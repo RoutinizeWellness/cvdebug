@@ -33,7 +33,7 @@ export const upgradePlan = action({
 
     const clerkSecretKey = process.env.CLERK_SECRET_KEY;
     if (!clerkSecretKey) {
-      throw new Error("CLERK_SECRET_KEY is not set in environment variables.");
+      throw new Error("CLERK_SECRET_KEY is not set in environment variables. Please set it in the Convex dashboard.");
     }
 
     // 1. Update Clerk Metadata via API
