@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQuery } from "convex/react";
-import { Image as ImageIcon, Loader2, Plus, Search, Trash2, Upload } from "lucide-react";
+import { Image as ImageIcon, Loader2, Plus, Search, Trash2, Upload, FileUp } from "lucide-react";
 import { useRef, useState } from "react";
 import { createWorker } from "tesseract.js";
 import { toast } from "sonner";
@@ -13,6 +13,7 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const [search, setSearch] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const generateUploadUrl = useMutation(api.screenshots.generateUploadUrl);
@@ -22,8 +23,7 @@ export default function Dashboard() {
   
   const screenshots = useQuery(api.screenshots.getScreenshots, { search: search || undefined });
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFile = async (file: File) => {
     if (!file) return;
 
     setIsUploading(true);
@@ -60,6 +60,33 @@ export default function Dashboard() {
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      handleFile(file);
+    } else if (file) {
+      toast.error("Please upload an image file");
     }
   };
 
@@ -125,7 +152,22 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main 
+        className="flex-1 container mx-auto px-4 py-8 relative"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {isDragging && (
+          <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm border-2 border-dashed border-primary rounded-xl flex flex-col items-center justify-center animate-in fade-in duration-200">
+            <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+              <FileUp className="h-10 w-10 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold text-primary">Drop screenshot here</h3>
+            <p className="text-muted-foreground mt-2">Release to upload instantly</p>
+          </div>
+        )}
+
         <div className="flex flex-col md:flex-row gap-6 items-start justify-between mb-8">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -157,7 +199,9 @@ export default function Dashboard() {
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : screenshots.length === 0 ? (
-          <div className="text-center py-20 border-2 border-dashed rounded-xl">
+          <div 
+            className={`text-center py-20 border-2 border-dashed rounded-xl transition-colors ${isDragging ? 'border-primary bg-primary/5' : 'border-border'}`}
+          >
             <div className="h-12 w-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
               <ImageIcon className="h-6 w-6 text-muted-foreground" />
             </div>
