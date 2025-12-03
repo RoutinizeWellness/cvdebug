@@ -1,14 +1,13 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2 } from "lucide-react";
-import { useMutation, useQuery, useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const upgradePlan = useMutation(api.users.upgradePlan);
-  const createCheckoutSession = useAction(api.payments.createCheckoutSession);
+  const upgradePlan = useAction(api.users.upgradePlan);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   
@@ -17,18 +16,9 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const handleUpgrade = async (plan: "free" | "pro" | "team") => {
     setIsLoading(plan);
     try {
-      if (plan === "free") {
-        await upgradePlan({ plan });
-        toast.success("Successfully downgraded to Free plan.");
-        onOpenChange(false);
-      } else {
-        const url = await createCheckoutSession({ plan });
-        if (url) {
-          window.location.href = url;
-        } else {
-          throw new Error("Failed to create checkout session");
-        }
-      }
+      await upgradePlan({ plan });
+      toast.success(`Successfully updated plan to ${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
+      onOpenChange(false);
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Failed to update plan");

@@ -48,30 +48,11 @@ export default function Dashboard() {
   const [showPricing, setShowPricing] = useState(false);
   const [isImmersive, setIsImmersive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const handleCheckoutSuccess = useAction(api.payments.handleCheckoutSuccess);
-
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate("/auth");
     }
   }, [isLoading, isAuthenticated, navigate]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get("session_id");
-    if (sessionId) {
-      handleCheckoutSuccess({ sessionId })
-        .then(() => {
-          toast.success("Subscription updated successfully!");
-          // Remove query params
-          window.history.replaceState({}, document.title, window.location.pathname);
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error("Failed to verify subscription");
-        });
-    }
-  }, []);
 
   const generateUploadUrl = useMutation(api.screenshots.generateUploadUrl);
   const createScreenshot = useMutation(api.screenshots.createScreenshot);

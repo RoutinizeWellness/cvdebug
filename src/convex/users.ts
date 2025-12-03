@@ -1,5 +1,6 @@
-import { query, mutation, internalMutation, QueryCtx, MutationCtx } from "./_generated/server";
+import { query, mutation, internalMutation, action } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 /**
  * Get the current signed in user identity. Returns null if the user is not signed in.
@@ -15,6 +16,8 @@ export const currentUser = query({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
       
+    // Prefer the local DB subscription tier, but fallback to "free"
+    // In a full Clerk integration, we might also check identity.tokenParsed.public_metadata
     return {
       ...identity,
       subscriptionTier: user?.subscriptionTier || "free",
@@ -22,31 +25,48 @@ export const currentUser = query({
   },
 });
 
-export const upgradePlan = mutation({
+export const upgradePlan = action({
   args: { plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
-      .unique();
-
-    if (args.plan !== "free") {
-      throw new Error("Plan upgrades must be processed through payment checkout.");
+    const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+    if (!clerkSecretKey) {
+      throw new Error("CLERK_SECRET_KEY is not set in environment variables.");
     }
 
-    if (user) {
-      await ctx.db.patch(user._id, { subscriptionTier: args.plan });
-    } else {
-      await ctx.db.insert("users", {
-        tokenIdentifier: identity.subject,
-        email: identity.email,
-        name: identity.name,
-        subscriptionTier: args.plan,
+    // 1. Update Clerk Metadata via API
+    // This makes it a "real" Clerk integration
+    try {
+      const response = await fetch(`https://api.clerk.com/v1/users/${identity.subject}/metadata`, {
+        method: "PATCH",
+        headers: {
+          "Authorization": `Bearer ${clerkSecretKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          public_metadata: {
+            subscriptionTier: args.plan,
+          },
+        }),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Clerk API Error:", errorText);
+        throw new Error(`Failed to update Clerk metadata: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Failed to update Clerk metadata", error);
+      throw new Error("Failed to process subscription update with Clerk.");
     }
+
+    // 2. Sync with local Convex DB
+    await ctx.runMutation(internal.users.updateSubscription, {
+      tokenIdentifier: identity.subject,
+      plan: args.plan,
+    });
   },
 });
 
@@ -63,6 +83,19 @@ export const updateSubscription = internalMutation({
 
     if (user) {
       await ctx.db.patch(user._id, { subscriptionTier: args.plan });
+    } else {
+      // Should not happen if user is created on login, but safe to handle
+      // We need to get email/name from somewhere if creating, but for now just patch if exists
+      // or insert minimal
+       const identity = await ctx.auth.getUserIdentity();
+       if (identity && identity.subject === args.tokenIdentifier) {
+          await ctx.db.insert("users", {
+            tokenIdentifier: args.tokenIdentifier,
+            email: identity.email,
+            name: identity.name,
+            subscriptionTier: args.plan,
+          });
+       }
     }
   },
 });
@@ -70,7 +103,7 @@ export const updateSubscription = internalMutation({
 /**
  * Use this function internally to get the current user data.
  */
-export const getCurrentUser = async (ctx: QueryCtx | MutationCtx) => {
+export const getCurrentUser = async (ctx: any) => {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     return null;
