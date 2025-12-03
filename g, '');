@@ -40,7 +40,7 @@ export const analyzeScreenshot = internalAction({
       const text = response.text();
       
       // Clean up markdown code blocks if present to ensure valid JSON
-      const jsonStr = text.replace(/```json/g, '').replace(/```/g, '');
+      const jsonStr = text.replace(/```json/g, "").replace(/```/g, "").trim();
       
       const parsed = JSON.parse(jsonStr);
       const { title, category } = parsed;

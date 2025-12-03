@@ -37,8 +37,8 @@ export default function Landing() {
       {/* Navigation */}
       <nav className="container mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-            <ImageIcon className="h-5 w-5 text-primary-foreground" />
+          <div className="h-8 w-8 bg-primary/10 rounded-lg flex items-center justify-center">
+            <img src="/logo.svg" alt="Logo" className="h-5 w-5" />
           </div>
           <span className="font-bold text-lg tracking-tight">Screenshot Organizer</span>
         </div>

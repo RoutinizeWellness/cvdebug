@@ -1,2 +1,1 @@
-npm install tesseract.js
-
+rm src/convex/payments.ts

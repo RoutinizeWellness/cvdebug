@@ -1,25 +1,24 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2 } from "lucide-react";
-import { useAction } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const createCheckoutSession = useAction(api.payments.createCheckoutSession);
+  const upgradePlan = useMutation(api.users.upgradePlan);
   const [isLoading, setIsLoading] = useState<string | null>(null);
 
-  const handleUpgrade = async (plan: string) => {
+  const handleUpgrade = async (plan: "pro" | "team") => {
     setIsLoading(plan);
     try {
-      const url = await createCheckoutSession({ plan });
-      if (url) {
-        window.location.href = url;
-      }
+      await upgradePlan({ plan });
+      toast.success(`Successfully upgraded to ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan!`);
+      onOpenChange(false);
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to start checkout");
+      toast.error(error.message || "Failed to upgrade plan");
     } finally {
       setIsLoading(null);
     }

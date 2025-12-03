@@ -33,6 +33,7 @@ import { useNavigate } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Chatbot } from "@/components/Chatbot";
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
@@ -147,13 +148,14 @@ export default function Dashboard() {
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
+      <Chatbot />
       <div className="flex h-full min-h-screen w-full">
         {/* SideNavBar */}
         <aside className="w-64 flex-shrink-0 p-4 hidden md:block">
           <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col gap-4 rounded-xl border border-white/10 bg-card/50 p-4 backdrop-blur-lg">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-                <ImageIcon className="h-6 w-6 text-primary-foreground" />
+              <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center shadow-sm">
+                <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
               </div>
               <div className="flex flex-col">
                 <h1 className="text-foreground text-base font-bold leading-normal tracking-tight">Screenshot Org</h1>
