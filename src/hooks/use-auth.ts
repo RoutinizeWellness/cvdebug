@@ -1,29 +1,18 @@
-import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useQuery } from "convex/react";
-
-import { useEffect, useState } from "react";
+import { useAuth as useClerkAuth, useUser } from "@clerk/clerk-react";
 
 export function useAuth() {
-  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.users.currentUser);
-  const { signIn, signOut } = useAuthActions();
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  // This effect updates the loading state once auth is loaded and user data is available
-  // It ensures we only show content when both authentication state and user data are ready
-  useEffect(() => {
-    if (!isAuthLoading && user !== undefined) {
-      setIsLoading(false);
-    }
-  }, [isAuthLoading, user]);
+  const { isLoaded, isSignedIn, signOut } = useClerkAuth();
+  const { user } = useUser();
 
   return {
-    isLoading,
-    isAuthenticated,
-    user,
-    signIn,
+    isLoading: !isLoaded,
+    isAuthenticated: isSignedIn ?? false,
+    user: user ? {
+      ...user,
+      email: user.primaryEmailAddress?.emailAddress,
+      _id: user.id, // Mapping Clerk ID to _id for compatibility
+    } : undefined,
+    signIn: () => {}, // Clerk handles sign in via components
     signOut,
   };
 }

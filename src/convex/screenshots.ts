@@ -26,7 +26,7 @@ export const createScreenshot = mutation({
     if (!url) throw new Error("Failed to get storage URL");
 
     const screenshotId = await ctx.db.insert("screenshots", {
-      userId: user._id,
+      userId: user._id, // This is now the Clerk ID (string)
       storageId: args.storageId,
       url,
       title: args.title,
@@ -45,7 +45,6 @@ export const updateScreenshotOcr = mutation({
   args: {
     id: v.id("screenshots"),
     ocrText: v.string(),
-    // category is no longer needed from client, but keeping optional for backward compatibility if needed, though we ignore it
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
@@ -57,14 +56,10 @@ export const updateScreenshotOcr = mutation({
       throw new Error("Screenshot not found or unauthorized");
     }
 
-    // Update OCR text but keep status as processing (or analyzing) until AI finishes
-    // We can set it to processing or a new status if we had one, but processing works.
     await ctx.db.patch(args.id, {
       ocrText: args.ocrText,
-      // We don't set category or status to completed yet
     });
 
-    // Schedule AI analysis
     await ctx.scheduler.runAfter(0, internal.ai.analyzeScreenshot, {
       id: args.id,
       ocrText: args.ocrText,
@@ -100,10 +95,6 @@ export const getScreenshots = query({
       .withIndex("by_user", (q) => q.eq("userId", user._id));
 
     if (args.search) {
-      // Simple client-side filtering for now as full text search requires specific setup
-      // We will filter in memory for the MVP or use the search index if set up
-      // For now, let's return all and filter on client or use search index if we defined it
-      // We defined search_ocr, so let's use it if search is present
        return await ctx.db
         .query("screenshots")
         .withSearchIndex("search_ocr", (q) => 

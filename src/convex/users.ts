@@ -1,33 +1,25 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
 import { query, QueryCtx, MutationCtx } from "./_generated/server";
 
 /**
- * Get the current signed in user. Returns null if the user is not signed in.
- * Usage: const signedInUser = await ctx.runQuery(api.authHelpers.currentUser);
- * THIS FUNCTION IS READ-ONLY. DO NOT MODIFY.
+ * Get the current signed in user identity. Returns null if the user is not signed in.
  */
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const user = await getCurrentUser(ctx);
-
-    if (user === null) {
-      return null;
-    }
-
-    return user;
+    return await ctx.auth.getUserIdentity();
   },
 });
 
 /**
- * Use this function internally to get the current user data. Remember to handle the null user case.
- * @param ctx
- * @returns
+ * Use this function internally to get the current user data.
  */
 export const getCurrentUser = async (ctx: QueryCtx | MutationCtx) => {
-  const userId = await getAuthUserId(ctx);
-  if (userId === null) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) {
     return null;
   }
-  return await ctx.db.get(userId);
+  return {
+    _id: identity.subject, // Use the subject (Clerk ID) as the ID
+    ...identity,
+  };
 };

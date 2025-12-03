@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: process.env.CONVEX_SITE_URL,
+      domain: "https://hopeful-doe-56.clerk.accounts.dev",
       applicationID: "convex",
     },
   ],
