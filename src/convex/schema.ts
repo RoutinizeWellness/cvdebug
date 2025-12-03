@@ -32,12 +32,24 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
-
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    screenshots: defineTable({
+      userId: v.id("users"),
+      storageId: v.id("_storage"),
+      url: v.string(),
+      title: v.string(),
+      category: v.optional(v.string()),
+      ocrText: v.optional(v.string()),
+      status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),
+      width: v.number(),
+      height: v.number(),
+      size: v.number(),
+      mimeType: v.string(),
+    })
+    .index("by_user", ["userId"])
+    .searchIndex("search_ocr", {
+      searchField: "ocrText",
+      filterFields: ["userId"],
+    }),
   },
   {
     schemaValidation: false,
