@@ -1,6 +1,7 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalMutation } from "./_generated/server";
 import { getCurrentUser } from "./users";
+import { internal } from "./_generated/api";
 
 export const generateUploadUrl = mutation(async (ctx) => {
   const user = await getCurrentUser(ctx);
@@ -44,6 +45,7 @@ export const updateScreenshotOcr = mutation({
   args: {
     id: v.id("screenshots"),
     ocrText: v.string(),
+    // category is no longer needed from client, but keeping optional for backward compatibility if needed, though we ignore it
     category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
@@ -55,9 +57,31 @@ export const updateScreenshotOcr = mutation({
       throw new Error("Screenshot not found or unauthorized");
     }
 
+    // Update OCR text but keep status as processing (or analyzing) until AI finishes
+    // We can set it to processing or a new status if we had one, but processing works.
     await ctx.db.patch(args.id, {
       ocrText: args.ocrText,
-      category: args.category || "Uncategorized",
+      // We don't set category or status to completed yet
+    });
+
+    // Schedule AI analysis
+    await ctx.scheduler.runAfter(0, internal.ai.analyzeScreenshot, {
+      id: args.id,
+      ocrText: args.ocrText,
+    });
+  },
+});
+
+export const updateScreenshotMetadata = internalMutation({
+  args: {
+    id: v.id("screenshots"),
+    title: v.string(),
+    category: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, {
+      title: args.title,
+      category: args.category,
       status: "completed",
     });
   },

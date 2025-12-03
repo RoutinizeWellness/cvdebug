@@ -98,21 +98,15 @@ export default function Dashboard() {
 
       const text = ret.data.text;
       
-      // Simple categorization based on keywords (Mocking AI for now)
-      let category = "Uncategorized";
-      const lowerText = text.toLowerCase();
-      if (lowerText.includes("error") || lowerText.includes("fail")) category = "Errors";
-      else if (lowerText.includes("invoice") || lowerText.includes("receipt")) category = "Finance";
-      else if (lowerText.includes("code") || lowerText.includes("function")) category = "Development";
-      else if (lowerText.includes("meeting") || lowerText.includes("zoom")) category = "Meetings";
-
+      // We no longer categorize on the client. 
+      // We send the text to the backend, which will trigger the AI analysis.
+      
       await updateScreenshotOcr({
         id: screenshotId,
         ocrText: text,
-        category,
       });
       
-      toast.success("OCR Processing Complete");
+      toast.success("OCR Complete. Analyzing content...");
     } catch (error) {
       console.error("OCR Error:", error);
       toast.error("OCR processing failed");
