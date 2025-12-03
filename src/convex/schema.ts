@@ -21,6 +21,9 @@ const schema = defineSchema(
       searchField: "ocrText",
       filterFields: ["userId"],
     }),
+    waitlist: defineTable({
+      email: v.string(),
+    }).index("by_email", ["email"]),
   },
   {
     schemaValidation: false,

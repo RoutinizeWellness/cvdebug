@@ -1,23 +1,45 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, Zap } from "lucide-react";
+import { Check, Zap, Building2, Loader2 } from "lucide-react";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+  const createCheckoutSession = useAction(api.payments.createCheckoutSession);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+
+  const handleUpgrade = async (plan: string) => {
+    setIsLoading(plan);
+    try {
+      const url = await createCheckoutSession({ plan });
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to start checkout");
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden gap-0">
+      <DialogContent className="sm:max-w-[1000px] p-0 overflow-hidden gap-0">
         <div className="p-6 sm:p-10 bg-muted/30 text-center">
           <DialogHeader>
-            <DialogTitle className="text-3xl font-bold text-center mb-2">Upgrade to Pro</DialogTitle>
+            <DialogTitle className="text-3xl font-bold text-center mb-2">Choose Your Plan</DialogTitle>
             <DialogDescription className="text-center text-lg max-w-md mx-auto">
               Unlock advanced AI features, unlimited storage, and organize your screenshots like a pro.
             </DialogDescription>
           </DialogHeader>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x border-t">
+        <div className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x border-t">
           {/* Free Plan */}
-          <div className="p-6 sm:p-10 flex flex-col gap-6 bg-background">
+          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
             <div className="space-y-2">
               <h3 className="font-bold text-xl text-muted-foreground">Free</h3>
               <div className="flex items-baseline gap-1">
@@ -52,7 +74,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
           </div>
 
           {/* Pro Plan */}
-          <div className="p-6 sm:p-10 flex flex-col gap-6 bg-background relative">
+          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background relative">
             <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
               Most Popular
             </div>
@@ -95,7 +117,63 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
               </div>
             </div>
             
-            <Button className="w-full shadow-lg shadow-primary/20">Upgrade to Pro</Button>
+            <Button 
+              className="w-full shadow-lg shadow-primary/20" 
+              onClick={() => handleUpgrade("pro")}
+              disabled={isLoading === "pro"}
+            >
+              {isLoading === "pro" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upgrade to Pro"}
+            </Button>
+          </div>
+
+          {/* Team Plan */}
+          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
+            <div className="space-y-2">
+              <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+                Team <Building2 className="h-4 w-4" />
+              </h3>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold">$29</span>
+                <span className="text-muted-foreground">/month</span>
+              </div>
+              <p className="text-sm text-muted-foreground">For teams and organizations.</p>
+            </div>
+            
+            <div className="space-y-3 flex-1">
+              <div className="flex items-center gap-3 text-sm">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span>Everything in Pro</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span>Shared Workspace</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span>Admin Controls</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span>API Access</span>
+              </div>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => handleUpgrade("team")}
+              disabled={isLoading === "team"}
+            >
+              {isLoading === "team" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upgrade to Team"}
+            </Button>
           </div>
         </div>
       </DialogContent>

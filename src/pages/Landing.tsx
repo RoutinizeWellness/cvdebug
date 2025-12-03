@@ -1,12 +1,36 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Image as ImageIcon, Search, Zap } from "lucide-react";
+import { ArrowRight, Check, Image as ImageIcon, Search, Zap, Mail, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export default function Landing() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const joinWaitlist = useMutation(api.waitlist.join);
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleJoinWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsLoading(true);
+    try {
+      await joinWaitlist({ email });
+      toast.success("You've been added to the waitlist!");
+      setEmail("");
+    } catch (error) {
+      toast.error("Failed to join waitlist. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -74,6 +98,34 @@ export default function Landing() {
                 title="Auto Categorization"
                 description="Screenshots are automatically tagged and organized into relevant categories."
               />
+            </div>
+          </div>
+        </section>
+
+        {/* Waitlist Section */}
+        <section className="py-24 border-t border-border/50">
+          <div className="container mx-auto px-6 text-center">
+            <div className="max-w-xl mx-auto space-y-6">
+              <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mx-auto">
+                <Mail className="h-6 w-6" />
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight">Join the Waitlist</h2>
+              <p className="text-muted-foreground">
+                Be the first to know when we release the desktop app and new AI features.
+              </p>
+              <form onSubmit={handleJoinWaitlist} className="flex gap-2 max-w-md mx-auto">
+                <Input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="h-11"
+                />
+                <Button type="submit" size="lg" className="h-11" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Join"}
+                </Button>
+              </form>
             </div>
           </div>
         </section>
