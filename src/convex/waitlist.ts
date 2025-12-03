@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, internalAction } from "./_generated/server";
+import { mutation, internalAction, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { Resend } from "resend";
 
@@ -51,5 +51,17 @@ export const sendWelcomeEmail = internalAction({
     } catch (error) {
       console.error("Failed to send email:", error);
     }
+  },
+});
+
+export const getWaitlist = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    return await ctx.db.query("waitlist").order("desc").collect();
   },
 });
