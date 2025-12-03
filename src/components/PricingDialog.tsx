@@ -1,24 +1,27 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2 } from "lucide-react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const upgradePlan = useMutation(api.users.upgradePlan);
+  const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
+  
+  const currentPlan = user?.subscriptionTier || "free";
 
-  const handleUpgrade = async (plan: "pro" | "team") => {
+  const handleUpgrade = async (plan: "free" | "pro" | "team") => {
     setIsLoading(plan);
     try {
       await upgradePlan({ plan });
-      toast.success(`Successfully upgraded to ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan!`);
+      toast.success(`Successfully updated to ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan!`);
       onOpenChange(false);
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to upgrade plan");
+      toast.error(error.message || "Failed to update plan");
     } finally {
       setIsLoading(null);
     }
@@ -69,7 +72,14 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
               </div>
             </div>
             
-            <Button variant="outline" className="w-full" disabled>Current Plan</Button>
+            <Button 
+              variant={currentPlan === "free" ? "outline" : "secondary"} 
+              className="w-full" 
+              disabled={currentPlan === "free" || !!isLoading}
+              onClick={() => handleUpgrade("free")}
+            >
+              {isLoading === "free" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "free" ? "Current Plan" : "Downgrade to Free")}
+            </Button>
           </div>
 
           {/* Pro Plan */}
@@ -118,10 +128,11 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             
             <Button 
               className="w-full shadow-lg shadow-primary/20" 
+              variant={currentPlan === "pro" ? "outline" : "default"}
               onClick={() => handleUpgrade("pro")}
-              disabled={isLoading === "pro"}
+              disabled={currentPlan === "pro" || !!isLoading}
             >
-              {isLoading === "pro" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upgrade to Pro"}
+              {isLoading === "pro" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "pro" ? "Current Plan" : "Upgrade to Pro")}
             </Button>
           </div>
 
@@ -166,12 +177,12 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             </div>
             
             <Button 
-              variant="outline" 
+              variant={currentPlan === "team" ? "outline" : "default"} 
               className="w-full"
               onClick={() => handleUpgrade("team")}
-              disabled={isLoading === "team"}
+              disabled={currentPlan === "team" || !!isLoading}
             >
-              {isLoading === "team" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upgrade to Team"}
+              {isLoading === "team" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "team" ? "Current Plan" : "Upgrade to Team")}
             </Button>
           </div>
         </div>

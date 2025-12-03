@@ -23,7 +23,7 @@ export const currentUser = query({
 });
 
 export const upgradePlan = mutation({
-  args: { plan: v.union(v.literal("pro"), v.literal("team")) },
+  args: { plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
