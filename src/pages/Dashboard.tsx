@@ -18,13 +18,21 @@ import {
   Filter,
   Share,
   Download,
-  X
+  X,
+  CreditCard,
+  Info,
+  Sparkles,
+  Tag,
+  FileText
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router";
+import { PricingDialog } from "@/components/PricingDialog";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
@@ -33,6 +41,7 @@ export default function Dashboard() {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedScreenshot, setSelectedScreenshot] = useState<any>(null);
+  const [showPricing, setShowPricing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -137,42 +146,61 @@ export default function Dashboard() {
 
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
+      <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
       <div className="flex h-full min-h-screen w-full">
         {/* SideNavBar */}
         <aside className="w-64 flex-shrink-0 p-4 hidden md:block">
           <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col gap-4 rounded-xl border border-white/10 bg-card/50 p-4 backdrop-blur-lg">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center">
+              <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
                 <ImageIcon className="h-6 w-6 text-primary-foreground" />
               </div>
               <div className="flex flex-col">
-                <h1 className="text-foreground text-base font-medium leading-normal">Screenshot Organizer</h1>
-                <p className="text-muted-foreground text-sm font-normal leading-normal">Workspace</p>
+                <h1 className="text-foreground text-base font-bold leading-normal tracking-tight">Screenshot Org</h1>
+                <p className="text-muted-foreground text-xs font-medium leading-normal">Personal Workspace</p>
               </div>
             </div>
             
-            <div className="flex flex-col gap-2 mt-4">
-              <div className="flex items-center gap-3 px-3 py-2 rounded-full bg-primary/10 text-primary">
-                <Grid className="h-5 w-5" />
-                <p className="text-sm font-medium leading-normal">All Screenshots</p>
+            <div className="flex flex-col gap-2 mt-6">
+              <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium">
+                <Grid className="h-4 w-4" />
+                <p className="text-sm leading-normal">All Screenshots</p>
               </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full cursor-pointer transition-colors">
-                <Folder className="h-5 w-5" />
+              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                <Folder className="h-4 w-4" />
                 <p className="text-sm font-medium leading-normal">Collections</p>
               </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full cursor-pointer transition-colors">
-                <Star className="h-5 w-5" />
+              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                <Star className="h-4 w-4" />
                 <p className="text-sm font-medium leading-normal">Favorites</p>
               </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full cursor-pointer transition-colors">
-                <Trash2 className="h-5 w-5" />
+              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
+                <Trash2 className="h-4 w-4" />
                 <p className="text-sm font-medium leading-normal">Trash</p>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <div 
+                className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 rounded-xl p-4 cursor-pointer hover:border-primary/30 transition-colors group"
+                onClick={() => setShowPricing(true)}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                  </div>
+                  <span className="font-bold text-sm">Upgrade to Pro</span>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">Get unlimited storage and advanced AI features.</p>
+                <button className="w-full py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-lg shadow-sm">
+                  Upgrade Now
+                </button>
               </div>
             </div>
             
             <div className="mt-auto flex flex-col gap-1">
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full cursor-pointer transition-colors" onClick={() => signOut()}>
-                <Settings className="h-5 w-5" />
+              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors" onClick={() => signOut()}>
+                <Settings className="h-4 w-4" />
                 <p className="text-sm font-medium leading-normal">Sign Out</p>
               </div>
             </div>
@@ -307,107 +335,147 @@ export default function Dashboard() {
 
       {/* Detailed View Dialog */}
       <Dialog open={!!selectedScreenshot} onOpenChange={(open) => !open && setSelectedScreenshot(null)}>
-        <DialogContent className="max-w-7xl w-[95vw] h-[90vh] p-0 bg-background border-border overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+        <DialogContent className="max-w-6xl w-[95vw] h-[85vh] p-0 bg-background border-border overflow-hidden flex flex-col shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm">
             <div className="flex items-center gap-4">
-              <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-                <ImageIcon className="h-5 w-5 text-primary-foreground" />
+              <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
+                <ImageIcon className="h-5 w-5 text-primary" />
               </div>
-              <h2 className="text-xl font-bold leading-tight tracking-tight">Screenshot Details</h2>
+              <div>
+                <h2 className="text-lg font-bold leading-tight tracking-tight">Screenshot Details</h2>
+                <p className="text-xs text-muted-foreground font-mono mt-0.5">{selectedScreenshot?._id}</p>
+              </div>
             </div>
             <div className="flex gap-2">
-              <button className="p-2 hover:bg-accent rounded-lg transition-colors">
-                <Share className="h-5 w-5 text-muted-foreground" />
+              <button className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground" title="Share">
+                <Share className="h-4 w-4" />
               </button>
-              <button className="p-2 hover:bg-accent rounded-lg transition-colors">
-                <Download className="h-5 w-5 text-muted-foreground" />
+              <button className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground" title="Download">
+                <Download className="h-4 w-4" />
               </button>
+              <div className="w-px h-8 bg-border mx-1 self-center" />
               <button 
                 className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors"
                 onClick={() => selectedScreenshot && handleDelete(selectedScreenshot._id)}
+                title="Delete"
               >
-                <Trash2 className="h-5 w-5" />
+                <Trash2 className="h-4 w-4" />
               </button>
               <button 
-                className="p-2 hover:bg-accent rounded-lg transition-colors"
+                className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground"
                 onClick={() => setSelectedScreenshot(null)}
+                title="Close"
               >
-                <X className="h-5 w-5 text-muted-foreground" />
+                <X className="h-4 w-4" />
               </button>
             </div>
           </div>
 
           <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden">
-            {/* Left Panel */}
-            <div className="lg:col-span-3 border-r border-border p-6 overflow-y-auto bg-card/30">
-              <div className="flex flex-col gap-8">
-                <div>
-                  <h3 className="text-lg font-bold pb-4">Details</h3>
-                  <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 text-sm">
-                    <p className="text-muted-foreground">Filename</p>
-                    <p className="text-foreground truncate">{selectedScreenshot?.title}</p>
-                    <p className="text-muted-foreground">Date</p>
-                    <p className="text-foreground">{selectedScreenshot && new Date(selectedScreenshot._creationTime).toLocaleDateString()}</p>
-                    <p className="text-muted-foreground">Size</p>
-                    <p className="text-foreground">{selectedScreenshot && (selectedScreenshot.size / 1024 / 1024).toFixed(2)} MB</p>
+            {/* Left Panel - Details */}
+            <div className="lg:col-span-3 border-r border-border bg-card/30 flex flex-col h-full overflow-hidden">
+              <ScrollArea className="flex-1">
+                <div className="p-6 flex flex-col gap-8">
+                  <div>
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Info className="h-4 w-4" /> Metadata
+                    </h3>
+                    <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
+                      <p className="text-muted-foreground font-medium">Filename</p>
+                      <p className="text-foreground truncate font-medium" title={selectedScreenshot?.title}>{selectedScreenshot?.title}</p>
+                      
+                      <p className="text-muted-foreground font-medium">Date</p>
+                      <p className="text-foreground">{selectedScreenshot && new Date(selectedScreenshot._creationTime).toLocaleDateString(undefined, { dateStyle: 'medium' })}</p>
+                      
+                      <p className="text-muted-foreground font-medium">Size</p>
+                      <p className="text-foreground font-mono">{selectedScreenshot && (selectedScreenshot.size / 1024 / 1024).toFixed(2)} MB</p>
+                      
+                      <p className="text-muted-foreground font-medium">Dimensions</p>
+                      <p className="text-foreground font-mono">{selectedScreenshot?.width || '?'} x {selectedScreenshot?.height || '?'}</p>
+                      
+                      <p className="text-muted-foreground font-medium">Type</p>
+                      <p className="text-foreground font-mono text-xs">{selectedScreenshot?.mimeType}</p>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold pb-4">AI Insights</h3>
-                  <div className="flex flex-col gap-2">
-                    <p className="text-muted-foreground text-sm">
-                      {selectedScreenshot?.ocrText ? selectedScreenshot.ocrText.substring(0, 150) + "..." : "No text extracted."}
-                    </p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {selectedScreenshot?.category && (
-                        <span className="bg-primary/20 text-primary text-xs font-semibold px-2.5 py-1 rounded-full">
-                          {selectedScreenshot.category}
-                        </span>
-                      )}
+                  
+                  <Separator />
+
+                  <div>
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-primary" /> AI Analysis
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                      <div className="space-y-2">
+                        <span className="text-xs font-medium text-muted-foreground">Category</span>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedScreenshot?.category ? (
+                            <span className="bg-primary/10 text-primary border border-primary/20 text-xs font-semibold px-3 py-1 rounded-full">
+                              {selectedScreenshot.category}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm italic">Uncategorized</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2 mt-2">
+                        <span className="text-xs font-medium text-muted-foreground">Extracted Text</span>
+                        <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-40 overflow-y-auto leading-relaxed">
+                          {selectedScreenshot?.ocrText ? selectedScreenshot.ocrText : "No text extracted."}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </ScrollArea>
             </div>
 
             {/* Center Image */}
-            <div className="lg:col-span-6 bg-black/5 flex items-center justify-center p-8 overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center">
+            <div className="lg:col-span-6 bg-black/5 flex items-center justify-center p-8 overflow-hidden relative group">
+              <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+              <div className="w-full h-full flex items-center justify-center relative z-10">
                 <img 
-                  className="max-w-full max-h-full object-contain rounded-lg shadow-lg" 
+                  className="max-w-full max-h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10" 
                   src={selectedScreenshot?.url} 
                   alt={selectedScreenshot?.title} 
                 />
               </div>
             </div>
 
-            {/* Right Panel */}
-            <div className="lg:col-span-3 border-l border-border p-6 overflow-y-auto bg-card/30">
-              <div className="flex flex-col gap-8">
-                <div>
-                  <h3 className="text-lg font-bold pb-4">Tags</h3>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="flex items-center gap-1.5 bg-secondary text-secondary-foreground text-sm font-medium px-3 py-1.5 rounded-full">
-                        Project X
-                        <X className="h-3 w-3 cursor-pointer hover:text-foreground" />
-                      </span>
+            {/* Right Panel - Actions */}
+            <div className="lg:col-span-3 border-l border-border bg-card/30 flex flex-col h-full overflow-hidden">
+              <ScrollArea className="flex-1">
+                <div className="p-6 flex flex-col gap-8">
+                  <div>
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Tag className="h-4 w-4" /> Tags
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="flex items-center gap-1.5 bg-secondary text-secondary-foreground border border-secondary-foreground/10 text-xs font-medium px-2.5 py-1 rounded-md group cursor-pointer hover:bg-secondary/80 transition-colors">
+                          Project X
+                          <X className="h-3 w-3 opacity-50 group-hover:opacity-100" />
+                        </span>
+                        <button className="flex items-center gap-1.5 text-muted-foreground hover:text-primary border border-dashed border-border hover:border-primary/50 text-xs font-medium px-2.5 py-1 rounded-md transition-all">
+                          <Plus className="h-3 w-3" /> Add Tag
+                        </button>
+                      </div>
                     </div>
-                    <input 
-                      className="w-full bg-background border border-border rounded-lg text-sm px-3 py-2 focus:ring-2 focus:ring-primary outline-none" 
-                      placeholder="Add a new tag..." 
-                      type="text"
-                    />
+                  </div>
+                  
+                  <Separator />
+
+                  <div>
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <FileText className="h-4 w-4" /> Notes
+                    </h3>
+                    <textarea 
+                      className="w-full h-64 bg-background border border-border rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-muted-foreground/50" 
+                      placeholder="Add a note about this screenshot..."
+                    ></textarea>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-bold pb-4">Notes</h3>
-                  <textarea 
-                    className="w-full h-48 bg-background border border-border rounded-lg text-sm p-3 focus:ring-2 focus:ring-primary outline-none resize-none" 
-                    placeholder="Add a note..."
-                  ></textarea>
-                </div>
-              </div>
+              </ScrollArea>
             </div>
           </div>
         </DialogContent>
