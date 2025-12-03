@@ -1,4 +1,4 @@
-import { query, mutation, QueryCtx, MutationCtx } from "./_generated/server";
+import { query, mutation, internalMutation, QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 
 /**
@@ -33,6 +33,10 @@ export const upgradePlan = mutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
 
+    if (args.plan !== "free") {
+      throw new Error("Plan upgrades must be processed through payment checkout.");
+    }
+
     if (user) {
       await ctx.db.patch(user._id, { subscriptionTier: args.plan });
     } else {
@@ -42,6 +46,23 @@ export const upgradePlan = mutation({
         name: identity.name,
         subscriptionTier: args.plan,
       });
+    }
+  },
+});
+
+export const updateSubscription = internalMutation({
+  args: { 
+    tokenIdentifier: v.string(), 
+    plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
+
+    if (user) {
+      await ctx.db.patch(user._id, { subscriptionTier: args.plan });
     }
   },
 });
