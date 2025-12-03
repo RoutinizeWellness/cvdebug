@@ -23,7 +23,9 @@ import {
   Info,
   Sparkles,
   Tag,
-  FileText
+  FileText,
+  Maximize2,
+  Minimize2
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -43,6 +45,7 @@ export default function Dashboard() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedScreenshot, setSelectedScreenshot] = useState<any>(null);
   const [showPricing, setShowPricing] = useState(false);
+  const [isImmersive, setIsImmersive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -337,7 +340,7 @@ export default function Dashboard() {
 
       {/* Detailed View Dialog */}
       <Dialog open={!!selectedScreenshot} onOpenChange={(open) => !open && setSelectedScreenshot(null)}>
-        <DialogContent className="max-w-6xl w-[95vw] h-[85vh] p-0 bg-background border-border overflow-hidden flex flex-col shadow-2xl">
+        <DialogContent className="max-w-[95vw] w-full h-[95vh] p-0 bg-background border-border overflow-hidden flex flex-col shadow-2xl">
           <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm">
             <div className="flex items-center gap-4">
               <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
@@ -375,7 +378,7 @@ export default function Dashboard() {
 
           <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-0 overflow-hidden">
             {/* Left Panel - Details */}
-            <div className="lg:col-span-3 border-r border-border bg-card/30 flex flex-col h-full overflow-hidden">
+            <div className={`lg:col-span-3 border-r border-border bg-card/30 flex flex-col h-full overflow-hidden ${isImmersive ? 'hidden' : ''}`}>
               <ScrollArea className="flex-1">
                 <div className="p-6 flex flex-col gap-8">
                   <div>
@@ -433,11 +436,20 @@ export default function Dashboard() {
             </div>
 
             {/* Center Image */}
-            <div className="lg:col-span-6 bg-black/5 flex items-center justify-center p-8 overflow-hidden relative group">
+            <div className={`${isImmersive ? 'lg:col-span-12' : 'lg:col-span-6'} bg-black/5 flex items-center justify-center p-8 overflow-hidden relative group transition-all duration-300`}>
               <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+              
+              <button 
+                onClick={() => setIsImmersive(!isImmersive)}
+                className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 text-white rounded-lg backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100"
+                title={isImmersive ? "Exit Fullscreen" : "Enter Fullscreen"}
+              >
+                {isImmersive ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+              </button>
+
               <div className="w-full h-full flex items-center justify-center relative z-10">
                 <img 
-                  className="max-w-full max-h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10" 
+                  className="w-full h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10" 
                   src={selectedScreenshot?.url} 
                   alt={selectedScreenshot?.title} 
                 />
@@ -445,7 +457,7 @@ export default function Dashboard() {
             </div>
 
             {/* Right Panel - Actions */}
-            <div className="lg:col-span-3 border-l border-border bg-card/30 flex flex-col h-full overflow-hidden">
+            <div className={`lg:col-span-3 border-l border-border bg-card/30 flex flex-col h-full overflow-hidden ${isImmersive ? 'hidden' : ''}`}>
               <ScrollArea className="flex-1">
                 <div className="p-6 flex flex-col gap-8">
                   <div>
