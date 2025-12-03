@@ -48,11 +48,34 @@ export default function Dashboard() {
   const [showPricing, setShowPricing] = useState(false);
   const [isImmersive, setIsImmersive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const handleCheckoutSuccess = useAction(api.billing.handleCheckoutSuccess);
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate("/auth");
     }
   }, [isLoading, isAuthenticated, navigate]);
+
+  // Handle Stripe Checkout Success
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+    if (sessionId) {
+      const handleSuccess = async () => {
+        try {
+          await handleCheckoutSuccess({ sessionId });
+          toast.success("Subscription updated successfully!");
+          // Clean up URL
+          window.history.replaceState({}, document.title, "/dashboard");
+        } catch (error) {
+          console.error("Failed to confirm subscription:", error);
+          toast.error("Failed to confirm subscription update");
+        }
+      };
+      handleSuccess();
+    }
+  }, [handleCheckoutSuccess]);
 
   const generateUploadUrl = useMutation(api.screenshots.generateUploadUrl);
   const createScreenshot = useMutation(api.screenshots.createScreenshot);

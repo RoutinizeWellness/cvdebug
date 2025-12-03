@@ -7,7 +7,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const upgradePlan = useAction(api.users.upgradePlan);
+  const createCheckoutSession = useAction(api.billing.createCheckoutSession);
+  const downgradeSubscription = useAction(api.billing.downgradeSubscription);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   
@@ -16,9 +17,18 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const handleUpgrade = async (plan: "free" | "pro" | "team") => {
     setIsLoading(plan);
     try {
-      await upgradePlan({ plan });
-      toast.success(`Successfully updated plan to ${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
-      onOpenChange(false);
+      if (plan === "free") {
+        await downgradeSubscription({});
+        toast.success("Successfully downgraded to Free plan");
+        onOpenChange(false);
+      } else {
+        const url = await createCheckoutSession({ plan });
+        if (url) {
+          window.location.href = url;
+        } else {
+          throw new Error("Failed to start checkout");
+        }
+      }
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Failed to update plan");
