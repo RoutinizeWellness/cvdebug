@@ -25,6 +25,50 @@ interface ResumeDetailDialogProps {
 export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDelete }: ResumeDetailDialogProps) {
   const [isImmersive, setIsImmersive] = useState(false);
 
+  // Helper to render markdown-like analysis
+  const renderAnalysis = (text: string) => {
+    if (!text) return <p className="text-muted-foreground italic">Analysis pending...</p>;
+    
+    // If it doesn't look like our markdown, return as is
+    if (!text.includes("###")) {
+      return <div className="whitespace-pre-wrap text-sm text-muted-foreground">{text}</div>;
+    }
+
+    const parts = text.split("###").filter(part => part.trim());
+
+    return (
+      <div className="space-y-4">
+        {parts.map((part, index) => {
+          const lines = part.trim().split("\n");
+          const title = lines[0];
+          const content = lines.slice(1).filter(line => line.trim());
+
+          return (
+            <div key={index} className="rounded-xl bg-muted/30 p-4 border border-border/50 hover:bg-muted/50 transition-colors">
+              <h4 className="font-bold text-foreground mb-3 text-sm flex items-center gap-2">
+                {title}
+              </h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                {content.map((line, i) => {
+                  const trimmed = line.trim();
+                  if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
+                    return (
+                      <div key={i} className="flex items-start gap-2">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                        <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                      </div>
+                    );
+                  }
+                  return <p key={i} className="leading-relaxed">{trimmed}</p>;
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   // Helper for Circular Progress
   const CircularScore = ({ score }: { score: number }) => {
     const radius = 30;
@@ -84,7 +128,14 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               <FileText className="h-5 w-5 text-primary" />
             </div>
             <div className="overflow-hidden">
-              <h2 className="text-lg font-bold leading-tight tracking-tight truncate">Resume Analysis</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-bold leading-tight tracking-tight truncate">Resume Analysis</h2>
+                {selectedResume?.category && (
+                  <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold border border-primary/20 uppercase tracking-wider">
+                    {selectedResume.category}
+                  </span>
+                )}
+              </div>
               <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate max-w-[200px]">{selectedResume?._id}</p>
             </div>
           </div>
@@ -163,8 +214,8 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" /> AI Recommendations
                   </h3>
-                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap max-h-[400px] overflow-y-auto">
-                    {selectedResume?.analysis || "Analysis pending..."}
+                  <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                    {renderAnalysis(selectedResume?.analysis)}
                   </div>
                 </div>
 
@@ -182,7 +233,13 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     <p className="text-foreground">{selectedResume && new Date(selectedResume._creationTime).toLocaleDateString(undefined, { dateStyle: 'medium' })}</p>
                     
                     <p className="text-muted-foreground font-medium">Category</p>
-                    <p className="text-foreground">{selectedResume?.category || "Uncategorized"}</p>
+                    <p className="text-foreground">
+                      {selectedResume?.category ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary text-secondary-foreground">
+                          {selectedResume.category}
+                        </span>
+                      ) : "Uncategorized"}
+                    </p>
                   </div>
                 </div>
               </div>
