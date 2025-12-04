@@ -143,13 +143,13 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span>100 Screenshots / month</span>
+                <span>3 Resumes / month</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span>Basic OCR Extraction</span>
+                <span>Basic Resume Parsing</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -183,7 +183,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 <span className="text-4xl font-bold">$9</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
-              <p className="text-sm text-muted-foreground">For power users who need more.</p>
+              <p className="text-sm text-muted-foreground">For serious job seekers.</p>
             </div>
             
             <div className="space-y-3 flex-1">
@@ -191,19 +191,19 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span>Unlimited Screenshots</span>
+                <span>Unlimited Resumes</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span>Advanced AI Analysis (Gemini)</span>
+                <span>Advanced AI Analysis</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span>Smart Categorization</span>
+                <span>Smart Job Categorization</span>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">

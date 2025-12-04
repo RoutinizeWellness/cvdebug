@@ -16,7 +16,7 @@ type Message = {
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hi! I can help you find screenshots or answer questions about your organized content." }
+    { role: "assistant", content: "Hi! I can help you optimize your resume, answer career questions, or provide feedback on your CV." }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);

@@ -4,9 +4,9 @@ import { v } from "convex/values";
 import { internalAction, action } from "./_generated/server";
 import { internal } from "./_generated/api";
 
-export const analyzeScreenshot = internalAction({
+export const analyzeResume = internalAction({
   args: {
-    id: v.id("screenshots"),
+    id: v.id("resumes"),
     ocrText: v.string(),
   },
   handler: async (ctx, args) => {
@@ -14,34 +14,41 @@ export const analyzeScreenshot = internalAction({
     
     if (!apiKey) {
       console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
-      await ctx.runMutation(internal.screenshots.updateScreenshotMetadata, {
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
-        title: "Screenshot",
+        title: "Resume",
         category: "Uncategorized",
+        analysis: "AI not configured.",
+        score: 0,
       });
       return;
     }
 
     try {
-      const prompt = `Analyze the following text extracted from a screenshot and provide a concise, descriptive title (max 5-6 words) and a category.
+      const prompt = `You are an expert ATS (Applicant Tracking System) optimizer and resume coach. Analyze the following resume text.
       
-      You MUST categorize the screenshot into exactly one of the following categories:
-      - Finance (receipts, banking, crypto, charts)
-      - Development (code, terminal, dev tools, github)
-      - Meetings (zoom, teams, calendar, notes)
-      - Errors (error messages, stack traces, bugs)
-      - Social Media (twitter, linkedin, instagram, posts)
-      - Shopping (products, carts, wishlists)
-      - Design (ui/ux, inspiration, colors)
-      - Documents (pdfs, articles, emails)
-      - Other (if it fits none of the above)
+      1. Identify the candidate's likely job role/category from this list:
+         - Engineering (Software, Hardware, Data)
+         - Marketing (Digital, Content, SEO)
+         - Sales (B2B, B2C, Account Mgmt)
+         - Design (UI/UX, Graphic, Product)
+         - Product (PM, PO, Strategy)
+         - Finance (Accounting, Investment, Analyst)
+         - HR (Recruiting, People Ops)
+         - Operations (Logistics, Admin, Support)
+         - Other
+      
+      2. Provide a concise title for this resume (e.g., "Senior Frontend Dev - John Doe").
+      
+      3. Calculate an ATS Score (0-100) based on keyword density, formatting (implied), and clarity.
+      
+      4. Provide a short, actionable analysis/feedback summary (max 3 sentences) on how to improve the resume.
 
-      If the text is empty or unclear, make your best guess based on any keywords or default to "Other".
-      
       Text content:
-      "${args.ocrText.substring(0, 3000)}"
+      "${args.ocrText.substring(0, 4000)}"
       
-      Return ONLY a JSON object with keys "title" and "category". Example: {"title": "GitHub PR Review", "category": "Development"}`;
+      Return ONLY a JSON object with keys: "title", "category", "score" (number), and "analysis".
+      Example: {"title": "Product Manager - Jane Smith", "category": "Product", "score": 85, "analysis": "Strong action verbs. Add more quantifiable metrics to your experience section."}`;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -65,23 +72,26 @@ export const analyzeScreenshot = internalAction({
       const data = await response.json();
       const content = data.choices[0].message.content;
       
-      // Clean up markdown code blocks if present to ensure valid JSON (just in case)
       const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category } = parsed;
+      const { title, category, score, analysis } = parsed;
       
-      await ctx.runMutation(internal.screenshots.updateScreenshotMetadata, {
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title,
         category,
+        analysis,
+        score,
       });
     } catch (error) {
-      console.error("Error analyzing screenshot:", error);
-      await ctx.runMutation(internal.screenshots.updateScreenshotMetadata, {
+      console.error("Error analyzing resume:", error);
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
-        title: "Screenshot",
+        title: "Resume",
         category: "Uncategorized",
+        analysis: "AI not configured.",
+        score: 0,
       });
     }
   },

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Image as ImageIcon, Search, Zap, Mail, Loader2, Star, Shield, Users } from "lucide-react";
+import { ArrowRight, Check, FileText, Search, Zap, Mail, Loader2, Star, Shield, Users, Upload, BarChart } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import { useMutation } from "convex/react";
@@ -40,16 +40,16 @@ export default function Landing() {
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 bg-primary/10 rounded-lg flex items-center justify-center border border-primary/20">
-              <img src="/logo.svg" alt="Logo" className="h-5 w-5" />
+              <FileText className="h-5 w-5 text-primary" />
             </div>
-            <span className="font-bold text-lg tracking-tight">Screenshot Organizer</span>
+            <span className="font-bold text-lg tracking-tight">Resume ATS Optimizer</span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => navigate("/auth")} className="text-muted-foreground hover:text-foreground">
               Sign In
             </Button>
             <Button onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")} className="shadow-lg shadow-primary/20">
-              Get Started
+              Optimize My Resume
             </Button>
           </div>
         </div>
@@ -67,24 +67,23 @@ export default function Landing() {
               className="max-w-4xl mx-auto space-y-8"
             >
               <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium rounded-full border-primary/20 bg-primary/5 text-primary mb-4">
-                ✨ Now with AI-Powered Analysis
+                ✨ Beat the ATS Algorithms
               </Badge>
               <h1 className="text-5xl md:text-7xl font-black tracking-tight text-foreground leading-[1.1]">
-                Organize your chaos.
+                Get hired faster with
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Instantly.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">AI Resume Optimization.</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Stop searching through thousands of "Screenshot 2024...". 
-                We use AI to extract text, categorize, and make every screenshot searchable in seconds.
+                Stop getting rejected by robots. Upload your resume, get an instant ATS score, and receive AI-powered feedback to land your dream job.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
                 <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
-                  Start Organizing Free
+                  Analyze My Resume Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full bg-background/50 backdrop-blur-sm hover:bg-accent/50" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Learn More
+                  How it Works
                 </Button>
               </div>
               
@@ -92,24 +91,38 @@ export default function Landing() {
               <div className="mt-16 relative mx-auto max-w-5xl rounded-xl border border-border/50 bg-card/50 shadow-2xl backdrop-blur-sm p-2 md:p-4">
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10"></div>
                 <div className="aspect-video rounded-lg bg-muted/50 overflow-hidden relative flex items-center justify-center border border-border/50">
-                   <div className="absolute inset-0 grid grid-cols-3 gap-4 p-8 opacity-50">
-                      {[1,2,3,4,5,6].map(i => (
-                        <div key={i} className="bg-background rounded-lg shadow-sm border border-border/50 h-full w-full animate-pulse" style={{ animationDelay: `${i * 0.2}s` }}></div>
-                      ))}
+                   <div className="absolute inset-0 grid grid-cols-2 gap-8 p-8 opacity-50">
+                      <div className="bg-background rounded-lg shadow-sm border border-border/50 h-full w-full p-4 space-y-2">
+                        <div className="h-4 w-1/3 bg-muted rounded"></div>
+                        <div className="h-2 w-full bg-muted rounded"></div>
+                        <div className="h-2 w-full bg-muted rounded"></div>
+                        <div className="h-2 w-2/3 bg-muted rounded"></div>
+                      </div>
+                      <div className="bg-background rounded-lg shadow-sm border border-border/50 h-full w-full p-4 space-y-2">
+                         <div className="h-4 w-1/3 bg-muted rounded"></div>
+                         <div className="h-2 w-full bg-muted rounded"></div>
+                      </div>
                    </div>
-                   <div className="relative z-20 bg-background/80 backdrop-blur-xl border border-border p-8 rounded-2xl shadow-2xl max-w-sm text-left">
+                   <div className="relative z-20 bg-background/90 backdrop-blur-xl border border-border p-8 rounded-2xl shadow-2xl max-w-sm text-left">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="h-10 w-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                          <Search className="h-5 w-5 text-primary" />
+                        <div className="h-12 w-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                          <span className="text-green-600 font-bold text-lg">92</span>
                         </div>
                         <div>
-                          <p className="font-bold text-sm">Smart Search</p>
-                          <p className="text-xs text-muted-foreground">Found in 0.2s</p>
+                          <p className="font-bold text-lg">ATS Score: Excellent</p>
+                          <p className="text-xs text-muted-foreground">Ready for application</p>
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <div className="h-2 w-3/4 bg-muted rounded"></div>
-                        <div className="h-2 w-1/2 bg-muted rounded"></div>
+                        <div className="flex items-center gap-2 text-sm">
+                           <Check className="h-4 w-4 text-green-500" /> <span>Keywords Optimized</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                           <Check className="h-4 w-4 text-green-500" /> <span>Formatting Verified</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                           <Check className="h-4 w-4 text-green-500" /> <span>Action Verbs Strong</span>
+                        </div>
                       </div>
                    </div>
                 </div>
@@ -122,24 +135,24 @@ export default function Landing() {
         <section id="features" className="py-24 bg-muted/30 border-y border-border/50">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Everything you need to stay organized</h2>
-              <p className="text-muted-foreground">Powerful features to help you manage your visual knowledge base.</p>
+              <h2 className="text-3xl font-bold tracking-tight mb-4">Optimize every aspect of your application</h2>
+              <p className="text-muted-foreground">Powerful AI tools to help you stand out from the crowd.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               <Feature 
+                icon={<BarChart className="h-6 w-6" />}
+                title="Instant ATS Scoring"
+                description="Get a score from 0-100 on how well your resume parses against standard Applicant Tracking Systems."
+              />
+              <Feature 
                 icon={<Zap className="h-6 w-6" />}
-                title="Instant OCR"
-                description="Text is automatically extracted from every screenshot you upload, making it instantly searchable."
+                title="AI Keyword Analysis"
+                description="Identify missing keywords and skills that recruiters in your industry are looking for."
               />
               <Feature 
-                icon={<Search className="h-6 w-6" />}
-                title="Smart Search"
-                description="Find that one receipt or code snippet from months ago just by typing what was in it."
-              />
-              <Feature 
-                icon={<Check className="h-6 w-6" />}
-                title="Auto Categorization"
-                description="Screenshots are automatically tagged and organized into relevant categories using advanced AI."
+                icon={<FileText className="h-6 w-6" />}
+                title="Smart Categorization"
+                description="Automatically organize your resume versions by job role (Engineering, Product, Sales, etc)."
               />
             </div>
           </div>
@@ -149,7 +162,7 @@ export default function Landing() {
         <section className="py-24 container mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl font-bold tracking-tight mb-4">Simple, transparent pricing</h2>
-            <p className="text-muted-foreground">Choose the plan that's right for you. No hidden fees.</p>
+            <p className="text-muted-foreground">Invest in your career for less than the cost of a lunch.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -161,14 +174,14 @@ export default function Landing() {
                   <span className="text-4xl font-bold">$0</span>
                   <span className="text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">Perfect for getting started.</p>
+                <p className="mt-4 text-sm text-muted-foreground">Basic analysis to get started.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> 100 Screenshots / month
+                  <Check className="h-4 w-4 text-primary" /> 3 Resume Scans / month
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Basic OCR Extraction
+                  <Check className="h-4 w-4 text-primary" /> Basic ATS Score
                 </li>
                 <li className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-primary" /> Standard Support
@@ -192,17 +205,17 @@ export default function Landing() {
                   <span className="text-4xl font-bold">$9</span>
                   <span className="text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">For power users who need more.</p>
+                <p className="mt-4 text-sm text-muted-foreground">For serious job seekers.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Unlimited Screenshots
+                  <Check className="h-4 w-4 text-primary" /> Unlimited Resume Scans
                 </li>
                 <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Advanced AI Analysis (Gemini)
+                  <Check className="h-4 w-4 text-primary" /> Detailed AI Feedback
                 </li>
                 <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Smart Categorization
+                  <Check className="h-4 w-4 text-primary" /> Keyword Optimization
                 </li>
                 <li className="flex items-center gap-3 text-sm font-medium">
                   <Check className="h-4 w-4 text-primary" /> Priority Support
@@ -217,23 +230,23 @@ export default function Landing() {
             <div className="relative flex flex-col p-8 bg-card border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="mb-6">
                 <h3 className="text-xl font-bold flex items-center gap-2">
-                  Team <Users className="h-4 w-4" />
+                  Agency <Users className="h-4 w-4" />
                 </h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-bold">$29</span>
                   <span className="text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">For teams and organizations.</p>
+                <p className="mt-4 text-sm text-muted-foreground">For career coaches & agencies.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-primary" /> Everything in Pro
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Shared Workspace
+                  <Check className="h-4 w-4 text-primary" /> Multiple Client Profiles
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Admin Controls
+                  <Check className="h-4 w-4 text-primary" /> Bulk Upload
                 </li>
                 <li className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-primary" /> API Access
@@ -255,7 +268,7 @@ export default function Landing() {
               </div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Join the Waitlist</h2>
               <p className="text-lg text-muted-foreground">
-                Be the first to know when we release the desktop app and new AI features.
+                Be the first to know when we release the Chrome Extension and LinkedIn integration.
               </p>
               <form onSubmit={handleJoinWaitlist} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                 <Input 
@@ -283,12 +296,12 @@ export default function Landing() {
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-primary/10 rounded flex items-center justify-center">
-              <img src="/logo.svg" alt="Logo" className="h-3 w-3" />
+              <FileText className="h-3 w-3 text-primary" />
             </div>
-            <span className="font-bold text-sm">Screenshot Organizer</span>
+            <span className="font-bold text-sm">Resume ATS Optimizer</span>
           </div>
           <div className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} Screenshot Organizer. All rights reserved.
+            &copy; {new Date().getFullYear()} Resume ATS Optimizer. All rights reserved.
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>

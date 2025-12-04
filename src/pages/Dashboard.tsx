@@ -4,7 +4,7 @@ import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQuery } from "convex/react";
 import { 
-  Image as ImageIcon, 
+  FileText, 
   Loader2, 
   Plus, 
   Search, 
@@ -23,7 +23,6 @@ import {
   Info,
   Sparkles,
   Tag,
-  FileText,
   Maximize2,
   Minimize2,
   Code,
@@ -33,7 +32,10 @@ import {
   MessageCircle,
   ShoppingCart,
   Palette,
-  File
+  File,
+  Briefcase,
+  BarChart,
+  Users
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -54,7 +56,7 @@ export default function Dashboard() {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedScreenshot, setSelectedScreenshot] = useState<any>(null);
+  const [selectedResume, setSelectedResume] = useState<any>(null);
   const [showPricing, setShowPricing] = useState(false);
   const [isImmersive, setIsImmersive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,12 +67,12 @@ export default function Dashboard() {
     }
   }, [isLoading, isAuthenticated, navigate]);
 
-  const generateUploadUrl = useMutation(api.screenshots.generateUploadUrl);
-  const createScreenshot = useMutation(api.screenshots.createScreenshot);
-  const updateScreenshotOcr = useMutation(api.screenshots.updateScreenshotOcr);
-  const deleteScreenshot = useMutation(api.screenshots.deleteScreenshot);
+  const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
+  const createResume = useMutation(api.resumes.createResume);
+  const updateResumeOcr = useMutation(api.resumes.updateResumeOcr);
+  const deleteResume = useMutation(api.resumes.deleteResume);
   
-  const screenshots = useQuery(api.screenshots.getScreenshots, { 
+  const resumes = useQuery(api.resumes.getResumes, { 
     search: search || undefined,
     category: categoryFilter || undefined
   });
@@ -88,7 +90,7 @@ export default function Dashboard() {
       });
       const { storageId } = await result.json();
 
-      const screenshotId = await createScreenshot({
+      const resumeId = await createResume({
         storageId,
         title: file.name,
         width: 0,
@@ -97,12 +99,12 @@ export default function Dashboard() {
         mimeType: file.type,
       });
 
-      toast.success("Screenshot uploaded");
-      processOcr(file, screenshotId);
+      toast.success("Resume uploaded");
+      processOcr(file, resumeId);
 
     } catch (error) {
       console.error(error);
-      toast.error("Failed to upload screenshot");
+      toast.error("Failed to upload resume");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -131,47 +133,51 @@ export default function Dashboard() {
     if (file && file.type.startsWith('image/')) {
       handleFile(file);
     } else if (file) {
-      toast.error("Please upload an image file");
+      toast.error("Please upload an image of your resume (PDF support coming soon)");
     }
   };
 
-  const processOcr = async (file: File, screenshotId: any) => {
+  const processOcr = async (file: File, resumeId: any) => {
     try {
       const worker = await createWorker("eng");
       const ret = await worker.recognize(file);
       await worker.terminate();
       const text = ret.data.text;
-      await updateScreenshotOcr({
-        id: screenshotId,
+      await updateResumeOcr({
+        id: resumeId,
         ocrText: text,
       });
-      toast.success("OCR Complete. Analyzing content...");
+      toast.success("Parsing Complete. Analyzing with AI...");
     } catch (error) {
       console.error("OCR Error:", error);
-      toast.error("OCR processing failed");
+      toast.error("Resume parsing failed");
     }
   };
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteScreenshot({ id });
-      toast.success("Screenshot deleted");
-      if (selectedScreenshot?._id === id) setSelectedScreenshot(null);
+      await deleteResume({ id });
+      toast.success("Resume deleted");
+      if (selectedResume?._id === id) setSelectedResume(null);
     } catch (error) {
       toast.error("Failed to delete");
     }
   };
 
   const categories = [
-    { id: "Finance", label: "Finance", icon: DollarSign },
-    { id: "Development", label: "Development", icon: Code },
-    { id: "Meetings", label: "Meetings", icon: Video },
-    { id: "Errors", label: "Errors", icon: AlertCircle },
-    { id: "Social Media", label: "Social", icon: MessageCircle },
-    { id: "Shopping", label: "Shopping", icon: ShoppingCart },
+    { id: "Engineering", label: "Engineering", icon: Code },
+    { id: "Marketing", label: "Marketing", icon: Share },
+    { id: "Sales", label: "Sales", icon: DollarSign },
     { id: "Design", label: "Design", icon: Palette },
-    { id: "Documents", label: "Docs", icon: File },
+    { id: "Product", label: "Product", icon: Box },
+    { id: "Finance", label: "Finance", icon: BarChart },
+    { id: "HR", label: "HR", icon: Users },
+    { id: "Operations", label: "Operations", icon: Settings },
+    { id: "Other", label: "Other", icon: File },
   ];
+
+  // Helper for icon
+  function Box(props: any) { return <Briefcase {...props} /> }
 
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
@@ -183,11 +189,11 @@ export default function Dashboard() {
           <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col gap-4 rounded-xl border border-white/10 bg-card/50 p-4 backdrop-blur-lg">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center shadow-sm">
-                <img src="/logo.svg" alt="Logo" className="h-6 w-6" />
+                <FileText className="h-6 w-6 text-primary" />
               </div>
               <div className="flex flex-col">
-                <h1 className="text-foreground text-base font-bold leading-normal tracking-tight">Screenshot Org</h1>
-                <p className="text-muted-foreground text-xs font-medium leading-normal">Personal Workspace</p>
+                <h1 className="text-foreground text-base font-bold leading-normal tracking-tight">Resume ATS</h1>
+                <p className="text-muted-foreground text-xs font-medium leading-normal">Optimizer</p>
               </div>
             </div>
             
@@ -197,11 +203,11 @@ export default function Dashboard() {
                 onClick={() => setCategoryFilter(null)}
               >
                 <Grid className="h-4 w-4" />
-                <p className="text-sm leading-normal">All Screenshots</p>
+                <p className="text-sm leading-normal">All Resumes</p>
               </div>
               
               <div className="pt-4 pb-2">
-                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Categories</p>
+                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Job Categories</p>
               </div>
               
               {categories.map((cat) => (
@@ -227,7 +233,7 @@ export default function Dashboard() {
                   </div>
                   <span className="font-bold text-sm">Upgrade to Pro</span>
                 </div>
-                <p className="text-xs text-muted-foreground mb-3">Get unlimited storage and advanced AI features.</p>
+                <p className="text-xs text-muted-foreground mb-3">Get unlimited scans and detailed AI feedback.</p>
                 <button className="w-full py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-lg shadow-sm">
                   Upgrade Now
                 </button>
@@ -262,8 +268,8 @@ export default function Dashboard() {
               <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <FileUp className="h-10 w-10 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold text-primary">Drop screenshot here</h3>
-              <p className="text-muted-foreground mt-2">Release to upload instantly</p>
+              <h3 className="text-2xl font-bold text-primary">Drop resume image here</h3>
+              <p className="text-muted-foreground mt-2">Release to analyze instantly</p>
             </div>
           )}
 
@@ -271,7 +277,7 @@ export default function Dashboard() {
             {/* PageHeading */}
             <div>
               <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">
-                {categoryFilter ? `${categoryFilter} Screenshots` : "Your Screenshots"}
+                {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
               </p>
             </div>
 
@@ -282,7 +288,7 @@ export default function Dashboard() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <input 
                     className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
-                    placeholder="Search screenshots..." 
+                    placeholder="Search resumes..." 
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -308,38 +314,41 @@ export default function Dashboard() {
                   disabled={isUploading}
                 >
                   {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
-                  <span>Add Screenshot</span>
+                  <span>Add Resume (Image)</span>
                 </button>
               </div>
             </div>
 
             {/* ImageGrid */}
-            {screenshots === undefined ? (
+            {resumes === undefined ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               </div>
-            ) : screenshots.length === 0 ? (
+            ) : resumes.length === 0 ? (
               <div className="text-center py-20 border-2 border-dashed border-border rounded-xl bg-card/50">
                 <div className="h-12 w-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ImageIcon className="h-6 w-6 text-muted-foreground" />
+                  <FileText className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-medium mb-1">No screenshots yet</h3>
-                <p className="text-muted-foreground mb-4">Upload your first screenshot to get started</p>
+                <h3 className="text-lg font-medium mb-1">No resumes yet</h3>
+                <p className="text-muted-foreground mb-4">Upload your first resume image to get an ATS score</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {screenshots.map((screenshot) => (
+                {resumes.map((resume) => (
                   <div 
-                    key={screenshot._id} 
+                    key={resume._id} 
                     className="group relative flex flex-col gap-3 rounded-xl border border-transparent bg-card p-3 transition-all hover:border-primary/50 hover:bg-accent/50 cursor-pointer"
-                    onClick={() => setSelectedScreenshot(screenshot)}
+                    onClick={() => setSelectedResume(resume)}
                   >
-                    <div className="relative w-full overflow-hidden rounded-lg aspect-video bg-secondary">
+                    <div className="relative w-full overflow-hidden rounded-lg aspect-[3/4] bg-secondary">
                       <img 
-                        src={screenshot.url} 
-                        alt={screenshot.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        src={resume.url} 
+                        alt={resume.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                       />
+                      <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-md">
+                        {resume.score ? `Score: ${resume.score}` : 'Analyzing...'}
+                      </div>
                       <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
                         <button className="rounded-full bg-white/20 p-2 text-white hover:bg-white/30 transition-colors">
                           <Star className="h-5 w-5" />
@@ -348,7 +357,7 @@ export default function Dashboard() {
                           className="rounded-full bg-white/20 p-2 text-white hover:bg-white/30 transition-colors"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDelete(screenshot._id);
+                            handleDelete(resume._id);
                           }}
                         >
                           <Trash2 className="h-5 w-5" />
@@ -356,17 +365,17 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-foreground text-base font-medium leading-normal truncate" title={screenshot.title}>
-                        {screenshot.title}
+                      <p className="text-foreground text-base font-medium leading-normal truncate" title={resume.title}>
+                        {resume.title}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                          screenshot.status === 'processing' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-primary/20 text-primary'
+                          resume.status === 'processing' ? 'bg-yellow-500/20 text-yellow-500' : 'bg-primary/20 text-primary'
                         }`}>
-                          {screenshot.category || (screenshot.status === 'processing' ? 'Processing...' : 'Uncategorized')}
+                          {resume.category || (resume.status === 'processing' ? 'Processing...' : 'Uncategorized')}
                         </span>
                         <p className="text-muted-foreground text-sm font-normal leading-normal ml-auto">
-                          {new Date(screenshot._creationTime).toLocaleDateString()}
+                          {new Date(resume._creationTime).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -379,16 +388,16 @@ export default function Dashboard() {
       </div>
 
       {/* Detailed View Dialog */}
-      <Dialog open={!!selectedScreenshot} onOpenChange={(open) => !open && setSelectedScreenshot(null)}>
-        <DialogContent className="max-w-none sm:max-w-none w-screen h-screen p-0 bg-background border-none rounded-none overflow-hidden flex flex-col shadow-none top-0 left-0 translate-x-0 translate-y-0">
+      <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
+        <DialogContent className="w-screen h-screen p-0 bg-background border-none rounded-none overflow-hidden flex flex-col shadow-none top-0 left-0 translate-x-0 translate-y-0">
           <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm">
             <div className="flex items-center gap-4">
               <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
-                <ImageIcon className="h-5 w-5 text-primary" />
+                <FileText className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h2 className="text-lg font-bold leading-tight tracking-tight">Screenshot Details</h2>
-                <p className="text-xs text-muted-foreground font-mono mt-0.5">{selectedScreenshot?._id}</p>
+                <h2 className="text-lg font-bold leading-tight tracking-tight">Resume Analysis</h2>
+                <p className="text-xs text-muted-foreground font-mono mt-0.5">{selectedResume?._id}</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -401,14 +410,14 @@ export default function Dashboard() {
               <div className="w-px h-8 bg-border mx-1 self-center" />
               <button 
                 className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors"
-                onClick={() => selectedScreenshot && handleDelete(selectedScreenshot._id)}
+                onClick={() => selectedResume && handleDelete(selectedResume._id)}
                 title="Delete"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
               <button 
                 className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground"
-                onClick={() => setSelectedScreenshot(null)}
+                onClick={() => setSelectedResume(null)}
                 title="Close"
               >
                 <X className="h-4 w-4" />
@@ -423,23 +432,24 @@ export default function Dashboard() {
                 <div className="p-6 flex flex-col gap-8">
                   <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Info className="h-4 w-4" /> Metadata
+                      <BarChart className="h-4 w-4" /> ATS Score
                     </h3>
-                    <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
-                      <p className="text-muted-foreground font-medium">Filename</p>
-                      <p className="text-foreground truncate font-medium" title={selectedScreenshot?.title}>{selectedScreenshot?.title}</p>
-                      
-                      <p className="text-muted-foreground font-medium">Date</p>
-                      <p className="text-foreground">{selectedScreenshot && new Date(selectedScreenshot._creationTime).toLocaleDateString(undefined, { dateStyle: 'medium' })}</p>
-                      
-                      <p className="text-muted-foreground font-medium">Size</p>
-                      <p className="text-foreground font-mono">{selectedScreenshot && (selectedScreenshot.size / 1024 / 1024).toFixed(2)} MB</p>
-                      
-                      <p className="text-muted-foreground font-medium">Dimensions</p>
-                      <p className="text-foreground font-mono">{selectedScreenshot?.width || '?'} x {selectedScreenshot?.height || '?'}</p>
-                      
-                      <p className="text-muted-foreground font-medium">Type</p>
-                      <p className="text-foreground font-mono text-xs">{selectedScreenshot?.mimeType}</p>
+                    <div className="flex items-center gap-4">
+                      <div className={`h-16 w-16 rounded-full flex items-center justify-center text-2xl font-bold border-4 ${
+                        (selectedResume?.score || 0) >= 80 ? 'border-green-500 text-green-500' : 
+                        (selectedResume?.score || 0) >= 50 ? 'border-yellow-500 text-yellow-500' : 
+                        'border-red-500 text-red-500'
+                      }`}>
+                        {selectedResume?.score || 0}
+                      </div>
+                      <div>
+                        <p className="font-medium">
+                          {(selectedResume?.score || 0) >= 80 ? 'Excellent' : 
+                           (selectedResume?.score || 0) >= 50 ? 'Needs Improvement' : 
+                           'Poor'}
+                        </p>
+                        <p className="text-xs text-muted-foreground">Based on keyword density & format</p>
+                      </div>
                     </div>
                   </div>
                   
@@ -447,28 +457,28 @@ export default function Dashboard() {
 
                   <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-primary" /> AI Analysis
+                      <Sparkles className="h-4 w-4 text-primary" /> AI Feedback
                     </h3>
-                    <div className="flex flex-col gap-3">
-                      <div className="space-y-2">
-                        <span className="text-xs font-medium text-muted-foreground">Category</span>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedScreenshot?.category ? (
-                            <span className="bg-primary/10 text-primary border border-primary/20 text-xs font-semibold px-3 py-1 rounded-full">
-                              {selectedScreenshot.category}
-                            </span>
-                          ) : (
-                            <span className="text-muted-foreground text-sm italic">Uncategorized</span>
-                          )}
-                        </div>
-                      </div>
+                    <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed">
+                      {selectedResume?.analysis || "Analysis pending..."}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Info className="h-4 w-4" /> Metadata
+                    </h3>
+                    <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
+                      <p className="text-muted-foreground font-medium">Filename</p>
+                      <p className="text-foreground truncate font-medium" title={selectedResume?.title}>{selectedResume?.title}</p>
                       
-                      <div className="space-y-2 mt-2">
-                        <span className="text-xs font-medium text-muted-foreground">Extracted Text</span>
-                        <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-40 overflow-y-auto leading-relaxed">
-                          {selectedScreenshot?.ocrText ? selectedScreenshot.ocrText : "No text extracted."}
-                        </div>
-                      </div>
+                      <p className="text-muted-foreground font-medium">Date</p>
+                      <p className="text-foreground">{selectedResume && new Date(selectedResume._creationTime).toLocaleDateString(undefined, { dateStyle: 'medium' })}</p>
+                      
+                      <p className="text-muted-foreground font-medium">Category</p>
+                      <p className="text-foreground">{selectedResume?.category || "Uncategorized"}</p>
                     </div>
                   </div>
                 </div>
@@ -489,9 +499,9 @@ export default function Dashboard() {
 
               <div className="w-full h-full flex items-center justify-center relative z-10">
                 <img 
-                  className="w-full h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10" 
-                  src={selectedScreenshot?.url} 
-                  alt={selectedScreenshot?.title} 
+                  className="h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
+                  src={selectedResume?.url} 
+                  alt={selectedResume?.title} 
                 />
               </div>
             </div>
@@ -502,18 +512,10 @@ export default function Dashboard() {
                 <div className="p-6 flex flex-col gap-8">
                   <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Tag className="h-4 w-4" /> Tags
+                      <Code className="h-4 w-4" /> Parsed Text
                     </h3>
-                    <div className="flex flex-col gap-4">
-                      <div className="flex flex-wrap gap-2">
-                        <span className="flex items-center gap-1.5 bg-secondary text-secondary-foreground border border-secondary-foreground/10 text-xs font-medium px-2.5 py-1 rounded-md group cursor-pointer hover:bg-secondary/80 transition-colors">
-                          Project X
-                          <X className="h-3 w-3 opacity-50 group-hover:opacity-100" />
-                        </span>
-                        <button className="flex items-center gap-1.5 text-muted-foreground hover:text-primary border border-dashed border-border hover:border-primary/50 text-xs font-medium px-2.5 py-1 rounded-md transition-all">
-                          <Plus className="h-3 w-3" /> Add Tag
-                        </button>
-                      </div>
+                    <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-60 overflow-y-auto leading-relaxed whitespace-pre-wrap">
+                      {selectedResume?.ocrText ? selectedResume.ocrText : "No text extracted."}
                     </div>
                   </div>
                   
@@ -524,8 +526,8 @@ export default function Dashboard() {
                       <FileText className="h-4 w-4" /> Notes
                     </h3>
                     <textarea 
-                      className="w-full h-64 bg-background border border-border rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-muted-foreground/50" 
-                      placeholder="Add a note about this screenshot..."
+                      className="w-full h-40 bg-background border border-border rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-muted-foreground/50" 
+                      placeholder="Add a note about this resume..."
                     ></textarea>
                   </div>
                 </div>

@@ -19,7 +19,7 @@ import type * as auth from "../auth.js";
 import type * as billing from "../billing.js";
 import type * as clerk from "../clerk.js";
 import type * as http from "../http.js";
-import type * as screenshots from "../screenshots.js";
+import type * as resumes from "../resumes.js";
 import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 
@@ -38,7 +38,7 @@ declare const fullApi: ApiFromModules<{
   billing: typeof billing;
   clerk: typeof clerk;
   http: typeof http;
-  screenshots: typeof screenshots;
+  resumes: typeof resumes;
   users: typeof users;
   waitlist: typeof waitlist;
 }>;

@@ -10,13 +10,15 @@ const schema = defineSchema(
       subscriptionTier: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
       endsOn: v.optional(v.number()),
     }).index("by_token", ["tokenIdentifier"]),
-    screenshots: defineTable({
+    resumes: defineTable({
       userId: v.string(), // Clerk User ID
       storageId: v.id("_storage"),
       url: v.string(),
       title: v.string(),
-      category: v.optional(v.string()),
+      category: v.optional(v.string()), // Engineering, Marketing, etc.
       ocrText: v.optional(v.string()),
+      analysis: v.optional(v.string()), // AI Feedback/Summary
+      score: v.optional(v.number()), // ATS Score 0-100
       status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),
       width: v.number(),
       height: v.number(),
