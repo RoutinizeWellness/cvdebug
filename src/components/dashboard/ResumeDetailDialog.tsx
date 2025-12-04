@@ -163,7 +163,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" /> AI Recommendations
                   </h3>
-                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap">
+                  <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap max-h-[400px] overflow-y-auto">
                     {selectedResume?.analysis || "Analysis pending..."}
                   </div>
                 </div>
