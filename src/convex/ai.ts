@@ -3,7 +3,6 @@
 import { v } from "convex/values";
 import { internalAction, action } from "./_generated/server";
 import { internal } from "./_generated/api";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const analyzeScreenshot = internalAction({
   args: {
@@ -11,10 +10,10 @@ export const analyzeScreenshot = internalAction({
     ocrText: v.string(),
   },
   handler: async (ctx, args) => {
-    const apiKey = process.env.GOOGLE_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
     
     if (!apiKey) {
-      console.log("No GOOGLE_API_KEY set, skipping AI analysis");
+      console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
       await ctx.runMutation(internal.screenshots.updateScreenshotMetadata, {
         id: args.id,
         title: "Screenshot",
@@ -24,23 +23,38 @@ export const analyzeScreenshot = internalAction({
     }
 
     try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
       const prompt = `Analyze the following text extracted from a screenshot and provide a concise, descriptive title (max 5-6 words) and a category.
       Categories: Finance, Development, Meetings, Errors, Social Media, Shopping, Other.
       
       Text:
       ${args.ocrText.substring(0, 2000)}
       
-      Return ONLY a JSON object with keys "title" and "category". Do not include markdown formatting.`;
+      Return ONLY a JSON object with keys "title" and "category". Do not include markdown formatting or code blocks.`;
 
-      const result = await model.generateContent(prompt);
-      const response = result.response;
-      const text = response.text();
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.0-flash-001",
+          messages: [
+            { role: "user", content: prompt }
+          ],
+          response_format: { type: "json_object" }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`OpenRouter API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const content = data.choices[0].message.content;
       
-      // Clean up markdown code blocks if present to ensure valid JSON
-      const jsonStr = text.replace(/```json/g, '').replace(/```/g, '');
+      // Clean up markdown code blocks if present to ensure valid JSON (just in case)
+      const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
       const { title, category } = parsed;
@@ -67,20 +81,33 @@ export const chat = action({
     history: v.array(v.object({ role: v.string(), content: v.string() })),
   },
   handler: async (ctx, args) => {
-    const apiKey = process.env.GOOGLE_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const messages = args.history.map(h => ({
+      role: h.role === "user" ? "user" : "assistant",
+      content: h.content,
+    }));
 
-    const chat = model.startChat({
-      history: args.history.map(h => ({
-        role: h.role === "user" ? "user" : "model",
-        parts: [{ text: h.content }],
-      })),
+    messages.push({ role: "user", content: args.message });
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-001",
+        messages: messages,
+      })
     });
 
-    const result = await chat.sendMessage(args.message);
-    return result.response.text();
+    if (!response.ok) {
+      throw new Error(`OpenRouter API error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
   },
 });
