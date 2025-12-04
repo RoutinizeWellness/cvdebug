@@ -25,7 +25,15 @@ import {
   Tag,
   FileText,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Code,
+  DollarSign,
+  Video,
+  AlertCircle,
+  MessageCircle,
+  ShoppingCart,
+  Palette,
+  File
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -43,6 +51,7 @@ export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedScreenshot, setSelectedScreenshot] = useState<any>(null);
@@ -61,7 +70,10 @@ export default function Dashboard() {
   const updateScreenshotOcr = useMutation(api.screenshots.updateScreenshotOcr);
   const deleteScreenshot = useMutation(api.screenshots.deleteScreenshot);
   
-  const screenshots = useQuery(api.screenshots.getScreenshots, { search: search || undefined });
+  const screenshots = useQuery(api.screenshots.getScreenshots, { 
+    search: search || undefined,
+    category: categoryFilter || undefined
+  });
 
   const handleFile = async (file: File) => {
     if (!file) return;
@@ -150,6 +162,17 @@ export default function Dashboard() {
     }
   };
 
+  const categories = [
+    { id: "Finance", label: "Finance", icon: DollarSign },
+    { id: "Development", label: "Development", icon: Code },
+    { id: "Meetings", label: "Meetings", icon: Video },
+    { id: "Errors", label: "Errors", icon: AlertCircle },
+    { id: "Social Media", label: "Social", icon: MessageCircle },
+    { id: "Shopping", label: "Shopping", icon: ShoppingCart },
+    { id: "Design", label: "Design", icon: Palette },
+    { id: "Documents", label: "Docs", icon: File },
+  ];
+
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
@@ -169,22 +192,28 @@ export default function Dashboard() {
             </div>
             
             <div className="flex flex-col gap-2 mt-6">
-              <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium">
+              <div 
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium cursor-pointer transition-colors ${!categoryFilter ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                onClick={() => setCategoryFilter(null)}
+              >
                 <Grid className="h-4 w-4" />
                 <p className="text-sm leading-normal">All Screenshots</p>
               </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
-                <Folder className="h-4 w-4" />
-                <p className="text-sm font-medium leading-normal">Collections</p>
+              
+              <div className="pt-4 pb-2">
+                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Categories</p>
               </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
-                <Star className="h-4 w-4" />
-                <p className="text-sm font-medium leading-normal">Favorites</p>
-              </div>
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors">
-                <Trash2 className="h-4 w-4" />
-                <p className="text-sm font-medium leading-normal">Trash</p>
-              </div>
+              
+              {categories.map((cat) => (
+                <div 
+                  key={cat.id}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${categoryFilter === cat.id ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+                  onClick={() => setCategoryFilter(cat.id)}
+                >
+                  <cat.icon className="h-4 w-4" />
+                  <p className="text-sm font-medium leading-normal">{cat.label}</p>
+                </div>
+              ))}
             </div>
 
             <div className="mt-6">
@@ -241,7 +270,9 @@ export default function Dashboard() {
           <div className="flex flex-col gap-6">
             {/* PageHeading */}
             <div>
-              <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">Your Screenshots</p>
+              <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">
+                {categoryFilter ? `${categoryFilter} Screenshots` : "Your Screenshots"}
+              </p>
             </div>
 
             {/* ToolBar */}

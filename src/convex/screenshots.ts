@@ -85,6 +85,7 @@ export const updateScreenshotMetadata = internalMutation({
 export const getScreenshots = query({
   args: {
     search: v.optional(v.string()),
+    category: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
@@ -103,7 +104,13 @@ export const getScreenshots = query({
         .take(20);
     }
 
-    return await q.order("desc").take(50);
+    const results = await q.order("desc").take(50);
+    
+    if (args.category) {
+      return results.filter(s => s.category === args.category);
+    }
+
+    return results;
   },
 });
 

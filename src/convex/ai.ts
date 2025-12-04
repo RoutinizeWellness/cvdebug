@@ -24,12 +24,24 @@ export const analyzeScreenshot = internalAction({
 
     try {
       const prompt = `Analyze the following text extracted from a screenshot and provide a concise, descriptive title (max 5-6 words) and a category.
-      Categories: Finance, Development, Meetings, Errors, Social Media, Shopping, Other.
       
-      Text:
-      ${args.ocrText.substring(0, 2000)}
+      You MUST categorize the screenshot into exactly one of the following categories:
+      - Finance (receipts, banking, crypto, charts)
+      - Development (code, terminal, dev tools, github)
+      - Meetings (zoom, teams, calendar, notes)
+      - Errors (error messages, stack traces, bugs)
+      - Social Media (twitter, linkedin, instagram, posts)
+      - Shopping (products, carts, wishlists)
+      - Design (ui/ux, inspiration, colors)
+      - Documents (pdfs, articles, emails)
+      - Other (if it fits none of the above)
+
+      If the text is empty or unclear, make your best guess based on any keywords or default to "Other".
       
-      Return ONLY a JSON object with keys "title" and "category". Do not include markdown formatting or code blocks.`;
+      Text content:
+      "${args.ocrText.substring(0, 3000)}"
+      
+      Return ONLY a JSON object with keys "title" and "category". Example: {"title": "GitHub PR Review", "category": "Development"}`;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
