@@ -81,6 +81,12 @@ export default function Dashboard() {
   const handleFile = async (file: File) => {
     if (!file) return;
 
+    // Validate file type for MVP (Images only for now)
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image (JPG/PNG). PDF support is coming soon!");
+      return;
+    }
+
     setIsUploading(true);
     try {
       const postUrl = await generateUploadUrl();
@@ -133,17 +139,17 @@ export default function Dashboard() {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file) {
       handleFile(file);
-    } else if (file) {
-      toast.error("Please upload an image of your resume (PDF support coming soon)");
     }
   };
 
   const processOcr = async (file: File, resumeId: any) => {
     try {
       const worker = await createWorker("eng");
-      const ret = await worker.recognize(file);
+      const imageUrl = URL.createObjectURL(file);
+      const ret = await worker.recognize(imageUrl);
+      URL.revokeObjectURL(imageUrl);
       await worker.terminate();
       const text = ret.data.text;
       await updateResumeOcr({
