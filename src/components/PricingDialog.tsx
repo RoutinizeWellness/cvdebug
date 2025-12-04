@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Loader2 } from "lucide-react";
+import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
@@ -10,6 +10,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const upgradePlan = useAction(api.clerk.upgradePlan);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
+  const [checkoutPlan, setCheckoutPlan] = useState<"pro" | "team" | null>(null);
   
   const currentPlan = user?.subscriptionTier || "free";
 
@@ -18,6 +19,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     try {
       await upgradePlan({ plan });
       toast.success(`Successfully updated to ${plan} plan`);
+      setCheckoutPlan(null);
       onOpenChange(false);
     } catch (error: any) {
       console.error(error);
@@ -26,6 +28,91 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       setIsLoading(null);
     }
   };
+
+  const initiateCheckout = (plan: "pro" | "team") => {
+    setCheckoutPlan(plan);
+  };
+
+  if (checkoutPlan) {
+    const planDetails = {
+      pro: { name: "Pro Plan", price: "$9", period: "/month", features: ["Unlimited Screenshots", "Advanced AI Analysis", "Priority Support"] },
+      team: { name: "Team Plan", price: "$29", period: "/month", features: ["Everything in Pro", "Shared Workspace", "Admin Controls"] }
+    }[checkoutPlan];
+
+    return (
+      <Dialog open={open} onOpenChange={(val) => {
+        if (!val) setCheckoutPlan(null);
+        onOpenChange(val);
+      }}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
+          <div className="p-6 bg-muted/30 border-b">
+            <Button variant="ghost" size="sm" className="mb-4 -ml-2 text-muted-foreground" onClick={() => setCheckoutPlan(null)}>
+              <ArrowLeft className="h-4 w-4 mr-1" /> Back to Plans
+            </Button>
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold">Checkout</DialogTitle>
+              <DialogDescription>
+                Complete your subscription to {planDetails.name}.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          
+          <div className="p-6 space-y-6">
+            <div className="rounded-xl border bg-card p-4 shadow-sm">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="font-semibold text-lg">{planDetails.name}</h3>
+                  <p className="text-sm text-muted-foreground">Monthly subscription</p>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-xl">{planDetails.price}</div>
+                  <div className="text-xs text-muted-foreground">{planDetails.period}</div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {planDetails.features.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Check className="h-3 w-3 text-primary" /> {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg border bg-muted/20">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <CreditCard className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium">Payment Method</p>
+                  <p className="text-xs text-muted-foreground">Clerk Secure Billing</p>
+                </div>
+                <Button variant="outline" size="sm" disabled>Change</Button>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
+                <ShieldCheck className="h-3 w-3" /> Secure checkout powered by Clerk
+              </div>
+
+              <Button 
+                className="w-full h-12 text-base" 
+                onClick={() => handleUpgrade(checkoutPlan)}
+                disabled={!!isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...
+                  </>
+                ) : (
+                  `Pay ${planDetails.price} & Subscribe`
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -129,7 +216,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             <Button 
               className="w-full shadow-lg shadow-primary/20" 
               variant={currentPlan === "pro" ? "outline" : "default"}
-              onClick={() => handleUpgrade("pro")}
+              onClick={() => initiateCheckout("pro")}
               disabled={currentPlan === "pro" || !!isLoading}
             >
               {isLoading === "pro" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "pro" ? "Current Plan" : "Upgrade to Pro")}
@@ -179,7 +266,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             <Button 
               variant={currentPlan === "team" ? "outline" : "default"} 
               className="w-full"
-              onClick={() => handleUpgrade("team")}
+              onClick={() => initiateCheckout("team")}
               disabled={currentPlan === "team" || !!isLoading}
             >
               {isLoading === "team" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "team" ? "Current Plan" : "Upgrade to Team")}
