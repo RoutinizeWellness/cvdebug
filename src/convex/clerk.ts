@@ -3,6 +3,7 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
+
 export const upgradePlan = action({
   args: { plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")) },
   handler: async (ctx, args) => {
@@ -14,6 +15,16 @@ export const upgradePlan = action({
       throw new Error("CLERK_SECRET_KEY is not set");
     }
 
+    // Map internal plan names to Clerk Plan Keys (from env vars)
+    let clerkPlanValue: string = args.plan;
+    if (args.plan === "pro") {
+      clerkPlanValue = process.env.CLERK_PLAN_KEY_PRO || "pro";
+      if (!process.env.CLERK_PLAN_KEY_PRO) console.warn("CLERK_PLAN_KEY_PRO not set, using default 'pro'");
+    } else if (args.plan === "team") {
+      clerkPlanValue = process.env.CLERK_PLAN_KEY_TEAM || "team";
+      if (!process.env.CLERK_PLAN_KEY_TEAM) console.warn("CLERK_PLAN_KEY_TEAM not set, using default 'team'");
+    }
+
     try {
       const response = await fetch(`https://api.clerk.com/v1/users/${identity.subject}/metadata`, {
         method: "PATCH",
@@ -23,7 +34,7 @@ export const upgradePlan = action({
         },
         body: JSON.stringify({
           public_metadata: {
-            subscriptionTier: args.plan,
+            subscriptionTier: clerkPlanValue,
           },
         }),
       });
@@ -38,6 +49,7 @@ export const upgradePlan = action({
       throw new Error("Failed to update subscription with Clerk");
     }
 
+    // Update Local DB with the internal representation ("pro", "team", "free")
     await ctx.runMutation(internal.users.updateSubscription, {
       tokenIdentifier: identity.subject,
       plan: args.plan,
