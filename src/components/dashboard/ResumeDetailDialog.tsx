@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { 
@@ -72,7 +72,12 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
 
   return (
     <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
-      <DialogContent className="w-full h-full max-w-none p-0 bg-background border-none rounded-none overflow-hidden flex flex-col shadow-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0">
+      <DialogContent 
+        showCloseButton={false}
+        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none"
+      >
+        <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
+        <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
         <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0">
           <div className="flex items-center gap-4">
             <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
