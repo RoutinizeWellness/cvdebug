@@ -1,26 +1,6 @@
-      
-      const parsed = JSON.parse(jsonStr);
-      const { title, category, score, analysis } = parsed;
-      
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
-        id: args.id,
-        title,
-        category,
-        analysis,
-        score,
-      });
-    } catch (error) {
-      console.error("Error analyzing resume:", error);
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: "Resume",
-        category: "Uncategorized",
-        analysis: "AI analysis failed.",
-        score: 0,
-      });
-    }
+    return JSON.parse(jsonStr);
   },
 });
 
 export const chat = action({
-// ... keep existing code
+// ... keep existing code (chat handler)

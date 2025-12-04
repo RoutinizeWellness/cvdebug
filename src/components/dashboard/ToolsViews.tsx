@@ -4,10 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Linkedin, Mail, Download, Sparkles, Lock, LayoutTemplate, Check, ArrowRight, Eye } from "lucide-react";
+import { FileText, Linkedin, Mail, Download, Sparkles, Lock, LayoutTemplate, Check, ArrowRight, Eye, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export function TemplatesView() {
   const [previewTemplate, setPreviewTemplate] = useState<any>(null);
@@ -174,6 +176,47 @@ export function TemplatesView() {
 }
 
 export function LinkedInView() {
+  const optimizeLinkedIn = useAction(api.ai.optimizeLinkedIn);
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [profileText, setProfileText] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [result, setResult] = useState<any>(null);
+
+  const handleAnalyzeUrl = () => {
+    if (!linkedinUrl) {
+      toast.error("Please enter a LinkedIn URL");
+      return;
+    }
+    toast.info("Direct LinkedIn scraping is restricted by privacy policies.", {
+      description: "Please copy and paste your profile content (About, Experience, Skills) into the text box below for the best analysis.",
+      duration: 5000,
+    });
+  };
+
+  const handleOptimize = async () => {
+    if (!profileText.trim()) {
+      toast.error("Please paste your profile text to analyze.");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const data = await optimizeLinkedIn({
+        profileText,
+        jobDescription,
+        linkedinUrl,
+      });
+      setResult(data);
+      toast.success("Profile analysis complete!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to analyze profile. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-20">
       <div className="flex flex-col gap-2">
@@ -185,50 +228,151 @@ export function LinkedInView() {
         </p>
       </div>
 
-      <Card className="border-border shadow-sm">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl">Import Profile</CardTitle>
-          <CardDescription>Paste your LinkedIn profile URL or export as PDF to analyze.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-3">
-            <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL</Label>
-            <div className="flex gap-3">
-              <div className="relative flex-1">
-                <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input id="linkedin-url" placeholder="https://linkedin.com/in/yourname" className="pl-10" />
+      <div className="grid gap-8 lg:grid-cols-1">
+        <Card className="border-border shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl">Import Profile</CardTitle>
+            <CardDescription>Paste your LinkedIn profile URL or export as PDF to analyze.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-3">
+              <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL</Label>
+              <div className="flex gap-3">
+                <div className="relative flex-1">
+                  <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="linkedin-url" 
+                    placeholder="https://linkedin.com/in/yourname" 
+                    className="pl-10" 
+                    value={linkedinUrl}
+                    onChange={(e) => setLinkedinUrl(e.target.value)}
+                  />
+                </div>
+                <Button className="font-bold" variant="secondary" onClick={handleAnalyzeUrl}>
+                  Analyze URL
+                </Button>
               </div>
-              <Button className="font-bold">Analyze URL</Button>
             </div>
-          </div>
-          
-          <div className="relative py-2">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
+            
+            <div className="relative py-2">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
+                <span className="bg-card px-4 text-muted-foreground">Or paste content</span>
+              </div>
             </div>
-            <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
-              <span className="bg-card px-4 text-muted-foreground">Or paste content</span>
-            </div>
-          </div>
 
-          <div className="grid gap-3">
-            <Label htmlFor="profile-text" className="font-bold">Profile Text (About, Experience, Skills)</Label>
-            <Textarea 
-              id="profile-text" 
-              placeholder="Paste your profile content here..." 
-              className="min-h-[200px] resize-none p-4 leading-relaxed"
-            />
+            <div className="grid gap-3">
+              <Label htmlFor="profile-text" className="font-bold">Profile Text (About, Experience, Skills)</Label>
+              <Textarea 
+                id="profile-text" 
+                placeholder="Paste your profile content here (About section, Experience descriptions, Skills list)..." 
+                className="min-h-[200px] resize-none p-4 leading-relaxed"
+                value={profileText}
+                onChange={(e) => setProfileText(e.target.value)}
+              />
+            </div>
+
+            <div className="grid gap-3">
+              <Label htmlFor="job-desc" className="font-bold">Target Job Description (Optional)</Label>
+              <Textarea 
+                id="job-desc" 
+                placeholder="Paste the job description you are targeting..." 
+                className="min-h-[100px] resize-none p-4 leading-relaxed"
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+              />
+            </div>
+          </CardContent>
+          <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+            <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+              <Lock className="h-3 w-3" /> We do not store your LinkedIn data permanently.
+            </p>
+            <Button 
+              size="lg" 
+              className="font-bold shadow-lg shadow-primary/20"
+              onClick={handleOptimize}
+              disabled={isAnalyzing}
+            >
+              {isAnalyzing ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
+              ) : (
+                <><Sparkles className="mr-2 h-4 w-4" /> Optimize Profile</>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+
+        {result && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold">Optimization Report</h3>
+              <div className={`
+                px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2
+                ${result.score >= 80 ? 'bg-green-500/10 text-green-600' : result.score >= 50 ? 'bg-yellow-500/10 text-yellow-600' : 'bg-red-500/10 text-red-600'}
+              `}>
+                <span className="text-lg">{result.score}/100</span> Score
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" /> Suggested Headline
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="bg-muted/50 p-4 rounded-lg text-sm font-medium italic border border-border">
+                    "{result.headline}"
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-orange-500" /> Missing Keywords
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {result.missingKeywords?.map((kw: string, i: number) => (
+                      <Badge key={i} variant="secondary" className="text-xs">{kw}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">About Section Critique</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground leading-relaxed">{result.about}</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Actionable Tips</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {result.actionableTips?.map((tip: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                      <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-        <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
-          <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
-            <Lock className="h-3 w-3" /> We do not store your LinkedIn data permanently.
-          </p>
-          <Button size="lg" className="font-bold shadow-lg shadow-primary/20">
-            <Sparkles className="mr-2 h-4 w-4" /> Optimize Profile
-          </Button>
-        </CardFooter>
-      </Card>
+        )}
+      </div>
     </div>
   );
 }

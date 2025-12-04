@@ -115,6 +115,70 @@ export const analyzeResume = internalAction({
   },
 });
 
+export const optimizeLinkedIn = action({
+  args: {
+    profileText: v.string(),
+    jobDescription: v.optional(v.string()),
+    linkedinUrl: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) throw new Error("AI not configured");
+
+    const prompt = `You are an expert LinkedIn Profile Optimizer and Career Coach.
+    Analyze the following LinkedIn profile data against the target Job Description (if provided).
+
+    LinkedIn URL: ${args.linkedinUrl || "Not provided"}
+    
+    Target Job Description:
+    "${args.jobDescription || "General professional optimization"}"
+
+    Profile Text (About, Experience, Skills, etc.):
+    "${args.profileText}"
+
+    Provide a detailed optimization report in JSON format with the following structure:
+    {
+      "score": number (0-100),
+      "headline": "Suggested new headline",
+      "about": "Critique of the About section...",
+      "missingKeywords": ["keyword1", "keyword2"],
+      "actionableTips": ["Tip 1", "Tip 2"]
+    }
+
+    Focus on:
+    1. SEO keywords for the target role.
+    2. Professional branding and impact.
+    3. Alignment with the job description.
+    `;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-001",
+        messages: [
+          { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" }
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`OpenRouter API error: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices[0].message.content;
+    const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
+    
+    const parsed = JSON.parse(jsonStr);
+    return parsed;
+  },
+});
+
 export const chat = action({
   args: {
     message: v.string(),
