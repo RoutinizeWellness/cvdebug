@@ -327,8 +327,8 @@ export default function Dashboard() {
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
                   >
-                    {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
-                    <span>Add Resume (Image)</span>
+                    {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
+                    <span>Upload & Analyze</span>
                   </button>
                 </div>
               </div>
@@ -463,7 +463,9 @@ export default function Dashboard() {
                            (selectedResume?.score || 0) >= 50 ? 'Needs Improvement' : 
                            'Poor'}
                         </p>
-                        <p className="text-xs text-muted-foreground">Based on keyword density & format</p>
+                        <p className="text-xs text-muted-foreground">
+                          40% Keywords • 30% Format • 30% Completeness
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -472,9 +474,9 @@ export default function Dashboard() {
 
                   <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-primary" /> AI Feedback
+                      <Sparkles className="h-4 w-4 text-primary" /> AI Recommendations
                     </h3>
-                    <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed">
+                    <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap">
                       {selectedResume?.analysis || "Analysis pending..."}
                     </div>
                   </div>

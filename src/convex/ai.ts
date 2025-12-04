@@ -8,20 +8,10 @@ export const analyzeResume = internalAction({
   args: {
     id: v.id("resumes"),
     ocrText: v.string(),
+    jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const apiKey = process.env.OPENROUTER_API_KEY;
-    
-    // Fetch the resume to get the job description if it exists
-    // Note: internalAction doesn't have direct db access, so we rely on what's passed or fetch via query if needed.
-    // However, we can't easily call a query here without making it an action that calls a query.
-    // For simplicity, we'll assume we might need to fetch it or just analyze the text generally if not passed.
-    // BETTER APPROACH: Pass jobDescription in args. But we need to update the call site in resumes.ts.
-    // Let's update the args definition first.
-    // But I can't easily change the args without changing the call in resumes.ts.
-    // Let's assume for now we will fetch the resume details via a runQuery if needed, OR better, 
-    // let's update the args in the next step.
-    // Actually, I will update the args here and the call in resumes.ts in the same turn.
     
     if (!apiKey) {
       console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
@@ -36,30 +26,32 @@ export const analyzeResume = internalAction({
     }
 
     try {
-      const prompt = `You are an expert ATS (Applicant Tracking System) optimizer and resume coach. Analyze the following resume text.
-      
-      1. Identify the candidate's likely job role/category from this list:
-         - Engineering (Software, Hardware, Data)
-         - Marketing (Digital, Content, SEO)
-         - Sales (B2B, B2C, Account Mgmt)
-         - Design (UI/UX, Graphic, Product)
-         - Product (PM, PO, Strategy)
-         - Finance (Accounting, Investment, Analyst)
-         - HR (Recruiting, People Ops)
-         - Operations (Logistics, Admin, Support)
-         - Other
-      
-      2. Provide a concise title for this resume (e.g., "Senior Frontend Dev - John Doe").
-      
-      3. Calculate an ATS Score (0-100) based on keyword density, formatting (implied), and clarity.
-      
-      4. Provide a short, actionable analysis/feedback summary (max 3 sentences) on how to improve the resume.
+      const prompt = `You are an expert ATS (Applicant Tracking System) optimizer.
+      Analyze the resume text against the provided Job Description (if any).
 
-      Text content:
+      Job Description:
+      "${args.jobDescription || "General optimization (no specific job provided)"}"
+
+      Resume Text:
       "${args.ocrText.substring(0, 4000)}"
+
+      Calculate an ATS Score (0-100) based strictly on this breakdown:
+      1. Keyword match (40 points): How well do resume keywords match the job description?
+      2. Format compatibility (30 points): Is the structure standard? (Implied from text layout)
+      3. Section completeness (30 points): Does it have Summary, Experience, Education, Skills?
+
+      Provide a detailed analysis with these specific sections using Markdown headers:
+      ### Missing Keywords
+      (List specific keywords from the job description missing in the resume)
       
-      Return ONLY a JSON object with keys: "title", "category", "score" (number), and "analysis".
-      Example: {"title": "Product Manager - Jane Smith", "category": "Product", "score": 85, "analysis": "Strong action verbs. Add more quantifiable metrics to your experience section."}`;
+      ### Format Issues
+      (Identify any layout or formatting problems)
+      
+      ### Specific Fixes
+      (Actionable recommendations to improve the score)
+
+      Return ONLY a JSON object with keys: "title", "category", "score" (number), and "analysis" (string, containing the markdown sections).
+      Example: {"title": "Product Manager - Jane Smith", "category": "Product", "score": 85, "analysis": "### Missing Keywords\\n- Agile\\n- SQL\\n\\n### Format Issues\\n- Use standard bullet points..."}`;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",

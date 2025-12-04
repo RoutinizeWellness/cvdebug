@@ -64,6 +64,7 @@ export const updateResumeOcr = mutation({
     await ctx.scheduler.runAfter(0, internal.ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
+      jobDescription: resume.jobDescription,
     });
   },
 });
