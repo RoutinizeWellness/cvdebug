@@ -35,8 +35,8 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
 
   if (checkoutPlan) {
     const planDetails = {
-      pro: { name: "Pro Plan", price: "$9", period: "/month", features: ["Unlimited Screenshots", "Advanced AI Analysis", "Priority Support"] },
-      team: { name: "Team Plan", price: "$29", period: "/month", features: ["Everything in Pro", "Shared Workspace", "Admin Controls"] }
+      pro: { name: "Single Resume Scan", price: "$9.99", period: "/resume", features: ["Deep ATS Analysis", "Keyword Optimization", "Format Check"] },
+      team: { name: "Bulk Pack (5)", price: "$39.99", period: "/pack", features: ["5 Resume Scans", "Priority Processing", "Save 20%"] }
     }[checkoutPlan];
 
     return (
@@ -62,7 +62,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-semibold text-lg">{planDetails.name}</h3>
-                  <p className="text-sm text-muted-foreground">Monthly subscription</p>
+                  <p className="text-sm text-muted-foreground">One-time payment</p>
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-xl">{planDetails.price}</div>
@@ -119,157 +119,109 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       <DialogContent className="sm:max-w-[1000px] p-0 overflow-hidden gap-0">
         <div className="p-6 sm:p-10 bg-muted/30 text-center">
           <DialogHeader>
-            <DialogTitle className="text-3xl font-bold text-center mb-2">Choose Your Plan</DialogTitle>
+            <DialogTitle className="text-3xl font-bold text-center mb-2">Pay Per Use Pricing</DialogTitle>
             <DialogDescription className="text-center text-lg max-w-md mx-auto">
-              Unlock advanced AI features, unlimited storage, and organize your screenshots like a pro.
+              No subscriptions. Just pay for what you need.
             </DialogDescription>
           </DialogHeader>
         </div>
         
         <div className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x border-t">
-          {/* Free Plan */}
+          {/* Free Preview */}
           <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
             <div className="space-y-2">
-              <h3 className="font-bold text-xl text-muted-foreground">Free</h3>
+              <h3 className="font-bold text-xl text-muted-foreground">Preview</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold">$0</span>
-                <span className="text-muted-foreground">/month</span>
               </div>
-              <p className="text-sm text-muted-foreground">Perfect for getting started.</p>
+              <p className="text-sm text-muted-foreground">Basic scan to see where you stand.</p>
             </div>
             
             <div className="space-y-3 flex-1">
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>3 Resumes / month</span>
+                <Check className="h-3 w-3 text-primary" /> Basic Score
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Basic Resume Parsing</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Standard Support</span>
+                <Check className="h-3 w-3 text-primary" /> 1 Resume Upload
               </div>
             </div>
             
-            <Button 
-              variant={currentPlan === "free" ? "outline" : "secondary"} 
-              className="w-full" 
-              disabled={currentPlan === "free" || !!isLoading}
-              onClick={() => handleUpgrade("free")}
-            >
-              {isLoading === "free" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "free" ? "Current Plan" : "Downgrade to Free")}
+            <Button variant="outline" className="w-full" onClick={() => onOpenChange(false)}>
+              Continue Free
             </Button>
           </div>
 
-          {/* Pro Plan */}
+          {/* Single Scan */}
           <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background relative">
             <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
-              Most Popular
+              Best Value
             </div>
             
             <div className="space-y-2">
               <h3 className="font-bold text-xl text-primary flex items-center gap-2">
-                Pro <Zap className="h-4 w-4 fill-primary" />
+                Single Scan <Zap className="h-4 w-4 fill-primary" />
               </h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$9</span>
-                <span className="text-muted-foreground">/month</span>
+                <span className="text-4xl font-bold">$9.99</span>
+                <span className="text-muted-foreground">/resume</span>
               </div>
-              <p className="text-sm text-muted-foreground">For serious job seekers.</p>
+              <p className="text-sm text-muted-foreground">Beat the ATS for one specific job.</p>
             </div>
             
             <div className="space-y-3 flex-1">
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Unlimited Resumes</span>
+                <Check className="h-3 w-3 text-primary" /> Deep ATS Analysis
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Advanced AI Analysis</span>
+                <Check className="h-3 w-3 text-primary" /> Keyword Optimization
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Smart Job Categorization</span>
+                <Check className="h-3 w-3 text-primary" /> Format Compatibility Check
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Priority Support</span>
+                <Check className="h-3 w-3 text-primary" /> Section Completeness Check
               </div>
             </div>
             
             <Button 
               className="w-full shadow-lg shadow-primary/20" 
-              variant={currentPlan === "pro" ? "outline" : "default"}
               onClick={() => initiateCheckout("pro")}
-              disabled={currentPlan === "pro" || !!isLoading}
             >
-              {isLoading === "pro" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "pro" ? "Current Plan" : "Upgrade to Pro")}
+              Buy Now
             </Button>
           </div>
 
-          {/* Team Plan */}
+          {/* Bulk Pack */}
           <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
             <div className="space-y-2">
               <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
-                Team <Building2 className="h-4 w-4" />
+                Bulk Pack <Building2 className="h-4 w-4" />
               </h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$29</span>
-                <span className="text-muted-foreground">/month</span>
+                <span className="text-4xl font-bold">$39.99</span>
+                <span className="text-muted-foreground">/5 scans</span>
               </div>
-              <p className="text-sm text-muted-foreground">For teams and organizations.</p>
+              <p className="text-sm text-muted-foreground">Perfect for active job seekers.</p>
             </div>
             
             <div className="space-y-3 flex-1">
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Everything in Pro</span>
+                <Check className="h-3 w-3 text-primary" /> 5 Full ATS Scans
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Shared Workspace</span>
+                <Check className="h-3 w-3 text-primary" /> Save 20%
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>Admin Controls</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <Check className="h-3 w-3 text-primary" />
-                </div>
-                <span>API Access</span>
+                <Check className="h-3 w-3 text-primary" /> Priority Processing
               </div>
             </div>
             
             <Button 
-              variant={currentPlan === "team" ? "outline" : "default"} 
+              variant="outline"
               className="w-full"
               onClick={() => initiateCheckout("team")}
-              disabled={currentPlan === "team" || !!isLoading}
             >
-              {isLoading === "team" ? <Loader2 className="h-4 w-4 animate-spin" /> : (currentPlan === "team" ? "Current Plan" : "Upgrade to Team")}
+              Buy Pack
             </Button>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query, internalMutation } from "./_generated/server";
+import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
 
@@ -17,6 +17,7 @@ export const createResume = mutation({
     height: v.number(),
     size: v.number(),
     mimeType: v.string(),
+    jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
@@ -30,6 +31,7 @@ export const createResume = mutation({
       storageId: args.storageId,
       url,
       title: args.title,
+      jobDescription: args.jobDescription,
       status: "processing",
       width: args.width,
       height: args.height,
@@ -114,6 +116,13 @@ export const getResumes = query({
     }
 
     return results;
+  },
+});
+
+export const getResumeInternal = internalQuery({
+  args: { id: v.id("resumes") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
   },
 });
 

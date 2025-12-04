@@ -67,19 +67,19 @@ export default function Landing() {
               className="max-w-4xl mx-auto space-y-8"
             >
               <Badge variant="secondary" className="px-4 py-1.5 text-sm font-medium rounded-full border-primary/20 bg-primary/5 text-primary mb-4">
-                ✨ Beat the ATS Algorithms
+                ✨ Beat the ATS. Get Interviews.
               </Badge>
               <h1 className="text-5xl md:text-7xl font-black tracking-tight text-foreground leading-[1.1]">
-                Get hired faster with
+                ResumeATS.ai
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">AI Resume Optimization.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">Optimize for the Robot.</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Stop getting rejected by robots. Upload your resume, get an instant ATS score, and receive AI-powered feedback to land your dream job.
+                75% of resumes are rejected by ATS before humans see them. Our AI analyzes your resume against the job description to tell you exactly what to fix.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
                 <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
-                  Analyze My Resume Free
+                  Analyze Resume ($9.99)
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full bg-background/50 backdrop-blur-sm hover:bg-accent/50" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -135,24 +135,24 @@ export default function Landing() {
         <section id="features" className="py-24 bg-muted/30 border-y border-border/50">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Optimize every aspect of your application</h2>
-              <p className="text-muted-foreground">Powerful AI tools to help you stand out from the crowd.</p>
+              <h2 className="text-3xl font-bold tracking-tight mb-4">How it works</h2>
+              <p className="text-muted-foreground">Three simple steps to land more interviews.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               <Feature 
-                icon={<BarChart className="h-6 w-6" />}
-                title="Instant ATS Scoring"
-                description="Get a score from 0-100 on how well your resume parses against standard Applicant Tracking Systems."
+                icon={<Upload className="h-6 w-6" />}
+                title="1. Upload & Paste Job"
+                description="Upload your resume (PDF/Image) and paste the job description you are applying for."
               />
               <Feature 
-                icon={<Zap className="h-6 w-6" />}
-                title="AI Keyword Analysis"
-                description="Identify missing keywords and skills that recruiters in your industry are looking for."
+                icon={<BarChart className="h-6 w-6" />}
+                title="2. Get ATS Score"
+                description="We score you on Keyword Match (40%), Format (30%), and Completeness (30%)."
               />
               <Feature 
                 icon={<FileText className="h-6 w-6" />}
-                title="Smart Categorization"
-                description="Automatically organize your resume versions by job role (Engineering, Product, Sales, etc)."
+                title="3. Fix & Optimize"
+                description="Get specific recommendations on missing keywords and formatting issues to fix immediately."
               />
             </div>
           </div>
@@ -161,34 +161,30 @@ export default function Landing() {
         {/* Pricing Section */}
         <section className="py-24 container mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold tracking-tight mb-4">Simple, transparent pricing</h2>
-            <p className="text-muted-foreground">Invest in your career for less than the cost of a lunch.</p>
+            <h2 className="text-3xl font-bold tracking-tight mb-4">Pay-per-use Pricing</h2>
+            <p className="text-muted-foreground">No subscriptions. No hidden fees. Just results.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Free Plan */}
             <div className="relative flex flex-col p-8 bg-card border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="mb-6">
-                <h3 className="text-xl font-bold">Free</h3>
+                <h3 className="text-xl font-bold">Preview</h3>
                 <div className="mt-4 flex items-baseline gap-1">
                   <span className="text-4xl font-bold">$0</span>
-                  <span className="text-muted-foreground">/month</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">Basic analysis to get started.</p>
+                <p className="mt-4 text-sm text-muted-foreground">See where you stand.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> 3 Resume Scans / month
-                </li>
                 <li className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-primary" /> Basic ATS Score
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Standard Support
+                  <Check className="h-4 w-4 text-primary" /> 1 Resume Upload
                 </li>
               </ul>
               <Button variant="outline" className="w-full" onClick={() => navigate("/auth")}>
-                Get Started
+                Try Free
               </Button>
             </div>
 
@@ -199,30 +195,27 @@ export default function Landing() {
               </div>
               <div className="mb-6">
                 <h3 className="text-xl font-bold text-primary flex items-center gap-2">
-                  Pro <Star className="h-4 w-4 fill-primary" />
+                  Single Scan <Zap className="h-4 w-4 fill-primary" />
                 </h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$9</span>
-                  <span className="text-muted-foreground">/month</span>
+                  <span className="text-4xl font-bold">$9.99</span>
+                  <span className="text-muted-foreground">/resume</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">For serious job seekers.</p>
+                <p className="mt-4 text-sm text-muted-foreground">Optimize for one specific job.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Unlimited Resume Scans
-                </li>
-                <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Detailed AI Feedback
+                  <Check className="h-4 w-4 text-primary" /> Deep ATS Analysis
                 </li>
                 <li className="flex items-center gap-3 text-sm font-medium">
                   <Check className="h-4 w-4 text-primary" /> Keyword Optimization
                 </li>
                 <li className="flex items-center gap-3 text-sm font-medium">
-                  <Check className="h-4 w-4 text-primary" /> Priority Support
+                  <Check className="h-4 w-4 text-primary" /> Format Check
                 </li>
               </ul>
               <Button className="w-full shadow-lg shadow-primary/20" onClick={() => navigate("/auth")}>
-                Start Pro Trial
+                Get Started
               </Button>
             </div>
 
@@ -230,30 +223,27 @@ export default function Landing() {
             <div className="relative flex flex-col p-8 bg-card border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow">
               <div className="mb-6">
                 <h3 className="text-xl font-bold flex items-center gap-2">
-                  Agency <Users className="h-4 w-4" />
+                  Bulk Pack <Users className="h-4 w-4" />
                 </h3>
                 <div className="mt-4 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$29</span>
-                  <span className="text-muted-foreground">/month</span>
+                  <span className="text-4xl font-bold">$39.99</span>
+                  <span className="text-muted-foreground">/5 scans</span>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">For career coaches & agencies.</p>
+                <p className="mt-4 text-sm text-muted-foreground">For active job seekers.</p>
               </div>
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Everything in Pro
+                  <Check className="h-4 w-4 text-primary" /> 5 Full Scans
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Multiple Client Profiles
+                  <Check className="h-4 w-4 text-primary" /> Save 20%
                 </li>
                 <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> Bulk Upload
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary" /> API Access
+                  <Check className="h-4 w-4 text-primary" /> Priority Processing
                 </li>
               </ul>
               <Button variant="outline" className="w-full" onClick={() => navigate("/auth")}>
-                Contact Sales
+                Buy Pack
               </Button>
             </div>
           </div>

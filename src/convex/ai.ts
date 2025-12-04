@@ -12,6 +12,17 @@ export const analyzeResume = internalAction({
   handler: async (ctx, args) => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     
+    // Fetch the resume to get the job description if it exists
+    // Note: internalAction doesn't have direct db access, so we rely on what's passed or fetch via query if needed.
+    // However, we can't easily call a query here without making it an action that calls a query.
+    // For simplicity, we'll assume we might need to fetch it or just analyze the text generally if not passed.
+    // BETTER APPROACH: Pass jobDescription in args. But we need to update the call site in resumes.ts.
+    // Let's update the args definition first.
+    // But I can't easily change the args without changing the call in resumes.ts.
+    // Let's assume for now we will fetch the resume details via a runQuery if needed, OR better, 
+    // let's update the args in the next step.
+    // Actually, I will update the args here and the call in resumes.ts in the same turn.
+    
     if (!apiKey) {
       console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {

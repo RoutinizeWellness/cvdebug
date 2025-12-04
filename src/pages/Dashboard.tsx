@@ -59,6 +59,7 @@ export default function Dashboard() {
   const [selectedResume, setSelectedResume] = useState<any>(null);
   const [showPricing, setShowPricing] = useState(false);
   const [isImmersive, setIsImmersive] = useState(false);
+  const [jobDescription, setJobDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
@@ -97,10 +98,12 @@ export default function Dashboard() {
         height: 0,
         size: file.size,
         mimeType: file.type,
+        jobDescription: jobDescription.trim() || undefined,
       });
 
       toast.success("Resume uploaded");
       processOcr(file, resumeId);
+      setJobDescription("");
 
     } catch (error) {
       console.error(error);
@@ -282,40 +285,52 @@ export default function Dashboard() {
             </div>
 
             {/* ToolBar */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-center gap-2 w-full md:w-auto">
-                <div className="relative w-full md:w-72">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input 
-                    className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
-                    placeholder="Search resumes..." 
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-                <button className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
-                  <Filter className="h-5 w-5" />
-                  <span className="text-sm font-medium hidden sm:inline">Filter</span>
-                </button>
-              </div>
-              
-              <div className="flex gap-2">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={handleFileUpload}
+            <div className="flex flex-col gap-4">
+              {/* Job Description Input */}
+              <div className="w-full">
+                <textarea
+                  className="w-full h-24 rounded-lg border border-border bg-card p-3 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all resize-none"
+                  placeholder="Paste the Job Description here to get a tailored ATS score (Optional)..."
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
                 />
-                <button 
-                  className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 min-w-0 bg-primary px-4 text-sm font-bold leading-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 disabled:opacity-50"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploading}
-                >
-                  {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
-                  <span>Add Resume (Image)</span>
-                </button>
+              </div>
+
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  <div className="relative w-full md:w-72">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input 
+                      className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
+                      placeholder="Search resumes..." 
+                      type="text"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
+                  <button className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Filter className="h-5 w-5" />
+                    <span className="text-sm font-medium hidden sm:inline">Filter</span>
+                  </button>
+                </div>
+                
+                <div className="flex gap-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                  />
+                  <button 
+                    className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 min-w-0 bg-primary px-4 text-sm font-bold leading-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 disabled:opacity-50"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                  >
+                    {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
+                    <span>Add Resume (Image)</span>
+                  </button>
+                </div>
               </div>
             </div>
 

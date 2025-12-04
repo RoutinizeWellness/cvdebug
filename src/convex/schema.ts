@@ -15,6 +15,7 @@ const schema = defineSchema(
       storageId: v.id("_storage"),
       url: v.string(),
       title: v.string(),
+      jobDescription: v.optional(v.string()), // Added for ATS comparison
       category: v.optional(v.string()), // Engineering, Marketing, etc.
       ocrText: v.optional(v.string()),
       analysis: v.optional(v.string()), // AI Feedback/Summary
