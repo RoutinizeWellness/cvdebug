@@ -25,6 +25,45 @@ export const currentUser = query({
   },
 });
 
+export const upgradePlan = action({
+  args: { plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")) },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
+    const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+    if (!clerkSecretKey) {
+      throw new Error("CLERK_SECRET_KEY is not set. Please set it in the Convex dashboard.");
+    }
+
+    // Update Clerk Metadata
+    const response = await fetch(`https://api.clerk.com/v1/users/${identity.subject}/metadata`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${clerkSecretKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        public_metadata: {
+          subscriptionTier: args.plan,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Clerk API Error:", errorText);
+      throw new Error(`Failed to update Clerk metadata: ${response.statusText}`);
+    }
+
+    // Update Local DB
+    await ctx.runMutation(internal.users.updateSubscription, {
+      tokenIdentifier: identity.subject,
+      plan: args.plan,
+    });
+  },
+});
+
 export const updateSubscription = internalMutation({
   args: { 
     tokenIdentifier: v.string(), 
