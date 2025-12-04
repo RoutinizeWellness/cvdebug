@@ -1,0 +1,23 @@
+export function StatsSection() {
+  const stats = [
+    { value: "75%", label: "Resumes rejected by ATS" },
+    { value: "2x", label: "More interviews" },
+    { value: "10s", label: "Average analysis time" },
+    { value: "24/7", label: "AI Availability" },
+  ];
+
+  return (
+    <section className="py-12 border-y border-border/50 bg-muted/30">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-border/50">
+          {stats.map((stat, i) => (
+            <div key={i} className="px-4">
+              <p className="text-3xl md:text-4xl font-black text-foreground tracking-tight">{stat.value}</p>
+              <p className="text-sm text-muted-foreground mt-1 font-medium">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
