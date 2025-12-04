@@ -35,23 +35,38 @@ export const analyzeResume = internalAction({
       Resume Text:
       "${args.ocrText.substring(0, 4000)}"
 
-      Calculate an ATS Score (0-100) based strictly on this breakdown:
-      1. Keyword match (40 points): How well do resume keywords match the job description?
-      2. Format compatibility (30 points): Is the structure standard? (Implied from text layout)
-      3. Section completeness (30 points): Does it have Summary, Experience, Education, Skills?
+      1. **Categorize the resume** into one of these exact categories: 
+         - Engineering
+         - Marketing
+         - Sales
+         - Design
+         - Product
+         - Finance
+         - HR
+         - Operations
+         - Other
 
-      Provide a detailed analysis with these specific sections using Markdown headers:
-      ### Missing Keywords
-      (List specific keywords from the job description missing in the resume)
-      
-      ### Format Issues
-      (Identify any layout or formatting problems)
-      
-      ### Specific Fixes
-      (Actionable recommendations to improve the score)
+      2. **Calculate an ATS Score (0-100)** based strictly on:
+         - Keyword match (40%): Match against Job Description (or general industry keywords if none provided).
+         - Format compatibility (30%): Standard headers, bullet points, readability.
+         - Section completeness (30%): Summary, Experience, Education, Skills present.
 
-      Return ONLY a JSON object with keys: "title", "category", "score" (number), and "analysis" (string, containing the markdown sections).
-      Example: {"title": "Product Manager - Jane Smith", "category": "Product", "score": 85, "analysis": "### Missing Keywords\\n- Agile\\n- SQL\\n\\n### Format Issues\\n- Use standard bullet points..."}`;
+      3. **Provide a detailed analysis** using Markdown headers:
+         ### 🚨 Critical Fixes
+         (Top 3 things that will get this resume rejected immediately)
+         
+         ### 🔑 Missing Keywords
+         (List specific keywords from the JD or industry standards missing here)
+         
+         ### 📝 Formatting & Structure
+         (Feedback on layout, bullet points, and section organization)
+         
+         ### 💡 Pro Tips
+         (Actionable advice to stand out)
+
+      Return ONLY a JSON object with keys: "title" (extracted name/role), "category" (from the list above), "score" (number), and "analysis" (string, containing the markdown sections).
+      Example: {"title": "Software Engineer - John Doe", "category": "Engineering", "score": 72, "analysis": "### 🚨 Critical Fixes\\n- ..."}
+      `;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",

@@ -97,10 +97,6 @@ export const getResumes = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    let q = ctx.db
-      .query("resumes")
-      .withIndex("by_user", (q) => q.eq("userId", user._id));
-
     if (args.search) {
        return await ctx.db
         .query("resumes")
@@ -110,13 +106,21 @@ export const getResumes = query({
         .take(20);
     }
 
-    const results = await q.order("desc").take(50);
-    
     if (args.category) {
-      return results.filter(s => s.category === args.category);
+      return await ctx.db
+        .query("resumes")
+        .withIndex("by_user_and_category", (q) => 
+          q.eq("userId", user._id).eq("category", args.category)
+        )
+        .order("desc")
+        .take(50);
     }
 
-    return results;
+    return await ctx.db
+      .query("resumes")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .order("desc")
+      .take(50);
   },
 });
 

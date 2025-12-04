@@ -27,6 +27,7 @@ const schema = defineSchema(
       mimeType: v.string(),
     })
     .index("by_user", ["userId"])
+    .index("by_user_and_category", ["userId", "category"])
     .searchIndex("search_ocr", {
       searchField: "ocrText",
       filterFields: ["userId"],
