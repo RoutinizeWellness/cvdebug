@@ -21,12 +21,14 @@ import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
+import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState("resumes"); // resumes, templates, linkedin, cover-letter
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedResume, setSelectedResume] = useState<any>(null);
@@ -188,6 +190,8 @@ export default function Dashboard() {
           categoryFilter={categoryFilter} 
           setCategoryFilter={setCategoryFilter} 
           setShowPricing={setShowPricing} 
+          currentView={currentView}
+          setCurrentView={setCurrentView}
         />
 
         {/* Main Content */}
@@ -207,70 +211,81 @@ export default function Dashboard() {
             </div>
           )}
 
-          <div className="flex flex-col gap-6">
-            {/* PageHeading */}
-            <div>
-              <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">
-                {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
-              </p>
-            </div>
-
-            {/* ToolBar */}
-            <div className="flex flex-col gap-4">
-              {/* Job Description Input */}
-              <div className="w-full">
-                <textarea
-                  className="w-full h-24 rounded-lg border border-border bg-card p-3 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all resize-none"
-                  placeholder="Paste the Job Description here to get a tailored ATS score (Optional)..."
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                />
+          {currentView === 'resumes' && (
+            <div className="flex flex-col gap-6">
+              {/* PageHeading */}
+              <div>
+                <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">
+                  {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
+                </p>
               </div>
 
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div className="flex items-center gap-2 w-full md:w-auto">
-                  <div className="relative w-full md:w-72">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <input 
-                      className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
-                      placeholder="Search resumes..." 
-                      type="text"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
+              {/* ToolBar */}
+              <div className="flex flex-col gap-4">
+                {/* Job Description Input */}
+                <div className="w-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Target Job Description</label>
+                    <span className="text-xs text-muted-foreground">Paste JD to get tailored ATS scoring</span>
                   </div>
-                  <button className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
-                    <Filter className="h-5 w-5" />
-                    <span className="text-sm font-medium hidden sm:inline">Filter</span>
-                  </button>
-                </div>
-                
-                <div className="flex gap-2">
-                  <input
-                    type="file"
-                    accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    className="hidden"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
+                  <textarea
+                    className="w-full h-24 rounded-lg border border-border bg-card p-3 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all resize-none"
+                    placeholder="Paste the Job Description here to get a tailored ATS score (Optional)..."
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value)}
                   />
-                  <button 
-                    className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 min-w-0 bg-primary px-4 text-sm font-bold leading-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 disabled:opacity-50"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploading}
-                  >
-                    {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
-                    <span>Upload & Analyze</span>
-                  </button>
+                </div>
+
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 w-full md:w-auto">
+                    <div className="relative w-full md:w-72">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <input 
+                        className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
+                        placeholder="Search resumes..." 
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                    </div>
+                    <button className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
+                      <Filter className="h-5 w-5" />
+                      <span className="text-sm font-medium hidden sm:inline">Filter</span>
+                    </button>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                      className="hidden"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                    />
+                    <button 
+                      className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 min-w-0 bg-primary px-4 text-sm font-bold leading-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 disabled:opacity-50"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isUploading}
+                    >
+                      {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
+                      <span>Upload & Analyze</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <ResumeGrid 
-              resumes={resumes} 
-              setSelectedResume={setSelectedResume} 
-              handleDelete={handleDelete} 
-            />
-          </div>
+              <ResumeGrid 
+                resumes={resumes} 
+                setSelectedResume={setSelectedResume} 
+                handleDelete={handleDelete} 
+              />
+            </div>
+          )}
+
+          {currentView === 'templates' && <TemplatesView />}
+          {currentView === 'linkedin' && <LinkedInView />}
+          {currentView === 'cover-letter' && <CoverLetterView />}
+
         </main>
       </div>
 

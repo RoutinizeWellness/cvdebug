@@ -1,13 +1,15 @@
-import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File } from "lucide-react";
+import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 
 interface SidebarProps {
   categoryFilter: string | null;
   setCategoryFilter: (category: string | null) => void;
   setShowPricing: (show: boolean) => void;
+  currentView: string;
+  setCurrentView: (view: string) => void;
 }
 
-export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing }: SidebarProps) {
+export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, currentView, setCurrentView }: SidebarProps) {
   const categories = [
     { id: "Engineering", label: "Engineering", icon: Code },
     { id: "Marketing", label: "Marketing", icon: Share },
@@ -33,13 +35,44 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing }: S
           </div>
         </div>
         
-        <div className="flex flex-col gap-2 mt-6">
+        <div className="flex flex-col gap-2 mt-6 overflow-y-auto flex-1 pr-2 custom-scrollbar">
           <div 
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium cursor-pointer transition-colors ${!categoryFilter ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-            onClick={() => setCategoryFilter(null)}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium cursor-pointer transition-colors ${currentView === 'resumes' && !categoryFilter ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            onClick={() => {
+              setCurrentView('resumes');
+              setCategoryFilter(null);
+            }}
           >
             <Grid className="h-4 w-4" />
             <p className="text-sm leading-normal">All Resumes</p>
+          </div>
+
+          <div className="pt-4 pb-2">
+            <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tools</p>
+          </div>
+
+          <div 
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'templates' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            onClick={() => setCurrentView('templates')}
+          >
+            <LayoutTemplate className="h-4 w-4" />
+            <p className="text-sm font-medium leading-normal">Templates</p>
+          </div>
+
+          <div 
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'linkedin' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            onClick={() => setCurrentView('linkedin')}
+          >
+            <Linkedin className="h-4 w-4" />
+            <p className="text-sm font-medium leading-normal">LinkedIn Optimizer</p>
+          </div>
+
+          <div 
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'cover-letter' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+            onClick={() => setCurrentView('cover-letter')}
+          >
+            <Mail className="h-4 w-4" />
+            <p className="text-sm font-medium leading-normal">Cover Letter</p>
           </div>
           
           <div className="pt-4 pb-2">
@@ -49,8 +82,11 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing }: S
           {categories.map((cat) => (
             <div 
               key={cat.id}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${categoryFilter === cat.id ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
-              onClick={() => setCategoryFilter(cat.id)}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'resumes' && categoryFilter === cat.id ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+              onClick={() => {
+                setCurrentView('resumes');
+                setCategoryFilter(cat.id);
+              }}
             >
               <cat.icon className="h-4 w-4" />
               <p className="text-sm font-medium leading-normal">{cat.label}</p>
@@ -58,7 +94,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing }: S
           ))}
         </div>
 
-        <div className="mt-6">
+        <div className="mt-2">
           <div 
             className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 rounded-xl p-4 cursor-pointer hover:border-primary/30 transition-colors group"
             onClick={() => setShowPricing(true)}

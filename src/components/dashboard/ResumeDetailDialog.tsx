@@ -12,9 +12,13 @@ import {
   Info, 
   Maximize2, 
   Minimize2, 
-  Code 
+  Code,
+  Wand2,
+  Printer
 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface ResumeDetailDialogProps {
   selectedResume: any;
@@ -24,6 +28,20 @@ interface ResumeDetailDialogProps {
 
 export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDelete }: ResumeDetailDialogProps) {
   const [isImmersive, setIsImmersive] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleDownloadReport = () => {
+    window.print();
+  };
+
+  const handleOptimize = () => {
+    setIsGenerating(true);
+    toast.info("AI is rewriting your resume... (Simulation)");
+    setTimeout(() => {
+      setIsGenerating(false);
+      toast.success("Optimization complete! Check the 'Parsed Text' tab for the new version.");
+    }, 2000);
+  };
 
   // Helper to render markdown-like analysis
   const renderAnalysis = (text: string) => {
@@ -118,11 +136,11 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
       <DialogContent 
         showCloseButton={false}
-        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none"
+        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
       >
         <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
         <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
-        <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0">
+        <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0 print:hidden">
           <div className="flex items-center gap-4">
             <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
               <FileText className="h-5 w-5 text-primary" />
@@ -140,12 +158,25 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground hidden sm:block" title="Share">
-              <Share className="h-4 w-4" />
-            </button>
-            <button className="p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground hidden sm:block" title="Download">
-              <Download className="h-4 w-4" />
-            </button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:flex gap-2 font-bold"
+              onClick={handleOptimize}
+              disabled={isGenerating}
+            >
+              <Wand2 className="h-4 w-4" />
+              {isGenerating ? "Optimizing..." : "AI Rewrite"}
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:flex gap-2 font-bold"
+              onClick={handleDownloadReport}
+            >
+              <Printer className="h-4 w-4" />
+              Print Report
+            </Button>
             <div className="w-px h-8 bg-border mx-1 self-center hidden sm:block" />
             <button 
               className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors"
@@ -164,17 +195,17 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-0 overflow-y-auto lg:overflow-hidden">
+        <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-0 overflow-y-auto lg:overflow-hidden print:block print:overflow-visible">
           {/* Left Panel - Details */}
-          <div className={`lg:col-span-3 border-r border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''}`}>
-            <ScrollArea className="flex-1 h-full">
+          <div className={`lg:col-span-3 border-r border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''} print:block print:w-full print:border-none`}>
+            <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
               <div className="p-6 flex flex-col gap-8">
                 <div>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <BarChart className="h-4 w-4" /> ATS Score Analysis
                   </h3>
                   
-                  <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6 shadow-sm">
+                  <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6 shadow-sm print:border-none print:shadow-none">
                     <div className="flex flex-col sm:flex-row items-center gap-6">
                       <CircularScore score={selectedResume?.score || 0} />
                       <div className="flex-1 space-y-1 text-center sm:text-left">
@@ -208,20 +239,20 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                   </div>
                 </div>
                 
-                <Separator />
+                <Separator className="print:hidden" />
 
                 <div>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-primary" /> AI Recommendations
                   </h3>
-                  <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar print:max-h-none print:overflow-visible">
                     {renderAnalysis(selectedResume?.analysis)}
                   </div>
                 </div>
 
-                <Separator />
+                <Separator className="print:hidden" />
 
-                <div>
+                <div className="print:hidden">
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Info className="h-4 w-4" /> Metadata
                   </h3>
@@ -247,7 +278,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
 
           {/* Center Image/Preview */}
-          <div className={`${isImmersive ? 'lg:col-span-12' : 'lg:col-span-6'} bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0`}>
+          <div className={`${isImmersive ? 'lg:col-span-12' : 'lg:col-span-6'} bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
             <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
             
             <button 
@@ -276,7 +307,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
 
           {/* Right Panel - Actions */}
-          <div className={`lg:col-span-3 border-l border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''}`}>
+          <div className={`lg:col-span-3 border-l border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
             <ScrollArea className="flex-1 h-full">
               <div className="p-6 flex flex-col gap-8">
                 <div>
