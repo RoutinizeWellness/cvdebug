@@ -182,6 +182,51 @@ export default function Dashboard() {
   // Helper for icon
   function Box(props: any) { return <Briefcase {...props} /> }
 
+  // Helper for Circular Progress
+  const CircularScore = ({ score }: { score: number }) => {
+    const radius = 30;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (score / 100) * circumference;
+    
+    let color = "text-red-500";
+    if (score >= 80) color = "text-green-500";
+    else if (score >= 50) color = "text-yellow-500";
+
+    return (
+      <div className="relative h-24 w-24 flex items-center justify-center">
+        <svg className="h-full w-full -rotate-90" viewBox="0 0 72 72">
+          {/* Background Circle */}
+          <circle
+            className="text-muted/20"
+            strokeWidth="6"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx="36"
+            cy="36"
+          />
+          {/* Progress Circle */}
+          <circle
+            className={`${color} transition-all duration-1000 ease-out`}
+            strokeWidth="6"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx="36"
+            cy="36"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className={`text-2xl font-bold ${color}`}>{score}</span>
+          <span className="text-[10px] text-muted-foreground font-medium uppercase">ATS Score</span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
@@ -447,25 +492,39 @@ export default function Dashboard() {
                 <div className="p-6 flex flex-col gap-8">
                   <div>
                     <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <BarChart className="h-4 w-4" /> ATS Score
+                      <BarChart className="h-4 w-4" /> ATS Score Analysis
                     </h3>
-                    <div className="flex items-center gap-4">
-                      <div className={`h-16 w-16 rounded-full flex items-center justify-center text-2xl font-bold border-4 ${
-                        (selectedResume?.score || 0) >= 80 ? 'border-green-500 text-green-500' : 
-                        (selectedResume?.score || 0) >= 50 ? 'border-yellow-500 text-yellow-500' : 
-                        'border-red-500 text-red-500'
-                      }`}>
-                        {selectedResume?.score || 0}
+                    
+                    <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6 shadow-sm">
+                      <div className="flex items-center gap-6">
+                        <CircularScore score={selectedResume?.score || 0} />
+                        <div className="flex-1 space-y-1">
+                          <h4 className="text-lg font-bold text-foreground">
+                            {(selectedResume?.score || 0) >= 80 ? 'Excellent Match' : 
+                             (selectedResume?.score || 0) >= 50 ? 'Needs Improvement' : 
+                             'Poor Match'}
+                          </h4>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {(selectedResume?.score || 0) >= 80 ? 'Your resume is well-optimized for ATS algorithms.' : 
+                             (selectedResume?.score || 0) >= 50 ? 'You have some good content, but formatting or keywords need work.' : 
+                             'Your resume may be rejected by ATS. Critical fixes needed.'}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium">
-                          {(selectedResume?.score || 0) >= 80 ? 'Excellent' : 
-                           (selectedResume?.score || 0) >= 50 ? 'Needs Improvement' : 
-                           'Poor'}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          40% Keywords • 30% Format • 30% Completeness
-                        </p>
+
+                      <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/50">
+                        <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
+                          <span className="text-xs font-bold text-foreground">40%</span>
+                          <span className="text-[10px] text-muted-foreground">Keywords</span>
+                        </div>
+                        <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
+                          <span className="text-xs font-bold text-foreground">30%</span>
+                          <span className="text-[10px] text-muted-foreground">Format</span>
+                        </div>
+                        <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
+                          <span className="text-xs font-bold text-foreground">30%</span>
+                          <span className="text-[10px] text-muted-foreground">Completeness</span>
+                        </div>
                       </div>
                     </div>
                   </div>
