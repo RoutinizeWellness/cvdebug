@@ -2,6 +2,7 @@ import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, 
 import { UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { Logo } from "@/components/Logo";
 
 interface SidebarProps {
   categoryFilter: string | null;
@@ -44,14 +45,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
     <aside className="w-72 flex-shrink-0 p-4 hidden md:block h-screen sticky top-0">
       <div className="flex h-full flex-col gap-6 rounded-2xl border border-border bg-card/50 p-5 shadow-sm backdrop-blur-xl">
         {/* Header */}
-        <div className="flex items-center gap-3 px-2">
-          <div className="h-10 w-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-            <FileText className="h-6 w-6 text-primary-foreground" />
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-foreground text-lg font-black tracking-tight leading-none">Resume ATS</h1>
-            <p className="text-muted-foreground text-xs font-medium">Optimizer</p>
-          </div>
+        <div className="px-2">
+          <Logo />
         </div>
         
         {/* Navigation */}
