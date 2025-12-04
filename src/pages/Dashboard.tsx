@@ -37,6 +37,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Chatbot } from "@/components/Chatbot";
 import { useAction } from "convex/react";
+import { UserButton } from "@clerk/clerk-react";
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
@@ -205,9 +206,16 @@ export default function Dashboard() {
             </div>
             
             <div className="mt-auto flex flex-col gap-1">
-              <div className="flex items-center gap-3 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg cursor-pointer transition-colors" onClick={() => signOut()}>
-                <Settings className="h-4 w-4" />
-                <p className="text-sm font-medium leading-normal">Sign Out</p>
+              <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
+                <UserButton 
+                  showName={true}
+                  appearance={{
+                    elements: {
+                      userButtonBox: "flex flex-row-reverse",
+                      userButtonOuterIdentifier: "text-sm font-medium text-foreground",
+                    }
+                  }}
+                />
               </div>
             </div>
           </div>

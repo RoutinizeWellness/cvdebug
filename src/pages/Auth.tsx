@@ -38,7 +38,7 @@ export default function AuthPage() {
           </div>
         </div>
         <div className="flex justify-center">
-          <SignIn />
+          <SignIn forceRedirectUrl="/dashboard" />
         </div>
       </div>
     </div>
