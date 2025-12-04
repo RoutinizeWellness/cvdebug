@@ -349,7 +349,7 @@ export default function Dashboard() {
 
       {/* Detailed View Dialog */}
       <Dialog open={!!selectedScreenshot} onOpenChange={(open) => !open && setSelectedScreenshot(null)}>
-        <DialogContent className="max-w-screen w-screen h-screen p-0 bg-background border-none rounded-none overflow-hidden flex flex-col shadow-none">
+        <DialogContent className="max-w-none sm:max-w-none w-screen h-screen p-0 bg-background border-none rounded-none overflow-hidden flex flex-col shadow-none top-0 left-0 translate-x-0 translate-y-0">
           <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm">
             <div className="flex items-center gap-4">
               <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
