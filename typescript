@@ -1,4 +1,573 @@
 // ... keep existing code
-export const currentUser = ...
-export const updateSubscription = ...
-// ... keep existing code
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { FileText, Linkedin, Mail, Download, Sparkles, Lock, LayoutTemplate, Check, ArrowRight, Eye, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+export function TemplatesView() {
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const generateTemplate = useAction(api.ai.generateTemplate);
+
+  const handleGenerate = async () => {
+    if (!selectedTemplate) {
+      toast.error("Please select a template to generate.");
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const result = await generateTemplate({
+        template: selectedTemplate,
+        prompt: "Generate a professional cover letter for a software engineering role with a focus on cloud infrastructure and DevOps experience.",
+      });
+      setGeneratedContent(result);
+      toast.success("Template generated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate template. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    if (!generatedContent) return;
+    try {
+      await navigator.clipboard.writeText(generatedContent);
+      setIsCopied(true);
+      toast.success("Content copied to clipboard!");
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      toast.error("Failed to copy content.");
+    }
+  };
+
+  return (
+    <div className="space-y-8 max-w-6xl mx-auto pb-20">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-4xl font-black tracking-tight flex items-center gap-3 text-foreground">
+          <LayoutTemplate className="h-8 w-8" /> Templates
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          Choose from our collection of professionally crafted templates for various job applications.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <Card className="border-border shadow-sm h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Select Template</CardTitle>
+              <CardDescription>Choose a template to get started with your cover letter.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-3">
+                <Label htmlFor="template" className="font-bold">Template Type</Label>
+                <Select 
+                  id="template" 
+                  value={selectedTemplate} 
+                  onValueChange={setSelectedTemplate}
+                  disabled={isGenerating}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a template..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="software-engineer">Software Engineer</SelectItem>
+                    <SelectItem value="data-scientist">Data Scientist</SelectItem>
+                    <SelectItem value="devops-engineer">DevOps Engineer</SelectItem>
+                    <SelectItem value="cloud-architect">Cloud Architect</SelectItem>
+                    <SelectItem value="machine-learning">Machine Learning Engineer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="job-title" className="font-bold">Target Job Title</Label>
+                <Input 
+                  id="job-title" 
+                  placeholder="e.g., Senior Software Engineer" 
+                  className="w-full"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="company" className="font-bold">Company Name</Label>
+                <Input 
+                  id="company" 
+                  placeholder="e.g., TechCorp Inc." 
+                  className="w-full"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+              <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+                <Lock className="h-3 w-3" /> Data is processed securely.
+              </p>
+              <Button 
+                size="lg" 
+                className="font-bold shadow-lg shadow-primary/20"
+                onClick={handleGenerate}
+                disabled={isGenerating || !selectedTemplate}
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" /> Generate Template
+                  </>
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+           <Card className="border-border shadow-sm h-full flex flex-col">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Generated Content</CardTitle>
+              <CardDescription>AI-generated cover letter based on your selected template.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 min-h-[400px] relative">
+              {generatedContent ? (
+                <ScrollArea className="h-[600px] w-full">
+                  <div className="p-6 prose prose-sm dark:prose-invert max-w-none">
+                    {generatedContent.split("###").map((section, i) => {
+                      if (!section.trim()) return null;
+                      const [title, ...content] = section.trim().split("\n");
+                      return (
+                        <div key={i} className="mb-6 last:mb-0">
+                          <h3 className="text-lg font-bold mb-3 text-primary flex items-center gap-2">
+                            {title.replace(/^\s*\d+\.\s*/, "")}
+                          </h3>
+                          <div className="text-muted-foreground space-y-2 bg-muted/30 p-4 rounded-xl border border-border/50">
+                            {content.join("\n").split("\n").map((line, j) => {
+                              const trimmed = line.trim();
+                              if (!trimmed) return null;
+                              if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
+                                return (
+                                  <div key={j} className="flex items-start gap-2">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                    <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                                  </div>
+                                );
+                              }
+                              return <p key={j} className="leading-relaxed">{trimmed}</p>;
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 text-muted-foreground">
+                  <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <Sparkles className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">Ready to Generate</h3>
+                  <p className="text-sm max-w-xs">
+                    Select a template and fill in the details to get a professionally crafted cover letter.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleCopy}
+                disabled={!generatedContent || isCopied}
+              >
+                {isCopied ? (
+                  <Check className="mr-2 h-4 w-4" /> Copied!
+                ) : (
+                  <Download className="mr-2 h-4 w-4" /> Copy to Clipboard
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function LinkedInView() {
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [profileText, setProfileText] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+  
+  const optimizeProfile = useAction(api.ai.optimizeLinkedIn);
+
+  const handleOptimize = async () => {
+    if (!profileText.trim()) {
+      toast.error("Please enter your profile text to analyze.");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const result = await optimizeProfile({
+        profileText,
+        jobDescription: jobDescription.trim() || undefined,
+        linkedinUrl: linkedinUrl.trim() || undefined,
+      });
+      setAnalysisResult(result);
+      toast.success("Profile analysis complete!");
+    } catch (error: any) {
+      console.error(error);
+      toast.error("Failed to analyze profile. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8 max-w-6xl mx-auto pb-20">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-4xl font-black tracking-tight flex items-center gap-3 text-foreground">
+          <Linkedin className="h-8 w-8 text-[#0077b5]" /> Profile Optimization
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          Analyze your LinkedIn profile against job descriptions to rank higher in recruiter searches.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <Card className="border-border shadow-sm h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Input Profile Data</CardTitle>
+              <CardDescription>Provide your current profile details and a target job.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-3">
+                <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL (Optional)</Label>
+                <div className="relative">
+                  <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input 
+                    id="linkedin-url" 
+                    placeholder="https://linkedin.com/in/yourname" 
+                    className="pl-10" 
+                    value={linkedinUrl}
+                    onChange={(e) => setLinkedinUrl(e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid gap-3">
+                <Label htmlFor="profile-text" className="font-bold">Profile Text <span className="text-red-500">*</span></Label>
+                <Textarea 
+                  id="profile-text" 
+                  placeholder="Paste your About section, Experience, and Skills here..." 
+                  className="min-h-[150px] resize-none p-4 leading-relaxed"
+                  value={profileText}
+                  onChange={(e) => setProfileText(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="job-description" className="font-bold">Target Job Description (Optional)</Label>
+                <Textarea 
+                  id="job-description" 
+                  placeholder="Paste the job description you are targeting..." 
+                  className="min-h-[100px] resize-none p-4 leading-relaxed"
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+              <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+                <Lock className="h-3 w-3" /> Data is processed securely.
+              </p>
+              <Button 
+                size="lg" 
+                className="font-bold shadow-lg shadow-primary/20"
+                onClick={handleOptimize}
+                disabled={isAnalyzing}
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" /> Optimize Profile
+                  </>
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+           <Card className="border-border shadow-sm h-full flex flex-col">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Optimization Results</CardTitle>
+              <CardDescription>AI-generated recommendations for your profile.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 min-h-[400px] relative p-0">
+              {analysisResult ? (
+                <ScrollArea className="h-[600px] w-full">
+                  <div className="p-6 prose prose-sm dark:prose-invert max-w-none">
+                    {analysisResult.split("###").map((section, i) => {
+                      if (!section.trim()) return null;
+                      const [title, ...content] = section.trim().split("\n");
+                      return (
+                        <div key={i} className="mb-6 last:mb-0">
+                          <h3 className="text-lg font-bold mb-3 text-primary flex items-center gap-2">
+                            {title.replace(/^\s*\d+\.\s*/, "")}
+                          </h3>
+                          <div className="text-muted-foreground space-y-2 bg-muted/30 p-4 rounded-xl border border-border/50">
+                            {content.join("\n").split("\n").map((line, j) => {
+                              const trimmed = line.trim();
+                              if (!trimmed) return null;
+                              if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
+                                return (
+                                  <div key={j} className="flex items-start gap-2">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                    <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                                  </div>
+                                );
+                              }
+                              return <p key={j} className="leading-relaxed">{trimmed}</p>;
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 text-muted-foreground">
+                  <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <Sparkles className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">Ready to Optimize</h3>
+                  <p className="text-sm max-w-xs">
+                    Fill in your profile details and click optimize to get actionable advice.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function CoverLetterView() {
+  const [isCoverLetterModalOpen, setIsCoverLetterModalOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedCoverLetter, setGeneratedCoverLetter] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const generateCoverLetter = useAction(api.ai.generateCoverLetter);
+
+  const handleGenerate = async () => {
+    if (!jobTitle || !company) {
+      toast.error("Please fill in all required fields to generate a cover letter.");
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const result = await generateCoverLetter({
+        jobTitle,
+        company,
+        experience: "5+ years of experience in software development with expertise in cloud infrastructure and DevOps practices.",
+        skills: "Python, JavaScript, Docker, Kubernetes, AWS, CI/CD pipelines, cloud security, system architecture",
+      });
+      setGeneratedCoverLetter(result);
+      toast.success("Cover letter generated successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate cover letter. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    if (!generatedCoverLetter) return;
+    try {
+      await navigator.clipboard.writeText(generatedCoverLetter);
+      setIsCopied(true);
+      toast.success("Cover letter copied to clipboard!");
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      toast.error("Failed to copy cover letter.");
+    }
+  };
+
+  return (
+    <div className="space-y-8 max-w-6xl mx-auto pb-20">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-4xl font-black tracking-tight flex items-center gap-3 text-foreground">
+          <FileText className="h-8 w-8" /> Cover Letter Generator
+        </h2>
+        <p className="text-lg text-muted-foreground">
+          Create a compelling cover letter tailored to specific job opportunities.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <Card className="border-border shadow-sm h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Job Details</CardTitle>
+              <CardDescription>Provide information about the job you're applying for.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-3">
+                <Label htmlFor="job-title" className="font-bold">Target Job Title</Label>
+                <Input 
+                  id="job-title" 
+                  placeholder="e.g., Senior Software Engineer" 
+                  className="w-full"
+                  value={jobTitle}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="company" className="font-bold">Company Name</Label>
+                <Input 
+                  id="company" 
+                  placeholder="e.g., TechCorp Inc." 
+                  className="w-full"
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-3">
+                <Label htmlFor="experience" className="font-bold">Your Experience</Label>
+                <Textarea 
+                  id="experience" 
+                  placeholder="Briefly describe your relevant experience and achievements..." 
+                  className="min-h-[100px] resize-none p-4 leading-relaxed"
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+              <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
+                <Lock className="h-3 w-3" /> Data is processed securely.
+              </p>
+              <Button 
+                size="lg" 
+                className="font-bold shadow-lg shadow-primary/20"
+                onClick={handleGenerate}
+                disabled={isGenerating || !jobTitle || !company}
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" /> Generate Cover Letter
+                  </>
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+           <Card className="border-border shadow-sm h-full flex flex-col">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl">Generated Cover Letter</CardTitle>
+              <CardDescription>AI-generated cover letter based on your input.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 min-h-[400px] relative">
+              {generatedCoverLetter ? (
+                <ScrollArea className="h-[600px] w-full">
+                  <div className="p-6 prose prose-sm dark:prose-invert max-w-none">
+                    {generatedCoverLetter.split("###").map((section, i) => {
+                      if (!section.trim()) return null;
+                      const [title, ...content] = section.trim().split("\n");
+                      return (
+                        <div key={i} className="mb-6 last:mb-0">
+                          <h3 className="text-lg font-bold mb-3 text-primary flex items-center gap-2">
+                            {title.replace(/^\s*\d+\.\s*/, "")}
+                          </h3>
+                          <div className="text-muted-foreground space-y-2 bg-muted/30 p-4 rounded-xl border border-border/50">
+                            {content.join("\n").split("\n").map((line, j) => {
+                              const trimmed = line.trim();
+                              if (!trimmed) return null;
+                              if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
+                                return (
+                                  <div key={j} className="flex items-start gap-2">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                    <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                                  </div>
+                                );
+                              }
+                              return <p key={j} className="leading-relaxed">{trimmed}</p>;
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 text-muted-foreground">
+                  <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                    <Sparkles className="h-8 w-8 text-muted-foreground/50" />
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">Ready to Generate</h3>
+                  <p className="text-sm max-w-xs">
+                    Fill in the job details and click generate to create a professional cover letter.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={handleCopy}
+                disabled={!generatedCoverLetter || isCopied}
+              >
+                {isCopied ? (
+                  <Check className="mr-2 h-4 w-4" /> Copied!
+                ) : (
+                  <Download className="mr-2 h-4 w-4" /> Copy to Clipboard
+                )}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
