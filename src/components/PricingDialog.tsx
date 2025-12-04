@@ -7,7 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const upgradePlan = useAction(api.users.upgradePlan);
+  const upgradePlan = useAction(api.clerk.upgradePlan);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   
