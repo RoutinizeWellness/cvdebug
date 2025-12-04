@@ -39,6 +39,8 @@ import {
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
+import * as pdfjsLib from "pdfjs-dist";
+import mammoth from "mammoth";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from "react-router";
@@ -81,9 +83,16 @@ export default function Dashboard() {
   const handleFile = async (file: File) => {
     if (!file) return;
 
-    // Validate file type for MVP (Images only for now)
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload an image (JPG/PNG). PDF support is coming soon!");
+    const validTypes = [
+      "image/jpeg", 
+      "image/png", 
+      "image/webp", 
+      "application/pdf", 
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+    ];
+
+    if (!validTypes.includes(file.type)) {
+      toast.error("Please upload an image (JPG/PNG), PDF, or Word (.docx) file.");
       return;
     }
 
@@ -108,7 +117,7 @@ export default function Dashboard() {
       });
 
       toast.success("Resume uploaded");
-      processOcr(file, resumeId);
+      processFile(file, resumeId);
       setJobDescription("");
 
     } catch (error) {
@@ -144,21 +153,48 @@ export default function Dashboard() {
     }
   };
 
-  const processOcr = async (file: File, resumeId: any) => {
+  const processFile = async (file: File, resumeId: any) => {
     try {
-      const worker = await createWorker("eng");
-      const imageUrl = URL.createObjectURL(file);
-      const ret = await worker.recognize(imageUrl);
-      URL.revokeObjectURL(imageUrl);
-      await worker.terminate();
-      const text = ret.data.text;
+      let text = "";
+
+      if (file.type === "application/pdf") {
+        // PDF Processing
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          const pageText = content.items.map((item: any) => item.str).join(" ");
+          text += pageText + "\n";
+        }
+      } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+        // Word (.docx) Processing
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        text = result.value;
+      } else {
+        // Image OCR Processing
+        const worker = await createWorker("eng");
+        const imageUrl = URL.createObjectURL(file);
+        const ret = await worker.recognize(imageUrl);
+        URL.revokeObjectURL(imageUrl);
+        await worker.terminate();
+        text = ret.data.text;
+      }
+
+      if (!text.trim()) {
+        toast.warning("No text could be extracted from the file.");
+      }
+
       await updateResumeOcr({
         id: resumeId,
         ocrText: text,
       });
       toast.success("Parsing Complete. Analyzing with AI...");
     } catch (error) {
-      console.error("OCR Error:", error);
+      console.error("Processing Error:", error);
       toast.error("Resume parsing failed");
     }
   };
@@ -368,7 +404,7 @@ export default function Dashboard() {
                 <div className="flex gap-2">
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                     className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileUpload}
@@ -407,11 +443,21 @@ export default function Dashboard() {
                     onClick={() => setSelectedResume(resume)}
                   >
                     <div className="relative w-full overflow-hidden rounded-lg aspect-[3/4] bg-secondary">
-                      <img 
-                        src={resume.url} 
-                        alt={resume.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                      />
+                      {resume.mimeType.startsWith("image/") ? (
+                        <img 
+                          src={resume.url} 
+                          alt={resume.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+                          {resume.mimeType === "application/pdf" ? (
+                            <FileText className="h-16 w-16" />
+                          ) : (
+                            <File className="h-16 w-16" />
+                          )}
+                        </div>
+                      )}
                       <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-md">
                         {resume.score ? `Score: ${resume.score}` : 'Analyzing...'}
                       </div>
@@ -567,7 +613,7 @@ export default function Dashboard() {
               </ScrollArea>
             </div>
 
-            {/* Center Image */}
+            {/* Center Image/Preview */}
             <div className={`${isImmersive ? 'lg:col-span-12' : 'lg:col-span-6'} bg-black/5 flex items-center justify-center p-8 overflow-hidden relative group transition-all duration-300`}>
               <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
               
@@ -580,11 +626,19 @@ export default function Dashboard() {
               </button>
 
               <div className="w-full h-full flex items-center justify-center relative z-10">
-                <img 
-                  className="h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
-                  src={selectedResume?.url} 
-                  alt={selectedResume?.title} 
-                />
+                {selectedResume?.mimeType.startsWith("image/") ? (
+                  <img 
+                    className="h-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
+                    src={selectedResume?.url} 
+                    alt={selectedResume?.title} 
+                  />
+                ) : (
+                  <iframe 
+                    src={selectedResume?.url} 
+                    className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                    title="Resume Preview"
+                  />
+                )}
               </div>
             </div>
 
