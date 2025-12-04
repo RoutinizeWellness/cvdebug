@@ -29,14 +29,14 @@ export function HeroSection() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              New: AI-Powered Analysis 2.0
+              New: LinkedIn Profile Analysis
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
               Is your resume <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">good enough?</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              Stop guessing. Get an instant ATS score and detailed feedback to fix your resume and land more interviews.
+              Stop guessing. Get an instant ATS score for your resume and LinkedIn profile to fix issues and land more interviews.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all font-bold" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>

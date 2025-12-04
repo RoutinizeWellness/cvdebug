@@ -1,4 +1,4 @@
-import { Shield, Target, BarChart3, CheckCircle2 } from "lucide-react";
+import { Shield, Target, BarChart3, CheckCircle2, Linkedin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
@@ -14,7 +14,7 @@ export function FeatureGridSection() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">
-              Why your resume is getting rejected
+              Why you're not getting interviews
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               Most companies use Applicant Tracking Systems (ATS) to filter resumes. If you don't have the right keywords or formatting, a human never sees your application.
@@ -24,6 +24,7 @@ export function FeatureGridSection() {
               {[
                 { icon: Shield, title: "Formatting Errors", desc: "Complex layouts, columns, and graphics confuse ATS parsers." },
                 { icon: Target, title: "Missing Keywords", desc: "Not matching the exact skills listed in the job description." },
+                { icon: Linkedin, title: "Unoptimized LinkedIn", desc: "Recruiters can't find you if your profile lacks the right SEO keywords." },
                 { icon: BarChart3, title: "Low Content Density", desc: "Vague bullet points that don't show impact or metrics." }
               ].map((feature, i) => (
                 <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-background/50 transition-colors border border-transparent hover:border-border/50">

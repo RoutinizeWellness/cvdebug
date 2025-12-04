@@ -4,13 +4,13 @@ export function HowItWorksSection() {
   const steps = [
     {
       icon: Upload,
-      title: "1. Upload Resume",
-      description: "Upload your PDF, Word doc, or image. We extract the text instantly."
+      title: "1. Upload or Import",
+      description: "Upload your resume PDF/Word or paste your LinkedIn profile text."
     },
     {
       icon: Zap,
       title: "2. AI Analysis",
-      description: "We check for keywords, formatting errors, and section completeness."
+      description: "We check for keywords, formatting errors, and profile completeness."
     },
     {
       icon: Target,
@@ -25,7 +25,7 @@ export function HowItWorksSection() {
         <div className="text-center max-w-3xl mx-auto mb-20">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">How it works</h2>
           <p className="text-xl text-muted-foreground">
-            Our AI analyzes your resume exactly like a recruiter's ATS would.
+            Our AI analyzes your resume and LinkedIn profile exactly like a recruiter would.
           </p>
         </div>
 
