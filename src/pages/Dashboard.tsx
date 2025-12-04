@@ -9,6 +9,8 @@ import {
   Upload, 
   FileUp,
   Filter,
+  Plus,
+  Sparkles
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -182,94 +184,101 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative flex h-auto min-h-screen w-full flex-col bg-background text-foreground font-sans">
+    <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
       <Chatbot />
-      <div className="flex h-full min-h-screen w-full">
-        <Sidebar 
-          categoryFilter={categoryFilter} 
-          setCategoryFilter={setCategoryFilter} 
-          setShowPricing={setShowPricing} 
-          currentView={currentView}
-          setCurrentView={setCurrentView}
-        />
+      
+      <Sidebar 
+        categoryFilter={categoryFilter} 
+        setCategoryFilter={setCategoryFilter} 
+        setShowPricing={setShowPricing} 
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+      />
 
-        {/* Main Content */}
-        <main 
-          className="flex-1 overflow-y-auto p-4 md:p-8 relative"
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          {isDragging && (
-            <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-sm border-2 border-dashed border-primary rounded-xl flex flex-col items-center justify-center animate-in fade-in duration-200 m-4 md:m-8">
-              <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <FileUp className="h-10 w-10 text-primary" />
-              </div>
-              <h3 className="text-2xl font-bold text-primary">Drop resume here</h3>
-              <p className="text-muted-foreground mt-2">Release to analyze instantly</p>
+      {/* Main Content */}
+      <main 
+        className="flex-1 h-full overflow-y-auto relative scroll-smooth"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {/* Drag Overlay */}
+        {isDragging && (
+          <div className="absolute inset-0 z-50 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
+            <div className="h-32 w-32 bg-primary/10 rounded-full flex items-center justify-center mb-6 border-4 border-dashed border-primary animate-pulse">
+              <FileUp className="h-16 w-16 text-primary" />
             </div>
-          )}
+            <h3 className="text-3xl font-black text-foreground">Drop resume here</h3>
+            <p className="text-muted-foreground mt-2 text-lg">Release to analyze instantly</p>
+          </div>
+        )}
 
+        <div className="container mx-auto px-6 py-8 max-w-7xl">
           {currentView === 'resumes' && (
-            <div className="flex flex-col gap-6">
-              {/* PageHeading */}
-              <div>
-                <p className="text-foreground text-4xl font-black leading-tight tracking-[-0.033em]">
-                  {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
-                </p>
+            <div className="flex flex-col gap-8">
+              {/* Header Section */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <h1 className="text-4xl font-black tracking-tight text-foreground mb-2">
+                    {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
+                  </h1>
+                  <p className="text-muted-foreground text-lg">
+                    Manage and optimize your resumes for ATS compatibility.
+                  </p>
+                </div>
+                
+                <div className="flex gap-3">
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                  />
+                  <Button 
+                    size="lg"
+                    className="font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                  >
+                    {isUploading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Plus className="mr-2 h-5 w-5" />}
+                    Upload New Resume
+                  </Button>
+                </div>
               </div>
 
-              {/* ToolBar */}
-              <div className="flex flex-col gap-4">
-                {/* Job Description Input */}
-                <div className="w-full">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Target Job Description</label>
-                    <span className="text-xs text-muted-foreground">Paste JD to get tailored ATS scoring</span>
-                  </div>
-                  <textarea
-                    className="w-full h-24 rounded-lg border border-border bg-card p-3 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all resize-none"
-                    placeholder="Paste the Job Description here to get a tailored ATS score (Optional)..."
-                    value={jobDescription}
-                    onChange={(e) => setJobDescription(e.target.value)}
+              {/* Search & Filter Bar */}
+              <div className="bg-card border border-border rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+                <div className="relative flex-1 w-full">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input 
+                    className="w-full bg-background rounded-xl border border-border py-2.5 pl-10 pr-4 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
+                    placeholder="Search by name, content, or keywords..." 
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
-
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 w-full md:w-auto">
-                    <div className="relative w-full md:w-72">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <input 
-                        className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:border-primary focus:ring-primary outline-none transition-all" 
-                        placeholder="Search resumes..." 
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                    </div>
-                    <button className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors">
-                      <Filter className="h-5 w-5" />
-                      <span className="text-sm font-medium hidden sm:inline">Filter</span>
-                    </button>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <input
-                      type="file"
-                      accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      className="hidden"
-                      ref={fileInputRef}
-                      onChange={handleFileUpload}
+                
+                <div className="w-px h-8 bg-border hidden lg:block" />
+                
+                <div className="w-full lg:w-auto flex-1">
+                  <div className="relative">
+                    <textarea
+                      className="w-full h-[42px] min-h-[42px] max-h-[100px] bg-background rounded-xl border border-border py-2.5 px-4 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-y"
+                      placeholder="Paste Job Description for tailored scoring..."
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
                     />
-                    <button 
-                      className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 min-w-0 bg-primary px-4 text-sm font-bold leading-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 disabled:opacity-50"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={isUploading}
-                    >
-                      {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
-                      <span>Upload & Analyze</span>
-                    </button>
+                    {jobDescription && (
+                      <div className="absolute right-2 top-2">
+                        <span className="flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -285,9 +294,8 @@ export default function Dashboard() {
           {currentView === 'templates' && <TemplatesView />}
           {currentView === 'linkedin' && <LinkedInView />}
           {currentView === 'cover-letter' && <CoverLetterView />}
-
-        </main>
-      </div>
+        </div>
+      </main>
 
       <ResumeDetailDialog 
         selectedResume={selectedResume} 

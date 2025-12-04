@@ -1,5 +1,7 @@
-import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail } from "lucide-react";
+import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail, LogOut } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 interface SidebarProps {
   categoryFilter: string | null;
@@ -10,6 +12,8 @@ interface SidebarProps {
 }
 
 export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, currentView, setCurrentView }: SidebarProps) {
+  const { signOut } = useAuth();
+  
   const categories = [
     { id: "Engineering", label: "Engineering", icon: Code },
     { id: "Marketing", label: "Marketing", icon: Share },
@@ -22,107 +26,124 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
     { id: "Other", label: "Other", icon: File },
   ];
 
+  const NavItem = ({ active, icon: Icon, label, onClick, className }: any) => (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
+        active 
+          ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
+          : "text-muted-foreground hover:bg-accent hover:text-foreground"
+      } ${className}`}
+    >
+      <Icon className={`h-4 w-4 ${active ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
+      {label}
+    </button>
+  );
+
   return (
-    <aside className="w-64 flex-shrink-0 p-4 hidden md:block">
-      <div className="sticky top-4 flex h-[calc(100vh-2rem)] flex-col gap-4 rounded-xl border border-white/10 bg-card/50 p-4 backdrop-blur-lg">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center shadow-sm">
-            <FileText className="h-6 w-6 text-primary" />
+    <aside className="w-72 flex-shrink-0 p-4 hidden md:block h-screen sticky top-0">
+      <div className="flex h-full flex-col gap-6 rounded-2xl border border-border bg-card/50 p-5 shadow-sm backdrop-blur-xl">
+        {/* Header */}
+        <div className="flex items-center gap-3 px-2">
+          <div className="h-10 w-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+            <FileText className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-foreground text-base font-bold leading-normal tracking-tight">Resume ATS</h1>
-            <p className="text-muted-foreground text-xs font-medium leading-normal">Optimizer</p>
+            <h1 className="text-foreground text-lg font-black tracking-tight leading-none">Resume ATS</h1>
+            <p className="text-muted-foreground text-xs font-medium">Optimizer</p>
           </div>
         </div>
         
-        <div className="flex flex-col gap-2 mt-6 overflow-y-auto flex-1 pr-2 custom-scrollbar">
-          <div 
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg font-medium cursor-pointer transition-colors ${currentView === 'resumes' && !categoryFilter ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+        {/* Navigation */}
+        <div className="flex flex-col gap-1 overflow-y-auto flex-1 pr-2 custom-scrollbar -mr-2">
+          <div className="px-3 pb-2">
+            <p className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">Main</p>
+          </div>
+          
+          <NavItem 
+            active={currentView === 'resumes' && !categoryFilter}
+            icon={Grid}
+            label="All Resumes"
             onClick={() => {
               setCurrentView('resumes');
               setCategoryFilter(null);
             }}
-          >
-            <Grid className="h-4 w-4" />
-            <p className="text-sm leading-normal">All Resumes</p>
+          />
+
+          <div className="px-3 pt-6 pb-2">
+            <p className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">Tools</p>
           </div>
 
-          <div className="pt-4 pb-2">
-            <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Tools</p>
-          </div>
-
-          <div 
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'templates' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+          <NavItem 
+            active={currentView === 'templates'}
+            icon={LayoutTemplate}
+            label="Templates"
             onClick={() => setCurrentView('templates')}
-          >
-            <LayoutTemplate className="h-4 w-4" />
-            <p className="text-sm font-medium leading-normal">Templates</p>
-          </div>
-
-          <div 
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'linkedin' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+          />
+          <NavItem 
+            active={currentView === 'linkedin'}
+            icon={Linkedin}
+            label="LinkedIn Optimizer"
             onClick={() => setCurrentView('linkedin')}
-          >
-            <Linkedin className="h-4 w-4" />
-            <p className="text-sm font-medium leading-normal">LinkedIn Optimizer</p>
-          </div>
-
-          <div 
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'cover-letter' ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+          />
+          <NavItem 
+            active={currentView === 'cover-letter'}
+            icon={Mail}
+            label="Cover Letter"
             onClick={() => setCurrentView('cover-letter')}
-          >
-            <Mail className="h-4 w-4" />
-            <p className="text-sm font-medium leading-normal">Cover Letter</p>
-          </div>
+          />
           
-          <div className="pt-4 pb-2">
-            <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Job Categories</p>
+          <div className="px-3 pt-6 pb-2">
+            <p className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">Categories</p>
           </div>
           
           {categories.map((cat) => (
-            <div 
+            <NavItem 
               key={cat.id}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${currentView === 'resumes' && categoryFilter === cat.id ? 'bg-primary/10 text-primary font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-white/5'}`}
+              active={currentView === 'resumes' && categoryFilter === cat.id}
+              icon={cat.icon}
+              label={cat.label}
               onClick={() => {
                 setCurrentView('resumes');
                 setCategoryFilter(cat.id);
               }}
-            >
-              <cat.icon className="h-4 w-4" />
-              <p className="text-sm font-medium leading-normal">{cat.label}</p>
-            </div>
+            />
           ))}
         </div>
 
-        <div className="mt-2">
+        {/* Footer Actions */}
+        <div className="mt-auto space-y-4">
           <div 
-            className="bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 rounded-xl p-4 cursor-pointer hover:border-primary/30 transition-colors group"
+            className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-purple-600 p-4 text-primary-foreground shadow-lg cursor-pointer group"
             onClick={() => setShowPricing(true)}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Sparkles className="h-4 w-4 text-primary" />
+            <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white/10 blur-2xl group-hover:bg-white/20 transition-colors"></div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-yellow-300 fill-yellow-300 animate-pulse" />
+                <span className="font-bold text-sm">Upgrade to Pro</span>
               </div>
-              <span className="font-bold text-sm">Upgrade to Pro</span>
+              <p className="text-xs text-primary-foreground/80 mb-3 leading-relaxed">Get unlimited scans and detailed AI feedback.</p>
+              <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs font-bold rounded-lg transition-colors border border-white/10">
+                View Plans
+              </button>
             </div>
-            <p className="text-xs text-muted-foreground mb-3">Get unlimited scans and detailed AI feedback.</p>
-            <button className="w-full py-1.5 bg-primary text-primary-foreground text-xs font-bold rounded-lg shadow-sm">
-              Upgrade Now
-            </button>
           </div>
-        </div>
-        
-        <div className="mt-auto flex flex-col gap-1">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
+          
+          <div className="flex items-center justify-between px-2 pt-2 border-t border-border/50">
             <UserButton 
               showName={true}
               appearance={{
                 elements: {
-                  userButtonBox: "flex flex-row-reverse",
-                  userButtonOuterIdentifier: "text-sm font-medium text-foreground",
+                  userButtonBox: "flex flex-row-reverse gap-2",
+                  userButtonOuterIdentifier: "text-sm font-bold text-foreground",
+                  avatarBox: "h-9 w-9 border-2 border-border"
                 }
               }}
             />
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-500" onClick={() => signOut()}>
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>
