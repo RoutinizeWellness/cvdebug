@@ -127,7 +127,7 @@ export default function AdminPage() {
                           </div>
                         </TableCell>
                         <TableCell className="text-right font-mono text-xs text-muted-foreground">
-                          {userData.tokenIdentifier.substring(0, 12)}...
+                          {userData.tokenIdentifier ? userData.tokenIdentifier.substring(0, 12) : "N/A"}...
                         </TableCell>
                       </TableRow>
                     ))}
