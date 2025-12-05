@@ -172,6 +172,9 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 <span className="text-4xl font-black">$4.99</span>
                 <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$9.99</span>
               </div>
+              <p className="text-[10px] font-bold text-green-600 mt-1 flex items-center gap-1">
+                50% off!
+              </p>
               <p className="text-[10px] font-bold text-orange-600 mt-1 flex items-center gap-1">
                 <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
               </p>

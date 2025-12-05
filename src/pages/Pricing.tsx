@@ -128,6 +128,7 @@ export default function PricingPage() {
                             <span className="text-5xl font-black">$19.99</span>
                             <span className="text-xl text-muted-foreground line-through">$49.95</span>
                         </div>
+                        <p className="text-sm font-bold text-green-600">Save $25!</p>
                         <p className="text-muted-foreground">Perfect for active job seekers.</p>
                     </div>
                     
