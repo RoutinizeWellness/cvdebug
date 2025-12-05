@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/Logo";
 import { useNavigate } from "react-router";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface SidebarProps {
   categoryFilter: string | null;
@@ -16,6 +18,7 @@ interface SidebarProps {
 export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, currentView, setCurrentView }: SidebarProps) {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
+  const currentUser = useQuery(api.users.currentUser);
   
   const categories = [
     { id: "Engineering", label: "Engineering", icon: Code },
@@ -130,13 +133,19 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           >
             <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white/10 blur-2xl group-hover:bg-white/20 transition-colors"></div>
             <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="h-4 w-4 text-yellow-300 fill-yellow-300 animate-pulse" />
-                <span className="font-bold text-sm">Upgrade to Pro</span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-yellow-300 fill-yellow-300 animate-pulse" />
+                  <span className="font-bold text-sm">
+                    {currentUser?.credits !== undefined ? `${currentUser.credits} Credits` : "Free Plan"}
+                  </span>
+                </div>
               </div>
-              <p className="text-xs text-primary-foreground/80 mb-3 leading-relaxed">Get unlimited scans and detailed AI feedback.</p>
+              <p className="text-xs text-primary-foreground/80 mb-3 leading-relaxed">
+                {currentUser?.credits === 0 ? "Out of credits. Upgrade now!" : "Get more scans & detailed AI feedback."}
+              </p>
               <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs font-bold rounded-lg transition-colors border border-white/10">
-                View Plans
+                {currentUser?.credits === 0 ? "Buy Credits" : "View Plans"}
               </button>
             </div>
           </div>

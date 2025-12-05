@@ -8,6 +8,7 @@ const schema = defineSchema(
       email: v.optional(v.string()),
       name: v.optional(v.string()),
       subscriptionTier: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
+      credits: v.optional(v.number()), // Added for Pay Per Use credits
       endsOn: v.optional(v.number()),
     }).index("by_token", ["tokenIdentifier"]),
     resumes: defineTable({

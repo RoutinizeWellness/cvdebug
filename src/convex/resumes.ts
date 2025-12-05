@@ -6,6 +6,18 @@ import { internal } from "./_generated/api";
 export const generateUploadUrl = mutation(async (ctx) => {
   const user = await getCurrentUser(ctx);
   if (!user) throw new Error("Unauthorized");
+
+  // Admin bypass
+  if (user.email === "tiniboti@gmail.com") {
+    return await ctx.storage.generateUploadUrl();
+  }
+
+  // Check credits
+  const credits = user.dbUser?.credits ?? 1;
+  if (credits <= 0) {
+    throw new Error("Insufficient credits. Please upgrade your plan.");
+  }
+
   return await ctx.storage.generateUploadUrl();
 });
 
@@ -23,11 +35,32 @@ export const createResume = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    // Credit Check & Deduction
+    if (user.email !== "tiniboti@gmail.com") {
+      const credits = user.dbUser?.credits ?? 1;
+      if (credits <= 0) {
+        throw new Error("Insufficient credits. Please upgrade your plan.");
+      }
+
+      if (user.dbUser) {
+        await ctx.db.patch(user.dbUser._id, { credits: credits - 1 });
+      } else {
+        // Create user record if it doesn't exist, consuming the 1 free credit (setting to 0)
+        await ctx.db.insert("users", {
+          tokenIdentifier: user.tokenIdentifier,
+          email: user.email,
+          name: user.name,
+          subscriptionTier: "free",
+          credits: 0,
+        });
+      }
+    }
+
     const url = await ctx.storage.getUrl(args.storageId);
     if (!url) throw new Error("Failed to get storage URL");
 
     const resumeId = await ctx.db.insert("resumes", {
-      userId: user._id,
+      userId: user.tokenIdentifier, // Use tokenIdentifier for consistency with schema
       storageId: args.storageId,
       url,
       title: args.title,
@@ -103,11 +136,18 @@ export const getResumes = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
+    // Use tokenIdentifier for querying as we switched to it in createResume
+    // But wait, existing code might use user._id (which was identity.subject in previous version)
+    // In previous version: userId: user._id where user._id was identity.subject.
+    // So we should continue using identity.subject (user.tokenIdentifier).
+    
+    const userId = user.tokenIdentifier;
+
     if (args.search) {
        return await ctx.db
         .query("resumes")
         .withSearchIndex("search_ocr", (q) => 
-          q.search("ocrText", args.search!).eq("userId", user._id)
+          q.search("ocrText", args.search!).eq("userId", userId)
         )
         .take(20);
     }
@@ -116,7 +156,7 @@ export const getResumes = query({
       return await ctx.db
         .query("resumes")
         .withIndex("by_user_and_category", (q) => 
-          q.eq("userId", user._id).eq("category", args.category)
+          q.eq("userId", userId).eq("category", args.category)
         )
         .order("desc")
         .take(50);
@@ -124,7 +164,7 @@ export const getResumes = query({
 
     return await ctx.db
       .query("resumes")
-      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .withIndex("by_user", (q) => q.eq("userId", userId))
       .order("desc")
       .take(50);
   },
@@ -144,7 +184,7 @@ export const deleteResume = mutation({
     if (!user) throw new Error("Unauthorized");
 
     const resume = await ctx.db.get(args.id);
-    if (!resume || resume.userId !== user._id) {
+    if (!resume || resume.userId !== user.tokenIdentifier) {
       throw new Error("Resume not found or unauthorized");
     }
 

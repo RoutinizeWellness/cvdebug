@@ -82,6 +82,7 @@ export default function AdminPage() {
                       <TableHead>User</TableHead>
                       <TableHead>Email</TableHead>
                       <TableHead>Plan</TableHead>
+                      <TableHead>Credits</TableHead>
                       <TableHead>Registered / Trial Start</TableHead>
                       <TableHead className="text-right">User ID</TableHead>
                     </TableRow>
@@ -104,6 +105,11 @@ export default function AdminPage() {
                             className="capitalize"
                           >
                             {userData.subscriptionTier}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">
+                            {userData.credits ?? 1}
                           </Badge>
                         </TableCell>
                         <TableCell>

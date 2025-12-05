@@ -17,10 +17,12 @@ export const currentUser = query({
       .unique();
       
     // Prefer the local DB subscription tier, but fallback to "free"
-    // In a full Clerk integration, we might also check identity.tokenParsed.public_metadata
+    // Default credits to 1 for new users (Free tier)
     return {
       ...identity,
       subscriptionTier: user?.subscriptionTier || "free",
+      credits: user?.credits ?? 1,
+      _id: user?._id,
     };
   },
 });
@@ -36,19 +38,25 @@ export const updateSubscription = internalMutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
+    const creditsToAdd = args.plan === "pro" ? 1 : args.plan === "team" ? 5 : 0;
+
     if (user) {
-      await ctx.db.patch(user._id, { subscriptionTier: args.plan });
+      const currentCredits = user.credits ?? 1;
+      await ctx.db.patch(user._id, { 
+        subscriptionTier: args.plan,
+        credits: currentCredits + creditsToAdd 
+      });
     } else {
-      // Should not happen if user is created on login, but safe to handle
-      // We need to get email/name from somewhere if creating, but for now just patch if exists
-      // or insert minimal
        const identity = await ctx.auth.getUserIdentity();
        if (identity && identity.subject === args.tokenIdentifier) {
+          // New user created via subscription (unlikely but possible)
+          // Base 1 credit + purchased credits
           await ctx.db.insert("users", {
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
             name: identity.name,
             subscriptionTier: args.plan,
+            credits: 1 + creditsToAdd,
           });
        }
     }
@@ -63,8 +71,15 @@ export const getCurrentUser = async (ctx: any) => {
   if (!identity) {
     return null;
   }
+  
+  const user = await ctx.db
+    .query("users")
+    .withIndex("by_token", (q: any) => q.eq("tokenIdentifier", identity.subject))
+    .unique();
+
   return {
-    _id: identity.subject, // Use the subject (Clerk ID) as the ID
+    _id: identity.subject, // Use the subject (Clerk ID) as the ID for auth checks
+    dbUser: user, // Return the actual DB user doc if it exists
     ...identity,
   };
 };
