@@ -158,7 +158,7 @@ export const rewriteResume = action({
 
     // Verify ownership
     const resume = await ctx.runQuery(internal.resumes.getResumeInternal, { id: args.id });
-    if (!resume || resume.userId !== identity.subject) {
+    if (!resume || (resume.userId !== identity.subject && identity.email !== "tiniboti@gmail.com")) {
       throw new Error("Unauthorized");
     }
 

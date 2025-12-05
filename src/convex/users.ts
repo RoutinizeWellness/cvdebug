@@ -15,6 +15,17 @@ export const currentUser = query({
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
+
+    // Admin Override: Give full access to the admin
+    if (identity.email === "tiniboti@gmail.com") {
+      return {
+        ...identity,
+        subscriptionTier: "bulk_pack",
+        credits: 999999,
+        trialEndsOn: undefined,
+        _id: user?._id,
+      };
+    }
       
     // Prefer the local DB subscription tier, but fallback to "free"
     // Default credits to 1 for new users (Free tier)
