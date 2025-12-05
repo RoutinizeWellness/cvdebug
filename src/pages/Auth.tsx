@@ -1,9 +1,16 @@
 import { SignIn, SignUp } from "@clerk/clerk-react";
 import { useState } from "react";
 import { Logo } from "@/components/Logo";
+import { useAuth } from "@/hooks/use-auth";
+import { Navigate } from "react-router";
 
 export default function AuthPage() {
+  const { isAuthenticated } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
@@ -25,6 +32,7 @@ export default function AuthPage() {
         <div className="bg-card border border-border rounded-2xl shadow-xl p-6">
           {isSignIn ? (
             <SignIn 
+              forceRedirectUrl="/dashboard"
               appearance={{
                 elements: {
                   rootBox: "w-full",
@@ -40,6 +48,7 @@ export default function AuthPage() {
             />
           ) : (
             <SignUp 
+              forceRedirectUrl="/dashboard"
               appearance={{
                 elements: {
                   rootBox: "w-full",
