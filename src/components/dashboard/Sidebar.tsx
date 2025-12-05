@@ -1,8 +1,9 @@
-import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail, LogOut } from "lucide-react";
+import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail, LogOut, Shield } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/Logo";
+import { useNavigate } from "react-router";
 
 interface SidebarProps {
   categoryFilter: string | null;
@@ -13,7 +14,8 @@ interface SidebarProps {
 }
 
 export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, currentView, setCurrentView }: SidebarProps) {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
+  const navigate = useNavigate();
   
   const categories = [
     { id: "Engineering", label: "Engineering", icon: Code },
@@ -87,6 +89,20 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             label="Cover Letter"
             onClick={() => setCurrentView('cover-letter')}
           />
+
+          {user?.email === "tiniboti@gmail.com" && (
+            <>
+              <div className="px-3 pt-6 pb-2">
+                <p className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">Admin</p>
+              </div>
+              <NavItem 
+                active={false}
+                icon={Shield}
+                label="Admin Panel"
+                onClick={() => navigate("/admin")}
+              />
+            </>
+          )}
           
           <div className="px-3 pt-6 pb-2">
             <p className="text-xs font-bold text-muted-foreground/70 uppercase tracking-wider">Categories</p>
