@@ -37,12 +37,16 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
-                  headerTitle: "hidden",
-                  headerSubtitle: "hidden",
-                  header: "hidden",
-                  footer: "hidden",
-                  footerAction: "hidden",
+                  headerTitle: "!hidden",
+                  headerSubtitle: "!hidden",
+                  header: "!hidden",
+                  footer: "!hidden",
+                  footerAction: "!hidden",
+                  footerActionLink: "!hidden",
+                  footerActionText: "!hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
+                  formFieldLabel: "text-foreground",
+                  formFieldInput: "bg-background border-border text-foreground",
                 }
               }}
             />
@@ -53,12 +57,16 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
-                  headerTitle: "hidden",
-                  headerSubtitle: "hidden",
-                  header: "hidden",
-                  footer: "hidden",
-                  footerAction: "hidden",
+                  headerTitle: "!hidden",
+                  headerSubtitle: "!hidden",
+                  header: "!hidden",
+                  footer: "!hidden",
+                  footerAction: "!hidden",
+                  footerActionLink: "!hidden",
+                  footerActionText: "!hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
+                  formFieldLabel: "text-foreground",
+                  formFieldInput: "bg-background border-border text-foreground",
                 }
               }}
             />
