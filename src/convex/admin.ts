@@ -9,7 +9,7 @@ export const getUsers = query({
     
     // Security check: Only allow specific admin email
     if (!identity || identity.email !== "tiniboti@gmail.com") {
-      throw new Error("Unauthorized: Admin access only");
+      return [];
     }
 
     const users = await ctx.db.query("users").order("desc").collect();

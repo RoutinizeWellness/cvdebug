@@ -21,7 +21,8 @@ export default function AdminPage() {
   const navigate = useNavigate();
   
   // We can't conditionally call hooks, but we can handle the error/loading states in render
-  const users = useQuery(api.admin.getUsers);
+  const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
+  const users = useQuery(api.admin.getUsers, shouldFetch ? {} : "skip");
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
