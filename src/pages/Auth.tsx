@@ -29,8 +29,11 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
+                  headerTitle: "hidden",
+                  headerSubtitle: "hidden",
                   header: "hidden",
                   footer: "hidden",
+                  footerAction: "hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                 }
               }}
@@ -41,8 +44,11 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
+                  headerTitle: "hidden",
+                  headerSubtitle: "hidden",
                   header: "hidden",
                   footer: "hidden",
+                  footerAction: "hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                 }
               }}
