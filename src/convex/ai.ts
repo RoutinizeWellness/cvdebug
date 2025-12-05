@@ -26,58 +26,60 @@ export const analyzeResume = internalAction({
     }
 
     try {
-      const prompt = `You are an expert ATS (Applicant Tracking System) Analyzer and Resume Optimizer.
-      Your goal is to analyze the resume against strict ATS standards and provide critical, data-driven feedback.
+      const prompt = `You are an advanced ATS (Applicant Tracking System) Simulator (simulating systems like Taleo, Greenhouse, Lever).
+      Your goal is to strictly evaluate the resume's machine-readability and content match against the target role.
 
-      Job Description / Target Context:
-      "${args.jobDescription || "General optimization (no specific job provided) - Evaluate based on general industry standards for the detected role."}"
-
-      RAW PARSED RESUME TEXT (What the ATS sees):
+      CONTEXT:
+      - Job Description: "${args.jobDescription || "General Industry Standards for the detected role"}"
+      - RAW PARSED TEXT (What the ATS sees):
       "${args.ocrText.substring(0, 30000)}"
 
-      ### INSTRUCTIONS:
+      ### SCORING ALGORITHM (0-100):
+      Be strict. Most resumes score between 40-70. Scores above 80 should be rare and require near-perfect optimization.
 
-      1. **Analyze the "ATS View" (Raw Text)**:
-         - This text was extracted via OCR/PDF parsing. 
-         - If the text is garbled, out of order, or missing sections (like headers/footers), this indicates a POOR FORMAT that will be rejected by real ATS software.
-         - **Penalize the Format score heavily** if the raw text is hard to read or unstructured.
+      1. **Parsing & Format (30%)**:
+         - **CRITICAL**: Does the raw text look garbled? Are headers (Experience, Education) clearly identifiable?
+         - Penalize for: Multi-column layouts (often parse poorly), graphics/icons (not visible in text), missing dates, or complex tables.
+         - If the raw text is a wall of text without structure, score this < 50.
 
-      2. **Industry & Company Specifics**:
-         - Detect the industry (e.g., Tech, Finance, Marketing).
-         - If a specific company is mentioned in the JD, apply their known values (e.g., Google/FAANG values "Scale", "Metrics"; Startups value "Speed", "Ownership").
-         - **Keywords**: Look for specific hard skills, not just generic buzzwords.
+      2. **Keyword Matching (40%)**:
+         - Extract hard skills from the JD (or imply them from the role).
+         - Calculate a match rate. 
+         - **Penalize** for "keyword stuffing" (listing skills without context).
+         - Look for "contextual keywords" (e.g., "Java" used in a project description vs just a list).
 
-      3. **Calculate Detailed Scores (0-100)**:
-         - **Keywords (40%)**: Match rate against JD hard skills or Industry standards.
-         - **Format (30%)**: Machine-readability. Are standard headers (Experience, Education) present in the RAW text? Is the hierarchy clear?
-         - **Completeness (30%)**: Essential sections present? Metrics used? Contact info found?
+      3. **Content & Impact (30%)**:
+         - **Quantifiable Metrics**: Are there numbers? (e.g., "Improved X by Y%"). If no metrics, score this < 60.
+         - **Action Verbs**: Strong start to bullets?
+         - **Completeness**: Contact info, LinkedIn URL, Education, Experience present?
 
       4. **Generate Output**:
          Return a JSON object with:
-         - "title": Extracted candidate name/role.
+         - "title": Candidate Name / Role.
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
-         - "score": Weighted average (Keywords*0.4 + Format*0.3 + Completeness*0.3).
+         - "score": Calculated weighted score (integer).
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "analysis": A Markdown string structured as:
-            ### 👁️ ATS Parsing Analysis
-            (Comment specifically on how well the resume was parsed. Did columns break the text? Are headers missing in the raw view?)
-            
-            ### 🚨 Critical Fixes
-            (Top 3 blockers)
-            
-            ### 🔑 Missing Keywords
-            (List specific missing hard skills found in the JD/Industry)
-            
-            ### 💡 Industry-Specific Tips
-            (Advice tailored to the detected industry/role)
+         - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume.
+            Structure:
+            ### 🤖 ATS Parsing Report
+            (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text.)
+
+            ### 📉 Score Drivers
+            (Why is the score X? e.g., "-10 points for missing metrics", "-15 points for unreadable header")
+
+            ### 🔑 Critical Missing Keywords
+            (List 3-5 top missing hard skills)
+
+            ### 🛠️ Fixes to Reach Top 10%
+            (Specific actionable steps)
 
       Example JSON: 
       {
-        "title": "Software Engineer - John Doe", 
-        "category": "Engineering", 
-        "score": 65, 
-        "scoreBreakdown": { "keywords": 60, "format": 80, "completeness": 55 },
-        "analysis": "### 👁️ ATS Parsing Analysis\\nThe two-column layout caused the skills section to merge with the experience..."
+        "title": "Product Manager - Jane Doe", 
+        "category": "Product", 
+        "score": 58, 
+        "scoreBreakdown": { "keywords": 50, "format": 70, "completeness": 55 },
+        "analysis": "### 🤖 ATS Parsing Report\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
       }
       `;
 

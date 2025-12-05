@@ -16,7 +16,9 @@ import {
   Wand2,
   Printer,
   Eye,
-  AlertTriangle
+  AlertTriangle,
+  Cpu,
+  ScanLine
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -163,18 +165,22 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
         <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0 print:hidden">
           <div className="flex items-center gap-4">
             <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
-              <FileText className="h-5 w-5 text-primary" />
+              <ScanLine className="h-5 w-5 text-primary" />
             </div>
             <div className="overflow-hidden">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold leading-tight tracking-tight truncate">Resume Analysis</h2>
+                <h2 className="text-lg font-bold leading-tight tracking-tight truncate">ATS Analysis Report</h2>
                 {selectedResume?.category && (
                   <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold border border-primary/20 uppercase tracking-wider">
                     {selectedResume.category}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate max-w-[200px]">{selectedResume?._id}</p>
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-0.5">
+                <span>ID: {selectedResume?._id?.slice(-8)}</span>
+                <span className="text-border">|</span>
+                <span className="flex items-center gap-1"><Cpu className="h-3 w-3" /> VLY-ATS-V2</span>
+              </div>
             </div>
           </div>
           <div className="flex gap-2">
