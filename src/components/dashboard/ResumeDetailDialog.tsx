@@ -14,7 +14,9 @@ import {
   Minimize2, 
   Code,
   Wand2,
-  Printer
+  Printer,
+  Eye,
+  AlertTriangle
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -349,9 +351,17 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               <div className="p-6 flex flex-col gap-8">
                 <div>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Code className="h-4 w-4" /> Parsed Text
+                    <Eye className="h-4 w-4" /> ATS Raw View
                   </h3>
-                  <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-60 overflow-y-auto leading-relaxed whitespace-pre-wrap">
+                  <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
+                    <div className="flex gap-2">
+                      <AlertTriangle className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-yellow-700 font-medium leading-relaxed">
+                        This is exactly what the ATS sees. If your text is missing, garbled, or out of order here, the ATS cannot read your resume.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
                     {selectedResume?.ocrText ? selectedResume.ocrText : "No text extracted."}
                   </div>
                 </div>
