@@ -153,6 +153,15 @@ export const rewriteResume = action({
     jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
+    // Verify ownership
+    const resume = await ctx.runQuery(internal.resumes.getResumeInternal, { id: args.id });
+    if (!resume || resume.userId !== identity.subject) {
+      throw new Error("Unauthorized");
+    }
+
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 

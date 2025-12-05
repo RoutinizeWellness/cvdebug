@@ -54,7 +54,7 @@ export const createResume = mutation({
         const trialEndsOn = Date.now() + (15 * 24 * 60 * 60 * 1000);
         
         await ctx.db.insert("users", {
-          tokenIdentifier: user.tokenIdentifier,
+          tokenIdentifier: user._id, // Use subject as tokenIdentifier
           email: user.email,
           name: user.name,
           subscriptionTier: "free",
@@ -68,7 +68,7 @@ export const createResume = mutation({
     if (!url) throw new Error("Failed to get storage URL");
 
     const resumeId = await ctx.db.insert("resumes", {
-      userId: user.tokenIdentifier, // Use tokenIdentifier for consistency with schema
+      userId: user._id, // Use subject as userId
       storageId: args.storageId,
       url,
       title: args.title,
@@ -146,12 +146,8 @@ export const getResumes = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    // Use tokenIdentifier for querying as we switched to it in createResume
-    // But wait, existing code might use user._id (which was identity.subject in previous version)
-    // In previous version: userId: user._id where user._id was identity.subject.
-    // So we should continue using identity.subject (user.tokenIdentifier).
-    
-    const userId = user.tokenIdentifier;
+    // Use subject (user._id) for querying
+    const userId = user._id;
 
     if (args.search) {
        return await ctx.db
@@ -194,7 +190,7 @@ export const deleteResume = mutation({
     if (!user) throw new Error("Unauthorized");
 
     const resume = await ctx.db.get(args.id);
-    if (!resume || resume.userId !== user.tokenIdentifier) {
+    if (!resume || resume.userId !== user._id) {
       throw new Error("Resume not found or unauthorized");
     }
 
