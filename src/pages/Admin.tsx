@@ -105,7 +105,7 @@ export default function AdminPage() {
                             variant={userData.subscriptionTier === "bulk_pack" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
                             className="capitalize"
                           >
-                            {userData.subscriptionTier.replace("_", " ")}
+                            {(userData.subscriptionTier || "free").replace("_", " ")}
                           </Badge>
                         </TableCell>
                         <TableCell>
