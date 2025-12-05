@@ -1,4 +1,4 @@
-import { query, internalMutation } from "./_generated/server";
+import { query, internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
@@ -25,6 +25,13 @@ export const currentUser = query({
       trialEndsOn: user?.trialEndsOn,
       _id: user?._id,
     };
+  },
+});
+
+export const getInternalUser = internalQuery({
+  args: {},
+  handler: async (ctx) => {
+    return await getCurrentUser(ctx);
   },
 });
 

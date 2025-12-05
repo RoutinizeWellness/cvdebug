@@ -20,6 +20,16 @@ export function FeatureGridSection() {
               Most companies use Applicant Tracking Systems (ATS) to filter resumes. If you don't have the right keywords or formatting, a human never sees your application.
             </p>
             
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 mb-8">
+              <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+                <span className="flex h-2 w-2 rounded-full bg-primary"></span>
+                Why not just use ChatGPT?
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS.ai is purpose-built</span> to analyze 20+ specific ATS factors (margins, metadata, keyword density) that LLMs miss, giving you a precise quantitative score.
+              </p>
+            </div>
+
             <div className="space-y-6">
               {[
                 { icon: Shield, title: "Formatting Errors", desc: "Complex layouts, columns, and graphics confuse ATS parsers." },
