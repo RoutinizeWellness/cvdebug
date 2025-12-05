@@ -113,10 +113,11 @@ export const updateResumeOcr = mutation({
 export const updateResumeMetadata = internalMutation({
   args: {
     id: v.id("resumes"),
-    title: v.string(),
-    category: v.string(),
-    analysis: v.string(),
-    score: v.number(),
+    title: v.optional(v.string()),
+    category: v.optional(v.string()),
+    analysis: v.optional(v.string()),
+    rewrittenText: v.optional(v.string()),
+    score: v.optional(v.number()),
     scoreBreakdown: v.optional(v.object({
       keywords: v.number(),
       format: v.number(),
@@ -124,14 +125,15 @@ export const updateResumeMetadata = internalMutation({
     })),
   },
   handler: async (ctx, args) => {
-    await ctx.db.patch(args.id, {
-      title: args.title,
-      category: args.category,
-      analysis: args.analysis,
-      score: args.score,
-      scoreBreakdown: args.scoreBreakdown,
-      status: "completed",
-    });
+    const updates: any = { status: "completed" };
+    if (args.title) updates.title = args.title;
+    if (args.category) updates.category = args.category;
+    if (args.analysis) updates.analysis = args.analysis;
+    if (args.rewrittenText) updates.rewrittenText = args.rewrittenText;
+    if (args.score !== undefined) updates.score = args.score;
+    if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
+
+    await ctx.db.patch(args.id, updates);
   },
 });
 

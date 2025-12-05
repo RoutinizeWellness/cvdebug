@@ -114,6 +114,7 @@ export const analyzeResume = internalAction({
         category,
         analysis,
         score,
+        scoreBreakdown,
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -121,9 +122,71 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI not configured.",
+        analysis: "AI not configured or failed to analyze.",
         score: 0,
       });
+    }
+  },
+});
+
+export const rewriteResume = action({
+  args: {
+    id: v.id("resumes"),
+    ocrText: v.string(),
+    jobDescription: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) throw new Error("AI not configured");
+
+    const prompt = `You are an expert Resume Writer and ATS Optimization Specialist.
+    Your task is to REWRITE the following resume content to be perfectly optimized for Applicant Tracking Systems (ATS).
+
+    Target Job Description (if any):
+    "${args.jobDescription || "General professional optimization"}"
+
+    Original Resume Text:
+    "${args.ocrText.substring(0, 20000)}"
+
+    ### INSTRUCTIONS:
+    1. **Improve Clarity & Impact**: Rewrite bullet points to use strong action verbs and include metrics where possible (e.g., "Increased sales by 20%").
+    2. **ATS Formatting**: Ensure the text is structured with clear headers (Summary, Experience, Education, Skills).
+    3. **Keyword Integration**: Naturally weave in relevant keywords from the JD or industry standards.
+    4. **Fix Grammar & Flow**: Correct any errors and ensure a professional tone.
+    5. **Output Format**: Return ONLY the rewritten resume text in a clean, Markdown format. Do not include explanations or "Here is the rewritten resume" text. Just the resume.
+    `;
+
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.0-flash-001",
+          messages: [
+            { role: "user", content: prompt }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`OpenRouter API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const rewrittenText = data.choices[0].message.content;
+
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+        id: args.id,
+        rewrittenText: rewrittenText,
+      });
+
+      return rewrittenText;
+    } catch (error) {
+      console.error("Error rewriting resume:", error);
+      throw new Error("Failed to rewrite resume");
     }
   },
 });

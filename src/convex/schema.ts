@@ -21,6 +21,7 @@ const schema = defineSchema(
       category: v.optional(v.string()), // Engineering, Marketing, etc.
       ocrText: v.optional(v.string()),
       analysis: v.optional(v.string()), // AI Feedback/Summary
+      rewrittenText: v.optional(v.string()), // Added for AI Rewrite
       score: v.optional(v.number()), // ATS Score 0-100
       scoreBreakdown: v.optional(v.object({
         keywords: v.number(),

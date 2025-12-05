@@ -21,6 +21,8 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface ResumeDetailDialogProps {
   selectedResume: any;
@@ -31,18 +33,34 @@ interface ResumeDetailDialogProps {
 export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDelete }: ResumeDetailDialogProps) {
   const [isImmersive, setIsImmersive] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const rewriteResume = useAction(api.ai.rewriteResume);
 
   const handleDownloadReport = () => {
     window.print();
   };
 
-  const handleOptimize = () => {
+  const handleOptimize = async () => {
+    if (!selectedResume?.ocrText) {
+      toast.error("No text available to optimize.");
+      return;
+    }
+
     setIsGenerating(true);
-    toast.info("AI is rewriting your resume... (Simulation)");
-    setTimeout(() => {
+    toast.info("AI is rewriting your resume... This may take a few seconds.");
+    
+    try {
+      await rewriteResume({
+        id: selectedResume._id,
+        ocrText: selectedResume.ocrText,
+        jobDescription: selectedResume.jobDescription,
+      });
+      toast.success("Optimization complete! Check the 'Rewritten' tab.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to optimize resume. Please try again.");
+    } finally {
       setIsGenerating(false);
-      toast.success("Optimization complete! Check the 'Parsed Text' tab for the new version.");
-    }, 2000);
+    }
   };
 
   // Helper to render markdown-like analysis
@@ -349,6 +367,23 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           <div className={`lg:col-span-3 border-l border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
             <ScrollArea className="flex-1 h-full">
               <div className="p-6 flex flex-col gap-8">
+                {selectedResume?.rewrittenText && (
+                  <div>
+                    <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Sparkles className="h-4 w-4" /> AI Rewritten Version
+                    </h3>
+                    <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mb-3">
+                      <p className="text-xs text-primary font-medium leading-relaxed">
+                        Here is an optimized version of your resume content, ready for ATS.
+                      </p>
+                    </div>
+                    <div className="bg-background rounded-lg border border-border p-3 text-xs text-foreground font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+                      {selectedResume.rewrittenText}
+                    </div>
+                    <Separator className="my-6" />
+                  </div>
+                )}
+
                 <div>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Eye className="h-4 w-4" /> ATS Raw View

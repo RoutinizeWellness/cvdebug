@@ -23,6 +23,9 @@ export const createCheckoutSession = action({
     console.log(`Initiating Autumn checkout for ${args.plan} (Product ID: ${productId})`);
 
     try {
+      const siteUrl = process.env.CONVEX_SITE_URL;
+      if (!siteUrl) throw new Error("CONVEX_SITE_URL is not set");
+
       // Create a checkout session with Autumn
       // Using the standard Autumn API endpoint for creating checkout sessions
       const response = await fetch("https://api.useautumn.com/v1/checkout", {
@@ -35,8 +38,8 @@ export const createCheckoutSession = action({
           product_id: productId,
           customer_email: user.email,
           customer_id: user.tokenIdentifier, // Use tokenIdentifier as customer ID
-          success_url: `${process.env.CONVEX_SITE_URL}/dashboard?payment=success&plan=${args.plan}`,
-          cancel_url: `${process.env.CONVEX_SITE_URL}/dashboard?payment=cancelled`,
+          success_url: `${siteUrl}/dashboard?payment=success&plan=${args.plan}`,
+          cancel_url: `${siteUrl}/dashboard?payment=cancelled`,
           metadata: {
             userId: user._id,
             plan: args.plan,
@@ -47,7 +50,7 @@ export const createCheckoutSession = action({
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Autumn API Error:", errorText);
-        throw new Error(`Autumn API error: ${response.statusText}`);
+        throw new Error(`Autumn API error: ${response.status} ${errorText}`);
       }
 
       const data = (await response.json()) as { url?: string; checkout_url?: string };
@@ -61,9 +64,10 @@ export const createCheckoutSession = action({
         console.error("Unexpected Autumn response:", data);
         throw new Error("Invalid response from payment provider");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Billing Error:", error);
-      throw new Error("Failed to create checkout session. Please try again later.");
+      // Throw the actual error message so it can be seen in the UI/Logs
+      throw new Error(`Billing Error: ${error.message}`);
     }
   },
 });
