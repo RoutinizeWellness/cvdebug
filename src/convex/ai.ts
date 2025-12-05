@@ -26,8 +26,8 @@ export const analyzeResume = internalAction({
     }
 
     try {
-      const prompt = `You are an advanced ATS (Applicant Tracking System) simulator and Resume Optimizer.
-      Your goal is to "see" the resume exactly as a machine would and provide critical, data-driven feedback.
+      const prompt = `You are an expert ATS (Applicant Tracking System) Analyzer and Resume Optimizer.
+      Your goal is to analyze the resume against strict ATS standards and provide critical, data-driven feedback.
 
       Job Description / Target Context:
       "${args.jobDescription || "General optimization (no specific job provided) - Evaluate based on general industry standards for the detected role."}"

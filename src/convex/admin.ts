@@ -1,18 +1,22 @@
 import { query } from "./_generated/server";
-import { v } from "convex/values";
 
 // Admin-only query to get all users
 export const getUsers = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    
-    // Security check: Only allow specific admin email
-    if (!identity || identity.email !== "tiniboti@gmail.com") {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+      
+      // Security check: Only allow specific admin email
+      if (!identity || identity.email !== "tiniboti@gmail.com") {
+        return [];
+      }
+
+      const users = await ctx.db.query("users").order("desc").collect();
+      return users;
+    } catch (error) {
+      console.error("Error fetching users:", error);
       return [];
     }
-
-    const users = await ctx.db.query("users").order("desc").collect();
-    return users;
   },
 });
