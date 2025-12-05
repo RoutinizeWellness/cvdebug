@@ -263,7 +263,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                           (selectedResume?.scoreBreakdown?.keywords || 0) >= 70 ? 'text-green-500' : 
                           (selectedResume?.scoreBreakdown?.keywords || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
                         }`}>
-                          {selectedResume?.scoreBreakdown?.keywords || "-"}
+                          {selectedResume?.scoreBreakdown?.keywords ?? "-"}
                         </span>
                         <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Keywords</span>
                       </div>
@@ -272,7 +272,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                           (selectedResume?.scoreBreakdown?.format || 0) >= 70 ? 'text-green-500' : 
                           (selectedResume?.scoreBreakdown?.format || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
                         }`}>
-                          {selectedResume?.scoreBreakdown?.format || "-"}
+                          {selectedResume?.scoreBreakdown?.format ?? "-"}
                         </span>
                         <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Format</span>
                       </div>
@@ -281,7 +281,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                           (selectedResume?.scoreBreakdown?.completeness || 0) >= 70 ? 'text-green-500' : 
                           (selectedResume?.scoreBreakdown?.completeness || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
                         }`}>
-                          {selectedResume?.scoreBreakdown?.completeness || "-"}
+                          {selectedResume?.scoreBreakdown?.completeness ?? "-"}
                         </span>
                         <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Completeness</span>
                       </div>

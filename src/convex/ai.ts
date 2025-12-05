@@ -141,6 +141,7 @@ export const analyzeResume = internalAction({
         category: "Uncategorized",
         analysis: "AI not configured or failed to analyze.",
         score: 0,
+        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
       });
     }
   },
