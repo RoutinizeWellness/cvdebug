@@ -31,7 +31,7 @@ export const currentUser = query({
 export const updateSubscription = internalMutation({
   args: { 
     tokenIdentifier: v.string(), 
-    plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
+    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -39,7 +39,7 @@ export const updateSubscription = internalMutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
-    const creditsToAdd = args.plan === "pro" ? 1 : args.plan === "team" ? 5 : 0;
+    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
 
     if (user) {
       const currentCredits = user.credits ?? 1;

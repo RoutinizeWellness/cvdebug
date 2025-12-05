@@ -5,7 +5,7 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 
 export const createCheckoutSession = action({
-  args: { plan: v.union(v.literal("pro"), v.literal("team")) },
+  args: { plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");

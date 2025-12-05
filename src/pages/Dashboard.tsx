@@ -17,7 +17,7 @@ import { createWorker } from "tesseract.js";
 import * as pdfjsLib from "pdfjs-dist";
 import mammoth from "mammoth";
 import { toast } from "sonner";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -28,6 +28,7 @@ import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashb
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState("resumes"); // resumes, templates, linkedin, cover-letter
@@ -35,6 +36,7 @@ export default function Dashboard() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedResume, setSelectedResume] = useState<any>(null);
   const [showPricing, setShowPricing] = useState(false);
+  const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -43,6 +45,14 @@ export default function Dashboard() {
       navigate("/auth");
     }
   }, [isLoading, isAuthenticated, navigate]);
+
+  useEffect(() => {
+    const plan = searchParams.get("plan");
+    if (plan === "single_scan" || plan === "bulk_pack") {
+      setInitialPlan(plan);
+      setShowPricing(true);
+    }
+  }, [searchParams]);
 
   const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
   const createResume = useMutation(api.resumes.createResume);
@@ -185,7 +195,7 @@ export default function Dashboard() {
 
   return (
     <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
-      <PricingDialog open={showPricing} onOpenChange={setShowPricing} />
+      <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan={initialPlan} />
       <Chatbot />
       
       <Sidebar 

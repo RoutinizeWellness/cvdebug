@@ -102,10 +102,10 @@ export default function AdminPage() {
                         <TableCell>{userData.email || "No email"}</TableCell>
                         <TableCell>
                           <Badge 
-                            variant={userData.subscriptionTier === "pro" ? "default" : userData.subscriptionTier === "team" ? "destructive" : "secondary"}
+                            variant={userData.subscriptionTier === "bulk_pack" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
                             className="capitalize"
                           >
-                            {userData.subscriptionTier}
+                            {userData.subscriptionTier.replace("_", " ")}
                           </Badge>
                         </TableCell>
                         <TableCell>

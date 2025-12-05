@@ -6,17 +6,16 @@ import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null }) {
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [checkoutPlan, setCheckoutPlan] = useState<"pro" | "team" | null>(null);
+  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "bulk_pack" | null>(initialPlan || null);
   
   const currentPlan = user?.subscriptionTier || "free";
   const isTrial = user?.trialEndsOn && user.trialEndsOn > Date.now();
 
-  const handleUpgrade = async (plan: "free" | "pro" | "team") => {
-    if (plan === "free") return;
+  const handleUpgrade = async (plan: "single_scan" | "bulk_pack") => {
     setIsLoading(plan);
     try {
       const url = await createCheckoutSession({ plan });
@@ -33,13 +32,13 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
     }
   };
 
-  const initiateCheckout = (plan: "pro" | "team") => {
+  const initiateCheckout = (plan: "single_scan" | "bulk_pack") => {
     setCheckoutPlan(plan);
   };
 
   if (checkoutPlan) {
     const planDetails = {
-      pro: { 
+      single_scan: { 
         name: "Single Resume Scan", 
         price: "$4.99", 
         originalPrice: "$9.99",
@@ -47,7 +46,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
         features: ["Deep ATS Analysis", "Keyword Optimization", "Format Check"],
         badge: "Beta Launch 🚀"
       },
-      team: { 
+      bulk_pack: { 
         name: "Bulk Pack (5)", 
         price: "$19.99", 
         originalPrice: "$39.99",
@@ -225,7 +224,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             
             <Button 
               className="w-full shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
-              onClick={() => initiateCheckout("pro")}
+              onClick={() => initiateCheckout("single_scan")}
             >
               Get Beta Access
             </Button>
@@ -259,7 +258,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             <Button 
               variant="outline"
               className="w-full"
-              onClick={() => initiateCheckout("team")}
+              onClick={() => initiateCheckout("bulk_pack")}
             >
               Buy Pack
             </Button>

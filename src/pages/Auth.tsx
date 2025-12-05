@@ -3,13 +3,17 @@ import { useState } from "react";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { Navigate } from "react-router";
+import { useSearchParams } from "react-router";
 
 export default function AuthPage() {
   const { isAuthenticated } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
+  const [searchParams] = useSearchParams();
+  const plan = searchParams.get("plan");
+  const redirectUrl = plan ? `/dashboard?plan=${plan}` : "/dashboard";
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to={redirectUrl} />;
   }
 
   return (
@@ -32,7 +36,7 @@ export default function AuthPage() {
         <div className="bg-card border border-border rounded-2xl shadow-xl p-6">
           {isSignIn ? (
             <SignIn 
-              forceRedirectUrl="/dashboard"
+              forceRedirectUrl={redirectUrl}
               appearance={{
                 elements: {
                   rootBox: "w-full",
@@ -52,7 +56,7 @@ export default function AuthPage() {
             />
           ) : (
             <SignUp 
-              forceRedirectUrl="/dashboard"
+              forceRedirectUrl={redirectUrl}
               appearance={{
                 elements: {
                   rootBox: "w-full",

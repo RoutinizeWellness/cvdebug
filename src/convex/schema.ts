@@ -7,7 +7,7 @@ const schema = defineSchema(
       tokenIdentifier: v.string(),
       email: v.optional(v.string()),
       name: v.optional(v.string()),
-      subscriptionTier: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
+      subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
       credits: v.optional(v.number()), // Added for Pay Per Use credits
       endsOn: v.optional(v.number()),
       trialEndsOn: v.optional(v.number()), // Added for 15-day free trial

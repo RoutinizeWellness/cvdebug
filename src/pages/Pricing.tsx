@@ -9,11 +9,11 @@ export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  const handleGetStarted = () => {
+  const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate(plan ? `/dashboard?plan=${plan}` : "/dashboard");
     } else {
-      navigate("/auth");
+      navigate(plan ? `/auth?plan=${plan}` : "/auth");
     }
   };
 
@@ -64,7 +64,7 @@ export default function PricingPage() {
                         </div>
                     </div>
                     
-                    <Button variant="outline" className="w-full h-12 font-bold" onClick={handleGetStarted}>
+                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted()}>
                         Try for Free
                     </Button>
                 </div>
@@ -110,7 +110,7 @@ export default function PricingPage() {
                     
                     <Button 
                         className="w-full h-12 font-bold text-lg shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
-                        onClick={handleGetStarted}
+                        onClick={() => handleGetStarted("single_scan")}
                     >
                         Get Beta Access
                     </Button>
@@ -146,7 +146,7 @@ export default function PricingPage() {
                         ))}
                     </div>
                     
-                    <Button variant="outline" className="w-full h-12 font-bold" onClick={handleGetStarted}>
+                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted("bulk_pack")}>
                         Buy Pack
                     </Button>
                 </div>
