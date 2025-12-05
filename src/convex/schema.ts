@@ -10,6 +10,7 @@ const schema = defineSchema(
       subscriptionTier: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
       credits: v.optional(v.number()), // Added for Pay Per Use credits
       endsOn: v.optional(v.number()),
+      trialEndsOn: v.optional(v.number()), // Added for 15-day free trial
     }).index("by_token", ["tokenIdentifier"]),
     resumes: defineTable({
       userId: v.string(), // Clerk User ID

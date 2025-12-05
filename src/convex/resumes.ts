@@ -38,20 +38,28 @@ export const createResume = mutation({
     // Credit Check & Deduction
     if (user.email !== "tiniboti@gmail.com") {
       const credits = user.dbUser?.credits ?? 1;
-      if (credits <= 0) {
+      
+      // Allow if they have credits OR if they are a new user (who will get trial credits)
+      if (credits <= 0 && user.dbUser) {
         throw new Error("Insufficient credits. Please upgrade your plan.");
       }
 
       if (user.dbUser) {
         await ctx.db.patch(user.dbUser._id, { credits: credits - 1 });
       } else {
-        // Create user record if it doesn't exist, consuming the 1 free credit (setting to 0)
+        // Create user record if it doesn't exist
+        // NEW: Apply 15-day free trial logic
+        // Give them Pro-level credits (2) initially. 
+        // They use 1 now, so they will have 1 left.
+        const trialEndsOn = Date.now() + (15 * 24 * 60 * 60 * 1000);
+        
         await ctx.db.insert("users", {
           tokenIdentifier: user.tokenIdentifier,
           email: user.email,
           name: user.name,
           subscriptionTier: "free",
-          credits: 0,
+          credits: 1, // 2 initial - 1 used = 1 remaining
+          trialEndsOn: trialEndsOn,
         });
       }
     }

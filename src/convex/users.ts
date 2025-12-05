@@ -22,6 +22,7 @@ export const currentUser = query({
       ...identity,
       subscriptionTier: user?.subscriptionTier || "free",
       credits: user?.credits ?? 1,
+      trialEndsOn: user?.trialEndsOn,
       _id: user?._id,
     };
   },
