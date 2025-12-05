@@ -13,6 +13,7 @@ import "./index.css";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AdminWaitlist from "./pages/AdminWaitlist.tsx";
+import AdminPage from "./pages/Admin.tsx";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -53,6 +54,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<Landing />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<AdminPage />} />
               <Route path="/admin/waitlist" element={<AdminWaitlist />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
