@@ -36,7 +36,7 @@ export default function PricingPage() {
                 {/* Free Tier */}
                 <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
                     <div className="space-y-2">
-                        <h3 className="font-bold text-2xl text-muted-foreground">Preview</h3>
+                        <h3 className="font-bold text-2xl text-muted-foreground">FREE Preview</h3>
                         <div className="flex items-baseline gap-1">
                             <span className="text-5xl font-black">$0</span>
                         </div>
@@ -48,31 +48,31 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Basic Score</span>
+                            <span className="text-sm">Basic Score (0-100)</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">1 Resume Upload</span>
+                            <span className="text-sm">Unlimited uses</span>
                         </div>
-                        <div className="flex items-center gap-3 font-bold text-primary">
+                        <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Free for 15 Days</span>
+                            <span className="text-sm">No credit card</span>
                         </div>
                     </div>
                     
                     <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted()}>
-                        Try for Free
+                        Try Free
                     </Button>
                 </div>
 
                 {/* Single Scan */}
                 <div className="rounded-2xl border-2 border-primary bg-card p-8 flex flex-col gap-6 relative shadow-2xl shadow-primary/10 scale-105 z-10">
                     <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-lg uppercase tracking-wider shadow-sm">
-                        Beta Launch 🚀
+                        BETA ★
                     </div>
                     
                     <div className="space-y-2">
@@ -84,8 +84,11 @@ export default function PricingPage() {
                                 <span className="text-5xl font-black">$4.99</span>
                                 <span className="text-xl text-muted-foreground line-through decoration-red-500/50">$9.99</span>
                             </div>
-                            <p className="text-xs font-bold text-orange-600 mt-2 flex items-center gap-1">
-                                <Rocket className="h-3 w-3" /> Limited to first 100 users
+                            <p className="text-xs font-bold text-green-600 mt-2 flex items-center gap-1">
+                                50% off!
+                            </p>
+                            <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
+                                <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
                             </p>
                         </div>
                         <p className="text-muted-foreground">Beat the ATS for one specific job.</p>
@@ -93,11 +96,10 @@ export default function PricingPage() {
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "Deep ATS Analysis",
-                            "Keyword Optimization",
-                            "Format Compatibility Check",
-                            "Section Completeness Check",
-                            "AI Rewrite Suggestions"
+                            "Full ATS Analysis",
+                            "Missing Keywords",
+                            "Format Check",
+                            "PDF Report"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -112,7 +114,7 @@ export default function PricingPage() {
                         className="w-full h-12 font-bold text-lg shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
                         onClick={() => handleGetStarted("single_scan")}
                     >
-                        Get Beta Access
+                        Get Full Analysis
                     </Button>
                 </div>
 
@@ -120,22 +122,21 @@ export default function PricingPage() {
                 <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
                     <div className="space-y-2">
                         <h3 className="font-bold text-2xl text-foreground flex items-center gap-2">
-                            Bulk Pack <Building2 className="h-5 w-5" />
+                            Bundle (5 Scans) <Building2 className="h-5 w-5" />
                         </h3>
                         <div className="flex items-baseline gap-2">
                             <span className="text-5xl font-black">$19.99</span>
-                            <span className="text-xl text-muted-foreground line-through">$39.99</span>
+                            <span className="text-xl text-muted-foreground line-through">$49.95</span>
                         </div>
                         <p className="text-muted-foreground">Perfect for active job seekers.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "5 Full ATS Scans",
-                            "Save 50% (Beta Pricing)",
-                            "Priority Processing",
-                            "All Pro Features",
-                            "Export to PDF"
+                            "5 Full Scans",
+                            "Test different versions",
+                            "Apply to 5+ jobs",
+                            "$4/scan (save $25!)"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -147,7 +148,7 @@ export default function PricingPage() {
                     </div>
                     
                     <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted("bulk_pack")}>
-                        Buy Pack
+                        Buy Bundle
                     </Button>
                 </div>
             </div>

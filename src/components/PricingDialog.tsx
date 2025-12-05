@@ -157,110 +157,83 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
           </DialogHeader>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x border-t">
-          {/* Free Preview */}
-          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
-            <div className="space-y-2">
-              <h3 className="font-bold text-xl text-muted-foreground">Preview</h3>
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$0</span>
-              </div>
-              <p className="text-sm text-muted-foreground">Basic scan to see where you stand.</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Single Scan */}
+          <div className="rounded-xl border-2 border-primary bg-card p-6 flex flex-col gap-4 relative shadow-xl shadow-primary/10">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg uppercase tracking-wider">
+              BETA ★
             </div>
             
-            <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Basic Score
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> 1 Resume Upload
-              </div>
-              <div className="flex items-center gap-3 text-sm font-bold text-primary">
-                <Check className="h-3 w-3" /> Free for 15 Days
-              </div>
-            </div>
-            
-            <Button variant="outline" className="w-full" onClick={() => onOpenChange(false)}>
-              Continue Free
-            </Button>
-          </div>
-
-          {/* Single Scan - BETA PRICING */}
-          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background relative border-primary/20 shadow-lg z-10 scale-105 md:scale-110 rounded-xl md:rounded-none md:border-y-0 md:border-x">
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider shadow-sm">
-              Beta Launch 🚀
-            </div>
-            
-            <div className="space-y-2">
+            <div>
               <h3 className="font-bold text-xl text-primary flex items-center gap-2">
                 Single Scan <Zap className="h-4 w-4 fill-primary" />
               </h3>
-              <div className="flex flex-col">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">$4.99</span>
-                  <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$9.99</span>
-                </div>
-                <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
-                  <Rocket className="h-3 w-3" /> Limited to first 100 users
-                </p>
+              <div className="flex items-baseline gap-2 mt-2">
+                <span className="text-4xl font-black">$4.99</span>
+                <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$9.99</span>
               </div>
-              <p className="text-sm text-muted-foreground">Beat the ATS for one specific job.</p>
+              <p className="text-[10px] font-bold text-orange-600 mt-1 flex items-center gap-1">
+                <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
+              </p>
             </div>
             
             <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Deep ATS Analysis
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Keyword Optimization
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Format Compatibility Check
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Section Completeness Check
-              </div>
+              {[
+                "Full ATS Analysis",
+                "Missing Keywords",
+                "Format Check",
+                "PDF Report"
+              ].map((feature, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span className="text-sm font-medium">{feature}</span>
+                </div>
+              ))}
             </div>
             
             <Button 
-              className="w-full shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
-              onClick={() => initiateCheckout("single_scan")}
+              className="w-full font-bold shadow-lg shadow-primary/20" 
+              onClick={() => handleUpgrade("single_scan")}
+              disabled={!!isLoading}
             >
-              Get Beta Access
+              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Get Full Analysis"}
             </Button>
           </div>
 
           {/* Bulk Pack */}
-          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background">
-            <div className="space-y-2">
+          <div className="rounded-xl border border-border bg-card p-6 flex flex-col gap-4 hover:border-primary/50 transition-colors">
+            <div>
               <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
-                Bulk Pack <Building2 className="h-4 w-4" />
+                Bundle (5 Scans) <Building2 className="h-4 w-4" />
               </h3>
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$19.99</span>
-                <span className="text-muted-foreground line-through text-sm">$39.99</span>
+              <div className="flex items-baseline gap-2 mt-2">
+                <span className="text-4xl font-black">$19.99</span>
+                <span className="text-lg text-muted-foreground line-through">$49.95</span>
               </div>
-              <p className="text-sm text-muted-foreground">Perfect for active job seekers.</p>
+              <p className="text-xs text-muted-foreground mt-1">Save $25!</p>
             </div>
             
             <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> 5 Full ATS Scans
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Save 50% (Beta)
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Priority Processing
-              </div>
+              {[
+                "5 Full Scans",
+                "Test different versions",
+                "Apply to 5+ jobs",
+                "$4/scan (save $25!)"
+              ].map((feature, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span className="text-sm">{feature}</span>
+                </div>
+              ))}
             </div>
             
             <Button 
-              variant="outline"
-              className="w-full"
-              onClick={() => initiateCheckout("bulk_pack")}
+              variant="outline" 
+              className="w-full font-bold" 
+              onClick={() => handleUpgrade("bulk_pack")}
+              disabled={!!isLoading}
             >
-              Buy Pack
+              {isLoading === "bulk_pack" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Buy Bundle"}
             </Button>
           </div>
         </div>
