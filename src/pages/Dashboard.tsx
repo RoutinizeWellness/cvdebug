@@ -40,11 +40,20 @@ export default function Dashboard() {
   const [jobDescription, setJobDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  const storeUser = useMutation(api.users.storeUser);
+
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate("/auth");
     }
   }, [isLoading, isAuthenticated, navigate]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Ensure user is stored in the database when they visit the dashboard
+      storeUser();
+    }
+  }, [isAuthenticated, storeUser]);
 
   useEffect(() => {
     const plan = searchParams.get("plan");

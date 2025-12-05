@@ -1,4 +1,4 @@
-import { query, internalMutation, internalQuery } from "./_generated/server";
+import { query, mutation, internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
@@ -25,6 +25,43 @@ export const currentUser = query({
       trialEndsOn: user?.trialEndsOn,
       _id: user?._id,
     };
+  },
+});
+
+export const storeUser = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    // Check if we've already stored this user
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (user !== null) {
+      // If we've seen this user before but their name/email has changed, update it.
+      if (user.name !== identity.name || user.email !== identity.email) {
+        await ctx.db.patch(user._id, {
+          name: identity.name,
+          email: identity.email,
+        });
+      }
+      return user._id;
+    }
+
+    // If it's a new user, create them in the database
+    const userId = await ctx.db.insert("users", {
+      tokenIdentifier: identity.subject,
+      name: identity.name,
+      email: identity.email,
+      subscriptionTier: "free",
+      credits: 1, // Default to 1 credit for free tier
+      trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
+    });
+
+    return userId;
   },
 });
 
