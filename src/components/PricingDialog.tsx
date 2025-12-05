@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck } from "lucide-react";
+import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const handleUpgrade = async (plan: "free" | "pro" | "team") => {
     setIsLoading(plan);
     try {
+      // TODO: Replace with Autumn implementation
       await upgradePlan({ plan });
       toast.success(`Successfully updated to ${plan} plan`);
       setCheckoutPlan(null);
@@ -36,8 +37,22 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
 
   if (checkoutPlan) {
     const planDetails = {
-      pro: { name: "Single Resume Scan", price: "$9.99", period: "/resume", features: ["Deep ATS Analysis", "Keyword Optimization", "Format Check"] },
-      team: { name: "Bulk Pack (5)", price: "$39.99", period: "/pack", features: ["5 Resume Scans", "Priority Processing", "Save 20%"] }
+      pro: { 
+        name: "Single Resume Scan", 
+        price: "$4.99", 
+        originalPrice: "$9.99",
+        period: "/resume", 
+        features: ["Deep ATS Analysis", "Keyword Optimization", "Format Check"],
+        badge: "Beta Launch 🚀"
+      },
+      team: { 
+        name: "Bulk Pack (5)", 
+        price: "$19.99", 
+        originalPrice: "$39.99",
+        period: "/pack", 
+        features: ["5 Resume Scans", "Priority Processing", "Save 50%"],
+        badge: "Beta Pricing"
+      }
     }[checkoutPlan];
 
     return (
@@ -59,14 +74,22 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
           </div>
           
           <div className="p-6 space-y-6">
-            <div className="rounded-xl border bg-card p-4 shadow-sm">
+            <div className="rounded-xl border bg-card p-4 shadow-sm relative overflow-hidden">
+              {planDetails.badge && (
+                <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded-bl-lg">
+                  {planDetails.badge}
+                </div>
+              )}
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-semibold text-lg">{planDetails.name}</h3>
                   <p className="text-sm text-muted-foreground">One-time payment</p>
                 </div>
                 <div className="text-right">
-                  <div className="font-bold text-xl">{planDetails.price}</div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs text-muted-foreground line-through">{planDetails.originalPrice}</span>
+                    <div className="font-bold text-xl text-primary">{planDetails.price}</div>
+                  </div>
                   <div className="text-xs text-muted-foreground">{planDetails.period}</div>
                 </div>
               </div>
@@ -86,13 +109,13 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium">Payment Method</p>
-                  <p className="text-xs text-muted-foreground">Clerk Secure Billing</p>
+                  <p className="text-xs text-muted-foreground">Secure Billing</p>
                 </div>
                 <Button variant="outline" size="sm" disabled>Change</Button>
               </div>
 
               <div className="flex items-center gap-2 text-xs text-muted-foreground justify-center">
-                <ShieldCheck className="h-3 w-3" /> Secure checkout powered by Clerk
+                <ShieldCheck className="h-3 w-3" /> Secure checkout
               </div>
 
               <Button 
@@ -161,19 +184,24 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             </Button>
           </div>
 
-          {/* Single Scan */}
-          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background relative">
-            <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
-              Best Value
+          {/* Single Scan - BETA PRICING */}
+          <div className="p-6 sm:p-8 flex flex-col gap-6 bg-background relative border-primary/20 shadow-lg z-10 scale-105 md:scale-110 rounded-xl md:rounded-none md:border-y-0 md:border-x">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl uppercase tracking-wider shadow-sm">
+              Beta Launch 🚀
             </div>
             
             <div className="space-y-2">
               <h3 className="font-bold text-xl text-primary flex items-center gap-2">
                 Single Scan <Zap className="h-4 w-4 fill-primary" />
               </h3>
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$9.99</span>
-                <span className="text-muted-foreground">/resume</span>
+              <div className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold">$4.99</span>
+                  <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$9.99</span>
+                </div>
+                <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
+                  <Rocket className="h-3 w-3" /> Limited to first 100 users
+                </p>
               </div>
               <p className="text-sm text-muted-foreground">Beat the ATS for one specific job.</p>
             </div>
@@ -194,10 +222,10 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
             </div>
             
             <Button 
-              className="w-full shadow-lg shadow-primary/20" 
+              className="w-full shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
               onClick={() => initiateCheckout("pro")}
             >
-              Buy Now
+              Get Beta Access
             </Button>
           </div>
 
@@ -208,8 +236,8 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 Bulk Pack <Building2 className="h-4 w-4" />
               </h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$39.99</span>
-                <span className="text-muted-foreground">/5 scans</span>
+                <span className="text-4xl font-bold">$19.99</span>
+                <span className="text-muted-foreground line-through text-sm">$39.99</span>
               </div>
               <p className="text-sm text-muted-foreground">Perfect for active job seekers.</p>
             </div>
@@ -219,7 +247,7 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                 <Check className="h-3 w-3 text-primary" /> 5 Full ATS Scans
               </div>
               <div className="flex items-center gap-3 text-sm">
-                <Check className="h-3 w-3 text-primary" /> Save 20%
+                <Check className="h-3 w-3 text-primary" /> Save 50% (Beta)
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <Check className="h-3 w-3 text-primary" /> Priority Processing
