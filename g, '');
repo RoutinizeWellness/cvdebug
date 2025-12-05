@@ -16,11 +16,11 @@
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI Analysis Failed. Please try again.",
+        analysis: "AI analysis failed. Please try again later.",
         score: 0,
       });
     }
   },
 });
 
-// ... keep existing code (optimizeLinkedIn, chat)
+// ... keep existing code (rewriteResume, optimizeLinkedIn, chat)

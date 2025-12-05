@@ -230,9 +230,9 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-0 overflow-y-auto lg:overflow-hidden print:block print:overflow-visible">
+        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden print:block print:overflow-visible">
           {/* Left Panel - Details */}
-          <div className={`lg:col-span-3 border-r border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''} print:block print:w-full print:border-none`}>
+          <div className={`w-full lg:w-80 xl:w-96 border-r border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:block print:w-full print:border-none`}>
             <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
               <div className="p-6 flex flex-col gap-8">
                 <div>
@@ -328,7 +328,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
 
           {/* Center Image/Preview */}
-          <div className={`${isImmersive ? 'lg:col-span-12' : 'lg:col-span-6'} bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
+          <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
             <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
             
             <button 
@@ -370,7 +370,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           </div>
 
           {/* Right Panel - Actions */}
-          <div className={`lg:col-span-3 border-l border-border bg-card/30 flex flex-col lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
+          <div className={`w-full lg:w-80 xl:w-96 border-l border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
             <ScrollArea className="flex-1 h-full">
               <div className="p-6 flex flex-col gap-8">
                 {selectedResume?.rewrittenText && (

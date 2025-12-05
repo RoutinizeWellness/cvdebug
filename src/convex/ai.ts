@@ -25,6 +25,20 @@ export const analyzeResume = internalAction({
       return;
     }
 
+    // Check for empty or insufficient text
+    if (!args.ocrText || args.ocrText.trim().length < 50) {
+      console.log("OCR Text is too short or empty.");
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+        id: args.id,
+        title: "Resume (Unreadable)",
+        category: "Uncategorized",
+        analysis: "### ⚠️ Parsing Error\nWe could not extract enough text from this file. It might be an image-only PDF without OCR data, or the file is corrupted.\n\n**Recommendation:**\n- Try converting your resume to a standard text-based PDF.\n- Ensure the file is not password protected.",
+        score: 0,
+        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
+      });
+      return;
+    }
+
     try {
       const prompt = `You are an advanced ATS (Applicant Tracking System) Simulator (simulating systems like Taleo, Greenhouse, Lever).
       Your goal is to strictly evaluate the resume's machine-readability and content match against the target role.
@@ -35,12 +49,13 @@ export const analyzeResume = internalAction({
       "${args.ocrText.substring(0, 30000)}"
 
       ### SCORING ALGORITHM (0-100):
-      Be strict. Most resumes score between 40-70. Scores above 80 should be rare and require near-perfect optimization.
+      Be strict but fair. Most resumes score between 40-70. Scores above 80 should be rare and require near-perfect optimization.
 
       1. **Parsing & Format (30%)**:
          - **CRITICAL**: Does the raw text look garbled? Are headers (Experience, Education) clearly identifiable?
          - Penalize for: Multi-column layouts (often parse poorly), graphics/icons (not visible in text), missing dates, or complex tables.
          - If the raw text is a wall of text without structure, score this < 50.
+         - If the text is readable but formatting is messy, score 50-70.
 
       2. **Keyword Matching (40%)**:
          - Extract hard skills from the JD (or imply them from the role).
