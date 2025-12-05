@@ -76,6 +76,11 @@ export const updateResumeMetadata = internalMutation({
     category: v.string(),
     analysis: v.string(),
     score: v.number(),
+    scoreBreakdown: v.optional(v.object({
+      keywords: v.number(),
+      format: v.number(),
+      completeness: v.number(),
+    })),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
@@ -83,6 +88,7 @@ export const updateResumeMetadata = internalMutation({
       category: args.category,
       analysis: args.analysis,
       score: args.score,
+      scoreBreakdown: args.scoreBreakdown,
       status: "completed",
     });
   },

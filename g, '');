@@ -1,6 +1,14 @@
-    return JSON.parse(jsonStr);
-  },
-});
-
-export const chat = action({
-// ... keep existing code (chat handler)
+      
+      const parsed = JSON.parse(jsonStr);
+      const { title, category, score, analysis, scoreBreakdown } = parsed;
+      
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+        id: args.id,
+        title,
+        category,
+        analysis,
+        score,
+        scoreBreakdown,
+      });
+    } catch (error) {
+// ... keep existing code

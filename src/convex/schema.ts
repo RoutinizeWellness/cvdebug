@@ -20,6 +20,11 @@ const schema = defineSchema(
       ocrText: v.optional(v.string()),
       analysis: v.optional(v.string()), // AI Feedback/Summary
       score: v.optional(v.number()), // ATS Score 0-100
+      scoreBreakdown: v.optional(v.object({
+        keywords: v.number(),
+        format: v.number(),
+        completeness: v.number(),
+      })),
       status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),
       width: v.number(),
       height: v.number(),

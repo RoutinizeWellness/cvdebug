@@ -233,16 +233,31 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
 
                     <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/50">
                       <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className="text-xs font-bold text-foreground">40%</span>
-                        <span className="text-[10px] text-muted-foreground">Keywords</span>
+                        <span className={`text-lg font-bold ${
+                          (selectedResume?.scoreBreakdown?.keywords || 0) >= 70 ? 'text-green-500' : 
+                          (selectedResume?.scoreBreakdown?.keywords || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
+                        }`}>
+                          {selectedResume?.scoreBreakdown?.keywords || "-"}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Keywords</span>
                       </div>
                       <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className="text-xs font-bold text-foreground">30%</span>
-                        <span className="text-[10px] text-muted-foreground">Format</span>
+                        <span className={`text-lg font-bold ${
+                          (selectedResume?.scoreBreakdown?.format || 0) >= 70 ? 'text-green-500' : 
+                          (selectedResume?.scoreBreakdown?.format || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
+                        }`}>
+                          {selectedResume?.scoreBreakdown?.format || "-"}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Format</span>
                       </div>
                       <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className="text-xs font-bold text-foreground">30%</span>
-                        <span className="text-[10px] text-muted-foreground">Completeness</span>
+                        <span className={`text-lg font-bold ${
+                          (selectedResume?.scoreBreakdown?.completeness || 0) >= 70 ? 'text-green-500' : 
+                          (selectedResume?.scoreBreakdown?.completeness || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
+                        }`}>
+                          {selectedResume?.scoreBreakdown?.completeness || "-"}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Completeness</span>
                       </div>
                     </div>
                   </div>

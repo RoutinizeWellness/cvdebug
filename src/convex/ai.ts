@@ -28,12 +28,17 @@ export const analyzeResume = internalAction({
     try {
       const prompt = `You are an expert ATS (Applicant Tracking System) optimizer.
       Analyze the resume text against the provided Job Description (if any).
+      
+      BE EXTREMELY CRITICAL. Do not give high scores easily. 
+      - A generic resume should score 40-60.
+      - A good resume should score 60-80.
+      - Only a perfect match should score 80+.
 
       Job Description:
-      "${args.jobDescription || "General optimization (no specific job provided)"}"
+      "${args.jobDescription || "General optimization (no specific job provided) - Evaluate based on general industry standards for the detected role."}"
 
       Resume Text:
-      "${args.ocrText.substring(0, 4000)}"
+      "${args.ocrText.substring(0, 30000)}"
 
       1. **Categorize the resume** into one of these exact categories: 
          - Engineering
@@ -46,10 +51,12 @@ export const analyzeResume = internalAction({
          - Operations
          - Other
 
-      2. **Calculate an ATS Score (0-100)** based strictly on:
-         - Keyword match (40%): Match against Job Description (or general industry keywords if none provided).
-         - Format compatibility (30%): Standard headers, bullet points, readability.
-         - Section completeness (30%): Summary, Experience, Education, Skills present.
+      2. **Calculate a detailed ATS Score Breakdown (0-100 for each):**
+         - **Keywords**: How well does it match the JD or role keywords? (If no JD, check for strong industry terms).
+         - **Format**: Is it readable? Standard headers? Bullet points? No complex columns?
+         - **Completeness**: Does it have Summary, Experience, Education, Skills, Contact Info?
+
+         *Calculate the Total Score as the weighted average: Keywords (40%) + Format (30%) + Completeness (30%).*
 
       3. **Provide a detailed analysis** using Markdown headers:
          ### 🚨 Critical Fixes
@@ -64,8 +71,21 @@ export const analyzeResume = internalAction({
          ### 💡 Pro Tips
          (Actionable advice to stand out)
 
-      Return ONLY a JSON object with keys: "title" (extracted name/role), "category" (from the list above), "score" (number), and "analysis" (string, containing the markdown sections).
-      Example: {"title": "Software Engineer - John Doe", "category": "Engineering", "score": 72, "analysis": "### 🚨 Critical Fixes\\n- ..."}
+      Return ONLY a JSON object with keys: 
+      - "title" (extracted name/role)
+      - "category" (from the list above)
+      - "score" (Total calculated number)
+      - "scoreBreakdown" (Object with "keywords", "format", "completeness" as numbers)
+      - "analysis" (string, containing the markdown sections)
+      
+      Example: 
+      {
+        "title": "Software Engineer - John Doe", 
+        "category": "Engineering", 
+        "score": 65, 
+        "scoreBreakdown": { "keywords": 60, "format": 80, "completeness": 55 },
+        "analysis": "### 🚨 Critical Fixes\\n- ..."
+      }
       `;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -93,7 +113,7 @@ export const analyzeResume = internalAction({
       const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category, score, analysis } = parsed;
+      const { title, category, score, scoreBreakdown, analysis } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
