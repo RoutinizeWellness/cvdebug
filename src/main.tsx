@@ -14,6 +14,7 @@ import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AdminWaitlist from "./pages/AdminWaitlist.tsx";
 import AdminPage from "./pages/Admin.tsx";
+import PricingPage from "./pages/Pricing.tsx";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -52,6 +53,7 @@ createRoot(document.getElementById("root")!).render(
             <RouteSyncer />
             <Routes>
               <Route path="/" element={<Landing />} />
+              <Route path="/pricing" element={<PricingPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/admin" element={<AdminPage />} />

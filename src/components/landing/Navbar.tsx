@@ -14,6 +14,9 @@ export function Navbar() {
           <Logo />
         </div>
         <div className="flex items-center gap-4">
+          <Button variant="ghost" onClick={() => navigate("/pricing")} className="text-muted-foreground hover:text-foreground font-medium hidden sm:flex">
+            Pricing
+          </Button>
           <Button variant="ghost" onClick={() => navigate("/auth")} className="text-muted-foreground hover:text-foreground font-medium hidden sm:flex">
             Sign In
           </Button>
