@@ -172,6 +172,15 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               variant="outline" 
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
+              onClick={() => window.open(selectedResume?.url, '_blank')}
+            >
+              <Download className="h-4 w-4" />
+              Download
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:flex gap-2 font-bold"
               onClick={handleDownloadReport}
             >
               <Printer className="h-4 w-4" />
@@ -296,12 +305,25 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                   src={selectedResume?.url} 
                   alt={selectedResume?.title} 
                 />
-              ) : (
+              ) : selectedResume?.mimeType === "application/pdf" ? (
                 <iframe 
                   src={selectedResume?.url} 
                   className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
                   title="Resume Preview"
                 />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-center p-6 bg-white rounded-lg shadow-xl max-w-md">
+                  <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mb-6">
+                    <FileText className="h-10 w-10 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-foreground">Preview Not Available</h3>
+                  <p className="text-muted-foreground mb-8">
+                    This file type cannot be previewed directly in the browser. You can download it to view the content.
+                  </p>
+                  <Button onClick={() => window.open(selectedResume?.url, '_blank')} className="font-bold shadow-lg shadow-primary/20">
+                    <Download className="h-4 w-4 mr-2" /> Download File
+                  </Button>
+                </div>
               )}
             </div>
           </div>
