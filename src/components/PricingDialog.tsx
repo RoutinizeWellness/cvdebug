@@ -39,19 +39,19 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
   if (checkoutPlan) {
     const planDetails = {
       single_scan: { 
-        name: "Single Resume Scan", 
+        name: "Single Scan", 
         price: "$4.99", 
         originalPrice: "$9.99",
-        period: "/resume", 
-        features: ["Deep ATS Analysis", "Keyword Optimization", "Format Check"],
+        period: "/scan", 
+        features: ["Full ATS Analysis", "Missing Keywords", "Format Check", "PDF Report"],
         badge: "Beta Launch 🚀"
       },
       bulk_pack: { 
-        name: "Bulk Pack (5)", 
+        name: "Bundle (5 Scans)", 
         price: "$19.99", 
-        originalPrice: "$39.99",
-        period: "/pack", 
-        features: ["5 Resume Scans", "Priority Processing", "Save 50%"],
+        originalPrice: "$49.95",
+        period: "/bundle", 
+        features: ["5 Full Scans", "Test different versions", "Apply to 5+ jobs", "$4/scan (save $25!)"],
         badge: "Beta Pricing"
       }
     }[checkoutPlan];
