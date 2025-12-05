@@ -22,10 +22,10 @@ export default function AuthPage() {
             <Logo />
           </div>
           <h1 className="text-2xl font-bold tracking-tight">
-            {isSignIn ? "Welcome back" : "Start your 15-Day Free Trial"}
+            {isSignIn ? "Welcome back" : "Join the Beta Launch"}
           </h1>
           <p className="text-muted-foreground mt-2">
-            {isSignIn ? "Enter your credentials to access your dashboard" : "Join now and get premium features free for 15 days."}
+            {isSignIn ? "Enter your credentials to access your dashboard" : "Get 15 days free access with our Beta Launch offer."}
           </p>
         </div>
 
@@ -80,7 +80,7 @@ export default function AuthPage() {
               onClick={() => setIsSignIn(!isSignIn)}
               className="font-bold text-primary hover:underline"
             >
-              {isSignIn ? "Sign up & Start Trial" : "Sign in"}
+              {isSignIn ? "Sign up & Get Beta Access" : "Sign in"}
             </button>
           </div>
         </div>

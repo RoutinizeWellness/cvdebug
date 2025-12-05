@@ -7,7 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const upgradePlan = useAction(api.clerk.upgradePlan);
+  const createCheckoutSession = useAction(api.billing.createCheckoutSession);
   const user = useQuery(api.users.currentUser);
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [checkoutPlan, setCheckoutPlan] = useState<"pro" | "team" | null>(null);
@@ -16,16 +16,18 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const isTrial = user?.trialEndsOn && user.trialEndsOn > Date.now();
 
   const handleUpgrade = async (plan: "free" | "pro" | "team") => {
+    if (plan === "free") return;
     setIsLoading(plan);
     try {
-      // TODO: Replace with Autumn implementation
-      await upgradePlan({ plan });
-      toast.success(`Successfully updated to ${plan} plan`);
-      setCheckoutPlan(null);
-      onOpenChange(false);
+      const url = await createCheckoutSession({ plan });
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error("Failed to start checkout");
+      }
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to update plan");
+      toast.error(error.message || "Failed to initiate checkout");
     } finally {
       setIsLoading(null);
     }
@@ -144,14 +146,14 @@ export function PricingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
         <div className="p-6 sm:p-10 bg-muted/30 text-center relative overflow-hidden">
            {/* Trial Banner */}
            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary/80 to-purple-600/80 text-white text-xs font-bold py-1 text-center">
-             LIMITED OFFER: 15-DAY FREE TRIAL ON SIGN UP
+             BETA LAUNCH OFFER: 15-DAY FREE TRIAL INCLUDED
            </div>
 
           <DialogHeader className="mt-4">
             <DialogTitle className="text-3xl font-bold text-center mb-2">Pay Per Use Pricing</DialogTitle>
             <DialogDescription className="text-center text-lg max-w-md mx-auto">
               No subscriptions. Just pay for what you need.
-              {isTrial && <span className="block mt-2 text-primary font-bold">Your 15-Day Free Trial is Active!</span>}
+              {isTrial && <span className="block mt-2 text-primary font-bold">Beta Trial Active!</span>}
             </DialogDescription>
           </DialogHeader>
         </div>
