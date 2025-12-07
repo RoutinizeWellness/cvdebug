@@ -36,6 +36,7 @@ export default function AuthPage() {
         <div className="bg-card border border-border rounded-2xl shadow-xl p-6">
           {isSignIn ? (
             <SignIn 
+              routing="hash"
               forceRedirectUrl={redirectUrl}
               appearance={{
                 elements: {
@@ -56,6 +57,7 @@ export default function AuthPage() {
             />
           ) : (
             <SignUp 
+              routing="hash"
               forceRedirectUrl={redirectUrl}
               appearance={{
                 elements: {

@@ -17,7 +17,8 @@ import AdminPage from "./pages/Admin.tsx";
 import PricingPage from "./pages/Pricing.tsx";
 import "./types/global.d.ts";
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
+const convex = new ConvexReactClient(convexUrl || "https://placeholder.convex.cloud");
 const CLERK_PUBLISHABLE_KEY = "pk_test_aG9wZWZ1bC1kb2UtNTYuY2xlcmsuYWNjb3VudHMuZGV2JA";
 
 function RouteSyncer() {
