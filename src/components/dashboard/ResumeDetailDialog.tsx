@@ -23,8 +23,10 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Lock } from "lucide-react";
+import { PricingDialog } from "@/components/PricingDialog";
 
 interface ResumeDetailDialogProps {
   selectedResume: any;
@@ -35,10 +37,27 @@ interface ResumeDetailDialogProps {
 export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDelete }: ResumeDetailDialogProps) {
   const [isImmersive, setIsImmersive] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
   const rewriteResume = useAction(api.ai.rewriteResume);
+  
+  // Fetch user to check subscription
+  const user = useQuery(api.users.currentUser);
+  const isFree = user?.subscriptionTier === "free";
 
   const handleDownloadReport = () => {
+    if (isFree) {
+      setShowPricing(true);
+      return;
+    }
     window.print();
+  };
+
+  const handleDownloadFile = () => {
+    if (isFree) {
+      setShowPricing(true);
+      return;
+    }
+    window.open(selectedResume?.url, '_blank');
   };
 
   const handleOptimize = async () => {
@@ -69,6 +88,37 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
   const renderAnalysis = (text: string) => {
     if (!text) return <p className="text-muted-foreground italic">Analysis pending...</p>;
     
+    // Free Tier Masking for Analysis
+    if (isFree) {
+      return (
+        <div className="relative">
+          <div className="space-y-4 filter blur-sm select-none pointer-events-none opacity-50">
+             {/* Fake content for blur effect */}
+             <div className="rounded-xl bg-muted/30 p-4 border border-border/50">
+                <h4 className="font-bold text-foreground mb-3 text-sm">🤖 ATS Parsing Report</h4>
+                <p className="text-sm text-muted-foreground">The parser successfully identified your contact information but failed to read the skills section correctly due to...</p>
+             </div>
+             <div className="rounded-xl bg-muted/30 p-4 border border-border/50">
+                <h4 className="font-bold text-foreground mb-3 text-sm">📉 Score Drivers</h4>
+                <p className="text-sm text-muted-foreground">-10 points for missing metrics in experience section...</p>
+             </div>
+          </div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+            <div className="bg-background/80 backdrop-blur-md p-6 rounded-2xl border border-border shadow-xl text-center max-w-xs">
+              <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
+              <h3 className="font-bold text-lg mb-2">Unlock Full Analysis</h3>
+              <p className="text-xs text-muted-foreground mb-4">
+                Upgrade to see detailed ATS feedback, score drivers, and specific fixes.
+              </p>
+              <Button onClick={() => setShowPricing(true)} className="w-full font-bold shadow-lg shadow-primary/20">
+                Upgrade - $4.99
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     // If it doesn't look like our markdown, return as is
     if (!text.includes("###")) {
       return <div className="whitespace-pre-wrap text-sm text-muted-foreground">{text}</div>;
@@ -156,6 +206,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
 
   return (
     <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
+      <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan="single_scan" />
       <DialogContent 
         showCloseButton={false}
         className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
@@ -198,8 +249,9 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               variant="outline" 
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
-              onClick={() => window.open(selectedResume?.url, '_blank')}
+              onClick={handleDownloadFile}
             >
+              {isFree && <Lock className="h-3 w-3 text-orange-500 mr-1" />}
               <Download className="h-4 w-4" />
               Download
             </Button>
@@ -209,6 +261,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleDownloadReport}
             >
+              {isFree && <Lock className="h-3 w-3 text-orange-500 mr-1" />}
               <Printer className="h-4 w-4" />
               Print Report
             </Button>
@@ -288,6 +341,40 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     </div>
                   </div>
                 </div>
+
+                {/* NEW: Missing Keywords Section (Free Tier Logic) */}
+                {isFree && selectedResume?.missingKeywords && selectedResume.missingKeywords.length > 0 && (
+                  <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-orange-700 mb-3 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4" /> Missing Keywords
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
+                        <span className="text-sm font-medium">{selectedResume.missingKeywords[0]}</span>
+                        <span className="text-[10px] text-red-500 font-bold uppercase">Critical</span>
+                      </div>
+                      {selectedResume.missingKeywords.length > 1 && (
+                        <div className="relative">
+                          <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
+                             <div className="bg-background p-2 rounded border border-border h-9"></div>
+                             <div className="bg-background p-2 rounded border border-border h-9"></div>
+                          </div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Button 
+                              size="sm" 
+                              variant="secondary" 
+                              className="h-8 text-xs font-bold shadow-sm"
+                              onClick={() => setShowPricing(true)}
+                            >
+                              <Lock className="h-3 w-3 mr-1.5" />
+                              Unlock {selectedResume.missingKeywords.length - 1} more
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
                 
                 <Separator className="print:hidden" />
 
@@ -361,7 +448,8 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                   <p className="text-muted-foreground mb-8">
                     This file type cannot be previewed directly in the browser. You can download it to view the content.
                   </p>
-                  <Button onClick={() => window.open(selectedResume?.url, '_blank')} className="font-bold shadow-lg shadow-primary/20">
+                  <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
+                    {isFree && <Lock className="h-3 w-3 mr-2" />}
                     <Download className="h-4 w-4 mr-2" /> Download File
                   </Button>
                 </div>

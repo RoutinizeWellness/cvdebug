@@ -1,6 +1,6 @@
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category, score, scoreBreakdown, analysis } = parsed;
+      const { title, category, score, scoreBreakdown, analysis, missingKeywords } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
@@ -9,6 +9,7 @@
         analysis,
         score,
         scoreBreakdown,
+        missingKeywords,
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -16,8 +17,10 @@
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI analysis failed. Please try again later.",
+        analysis: "AI not configured or failed to analyze.",
         score: 0,
+        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
+        missingKeywords: [],
       });
     }
   },
