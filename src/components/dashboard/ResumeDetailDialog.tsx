@@ -18,7 +18,9 @@ import {
   Eye,
   AlertTriangle,
   Cpu,
-  ScanLine
+  ScanLine,
+  Check,
+  Clock
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -102,17 +104,83 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 <h4 className="font-bold text-foreground mb-3 text-sm">📉 Score Drivers</h4>
                 <p className="text-sm text-muted-foreground">-10 points for missing metrics in experience section...</p>
              </div>
+             <div className="rounded-xl bg-muted/30 p-4 border border-border/50">
+                <h4 className="font-bold text-foreground mb-3 text-sm">🛠️ Fixes to Reach Top 10%</h4>
+                <p className="text-sm text-muted-foreground">Actionable steps to improve your resume...</p>
+             </div>
           </div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-            <div className="bg-background/80 backdrop-blur-md p-6 rounded-2xl border border-border shadow-xl text-center max-w-xs">
-              <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
-              <h3 className="font-bold text-lg mb-2">Unlock Full Analysis</h3>
-              <p className="text-xs text-muted-foreground mb-4">
-                Upgrade to see detailed ATS feedback, score drivers, and specific fixes.
-              </p>
-              <Button onClick={() => setShowPricing(true)} className="w-full font-bold shadow-lg shadow-primary/20">
-                Upgrade - $4.99
+          
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
+            <div className="bg-background/95 backdrop-blur-md p-6 rounded-2xl border border-border shadow-2xl text-center max-w-sm w-full relative overflow-hidden">
+              {/* Urgency Banner */}
+              <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold py-1 flex items-center justify-center gap-1">
+                <Clock className="h-3 w-3" /> Beta Offer Ends Soon
+              </div>
+
+              <div className="mt-4 mb-4">
+                <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Lock className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-black text-xl mb-1">Unlock Full Analysis</h3>
+                <p className="text-sm text-muted-foreground">
+                  See exactly why your resume is scoring <span className="font-bold text-foreground">{selectedResume?.score || 0}/100</span>.
+                </p>
+              </div>
+
+              {/* Comparison Table */}
+              <div className="bg-muted/30 rounded-lg p-3 mb-4 text-xs">
+                <div className="flex justify-between items-center border-b border-border/50 pb-2 mb-2">
+                  <span className="font-medium text-muted-foreground">Feature</span>
+                  <div className="flex gap-4">
+                    <span className="font-bold text-muted-foreground">Free</span>
+                    <span className="font-bold text-primary">Pro</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">ATS Score</span>
+                    <div className="flex gap-6">
+                      <Check className="h-3 w-3 text-green-500" />
+                      <Check className="h-3 w-3 text-green-500" />
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Missing Keywords</span>
+                    <div className="flex gap-6">
+                      <span className="text-muted-foreground">1</span>
+                      <span className="font-bold text-green-500">All</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Detailed Fixes</span>
+                    <div className="flex gap-6">
+                      <X className="h-3 w-3 text-red-400" />
+                      <Check className="h-3 w-3 text-green-500" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Proof */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-5 w-5 rounded-full border border-background bg-muted overflow-hidden">
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+20}`} alt="User" className="h-full w-full" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  <span className="font-bold text-foreground">53 people</span> upgraded today
+                </p>
+              </div>
+
+              <Button onClick={() => setShowPricing(true)} className="w-full font-bold shadow-lg shadow-primary/20 h-11 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90">
+                Unlock Report - $4.99
               </Button>
+              <p className="text-[10px] text-muted-foreground mt-2">
+                One-time payment. No subscription.
+              </p>
             </div>
           </div>
         </div>

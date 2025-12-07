@@ -99,23 +99,49 @@ export const updateSubscription = internalMutation({
     if (user) {
       const currentCredits = user.credits ?? 1;
       await ctx.db.patch(user._id, { 
-        subscriptionTier: args.plan,
+        // Don't change subscriptionTier to single_scan as it's a one-time purchase, 
+        // unless we want to track "last purchased". 
+        // For now, we just add credits.
         credits: currentCredits + creditsToAdd 
       });
     } else {
        const identity = await ctx.auth.getUserIdentity();
        if (identity && identity.subject === args.tokenIdentifier) {
-          // New user created via subscription (unlikely but possible)
-          // Base 1 credit + purchased credits
           await ctx.db.insert("users", {
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
             name: identity.name,
-            subscriptionTier: args.plan,
+            subscriptionTier: "free", // Keep as free, just add credits
             credits: 1 + creditsToAdd,
           });
        }
     }
+  },
+});
+
+export const purchaseCredits = mutation({
+  args: { 
+    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (!user) throw new Error("User not found");
+
+    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const currentCredits = user.credits ?? 0;
+
+    await ctx.db.patch(user._id, {
+      credits: currentCredits + creditsToAdd,
+    });
+    
+    return { success: true, credits: currentCredits + creditsToAdd };
   },
 });
 

@@ -28,7 +28,7 @@ import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashb
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState("resumes"); // resumes, templates, linkedin, cover-letter
@@ -41,6 +41,7 @@ export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const storeUser = useMutation(api.users.storeUser);
+  const purchaseCredits = useMutation(api.users.purchaseCredits);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -57,11 +58,26 @@ export default function Dashboard() {
 
   useEffect(() => {
     const plan = searchParams.get("plan");
-    if (plan === "single_scan" || plan === "bulk_pack") {
+    const payment = searchParams.get("payment");
+
+    if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
+      // Handle successful payment
+      purchaseCredits({ plan })
+        .then(() => {
+          toast.success("Payment successful! Credits added to your account.");
+          // Remove query params
+          setSearchParams({});
+          navigate("/dashboard", { replace: true });
+        })
+        .catch((error) => {
+          console.error("Credit update failed:", error);
+          toast.error("Payment recorded but credit update failed. Please contact support.");
+        });
+    } else if (plan === "single_scan" || plan === "bulk_pack") {
       setInitialPlan(plan);
       setShowPricing(true);
     }
-  }, [searchParams]);
+  }, [searchParams, purchaseCredits, navigate, setSearchParams]);
 
   const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
   const createResume = useMutation(api.resumes.createResume);
