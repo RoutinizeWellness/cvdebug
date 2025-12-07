@@ -26,7 +26,7 @@ export function FeatureGridSection() {
                 Why not just use ChatGPT?
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS.ai is purpose-built</span> to analyze 20+ specific ATS factors (margins, metadata, keyword density) that LLMs miss, giving you a precise quantitative score.
+                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS is purpose-built</span> to analyze 20+ specific ATS factors (margins, metadata, keyword density) that LLMs miss, giving you a precise quantitative score.
               </p>
             </div>
 
