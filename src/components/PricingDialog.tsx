@@ -160,7 +160,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden gap-0 border-none shadow-2xl bg-muted/10">
+      <DialogContent className="sm:max-w-[1100px] p-0 overflow-hidden gap-0 border-none shadow-2xl bg-muted/10">
         <div className="p-8 pb-6 text-center relative overflow-hidden bg-background">
            {/* Trial Banner */}
            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-[10px] font-bold py-1.5 text-center tracking-widest uppercase shadow-sm">
@@ -175,7 +175,39 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
           </DialogHeader>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-4 p-4 md:p-8 pt-0 bg-background">
+        <div className="grid md:grid-cols-3 gap-4 p-4 md:p-8 pt-0 bg-background">
+          {/* Free Tier */}
+          <div className="rounded-2xl border border-border bg-card p-6 flex flex-col gap-5 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div className="space-y-2">
+              <h3 className="font-bold text-xl text-muted-foreground">FREE Preview</h3>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black tracking-tight">$0</span>
+              </div>
+              <p className="text-sm text-muted-foreground">Basic scan to see where you stand.</p>
+            </div>
+            
+            <Separator />
+
+            <div className="space-y-3 flex-1">
+              {[
+                "Basic Score (0-100)",
+                "Unlimited uses",
+                "No credit card"
+              ].map((feature, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium text-foreground/80">{feature}</span>
+                </div>
+              ))}
+            </div>
+            
+            <Button variant="outline" className="w-full h-12 font-bold text-base rounded-xl" onClick={() => onOpenChange(false)}>
+              Continue Free
+            </Button>
+          </div>
+
           {/* Single Scan */}
           <div className="group relative rounded-2xl border-2 border-orange-500/20 bg-card p-6 flex flex-col gap-5 hover:border-orange-500 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
             <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-bl-xl rounded-tr-lg uppercase tracking-wider shadow-sm z-10">
