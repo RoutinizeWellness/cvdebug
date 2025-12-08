@@ -45,7 +45,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
         price: "$4.99", 
         originalPrice: "$9.99",
         period: "one-time", 
-        features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Downloadable PDF Report"],
+        features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Detailed Analysis Report"],
         badge: "Beta Launch 🚀",
         icon: Zap,
         color: "text-orange-500"
@@ -191,7 +191,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
             <div className="space-y-3 flex-1">
               {[
                 "Basic Score (0-100)",
-                "Unlimited uses",
+                "1 Free Scan",
                 "No credit card"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -245,7 +245,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 "Full ATS Analysis Score",
                 "Missing Keywords Report",
                 "Formatting & Structure Check",
-                "Downloadable PDF Report"
+                "Detailed Analysis Report"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">

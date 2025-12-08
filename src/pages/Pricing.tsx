@@ -48,13 +48,7 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Basic Score (0-100)</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">Unlimited uses</span>
+                            <span className="text-sm">1 Free Scan</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -99,7 +93,7 @@ export default function PricingPage() {
                             "Full ATS Analysis Score",
                             "Missing Keywords Report",
                             "Formatting & Structure Check",
-                            "Downloadable PDF Report"
+                            "Detailed Analysis Report"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
