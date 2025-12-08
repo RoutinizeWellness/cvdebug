@@ -415,7 +415,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 {selectedResume?.missingKeywords && selectedResume.missingKeywords.length > 0 && (
                   <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
                     <h4 className="text-sm font-bold text-orange-700 mb-3 flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4" /> Missing Keywords
+                      <AlertTriangle className="h-4 w-4" /> Missing Keywords {isFree && <span className="text-xs font-normal opacity-80">(Top 3 of 10)</span>}
                     </h4>
                     <div className="space-y-3">
                       {/* Show up to 3 keywords for free users, or all for paid */}
@@ -454,7 +454,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
                   <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
                     <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
-                      <LayoutTemplate className="h-4 w-4" /> Format Issues
+                      <LayoutTemplate className="h-4 w-4" /> Format Issues {isFree && <span className="text-xs font-normal opacity-80">(Top 2 of 5)</span>}
                     </h4>
                     <div className="space-y-3">
                       {/* Show up to 2 format issues for free users, or all for paid */}

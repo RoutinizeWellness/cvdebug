@@ -74,8 +74,8 @@ export const analyzeResume = internalAction({
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
          - "score": Calculated weighted score (integer).
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of strings (Top 5-10 critical missing keywords).
-         - "formatIssues": Array of strings (List 3-5 specific formatting problems found, e.g. "Date format inconsistent", "Tables detected", "Low text density").
+         - "missingKeywords": Array of strings (Identify exactly 10 critical missing keywords or skills based on the JD/Industry standards. If fewer are missing, include relevant related skills to reach 10).
+         - "formatIssues": Array of strings (Identify exactly 5 specific formatting or structural issues. Be strict to find 5, e.g., "Date format inconsistent", "Tables detected", "Low text density", "Margins too wide", "Font size too small").
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume.
             Structure:
             ### 🤖 ATS Parsing Report
