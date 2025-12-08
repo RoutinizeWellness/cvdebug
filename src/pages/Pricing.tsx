@@ -85,21 +85,21 @@ export default function PricingPage() {
                                 <span className="text-xl text-muted-foreground line-through decoration-red-500/50">$9.99</span>
                             </div>
                             <p className="text-xs font-bold text-green-600 mt-2 flex items-center gap-1">
-                                50% off!
+                                50% OFF
                             </p>
                             <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
                                 <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
                             </p>
                         </div>
-                        <p className="text-muted-foreground">Beat the ATS for one specific job.</p>
+                        <p className="text-muted-foreground">Perfect for optimizing a resume for one specific job application.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "Full ATS Analysis",
-                            "Missing Keywords",
-                            "Format Check",
-                            "PDF Report"
+                            "Full ATS Analysis Score",
+                            "Missing Keywords Report",
+                            "Formatting & Structure Check",
+                            "Downloadable PDF Report"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -128,16 +128,16 @@ export default function PricingPage() {
                             <span className="text-5xl font-black">$19.99</span>
                             <span className="text-xl text-muted-foreground line-through">$49.95</span>
                         </div>
-                        <p className="text-sm font-bold text-green-600">Save $25!</p>
-                        <p className="text-muted-foreground">Perfect for active job seekers.</p>
+                        <p className="text-sm font-bold text-green-600">SAVE $25</p>
+                        <p className="text-muted-foreground">Best for active job seekers applying to multiple companies.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "5 Full Scans",
-                            "Test different versions",
-                            "Apply to 5+ jobs",
-                            "$4/scan (save $25!)"
+                            "5 Full ATS Scans",
+                            "Test Different Resume Versions",
+                            "Tailor for 5+ Job Descriptions",
+                            "Credits Never Expire"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">

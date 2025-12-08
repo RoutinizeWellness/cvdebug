@@ -45,7 +45,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
         price: "$4.99", 
         originalPrice: "$9.99",
         period: "one-time", 
-        features: ["Full ATS Analysis", "Missing Keywords", "Format Check", "PDF Report"],
+        features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Downloadable PDF Report"],
         badge: "Beta Launch 🚀",
         icon: Zap,
         color: "text-orange-500"
@@ -55,7 +55,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
         price: "$19.99", 
         originalPrice: "$49.95",
         period: "credits never expire", 
-        features: ["5 Full Scans", "Test different versions", "Apply to 5+ jobs", "$4/scan (save $25!)"],
+        features: ["5 Full ATS Scans", "Test Different Resume Versions", "Tailor for 5+ Job Descriptions", "Credits Never Expire"],
         badge: "Best Value",
         icon: Building2,
         color: "text-blue-500"
@@ -204,7 +204,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
             </div>
             
             <Button variant="outline" className="w-full h-12 font-bold text-base rounded-xl" onClick={() => onOpenChange(false)}>
-              Continue Free
+              Try Free
             </Button>
           </div>
 
@@ -228,24 +228,24 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <Badge variant="secondary" className="bg-green-500/10 text-green-600 hover:bg-green-500/20 border-green-500/20">
-                    50% off!
+                    50% OFF
                   </Badge>
                   <span className="text-[10px] font-bold text-orange-600 flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">
                     <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Beat the ATS for one specific job.</p>
+              <p className="text-sm text-muted-foreground">Perfect for optimizing a resume for one specific job application.</p>
             </div>
             
             <Separator />
 
             <div className="space-y-3 flex-1">
               {[
-                "Full ATS Analysis",
-                "Missing Keywords",
-                "Format Check",
-                "PDF Report"
+                "Full ATS Analysis Score",
+                "Missing Keywords Report",
+                "Formatting & Structure Check",
+                "Downloadable PDF Report"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -285,24 +285,24 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border-blue-500/20">
-                    Save $25!
+                    SAVE $25
                   </Badge>
                   <span className="text-[10px] font-medium text-muted-foreground">
                     Just $4.00 per scan
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Perfect for active job seekers.</p>
+              <p className="text-sm text-muted-foreground">Best for active job seekers applying to multiple companies.</p>
             </div>
             
             <Separator />
 
             <div className="space-y-3 flex-1">
               {[
-                "5 Full Scans",
-                "Test different versions",
-                "Apply to 5+ jobs",
-                "$4/scan (save $25!)"
+                "5 Full ATS Scans",
+                "Test Different Resume Versions",
+                "Tailor for 5+ Job Descriptions",
+                "Credits Never Expire"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
