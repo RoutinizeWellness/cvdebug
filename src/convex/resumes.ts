@@ -123,7 +123,10 @@ export const updateResumeMetadata = internalMutation({
       format: v.number(),
       completeness: v.number(),
     })),
-    missingKeywords: v.optional(v.array(v.string())),
+    missingKeywords: v.optional(v.array(v.object({
+      keyword: v.string(),
+      priority: v.string(),
+    }))),
     formatIssues: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {

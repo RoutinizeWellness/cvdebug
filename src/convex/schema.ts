@@ -28,7 +28,10 @@ const schema = defineSchema(
         format: v.number(),
         completeness: v.number(),
       })),
-      missingKeywords: v.optional(v.array(v.string())), // Added for Free Tier Preview
+      missingKeywords: v.optional(v.array(v.object({
+        keyword: v.string(),
+        priority: v.string(), // critical, important, nice-to-have
+      }))), 
       formatIssues: v.optional(v.array(v.string())), // Added for Free Tier Preview
       marketingEmailSent: v.optional(v.boolean()), // Added for 24h follow-up email
       status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),

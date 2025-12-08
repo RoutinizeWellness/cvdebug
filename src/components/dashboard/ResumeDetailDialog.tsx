@@ -28,8 +28,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Lock } from "lucide-react";
+import { Lock, Briefcase, Building } from "lucide-react";
 import { PricingDialog } from "@/components/PricingDialog";
+import { ScoreHistory } from "./ScoreHistory";
 
 interface ResumeDetailDialogProps {
   selectedResume: any;
@@ -359,7 +360,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
               <div className="p-6 flex flex-col gap-8">
                 <div>
                   <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <BarChart className="h-4 w-4" /> ATS Score Analysis
+                    <BarChart className="h-4 w-4" /> Match Rate Score
                   </h3>
                   
                   <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6 shadow-sm print:border-none print:shadow-none">
@@ -367,14 +368,16 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                       <CircularScore score={selectedResume?.score || 0} />
                       <div className="flex-1 space-y-1 text-center sm:text-left">
                         <h4 className="text-lg font-bold text-foreground">
-                          {(selectedResume?.score || 0) >= 80 ? 'Excellent Match' : 
-                           (selectedResume?.score || 0) >= 50 ? 'Needs Improvement' : 
-                           'Poor Match'}
+                          {(selectedResume?.score || 0) >= 86 ? '⭐ Excellent' : 
+                           (selectedResume?.score || 0) >= 71 ? '✅ Great Match' : 
+                           (selectedResume?.score || 0) >= 51 ? '⚠️ Good, but can improve' : 
+                           '❌ Needs significant work'}
                         </h4>
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          {(selectedResume?.score || 0) >= 80 ? 'Your resume is well-optimized for ATS algorithms.' : 
-                           (selectedResume?.score || 0) >= 50 ? 'You have some good content, but formatting or keywords need work.' : 
-                           'Your resume may be rejected by ATS. Critical fixes needed.'}
+                          {(selectedResume?.score || 0) >= 86 ? 'Your resume is in the top tier. It might be slightly over-optimized, but ready for application.' : 
+                           (selectedResume?.score || 0) >= 71 ? 'You have a strong chance of passing the ATS. Minor tweaks could push you to the top.' : 
+                           (selectedResume?.score || 0) >= 51 ? 'You are on the right track, but missing key elements are holding your score back.' : 
+                           'Your resume is likely to be rejected by ATS. Immediate attention to keywords and format is required.'}
                         </p>
                       </div>
                     </div>
@@ -419,12 +422,37 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     </h4>
                     <div className="space-y-3">
                       {/* Show up to 3 keywords for free users, or all for paid */}
-                      {selectedResume.missingKeywords.slice(0, isFree ? 3 : undefined).map((keyword: string, i: number) => (
-                        <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
-                          <span className="text-sm font-medium">{keyword}</span>
-                          <span className="text-[10px] text-red-500 font-bold uppercase">Critical</span>
-                        </div>
-                      ))}
+                      {selectedResume.missingKeywords.slice(0, isFree ? 3 : undefined).map((item: any, i: number) => {
+                        // Handle both old string format and new object format
+                        const keyword = typeof item === 'string' ? item : item.keyword;
+                        const priority = typeof item === 'string' ? 'critical' : item.priority;
+                        
+                        let priorityColor = "text-red-500";
+                        let priorityBg = "bg-red-500/10";
+                        let priorityLabel = "CRITICAL";
+                        
+                        if (priority === 'important') {
+                          priorityColor = "text-yellow-600";
+                          priorityBg = "bg-yellow-500/10";
+                          priorityLabel = "IMPORTANT";
+                        } else if (priority === 'nice-to-have') {
+                          priorityColor = "text-green-600";
+                          priorityBg = "bg-green-500/10";
+                          priorityLabel = "NICE TO HAVE";
+                        }
+
+                        return (
+                          <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
+                            <div className="flex items-center gap-2">
+                              <div className={`h-2 w-2 rounded-full ${priority === 'critical' ? 'bg-red-500' : priority === 'important' ? 'bg-yellow-500' : 'bg-green-500'}`} />
+                              <span className="text-sm font-medium">{keyword}</span>
+                            </div>
+                            <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${priorityBg} ${priorityColor}`}>
+                              {priorityLabel}
+                            </span>
+                          </div>
+                        );
+                      })}
                       
                       {/* Masking for Free Users if there are more than 3 */}
                       {isFree && selectedResume.missingKeywords.length > 3 && (
@@ -487,6 +515,25 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     </div>
                   </div>
                 )}
+
+                <ScoreHistory />
+
+                <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4 mt-4">
+                  <h4 className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-2 uppercase tracking-wider">
+                    <Building className="h-3 w-3" /> Users got interviews at
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
+                      Fortune 500
+                    </span>
+                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
+                      FAANG
+                    </span>
+                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
+                      Leading Startups
+                    </span>
+                  </div>
+                </div>
 
                 <Separator className="print:hidden" />
 

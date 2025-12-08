@@ -74,7 +74,10 @@ export const analyzeResume = internalAction({
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
          - "score": Calculated weighted score (integer).
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of strings (Identify exactly 10 critical missing keywords or skills based on the JD/Industry standards. If fewer are missing, include relevant related skills to reach 10).
+         - "missingKeywords": Array of objects. Identify exactly 10 critical missing keywords. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have" }.
+           - "critical": Essential hard skills for the role (e.g., Python for Data Science).
+           - "important": Preferred skills or tools.
+           - "nice-to-have": Soft skills or bonus tech.
          - "formatIssues": Array of strings (Identify exactly 5 specific formatting or structural issues. Be strict to find 5, e.g., "Date format inconsistent", "Tables detected", "Low text density", "Margins too wide", "Font size too small").
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume.
             Structure:
@@ -96,9 +99,13 @@ export const analyzeResume = internalAction({
         "category": "Product", 
         "score": 58, 
         "scoreBreakdown": { "keywords": 50, "format": 70, "completeness": 55 },
-        "missingKeywords": ["Python", "SQL", "Agile", "Product Strategy"],
-        "formatIssues": ["Use of tables detected", "Date format inconsistent"],
-        "analysis": "### 🤖 ATS Parsing Report\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
+        "missingKeywords": [
+          { "keyword": "Python", "priority": "critical" },
+          { "keyword": "SQL", "priority": "important" },
+          { "keyword": "Agile", "priority": "nice-to-have" }
+        ],
+        "formatIssues": [\"Use of tables detected\", \"Date format inconsistent\"],
+        "analysis": "### 🤖 ATS Parsing Report\\\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
       }
       `;
 
