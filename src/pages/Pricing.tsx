@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Rocket, X } from "lucide-react";
+import { Check, Zap, Building2, Rocket, X, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "convex/react";
@@ -52,19 +52,25 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">2 Free Scans</span>
+                            <span className="text-sm">Score 0-100</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Basic Score (0-100)</span>
+                            <span className="text-sm">Top 3 keywords missing (of 10)</span>
                         </div>
-                        <div className="flex items-center gap-3 text-muted-foreground/60">
-                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                                <X className="h-3.5 w-3.5" />
+                        <div className="flex items-center gap-3">
+                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm line-through">No detailed analysis</span>
+                            <span className="text-sm">Top 2 format issues (of 5)</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-muted-foreground/80">
+                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                                <Lock className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="text-sm">Detailed recommendations locked</span>
                         </div>
                     </div>
                     

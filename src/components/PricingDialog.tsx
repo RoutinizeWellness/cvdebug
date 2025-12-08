@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X } from "lucide-react";
+import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X, Lock } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
@@ -196,19 +196,25 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span className="text-sm font-medium text-foreground/80">2 Free Scans</span>
+                <span className="text-sm font-medium text-foreground/80">Score 0-100</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span className="text-sm font-medium text-foreground/80">Basic Score (0-100)</span>
+                <span className="text-sm font-medium text-foreground/80">Top 3 keywords missing (of 10)</span>
               </div>
-              <div className="flex items-center gap-3 text-muted-foreground/60">
-                <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <X className="h-3 w-3" />
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span className="text-sm font-medium line-through">No detailed analysis</span>
+                <span className="text-sm font-medium text-foreground/80">Top 2 format issues (of 5)</span>
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground/80">
+                <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Lock className="h-3 w-3" />
+                </div>
+                <span className="text-sm font-medium">Detailed recommendations locked</span>
               </div>
             </div>
             
