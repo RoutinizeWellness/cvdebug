@@ -124,6 +124,7 @@ export const updateResumeMetadata = internalMutation({
       completeness: v.number(),
     })),
     missingKeywords: v.optional(v.array(v.string())),
+    formatIssues: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const updates: any = { status: "completed" };
@@ -134,6 +135,7 @@ export const updateResumeMetadata = internalMutation({
     if (args.score !== undefined) updates.score = args.score;
     if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
     if (args.missingKeywords) updates.missingKeywords = args.missingKeywords;
+    if (args.formatIssues) updates.formatIssues = args.formatIssues;
 
     await ctx.db.patch(args.id, updates);
   },

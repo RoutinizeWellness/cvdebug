@@ -75,6 +75,7 @@ export const analyzeResume = internalAction({
          - "score": Calculated weighted score (integer).
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
          - "missingKeywords": Array of strings (Top 5-10 critical missing keywords).
+         - "formatIssues": Array of strings (List 3-5 specific formatting problems found, e.g. "Date format inconsistent", "Tables detected", "Low text density").
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume.
             Structure:
             ### 🤖 ATS Parsing Report
@@ -96,6 +97,7 @@ export const analyzeResume = internalAction({
         "score": 58, 
         "scoreBreakdown": { "keywords": 50, "format": 70, "completeness": 55 },
         "missingKeywords": ["Python", "SQL", "Agile", "Product Strategy"],
+        "formatIssues": ["Use of tables detected", "Date format inconsistent"],
         "analysis": "### 🤖 ATS Parsing Report\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
       }
       `;
@@ -125,7 +127,7 @@ export const analyzeResume = internalAction({
       const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category, score, scoreBreakdown, missingKeywords, analysis } = parsed;
+      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,

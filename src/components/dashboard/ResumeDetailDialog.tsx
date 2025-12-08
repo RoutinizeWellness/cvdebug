@@ -20,7 +20,8 @@ import {
   Cpu,
   ScanLine,
   Check,
-  Clock
+  Clock,
+  LayoutTemplate
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -411,17 +412,22 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 </div>
 
                 {/* NEW: Missing Keywords Section (Free Tier Logic) */}
-                {isFree && selectedResume?.missingKeywords && selectedResume.missingKeywords.length > 0 && (
+                {selectedResume?.missingKeywords && selectedResume.missingKeywords.length > 0 && (
                   <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
                     <h4 className="text-sm font-bold text-orange-700 mb-3 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4" /> Missing Keywords
                     </h4>
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
-                        <span className="text-sm font-medium">{selectedResume.missingKeywords[0]}</span>
-                        <span className="text-[10px] text-red-500 font-bold uppercase">Critical</span>
-                      </div>
-                      {selectedResume.missingKeywords.length > 1 && (
+                      {/* Show up to 3 keywords for free users, or all for paid */}
+                      {selectedResume.missingKeywords.slice(0, isFree ? 3 : undefined).map((keyword: string, i: number) => (
+                        <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
+                          <span className="text-sm font-medium">{keyword}</span>
+                          <span className="text-[10px] text-red-500 font-bold uppercase">Critical</span>
+                        </div>
+                      ))}
+                      
+                      {/* Masking for Free Users if there are more than 3 */}
+                      {isFree && selectedResume.missingKeywords.length > 3 && (
                         <div className="relative">
                           <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
                              <div className="bg-background p-2 rounded border border-border h-9"></div>
@@ -435,7 +441,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                               onClick={() => setShowPricing(true)}
                             >
                               <Lock className="h-3 w-3 mr-1.5" />
-                              Unlock {selectedResume.missingKeywords.length - 1} more
+                              Unlock {selectedResume.missingKeywords.length - 3} more
                             </Button>
                           </div>
                         </div>
@@ -443,7 +449,45 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     </div>
                   </div>
                 )}
-                
+
+                {/* NEW: Format Issues Section (Free Tier Logic) */}
+                {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
+                  <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
+                      <LayoutTemplate className="h-4 w-4" /> Format Issues
+                    </h4>
+                    <div className="space-y-3">
+                      {/* Show up to 2 format issues for free users, or all for paid */}
+                      {selectedResume.formatIssues.slice(0, isFree ? 2 : undefined).map((issue: string, i: number) => (
+                        <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-blue-500/10">
+                          <span className="text-sm font-medium">{issue}</span>
+                          <span className="text-[10px] text-blue-500 font-bold uppercase">Fix</span>
+                        </div>
+                      ))}
+                      
+                      {/* Masking for Free Users if there are more than 2 */}
+                      {isFree && selectedResume.formatIssues.length > 2 && (
+                        <div className="relative">
+                          <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
+                             <div className="bg-background p-2 rounded border border-border h-9"></div>
+                          </div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <Button 
+                              size="sm" 
+                              variant="secondary" 
+                              className="h-8 text-xs font-bold shadow-sm"
+                              onClick={() => setShowPricing(true)}
+                            >
+                              <Lock className="h-3 w-3 mr-1.5" />
+                              Unlock {selectedResume.formatIssues.length - 2} more
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <Separator className="print:hidden" />
 
                 <div>
