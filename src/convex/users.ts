@@ -145,6 +145,29 @@ export const purchaseCredits = mutation({
   },
 });
 
+export const getBetaStatus = query({
+  args: {},
+  handler: async (ctx) => {
+    // Count users to determine claimed spots
+    // We take up to 101 to know if we exceeded 100
+    const users = await ctx.db.query("users").take(101);
+    const realCount = users.length;
+    
+    // Marketing logic: Start at 47 to show social proof if low
+    // This ensures the site doesn't look empty initially
+    const baseCount = 47;
+    const displayClaimed = Math.max(realCount, baseCount);
+    const total = 100;
+    
+    return {
+      claimed: Math.min(displayClaimed, total),
+      total,
+      remaining: Math.max(0, total - displayClaimed),
+      isSoldOut: displayClaimed >= total
+    };
+  },
+});
+
 /**
  * Use this function internally to get the current user data.
  */

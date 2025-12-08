@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Rocket, X } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const betaStatus = useQuery(api.users.getBetaStatus);
+  const claimed = betaStatus?.claimed ?? 53;
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -88,7 +92,7 @@ export default function PricingPage() {
                                 50% OFF
                             </p>
                             <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
-                                <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
+                                <Rocket className="h-3 w-3" /> Limited: {claimed}/100 claimed
                             </p>
                         </div>
                         <p className="text-muted-foreground">Perfect for optimizing a resume for one specific job application.</p>

@@ -11,6 +11,9 @@ import { Separator } from "@/components/ui/separator";
 export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null }) {
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
   const user = useQuery(api.users.currentUser);
+  const betaStatus = useQuery(api.users.getBetaStatus);
+  const claimed = betaStatus?.claimed ?? 53;
+  
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "bulk_pack" | null>(initialPlan || null);
   
@@ -237,7 +240,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                     50% OFF
                   </Badge>
                   <span className="text-[10px] font-bold text-orange-600 flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">
-                    <Rocket className="h-3 w-3" /> Limited: 53/100 claimed
+                    <Rocket className="h-3 w-3" /> Limited: {claimed}/100 claimed
                   </span>
                 </div>
               </div>
