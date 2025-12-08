@@ -141,8 +141,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                   </>
                 ) : (
                   <div className="flex flex-col items-center leading-none gap-1">
-                    <span>Pay {planDetails.price} & Subscribe</span>
-                    <span className="text-[10px] font-normal opacity-80">Instant access • Secure checkout</span>
+                    <span>Pay {planDetails.price}</span>
+                    <span className="text-[10px] font-normal opacity-80">One-time payment • Secure checkout</span>
                   </div>
                 )}
               </Button>
