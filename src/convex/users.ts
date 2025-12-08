@@ -68,7 +68,7 @@ export const storeUser = mutation({
       name: identity.name,
       email: identity.email,
       subscriptionTier: "free",
-      credits: 1, // Default to 1 credit for free tier
+      credits: 2, // Default to 2 credits for free tier
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
     });
 

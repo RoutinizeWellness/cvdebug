@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Rocket } from "lucide-react";
+import { Check, Zap, Building2, Rocket, X } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -48,13 +48,19 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">1 Free Scan</span>
+                            <span className="text-sm">2 Free Scans</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">No credit card</span>
+                            <span className="text-sm">Basic Score (0-100)</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-muted-foreground/60">
+                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                                <X className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="text-sm line-through">No detailed analysis</span>
                         </div>
                     </div>
                     

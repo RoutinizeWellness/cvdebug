@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star } from "lucide-react";
+import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
@@ -189,18 +189,24 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
             <Separator />
 
             <div className="space-y-3 flex-1">
-              {[
-                "Basic Score (0-100)",
-                "1 Free Scan",
-                "No credit card"
-              ].map((feature, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground/80">{feature}</span>
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
                 </div>
-              ))}
+                <span className="text-sm font-medium text-foreground/80">2 Free Scans</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground/80">Basic Score (0-100)</span>
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground/60">
+                <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <X className="h-3 w-3" />
+                </div>
+                <span className="text-sm font-medium line-through">No detailed analysis</span>
+              </div>
             </div>
             
             <Button variant="outline" className="w-full h-12 font-bold text-base rounded-xl" onClick={() => onOpenChange(false)}>
