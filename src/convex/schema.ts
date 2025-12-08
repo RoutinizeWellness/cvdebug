@@ -31,6 +31,8 @@ const schema = defineSchema(
       missingKeywords: v.optional(v.array(v.object({
         keyword: v.string(),
         priority: v.string(), // critical, important, nice-to-have
+        frequency: v.optional(v.number()), // Added for Jobscan UI
+        impact: v.optional(v.number()), // Added for Jobscan UI
       }))), 
       formatIssues: v.optional(v.array(v.string())), // Added for Free Tier Preview
       marketingEmailSent: v.optional(v.boolean()), // Added for 24h follow-up email

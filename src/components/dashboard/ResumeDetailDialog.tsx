@@ -21,7 +21,11 @@ import {
   ScanLine,
   Check,
   Clock,
-  LayoutTemplate
+  LayoutTemplate,
+  Target,
+  ArrowRight,
+  AlertCircle,
+  TrendingUp
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -31,6 +35,7 @@ import { api } from "@/convex/_generated/api";
 import { Lock, Briefcase, Building } from "lucide-react";
 import { PricingDialog } from "@/components/PricingDialog";
 import { ScoreHistory } from "./ScoreHistory";
+import { Progress } from "@/components/ui/progress";
 
 interface ResumeDetailDialogProps {
   selectedResume: any;
@@ -274,6 +279,12 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     );
   };
 
+  const criticalKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'critical' : k.priority) === 'critical') || [];
+  const importantKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'important' : k.priority) === 'important') || [];
+  const niceToHaveKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'nice-to-have' : k.priority) === 'nice-to-have') || [];
+  
+  const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
+
   return (
     <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan="single_scan" />
@@ -357,168 +368,169 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
           {/* Left Panel - Details */}
           <div className={`w-full lg:w-80 xl:w-96 border-r border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:block print:w-full print:border-none`}>
             <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-              <div className="p-6 flex flex-col gap-8">
-                <div>
-                  <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <BarChart className="h-4 w-4" /> Match Rate Score
-                  </h3>
-                  
-                  <div className="bg-card border border-border rounded-xl p-6 flex flex-col gap-6 shadow-sm print:border-none print:shadow-none">
-                    <div className="flex flex-col sm:flex-row items-center gap-6">
-                      <CircularScore score={selectedResume?.score || 0} />
-                      <div className="flex-1 space-y-1 text-center sm:text-left">
-                        <h4 className="text-lg font-bold text-foreground">
-                          {(selectedResume?.score || 0) >= 86 ? '⭐ Excellent' : 
-                           (selectedResume?.score || 0) >= 71 ? '✅ Great Match' : 
-                           (selectedResume?.score || 0) >= 51 ? '⚠️ Good, but can improve' : 
-                           '❌ Needs significant work'}
-                        </h4>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          {(selectedResume?.score || 0) >= 86 ? 'Your resume is in the top tier. It might be slightly over-optimized, but ready for application.' : 
-                           (selectedResume?.score || 0) >= 71 ? 'You have a strong chance of passing the ATS. Minor tweaks could push you to the top.' : 
-                           (selectedResume?.score || 0) >= 51 ? 'You are on the right track, but missing key elements are holding your score back.' : 
-                           'Your resume is likely to be rejected by ATS. Immediate attention to keywords and format is required.'}
-                        </p>
+              <div className="p-6 flex flex-col gap-6">
+                
+                {/* 1. Match Rate Card */}
+                <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Your Match Rate</h3>
+                      <div className="flex items-baseline gap-2 mt-1">
+                        <span className={`text-4xl font-black ${(selectedResume?.score || 0) >= 75 ? 'text-green-500' : 'text-foreground'}`}>
+                          {selectedResume?.score || 0}%
+                        </span>
+                        <span className="text-xs text-muted-foreground font-medium">
+                          Target: 75%+
+                        </span>
                       </div>
                     </div>
+                    <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+                      <Target className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2 mb-4">
+                    <Progress value={selectedResume?.score || 0} className="h-2.5" />
+                    <div className="flex justify-between text-[10px] font-bold text-muted-foreground uppercase">
+                      <span>Low</span>
+                      <span>Good</span>
+                      <span>Excellent</span>
+                    </div>
+                  </div>
 
-                    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/50">
-                      <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className={`text-lg font-bold ${
-                          (selectedResume?.scoreBreakdown?.keywords || 0) >= 70 ? 'text-green-500' : 
-                          (selectedResume?.scoreBreakdown?.keywords || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
-                        }`}>
-                          {selectedResume?.scoreBreakdown?.keywords ?? "-"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Keywords</span>
+                  <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
+                    <p className="text-xs font-medium leading-relaxed">
+                      {(selectedResume?.score || 0) >= 75 
+                        ? "🎉 You're matched! Your resume is well-optimized for this role."
+                        : `You're ${selectedResume?.score || 0}% matched! Add ${Math.max(0, 10 - (selectedResume?.scoreBreakdown?.keywords ? Math.floor(selectedResume.scoreBreakdown.keywords / 10) : 0))} more keywords to hit 75%.`
+                      }
+                    </p>
+                    {(selectedResume?.score || 0) < 75 && (
+                      <Button variant="link" className="h-auto p-0 text-xs font-bold text-primary mt-2" onClick={() => document.getElementById('critical-issues')?.scrollIntoView({ behavior: 'smooth' })}>
+                        See What to Fix <ArrowRight className="h-3 w-3 ml-1" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* 2. Critical Issues (Red) */}
+                <div id="critical-issues" className="bg-red-500/5 border border-red-500/20 rounded-xl overflow-hidden">
+                  <div className="bg-red-500/10 px-4 py-3 border-b border-red-500/10 flex justify-between items-center">
+                    <h3 className="text-sm font-bold text-red-600 flex items-center gap-2">
+                      <AlertCircle className="h-4 w-4" /> CRITICAL (Fix First)
+                    </h3>
+                    <span className="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full">
+                      {criticalKeywords.length} Issues
+                    </span>
+                  </div>
+                  
+                  <div className="p-4 space-y-4">
+                    <div>
+                      <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Missing Required Skills:</p>
+                      <div className="space-y-3">
+                        {criticalKeywords.slice(0, isFree ? 3 : undefined).map((item: any, i: number) => (
+                          <div key={i} className="flex flex-col gap-1 pb-3 border-b border-red-500/10 last:border-0 last:pb-0">
+                            <div className="flex justify-between items-start">
+                              <span className="text-sm font-bold text-foreground flex items-center gap-2">
+                                • {typeof item === 'string' ? item : item.keyword}
+                                {item.frequency && <span className="text-[10px] font-normal text-muted-foreground bg-muted px-1.5 rounded">(mentioned {item.frequency}x)</span>}
+                              </span>
+                            </div>
+                            <div className="pl-3.5 flex items-center gap-1 text-xs text-red-600/80 font-medium">
+                              <ArrowRight className="h-3 w-3" /> Add to Skills section
+                            </div>
+                          </div>
+                        ))}
+                        
+                        {isFree && criticalKeywords.length > 3 && (
+                          <div className="relative pt-2">
+                            <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
+                               <div className="h-8 bg-muted/50 rounded w-3/4"></div>
+                               <div className="h-8 bg-muted/50 rounded w-1/2"></div>
+                            </div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Button size="sm" variant="secondary" className="h-7 text-xs font-bold" onClick={() => setShowPricing(true)}>
+                                <Lock className="h-3 w-3 mr-1.5" /> Unlock {criticalKeywords.length - 3} more
+                              </Button>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className={`text-lg font-bold ${
-                          (selectedResume?.scoreBreakdown?.format || 0) >= 70 ? 'text-green-500' : 
-                          (selectedResume?.scoreBreakdown?.format || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
-                        }`}>
-                          {selectedResume?.scoreBreakdown?.format ?? "-"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Format</span>
+                    </div>
+                    
+                    <div className="bg-background rounded-lg p-3 border border-red-500/10 flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="h-4 w-4 text-red-600" />
                       </div>
-                      <div className="flex flex-col items-center justify-center p-2 bg-muted/30 rounded-lg text-center">
-                        <span className={`text-lg font-bold ${
-                          (selectedResume?.scoreBreakdown?.completeness || 0) >= 70 ? 'text-green-500' : 
-                          (selectedResume?.scoreBreakdown?.completeness || 0) >= 40 ? 'text-yellow-500' : 'text-red-500'
-                        }`}>
-                          {selectedResume?.scoreBreakdown?.completeness ?? "-"}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Completeness</span>
+                      <div>
+                        <p className="text-xs font-bold text-foreground">Impact</p>
+                        <p className="text-xs text-muted-foreground">+{totalImpact > 0 ? totalImpact : 15}% match if fixed</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* NEW: Missing Keywords Section (Free Tier Logic) */}
-                {selectedResume?.missingKeywords && selectedResume.missingKeywords.length > 0 && (
-                  <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
-                    <h4 className="text-sm font-bold text-orange-700 mb-3 flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4" /> Missing Keywords {isFree && <span className="text-xs font-normal opacity-80">(Top 3 of 10)</span>}
-                    </h4>
-                    <div className="space-y-3">
-                      {/* Show up to 3 keywords for free users, or all for paid */}
-                      {selectedResume.missingKeywords.slice(0, isFree ? 3 : undefined).map((item: any, i: number) => {
-                        // Handle both old string format and new object format
-                        const keyword = typeof item === 'string' ? item : item.keyword;
-                        const priority = typeof item === 'string' ? 'critical' : item.priority;
-                        
-                        let priorityColor = "text-red-500";
-                        let priorityBg = "bg-red-500/10";
-                        let priorityLabel = "CRITICAL";
-                        
-                        if (priority === 'important') {
-                          priorityColor = "text-yellow-600";
-                          priorityBg = "bg-yellow-500/10";
-                          priorityLabel = "IMPORTANT";
-                        } else if (priority === 'nice-to-have') {
-                          priorityColor = "text-green-600";
-                          priorityBg = "bg-green-500/10";
-                          priorityLabel = "NICE TO HAVE";
-                        }
-
-                        return (
-                          <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-orange-500/10">
-                            <div className="flex items-center gap-2">
-                              <div className={`h-2 w-2 rounded-full ${priority === 'critical' ? 'bg-red-500' : priority === 'important' ? 'bg-yellow-500' : 'bg-green-500'}`} />
-                              <span className="text-sm font-medium">{keyword}</span>
+                {/* 3. Important Issues (Yellow) */}
+                <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-xl overflow-hidden">
+                  <div className="bg-yellow-500/10 px-4 py-3 border-b border-yellow-500/10 flex justify-between items-center">
+                    <h3 className="text-sm font-bold text-yellow-700 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4" /> IMPORTANT (Optimize)
+                    </h3>
+                    <span className="text-[10px] font-bold bg-yellow-500 text-white px-2 py-0.5 rounded-full">
+                      {(selectedResume?.formatIssues?.length || 0) + importantKeywords.length} Issues
+                    </span>
+                  </div>
+                  
+                  <div className="p-4 space-y-4">
+                    {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
+                      <div>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Format Issues:</p>
+                        <div className="space-y-3">
+                          {selectedResume.formatIssues.slice(0, isFree ? 2 : undefined).map((issue: string, i: number) => (
+                            <div key={i} className="flex flex-col gap-1 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0">
+                              <span className="text-sm font-medium text-foreground flex items-start gap-2">
+                                • {issue}
+                              </span>
+                              <div className="pl-3.5 flex items-center gap-1 text-xs text-yellow-700/80 font-medium">
+                                <ArrowRight className="h-3 w-3" /> Fix formatting
+                              </div>
                             </div>
-                            <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${priorityBg} ${priorityColor}`}>
-                              {priorityLabel}
-                            </span>
-                          </div>
-                        );
-                      })}
-                      
-                      {/* Masking for Free Users if there are more than 3 */}
-                      {isFree && selectedResume.missingKeywords.length > 3 && (
-                        <div className="relative">
-                          <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
-                             <div className="bg-background p-2 rounded border border-border h-9"></div>
-                             <div className="bg-background p-2 rounded border border-border h-9"></div>
-                          </div>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <Button 
-                              size="sm" 
-                              variant="secondary" 
-                              className="h-8 text-xs font-bold shadow-sm"
-                              onClick={() => setShowPricing(true)}
-                            >
-                              <Lock className="h-3 w-3 mr-1.5" />
-                              Unlock {selectedResume.missingKeywords.length - 3} more
-                            </Button>
-                          </div>
+                          ))}
+                          
+                          {isFree && selectedResume.formatIssues.length > 2 && (
+                            <div className="relative pt-2">
+                              <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
+                                 <div className="h-8 bg-muted/50 rounded w-3/4"></div>
+                              </div>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <Button size="sm" variant="secondary" className="h-7 text-xs font-bold" onClick={() => setShowPricing(true)}>
+                                  <Lock className="h-3 w-3 mr-1.5" /> Unlock {selectedResume.formatIssues.length - 2} more
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </div>
-                )}
+                      </div>
+                    )}
 
-                {/* NEW: Format Issues Section (Free Tier Logic) */}
-                {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
-                  <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
-                    <h4 className="text-sm font-bold text-blue-700 mb-3 flex items-center gap-2">
-                      <LayoutTemplate className="h-4 w-4" /> Format Issues {isFree && <span className="text-xs font-normal opacity-80">(Top 2 of 5)</span>}
-                    </h4>
-                    <div className="space-y-3">
-                      {/* Show up to 2 format issues for free users, or all for paid */}
-                      {selectedResume.formatIssues.slice(0, isFree ? 2 : undefined).map((issue: string, i: number) => (
-                        <div key={i} className="flex items-center justify-between bg-background p-2 rounded border border-blue-500/10">
-                          <span className="text-sm font-medium">{issue}</span>
-                          <span className="text-[10px] text-blue-500 font-bold uppercase">Fix</span>
-                        </div>
-                      ))}
-                      
-                      {/* Masking for Free Users if there are more than 2 */}
-                      {isFree && selectedResume.formatIssues.length > 2 && (
-                        <div className="relative">
-                          <div className="space-y-2 filter blur-[2px] opacity-50 select-none">
-                             <div className="bg-background p-2 rounded border border-border h-9"></div>
-                          </div>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <Button 
-                              size="sm" 
-                              variant="secondary" 
-                              className="h-8 text-xs font-bold shadow-sm"
-                              onClick={() => setShowPricing(true)}
-                            >
-                              <Lock className="h-3 w-3 mr-1.5" />
-                              Unlock {selectedResume.formatIssues.length - 2} more
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    {importantKeywords.length > 0 && (
+                      <div className="mt-4">
+                         <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Important Skills:</p>
+                         <div className="space-y-2">
+                            {importantKeywords.map((item: any, i: number) => (
+                              <div key={i} className="text-sm text-foreground flex items-center gap-2">
+                                • {typeof item === 'string' ? item : item.keyword}
+                              </div>
+                            ))}
+                         </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
 
                 <ScoreHistory />
 
-                <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4 mt-4">
+                <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4">
                   <h4 className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-2 uppercase tracking-wider">
                     <Building className="h-3 w-3" /> Users got interviews at
                   </h4>
