@@ -72,6 +72,14 @@ export const storeUser = mutation({
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
     });
 
+    // Send onboarding email
+    if (identity.email) {
+      await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, {
+        email: identity.email,
+        name: identity.name,
+      });
+    }
+
     return userId;
   },
 });
