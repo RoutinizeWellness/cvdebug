@@ -11,6 +11,7 @@ const schema = defineSchema(
       credits: v.optional(v.number()), // Added for Pay Per Use credits
       endsOn: v.optional(v.number()),
       trialEndsOn: v.optional(v.number()), // Added for 15-day free trial
+      emailVariant: v.optional(v.string()), // Added for A/B testing onboarding emails
     }).index("by_token", ["tokenIdentifier"]),
     resumes: defineTable({
       userId: v.string(), // Clerk User ID

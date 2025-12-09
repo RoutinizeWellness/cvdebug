@@ -62,6 +62,9 @@ export const storeUser = mutation({
       return user._id;
     }
 
+    // Assign A/B test variant
+    const emailVariant = Math.random() < 0.5 ? "A" : "B";
+
     // If it's a new user, create them in the database
     const userId = await ctx.db.insert("users", {
       tokenIdentifier: identity.subject,
@@ -70,6 +73,7 @@ export const storeUser = mutation({
       subscriptionTier: "free",
       credits: 2, // Default to 2 credits for free tier
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
+      emailVariant,
     });
 
     // Send onboarding email
@@ -77,6 +81,7 @@ export const storeUser = mutation({
       await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, {
         email: identity.email,
         name: identity.name,
+        variant: emailVariant,
       });
     }
 
