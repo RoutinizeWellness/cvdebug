@@ -6,6 +6,7 @@ import { FeatureGridSection } from "@/components/landing/FeatureGridSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
+import { DifferentiationSection } from "@/components/landing/DifferentiationSection";
 import { Clock } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -39,6 +40,7 @@ export default function Landing() {
         <HowItWorksSection />
         <TestimonialsSection />
         <FeatureGridSection />
+        <DifferentiationSection />
         <CTASection />
         <Footer />
       </main>
