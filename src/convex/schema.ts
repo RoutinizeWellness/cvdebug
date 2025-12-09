@@ -17,7 +17,9 @@ const schema = defineSchema(
       activationEmail24hSent: v.optional(v.boolean()),
       activationEmail72hSent: v.optional(v.boolean()),
       winBackEmail30dSent: v.optional(v.boolean()),
-    }).index("by_token", ["tokenIdentifier"]),
+    })
+    .index("by_token", ["tokenIdentifier"])
+    .index("by_email", ["email"]),
     resumes: defineTable({
       userId: v.string(), // Clerk User ID
       storageId: v.id("_storage"),

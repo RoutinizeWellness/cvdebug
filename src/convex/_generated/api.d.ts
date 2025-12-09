@@ -17,6 +17,7 @@ import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as marketing from "../marketing.js";
 import type * as resumes from "../resumes.js";
+import type * as testing from "../testing.js";
 import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   marketing: typeof marketing;
   resumes: typeof resumes;
+  testing: typeof testing;
   users: typeof users;
   waitlist: typeof waitlist;
 }>;
