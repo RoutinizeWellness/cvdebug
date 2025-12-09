@@ -5,7 +5,7 @@ import { internal } from "./_generated/api";
 export const sendTestEmail = mutation({
   args: {
     email: v.string(),
-    type: v.string(), // "welcome", "reminder_24h", "last_chance_72h", "post_scan", "value_reminder", "discount", "win_back"
+    type: v.string(), // "welcome", "reminder_24h", "last_chance_72h", "post_scan", "value_reminder", "discount", "win_back", "all"
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -15,38 +15,52 @@ export const sendTestEmail = mutation({
 
     const name = user?.name || "Test User";
     const email = args.email;
+    const type = args.type.trim();
 
-    console.log(`Sending ${args.type} email to ${email} (${name})`);
+    const validTypes = ["welcome", "reminder_24h", "last_chance_72h", "post_scan", "value_reminder", "discount", "win_back"];
 
-    switch (args.type) {
-      case "welcome":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, { email, name, variant: "A" });
-        break;
-      case "reminder_24h":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationReminderEmail, { email, name });
-        break;
-      case "last_chance_72h":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationLastChanceEmail, { email, name });
-        break;
-      case "post_scan":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendPostScanEmail, { email, name, score: 65 });
-        break;
-      case "value_reminder":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, { email, name, score: 65 });
-        break;
-      case "discount":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendDiscountEmail, { email, name });
-        break;
-      case "win_back":
-        await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, { email, name });
-        break;
-      default:
-        throw new Error(`Invalid email type: ${args.type}`);
+    if (type === "all") {
+      for (const t of validTypes) {
+        await scheduleEmail(ctx, t, email, name);
+      }
+      return `Scheduled all ${validTypes.length} emails for ${email}`;
     }
-    
-    return `Scheduled ${args.type} email for ${email}`;
+
+    if (!validTypes.includes(type)) {
+      throw new Error(`Invalid email type: "${type}". Valid types are: ${validTypes.join(", ")}, or "all"`);
+    }
+
+    await scheduleEmail(ctx, type, email, name);
+    return `Scheduled ${type} email for ${email}`;
   },
 });
+
+async function scheduleEmail(ctx: any, type: string, email: string, name: string) {
+  console.log(`Scheduling ${type} email for ${email}`);
+  switch (type) {
+    case "welcome":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, { email, name, variant: "A" });
+      break;
+    case "reminder_24h":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendActivationReminderEmail, { email, name });
+      break;
+    case "last_chance_72h":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendActivationLastChanceEmail, { email, name });
+      break;
+    case "post_scan":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendPostScanEmail, { email, name, score: 65 });
+      break;
+    case "value_reminder":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, { email, name, score: 65 });
+      break;
+    case "discount":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendDiscountEmail, { email, name });
+      break;
+    case "win_back":
+      await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, { email, name });
+      break;
+  }
+}
 
 export const resetUserFlags = mutation({
   args: { email: v.string() },
