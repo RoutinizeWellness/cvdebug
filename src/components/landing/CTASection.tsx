@@ -14,9 +14,9 @@ export function CTASection() {
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
         
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight">Ready to land your dream job?</h2>
+          <h2 className="text-3xl md:text-5xl font-black mb-6 tracking-tight">Ready to check your ATS score?</h2>
           <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
-            Join thousands of job seekers who have optimized their resumes and increased their interview rate.
+            Get a clear diagnostic of your resume's technical performance. No subscriptions, just results.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" variant="secondary" className="h-14 px-8 text-base rounded-full font-bold text-primary shadow-xl hover:scale-105 transition-transform" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>

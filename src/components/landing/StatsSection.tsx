@@ -1,9 +1,9 @@
 export function StatsSection() {
   const stats = [
     { value: "75%", label: "Resumes rejected by ATS" },
-    { value: "2x", label: "More interviews" },
+    { value: "No BS", label: "Transparent Pricing" },
     { value: "10s", label: "Average analysis time" },
-    { value: "24/7", label: "AI Availability" },
+    { value: "Secure", label: "Data deleted in 30 days" },
   ];
 
   return (

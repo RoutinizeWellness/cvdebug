@@ -14,27 +14,27 @@ export function FeatureGridSection() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">
-              Why you're not getting interviews
+              Don't let technical errors hold you back
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Most companies use Applicant Tracking Systems (ATS) to filter resumes. If you don't have the right keywords or formatting, a human never sees your application.
+              ATS rejection is just one factor of many, but it's one you can control. Ensure your resume isn't being filtered out due to formatting or keyword issues before a human even sees it.
             </p>
             
             <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 mb-8">
               <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
                 <span className="flex h-2 w-2 rounded-full bg-primary"></span>
-                Why not just use ChatGPT?
+                Diagnostic Tool vs. General Advice
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS is purpose-built</span> to analyze 20+ specific ATS factors (margins, metadata, keyword density) that LLMs miss, giving you a precise quantitative score.
+                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS is a technical diagnostic tool</span> that checks 20+ specific ATS factors (margins, metadata, keyword density) to give you a precise quantitative score.
               </p>
             </div>
 
             <div className="space-y-6">
               {[
-                { icon: Shield, title: "Formatting Errors", desc: "Complex layouts, columns, and graphics confuse ATS parsers." },
-                { icon: Target, title: "Missing Keywords", desc: "Not matching the exact skills listed in the job description." },
-                { icon: Linkedin, title: "Unoptimized LinkedIn", desc: "Recruiters can't find you if your profile lacks the right SEO keywords." },
+                { icon: Shield, title: "Formatting Errors", desc: "Complex layouts, columns, and graphics can confuse ATS parsers." },
+                { icon: Target, title: "Missing Keywords", desc: "Identify gaps between your resume and the job description." },
+                { icon: Linkedin, title: "Unoptimized LinkedIn", desc: "Ensure your profile is discoverable by recruiters." },
                 { icon: BarChart3, title: "Low Content Density", desc: "Vague bullet points that don't show impact or metrics." }
               ].map((feature, i) => (
                 <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-background/50 transition-colors border border-transparent hover:border-border/50">

@@ -13,7 +13,12 @@ export function Footer() {
       <TermsDialog open={showTerms} onOpenChange={setShowTerms} />
       
       <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        <Logo />
+        <div className="flex flex-col gap-2">
+          <Logo />
+          <p className="text-xs text-muted-foreground max-w-xs">
+            Privacy-first: Your data is automatically deleted after 30 days. We do not sell your data.
+          </p>
+        </div>
         <div className="text-muted-foreground text-sm">
           &copy; {new Date().getFullYear()} Resume ATS Optimizer. All rights reserved.
         </div>

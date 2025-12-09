@@ -32,11 +32,11 @@ export function HeroSection() {
               New: LinkedIn Profile Analysis
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
-              Is your resume <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">good enough?</span>
+              Is ATS blocking <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">your resume?</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              <span className="font-bold text-foreground">ResumeATS is a purpose-built ATS optimizer.</span> While ChatGPT gives general advice, we analyze 20+ ATS-specific factors, give you a quantitative score, and tell you exactly what to fix.
+              <span className="font-bold text-foreground">ResumeATS is a diagnostic tool, not a magic solution.</span> We analyze 20+ technical factors to help you pass automated filters. One-time payment, no subscriptions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all font-bold" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
