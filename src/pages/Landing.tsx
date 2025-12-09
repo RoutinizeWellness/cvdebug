@@ -37,10 +37,10 @@ export default function Landing() {
       <main className="flex-1">
         <HeroSection />
         <StatsSection />
-        <HowItWorksSection />
-        <TestimonialsSection />
-        <FeatureGridSection />
         <DifferentiationSection />
+        <HowItWorksSection />
+        <FeatureGridSection />
+        <TestimonialsSection />
         <CTASection />
         <Footer />
       </main>
