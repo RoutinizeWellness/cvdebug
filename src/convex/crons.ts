@@ -4,43 +4,193 @@ import { internalMutation } from "./_generated/server";
 
 const crons = cronJobs();
 
-// Run daily at 9am UTC (check for users who signed up 24h ago)
-crons.interval("send follow up emails", { hours: 24 }, internal.crons.checkAndSendFollowUps, {});
+// 1. Activation Flow (No-Show Users)
+// Check every hour for users who signed up 24h or 72h ago
+crons.interval("activation_flow", { hours: 1 }, internal.crons.runActivationFlow, {});
 
-export const checkAndSendFollowUps = internalMutation({
+// 2. Conversion Flow (Free Users)
+// Check every hour for resumes scanned 1h, 48h, or 7d ago
+crons.interval("conversion_flow", { hours: 1 }, internal.crons.runConversionFlow, {});
+
+// 3. Re-Engagement Flow (Abandoned Users)
+// Check daily for users inactive for 30 days
+crons.interval("reengagement_flow", { hours: 24 }, internal.crons.runReengagementFlow, {});
+
+// --- Activation Flow Logic ---
+export const runActivationFlow = internalMutation({
   handler: async (ctx) => {
     const now = Date.now();
-    const twentyFourHoursAgo = now - (24 * 60 * 60 * 1000);
-    const twentyFiveHoursAgo = now - (25 * 60 * 60 * 1000);
-
-    // Find resumes created between 24-25 hours ago that haven't had an email sent
-    const resumes = await ctx.db
-      .query("resumes")
+    const hour = 60 * 60 * 1000;
+    
+    // Email #2: 24h Reminder
+    // Look for users created between 24h and 25h ago
+    const users24h = await ctx.db
+      .query("users")
       .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", twentyFiveHoursAgo).lt("_creationTime", twentyFourHoursAgo)
+        q.gt("_creationTime", now - (25 * hour)).lt("_creationTime", now - (24 * hour))
       )
-      .filter((q) => q.eq(q.field("marketingEmailSent"), undefined))
-      .take(20);
+      .filter(q => q.eq(q.field("activationEmail24hSent"), undefined))
+      .take(50);
 
-    for (const resume of resumes) {
-      if (!resume.userId) continue;
-      
-      const user = await ctx.db
-        .query("users")
-        .filter(q => q.eq(q.field("tokenIdentifier"), resume.userId))
+    for (const user of users24h) {
+      // Check if they have used the product (created a resume)
+      const resume = await ctx.db
+        .query("resumes")
+        .withIndex("by_user", q => q.eq("userId", user.tokenIdentifier))
         .first();
 
-      if (user && user.email) {
-        // Mark as sent immediately to prevent duplicates
-        await ctx.db.patch(resume._id, { marketingEmailSent: true });
-
-        // Schedule email sending
-        await ctx.scheduler.runAfter(0, internal.marketing.sendFollowUpEmail, {
+      if (!resume && user.email) {
+        await ctx.db.patch(user._id, { activationEmail24hSent: true });
+        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationReminderEmail, {
           email: user.email,
           name: user.name,
-          score: resume.score || 0,
-          missingKeywordsCount: resume.missingKeywords?.length || 0,
-          topMissingKeyword: resume.missingKeywords?.[0]?.keyword,
+        });
+      }
+    }
+
+    // Email #3: 72h Last Chance
+    // Look for users created between 72h and 73h ago
+    const users72h = await ctx.db
+      .query("users")
+      .withIndex("by_creation_time", (q) => 
+        q.gt("_creationTime", now - (73 * hour)).lt("_creationTime", now - (72 * hour))
+      )
+      .filter(q => q.eq(q.field("activationEmail72hSent"), undefined))
+      .take(50);
+
+    for (const user of users72h) {
+      const resume = await ctx.db
+        .query("resumes")
+        .withIndex("by_user", q => q.eq("userId", user.tokenIdentifier))
+        .first();
+
+      if (!resume && user.email) {
+        await ctx.db.patch(user._id, { activationEmail72hSent: true });
+        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationLastChanceEmail, {
+          email: user.email,
+          name: user.name,
+        });
+      }
+    }
+  },
+});
+
+// --- Conversion Flow Logic ---
+export const runConversionFlow = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const hour = 60 * 60 * 1000;
+
+    // Email #4: Post Free-Scan (1h after scan)
+    const resumes1h = await ctx.db
+      .query("resumes")
+      .withIndex("by_creation_time", (q) => 
+        q.gt("_creationTime", now - (2 * hour)).lt("_creationTime", now - (1 * hour))
+      )
+      .filter(q => q.eq(q.field("conversionEmail1hSent"), undefined))
+      .take(50);
+
+    for (const resume of resumes1h) {
+      if (resume.score !== undefined && resume.userId) {
+        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
+        if (user && user.email) {
+          await ctx.db.patch(resume._id, { conversionEmail1hSent: true });
+          await ctx.scheduler.runAfter(0, internal.marketing.sendPostScanEmail, {
+            email: user.email,
+            name: user.name,
+            score: resume.score,
+          });
+        }
+      }
+    }
+
+    // Email #5: Value Reminder (48h after scan, no upgrade)
+    const resumes48h = await ctx.db
+      .query("resumes")
+      .withIndex("by_creation_time", (q) => 
+        q.gt("_creationTime", now - (49 * hour)).lt("_creationTime", now - (48 * hour))
+      )
+      .filter(q => q.eq(q.field("conversionEmail48hSent"), undefined))
+      .take(50);
+
+    for (const resume of resumes48h) {
+      if (resume.score !== undefined && resume.userId) {
+        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
+        // Only send if user is still on free tier
+        if (user && user.email && user.subscriptionTier === "free") {
+          await ctx.db.patch(resume._id, { conversionEmail48hSent: true });
+          await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, {
+            email: user.email,
+            name: user.name,
+            score: resume.score,
+          });
+        }
+      }
+    }
+
+    // Email #6: Discount (7 days after scan, no upgrade)
+    const day = 24 * hour;
+    const resumes7d = await ctx.db
+      .query("resumes")
+      .withIndex("by_creation_time", (q) => 
+        q.gt("_creationTime", now - (7 * day + hour)).lt("_creationTime", now - (7 * day))
+      )
+      .filter(q => q.eq(q.field("conversionEmail7dSent"), undefined))
+      .take(50);
+
+    for (const resume of resumes7d) {
+      if (resume.score !== undefined && resume.userId) {
+        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
+        if (user && user.email && user.subscriptionTier === "free") {
+          await ctx.db.patch(resume._id, { conversionEmail7dSent: true });
+          await ctx.scheduler.runAfter(0, internal.marketing.sendDiscountEmail, {
+            email: user.email,
+            name: user.name,
+          });
+        }
+      }
+    }
+  },
+});
+
+// --- Re-Engagement Flow Logic ---
+export const runReengagementFlow = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const day = 24 * 60 * 60 * 1000;
+    const thirtyDaysAgo = now - (30 * day);
+    const thirtyOneDaysAgo = now - (31 * day);
+
+    // Email #7: Win-Back (30 days inactive)
+    // We check users whose lastSeen is between 30 and 31 days ago
+    // If lastSeen is undefined, we fall back to _creationTime
+    
+    // Note: We can't easily query by lastSeen range if it's not indexed and optional.
+    // But we can query by creation time for older users and then filter by lastSeen.
+    // However, for efficiency in this demo, we'll iterate recent users or just rely on creation time for now if lastSeen is missing.
+    // Better approach: We'll just scan users created > 30 days ago who haven't been sent this email.
+    // To avoid scanning the whole table, we limit to a window of creation time OR we need an index on lastSeen.
+    // Since we just added lastSeen, most users won't have it.
+    // Let's use creation time as a proxy for the "cohort" we are checking, then check lastSeen.
+    
+    const users = await ctx.db
+      .query("users")
+      .withIndex("by_creation_time", q => q.lt("_creationTime", thirtyDaysAgo))
+      .filter(q => q.eq(q.field("winBackEmail30dSent"), undefined))
+      .take(50);
+
+    for (const user of users) {
+      const lastActivity = user.lastSeen || user._creationTime;
+      
+      // If they have been active recently (after 30 days ago), skip
+      if (lastActivity > thirtyDaysAgo) continue;
+
+      // If they have been inactive for > 30 days, send email
+      if (user.email) {
+        await ctx.db.patch(user._id, { winBackEmail30dSent: true });
+        await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, {
+          email: user.email,
+          name: user.name,
         });
       }
     }

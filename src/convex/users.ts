@@ -53,12 +53,12 @@ export const storeUser = mutation({
 
     if (user !== null) {
       // If we've seen this user before but their name/email has changed, update it.
-      if (user.name !== identity.name || user.email !== identity.email) {
-        await ctx.db.patch(user._id, {
-          name: identity.name,
-          email: identity.email,
-        });
-      }
+      // Also update lastSeen for re-engagement tracking
+      await ctx.db.patch(user._id, {
+        name: identity.name,
+        email: identity.email,
+        lastSeen: Date.now(),
+      });
       return user._id;
     }
 
@@ -74,9 +74,10 @@ export const storeUser = mutation({
       credits: 2, // Default to 2 credits for free tier
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
       emailVariant,
+      lastSeen: Date.now(),
     });
 
-    // Send onboarding email
+    // Send onboarding email (Email #1)
     if (identity.email) {
       await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, {
         email: identity.email,

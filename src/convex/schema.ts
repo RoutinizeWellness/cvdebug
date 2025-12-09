@@ -8,22 +8,27 @@ const schema = defineSchema(
       email: v.optional(v.string()),
       name: v.optional(v.string()),
       subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
-      credits: v.optional(v.number()), // Added for Pay Per Use credits
+      credits: v.optional(v.number()),
       endsOn: v.optional(v.number()),
-      trialEndsOn: v.optional(v.number()), // Added for 15-day free trial
-      emailVariant: v.optional(v.string()), // Added for A/B testing onboarding emails
+      trialEndsOn: v.optional(v.number()),
+      emailVariant: v.optional(v.string()),
+      lastSeen: v.optional(v.number()), // Added for Re-Engagement flow
+      // Email tracking flags
+      activationEmail24hSent: v.optional(v.boolean()),
+      activationEmail72hSent: v.optional(v.boolean()),
+      winBackEmail30dSent: v.optional(v.boolean()),
     }).index("by_token", ["tokenIdentifier"]),
     resumes: defineTable({
       userId: v.string(), // Clerk User ID
       storageId: v.id("_storage"),
       url: v.string(),
       title: v.string(),
-      jobDescription: v.optional(v.string()), // Added for ATS comparison
-      category: v.optional(v.string()), // Engineering, Marketing, etc.
+      jobDescription: v.optional(v.string()),
+      category: v.optional(v.string()),
       ocrText: v.optional(v.string()),
-      analysis: v.optional(v.string()), // AI Feedback/Summary
-      rewrittenText: v.optional(v.string()), // Added for AI Rewrite
-      score: v.optional(v.number()), // ATS Score 0-100
+      analysis: v.optional(v.string()),
+      rewrittenText: v.optional(v.string()),
+      score: v.optional(v.number()),
       scoreBreakdown: v.optional(v.object({
         keywords: v.number(),
         format: v.number(),
@@ -31,12 +36,16 @@ const schema = defineSchema(
       })),
       missingKeywords: v.optional(v.array(v.object({
         keyword: v.string(),
-        priority: v.string(), // critical, important, nice-to-have
-        frequency: v.optional(v.number()), // Added for Jobscan UI
-        impact: v.optional(v.number()), // Added for Jobscan UI
+        priority: v.string(),
+        frequency: v.optional(v.number()),
+        impact: v.optional(v.number()),
       }))), 
-      formatIssues: v.optional(v.array(v.string())), // Added for Free Tier Preview
-      marketingEmailSent: v.optional(v.boolean()), // Added for 24h follow-up email
+      formatIssues: v.optional(v.array(v.string())),
+      marketingEmailSent: v.optional(v.boolean()), // Deprecated in favor of specific flags below, but keeping for safety
+      // Conversion flow email flags
+      conversionEmail1hSent: v.optional(v.boolean()),
+      conversionEmail48hSent: v.optional(v.boolean()),
+      conversionEmail7dSent: v.optional(v.boolean()),
       status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),
       width: v.number(),
       height: v.number(),
