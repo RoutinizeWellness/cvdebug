@@ -21,9 +21,9 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-background relative overflow-hidden">
+    <section id="how-it-works" className="py-16 md:py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export function HowItWorksSection() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">How it works</h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground">
               Our AI analyzes your resume and LinkedIn profile exactly like a recruiter would.
             </p>
           </motion.div>
@@ -49,12 +49,12 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: i * 0.2 }}
               className="relative flex flex-col items-center text-center group"
             >
-              <div className="h-24 w-24 bg-background border-2 border-border rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary/50 group-hover:scale-110 transition-all duration-300 z-10 relative">
+              <div className="h-20 w-20 md:h-24 md:w-24 bg-background border-2 border-border rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary/50 group-hover:scale-110 transition-all duration-300 z-10 relative">
                 <div className="absolute inset-0 bg-primary/5 rounded-2xl transform rotate-6 group-hover:rotate-12 transition-transform -z-10"></div>
-                <step.icon className="h-10 w-10 text-primary" />
+                <step.icon className="h-8 w-8 md:h-10 md:w-10 text-primary" />
               </div>
               <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-              <p className="text-muted-foreground leading-relaxed max-w-xs">
+              <p className="text-muted-foreground leading-relaxed max-w-xs text-sm md:text-base">
                 {step.description}
               </p>
             </motion.div>

@@ -45,11 +45,11 @@ export function DifferentiationSection() {
   };
 
   return (
-    <section className="py-24 bg-muted/30 border-y border-border/50 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-muted/30 border-y border-border/50 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

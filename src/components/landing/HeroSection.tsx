@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, FileText } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export function HeroSection() {
@@ -9,45 +9,45 @@ export function HeroSection() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative pt-20 pb-32 overflow-hidden">
+    <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background opacity-50"></div>
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-purple-500/5 rounded-full blur-3xl"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="max-w-2xl"
+            className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold mb-6 border border-primary/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-bold mb-6 border border-primary/20">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
               New: LinkedIn Profile Analysis
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
               Is ATS blocking <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">your resume?</span>
             </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
               <span className="font-bold text-foreground">ResumeATS is a diagnostic tool, not a magic solution.</span> We analyze 20+ technical factors to help you pass automated filters. One-time payment, no subscriptions.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all font-bold" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button size="lg" className="h-12 md:h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all font-bold" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
                 Check My Resume
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full border-2 hover:bg-accent/50 font-bold" onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}>
+              <Button size="lg" variant="outline" className="h-12 md:h-14 px-8 text-base rounded-full border-2 hover:bg-accent/50 font-bold" onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}>
                 See How It Works
               </Button>
             </div>
-            <div className="mt-8 flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="mt-8 flex items-center justify-center lg:justify-start gap-4 text-sm text-muted-foreground">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-bold overflow-hidden">
@@ -63,37 +63,48 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative hidden lg:block"
+            className="relative mt-8 lg:mt-0 w-full max-w-md mx-auto lg:ml-auto"
           >
-            <div className="relative rounded-2xl border border-border bg-card shadow-2xl p-6 md:p-8 max-w-md mx-auto lg:ml-auto rotate-3 hover:rotate-0 transition-transform duration-500 group">
-              <div className="absolute -top-6 -right-6 bg-green-500 text-white p-4 rounded-2xl shadow-xl flex flex-col items-center animate-bounce duration-[3000ms] z-20">
-                <span className="text-3xl font-black">92</span>
-                <span className="text-xs font-bold uppercase">Score</span>
+            <div className="relative rounded-2xl border border-border bg-card/80 backdrop-blur-sm shadow-2xl p-6 md:p-8 rotate-0 lg:rotate-3 hover:rotate-0 transition-transform duration-500 group">
+              {/* Floating Score Badge */}
+              <div className="absolute -top-6 -right-6 bg-background border border-border p-1.5 rounded-2xl shadow-xl z-20 animate-bounce duration-[3000ms]">
+                 <div className="bg-green-500 text-white p-4 rounded-xl flex flex-col items-center min-w-[80px]">
+                    <span className="text-3xl font-black">92</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">ATS Score</span>
+                 </div>
               </div>
               
               <div className="space-y-6 relative z-10">
-                <div className="flex items-center gap-4 border-b border-border pb-4">
-                  <div className="h-12 w-12 bg-muted rounded-full flex-shrink-0 overflow-hidden">
-                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="h-full w-full" />
+                {/* Header */}
+                <div className="flex items-center gap-4 border-b border-border/50 pb-4">
+                  <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 text-primary">
+                     <FileText className="h-6 w-6" />
                   </div>
-                  <div className="space-y-2 w-full">
-                    <div className="h-4 w-2/3 bg-muted rounded"></div>
-                    <div className="h-3 w-1/3 bg-muted/50 rounded"></div>
+                  <div className="space-y-1.5 w-full">
+                    <div className="flex items-center justify-between">
+                        <div className="h-4 w-32 bg-foreground/10 rounded animate-pulse"></div>
+                        <div className="h-4 w-16 bg-green-500/20 rounded text-[10px] font-bold text-green-700 flex items-center justify-center">PASSED</div>
+                    </div>
+                    <div className="h-3 w-24 bg-muted rounded"></div>
                   </div>
                 </div>
                 
-                <div className="space-y-4">
+                {/* Metrics */}
+                <div className="space-y-5">
                   {[
-                    { label: "Impact", score: "High", color: "bg-green-500", width: "90%" },
-                    { label: "Brevity", score: "Medium", color: "bg-yellow-500", width: "60%" },
-                    { label: "Style", score: "High", color: "bg-green-500", width: "95%" }
+                    { label: "Keyword Match", score: "95%", color: "bg-green-500", width: "95%" },
+                    { label: "Formatting", score: "100%", color: "bg-green-500", width: "100%" },
+                    { label: "Content Density", score: "72%", color: "bg-yellow-500", width: "72%" }
                   ].map((item, i) => (
                     <div key={i} className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-muted-foreground">{item.label}</span>
-                        <span className={`font-bold ${item.color.replace('bg-', 'text-')}`}>{item.score}</span>
+                        <span className="font-medium text-muted-foreground flex items-center gap-2">
+                            {item.score === "100%" ? <CheckCircle2 className="h-3 w-3 text-green-500" /> : <div className="h-3 w-3 rounded-full border border-muted-foreground/30" />}
+                            {item.label}
+                        </span>
+                        <span className="font-bold text-foreground">{item.score}</span>
                       </div>
-                      <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                      <div className="h-2 w-full bg-muted/50 rounded-full overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
                           animate={{ width: item.width }}
@@ -105,17 +116,21 @@ export function HeroSection() {
                   ))}
                 </div>
 
-                <div className="pt-4">
-                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex gap-3">
-                    <div className="h-5 w-5 rounded-full bg-red-500/20 text-red-600 flex items-center justify-center flex-shrink-0 text-xs font-bold">!</div>
+                {/* Alert Box */}
+                <div className="pt-2">
+                  <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-4 flex gap-3 items-start">
+                    <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div className="space-y-1">
                       <p className="text-xs font-bold text-red-700">Critical Fix Needed</p>
-                      <p className="text-xs text-red-600/80">Missing keywords: "Project Management", "Agile".</p>
+                      <p className="text-xs text-red-600/80 leading-relaxed">Your resume is missing 3 critical keywords found in the job description: "Agile", "React", "TypeScript".</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* Decorative elements behind */}
+            <div className="absolute -z-10 top-10 -left-10 w-full h-full bg-primary/5 rounded-3xl rotate-[-6deg] scale-95 border border-primary/10"></div>
           </motion.div>
         </div>
       </div>

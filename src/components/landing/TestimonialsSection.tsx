@@ -27,11 +27,11 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-background relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-card border border-border rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 duration-300 relative group"
+              className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 duration-300 relative group"
             >
               <Quote className="absolute top-6 right-6 h-8 w-8 text-muted/50 group-hover:text-primary/20 transition-colors" />
               
@@ -68,7 +68,7 @@ export function TestimonialsSection() {
                 ))}
               </div>
               
-              <p className="text-foreground leading-relaxed mb-8 font-medium relative z-10">
+              <p className="text-foreground leading-relaxed mb-8 font-medium relative z-10 text-sm md:text-base">
                 "{testimonial.content}"
               </p>
               
