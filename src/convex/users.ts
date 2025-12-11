@@ -115,6 +115,16 @@ export const getInternalUser = internalQuery({
   },
 });
 
+export const getUserByEmail = internalQuery({
+  args: { email: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+  },
+});
+
 export const updateSubscription = internalMutation({
   args: { 
     tokenIdentifier: v.string(), 

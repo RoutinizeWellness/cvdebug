@@ -66,6 +66,7 @@ export default function AdminPage() {
   const fixSpecificReportedUsers = useMutation(api.admin.fixSpecificReportedUsers);
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const processBulkGrants = useMutation(api.admin.processBulkGrants);
+  const simulateWebhook = useAction(api.admin.simulateWebhookEvent);
   const syncAutumn = useAction(api.billing.syncAutumnData);
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
 
@@ -88,6 +89,11 @@ export default function AdminPage() {
   const [grantName, setGrantName] = useState("");
   const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
+  
+  // Webhook Simulation State
+  const [webhookEmail, setWebhookEmail] = useState("");
+  const [webhookPlan, setWebhookPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
+  const [isSimulatingWebhook, setIsSimulatingWebhook] = useState(false);
   
   // Bulk Grant State
   const [bulkText, setBulkText] = useState("");
@@ -265,6 +271,26 @@ export default function AdminPage() {
     }
   };
 
+  const handleSimulateWebhook = async () => {
+    if (!webhookEmail) {
+      toast.error("Please enter a user email");
+      return;
+    }
+    setIsSimulatingWebhook(true);
+    try {
+      const result = await simulateWebhook({
+        email: webhookEmail,
+        plan: webhookPlan
+      });
+      toast.success(result);
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to simulate webhook");
+    } finally {
+      setIsSimulatingWebhook(false);
+    }
+  };
+
   // Filter users based on search
   const filteredUsers = users?.filter(user => {
     const search = searchTerm.toLowerCase();
@@ -369,30 +395,74 @@ export default function AdminPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-4">
-              <p className="text-sm text-muted-foreground">
-                Initiate a real checkout session as the current admin user to verify the payment integration.
-                This will redirect you to the payment provider.
-              </p>
-              <div className="flex gap-4">
-                <Button 
-                  onClick={() => handleTestPayment("single_scan")} 
-                  disabled={!!isTestingPayment}
-                  variant="outline"
-                  className="border-green-200 hover:bg-green-50 hover:text-green-700"
-                >
-                  {isTestingPayment === "single_scan" ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Zap className="mr-2 h-4 w-4" />}
-                  Test Single Scan Checkout ($4.99)
-                </Button>
-                <Button 
-                  onClick={() => handleTestPayment("bulk_pack")} 
-                  disabled={!!isTestingPayment}
-                  variant="outline"
-                  className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  {isTestingPayment === "bulk_pack" ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Building2 className="mr-2 h-4 w-4" />}
-                  Test Bulk Pack Checkout ($19.99)
-                </Button>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Left: Real Checkout */}
+              <div className="flex flex-col gap-4">
+                <h3 className="text-sm font-semibold text-foreground">1. Test Real Checkout Redirect</h3>
+                <p className="text-xs text-muted-foreground">
+                  Initiate a real checkout session to verify the payment provider connection.
+                </p>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => handleTestPayment("single_scan")} 
+                    disabled={!!isTestingPayment}
+                    variant="outline"
+                    size="sm"
+                    className="border-green-200 hover:bg-green-50 hover:text-green-700"
+                  >
+                    {isTestingPayment === "single_scan" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Zap className="mr-2 h-3 w-3" />}
+                    Test Single ($4.99)
+                  </Button>
+                  <Button 
+                    onClick={() => handleTestPayment("bulk_pack")} 
+                    disabled={!!isTestingPayment}
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                  >
+                    {isTestingPayment === "bulk_pack" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
+                    Test Bulk ($19.99)
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right: Webhook Simulation */}
+              <div className="flex flex-col gap-4 border-l pl-8 border-green-500/20">
+                <h3 className="text-sm font-semibold text-foreground">2. Test Post-Payment Logic (Webhook)</h3>
+                <p className="text-xs text-muted-foreground">
+                  Simulate a successful payment event from the provider to verify credit granting logic.
+                </p>
+                <div className="flex flex-col gap-3">
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="User Email" 
+                      value={webhookEmail}
+                      onChange={(e) => setWebhookEmail(e.target.value)}
+                      className="h-8 text-xs bg-background"
+                    />
+                    <Select 
+                      value={webhookPlan} 
+                      onValueChange={(val: "single_scan" | "bulk_pack") => setWebhookPlan(val)}
+                    >
+                      <SelectTrigger className="h-8 w-[130px] text-xs bg-background">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="single_scan">Single Scan</SelectItem>
+                        <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button 
+                    onClick={handleSimulateWebhook}
+                    disabled={isSimulatingWebhook}
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    {isSimulatingWebhook ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Sparkles className="mr-2 h-3 w-3" />}
+                    Simulate Payment Success
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>

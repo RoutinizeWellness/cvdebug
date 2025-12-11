@@ -525,3 +525,47 @@ export const deleteUser = mutation({
     await ctx.db.delete(args.userId);
   },
 });
+
+export const simulateWebhookEvent = action({
+  args: {
+    email: v.string(),
+    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    // Get user to find their ID (tokenIdentifier) which is required for the webhook logic
+    const user = await ctx.runQuery(internal.users.getUserByEmail, { email: args.email });
+    if (!user) {
+      throw new Error(`User with email ${args.email} not found. Please ensure the user exists first.`);
+    }
+
+    if (!user.tokenIdentifier) {
+       throw new Error("User has no token identifier (Clerk ID). Cannot simulate webhook.");
+    }
+
+    console.log(`Simulating webhook for user ${user.email} (${user.tokenIdentifier})`);
+
+    // Construct a fake event that matches what Autumn/Stripe sends
+    const payload = {
+      type: "payment.succeeded",
+      data: {
+        metadata: {
+          userId: user.tokenIdentifier, // The webhook looks for this
+          plan: args.plan
+        }
+      }
+    };
+
+    // Call the actual webhook handler
+    await ctx.runAction(internal.billing.handleAutumnWebhook, {
+      body: JSON.stringify(payload),
+      signature: "simulated-admin-test"
+    });
+
+    return `✅ Simulated webhook sent for ${args.email}. Credits should be updated.`;
+  }
+});
