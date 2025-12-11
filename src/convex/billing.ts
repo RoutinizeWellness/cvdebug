@@ -193,13 +193,23 @@ export const syncAutumnData = action({
           // Assuming structure: { customers: [ { id, email, metadata: { ... } } ] }
           const customers = data.customers || data.data || [];
           for (const customer of customers) {
-              // Check metadata for plan info
+              // Strategy 1: Check metadata for plan info (Best case)
               if (customer.metadata?.userId && customer.metadata?.plan) {
                    await ctx.runMutation(internal.users.updateSubscription, {
                        tokenIdentifier: customer.metadata.userId,
                        plan: customer.metadata.plan as "single_scan" | "bulk_pack",
                    });
                    syncedCount++;
+              } 
+              // Strategy 2: Match by Email if metadata is missing (Fallback)
+              else if (customer.email) {
+                  // If we have an email but no metadata, we can try to find the user by email
+                  // We'll assume a default plan if not specified, or check other fields
+                  // For now, we'll just log it or try to update if we can infer the plan
+                  // This requires a new internal mutation that handles email-based updates
+                  // For safety, we will skip automatic update without explicit plan, 
+                  // but we could add logic here if we knew the product ID mapping.
+                  console.log(`Found customer ${customer.email} in Autumn but missing metadata.`);
               }
           }
       }

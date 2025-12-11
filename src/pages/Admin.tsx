@@ -45,6 +45,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 import { PaymentHistoryDialog } from "@/components/admin/PaymentHistoryDialog";
 
 export default function AdminPage() {
@@ -61,6 +62,7 @@ export default function AdminPage() {
   const fixKnownMissingUsers = useMutation(api.admin.fixKnownMissingUsers);
   const fixSpecificReportedUsers = useMutation(api.admin.fixSpecificReportedUsers);
   const grantPurchase = useMutation(api.admin.grantPurchase);
+  const processBulkGrants = useMutation(api.admin.processBulkGrants);
   const syncAutumn = useAction(api.billing.syncAutumnData);
 
   const [editingUser, setEditingUser] = useState<any>(null);
@@ -82,6 +84,11 @@ export default function AdminPage() {
   const [grantName, setGrantName] = useState("");
   const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
+  
+  // Bulk Grant State
+  const [bulkText, setBulkText] = useState("");
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
+  const [bulkResult, setBulkResult] = useState<string | null>(null);
   
   // Search State
   const [searchTerm, setSearchTerm] = useState("");
@@ -194,6 +201,26 @@ export default function AdminPage() {
     }
   };
 
+  const handleBulkGrant = async () => {
+    if (!bulkText.trim()) {
+      toast.error("Please paste text containing emails");
+      return;
+    }
+    setIsBulkProcessing(true);
+    setBulkResult(null);
+    try {
+      const result = await processBulkGrants({ rawText: bulkText });
+      setBulkResult(result);
+      toast.success("Bulk processing complete");
+      setBulkText("");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to process bulk grants");
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
+
   const handleSyncAutumn = async () => {
     setIsSyncing(true);
     try {
@@ -270,6 +297,41 @@ export default function AdminPage() {
              </Button>
           </div>
         </div>
+
+        {/* Bulk Grant Section */}
+        <Card className="mb-8 border-blue-500/20 bg-blue-500/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-blue-600" />
+              Bulk Grant from Text
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="bulk-text">Paste Transaction List (Emails will be extracted)</Label>
+                <Textarea 
+                  id="bulk-text" 
+                  placeholder="Paste the list of transactions here (e.g. from Stripe or email). We will find emails like user@example.com and grant 1 credit for each occurrence." 
+                  value={bulkText}
+                  onChange={(e) => setBulkText(e.target.value)}
+                  className="min-h-[100px] font-mono text-xs"
+                />
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <Button onClick={handleBulkGrant} disabled={isBulkProcessing} className="bg-blue-600 hover:bg-blue-700">
+                  {isBulkProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                  Process Bulk Grants
+                </Button>
+                {bulkResult && (
+                  <div className="flex-1 bg-background border rounded-md p-3 text-xs font-mono overflow-auto max-h-[200px]">
+                    <pre>{bulkResult}</pre>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Manual Grant Section */}
         <Card className="mb-8 border-primary/20 bg-primary/5">

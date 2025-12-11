@@ -371,6 +371,76 @@ export const grantPurchase = mutation({
   },
 });
 
+export const processBulkGrants = mutation({
+  args: {
+    rawText: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    // Extract emails using regex
+    const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+    const matches = args.rawText.match(emailRegex) || [];
+    
+    if (matches.length === 0) {
+      return "No emails found in the provided text.";
+    }
+
+    // Count occurrences of each email to determine credits
+    const emailCounts: Record<string, number> = {};
+    for (const email of matches) {
+      const normalized = email.toLowerCase();
+      emailCounts[normalized] = (emailCounts[normalized] || 0) + 1;
+    }
+
+    let logs = [];
+    let successCount = 0;
+
+    for (const [email, count] of Object.entries(emailCounts)) {
+      // Determine plan based on count (heuristic)
+      // 1-4 occurrences = single_scan * count
+      // 5+ occurrences = bulk_pack (or just give them lots of credits)
+      const creditsToAdd = count; 
+      const plan = count >= 5 ? "bulk_pack" : "single_scan";
+
+      // Find or Create User
+      let user = await ctx.db
+        .query("users")
+        .withIndex("by_email", (q) => q.eq("email", email))
+        .unique();
+
+      if (user) {
+        const currentCredits = user.credits || 0;
+        await ctx.db.patch(user._id, {
+          credits: currentCredits + creditsToAdd,
+          subscriptionTier: plan
+        });
+        logs.push(`✅ ${email}: Added ${creditsToAdd} credits (Total: ${currentCredits + creditsToAdd})`);
+        successCount++;
+      } else {
+        // Create new user
+        await ctx.db.insert("users", {
+          tokenIdentifier: `bulk_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+          name: email.split("@")[0],
+          email: email,
+          subscriptionTier: plan,
+          credits: creditsToAdd,
+          trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+          emailVariant: "A",
+          lastSeen: Date.now(),
+        });
+        logs.push(`✨ ${email}: Created new user with ${creditsToAdd} credits`);
+        successCount++;
+      }
+    }
+
+    return `Processed ${successCount} unique emails.\n\nDetails:\n${logs.join("\n")}`;
+  }
+});
+
 export const updateUserPlan = mutation({
   args: {
     userId: v.id("users"),
