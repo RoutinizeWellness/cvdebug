@@ -177,12 +177,51 @@ export const purchaseCredits = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
-    const user = await ctx.db
+    let user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
 
-    if (!user) throw new Error("User not found");
+    // Recovery: If user not found by token (e.g. deleted manually), try email or create
+    if (!user) {
+      console.log(`User not found by token ${identity.subject}, attempting recovery...`);
+      
+      // Try by email
+      if (identity.email) {
+        user = await ctx.db
+          .query("users")
+          .withIndex("by_email", (q) => q.eq("email", identity.email!))
+          .unique();
+          
+        if (user) {
+          // Link found user
+          await ctx.db.patch(user._id, {
+            tokenIdentifier: identity.subject,
+            name: identity.name || user.name,
+            lastSeen: Date.now()
+          });
+        }
+      }
+      
+      // If still not found, create new user
+      if (!user) {
+         const userId = await ctx.db.insert("users", {
+          tokenIdentifier: identity.subject,
+          name: identity.name,
+          email: identity.email,
+          subscriptionTier: "free",
+          credits: 2,
+          trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+          emailVariant: "A", // Default
+          lastSeen: Date.now(),
+        });
+        
+        // Fetch the newly created user
+        user = await ctx.db.get(userId);
+      }
+    }
+
+    if (!user) throw new Error("User could not be found or created");
 
     const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
     const currentCredits = user.credits ?? 0;
