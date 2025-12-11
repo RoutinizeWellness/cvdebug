@@ -1,5 +1,6 @@
 import { query, mutation, action } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // Admin-only query to get all users
 export const getUsers = query({
@@ -383,6 +384,17 @@ export const grantPurchase = mutation({
         subscriptionTier: args.plan,
         credits: currentCredits + creditsToAdd,
       });
+
+      // Send confirmation email
+      if (user.email) {
+        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+          email: user.email,
+          name: user.name,
+          plan: args.plan,
+          credits: creditsToAdd
+        });
+      }
+
       return `Successfully granted ${args.plan} (+${creditsToAdd} credits) to ${user.email || user.name}`;
     } else {
       // User not found - Create them if identifier is an email
@@ -397,6 +409,15 @@ export const grantPurchase = mutation({
           emailVariant: "A",
           lastSeen: Date.now(),
         });
+
+        // Send confirmation email
+        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+          email: args.identifier,
+          name: args.name,
+          plan: args.plan,
+          credits: creditsToAdd
+        });
+
         return `Created NEW user ${args.identifier} with ${args.plan} and ${creditsToAdd} credits. They will be linked when they login.`;
       } else {
         throw new Error(`User not found and identifier '${args.identifier}' is not a valid email to create a new user.`);

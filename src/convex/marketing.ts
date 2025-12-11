@@ -278,3 +278,34 @@ export const sendWinBackEmail = internalAction({
     } catch (error) { console.error("Failed to send Email #7:", error); }
   },
 });
+
+// Email #8: Purchase Confirmation
+export const sendPurchaseConfirmationEmail = internalAction({
+  args: { email: v.string(), name: v.optional(v.string()), plan: v.string(), credits: v.number() },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "Job Seeker";
+    const subject = "Purchase Confirmed! 🚀";
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hey ${firstName},</p>
+        <p>Thanks for your purchase!</p>
+        <p>You've successfully upgraded to the <strong>${args.plan.replace("_", " ")}</strong> plan.</p>
+        <p>We've added <strong>${args.credits} credits</strong> to your account.</p>
+        <p>You can now scan your resume and get detailed feedback to beat the ATS.</p>
+        <div style="text-align: center; margin: 20px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard" style="background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Go to Dashboard</a>
+        </div>
+        <p>Good luck with your job search!</p>
+        <p>The ResumeATS Team</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent Purchase Confirmation to ${args.email}`);
+    } catch (error) { console.error("Failed to send Purchase Confirmation:", error); }
+  },
+});

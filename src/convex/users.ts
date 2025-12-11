@@ -134,6 +134,16 @@ export const updateSubscription = internalMutation({
         credits: currentCredits + creditsToAdd,
         subscriptionTier: args.plan
       });
+
+      // Send confirmation email
+      if (user.email) {
+        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+          email: user.email,
+          name: user.name,
+          plan: args.plan,
+          credits: creditsToAdd
+        });
+      }
     } else {
        const identity = await ctx.auth.getUserIdentity();
        if (identity && identity.subject === args.tokenIdentifier) {
@@ -144,6 +154,16 @@ export const updateSubscription = internalMutation({
             subscriptionTier: args.plan,
             credits: 1 + creditsToAdd,
           });
+          
+          // Send confirmation email if we have email
+          if (identity.email) {
+            await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+              email: identity.email,
+              name: identity.name,
+              plan: args.plan,
+              credits: creditsToAdd
+            });
+          }
        }
     }
   },
@@ -173,6 +193,16 @@ export const purchaseCredits = mutation({
       credits: currentCredits + creditsToAdd,
       subscriptionTier: args.plan,
     });
+    
+    // Send confirmation email
+    if (user.email) {
+      await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+        email: user.email,
+        name: user.name,
+        plan: args.plan,
+        credits: creditsToAdd
+      });
+    }
     
     return { success: true, credits: currentCredits + creditsToAdd };
   },
