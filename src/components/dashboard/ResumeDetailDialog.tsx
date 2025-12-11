@@ -526,41 +526,53 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                         <h3 className="text-sm font-bold text-yellow-700 flex items-center gap-2">
                           <AlertTriangle className="h-4 w-4" /> IMPORTANT (Optimize)
                         </h3>
-                        <span className="text-[10px] font-bold bg-yellow-500 text-white px-2 py-0.5 rounded-full">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${((selectedResume?.formatIssues?.length || 0) + importantKeywords.length) === 0 ? "bg-green-500 text-white" : "bg-yellow-500 text-white"}`}>
                           {(selectedResume?.formatIssues?.length || 0) + importantKeywords.length} Issues
                         </span>
                       </div>
                       
                       <div className="p-4 space-y-4">
-                        {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
-                          <div>
-                            <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Format Issues:</p>
-                            <div className="space-y-3">
-                              {selectedResume.formatIssues.map((issue: string, i: number) => (
-                                <div key={i} className="flex flex-col gap-1 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0">
-                                  <span className="text-sm font-medium text-foreground flex items-start gap-2">
-                                    • {issue}
-                                  </span>
-                                  <div className="pl-3.5 flex items-center gap-1 text-xs text-yellow-700/80 font-medium">
-                                    <ArrowRight className="h-3 w-3" /> Fix formatting
-                                  </div>
-                                </div>
-                              ))}
+                        {((selectedResume?.formatIssues?.length || 0) + importantKeywords.length) === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-4 text-center">
+                            <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                              <Check className="h-5 w-5 text-green-600" />
                             </div>
+                            <p className="text-sm font-bold text-foreground">No Important Issues Found!</p>
+                            <p className="text-xs text-muted-foreground">Your resume formatting and important keywords look good.</p>
                           </div>
-                        )}
+                        ) : (
+                          <>
+                            {selectedResume?.formatIssues && selectedResume.formatIssues.length > 0 && (
+                              <div>
+                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Format Issues:</p>
+                                <div className="space-y-3">
+                                  {selectedResume.formatIssues.map((issue: string, i: number) => (
+                                    <div key={i} className="flex flex-col gap-1 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0">
+                                      <span className="text-sm font-medium text-foreground flex items-start gap-2">
+                                        • {issue}
+                                      </span>
+                                      <div className="pl-3.5 flex items-center gap-1 text-xs text-yellow-700/80 font-medium">
+                                        <ArrowRight className="h-3 w-3" /> Fix formatting
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
 
-                        {importantKeywords.length > 0 && (
-                          <div className="mt-4">
-                             <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Important Skills:</p>
-                             <div className="space-y-2">
-                                {importantKeywords.map((item: any, i: number) => (
-                                  <div key={i} className="text-sm text-foreground flex items-center gap-2">
-                                    • {typeof item === 'string' ? item : item.keyword}
-                                  </div>
-                                ))}
-                             </div>
-                          </div>
+                            {importantKeywords.length > 0 && (
+                              <div className="mt-4">
+                                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Important Skills:</p>
+                                 <div className="space-y-2">
+                                    {importantKeywords.map((item: any, i: number) => (
+                                      <div key={i} className="text-sm text-foreground flex items-center gap-2">
+                                        • {typeof item === 'string' ? item : item.keyword}
+                                      </div>
+                                    ))}
+                                 </div>
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>
@@ -674,13 +686,15 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
             <ScrollArea className="flex-1 h-full">
               <div className="p-6 flex flex-col gap-8">
                 {selectedResume?.rewrittenText && (
-                  <div>
+                  <div className="relative">
+                    <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-purple-600 rounded-r-full"></div>
                     <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" /> AI Rewritten Version
+                      <Sparkles className="h-4 w-4 animate-pulse" /> AI Rewritten Version
+                      <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold">NEW</span>
                     </h3>
-                    <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mb-3">
-                      <p className="text-xs text-primary font-medium leading-relaxed">
-                        Here is an optimized version of your resume content, ready for ATS.
+                    <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-lg p-4 mb-4 shadow-sm">
+                      <p className="text-xs text-foreground font-medium leading-relaxed">
+                        <span className="font-bold text-primary">✨ Optimized for ATS:</span> We've rewritten your resume content to include missing keywords and improve readability for tracking systems.
                       </p>
                     </div>
                     <div className="bg-background rounded-lg border border-border p-3 text-xs text-foreground font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">

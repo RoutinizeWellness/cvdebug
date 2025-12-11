@@ -10,7 +10,8 @@ import {
   FileUp,
   Filter,
   Plus,
-  Sparkles
+  Sparkles,
+  CheckCircle2
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -24,6 +25,14 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
@@ -36,6 +45,7 @@ export default function Dashboard() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedResume, setSelectedResume] = useState<any>(null);
   const [showPricing, setShowPricing] = useState(false);
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -84,7 +94,8 @@ export default function Dashboard() {
           return purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" });
         })
         .then(() => {
-          toast.success("Payment successful! Credits added to your account.");
+          // toast.success("Payment successful! Credits added to your account.");
+          setShowPaymentSuccess(true);
           // Remove query params to prevent replay
           setSearchParams({});
           navigate("/dashboard", { replace: true });
@@ -251,6 +262,26 @@ export default function Dashboard() {
   return (
     <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan={initialPlan} />
+      
+      <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+              <CheckCircle2 className="h-6 w-6 text-green-600" />
+            </div>
+            <DialogTitle className="text-center text-xl">Payment Successful!</DialogTitle>
+            <DialogDescription className="text-center">
+              Thank you for your purchase. Your credits have been added to your account and you can now access premium features.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button onClick={() => setShowPaymentSuccess(false)} className="w-full sm:w-auto font-bold">
+              Start Optimizing
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Chatbot />
       
       <Sidebar 
