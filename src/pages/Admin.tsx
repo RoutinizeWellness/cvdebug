@@ -1,4 +1,4 @@
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
   Table,
@@ -10,11 +10,30 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, ShieldAlert } from "lucide-react";
+import { Loader2, ShieldAlert, Pencil, Trash2, Save, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { Id } from "@/convex/_generated/dataModel";
 
 export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -23,12 +42,58 @@ export default function AdminPage() {
   // We can't conditionally call hooks, but we can handle the error/loading states in render
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
   const users = useQuery(api.admin.getUsers, shouldFetch ? {} : "skip");
+  const updateUserPlan = useMutation(api.admin.updateUserPlan);
+  const deleteUser = useMutation(api.admin.deleteUser);
+
+  const [editingUser, setEditingUser] = useState<any>(null);
+  const [editForm, setEditForm] = useState({
+    plan: "free",
+    credits: 0
+  });
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
       navigate("/");
     }
   }, [user, authLoading, navigate]);
+
+  const handleEditClick = (user: any) => {
+    setEditingUser(user);
+    setEditForm({
+      plan: user.subscriptionTier || "free",
+      credits: user.credits || 0
+    });
+  };
+
+  const handleSave = async () => {
+    if (!editingUser) return;
+    setIsSaving(true);
+    try {
+      await updateUserPlan({
+        userId: editingUser._id as Id<"users">,
+        plan: editForm.plan as "free" | "single_scan" | "bulk_pack",
+        credits: Number(editForm.credits)
+      });
+      toast.success("User updated successfully");
+      setEditingUser(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update user");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async (userId: Id<"users">) => {
+    if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
+    try {
+      await deleteUser({ userId });
+      toast.success("User deleted");
+    } catch (error) {
+      toast.error("Failed to delete user");
+    }
+  };
 
   if (authLoading) {
     return (
@@ -84,8 +149,8 @@ export default function AdminPage() {
                       <TableHead>Email</TableHead>
                       <TableHead>Plan</TableHead>
                       <TableHead>Credits</TableHead>
-                      <TableHead>Registered / Trial Start</TableHead>
-                      <TableHead className="text-right">User ID</TableHead>
+                      <TableHead>Registered</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -96,7 +161,10 @@ export default function AdminPage() {
                             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
                               {userData.name?.charAt(0) || "?"}
                             </div>
-                            {userData.name || "Anonymous"}
+                            <div className="flex flex-col">
+                              <span>{userData.name || "Anonymous"}</span>
+                              <span className="text-[10px] text-muted-foreground font-mono">{userData._id}</span>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>{userData.email || "No email"}</TableCell>
@@ -127,14 +195,21 @@ export default function AdminPage() {
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="text-right font-mono text-xs text-muted-foreground">
-                          {userData.tokenIdentifier ? userData.tokenIdentifier.substring(0, 12) : "N/A"}...
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button variant="ghost" size="icon" onClick={() => handleEditClick(userData)}>
+                              <Pencil className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(userData._id)}>
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
                     {users.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center">
+                        <TableCell colSpan={6} className="h-24 text-center">
                           No users found.
                         </TableCell>
                       </TableRow>
@@ -146,6 +221,58 @@ export default function AdminPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+            <DialogDescription>
+              Manually update subscription and credits for {editingUser?.name}.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="plan" className="text-right">
+                Plan
+              </Label>
+              <Select 
+                value={editForm.plan} 
+                onValueChange={(val) => setEditForm({...editForm, plan: val})}
+              >
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select plan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="free">Free</SelectItem>
+                  <SelectItem value="single_scan">Single Scan</SelectItem>
+                  <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="credits" className="text-right">
+                Credits
+              </Label>
+              <Input
+                id="credits"
+                type="number"
+                value={editForm.credits}
+                onChange={(e) => setEditForm({...editForm, credits: parseInt(e.target.value) || 0})}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

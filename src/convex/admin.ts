@@ -1,4 +1,5 @@
-import { query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
+import { v } from "convex/values";
 
 // Admin-only query to get all users
 export const getUsers = query({
@@ -18,5 +19,35 @@ export const getUsers = query({
       console.error("Error fetching users:", error);
       return [];
     }
+  },
+});
+
+export const updateUserPlan = mutation({
+  args: {
+    userId: v.id("users"),
+    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
+    credits: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.patch(args.userId, {
+      subscriptionTier: args.plan,
+      credits: args.credits,
+    });
+  },
+});
+
+export const deleteUser = mutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+    await ctx.db.delete(args.userId);
   },
 });
