@@ -148,6 +148,10 @@ export const syncAutumnData = action({
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          console.warn("Autumn Events API endpoint not found (404).");
+          return { success: false, message: "Sync unavailable: Autumn API endpoint not found. Please use 'Manual Grant' below to fix users." };
+        }
         const errorText = await response.text();
         console.error("Failed to fetch Autumn events:", errorText);
         return { success: false, message: `Failed to fetch data from Autumn: ${response.status} - ${errorText}` };

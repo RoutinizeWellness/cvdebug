@@ -258,6 +258,7 @@ export const grantPurchase = mutation({
   args: {
     identifier: v.string(), // Email or TokenIdentifier
     plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -279,19 +280,33 @@ export const grantPurchase = mutation({
         .unique();
     }
 
-    if (!user) {
-      throw new Error(`User not found with identifier: ${args.identifier}`);
-    }
-
     const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
-    const currentCredits = user.credits ?? 0;
 
-    await ctx.db.patch(user._id, {
-      subscriptionTier: args.plan,
-      credits: currentCredits + creditsToAdd,
-    });
-
-    return `Successfully granted ${args.plan} (+${creditsToAdd} credits) to ${user.email || user.name}`;
+    if (user) {
+      const currentCredits = user.credits ?? 0;
+      await ctx.db.patch(user._id, {
+        subscriptionTier: args.plan,
+        credits: currentCredits + creditsToAdd,
+      });
+      return `Successfully granted ${args.plan} (+${creditsToAdd} credits) to ${user.email || user.name}`;
+    } else {
+      // User not found - Create them if identifier is an email
+      if (args.identifier.includes("@")) {
+        const newUserId = await ctx.db.insert("users", {
+          tokenIdentifier: `manual_${Date.now()}_${Math.random().toString(36).substring(7)}`, // Temporary ID
+          name: args.name || "Valued Customer",
+          email: args.identifier,
+          subscriptionTier: args.plan,
+          credits: creditsToAdd,
+          trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+          emailVariant: "A",
+          lastSeen: Date.now(),
+        });
+        return `Created NEW user ${args.identifier} with ${args.plan} and ${creditsToAdd} credits. They will be linked when they login.`;
+      } else {
+        throw new Error(`User not found and identifier '${args.identifier}' is not a valid email to create a new user.`);
+      }
+    }
   },
 });
 

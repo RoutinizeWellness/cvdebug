@@ -74,6 +74,7 @@ export default function AdminPage() {
   
   // Manual Grant State
   const [grantEmail, setGrantEmail] = useState("");
+  const [grantName, setGrantName] = useState("");
   const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
   
@@ -175,9 +176,11 @@ export default function AdminPage() {
       const result = await grantPurchase({
         identifier: grantEmail.trim(),
         plan: grantPlan,
+        name: grantName.trim() || undefined,
       });
       toast.success(result);
       setGrantEmail("");
+      setGrantName("");
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Failed to grant purchase");
@@ -283,6 +286,15 @@ export default function AdminPage() {
                 />
               </div>
               <div className="grid w-full md:w-[200px] gap-1.5">
+                <Label htmlFor="grant-name">Name (Optional)</Label>
+                <Input 
+                  id="grant-name" 
+                  placeholder="John Doe" 
+                  value={grantName}
+                  onChange={(e) => setGrantName(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full md:w-[200px] gap-1.5">
                 <Label htmlFor="grant-plan">Plan to Grant</Label>
                 <Select 
                   value={grantPlan} 
@@ -302,7 +314,7 @@ export default function AdminPage() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              Use this to manually fix users who paid but didn't receive credits. It will update their plan and add the corresponding credits.
+              Use this to manually fix users who paid but didn't receive credits. If the user doesn't exist, it will create a new account for them that links when they sign up.
             </p>
           </CardContent>
         </Card>

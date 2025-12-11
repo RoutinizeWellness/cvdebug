@@ -62,6 +62,24 @@ export const storeUser = mutation({
       return user._id;
     }
 
+    // Check for existing user by email (e.g. created via Admin Manual Grant) to link accounts
+    if (identity.email) {
+      const existingUserByEmail = await ctx.db
+        .query("users")
+        .withIndex("by_email", (q) => q.eq("email", identity.email))
+        .unique();
+      
+      if (existingUserByEmail) {
+         // Link this user to the Clerk ID
+         await ctx.db.patch(existingUserByEmail._id, {
+           tokenIdentifier: identity.subject,
+           name: identity.name || existingUserByEmail.name,
+           lastSeen: Date.now(),
+         });
+         return existingUserByEmail._id;
+      }
+    }
+
     // Assign A/B test variant
     const emailVariant = Math.random() < 0.5 ? "A" : "B";
 
