@@ -351,10 +351,10 @@ export const fixKnownMissingUsers = mutation({
 });
 
 export const grantPurchase = mutation({
-  args: {
-    identifier: v.string(), // Email or TokenIdentifier
+  args: { 
+    identifier: v.string(), 
     plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
-    name: v.optional(v.string()),
+    name: v.optional(v.string())
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
