@@ -54,6 +54,7 @@ export default function Dashboard() {
   
   const storeUser = useMutation(api.users.storeUser);
   const purchaseCredits = useMutation(api.users.purchaseCredits);
+  const currentUser = useQuery(api.users.currentUser);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -270,8 +271,19 @@ export default function Dashboard() {
               <CheckCircle2 className="h-6 w-6 text-green-600" />
             </div>
             <DialogTitle className="text-center text-xl">Payment Successful!</DialogTitle>
-            <DialogDescription className="text-center">
-              Thank you for your purchase. Your credits have been added to your account and you can now access premium features.
+            <DialogDescription className="text-center space-y-4">
+              <p>Thank you for your purchase. Your credits have been added to your account and you can now access premium features.</p>
+              {currentUser ? (
+                <div className="bg-muted/50 p-4 rounded-xl border border-border flex flex-col items-center justify-center gap-1">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">New Balance</span>
+                  <span className="text-3xl font-black text-primary flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                    {currentUser.credits} Credits
+                  </span>
+                </div>
+              ) : (
+                <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-center">

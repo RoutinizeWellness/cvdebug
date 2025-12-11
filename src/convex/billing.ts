@@ -30,6 +30,8 @@ export const createCheckoutSession = action({
     if (!user) throw new Error("User not found in database.");
     if (!user.email) throw new Error("User email is required for billing.");
 
+    console.log(`Creating checkout session. Success URL: ${siteUrl}/dashboard?payment=success&plan=${args.plan}`);
+
     // Map internal plan names to Autumn Product IDs
     const productId = args.plan;
     // Use the Clerk Subject ID (user_...) as the customer ID for stability
