@@ -113,10 +113,8 @@ export const updateSubscription = internalMutation({
     if (user) {
       const currentCredits = user.credits ?? 1;
       await ctx.db.patch(user._id, { 
-        // Don't change subscriptionTier to single_scan as it's a one-time purchase, 
-        // unless we want to track "last purchased". 
-        // For now, we just add credits.
-        credits: currentCredits + creditsToAdd 
+        credits: currentCredits + creditsToAdd,
+        subscriptionTier: args.plan
       });
     } else {
        const identity = await ctx.auth.getUserIdentity();
@@ -125,7 +123,7 @@ export const updateSubscription = internalMutation({
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
             name: identity.name,
-            subscriptionTier: "free", // Keep as free, just add credits
+            subscriptionTier: args.plan,
             credits: 1 + creditsToAdd,
           });
        }
@@ -153,6 +151,7 @@ export const purchaseCredits = mutation({
 
     await ctx.db.patch(user._id, {
       credits: currentCredits + creditsToAdd,
+      subscriptionTier: args.plan,
     });
     
     return { success: true, credits: currentCredits + creditsToAdd };
