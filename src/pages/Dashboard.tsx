@@ -40,6 +40,7 @@ export default function Dashboard() {
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const processedPaymentRef = useRef(false);
   
   const storeUser = useMutation(api.users.storeUser);
   const purchaseCredits = useMutation(api.users.purchaseCredits);
@@ -58,23 +59,38 @@ export default function Dashboard() {
   }, [isAuthenticated, storeUser]);
 
   useEffect(() => {
+    // Wait for auth to be ready
+    if (isLoading) return;
+
     const plan = searchParams.get("plan");
     const payment = searchParams.get("payment");
 
     if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
-      // Handle successful payment
+      // Prevent double processing
+      if (processedPaymentRef.current) return;
+      
+      // If not authenticated yet, wait (or let the auth redirect handle it)
+      if (!isAuthenticated) return;
+
+      processedPaymentRef.current = true;
       setIsProcessingPayment(true);
-      // Cast plan to the expected union type
-      purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" })
+
+      // 1. Ensure user exists in DB first
+      storeUser()
+        .then(() => {
+          // 2. Then purchase credits
+          return purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" });
+        })
         .then(() => {
           toast.success("Payment successful! Credits added to your account.");
-          // Remove query params
+          // Remove query params to prevent replay
           setSearchParams({});
           navigate("/dashboard", { replace: true });
         })
         .catch((error) => {
           console.error("Credit update failed:", error);
           toast.error("Payment recorded but credit update failed. Please contact support.");
+          processedPaymentRef.current = false; // Allow retry if it failed
         })
         .finally(() => {
           setIsProcessingPayment(false);
@@ -87,7 +103,7 @@ export default function Dashboard() {
       setInitialPlan(plan as "single_scan" | "bulk_pack");
       setShowPricing(true);
     }
-  }, [searchParams, purchaseCredits, navigate, setSearchParams]);
+  }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);
 
   const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
   const createResume = useMutation(api.resumes.createResume);

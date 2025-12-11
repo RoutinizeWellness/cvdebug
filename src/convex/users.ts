@@ -149,6 +149,8 @@ export const purchaseCredits = mutation({
     const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
     const currentCredits = user.credits ?? 0;
 
+    console.log(`[PURCHASE] Adding ${creditsToAdd} credits to user ${user._id} (${user.email}) for plan ${args.plan}`);
+
     await ctx.db.patch(user._id, {
       credits: currentCredits + creditsToAdd,
       subscriptionTier: args.plan,
