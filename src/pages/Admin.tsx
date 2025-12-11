@@ -61,6 +61,9 @@ export default function AdminPage() {
   const [grantEmail, setGrantEmail] = useState("");
   const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
+  
+  // Search State
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
@@ -138,6 +141,17 @@ export default function AdminPage() {
     }
   };
 
+  // Filter users based on search
+  const filteredUsers = users?.filter(user => {
+    const search = searchTerm.toLowerCase();
+    return (
+      user.name?.toLowerCase().includes(search) ||
+      user.email?.toLowerCase().includes(search) ||
+      user.tokenIdentifier?.toLowerCase().includes(search) ||
+      user._id.toLowerCase().includes(search)
+    );
+  }) || [];
+
   if (authLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -186,7 +200,7 @@ export default function AdminPage() {
           <CardContent>
             <div className="flex flex-col md:flex-row gap-4 items-end">
               <div className="grid w-full gap-1.5">
-                <Label htmlFor="grant-email">User Email or ID</Label>
+                <Label htmlFor="grant-email">User Email or ID (Clerk ID)</Label>
                 <Input 
                   id="grant-email" 
                   placeholder="user@example.com or user_2..." 
@@ -257,8 +271,16 @@ export default function AdminPage() {
         )}
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Registered Users</CardTitle>
+            <div className="w-[300px]">
+              <Input 
+                placeholder="Search users..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="h-9"
+              />
+            </div>
           </CardHeader>
           <CardContent>
             {!users ? (
@@ -279,7 +301,7 @@ export default function AdminPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {users.map((userData) => (
+                    {filteredUsers.map((userData) => (
                       <TableRow key={userData._id}>
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
@@ -288,7 +310,8 @@ export default function AdminPage() {
                             </div>
                             <div className="flex flex-col">
                               <span>{userData.name || "Anonymous"}</span>
-                              <span className="text-[10px] text-muted-foreground font-mono">{userData._id}</span>
+                              <span className="text-[10px] text-muted-foreground font-mono" title="Convex ID">{userData._id}</span>
+                              <span className="text-[10px] text-primary/60 font-mono" title="Clerk ID">{userData.tokenIdentifier}</span>
                             </div>
                           </div>
                         </TableCell>
@@ -332,10 +355,10 @@ export default function AdminPage() {
                         </TableCell>
                       </TableRow>
                     ))}
-                    {users.length === 0 && (
+                    {filteredUsers.length === 0 && (
                       <TableRow>
                         <TableCell colSpan={6} className="h-24 text-center">
-                          No users found.
+                          No users found matching "{searchTerm}".
                         </TableCell>
                       </TableRow>
                     )}
