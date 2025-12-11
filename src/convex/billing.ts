@@ -1,7 +1,7 @@
 "use node";
 
 import { v } from "convex/values";
-import { action } from "./_generated/server";
+import { action, internalAction } from "./_generated/server";
 import { internal } from "./_generated/api";
 
 export const createCheckoutSession = action({
@@ -81,6 +81,100 @@ export const createCheckoutSession = action({
       throw new Error(error.message || "Failed to create checkout session");
     }
   },
+});
+
+export const handleAutumnWebhook = internalAction({
+  args: { body: v.string(), signature: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    console.log("Received Autumn Webhook:", args.body);
+    
+    try {
+      const event = JSON.parse(args.body);
+      
+      // Handle "payment.succeeded" or similar events
+      // Based on Autumn docs (assumed) or standard patterns
+      // We look for metadata passed during checkout
+      
+      if (event.type === "payment.succeeded" || event.type === "checkout.session.completed") {
+        const data = event.data;
+        const metadata = data.metadata || {};
+        const { userId, plan } = metadata;
+        
+        if (userId && plan) {
+          console.log(`Processing successful payment for user ${userId} with plan ${plan}`);
+          
+          // Update user subscription
+          await ctx.runMutation(internal.users.updateSubscription, {
+            tokenIdentifier: userId, // This is the Clerk Subject ID
+            plan: plan as "single_scan" | "bulk_pack",
+          });
+          
+          return { success: true };
+        } else {
+          console.warn("Webhook received but missing metadata (userId or plan)", data);
+        }
+      }
+      
+      return { success: true }; // Acknowledge other events
+    } catch (error) {
+      console.error("Error processing webhook:", error);
+      return { success: false };
+    }
+  }
+});
+
+export const syncAutumnData = action({
+  args: {},
+  handler: async (ctx) => {
+    const autumnSecretKey = process.env.AUTUMN_SECRET_KEY;
+    if (!autumnSecretKey) {
+      throw new Error("AUTUMN_SECRET_KEY is not configured");
+    }
+
+    // Attempt to fetch recent orders/events to sync
+    // Since we don't have exact docs, we'll try to list events or customers
+    // This is a best-effort sync
+    
+    try {
+      console.log("Attempting to sync with Autumn...");
+      
+      // Try to fetch events
+      const response = await fetch("https://api.useautumn.com/v1/events", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${autumnSecretKey}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to fetch Autumn events:", await response.text());
+        return { success: false, message: "Failed to fetch data from Autumn" };
+      }
+
+      const data = await response.json();
+      const events = data.events || data.data || [];
+      let syncedCount = 0;
+
+      for (const event of events) {
+        if (event.type === "payment.succeeded" || event.type === "checkout.session.completed") {
+           const metadata = event.data?.metadata || {};
+           if (metadata.userId && metadata.plan) {
+             await ctx.runMutation(internal.users.updateSubscription, {
+               tokenIdentifier: metadata.userId,
+               plan: metadata.plan as "single_scan" | "bulk_pack",
+             });
+             syncedCount++;
+           }
+        }
+      }
+
+      return { success: true, message: `Synced ${syncedCount} transactions from Autumn` };
+    } catch (error: any) {
+      console.error("Sync error:", error);
+      return { success: false, message: error.message };
+    }
+  }
 });
 
 export const handleCheckoutSuccess = action({

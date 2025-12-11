@@ -1,5 +1,16 @@
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { 
+  PlusCircle, 
+  Loader2, 
+  ShieldAlert, 
+  Pencil, 
+  Trash2, 
+  Save, 
+  X, 
+  RefreshCw 
+} from "lucide-react";
 import {
   Table,
   TableBody,
@@ -10,7 +21,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, ShieldAlert, Pencil, Trash2, Save, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
@@ -33,8 +43,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Id } from "@/convex/_generated/dataModel";
-import { PlusCircle } from "lucide-react";
 
 export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -48,6 +56,7 @@ export default function AdminPage() {
   const deleteUser = useMutation(api.admin.deleteUser);
   const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
   const grantPurchase = useMutation(api.admin.grantPurchase);
+  const syncAutumn = useAction(api.billing.syncAutumnData);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({
@@ -56,6 +65,7 @@ export default function AdminPage() {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   
   // Manual Grant State
   const [grantEmail, setGrantEmail] = useState("");
@@ -141,6 +151,23 @@ export default function AdminPage() {
     }
   };
 
+  const handleSyncAutumn = async () => {
+    setIsSyncing(true);
+    try {
+      const result = await syncAutumn();
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message || "Failed to sync with Autumn");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to sync with Autumn");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   // Filter users based on search
   const filteredUsers = users?.filter(user => {
     const search = searchTerm.toLowerCase();
@@ -182,6 +209,10 @@ export default function AdminPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+             <Button variant="outline" onClick={handleSyncAutumn} disabled={isSyncing}>
+                {isSyncing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                Sync with Autumn
+             </Button>
              <Button variant="outline" onClick={handleFixInconsistent} disabled={isFixing}>
                 {isFixing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
                 Auto-Fix Inconsistent Users
