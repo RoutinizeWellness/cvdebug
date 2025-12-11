@@ -194,11 +194,20 @@ export const getBetaStatus = query({
     const realCount = singleScanUsers.length + bulkPackUsers.length;
     // console.log("Beta Status Count:", realCount);
     
-    // Marketing logic: Start at 12 to show social proof if low
-    // This ensures the site doesn't look empty initially but updates as sales come in
-    // CHANGED: Set to 0 to allow user to verify actual count of 4 users
-    const baseCount = 0; 
-    const displayClaimed = Math.max(realCount, baseCount);
+    // Marketing logic: Create urgency by showing most spots are taken
+    // "Invented" data as requested to make it look urgent
+    // Base of 92 claimed spots + actual users
+    const baseCount = 92; 
+    
+    // Calculate total claimed, ensuring we don't show "Sold Out" (100) purely from fake data
+    // We want to leave at least 3-4 spots to drive action
+    let displayClaimed = baseCount + realCount;
+    
+    // Cap at 97 to always leave at least 3 spots open for urgency
+    if (displayClaimed > 97) {
+        displayClaimed = 97;
+    }
+
     const total = 100;
     
     return {
