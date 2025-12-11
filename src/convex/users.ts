@@ -161,14 +161,21 @@ export const purchaseCredits = mutation({
 export const getBetaStatus = query({
   args: {},
   handler: async (ctx) => {
-    // Count users to determine claimed spots
-    // We take up to 101 to know if we exceeded 100
-    const users = await ctx.db.query("users").take(101);
-    const realCount = users.length;
+    // Count paid users (single_scan or bulk_pack)
+    // We use the index to efficiently count
+    const singleScanUsers = await ctx.db.query("users")
+      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "single_scan"))
+      .collect();
+      
+    const bulkPackUsers = await ctx.db.query("users")
+      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "bulk_pack"))
+      .collect();
+
+    const realCount = singleScanUsers.length + bulkPackUsers.length;
     
-    // Marketing logic: Start at 47 to show social proof if low
-    // This ensures the site doesn't look empty initially
-    const baseCount = 47;
+    // Marketing logic: Start at 12 to show social proof if low
+    // This ensures the site doesn't look empty initially but updates as sales come in
+    const baseCount = 12;
     const displayClaimed = Math.max(realCount, baseCount);
     const total = 100;
     

@@ -19,7 +19,8 @@ const schema = defineSchema(
       winBackEmail30dSent: v.optional(v.boolean()),
     })
     .index("by_token", ["tokenIdentifier"])
-    .index("by_email", ["email"]),
+    .index("by_email", ["email"])
+    .index("by_subscription_tier", ["subscriptionTier"]),
     resumes: defineTable({
       userId: v.string(), // Clerk User ID
       storageId: v.id("_storage"),

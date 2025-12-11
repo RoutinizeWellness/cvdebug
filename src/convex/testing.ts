@@ -81,3 +81,28 @@ export const resetUserFlags = mutation({
     return "Reset user email flags";
   },
 });
+
+export const simulatePurchase = mutation({
+  args: { 
+    email: v.string(), 
+    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")) 
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+
+    if (!user) return "User not found";
+
+    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const currentCredits = user.credits ?? 0;
+
+    await ctx.db.patch(user._id, {
+      credits: currentCredits + creditsToAdd,
+      subscriptionTier: args.plan,
+    });
+
+    return `Updated ${user.email}: Plan=${args.plan}, Credits=${currentCredits} -> ${currentCredits + creditsToAdd}`;
+  },
+});
