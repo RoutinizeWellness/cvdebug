@@ -23,7 +23,12 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
   const handleUpgrade = async (plan: "single_scan" | "bulk_pack") => {
     setIsLoading(plan);
     try {
-      const url = await createCheckoutSession({ plan });
+      // Pass window.location.origin to ensure redirects work in all environments (dev/prod)
+      const url = await createCheckoutSession({ 
+        plan,
+        origin: window.location.origin 
+      });
+      
       if (url) {
         window.location.href = url;
       } else {

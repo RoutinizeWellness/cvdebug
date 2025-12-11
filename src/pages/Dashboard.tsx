@@ -64,7 +64,8 @@ export default function Dashboard() {
     if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
       // Handle successful payment
       setIsProcessingPayment(true);
-      purchaseCredits({ plan })
+      // Cast plan to the expected union type
+      purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" })
         .then(() => {
           toast.success("Payment successful! Credits added to your account.");
           // Remove query params
@@ -78,8 +79,12 @@ export default function Dashboard() {
         .finally(() => {
           setIsProcessingPayment(false);
         });
+    } else if (payment === "cancelled") {
+      toast.info("Payment cancelled.");
+      setSearchParams({});
+      navigate("/dashboard", { replace: true });
     } else if (plan === "single_scan" || plan === "bulk_pack") {
-      setInitialPlan(plan);
+      setInitialPlan(plan as "single_scan" | "bulk_pack");
       setShowPricing(true);
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams]);

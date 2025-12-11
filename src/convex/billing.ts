@@ -5,7 +5,10 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 
 export const createCheckoutSession = action({
-  args: { plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")) },
+  args: { 
+    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    origin: v.optional(v.string()) 
+  },
   handler: async (ctx, args): Promise<string> => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized: Please log in.");
@@ -16,9 +19,10 @@ export const createCheckoutSession = action({
       throw new Error("Configuration Error: Payment provider is not configured.");
     }
 
-    const siteUrl = process.env.CONVEX_SITE_URL;
+    // Use provided origin (from client) or fallback to env var
+    const siteUrl = args.origin || process.env.CONVEX_SITE_URL;
     if (!siteUrl) {
-      console.error("CONVEX_SITE_URL is missing in environment variables");
+      console.error("CONVEX_SITE_URL is missing and no origin provided");
       throw new Error("Configuration Error: Site URL is not configured.");
     }
 
