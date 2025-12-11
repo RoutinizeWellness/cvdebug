@@ -11,7 +11,10 @@ import {
   X, 
   RefreshCw,
   Sparkles,
-  Receipt
+  Receipt,
+  CreditCard,
+  Zap,
+  Building2
 } from "lucide-react";
 import {
   Table,
@@ -64,6 +67,7 @@ export default function AdminPage() {
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const processBulkGrants = useMutation(api.admin.processBulkGrants);
   const syncAutumn = useAction(api.billing.syncAutumnData);
+  const createCheckoutSession = useAction(api.billing.createCheckoutSession);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({
@@ -89,6 +93,9 @@ export default function AdminPage() {
   const [bulkText, setBulkText] = useState("");
   const [isBulkProcessing, setIsBulkProcessing] = useState(false);
   const [bulkResult, setBulkResult] = useState<string | null>(null);
+  
+  // Payment Testing State
+  const [isTestingPayment, setIsTestingPayment] = useState<string | null>(null);
   
   // Search State
   const [searchTerm, setSearchTerm] = useState("");
@@ -238,6 +245,26 @@ export default function AdminPage() {
     }
   };
 
+  const handleTestPayment = async (plan: "single_scan" | "bulk_pack") => {
+    setIsTestingPayment(plan);
+    try {
+      const url = await createCheckoutSession({
+        plan,
+        origin: window.location.origin
+      });
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error("Failed to create checkout session");
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to initiate checkout");
+    } finally {
+      setIsTestingPayment(null);
+    }
+  };
+
   // Filter users based on search
   const filteredUsers = users?.filter(user => {
     const search = searchTerm.toLowerCase();
@@ -328,6 +355,44 @@ export default function AdminPage() {
                     <pre>{bulkResult}</pre>
                   </div>
                 )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Payment Testing Section */}
+        <Card className="mb-8 border-green-500/20 bg-green-500/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-green-600" />
+              Test Payment Flow (Stripe/Autumn)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-4">
+              <p className="text-sm text-muted-foreground">
+                Initiate a real checkout session as the current admin user to verify the payment integration.
+                This will redirect you to the payment provider.
+              </p>
+              <div className="flex gap-4">
+                <Button 
+                  onClick={() => handleTestPayment("single_scan")} 
+                  disabled={!!isTestingPayment}
+                  variant="outline"
+                  className="border-green-200 hover:bg-green-50 hover:text-green-700"
+                >
+                  {isTestingPayment === "single_scan" ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Zap className="mr-2 h-4 w-4" />}
+                  Test Single Scan Checkout ($4.99)
+                </Button>
+                <Button 
+                  onClick={() => handleTestPayment("bulk_pack")} 
+                  disabled={!!isTestingPayment}
+                  variant="outline"
+                  className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                >
+                  {isTestingPayment === "bulk_pack" ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Building2 className="mr-2 h-4 w-4" />}
+                  Test Bulk Pack Checkout ($19.99)
+                </Button>
               </div>
             </div>
           </CardContent>
