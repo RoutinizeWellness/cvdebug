@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [showPricing, setShowPricing] = useState(false);
   const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const storeUser = useMutation(api.users.storeUser);
@@ -62,6 +63,7 @@ export default function Dashboard() {
 
     if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
       // Handle successful payment
+      setIsProcessingPayment(true);
       purchaseCredits({ plan })
         .then(() => {
           toast.success("Payment successful! Credits added to your account.");
@@ -72,6 +74,9 @@ export default function Dashboard() {
         .catch((error) => {
           console.error("Credit update failed:", error);
           toast.error("Payment recorded but credit update failed. Please contact support.");
+        })
+        .finally(() => {
+          setIsProcessingPayment(false);
         });
     } else if (plan === "single_scan" || plan === "bulk_pack") {
       setInitialPlan(plan);
@@ -240,6 +245,17 @@ export default function Dashboard() {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
+        {/* Payment Processing Overlay */}
+        {isProcessingPayment && (
+          <div className="absolute inset-0 z-50 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
+            <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
+              <Loader2 className="h-8 w-8 text-primary animate-spin" />
+            </div>
+            <h3 className="text-2xl font-bold text-foreground">Processing Payment...</h3>
+            <p className="text-muted-foreground mt-2">Adding credits to your account</p>
+          </div>
+        )}
+
         {/* Drag Overlay */}
         {isDragging && (
           <div className="absolute inset-0 z-50 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
