@@ -77,7 +77,7 @@ export default function AdminPage() {
   const [isSyncing, setIsSyncing] = useState(false);
   
   // Payment History State
-  const [historyUser, setHistoryUser] = useState<{id: string, name: string} | null>(null);
+  const [historyUser, setHistoryUser] = useState<{id: string, name: string, email?: string} | null>(null);
   
   // Manual Grant State
   const [grantEmail, setGrantEmail] = useState("");
@@ -501,7 +501,11 @@ export default function AdminPage() {
                             <Button 
                               variant="ghost" 
                               size="icon" 
-                              onClick={() => setHistoryUser({ id: userData.tokenIdentifier, name: userData.name || "User" })}
+                              onClick={() => setHistoryUser({ 
+                                id: userData.tokenIdentifier, 
+                                name: userData.name || "User",
+                                email: userData.email 
+                              })}
                               title="View Payment History"
                             >
                               <Receipt className="h-4 w-4 text-blue-500" />
@@ -589,6 +593,7 @@ export default function AdminPage() {
         onClose={() => setHistoryUser(null)} 
         userId={historyUser?.id || ""} 
         userName={historyUser?.name || ""} 
+        userEmail={historyUser?.email}
       />
     </div>
   );

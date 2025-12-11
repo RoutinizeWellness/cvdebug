@@ -13,9 +13,10 @@ interface PaymentHistoryDialogProps {
   onClose: () => void;
   userId: string;
   userName: string;
+  userEmail?: string;
 }
 
-export function PaymentHistoryDialog({ isOpen, onClose, userId, userName }: PaymentHistoryDialogProps) {
+export function PaymentHistoryDialog({ isOpen, onClose, userId, userName, userEmail }: PaymentHistoryDialogProps) {
   const getPaymentHistory = useAction(api.admin.getUserPaymentHistory);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
@@ -34,7 +35,7 @@ export function PaymentHistoryDialog({ isOpen, onClose, userId, userName }: Paym
     setLoading(true);
     setError(null);
     try {
-      const result = await getPaymentHistory({ customerId: userId });
+      const result = await getPaymentHistory({ customerId: userId, email: userEmail });
       setData(result);
     } catch (err: any) {
       setError(err.message || "Failed to fetch payment history");
