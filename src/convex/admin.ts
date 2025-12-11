@@ -78,6 +78,47 @@ export const fixInconsistentUsers = mutation({
   }
 });
 
+export const grantPurchase = mutation({
+  args: {
+    identifier: v.string(), // Email or TokenIdentifier
+    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    // Try to find by email first
+    let user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.identifier))
+      .unique();
+
+    // If not found, try by tokenIdentifier
+    if (!user) {
+      user = await ctx.db
+        .query("users")
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.identifier))
+        .unique();
+    }
+
+    if (!user) {
+      throw new Error(`User not found with identifier: ${args.identifier}`);
+    }
+
+    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const currentCredits = user.credits ?? 0;
+
+    await ctx.db.patch(user._id, {
+      subscriptionTier: args.plan,
+      credits: currentCredits + creditsToAdd,
+    });
+
+    return `Successfully granted ${args.plan} (+${creditsToAdd} credits) to ${user.email || user.name}`;
+  },
+});
+
 export const updateUserPlan = mutation({
   args: {
     userId: v.id("users"),

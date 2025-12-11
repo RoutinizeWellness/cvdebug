@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
+import { PlusCircle } from "lucide-react";
 
 export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -46,6 +47,7 @@ export default function AdminPage() {
   const updateUserPlan = useMutation(api.admin.updateUserPlan);
   const deleteUser = useMutation(api.admin.deleteUser);
   const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
+  const grantPurchase = useMutation(api.admin.grantPurchase);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({
@@ -54,6 +56,11 @@ export default function AdminPage() {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
+  
+  // Manual Grant State
+  const [grantEmail, setGrantEmail] = useState("");
+  const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
+  const [isGranting, setIsGranting] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
@@ -110,6 +117,27 @@ export default function AdminPage() {
     }
   };
 
+  const handleGrantPurchase = async () => {
+    if (!grantEmail) {
+      toast.error("Please enter an email or user ID");
+      return;
+    }
+    setIsGranting(true);
+    try {
+      const result = await grantPurchase({
+        identifier: grantEmail.trim(),
+        plan: grantPlan,
+      });
+      toast.success(result);
+      setGrantEmail("");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to grant purchase");
+    } finally {
+      setIsGranting(false);
+    }
+  };
+
   if (authLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -146,6 +174,50 @@ export default function AdminPage() {
              </Button>
           </div>
         </div>
+
+        {/* Manual Grant Section */}
+        <Card className="mb-8 border-primary/20 bg-primary/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <PlusCircle className="h-5 w-5 text-primary" />
+              Manual Purchase Grant
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="grant-email">User Email or ID</Label>
+                <Input 
+                  id="grant-email" 
+                  placeholder="user@example.com or user_2..." 
+                  value={grantEmail}
+                  onChange={(e) => setGrantEmail(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full md:w-[200px] gap-1.5">
+                <Label htmlFor="grant-plan">Plan to Grant</Label>
+                <Select 
+                  value={grantPlan} 
+                  onValueChange={(val: "single_scan" | "bulk_pack") => setGrantPlan(val)}
+                >
+                  <SelectTrigger id="grant-plan">
+                    <SelectValue placeholder="Select plan" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="single_scan">Single Scan</SelectItem>
+                    <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={handleGrantPurchase} disabled={isGranting} className="min-w-[120px]">
+                {isGranting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Grant Access"}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Use this to manually fix users who paid but didn't receive credits. It will update their plan and add the corresponding credits.
+            </p>
+          </CardContent>
+        </Card>
 
         {stats && (
           <div className="grid grid-cols-4 gap-4 mb-8">
