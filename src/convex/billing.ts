@@ -138,8 +138,11 @@ export const syncAutumnData = action({
     try {
       console.log("Attempting to sync with Autumn...");
       
-      // Try to fetch events
-      const response = await fetch("https://api.useautumn.com/v1/events", {
+      let endpoint = "https://api.useautumn.com/v1/events";
+      let isEvents = true;
+      
+      // 1. Try Events Endpoint
+      let response = await fetch(endpoint, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${autumnSecretKey}`,
@@ -147,34 +150,61 @@ export const syncAutumnData = action({
         },
       });
 
+      // 2. Fallback to Customers Endpoint if Events 404s
+      if (!response.ok && response.status === 404) {
+        console.warn("Autumn Events API endpoint not found (404). Trying customers endpoint...");
+        endpoint = "https://api.useautumn.com/v1/customers";
+        isEvents = false;
+        
+        response = await fetch(endpoint, {
+            method: "GET",
+            headers: {
+            "Authorization": `Bearer ${autumnSecretKey}`,
+            "Content-Type": "application/json",
+            },
+        });
+      }
+
       if (!response.ok) {
-        if (response.status === 404) {
-          console.warn("Autumn Events API endpoint not found (404).");
-          return { success: false, message: "Sync unavailable: Autumn API endpoint not found. Please use 'Manual Grant' below to fix users." };
-        }
         const errorText = await response.text();
-        console.error("Failed to fetch Autumn events:", errorText);
-        return { success: false, message: `Failed to fetch data from Autumn: ${response.status} - ${errorText}` };
+        console.error(`Failed to fetch Autumn data from ${endpoint}:`, errorText);
+        return { success: false, message: `Sync failed: Autumn API returned ${response.status}. Please use 'Manual Grant' below.` };
       }
 
       const data = await response.json();
-      const events = data.events || data.data || [];
       let syncedCount = 0;
 
-      for (const event of events) {
-        if (event.type === "payment.succeeded" || event.type === "checkout.session.completed") {
-           const metadata = event.data?.metadata || {};
-           if (metadata.userId && metadata.plan) {
-             await ctx.runMutation(internal.users.updateSubscription, {
-               tokenIdentifier: metadata.userId,
-               plan: metadata.plan as "single_scan" | "bulk_pack",
-             });
-             syncedCount++;
-           }
-        }
+      if (isEvents) {
+          const events = data.events || data.data || [];
+          for (const event of events) {
+            if (event.type === "payment.succeeded" || event.type === "checkout.session.completed") {
+               const metadata = event.data?.metadata || {};
+               if (metadata.userId && metadata.plan) {
+                 await ctx.runMutation(internal.users.updateSubscription, {
+                   tokenIdentifier: metadata.userId,
+                   plan: metadata.plan as "single_scan" | "bulk_pack",
+                 });
+                 syncedCount++;
+               }
+            }
+          }
+      } else {
+          // Handle Customers
+          // Assuming structure: { customers: [ { id, email, metadata: { ... } } ] }
+          const customers = data.customers || data.data || [];
+          for (const customer of customers) {
+              // Check metadata for plan info
+              if (customer.metadata?.userId && customer.metadata?.plan) {
+                   await ctx.runMutation(internal.users.updateSubscription, {
+                       tokenIdentifier: customer.metadata.userId,
+                       plan: customer.metadata.plan as "single_scan" | "bulk_pack",
+                   });
+                   syncedCount++;
+              }
+          }
       }
 
-      return { success: true, message: `Synced ${syncedCount} transactions from Autumn` };
+      return { success: true, message: `Synced ${syncedCount} records from Autumn` };
     } catch (error: any) {
       console.error("Sync error:", error);
       return { success: false, message: error.message };
