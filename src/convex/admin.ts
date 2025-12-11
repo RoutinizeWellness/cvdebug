@@ -87,52 +87,87 @@ export const fixSpecificReportedUsers = mutation({
     }
 
     // Specific users reported with missing credits from payments
+    // We include their IDs to ensure we find them or create them if missing
     const fixes = [
-      { email: "juratbupt@gmail.com", creditsToAdd: 2, plan: "single_scan" }, // 2 payments
-      { email: "adty910@gmail.com", creditsToAdd: 2, plan: "single_scan" },   // 2 payments
-      { email: "lyp@oregonstate.edu", creditsToAdd: 3, plan: "single_scan" }  // 3 payments
+      { 
+        email: "juratbupt@gmail.com", 
+        id: "user_36Zmp3s64EbsVfdDLX96yQ3SJCKjuratbupt",
+        creditsToAdd: 2, 
+        plan: "single_scan",
+        name: "JULAITI SHAYIDING"
+      },
+      { 
+        email: "adty910@gmail.com", 
+        id: "user_36eucfnySMbebZiqtME2txTRtNCadty9",
+        creditsToAdd: 2, 
+        plan: "single_scan",
+        name: "Aditya Ganesh Kumar"
+      },
+      { 
+        email: "lyp@oregonstate.edu", 
+        id: "user_36crk9hfwis3yHRHsvuYwIfxicrlyp",
+        creditsToAdd: 3, 
+        plan: "single_scan",
+        name: "Phillip Ly"
+      },
+      { 
+        email: "lyp@oregonstate.edu", 
+        id: "user_36cqEBADYopX7SoGUqp9nduJyWclyp",
+        creditsToAdd: 1, // Ensure this duplicate ID also has access if used
+        plan: "single_scan",
+        name: "Phillip Ly (Alt)"
+      }
     ];
 
     let logs = [];
     let fixedCount = 0;
 
     for (const fix of fixes) {
-      // Try to find by email
-      const user = await ctx.db
+      // 1. Try to find by Token Identifier (Clerk ID)
+      let user = await ctx.db
         .query("users")
-        .withIndex("by_email", (q) => q.eq("email", fix.email))
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", fix.id))
         .unique();
 
+      // 2. If not found by ID, try by Email
+      if (!user) {
+        user = await ctx.db
+          .query("users")
+          .withIndex("by_email", (q) => q.eq("email", fix.email))
+          .unique();
+      }
+
       if (user) {
+        // Update existing user
         const currentCredits = user.credits || 0;
-        // We add the credits because they paid multiple times
-        const newCredits = currentCredits + fix.creditsToAdd;
+        // Only add credits if they seem low (avoid double adding if run multiple times)
+        // But since this is a manual fix for reported issues, we'll ensure they have AT LEAST the amount
+        const newCredits = Math.max(currentCredits, fix.creditsToAdd);
         
         await ctx.db.patch(user._id, {
           subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
-          credits: newCredits
+          credits: newCredits,
+          // Ensure token identifier is correct if we found by email
+          tokenIdentifier: user.tokenIdentifier || fix.id 
         });
         
-        logs.push(`✅ Fixed ${fix.email}: Added ${fix.creditsToAdd} credits. Total: ${newCredits}`);
+        logs.push(`✅ Updated ${fix.email} (${user._id}): Set to ${fix.plan}, Credits ${currentCredits} -> ${newCredits}`);
         fixedCount++;
       } else {
-        // Try to find by partial email match if exact match fails (e.g. case sensitivity or aliases)
-        const potentialUser = await ctx.db.query("users").collect();
-        const found = potentialUser.find(u => u.email && u.email.toLowerCase().includes(fix.email.toLowerCase()));
+        // 3. Create user if they don't exist
+        const newUserId = await ctx.db.insert("users", {
+          tokenIdentifier: fix.id,
+          name: fix.name,
+          email: fix.email,
+          subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
+          credits: fix.creditsToAdd,
+          trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+          emailVariant: "A",
+          lastSeen: Date.now(),
+        });
         
-        if (found) {
-           const currentCredits = found.credits || 0;
-           const newCredits = currentCredits + fix.creditsToAdd;
-           
-           await ctx.db.patch(found._id, {
-             subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
-             credits: newCredits
-           });
-           logs.push(`✅ Fixed (Fuzzy Match) ${found.email}: Added ${fix.creditsToAdd} credits. Total: ${newCredits}`);
-           fixedCount++;
-        } else {
-           logs.push(`❌ User ${fix.email} not found in database`);
-        }
+        logs.push(`✨ Created NEW user ${fix.email} (${newUserId}) with ${fix.creditsToAdd} credits`);
+        fixedCount++;
       }
     }
 

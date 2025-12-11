@@ -148,8 +148,9 @@ export const syncAutumnData = action({
       });
 
       if (!response.ok) {
-        console.error("Failed to fetch Autumn events:", await response.text());
-        return { success: false, message: "Failed to fetch data from Autumn" };
+        const errorText = await response.text();
+        console.error("Failed to fetch Autumn events:", errorText);
+        return { success: false, message: `Failed to fetch data from Autumn: ${response.status} - ${errorText}` };
       }
 
       const data = await response.json();
