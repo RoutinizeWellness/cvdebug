@@ -103,6 +103,16 @@ export const simulatePurchase = mutation({
       subscriptionTier: args.plan,
     });
 
+    // Send confirmation email
+    if (user.email) {
+      await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+        email: user.email,
+        name: user.name,
+        plan: args.plan,
+        credits: creditsToAdd
+      });
+    }
+
     return `Updated ${user.email}: Plan=${args.plan}, Credits=${currentCredits} -> ${currentCredits + creditsToAdd}`;
   },
 });

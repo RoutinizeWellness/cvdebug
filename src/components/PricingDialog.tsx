@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X, Lock } from "lucide-react";
-import { useAction, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 
 export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null }) {
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
+  const purchaseCredits = useMutation(api.users.purchaseCredits);
   const user = useQuery(api.users.currentUser);
   const betaStatus = useQuery(api.users.getBetaStatus);
   const claimed = betaStatus?.claimed ?? 53;
@@ -37,6 +38,20 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Failed to initiate checkout");
+    } finally {
+      setIsLoading(null);
+    }
+  };
+
+  const handleSimulatePurchase = async (plan: "single_scan" | "bulk_pack") => {
+    setIsLoading(plan);
+    try {
+      await purchaseCredits({ plan });
+      toast.success(`Simulated purchase of ${plan} successful!`);
+      onOpenChange(false);
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to simulate purchase");
     } finally {
       setIsLoading(null);
     }
@@ -155,6 +170,15 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
                 )}
               </Button>
               
+              <Button 
+                variant="outline"
+                className="w-full h-10 text-xs font-mono text-muted-foreground border-dashed" 
+                onClick={() => handleSimulatePurchase(checkoutPlan)}
+                disabled={!!isLoading}
+              >
+                DEV: Simulate Success (No Charge)
+              </Button>
+
               <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground">
                 <ShieldCheck className="h-3 w-3" /> 
                 <span>256-bit SSL Encrypted Payment</span>
