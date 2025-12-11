@@ -78,6 +78,55 @@ export const fixInconsistentUsers = mutation({
   }
 });
 
+export const fixKnownMissingUsers = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    const idsToFix = [
+      "user_36Zmp3s64EbsVfdDLX96yQ3SJCKjuratbupt",
+      "user_36eucfnySMbebZiqtME2txTRtNCadty9",
+      "user_36crk9hfwis3yHRHsvuYwIfxicrlyp",
+      "user_36cqEBADYopX7SoGUqp9nduJyWclyp"
+    ];
+
+    let fixedCount = 0;
+    let logs = [];
+
+    for (const id of idsToFix) {
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", id))
+        .unique();
+
+      if (user) {
+        logs.push(`Found user ${user.name} (${user.email})`);
+        // Update to single_scan if not already
+        if (user.subscriptionTier !== "single_scan" && user.subscriptionTier !== "bulk_pack") {
+           // Also ensure they have at least 1 credit if they are single_scan
+           const currentCredits = user.credits || 0;
+           const newCredits = currentCredits < 1 ? 1 : currentCredits;
+           
+           await ctx.db.patch(user._id, {
+             subscriptionTier: "single_scan",
+             credits: newCredits
+           });
+           fixedCount++;
+           logs.push(`Updated ${user.email} to single_scan`);
+        } else {
+          logs.push(`User ${user.email} is already ${user.subscriptionTier}`);
+        }
+      } else {
+        logs.push(`User with ID ${id} not found`);
+      }
+    }
+    return `Fixed ${fixedCount} users. Logs: ${logs.join(", ")}`;
+  }
+});
+
 export const grantPurchase = mutation({
   args: {
     identifier: v.string(), // Email or TokenIdentifier

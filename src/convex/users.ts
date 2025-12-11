@@ -174,6 +174,7 @@ export const getBetaStatus = query({
       .collect();
 
     const realCount = singleScanUsers.length + bulkPackUsers.length;
+    // console.log("Beta Status Count:", realCount);
     
     // Marketing logic: Start at 12 to show social proof if low
     // This ensures the site doesn't look empty initially but updates as sales come in

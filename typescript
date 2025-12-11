@@ -1,6 +1,12 @@
-const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
+import { 
+  PlusCircle, 
+  Loader2, 
+  ShieldAlert, 
+  Pencil, 
+  Trash2, 
+  Save, 
+  X, 
+  RefreshCw 
+} from "lucide-react";
 
-        let newTier: "single_scan" | "bulk_pack" = "single_scan";
-        if ((user.credits || 0) >= 7) {
-          newTier = "bulk_pack";
-        }
+<span>Beta Launch: {claimed}/100 spots claimed</span>

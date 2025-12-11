@@ -9,7 +9,8 @@ import {
   Trash2, 
   Save, 
   X, 
-  RefreshCw 
+  RefreshCw,
+  Sparkles
 } from "lucide-react";
 import {
   Table,
@@ -55,6 +56,7 @@ export default function AdminPage() {
   const updateUserPlan = useMutation(api.admin.updateUserPlan);
   const deleteUser = useMutation(api.admin.deleteUser);
   const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
+  const fixKnownMissingUsers = useMutation(api.admin.fixKnownMissingUsers);
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const syncAutumn = useAction(api.billing.syncAutumnData);
 
@@ -65,6 +67,7 @@ export default function AdminPage() {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
+  const [isFixingKnown, setIsFixingKnown] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   
   // Manual Grant State
@@ -117,6 +120,18 @@ export default function AdminPage() {
       toast.error("Failed to fix users");
     } finally {
       setIsFixing(false);
+    }
+  };
+
+  const handleFixKnownMissing = async () => {
+    setIsFixingKnown(true);
+    try {
+      const result = await fixKnownMissingUsers();
+      toast.success(result);
+    } catch (error) {
+      toast.error("Failed to fix known missing users");
+    } finally {
+      setIsFixingKnown(false);
     }
   };
 
@@ -215,7 +230,11 @@ export default function AdminPage() {
              </Button>
              <Button variant="outline" onClick={handleFixInconsistent} disabled={isFixing}>
                 {isFixing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
-                Auto-Fix Inconsistent Users
+                Auto-Fix Inconsistent
+             </Button>
+             <Button variant="outline" onClick={handleFixKnownMissing} disabled={isFixingKnown}>
+                {isFixingKnown ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                Fix Known Missing (4)
              </Button>
           </div>
         </div>
