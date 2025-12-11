@@ -42,8 +42,10 @@ export default function AdminPage() {
   // We can't conditionally call hooks, but we can handle the error/loading states in render
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
   const users = useQuery(api.admin.getUsers, shouldFetch ? {} : "skip");
+  const stats = useQuery(api.admin.getAdminStats, shouldFetch ? {} : "skip");
   const updateUserPlan = useMutation(api.admin.updateUserPlan);
   const deleteUser = useMutation(api.admin.deleteUser);
+  const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({
@@ -51,6 +53,7 @@ export default function AdminPage() {
     credits: 0
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [isFixing, setIsFixing] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
@@ -82,6 +85,18 @@ export default function AdminPage() {
       toast.error("Failed to update user");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleFixInconsistent = async () => {
+    setIsFixing(true);
+    try {
+      const result = await fixInconsistentUsers();
+      toast.success(result);
+    } catch (error) {
+      toast.error("Failed to fix users");
+    } finally {
+      setIsFixing(false);
     }
   };
 
@@ -125,11 +140,49 @@ export default function AdminPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-             <Badge variant="outline" className="px-3 py-1">
-                Total Users: {users?.length || 0}
-             </Badge>
+             <Button variant="outline" onClick={handleFixInconsistent} disabled={isFixing}>
+                {isFixing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
+                Auto-Fix Inconsistent Users
+             </Button>
           </div>
         </div>
+
+        {stats && (
+          <div className="grid grid-cols-4 gap-4 mb-8">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Free Users</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.free}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Single Scan</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-orange-600">{stats.singleScan}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Bulk Pack</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">{stats.bulkPack}</div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         <Card>
           <CardHeader>

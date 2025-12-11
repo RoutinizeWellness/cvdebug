@@ -22,6 +22,62 @@ export const getUsers = query({
   },
 });
 
+export const getAdminStats = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      return null;
+    }
+
+    const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
+    const singleScanUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan")).collect();
+    const bulkPackUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "bulk_pack")).collect();
+
+    return {
+      free: freeUsers.length,
+      singleScan: singleScanUsers.length,
+      bulkPack: bulkPackUsers.length,
+      total: freeUsers.length + singleScanUsers.length + bulkPackUsers.length
+    };
+  }
+});
+
+export const fixInconsistentUsers = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    // Find users who have credits > 2 (default free is 2) but are still marked as "free"
+    // This implies they bought credits but the tier wasn't updated
+    const allUsers = await ctx.db.query("users").collect();
+    let fixedCount = 0;
+
+    for (const user of allUsers) {
+      if (user.subscriptionTier === "free" && (user.credits || 0) > 2) {
+        // Heuristic: If they have > 2 credits, they likely paid.
+        // 3 credits = 2 (free) + 1 (single scan)
+        // 7 credits = 2 (free) + 5 (bulk pack)
+        
+        let newTier: "single_scan" | "bulk_pack" = "single_scan";
+        if ((user.credits || 0) >= 7) {
+          newTier = "bulk_pack";
+        }
+
+        await ctx.db.patch(user._id, {
+          subscriptionTier: newTier
+        });
+        fixedCount++;
+      }
+    }
+
+    return `Fixed ${fixedCount} inconsistent users.`;
+  }
+});
+
 export const updateUserPlan = mutation({
   args: {
     userId: v.id("users"),

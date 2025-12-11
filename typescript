@@ -1,41 +1,6 @@
-import { 
-  FileText, 
-  Share, 
-  Download, 
-  Trash2, 
-  X, 
-  BarChart, 
-  Sparkles, 
-  Info, 
-  Maximize2, 
-  Minimize2, 
-  Code,
-  Wand2,
-  Printer,
-  Eye,
-  AlertTriangle,
-  Cpu,
-  ScanLine,
-  Check,
-  Clock,
-  LayoutTemplate,
-  Target, // Added
-  ArrowRight, // Added
-  AlertCircle // Added
-} from "lucide-react";
+const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
 
-// Helper to render markdown-like analysis
-const renderAnalysis = (text: string) => {
-  // ... keep existing code
-};
-
-// Helper for Circular Progress
-const CircularScore = ({ score }: { score: number }) => {
-  // ... keep existing code
-};
-
-const criticalKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'critical' : k.priority) === 'critical') || [];
-
-return (
-
-);
+        let newTier: "single_scan" | "bulk_pack" = "single_scan";
+        if ((user.credits || 0) >= 7) {
+          newTier = "bulk_pack";
+        }

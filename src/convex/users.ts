@@ -175,7 +175,8 @@ export const getBetaStatus = query({
     
     // Marketing logic: Start at 12 to show social proof if low
     // This ensures the site doesn't look empty initially but updates as sales come in
-    const baseCount = 12;
+    // CHANGED: Set to 0 to allow user to verify actual count of 4 users
+    const baseCount = 0; 
     const displayClaimed = Math.max(realCount, baseCount);
     const total = 100;
     
