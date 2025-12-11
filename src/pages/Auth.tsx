@@ -10,7 +10,17 @@ export default function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(true);
   const [searchParams] = useSearchParams();
   const plan = searchParams.get("plan");
-  const redirectUrl = plan ? `/dashboard?plan=${plan}` : "/dashboard";
+  const payment = searchParams.get("payment");
+  
+  // Construct redirect URL preserving both plan and payment status
+  let redirectUrl = "/dashboard";
+  const params = new URLSearchParams();
+  if (plan) params.append("plan", plan);
+  if (payment) params.append("payment", payment);
+  
+  if (params.toString()) {
+    redirectUrl = `/dashboard?${params.toString()}`;
+  }
 
   if (isAuthenticated) {
     return <Navigate to={redirectUrl} />;

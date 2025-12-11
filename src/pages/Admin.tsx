@@ -57,6 +57,7 @@ export default function AdminPage() {
   const deleteUser = useMutation(api.admin.deleteUser);
   const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
   const fixKnownMissingUsers = useMutation(api.admin.fixKnownMissingUsers);
+  const fixSpecificReportedUsers = useMutation(api.admin.fixSpecificReportedUsers);
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const syncAutumn = useAction(api.billing.syncAutumnData);
 
@@ -68,6 +69,7 @@ export default function AdminPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingKnown, setIsFixingKnown] = useState(false);
+  const [isFixingReported, setIsFixingReported] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   
   // Manual Grant State
@@ -135,6 +137,21 @@ export default function AdminPage() {
       toast.error("Failed to fix known missing users");
     } finally {
       setIsFixingKnown(false);
+    }
+  };
+
+  const handleFixReported = async () => {
+    setIsFixingReported(true);
+    try {
+      const result = await fixSpecificReportedUsers();
+      toast.success("Reported Users Fix Complete", {
+        description: <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4 overflow-auto text-xs text-white">{result}</pre>,
+        duration: 10000,
+      });
+    } catch (error) {
+      toast.error("Failed to fix reported users");
+    } finally {
+      setIsFixingReported(false);
     }
   };
 
@@ -226,10 +243,14 @@ export default function AdminPage() {
               Manage users and view subscription details.
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
              <Button variant="outline" onClick={handleSyncAutumn} disabled={isSyncing}>
                 {isSyncing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-                Sync with Autumn
+                Sync Autumn
+             </Button>
+             <Button variant="outline" onClick={handleFixReported} disabled={isFixingReported} className="border-orange-500/50 hover:bg-orange-500/10 text-orange-600">
+                {isFixingReported ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
+                Fix Reported (3 Users)
              </Button>
              <Button variant="outline" onClick={handleFixInconsistent} disabled={isFixing}>
                 {isFixing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}

@@ -78,6 +78,68 @@ export const fixInconsistentUsers = mutation({
   }
 });
 
+export const fixSpecificReportedUsers = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    // Specific users reported with missing credits from payments
+    const fixes = [
+      { email: "juratbupt@gmail.com", creditsToAdd: 2, plan: "single_scan" }, // 2 payments
+      { email: "adty910@gmail.com", creditsToAdd: 2, plan: "single_scan" },   // 2 payments
+      { email: "lyp@oregonstate.edu", creditsToAdd: 3, plan: "single_scan" }  // 3 payments
+    ];
+
+    let logs = [];
+    let fixedCount = 0;
+
+    for (const fix of fixes) {
+      // Try to find by email
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_email", (q) => q.eq("email", fix.email))
+        .unique();
+
+      if (user) {
+        const currentCredits = user.credits || 0;
+        // We add the credits because they paid multiple times
+        const newCredits = currentCredits + fix.creditsToAdd;
+        
+        await ctx.db.patch(user._id, {
+          subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
+          credits: newCredits
+        });
+        
+        logs.push(`✅ Fixed ${fix.email}: Added ${fix.creditsToAdd} credits. Total: ${newCredits}`);
+        fixedCount++;
+      } else {
+        // Try to find by partial email match if exact match fails (e.g. case sensitivity or aliases)
+        const potentialUser = await ctx.db.query("users").collect();
+        const found = potentialUser.find(u => u.email && u.email.toLowerCase().includes(fix.email.toLowerCase()));
+        
+        if (found) {
+           const currentCredits = found.credits || 0;
+           const newCredits = currentCredits + fix.creditsToAdd;
+           
+           await ctx.db.patch(found._id, {
+             subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
+             credits: newCredits
+           });
+           logs.push(`✅ Fixed (Fuzzy Match) ${found.email}: Added ${fix.creditsToAdd} credits. Total: ${newCredits}`);
+           fixedCount++;
+        } else {
+           logs.push(`❌ User ${fix.email} not found in database`);
+        }
+      }
+    }
+
+    return `Processed ${fixedCount}/${fixes.length} users.\n${logs.join("\n")}`;
+  }
+});
+
 export const fixKnownMissingUsers = mutation({
   args: {},
   handler: async (ctx) => {
