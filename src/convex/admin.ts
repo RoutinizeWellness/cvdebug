@@ -93,9 +93,16 @@ export const fixKnownMissingUsers = mutation({
       "user_36cqEBADYopX7SoGUqp9nduJyWclyp"
     ];
 
+    // Also try to match by email parts if ID fails, based on user report
+    const emailPatterns = [
+      "oregonstate.edu",
+      "gmail.com" 
+    ];
+
     let fixedCount = 0;
     let logs = [];
 
+    // 1. Fix by ID
     for (const id of idsToFix) {
       const user = await ctx.db
         .query("users")
@@ -103,10 +110,8 @@ export const fixKnownMissingUsers = mutation({
         .unique();
 
       if (user) {
-        logs.push(`Found user ${user.name} (${user.email})`);
-        // Update to single_scan if not already
+        logs.push(`Found user by ID: ${user.name} (${user.email})`);
         if (user.subscriptionTier !== "single_scan" && user.subscriptionTier !== "bulk_pack") {
-           // Also ensure they have at least 1 credit if they are single_scan
            const currentCredits = user.credits || 0;
            const newCredits = currentCredits < 1 ? 1 : currentCredits;
            
@@ -123,6 +128,31 @@ export const fixKnownMissingUsers = mutation({
         logs.push(`User with ID ${id} not found`);
       }
     }
+
+    // 2. Fallback: Fix by Email if they look like the reported users and are still free
+    // This is a heuristic to catch them if the ID was wrong but email matches
+    if (fixedCount < 4) {
+       const potentialUsers = await ctx.db.query("users").collect();
+       for (const user of potentialUsers) {
+          if (user.subscriptionTier === "free" && user.email) {
+             // Check if this looks like one of the reported users
+             const isMatch = 
+                (user.email.includes("oregonstate.edu") && user.name?.includes("Phillip")) ||
+                (user.email.includes("gmail.com") && user.name?.includes("Aditya")) ||
+                (user.email.includes("gmail.com") && user.name?.includes("JULAITI"));
+             
+             if (isMatch) {
+                await ctx.db.patch(user._id, {
+                   subscriptionTier: "single_scan",
+                   credits: Math.max(user.credits || 0, 1)
+                });
+                fixedCount++;
+                logs.push(`Found & Fixed by Email Match: ${user.name} (${user.email})`);
+             }
+          }
+       }
+    }
+
     return `Fixed ${fixedCount} users. Logs: ${logs.join(", ")}`;
   }
 });

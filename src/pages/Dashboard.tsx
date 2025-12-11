@@ -47,7 +47,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate("/auth");
+      // Preserve query params (like payment=success) when redirecting to auth
+      const currentSearch = window.location.search;
+      navigate(`/auth${currentSearch}`);
     }
   }, [isLoading, isAuthenticated, navigate]);
 

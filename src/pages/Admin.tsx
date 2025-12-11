@@ -127,7 +127,10 @@ export default function AdminPage() {
     setIsFixingKnown(true);
     try {
       const result = await fixKnownMissingUsers();
-      toast.success(result);
+      toast.success("Fix Complete", {
+        description: result,
+        duration: 5000,
+      });
     } catch (error) {
       toast.error("Failed to fix known missing users");
     } finally {
