@@ -1,4 +1,4 @@
-import { query, mutation } from "./_generated/server";
+import { query, mutation, action } from "./_generated/server";
 import { v } from "convex/values";
 
 // Admin-only query to get all users
@@ -20,6 +20,67 @@ export const getUsers = query({
       return [];
     }
   },
+});
+
+export const getUserPaymentHistory = action({
+  args: { customerId: v.string() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    const autumnSecretKey = process.env.AUTUMN_SECRET_KEY;
+    if (!autumnSecretKey) {
+      return { results: [{ type: "config_error", error: "AUTUMN_SECRET_KEY not configured" }] };
+    }
+
+    const results = [];
+    
+    // 1. Try getting customer details
+    try {
+        const res = await fetch(`https://api.useautumn.com/v1/customers/${args.customerId}`, {
+            headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            results.push({ type: "customer_details", data });
+        } else {
+            results.push({ type: "customer_lookup_error", status: res.status, text: await res.text() });
+        }
+    } catch (e: any) {
+        results.push({ type: "customer_lookup_exception", error: e.message });
+    }
+
+    // 2. Try getting events (transactions)
+    // Note: The endpoint might be different, trying standard patterns
+    try {
+        const res = await fetch(`https://api.useautumn.com/v1/events?customer_id=${args.customerId}`, {
+            headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            results.push({ type: "events", data });
+        } else {
+             // Try alternate endpoint if events fails
+             try {
+                const res2 = await fetch(`https://api.useautumn.com/v1/customers/${args.customerId}/events`, {
+                    headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+                });
+                if (res2.ok) {
+                    const data = await res2.json();
+                    results.push({ type: "customer_events", data });
+                }
+             } catch (e) {
+                 // ignore
+             }
+        }
+    } catch (e: any) {
+        results.push({ type: "events_lookup_exception", error: e.message });
+    }
+
+    return { results };
+  }
 });
 
 export const getAdminStats = query({

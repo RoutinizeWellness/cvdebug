@@ -10,7 +10,8 @@ import {
   Save, 
   X, 
   RefreshCw,
-  Sparkles
+  Sparkles,
+  Receipt
 } from "lucide-react";
 import {
   Table,
@@ -44,6 +45,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { PaymentHistoryDialog } from "@/components/admin/PaymentHistoryDialog";
 
 export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -71,6 +73,9 @@ export default function AdminPage() {
   const [isFixingKnown, setIsFixingKnown] = useState(false);
   const [isFixingReported, setIsFixingReported] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  
+  // Payment History State
+  const [historyUser, setHistoryUser] = useState<{id: string, name: string} | null>(null);
   
   // Manual Grant State
   const [grantEmail, setGrantEmail] = useState("");
@@ -431,6 +436,14 @@ export default function AdminPage() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => setHistoryUser({ id: userData.tokenIdentifier, name: userData.name || "User" })}
+                              title="View Payment History"
+                            >
+                              <Receipt className="h-4 w-4 text-blue-500" />
+                            </Button>
                             <Button variant="ghost" size="icon" onClick={() => handleEditClick(userData)}>
                               <Pencil className="h-4 w-4 text-muted-foreground" />
                             </Button>
@@ -507,6 +520,14 @@ export default function AdminPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Payment History Dialog */}
+      <PaymentHistoryDialog 
+        isOpen={!!historyUser} 
+        onClose={() => setHistoryUser(null)} 
+        userId={historyUser?.id || ""} 
+        userName={historyUser?.name || ""} 
+      />
     </div>
   );
 }
