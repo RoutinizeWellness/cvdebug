@@ -86,12 +86,20 @@ export const analyzeResume = internalAction({
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
          - "score": Calculated weighted score (integer). ${hasJobDescription ? 'IMPORTANT: Be strict with tailored scoring - missing JD keywords should significantly impact score.' : ''}
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of objects. Identify exactly 10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education" }.
-           - "critical": Essential hard skills for the role ${hasJobDescription ? '(from JD)' : ''}.
-           - "frequency": How many times this keyword appears in the JD (estimate 1-5).
-           - "impact": Estimated score increase if fixed (1-10).
+         - "missingKeywords": Array of objects. Identify 5-10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education", "context": "Brief explanation of why this keyword matters and how to add it naturally" }.
+           - "critical": Essential hard skills for the role ${hasJobDescription ? '(from JD)' : ''} - these should appear 2+ times in JD.
+           - "important": Valuable skills mentioned 1-2 times in JD or industry standards.
+           - "nice-to-have": Complementary skills that would strengthen the resume.
+           - "frequency": Exact count of how many times this keyword appears in the JD (1-10).
+           - "impact": Estimated score increase if fixed (1-10 points).
            - "section": Recommended section to add this keyword.
-         - "formatIssues": Array of objects. Identify exactly 5 specific formatting or structural issues. Structure: { "issue": "Description of the issue", "severity": "high" | "medium" | "low", "fix": "Specific actionable fix" }.
+           - "context": 1-2 sentence explanation of why this matters and how to incorporate it.
+         - "formatIssues": Array of objects. Identify 3-7 specific formatting or structural issues found in the raw text. Structure: { "issue": "Specific description of what's wrong", "severity": "high" | "medium" | "low", "fix": "Detailed step-by-step fix with before/after example if possible", "location": "Where in the resume this issue appears" }.
+           - Only include REAL issues found in the parsed text.
+           - If no issues found, return empty array.
+           - "high": Blocks ATS from reading content (e.g., multi-column, tables, graphics).
+           - "medium": Reduces readability (e.g., inconsistent dates, missing headers).
+           - "low": Minor improvements (e.g., formatting consistency).
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
             Structure:
             ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\n\n' : ''}

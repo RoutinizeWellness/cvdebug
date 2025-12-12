@@ -597,10 +597,15 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                                         </span>
                                       )}
                                     </div>
-                                    <div className="pl-3.5 flex items-center gap-2 text-xs text-red-600/80 font-medium bg-red-50 dark:bg-red-950/20 p-2 rounded">
-                                      <ArrowRight className="h-3 w-3 flex-shrink-0" /> 
+                                    <div className="pl-3.5 flex items-start gap-2 text-xs text-red-600/80 font-medium bg-red-50 dark:bg-red-950/20 p-2 rounded">
+                                      <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" /> 
                                       <span>Add to <strong>{item.section || 'Skills'}</strong> section</span>
                                     </div>
+                                    {item.context && (
+                                      <div className="pl-3.5 text-xs text-foreground/70 leading-relaxed bg-background/50 p-2 rounded border-l-2 border-red-500/30">
+                                        💡 {item.context}
+                                      </div>
+                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -650,13 +655,21 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                                     const issueText = typeof issue === 'string' ? issue : issue.issue;
                                     const severity = typeof issue === 'object' ? issue.severity : 'medium';
                                     const fix = typeof issue === 'object' ? issue.fix : null;
+                                    const location = typeof issue === 'object' ? issue.location : null;
                                     
                                     return (
                                       <div key={i} className="flex flex-col gap-2 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0 bg-background/30 p-3 rounded-lg">
                                         <div className="flex items-start justify-between gap-2">
-                                          <span className="text-sm font-medium text-foreground flex items-start gap-2">
-                                            • {issueText}
-                                          </span>
+                                          <div className="flex-1">
+                                            <span className="text-sm font-medium text-foreground flex items-start gap-2">
+                                              • {issueText}
+                                            </span>
+                                            {location && (
+                                              <span className="text-[10px] text-muted-foreground mt-1 ml-3.5 block">
+                                                📍 Location: {location}
+                                              </span>
+                                            )}
+                                          </div>
                                           {severity && (
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
                                               severity === 'high' ? 'bg-red-100 text-red-700' :
@@ -668,9 +681,12 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                                           )}
                                         </div>
                                         {fix && (
-                                          <div className="pl-3.5 flex items-start gap-2 text-xs text-yellow-700/80 font-medium bg-yellow-50 dark:bg-yellow-950/20 p-2 rounded">
+                                          <div className="pl-3.5 flex items-start gap-2 text-xs text-yellow-700/80 font-medium bg-yellow-50 dark:bg-yellow-950/20 p-2.5 rounded leading-relaxed">
                                             <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" /> 
-                                            <span><strong>Fix:</strong> {fix}</span>
+                                            <div>
+                                              <strong className="block mb-1">How to Fix:</strong>
+                                              <span className="text-foreground/80">{fix}</span>
+                                            </div>
                                           </div>
                                         )}
                                       </div>
