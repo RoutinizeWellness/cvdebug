@@ -86,25 +86,46 @@ export const analyzeResume = internalAction({
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
          - "score": Calculated weighted score (integer). ${hasJobDescription ? 'IMPORTANT: Be strict with tailored scoring - missing JD keywords should significantly impact score.' : ''}
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of objects. Identify exactly 10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number }.
+         - "missingKeywords": Array of objects. Identify exactly 10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education" }.
            - "critical": Essential hard skills for the role ${hasJobDescription ? '(from JD)' : ''}.
-           - "frequency": How many times this keyword appears in the JD (estimate).
+           - "frequency": How many times this keyword appears in the JD (estimate 1-5).
            - "impact": Estimated score increase if fixed (1-10).
-         - "formatIssues": Array of strings (Identify exactly 5 specific formatting or structural issues).
+           - "section": Recommended section to add this keyword.
+         - "formatIssues": Array of objects. Identify exactly 5 specific formatting or structural issues. Structure: { "issue": "Description of the issue", "severity": "high" | "medium" | "low", "fix": "Specific actionable fix" }.
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
             Structure:
-            ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD.)\n\n' : ''}
+            ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\n\n' : ''}
             ### 🤖 ATS Parsing Report
-            (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text.)
+            (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text. Rate parsing quality: Excellent/Good/Fair/Poor)
 
-            ### 📉 Score Drivers
-            (Why is the score X? e.g., "-10 points for missing metrics", "-15 points for unreadable header"${hasJobDescription ? ', "-20 points for missing 6 critical JD keywords"' : ''})
+            ### 📊 Score Breakdown Analysis
+            (Explain each component score in detail:
+            - Keywords: X/40 points - Why? List top 3 missing critical keywords.
+            - Format: X/30 points - Why? List top 2 format issues.
+            - Completeness: X/30 points - Why? What's missing or weak?)
 
-            ### 🔑 Critical Missing Keywords
-            (List 3-5 top missing hard skills${hasJobDescription ? ' from the job description' : ''})
+            ### 🔑 Critical Missing Keywords (Priority: HIGH)
+            (List 3-5 top missing hard skills${hasJobDescription ? ' from the job description' : ''} with:
+            - Keyword name
+            - Why it's critical (appears X times in JD, required skill, etc.)
+            - Exact section to add it to
+            - Example of how to incorporate it naturally)
 
-            ### 🛠️ Fixes to Reach Top 10%
-            (Specific actionable steps${hasJobDescription ? ' to match the job description' : ''})
+            ### ⚠️ Format Issues Blocking ATS
+            (List specific format problems that prevent ATS from reading correctly:
+            - Issue description
+            - Why it's a problem
+            - Exact fix with before/after example if possible)
+
+            ### 🛠️ Action Plan to Reach 75%+ Score
+            (Provide a numbered, step-by-step action plan:
+            1. [Specific action] - Expected impact: +X points
+            2. [Specific action] - Expected impact: +X points
+            etc.
+            Total potential improvement: +XX points → New score: XX%)
+
+            ### 💡 Pro Tips for This Role
+            (2-3 specific tips based on the role/industry that would make this resume stand out to both ATS and human recruiters)
 
       Example JSON: 
       {
@@ -113,12 +134,15 @@ export const analyzeResume = internalAction({
         "score": 58, 
         "scoreBreakdown": { "keywords": 50, "format": 70, "completeness": 55 },
         "missingKeywords": [
-          { "keyword": "Python", "priority": "critical", "frequency": 3, "impact": 8 },
-          { "keyword": "SQL", "priority": "important", "frequency": 2, "impact": 6 },
-          { "keyword": "Agile", "priority": "nice-to-have", "frequency": 1, "impact": 4 }
+          { "keyword": "Python", "priority": "critical", "frequency": 3, "impact": 8, "section": "Skills" },
+          { "keyword": "SQL", "priority": "important", "frequency": 2, "impact": 6, "section": "Experience" },
+          { "keyword": "Agile", "priority": "nice-to-have", "frequency": 1, "impact": 4, "section": "Experience" }
         ],
-        "formatIssues": ["Use of tables detected", "Date format inconsistent"],
-        "analysis": "${hasJobDescription ? '### 🎯 Tailored Analysis\\n\\nThis resume matches 45% of the job description keywords...\\n\\n' : ''}### 🤖 ATS Parsing Report\\n\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
+        "formatIssues": [
+          { "issue": "Two-column layout detected", "severity": "high", "fix": "Convert to single-column format. ATS reads left-to-right and may jumble content." },
+          { "issue": "Date format inconsistent", "severity": "medium", "fix": "Use consistent format: 'Jan 2020 - Dec 2022' throughout" }
+        ],
+        "analysis": "${hasJobDescription ? '### 🎯 Tailored Analysis\\n\\nThis resume matches 45% of the job description keywords. The JD mentions \\"Python\\" 3 times, \\"SQL\\" 2 times, and \\"Agile\\" once - all missing from your resume. Add these to your Skills section and weave them into your Experience bullets.\\n\\n' : ''}### 🤖 ATS Parsing Report\\n\\nParsing Quality: Fair\\n\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser. Contact info is readable but LinkedIn URL is missing.\\n\\n### 📊 Score Breakdown Analysis\\n\\nKeywords: 20/40 points - Missing 6 critical technical skills from the JD\\nFormat: 21/30 points - Two-column layout and inconsistent dates\\nCompleteness: 17/30 points - No quantifiable metrics in experience bullets\\n\\n### 🔑 Critical Missing Keywords\\n\\n1. Python (appears 3x in JD) - Add to Skills section and mention in 2-3 project bullets\\n2. SQL (appears 2x in JD) - Add specific SQL achievements with metrics\\n3. Agile (appears 1x in JD) - Mention Agile/Scrum methodology in Experience\\n\\n### 🛠️ Action Plan to Reach 75%+ Score\\n\\n1. Add Python, SQL, Agile to Skills section - Impact: +12 points\\n2. Convert to single-column layout - Impact: +9 points\\n3. Add 3-5 quantifiable metrics to Experience - Impact: +13 points\\n4. Add LinkedIn URL to contact info - Impact: +3 points\\n\\nTotal improvement: +37 points → New score: 95%"
       }
       `;
 

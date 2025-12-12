@@ -94,7 +94,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     }
   };
 
-  // Helper to render markdown-like analysis
+  // Helper to render markdown-like analysis with enhanced formatting
   const renderAnalysis = (text: string) => {
     if (!text) return <p className="text-muted-foreground italic">Analysis pending...</p>;
     
@@ -106,31 +106,102 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     const parts = text.split("###").filter(part => part.trim());
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-5">
         {parts.map((part, index) => {
           const lines = part.trim().split("\n");
           const title = lines[0];
           const content = lines.slice(1).filter(line => line.trim());
 
+          // Determine icon and color based on section title
+          let icon = null;
+          let headerClass = "text-foreground";
+          let bgClass = "bg-muted/30";
+          let borderClass = "border-border/50";
+
+          if (title.includes("🎯") || title.includes("Tailored")) {
+            icon = <Target className="h-4 w-4 text-green-600" />;
+            headerClass = "text-green-700 dark:text-green-400";
+            bgClass = "bg-green-500/5";
+            borderClass = "border-green-500/20";
+          } else if (title.includes("🤖") || title.includes("Parsing")) {
+            icon = <Cpu className="h-4 w-4 text-blue-600" />;
+            headerClass = "text-blue-700 dark:text-blue-400";
+            bgClass = "bg-blue-500/5";
+            borderClass = "border-blue-500/20";
+          } else if (title.includes("📊") || title.includes("Score Breakdown")) {
+            icon = <BarChart className="h-4 w-4 text-purple-600" />;
+            headerClass = "text-purple-700 dark:text-purple-400";
+            bgClass = "bg-purple-500/5";
+            borderClass = "border-purple-500/20";
+          } else if (title.includes("🔑") || title.includes("Critical")) {
+            icon = <AlertCircle className="h-4 w-4 text-red-600" />;
+            headerClass = "text-red-700 dark:text-red-400";
+            bgClass = "bg-red-500/5";
+            borderClass = "border-red-500/20";
+          } else if (title.includes("⚠️") || title.includes("Format Issues")) {
+            icon = <AlertTriangle className="h-4 w-4 text-yellow-600" />;
+            headerClass = "text-yellow-700 dark:text-yellow-400";
+            bgClass = "bg-yellow-500/5";
+            borderClass = "border-yellow-500/20";
+          } else if (title.includes("🛠️") || title.includes("Action Plan")) {
+            icon = <TrendingUp className="h-4 w-4 text-primary" />;
+            headerClass = "text-primary";
+            bgClass = "bg-primary/5";
+            borderClass = "border-primary/20";
+          } else if (title.includes("💡") || title.includes("Pro Tips")) {
+            icon = <Sparkles className="h-4 w-4 text-yellow-500" />;
+            headerClass = "text-yellow-600 dark:text-yellow-400";
+            bgClass = "bg-yellow-500/5";
+            borderClass = "border-yellow-500/20";
+          }
+
           return (
-            <div key={index} className="rounded-xl bg-muted/30 p-4 border border-border/50 hover:bg-muted/50 transition-colors">
-              <h4 className="font-bold text-foreground mb-3 text-sm flex items-center gap-2">
+            <div key={index} className={`rounded-xl ${bgClass} p-5 border ${borderClass} hover:shadow-md transition-all duration-200`}>
+              <h4 className={`font-bold ${headerClass} mb-4 text-base flex items-center gap-2`}>
+                {icon}
                 {title}
               </h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="space-y-3 text-sm text-foreground/90">
                 {content.map((line, i) => {
                   const trimmed = line.trim();
+                  
+                  // Handle numbered lists (1. 2. 3.)
+                  if (/^\d+\./.test(trimmed)) {
+                    const [number, ...rest] = trimmed.split(/\.\s+/);
+                    return (
+                      <div key={i} className="flex items-start gap-3 p-3 bg-background/50 rounded-lg border border-border/30">
+                        <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
+                          {number}
+                        </span>
+                        <span className="flex-1 leading-relaxed font-medium">{rest.join('. ')}</span>
+                      </div>
+                    );
+                  }
+                  
+                  // Handle bullet points
                   if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
                     return (
-                      <div key={i} className="flex items-start gap-2">
-                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                      <div key={i} className="flex items-start gap-3 pl-2">
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
                         <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
                       </div>
                     );
                   }
+                  
+                  // Handle bold text (**text**)
+                  if (trimmed.includes("**")) {
+                    const parts = trimmed.split("**");
+                    return (
+                      <p key={i} className="leading-relaxed">
+                        {parts.map((part, idx) => 
+                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-foreground">{part}</strong> : part
+                        )}
+                      </p>
+                    );
+                  }
+                  
                   return <p key={i} className="leading-relaxed">{trimmed}</p>;
-                })}
-              </div>
+                })}</div>
             </div>
           );
         })}
@@ -500,34 +571,52 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                       </div>
                       
                       <div className="p-4 space-y-4">
-                        <div>
-                          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Missing Required Skills:</p>
-                          <div className="space-y-3">
-                            {criticalKeywords.map((item: any, i: number) => (
-                              <div key={i} className="flex flex-col gap-1 pb-3 border-b border-red-500/10 last:border-0 last:pb-0">
-                                <div className="flex justify-between items-start">
-                                  <span className="text-sm font-bold text-foreground flex items-center gap-2">
-                                    • {typeof item === 'string' ? item : item.keyword}
-                                    {item.frequency && <span className="text-[10px] font-normal text-muted-foreground bg-muted px-1.5 rounded">(mentioned {item.frequency}x)</span>}
-                                  </span>
-                                </div>
-                                <div className="pl-3.5 flex items-center gap-1 text-xs text-red-600/80 font-medium">
-                                  <ArrowRight className="h-3 w-3" /> Add to Skills section
-                                </div>
+                        {criticalKeywords.length === 0 ? (
+                          <div className="flex flex-col items-center justify-center py-6 text-center">
+                            <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                              <Check className="h-6 w-6 text-green-600" />
+                            </div>
+                            <p className="text-sm font-bold text-foreground">No Critical Issues!</p>
+                            <p className="text-xs text-muted-foreground mt-1">All essential keywords are present.</p>
+                          </div>
+                        ) : (
+                          <>
+                            <div>
+                              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Missing Required Skills:</p>
+                              <div className="space-y-3">
+                                {criticalKeywords.map((item: any, i: number) => (
+                                  <div key={i} className="flex flex-col gap-2 pb-3 border-b border-red-500/10 last:border-0 last:pb-0 bg-background/30 p-3 rounded-lg">
+                                    <div className="flex justify-between items-start">
+                                      <span className="text-sm font-bold text-foreground flex items-center gap-2">
+                                        • {typeof item === 'string' ? item : item.keyword}
+                                        {item.frequency && <span className="text-[10px] font-normal text-muted-foreground bg-muted px-1.5 py-0.5 rounded">mentioned {item.frequency}x in JD</span>}
+                                      </span>
+                                      {item.impact && (
+                                        <span className="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                                          +{item.impact} pts
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="pl-3.5 flex items-center gap-2 text-xs text-red-600/80 font-medium bg-red-50 dark:bg-red-950/20 p-2 rounded">
+                                      <ArrowRight className="h-3 w-3 flex-shrink-0" /> 
+                                      <span>Add to <strong>{item.section || 'Skills'}</strong> section</span>
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                        
-                        <div className="bg-background rounded-lg p-3 border border-red-500/10 flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                            <TrendingUp className="h-4 w-4 text-red-600" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-foreground">Impact</p>
-                            <p className="text-xs text-muted-foreground">+{totalImpact > 0 ? totalImpact : 15}% match if fixed</p>
-                          </div>
-                        </div>
+                            </div>
+                            
+                            <div className="bg-background rounded-lg p-3 border border-red-500/10 flex items-center gap-3">
+                              <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                                <TrendingUp className="h-4 w-4 text-red-600" />
+                              </div>
+                              <div>
+                                <p className="text-xs font-bold text-foreground">Potential Impact</p>
+                                <p className="text-xs text-muted-foreground">+{totalImpact > 0 ? totalImpact : 15}% match if all fixed</p>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
 
@@ -548,7 +637,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                             <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
                               <Check className="h-5 w-5 text-green-600" />
                             </div>
-                            <p className="text-sm font-bold text-foreground">No Important Issues Found!</p>
+                            <p className="text-sm font-bold text-foreground">0 Issues Found!</p>
                             <p className="text-xs text-muted-foreground">Your resume formatting and important keywords look good.</p>
                           </div>
                         ) : (
@@ -557,27 +646,52 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                               <div>
                                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Format Issues:</p>
                                 <div className="space-y-3">
-                                  {selectedResume.formatIssues.map((issue: string, i: number) => (
-                                    <div key={i} className="flex flex-col gap-1 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0">
-                                      <span className="text-sm font-medium text-foreground flex items-start gap-2">
-                                        • {issue}
-                                      </span>
-                                      <div className="pl-3.5 flex items-center gap-1 text-xs text-yellow-700/80 font-medium">
-                                        <ArrowRight className="h-3 w-3" /> Fix formatting
+                                  {selectedResume.formatIssues.map((issue: any, i: number) => {
+                                    const issueText = typeof issue === 'string' ? issue : issue.issue;
+                                    const severity = typeof issue === 'object' ? issue.severity : 'medium';
+                                    const fix = typeof issue === 'object' ? issue.fix : null;
+                                    
+                                    return (
+                                      <div key={i} className="flex flex-col gap-2 pb-3 border-b border-yellow-500/10 last:border-0 last:pb-0 bg-background/30 p-3 rounded-lg">
+                                        <div className="flex items-start justify-between gap-2">
+                                          <span className="text-sm font-medium text-foreground flex items-start gap-2">
+                                            • {issueText}
+                                          </span>
+                                          {severity && (
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
+                                              severity === 'high' ? 'bg-red-100 text-red-700' :
+                                              severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                              'bg-blue-100 text-blue-700'
+                                            }`}>
+                                              {severity.toUpperCase()}
+                                            </span>
+                                          )}
+                                        </div>
+                                        {fix && (
+                                          <div className="pl-3.5 flex items-start gap-2 text-xs text-yellow-700/80 font-medium bg-yellow-50 dark:bg-yellow-950/20 p-2 rounded">
+                                            <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" /> 
+                                            <span><strong>Fix:</strong> {fix}</span>
+                                          </div>
+                                        )}
                                       </div>
-                                    </div>
-                                  ))}
+                                    );
+                                  })}
                                 </div>
                               </div>
                             )}
 
                             {importantKeywords.length > 0 && (
-                              <div className="mt-4">
-                                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Important Skills:</p>
+                              <div className={selectedResume?.formatIssues?.length > 0 ? "mt-4 pt-4 border-t border-yellow-500/10" : ""}>
+                                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Important Skills to Add:</p>
                                  <div className="space-y-2">
                                     {importantKeywords.map((item: any, i: number) => (
-                                      <div key={i} className="text-sm text-foreground flex items-center gap-2">
-                                        • {typeof item === 'string' ? item : item.keyword}
+                                      <div key={i} className="text-sm text-foreground flex items-center justify-between gap-2 bg-background/30 p-2 rounded">
+                                        <span>• {typeof item === 'string' ? item : item.keyword}</span>
+                                        {item.section && (
+                                          <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                                            → {item.section}
+                                          </span>
+                                        )}
                                       </div>
                                     ))}
                                  </div>
