@@ -27,7 +27,7 @@ export function Footer() {
                 TB
               </div>
               <div className="text-left md:text-right">
-                <p className="text-sm font-bold text-foreground">Built by Tini Boti</p>
+                <p className="text-sm font-bold text-foreground">Built by Albert</p>
                 <p className="text-xs text-muted-foreground">Developer building tools for job seekers</p>
               </div>
             </div>
