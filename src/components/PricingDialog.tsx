@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
-export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null }) {
+export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null; resumeId?: string }) {
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
   const purchaseCredits = useMutation(api.users.purchaseCredits);
   const user = useQuery(api.users.currentUser);
@@ -27,7 +27,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan }: { open: boole
       // Pass window.location.origin to ensure redirects work in all environments (dev/prod)
       const url = await createCheckoutSession({ 
         plan,
-        origin: window.location.origin 
+        origin: window.location.origin,
+        resumeId: resumeId || undefined
       });
       
       if (url) {

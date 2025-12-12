@@ -7,7 +7,8 @@ import { internal } from "./_generated/api";
 export const createCheckoutSession = action({
   args: { 
     plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
-    origin: v.optional(v.string()) 
+    origin: v.optional(v.string()),
+    resumeId: v.optional(v.string())
   },
   handler: async (ctx, args): Promise<string> => {
     const identity = await ctx.auth.getUserIdentity();
@@ -29,7 +30,12 @@ export const createCheckoutSession = action({
     if (!user) throw new Error("User not found in database.");
     if (!user.email) throw new Error("User email is required for billing.");
 
-    console.log(`Creating checkout session. Success URL: ${siteUrl}/dashboard?payment=success&plan=${args.plan}`);
+    // Build success URL with resumeId if provided
+    const successUrl = args.resumeId 
+      ? `${siteUrl}/dashboard?payment=success&plan=${args.plan}&resumeId=${args.resumeId}`
+      : `${siteUrl}/dashboard?payment=success&plan=${args.plan}`;
+
+    console.log(`Creating checkout session. Success URL: ${successUrl}`);
 
     const productId = args.plan;
     const customerId = user.subject;
@@ -47,12 +53,13 @@ export const createCheckoutSession = action({
           product_id: productId,
           customer_email: user.email,
           customer_id: customerId,
-          success_url: `${siteUrl}/dashboard?payment=success&plan=${args.plan}`,
+          success_url: successUrl,
           cancel_url: `${siteUrl}/dashboard?payment=cancelled`,
           metadata: {
             userId: user._id,
             dbId: user.dbUser?._id,
             plan: args.plan,
+            resumeId: args.resumeId,
           }
         }),
       });

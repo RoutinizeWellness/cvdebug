@@ -49,6 +49,7 @@ export default function Dashboard() {
   const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const processedPaymentRef = useRef(false);
   
@@ -77,6 +78,7 @@ export default function Dashboard() {
 
     const plan = searchParams.get("plan");
     const payment = searchParams.get("payment");
+    const resumeId = searchParams.get("resumeId");
 
     if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
       // Prevent double processing
@@ -95,8 +97,13 @@ export default function Dashboard() {
           return purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" });
         })
         .then(() => {
-          // toast.success("Payment successful! Credits added to your account.");
-          setShowPaymentSuccess(true);
+          // 3. Check if there's a pending resume to auto-unlock
+          if (resumeId) {
+            setPendingResumeId(resumeId);
+            toast.success("Payment successful! Unlocking your resume report...");
+          } else {
+            setShowPaymentSuccess(true);
+          }
           // Remove query params to prevent replay
           setSearchParams({});
           navigate("/dashboard", { replace: true });
@@ -128,6 +135,18 @@ export default function Dashboard() {
     search: search || undefined,
     category: categoryFilter || undefined
   });
+
+  // Auto-unlock resume after payment
+  useEffect(() => {
+    if (pendingResumeId && resumes && currentUser) {
+      const resume = resumes.find((r: any) => r._id === pendingResumeId);
+      if (resume) {
+        setSelectedResume(resume);
+        setPendingResumeId(null);
+        toast.success("🎉 Resume report unlocked! Your credits have been applied.");
+      }
+    }
+  }, [pendingResumeId, resumes, currentUser]);
 
   const handleFile = async (file: File) => {
     if (!file) return;
@@ -272,7 +291,12 @@ export default function Dashboard() {
 
   return (
     <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
-      <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan={initialPlan} />
+      <PricingDialog 
+        open={showPricing} 
+        onOpenChange={setShowPricing} 
+        initialPlan={initialPlan}
+        resumeId={selectedResume?._id}
+      />
       
       <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
         <DialogContent className="sm:max-w-lg">
