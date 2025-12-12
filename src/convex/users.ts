@@ -131,15 +131,20 @@ export const updateSubscription = internalMutation({
     plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
   },
   handler: async (ctx, args) => {
+    console.log(`[updateSubscription] START - Called with args:`, args);
+
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
     const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    console.log(`[updateSubscription] Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
 
     if (user) {
       const currentCredits = user.credits ?? 1;
+      console.log(`[updateSubscription] Found user ${user._id} (${user.email}). Updating credits from ${currentCredits} to ${currentCredits + creditsToAdd}`);
+      
       await ctx.db.patch(user._id, { 
         credits: currentCredits + creditsToAdd,
         subscriptionTier: args.plan
@@ -147,6 +152,7 @@ export const updateSubscription = internalMutation({
 
       // Send confirmation email
       if (user.email) {
+        console.log(`[updateSubscription] Scheduling confirmation email for ${user.email}`);
         await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
           email: user.email,
           name: user.name,
@@ -155,8 +161,11 @@ export const updateSubscription = internalMutation({
         });
       }
     } else {
+       console.log(`[updateSubscription] User not found by token ${args.tokenIdentifier}. Attempting to create/recover via identity...`);
        const identity = await ctx.auth.getUserIdentity();
+       
        if (identity && identity.subject === args.tokenIdentifier) {
+          console.log(`[updateSubscription] Identity verified. Creating new user for ${identity.email}`);
           await ctx.db.insert("users", {
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
@@ -167,6 +176,7 @@ export const updateSubscription = internalMutation({
           
           // Send confirmation email if we have email
           if (identity.email) {
+            console.log(`[updateSubscription] Scheduling confirmation email for new user ${identity.email}`);
             await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
               email: identity.email,
               name: identity.name,
@@ -174,8 +184,11 @@ export const updateSubscription = internalMutation({
               credits: creditsToAdd
             });
           }
+       } else {
+          console.error(`[updateSubscription] FAILED: User not found and current identity does not match tokenIdentifier ${args.tokenIdentifier}`);
        }
     }
+    console.log(`[updateSubscription] END`);
   },
 });
 
