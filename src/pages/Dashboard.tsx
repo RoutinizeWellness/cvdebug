@@ -320,6 +320,15 @@ export default function Dashboard() {
                 <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
               )}
               
+              <div className="bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-300 dark:border-amber-700 rounded-xl p-5 mb-4">
+                <p className="text-sm text-amber-900 dark:text-amber-100 font-bold text-center mb-2">
+                  💳 Think of credits like arcade tokens
+                </p>
+                <p className="text-xs text-amber-800 dark:text-amber-200 text-center">
+                  Each scan costs <span className="font-black text-amber-900 dark:text-amber-100">1 token</span>. Upload → Spend 1 credit → Get full report.
+                </p>
+              </div>
+
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-2 border-green-200 dark:border-green-800 rounded-xl p-5 space-y-4 text-left">
                 <h4 className="text-base font-black text-green-900 dark:text-green-100 flex items-center gap-2">
                   💡 How to use your credits:
@@ -329,7 +338,7 @@ export default function Dashboard() {
                     <div className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
                     <div>
                       <p className="text-sm font-bold text-green-900 dark:text-green-100">To unlock your CURRENT report:</p>
-                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Click <span className="font-bold">"Re-Run Scan"</span> now <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
+                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Click <span className="font-bold">"Upload Resume"</span> or view any blurred report <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -346,12 +355,6 @@ export default function Dashboard() {
                     Your credits never expire.
                   </p>
                 </div>
-              </div>
-
-              <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                <p className="text-xs text-amber-900 dark:text-amber-100 font-medium">
-                  <span className="font-bold">💳 Think of credits like arcade tokens:</span> Each scan costs 1 token. Upload → Spend 1 credit → Get full report.
-                </p>
               </div>
             </DialogDescription>
           </DialogHeader>
