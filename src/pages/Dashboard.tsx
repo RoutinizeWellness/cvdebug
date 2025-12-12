@@ -145,6 +145,13 @@ export default function Dashboard() {
       return;
     }
 
+    // Enhanced feedback for job description
+    if (jobDescription.trim()) {
+      toast.info("🎯 Analyzing resume with your job description for tailored scoring...");
+    } else {
+      toast.info("📄 Analyzing resume with general industry standards...");
+    }
+
     setIsUploading(true);
     try {
       const postUrl = await generateUploadUrl();
@@ -165,7 +172,10 @@ export default function Dashboard() {
         jobDescription: jobDescription.trim() || undefined,
       });
 
-      toast.success("Resume uploaded");
+      toast.success(jobDescription.trim() 
+        ? "Resume uploaded! AI is analyzing against your job description..." 
+        : "Resume uploaded! AI is analyzing..."
+      );
       processFile(file, resumeId);
       setJobDescription("");
 
@@ -391,11 +401,19 @@ export default function Dashboard() {
                       onChange={(e) => setJobDescription(e.target.value)}
                     />
                     {jobDescription && (
-                      <div className="absolute right-2 top-2">
+                      <div className="absolute right-2 top-2 flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                          Tailored Mode
+                        </span>
                         <span className="flex h-2 w-2">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                         </span>
+                      </div>
+                    )}
+                    {jobDescription && (
+                      <div className="absolute -bottom-6 left-0 text-[10px] text-muted-foreground">
+                        💡 Your next upload will be scored against this job description
                       </div>
                     )}
                   </div>

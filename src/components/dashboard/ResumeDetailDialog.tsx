@@ -367,11 +367,22 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                     {selectedResume.category}
                   </span>
                 )}
+                {selectedResume?.jobDescription && (
+                  <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold border border-green-500/20 uppercase tracking-wider flex items-center gap-1">
+                    <Target className="h-3 w-3" /> Tailored
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-mono mt-0.5">
                 <span>ID: {selectedResume?._id?.slice(-8)}</span>
                 <span className="text-border">|</span>
                 <span className="flex items-center gap-1"><Cpu className="h-3 w-3" /> VLY-ATS-V2</span>
+                {selectedResume?.jobDescription && (
+                  <>
+                    <span className="text-border">|</span>
+                    <span className="flex items-center gap-1 text-green-600"><Target className="h-3 w-3" /> Job-Specific</span>
+                  </>
+                )}
               </div>
             </div>
           </div>

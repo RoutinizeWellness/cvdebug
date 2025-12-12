@@ -39,17 +39,27 @@ export const analyzeResume = internalAction({
       return;
     }
 
+    // Log job description usage for validation
+    const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
+    console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
+
     try {
+      const jobDescriptionContext = hasJobDescription 
+        ? `"${args.jobDescription}"`
+        : `"General Industry Standards for the detected role"`;
+
       const prompt = `You are an advanced ATS (Applicant Tracking System) Simulator (simulating systems like Taleo, Greenhouse, Lever).
       Your goal is to strictly evaluate the resume's machine-readability and content match against the target role.
 
       CONTEXT:
-      - Job Description: "${args.jobDescription || "General Industry Standards for the detected role"}"
+      - Job Description: ${jobDescriptionContext}
+      ${hasJobDescription ? '- IMPORTANT: This is a TAILORED analysis. Score heavily based on keyword matches from the provided job description.' : '- This is a GENERAL analysis based on industry standards.'}
       - RAW PARSED TEXT (What the ATS sees):
       "${args.ocrText.substring(0, 30000)}"
 
       ### SCORING ALGORITHM (0-100):
       Be strict but fair. Most resumes score between 40-70. Scores above 80 should be rare and require near-perfect optimization.
+      ${hasJobDescription ? '\n**TAILORED MODE**: Prioritize exact keyword matches from the job description. Missing critical JD keywords should significantly lower the score.' : ''}
 
       1. **Parsing & Format (30%)**:
          - **CRITICAL**: Does the raw text look garbled? Are headers (Experience, Education) clearly identifiable?
@@ -58,8 +68,10 @@ export const analyzeResume = internalAction({
          - If the text is readable but formatting is messy, score 50-70.
 
       2. **Keyword Matching (40%)**:
-         - Extract hard skills from the JD (or imply them from the role).
-         - Calculate a match rate. 
+         ${hasJobDescription 
+           ? '- Extract ALL hard skills, soft skills, and key phrases from the provided Job Description.\n         - Calculate exact match rate. Each missing critical keyword should reduce score by 3-5 points.\n         - **CRITICAL**: If the resume is missing 5+ key skills from the JD, score should be < 60.'
+           : '- Extract hard skills from general industry standards for the detected role.\n         - Calculate a match rate.'
+         }
          - **Penalize** for "keyword stuffing" (listing skills without context).
          - Look for "contextual keywords" (e.g., "Java" used in a project description vs just a list).
 
@@ -72,26 +84,27 @@ export const analyzeResume = internalAction({
          Return a JSON object with:
          - "title": Candidate Name / Role.
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
-         - "score": Calculated weighted score (integer).
+         - "score": Calculated weighted score (integer). ${hasJobDescription ? 'IMPORTANT: Be strict with tailored scoring - missing JD keywords should significantly impact score.' : ''}
          - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of objects. Identify exactly 10 critical missing keywords. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number }.
-           - "critical": Essential hard skills for the role.
+         - "missingKeywords": Array of objects. Identify exactly 10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number }.
+           - "critical": Essential hard skills for the role ${hasJobDescription ? '(from JD)' : ''}.
            - "frequency": How many times this keyword appears in the JD (estimate).
            - "impact": Estimated score increase if fixed (1-10).
          - "formatIssues": Array of strings (Identify exactly 5 specific formatting or structural issues).
-         - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume.
+         - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
             Structure:
+            ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD.)\n\n' : ''}
             ### 🤖 ATS Parsing Report
             (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text.)
 
             ### 📉 Score Drivers
-            (Why is the score X? e.g., "-10 points for missing metrics", "-15 points for unreadable header")
+            (Why is the score X? e.g., "-10 points for missing metrics", "-15 points for unreadable header"${hasJobDescription ? ', "-20 points for missing 6 critical JD keywords"' : ''})
 
             ### 🔑 Critical Missing Keywords
-            (List 3-5 top missing hard skills)
+            (List 3-5 top missing hard skills${hasJobDescription ? ' from the job description' : ''})
 
             ### 🛠️ Fixes to Reach Top 10%
-            (Specific actionable steps)
+            (Specific actionable steps${hasJobDescription ? ' to match the job description' : ''})
 
       Example JSON: 
       {
@@ -104,8 +117,8 @@ export const analyzeResume = internalAction({
           { "keyword": "SQL", "priority": "important", "frequency": 2, "impact": 6 },
           { "keyword": "Agile", "priority": "nice-to-have", "frequency": 1, "impact": 4 }
         ],
-        "formatIssues": [\"Use of tables detected\", \"Date format inconsistent\"],
-        "analysis": "### 🤖 ATS Parsing Report\\\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
+        "formatIssues": ["Use of tables detected", "Date format inconsistent"],
+        "analysis": "${hasJobDescription ? '### 🎯 Tailored Analysis\\n\\nThis resume matches 45% of the job description keywords...\\n\\n' : ''}### 🤖 ATS Parsing Report\\n\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser..."
       }
       `;
 

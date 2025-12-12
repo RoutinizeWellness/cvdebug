@@ -2,6 +2,8 @@
       const parsed = JSON.parse(jsonStr);
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis } = parsed;
       
+      console.log(`[AI Analysis Complete] Resume ID: ${args.id}, Score: ${score}, Tailored: ${hasJobDescription}`);
+      
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title,
@@ -9,8 +11,19 @@
         analysis,
         score,
         scoreBreakdown,
-        missingKeywords,
-        formatIssues,
       });
     } catch (error) {
-// ... keep existing code
+      console.error("Error analyzing resume:", error);
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+        id: args.id,
+        title: "Resume",
+        category: "Uncategorized",
+        analysis: "AI not configured or failed to analyze.",
+        score: 0,
+        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
+      });
+    }
+  },
+});
+
+// ... keep existing code (rewriteResume, optimizeLinkedIn, chat actions)
