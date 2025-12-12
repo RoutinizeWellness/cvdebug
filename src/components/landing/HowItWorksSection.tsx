@@ -1,4 +1,4 @@
-import { Upload, Zap, Target } from "lucide-react";
+import { Upload, Zap, Target, CreditCard, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function HowItWorksSection() {
@@ -20,6 +20,24 @@ export function HowItWorksSection() {
     }
   ];
 
+  const postPaymentSteps = [
+    {
+      icon: CreditCard,
+      title: "Complete Payment",
+      description: "Choose your plan ($4.99 for 1 scan or $19.99 for 5 scans) and checkout securely via Stripe."
+    },
+    {
+      icon: CheckCircle,
+      title: "Credits Unlocked",
+      description: "Your credits are instantly added to your account. You'll see your new balance in the dashboard."
+    },
+    {
+      icon: Upload,
+      title: "Upload & Analyze",
+      description: "Go to Dashboard → Upload Resume → Paste Job Description (optional) → Click 'Analyze'. Your full ATS report unlocks immediately."
+    }
+  ];
+
   return (
     <section id="how-it-works" className="py-16 md:py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6">
@@ -37,7 +55,7 @@ export function HowItWorksSection() {
           </motion.div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12 relative">
+        <div className="grid md:grid-cols-3 gap-12 relative mb-20">
           <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-transparent via-border to-transparent border-t border-dashed border-muted-foreground/30"></div>
           
           {steps.map((step, i) => (
@@ -59,6 +77,65 @@ export function HowItWorksSection() {
               </p>
             </motion.div>
           ))}
+        </div>
+
+        <div className="bg-gradient-to-br from-primary/5 via-purple-500/5 to-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4 border border-primary/20">
+                <CheckCircle className="h-4 w-4" />
+                After You Purchase
+              </div>
+              <h3 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
+                How to Use Your Credits
+              </h3>
+              <p className="text-base md:text-lg text-muted-foreground">
+                Your credits unlock instantly. Here's how to get your full ATS analysis report:
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+            
+            {postPaymentSteps.map((step, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="relative flex flex-col items-center text-center group"
+              >
+                <div className="h-16 w-16 md:h-20 md:w-20 bg-background border-2 border-primary/30 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl"></div>
+                  <step.icon className="h-7 w-7 md:h-9 md:w-9 text-primary relative z-10" />
+                </div>
+                <h4 className="text-lg font-bold mb-2 text-foreground">{step.title}</h4>
+                <p className="text-muted-foreground leading-relaxed text-sm">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="mt-10 text-center"
+          >
+            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 text-sm font-bold text-green-700 dark:text-green-400">
+              <CheckCircle className="h-4 w-4" />
+              No subscription • Credits never expire • Instant access
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
