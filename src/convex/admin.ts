@@ -37,81 +37,61 @@ export const getUserPaymentHistory = action({
     }
 
     const results = [];
+    console.log(`[PAYMENT HISTORY] Fetching for customer: ${args.customerId}, email: ${args.email}`);
     
-    // 1. Try getting customer details by ID
-    try {
-        const res = await fetch(`https://api.useautumn.com/v1/customers/${args.customerId}`, {
-            headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+    // Try multiple endpoints to find payment data
+    const endpoints = [
+      { url: `https://api.useautumn.com/v1/customers/${args.customerId}`, type: "customer_details" },
+      { url: `https://api.useautumn.com/v1/payments?customer_id=${args.customerId}`, type: "payments" },
+      { url: `https://api.useautumn.com/v1/transactions?customer_id=${args.customerId}`, type: "transactions" },
+      { url: `https://api.useautumn.com/v1/orders?customer_id=${args.customerId}`, type: "orders" },
+    ];
+
+    for (const endpoint of endpoints) {
+      try {
+        const res = await fetch(endpoint.url, {
+          headers: { "Authorization": `Bearer ${autumnSecretKey}` }
         });
+        
         if (res.ok) {
-            const data = await res.json();
-            results.push({ type: "customer_details", data });
+          const data = await res.json();
+          console.log(`[PAYMENT HISTORY] Success from ${endpoint.type}:`, JSON.stringify(data).substring(0, 300));
+          results.push({ type: endpoint.type, data });
         } else {
-            results.push({ type: "customer_lookup_error", status: res.status, text: await res.text() });
-            
-            // Fallback: Try looking up by email if ID failed (404)
-            if (res.status === 404 && args.email) {
-                try {
-                    // Try to find in list of customers
-                    const listRes = await fetch(`https://api.useautumn.com/v1/customers`, {
-                        headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-                    });
-                    
-                    if (listRes.ok) {
-                        const listData = await listRes.json();
-                        const customers = listData.customers || listData.data || [];
-                        const found = customers.find((c: any) => c.email === args.email);
-                        
-                        if (found) {
-                            results.push({ type: "customer_found_by_email", data: found });
-                            // Also try to get events for this found customer ID
-                            const eventsRes = await fetch(`https://api.useautumn.com/v1/events?customer_id=${found.id}`, {
-                                headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-                            });
-                            if (eventsRes.ok) {
-                                const eventsData = await eventsRes.json();
-                                results.push({ type: "events_from_email_match", data: eventsData });
-                            }
-                        } else {
-                            results.push({ type: "customer_email_lookup_failed", email: args.email });
-                        }
-                    }
-                } catch (e: any) {
-                    results.push({ type: "email_fallback_exception", error: e.message });
-                }
-            }
+          console.log(`[PAYMENT HISTORY] ${endpoint.type} returned ${res.status}`);
         }
-    } catch (e: any) {
-        results.push({ type: "customer_lookup_exception", error: e.message });
+      } catch (e: any) {
+        console.log(`[PAYMENT HISTORY] Error with ${endpoint.type}:`, e.message);
+      }
     }
 
-    // 2. Try getting events (transactions) for the original ID (if we haven't already found them via email)
-    // Only do this if we didn't find by email, or just do it anyway to be thorough
-    if (!results.some(r => r.type === "events_from_email_match")) {
-        try {
-            const res = await fetch(`https://api.useautumn.com/v1/events?customer_id=${args.customerId}`, {
-                headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-            });
-            if (res.ok) {
-                const data = await res.json();
-                results.push({ type: "events", data });
-            } else {
-                 // Try alternate endpoint if events fails
-                 try {
-                    const res2 = await fetch(`https://api.useautumn.com/v1/customers/${args.customerId}/events`, {
-                        headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-                    });
-                    if (res2.ok) {
-                        const data = await res2.json();
-                        results.push({ type: "customer_events", data });
-                    }
-                 } catch (e) {
-                     // ignore
-                 }
-            }
-        } catch (e: any) {
-            results.push({ type: "events_lookup_exception", error: e.message });
+    // Fallback: Try to find by email if we have it
+    if (args.email && results.length === 0) {
+      try {
+        const listRes = await fetch(`https://api.useautumn.com/v1/customers`, {
+          headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+        });
+        
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          const customers = listData.customers || listData.data || [];
+          const found = customers.find((c: any) => c.email === args.email);
+          
+          if (found) {
+            results.push({ type: "customer_found_by_email", data: found });
+            console.log(`[PAYMENT HISTORY] Found customer by email: ${args.email}`);
+          }
         }
+      } catch (e: any) {
+        console.log(`[PAYMENT HISTORY] Email lookup error:`, e.message);
+      }
+    }
+
+    if (results.length === 0) {
+      results.push({ 
+        type: "no_data", 
+        message: "No payment records found in Autumn. This could mean the customer hasn't made any purchases yet, or the API key doesn't have access to this data." 
+      });
     }
 
     return { results };

@@ -133,93 +133,111 @@ export const syncAutumnData = action({
       throw new Error("AUTUMN_SECRET_KEY is not configured");
     }
 
-    // Attempt to fetch recent orders/events to sync
-    // Since we don't have exact docs, we'll try to list events or customers
-    // This is a best-effort sync
-    
     try {
-      console.log("Attempting to sync with Autumn...");
+      console.log("[AUTUMN SYNC] Starting synchronization with Autumn API...");
       
-      let endpoint = "https://api.useautumn.com/v1/events";
-      let isEvents = true;
-      
-      // 1. Try Events Endpoint
-      let response = await fetch(endpoint, {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${autumnSecretKey}`,
-          "Content-Type": "application/json",
-        },
-      });
+      // Try to fetch payments/transactions from Autumn
+      // Autumn typically uses /v1/payments or /v1/transactions endpoint
+      const endpoints = [
+        "https://api.useautumn.com/v1/payments",
+        "https://api.useautumn.com/v1/transactions", 
+        "https://api.useautumn.com/v1/orders",
+        "https://api.useautumn.com/v1/customers"
+      ];
 
-      // 2. Fallback to Customers Endpoint if Events 404s
-      if (!response.ok && response.status === 404) {
-        console.warn("Autumn Events API endpoint not found (404). Trying customers endpoint...");
-        endpoint = "https://api.useautumn.com/v1/customers";
-        isEvents = false;
-        
-        response = await fetch(endpoint, {
+      let syncedCount = 0;
+      let foundData = false;
+      const syncDetails: string[] = [];
+
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`[AUTUMN SYNC] Trying endpoint: ${endpoint}`);
+          const response = await fetch(endpoint, {
             method: "GET",
             headers: {
-            "Authorization": `Bearer ${autumnSecretKey}`,
-            "Content-Type": "application/json",
+              "Authorization": `Bearer ${autumnSecretKey}`,
+              "Content-Type": "application/json",
             },
-        });
-      }
+          });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`Failed to fetch Autumn data from ${endpoint}:`, errorText);
-        return { success: false, message: `Sync failed: Autumn API returned ${response.status}. Please use 'Manual Grant' below.` };
-      }
-
-      const data = await response.json();
-      let syncedCount = 0;
-
-      if (isEvents) {
-          const events = data.events || data.data || [];
-          for (const event of events) {
-            if (event.type === "payment.succeeded" || event.type === "checkout.session.completed") {
-               const metadata = event.data?.metadata || {};
-               if (metadata.userId && metadata.plan) {
-                 await ctx.runMutation(internal.users.updateSubscription, {
-                   tokenIdentifier: metadata.userId,
-                   plan: metadata.plan as "single_scan" | "bulk_pack",
-                 });
-                 syncedCount++;
-               }
-            }
-          }
-      } else {
-          // Handle Customers
-          // Assuming structure: { customers: [ { id, email, metadata: { ... } } ] }
-          const customers = data.customers || data.data || [];
-          for (const customer of customers) {
-              // Strategy 1: Check metadata for plan info (Best case)
-              if (customer.metadata?.userId && customer.metadata?.plan) {
-                   await ctx.runMutation(internal.users.updateSubscription, {
-                       tokenIdentifier: customer.metadata.userId,
-                       plan: customer.metadata.plan as "single_scan" | "bulk_pack",
-                   });
-                   syncedCount++;
-              } 
-              // Strategy 2: Match by Email if metadata is missing (Fallback)
-              else if (customer.email) {
-                  // If we have an email but no metadata, we can try to find the user by email
-                  // We'll assume a default plan if not specified, or check other fields
-                  // For now, we'll just log it or try to update if we can infer the plan
-                  // This requires a new internal mutation that handles email-based updates
-                  // For safety, we will skip automatic update without explicit plan, 
-                  // but we could add logic here if we knew the product ID mapping.
-                  console.log(`Found customer ${customer.email} in Autumn but missing metadata.`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log(`[AUTUMN SYNC] Success from ${endpoint}:`, JSON.stringify(data).substring(0, 500));
+            
+            // Handle different response structures
+            const items = data.payments || data.transactions || data.orders || data.customers || data.data || [];
+            
+            if (items.length > 0) {
+              foundData = true;
+              syncDetails.push(`Found ${items.length} records from ${endpoint.split('/').pop()}`);
+              
+              for (const item of items) {
+                // Extract customer info and metadata
+                const metadata = item.metadata || {};
+                const customerEmail = item.customer_email || item.email || metadata.email;
+                const customerId = item.customer_id || item.customer || metadata.userId;
+                const status = item.status || item.payment_status;
+                const productId = item.product_id || metadata.plan;
+                
+                console.log(`[AUTUMN SYNC] Processing item:`, { customerEmail, customerId, status, productId });
+                
+                // Only process successful payments
+                if (status === "succeeded" || status === "completed" || status === "paid") {
+                  // Determine plan from product_id or metadata
+                  let plan: "single_scan" | "bulk_pack" | null = null;
+                  
+                  if (productId === "single_scan" || productId === "single-scan") {
+                    plan = "single_scan";
+                  } else if (productId === "bulk_pack" || productId === "bulk-pack") {
+                    plan = "bulk_pack";
+                  } else if (metadata.plan) {
+                    plan = metadata.plan as "single_scan" | "bulk_pack";
+                  }
+                  
+                  if (plan && (customerId || customerEmail)) {
+                    try {
+                      // Try to find user by Clerk ID first, then by email
+                      const identifier = customerId || customerEmail;
+                      
+                      await ctx.runMutation(internal.users.updateSubscription, {
+                        tokenIdentifier: identifier,
+                        plan: plan,
+                      });
+                      
+                      syncedCount++;
+                      syncDetails.push(`✅ Synced ${customerEmail || customerId} - ${plan}`);
+                    } catch (err: any) {
+                      console.error(`[AUTUMN SYNC] Failed to update user:`, err);
+                      syncDetails.push(`❌ Failed: ${customerEmail || customerId} - ${err.message}`);
+                    }
+                  }
+                }
               }
+            }
+          } else {
+            console.log(`[AUTUMN SYNC] ${endpoint} returned ${response.status}`);
           }
+        } catch (err: any) {
+          console.log(`[AUTUMN SYNC] Error with ${endpoint}:`, err.message);
+        }
       }
 
-      return { success: true, message: `Synced ${syncedCount} records from Autumn` };
+      if (!foundData) {
+        return { 
+          success: false, 
+          message: "Could not retrieve payment data from Autumn API. Please verify API key and use 'Manual Grant' to add credits manually." 
+        };
+      }
+
+      const detailsMessage = syncDetails.length > 0 ? `\n\nDetails:\n${syncDetails.join('\n')}` : '';
+      return { 
+        success: true, 
+        message: `Synced ${syncedCount} payment(s) from Autumn${detailsMessage}` 
+      };
+      
     } catch (error: any) {
-      console.error("Sync error:", error);
-      return { success: false, message: error.message };
+      console.error("[AUTUMN SYNC] Error:", error);
+      return { success: false, message: `Sync error: ${error.message}` };
     }
   }
 });
