@@ -94,9 +94,15 @@ export function HowItWorksSection() {
               <h3 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
                 How to Use Your Credits
               </h3>
-              <p className="text-base md:text-lg text-muted-foreground">
+              <p className="text-base md:text-lg text-muted-foreground mb-3">
                 Your credits unlock instantly. Here's how to get your full ATS analysis report:
               </p>
+              <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 rounded-lg px-4 py-2 text-sm">
+                <span className="text-2xl">💳</span>
+                <p className="text-amber-900 dark:text-amber-100 font-bold">
+                  Think of credits like arcade tokens: <span className="underline">1 scan = 1 credit</span>
+                </p>
+              </div>
             </motion.div>
           </div>
 
@@ -120,6 +126,11 @@ export function HowItWorksSection() {
                 <p className="text-muted-foreground leading-relaxed text-sm">
                   {step.description}
                 </p>
+                {i === 2 && (
+                  <div className="mt-3 inline-flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-[10px] font-bold text-primary">
+                    💳 Costs 1 credit per scan
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>

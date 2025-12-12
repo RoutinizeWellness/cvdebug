@@ -304,45 +304,54 @@ export default function Dashboard() {
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 mb-4 animate-in zoom-in duration-300">
               <CheckCircle2 className="h-8 w-8 text-white" />
             </div>
-            <DialogTitle className="text-center text-2xl font-black">🎉 You're All Set!</DialogTitle>
+            <DialogTitle className="text-center text-2xl font-black">🎉 Purchase Successful!</DialogTitle>
             <DialogDescription className="text-center space-y-6 pt-2">
-              <p className="text-base text-foreground font-medium">Your payment was successful and credits are ready to use.</p>
               {currentUser ? (
                 <div className="bg-gradient-to-br from-primary/10 to-purple-500/10 p-6 rounded-2xl border-2 border-primary/20 flex flex-col items-center justify-center gap-2 shadow-lg">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Your New Balance</span>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">You now have</span>
                   <span className="text-5xl font-black text-primary flex items-center gap-3 animate-in slide-in-from-bottom duration-500">
                     <Sparkles className="h-7 w-7 text-yellow-400 fill-yellow-400 animate-pulse" />
                     {currentUser.credits}
                     <span className="text-2xl font-bold text-muted-foreground">Credits</span>
                   </span>
+                  <span className="text-xs text-muted-foreground">in your account</span>
                 </div>
               ) : (
                 <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
               )}
               
-              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 space-y-3">
-                <h4 className="text-sm font-bold text-blue-900 dark:text-blue-100 flex items-center gap-2">
-                  <Upload className="h-4 w-4" />
-                  Ready to optimize your resume?
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-2 border-green-200 dark:border-green-800 rounded-xl p-5 space-y-4 text-left">
+                <h4 className="text-base font-black text-green-900 dark:text-green-100 flex items-center gap-2">
+                  💡 How to use your credits:
                 </h4>
-                <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-2 text-left">
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">✓</span>
-                    <span>Upload your resume (PDF, Word, or Image)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">✓</span>
-                    <span>Paste a job description for tailored scoring</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">✓</span>
-                    <span>Get instant ATS analysis with missing keywords</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-blue-500 mt-0.5">✓</span>
-                    <span>Download your optimized report</span>
-                  </li>
-                </ul>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
+                    <div>
+                      <p className="text-sm font-bold text-green-900 dark:text-green-100">To unlock your CURRENT report:</p>
+                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Click <span className="font-bold">"Re-Run Scan"</span> now <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
+                    <div>
+                      <p className="text-sm font-bold text-green-900 dark:text-green-100">To check a NEW resume version later:</p>
+                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Just upload it anytime <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-green-200 dark:border-green-800">
+                  <p className="text-xs font-bold text-green-700 dark:text-green-300 flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4" />
+                    Your credits never expire.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+                <p className="text-xs text-amber-900 dark:text-amber-100 font-medium">
+                  <span className="font-bold">💳 Think of credits like arcade tokens:</span> Each scan costs 1 token. Upload → Spend 1 credit → Get full report.
+                </p>
               </div>
             </DialogDescription>
           </DialogHeader>
