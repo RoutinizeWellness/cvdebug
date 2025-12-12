@@ -1,12 +1,2 @@
-import { 
-  PlusCircle, 
-  Loader2, 
-  ShieldAlert, 
-  Pencil, 
-  Trash2, 
-  Save, 
-  X, 
-  RefreshCw 
-} from "lucide-react";
-
-<span>Beta Launch: {claimed}/100 spots claimed</span>
+CONTEXT:
+- Job Description: "${args.jobDescription || "General Industry Standards for the detected role"}"
