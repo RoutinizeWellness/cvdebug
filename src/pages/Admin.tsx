@@ -67,7 +67,6 @@ export default function AdminPage() {
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const processBulkGrants = useMutation(api.admin.processBulkGrants);
   const simulateWebhook = useAction(api.admin.simulateWebhookEvent);
-  const syncAutumn = useAction(api.billing.syncAutumnData);
   const createCheckoutSession = useAction(api.billing.createCheckoutSession);
 
   const [editingUser, setEditingUser] = useState<any>(null);
@@ -79,7 +78,6 @@ export default function AdminPage() {
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingKnown, setIsFixingKnown] = useState(false);
   const [isFixingReported, setIsFixingReported] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
   
   // Payment History State
   const [historyUser, setHistoryUser] = useState<{id: string, name: string, email?: string} | null>(null);
@@ -234,23 +232,6 @@ export default function AdminPage() {
     }
   };
 
-  const handleSyncAutumn = async () => {
-    setIsSyncing(true);
-    try {
-      const result = await syncAutumn();
-      if (result.success) {
-        toast.success(result.message);
-      } else {
-        toast.error(result.message || "Failed to sync with Autumn");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to sync with Autumn");
-    } finally {
-      setIsSyncing(false);
-    }
-  };
-
   const handleTestPayment = async (plan: "single_scan" | "bulk_pack") => {
     setIsTestingPayment(plan);
     try {
@@ -332,10 +313,6 @@ export default function AdminPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-             <Button variant="outline" onClick={handleSyncAutumn} disabled={isSyncing}>
-                {isSyncing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
-                Sync Autumn
-             </Button>
              <Button variant="outline" onClick={handleFixReported} disabled={isFixingReported} className="border-orange-500/50 hover:bg-orange-500/10 text-orange-600">
                 {isFixingReported ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
                 Fix Reported (3 Users)

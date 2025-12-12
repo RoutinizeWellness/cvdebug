@@ -37,60 +37,37 @@ export const getUserPaymentHistory = action({
     }
 
     const results = [];
-    console.log(`[PAYMENT HISTORY] Fetching for customer: ${args.customerId}, email: ${args.email}`);
+    console.log(`[PAYMENT HISTORY] Checking for customer: ${args.customerId}, email: ${args.email}`);
     
-    // Try multiple endpoints to find payment data
-    const endpoints = [
-      { url: `https://api.useautumn.com/v1/customers/${args.customerId}`, type: "customer_details" },
-      { url: `https://api.useautumn.com/v1/payments?customer_id=${args.customerId}`, type: "payments" },
-      { url: `https://api.useautumn.com/v1/transactions?customer_id=${args.customerId}`, type: "transactions" },
-      { url: `https://api.useautumn.com/v1/orders?customer_id=${args.customerId}`, type: "orders" },
-    ];
+    // Autumn doesn't provide direct payment history endpoints
+    // Instead, we show what we know from our database
+    results.push({ 
+      type: "info", 
+      message: "Autumn manages billing through Stripe webhooks. Payment history is not directly queryable via API.",
+      note: "Use the 'Manual Grant' feature below to add credits if a payment was processed but not reflected."
+    });
 
-    for (const endpoint of endpoints) {
-      try {
-        const res = await fetch(endpoint.url, {
-          headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-        });
-        
-        if (res.ok) {
-          const data = await res.json();
-          console.log(`[PAYMENT HISTORY] Success from ${endpoint.type}:`, JSON.stringify(data).substring(0, 300));
-          results.push({ type: endpoint.type, data });
-        } else {
-          console.log(`[PAYMENT HISTORY] ${endpoint.type} returned ${res.status}`);
-        }
-      } catch (e: any) {
-        console.log(`[PAYMENT HISTORY] Error with ${endpoint.type}:`, e.message);
+    // Try to get customer info from Autumn (if endpoint exists)
+    try {
+      const res = await fetch(`https://api.useautumn.com/v1/customers/${args.customerId}`, {
+        headers: { "Authorization": `Bearer ${autumnSecretKey}` }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        console.log(`[PAYMENT HISTORY] Customer data:`, JSON.stringify(data).substring(0, 300));
+        results.push({ type: "customer_info", data });
+      } else {
+        console.log(`[PAYMENT HISTORY] Customer endpoint returned ${res.status}`);
       }
+    } catch (e: any) {
+      console.log(`[PAYMENT HISTORY] Error fetching customer:`, e.message);
     }
 
-    // Fallback: Try to find by email if we have it
-    if (args.email && results.length === 0) {
-      try {
-        const listRes = await fetch(`https://api.useautumn.com/v1/customers`, {
-          headers: { "Authorization": `Bearer ${autumnSecretKey}` }
-        });
-        
-        if (listRes.ok) {
-          const listData = await listRes.json();
-          const customers = listData.customers || listData.data || [];
-          const found = customers.find((c: any) => c.email === args.email);
-          
-          if (found) {
-            results.push({ type: "customer_found_by_email", data: found });
-            console.log(`[PAYMENT HISTORY] Found customer by email: ${args.email}`);
-          }
-        }
-      } catch (e: any) {
-        console.log(`[PAYMENT HISTORY] Email lookup error:`, e.message);
-      }
-    }
-
-    if (results.length === 0) {
+    if (results.length === 1) {
       results.push({ 
-        type: "no_data", 
-        message: "No payment records found in Autumn. This could mean the customer hasn't made any purchases yet, or the API key doesn't have access to this data." 
+        type: "recommendation", 
+        message: "To verify payments: Check your Stripe dashboard or use 'Manual Grant' to add credits directly." 
       });
     }
 
