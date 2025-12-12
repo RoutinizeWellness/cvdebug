@@ -275,30 +275,70 @@ export default function Dashboard() {
       <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan={initialPlan} />
       
       <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-              <CheckCircle2 className="h-6 w-6 text-green-600" />
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 mb-4 animate-in zoom-in duration-300">
+              <CheckCircle2 className="h-8 w-8 text-white" />
             </div>
-            <DialogTitle className="text-center text-xl">Payment Successful!</DialogTitle>
-            <DialogDescription className="text-center space-y-4">
-              <p>Thank you for your purchase. Your credits have been added to your account and you can now access premium features.</p>
+            <DialogTitle className="text-center text-2xl font-black">🎉 You're All Set!</DialogTitle>
+            <DialogDescription className="text-center space-y-6 pt-2">
+              <p className="text-base text-foreground font-medium">Your payment was successful and credits are ready to use.</p>
               {currentUser ? (
-                <div className="bg-muted/50 p-4 rounded-xl border border-border flex flex-col items-center justify-center gap-1">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">New Balance</span>
-                  <span className="text-3xl font-black text-primary flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                    {currentUser.credits} Credits
+                <div className="bg-gradient-to-br from-primary/10 to-purple-500/10 p-6 rounded-2xl border-2 border-primary/20 flex flex-col items-center justify-center gap-2 shadow-lg">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Your New Balance</span>
+                  <span className="text-5xl font-black text-primary flex items-center gap-3 animate-in slide-in-from-bottom duration-500">
+                    <Sparkles className="h-7 w-7 text-yellow-400 fill-yellow-400 animate-pulse" />
+                    {currentUser.credits}
+                    <span className="text-2xl font-bold text-muted-foreground">Credits</span>
                   </span>
                 </div>
               ) : (
                 <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
               )}
+              
+              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 space-y-3">
+                <h4 className="text-sm font-bold text-blue-900 dark:text-blue-100 flex items-center gap-2">
+                  <Upload className="h-4 w-4" />
+                  Ready to optimize your resume?
+                </h4>
+                <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-2 text-left">
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">✓</span>
+                    <span>Upload your resume (PDF, Word, or Image)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">✓</span>
+                    <span>Paste a job description for tailored scoring</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">✓</span>
+                    <span>Get instant ATS analysis with missing keywords</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-blue-500 mt-0.5">✓</span>
+                    <span>Download your optimized report</span>
+                  </li>
+                </ul>
+              </div>
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="sm:justify-center">
-            <Button onClick={() => setShowPaymentSuccess(false)} className="w-full sm:w-auto font-bold">
-              Start Optimizing
+          <DialogFooter className="sm:justify-center gap-2 flex-col sm:flex-row">
+            <Button 
+              onClick={() => {
+                setShowPaymentSuccess(false);
+                fileInputRef.current?.click();
+              }} 
+              className="w-full sm:w-auto font-bold text-base h-12 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-lg"
+            >
+              <Upload className="mr-2 h-5 w-5" />
+              Upload Resume Now
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => setShowPaymentSuccess(false)} 
+              className="w-full sm:w-auto font-bold"
+            >
+              I'll Do It Later
             </Button>
           </DialogFooter>
         </DialogContent>
