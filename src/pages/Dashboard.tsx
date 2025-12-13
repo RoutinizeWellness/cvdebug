@@ -11,7 +11,9 @@ import {
   Filter,
   Plus,
   Sparkles,
-  CheckCircle2
+  CheckCircle2,
+  X,
+  Check
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
@@ -50,6 +52,7 @@ export default function Dashboard() {
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
+  const [showNewFeatureBanner, setShowNewFeatureBanner] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const processedPaymentRef = useRef(false);
   
@@ -420,6 +423,50 @@ export default function Dashboard() {
         )}
 
         <div className="container mx-auto px-6 py-8 max-w-7xl">
+          {/* New Feature Announcement Banner */}
+          {showNewFeatureBanner && currentView === 'resumes' && (
+            <div className="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500/10 via-primary/10 to-pink-500/10 border-2 border-primary/30 shadow-lg animate-in slide-in-from-top duration-500">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.1),rgba(255,255,255,0))]"></div>
+              <div className="relative p-6 flex items-start gap-4">
+                <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg animate-pulse">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-primary to-purple-600 text-white shadow-sm">
+                      ✨ NEW FEATURE
+                    </span>
+                    <h3 className="text-xl font-black text-foreground">Smart Metric Suggestions</h3>
+                  </div>
+                  <p className="text-sm text-foreground/80 leading-relaxed mb-3">
+                    Get AI-powered, quantifiable metrics for every technology in your stack! Now included in all paid reports ($4.99).
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
+                      <Check className="h-3.5 w-3.5 text-green-600" />
+                      <span className="font-medium">Realistic metrics for Redis, Docker, AWS, etc.</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
+                      <Check className="h-3.5 w-3.5 text-green-600" />
+                      <span className="font-medium">Copy-paste ready bullet points</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
+                      <Check className="h-3.5 w-3.5 text-green-600" />
+                      <span className="font-medium">Tailored to your role</span>
+                    </div>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setShowNewFeatureBanner(false)}
+                  className="flex-shrink-0 p-2 hover:bg-background/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+                  title="Dismiss"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
           {currentView === 'resumes' && (
             <div className="flex flex-col gap-8">
               {/* Header Section */}
