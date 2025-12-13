@@ -374,6 +374,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 "List of all missing keywords",
                 "Exact sections to add them",
                 "Format issues with specific fixes",
+                "💎 AI Metric Suggestions for your tech stack",
                 "Downloadable PDF report",
                 "Priority email support"
               ].map((item, i) => (

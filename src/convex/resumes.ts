@@ -128,6 +128,10 @@ export const updateResumeMetadata = internalMutation({
       priority: v.string(),
     }))),
     formatIssues: v.optional(v.array(v.string())),
+    metricSuggestions: v.optional(v.array(v.object({
+      technology: v.string(),
+      metrics: v.array(v.string()),
+    }))),
   },
   handler: async (ctx, args) => {
     const updates: any = { status: "completed" };
@@ -139,6 +143,7 @@ export const updateResumeMetadata = internalMutation({
     if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
     if (args.missingKeywords) updates.missingKeywords = args.missingKeywords;
     if (args.formatIssues) updates.formatIssues = args.formatIssues;
+    if (args.metricSuggestions) updates.metricSuggestions = args.metricSuggestions;
 
     await ctx.db.patch(args.id, updates);
   },

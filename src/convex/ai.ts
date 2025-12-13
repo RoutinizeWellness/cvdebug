@@ -209,7 +209,7 @@ export const analyzeResume = internalAction({
       const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis } = parsed;
+      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
@@ -218,6 +218,9 @@ export const analyzeResume = internalAction({
         analysis,
         score,
         scoreBreakdown,
+        missingKeywords,
+        formatIssues,
+        metricSuggestions,
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
