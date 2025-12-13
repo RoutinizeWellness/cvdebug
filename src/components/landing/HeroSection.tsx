@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, AlertCircle, FileText } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, FileText, Sparkles, Zap } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export function HeroSection() {
@@ -10,10 +10,39 @@ export function HeroSection() {
 
   return (
     <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background opacity-50"></div>
+      {/* Enhanced animated background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-purple-500/10 to-background animate-pulse"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02]"></div>
+      </div>
+      
+      {/* Animated gradient orbs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-        <div className="absolute top-20 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-purple-500/5 rounded-full blur-3xl"></div>
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ 
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-20 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full blur-3xl"
+        ></motion.div>
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2]
+          }}
+          transition={{ 
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+          className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"
+        ></motion.div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -24,13 +53,16 @@ export function HeroSection() {
             transition={{ duration: 0.5 }}
             className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-bold mb-6 border-2 border-primary/20 shadow-lg">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-              </span>
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 text-primary text-xs md:text-sm font-bold mb-6 border-2 border-primary/30 shadow-lg backdrop-blur-sm hover:scale-105 transition-transform"
+            >
+              <Sparkles className="h-4 w-4 animate-pulse" />
               New: ML-Enhanced ATS Analysis
-            </div>
+              <Zap className="h-3 w-3" />
+            </motion.div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
               Is ATS blocking <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">your resume?</span>

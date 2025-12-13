@@ -3,16 +3,36 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { motion } from "framer-motion";
 
 export function FeatureGridSection() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-6">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+      {/* Animated background pattern */}
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02]"></div>
+      <motion.div 
+        animate={{ 
+          backgroundPosition: ["0% 0%", "100% 100%"],
+        }}
+        transition={{ 
+          duration: 20,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-purple-500/5 opacity-50"
+      ></motion.div>
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="order-2 lg:order-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="order-2 lg:order-1"
+          >
             <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">
               Don't let technical errors hold you back
             </h2>
@@ -48,11 +68,28 @@ export function FeatureGridSection() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
           
-          <div className="relative order-1 lg:order-2">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl blur-3xl"></div>
-            <div className="relative bg-card border border-border rounded-3xl p-6 md:p-8 shadow-2xl">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative order-1 lg:order-2"
+          >
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.05, 1],
+                rotate: [0, 2, 0]
+              }}
+              transition={{ 
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl blur-3xl"
+            ></motion.div>
+            <div className="relative bg-card border border-border rounded-3xl p-6 md:p-8 shadow-2xl hover:shadow-primary/20 transition-shadow duration-500">
               <div className="flex items-center justify-between mb-8 border-b border-border pb-6">
                 <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
@@ -98,7 +135,7 @@ export function FeatureGridSection() {
                   </Button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
