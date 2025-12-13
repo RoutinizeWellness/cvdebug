@@ -79,7 +79,7 @@ export function HowItWorksSection() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-br from-primary/5 via-purple-500/5 to-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12">
+        <div className="bg-gradient-to-br from-primary/5 via-purple-500/5 to-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12 shadow-xl">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -87,26 +87,28 @@ export function HowItWorksSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4 border border-primary/20">
-                <CheckCircle className="h-4 w-4" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 text-primary text-sm font-bold uppercase tracking-wider mb-6 border-2 border-primary/30 shadow-lg">
+                <CheckCircle className="h-5 w-5" />
                 After You Purchase
               </div>
-              <h3 className="text-2xl md:text-4xl font-black tracking-tight mb-4">
-                How to Use Your Credits
+              <h3 className="text-3xl md:text-5xl font-black tracking-tight mb-6 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                Your Credits Work Like Arcade Tokens
               </h3>
-              <p className="text-base md:text-lg text-muted-foreground mb-3">
-                Your credits unlock instantly. Here's how to get your full ATS analysis report:
-              </p>
-              <div className="inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 rounded-lg px-4 py-2 text-sm">
-                <span className="text-2xl">💳</span>
-                <p className="text-amber-900 dark:text-amber-100 font-bold">
-                  Think of credits like arcade tokens: <span className="underline">1 scan = 1 credit</span>
-                </p>
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl px-6 py-4 text-base shadow-lg">
+                <span className="text-4xl">🎮</span>
+                <div className="text-left">
+                  <p className="text-amber-900 dark:text-amber-100 font-black text-lg">
+                    1 Scan = 1 Credit
+                  </p>
+                  <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
+                    Simple, transparent, no surprises
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 relative">
+          <div className="grid md:grid-cols-3 gap-8 relative mb-10">
             <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
             
             {postPaymentSteps.map((step, i) => (
@@ -118,19 +120,17 @@ export function HowItWorksSection() {
                 transition={{ duration: 0.5, delay: i * 0.15 }}
                 className="relative flex flex-col items-center text-center group"
               >
-                <div className="h-16 w-16 md:h-20 md:w-20 bg-background border-2 border-primary/30 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
+                <div className="h-20 w-20 md:h-24 md:w-24 bg-background border-2 border-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl"></div>
-                  <step.icon className="h-7 w-7 md:h-9 md:w-9 text-primary relative z-10" />
+                  <step.icon className="h-9 w-9 md:h-11 md:w-11 text-primary relative z-10" />
                 </div>
-                <h4 className="text-lg font-bold mb-2 text-foreground">{step.title}</h4>
-                <p className="text-muted-foreground leading-relaxed text-sm">
+                <div className="mb-3 inline-flex items-center justify-center h-7 w-7 rounded-full bg-primary text-primary-foreground text-sm font-bold">
+                  {i + 1}
+                </div>
+                <h4 className="text-xl font-bold mb-3 text-foreground">{step.title}</h4>
+                <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                   {step.description}
                 </p>
-                {i === 2 && (
-                  <div className="mt-3 inline-flex items-center gap-1 bg-primary/10 border border-primary/20 rounded-full px-3 py-1 text-[10px] font-bold text-primary">
-                    💳 Costs 1 credit per scan
-                  </div>
-                )}
               </motion.div>
             ))}
           </div>
@@ -140,12 +140,25 @@ export function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-10 text-center"
+            className="space-y-4"
           >
-            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 text-sm font-bold text-green-700 dark:text-green-400">
-              <CheckCircle className="h-4 w-4" />
-              No subscription • Credits never expire • Instant access
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="inline-flex items-center gap-2 bg-green-500/10 border-2 border-green-500/30 rounded-full px-5 py-2.5 text-sm font-bold text-green-700 dark:text-green-400 shadow-md">
+                <CheckCircle className="h-5 w-5" />
+                No subscription
+              </div>
+              <div className="inline-flex items-center gap-2 bg-blue-500/10 border-2 border-blue-500/30 rounded-full px-5 py-2.5 text-sm font-bold text-blue-700 dark:text-blue-400 shadow-md">
+                <CheckCircle className="h-5 w-5" />
+                Credits never expire
+              </div>
+              <div className="inline-flex items-center gap-2 bg-purple-500/10 border-2 border-purple-500/30 rounded-full px-5 py-2.5 text-sm font-bold text-purple-700 dark:text-purple-400 shadow-md">
+                <CheckCircle className="h-5 w-5" />
+                Instant access
+              </div>
             </div>
+            <p className="text-center text-sm text-muted-foreground max-w-xl mx-auto">
+              💡 <strong>Pro Tip:</strong> If you're viewing a blurred report when you purchase, we'll automatically unlock it for you—no extra clicks needed!
+            </p>
           </motion.div>
         </div>
       </div>

@@ -24,12 +24,12 @@ export function HeroSection() {
             transition={{ duration: 0.5 }}
             className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-bold mb-6 border border-primary/20">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-bold mb-6 border-2 border-primary/20 shadow-lg">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
               </span>
-              New: LinkedIn Profile Analysis
+              New: ML-Enhanced ATS Analysis
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
               Is ATS blocking <br />
