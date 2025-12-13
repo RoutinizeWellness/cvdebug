@@ -26,7 +26,8 @@ import {
   ArrowRight,
   AlertCircle,
   TrendingUp,
-  Star
+  Star,
+  Link2
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,17 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
       return;
     }
     window.open(selectedResume?.url, '_blank');
+  };
+
+  const handleShareLink = () => {
+    if (!selectedResume?._id) return;
+    
+    const shareUrl = `${window.location.origin}/dashboard?resumeId=${selectedResume._id}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      toast.success("📋 Link copied to clipboard! Share it with anyone.");
+    }).catch(() => {
+      toast.error("Failed to copy link. Please try again.");
+    });
   };
 
   const handleOptimize = async () => {
@@ -458,6 +470,16 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
             </div>
           </div>
           <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:flex gap-2 font-bold"
+              onClick={handleShareLink}
+              title="Copy shareable link"
+            >
+              <Link2 className="h-4 w-4" />
+              Share Link
+            </Button>
             <Button 
               variant="outline" 
               size="sm" 
