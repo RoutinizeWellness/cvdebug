@@ -32,7 +32,7 @@ export function Footer() {
               </div>
             </div>
             <a 
-              href="https://twitter.com/tiniboti" 
+              href="https://x.com/Aherme13" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:text-primary/80 transition-colors group"
@@ -52,7 +52,7 @@ export function Footer() {
           <div className="flex gap-6 text-sm text-muted-foreground font-medium">
             <button onClick={() => setShowPrivacy(true)} className="hover:text-foreground transition-colors">Privacy</button>
             <button onClick={() => setShowTerms(true)} className="hover:text-foreground transition-colors">Terms</button>
-            <a href="https://twitter.com/tiniboti" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Twitter</a>
+            <a href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Twitter</a>
           </div>
         </div>
       </div>
