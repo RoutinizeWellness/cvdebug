@@ -48,58 +48,88 @@ export const analyzeResume = internalAction({
         ? `"${args.jobDescription}"`
         : `"General Industry Standards for the detected role"`;
 
-      const prompt = `You are an advanced ATS (Applicant Tracking System) Simulator (simulating systems like Taleo, Greenhouse, Lever).
-      Your goal is to strictly evaluate the resume's machine-readability and content match against the target role.
+      const prompt = `You are an advanced ATS (Applicant Tracking System) Simulator with ML-enhanced analysis capabilities (simulating systems like Taleo, Greenhouse, Lever, Workday).
+      Your goal is to strictly evaluate the resume's machine-readability and content match against the target role using sophisticated algorithms.
 
       CONTEXT:
       - Job Description: ${jobDescriptionContext}
-      ${hasJobDescription ? '- IMPORTANT: This is a TAILORED analysis. Score heavily based on keyword matches from the provided job description.' : '- This is a GENERAL analysis based on industry standards.'}
+      ${hasJobDescription ? '- IMPORTANT: This is a TAILORED analysis. Use TF-IDF-like weighting for keyword importance from the JD.' : '- This is a GENERAL analysis based on industry standards and role-specific benchmarks.'}
       - RAW PARSED TEXT (What the ATS sees):
       "${args.ocrText.substring(0, 30000)}"
 
-      ### SCORING ALGORITHM (0-100):
-      Be strict but fair. Most resumes score between 40-70. Scores above 80 should be rare and require near-perfect optimization.
-      ${hasJobDescription ? '\n**TAILORED MODE**: Prioritize exact keyword matches from the job description. Missing critical JD keywords should significantly lower the score.' : ''}
+      ### ENHANCED SCORING ALGORITHM (0-100):
+      Use ML-inspired scoring with weighted components. Most resumes score 45-75. Scores above 85 require exceptional optimization.
+      ${hasJobDescription ? '\n**TAILORED MODE**: Apply TF-IDF weighting - keywords appearing 3+ times in JD are "critical", 2 times are "important", 1 time is "nice-to-have".' : ''}
 
-      1. **Parsing & Format (30%)**:
-         - **CRITICAL**: Does the raw text look garbled? Are headers (Experience, Education) clearly identifiable?
-         - Penalize for: Multi-column layouts (often parse poorly), graphics/icons (not visible in text), missing dates, or complex tables.
-         - If the raw text is a wall of text without structure, score this < 50.
-         - If the text is readable but formatting is messy, score 50-70.
+      1. **Parsing & Format Quality (30 points)**:
+         - **Structure Detection Algorithm**:
+           * Check for standard section headers (Experience, Education, Skills, Summary/Objective)
+           * Detect chronological order and date consistency
+           * Identify contact information block (email, phone, LinkedIn)
+         - **Format Issues Detection**:
+           * Multi-column layouts (ATS reads left-to-right, causes jumbling) → -8 points
+           * Tables/graphics (invisible to text parsers) → -6 points
+           * Inconsistent date formats → -4 points
+           * Missing section headers → -5 points
+           * Poor spacing/wall of text → -3 points
+         - **Scoring**:
+           * 25-30: Clean, single-column, clear headers, consistent formatting
+           * 18-24: Minor issues, mostly readable
+           * 10-17: Significant parsing problems
+           * 0-9: Severely garbled or unparseable
 
-      2. **Keyword Matching (40%)**:
+      2. **Keyword Matching & Context (40 points)**:
          ${hasJobDescription 
-           ? '- Extract ALL hard skills, soft skills, and key phrases from the provided Job Description.\n         - Calculate exact match rate. Each missing critical keyword should reduce score by 3-5 points.\n         - **CRITICAL**: If the resume is missing 5+ key skills from the JD, score should be < 60.'
-           : '- Extract hard skills from general industry standards for the detected role.\n         - Calculate a match rate.'
+           ? '- **TF-IDF-Inspired Weighting**:\n           * Extract all technical skills, tools, methodologies from JD\n           * Weight by frequency: 3+ mentions = 5 points each, 2 mentions = 3 points, 1 mention = 1 point\n           * Calculate match rate: (matched_weight / total_weight) × 40\n         - **Contextual Analysis**:\n           * Keyword in project description with metrics = full points\n           * Keyword in skills list only = 60% of points\n           * Keyword stuffing (>10 skills with no context) = -5 points penalty\n         - **Critical Threshold**: Missing 5+ high-frequency JD keywords → cap score at 55'
+           : '- **Industry Benchmark Matching**:\n           * Identify role category (Engineering, Marketing, Sales, etc.)\n           * Compare against top 20 industry-standard skills for that role\n           * Calculate coverage percentage'
          }
-         - **Penalize** for "keyword stuffing" (listing skills without context).
-         - Look for "contextual keywords" (e.g., "Java" used in a project description vs just a list).
+         - **Semantic Matching**: Consider synonyms (e.g., "JavaScript" = "JS", "Machine Learning" = "ML")
+         - **Recency Weighting**: Skills mentioned in recent roles (last 2 years) weighted 1.5x
 
-      3. **Content & Impact (30%)**:
-         - **Quantifiable Metrics**: Are there numbers? (e.g., "Improved X by Y%"). If no metrics, score this < 60.
-         - **Action Verbs**: Strong start to bullets?
-         - **Completeness**: Contact info, LinkedIn URL, Education, Experience present?
+      3. **Content Quality & Impact (30 points)**:
+         - **Quantifiable Metrics Algorithm** (15 points):
+           * Count metrics/numbers in experience bullets (%, $, #, X times)
+           * 5+ quantified achievements = 15 points
+           * 3-4 quantified achievements = 10 points
+           * 1-2 quantified achievements = 5 points
+           * 0 quantified achievements = 0 points
+         - **Action Verb Analysis** (8 points):
+           * Strong verbs (Led, Architected, Optimized, Increased) = full points
+           * Weak verbs (Responsible for, Worked on, Helped with) = partial points
+           * Passive voice = 0 points
+         - **Completeness Check** (7 points):
+           * Contact info (email, phone) = 2 points
+           * LinkedIn URL = 1 point
+           * Education section = 2 points
+           * 2+ years of experience = 2 points
 
-      4. **Generate Output**:
+      4. **ML-Enhanced Output Generation**:
          Return a JSON object with:
          - "title": Candidate Name / Role.
          - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
-         - "score": Calculated weighted score (integer). ${hasJobDescription ? 'IMPORTANT: Be strict with tailored scoring - missing JD keywords should significantly impact score.' : ''}
-         - "scoreBreakdown": { "keywords": number, "format": number, "completeness": number }.
-         - "missingKeywords": Array of objects. Identify 5-10 ${hasJobDescription ? 'missing keywords FROM THE JOB DESCRIPTION' : 'critical missing keywords'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education", "context": "Brief explanation of why this keyword matters and how to add it naturally" }.
-           - "critical": Essential hard skills for the role ${hasJobDescription ? '(from JD)' : ''} - these should appear 2+ times in JD.
-           - "important": Valuable skills mentioned 1-2 times in JD or industry standards.
-           - "nice-to-have": Complementary skills that would strengthen the resume.
-           - "frequency": Exact count of how many times this keyword appears in the JD (1-10).
-           - "impact": Estimated score increase if fixed (1-10 points).
-           - "section": Recommended section to add this keyword.
-           - "context": 1-2 sentence explanation of why this matters and how to incorporate it.
-         - "formatIssues": Array of objects. Identify 3-7 specific formatting or structural issues found in the raw text. Structure: { "issue": "Specific description of what's wrong", "severity": "high" | "medium" | "low", "fix": "Detailed step-by-step fix with before/after example if possible", "location": "Where in the resume this issue appears" }.
-           - Only include REAL issues found in the parsed text.
-           - If no issues found, return empty array.
-           - "high": Blocks ATS from reading content (e.g., multi-column, tables, graphics).
-           - "medium": Reduces readability (e.g., inconsistent dates, missing headers).
-           - "low": Minor improvements (e.g., formatting consistency).
+         - "score": Calculated weighted score (integer, 0-100). ${hasJobDescription ? 'Apply TF-IDF weighting for tailored scoring.' : 'Use industry benchmark comparison.'}
+         - "scoreBreakdown": { "keywords": number (0-40), "format": number (0-30), "completeness": number (0-30) }.
+         - "missingKeywords": Array of objects (5-10 items). ${hasJobDescription ? 'Extract from JD using frequency analysis' : 'Use industry-standard skill database'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education", "context": "Why this matters and how to add it naturally", "synonyms": ["alt1", "alt2"] }.
+           - **Priority Algorithm**:
+             * "critical": Appears 3+ times in JD OR top 5 industry-standard skills for role
+             * "important": Appears 2 times in JD OR top 10 industry skills
+             * "nice-to-have": Appears 1 time in JD OR complementary skills
+           - "frequency": Exact count in JD (1-10) or industry importance score (1-10)
+           - "impact": ML-estimated score increase (1-10 points) based on keyword weight
+           - "section": Optimal placement based on keyword type (technical → Skills, soft → Experience)
+           - "context": Actionable advice with example usage
+           - "synonyms": Alternative terms ATS might recognize
+         - "formatIssues": Array of objects (3-7 items). Use parsing algorithm to detect real issues. Structure: { "issue": "Specific problem detected", "severity": "high" | "medium" | "low", "fix": "Step-by-step solution with before/after", "location": "Section/line where found", "atsImpact": "How this affects ATS parsing" }.
+           - **Detection Algorithm**:
+             * Scan for multi-column indicators (text jumping, misaligned sections)
+             * Check date format consistency (MM/YYYY vs Month Year vs MM-DD-YYYY)
+             * Verify section header presence (Experience, Education, Skills)
+             * Detect table structures (aligned columns, grid patterns)
+           - Only include REAL detected issues, not generic advice
+           - "high": Blocks ATS parsing (multi-column, tables, images-as-text)
+           - "medium": Reduces accuracy (inconsistent dates, unclear headers)
+           - "low": Minor polish (spacing, bullet consistency)
+           - "atsImpact": Explain specific parsing failure this causes
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
             Structure:
             ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\n\n' : ''}
