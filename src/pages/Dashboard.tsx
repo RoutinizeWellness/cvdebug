@@ -239,10 +239,10 @@ export default function Dashboard() {
       let text = "";
 
       if (file.type === "application/pdf") {
-        // PDF Processing
-        // Use https protocol explicitly and ensure version is present
-        const pdfVersion = pdfjsLib.version || "5.4.449"; 
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
+        // PDF Processing with fallback version
+        const pdfVersion = pdfjsLib.version || "4.0.379"; 
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfVersion}/pdf.worker.min.mjs`;
+        
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         
@@ -268,17 +268,17 @@ export default function Dashboard() {
       }
 
       if (!text.trim()) {
-        toast.warning("No text could be extracted from the file.");
+        toast.warning("No text could be extracted from the file. Please ensure your file contains readable text.");
       }
 
       await updateResumeOcr({
         id: resumeId,
         ocrText: text,
       });
-      toast.success("Parsing Complete. Analyzing with AI...");
+      toast.success("✅ Parsing Complete. AI is now analyzing your resume...");
     } catch (error) {
       console.error("Processing Error:", error);
-      toast.error("Resume parsing failed");
+      toast.error("Resume parsing failed. Please try a different file format or ensure the file is not corrupted.");
     }
   };
 
