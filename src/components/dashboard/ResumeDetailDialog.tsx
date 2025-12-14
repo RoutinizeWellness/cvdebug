@@ -29,7 +29,7 @@ import {
   Star,
   Link2
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useAction, useQuery } from "convex/react";
@@ -49,11 +49,19 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
   const [isImmersive, setIsImmersive] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
+  const [showBlurredPreview, setShowBlurredPreview] = useState(true);
   const rewriteResume = useAction(api.ai.rewriteResume);
   
   // Fetch user to check subscription
   const user = useQuery(api.users.currentUser);
   const isFree = user?.subscriptionTier === "free";
+
+  // Reset blurred preview when resume changes
+  useEffect(() => {
+    if (selectedResume && isFree) {
+      setShowBlurredPreview(true);
+    }
+  }, [selectedResume?._id, isFree]);
 
   const handleDownloadReport = () => {
     if (isFree) {
@@ -279,6 +287,70 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     const missingCount = selectedResume?.missingKeywords?.length || 0;
     const formatCount = selectedResume?.formatIssues?.length || 0;
 
+    // Show blurred preview first
+    if (showBlurredPreview) {
+      return (
+        <div className="space-y-6">
+          {/* Blurred Preview */}
+          <div className="relative">
+            <div className="filter blur-md pointer-events-none select-none">
+              <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+                <div className="p-6 space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Match Rate</h3>
+                      <div className="flex items-baseline gap-2 mt-1">
+                        <span className="text-5xl font-black text-foreground">{score}%</span>
+                        <span className="text-sm text-muted-foreground font-medium">/ 100</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Progress value={score} className="h-3" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
+                      <p className="text-xs text-muted-foreground font-medium mb-1">Missing Keywords</p>
+                      <p className="text-lg font-bold text-red-500">{missingCount}</p>
+                    </div>
+                    <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
+                      <p className="text-xs text-muted-foreground font-medium mb-1">Format Issues</p>
+                      <p className="text-lg font-bold text-yellow-500">{formatCount}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Unlock CTA Overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
+              <div className="text-center space-y-6 p-8 max-w-md">
+                <div className="h-16 w-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                  <AlertCircle className="h-8 w-8 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-foreground mb-2">Critical Issues Found!</h3>
+                  <p className="text-muted-foreground">
+                    We detected <strong className="text-red-600">{missingCount} missing keywords</strong> and <strong className="text-yellow-600">{formatCount} format issues</strong> that could be blocking your applications.
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => setShowBlurredPreview(false)} 
+                  size="lg"
+                  className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 animate-in zoom-in duration-300"
+                >
+                  <AlertCircle className="mr-2 h-5 w-5" />
+                  See My Critical Errors - $4.99
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  One-time payment • Instant access • No subscription
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Show full free tier view after clicking
     return (
       <div className="space-y-6">
         <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
