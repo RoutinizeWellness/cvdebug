@@ -35,6 +35,8 @@ export const createResume = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    console.log("[createResume] Creating resume for userId:", user._id, "email:", user.email);
+
     // Credit Check & Deduction
     if (user.email !== "tiniboti@gmail.com") {
       const credits = user.dbUser?.credits ?? 1;
@@ -45,6 +47,7 @@ export const createResume = mutation({
       }
 
       if (user.dbUser) {
+        console.log("[createResume] Deducting credit from existing user. Current credits:", credits);
         await ctx.db.patch(user.dbUser._id, { credits: credits - 1 });
       } else {
         // Create user record if it doesn't exist
@@ -53,6 +56,7 @@ export const createResume = mutation({
         // They use 1 now, so they will have 1 left.
         const trialEndsOn = Date.now() + (15 * 24 * 60 * 60 * 1000);
         
+        console.log("[createResume] Creating new user record with tokenIdentifier:", user._id);
         await ctx.db.insert("users", {
           tokenIdentifier: user._id, // Use subject as tokenIdentifier
           email: user.email,
@@ -80,6 +84,7 @@ export const createResume = mutation({
       mimeType: args.mimeType,
     });
 
+    console.log("[createResume] Resume created successfully with ID:", resumeId);
     return resumeId;
   },
 });
@@ -156,35 +161,45 @@ export const getResumes = query({
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) return [];
+    if (!user) {
+      console.log("[getResumes] No user found - returning empty array");
+      return [];
+    }
 
     // Use subject (user._id) for querying
     const userId = user._id;
+    console.log("[getResumes] Fetching resumes for userId:", userId);
 
     if (args.search) {
-       return await ctx.db
+       const results = await ctx.db
         .query("resumes")
         .withSearchIndex("search_ocr", (q) => 
           q.search("ocrText", args.search!).eq("userId", userId)
         )
         .take(20);
+       console.log("[getResumes] Search results count:", results.length);
+       return results;
     }
 
     if (args.category) {
-      return await ctx.db
+      const results = await ctx.db
         .query("resumes")
         .withIndex("by_user_and_category", (q) => 
           q.eq("userId", userId).eq("category", args.category)
         )
         .order("desc")
         .take(50);
+      console.log("[getResumes] Category results count:", results.length);
+      return results;
     }
 
-    return await ctx.db
+    const results = await ctx.db
       .query("resumes")
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .order("desc")
       .take(50);
+    console.log("[getResumes] All resumes count:", results.length);
+    return results;
   },
 });
 
