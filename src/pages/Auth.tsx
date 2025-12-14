@@ -28,22 +28,38 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-background to-background opacity-50"></div>
+      {/* Animated Background */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-purple-500/10 to-background opacity-60"></div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent"></div>
       
-      <div className="w-full max-w-md p-4">
+      {/* Floating Orbs */}
+      <div className="absolute top-20 left-20 h-64 w-64 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-20 h-80 w-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      
+      <div className="w-full max-w-md p-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="text-center mb-8 flex flex-col items-center">
-          <div className="mb-6 scale-150">
+          <div className="mb-6 scale-150 animate-in zoom-in duration-500">
             <Logo />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent animate-in slide-in-from-bottom-2 duration-500 delay-100">
             {isSignIn ? "Welcome back" : "Join the Beta Launch"}
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-3 text-base animate-in slide-in-from-bottom-2 duration-500 delay-200">
             {isSignIn ? "Enter your credentials to access your dashboard" : "Get 15 days free access with our Beta Launch offer."}
           </p>
+          
+          {!isSignIn && (
+            <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-full px-4 py-2 animate-in slide-in-from-bottom-2 duration-500 delay-300">
+              <span className="flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              <span className="text-xs font-bold text-primary">Limited Beta Access Available</span>
+            </div>
+          )}
         </div>
 
-        <div className="bg-card border border-border rounded-2xl shadow-xl p-6">
+        <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl p-6 animate-in slide-in-from-bottom-3 duration-500 delay-200">
           {isSignIn ? (
             <SignIn 
               routing="hash"
@@ -94,10 +110,28 @@ export default function AuthPage() {
             </span>
             <button 
               onClick={() => setIsSignIn(!isSignIn)}
-              className="font-bold text-primary hover:underline"
+              className="font-bold text-primary hover:underline transition-all hover:scale-105 inline-block"
             >
               {isSignIn ? "Sign up & Get Beta Access" : "Sign in"}
             </button>
+          </div>
+        </div>
+        
+        {/* Trust Indicators */}
+        <div className="mt-8 flex items-center justify-center gap-6 text-xs text-muted-foreground animate-in fade-in duration-700 delay-500">
+          <div className="flex items-center gap-1.5">
+            <div className="h-4 w-4 rounded-full bg-green-500/20 flex items-center justify-center">
+              <div className="h-2 w-2 rounded-full bg-green-500"></div>
+            </div>
+            <span className="font-medium">Secure Login</span>
+          </div>
+          <div className="h-4 w-px bg-border"></div>
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium">10K+ Users</span>
+          </div>
+          <div className="h-4 w-px bg-border"></div>
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium">No Credit Card</span>
           </div>
         </div>
       </div>
