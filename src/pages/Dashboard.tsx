@@ -241,7 +241,8 @@ export default function Dashboard() {
       if (file.type === "application/pdf") {
         // PDF Processing with fallback version
         const pdfVersion = pdfjsLib.version || "4.0.379"; 
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfVersion}/pdf.worker.min.mjs`;
+        // Use unpkg for better version availability matching npm
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
         
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
