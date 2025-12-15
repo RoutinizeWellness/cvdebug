@@ -27,29 +27,29 @@ export const analyzeResume = internalAction({
     }
 
     // STEP 1: ANALYZE READABILITY - Check for corrupted/illegible text
-    // RELAXED THRESHOLDS - Only flag truly unreadable files
+    // EXTREMELY RELAXED THRESHOLDS - Only flag truly broken/empty files
     const textSample = args.ocrText.substring(0, 500);
     const totalLength = args.ocrText.trim().length;
     
     // Count meaningless characters and patterns
     const nullChars = (args.ocrText.match(/\u0000/g) || []).length;
-    const excessiveSpaces = (textSample.match(/\s{10,}/g) || []).length; // Increased from 5 to 10
+    const excessiveSpaces = (textSample.match(/\s{20,}/g) || []).length; // Increased from 10 to 20
     const nonAsciiRatio = (args.ocrText.match(/[^\x00-\x7F]/g) || []).length / totalLength;
     
-    // Check for standard English words - RELAXED from 2 to 1
-    const commonWords = ['the', 'and', 'work', 'experience', 'education', 'skills', 'project', 'company', 'role', 'team', 'developed', 'managed', 'led', 'designed', 'built'];
+    // Check for standard English words - VERY RELAXED
+    const commonWords = ['the', 'and', 'work', 'experience', 'education', 'skills', 'project', 'company', 'role', 'team', 'developed', 'managed', 'led', 'designed', 'built', 'a', 'to', 'of', 'in', 'for', 'with', 'at', 'by', 'from'];
     const foundCommonWords = commonWords.filter(word => 
       args.ocrText.toLowerCase().includes(word)
     ).length;
     
     // STEP 2: DECISION - Is this text illegible/corrupted?
-    // MUCH MORE LENIENT - Only flag truly broken files
+    // EXTREMELY LENIENT - Only flag completely broken files
     const isCorrupted = (
-      totalLength < 20 || // Reduced from 50 - only flag extremely short text
-      nullChars > 50 || // Increased from 10 - allow more null chars
-      excessiveSpaces > 10 || // Increased from 5
-      (nonAsciiRatio > 0.7 && totalLength > 100) || // Increased from 0.3 to 0.7 - allow international characters
-      (foundCommonWords === 0 && totalLength > 100) // Changed from < 2 to === 0 - only flag if NO common words found
+      totalLength < 10 || // Only flag if almost no text extracted
+      nullChars > 100 || // Allow many null chars
+      excessiveSpaces > 20 || // Allow lots of spacing issues
+      (nonAsciiRatio > 0.95 && totalLength > 100) || // Only flag if almost entirely non-ASCII
+      (foundCommonWords === 0 && totalLength > 200) // Only flag if NO common words AND substantial length
     );
     
     if (isCorrupted) {
