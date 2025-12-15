@@ -32,7 +32,7 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume (Unreadable)",
         category: "Uncategorized",
-        analysis: "### ⚠️ Parsing Error\nWe could not extract enough text from this file. It might be an image-only PDF without OCR data, or the file is corrupted.\n\n**Recommendation:**\n- Try converting your resume to a standard text-based PDF.\n- Ensure the file is not password protected.",
+        analysis: "### ⚠️ Parsing Error\\nWe could not extract enough text from this file. It might be an image-only PDF without OCR data, or the file is corrupted.\\n\\n**Recommendation:**\\n- Try converting your resume to a standard text-based PDF.\\n- Ensure the file is not password protected.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
       });
@@ -59,7 +59,7 @@ export const analyzeResume = internalAction({
 
       ### ENHANCED SCORING ALGORITHM (0-100):
       Use ML-inspired scoring with weighted components. Most resumes score 45-75. Scores above 85 require exceptional optimization.
-      ${hasJobDescription ? '\n**TAILORED MODE**: Apply TF-IDF weighting - keywords appearing 3+ times in JD are "critical", 2 times are "important", 1 time is "nice-to-have".' : ''}
+      ${hasJobDescription ? '\\n**TAILORED MODE**: Apply TF-IDF weighting - keywords appearing 3+ times in JD are "critical", 2 times are "important", 1 time is "nice-to-have".' : ''}
 
       1. **Parsing & Format Quality (30 points)**:
          - **Structure Detection Algorithm**:
@@ -80,8 +80,8 @@ export const analyzeResume = internalAction({
 
       2. **Keyword Matching & Context (40 points)**:
          ${hasJobDescription 
-           ? '- **TF-IDF-Inspired Weighting**:\n           * Extract all technical skills, tools, methodologies from JD\n           * Weight by frequency: 3+ mentions = 5 points each, 2 mentions = 3 points, 1 mention = 1 point\n           * Calculate match rate: (matched_weight / total_weight) × 40\n         - **Contextual Analysis**:\n           * Keyword in project description with metrics = full points\n           * Keyword in skills list only = 60% of points\n           * Keyword stuffing (>10 skills with no context) = -5 points penalty\n         - **Critical Threshold**: Missing 5+ high-frequency JD keywords → cap score at 55'
-           : '- **Industry Benchmark Matching**:\n           * Identify role category (Engineering, Marketing, Sales, etc.)\n           * Compare against top 20 industry-standard skills for that role\n           * Calculate coverage percentage'
+           ? '- **TF-IDF-Inspired Weighting**:\\n           * Extract all technical skills, tools, methodologies from JD\\n           * Weight by frequency: 3+ mentions = 5 points each, 2 mentions = 3 points, 1 mention = 1 point\\n           * Calculate match rate: (matched_weight / total_weight) × 40\\n         - **Contextual Analysis**:\\n           * Keyword in project description with metrics = full points\\n           * Keyword in skills list only = 60% of points\\n           * Keyword stuffing (>10 skills with no context) = -5 points penalty\\n         - **Critical Threshold**: Missing 5+ high-frequency JD keywords → cap score at 55'
+           : '- **Industry Benchmark Matching**:\\n           * Identify role category (Engineering, Marketing, Sales, etc.)\\n           * Compare against top 20 industry-standard skills for that role\\n           * Calculate coverage percentage'
          }
          - **Semantic Matching**: Consider synonyms (e.g., "JavaScript" = "JS", "Machine Learning" = "ML")
          - **Recency Weighting**: Skills mentioned in recent roles (last 2 years) weighted 1.5x
@@ -102,6 +102,33 @@ export const analyzeResume = internalAction({
            * LinkedIn URL = 1 point
            * Education section = 2 points
            * 2+ years of experience = 2 points
+
+      ### ROLE-SPECIFIC GUIDANCE:
+      
+      **For Engineering/Technical Roles (Civil, Structural, Mechanical, Software, etc.):**
+      - **Project-Based Achievements**: Strong resumes showcase SPECIFIC projects as stars, not generic duties
+      - **Required Project Details**:
+        * Project name/type (e.g., "6-story multifamily wood-frame building")
+        * Scale/scope (floors, area in m²/ft², budget/cost)
+        * Materials/technologies used (wood, steel, RC, specific software)
+        * Codes/standards applied (IBC, ASCE 7, Eurocode, etc.)
+        * YOUR specific contribution (what YOU designed, calculated, detailed)
+      - **Metric Suggestions for Engineering**:
+        * "Designed gravity and lateral systems for [X m² / X-story] [material] building using [code/software], reducing material cost by Y% / meeting Z seismic requirements"
+        * "Performed structural analysis for [project type] using [software], optimizing [element] design and saving $X"
+        * "Detailed [number] connection designs for [project], ensuring compliance with [code] and reducing construction time by Y%"
+      - **Format Recommendation**: 
+        * Keep main resume to 1 page
+        * Link or attach a 1-page project sheet with 2-3 representative projects showing scope and contributions
+        * Use bullets like: "Designed [system] for [specific project details] using [tools/codes], achieving [quantifiable result]"
+
+      **For Marketing/Sales Roles:**
+      - Focus on campaign results, conversion rates, revenue impact, audience growth
+      - Metrics: "Increased conversions by X%", "Generated $Y in revenue", "Grew audience from A to B"
+
+      **For Product/Design Roles:**
+      - Focus on user impact, feature adoption, design system contributions
+      - Metrics: "Improved user retention by X%", "Designed feature used by Y users", "Reduced friction by Z%"
 
       4. **ML-Enhanced Output Generation**:
          Return a JSON object with:
@@ -130,9 +157,10 @@ export const analyzeResume = internalAction({
            - "medium": Reduces accuracy (inconsistent dates, unclear headers)
            - "low": Minor polish (spacing, bullet consistency)
            - "atsImpact": Explain specific parsing failure this causes
+         - "metricSuggestions": Array of 3-5 role-specific metric templates. For Engineering roles, focus on project-based achievements with specific details (building type, scale, materials, codes, personal contribution). Structure: { "tech": "Technology/System", "metrics": ["Metric template 1", "Metric template 2", "Metric template 3"] }
          - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
             Structure:
-            ${hasJobDescription ? '### 🎯 Tailored Analysis\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\n\n' : ''}
+            ${hasJobDescription ? '### 🎯 Tailored Analysis\\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\\n\\n' : ''}
             ### 🤖 ATS Parsing Report
             (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text. Rate parsing quality: Excellent/Good/Fair/Poor)
 
@@ -163,24 +191,27 @@ export const analyzeResume = internalAction({
             Total potential improvement: +XX points → New score: XX%)
 
             ### 💡 Pro Tips for This Role
-            (2-3 specific tips based on the role/industry that would make this resume stand out to both ATS and human recruiters)
+            (2-3 specific tips based on the role/industry. **For Engineering roles**: Emphasize project-based achievements over generic duties. Recommend creating a 1-page project sheet with 2-3 representative projects showing specific scope, scale, materials, codes, and personal contributions. Example: "Instead of 'Performed structural design duties', use 'Designed gravity and lateral systems for 6-story, 5,000 m² wood-frame apartment using IBC 2018/ETABS, reducing material cost by 12%'")
 
-      Example JSON: 
+      Example JSON for Engineering Role: 
       {
-        "title": "Product Manager - Jane Doe", 
-        "category": "Product", 
-        "score": 58, 
-        "scoreBreakdown": { "keywords": 50, "format": 70, "completeness": 55 },
+        "title": "Structural Engineer - John Doe", 
+        "category": "Engineering", 
+        "score": 62, 
+        "scoreBreakdown": { "keywords": 55, "format": 65, "completeness": 60 },
         "missingKeywords": [
-          { "keyword": "Python", "priority": "critical", "frequency": 3, "impact": 8, "section": "Skills" },
-          { "keyword": "SQL", "priority": "important", "frequency": 2, "impact": 6, "section": "Experience" },
-          { "keyword": "Agile", "priority": "nice-to-have", "frequency": 1, "impact": 4, "section": "Experience" }
+          { "keyword": "ETABS", "priority": "critical", "frequency": 4, "impact": 8, "section": "Skills", "context": "Add to technical skills and mention in project bullets", "synonyms": ["SAP2000", "Structural Analysis Software"] },
+          { "keyword": "Seismic Design", "priority": "critical", "frequency": 3, "impact": 7, "section": "Experience", "context": "Specify seismic code compliance in project descriptions", "synonyms": ["Earthquake Engineering", "ASCE 7"] },
+          { "keyword": "Steel Connections", "priority": "important", "frequency": 2, "impact": 5, "section": "Experience", "context": "Detail connection design work with quantities", "synonyms": ["Connection Design", "Steel Detailing"] }
         ],
         "formatIssues": [
-          { "issue": "Two-column layout detected", "severity": "high", "fix": "Convert to single-column format. ATS reads left-to-right and may jumble content." },
-          { "issue": "Date format inconsistent", "severity": "medium", "fix": "Use consistent format: 'Jan 2020 - Dec 2022' throughout" }
+          { "issue": "Generic duty-based bullets", "severity": "high", "fix": "Replace 'Responsible for structural design' with 'Designed lateral system for 8-story, 12,000 m² RC building using Eurocode 8, optimizing column layout and reducing concrete volume by 15%'", "location": "Experience section", "atsImpact": "Lacks quantifiable project details that ATS and recruiters prioritize" }
         ],
-        "analysis": "${hasJobDescription ? '### 🎯 Tailored Analysis\\n\\nThis resume matches 45% of the job description keywords. The JD mentions \\"Python\\" 3 times, \\"SQL\\" 2 times, and \\"Agile\\" once - all missing from your resume. Add these to your Skills section and weave them into your Experience bullets.\\n\\n' : ''}### 🤖 ATS Parsing Report\\n\\nParsing Quality: Fair\\n\\nThe two-column layout caused the 'Skills' section to be read *after* 'Education', confusing the parser. Contact info is readable but LinkedIn URL is missing.\\n\\n### 📊 Score Breakdown Analysis\\n\\nKeywords: 20/40 points - Missing 6 critical technical skills from the JD\\nFormat: 21/30 points - Two-column layout and inconsistent dates\\nCompleteness: 17/30 points - No quantifiable metrics in experience bullets\\n\\n### 🔑 Critical Missing Keywords\\n\\n1. Python (appears 3x in JD) - Add to Skills section and mention in 2-3 project bullets\\n2. SQL (appears 2x in JD) - Add specific SQL achievements with metrics\\n3. Agile (appears 1x in JD) - Mention Agile/Scrum methodology in Experience\\n\\n### 🛠️ Action Plan to Reach 75%+ Score\\n\\n1. Add Python, SQL, Agile to Skills section - Impact: +12 points\\n2. Convert to single-column layout - Impact: +9 points\\n3. Add 3-5 quantifiable metrics to Experience - Impact: +13 points\\n4. Add LinkedIn URL to contact info - Impact: +3 points\\n\\nTotal improvement: +37 points → New score: 95%"
+        "metricSuggestions": [
+          { "tech": "Structural Analysis (ETABS/SAP2000)", "metrics": ["Performed seismic analysis for [X-story] [material] building using [software], ensuring compliance with [code] and optimizing [element] design", "Analyzed [number] load combinations for [project type], reducing design iterations by X% through [optimization method]", "Modeled [structure type] in [software], identifying critical load paths and achieving Y% material savings"] },
+          { "tech": "Steel/RC Design", "metrics": ["Designed [number] steel/RC connections for [project], meeting [code] requirements and reducing fabrication cost by $X", "Detailed structural drawings for [X m²] [building type], coordinating with [discipline] and ensuring [standard] compliance", "Optimized [structural element] design for [project], reducing material weight by X kg while maintaining [performance criteria]"] }
+        ],
+        "analysis": "### 🤖 ATS Parsing Report\\n\\nParsing Quality: Good\\n\\nYour resume structure is readable, but the Experience section uses generic duty-based language instead of project-specific achievements.\\n\\n### 📊 Score Breakdown Analysis\\n\\nKeywords: 22/40 points - Missing critical technical terms like ETABS, seismic design, and specific codes\\nFormat: 20/30 points - Bullets lack project details (building type, scale, materials, your specific contribution)\\nCompleteness: 20/30 points - No quantifiable metrics in project descriptions\\n\\n### 🛠️ Action Plan to Reach 75%+ Score\\n\\n1. Replace generic bullets with project-based achievements - Impact: +15 points\\n2. Add ETABS, seismic design, and code references to Skills and Experience - Impact: +10 points\\n3. Include project scale (floors, area, cost) and your specific contributions - Impact: +8 points\\n\\nTotal improvement: +33 points → New score: 95%\\n\\n### 💡 Pro Tips for Structural Engineering\\n\\n1. **Make Projects the Stars**: Instead of 'Performed structural design', use 'Designed gravity and lateral systems for 6-story, 5,000 m² wood-frame apartment using IBC 2018/ETABS, reducing material cost by 12%'\\n2. **Create a Project Sheet**: Keep main resume to 1 page, then attach a simple 1-page sheet with 2-3 representative projects (e.g., multifamily wood, commercial steel, renovation) showing scope and your contributions\\n3. **Quantify Everything**: Include building type, floors, area, materials, codes, software, and measurable results (cost savings, efficiency gains, code compliance achievements)"
       }
       `;
 
