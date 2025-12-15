@@ -412,7 +412,10 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
                 {/* Enhanced CTA */}
                 <div className="space-y-3">
                   <Button 
-                    onClick={() => setShowBlurredPreview(false)} 
+                    onClick={() => {
+                      setShowPricing(true);
+                      setShowBlurredPreview(false);
+                    }} 
                     size="lg"
                     className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 animate-in zoom-in duration-300"
                   >
@@ -599,7 +602,12 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
 
   return (
     <Dialog open={!!selectedResume} onOpenChange={(open) => !open && setSelectedResume(null)}>
-      <PricingDialog open={showPricing} onOpenChange={setShowPricing} initialPlan="single_scan" />
+      <PricingDialog 
+        open={showPricing} 
+        onOpenChange={setShowPricing} 
+        initialPlan="single_scan" 
+        resumeId={selectedResume?._id}
+      />
       <DialogContent 
         showCloseButton={false}
         className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
