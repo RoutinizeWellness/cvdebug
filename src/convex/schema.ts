@@ -12,10 +12,14 @@ const schema = defineSchema(
       endsOn: v.optional(v.number()),
       trialEndsOn: v.optional(v.number()),
       emailVariant: v.optional(v.string()),
-      lastSeen: v.optional(v.number()), // Added for Re-Engagement flow
-      // Email tracking flags
+      lastSeen: v.optional(v.number()),
+      // Email tracking flags - Onboarding
+      onboardingEmailSent: v.optional(v.boolean()),
       activationEmail24hSent: v.optional(v.boolean()),
-      activationEmail72hSent: v.optional(v.boolean()),
+      // Email tracking flags - Conversion
+      postScanEmailSent: v.optional(v.boolean()),
+      conversionReminderSent: v.optional(v.boolean()),
+      // Email tracking flags - Re-engagement
       winBackEmail30dSent: v.optional(v.boolean()),
     })
     .index("by_token", ["tokenIdentifier"])
@@ -60,9 +64,10 @@ const schema = defineSchema(
     rewrittenText: v.optional(v.string()),
     jobDescription: v.optional(v.string()),
     detailsUnlocked: v.optional(v.boolean()),
-    conversionEmail1hSent: v.optional(v.boolean()),
-    conversionEmail48hSent: v.optional(v.boolean()),
-    conversionEmail7dSent: v.optional(v.boolean()),
+    // Email tracking for this specific resume
+    parsingErrorEmailSent: v.optional(v.boolean()),
+    postScanEmailSent: v.optional(v.boolean()),
+    conversionReminderEmailSent: v.optional(v.boolean()),
   })
     .index("by_user", ["userId"])
     .index("by_user_and_category", ["userId", "category"])

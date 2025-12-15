@@ -45,6 +45,10 @@ export const analyzeResume = internalAction({
     if (isCorrupted) {
       console.log("OCR Text is corrupted or illegible. Returning parsing error.");
       console.log(`Debug: length=${totalLength}, hasAlphanumeric=${hasAlphanumeric}, hasMinimalContent=${hasMinimalContent}`);
+      
+      // Get resume to find user and send email
+      const resume = await ctx.runQuery(internal.resumes.getResumeInternal, { id: args.id });
+      
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume (Parsing Failed)",
@@ -83,6 +87,19 @@ This is common with:
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
       });
+      
+      // Send Email #3: Parsing Error Alert
+      if (resume && resume.userId) {
+        const user = await ctx.runQuery(internal.users.getInternalUser, {});
+        if (user && user.dbUser && user.dbUser.email) {
+          await ctx.scheduler.runAfter(0, internal.marketing.sendParsingErrorEmail, {
+            email: user.dbUser.email,
+            name: user.dbUser.name,
+            resumeId: args.id,
+          });
+        }
+      }
+      
       return;
     }
     

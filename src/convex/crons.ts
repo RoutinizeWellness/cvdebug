@@ -4,26 +4,23 @@ import { internalMutation } from "./_generated/server";
 
 const crons = cronJobs();
 
-// 1. Activation Flow (No-Show Users)
-// Check every hour for users who signed up 24h or 72h ago
+// 1. Activation Flow (Email #2: 24h reminder if no scans)
 crons.interval("activation_flow", { hours: 1 }, internal.crons.runActivationFlow, {});
 
-// 2. Conversion Flow (Free Users)
-// Check every hour for resumes scanned 1h, 48h, or 7d ago
+// 2. Conversion Flow (Email #4 & #5: Post-scan conversion)
 crons.interval("conversion_flow", { hours: 1 }, internal.crons.runConversionFlow, {});
 
-// 3. Re-Engagement Flow (Abandoned Users)
-// Check daily for users inactive for 30 days
+// 3. Re-Engagement Flow (Email #7: 30-day check-in)
 crons.interval("reengagement_flow", { hours: 24 }, internal.crons.runReengagementFlow, {});
 
 // --- Activation Flow Logic ---
+// Email #2: 24h reminder if no scans
 export const runActivationFlow = internalMutation({
   handler: async (ctx) => {
     const now = Date.now();
     const hour = 60 * 60 * 1000;
     
-    // Email #2: 24h Reminder
-    // Look for users created between 24h and 25h ago
+    // Email #2: 24h Reminder (if no scans)
     const users24h = await ctx.db
       .query("users")
       .filter(q => 
@@ -36,7 +33,7 @@ export const runActivationFlow = internalMutation({
       .take(50);
 
     for (const user of users24h) {
-      // Check if they have used the product (created a resume)
+      // Check if they have scanned (created a resume)
       const resume = await ctx.db
         .query("resumes")
         .withIndex("by_user", q => q.eq("userId", user.tokenIdentifier))
@@ -50,127 +47,80 @@ export const runActivationFlow = internalMutation({
         });
       }
     }
-
-    // Email #3: 72h Last Chance
-    // Look for users created between 72h and 73h ago
-    const users72h = await ctx.db
-      .query("users")
-      .filter(q => 
-        q.and(
-          q.gt(q.field("_creationTime"), now - (73 * hour)),
-          q.lt(q.field("_creationTime"), now - (72 * hour)),
-          q.eq(q.field("activationEmail72hSent"), undefined)
-        )
-      )
-      .take(50);
-
-    for (const user of users72h) {
-      const resume = await ctx.db
-        .query("resumes")
-        .withIndex("by_user", q => q.eq("userId", user.tokenIdentifier))
-        .first();
-
-      if (!resume && user.email) {
-        await ctx.db.patch(user._id, { activationEmail72hSent: true });
-        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationLastChanceEmail, {
-          email: user.email,
-          name: user.name,
-        });
-      }
-    }
   },
 });
 
 // --- Conversion Flow Logic ---
+// Email #4: 1h after successful scan (if free user)
+// Email #5: 48h reminder (if still free)
 export const runConversionFlow = internalMutation({
   handler: async (ctx) => {
     const now = Date.now();
     const hour = 60 * 60 * 1000;
 
-    // Email #4: Recovery Email (1h after scan, details not unlocked)
+    // Email #4: Post-Scan Email (1h after successful scan, free user)
     const resumes1h = await ctx.db
       .query("resumes")
       .filter(q => 
         q.and(
           q.gt(q.field("_creationTime"), now - (2 * hour)),
           q.lt(q.field("_creationTime"), now - (1 * hour)),
-          q.eq(q.field("conversionEmail1hSent"), undefined)
+          q.eq(q.field("postScanEmailSent"), undefined)
         )
       )
       .take(50);
 
     for (const resume of resumes1h) {
-      // Only send if score exists and details are NOT unlocked
-      if (resume.score !== undefined && !resume.detailsUnlocked && resume.userId) {
+      // Only send if score exists, status is completed, and user is free
+      if (resume.score !== undefined && resume.status === "completed" && resume.userId) {
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
-        if (user && user.email) {
-          await ctx.db.patch(resume._id, { conversionEmail1hSent: true });
+        if (user && user.email && user.subscriptionTier === "free") {
+          await ctx.db.patch(resume._id, { postScanEmailSent: true });
           
-          // Get first critical error for preview
-          const firstError = resume.missingKeywords?.[0];
-          const firstErrorText = firstError 
-            ? (typeof firstError === 'string' ? firstError : firstError.keyword)
-            : undefined;
+          const totalErrors = (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0);
+          
+          // Extract first error safely handling both string and object types
+          const firstKeyword = resume.missingKeywords?.[0];
+          const firstFormat = resume.formatIssues?.[0];
+          const firstError = (typeof firstKeyword === 'string' ? firstKeyword : firstKeyword?.keyword) 
+            || (typeof firstFormat === 'string' ? firstFormat : firstFormat?.issue);
 
           await ctx.scheduler.runAfter(0, internal.marketing.sendRecoveryEmail, {
             email: user.email,
             name: user.name,
             score: resume.score,
-            totalErrors: (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0),
-            firstError: firstErrorText,
+            totalErrors,
+            firstError,
           });
         }
       }
     }
 
-    // Email #5: Value Reminder (48h after scan, no upgrade)
+    // Email #5: Conversion Reminder (48h after scan, still free)
     const resumes48h = await ctx.db
       .query("resumes")
       .filter(q => 
         q.and(
           q.gt(q.field("_creationTime"), now - (49 * hour)),
           q.lt(q.field("_creationTime"), now - (48 * hour)),
-          q.eq(q.field("conversionEmail48hSent"), undefined)
+          q.eq(q.field("conversionReminderEmailSent"), undefined)
         )
       )
       .take(50);
 
     for (const resume of resumes48h) {
-      if (resume.score !== undefined && resume.userId) {
+      if (resume.score !== undefined && resume.status === "completed" && resume.userId) {
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         // Only send if user is still on free tier
         if (user && user.email && user.subscriptionTier === "free") {
-          await ctx.db.patch(resume._id, { conversionEmail48hSent: true });
+          await ctx.db.patch(resume._id, { conversionReminderEmailSent: true });
+          
+          const totalErrors = (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0);
+
           await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, {
             email: user.email,
             name: user.name,
             score: resume.score,
-          });
-        }
-      }
-    }
-
-    // Email #6: Discount (7 days after scan, no upgrade)
-    const day = 24 * hour;
-    const resumes7d = await ctx.db
-      .query("resumes")
-      .filter(q => 
-        q.and(
-          q.gt(q.field("_creationTime"), now - (7 * day + hour)),
-          q.lt(q.field("_creationTime"), now - (7 * day)),
-          q.eq(q.field("conversionEmail7dSent"), undefined)
-        )
-      )
-      .take(50);
-
-    for (const resume of resumes7d) {
-      if (resume.score !== undefined && resume.userId) {
-        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
-        if (user && user.email && user.subscriptionTier === "free") {
-          await ctx.db.patch(resume._id, { conversionEmail7dSent: true });
-          await ctx.scheduler.runAfter(0, internal.marketing.sendDiscountEmail, {
-            email: user.email,
-            name: user.name,
           });
         }
       }

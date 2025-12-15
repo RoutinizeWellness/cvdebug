@@ -3,6 +3,7 @@
 import { v } from "convex/values";
 import { internalAction } from "./_generated/server";
 import { Resend } from "resend";
+import { Id } from "./_generated/dataModel";
 
 // Helper to get Resend instance
 const getResend = () => {
@@ -16,7 +17,7 @@ const getResend = () => {
 
 const FROM_EMAIL = "ResumeATS <onboarding@resend.dev>";
 
-// Email #1: Welcome (Trigger: Signup)
+// Email #1: Bienvenida + Qué esperar (Trigger: Signup)
 export const sendOnboardingEmail = internalAction({
   args: {
     email: v.string(),
@@ -27,24 +28,30 @@ export const sendOnboardingEmail = internalAction({
     const resend = getResend();
     if (!resend) return;
 
-    const firstName = args.name?.split(" ")[0] || "Job Seeker";
+    const firstName = args.name?.split(" ")[0] || "there";
     
-    // Using the specific copy provided for Email #1
-    const subject = "Your free ATS scan is ready ✅";
+    const subject = "👋 Bienvenido a CVDebug (Tu primer paso)";
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <p>Hey ${firstName}!</p>
-        <p>Thanks for signing up for the Resume ATS Optimizer.</p>
-        <p>Your next step is simple:</p>
+        <p>Hola ${firstName},</p>
+        <p>Gracias por unirte. Estás aquí porque quieres dejar de enviar currículums a agujeros negros.</p>
+        
+        <h3>Cómo funciona CVDebug:</h3>
         <ol>
-          <li>Upload your resume here: <a href="https://resume-ats-optimizer.convex.site/dashboard">https://resume-ats-optimizer.convex.site/dashboard</a></li>
-          <li>Paste a job description you're targeting</li>
-          <li>Get your ATS compatibility score in 30 seconds</li>
+          <li>Sube tu PDF.</li>
+          <li>Nuestra IA simula un ATS (Applicant Tracking System).</li>
+          <li>Te decimos exactamente qué borrar y qué añadir.</li>
         </ol>
-        <p>You have 1 free scan waiting for you.</p>
-        <p>Questions? Just reply to this email.</p>
-        <p>Best,<br>The ResumeATS Team</p>
-        <p style="font-size: 12px; color: #666; margin-top: 20px;">P.S. Takes less than 2 minutes to see your score!</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            🚀 Haz tu primer escaneo gratis aquí
+          </a>
+        </div>
+        
+        <p><strong>Tip:</strong> Usa el mismo PDF que envías a las empresas.</p>
+        
+        <p>Saludos,<br>El equipo de CVDebug</p>
       </div>
     `;
 
@@ -55,47 +62,97 @@ export const sendOnboardingEmail = internalAction({
         subject,
         html,
       });
-      console.log(`Sent Email #1 (Welcome) to ${args.email}`);
+      console.log(`Sent Email #1 (Onboarding) to ${args.email}`);
     } catch (error) {
       console.error("Failed to send Email #1:", error);
     }
   },
 });
 
-// Email #2: Reminder (Trigger: 24h sin uso)
+// Email #2: El "Empujón" (Trigger: 24h sin escanear)
 export const sendActivationReminderEmail = internalAction({
   args: { email: v.string(), name: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const resend = getResend();
     if (!resend) return;
 
-    const firstName = args.name?.split(" ")[0] || "Job Seeker";
-    const subject = "Haven't scanned your resume yet?";
+    const firstName = args.name?.split(" ")[0] || "there";
+    const subject = "⏳ ¿Olvidaste escanear tu CV?";
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <p>Hey ${firstName},</p>
-        <p>You signed up yesterday but haven't used your free ATS scan yet.</p>
-        <p>Quick reminder: Upload your resume here → <a href="https://resume-ats-optimizer.convex.site/dashboard">https://resume-ats-optimizer.convex.site/dashboard</a></p>
-        <p>It only takes 2 minutes to:</p>
-        <ul>
-          <li>See your ATS compatibility score</li>
-          <li>Find out if format issues are blocking you</li>
-          <li>Check keyword alignment</li>
-        </ul>
-        <p>Your free scan expires in 48h.</p>
-        <p>Let me know if you need help!</p>
-        <p>The ResumeATS Team</p>
+        <p>Hola ${firstName},</p>
+        <p>Vi que creaste tu cuenta pero aún no has subido tu currículum.</p>
+        <p>Solo toma 10 segundos saber si tu formato es legible para los robots de contratación. Es mejor saberlo ahora que después de recibir 50 rechazos.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Escanear mi CV ahora
+          </a>
+        </div>
+        
+        <p>Saludos,<br>El equipo de CVDebug</p>
       </div>
     `;
 
     try {
       await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
-      console.log(`Sent Email #2 (Reminder) to ${args.email}`);
+      console.log(`Sent Email #2 (Activation Reminder) to ${args.email}`);
     } catch (error) { console.error("Failed to send Email #2:", error); }
   },
 });
 
-// Email #3: Last Chance (Trigger: 72h sin uso)
+// Email #3: Detectado Error de Parseo (0% Score)
+export const sendParsingErrorEmail = internalAction({
+  args: { 
+    email: v.string(), 
+    name: v.optional(v.string()),
+    resumeId: v.id("resumes"),
+  },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "there";
+    const subject = "⚠️ Alerta: Tu archivo no se puede leer (0% Score)";
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hola ${firstName},</p>
+        <p>Tu último escaneo dio un resultado de <strong style="color: #ef4444;">0%</strong>.</p>
+        
+        <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: bold; color: #991b1b;">⚠️ No entres en pánico.</p>
+          <p style="margin: 8px 0 0 0; color: #7f1d1d;">Esto no significa que tu experiencia sea mala, significa que tu formato de archivo está corrupto (Encoding Error).</p>
+        </div>
+        
+        <p><strong>Si hubieras enviado este archivo a una empresa real, te habrían rechazado automáticamente.</strong></p>
+        
+        <h3>Cómo arreglarlo:</h3>
+        <ol>
+          <li>Abre tu PDF en Chrome/Edge.</li>
+          <li>Pulsa <strong>Imprimir (Ctrl+P)</strong> → "Guardar como PDF".</li>
+          <li>Sube ese archivo nuevo.</li>
+        </ol>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Inténtalo de nuevo aquí
+          </a>
+        </div>
+        
+        <p>Saludos,<br>El equipo de CVDebug</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent Email #3 (Parsing Error) to ${args.email}`);
+    } catch (error) { 
+      console.error("Failed to send Email #3:", error); 
+    }
+  },
+});
+
+// Email #3b: Last Chance (Trigger: 72h sin uso) - REMOVED, not in new spec
 export const sendActivationLastChanceEmail = internalAction({
   args: { email: v.string(), name: v.optional(v.string()) },
   handler: async (ctx, args) => {
@@ -139,56 +196,36 @@ export const sendRecoveryEmail = internalAction({
     const firstName = args.name?.split(" ")[0] || "Job Seeker";
     const subject = `⚠️ Your resume scored ${args.score}% - Don't let ATS reject you`;
     
-    const errorPreview = args.firstError 
-      ? `<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px; margin: 16px 0; border-radius: 4px;">
-          <p style="margin: 0; font-weight: bold; color: #991b1b;">🎁 FREE PREVIEW - Error #1:</p>
-          <p style="margin: 8px 0 0 0; color: #7f1d1d;">❌ Missing critical keyword: <strong>"${args.firstError}"</strong></p>
-        </div>`
-      : '';
-
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <p>Hey ${firstName},</p>
-        <p>You scanned your resume an hour ago and got <strong style="color: #ef4444;">${args.score}% ATS compatibility</strong>.</p>
-        <p><strong>That means ATS systems are likely auto-rejecting your applications.</strong></p>
+        <p>Tu análisis está completo.</p>
         
         <div style="background: #fef3c7; border: 2px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 8px; text-align: center;">
-          <p style="margin: 0; font-size: 18px; font-weight: bold; color: #92400e;">⚠️ ${args.totalErrors} Critical Issues Found</p>
+          <p style="margin: 0; font-size: 18px; font-weight: bold; color: #92400e;">Resultado: ${args.score}/100</p>
+          <p style="margin: 8px 0 0 0; font-size: 16px; color: #92400e;">Errores Críticos: ${args.totalErrors}</p>
         </div>
 
-        ${errorPreview}
-
-        <p>The good news? <strong>These are fixable in under 10 minutes.</strong></p>
+        <p>Hemos detectado que te faltan palabras clave esenciales para el puesto. Tu reporte completo está bloqueado.</p>
         
-        <p>Unlock your full report to see:</p>
-        <ul>
-          <li>✅ All ${args.totalErrors} missing keywords and format errors</li>
-          <li>✅ Exact sections to add them</li>
-          <li>✅ Step-by-step fixes with examples</li>
-          <li>✅ Priority ranking (fix these first)</li>
-        </ul>
+        <p><strong>Desbloquéalo por el precio de un café ($4.99) y deja de perder oportunidades.</strong></p>
 
         <div style="text-align: center; margin: 30px 0;">
           <a href="https://resume-ats-optimizer.convex.site/dashboard?unlock=true" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
-            Unlock Full Report - $4.99
+            Desbloquear Reporte
           </a>
         </div>
 
-        <p style="font-size: 12px; color: #666; text-align: center;">One-time payment • No subscription • Instant access</p>
-
-        <p style="margin-top: 30px;">Don't let a fixable resume block your dream job.</p>
+        <p style="font-size: 12px; color: #666; text-align: center;">Pago único • Sin suscripción • Acceso instantáneo</p>
         
-        <p>The ResumeATS Team</p>
-        
-        <p style="font-size: 12px; color: #666; margin-top: 20px;">P.S. Most users improve their score by 20-30% after implementing our fixes. That's the difference between getting rejected and getting interviews.</p>
+        <p>Saludos,<br>El equipo de CVDebug</p>
       </div>
     `;
 
     try {
       await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
-      console.log(`Sent Recovery Email to ${args.email}`);
+      console.log(`Sent Email #4 (Post Scan) to ${args.email}`);
     } catch (error) { 
-      console.error("Failed to send Recovery Email:", error); 
+      console.error("Failed to send Email #4:", error); 
     }
   },
 });

@@ -74,7 +74,6 @@ export const resetUserFlags = mutation({
 
     await ctx.db.patch(user._id, {
       activationEmail24hSent: undefined,
-      activationEmail72hSent: undefined,
       winBackEmail30dSent: undefined,
     });
 
