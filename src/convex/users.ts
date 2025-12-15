@@ -289,15 +289,15 @@ export const getBetaStatus = query({
     // Marketing logic: Create urgency by showing most spots are taken
     // "Invented" data as requested to make it look urgent
     // Base of 92 claimed spots + actual users
-    const baseCount = 92; 
+    const baseCount = 97; 
     
     // Calculate total claimed, ensuring we don't show "Sold Out" (100) purely from fake data
     // We want to leave at least 3-4 spots to drive action
     let displayClaimed = baseCount + realCount;
     
-    // Cap at 97 to always leave at least 3 spots open for urgency
-    if (displayClaimed > 97) {
-        displayClaimed = 97;
+    // Cap at 99 to always leave at least 1 spot open for urgency
+    if (displayClaimed > 99) {
+        displayClaimed = 99;
     }
 
     const total = 100;
