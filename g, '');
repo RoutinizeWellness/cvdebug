@@ -14,13 +14,15 @@
         metricSuggestions,
         status: "completed",
       });
+      
+      console.log(`[AI Analysis] Successfully completed analysis for resume ${args.id}, score: ${score}`);
     } catch (error) {
       console.error("Error analyzing resume:", error);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI analysis failed. Please try uploading again.",
+        analysis: "AI analysis failed. Please try again.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
         status: "failed",
@@ -29,4 +31,4 @@
   },
 });
 
-// ... keep existing code for rewriteResume, optimizeLinkedIn, and chat functions ...
+// ... keep existing code (rewriteResume, optimizeLinkedIn, chat functions)

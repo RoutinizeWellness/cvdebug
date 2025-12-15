@@ -26,85 +26,11 @@ export const analyzeResume = internalAction({
       return;
     }
 
-    // STEP 1: ANALYZE READABILITY - Check for corrupted/illegible text
-    // ULTRA-PERMISSIVE THRESHOLDS - Almost never flag as corrupted
-    const totalLength = args.ocrText.trim().length;
+    // REMOVED: Corruption detection logic
+    // If we got here, OCR already succeeded and extracted text
+    // No need to re-validate the text quality
     
-    // Check for ANY alphanumeric content - ULTRA RELAXED
-    const hasAlphanumeric = /[a-zA-Z0-9]/.test(args.ocrText);
-    const hasMinimalContent = /[a-zA-Z]{3,}/.test(args.ocrText); // At least one 3+ letter word
-    
-    // STEP 2: DECISION - Is this text illegible/corrupted?
-    // ULTRA-PERMISSIVE - Only flag if literally no readable content
-    const isCorrupted = (
-      totalLength < 5 || // Only flag if virtually no text
-      !hasAlphanumeric || // No letters or numbers at all
-      !hasMinimalContent // Not even a single 3-letter word
-    );
-    
-    if (isCorrupted) {
-      console.log("OCR Text is corrupted or illegible. Returning parsing error.");
-      console.log(`Debug: length=${totalLength}, hasAlphanumeric=${hasAlphanumeric}, hasMinimalContent=${hasMinimalContent}`);
-      
-      // Get resume to find user and send email
-      const resume = await ctx.runQuery(internal.resumes.getResumeInternal, { id: args.id });
-      
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: "Resume (Parsing Failed)",
-        category: "Uncategorized",
-        status: "failed",
-        analysis: `### ⚠️ CRITICAL: Parsing Error Detected
-
-**Status:** The PDF text layer is unreadable (Encoding Error)
-
-This is common with:
-- "Save as PDF" from Canva
-- LaTeX-generated PDFs
-- Scanned images without proper OCR
-- Password-protected or corrupted files
-
-### 🔧 How to Fix (99% Success Rate):
-
-1. **Open your resume in a web browser** (Chrome, Edge, or Firefox)
-2. **Press Ctrl+P** (or Cmd+P on Mac) to open Print dialog
-3. **Select "Save as PDF"** as the destination
-4. **Save the new file** and upload it here
-
-**Why this works:** Browser printing forces text flattening and re-encoding, which fixes most parsing errors.
-
-### Alternative Solutions:
-
-- Convert to .docx format (Word documents parse more reliably)
-- Use Adobe Acrobat to "Print to PDF" 
-- Ensure the file is not password-protected
-- If it's a scanned image, use a proper OCR tool first
-
-**Technical Details:**
-- Text length: ${totalLength} characters
-- Has alphanumeric content: ${hasAlphanumeric}
-- Has minimal readable words: ${hasMinimalContent}`,
-        score: 0,
-        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
-      });
-      
-      // Send Email #3: Parsing Error Alert
-      if (resume && resume.userId) {
-        const user = await ctx.runQuery(internal.users.getInternalUser, {});
-        if (user && user.dbUser && user.dbUser.email) {
-          await ctx.scheduler.runAfter(0, internal.marketing.sendParsingErrorEmail, {
-            email: user.dbUser.email,
-            name: user.dbUser.name,
-            resumeId: args.id,
-          });
-        }
-      }
-      
-      return;
-    }
-    
-    // Text is readable - proceed with normal analysis
-    console.log(`OCR Text passed readability check. Length: ${totalLength}, hasAlphanumeric: ${hasAlphanumeric}, hasMinimalContent: ${hasMinimalContent}`);
+    console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${args.ocrText.length} chars`);
 
     // Log job description usage for validation
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
