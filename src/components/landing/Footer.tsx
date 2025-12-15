@@ -47,7 +47,7 @@ export function Footer() {
 
         <div className="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} Resume ATS Optimizer. All rights reserved.
+            &copy; {new Date().getFullYear()} CVDebug. All rights reserved.
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground font-medium">
             <button onClick={() => setShowPrivacy(true)} className="hover:text-foreground transition-colors">Privacy</button>
