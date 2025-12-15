@@ -12,6 +12,7 @@
         missingKeywords,
         formatIssues,
         metricSuggestions,
+        status: "completed",
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -19,12 +20,13 @@
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI not configured or failed to analyze.",
+        analysis: "AI analysis failed. Please try uploading again.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
+        status: "failed",
       });
     }
   },
 });
 
-// ... keep existing code for rewriteResume, optimizeLinkedIn, and chat functions
+// ... keep existing code for rewriteResume, optimizeLinkedIn, and chat functions ...

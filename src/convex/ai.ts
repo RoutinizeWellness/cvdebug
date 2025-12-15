@@ -21,36 +21,40 @@ export const analyzeResume = internalAction({
         category: "Uncategorized",
         analysis: "AI not configured.",
         score: 0,
+        status: "failed",
       });
       return;
     }
 
     // STEP 1: ANALYZE READABILITY - Check for corrupted/illegible text
+    // RELAXED THRESHOLDS - Only flag truly unreadable files
     const textSample = args.ocrText.substring(0, 500);
     const totalLength = args.ocrText.trim().length;
     
     // Count meaningless characters and patterns
     const nullChars = (args.ocrText.match(/\u0000/g) || []).length;
-    const excessiveSpaces = (textSample.match(/\s{5,}/g) || []).length;
+    const excessiveSpaces = (textSample.match(/\s{10,}/g) || []).length; // Increased from 5 to 10
     const nonAsciiRatio = (args.ocrText.match(/[^\x00-\x7F]/g) || []).length / totalLength;
     
-    // Check for standard English words
-    const commonWords = ['the', 'and', 'work', 'experience', 'education', 'skills', 'project', 'company', 'role', 'team'];
+    // Check for standard English words - RELAXED from 2 to 1
+    const commonWords = ['the', 'and', 'work', 'experience', 'education', 'skills', 'project', 'company', 'role', 'team', 'developed', 'managed', 'led', 'designed', 'built'];
     const foundCommonWords = commonWords.filter(word => 
       args.ocrText.toLowerCase().includes(word)
     ).length;
     
     // STEP 2: DECISION - Is this text illegible/corrupted?
+    // MUCH MORE LENIENT - Only flag truly broken files
     const isCorrupted = (
-      totalLength < 50 || // Too short
-      nullChars > 10 || // Excessive null characters
-      excessiveSpaces > 5 || // Excessive spacing issues
-      (nonAsciiRatio > 0.3 && totalLength > 100) || // Too many non-ASCII chars
-      foundCommonWords < 2 // Missing basic English words
+      totalLength < 20 || // Reduced from 50 - only flag extremely short text
+      nullChars > 50 || // Increased from 10 - allow more null chars
+      excessiveSpaces > 10 || // Increased from 5
+      (nonAsciiRatio > 0.7 && totalLength > 100) || // Increased from 0.3 to 0.7 - allow international characters
+      (foundCommonWords === 0 && totalLength > 100) // Changed from < 2 to === 0 - only flag if NO common words found
     );
     
     if (isCorrupted) {
       console.log("OCR Text is corrupted or illegible. Returning parsing error.");
+      console.log(`Debug: length=${totalLength}, nullChars=${nullChars}, spaces=${excessiveSpaces}, nonAscii=${(nonAsciiRatio * 100).toFixed(1)}%, commonWords=${foundCommonWords}`);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume (Parsing Failed)",
@@ -84,7 +88,7 @@ This is common with:
 
 **Technical Details:**
 - Detected ${nullChars} null characters
-- Found only ${foundCommonWords}/10 common English words
+- Found only ${foundCommonWords}/${commonWords.length} common English words
 - Non-ASCII ratio: ${(nonAsciiRatio * 100).toFixed(1)}%`,
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
@@ -93,7 +97,7 @@ This is common with:
     }
     
     // Text is readable - proceed with normal analysis
-    console.log(`OCR Text passed readability check. Length: ${totalLength}, Common words: ${foundCommonWords}/10`);
+    console.log(`OCR Text passed readability check. Length: ${totalLength}, Common words: ${foundCommonWords}/${commonWords.length}`);
 
     // Log job description usage for validation
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
