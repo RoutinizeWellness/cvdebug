@@ -67,6 +67,7 @@ export const createResume = mutation({
       category: args.category,
       jobDescription: args.jobDescription,
       detailsUnlocked: false, // Details locked by default
+      status: "processing", // Set initial status
     });
 
     // AI analysis will be triggered after OCR extraction in updateResumeOcr
@@ -85,9 +86,10 @@ export const updateResumeOcr = mutation({
       throw new Error("Resume not found");
     }
 
-    // Update OCR text
+    // Update OCR text and keep processing status
     await ctx.db.patch(args.id, {
       ocrText: args.ocrText,
+      status: "processing",
     });
 
     console.log(`[OCR] Text extracted for resume ${args.id}, length: ${args.ocrText.length} chars`);
@@ -111,6 +113,7 @@ export const updateResumeMetadata = internalMutation({
     analysis: v.optional(v.string()),
     rewrittenText: v.optional(v.string()),
     score: v.optional(v.number()),
+    status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
     scoreBreakdown: v.optional(v.object({
       keywords: v.number(),
       format: v.number(),
@@ -127,7 +130,8 @@ export const updateResumeMetadata = internalMutation({
     }))),
   },
   handler: async (ctx, args) => {
-    const updates: any = { status: "completed" };
+    const updates: any = {};
+    if (args.status) updates.status = args.status;
     if (args.title) updates.title = args.title;
     if (args.category) updates.category = args.category;
     if (args.analysis) updates.analysis = args.analysis;

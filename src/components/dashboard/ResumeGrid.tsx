@@ -1,4 +1,4 @@
-import { FileText, Loader2, Star, Trash2, File, MoreVertical, Eye } from "lucide-react";
+import { FileText, Loader2, Star, Trash2, File, MoreVertical, Eye, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -88,6 +88,10 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete }: ResumeG
               {resume.status === 'processing' ? (
                 <div className="bg-background/80 backdrop-blur-md text-foreground text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-border/50">
                   <Loader2 className="h-3 w-3 animate-spin" /> Processing
+                </div>
+              ) : resume.status === 'failed' ? (
+                <div className="bg-red-500/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 border border-white/10">
+                  <AlertCircle className="h-3 w-3" /> Parsing Error
                 </div>
               ) : (
                 <div className={`

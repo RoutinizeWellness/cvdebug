@@ -55,6 +55,7 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume (Parsing Failed)",
         category: "Uncategorized",
+        status: "failed",
         analysis: `### ⚠️ CRITICAL: Parsing Error Detected
 
 **Status:** The PDF text layer is unreadable (Encoding Error)
@@ -461,6 +462,7 @@ This is common with:
         missingKeywords,
         formatIssues,
         metricSuggestions,
+        status: "completed",
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -471,6 +473,7 @@ This is common with:
         analysis: "AI not configured or failed to analyze.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
+        status: "failed",
       });
     }
   },

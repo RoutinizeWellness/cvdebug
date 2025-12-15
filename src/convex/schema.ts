@@ -28,6 +28,7 @@ const schema = defineSchema(
     storageId: v.id("_storage"),
     mimeType: v.string(),
     category: v.optional(v.string()),
+    status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
     score: v.optional(v.number()),
     analysis: v.optional(v.string()),
     missingKeywords: v.optional(v.array(v.union(
