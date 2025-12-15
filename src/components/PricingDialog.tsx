@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
 export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null; resumeId?: string }) {
-  const createCheckoutSession = useAction(api.billing.createCheckoutSession);
+  const createCheckoutSession = useAction(api.billingActions.createCheckoutSession);
   const user = useQuery(api.users.currentUser);
   const betaStatus = useQuery(api.users.getBetaStatus);
   const claimed = betaStatus?.claimed ?? 97;

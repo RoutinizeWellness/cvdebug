@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
+import { Id } from "./_generated/dataModel";
 
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
@@ -76,23 +77,26 @@ export const updateResumeOcr = mutation({
     ocrText: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Unauthorized");
-
     const resume = await ctx.db.get(args.id);
-    if (!resume || (resume.userId !== user._id && user.email !== "tiniboti@gmail.com")) {
-      throw new Error("Resume not found or unauthorized");
+    if (!resume) {
+      throw new Error("Resume not found");
     }
 
+    // Update OCR text
     await ctx.db.patch(args.id, {
       ocrText: args.ocrText,
     });
 
+    console.log(`[OCR] Text extracted for resume ${args.id}, length: ${args.ocrText.length} chars`);
+
+    // Trigger AI analysis with job description if available
     await ctx.scheduler.runAfter(0, internal.ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
       jobDescription: resume.jobDescription,
     });
+
+    console.log(`[OCR] AI analysis scheduled for resume ${args.id}, JD provided: ${!!resume.jobDescription}`);
   },
 });
 
@@ -132,6 +136,35 @@ export const updateResumeMetadata = internalMutation({
     if (args.metricSuggestions) updates.metricSuggestions = args.metricSuggestions;
 
     await ctx.db.patch(args.id, updates);
+  },
+});
+
+export const unlockResumeAfterPurchase = internalMutation({
+  args: {
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    // Verify the resume exists and belongs to this user
+    const resume = await ctx.db.get(args.resumeId);
+    
+    if (!resume) {
+      console.error(`[Unlock] Resume ${args.resumeId} not found`);
+      return { success: false, error: "Resume not found" };
+    }
+
+    if (resume.userId !== args.userId) {
+      console.error(`[Unlock] Resume ${args.resumeId} does not belong to user ${args.userId}`);
+      return { success: false, error: "Unauthorized" };
+    }
+
+    // Unlock the resume
+    await ctx.db.patch(args.resumeId, {
+      detailsUnlocked: true,
+    });
+
+    console.log(`[Unlock] Successfully unlocked resume ${args.resumeId} for user ${args.userId}`);
+    return { success: true };
   },
 });
 

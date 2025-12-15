@@ -67,7 +67,7 @@ export default function AdminPage() {
   const grantPurchase = useMutation(api.admin.grantPurchase);
   const processBulkGrants = useMutation(api.admin.processBulkGrants);
   const simulateWebhook = useAction(api.admin.simulateWebhookEvent);
-  const createCheckoutSession = useAction(api.billing.createCheckoutSession);
+  const createCheckoutSession = useAction(api.billingActions.createCheckoutSession);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({

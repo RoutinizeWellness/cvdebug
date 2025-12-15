@@ -134,7 +134,6 @@ export default function Dashboard() {
 
   const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
   const createResume = useMutation(api.resumes.createResume);
-  const updateResumeOcr = useMutation(api.resumes.updateResumeOcr);
   const deleteResume = useMutation(api.resumes.deleteResume);
   
   const resumes = useQuery(api.resumes.getResumes, { 
@@ -278,10 +277,8 @@ export default function Dashboard() {
         toast.warning("No text could be extracted from the file. Please ensure your file contains readable text.");
       }
 
-      await updateResumeOcr({
-        id: resumeId,
-        ocrText: text,
-      });
+      // OCR text is now handled internally by the backend after createResume
+      // The backend will automatically trigger AI analysis after OCR
       toast.success("✅ Parsing Complete. AI is now analyzing your resume...");
     } catch (error) {
       console.error("Processing Error:", error);

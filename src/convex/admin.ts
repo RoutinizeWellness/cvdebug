@@ -506,23 +506,12 @@ export const simulateWebhookEvent = action({
 
     console.log(`Simulating webhook for user ${user.email} (${user.tokenIdentifier})`);
 
-    // Construct a fake event that matches what Autumn/Stripe sends
-    const payload = {
-      type: "payment.succeeded",
-      data: {
-        metadata: {
-          userId: user.tokenIdentifier, // The webhook looks for this
-          plan: args.plan
-        }
-      }
-    };
-
-    // Call the actual webhook handler
-    await ctx.runAction(internal.billing.handleAutumnWebhook, {
-      body: JSON.stringify(payload),
-      signature: "simulated-admin-test"
+    // Directly update the user's subscription (simulating what the webhook would do)
+    await ctx.runMutation(internal.users.updateSubscription, {
+      tokenIdentifier: user.tokenIdentifier,
+      plan: args.plan,
     });
 
-    return `✅ Simulated webhook sent for ${args.email}. Credits should be updated.`;
+    return `✅ Simulated payment processed for ${args.email}. Credits updated directly.`;
   }
 });
