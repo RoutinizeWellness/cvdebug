@@ -4,9 +4,10 @@ import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { Navigate } from "react-router";
 import { useSearchParams } from "react-router";
+import { Loader2 } from "lucide-react";
 
 export default function AuthPage() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
   const [searchParams] = useSearchParams();
   const plan = searchParams.get("plan");
@@ -20,6 +21,19 @@ export default function AuthPage() {
   
   if (params.toString()) {
     redirectUrl = `/dashboard?${params.toString()}`;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-pulse flex flex-col items-center gap-4">
+          <div className="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center">
+            <Loader2 className="h-6 w-6 text-primary animate-spin" />
+          </div>
+          <div className="h-4 w-32 bg-primary/20 rounded"></div>
+        </div>
+      </div>
+    );
   }
 
   if (isAuthenticated) {
@@ -68,13 +82,13 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
-                  headerTitle: "!hidden",
-                  headerSubtitle: "!hidden",
-                  header: "!hidden",
-                  footer: "!hidden",
-                  footerAction: "!hidden",
-                  footerActionLink: "!hidden",
-                  footerActionText: "!hidden",
+                  headerTitle: "hidden",
+                  headerSubtitle: "hidden",
+                  header: "hidden",
+                  footer: "hidden",
+                  footerAction: "hidden",
+                  footerActionLink: "hidden",
+                  footerActionText: "hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                   formFieldLabel: "text-foreground",
                   formFieldInput: "bg-background border-border text-foreground",
@@ -89,13 +103,13 @@ export default function AuthPage() {
                 elements: {
                   rootBox: "w-full",
                   card: "shadow-none border-none w-full bg-transparent p-0",
-                  headerTitle: "!hidden",
-                  headerSubtitle: "!hidden",
-                  header: "!hidden",
-                  footer: "!hidden",
-                  footerAction: "!hidden",
-                  footerActionLink: "!hidden",
-                  footerActionText: "!hidden",
+                  headerTitle: "hidden",
+                  headerSubtitle: "hidden",
+                  header: "hidden",
+                  footer: "hidden",
+                  footerAction: "hidden",
+                  footerActionLink: "hidden",
+                  footerActionText: "hidden",
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                   formFieldLabel: "text-foreground",
                   formFieldInput: "bg-background border-border text-foreground",
