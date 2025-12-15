@@ -28,13 +28,7 @@ export const analyzeResume = internalAction({
 
     // STEP 1: ANALYZE READABILITY - Check for corrupted/illegible text
     // ULTRA-PERMISSIVE THRESHOLDS - Almost never flag as corrupted
-    const textSample = args.ocrText.substring(0, 500);
     const totalLength = args.ocrText.trim().length;
-    
-    // Count meaningless characters and patterns - VERY HIGH THRESHOLDS
-    const nullChars = (args.ocrText.match(/\u0000/g) || []).length;
-    const excessiveSpaces = (textSample.match(/\s{50,}/g) || []).length; // Increased to 50
-    const nonAsciiRatio = (args.ocrText.match(/[^\x00-\x7F]/g) || []).length / totalLength;
     
     // Check for ANY alphanumeric content - ULTRA RELAXED
     const hasAlphanumeric = /[a-zA-Z0-9]/.test(args.ocrText);
@@ -45,14 +39,12 @@ export const analyzeResume = internalAction({
     const isCorrupted = (
       totalLength < 5 || // Only flag if virtually no text
       !hasAlphanumeric || // No letters or numbers at all
-      !hasMinimalContent || // Not even a single 3-letter word
-      (nullChars > 500 && totalLength < 100) || // Massive null chars in tiny file
-      (nonAsciiRatio > 0.99 && totalLength > 50 && !hasMinimalContent) // 99% non-ASCII AND no words
+      !hasMinimalContent // Not even a single 3-letter word
     );
     
     if (isCorrupted) {
       console.log("OCR Text is corrupted or illegible. Returning parsing error.");
-      console.log(`Debug: length=${totalLength}, nullChars=${nullChars}, spaces=${excessiveSpaces}, nonAscii=${(nonAsciiRatio * 100).toFixed(1)}%, hasAlphanumeric=${hasAlphanumeric}, hasMinimalContent=${hasMinimalContent}`);
+      console.log(`Debug: length=${totalLength}, hasAlphanumeric=${hasAlphanumeric}, hasMinimalContent=${hasMinimalContent}`);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume (Parsing Failed)",
@@ -86,8 +78,6 @@ This is common with:
 
 **Technical Details:**
 - Text length: ${totalLength} characters
-- Null characters detected: ${nullChars}
-- Non-ASCII ratio: ${(nonAsciiRatio * 100).toFixed(1)}%
 - Has alphanumeric content: ${hasAlphanumeric}
 - Has minimal readable words: ${hasMinimalContent}`,
         score: 0,
