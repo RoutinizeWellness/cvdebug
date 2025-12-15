@@ -192,9 +192,6 @@ export default function Dashboard() {
       const resumeId = await createResume({
         storageId,
         title: file.name,
-        width: 0,
-        height: 0,
-        size: file.size,
         mimeType: file.type,
         jobDescription: jobDescription.trim() || undefined,
       });

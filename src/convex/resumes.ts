@@ -3,88 +3,69 @@ import { mutation, query, internalMutation, internalQuery } from "./_generated/s
 import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
 
-export const generateUploadUrl = mutation(async (ctx) => {
-  const user = await getCurrentUser(ctx);
-  if (!user) throw new Error("Unauthorized");
+export const generateUploadUrl = mutation({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
 
-  // Admin bypass
-  if (user.email === "tiniboti@gmail.com") {
+    // Allow upload without credit check - everyone can scan for free
     return await ctx.storage.generateUploadUrl();
-  }
-
-  // Check credits
-  const credits = user.dbUser?.credits ?? 1;
-  if (credits <= 0) {
-    throw new Error("Insufficient credits. Please upgrade your plan.");
-  }
-
-  return await ctx.storage.generateUploadUrl();
+  },
 });
 
 export const createResume = mutation({
   args: {
     storageId: v.id("_storage"),
     title: v.string(),
-    width: v.number(),
-    height: v.number(),
-    size: v.number(),
     mimeType: v.string(),
+    category: v.optional(v.string()),
     jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Unauthorized");
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
 
-    console.log("[createResume] Creating resume for userId:", user._id, "email:", user.email);
+    // Get or create user (no credit check - free scans for everyone)
+    let user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .unique();
 
-    // Credit Check & Deduction
-    if (user.email !== "tiniboti@gmail.com") {
-      const credits = user.dbUser?.credits ?? 1;
-      
-      // Allow if they have credits OR if they are a new user (who will get trial credits)
-      if (credits <= 0 && user.dbUser) {
-        throw new Error("Insufficient credits. Please upgrade your plan.");
-      }
-
-      if (user.dbUser) {
-        console.log("[createResume] Deducting credit from existing user. Current credits:", credits);
-        await ctx.db.patch(user.dbUser._id, { credits: credits - 1 });
-      } else {
-        // Create user record if it doesn't exist
-        // NEW: Apply 15-day free trial logic
-        // Give them Pro-level credits (2) initially. 
-        // They use 1 now, so they will have 1 left.
-        const trialEndsOn = Date.now() + (15 * 24 * 60 * 60 * 1000);
-        
-        console.log("[createResume] Creating new user record with tokenIdentifier:", user._id);
-        await ctx.db.insert("users", {
-          tokenIdentifier: user._id, // Use subject as tokenIdentifier
-          email: user.email,
-          name: user.name,
-          subscriptionTier: "free",
-          credits: 1, // 2 initial - 1 used = 1 remaining
-          trialEndsOn: trialEndsOn,
-        });
-      }
+    if (!user) {
+      // Create new user with 0 credits (they can still scan)
+      const userId = await ctx.db.insert("users", {
+        tokenIdentifier: identity.tokenIdentifier,
+        email: identity.email,
+        name: identity.name,
+        subscriptionTier: "free",
+        credits: 0,
+        lastSeen: Date.now(),
+      });
+      user = await ctx.db.get(userId);
     }
 
     const url = await ctx.storage.getUrl(args.storageId);
-    if (!url) throw new Error("Failed to get storage URL");
+    if (!url) {
+      throw new Error("Failed to get file URL");
+    }
 
+    // Create resume without deducting credits
     const resumeId = await ctx.db.insert("resumes", {
-      userId: user._id, // Use subject as userId
-      storageId: args.storageId,
-      url,
+      userId: identity.tokenIdentifier,
       title: args.title,
-      jobDescription: args.jobDescription,
-      status: "processing",
-      width: args.width,
-      height: args.height,
-      size: args.size,
+      url,
+      storageId: args.storageId,
       mimeType: args.mimeType,
+      category: args.category,
+      jobDescription: args.jobDescription,
+      detailsUnlocked: false, // Details locked by default
     });
 
-    console.log("[createResume] Resume created successfully with ID:", resumeId);
+    // AI analysis will be triggered after OCR extraction in updateResumeOcr
     return resumeId;
   },
 });

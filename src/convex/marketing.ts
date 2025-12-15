@@ -123,6 +123,76 @@ export const sendActivationLastChanceEmail = internalAction({
   },
 });
 
+// Email #4: Recovery Email (1h after free scan, details not unlocked)
+export const sendRecoveryEmail = internalAction({
+  args: { 
+    email: v.string(), 
+    name: v.optional(v.string()), 
+    score: v.number(),
+    totalErrors: v.number(),
+    firstError: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "Job Seeker";
+    const subject = `⚠️ Your resume scored ${args.score}% - Don't let ATS reject you`;
+    
+    const errorPreview = args.firstError 
+      ? `<div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px; margin: 16px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: bold; color: #991b1b;">🎁 FREE PREVIEW - Error #1:</p>
+          <p style="margin: 8px 0 0 0; color: #7f1d1d;">❌ Missing critical keyword: <strong>"${args.firstError}"</strong></p>
+        </div>`
+      : '';
+
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hey ${firstName},</p>
+        <p>You scanned your resume an hour ago and got <strong style="color: #ef4444;">${args.score}% ATS compatibility</strong>.</p>
+        <p><strong>That means ATS systems are likely auto-rejecting your applications.</strong></p>
+        
+        <div style="background: #fef3c7; border: 2px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 8px; text-align: center;">
+          <p style="margin: 0; font-size: 18px; font-weight: bold; color: #92400e;">⚠️ ${args.totalErrors} Critical Issues Found</p>
+        </div>
+
+        ${errorPreview}
+
+        <p>The good news? <strong>These are fixable in under 10 minutes.</strong></p>
+        
+        <p>Unlock your full report to see:</p>
+        <ul>
+          <li>✅ All ${args.totalErrors} missing keywords and format errors</li>
+          <li>✅ Exact sections to add them</li>
+          <li>✅ Step-by-step fixes with examples</li>
+          <li>✅ Priority ranking (fix these first)</li>
+        </ul>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard?unlock=true" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Unlock Full Report - $4.99
+          </a>
+        </div>
+
+        <p style="font-size: 12px; color: #666; text-align: center;">One-time payment • No subscription • Instant access</p>
+
+        <p style="margin-top: 30px;">Don't let a fixable resume block your dream job.</p>
+        
+        <p>The ResumeATS Team</p>
+        
+        <p style="font-size: 12px; color: #666; margin-top: 20px;">P.S. Most users improve their score by 20-30% after implementing our fixes. That's the difference between getting rejected and getting interviews.</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent Recovery Email to ${args.email}`);
+    } catch (error) { 
+      console.error("Failed to send Recovery Email:", error); 
+    }
+  },
+});
+
 // Email #4: Post Free-Scan (Trigger: Usaron free scan)
 export const sendPostScanEmail = internalAction({
   args: { email: v.string(), name: v.optional(v.string()), score: v.number() },

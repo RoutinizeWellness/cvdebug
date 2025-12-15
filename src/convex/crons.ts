@@ -26,10 +26,13 @@ export const runActivationFlow = internalMutation({
     // Look for users created between 24h and 25h ago
     const users24h = await ctx.db
       .query("users")
-      .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", now - (25 * hour)).lt("_creationTime", now - (24 * hour))
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (25 * hour)),
+          q.lt(q.field("_creationTime"), now - (24 * hour)),
+          q.eq(q.field("activationEmail24hSent"), undefined)
+        )
       )
-      .filter(q => q.eq(q.field("activationEmail24hSent"), undefined))
       .take(50);
 
     for (const user of users24h) {
@@ -52,10 +55,13 @@ export const runActivationFlow = internalMutation({
     // Look for users created between 72h and 73h ago
     const users72h = await ctx.db
       .query("users")
-      .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", now - (73 * hour)).lt("_creationTime", now - (72 * hour))
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (73 * hour)),
+          q.lt(q.field("_creationTime"), now - (72 * hour)),
+          q.eq(q.field("activationEmail72hSent"), undefined)
+        )
       )
-      .filter(q => q.eq(q.field("activationEmail72hSent"), undefined))
       .take(50);
 
     for (const user of users72h) {
@@ -81,24 +87,37 @@ export const runConversionFlow = internalMutation({
     const now = Date.now();
     const hour = 60 * 60 * 1000;
 
-    // Email #4: Post Free-Scan (1h after scan)
+    // Email #4: Recovery Email (1h after scan, details not unlocked)
     const resumes1h = await ctx.db
       .query("resumes")
-      .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", now - (2 * hour)).lt("_creationTime", now - (1 * hour))
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (2 * hour)),
+          q.lt(q.field("_creationTime"), now - (1 * hour)),
+          q.eq(q.field("conversionEmail1hSent"), undefined)
+        )
       )
-      .filter(q => q.eq(q.field("conversionEmail1hSent"), undefined))
       .take(50);
 
     for (const resume of resumes1h) {
-      if (resume.score !== undefined && resume.userId) {
+      // Only send if score exists and details are NOT unlocked
+      if (resume.score !== undefined && !resume.detailsUnlocked && resume.userId) {
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         if (user && user.email) {
           await ctx.db.patch(resume._id, { conversionEmail1hSent: true });
-          await ctx.scheduler.runAfter(0, internal.marketing.sendPostScanEmail, {
+          
+          // Get first critical error for preview
+          const firstError = resume.missingKeywords?.[0];
+          const firstErrorText = firstError 
+            ? (typeof firstError === 'string' ? firstError : firstError.keyword)
+            : undefined;
+
+          await ctx.scheduler.runAfter(0, internal.marketing.sendRecoveryEmail, {
             email: user.email,
             name: user.name,
             score: resume.score,
+            totalErrors: (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0),
+            firstError: firstErrorText,
           });
         }
       }
@@ -107,10 +126,13 @@ export const runConversionFlow = internalMutation({
     // Email #5: Value Reminder (48h after scan, no upgrade)
     const resumes48h = await ctx.db
       .query("resumes")
-      .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", now - (49 * hour)).lt("_creationTime", now - (48 * hour))
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (49 * hour)),
+          q.lt(q.field("_creationTime"), now - (48 * hour)),
+          q.eq(q.field("conversionEmail48hSent"), undefined)
+        )
       )
-      .filter(q => q.eq(q.field("conversionEmail48hSent"), undefined))
       .take(50);
 
     for (const resume of resumes48h) {
@@ -132,10 +154,13 @@ export const runConversionFlow = internalMutation({
     const day = 24 * hour;
     const resumes7d = await ctx.db
       .query("resumes")
-      .withIndex("by_creation_time", (q) => 
-        q.gt("_creationTime", now - (7 * day + hour)).lt("_creationTime", now - (7 * day))
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (7 * day + hour)),
+          q.lt(q.field("_creationTime"), now - (7 * day)),
+          q.eq(q.field("conversionEmail7dSent"), undefined)
+        )
       )
-      .filter(q => q.eq(q.field("conversionEmail7dSent"), undefined))
       .take(50);
 
     for (const resume of resumes7d) {
@@ -175,8 +200,12 @@ export const runReengagementFlow = internalMutation({
     
     const users = await ctx.db
       .query("users")
-      .withIndex("by_creation_time", q => q.lt("_creationTime", thirtyDaysAgo))
-      .filter(q => q.eq(q.field("winBackEmail30dSent"), undefined))
+      .filter(q => 
+        q.and(
+          q.lt(q.field("_creationTime"), thirtyDaysAgo),
+          q.eq(q.field("winBackEmail30dSent"), undefined)
+        )
+      )
       .take(50);
 
     for (const user of users) {

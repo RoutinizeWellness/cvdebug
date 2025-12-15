@@ -21,40 +21,48 @@ const schema = defineSchema(
     .index("by_token", ["tokenIdentifier"])
     .index("by_email", ["email"])
     .index("by_subscription_tier", ["subscriptionTier"]),
-    resumes: defineTable({
-      userId: v.string(), // Clerk User ID
-      storageId: v.id("_storage"),
-      url: v.string(),
-      title: v.string(),
-      jobDescription: v.optional(v.string()),
-      category: v.optional(v.string()),
-      ocrText: v.optional(v.string()),
-      analysis: v.optional(v.string()),
-      rewrittenText: v.optional(v.string()),
-      score: v.optional(v.number()),
-      scoreBreakdown: v.optional(v.object({
-        keywords: v.number(),
-        format: v.number(),
-        completeness: v.number(),
-      })),
-      missingKeywords: v.optional(v.array(v.object({
+  resumes: defineTable({
+    userId: v.string(),
+    title: v.string(),
+    url: v.string(),
+    storageId: v.id("_storage"),
+    mimeType: v.string(),
+    category: v.optional(v.string()),
+    score: v.optional(v.number()),
+    analysis: v.optional(v.string()),
+    missingKeywords: v.optional(v.array(v.union(
+      v.string(),
+      v.object({
         keyword: v.string(),
         priority: v.string(),
+        section: v.optional(v.string()),
+        context: v.optional(v.string()),
         frequency: v.optional(v.number()),
         impact: v.optional(v.number()),
-      }))), 
-      formatIssues: v.optional(v.array(v.string())),
-      marketingEmailSent: v.optional(v.boolean()), // Deprecated in favor of specific flags below, but keeping for safety
-      // Conversion flow email flags
-      conversionEmail1hSent: v.optional(v.boolean()),
-      conversionEmail48hSent: v.optional(v.boolean()),
-      conversionEmail7dSent: v.optional(v.boolean()),
-      status: v.union(v.literal("processing"), v.literal("completed"), v.literal("error")),
-      width: v.number(),
-      height: v.number(),
-      size: v.number(),
-      mimeType: v.string(),
-    })
+      })
+    ))),
+    formatIssues: v.optional(v.array(v.union(
+      v.string(),
+      v.object({
+        issue: v.string(),
+        severity: v.optional(v.string()),
+        fix: v.optional(v.string()),
+        location: v.optional(v.string()),
+      })
+    ))),
+    scoreBreakdown: v.optional(v.object({
+      keywords: v.optional(v.number()),
+      format: v.optional(v.number()),
+      completeness: v.optional(v.number()),
+    })),
+    ocrText: v.optional(v.string()),
+    rewrittenText: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
+    detailsUnlocked: v.optional(v.boolean()),
+    conversionEmail1hSent: v.optional(v.boolean()),
+    conversionEmail48hSent: v.optional(v.boolean()),
+    conversionEmail7dSent: v.optional(v.boolean()),
+  })
     .index("by_user", ["userId"])
     .index("by_user_and_category", ["userId", "category"])
     .searchIndex("search_ocr", {
