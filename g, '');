@@ -1,8 +1,6 @@
       
       const parsed = JSON.parse(jsonStr);
-      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis } = parsed;
-      
-      console.log(`[AI Analysis Complete] Resume ID: ${args.id}, Score: ${score}, Tailored: ${hasJobDescription}`);
+      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
@@ -11,6 +9,9 @@
         analysis,
         score,
         scoreBreakdown,
+        missingKeywords,
+        formatIssues,
+        metricSuggestions,
       });
     } catch (error) {
       console.error("Error analyzing resume:", error);
@@ -26,4 +27,4 @@
   },
 });
 
-// ... keep existing code (rewriteResume, optimizeLinkedIn, chat actions)
+// ... keep existing code for rewriteResume, optimizeLinkedIn, and chat functions

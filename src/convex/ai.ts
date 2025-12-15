@@ -32,7 +32,7 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume (Unreadable)",
         category: "Uncategorized",
-        analysis: "### ⚠️ Parsing Error\\nWe could not extract enough text from this file. It might be an image-only PDF without OCR data, or the file is corrupted.\\n\\n**Recommendation:**\\n- Try converting your resume to a standard text-based PDF.\\n- Ensure the file is not password protected.",
+        analysis: "### ⚠️ Parsing Error\\n\\nWe could not extract enough text from this file. It might be an image-only PDF without OCR data, or the file is corrupted.\\n\\n**Recommendation:**\\n- Try converting your resume to a standard text-based PDF.\\n- Ensure the file is not password protected.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
       });
@@ -57,162 +57,316 @@ export const analyzeResume = internalAction({
       - RAW PARSED TEXT (What the ATS sees):
       "${args.ocrText.substring(0, 30000)}"
 
-      ### ENHANCED SCORING ALGORITHM (0-100):
-      Use ML-inspired scoring with weighted components. Most resumes score 45-75. Scores above 85 require exceptional optimization.
-      ${hasJobDescription ? '\\n**TAILORED MODE**: Apply TF-IDF weighting - keywords appearing 3+ times in JD are "critical", 2 times are "important", 1 time is "nice-to-have".' : ''}
-
-      1. **Parsing & Format Quality (30 points)**:
-         - **Structure Detection Algorithm**:
-           * Check for standard section headers (Experience, Education, Skills, Summary/Objective)
-           * Detect chronological order and date consistency
-           * Identify contact information block (email, phone, LinkedIn)
-         - **Format Issues Detection**:
-           * Multi-column layouts (ATS reads left-to-right, causes jumbling) → -8 points
-           * Tables/graphics (invisible to text parsers) → -6 points
-           * Inconsistent date formats → -4 points
-           * Missing section headers → -5 points
-           * Poor spacing/wall of text → -3 points
-         - **Scoring**:
-           * 25-30: Clean, single-column, clear headers, consistent formatting
-           * 18-24: Minor issues, mostly readable
-           * 10-17: Significant parsing problems
-           * 0-9: Severely garbled or unparseable
-
-      2. **Keyword Matching & Context (40 points)**:
-         ${hasJobDescription 
-           ? '- **TF-IDF-Inspired Weighting**:\\n           * Extract all technical skills, tools, methodologies from JD\\n           * Weight by frequency: 3+ mentions = 5 points each, 2 mentions = 3 points, 1 mention = 1 point\\n           * Calculate match rate: (matched_weight / total_weight) × 40\\n         - **Contextual Analysis**:\\n           * Keyword in project description with metrics = full points\\n           * Keyword in skills list only = 60% of points\\n           * Keyword stuffing (>10 skills with no context) = -5 points penalty\\n         - **Critical Threshold**: Missing 5+ high-frequency JD keywords → cap score at 55'
-           : '- **Industry Benchmark Matching**:\\n           * Identify role category (Engineering, Marketing, Sales, etc.)\\n           * Compare against top 20 industry-standard skills for that role\\n           * Calculate coverage percentage'
-         }
-         - **Semantic Matching**: Consider synonyms (e.g., "JavaScript" = "JS", "Machine Learning" = "ML")
-         - **Recency Weighting**: Skills mentioned in recent roles (last 2 years) weighted 1.5x
-
-      3. **Content Quality & Impact (30 points)**:
-         - **Quantifiable Metrics Algorithm** (15 points):
-           * Count metrics/numbers in experience bullets (%, $, #, X times)
-           * 5+ quantified achievements = 15 points
-           * 3-4 quantified achievements = 10 points
-           * 1-2 quantified achievements = 5 points
-           * 0 quantified achievements = 0 points
-         - **Action Verb Analysis** (8 points):
-           * Strong verbs (Led, Architected, Optimized, Increased) = full points
-           * Weak verbs (Responsible for, Worked on, Helped with) = partial points
-           * Passive voice = 0 points
-         - **Completeness Check** (7 points):
-           * Contact info (email, phone) = 2 points
-           * LinkedIn URL = 1 point
-           * Education section = 2 points
-           * 2+ years of experience = 2 points
-
-      ### ROLE-SPECIFIC GUIDANCE:
+      ### ENHANCED ML-POWERED SCORING ALGORITHM (0-100):
       
-      **For Engineering/Technical Roles (Civil, Structural, Mechanical, Software, etc.):**
-      - **Project-Based Achievements**: Strong resumes showcase SPECIFIC projects as stars, not generic duties
-      - **Required Project Details**:
-        * Project name/type (e.g., "6-story multifamily wood-frame building")
-        * Scale/scope (floors, area in m²/ft², budget/cost)
-        * Materials/technologies used (wood, steel, RC, specific software)
-        * Codes/standards applied (IBC, ASCE 7, Eurocode, etc.)
-        * YOUR specific contribution (what YOU designed, calculated, detailed)
-      - **Metric Suggestions for Engineering**:
-        * "Designed gravity and lateral systems for [X m² / X-story] [material] building using [code/software], reducing material cost by Y% / meeting Z seismic requirements"
-        * "Performed structural analysis for [project type] using [software], optimizing [element] design and saving $X"
-        * "Detailed [number] connection designs for [project], ensuring compliance with [code] and reducing construction time by Y%"
-      - **Format Recommendation**: 
-        * Keep main resume to 1 page
-        * Link or attach a 1-page project sheet with 2-3 representative projects showing scope and contributions
-        * Use bullets like: "Designed [system] for [specific project details] using [tools/codes], achieving [quantifiable result]"
+      **CRITICAL CALIBRATION RULES:**
+      - Most real-world resumes score 45-75 (industry average: 62)
+      - Scores above 85 require exceptional optimization across ALL dimensions
+      - Be STRICT and REALISTIC - don't inflate scores
+      - Each point deduction must be justified by specific deficiencies
+      
+      ${hasJobDescription ? '**TAILORED MODE ACTIVATED**: Apply TF-IDF weighting - keywords appearing 3+ times in JD are "critical" (5 pts each), 2 times are "important" (3 pts), 1 time is "nice-to-have" (1 pt).' : ''}
 
-      **For Marketing/Sales Roles:**
-      - Focus on campaign results, conversion rates, revenue impact, audience growth
-      - Metrics: "Increased conversions by X%", "Generated $Y in revenue", "Grew audience from A to B"
+      ### COMPONENT 1: Parsing & Format Quality (30 points)
+      
+      **Structure Detection Algorithm:**
+      - Scan for standard section headers (Experience, Education, Skills, Summary/Objective) → +8 pts if all present
+      - Verify chronological order and date consistency → +6 pts if consistent
+      - Identify complete contact information block (email, phone, LinkedIn) → +5 pts if complete
+      - Check for single-column layout (ATS-friendly) → +6 pts if single-column
+      - Assess readability (proper spacing, clear hierarchy) → +5 pts if excellent
+      
+      **Format Issues Detection & Penalties:**
+      - Multi-column layouts (causes text jumbling) → -10 points
+      - Tables/graphics (invisible to text parsers) → -8 points
+      - Inconsistent date formats (MM/YYYY vs Month Year) → -5 points
+      - Missing critical section headers → -6 points
+      - Poor spacing/wall of text → -4 points
+      - Special characters or symbols that break parsing → -3 points
+      
+      **Scoring Bands:**
+      - 25-30: Perfect ATS formatting, single-column, clear headers, consistent dates
+      - 18-24: Minor issues, mostly readable with 1-2 format problems
+      - 10-17: Significant parsing problems affecting readability
+      - 0-9: Severely garbled, multi-column, or unparseable
 
-      **For Product/Design Roles:**
-      - Focus on user impact, feature adoption, design system contributions
-      - Metrics: "Improved user retention by X%", "Designed feature used by Y users", "Reduced friction by Z%"
+      ### COMPONENT 2: Keyword Matching & Semantic Analysis (40 points)
+      
+      ${hasJobDescription 
+        ? `**TF-IDF-Inspired Weighting Algorithm:**
+        1. Extract ALL technical skills, tools, methodologies, certifications from JD
+        2. Calculate frequency weights:
+           - 3+ mentions = CRITICAL (5 points each, max 25 pts total)
+           - 2 mentions = IMPORTANT (3 points each, max 10 pts total)
+           - 1 mention = NICE-TO-HAVE (1 point each, max 5 pts total)
+        3. Match rate formula: (matched_weight / total_possible_weight) × 40
+        
+        **Contextual Scoring Rules:**
+        - Keyword in project description WITH metrics = 100% of points
+        - Keyword in experience bullets with context = 80% of points
+        - Keyword in skills list only = 50% of points
+        - Keyword stuffing (>15 skills with no context) = -8 points penalty
+        
+        **Critical Threshold Penalties:**
+        - Missing 5+ high-frequency JD keywords → cap total score at 55
+        - Missing 3-4 critical keywords → cap at 65
+        - Missing 1-2 critical keywords → cap at 75`
+        : `**Industry Benchmark Matching:**
+        1. Identify role category (Engineering, Marketing, Sales, Design, etc.)
+        2. Compare against top 20 industry-standard skills for that role
+        3. Calculate coverage: (matched_skills / 20) × 40
+        4. Bonus points for emerging/high-demand skills (+5 pts max)`
+      }
+      
+      **Semantic Matching Intelligence:**
+      - Recognize synonyms: "JavaScript" = "JS", "Machine Learning" = "ML", "React.js" = "React"
+      - Acronym expansion: "AWS" includes "Amazon Web Services"
+      - Tool variations: "Photoshop" = "Adobe Photoshop" = "PS"
+      
+      **Recency Weighting:**
+      - Skills in most recent role (last 2 years) → 1.5x weight
+      - Skills in older roles (2-5 years) → 1.0x weight
+      - Skills older than 5 years → 0.5x weight
 
-      4. **ML-Enhanced Output Generation**:
-         Return a JSON object with:
-         - "title": Candidate Name / Role.
-         - "category": One of [Engineering, Marketing, Sales, Design, Product, Finance, HR, Operations, Other].
-         - "score": Calculated weighted score (integer, 0-100). ${hasJobDescription ? 'Apply TF-IDF weighting for tailored scoring.' : 'Use industry benchmark comparison.'}
-         - "scoreBreakdown": { "keywords": number (0-40), "format": number (0-30), "completeness": number (0-30) }.
-         - "missingKeywords": Array of objects (5-10 items). ${hasJobDescription ? 'Extract from JD using frequency analysis' : 'Use industry-standard skill database'}. Structure: { "keyword": "Skill Name", "priority": "critical" | "important" | "nice-to-have", "frequency": number, "impact": number, "section": "Skills" | "Experience" | "Summary" | "Education", "context": "Why this matters and how to add it naturally", "synonyms": ["alt1", "alt2"] }.
-           - **Priority Algorithm**:
-             * "critical": Appears 3+ times in JD OR top 5 industry-standard skills for role
-             * "important": Appears 2 times in JD OR top 10 industry skills
-             * "nice-to-have": Appears 1 time in JD OR complementary skills
-           - "frequency": Exact count in JD (1-10) or industry importance score (1-10)
-           - "impact": ML-estimated score increase (1-10 points) based on keyword weight
-           - "section": Optimal placement based on keyword type (technical → Skills, soft → Experience)
-           - "context": Actionable advice with example usage
-           - "synonyms": Alternative terms ATS might recognize
-         - "formatIssues": Array of objects (3-7 items). Use parsing algorithm to detect real issues. Structure: { "issue": "Specific problem detected", "severity": "high" | "medium" | "low", "fix": "Step-by-step solution with before/after", "location": "Section/line where found", "atsImpact": "How this affects ATS parsing" }.
-           - **Detection Algorithm**:
-             * Scan for multi-column indicators (text jumping, misaligned sections)
-             * Check date format consistency (MM/YYYY vs Month Year vs MM-DD-YYYY)
-             * Verify section header presence (Experience, Education, Skills)
-             * Detect table structures (aligned columns, grid patterns)
-           - Only include REAL detected issues, not generic advice
-           - "high": Blocks ATS parsing (multi-column, tables, images-as-text)
-           - "medium": Reduces accuracy (inconsistent dates, unclear headers)
-           - "low": Minor polish (spacing, bullet consistency)
-           - "atsImpact": Explain specific parsing failure this causes
-         - "metricSuggestions": Array of 3-5 role-specific metric templates. For Engineering roles, focus on project-based achievements with specific details (building type, scale, materials, codes, personal contribution). Structure: { "tech": "Technology/System", "metrics": ["Metric template 1", "Metric template 2", "Metric template 3"] }
-         - "analysis": A Markdown string. **DO NOT use generic advice.** Be specific to THIS resume ${hasJobDescription ? 'and the provided job description' : ''}.
-            Structure:
-            ${hasJobDescription ? '### 🎯 Tailored Analysis\\n(Explain how well this resume matches the specific job description. List exact missing keywords from the JD with their frequency in the JD. Be specific about which sections need these keywords.)\\n\\n' : ''}
-            ### 🤖 ATS Parsing Report
-            (Did the parser fail on any sections? Is the contact info readable? Mention specific parsing artifacts found in the raw text. Rate parsing quality: Excellent/Good/Fair/Poor)
+      ### COMPONENT 3: Content Quality & Impact (30 points)
+      
+      **Quantifiable Metrics Algorithm (15 points):**
+      - Count metrics/numbers in experience bullets (%, $, #, X times, X users, etc.)
+      - Scoring:
+        * 8+ quantified achievements across all roles = 15 points
+        * 5-7 quantified achievements = 11 points
+        * 3-4 quantified achievements = 7 points
+        * 1-2 quantified achievements = 3 points
+        * 0 quantified achievements = 0 points
+      
+      **Action Verb Strength Analysis (8 points):**
+      - Strong impact verbs (Led, Architected, Optimized, Increased, Reduced, Launched) = 8 points
+      - Moderate verbs (Managed, Developed, Implemented, Created) = 5 points
+      - Weak verbs (Responsible for, Worked on, Helped with, Assisted) = 2 points
+      - Passive voice or no action verbs = 0 points
+      
+      **Completeness & Professional Polish (7 points):**
+      - Contact info (email + phone) = 2 points
+      - LinkedIn URL or portfolio link = 1 point
+      - Education section with degree/institution = 2 points
+      - 2+ years of relevant experience = 2 points
 
-            ### 📊 Score Breakdown Analysis
-            (Explain each component score in detail:
-            - Keywords: X/40 points - Why? List top 3 missing critical keywords.
-            - Format: X/30 points - Why? List top 2 format issues.
-            - Completeness: X/30 points - Why? What's missing or weak?)
+      ### ROLE-SPECIFIC OPTIMIZATION GUIDANCE:
+      
+      **For Engineering/Technical Roles (Civil, Structural, Mechanical, Software, Data, etc.):**
+      
+      **Project-Based Achievement Framework:**
+      Every bullet should answer: WHAT project + WHAT scale + WHAT you did + WHAT result
+      
+      **Required Project Details:**
+      - Project name/type (e.g., "6-story multifamily wood-frame building", "E-commerce platform")
+      - Scale/scope (floors, area in m²/ft², budget, users, data volume)
+      - Technologies/materials used (wood, steel, RC, Python, AWS, React, etc.)
+      - Standards/codes applied (IBC, ASCE 7, Eurocode, WCAG, SOC 2, etc.)
+      - YOUR specific contribution (what YOU designed, built, optimized)
+      - Quantifiable impact (cost savings, performance gains, time reduction)
+      
+      **Metric Templates for Engineering:**
+      - Structural: "Designed gravity and lateral systems for [X m² / X-story] [material] building using [code/software], reducing material cost by Y% / meeting Z seismic requirements"
+      - Software: "Architected [system/feature] serving [X users/requests] using [tech stack], improving [metric] by Y% and reducing [cost/latency] by Z%"
+      - Data: "Built [pipeline/model] processing [X TB/records] using [tools], achieving [accuracy/speed] and enabling [business outcome]"
+      
+      **Format Recommendation:**
+      - Keep main resume to 1 page (2 pages max for 10+ years experience)
+      - Consider a separate 1-page project sheet with 2-3 representative projects
+      - Use bullet format: "Designed [system] for [specific project details] using [tools/codes], achieving [quantifiable result]"
 
-            ### 🔑 Critical Missing Keywords (Priority: HIGH)
-            (List 3-5 top missing hard skills${hasJobDescription ? ' from the job description' : ''} with:
-            - Keyword name
-            - Why it's critical (appears X times in JD, required skill, etc.)
-            - Exact section to add it to
-            - Example of how to incorporate it naturally)
+      **For Marketing/Sales/Business Roles:**
+      - Focus on: campaign results, conversion rates, revenue impact, audience growth, ROI
+      - Metrics: "Increased conversions by X%", "Generated $Y in revenue", "Grew audience from A to B", "Achieved X% ROI"
 
-            ### ⚠️ Format Issues Blocking ATS
-            (List specific format problems that prevent ATS from reading correctly:
-            - Issue description
-            - Why it's a problem
-            - Exact fix with before/after example if possible)
+      **For Product/Design/UX Roles:**
+      - Focus on: user impact, feature adoption, design system contributions, usability improvements
+      - Metrics: "Improved user retention by X%", "Designed feature used by Y users", "Reduced friction by Z%", "Increased NPS by X points"
 
-            ### 🛠️ Action Plan to Reach 75%+ Score
-            (Provide a numbered, step-by-step action plan:
-            1. [Specific action] - Expected impact: +X points
-            2. [Specific action] - Expected impact: +X points
-            etc.
-            Total potential improvement: +XX points → New score: XX%)
-
-            ### 💡 Pro Tips for This Role
-            (2-3 specific tips based on the role/industry. **For Engineering roles**: Emphasize project-based achievements over generic duties. Recommend creating a 1-page project sheet with 2-3 representative projects showing specific scope, scale, materials, codes, and personal contributions. Example: "Instead of 'Performed structural design duties', use 'Designed gravity and lateral systems for 6-story, 5,000 m² wood-frame apartment using IBC 2018/ETABS, reducing material cost by 12%'")
-
-      Example JSON for Engineering Role: 
+      ### ML-ENHANCED OUTPUT GENERATION:
+      
+      Return a JSON object with the following structure:
+      
       {
-        "title": "Structural Engineer - John Doe", 
-        "category": "Engineering", 
-        "score": 62, 
-        "scoreBreakdown": { "keywords": 55, "format": 65, "completeness": 60 },
+        "title": "Candidate Name / Role Title",
+        "category": "Engineering" | "Marketing" | "Sales" | "Design" | "Product" | "Finance" | "HR" | "Operations" | "Other",
+        "score": <integer 0-100, STRICTLY CALIBRATED>,
+        "scoreBreakdown": {
+          "keywords": <0-40>,
+          "format": <0-30>,
+          "completeness": <0-30>
+        },
         "missingKeywords": [
-          { "keyword": "ETABS", "priority": "critical", "frequency": 4, "impact": 8, "section": "Skills", "context": "Add to technical skills and mention in project bullets", "synonyms": ["SAP2000", "Structural Analysis Software"] },
-          { "keyword": "Seismic Design", "priority": "critical", "frequency": 3, "impact": 7, "section": "Experience", "context": "Specify seismic code compliance in project descriptions", "synonyms": ["Earthquake Engineering", "ASCE 7"] },
-          { "keyword": "Steel Connections", "priority": "important", "frequency": 2, "impact": 5, "section": "Experience", "context": "Detail connection design work with quantities", "synonyms": ["Connection Design", "Steel Detailing"] }
+          {
+            "keyword": "Specific Skill/Tool Name",
+            "priority": "critical" | "important" | "nice-to-have",
+            "frequency": <1-10, exact count in JD or industry importance>,
+            "impact": <1-10, estimated score increase if added>,
+            "section": "Skills" | "Experience" | "Summary" | "Education",
+            "context": "Detailed advice on how to naturally incorporate this keyword with example usage",
+            "synonyms": ["alternative term 1", "alternative term 2"]
+          }
         ],
         "formatIssues": [
-          { "issue": "Generic duty-based bullets", "severity": "high", "fix": "Replace 'Responsible for structural design' with 'Designed lateral system for 8-story, 12,000 m² RC building using Eurocode 8, optimizing column layout and reducing concrete volume by 15%'", "location": "Experience section", "atsImpact": "Lacks quantifiable project details that ATS and recruiters prioritize" }
+          {
+            "issue": "Specific problem detected in the resume",
+            "severity": "high" | "medium" | "low",
+            "fix": "Step-by-step solution with before/after example",
+            "location": "Specific section or line where found",
+            "atsImpact": "Explanation of how this affects ATS parsing"
+          }
         ],
         "metricSuggestions": [
-          { "tech": "Structural Analysis (ETABS/SAP2000)", "metrics": ["Performed seismic analysis for [X-story] [material] building using [software], ensuring compliance with [code] and optimizing [element] design", "Analyzed [number] load combinations for [project type], reducing design iterations by X% through [optimization method]", "Modeled [structure type] in [software], identifying critical load paths and achieving Y% material savings"] },
-          { "tech": "Steel/RC Design", "metrics": ["Designed [number] steel/RC connections for [project], meeting [code] requirements and reducing fabrication cost by $X", "Detailed structural drawings for [X m²] [building type], coordinating with [discipline] and ensuring [standard] compliance", "Optimized [structural element] design for [project], reducing material weight by X kg while maintaining [performance criteria]"] }
+          {
+            "tech": "Technology/System/Skill Area",
+            "metrics": [
+              "Metric template 1 with [placeholders]",
+              "Metric template 2 with [placeholders]",
+              "Metric template 3 with [placeholders]"
+            ]
+          }
         ],
-        "analysis": "### 🤖 ATS Parsing Report\\n\\nParsing Quality: Good\\n\\nYour resume structure is readable, but the Experience section uses generic duty-based language instead of project-specific achievements.\\n\\n### 📊 Score Breakdown Analysis\\n\\nKeywords: 22/40 points - Missing critical technical terms like ETABS, seismic design, and specific codes\\nFormat: 20/30 points - Bullets lack project details (building type, scale, materials, your specific contribution)\\nCompleteness: 20/30 points - No quantifiable metrics in project descriptions\\n\\n### 🛠️ Action Plan to Reach 75%+ Score\\n\\n1. Replace generic bullets with project-based achievements - Impact: +15 points\\n2. Add ETABS, seismic design, and code references to Skills and Experience - Impact: +10 points\\n3. Include project scale (floors, area, cost) and your specific contributions - Impact: +8 points\\n\\nTotal improvement: +33 points → New score: 95%\\n\\n### 💡 Pro Tips for Structural Engineering\\n\\n1. **Make Projects the Stars**: Instead of 'Performed structural design', use 'Designed gravity and lateral systems for 6-story, 5,000 m² wood-frame apartment using IBC 2018/ETABS, reducing material cost by 12%'\\n2. **Create a Project Sheet**: Keep main resume to 1 page, then attach a simple 1-page sheet with 2-3 representative projects (e.g., multifamily wood, commercial steel, renovation) showing scope and your contributions\\n3. **Quantify Everything**: Include building type, floors, area, materials, codes, software, and measurable results (cost savings, efficiency gains, code compliance achievements)"
+        "analysis": "Detailed Markdown analysis (see structure below)"
       }
+
+      ### ANALYSIS MARKDOWN STRUCTURE:
+      
+      ${hasJobDescription ? `### 🎯 Tailored Job Match Analysis
+      
+      **Match Score: [X]%**
+      
+      This resume is ${hasJobDescription ? 'specifically analyzed against the provided job description' : 'evaluated against general industry standards'}.
+      
+      **Critical Missing Keywords from JD:**
+      - [Keyword 1] (appears X times in JD) - Add to [Section]
+      - [Keyword 2] (appears X times in JD) - Add to [Section]
+      - [Keyword 3] (appears X times in JD) - Add to [Section]
+      
+      **Keyword Match Rate:** [X]% of critical JD keywords found
+      
+      ---
+      
+      ` : ''}### 🤖 ATS Parsing Report
+      
+      **Parsing Quality: [Excellent/Good/Fair/Poor]**
+      
+      [Specific analysis of how well the ATS can read this resume. Mention any parsing artifacts, jumbled sections, or unreadable areas found in the raw text.]
+      
+      **Contact Information:** [Readable/Partially Readable/Not Found]
+      **Section Headers:** [All Present/Some Missing/Unclear]
+      **Date Formats:** [Consistent/Inconsistent]
+      **Layout:** [Single-column/Multi-column]
+      
+      ---
+      
+      ### 📊 Detailed Score Breakdown
+      
+      **Keywords & Content Match: [X]/40 points**
+      - [Explanation of keyword score]
+      - Top 3 missing critical keywords: [keyword1], [keyword2], [keyword3]
+      - [Specific gaps identified]
+      
+      **Format & Parseability: [X]/30 points**
+      - [Explanation of format score]
+      - Top 2 format issues: [issue1], [issue2]
+      - [Specific formatting problems]
+      
+      **Completeness & Impact: [X]/30 points**
+      - [Explanation of completeness score]
+      - Quantified achievements: [count]
+      - Action verb strength: [Strong/Moderate/Weak]
+      
+      ---
+      
+      ### 🔑 Critical Missing Keywords (Priority: HIGH)
+      
+      ${hasJobDescription ? 'Based on the job description analysis:' : 'Based on industry standards for this role:'}
+      
+      1. **[Keyword 1]** (${hasJobDescription ? 'appears X times in JD' : 'industry-critical skill'})
+         - Why critical: [Explanation]
+         - Where to add: [Specific section]
+         - How to add: "[Example bullet point incorporating this keyword naturally]"
+      
+      2. **[Keyword 2]** (${hasJobDescription ? 'appears X times in JD' : 'high-demand skill'})
+         - Why critical: [Explanation]
+         - Where to add: [Specific section]
+         - How to add: "[Example bullet point]"
+      
+      [Continue for 3-5 keywords]
+      
+      ---
+      
+      ### ⚠️ Format Issues Blocking ATS
+      
+      1. **[Issue Name]** (Severity: [High/Medium/Low])
+         - Problem: [Detailed description]
+         - ATS Impact: [How this breaks parsing]
+         - Fix: [Step-by-step solution]
+         - Example: 
+           ❌ Before: [problematic format]
+           ✅ After: [corrected format]
+      
+      [Continue for all detected issues]
+      
+      ---
+      
+      ### 🎯 Action Plan to Reach 75%+ Score
+      
+      Follow these steps in order for maximum impact:
+      
+      1. **[Specific action]** - Expected impact: +[X] points
+         - [Detailed instructions]
+      
+      2. **[Specific action]** - Expected impact: +[X] points
+         - [Detailed instructions]
+      
+      3. **[Specific action]** - Expected impact: +[X] points
+         - [Detailed instructions]
+      
+      **Total Potential Improvement:** +[XX] points → **New Projected Score: [XX]%**
+      
+      ---
+      
+      ### 💡 Pro Tips for This Role
+      
+      ${hasJobDescription ? '**For this specific position:**' : '**For this role category:**'}
+      
+      1. **[Tip 1 specific to role/industry]**
+         - [Detailed explanation with examples]
+      
+      2. **[Tip 2 specific to role/industry]**
+         - [Detailed explanation with examples]
+      
+      3. **[Tip 3 specific to role/industry]**
+         - [Detailed explanation with examples]
+      
+      ${args.ocrText.toLowerCase().includes('engineer') || args.ocrText.toLowerCase().includes('structural') || args.ocrText.toLowerCase().includes('civil') ? `
+      **Special Advice for Engineering Roles:**
+      
+      Make projects the stars of your resume, not generic duties. Instead of:
+      ❌ "Responsible for structural design and analysis"
+      
+      Use:
+      ✅ "Designed gravity and lateral systems for 6-story, 5,000 m² wood-frame apartment using IBC 2018/ETABS, reducing material cost by 12% while meeting seismic requirements"
+      
+      Consider creating a 1-page project sheet with 2-3 representative projects showing:
+      - Building/project type and scale
+      - Materials and codes used
+      - Your specific contributions
+      - Quantifiable results
+      ` : ''}
+      
+      ---
+      
+      ### 📈 Competitive Benchmark
+      
+      - **Your Score:** [X]%
+      - **Industry Average:** 62%
+      - **Top 25% Threshold:** 75%
+      - **Top 10% Threshold:** 85%
+      
+      ${hasJobDescription ? 'With the improvements suggested above, you can reach the top 25% of applicants for this specific role.' : 'With the improvements suggested above, you can significantly improve your ATS performance.'}
       `;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
