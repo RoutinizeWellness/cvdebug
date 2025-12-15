@@ -37,16 +37,19 @@ export const createResume = mutation({
       .unique();
 
     if (!user) {
-      // Create new user with 0 credits (they can still scan)
+      // Create new user with 2 free credits
       const userId = await ctx.db.insert("users", {
         tokenIdentifier: identity.tokenIdentifier,
         email: identity.email,
         name: identity.name,
         subscriptionTier: "free",
-        credits: 0,
+        credits: 2,
         lastSeen: Date.now(),
       });
       user = await ctx.db.get(userId);
+      if (!user) {
+        throw new Error("Failed to create user");
+      }
     }
 
     const url = await ctx.storage.getUrl(args.storageId);
@@ -54,9 +57,9 @@ export const createResume = mutation({
       throw new Error("Failed to get file URL");
     }
 
-    // Create resume without deducting credits
+    // Create resume without deducting credits - use user._id instead of tokenIdentifier
     const resumeId = await ctx.db.insert("resumes", {
-      userId: identity.tokenIdentifier,
+      userId: user._id,
       title: args.title,
       url,
       storageId: args.storageId,
