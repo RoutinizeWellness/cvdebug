@@ -57,9 +57,9 @@ export const createResume = mutation({
       throw new Error("Failed to get file URL");
     }
 
-    // Create resume without deducting credits - use user._id instead of tokenIdentifier
+    // Create resume without deducting credits - use identity.subject for consistency
     const resumeId = await ctx.db.insert("resumes", {
-      userId: user._id,
+      userId: identity.subject,
       title: args.title,
       url,
       storageId: args.storageId,
@@ -183,8 +183,12 @@ export const getResumes = query({
       return [];
     }
 
-    // Use subject (user._id) for querying
-    const userId = user._id;
+    // Use identity.subject for querying (consistent with resume creation)
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return [];
+    }
+    const userId = identity.subject;
     console.log("[getResumes] Fetching resumes for userId:", userId);
 
     if (args.search) {
@@ -233,8 +237,11 @@ export const deleteResume = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
     const resume = await ctx.db.get(args.id);
-    if (!resume || (resume.userId !== user._id && user.email !== "tiniboti@gmail.com")) {
+    if (!resume || (resume.userId !== identity.subject && user.email !== "tiniboti@gmail.com")) {
       throw new Error("Resume not found or unauthorized");
     }
 
