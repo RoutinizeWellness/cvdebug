@@ -8,9 +8,9 @@ export function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80 shadow-sm">
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate("/")}>
+        <div className="cursor-pointer hover:opacity-90 transition-opacity group" onClick={() => navigate("/")}>
           <Logo />
         </div>
         <div className="flex items-center gap-4">
