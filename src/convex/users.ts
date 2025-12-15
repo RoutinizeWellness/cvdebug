@@ -273,17 +273,23 @@ export const purchaseCredits = mutation({
 export const getBetaStatus = query({
   args: {},
   handler: async (ctx) => {
-    // Count paid users (single_scan or bulk_pack)
-    // We use the index to efficiently count
+    // Count paid users (single_scan or bulk_pack) - OPTIMIZED to avoid .collect()
+    // Use take() with a reasonable limit instead of loading all users
     const singleScanUsers = await ctx.db.query("users")
       .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "single_scan"))
-      .collect();
+      .take(100); // Limit to prevent excessive database reads
       
     const bulkPackUsers = await ctx.db.query("users")
       .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "bulk_pack"))
-      .collect();
+      .take(100); // Limit to prevent excessive database reads
 
-    const realCount = singleScanUsers.length + bulkPackUsers.length;
+    // Deduplicate by email to prevent counting duplicate accounts
+    const uniqueEmails = new Set<string>();
+    [...singleScanUsers, ...bulkPackUsers].forEach(user => {
+      if (user.email) uniqueEmails.add(user.email);
+    });
+    
+    const realCount = uniqueEmails.size;
     // console.log("Beta Status Count:", realCount);
     
     // Marketing logic: Create urgency by showing most spots are taken

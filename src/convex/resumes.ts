@@ -30,26 +30,15 @@ export const createResume = mutation({
       throw new Error("Not authenticated");
     }
 
-    // Get or create user (no credit check - free scans for everyone)
-    let user = await ctx.db
+    // User should already exist from storeUser mutation
+    // We don't create users here to avoid duplicates
+    const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
 
     if (!user) {
-      // Create new user with 2 free credits
-      const userId = await ctx.db.insert("users", {
-        tokenIdentifier: identity.tokenIdentifier,
-        email: identity.email,
-        name: identity.name,
-        subscriptionTier: "free",
-        credits: 2,
-        lastSeen: Date.now(),
-      });
-      user = await ctx.db.get(userId);
-      if (!user) {
-        throw new Error("Failed to create user");
-      }
+      throw new Error("User not found. Please refresh the page.");
     }
 
     const url = await ctx.storage.getUrl(args.storageId);
