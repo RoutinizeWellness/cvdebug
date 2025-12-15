@@ -27,34 +27,32 @@ export const analyzeResume = internalAction({
     }
 
     // STEP 1: ANALYZE READABILITY - Check for corrupted/illegible text
-    // EXTREMELY RELAXED THRESHOLDS - Only flag truly broken/empty files
+    // ULTRA-PERMISSIVE THRESHOLDS - Almost never flag as corrupted
     const textSample = args.ocrText.substring(0, 500);
     const totalLength = args.ocrText.trim().length;
     
-    // Count meaningless characters and patterns
+    // Count meaningless characters and patterns - VERY HIGH THRESHOLDS
     const nullChars = (args.ocrText.match(/\u0000/g) || []).length;
-    const excessiveSpaces = (textSample.match(/\s{20,}/g) || []).length; // Increased from 10 to 20
+    const excessiveSpaces = (textSample.match(/\s{50,}/g) || []).length; // Increased to 50
     const nonAsciiRatio = (args.ocrText.match(/[^\x00-\x7F]/g) || []).length / totalLength;
     
-    // Check for standard English words - VERY RELAXED
-    const commonWords = ['the', 'and', 'work', 'experience', 'education', 'skills', 'project', 'company', 'role', 'team', 'developed', 'managed', 'led', 'designed', 'built', 'a', 'to', 'of', 'in', 'for', 'with', 'at', 'by', 'from'];
-    const foundCommonWords = commonWords.filter(word => 
-      args.ocrText.toLowerCase().includes(word)
-    ).length;
+    // Check for ANY alphanumeric content - ULTRA RELAXED
+    const hasAlphanumeric = /[a-zA-Z0-9]/.test(args.ocrText);
+    const hasMinimalContent = /[a-zA-Z]{3,}/.test(args.ocrText); // At least one 3+ letter word
     
     // STEP 2: DECISION - Is this text illegible/corrupted?
-    // EXTREMELY LENIENT - Only flag completely broken files
+    // ULTRA-PERMISSIVE - Only flag if literally no readable content
     const isCorrupted = (
-      totalLength < 10 || // Only flag if almost no text extracted
-      nullChars > 100 || // Allow many null chars
-      excessiveSpaces > 20 || // Allow lots of spacing issues
-      (nonAsciiRatio > 0.95 && totalLength > 100) || // Only flag if almost entirely non-ASCII
-      (foundCommonWords === 0 && totalLength > 200) // Only flag if NO common words AND substantial length
+      totalLength < 5 || // Only flag if virtually no text
+      !hasAlphanumeric || // No letters or numbers at all
+      !hasMinimalContent || // Not even a single 3-letter word
+      (nullChars > 500 && totalLength < 100) || // Massive null chars in tiny file
+      (nonAsciiRatio > 0.99 && totalLength > 50 && !hasMinimalContent) // 99% non-ASCII AND no words
     );
     
     if (isCorrupted) {
       console.log("OCR Text is corrupted or illegible. Returning parsing error.");
-      console.log(`Debug: length=${totalLength}, nullChars=${nullChars}, spaces=${excessiveSpaces}, nonAscii=${(nonAsciiRatio * 100).toFixed(1)}%, commonWords=${foundCommonWords}`);
+      console.log(`Debug: length=${totalLength}, nullChars=${nullChars}, spaces=${excessiveSpaces}, nonAscii=${(nonAsciiRatio * 100).toFixed(1)}%, hasAlphanumeric=${hasAlphanumeric}, hasMinimalContent=${hasMinimalContent}`);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume (Parsing Failed)",
@@ -87,9 +85,11 @@ This is common with:
 - If it's a scanned image, use a proper OCR tool first
 
 **Technical Details:**
-- Detected ${nullChars} null characters
-- Found only ${foundCommonWords}/${commonWords.length} common English words
-- Non-ASCII ratio: ${(nonAsciiRatio * 100).toFixed(1)}%`,
+- Text length: ${totalLength} characters
+- Null characters detected: ${nullChars}
+- Non-ASCII ratio: ${(nonAsciiRatio * 100).toFixed(1)}%
+- Has alphanumeric content: ${hasAlphanumeric}
+- Has minimal readable words: ${hasMinimalContent}`,
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 }
       });
@@ -97,7 +97,7 @@ This is common with:
     }
     
     // Text is readable - proceed with normal analysis
-    console.log(`OCR Text passed readability check. Length: ${totalLength}, Common words: ${foundCommonWords}/${commonWords.length}`);
+    console.log(`OCR Text passed readability check. Length: ${totalLength}, hasAlphanumeric: ${hasAlphanumeric}, hasMinimalContent: ${hasMinimalContent}`);
 
     // Log job description usage for validation
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
