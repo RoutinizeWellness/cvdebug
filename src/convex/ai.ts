@@ -373,7 +373,11 @@ export const analyzeResume = internalAction({
       - **Top 10% Threshold:** 85%
       
       ${hasJobDescription ? 'With the improvements suggested above, you can reach the top 25% of applicants for this specific role.' : 'With the improvements suggested above, you can significantly improve your ATS performance.'}
+      
+      IMPORTANT: Return ONLY the raw JSON object. Do not wrap it in markdown code blocks (like \`\`\`json). Do not add any introductory text. Just the JSON string.
       `;
+
+      console.log(`[AI Analysis] Sending request to OpenRouter with model google/gemini-2.0-flash-001`);
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -384,23 +388,25 @@ export const analyzeResume = internalAction({
           "X-Title": "ResumeATS", // Required by OpenRouter
         },
         body: JSON.stringify({
-          model: "google/gemini-1.5-flash", // Using stable model
+          model: "google/gemini-2.0-flash-001", // Upgraded to 2.0 Flash
           messages: [
             { role: "user", content: prompt }
           ],
-          response_format: { type: "json_object" }
+          // Removed response_format to avoid compatibility issues with some providers/models
         })
       });
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error(`[AI Analysis] OpenRouter API Error: ${response.status} ${response.statusText}`, errorText);
         throw new Error(`OpenRouter API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
       const content = data.choices[0]?.message?.content || "";
       
-      console.log("DEBUG: AI Raw Response:", content);
+      console.log("DEBUG: AI Raw Response length:", content.length);
+      // console.log("DEBUG: AI Raw Response:", content); // Uncomment if needed, but length is good for now
 
       // Robust JSON extraction - find the first { and last }
       const jsonStart = content.indexOf('{');
@@ -408,12 +414,20 @@ export const analyzeResume = internalAction({
       
       if (jsonStart === -1 || jsonEnd === -1) {
          console.error("AI Response not JSON:", content);
-         throw new Error("Invalid JSON response from AI");
+         throw new Error("Invalid JSON response from AI - No JSON object found");
       }
       
       const jsonStr = content.substring(jsonStart, jsonEnd + 1);
       
-      const parsed = JSON.parse(jsonStr);
+      let parsed;
+      try {
+        parsed = JSON.parse(jsonStr);
+      } catch (e) {
+        console.error("JSON Parse Error:", e);
+        console.error("Faulty JSON String:", jsonStr);
+        throw new Error("Failed to parse AI response as JSON");
+      }
+
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
       
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
@@ -428,13 +442,16 @@ export const analyzeResume = internalAction({
         metricSuggestions,
         status: "completed",
       });
-    } catch (error) {
+      
+      console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score}`);
+      
+    } catch (error: any) {
       console.error("Error analyzing resume:", error);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI analysis failed. Please try again or use a different file format.",
+        analysis: `AI analysis failed: ${error.message || "Unknown error"}. Please try again.`,
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
         status: "failed",
