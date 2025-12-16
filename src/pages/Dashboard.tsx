@@ -149,7 +149,31 @@ export default function Dashboard() {
   });
 
   // Track processing resumes - check if resume exists and is still processing
-  const processingResume = resumes?.find((r: any) => r._id === processingResumeId && (!r.score || r.score === 0));
+  const processingResume = resumes?.find((r: any) => 
+    r._id === processingResumeId && 
+    (r.status === "processing" || (!r.status && (!r.score || r.score === 0)))
+  );
+
+  // Handle completion/failure of processing
+  useEffect(() => {
+    if (processingResumeId && resumes) {
+      const resume = resumes.find((r: any) => r._id === processingResumeId);
+      
+      if (!resume) {
+        setProcessingResumeId(null);
+        return;
+      }
+
+      if (resume.status === "failed") {
+        toast.error("Resume analysis failed. Please try again.");
+        setProcessingResumeId(null);
+      } else if (resume.status === "completed") {
+        setProcessingResumeId(null);
+      } else if (!resume.status && resume.score > 0) {
+        setProcessingResumeId(null);
+      }
+    }
+  }, [resumes, processingResumeId, setProcessingResumeId]);
 
   // Auto-unlock resume after payment
   useEffect(() => {
@@ -356,12 +380,6 @@ export default function Dashboard() {
             </div>
           </div>
         )}
-
-        {/* Clear processing state when resume is completed */}
-        {processingResumeId && !processingResume && (() => {
-          setProcessingResumeId(null);
-          return null;
-        })()}
 
         {/* Payment Processing Overlay */}
         {isProcessingPayment && (
