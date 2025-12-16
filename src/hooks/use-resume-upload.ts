@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { createWorker } from "tesseract.js";
