@@ -30,35 +30,38 @@ export const createCheckoutSession = action({
         throw new Error("Configuration error: Payment system not set up");
       }
 
-      // Use env vars for prices, or default to the plan names as requested
-      const priceSingle = process.env.PRICE_SINGLE_SCAN || "single_scan";
-      const priceBulk = process.env.PRICE_BULK_PACK || "bulk_pack";
+      // Autumn expects product_id, not price_id
+      // Use env vars for product IDs, or default to the plan names
+      const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
+      const productBulk = process.env.PRODUCT_BULK_PACK || "bulk_pack";
 
-      const prices = {
-        single_scan: priceSingle,
-        bulk_pack: priceBulk,
+      const products = {
+        single_scan: productSingle,
+        bulk_pack: productBulk,
       };
 
-      const priceId = prices[args.plan];
-      console.log(`[Billing] Creating session for ${args.plan} with price ${priceId}`);
+      const productId = products[args.plan];
+      console.log(`[Billing] Creating session for ${args.plan} with product ${productId}`);
       console.log(`[Billing] Origin: ${args.origin}`);
 
+      // Autumn API expects customer_id and product_id
       const payload = {
-        customer_email: identity.email,
-        price_id: priceId,
+        customer_id: identity.subject, // Use Clerk's subject as customer_id
+        product_id: productId,
         success_url: args.resumeId 
           ? `${args.origin}/dashboard?resumeId=${args.resumeId}&unlocked=true`
           : `${args.origin}/dashboard?payment=success`,
         cancel_url: `${args.origin}/dashboard?payment=cancelled`,
-        metadata: {
-          plan: args.plan,
-          resumeId: args.resumeId || null,
+        customer_data: {
+          email: identity.email,
+          name: identity.name || identity.email,
         },
       };
 
       console.log("[Billing] Sending payload to Autumn:", JSON.stringify(payload, null, 2));
 
-      const response = await fetch("https://api.useautumn.com/v1/checkout/sessions", {
+      // Correct Autumn API endpoint: /checkout (not /v1/checkout/sessions)
+      const response = await fetch("https://api.useautumn.com/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
