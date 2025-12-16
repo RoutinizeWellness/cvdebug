@@ -32,21 +32,73 @@ export async function callOpenRouter(
 }
 
 export function extractJSON(content: string): any {
+  // 1. Try to find the JSON object using brace counting (most robust)
   const jsonStart = content.indexOf('{');
-  const jsonEnd = content.lastIndexOf('}');
-  
-  if (jsonStart === -1 || jsonEnd === -1) {
-    console.error("AI Response not JSON:", content);
+  if (jsonStart === -1) {
+    console.error("AI Response not JSON (no opening brace):", content);
     throw new Error("Invalid JSON response from AI - No JSON object found");
   }
+
+  let braceCount = 0;
+  let inString = false;
+  let escape = false;
+  let jsonEnd = -1;
+
+  for (let i = jsonStart; i < content.length; i++) {
+    const char = content[i];
+    
+    if (inString) {
+      if (escape) {
+        escape = false;
+      } else if (char === '\\') {
+        escape = true;
+      } else if (char === '"') {
+        inString = false;
+      }
+    } else {
+      if (char === '"') {
+        inString = true;
+      } else if (char === '{') {
+        braceCount++;
+      } else if (char === '}') {
+        braceCount--;
+        if (braceCount === 0) {
+          jsonEnd = i;
+          break;
+        }
+      }
+    }
+  }
+
+  let jsonStr = "";
   
-  const jsonStr = content.substring(jsonStart, jsonEnd + 1);
+  if (jsonEnd !== -1) {
+    jsonStr = content.substring(jsonStart, jsonEnd + 1);
+  } else {
+    // Fallback: Try to use the last closing brace if counting failed (e.g. malformed)
+    const lastBrace = content.lastIndexOf('}');
+    if (lastBrace !== -1) {
+      jsonStr = content.substring(jsonStart, lastBrace + 1);
+    } else {
+      // Last resort: try to parse the whole thing from start
+      jsonStr = content.substring(jsonStart);
+    }
+  }
   
   try {
     return JSON.parse(jsonStr);
   } catch (e) {
     console.error("JSON Parse Error:", e);
     console.error("Faulty JSON String:", jsonStr);
-    throw new Error("Failed to parse AI response as JSON");
+    
+    // One final attempt: clean markdown code blocks if present
+    try {
+      const clean = content.replace(/```json/g, '').replace(/```/g, '');
+      const cleanJson = clean.replace(/(\s*[\n\r]+|\s+)+/g, ' ').trim();
+      return JSON.parse(cleanJson);
+    } catch (e) {
+      console.error("Final JSON Parse Error:", e);
+      throw new Error("Failed to parse AI response as JSON");
+    }
   }
 }

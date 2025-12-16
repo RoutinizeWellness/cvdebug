@@ -62,7 +62,8 @@ export const analyzeResume = internalAction({
 
       const content = await callOpenRouter(apiKey, {
         model: "google/gemini-2.0-flash-001",
-        messages: [{ role: "user", content: prompt }]
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" }
       });
       
       console.log("DEBUG: AI Raw Response length:", content.length);
