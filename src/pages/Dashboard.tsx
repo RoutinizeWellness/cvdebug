@@ -346,13 +346,21 @@ export default function Dashboard() {
       // Clean text before sending
       const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
+      console.log("DEBUG: Extracted text length:", cleanText.length);
+      console.log("DEBUG: Extracted text preview:", cleanText.substring(0, 200));
+
+      if (cleanText.length < 20) {
+        throw new Error(`Extracted text is too short (${cleanText.length} chars). Please ensure the file contains selectable text.`);
+      }
+
       // Send extracted text to backend for AI analysis
       await updateResumeOcr({ id: resumeId, ocrText: cleanText });
       
       toast.success("✅ Parsing Complete. AI is now analyzing your resume...");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Processing Error:", error);
-      toast.error("Resume parsing failed. Please try a different file format or ensure the file is not corrupted.");
+      toast.error(`Resume parsing failed: ${error.message || "Please try a different file format."}`);
+      setProcessingResumeId(null);
     }
   };
 

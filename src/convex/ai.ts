@@ -400,6 +400,8 @@ export const analyzeResume = internalAction({
       const data = await response.json();
       const content = data.choices[0]?.message?.content || "";
       
+      console.log("DEBUG: AI Raw Response:", content);
+
       // Robust JSON extraction - find the first { and last }
       const jsonStart = content.indexOf('{');
       const jsonEnd = content.lastIndexOf('}');
