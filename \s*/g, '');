@@ -1,0 +1,27 @@
+  
+  // Remove any leading/trailing text before/after JSON
+  const jsonStart = cleaned.indexOf('{');
+  const jsonEnd = cleaned.lastIndexOf('}');
+  
+  if (jsonStart === -1 || jsonEnd === -1) {
+    console.error("[extractJSON] No JSON object found in content:", cleaned.substring(0, 200));
+    throw new Error("No JSON object found in AI response");
+  }
+  
+  cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
+  
+  // Fix common JSON issues
+  cleaned = cleaned.replace(/'/g, '"'); // Replace single quotes with double quotes
+  cleaned = cleaned.replace(/\n/g, ' '); // Remove newlines
+  cleaned = cleaned.replace(/\r/g, ''); // Remove carriage returns
+  
+  try {
+    const parsed = JSON.parse(cleaned);
+    console.log("[extractJSON] Successfully parsed JSON");
+    return parsed;
+  } catch (error: any) {
+    console.error("[extractJSON] JSON parse error:", error.message);
+    console.error("[extractJSON] Attempted to parse:", cleaned.substring(0, 500));
+    throw new Error(`Failed to parse JSON: ${error.message}`);
+  }
+}
