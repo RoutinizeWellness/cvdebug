@@ -46,17 +46,12 @@ export const sendAllTestEmails = action({
       results.push({ email: "Welcome Email", status: "failed", error: error.message });
     }
     
-    // 2. Parsing Error Email
-    try {
-      await ctx.runAction(internalAny.marketing.sendParsingErrorEmail, {
-        email,
-        name,
-        resumeId: "test_resume_id" as any,
-      });
-      results.push({ email: "Parsing Error Email", status: "sent" });
-    } catch (error: any) {
-      results.push({ email: "Parsing Error Email", status: "failed", error: error.message });
-    }
+    // 2. Parsing Error Email - SKIP (requires valid resume ID)
+    results.push({ 
+      email: "Parsing Error Email", 
+      status: "skipped", 
+      note: "Requires valid resume ID - test manually after uploading a resume" 
+    });
     
     // 3. Purchase Confirmation Email
     try {
@@ -100,7 +95,7 @@ export const sendAllTestEmails = action({
       success: true, 
       sentTo: email,
       results,
-      message: `Sent 5 test emails to ${email}. Check your inbox (and spam folder)!`
+      message: `Sent 4 test emails to ${email} (1 skipped). Check your inbox (and spam folder)!`
     };
   },
 });
