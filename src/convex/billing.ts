@@ -20,34 +20,49 @@ export const handleWebhook = httpAction(async (ctx, request) => {
   try {
     const payload = JSON.parse(body);
     
+    console.log("[Webhook] Received event:", payload.event);
+    console.log("[Webhook] Payload data:", JSON.stringify(payload.data, null, 2));
+    
     if (payload.event === "checkout.completed") {
-      const { customer_email, plan, metadata } = payload.data;
+      const { customer_id, product_id, metadata } = payload.data;
       
-      // Get the user who just purchased
-      const user = await ctx.runQuery(internalAny.users.getUserByEmail, {
-        email: customer_email,
-      });
-
-      if (!user) {
-        console.error(`[Webhook] User not found: ${customer_email}`);
-        return new Response("User not found", { status: 404 });
+      console.log(`[Webhook] Processing checkout for customer_id: ${customer_id}, product_id: ${product_id}`);
+      
+      // customer_id from Autumn is the Clerk tokenIdentifier (identity.subject)
+      // Map product_id to plan
+      const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
+      const productBulk = process.env.PRODUCT_BULK_PACK || "bulk_pack";
+      
+      let plan: "single_scan" | "bulk_pack";
+      if (product_id === productSingle) {
+        plan = "single_scan";
+      } else if (product_id === productBulk) {
+        plan = "bulk_pack";
+      } else {
+        console.error(`[Webhook] Unknown product_id: ${product_id}`);
+        return new Response("Unknown product", { status: 400 });
       }
 
-      // Update user subscription and credits
-        await ctx.runMutation(internalAny.users.updateSubscription, {
-        tokenIdentifier: user.tokenIdentifier,
-        plan: plan as "single_scan" | "bulk_pack",
+      console.log(`[Webhook] Mapped product to plan: ${plan}`);
+
+      // Update user subscription and credits using customer_id as tokenIdentifier
+      await ctx.runMutation(internalAny.users.updateSubscription, {
+        tokenIdentifier: customer_id,
+        plan: plan,
       });
 
+      console.log(`[Webhook] Credits granted for ${customer_id}`);
+
       // If resumeId was passed in metadata, unlock that specific resume
-      if (metadata?.resumeId && user) {
-        console.log(`[Webhook] Unlocking resume ${metadata.resumeId} for ${customer_email}`);
+      if (metadata?.resumeId) {
+        console.log(`[Webhook] Unlocking resume ${metadata.resumeId} for ${customer_id}`);
         
-        // Unlock the resume details immediately after purchase
         await ctx.runMutation(internalAny.resumes.unlockResumeAfterPurchase, {
           resumeId: metadata.resumeId,
-          userId: user.tokenIdentifier,
+          userId: customer_id,
         });
+        
+        console.log(`[Webhook] Resume unlocked successfully`);
       }
 
       return new Response("OK", { status: 200 });
@@ -55,7 +70,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 
     return new Response("Event not handled", { status: 200 });
   } catch (error: any) {
-    console.error("Webhook error:", error);
+    console.error("[Webhook] Error:", error);
     return new Response(`Webhook error: ${error.message}`, { status: 400 });
   }
 });
