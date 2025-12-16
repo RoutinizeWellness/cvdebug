@@ -391,7 +391,10 @@ export const sendPurchaseConfirmationEmail = internalAction({
   args: { email: v.string(), name: v.optional(v.string()), plan: v.string(), credits: v.number() },
   handler: async (ctx, args) => {
     const resend = getResend();
-    if (!resend) return;
+    if (!resend) {
+      console.error(`[Email] Failed to send purchase confirmation to ${args.email}: RESEND_API_KEY not configured`);
+      return;
+    }
 
     const firstName = args.name?.split(" ")[0] || "Job Seeker";
     const subject = "Purchase Confirmed! 🚀";
@@ -411,9 +414,11 @@ export const sendPurchaseConfirmationEmail = internalAction({
     `;
 
     try {
-      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
-      console.log(`Sent Purchase Confirmation to ${args.email}`);
-    } catch (error) { console.error("Failed to send Purchase Confirmation:", error); }
+      const result = await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`[Email] ✅ Purchase confirmation sent successfully to ${args.email}`, result);
+    } catch (error) { 
+      console.error(`[Email] ❌ Failed to send purchase confirmation to ${args.email}:`, error); 
+    }
   },
 });
 
