@@ -25,6 +25,7 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
+import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import {
   Dialog,
   DialogContent,
@@ -313,72 +314,7 @@ export default function Dashboard() {
       >
         {/* Processing Upsell Overlay */}
         {processingResumeId && processingResume && (
-          <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200 p-6 overflow-y-auto">
-            <div className="max-w-2xl w-full space-y-8">
-              {/* Progress Header */}
-              <div className="text-center space-y-4">
-                <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                  <Loader2 className="h-10 w-10 text-primary animate-spin" />
-                </div>
-                <h3 className="text-3xl font-black text-foreground">Analyzing Your Resume...</h3>
-                <p className="text-muted-foreground text-lg">Our AI is scanning for ATS compatibility issues</p>
-              </div>
-
-              {/* Fear-Based Stats Carousel */}
-              <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/20 rounded-2xl p-8 space-y-4 animate-in slide-in-from-bottom duration-500">
-                <div className="flex items-start gap-4">
-                  <div className="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                    <AlertCircle className="h-6 w-6 text-red-600" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-foreground mb-2">Did You Know?</h4>
-                    <p className="text-base text-foreground/80 leading-relaxed">
-                      <strong className="text-red-600">75% of resumes</strong> are rejected by ATS systems before a human ever sees them. A single formatting error can cost you the interview.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Testimonial */}
-              <div className="bg-card border-2 border-border rounded-2xl p-6 space-y-4 animate-in slide-in-from-bottom duration-700 delay-200">
-                <div className="flex gap-1 mb-2">
-                  {[1,2,3,4,5].map(i => <Star key={i} className="h-4 w-4 text-yellow-500 fill-yellow-500" />)}
-                </div>
-                <p className="text-sm text-foreground leading-relaxed italic">
-                  "I was applying for months with no responses. After fixing the ATS issues this tool found, I got 3 interview requests in one week. The $4.99 was the best investment I made in my job search."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-muted overflow-hidden">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer" alt="Jennifer" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-foreground">Jennifer M.</p>
-                    <p className="text-xs text-muted-foreground">Software Engineer at Google</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Processing Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="bg-card border border-border rounded-xl p-4 text-center">
-                  <p className="text-2xl font-black text-primary">98%</p>
-                  <p className="text-xs text-muted-foreground mt-1">Accuracy Rate</p>
-                </div>
-                <div className="bg-card border border-border rounded-xl p-4 text-center">
-                  <p className="text-2xl font-black text-primary">30s</p>
-                  <p className="text-xs text-muted-foreground mt-1">Avg Analysis</p>
-                </div>
-                <div className="bg-card border border-border rounded-xl p-4 text-center">
-                  <p className="text-2xl font-black text-primary">10K+</p>
-                  <p className="text-xs text-muted-foreground mt-1">Resumes Fixed</p>
-                </div>
-              </div>
-
-              <p className="text-center text-sm text-muted-foreground">
-                Almost done... Preparing your detailed report
-              </p>
-            </div>
-          </div>
+          <ProcessingOverlay />
         )}
 
         {/* Payment Processing Overlay */}
