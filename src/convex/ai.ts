@@ -446,16 +446,20 @@ export const analyzeResume = internalAction({
       console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score}`);
       
     } catch (error: any) {
-      console.error("Error analyzing resume:", error);
+      console.error("[AI Analysis] Error analyzing resume:", error);
+      console.error("[AI Analysis] Error stack:", error.stack);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: `AI analysis failed: ${error.message || "Unknown error"}. Please try again.`,
+        analysis: `AI analysis failed: ${error.message || "Unknown error"}. Please try again or contact support.`,
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
         status: "failed",
       });
+      
+      // Re-throw to ensure the error is visible in logs
+      throw error;
     }
   },
 });

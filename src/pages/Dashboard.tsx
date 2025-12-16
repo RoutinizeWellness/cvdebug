@@ -494,7 +494,7 @@ export default function Dashboard() {
       >
         {/* Processing Upsell Overlay */}
         {processingResumeId && processingResume && (
-          <div className="absolute inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200 p-6">
+          <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200 p-6 overflow-y-auto">
             <div className="max-w-2xl w-full space-y-8">
               {/* Progress Header */}
               <div className="text-center space-y-4">
