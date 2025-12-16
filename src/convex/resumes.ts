@@ -111,11 +111,27 @@ export const updateResumeMetadata = internalMutation({
       format: v.number(),
       completeness: v.number(),
     })),
-    missingKeywords: v.optional(v.array(v.object({
-      keyword: v.string(),
-      priority: v.string(),
-    }))),
-    formatIssues: v.optional(v.array(v.string())),
+    missingKeywords: v.optional(v.array(v.union(
+      v.string(),
+      v.object({
+        keyword: v.string(),
+        priority: v.string(),
+        section: v.optional(v.string()),
+        context: v.optional(v.string()),
+        frequency: v.optional(v.number()),
+        impact: v.optional(v.number()),
+      })
+    ))),
+    formatIssues: v.optional(v.array(v.union(
+      v.string(),
+      v.object({
+        issue: v.string(),
+        severity: v.optional(v.string()),
+        fix: v.optional(v.string()),
+        location: v.optional(v.string()),
+        atsImpact: v.optional(v.string()),
+      })
+    ))),
     metricSuggestions: v.optional(v.array(v.object({
       technology: v.string(),
       metrics: v.array(v.string()),

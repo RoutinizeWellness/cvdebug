@@ -53,6 +53,7 @@ const schema = defineSchema(
         severity: v.optional(v.string()),
         fix: v.optional(v.string()),
         location: v.optional(v.string()),
+        atsImpact: v.optional(v.string()),
       })
     ))),
     scoreBreakdown: v.optional(v.object({
