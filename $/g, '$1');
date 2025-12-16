@@ -1,0 +1,12 @@
+
+    // Remove any remaining code blocks or markdown formatting
+    // Optional: Further cleaning can be added here if needed.
+
+    const jsonObject = JSON.parse(cleaned);
+    return jsonObject;
+  } catch (error) {
+    console.error("[extractJSON] Failed to parse JSON:", error);
+    throw error;
+  }
+}
+>>>>>>> REPLACE
