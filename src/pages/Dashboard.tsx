@@ -343,8 +343,11 @@ export default function Dashboard() {
         return;
       }
 
+      // Clean text before sending
+      const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
+
       // Send extracted text to backend for AI analysis
-      await updateResumeOcr({ id: resumeId, ocrText: text });
+      await updateResumeOcr({ id: resumeId, ocrText: cleanText });
       
       toast.success("✅ Parsing Complete. AI is now analyzing your resume...");
     } catch (error) {

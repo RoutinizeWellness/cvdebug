@@ -26,9 +26,12 @@ export const analyzeResume = internalAction({
       return;
     }
 
+    // Clean OCR text to remove null bytes or weird control characters
+    const cleanText = args.ocrText.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
+
     // Minimal sanity check - if text is virtually empty, fail gracefully
-    if (!args.ocrText || args.ocrText.trim().length < 20) {
-      console.log(`[AI Analysis] Text too short (${args.ocrText?.length} chars), marking as failed`);
+    if (!cleanText || cleanText.trim().length < 20) {
+      console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
       await ctx.runMutation(internal.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
@@ -40,7 +43,7 @@ export const analyzeResume = internalAction({
       return;
     }
     
-    console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${args.ocrText.length} chars`);
+    console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${cleanText.length} chars`);
 
     // Log job description usage for validation
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
@@ -58,7 +61,7 @@ export const analyzeResume = internalAction({
       - Job Description: ${jobDescriptionContext}
       ${hasJobDescription ? '- IMPORTANT: This is a TAILORED analysis. Use TF-IDF-like weighting for keyword importance from the JD.' : '- This is a GENERAL analysis based on industry standards and role-specific benchmarks.'}
       - RAW PARSED TEXT (What the ATS sees):
-      "${args.ocrText.substring(0, 30000)}"
+      "${cleanText.substring(0, 30000)}"
 
       ### ENHANCED ML-POWERED SCORING ALGORITHM (0-100):
       
@@ -344,7 +347,7 @@ export const analyzeResume = internalAction({
       3. **[Tip 3 specific to role/industry]**
          - [Detailed explanation with examples]
       
-      ${args.ocrText.toLowerCase().includes('engineer') || args.ocrText.toLowerCase().includes('structural') || args.ocrText.toLowerCase().includes('civil') ? `
+      ${cleanText.toLowerCase().includes('engineer') || cleanText.toLowerCase().includes('structural') || cleanText.toLowerCase().includes('civil') ? `
       **Special Advice for Engineering Roles:**
       
       Make projects the stars of your resume, not generic duties. Instead of:
@@ -381,7 +384,7 @@ export const analyzeResume = internalAction({
           "X-Title": "ResumeATS", // Required by OpenRouter
         },
         body: JSON.stringify({
-          model: "google/gemini-flash-1.5", // Using stable model
+          model: "google/gemini-2.0-flash-001", // Using newer model
           messages: [
             { role: "user", content: prompt }
           ],
@@ -397,7 +400,8 @@ export const analyzeResume = internalAction({
       const data = await response.json();
       const content = data.choices[0].message.content;
       
-      const jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
+      // Robust JSON extraction
+      let jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
       
       const parsed = JSON.parse(jsonStr);
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
