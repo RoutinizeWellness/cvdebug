@@ -8,6 +8,7 @@ import {
   dataKeywords,
   synonymMap,
   getKeywordsForCategory,
+  classifyRole,
   type RoleCategory
 } from "./config/keywords";
 import { getMetricsForCategory } from "./config/metricTemplates";
@@ -106,154 +107,12 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   const phoneMatch = ocrText.match(/\+?[\d\s()-]{10,}/);
   const hasLinkedIn = text.includes("linkedin") || text.includes("linked.in");
   
-  // ===== EXPANDED INDUSTRY KEYWORD DATABASES (ML Training Data) =====
+  // ===== ENHANCED ROLE CLASSIFICATION WITH CONFIDENCE SCORING =====
   
-  const techKeywords = [
-    "javascript", "python", "java", "react", "node", "sql", "aws", "docker",
-    "kubernetes", "typescript", "angular", "vue", "mongodb", "postgresql",
-    "git", "ci/cd", "agile", "scrum", "api", "rest", "graphql", "microservices",
-    "machine learning", "ml", "ai", "tensorflow", "pytorch", "data science",
-    "redux", "webpack", "babel", "jest", "cypress", "jenkins", "terraform",
-    "ansible", "prometheus", "grafana", "elasticsearch", "redis", "kafka",
-    "spark", "hadoop", "pandas", "numpy", "scikit-learn", "keras", "nlp"
-  ];
+  const { category, confidence } = classifyRole(ocrText);
+  const relevantKeywords = getKeywordsForCategory(category);
   
-  const engineeringKeywords = [
-    "structural", "civil", "mechanical", "design", "cad", "autocad", "revit",
-    "etabs", "sap2000", "staad", "tekla", "ibc", "asce", "eurocode", "seismic",
-    "steel", "concrete", "wood", "foundation", "lateral", "gravity",
-    "risa", "ram", "safe", "aisc", "aci", "aashto", "lrfd", "asd",
-    "finite element", "fem", "structural analysis", "load calculation",
-    "wind load", "snow load", "dead load", "live load", "moment frame"
-  ];
-  
-  const marketingKeywords = [
-    "seo", "sem", "google analytics", "facebook ads", "content marketing",
-    "email marketing", "social media", "conversion", "roi", "ctr", "cpc",
-    "google ads", "linkedin ads", "marketing automation", "hubspot", "salesforce",
-    "a/b testing", "funnel optimization", "lead generation", "crm", "kpi",
-    "brand strategy", "copywriting", "ppc", "display ads", "retargeting"
-  ];
-  
-  const productKeywords = [
-    "product management", "roadmap", "user stories", "backlog", "sprint planning",
-    "jira", "confluence", "figma", "wireframes", "prototyping", "user research",
-    "a/b testing", "analytics", "kpi", "okr", "mvp", "product strategy",
-    "stakeholder management", "agile", "scrum", "kanban", "product launch"
-  ];
-  
-  const dataKeywords = [
-    "sql", "python", "r", "tableau", "power bi", "excel", "data visualization",
-    "statistical analysis", "predictive modeling", "etl", "data warehouse",
-    "big data", "hadoop", "spark", "hive", "pig", "data mining", "regression",
-    "classification", "clustering", "time series", "forecasting", "bi"
-  ];
-  
-  // ===== SYNONYM MAPPING FOR SEMANTIC MATCHING =====
-  
-  const synonymMap: Record<string, string[]> = {
-    "javascript": ["js", "ecmascript", "es6", "es2015", "node.js", "nodejs"],
-    "python": ["py", "python3", "python2"],
-    "machine learning": ["ml", "artificial intelligence", "ai", "deep learning", "neural networks"],
-    "react": ["reactjs", "react.js", "react native"],
-    "angular": ["angularjs", "angular.js", "angular2+"],
-    "vue": ["vuejs", "vue.js"],
-    "docker": ["containerization", "containers"],
-    "kubernetes": ["k8s", "container orchestration"],
-    "aws": ["amazon web services", "amazon aws", "cloud"],
-    "sql": ["structured query language", "mysql", "postgresql", "mssql", "oracle"],
-    "mongodb": ["mongo", "nosql"],
-    "git": ["version control", "github", "gitlab", "bitbucket"],
-    "ci/cd": ["continuous integration", "continuous deployment", "devops"],
-    "api": ["rest api", "restful", "web services"],
-    "seo": ["search engine optimization", "organic search"],
-    "sem": ["search engine marketing", "paid search"],
-    "ctr": ["click-through rate", "click through rate"],
-    "cpc": ["cost per click", "pay per click", "ppc"],
-    "roi": ["return on investment"],
-    "structural": ["structural engineering", "structural design"],
-    "civil": ["civil engineering"],
-    "mechanical": ["mechanical engineering"],
-    "autocad": ["cad", "computer aided design"],
-    "revit": ["bim", "building information modeling"],
-    "etabs": ["structural analysis software"],
-    "ibc": ["international building code"],
-    "asce": ["american society of civil engineers", "asce 7"],
-    "eurocode": ["european code", "en 1990"],
-    "product management": ["product manager", "pm", "product owner", "po"],
-    "agile": ["scrum", "kanban", "sprint"],
-    "data science": ["data scientist", "data analysis", "analytics"],
-    "tableau": ["data visualization", "bi tool"],
-    "power bi": ["microsoft power bi", "powerbi"]
-  };
-  
-  // ===== ENHANCED ROLE CLASSIFICATION (ML-based) =====
-  
-  let category = "General";
-  let relevantKeywords = techKeywords;
-  
-  // Score-based classification for better accuracy
-  const roleScores: Record<string, number> = {
-    "Engineering": 0,
-    "Software Engineering": 0,
-    "Marketing": 0,
-    "Product Management": 0,
-    "Data Science": 0,
-    "General": 0
-  };
-  
-  // Engineering signals
-  if (/(structural|civil|mechanical|electrical)\s*(engineer|engineering)/i.test(text)) roleScores["Engineering"] += 10;
-  if (/\b(etabs|sap2000|revit|autocad|staad|tekla|risa)\b/i.test(text)) roleScores["Engineering"] += 8;
-  if (/\b(ibc|asce|eurocode|aisc|aci)\b/i.test(text)) roleScores["Engineering"] += 6;
-  if (/\b(steel|concrete|seismic|foundation|structural design)\b/i.test(text)) roleScores["Engineering"] += 4;
-  
-  // Software Engineering signals
-  if (/(software|full.?stack|backend|frontend|web)\s*(engineer|developer)/i.test(text)) roleScores["Software Engineering"] += 10;
-  if (/\b(javascript|python|java|react|node|typescript|angular|vue)\b/i.test(text)) roleScores["Software Engineering"] += 6;
-  if (/\b(api|microservices|docker|kubernetes|aws|git|ci\/cd)\b/i.test(text)) roleScores["Software Engineering"] += 4;
-  
-  // Marketing signals
-  if (/(digital|content|growth|performance)\s*marketing/i.test(text)) roleScores["Marketing"] += 10;
-  if (/\b(seo|sem|google analytics|facebook ads|ppc|cpc|ctr)\b/i.test(text)) roleScores["Marketing"] += 6;
-  if (/\b(campaign|conversion|roi|lead generation|email marketing)\b/i.test(text)) roleScores["Marketing"] += 4;
-  
-  // Product Management signals
-  if (/product\s*(manager|management|owner)/i.test(text)) roleScores["Product Management"] += 10;
-  if (/\b(roadmap|backlog|user stories|sprint|jira|confluence)\b/i.test(text)) roleScores["Product Management"] += 6;
-  if (/\b(mvp|okr|kpi|stakeholder|product strategy)\b/i.test(text)) roleScores["Product Management"] += 4;
-  
-  // Data Science signals
-  if (/(data|machine learning|ml)\s*(scientist|engineer|analyst)/i.test(text)) roleScores["Data Science"] += 10;
-  if (/\b(python|r|sql|tableau|power bi|pandas|numpy)\b/i.test(text)) roleScores["Data Science"] += 6;
-  if (/\b(regression|classification|clustering|predictive|statistical)\b/i.test(text)) roleScores["Data Science"] += 4;
-  
-  // Select category with highest score
-  const maxScore = Math.max(...Object.values(roleScores));
-  if (maxScore > 0) {
-    category = Object.keys(roleScores).find(key => roleScores[key] === maxScore) || "General";
-  }
-  
-  // Assign relevant keywords based on category
-  switch (category) {
-    case "Engineering":
-      relevantKeywords = [...engineeringKeywords, ...techKeywords];
-      break;
-    case "Software Engineering":
-      relevantKeywords = techKeywords;
-      break;
-    case "Marketing":
-      relevantKeywords = [...marketingKeywords, ...techKeywords];
-      break;
-    case "Product Management":
-      relevantKeywords = [...productKeywords, ...techKeywords];
-      break;
-    case "Data Science":
-      relevantKeywords = [...dataKeywords, ...techKeywords];
-      break;
-    default:
-      relevantKeywords = [...techKeywords, ...marketingKeywords, ...engineeringKeywords];
-  }
+  console.log(`[Role Classification] Category: ${category}, Confidence: ${(confidence * 100).toFixed(1)}%`);
   
   // ===== ENHANCED TF-IDF KEYWORD SCORING WITH SYNONYM RECOGNITION =====
   
@@ -288,7 +147,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
     const jdFrequency: Record<string, number> = {};
     
     // Unigrams with stop word filtering
-    const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being']);
+    const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those']);
     jdWords.forEach(word => {
       if (word.length >= 3 && !stopWords.has(word)) {
         jdFrequency[word] = (jdFrequency[word] || 0) + 1;
@@ -517,6 +376,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
     /\d+\+?\s*(users|customers|clients)/gi,  // User counts
     /increased|improved|reduced|optimized/gi, // Impact verbs
     /\d+x\s/g,                         // Multipliers (e.g., "10x faster")
+    /\d+\s*(million|billion|thousand)/gi,    // Large numbers
   ];
   
   let metricCount = 0;
@@ -532,7 +392,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   else if (metricCount >= 1) completenessScore += 3;
   
   // Action verb strength analysis (NLP-inspired)
-  const strongVerbs = /\b(led|architected|designed|built|optimized|increased|reduced|launched|scaled|implemented|developed|created|managed)\b/gi;
+  const strongVerbs = /\b(led|architected|designed|built|optimized|increased|reduced|launched|scaled|implemented|developed|created|managed|spearheaded|pioneered|transformed)\b/gi;
   const weakVerbs = /\b(responsible for|worked on|helped with|assisted|involved in)\b/gi;
   
   const strongVerbMatches = (ocrText.match(strongVerbs) || []).length;
@@ -560,124 +420,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   
   // ===== ENHANCED METRIC SUGGESTIONS (Role-Specific) =====
   
-  const metricSuggestions: Array<{tech: string, metrics: string[]}> = [];
-  
-  switch (category) {
-    case "Engineering":
-      metricSuggestions.push(
-        {
-          tech: "Structural Design",
-          metrics: [
-            "Designed [X-story], [Y m²/ft²] [material] building using [IBC/ASCE/Eurocode] and [ETABS/SAP2000], reducing material cost by Z%",
-            "Optimized structural system for [project type], achieving [X%] cost savings while meeting [seismic/wind] requirements",
-            "Analyzed and designed [X] structures totaling [Y m²], ensuring compliance with [code] and achieving [Z%] efficiency gain"
-          ]
-        },
-        {
-          tech: "Project Delivery",
-          metrics: [
-            "Managed [X] projects with combined budget of $[Y]M, delivering [Z%] on-time and under budget",
-            "Coordinated with [X] stakeholders across [Y] disciplines, reducing design conflicts by [Z%]",
-            "Implemented [BIM/VDC] workflow, reducing coordination issues by [X%] and saving [Y] hours"
-          ]
-        }
-      );
-      break;
-      
-    case "Software Engineering":
-      metricSuggestions.push(
-        {
-          tech: "Backend Development",
-          metrics: [
-            "Built [system/API] serving [X]M users/requests daily using [tech stack], improving response time by [Y%]",
-            "Optimized database queries reducing latency by [X%] and increasing throughput to [Y] requests/sec",
-            "Architected microservices processing [X] TB/records daily, achieving [Y%] uptime and [Z%] cost reduction"
-          ]
-        },
-        {
-          tech: "Frontend Development",
-          metrics: [
-            "Developed [feature/app] using [React/Angular/Vue], improving user engagement by [X%] and reducing bounce rate by [Y%]",
-            "Optimized bundle size by [X%] and page load time by [Y]ms, increasing conversion rate by [Z%]",
-            "Implemented responsive design serving [X]M users across [Y] devices, achieving [Z%] satisfaction score"
-          ]
-        }
-      );
-      break;
-      
-    case "Marketing":
-      metricSuggestions.push(
-        {
-          tech: "Digital Marketing",
-          metrics: [
-            "Increased conversion rate by [X%] through [campaign/strategy], generating $[Y]K in revenue with [Z%] ROI",
-            "Grew organic traffic by [X%] using SEO optimization, resulting in [Y] new leads per month at $[Z] CAC",
-            "Achieved [X%] ROI on [platform] campaigns with $[Y]K budget, reducing CPC by [Z%] and increasing CTR to [W%]"
-          ]
-        },
-        {
-          tech: "Content & Social",
-          metrics: [
-            "Created [X] pieces of content generating [Y]K views and [Z]K engagements, increasing brand awareness by [W%]",
-            "Grew social media following by [X%] to [Y]K followers, achieving [Z%] engagement rate",
-            "Launched email campaigns with [X%] open rate and [Y%] CTR, generating $[Z]K in revenue"
-          ]
-        }
-      );
-      break;
-      
-    case "Product Management":
-      metricSuggestions.push(
-        {
-          tech: "Product Strategy",
-          metrics: [
-            "Launched [X] features serving [Y]M users, increasing retention by [Z%] and reducing churn by [W%]",
-            "Defined product roadmap for [X] quarters, delivering [Y] releases and achieving [Z%] of OKRs",
-            "Conducted [X] user interviews and [Y] A/B tests, improving [metric] by [Z%]"
-          ]
-        },
-        {
-          tech: "Stakeholder Management",
-          metrics: [
-            "Coordinated with [X] cross-functional teams ([Y] engineers, [Z] designers), delivering [W] projects on time",
-            "Presented to [X] executives and [Y] stakeholders, securing $[Z]M budget for [initiative]",
-            "Managed backlog of [X] stories across [Y] sprints, achieving [Z%] velocity and [W%] predictability"
-          ]
-        }
-      );
-      break;
-      
-    case "Data Science":
-      metricSuggestions.push(
-        {
-          tech: "Machine Learning",
-          metrics: [
-            "Built [model type] achieving [X%] accuracy on [Y]M records, improving [business metric] by [Z%]",
-            "Deployed predictive model processing [X] TB data, reducing [cost/time] by [Y%] and increasing [metric] by [Z%]",
-            "Implemented [algorithm] for [use case], achieving [X%] precision and [Y%] recall on [Z]K samples"
-          ]
-        },
-        {
-          tech: "Data Analytics",
-          metrics: [
-            "Analyzed [X] TB of data using [SQL/Python/R], identifying insights that increased revenue by $[Y]M",
-            "Created [X] dashboards in [Tableau/Power BI] serving [Y] stakeholders, reducing reporting time by [Z%]",
-            "Conducted [X] statistical analyses revealing [Y] opportunities, resulting in $[Z]K savings"
-          ]
-        }
-      );
-      break;
-      
-    default:
-      metricSuggestions.push({
-        tech: "General Achievements",
-        metrics: [
-          "Led [X] projects/initiatives resulting in [Y%] improvement in [metric] and $[Z]K impact",
-          "Managed team of [X] people delivering [Y] projects, achieving [Z%] on-time delivery rate",
-          "Implemented [process/system] reducing [cost/time] by [X%] and improving [metric] by [Y%]"
-        ]
-      });
-  }
+  const metricSuggestions = getMetricsForCategory(category);
   
   // ===== GENERATE DETAILED ANALYSIS =====
   
@@ -688,6 +431,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
 
 ${hasJD ? '**Analysis Mode:** Tailored to job description with advanced keyword matching' : '**Analysis Mode:** Industry-standard analysis with intelligent classification'}
 
+**Role Classification:** ${category} (Confidence: ${(confidence * 100).toFixed(0)}%)
 **Contact Information:** ${emailMatch && phoneMatch ? '✅ Complete' : '⚠️ Incomplete'}
 **Section Headers:** ${hasExperience && hasEducation ? '✅ Present' : '⚠️ Some Missing'}
 **Date Formats:** ${hasConsistentDates ? '✅ Consistent' : '⚠️ Inconsistent'}
@@ -826,7 +570,7 @@ ${totalScore >= 75 ? '🎉 You\'re in the top 25%!' : totalScore >= 62 ? '📊 Y
       context: `Add "${kw.keyword}" to relevant experience bullets with specific context and metrics`,
       frequency: kw.frequency,
       impact: kw.impact,
-      synonyms: []
+      synonyms: synonymMap[kw.keyword] || []
     })),
     formatIssues,
     metricSuggestions,
