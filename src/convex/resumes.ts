@@ -152,6 +152,23 @@ export const updateResumeMetadata = internalMutation({
     if (args.metricSuggestions) updates.metricSuggestions = args.metricSuggestions;
 
     await ctx.db.patch(args.id, updates);
+
+    // Trigger parsing error email if score is 0 or status is failed
+    if ((args.score === 0 || args.status === "failed") && args.status !== "processing") {
+      const resume = await ctx.db.get(args.id);
+      if (resume && !resume.parsingErrorEmailSent && resume.userId) {
+        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
+        if (user && user.email) {
+          await ctx.db.patch(args.id, { parsingErrorEmailSent: true });
+          await ctx.scheduler.runAfter(0, internalAny.marketing.sendParsingErrorEmail, {
+            email: user.email,
+            name: user.name,
+            resumeId: args.id,
+          });
+          console.log(`[Email] Parsing error email scheduled for ${user.email}`);
+        }
+      }
+    }
   },
 });
 
