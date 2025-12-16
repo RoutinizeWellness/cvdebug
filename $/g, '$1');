@@ -1,3 +1,15 @@
+export function extractJSON(content: string): any {
+  try {
+    console.log("[extractJSON] Starting JSON extraction, content length:", content.length);
+    console.log("[extractJSON] First 200 chars:", content.substring(0, 200));
+    
+    let cleaned = content.trim();
+
+    // Remove markdown code blocks with multiple patterns
+    cleaned = cleaned.replace(/^\s*```[\w]*\n([\s\S]*?)^\s*```/gm, '$1');
+
+    // Remove inline code blocks enclosed in backticks
+    cleaned = cleaned.replace(/`([^`]*)`/g, '$1');
 
     // Remove any remaining code blocks or markdown formatting
     // Optional: Further cleaning can be added here if needed.
@@ -9,4 +21,3 @@
     throw error;
   }
 }
->>>>>>> REPLACE

@@ -3,7 +3,7 @@
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
 import { buildResumeAnalysisPrompt } from "./prompts";
-import { callOpenRouter, extractJSON } from "./apiClient";
+import { callOpenRouter, extractJSON, generateFallbackAnalysis } from "./apiClient";
 
 // Type-safe wrapper to avoid deep type instantiation errors
 const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
@@ -20,20 +20,7 @@ export const analyzeResume = internalAction({
   handler: async (ctx, args) => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     
-    if (!apiKey) {
-      console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
-      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: "Resume",
-        category: "Uncategorized",
-        analysis: "AI not configured.",
-        score: 0,
-        status: "failed",
-      });
-      return;
-    }
-
-    // Clean OCR text
+    // Clean OCR text first
     const cleanText = args.ocrText.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
     // Sanity check
@@ -49,59 +36,67 @@ export const analyzeResume = internalAction({
       });
       return;
     }
-    
+
     console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${cleanText.length} chars`);
 
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
     console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
-    try {
-      const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
+    // Try AI analysis first, fall back to rule-based if it fails
+    let analysisResult;
+    let usedFallback = false;
 
-      // Use the free model as requested
-      const model = "google/gemini-2.0-flash-lite-preview-02-05:free";
-      console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
+    if (!apiKey) {
+      console.log("[AI Analysis] No OPENROUTER_API_KEY set, using fallback analysis");
+      analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription);
+      usedFallback = true;
+    } else {
+      try {
+        const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
+        const model = "google/gemini-2.0-flash-lite-preview-02-05:free";
+        
+        console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 
-      const content = await callOpenRouter(apiKey, {
-        model: model,
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" }
-      });
-      
-      console.log("DEBUG: AI Raw Response length:", content.length);
+        const content = await callOpenRouter(apiKey, {
+          model: model,
+          messages: [{ role: "user", content: prompt }],
+          response_format: { type: "json_object" }
+        });
+        
+        console.log("[AI Analysis] Received response, length:", content.length);
+        console.log("[AI Analysis] Response preview:", content.substring(0, 300));
 
-      const parsed = extractJSON(content);
-      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
-      
-      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
-        id: args.id,
-        title,
-        category,
-        analysis,
-        score,
-        scoreBreakdown,
-        missingKeywords,
-        formatIssues,
-        metricSuggestions,
-        status: "completed",
-      });
-      
-      console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score}`);
-      
-    } catch (error: any) {
-      console.error("[AI Analysis] Error analyzing resume:", error);
-      console.error("[AI Analysis] Error stack:", error.stack);
-      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: "Resume",
-        category: "Uncategorized",
-        analysis: `AI analysis failed: ${error.message || "Unknown error"}. Please try again or contact support.`,
-        score: 0,
-        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
-        status: "failed",
-      });
-      
-      throw error;
+        analysisResult = extractJSON(content);
+        console.log("[AI Analysis] Successfully parsed AI response");
+        
+      } catch (error: any) {
+        console.error("[AI Analysis] OpenRouter failed, using fallback:", error.message);
+        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription);
+        usedFallback = true;
+      }
     }
+
+    // Extract results
+    const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
+    
+    // Add note if fallback was used
+    const finalAnalysis = usedFallback 
+      ? `${analysis}\n\n---\n\n**Note:** This analysis was generated using our fallback rule-based system. For enhanced AI-powered insights, please ensure OpenRouter API credits are available.`
+      : analysis;
+    
+    await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+      id: args.id,
+      title,
+      category,
+      analysis: finalAnalysis,
+      score,
+      scoreBreakdown,
+      missingKeywords,
+      formatIssues,
+      metricSuggestions: metricSuggestions || [],
+      status: "completed",
+    });
+    
+    console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (fallback: ${usedFallback})`);
   },
 });

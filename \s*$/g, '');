@@ -1,82 +1,49 @@
-"use node";
+// Strategy 1: Remove markdown code blocks with multiple patterns
+cleaned = cleaned.replace(/^
+  \s*```(?:\w+)?\s*[\s\S]*?```\s*$/gm, '');
 
-interface OpenRouterRequest {
-  model: string;
-  messages: Array<{ role: string; content: string }>;
-  response_format?: { type: string };
+// Strategy 2: Find JSON object boundaries if wrapped in text
+const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+if (jsonMatch) {
+  cleaned = jsonMatch[0];
+  console.log("[extractJSON] Extracted JSON from boundaries");
 }
 
-export async function callOpenRouter(
-  apiKey: string,
-  request: OpenRouterRequest
-): Promise<string> {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": "https://convex.dev",
-      "X-Title": "ResumeATS",
-    },
-    body: JSON.stringify(request)
-  });
+// Strategy 3: Remove common prefixes/suffixes
+cleaned = cleaned.replace(/^[^{]*/, ''); // Remove everything before first {
+cleaned = cleaned.replace(/[^}]*$/, ''); // Remove everything after last }
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`[OpenRouter API] Error: ${response.status} ${response.statusText}`, errorText);
-    throw new Error(`OpenRouter API error: ${response.status} ${response.statusText} - ${errorText}`);
-  }
+// Strategy 4: Clean up control characters and invalid JSON characters
+cleaned = cleaned.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
+cleaned = cleaned.replace(/\\n/g, '\n');
+cleaned = cleaned.replace(/\\"/g, '"');
 
-  const data = await response.json();
-  return data.choices[0]?.message?.content || "";
-}
+cleaned = cleaned.trim();
 
-// Enhanced JSON extraction with multiple fallback strategies
-export function extractJSON(content: string): any {
+console.log("[extractJSON] Cleaned content length:", cleaned.length);
+console.log("[extractJSON] First 200 chars of cleaned:", cleaned.substring(0, 200));
+
+// Try to parse
+const jsonObject = JSON.parse(cleaned);
+console.log("[extractJSON] Successfully parsed JSON");
+return jsonObject;
+} catch (error: any) {
+  console.error("[extractJSON] Failed to parse JSON:", error.message);
+  console.error("[extractJSON] Content that failed:", content.substring(0, 500));
+  
+  // Last resort: Try to extract just the JSON part more aggressively
   try {
-    console.log("[extractJSON] Starting JSON extraction, content length:", content.length);
-    console.log("[extractJSON] First 200 chars:", content.substring(0, 200));
-    
-    let cleaned = content.trim();
-
-    // Strategy 1: Remove markdown code blocks with multiple patterns
-    cleaned = cleaned.replace(/^\s*```[\s\S]*?```/g, '');
-    cleaned = cleaned.replace(/^\s*```[\s\S]*?```/g, '');
-    cleaned = cleaned.replace(/^\s*```[\s\S]*?```/g, '');
-
-    // Strategy 2: Remove inline code blocks
-    cleaned = cleaned.replace(/`[^`]*`/g, '');
-
-    // Strategy 3: Remove all brackets
-    cleaned = cleaned.replace(/[\[\]\{\}\(\)]/g, '');
-
-    // Strategy 4: Remove '```json' marker at start
-    cleaned = cleaned.replace(/^```json\s*/i, '');
-
-    // Strategy 5: Remove known trailing markdown patterns
-    cleaned = cleaned.replace(/[\s]*```[\s]*$/, '');
-    cleaned = cleaned.replace(/[\s]*```json[\s]*$/i, '');
-    
-    // Additional: Remove lines starting with '```' (just in case)
-    cleaned = cleaned.replace(/^```[\s\S]*?^```/gm, '');
-
-    // Final cleaning: trim and remove excessive whitespace
-    cleaned = cleaned.trim();
-
-    // Parse JSON
-    const parsed = JSON.parse(cleaned);
-    return parsed;
-
-  } catch (error) {
-    console.log("[extractJSON] Error during JSON extraction:", error);
-    // fallback: try JSON.parse(content) directly
-    try {
-      return JSON.parse(content);
-    } catch (err) {
-      console.warn("[extractJSON] Fallback json parse failed:", err);
-      return null;
+    const match = content.match(/\{(?:[^{}]|(?:\{[^{}]*\}))*\}/);
+    if (match) {
+      console.log("[extractJSON] Attempting aggressive extraction");
+      return JSON.parse(match[0]);
     }
+  } catch (e) {
+    console.error("[extractJSON] Aggressive extraction also failed");
   }
+  
+  throw new Error(`JSON parsing failed: ${error.message}`);
+}
 }
 
 // Fallback analysis function using rule-based ML approach
