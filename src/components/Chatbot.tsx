@@ -6,9 +6,9 @@ import { MessageSquare, Send, X, Loader2, Bot } from "lucide-react";
 import { useAction } from "convex/react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { api } from "@/convex/_generated/api";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
 const apiAny = api as any;
 
 type Message = {
