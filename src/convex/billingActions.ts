@@ -12,9 +12,16 @@ export const createCheckoutSession = action({
   handler: async (ctx, args) => {
     try {
       const identity = await ctx.auth.getUserIdentity();
-      if (!identity?.email) {
-        console.error("[Billing] No user identity found");
-        throw new Error("Not authenticated");
+      console.log("[Billing] Auth Identity:", JSON.stringify(identity, null, 2));
+
+      if (!identity) {
+        console.error("[Billing] No user identity found (identity is null)");
+        throw new Error("Not authenticated - Please log in again");
+      }
+
+      if (!identity.email) {
+        console.error("[Billing] User identity has no email:", JSON.stringify(identity));
+        throw new Error("Not authenticated - Email missing from profile");
       }
 
       const secretKey = process.env.AUTUMN_SECRET_KEY;
@@ -51,7 +58,7 @@ export const createCheckoutSession = action({
 
       console.log("[Billing] Sending payload to Autumn:", JSON.stringify(payload, null, 2));
 
-      const response = await fetch("https://api.useautumn.com/v1/checkout/sessions", {
+      const response = await fetch("https://api.autumnpay.com/v1/checkout/sessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
