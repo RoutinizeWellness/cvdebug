@@ -24,7 +24,7 @@ export const createCheckoutSession = action({
         throw new Error("Not authenticated - Email missing from profile");
       }
 
-      const secretKey = process.env.AUTUMN_SECRET_KEY;
+      const secretKey = process.env.AUTUMN_SECRET_KEY?.trim();
       if (!secretKey) {
         console.error("[Billing] AUTUMN_SECRET_KEY is missing");
         throw new Error("Configuration error: Payment system not set up");
@@ -67,18 +67,27 @@ export const createCheckoutSession = action({
         body: JSON.stringify(payload),
       });
 
+      const responseText = await response.text();
+      console.log(`[Billing] Autumn Response Status: ${response.status}`);
+      console.log(`[Billing] Autumn Response Body: ${responseText}`);
+
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`[Billing] Autumn API Error: ${response.status} ${errorText}`);
-        throw new Error(`Payment provider error: ${errorText}`);
+        throw new Error(`Payment provider error (${response.status}): ${responseText}`);
       }
 
-      const data = await response.json();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error("[Billing] Failed to parse JSON response:", responseText);
+        throw new Error("Invalid JSON response from payment provider");
+      }
+
       console.log("[Billing] Autumn response:", data);
 
       if (!data.url) {
         console.error("[Billing] No checkout URL in response:", data);
-        throw new Error("Invalid response from payment provider");
+        throw new Error("Invalid response from payment provider: Missing checkout URL");
       }
       
       return data.url;
