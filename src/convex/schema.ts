@@ -44,6 +44,7 @@ const schema = defineSchema(
         context: v.optional(v.string()),
         frequency: v.optional(v.number()),
         impact: v.optional(v.number()),
+        synonyms: v.optional(v.array(v.string())),
       })
     ))),
     formatIssues: v.optional(v.array(v.union(
@@ -69,6 +70,10 @@ const schema = defineSchema(
     parsingErrorEmailSent: v.optional(v.boolean()),
     postScanEmailSent: v.optional(v.boolean()),
     conversionReminderEmailSent: v.optional(v.boolean()),
+    metricSuggestions: v.optional(v.array(v.object({
+      tech: v.string(),
+      metrics: v.array(v.string()),
+    }))),
   })
     .index("by_user", ["userId"])
     .index("by_user_and_category", ["userId", "category"])

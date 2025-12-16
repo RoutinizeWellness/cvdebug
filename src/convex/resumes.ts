@@ -120,6 +120,7 @@ export const updateResumeMetadata = internalMutation({
         context: v.optional(v.string()),
         frequency: v.optional(v.number()),
         impact: v.optional(v.number()),
+        synonyms: v.optional(v.array(v.string())),
       })
     ))),
     formatIssues: v.optional(v.array(v.union(
@@ -133,7 +134,7 @@ export const updateResumeMetadata = internalMutation({
       })
     ))),
     metricSuggestions: v.optional(v.array(v.object({
-      technology: v.string(),
+      tech: v.string(),
       metrics: v.array(v.string()),
     }))),
   },
