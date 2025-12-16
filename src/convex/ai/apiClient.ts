@@ -33,5 +33,7 @@ export async function callOpenRouter(
 
 export function extractJSON(content: string): any {
   // Pre-cleaning: Remove markdown code blocks immediately
-  // This helps when the model wraps the JSON in 
+  let cleaned = content.trim();
+  
+  // Remove markdown code fences (
 }

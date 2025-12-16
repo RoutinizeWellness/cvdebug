@@ -1,0 +1,17 @@
+  
+  // Try to find JSON object boundaries
+  const jsonStart = cleaned.indexOf('{');
+  const jsonEnd = cleaned.lastIndexOf('}');
+  
+  if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+    cleaned = cleaned.substring(jsonStart, jsonEnd + 1);
+  }
+  
+  try {
+    return JSON.parse(cleaned);
+  } catch (error: any) {
+    console.error('[JSON Parse] Failed to parse AI response:', error.message);
+    console.error('[JSON Parse] Content preview:', cleaned.substring(0, 500));
+    throw new Error(`Failed to parse AI response as JSON: ${error.message}`);
+  }
+}

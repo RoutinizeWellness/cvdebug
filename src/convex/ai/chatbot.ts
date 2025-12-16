@@ -21,7 +21,7 @@ export const chat = action({
     messages.push({ role: "user", content: args.message });
 
     return await callOpenRouter(apiKey, {
-      model: "google/gemini-2.0-flash-001",
+      model: "google/gemini-2.0-flash-lite-preview-02-05:free",
       messages: messages,
     });
   },

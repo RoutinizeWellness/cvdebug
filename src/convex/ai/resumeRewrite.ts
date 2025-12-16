@@ -31,7 +31,7 @@ export const rewriteResume = action({
 
     try {
       const rewrittenText = await callOpenRouter(apiKey, {
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.0-flash-lite-preview-02-05:free",
         messages: [{ role: "user", content: prompt }]
       });
 
