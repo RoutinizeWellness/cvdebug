@@ -5,10 +5,9 @@ import { v } from "convex/values";
 import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON, generateFallbackAnalysis } from "./apiClient";
 
-// Type-safe wrapper to avoid deep type instantiation errors
 const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
+const runQuery = (ctx: any, fn: any, args: any) => (ctx as any).runQuery(fn, args);
 
-// Cast internal to any to avoid type instantiation issues
 const internalAny = require("../_generated/api").internal;
 
 export const analyzeResume = internalAction({
@@ -20,10 +19,8 @@ export const analyzeResume = internalAction({
   handler: async (ctx, args) => {
     const apiKey = process.env.OPENROUTER_API_KEY;
     
-    // Clean OCR text first
     const cleanText = args.ocrText.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
-    // Sanity check
     if (!cleanText || cleanText.trim().length < 20) {
       console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
       await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
@@ -42,13 +39,22 @@ export const analyzeResume = internalAction({
     const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
     console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
-    // Try AI analysis first, fall back to rule-based if it fails
+    // Fetch ML learning configuration
+    let mlConfig;
+    try {
+      mlConfig = await runQuery(ctx, internalAny.mlLearning.getMLConfig, {});
+      console.log("[ML Learning] Loaded adaptive learning configuration");
+    } catch (error) {
+      console.log("[ML Learning] No configuration found, using defaults");
+      mlConfig = undefined;
+    }
+
     let analysisResult;
     let usedFallback = false;
 
     if (!apiKey) {
-      console.log("[AI Analysis] No OPENROUTER_API_KEY set, using fallback analysis");
-      analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription);
+      console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
+      analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
       usedFallback = true;
     } else {
       try {
@@ -64,22 +70,19 @@ export const analyzeResume = internalAction({
         });
         
         console.log("[AI Analysis] Received response, length:", content.length);
-        console.log("[AI Analysis] Response preview:", content.substring(0, 300));
 
         analysisResult = extractJSON(content);
         console.log("[AI Analysis] Successfully parsed AI response");
         
       } catch (error: any) {
-        console.error("[AI Analysis] OpenRouter failed, using fallback:", error.message);
-        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription);
+        console.error("[AI Analysis] OpenRouter failed, using ML-based analysis:", error.message);
+        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
         usedFallback = true;
       }
     }
 
-    // Extract results
     const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
     
-    // Use analysis directly without fallback notes
     await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
       id: args.id,
       title,
@@ -93,6 +96,6 @@ export const analyzeResume = internalAction({
       status: "completed",
     });
     
-    console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (fallback: ${usedFallback})`);
+    console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (ML-based: ${usedFallback})`);
   },
 });

@@ -92,31 +92,62 @@ export function extractJSON(content: string): any {
   }
 }
 
-// ML-based fallback analysis using TF-IDF, semantic matching, and statistical models
-export function generateFallbackAnalysis(ocrText: string, jobDescription?: string): any {
-  console.log("[Fallback Analysis] Generating ML-based analysis");
+// Enhanced ML-based fallback analysis with adaptive learning
+export function generateFallbackAnalysis(
+  ocrText: string, 
+  jobDescription?: string,
+  mlConfig?: {
+    keywordWeights?: Record<string, number>;
+    categoryWeights?: Record<string, number>;
+    scoringAdjustments?: { keywords?: number; format?: number; completeness?: number };
+  }
+): any {
+  console.log("[Fallback Analysis] Generating ML-based analysis with adaptive learning");
   
   const text = ocrText.toLowerCase();
   const hasJD = jobDescription && jobDescription.trim().length > 0;
   const jdLower = hasJD ? jobDescription!.toLowerCase() : "";
   
+  // Apply learned adjustments if available
+  const scoringMultipliers = {
+    keywords: 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0),
+    format: 1.0 + (mlConfig?.scoringAdjustments?.format || 0),
+    completeness: 1.0 + (mlConfig?.scoringAdjustments?.completeness || 0),
+  };
+  
   // ===== FEATURE EXTRACTION =====
   
-  // Extract contact information with regex patterns
   const emailMatch = ocrText.match(/[\w.-]+@[\w.-]+\.\w+/);
   const phoneMatch = ocrText.match(/\+?[\d\s()-]{10,}/);
   const hasLinkedIn = text.includes("linkedin") || text.includes("linked.in");
   
-  // ===== ENHANCED ROLE CLASSIFICATION WITH CONFIDENCE SCORING =====
+  // ===== ENHANCED ROLE CLASSIFICATION WITH LEARNED WEIGHTS =====
   
   const { category, confidence } = classifyRole(ocrText);
-  const relevantKeywords = getKeywordsForCategory(category);
   
-  console.log(`[Role Classification] Category: ${category}, Confidence: ${(confidence * 100).toFixed(1)}%`);
+  // Apply learned category weights if available
+  let adjustedCategory = category;
+  if (mlConfig?.categoryWeights) {
+    const categoryScores = Object.entries(mlConfig.categoryWeights).map(([cat, weight]) => ({
+      category: cat as RoleCategory,
+      score: weight as number,
+    }));
+    
+    if (categoryScores.length > 0) {
+      const topCategory = categoryScores.sort((a, b) => b.score - a.score)[0];
+      if (topCategory.score > confidence) {
+        adjustedCategory = topCategory.category;
+        console.log(`[ML Learning] Category adjusted from ${category} to ${adjustedCategory} based on learned weights`);
+      }
+    }
+  }
   
-  // ===== ENHANCED TF-IDF KEYWORD SCORING WITH SYNONYM RECOGNITION =====
+  const relevantKeywords = getKeywordsForCategory(adjustedCategory);
   
-  // Helper function to check if keyword or its synonyms exist in text
+  console.log(`[Role Classification] Category: ${adjustedCategory}, Confidence: ${(confidence * 100).toFixed(1)}%`);
+  
+  // ===== ENHANCED TF-IDF WITH LEARNED KEYWORD WEIGHTS =====
+  
   const findKeywordWithSynonyms = (keyword: string, text: string): { found: boolean, matches: number, matchedTerm: string } => {
     const terms = [keyword, ...(synonymMap[keyword] || [])];
     let totalMatches = 0;
@@ -132,6 +163,12 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
       }
     }
     
+    // Apply learned keyword weight if available
+    if (mlConfig?.keywordWeights && mlConfig.keywordWeights[keyword]) {
+      totalMatches = Math.round(totalMatches * mlConfig.keywordWeights[keyword]);
+      console.log(`[ML Learning] Keyword "${keyword}" weight adjusted by ${mlConfig.keywordWeights[keyword]}x`);
+    }
+    
     return { found: totalMatches > 0, matches: totalMatches, matchedTerm };
   };
   
@@ -140,65 +177,48 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   const missingKeywords: Array<{keyword: string, priority: string, frequency: number, impact: number}> = [];
   
   if (hasJD) {
-    // ===== ENHANCED TF-IDF WITH BIGRAM/TRIGRAM SUPPORT =====
-    
-    // Extract unigrams, bigrams, and trigrams from JD
     const jdWords = jdLower.match(/\b[a-z0-9]+\b/g) || [];
     const jdFrequency: Record<string, number> = {};
     
-    // Unigrams with stop word filtering
     const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those']);
+    
     jdWords.forEach(word => {
       if (word.length >= 3 && !stopWords.has(word)) {
         jdFrequency[word] = (jdFrequency[word] || 0) + 1;
       }
     });
     
-    // Bigrams (two-word phrases) with improved filtering
     for (let i = 0; i < jdWords.length - 1; i++) {
       if (!stopWords.has(jdWords[i]) || !stopWords.has(jdWords[i + 1])) {
         const bigram = `${jdWords[i]} ${jdWords[i + 1]}`;
         if (bigram.length >= 6) {
-          jdFrequency[bigram] = (jdFrequency[bigram] || 0) + 1.5; // Weight bigrams higher
+          jdFrequency[bigram] = (jdFrequency[bigram] || 0) + 1.5;
         }
       }
     }
     
-    // Trigrams (three-word phrases) with highest weight
     for (let i = 0; i < jdWords.length - 2; i++) {
       const trigram = `${jdWords[i]} ${jdWords[i + 1]} ${jdWords[i + 2]}`;
       if (trigram.length >= 10 && !stopWords.has(jdWords[i]) && !stopWords.has(jdWords[i + 2])) {
-        jdFrequency[trigram] = (jdFrequency[trigram] || 0) + 2.0; // Weight trigrams highest
+        jdFrequency[trigram] = (jdFrequency[trigram] || 0) + 2.0;
       }
     }
     
-    // Enhanced IDF calculation with domain-specific weighting
     const calculateIDF = (term: string): number => {
-      // Stop words get minimal weight
       if (stopWords.has(term)) return 0.05;
-      
-      // Technical/domain-specific terms get highest weight
       if (relevantKeywords.includes(term)) return 3.0;
-      
-      // Check if term appears in synonym map (indicates importance)
       if (synonymMap[term] || Object.values(synonymMap).some(syns => syns.includes(term))) {
         return 2.8;
       }
-      
-      // Multi-word phrases get higher weight (more specific)
       const wordCount = term.split(' ').length;
       if (wordCount === 2) return 2.2;
       if (wordCount >= 3) return 2.5;
-      
-      // Longer single words are more specific
       if (term.length >= 10) return 2.0;
       if (term.length >= 7) return 1.5;
       if (term.length >= 5) return 1.0;
-      
       return 0.5;
     };
     
-    // Sort by TF-IDF score
     const sortedJDKeywords = Object.entries(jdFrequency)
       .map(([term, freq]) => ({
         term,
@@ -208,9 +228,8 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
         tfidf: (freq / jdWords.length) * calculateIDF(term)
       }))
       .sort((a, b) => b.tfidf - a.tfidf)
-      .slice(0, 40); // Top 40 keywords by TF-IDF
+      .slice(0, 40);
     
-    // Apply enhanced weighting with synonym matching
     sortedJDKeywords.forEach(({ term, freq, tfidf }) => {
       if (term.length < 3) return;
       
@@ -218,7 +237,6 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
       let priority = "nice-to-have";
       let impact = 3;
       
-      // Weight based on TF-IDF score
       if (tfidf > 0.05 || freq >= 3) {
         weight = 5;
         priority = "critical";
@@ -232,11 +250,9 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
         impact = 3;
       }
       
-      // Check with synonym matching
       const result = findKeywordWithSynonyms(term, ocrText);
       
       if (result.found) {
-        // Context bonus: check if keyword appears in experience/project sections
         const contextPatterns = [
           new RegExp(`(experience|project|developed|built|designed|implemented).*${result.matchedTerm}`, 'i'),
           new RegExp(`${result.matchedTerm}.*(experience|project|developed|built|designed|implemented)`, 'i')
@@ -245,7 +261,6 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
         const hasContext = contextPatterns.some(pattern => pattern.test(text));
         const contextMultiplier = hasContext ? 1.5 : 1.0;
         
-        // Recency bonus: check if in recent experience (first 30% of text)
         const firstThird = ocrText.substring(0, ocrText.length * 0.3);
         const isRecent = findKeywordWithSynonyms(term, firstThird).found;
         const recencyMultiplier = isRecent ? 1.2 : 1.0;
@@ -268,12 +283,9 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
       }
     });
     
-    // Cap keyword score at 40
-    keywordScore = Math.min(40, keywordScore);
+    keywordScore = Math.min(40, keywordScore * scoringMultipliers.keywords);
     
   } else {
-    // ===== GENERAL ANALYSIS WITH SYNONYM MATCHING =====
-    
     relevantKeywords.forEach(keyword => {
       const result = findKeywordWithSynonyms(keyword, ocrText);
       
@@ -287,7 +299,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
       }
     });
     
-    keywordScore = Math.min(40, keywordScore);
+    keywordScore = Math.min(40, keywordScore * scoringMultipliers.keywords);
   }
   
   // ===== FORMAT QUALITY SCORING (ML-based) =====
@@ -363,7 +375,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
     });
   }
   
-  formatScore = Math.min(30, formatScore);
+  formatScore = Math.min(30, formatScore * scoringMultipliers.format);
   
   // ===== CONTENT QUALITY & IMPACT SCORING =====
   
@@ -412,7 +424,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   const hasSummary = /summary|objective|profile/i.test(ocrText);
   if (hasSummary) completenessScore += 2;
   
-  completenessScore = Math.max(0, Math.min(30, completenessScore));
+  completenessScore = Math.max(0, Math.min(30, completenessScore * scoringMultipliers.completeness));
   
   // ===== FINAL SCORE CALCULATION =====
   
@@ -420,7 +432,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   
   // ===== ENHANCED METRIC SUGGESTIONS (Role-Specific) =====
   
-  const metricSuggestions = getMetricsForCategory(category);
+  const metricSuggestions = getMetricsForCategory(adjustedCategory);
   
   // ===== GENERATE DETAILED ANALYSIS =====
   
@@ -431,7 +443,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
 
 ${hasJD ? '**Analysis Mode:** Tailored to job description with advanced keyword matching' : '**Analysis Mode:** Industry-standard analysis with intelligent classification'}
 
-**Role Classification:** ${category} (Confidence: ${(confidence * 100).toFixed(0)}%)
+**Role Classification:** ${adjustedCategory} (Confidence: ${(confidence * 100).toFixed(0)}%)
 **Contact Information:** ${emailMatch && phoneMatch ? '✅ Complete' : '⚠️ Incomplete'}
 **Section Headers:** ${hasExperience && hasEducation ? '✅ Present' : '⚠️ Some Missing'}
 **Date Formats:** ${hasConsistentDates ? '✅ Consistent' : '⚠️ Inconsistent'}
@@ -440,18 +452,18 @@ ${hasJD ? '**Analysis Mode:** Tailored to job description with advanced keyword 
 
 ### 📊 Detailed Score Breakdown
 
-**Keywords & Content Match: ${keywordScore}/40 points**
+**Keywords & Content Match: ${Math.round(keywordScore)}/40 points**
 - Found ${foundKeywords.length} relevant keywords with weighted scoring
 - Keyword density: ${foundKeywords.length > 0 ? 'Good' : 'Low'}
 ${hasJD ? `- Missing ${missingKeywords.length} critical JD keywords` : ''}
 ${foundKeywords.slice(0, 5).map(k => `  • ${k.keyword} (freq: ${k.frequency}, weight: ${k.weight.toFixed(1)})`).join('\n')}
 
-**Format & Parseability: ${formatScore}/30 points**
+**Format & Parseability: ${Math.round(formatScore)}/30 points**
 - Contact info: ${emailMatch ? '✅' : '❌'} Email, ${phoneMatch ? '✅' : '❌'} Phone, ${hasLinkedIn ? '✅' : '❌'} LinkedIn
 - Section headers: ${hasExperience ? '✅' : '❌'} Experience, ${hasEducation ? '✅' : '❌'} Education, ${hasSkills ? '✅' : '❌'} Skills
 - Date consistency: ${hasConsistentDates ? '✅' : '❌'}
 
-**Completeness & Impact: ${completenessScore}/30 points**
+**Completeness & Impact: ${Math.round(completenessScore)}/30 points**
 - Quantified achievements: ${metricCount} metrics found
 - Strong action verbs: ${strongVerbMatches} detected
 - Resume length: ${ocrText.length > 1500 ? 'Adequate' : 'Could be expanded'}
@@ -519,15 +531,15 @@ ${totalScore < 50 ? `
 
 ---
 
-### 💡 Pro Tips for ${category} Roles
+### 💡 Pro Tips for ${adjustedCategory} Roles
 
-${category === "Engineering" ? `
+${adjustedCategory === "Engineering" ? `
 **Engineering Resume Best Practices:**
 - Lead with project scale and impact (e.g., "Designed 6-story, 5,000 m² structure")
 - Include specific codes/standards (IBC, ASCE 7, Eurocode)
 - Quantify results (cost savings, efficiency gains, load capacity)
 - List technical tools (AutoCAD, Revit, ETABS, SAP2000)
-` : category === "Marketing" ? `
+` : adjustedCategory === "Marketing" ? `
 **Marketing Resume Best Practices:**
 - Emphasize ROI and conversion metrics
 - Include campaign results (CTR, CPC, conversion rates)
@@ -555,8 +567,8 @@ ${totalScore >= 75 ? '🎉 You\'re in the top 25%!' : totalScore >= 62 ? '📊 Y
 `;
 
   return {
-    title: `${category} Resume`,
-    category,
+    title: `${adjustedCategory} Resume`,
+    category: adjustedCategory,
     score: totalScore,
     scoreBreakdown: {
       keywords: Math.round(keywordScore),

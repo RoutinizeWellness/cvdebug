@@ -81,9 +81,62 @@ const schema = defineSchema(
       searchField: "ocrText",
       filterFields: ["userId"],
     }),
-    waitlist: defineTable({
-      email: v.string(),
-    }).index("by_email", ["email"]),
+    
+  // ML Learning: User feedback on analysis quality
+  mlFeedback: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+    feedbackType: v.union(
+      v.literal("score_too_high"),
+      v.literal("score_too_low"),
+      v.literal("missing_keyword"),
+      v.literal("wrong_category"),
+      v.literal("helpful"),
+      v.literal("not_helpful")
+    ),
+    details: v.optional(v.string()),
+    suggestedScore: v.optional(v.number()),
+    suggestedCategory: v.optional(v.string()),
+    suggestedKeywords: v.optional(v.array(v.string())),
+    originalScore: v.optional(v.number()),
+    originalCategory: v.optional(v.string()),
+    timestamp: v.number(),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"])
+    .index("by_feedback_type", ["feedbackType"]),
+
+  // ML Learning: Track successful outcomes
+  mlSuccessTracking: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+    outcomeType: v.union(
+      v.literal("interview"),
+      v.literal("offer"),
+      v.literal("hired")
+    ),
+    jobTitle: v.optional(v.string()),
+    company: v.optional(v.string()),
+    resumeScore: v.optional(v.number()),
+    resumeCategory: v.optional(v.string()),
+    keywords: v.optional(v.any()),
+    timestamp: v.number(),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"])
+    .index("by_outcome", ["outcomeType"]),
+
+  // ML Learning: Store learned weights and configurations
+  mlConfig: defineTable({
+    keywordWeights: v.any(),
+    categoryWeights: v.any(),
+    scoringAdjustments: v.any(),
+    lastUpdated: v.number(),
+  }),
+
+  waitlist: defineTable({
+    email: v.string(),
+  }).index("by_email", ["email"]),
   },
   {
     schemaValidation: false,
