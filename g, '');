@@ -1,3 +1,9 @@
-cleaned = cleaned.replace(/`[^`]*`/g, '');
-cleaned = cleaned.replace(/[\[\]\{\}\(\)]/g, '');
-cleaned = cleaned.replace(/^
+cleaned = cleaned.replace(/^\s*
+    // Strategy 2: Remove inline code blocks
+    cleaned = cleaned.replace(/`[^`]*`/g, '');
+
+    // Strategy 3: Remove all brackets
+    cleaned = cleaned.replace(/[\[\]\{\}\(\)]/g, '');
+
+    // Strategy 4: Remove '
+    cleaned = cleaned.replace(/'/g, '');
