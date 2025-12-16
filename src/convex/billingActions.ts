@@ -2,6 +2,7 @@
 
 import { v } from "convex/values";
 import { action } from "./_generated/server";
+import { Autumn } from "autumn-js";
 
 export const createCheckoutSession = action({
   args: {
@@ -30,7 +31,9 @@ export const createCheckoutSession = action({
         throw new Error("Configuration error: Payment system not set up");
       }
 
-      // Autumn expects product_id, not price_id
+      // Initialize Autumn SDK with configuration object
+      const autumn = new Autumn({ secretKey });
+
       // Use env vars for product IDs, or default to the plan names
       const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
       const productBulk = process.env.PRODUCT_BULK_PACK || "bulk_pack";
@@ -44,56 +47,33 @@ export const createCheckoutSession = action({
       console.log(`[Billing] Creating session for ${args.plan} with product ${productId}`);
       console.log(`[Billing] Origin: ${args.origin}`);
 
-      // Autumn API expects customer_id and product_id
-      const payload = {
+      // Call Autumn SDK checkout method
+      const response = await autumn.checkout({
         customer_id: identity.subject, // Use Clerk's subject as customer_id
         product_id: productId,
         success_url: args.resumeId 
           ? `${args.origin}/dashboard?resumeId=${args.resumeId}&unlocked=true`
           : `${args.origin}/dashboard?payment=success`,
-        cancel_url: `${args.origin}/dashboard?payment=cancelled`,
         customer_data: {
           email: identity.email,
           name: identity.name || identity.email,
         },
-      };
-
-      console.log("[Billing] Sending payload to Autumn:", JSON.stringify(payload, null, 2));
-
-      // Correct Autumn API endpoint: /checkout (not /v1/checkout/sessions)
-      const response = await fetch("https://api.useautumn.com/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${secretKey}`,
-        },
-        body: JSON.stringify(payload),
       });
 
-      const responseText = await response.text();
-      console.log(`[Billing] Autumn Response Status: ${response.status}`);
-      console.log(`[Billing] Autumn Response Body: ${responseText}`);
+      console.log("[Billing] Autumn response:", response);
 
-      if (!response.ok) {
-        throw new Error(`Payment provider error (${response.status}): ${responseText}`);
+      // Handle Result type from Autumn SDK
+      if (response.error) {
+        console.error("[Billing] Autumn checkout failed:", response.error);
+        throw new Error(response.error?.message || "Failed to create checkout session");
       }
 
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (e) {
-        console.error("[Billing] Failed to parse JSON response:", responseText);
-        throw new Error("Invalid JSON response from payment provider");
-      }
-
-      console.log("[Billing] Autumn response:", data);
-
-      if (!data.url) {
-        console.error("[Billing] No checkout URL in response:", data);
+      if (!response.data?.url) {
+        console.error("[Billing] No checkout URL in response:", response);
         throw new Error("Invalid response from payment provider: Missing checkout URL");
       }
       
-      return data.url;
+      return response.data.url;
     } catch (error: any) {
       console.error("[Billing] Checkout error:", error);
       // Ensure the error message is propagated

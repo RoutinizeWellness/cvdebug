@@ -1,1 +1,6 @@
-import { internal } from "./_generated/api";
+import { Autumn as autumn } from 'autumn-js'
+
+const response = await autumn.checkout({
+  customer_id: 'user_123',
+  product_id: 'pro'
+})
