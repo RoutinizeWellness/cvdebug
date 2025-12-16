@@ -1,5 +1,17 @@
 "use node";
 
+import { 
+  techKeywords, 
+  engineeringKeywords, 
+  marketingKeywords, 
+  productKeywords, 
+  dataKeywords,
+  synonymMap,
+  getKeywordsForCategory,
+  type RoleCategory
+} from "./config/keywords";
+import { getMetricsForCategory } from "./config/metricTemplates";
+
 interface OpenRouterRequest {
   model: string;
   messages: Array<{ role: string; content: string }>;

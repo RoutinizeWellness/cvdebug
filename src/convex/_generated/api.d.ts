@@ -12,6 +12,8 @@ import type * as admin from "../admin.js";
 import type * as ai from "../ai.js";
 import type * as ai_apiClient from "../ai/apiClient.js";
 import type * as ai_chatbot from "../ai/chatbot.js";
+import type * as ai_config_keywords from "../ai/config/keywords.js";
+import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
@@ -41,6 +43,8 @@ declare const fullApi: ApiFromModules<{
   ai: typeof ai;
   "ai/apiClient": typeof ai_apiClient;
   "ai/chatbot": typeof ai_chatbot;
+  "ai/config/keywords": typeof ai_config_keywords;
+  "ai/config/metricTemplates": typeof ai_config_metricTemplates;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
   "ai/prompts": typeof ai_prompts;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;
