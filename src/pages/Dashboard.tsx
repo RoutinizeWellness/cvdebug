@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Chatbot } from "@/components/Chatbot";
@@ -35,6 +34,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { api } from "@/convex/_generated/api";
+import { useResumeUpload } from "@/hooks/use-resume-upload";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -55,7 +55,7 @@ export default function Dashboard() {
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
   const [showNewFeatureBanner, setShowNewFeatureBanner] = useState(true);
   const processedPaymentRef = useRef(false);
-
+  
   const {
     isUploading,
     isDragging,
@@ -175,6 +175,13 @@ export default function Dashboard() {
 
   return (
     <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept=".pdf,.doc,.docx,image/*"
+        onChange={handleFileUpload}
+      />
       <PricingDialog 
         open={showPricing} 
         onOpenChange={setShowPricing} 
@@ -437,13 +444,6 @@ export default function Dashboard() {
                 </div>
                 
                 <div className="flex gap-3">
-                  <input
-                    type="file"
-                    accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    className="hidden"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                  />
                   <Button 
                     size="lg"
                     className="font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
