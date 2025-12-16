@@ -51,7 +51,7 @@ export const createCheckoutSession = action({
 
       console.log("[Billing] Sending payload to Autumn:", JSON.stringify(payload, null, 2));
 
-      const response = await fetch("https://api.autumnpay.com/v1/checkout/sessions", {
+      const response = await fetch("https://api.useautumn.com/v1/checkout/sessions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
