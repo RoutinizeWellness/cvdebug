@@ -10,6 +10,12 @@
 
 import type * as admin from "../admin.js";
 import type * as ai from "../ai.js";
+import type * as ai_apiClient from "../ai/apiClient.js";
+import type * as ai_chatbot from "../ai/chatbot.js";
+import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
+import type * as ai_prompts from "../ai/prompts.js";
+import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
+import type * as ai_resumeRewrite from "../ai/resumeRewrite.js";
 import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as billing from "../billing.js";
@@ -32,6 +38,12 @@ import type {
 declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   ai: typeof ai;
+  "ai/apiClient": typeof ai_apiClient;
+  "ai/chatbot": typeof ai_chatbot;
+  "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
+  "ai/prompts": typeof ai_prompts;
+  "ai/resumeAnalysis": typeof ai_resumeAnalysis;
+  "ai/resumeRewrite": typeof ai_resumeRewrite;
   auth: typeof auth;
   "auth/emailOtp": typeof auth_emailOtp;
   billing: typeof billing;

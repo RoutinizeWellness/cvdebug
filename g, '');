@@ -1,46 +1,9 @@
-      const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        jsonStr = jsonMatch[0];
-      }
-      
-      let parsed;
-      try {
-        parsed = JSON.parse(jsonStr);
-      } catch (e) {
-        console.error("JSON Parse Error:", e);
-        console.log("Raw Content:", content);
-        throw new Error("Failed to parse AI response as JSON");
-      }
+// Re-export all AI functions from modular files
+export { analyzeResume } from "./ai/resumeAnalysis";
+export { rewriteResume } from "./ai/resumeRewrite";
+export { optimizeLinkedIn } from "./ai/linkedinOptimizer";
+export { chat } from "./ai/chatbot";
 
-      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
-      
-      // Ensure score is a number
-      const safeScore = typeof score === 'number' ? score : 0;
-      
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: title || "Resume",
-        category: category || "Uncategorized",
-        analysis: analysis || "Analysis completed.",
-        score: safeScore,
-        scoreBreakdown: scoreBreakdown || { keywords: 0, format: 0, completeness: 0 },
-        missingKeywords: missingKeywords || [],
-        formatIssues: formatIssues || [],
-        metricSuggestions: metricSuggestions || [],
-        status: "completed",
-      });
-    } catch (error) {
-      console.error("Error analyzing resume:", error);
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
-        id: args.id,
-        title: "Resume",
-        category: "Uncategorized",
-        analysis: `AI Analysis Failed. Please try again. Error: ${error instanceof Error ? error.message : "Unknown error"}`,
-        score: 0,
-        scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
-        status: "failed",
-      });
-    }
-  },
-});
-// ... keep existing code
+const parsed = JSON.parse(jsonStr);
+return parsed;
+},
