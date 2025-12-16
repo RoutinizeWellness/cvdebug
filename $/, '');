@@ -1,12 +1,4 @@
-export function extractJSON(content: string): any {
-  try {
-    console.log("[extractJSON] Starting JSON extraction, content length:", content.length);
     
-    let cleaned = content.trim();
-    
-    // Remove markdown code blocks - use proper regex without double escaping
-    cleaned = cleaned.replace(/^```[\s\S]*?```/, '');
-
     // Try to find JSON object boundaries
     const jsonStart = cleaned.indexOf('{');
     const jsonEnd = cleaned.lastIndexOf('}');
@@ -29,6 +21,7 @@ export function extractJSON(content: string): any {
     const parsed = JSON.parse(finalJson);
     console.log("[extractJSON] Successfully parsed JSON");
     return parsed;
+    
   } catch (error: any) {
     console.error("[extractJSON] Failed to parse JSON:", error.message);
     console.error("[extractJSON] Content preview:", content.substring(0, 500));

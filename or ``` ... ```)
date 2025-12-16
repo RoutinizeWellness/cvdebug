@@ -1,1 +1,1 @@
-  cleaned = cleaned.replace(/
+    cleaned = cleaned.replace(/^

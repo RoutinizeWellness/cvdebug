@@ -31,9 +31,23 @@ export async function callOpenRouter(
   return data.choices[0]?.message?.content || "";
 }
 
+// Added the extractJSON function with core logic and a debug statement
 export function extractJSON(content: string): any {
-  // Pre-cleaning: Remove markdown code blocks immediately
-  let cleaned = content.trim();
-  
-  // Remove markdown code fences (
+  try {
+    console.log("[extractJSON] Starting JSON extraction, content length:", content.length);
+    
+    let cleaned = content.trim();
+    
+    // Remove markdown code blocks - use proper regex without double escaping
+    cleaned = cleaned.replace(/^```[\w]*\n([\s\S]*?)\n```$/g, '$1');
+
+    // Remove any remaining code blocks or markdown formatting
+    // Optional: Further cleaning can be added here if needed.
+
+    const jsonObject = JSON.parse(cleaned);
+    return jsonObject;
+  } catch (error) {
+    console.error("[extractJSON] Failed to parse JSON:", error);
+    throw error;
+  }
 }
