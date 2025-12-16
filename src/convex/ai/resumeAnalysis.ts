@@ -53,7 +53,7 @@ export const analyzeResume = internalAction({
     } else {
       try {
         const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
-        const model = "google/gemini-2.0-flash-lite-preview-02-05:free";
+        const model = "google/gemini-2.0-flash-exp:free";
         
         console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 

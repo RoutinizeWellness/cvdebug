@@ -106,6 +106,10 @@ export default function AuthPage() {
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                   formFieldLabel: "text-foreground",
                   formFieldInput: "bg-background border-border text-foreground",
+                  identityPreviewText: "hidden",
+                  identityPreviewEditButton: "hidden",
+                  footerPages: "hidden",
+                  footerPagesLink: "hidden",
                 }
               }}
             />
@@ -127,6 +131,10 @@ export default function AuthPage() {
                   formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
                   formFieldLabel: "text-foreground",
                   formFieldInput: "bg-background border-border text-foreground",
+                  identityPreviewText: "hidden",
+                  identityPreviewEditButton: "hidden",
+                  footerPages: "hidden",
+                  footerPagesLink: "hidden",
                 }
               }}
             />

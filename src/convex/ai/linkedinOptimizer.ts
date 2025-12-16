@@ -18,7 +18,7 @@ export const optimizeLinkedIn = action({
     const prompt = buildLinkedInPrompt(args.profileText, args.jobDescription, args.linkedinUrl);
 
     const content = await callOpenRouter(apiKey, {
-      model: "google/gemini-2.0-flash-lite-preview-02-05:free",
+      model: "google/gemini-2.0-flash-exp:free",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
