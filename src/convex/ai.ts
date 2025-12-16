@@ -26,9 +26,19 @@ export const analyzeResume = internalAction({
       return;
     }
 
-    // REMOVED: Corruption detection logic
-    // If we got here, OCR already succeeded and extracted text
-    // No need to re-validate the text quality
+    // Minimal sanity check - if text is virtually empty, fail gracefully
+    if (!args.ocrText || args.ocrText.trim().length < 20) {
+      console.log(`[AI Analysis] Text too short (${args.ocrText?.length} chars), marking as failed`);
+      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+        id: args.id,
+        title: "Resume",
+        category: "Uncategorized",
+        analysis: "Resume text is too short or unreadable. Please try a different file format (PDF/Word).",
+        score: 0,
+        status: "failed",
+      });
+      return;
+    }
     
     console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${args.ocrText.length} chars`);
 
@@ -367,9 +377,11 @@ export const analyzeResume = internalAction({
         headers: {
           "Authorization": `Bearer ${apiKey}`,
           "Content-Type": "application/json",
+          "HTTP-Referer": "https://convex.dev", // Required by OpenRouter
+          "X-Title": "ResumeATS", // Required by OpenRouter
         },
         body: JSON.stringify({
-          model: "google/gemini-2.0-flash-001",
+          model: "google/gemini-flash-1.5", // Using stable model
           messages: [
             { role: "user", content: prompt }
           ],
@@ -378,7 +390,8 @@ export const analyzeResume = internalAction({
       });
 
       if (!response.ok) {
-        throw new Error(`OpenRouter API error: ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`OpenRouter API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
