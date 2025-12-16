@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/convex/_generated/api";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "react-router";
 
 const apiAny = api;
 
@@ -15,6 +17,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   const user = useQuery(apiAny.users.currentUser);
   const betaStatus = useQuery(apiAny.users.getBetaStatus);
   const claimed = betaStatus?.claimed ?? 97;
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "bulk_pack" | null>(initialPlan || null);
@@ -23,6 +27,13 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   const isTrial = user?.trialEndsOn && user.trialEndsOn > Date.now();
 
   const handleUpgrade = async (plan: "single_scan" | "bulk_pack") => {
+    if (!isAuthenticated) {
+      toast.error("Please log in to purchase credits");
+      onOpenChange(false);
+      navigate("/auth");
+      return;
+    }
+
     setIsLoading(plan);
     try {
       // Pass window.location.origin to ensure redirects work in all environments (dev/prod)
