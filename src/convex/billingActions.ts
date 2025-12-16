@@ -21,16 +21,10 @@ export const createCheckoutSession = action({
       throw new Error("Configuration error: Payment system not set up");
     }
 
-    // Ensure pricing env vars are set
-    const priceSingle = process.env.PRICE_SINGLE_SCAN;
-    const priceBulk = process.env.PRICE_BULK_PACK;
+    // Use env vars for prices, or default to the plan names as requested
+    const priceSingle = process.env.PRICE_SINGLE_SCAN || "single_scan";
+    const priceBulk = process.env.PRICE_BULK_PACK || "bulk_pack";
 
-    if (!priceSingle || !priceBulk) {
-      console.error("Pricing configuration missing. PRICE_SINGLE_SCAN or PRICE_BULK_PACK not set.");
-      throw new Error("Configuration error: Pricing not set up. Please set PRICE_SINGLE_SCAN and PRICE_BULK_PACK environment variables.");
-    }
-
-    // Use env vars for prices
     const prices = {
       single_scan: priceSingle,
       bulk_pack: priceBulk,
