@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Chatbot } from "@/components/Chatbot";
@@ -25,7 +26,6 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
-import { useResumeUpload } from "@/hooks/use-resume-upload";
 import {
   Dialog,
   DialogContent,
@@ -55,7 +55,7 @@ export default function Dashboard() {
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
   const [showNewFeatureBanner, setShowNewFeatureBanner] = useState(true);
   const processedPaymentRef = useRef(false);
-  
+
   const {
     isUploading,
     isDragging,
@@ -71,7 +71,6 @@ export default function Dashboard() {
   const storeUser = useMutation(apiAny.users.storeUser);
   const purchaseCredits = useMutation(apiAny.users.purchaseCredits);
   const currentUser = useQuery(apiAny.users.currentUser);
-  const deleteResume = useMutation(apiAny.resumes.deleteResume);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -142,6 +141,8 @@ export default function Dashboard() {
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);
 
+  const deleteResume = useMutation(apiAny.resumes.deleteResume);
+  
   const resumes = useQuery(apiAny.resumes.getResumes, { 
     search: search || undefined,
     category: categoryFilter || undefined
@@ -436,6 +437,13 @@ export default function Dashboard() {
                 </div>
                 
                 <div className="flex gap-3">
+                  <input
+                    type="file"
+                    accept="image/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                  />
                   <Button 
                     size="lg"
                     className="font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
@@ -509,15 +517,6 @@ export default function Dashboard() {
         resumeId={selectedResumeId as any}
         onClose={() => setSelectedResumeId(null)}
         onDelete={handleDelete}
-      />
-
-      {/* Hidden file input for upload */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        className="hidden"
-        accept=".pdf,.docx,.doc,image/*"
-        onChange={handleFileUpload}
       />
     </div>
   );
