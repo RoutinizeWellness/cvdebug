@@ -1,10 +1,13 @@
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, ArrowUpRight } from "lucide-react";
 
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
+
 export function ScoreHistory() {
-  const resumes = useQuery(api.resumes.getResumes, {});
+  const resumes = useQuery(apiAny.resumes.getResumes, {});
 
   if (!resumes || resumes.length < 2) return null;
 

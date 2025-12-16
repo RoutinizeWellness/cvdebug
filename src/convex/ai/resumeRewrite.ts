@@ -1,10 +1,12 @@
 "use node";
 
 import { action } from "../_generated/server";
-import { internal } from "../_generated/api";
 import { v } from "convex/values";
 import { buildRewritePrompt } from "./prompts";
 import { callOpenRouter } from "./apiClient";
+
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("../_generated/api").internal;
 
 export const rewriteResume = action({
   args: {
@@ -17,7 +19,7 @@ export const rewriteResume = action({
     if (!identity) throw new Error("Unauthorized");
 
     // Verify ownership
-    const resume = await ctx.runQuery(internal.resumes.getResumeInternal, { id: args.id });
+    const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, { id: args.id });
     if (!resume || (resume.userId !== identity.subject && identity.email !== "tiniboti@gmail.com")) {
       throw new Error("Unauthorized");
     }
@@ -33,7 +35,7 @@ export const rewriteResume = action({
         messages: [{ role: "user", content: prompt }]
       });
 
-      await ctx.runMutation(internal.resumes.updateResumeMetadata, {
+      await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
         id: args.id,
         rewrittenText: rewrittenText,
       });

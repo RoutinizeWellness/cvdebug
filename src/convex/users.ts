@@ -2,6 +2,9 @@ import { query, mutation, internalMutation, internalQuery } from "./_generated/s
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 /**
  * Get the current signed in user identity. Returns null if the user is not signed in.
  */
@@ -97,7 +100,7 @@ export const storeUser = mutation({
 
     // Send onboarding email (Email #1)
     if (identity.email) {
-      await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, {
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendOnboardingEmail, {
         email: identity.email,
         name: identity.name,
         variant: emailVariant,
@@ -153,7 +156,7 @@ export const updateSubscription = internalMutation({
       // Send confirmation email
       if (user.email) {
         console.log(`[updateSubscription] Scheduling confirmation email for ${user.email}`);
-        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+        await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: user.email,
           name: user.name,
           plan: args.plan,
@@ -177,7 +180,7 @@ export const updateSubscription = internalMutation({
           // Send confirmation email if we have email
           if (identity.email) {
             console.log(`[updateSubscription] Scheduling confirmation email for new user ${identity.email}`);
-            await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+            await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
               email: identity.email,
               name: identity.name,
               plan: args.plan,
@@ -258,7 +261,7 @@ export const purchaseCredits = mutation({
     
     // Send confirmation email
     if (user.email) {
-      await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
         email: user.email,
         name: user.name,
         plan: args.plan,

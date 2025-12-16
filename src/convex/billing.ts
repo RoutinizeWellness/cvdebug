@@ -1,5 +1,7 @@
 import { httpAction } from "./_generated/server";
-import { internal } from "./_generated/api";
+
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
 
 export const handleWebhook = httpAction(async (ctx, request) => {
   const signature = request.headers.get("autumn-signature");
@@ -22,7 +24,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
       const { customer_email, plan, metadata } = payload.data;
       
       // Get the user who just purchased
-      const user = await ctx.runQuery(internal.users.getUserByEmail, {
+      const user = await ctx.runQuery(internalAny.users.getUserByEmail, {
         email: customer_email,
       });
 
@@ -32,7 +34,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
       }
 
       // Update user subscription and credits
-      await ctx.runMutation(internal.users.updateSubscription, {
+        await ctx.runMutation(internalAny.users.updateSubscription, {
         tokenIdentifier: user.tokenIdentifier,
         plan: plan as "single_scan" | "bulk_pack",
       });
@@ -42,7 +44,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
         console.log(`[Webhook] Unlocking resume ${metadata.resumeId} for ${customer_email}`);
         
         // Unlock the resume details immediately after purchase
-        await ctx.runMutation(internal.resumes.unlockResumeAfterPurchase, {
+        await ctx.runMutation(internalAny.resumes.unlockResumeAfterPurchase, {
           resumeId: metadata.resumeId,
           userId: user.tokenIdentifier,
         });

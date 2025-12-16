@@ -9,7 +9,10 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 export function TemplatesView() {
   return (
@@ -45,7 +48,7 @@ export function TemplatesView() {
 }
 
 export function LinkedInView() {
-  const optimizeLinkedIn = useAction(api.ai.optimizeLinkedIn);
+  const optimizeLinkedIn = useAction(apiAny.ai.optimizeLinkedIn);
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [profileText, setProfileText] = useState("");
   const [jobDescription, setJobDescription] = useState("");

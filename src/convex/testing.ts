@@ -2,6 +2,9 @@ import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 export const sendTestEmail = mutation({
   args: {
     email: v.string(),
@@ -39,25 +42,25 @@ async function scheduleEmail(ctx: any, type: string, email: string, name: string
   console.log(`Scheduling ${type} email for ${email}`);
   switch (type) {
     case "welcome":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendOnboardingEmail, { email, name, variant: "A" });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendOnboardingEmail, { email, name, variant: "A" });
       break;
     case "reminder_24h":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendActivationReminderEmail, { email, name });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendActivationReminderEmail, { email, name });
       break;
     case "last_chance_72h":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendActivationLastChanceEmail, { email, name });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendActivationLastChanceEmail, { email, name });
       break;
     case "post_scan":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendPostScanEmail, { email, name, score: 65 });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendPostScanEmail, { email, name, score: 65 });
       break;
     case "value_reminder":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, { email, name, score: 65 });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendValueReminderEmail, { email, name, score: 65 });
       break;
     case "discount":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendDiscountEmail, { email, name });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendDiscountEmail, { email, name });
       break;
     case "win_back":
-      await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, { email, name });
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendWinBackEmail, { email, name });
       break;
   }
 }
@@ -104,7 +107,7 @@ export const simulatePurchase = mutation({
 
     // Send confirmation email
     if (user.email) {
-      await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
         email: user.email,
         name: user.name,
         plan: args.plan,

@@ -1,17 +1,15 @@
 "use node";
 
 import { internalAction } from "../_generated/server";
-import { internal } from "../_generated/api";
 import { v } from "convex/values";
 import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 
-=======
-=======
 // Type-safe wrapper to avoid deep type instantiation errors
 const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
 
-=======
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("../_generated/api").internal;
 
 export const analyzeResume = internalAction({
   args: {
@@ -24,7 +22,7 @@ export const analyzeResume = internalAction({
     
     if (!apiKey) {
       console.log("No OPENROUTER_API_KEY set, skipping AI analysis");
-      await runMutation(ctx, internal.resumes.updateResumeMetadata, {
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
@@ -41,7 +39,7 @@ export const analyzeResume = internalAction({
     // Sanity check
     if (!cleanText || cleanText.trim().length < 20) {
       console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
-      await runMutation(ctx, internal.resumes.updateResumeMetadata, {
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
@@ -72,7 +70,7 @@ export const analyzeResume = internalAction({
       const parsed = extractJSON(content);
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
       
-      await runMutation(ctx, internal.resumes.updateResumeMetadata, {
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
         id: args.id,
         title,
         category,
@@ -90,7 +88,7 @@ export const analyzeResume = internalAction({
     } catch (error: any) {
       console.error("[AI Analysis] Error analyzing resume:", error);
       console.error("[AI Analysis] Error stack:", error.stack);
-      await runMutation(ctx, internal.resumes.updateResumeMetadata, {
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
         id: args.id,
         title: "Resume",
         category: "Uncategorized",

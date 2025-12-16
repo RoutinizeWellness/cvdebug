@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQuery } from "convex/react";
 import { 
@@ -38,6 +37,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
+
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -59,9 +62,9 @@ export default function Dashboard() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const processedPaymentRef = useRef(false);
   
-  const storeUser = useMutation(api.users.storeUser);
-  const purchaseCredits = useMutation(api.users.purchaseCredits);
-  const currentUser = useQuery(api.users.currentUser);
+  const storeUser = useMutation(apiAny.users.storeUser);
+  const purchaseCredits = useMutation(apiAny.users.purchaseCredits);
+  const currentUser = useQuery(apiAny.users.currentUser);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -132,12 +135,12 @@ export default function Dashboard() {
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);
 
-  const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
-  const createResume = useMutation(api.resumes.createResume);
-  const updateResumeOcr = useMutation(api.resumes.updateResumeOcr);
-  const deleteResume = useMutation(api.resumes.deleteResume);
+  const generateUploadUrl = useMutation(apiAny.resumes.generateUploadUrl);
+  const createResume = useMutation(apiAny.resumes.createResume);
+  const updateResumeOcr = useMutation(apiAny.resumes.updateResumeOcr);
+  const deleteResume = useMutation(apiAny.resumes.deleteResume);
   
-  const resumes = useQuery(api.resumes.getResumes, { 
+  const resumes = useQuery(apiAny.resumes.getResumes, { 
     search: search || undefined,
     category: categoryFilter || undefined
   });

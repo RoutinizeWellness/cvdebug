@@ -4,9 +4,12 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageSquare, Send, X, Loader2, Bot } from "lucide-react";
 import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 type Message = {
   role: "user" | "assistant";
@@ -22,7 +25,7 @@ export function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   
-  const chatAction = useAction(api.ai.chat);
+  const chatAction = useAction(apiAny.ai.chat);
 
   useEffect(() => {
     if (scrollRef.current) {

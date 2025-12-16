@@ -5,7 +5,10 @@ import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/Logo";
 import { useNavigate } from "react-router";
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 interface SidebarProps {
   categoryFilter: string | null;
@@ -18,7 +21,7 @@ interface SidebarProps {
 export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, currentView, setCurrentView }: SidebarProps) {
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
-  const currentUser = useQuery(api.users.currentUser);
+  const currentUser = useQuery(apiAny.users.currentUser);
   
   const categories = [
     { id: "Engineering", label: "Engineering", icon: Code },

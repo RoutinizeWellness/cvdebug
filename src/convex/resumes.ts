@@ -4,6 +4,9 @@ import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -84,7 +87,7 @@ export const updateResumeOcr = mutation({
     console.log(`[OCR] Text extracted for resume ${args.id}, length: ${args.ocrText.length} chars`);
 
     // Trigger AI analysis with job description if available
-    await ctx.scheduler.runAfter(0, internal.ai.analyzeResume, {
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
       jobDescription: resume.jobDescription,

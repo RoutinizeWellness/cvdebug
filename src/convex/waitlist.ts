@@ -3,6 +3,9 @@ import { mutation, internalAction, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { Resend } from "resend";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 export const join = mutation({
   args: { email: v.string() },
   handler: async (ctx, args) => {
@@ -18,7 +21,7 @@ export const join = mutation({
       email: args.email,
     });
 
-    await ctx.scheduler.runAfter(0, internal.waitlist.sendWelcomeEmail, {
+    await ctx.scheduler.runAfter(0, internalAny.waitlist.sendWelcomeEmail, {
       email: args.email,
     });
   },

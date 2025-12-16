@@ -2,6 +2,9 @@ import { query, mutation, action } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 // Admin-only query to get all users
 export const getUsers = query({
   args: {},
@@ -344,7 +347,7 @@ export const grantPurchase = mutation({
 
       // Send confirmation email
       if (user.email) {
-        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+        await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: user.email,
           name: user.name,
           plan: args.plan,
@@ -368,7 +371,7 @@ export const grantPurchase = mutation({
         });
 
         // Send confirmation email
-        await ctx.scheduler.runAfter(0, internal.marketing.sendPurchaseConfirmationEmail, {
+        await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: args.identifier,
           name: args.name,
           plan: args.plan,
@@ -495,7 +498,7 @@ export const simulateWebhookEvent = action({
     }
 
     // Get user to find their ID (tokenIdentifier) which is required for the webhook logic
-    const user = await ctx.runQuery(internal.users.getUserByEmail, { email: args.email });
+    const user = await ctx.runQuery(internalAny.users.getUserByEmail, { email: args.email });
     if (!user) {
       throw new Error(`User with email ${args.email} not found. Please ensure the user exists first.`);
     }
@@ -507,7 +510,7 @@ export const simulateWebhookEvent = action({
     console.log(`Simulating webhook for user ${user.email} (${user.tokenIdentifier})`);
 
     // Directly update the user's subscription (simulating what the webhook would do)
-    await ctx.runMutation(internal.users.updateSubscription, {
+    await ctx.runMutation(internalAny.users.updateSubscription, {
       tokenIdentifier: user.tokenIdentifier,
       plan: args.plan,
     });

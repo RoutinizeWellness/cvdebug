@@ -23,7 +23,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useAction, useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { PricingDialog } from "@/components/PricingDialog";
 import { ScoreHistory } from "./ScoreHistory";
 import { ResumeStats } from "./ResumeStats";
@@ -31,6 +30,10 @@ import { CriticalIssues } from "./CriticalIssues";
 import { ImportantIssues } from "./ImportantIssues";
 import { FreeTierView } from "./FreeTierView";
 import type { Id } from "@/convex/_generated/dataModel";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 interface ResumeDetailDialogProps {
   resumeId: Id<"resumes"> | null;
@@ -43,13 +46,13 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [showBlurredPreview, setShowBlurredPreview] = useState(true);
-  const rewriteResume = useAction(api.ai.rewriteResume);
+  const rewriteResume = useAction(apiAny.ai.rewriteResume);
   
-  const user = useQuery(api.users.currentUser);
+  const user = useQuery(apiAny.users.currentUser);
   const isFree = user?.subscriptionTier === "free";
 
-  const allResumes = useQuery(api.resumes.getResumes, {});
-  const displayResume = allResumes?.find(r => r._id === resumeId);
+  const allResumes = useQuery(apiAny.resumes.getResumes, {});
+  const displayResume = allResumes?.find((r: any) => r._id === resumeId);
 
   useEffect(() => {
     if (displayResume && isFree) {
