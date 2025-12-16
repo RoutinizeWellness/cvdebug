@@ -30,9 +30,9 @@ import { CriticalIssues } from "./CriticalIssues";
 import { ImportantIssues } from "./ImportantIssues";
 import { FreeTierView } from "./FreeTierView";
 import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
 const apiAny = api as any;
 
 interface ResumeDetailDialogProps {
