@@ -142,8 +142,8 @@ export default function Dashboard() {
     category: categoryFilter || undefined
   });
 
-  // Track processing resumes
-  const processingResume = resumes?.find((r: any) => r._id === processingResumeId && r.status === "processing");
+  // Track processing resumes - check if resume exists and is still processing
+  const processingResume = resumes?.find((r: any) => r._id === processingResumeId && (!r.score || r.score === 0));
 
   // Auto-unlock resume after payment
   useEffect(() => {
@@ -203,7 +203,9 @@ export default function Dashboard() {
         ? "Resume uploaded! AI is analyzing against your job description..." 
         : "Resume uploaded! AI is analyzing..."
       );
-      processFile(file, resumeId);
+      
+      // Process the file
+      await processFile(file, resumeId);
       setJobDescription("");
 
     } catch (error) {
@@ -356,11 +358,20 @@ export default function Dashboard() {
       // Send extracted text to backend for AI analysis
       await updateResumeOcr({ id: resumeId, ocrText: cleanText });
       
-      toast.success("✅ Parsing Complete. AI is now analyzing your resume...");
+      toast.success("✅ Text extracted successfully! AI analysis in progress...");
+      
+      // Don't clear processing state here - let it clear when analysis completes
     } catch (error: any) {
       console.error("Processing Error:", error);
-      toast.error(`Resume parsing failed: ${error.message || "Please try a different file format."}`);
+      toast.error(`Text extraction failed: ${error.message || "Please try a different file format."}`);
       setProcessingResumeId(null);
+      
+      // Delete the failed resume
+      try {
+        await deleteResume({ id: resumeId });
+      } catch (deleteError) {
+        console.error("Failed to delete failed resume:", deleteError);
+      }
     }
   };
 
