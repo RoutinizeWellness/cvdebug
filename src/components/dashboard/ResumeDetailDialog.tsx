@@ -56,12 +56,19 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
   const user = useQuery(api.users.currentUser);
   const isFree = user?.subscriptionTier === "free";
 
+  // Fetch live resume data to get real-time updates from AI analysis
+  const allResumes = useQuery(api.resumes.getResumes, {});
+  const liveResume = allResumes?.find(r => r._id === selectedResume?._id);
+  
+  // Use live data if available, otherwise fall back to selectedResume prop
+  const displayResume = liveResume || selectedResume;
+
   // Reset blurred preview when resume changes
   useEffect(() => {
-    if (selectedResume && isFree) {
+    if (displayResume && isFree) {
       setShowBlurredPreview(true);
     }
-  }, [selectedResume?._id, isFree]);
+  }, [displayResume?._id, isFree]);
 
   const handleDownloadReport = () => {
     if (isFree) {
@@ -76,13 +83,13 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
       setShowPricing(true);
       return;
     }
-    window.open(selectedResume?.url, '_blank');
+    window.open(displayResume?.url, '_blank');
   };
 
   const handleShareLink = () => {
-    if (!selectedResume?._id) return;
+    if (!displayResume?._id) return;
     
-    const shareUrl = `${window.location.origin}/dashboard?resumeId=${selectedResume._id}`;
+    const shareUrl = `${window.location.origin}/dashboard?resumeId=${displayResume._id}`;
     navigator.clipboard.writeText(shareUrl).then(() => {
       toast.success("📋 Link copied to clipboard! Share it with anyone.");
     }).catch(() => {
@@ -91,7 +98,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
   };
 
   const handleOptimize = async () => {
-    if (!selectedResume?.ocrText) {
+    if (!displayResume?.ocrText) {
       toast.error("No text available to optimize.");
       return;
     }
@@ -101,9 +108,9 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     
     try {
       await rewriteResume({
-        id: selectedResume._id,
-        ocrText: selectedResume.ocrText,
-        jobDescription: selectedResume.jobDescription,
+        id: displayResume._id,
+        ocrText: displayResume.ocrText,
+        jobDescription: displayResume.jobDescription,
       });
       toast.success("Optimization complete! Check the 'Rewritten' tab.");
     } catch (error) {
@@ -274,18 +281,18 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
     );
   };
 
-  const criticalKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'critical' : k.priority) === 'critical') || [];
-  const importantKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'important' : k.priority) === 'important') || [];
-  const niceToHaveKeywords = selectedResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'nice-to-have' : k.priority) === 'nice-to-have') || [];
+  const criticalKeywords = displayResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'critical' : k.priority) === 'critical') || [];
+  const importantKeywords = displayResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'important' : k.priority) === 'important') || [];
+  const niceToHaveKeywords = displayResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'nice-to-have' : k.priority) === 'nice-to-have') || [];
   
   const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
 
   const FreeTierView = () => {
-    const score = selectedResume?.score || 0;
+    const score = displayResume?.score || 0;
     const target = 75;
     const gap = Math.max(0, target - score);
-    const missingCount = selectedResume?.missingKeywords?.length || 0;
-    const formatCount = selectedResume?.formatIssues?.length || 0;
+    const missingCount = displayResume?.missingKeywords?.length || 0;
+    const formatCount = displayResume?.formatIssues?.length || 0;
 
     // Show blurred preview first
     if (showBlurredPreview) {
@@ -606,7 +613,7 @@ export function ResumeDetailDialog({ selectedResume, setSelectedResume, handleDe
         open={showPricing} 
         onOpenChange={setShowPricing} 
         initialPlan="single_scan" 
-        resumeId={selectedResume?._id}
+        resumeId={displayResume?._id}
       />
       <DialogContent 
         showCloseButton={false}
