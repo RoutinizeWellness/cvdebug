@@ -79,16 +79,12 @@ export const analyzeResume = internalAction({
     // Extract results
     const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
     
-    // Add note if fallback was used
-    const finalAnalysis = usedFallback 
-      ? `${analysis}\n\n---\n\n**Note:** This analysis was generated using our fallback rule-based system. For enhanced AI-powered insights, please ensure OpenRouter API credits are available.`
-      : analysis;
-    
+    // Use analysis directly without fallback notes
     await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
       id: args.id,
       title,
       category,
-      analysis: finalAnalysis,
+      analysis,
       score,
       scoreBreakdown,
       missingKeywords,

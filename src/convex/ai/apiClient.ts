@@ -287,41 +287,56 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
     const jdWords = jdLower.match(/\b[a-z0-9]+\b/g) || [];
     const jdFrequency: Record<string, number> = {};
     
-    // Unigrams
+    // Unigrams with stop word filtering
+    const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being']);
     jdWords.forEach(word => {
-      if (word.length >= 3) {
+      if (word.length >= 3 && !stopWords.has(word)) {
         jdFrequency[word] = (jdFrequency[word] || 0) + 1;
       }
     });
     
-    // Bigrams (two-word phrases)
+    // Bigrams (two-word phrases) with improved filtering
     for (let i = 0; i < jdWords.length - 1; i++) {
-      const bigram = `${jdWords[i]} ${jdWords[i + 1]}`;
-      if (bigram.length >= 6) {
-        jdFrequency[bigram] = (jdFrequency[bigram] || 0) + 1;
+      if (!stopWords.has(jdWords[i]) || !stopWords.has(jdWords[i + 1])) {
+        const bigram = `${jdWords[i]} ${jdWords[i + 1]}`;
+        if (bigram.length >= 6) {
+          jdFrequency[bigram] = (jdFrequency[bigram] || 0) + 1.5; // Weight bigrams higher
+        }
       }
     }
     
-    // Trigrams (three-word phrases)
+    // Trigrams (three-word phrases) with highest weight
     for (let i = 0; i < jdWords.length - 2; i++) {
       const trigram = `${jdWords[i]} ${jdWords[i + 1]} ${jdWords[i + 2]}`;
-      if (trigram.length >= 10) {
-        jdFrequency[trigram] = (jdFrequency[trigram] || 0) + 1;
+      if (trigram.length >= 10 && !stopWords.has(jdWords[i]) && !stopWords.has(jdWords[i + 2])) {
+        jdFrequency[trigram] = (jdFrequency[trigram] || 0) + 2.0; // Weight trigrams highest
       }
     }
     
-    // Calculate IDF (Inverse Document Frequency) - simulate with corpus size
-    const corpusSize = 1000; // Simulated corpus of 1000 resumes
+    // Enhanced IDF calculation with domain-specific weighting
     const calculateIDF = (term: string): number => {
-      // Common terms have lower IDF, rare terms have higher IDF
-      const commonTerms = ["the", "and", "or", "with", "for", "to", "in", "of", "a", "an"];
-      if (commonTerms.includes(term)) return 0.1;
+      // Stop words get minimal weight
+      if (stopWords.has(term)) return 0.05;
       
-      // Technical terms get higher IDF
-      if (relevantKeywords.includes(term)) return 2.5;
+      // Technical/domain-specific terms get highest weight
+      if (relevantKeywords.includes(term)) return 3.0;
       
-      // Default IDF based on term length (longer = more specific = higher IDF)
-      return Math.min(2.0, 0.5 + (term.length / 20));
+      // Check if term appears in synonym map (indicates importance)
+      if (synonymMap[term] || Object.values(synonymMap).some(syns => syns.includes(term))) {
+        return 2.8;
+      }
+      
+      // Multi-word phrases get higher weight (more specific)
+      const wordCount = term.split(' ').length;
+      if (wordCount === 2) return 2.2;
+      if (wordCount >= 3) return 2.5;
+      
+      // Longer single words are more specific
+      if (term.length >= 10) return 2.0;
+      if (term.length >= 7) return 1.5;
+      if (term.length >= 5) return 1.0;
+      
+      return 0.5;
     };
     
     // Sort by TF-IDF score
@@ -667,11 +682,11 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   // ===== GENERATE DETAILED ANALYSIS =====
   
   const analysis = `
-### 🤖 ATS Parsing Report (ML-Based Analysis)
+### 🤖 ATS Parsing Report
 
-**Parsing Quality: ${formatScore > 20 ? 'Good' : formatScore > 10 ? 'Fair' : 'Poor'}**
+**Parsing Quality: ${formatScore > 20 ? 'Excellent' : formatScore > 10 ? 'Good' : 'Needs Improvement'}**
 
-${hasJD ? '**Analysis Mode:** Tailored to job description using TF-IDF keyword weighting' : '**Analysis Mode:** General industry standards with ML classification'}
+${hasJD ? '**Analysis Mode:** Tailored to job description with advanced keyword matching' : '**Analysis Mode:** Industry-standard analysis with intelligent classification'}
 
 **Contact Information:** ${emailMatch && phoneMatch ? '✅ Complete' : '⚠️ Incomplete'}
 **Section Headers:** ${hasExperience && hasEducation ? '✅ Present' : '⚠️ Some Missing'}
@@ -679,7 +694,7 @@ ${hasJD ? '**Analysis Mode:** Tailored to job description using TF-IDF keyword w
 
 ---
 
-### 📊 ML-Powered Score Breakdown
+### 📊 Detailed Score Breakdown
 
 **Keywords & Content Match: ${keywordScore}/40 points**
 - Found ${foundKeywords.length} relevant keywords with weighted scoring
@@ -793,9 +808,6 @@ ${category === "Engineering" ? `
 
 ${totalScore >= 75 ? '🎉 You\'re in the top 25%!' : totalScore >= 62 ? '📊 You\'re above average - keep improving!' : '⚠️ Below average - focus on the priority actions above'}
 
----
-
-**Note:** This analysis uses ML-based algorithms including TF-IDF keyword weighting, semantic pattern matching, and statistical scoring models trained on real resume data. For enhanced AI-powered insights with GPT-4 level analysis, ensure OpenRouter API credits are available.
 `;
 
   return {
