@@ -47,7 +47,7 @@ export default function Dashboard() {
   const [currentView, setCurrentView] = useState("resumes");
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedResume, setSelectedResume] = useState<any>(null);
+  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
   const [showPricing, setShowPricing] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
@@ -150,7 +150,7 @@ export default function Dashboard() {
     if (pendingResumeId && resumes && currentUser) {
       const resume = resumes.find((r: any) => r._id === pendingResumeId);
       if (resume) {
-        setSelectedResume(resume);
+        setSelectedResumeId(pendingResumeId);
         setPendingResumeId(null);
         toast.success("🎉 Resume report unlocked! Your credits have been applied.");
       }
@@ -368,7 +368,7 @@ export default function Dashboard() {
     try {
       await deleteResume({ id });
       toast.success("Resume deleted");
-      if (selectedResume?._id === id) setSelectedResume(null);
+      if (selectedResumeId === id) setSelectedResumeId(null);
     } catch (error) {
       toast.error("Failed to delete");
     }
@@ -380,7 +380,7 @@ export default function Dashboard() {
         open={showPricing} 
         onOpenChange={setShowPricing} 
         initialPlan={initialPlan}
-        resumeId={selectedResume?._id}
+        resumeId={selectedResumeId || undefined}
       />
       
       <Dialog open={showPaymentSuccess} onOpenChange={setShowPaymentSuccess}>
@@ -702,7 +702,7 @@ export default function Dashboard() {
 
               <ResumeGrid 
                 resumes={resumes} 
-                setSelectedResume={setSelectedResume} 
+                setSelectedResume={(resume: any) => setSelectedResumeId(resume?._id || null)} 
                 handleDelete={handleDelete} 
               />
             </div>
@@ -715,9 +715,9 @@ export default function Dashboard() {
       </main>
 
       <ResumeDetailDialog 
-        selectedResume={selectedResume} 
-        setSelectedResume={setSelectedResume} 
-        handleDelete={handleDelete} 
+        resumeId={selectedResumeId as any}
+        onClose={() => setSelectedResumeId(null)}
+        onDelete={handleDelete}
       />
     </div>
   );
