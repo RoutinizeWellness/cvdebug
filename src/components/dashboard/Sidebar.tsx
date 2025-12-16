@@ -5,10 +5,10 @@ import { useAuth } from "@/hooks/use-auth";
 import { Logo } from "@/components/Logo";
 import { useNavigate } from "react-router";
 import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
-const apiAny = api as any;
+const apiAny = api;
 
 interface SidebarProps {
   categoryFilter: string | null;
