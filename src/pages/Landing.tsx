@@ -11,8 +11,8 @@ import { Clock } from "lucide-react";
 import { useQuery } from "convex/react";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
-const apiAny = api as any;
+import { api } from "@/convex/_generated/api";
+const apiAny: any = api;
 
 export default function Landing() {
   const betaStatus = useQuery(apiAny.users.getBetaStatus);

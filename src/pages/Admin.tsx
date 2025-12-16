@@ -2,8 +2,8 @@ import { useQuery, useMutation, useAction } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
-const apiAny = api as any;
+import { api } from "@/convex/_generated/api";
+const apiAny: any = api;
 import { 
   PlusCircle, 
   Loader2, 

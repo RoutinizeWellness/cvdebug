@@ -1,8 +1,8 @@
 import { useQuery } from "convex/react";
 
 // Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
-const apiAny = api as any;
+import { api } from "@/convex/_generated/api";
+const apiAny: any = api;
 
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";

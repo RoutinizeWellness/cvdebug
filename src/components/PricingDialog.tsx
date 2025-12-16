@@ -2,15 +2,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X, Lock } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
-import type { api as ApiType } from "@/convex/_generated/api";
 import { useState } from "react";
-
-// Cast to any to avoid deep type instantiation errors
-const api = require("@/convex/_generated/api").api;
-const apiAny = api as any;
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { api } from "@/convex/_generated/api";
+
+const apiAny = api;
 
 export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null; resumeId?: string }) {
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
