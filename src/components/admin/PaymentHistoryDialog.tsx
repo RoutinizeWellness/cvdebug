@@ -2,11 +2,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Loader2, Receipt, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
 import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 interface PaymentHistoryDialogProps {
   isOpen: boolean;
@@ -17,7 +20,7 @@ interface PaymentHistoryDialogProps {
 }
 
 export function PaymentHistoryDialog({ isOpen, onClose, userId, userName, userEmail }: PaymentHistoryDialogProps) {
-  const getPaymentHistory = useAction(api.admin.getUserPaymentHistory);
+  const getPaymentHistory = useAction(apiAny.admin.getUserPaymentHistory);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);

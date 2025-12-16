@@ -9,10 +9,13 @@ import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { DifferentiationSection } from "@/components/landing/DifferentiationSection";
 import { Clock } from "lucide-react";
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 export default function Landing() {
-  const betaStatus = useQuery(api.users.getBetaStatus);
+  const betaStatus = useQuery(apiAny.users.getBetaStatus);
   const claimed = betaStatus?.claimed ?? 47;
   const remaining = betaStatus?.remaining ?? 53;
 

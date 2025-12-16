@@ -5,7 +5,10 @@ import { Check, Zap, Building2, Rocket, X, Lock } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 
 export default function PricingPage() {
   const navigate = useNavigate();

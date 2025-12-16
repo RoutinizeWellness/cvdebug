@@ -1,5 +1,9 @@
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
+
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
@@ -20,7 +24,7 @@ export default function AdminWaitlist() {
   
   // We don't block the query here, the backend handles security, 
   // but we can conditionally render or redirect on the client side too.
-  const waitlist = useQuery(api.waitlist.getWaitlist);
+  const waitlist = useQuery(apiAny.waitlist.getWaitlist);
 
   useEffect(() => {
     if (!authLoading && (!user || user.email !== "tiniboti@gmail.com")) {
@@ -78,7 +82,7 @@ export default function AdminWaitlist() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {waitlist.map((entry) => (
+                {waitlist.map((entry: any) => (
                   <TableRow key={entry._id}>
                     <TableCell className="font-medium">{entry.email}</TableCell>
                     <TableCell className="text-right text-muted-foreground">

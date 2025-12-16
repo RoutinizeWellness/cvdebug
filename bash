@@ -1,1 +1,1 @@
-npx convex env set OPENROUTER_API_KEY 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
+npx convex run testEmail:runEmailTest

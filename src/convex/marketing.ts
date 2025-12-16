@@ -416,3 +416,63 @@ export const sendPurchaseConfirmationEmail = internalAction({
     } catch (error) { console.error("Failed to send Purchase Confirmation:", error); }
   },
 });
+
+// Test Email Function - Send to tiniboti@gmail.com for testing
+export const sendTestEmail = internalAction({
+  args: {},
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) {
+      console.error("RESEND_API_KEY not set");
+      return { success: false, error: "RESEND_API_KEY not configured" };
+    }
+
+    const testEmail = "tiniboti@gmail.com";
+    const subject = "🧪 Test Email - CVDebug Email System";
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #ea580c;">✅ Email System Test - CVDebug</h2>
+        <p>Hola Tini,</p>
+        <p>Este es un email de prueba del sistema de marketing de CVDebug.</p>
+        
+        <div style="background: #f3f4f6; border-left: 4px solid #ea580c; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <h3 style="margin: 0 0 10px 0; color: #1f2937;">📧 Emails Configurados:</h3>
+          <ul style="margin: 0; padding-left: 20px; color: #4b5563;">
+            <li><strong>Email #1:</strong> Bienvenida + Qué esperar (Trigger: Signup)</li>
+            <li><strong>Email #2:</strong> El "Empujón" (Trigger: 24h sin escanear)</li>
+            <li><strong>Email #3:</strong> Detectado Error de Parseo (0% Score)</li>
+            <li><strong>Email #4:</strong> Recovery Email (1h after free scan, details not unlocked)</li>
+            <li><strong>Email #5:</strong> Value Reminder (48h después, no upgrade)</li>
+            <li><strong>Email #6:</strong> Discount (7 días, no upgrade)</li>
+            <li><strong>Email #7:</strong> Win-Back (30 días inactivo)</li>
+            <li><strong>Email #8:</strong> Purchase Confirmation</li>
+          </ul>
+        </div>
+
+        <p><strong>Estado del sistema:</strong> ✅ Funcionando correctamente</p>
+        <p><strong>Fecha de prueba:</strong> ${new Date().toLocaleString('es-ES')}</p>
+        
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
+        
+        <p style="font-size: 12px; color: #6b7280;">
+          Este es un email de prueba generado automáticamente por el sistema CVDebug.<br>
+          Si recibes este email, significa que Resend está configurado correctamente.
+        </p>
+      </div>
+    `;
+
+    try {
+      const result = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: testEmail,
+        subject,
+        html,
+      });
+      console.log(`✅ Test email sent successfully to ${testEmail}`, result);
+      return { success: true, messageId: result.data?.id };
+    } catch (error) {
+      console.error("❌ Failed to send test email:", error);
+      return { success: false, error: String(error) };
+    }
+  },
+});

@@ -24,6 +24,7 @@ import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as marketing from "../marketing.js";
 import type * as resumes from "../resumes.js";
+import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
 import type * as unlockResume from "../unlockResume.js";
 import type * as users from "../users.js";
@@ -52,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   marketing: typeof marketing;
   resumes: typeof resumes;
+  testEmail: typeof testEmail;
   testing: typeof testing;
   unlockResume: typeof unlockResume;
   users: typeof users;

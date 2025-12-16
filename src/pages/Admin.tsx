@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+
+// Cast to any to avoid deep type instantiation errors
+const api = require("@/convex/_generated/api").api;
+const apiAny = api as any;
 import { 
   PlusCircle, 
   Loader2, 
@@ -57,17 +60,17 @@ export default function AdminPage() {
   
   // We can't conditionally call hooks, but we can handle the error/loading states in render
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
-  const users = useQuery(api.admin.getUsers, shouldFetch ? {} : "skip");
-  const stats = useQuery(api.admin.getAdminStats, shouldFetch ? {} : "skip");
-  const updateUserPlan = useMutation(api.admin.updateUserPlan);
-  const deleteUser = useMutation(api.admin.deleteUser);
-  const fixInconsistentUsers = useMutation(api.admin.fixInconsistentUsers);
-  const fixKnownMissingUsers = useMutation(api.admin.fixKnownMissingUsers);
-  const fixSpecificReportedUsers = useMutation(api.admin.fixSpecificReportedUsers);
-  const grantPurchase = useMutation(api.admin.grantPurchase);
-  const processBulkGrants = useMutation(api.admin.processBulkGrants);
-  const simulateWebhook = useAction(api.admin.simulateWebhookEvent);
-  const createCheckoutSession = useAction(api.billingActions.createCheckoutSession);
+  const users = useQuery(apiAny.admin.getUsers, shouldFetch ? {} : "skip");
+  const stats = useQuery(apiAny.admin.getAdminStats, shouldFetch ? {} : "skip");
+  const updateUserPlan = useMutation(apiAny.admin.updateUserPlan);
+  const deleteUser = useMutation(apiAny.admin.deleteUser);
+  const fixInconsistentUsers = useMutation(apiAny.admin.fixInconsistentUsers);
+  const fixKnownMissingUsers = useMutation(apiAny.admin.fixKnownMissingUsers);
+  const fixSpecificReportedUsers = useMutation(apiAny.admin.fixSpecificReportedUsers);
+  const grantPurchase = useMutation(apiAny.admin.grantPurchase);
+  const processBulkGrants = useMutation(apiAny.admin.processBulkGrants);
+  const simulateWebhook = useAction(apiAny.admin.simulateWebhookEvent);
+  const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({
@@ -273,7 +276,7 @@ export default function AdminPage() {
   };
 
   // Filter users based on search
-  const filteredUsers = users?.filter(user => {
+  const filteredUsers = users?.filter((user: any) => {
     const search = searchTerm.toLowerCase();
     return (
       user.name?.toLowerCase().includes(search) ||
@@ -566,7 +569,7 @@ export default function AdminPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredUsers.map((userData) => (
+                    {filteredUsers.map((userData: any) => (
                       <TableRow key={userData._id}>
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
