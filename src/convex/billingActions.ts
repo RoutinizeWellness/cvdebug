@@ -17,13 +17,18 @@ export const createCheckoutSession = action({
 
     const secretKey = process.env.AUTUMN_SECRET_KEY;
     if (!secretKey) {
-      throw new Error("AUTUMN_SECRET_KEY not configured");
+      console.error("AUTUMN_SECRET_KEY is missing");
+      throw new Error("Configuration error: Payment system not set up");
     }
 
+    // Use env vars for prices or fall back to placeholders (which will likely fail if not set)
     const prices = {
-      single_scan: "price_single_scan_id",
-      bulk_pack: "price_bulk_pack_id",
+      single_scan: process.env.PRICE_SINGLE_SCAN || "price_single_scan_id",
+      bulk_pack: process.env.PRICE_BULK_PACK || "price_bulk_pack_id",
     };
+
+    const priceId = prices[args.plan];
+    console.log(`[Billing] Creating session for ${args.plan} with price ${priceId}`);
 
     try {
       const response = await fetch("https://api.autumnpay.com/v1/checkout/sessions", {
@@ -34,7 +39,7 @@ export const createCheckoutSession = action({
         },
         body: JSON.stringify({
           customer_email: identity.email,
-          price_id: prices[args.plan],
+          price_id: priceId,
           success_url: args.resumeId 
             ? `${args.origin}/dashboard?resumeId=${args.resumeId}&unlocked=true`
             : `${args.origin}/dashboard?payment=success`,
@@ -47,14 +52,20 @@ export const createCheckoutSession = action({
       });
 
       if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Autumn API error: ${error}`);
+        const errorText = await response.text();
+        console.error(`[Billing] Autumn API Error: ${response.status} ${errorText}`);
+        throw new Error(`Payment provider error: ${errorText}`);
       }
 
       const data = await response.json();
+      if (!data.url) {
+        console.error("[Billing] No checkout URL in response:", data);
+        throw new Error("Invalid response from payment provider");
+      }
+      
       return data.url;
     } catch (error: any) {
-      console.error("Checkout error:", error);
+      console.error("[Billing] Checkout error:", error);
       throw new Error(error.message || "Failed to create checkout session");
     }
   },

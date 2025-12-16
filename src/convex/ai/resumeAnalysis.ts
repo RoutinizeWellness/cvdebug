@@ -58,10 +58,12 @@ export const analyzeResume = internalAction({
     try {
       const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
 
-      console.log(`[AI Analysis] Sending request to OpenRouter with model google/gemini-2.0-flash-001`);
+      // Use the free model as requested
+      const model = "google/gemini-2.0-flash-lite-preview-02-05:free";
+      console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 
       const content = await callOpenRouter(apiKey, {
-        model: "google/gemini-2.0-flash-001",
+        model: model,
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" }
       });
