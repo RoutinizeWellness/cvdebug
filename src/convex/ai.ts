@@ -384,7 +384,7 @@ export const analyzeResume = internalAction({
           "X-Title": "ResumeATS", // Required by OpenRouter
         },
         body: JSON.stringify({
-          model: "google/gemini-2.0-flash-001", // Using newer model
+          model: "google/gemini-1.5-flash", // Using stable model
           messages: [
             { role: "user", content: prompt }
           ],
@@ -398,10 +398,18 @@ export const analyzeResume = internalAction({
       }
 
       const data = await response.json();
-      const content = data.choices[0].message.content;
+      const content = data.choices[0]?.message?.content || "";
       
-      // Robust JSON extraction
-      let jsonStr = content.replace(/```json/g, '').replace(/```/g, '');
+      // Robust JSON extraction - find the first { and last }
+      const jsonStart = content.indexOf('{');
+      const jsonEnd = content.lastIndexOf('}');
+      
+      if (jsonStart === -1 || jsonEnd === -1) {
+         console.error("AI Response not JSON:", content);
+         throw new Error("Invalid JSON response from AI");
+      }
+      
+      const jsonStr = content.substring(jsonStart, jsonEnd + 1);
       
       const parsed = JSON.parse(jsonStr);
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = parsed;
@@ -424,7 +432,7 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "AI not configured or failed to analyze.",
+        analysis: "AI analysis failed. Please try again or use a different file format.",
         score: 0,
         scoreBreakdown: { keywords: 0, format: 0, completeness: 0 },
         status: "failed",
