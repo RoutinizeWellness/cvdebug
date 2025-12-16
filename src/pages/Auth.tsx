@@ -1,17 +1,31 @@
 import { SignIn, SignUp } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { Navigate } from "react-router";
 import { useSearchParams } from "react-router";
 import { Loader2 } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
+const apiAny: any = api;
 
 export default function AuthPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const [isSignIn, setIsSignIn] = useState(true);
   const [searchParams] = useSearchParams();
+  const storeUser = useMutation(apiAny.users.storeUser);
   const plan = searchParams.get("plan");
   const payment = searchParams.get("payment");
+  
+  // Store user in database immediately after authentication
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      storeUser().catch(err => {
+        console.error("Failed to store user:", err);
+      });
+    }
+  }, [isAuthenticated, isLoading, storeUser]);
   
   // Construct redirect URL preserving both plan and payment status
   let redirectUrl = "/dashboard";
