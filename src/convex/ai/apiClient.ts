@@ -128,7 +128,7 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
     relevantKeywords = techKeywords;
   }
   
-  // ===== TF-IDF INSPIRED KEYWORD SCORING =====
+  // ===== REFINED TF-IDF KEYWORD SCORING =====
   
   let keywordScore = 0;
   const foundKeywords: Array<{keyword: string, frequency: number, weight: number}> = [];
@@ -346,6 +346,39 @@ export function generateFallbackAnalysis(ocrText: string, jobDescription?: strin
   
   const totalScore = Math.min(100, Math.max(0, keywordScore + formatScore + completenessScore));
   
+  // ===== GENERATE METRIC SUGGESTIONS =====
+  
+  const metricSuggestions: Array<{tech: string, metrics: string[]}> = [];
+  
+  if (category === "Engineering") {
+    metricSuggestions.push({
+      tech: "Structural Design",
+      metrics: [
+        "Designed [X-story], [Y m²/ft²] [material] building using [code/software], reducing material cost by Z%",
+        "Optimized structural system for [project type], achieving [X%] cost savings while meeting [code] requirements",
+        "Analyzed and designed [X] structures totaling [Y m²], ensuring compliance with [IBC/ASCE/Eurocode]"
+      ]
+    });
+  } else if (category === "Marketing") {
+    metricSuggestions.push({
+      tech: "Digital Marketing",
+      metrics: [
+        "Increased conversion rate by X% through [campaign/strategy], generating $Y in revenue",
+        "Grew organic traffic by X% using SEO optimization, resulting in Y new leads per month",
+        "Achieved X% ROI on [platform] campaigns with $Y budget, reducing CPC by Z%"
+      ]
+    });
+  } else if (category === "Software Engineering") {
+    metricSuggestions.push({
+      tech: "Software Development",
+      metrics: [
+        "Built [system/feature] serving X users/requests using [tech stack], improving [metric] by Y%",
+        "Optimized [component] reducing latency by X% and increasing throughput by Y requests/sec",
+        "Architected [system] processing X TB/records daily, achieving Y% uptime and Z% cost reduction"
+      ]
+    });
+  }
+  
   // ===== GENERATE DETAILED ANALYSIS =====
   
   const analysis = `
@@ -499,7 +532,7 @@ ${totalScore >= 75 ? '🎉 You\'re in the top 25%!' : totalScore >= 62 ? '📊 Y
       synonyms: []
     })),
     formatIssues,
-    metricSuggestions: [],
+    metricSuggestions,
     analysis
   };
 }
