@@ -8,6 +8,10 @@ const crons = cronJobs();
 // @ts-ignore
 crons.interval("ml learning update", { hours: 24 }, (internal as any).mlLearning.processLearningData, {});
 
+// Run Role Classification Evaluation weekly (168 hours) to monitor accuracy
+// @ts-ignore
+crons.interval("role classification eval", { hours: 168 }, (internal as any).ai.evaluation.evaluateRoleClassification, {});
+
 // 1. Activation Flow (Email #2: 24h reminder if no scans)
 crons.interval("activation_flow", { hours: 1 }, internal.crons.runActivationFlow, {});
 
