@@ -16,6 +16,7 @@ import type * as ai_config_keywords from "../ai/config/keywords.js";
 import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
 import type * as ai_prompts from "../ai/prompts.js";
+import type * as ai_qualityChecks from "../ai/qualityChecks.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
 import type * as ai_resumeRewrite from "../ai/resumeRewrite.js";
 import type * as auth from "../auth.js";
@@ -48,6 +49,7 @@ declare const fullApi: ApiFromModules<{
   "ai/config/metricTemplates": typeof ai_config_metricTemplates;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
   "ai/prompts": typeof ai_prompts;
+  "ai/qualityChecks": typeof ai_qualityChecks;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;
   "ai/resumeRewrite": typeof ai_resumeRewrite;
   auth: typeof auth;

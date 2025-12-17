@@ -12,6 +12,7 @@ import {
   type RoleCategory
 } from "./config/keywords";
 import { getMetricsForCategory } from "./config/metricTemplates";
+import { checkBuzzwords, checkCapitalization, checkRepetitiveStarts } from "./qualityChecks";
 
 interface OpenRouterRequest {
   model: string;
@@ -379,6 +380,34 @@ export function generateFallbackAnalysis(
       atsImpact: "Confuses ATS timeline parsing, may misorder your experience"
     });
   }
+
+  // NEW: Capitalization Check
+  const capitalizationIssues = checkCapitalization(ocrText);
+  if (capitalizationIssues.length > 0) {
+    formatIssues.push({
+      issue: "Incorrect Technical Capitalization",
+      severity: "low",
+      fix: `Correct the capitalization of technical terms: ${capitalizationIssues.join(", ")}`,
+      location: "Skills/Experience",
+      atsImpact: "Indicates lack of attention to detail to human recruiters"
+    });
+  } else {
+    formatScore += 2;
+  }
+
+  // NEW: Repetition Check
+  const repetitionIssues = checkRepetitiveStarts(ocrText);
+  if (repetitionIssues.length > 0) {
+    formatIssues.push({
+      issue: "Repetitive Sentence Starters",
+      severity: "medium",
+      fix: `Vary your action verbs. Found repetition: ${repetitionIssues.join(", ")}`,
+      location: "Experience Bullets",
+      atsImpact: "Reduces readability and engagement"
+    });
+  } else {
+    formatScore += 2;
+  }
   
   formatScore = Math.min(30, formatScore * scoringMultipliers.format);
   
@@ -457,6 +486,20 @@ export function generateFallbackAnalysis(
   sentimentScore += (powerPhraseCount * 1.5); // Bonus for result-oriented phrasing
   sentimentScore -= (weakPhraseCount * 0.5);  // Penalty for passive phrasing
   sentimentScore += (growthCount * 0.5);      // Bonus for growth mindset
+
+  // NEW: Buzzword Penalty
+  const foundBuzzwords = checkBuzzwords(ocrText);
+  if (foundBuzzwords.length > 0) {
+    sentimentScore -= (foundBuzzwords.length * 0.5);
+    // Add to format issues as a content warning
+    formatIssues.push({
+      issue: "Overused Buzzwords Detected",
+      severity: "low",
+      fix: `Replace clichés with specific examples: ${foundBuzzwords.slice(0, 3).join(", ")}`,
+      location: "Summary/Experience",
+      atsImpact: "Generic terms fail to differentiate you from other candidates"
+    });
+  }
   
   // Cap sentiment contribution to completeness score
   const sentimentContribution = Math.max(0, Math.min(15, sentimentScore));
