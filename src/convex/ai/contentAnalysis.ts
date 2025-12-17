@@ -1,4 +1,4 @@
-import { softSkills } from "./config/keywords";
+import { softSkills, actionVerbs } from "./config/keywords";
 
 export interface BulletPointAnalysis {
   score: number;
@@ -26,7 +26,8 @@ export function analyzeBulletPoints(text: string): BulletPointAnalysis {
   let bulletCount = 0;
 
   // Strong action verbs to look for at start
-  const strongVerbs = /^(led|managed|developed|created|designed|implemented|optimized|increased|reduced|saved|achieved|launched|spearheaded|transformed|built|engineered|architected|orchestrated|accelerated|revitalized|modernized|pioneered|generated|delivered|executed|consolidated|maximized|minimized|streamlined|overhauled|championed|directed|supervised|guided|mentored|coached|established|founded|initiated|instituted|introduced|resolved|solved|negotiated|secured|won|awarded|exceeded|outperformed|surpassed)/i;
+  // Create regex from centralized actionVerbs list
+  const strongVerbs = new RegExp(`^(${actionVerbs.join('|')})`, 'i');
   
   // Metrics patterns
   const metrics = /(\d+%|\$\d+|\d+x|\d+\+)/;

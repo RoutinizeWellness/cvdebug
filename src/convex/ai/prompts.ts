@@ -109,7 +109,7 @@ Return a raw JSON object with this exact structure. Do not include markdown form
 
 export function buildRewritePrompt(ocrText: string, jobDescription?: string): string {
   return `You are an expert Resume Writer and ATS Optimization Specialist.
-Your task is to REWRITE the following resume content to be perfectly optimized for Applicant Tracking Systems (ATS).
+Your task is to REWRITE the following resume content to be perfectly optimized for Applicant Tracking Systems (ATS) and human recruiters.
 
 Target Job Description (if any):
 "${jobDescription || "General professional optimization"}"
@@ -118,17 +118,25 @@ Original Resume Text:
 "${ocrText.substring(0, 20000)}"
 
 ### INSTRUCTIONS:
-1. **Improve Clarity & Impact**: Rewrite bullet points to use strong action verbs and include metrics where possible (e.g., "Increased sales by 20%").
-2. **ATS Formatting**: Ensure the text is structured with clear headers (Summary, Experience, Education, Skills).
-3. **Keyword Integration**: Naturally weave in relevant keywords from the JD or industry standards.
-4. **Fix Grammar & Flow**: Correct any errors and ensure a professional tone.
-5. **Output Format**: Return ONLY the rewritten resume text in a clean, Markdown format. Do not include explanations or "Here is the rewritten resume" text. Just the resume.
+1. **STAR Method**: Rewrite every bullet point using the STAR method (Situation, Task, Action, Result).
+2. **Quantifiable Impact**: Ensure every bullet point includes a metric (%, $, #) or a clear qualitative result. If exact numbers are missing, use placeholders like "[X]%" or "significant".
+3. **Strong Action Verbs**: Start every bullet with a powerful action verb (e.g., "Orchestrated", "Spearheaded", "Engineered"). Avoid passive language like "Responsible for".
+4. **Keyword Integration**: Naturally weave in relevant keywords from the JD or industry standards without keyword stuffing.
+5. **Formatting**: 
+   - Use clear headers: "Professional Summary", "Experience", "Education", "Skills".
+   - Keep the layout clean and simple.
+6. **Tone**: Professional, confident, and concise.
+
+### OUTPUT FORMAT:
+Return ONLY the rewritten resume text in a clean, Markdown format. 
+Do not include explanations, preambles, or "Here is the rewritten resume" text. 
+Just the resume content.
 `;
 }
 
 export function buildLinkedInPrompt(profileText: string, jobDescription?: string, linkedinUrl?: string): string {
-  return `You are an expert LinkedIn Profile Optimizer and Career Coach.
-Analyze the following LinkedIn profile data against the target Job Description (if provided).
+  return `You are an expert LinkedIn Profile Optimizer and Personal Branding Coach.
+Analyze the following LinkedIn profile data against the target Job Description (if provided) to maximize visibility and recruiter engagement.
 
 LinkedIn URL: ${linkedinUrl || "Not provided"}
 
@@ -141,15 +149,28 @@ Profile Text (About, Experience, Skills, etc.):
 Provide a detailed optimization report in JSON format with the following structure:
 {
   "score": number (0-100),
-  "headline": "Suggested new headline",
-  "about": "Critique of the About section...",
-  "missingKeywords": ["keyword1", "keyword2"],
-  "actionableTips": ["Tip 1", "Tip 2"]
+  "headline": {
+    "current": "Current headline string",
+    "suggested": "Suggested punchy, keyword-rich headline",
+    "critique": "Why the change is needed"
+  },
+  "about": {
+    "critique": "Analysis of the About section (storytelling, hook, call to action)",
+    "suggestions": "Specific improvements"
+  },
+  "experience": {
+    "critique": "Analysis of experience descriptions",
+    "missingKeywords": ["keyword1", "keyword2"]
+  },
+  "actionableTips": [
+    { "section": "Section Name", "tip": "Specific advice" }
+  ]
 }
 
 Focus on:
-1. SEO keywords for the target role.
-2. Professional branding and impact.
-3. Alignment with the job description.
+1. **SEO & Discoverability**: Keywords in Headline, About, and Experience.
+2. **First Impressions**: Professional headline and engaging About section.
+3. **Social Proof**: Recommendations, skills endorsements, and project highlights.
+4. **Alignment**: Matching the profile to the target role/industry.
 `;
 }

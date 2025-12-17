@@ -76,7 +76,28 @@ export const softSkills = [
   "analytical", "detail oriented", "organization", "flexibility", "interpersonal skills",
   "cross-functional collaboration", "remote collaboration", "async communication", "active listening",
   "cultural awareness", "empathy", "storytelling", "public speaking", "consensus building",
-  "self-motivation", "resilience", "accountability", "ownership", "growth mindset"
+  "self-motivation", "resilience", "accountability", "ownership", "growth mindset",
+  "initiative", "integrity", "work ethic", "dependability", "patience", "open-mindedness",
+  "stress management", "delegation", "constructive feedback", "diplomacy", "networking",
+  "persuasion", "influence", "team building", "conflict management", "customer focus"
+];
+
+export const actionVerbs = [
+  "led", "managed", "developed", "created", "designed", "implemented", "optimized",
+  "increased", "reduced", "saved", "achieved", "launched", "spearheaded", "transformed",
+  "built", "engineered", "architected", "orchestrated", "accelerated", "revitalized",
+  "modernized", "pioneered", "generated", "delivered", "executed", "consolidated",
+  "maximized", "minimized", "streamlined", "overhauled", "championed", "directed",
+  "supervised", "guided", "mentored", "coached", "established", "founded", "initiated",
+  "instituted", "introduced", "resolved", "solved", "negotiated", "secured", "won",
+  "awarded", "exceeded", "outperformed", "surpassed", "collaborated", "partnered",
+  "facilitated", "coordinated", "standardized", "automated", "conceptualized",
+  "forecasted", "budgeted", "allocated", "restructured", "simplified", "clarified",
+  "presented", "authored", "published", "researched", "investigated", "audited",
+  "evaluated", "assessed", "diagnosed", "troubleshot", "debugged", "refactored",
+  "deployed", "maintained", "supported", "administered", "configured", "provisioned",
+  "mobilized", "leveraged", "cultivated", "fostered", "empowered", "enabled",
+  "integrated", "migrated", "upgraded", "scaled", "expanded", "diversified"
 ];
 
 // Enhanced synonym mapping for semantic matching with weighted importance
