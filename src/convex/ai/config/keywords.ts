@@ -20,7 +20,8 @@ export const engineeringKeywords = [
   "finite element", "fem", "structural analysis", "load calculation",
   "wind load", "snow load", "dead load", "live load", "moment frame",
   "shear wall", "braced frame", "composite", "prestressed", "post-tensioned",
-  "geotechnical", "soil mechanics", "retaining wall", "pile foundation"
+  "geotechnical", "soil mechanics", "retaining wall", "pile foundation",
+  "hvac", "piping", "solidworks", "catia", "ansys", "cfd", "thermodynamics"
 ];
 
 export const marketingKeywords = [
@@ -31,7 +32,8 @@ export const marketingKeywords = [
   "brand strategy", "copywriting", "ppc", "display ads", "retargeting",
   "instagram ads", "tiktok ads", "influencer marketing", "affiliate marketing",
   "marketing analytics", "customer acquisition", "customer retention", "churn rate",
-  "lifetime value", "ltv", "cac", "marketing mix", "attribution modeling"
+  "lifetime value", "ltv", "cac", "marketing mix", "attribution modeling",
+  "brand management", "growth hacking", "marketo", "mailchimp", "klaviyo"
 ];
 
 export const productKeywords = [
@@ -57,7 +59,10 @@ export const softSkills = [
   "adaptability", "creativity", "critical thinking", "time management", "emotional intelligence",
   "negotiation", "conflict resolution", "decision making", "mentoring", "presentation",
   "strategic planning", "project management", "stakeholder management", "client facing", 
-  "analytical", "detail oriented", "organization", "flexibility", "interpersonal skills"
+  "analytical", "detail oriented", "organization", "flexibility", "interpersonal skills",
+  "cross-functional collaboration", "remote collaboration", "async communication", "active listening",
+  "cultural awareness", "empathy", "storytelling", "public speaking", "consensus building",
+  "self-motivation", "resilience", "accountability", "ownership", "growth mindset"
 ];
 
 // Enhanced synonym mapping for semantic matching with weighted importance
@@ -137,39 +142,39 @@ export interface RolePattern {
 
 export const roleClassificationPatterns: Record<RoleCategory, RolePattern[]> = {
   "Engineering": [
-    { keywords: ["structural", "civil", "mechanical", "electrical"], weight: 10, context: ["engineer", "engineering"] },
-    { keywords: ["etabs", "sap2000", "revit", "autocad", "staad", "tekla", "risa"], weight: 8 },
-    { keywords: ["ibc", "asce", "eurocode", "aisc", "aci", "aashto"], weight: 6 },
-    { keywords: ["steel", "concrete", "seismic", "foundation", "structural design"], weight: 4 },
-    { keywords: ["load calculation", "finite element", "fem", "lateral", "gravity"], weight: 3 }
+    { keywords: ["structural", "civil", "mechanical", "electrical", "hvac", "piping"], weight: 10, context: ["engineer", "engineering", "design"] },
+    { keywords: ["etabs", "sap2000", "revit", "autocad", "staad", "tekla", "risa", "solidworks", "catia", "ansys"], weight: 8 },
+    { keywords: ["ibc", "asce", "eurocode", "aisc", "aci", "aashto", "astm", "iso", "din"], weight: 6 },
+    { keywords: ["steel", "concrete", "seismic", "foundation", "structural design", "fea", "cfd"], weight: 4 },
+    { keywords: ["load calculation", "finite element", "fem", "lateral", "gravity", "stress analysis"], weight: 3 }
   ],
   "Software Engineering": [
-    { keywords: ["software", "full stack", "backend", "frontend", "web"], weight: 10, context: ["engineer", "developer"] },
-    { keywords: ["javascript", "python", "java", "react", "node", "typescript", "angular", "vue"], weight: 6 },
-    { keywords: ["api", "microservices", "docker", "kubernetes", "aws", "git", "ci/cd"], weight: 4 },
-    { keywords: ["database", "sql", "nosql", "redis", "mongodb"], weight: 3 }
+    { keywords: ["software", "full stack", "backend", "frontend", "web", "mobile", "ios", "android"], weight: 10, context: ["engineer", "developer", "architect"] },
+    { keywords: ["javascript", "python", "java", "react", "node", "typescript", "angular", "vue", "golang", "rust", "c++", "c#"], weight: 6 },
+    { keywords: ["api", "microservices", "docker", "kubernetes", "aws", "git", "ci/cd", "graphql", "rest", "grpc"], weight: 4 },
+    { keywords: ["database", "sql", "nosql", "redis", "mongodb", "postgresql", "system design"], weight: 3 }
   ],
   "Marketing": [
-    { keywords: ["digital", "content", "growth", "performance"], weight: 10, context: ["marketing", "marketer"] },
-    { keywords: ["seo", "sem", "google analytics", "facebook ads", "ppc", "cpc", "ctr"], weight: 6 },
-    { keywords: ["campaign", "conversion", "roi", "lead generation", "email marketing"], weight: 4 },
-    { keywords: ["social media", "brand", "copywriting"], weight: 3 }
+    { keywords: ["digital marketing", "content strategy", "growth marketing", "brand management", "product marketing"], weight: 10, context: ["marketing", "marketer", "manager"] },
+    { keywords: ["seo", "sem", "google analytics", "facebook ads", "ppc", "cpc", "ctr", "hubspot", "salesforce", "marketo"], weight: 6 },
+    { keywords: ["campaign", "conversion", "roi", "lead generation", "email marketing", "social media", "influencer"], weight: 4 },
+    { keywords: ["brand awareness", "copywriting", "storytelling", "market research", "customer segmentation"], weight: 3 }
   ],
   "Product Management": [
-    { keywords: ["product"], weight: 10, context: ["manager", "management", "owner"] },
-    { keywords: ["roadmap", "backlog", "user stories", "sprint", "jira", "confluence"], weight: 6 },
-    { keywords: ["mvp", "okr", "kpi", "stakeholder", "product strategy"], weight: 4 },
-    { keywords: ["agile", "scrum", "kanban"], weight: 3 }
+    { keywords: ["product management", "product owner", "technical product manager"], weight: 10, context: ["manager", "management", "owner", "head"] },
+    { keywords: ["roadmap", "backlog", "user stories", "sprint", "jira", "confluence", "prd", "mrd"], weight: 6 },
+    { keywords: ["mvp", "okr", "kpi", "stakeholder", "product strategy", "go-to-market", "gtm"], weight: 4 },
+    { keywords: ["agile", "scrum", "kanban", "user research", "a/b testing", "feature prioritization"], weight: 3 }
   ],
   "Data Science": [
-    { keywords: ["data", "machine learning", "ml"], weight: 10, context: ["scientist", "engineer", "analyst"] },
-    { keywords: ["python", "r", "sql", "tableau", "power bi", "pandas", "numpy"], weight: 6 },
-    { keywords: ["regression", "classification", "clustering", "predictive", "statistical"], weight: 4 },
-    { keywords: ["tensorflow", "pytorch", "scikit-learn", "keras"], weight: 3 }
+    { keywords: ["data science", "machine learning", "deep learning", "artificial intelligence"], weight: 10, context: ["scientist", "engineer", "analyst"] },
+    { keywords: ["python", "r", "sql", "tableau", "power bi", "pandas", "numpy", "scikit-learn", "spark"], weight: 6 },
+    { keywords: ["regression", "classification", "clustering", "predictive", "statistical", "nlp", "computer vision"], weight: 4 },
+    { keywords: ["tensorflow", "pytorch", "keras", "big data", "etl", "data mining"], weight: 3 }
   ],
   "General": [
-    { keywords: ["management", "leadership", "strategy"], weight: 5 },
-    { keywords: ["communication", "collaboration", "problem solving"], weight: 3 }
+    { keywords: ["management", "leadership", "strategy", "operations", "administration"], weight: 5 },
+    { keywords: ["communication", "collaboration", "problem solving", "customer service"], weight: 3 }
   ]
 };
 

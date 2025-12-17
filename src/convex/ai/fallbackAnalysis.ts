@@ -404,7 +404,7 @@ export function generateFallbackAnalysis(
   let sentimentScore = 0;
   
   // Base score from strong verbs (existing logic)
-  const strongVerbs = /\b(led|architected|designed|built|optimized|increased|reduced|launched|scaled|implemented|developed|created|managed|spearheaded|pioneered|transformed)\b/gi;
+  const strongVerbs = /\b(led|architected|designed|built|optimized|increased|reduced|launched|scaled|implemented|developed|created|managed|spearheaded|pioneered|transformed|orchestrated|accelerated|revitalized|modernized|generated|delivered|executed|consolidated|maximized|minimized|streamlined|overhauled|championed|established|founded|initiated|instituted|introduced|resolved|solved|negotiated|secured|won|exceeded|outperformed|surpassed)\b/gi;
   const strongVerbMatches = (ocrText.match(strongVerbs) || []).length;
   
   if (strongVerbMatches >= 8) sentimentScore += 8;

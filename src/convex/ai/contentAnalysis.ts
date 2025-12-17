@@ -26,7 +26,7 @@ export function analyzeBulletPoints(text: string): BulletPointAnalysis {
   let bulletCount = 0;
 
   // Strong action verbs to look for at start
-  const strongVerbs = /^(led|managed|developed|created|designed|implemented|optimized|increased|reduced|saved|achieved|launched|spearheaded|transformed|built|engineered|architected)/i;
+  const strongVerbs = /^(led|managed|developed|created|designed|implemented|optimized|increased|reduced|saved|achieved|launched|spearheaded|transformed|built|engineered|architected|orchestrated|accelerated|revitalized|modernized|pioneered|generated|delivered|executed|consolidated|maximized|minimized|streamlined|overhauled|championed|directed|supervised|guided|mentored|coached|established|founded|initiated|instituted|introduced|resolved|solved|negotiated|secured|won|awarded|exceeded|outperformed|surpassed)/i;
   
   // Metrics patterns
   const metrics = /(\d+%|\$\d+|\d+x|\d+\+)/;
