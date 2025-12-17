@@ -1,0 +1,3 @@
+{
+  "plan": "1. Verify that the build errors are resolved.\n2. Confirm that the ML learning cron job is correctly registered in `src/convex/crons.ts`.\n3. Verify that `src/convex/ai/resumeAnalysis.ts` correctly imports and uses the new `generateFallbackAnalysis` from `src/convex/ai/fallbackAnalysis.ts`."
+}

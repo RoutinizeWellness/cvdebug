@@ -3,7 +3,8 @@
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
 import { buildResumeAnalysisPrompt } from "./prompts";
-import { callOpenRouter, extractJSON, generateFallbackAnalysis } from "./apiClient";
+import { callOpenRouter, extractJSON } from "./apiClient";
+import { generateFallbackAnalysis } from "./fallbackAnalysis";
 
 const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
 const runQuery = (ctx: any, fn: any, args: any) => (ctx as any).runQuery(fn, args);
