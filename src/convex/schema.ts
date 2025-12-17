@@ -131,6 +131,7 @@ const schema = defineSchema(
     keywordWeights: v.any(),
     categoryWeights: v.any(),
     scoringAdjustments: v.any(),
+    discoveredKeywords: v.optional(v.array(v.string())),
     lastUpdated: v.number(),
   }),
 

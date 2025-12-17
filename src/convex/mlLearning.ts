@@ -147,6 +147,109 @@ export const getCategoryAccuracy = query({
   },
 });
 
+// Automated learning process to update weights and discover new keywords
+export const processLearningData = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    // 1. Fetch recent data
+    const successes = await ctx.db.query("mlSuccessTracking").order("desc").take(50);
+    const feedback = await ctx.db.query("mlFeedback").order("desc").take(50);
+    
+    // 2. Calculate New Keyword Weights based on Feedback
+    const newKeywordWeights: Record<string, number> = {};
+    const newCategoryWeights: Record<string, number> = {};
+    const newScoringAdjustments = { keywords: 0, format: 0, completeness: 0 };
+
+    // Process Feedback
+    let scoreHighCount = 0;
+    let scoreLowCount = 0;
+
+    for (const f of feedback) {
+        if (f.feedbackType === "missing_keyword" && f.suggestedKeywords) {
+            for (const k of f.suggestedKeywords) {
+                // Boost weight for user-suggested missing keywords
+                newKeywordWeights[k] = (newKeywordWeights[k] || 1) + 0.2;
+            }
+        }
+        if (f.feedbackType === "wrong_category" && f.suggestedCategory) {
+             // Boost weight for user-corrected categories
+             newCategoryWeights[f.suggestedCategory] = (newCategoryWeights[f.suggestedCategory] || 0) + 0.5;
+        }
+        if (f.feedbackType === "score_too_high") scoreHighCount++;
+        if (f.feedbackType === "score_too_low") scoreLowCount++;
+    }
+
+    // Adjust global scoring based on bias (Self-Calibration)
+    if (scoreHighCount > scoreLowCount) {
+        newScoringAdjustments.keywords = -0.02; // Slightly harder
+        newScoringAdjustments.completeness = -0.02;
+    } else if (scoreLowCount > scoreHighCount) {
+        newScoringAdjustments.keywords = 0.02; // Slightly easier
+        newScoringAdjustments.completeness = 0.02;
+    }
+
+    // 3. Synonym & Keyword Discovery from Successful Resumes
+    const wordFrequency: Record<string, number> = {};
+    const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those', 'i', 'my', 'me', 'we', 'our', 'us', 'you', 'your', 'he', 'she', 'it', 'they', 'them', 'from', 'by', 'about', 'as', 'into', 'like', 'through', 'after', 'over', 'between', 'out', 'against', 'during', 'without', 'before', 'under', 'around', 'among']);
+
+    for (const s of successes) {
+        // Boost category weight for successful outcomes
+        if (s.resumeCategory) {
+            newCategoryWeights[s.resumeCategory] = (newCategoryWeights[s.resumeCategory] || 0) + 0.3;
+        }
+
+        // Analyze text for new keywords if we can access the resume
+        const resume = await ctx.db.get(s.resumeId);
+        if (resume && resume.ocrText) {
+            const words = resume.ocrText.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
+            for (const word of words) {
+                if (!stopWords.has(word)) {
+                    wordFrequency[word] = (wordFrequency[word] || 0) + 1;
+                }
+            }
+        }
+    }
+
+    // Identify potential new keywords (appear in > 20% of successful resumes)
+    const discoveredKeywords: string[] = [];
+    const threshold = Math.max(3, successes.length * 0.2);
+    
+    for (const [word, count] of Object.entries(wordFrequency)) {
+        if (count >= threshold) {
+            discoveredKeywords.push(word);
+        }
+    }
+
+    // 4. Update Configuration
+    const existingConfig = await ctx.db.query("mlConfig").order("desc").first();
+    
+    // Merge with existing weights
+    const finalKeywordWeights = { ...(existingConfig?.keywordWeights || {}), ...newKeywordWeights };
+    const finalCategoryWeights = { ...(existingConfig?.categoryWeights || {}), ...newCategoryWeights };
+    
+    // Accumulate adjustments
+    const finalScoringAdjustments = {
+        keywords: (existingConfig?.scoringAdjustments?.keywords || 0) + newScoringAdjustments.keywords,
+        format: (existingConfig?.scoringAdjustments?.format || 0) + newScoringAdjustments.format,
+        completeness: (existingConfig?.scoringAdjustments?.completeness || 0) + newScoringAdjustments.completeness,
+    };
+
+    // Merge discovered keywords
+    const existingDiscovered = new Set(existingConfig?.discoveredKeywords || []);
+    discoveredKeywords.forEach(k => existingDiscovered.add(k));
+
+    await ctx.db.insert("mlConfig", {
+        keywordWeights: finalKeywordWeights,
+        categoryWeights: finalCategoryWeights,
+        scoringAdjustments: finalScoringAdjustments,
+        discoveredKeywords: Array.from(existingDiscovered),
+        lastUpdated: Date.now(),
+    });
+    
+    console.log(`[ML Learning] Automated update complete. Discovered ${discoveredKeywords.length} potential keywords.`);
+  }
+});
+
 // Internal mutation to update ML weights based on learning
 export const updateMLWeights = internalMutation({
   args: {

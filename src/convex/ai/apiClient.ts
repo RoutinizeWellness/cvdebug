@@ -100,6 +100,7 @@ export function generateFallbackAnalysis(
     keywordWeights?: Record<string, number>;
     categoryWeights?: Record<string, number>;
     scoringAdjustments?: { keywords?: number; format?: number; completeness?: number };
+    discoveredKeywords?: string[];
   }
 ): any {
   console.log("[Fallback Analysis] Generating ML-based analysis with adaptive learning");
@@ -143,6 +144,10 @@ export function generateFallbackAnalysis(
   }
   
   const relevantKeywords = getKeywordsForCategory(adjustedCategory);
+  // Add discovered keywords from ML learning
+  if (mlConfig?.discoveredKeywords) {
+    relevantKeywords.push(...mlConfig.discoveredKeywords);
+  }
   
   console.log(`[Role Classification] Category: ${adjustedCategory}, Confidence: ${(confidence * 100).toFixed(1)}%`);
   
@@ -403,18 +408,59 @@ export function generateFallbackAnalysis(
   else if (metricCount >= 3) completenessScore += 7;
   else if (metricCount >= 1) completenessScore += 3;
   
-  // Action verb strength analysis (NLP-inspired)
+  // ENHANCED SENTIMENT ANALYSIS
+  // 1. Power Phrases (Action + Metric + Result)
+  const powerPhrasePatterns = [
+    /\b(increased|reduced|improved|grew|saved|generated)\b.{0,30}\b(\d+%|\$\d+)\b/i,
+    /\b(achieved|delivered|completed)\b.{0,30}\b(under budget|ahead of schedule)\b/i,
+    /\b(led|managed|spearheaded)\b.{0,30}\b(team|project|initiative)\b.{0,30}\b(result|outcome|success)\b/i
+  ];
+  
+  let powerPhraseCount = 0;
+  powerPhrasePatterns.forEach(pattern => {
+    const matches = ocrText.match(pattern);
+    if (matches) powerPhraseCount += matches.length;
+  });
+
+  // 2. Weak/Passive Language Detection
+  const weakPhrases = [
+    "responsible for", "duties included", "worked on", "helped with", "assisted in", 
+    "attempted to", "tried to", "participated in", "familiar with"
+  ];
+  
+  let weakPhraseCount = 0;
+  weakPhrases.forEach(phrase => {
+    const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
+    const matches = ocrText.match(regex);
+    if (matches) weakPhraseCount += matches.length;
+  });
+
+  // 3. Growth Mindset Language
+  const growthWords = ["learned", "adapted", "upskilled", "certified", "trained", "mentored", "volunteered"];
+  let growthCount = 0;
+  growthWords.forEach(word => {
+    if (text.includes(word)) growthCount++;
+  });
+
+  // Sentiment Scoring Logic
+  let sentimentScore = 0;
+  
+  // Base score from strong verbs (existing logic)
   const strongVerbs = /\b(led|architected|designed|built|optimized|increased|reduced|launched|scaled|implemented|developed|created|managed|spearheaded|pioneered|transformed)\b/gi;
-  const weakVerbs = /\b(responsible for|worked on|helped with|assisted|involved in)\b/gi;
-  
   const strongVerbMatches = (ocrText.match(strongVerbs) || []).length;
-  const weakVerbMatches = (ocrText.match(weakVerbs) || []).length;
   
-  if (strongVerbMatches >= 8) completenessScore += 8;
-  else if (strongVerbMatches >= 5) completenessScore += 5;
-  else if (strongVerbMatches >= 2) completenessScore += 2;
+  if (strongVerbMatches >= 8) sentimentScore += 8;
+  else if (strongVerbMatches >= 5) sentimentScore += 5;
+  else if (strongVerbMatches >= 2) sentimentScore += 2;
   
-  if (weakVerbMatches > 3) completenessScore -= 2; // Penalty for weak verbs
+  // Adjust based on Power Phrases vs Weak Phrases
+  sentimentScore += (powerPhraseCount * 1.5); // Bonus for result-oriented phrasing
+  sentimentScore -= (weakPhraseCount * 0.5);  // Penalty for passive phrasing
+  sentimentScore += (growthCount * 0.5);      // Bonus for growth mindset
+  
+  // Cap sentiment contribution to completeness score
+  const sentimentContribution = Math.max(0, Math.min(15, sentimentScore));
+  completenessScore += sentimentContribution;
   
   // Resume length analysis
   if (ocrText.length > 1500) completenessScore += 5;

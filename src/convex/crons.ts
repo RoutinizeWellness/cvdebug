@@ -1,19 +1,21 @@
 import { cronJobs } from "convex/server";
+import { internal } from "./_generated/api";
 import { internalMutation } from "./_generated/server";
-
-// Cast internal to any to avoid type instantiation issues
-const internalAny = require("./_generated/api").internal;
 
 const crons = cronJobs();
 
+// Run ML learning update every 24 hours to refine weights and discover synonyms
+// @ts-ignore
+crons.interval("ml learning update", { hours: 24 }, (internal as any).mlLearning.processLearningData, {});
+
 // 1. Activation Flow (Email #2: 24h reminder if no scans)
-crons.interval("activation_flow", { hours: 1 }, internalAny.crons.runActivationFlow, {});
+crons.interval("activation_flow", { hours: 1 }, internal.crons.runActivationFlow, {});
 
 // 2. Conversion Flow (Email #4 & #5: Post-scan conversion)
-crons.interval("conversion_flow", { hours: 1 }, internalAny.crons.runConversionFlow, {});
+crons.interval("conversion_flow", { hours: 1 }, internal.crons.runConversionFlow, {});
 
 // 3. Re-Engagement Flow (Email #7: 30-day check-in)
-crons.interval("reengagement_flow", { hours: 24 }, internalAny.crons.runReengagementFlow, {});
+crons.interval("reengagement_flow", { hours: 24 }, internal.crons.runReengagementFlow, {});
 
 // --- Activation Flow Logic ---
 // Email #2: 24h reminder if no scans
@@ -43,7 +45,7 @@ export const runActivationFlow = internalMutation({
 
       if (!resume && user.email) {
         await ctx.db.patch(user._id, { activationEmail24hSent: true });
-        await ctx.scheduler.runAfter(0, internalAny.marketing.sendActivationReminderEmail, {
+        await ctx.scheduler.runAfter(0, internal.marketing.sendActivationReminderEmail, {
           email: user.email,
           name: user.name,
         });
@@ -87,7 +89,7 @@ export const runConversionFlow = internalMutation({
           const firstError = (typeof firstKeyword === 'string' ? firstKeyword : firstKeyword?.keyword) 
             || (typeof firstFormat === 'string' ? firstFormat : firstFormat?.issue);
 
-          await ctx.scheduler.runAfter(0, internalAny.marketing.sendRecoveryEmail, {
+          await ctx.scheduler.runAfter(0, internal.marketing.sendRecoveryEmail, {
             email: user.email,
             name: user.name,
             score: resume.score,
@@ -119,7 +121,7 @@ export const runConversionFlow = internalMutation({
           
           const totalErrors = (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0);
 
-          await ctx.scheduler.runAfter(0, internalAny.marketing.sendValueReminderEmail, {
+          await ctx.scheduler.runAfter(0, internal.marketing.sendValueReminderEmail, {
             email: user.email,
             name: user.name,
             score: resume.score,
@@ -169,7 +171,7 @@ export const runReengagementFlow = internalMutation({
       // If they have been inactive for > 30 days, send email
       if (user.email) {
         await ctx.db.patch(user._id, { winBackEmail30dSent: true });
-        await ctx.scheduler.runAfter(0, internalAny.marketing.sendWinBackEmail, {
+        await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, {
           email: user.email,
           name: user.name,
         });
