@@ -1,4 +1,4 @@
-import { Shield, Target, BarChart3, CheckCircle2, Linkedin, FileSearch, XCircle, AlertTriangle } from "lucide-react";
+import { Shield, Target, BarChart3, CheckCircle2, Linkedin, FileSearch, XCircle, AlertTriangle, TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
@@ -89,49 +89,76 @@ export function FeatureGridSection() {
               }}
               className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl blur-3xl"
             ></motion.div>
-            <div className="relative bg-card border border-border rounded-3xl p-6 md:p-8 shadow-2xl hover:shadow-primary/20 transition-shadow duration-500">
-              <div className="flex items-center justify-between mb-8 border-b border-border pb-6">
+            <div className="relative bg-gradient-to-br from-card via-card to-card/80 border-2 border-border/50 rounded-3xl p-6 md:p-8 shadow-2xl hover:shadow-primary/20 transition-all duration-500 backdrop-blur-sm">
+              {/* Enhanced Header */}
+              <div className="flex items-center justify-between mb-6 pb-6 border-b-2 border-border/50">
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                        <FileSearch className="h-5 w-5" />
+                    <div className="h-12 w-12 bg-gradient-to-br from-primary to-primary/70 rounded-xl flex items-center justify-center text-white shadow-lg">
+                        <FileSearch className="h-6 w-6" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-lg leading-tight">Analysis Report</h3>
-                        <p className="text-xs text-muted-foreground">Generated just now</p>
+                        <h3 className="font-black text-xl leading-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">Analysis Report</h3>
+                        <p className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                          <span className="flex h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                          Generated just now
+                        </p>
                     </div>
                 </div>
-                <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/20 px-3 py-1">Passed</Badge>
+                <Badge variant="outline" className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 text-green-600 border-green-500/30 px-4 py-1.5 font-bold shadow-sm">
+                  ✓ Passed
+                </Badge>
               </div>
               
-              <div className="space-y-3">
+              {/* Enhanced Metrics */}
+              <div className="space-y-3 mb-6">
                 {[
-                  { label: "File Format", status: "Compatible", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20" },
-                  { label: "Contact Info", status: "Found", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20" },
-                  { label: "Job Title Match", status: "Exact Match", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20" },
-                  { label: "Education", status: "Listed", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20" },
-                  { label: "Soft Skills", status: "3 Missing", icon: AlertTriangle, color: "text-yellow-600", bg: "bg-yellow-500/10", border: "border-yellow-500/20" },
-                  { label: "Hard Skills", status: "Critical Missing", icon: XCircle, color: "text-red-600", bg: "bg-red-500/10", border: "border-red-500/20" },
+                  { label: "File Format", status: "Compatible", icon: CheckCircle2, color: "text-green-600", bg: "bg-gradient-to-r from-green-500/10 to-emerald-500/10", border: "border-green-500/30" },
+                  { label: "Contact Info", status: "Found", icon: CheckCircle2, color: "text-green-600", bg: "bg-gradient-to-r from-green-500/10 to-emerald-500/10", border: "border-green-500/30" },
+                  { label: "Job Title Match", status: "Exact Match", icon: CheckCircle2, color: "text-green-600", bg: "bg-gradient-to-r from-green-500/10 to-emerald-500/10", border: "border-green-500/30" },
+                  { label: "Education", status: "Listed", icon: CheckCircle2, color: "text-green-600", bg: "bg-gradient-to-r from-green-500/10 to-emerald-500/10", border: "border-green-500/30" },
+                  { label: "Soft Skills", status: "3 Missing", icon: AlertTriangle, color: "text-yellow-600", bg: "bg-gradient-to-r from-yellow-500/10 to-amber-500/10", border: "border-yellow-500/30" },
+                  { label: "Hard Skills", status: "Critical Missing", icon: XCircle, color: "text-red-600", bg: "bg-gradient-to-r from-red-500/10 to-rose-500/10", border: "border-red-500/30" },
                 ].map((item, i) => (
-                  <div key={i} className={`flex items-center justify-between p-3 rounded-xl border ${item.border} ${item.bg} transition-colors`}>
+                  <motion.div 
+                    key={i} 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: i * 0.1 }}
+                    className={`flex items-center justify-between p-3.5 rounded-xl border-2 ${item.border} ${item.bg} transition-all hover:scale-[1.02] hover:shadow-md`}
+                  >
                     <div className="flex items-center gap-3">
                       <item.icon className={`h-5 w-5 ${item.color}`} />
-                      <span className="font-medium text-sm md:text-base">{item.label}</span>
+                      <span className="font-semibold text-sm md:text-base">{item.label}</span>
                     </div>
-                    <span className={`text-xs md:text-sm font-bold ${item.color}`}>{item.status}</span>
-                  </div>
+                    <span className={`text-xs md:text-sm font-bold ${item.color} px-2 py-1 rounded-md bg-background/50`}>{item.status}</span>
+                  </motion.div>
                 ))}
               </div>
               
-              <div className="mt-8 pt-6 border-t border-border">
+              {/* Enhanced Score Section */}
+              <div className="mt-8 pt-6 border-t-2 border-border/50">
                   <div className="flex justify-between items-center mb-4">
-                      <span className="text-sm font-medium text-muted-foreground">Overall Score</span>
-                      <span className="text-2xl font-black text-foreground">85<span className="text-sm text-muted-foreground font-normal">/100</span></span>
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-primary" />
+                        <span className="text-sm font-bold text-muted-foreground uppercase tracking-wide">Overall Score</span>
+                      </div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-4xl font-black bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">85</span>
+                        <span className="text-lg text-muted-foreground font-semibold">/100</span>
+                      </div>
                   </div>
-                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden mb-6">
-                      <div className="h-full bg-gradient-to-r from-primary to-purple-600 w-[85%] rounded-full" />
+                  <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden mb-6 shadow-inner">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "85%" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="h-full bg-gradient-to-r from-primary via-purple-500 to-purple-600 rounded-full shadow-lg" 
+                      />
                   </div>
-                  <Button className="w-full font-bold h-12 text-base shadow-lg shadow-primary/10" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
-                    View Full Report
+                  <Button className="w-full font-bold h-12 text-base shadow-xl shadow-primary/20 hover:shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
+                    View Full Report →
                   </Button>
               </div>
             </div>
