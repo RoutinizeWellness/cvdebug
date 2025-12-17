@@ -15,7 +15,7 @@ const getResend = () => {
   return new Resend(key);
 };
 
-const FROM_EMAIL = "CVDebug <CVDebug@CVDebug.com>";
+const FROM_EMAIL = "CVDebug <noreply@cvdebug.com>";
 
 // Email #1: Welcome + What to Expect (Trigger: Signup)
 export const sendOnboardingEmail = internalAction({
