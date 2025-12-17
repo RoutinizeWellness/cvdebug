@@ -21,7 +21,10 @@ export const engineeringKeywords = [
   "wind load", "snow load", "dead load", "live load", "moment frame",
   "shear wall", "braced frame", "composite", "prestressed", "post-tensioned",
   "geotechnical", "soil mechanics", "retaining wall", "pile foundation",
-  "hvac", "piping", "solidworks", "catia", "ansys", "cfd", "thermodynamics"
+  "hvac", "piping", "solidworks", "catia", "ansys", "cfd", "thermodynamics",
+  "bluebeam", "mathcad", "civil 3d", "microstation", "hec-ras", "arcgis", "qgis",
+  "primavera", "procore", "bluebeam revu", "navisworks", "sketchup", "rhino",
+  "grasshopper", "dynamo", "leed", "well ap", "osha", "pe license", "eit"
 ];
 
 export const marketingKeywords = [
@@ -33,7 +36,11 @@ export const marketingKeywords = [
   "instagram ads", "tiktok ads", "influencer marketing", "affiliate marketing",
   "marketing analytics", "customer acquisition", "customer retention", "churn rate",
   "lifetime value", "ltv", "cac", "marketing mix", "attribution modeling",
-  "brand management", "growth hacking", "marketo", "mailchimp", "klaviyo"
+  "brand management", "growth hacking", "marketo", "mailchimp", "klaviyo",
+  "buffer", "hootsuite", "sprout social", "canva", "adobe xd", "sketch",
+  "invision", "zeplin", "hotjar", "crazy egg", "optimizely", "vwo",
+  "google tag manager", "gtm", "search console", "ahrefs", "semrush", "moz",
+  "screaming frog", "buzzsumo", "mailgun", "sendgrid", "twilio"
 ];
 
 export const productKeywords = [
@@ -42,7 +49,10 @@ export const productKeywords = [
   "a/b testing", "analytics", "kpi", "okr", "mvp", "product strategy",
   "stakeholder management", "agile", "scrum", "kanban", "product launch",
   "product-market fit", "user personas", "customer journey", "feature prioritization",
-  "product analytics", "mixpanel", "amplitude", "product roadmap", "go-to-market"
+  "product analytics", "mixpanel", "amplitude", "product roadmap", "go-to-market",
+  "pendo", "fullstory", "heap", "segment", "airtable", "notion", "trello", 
+  "asana", "monday.com", "clickup", "linear", "aha!", "roadmunk", 
+  "productboard", "miro", "mural", "lucidchart", "balsamiq", "axure"
 ];
 
 export const dataKeywords = [
@@ -51,7 +61,11 @@ export const dataKeywords = [
   "big data", "hadoop", "spark", "hive", "pig", "data mining", "regression",
   "classification", "clustering", "time series", "forecasting", "bi",
   "data pipeline", "airflow", "dbt", "snowflake", "redshift", "bigquery",
-  "looker", "metabase", "data modeling", "dimensional modeling", "star schema"
+  "looker", "metabase", "data modeling", "dimensional modeling", "star schema",
+  "matplotlib", "seaborn", "plotly", "bokeh", "altair", "ggplot2",
+  "shiny", "dash", "streamlit", "jupyter", "colab", "databricks",
+  "sagemaker", "mlflow", "kubeflow", "dvc", "weights & biases",
+  "hugging face", "transformers", "bert", "gpt", "llm", "langchain"
 ];
 
 export const softSkills = [
@@ -69,13 +83,13 @@ export const softSkills = [
 export const synonymMap: Record<string, string[]> = {
   "javascript": ["js", "ecmascript", "es6", "es2015", "es2020", "node.js", "nodejs"],
   "python": ["py", "python3", "python2", "cpython"],
-  "machine learning": ["ml", "artificial intelligence", "ai", "deep learning", "neural networks", "neural nets", "dl"],
-  "react": ["reactjs", "react.js", "react native", "react-native"],
+  "machine learning": ["ml", "artificial intelligence", "ai", "deep learning", "neural networks", "neural nets", "dl", "nlp", "computer vision", "reinforcement learning"],
+  "react": ["reactjs", "react.js", "react native", "react-native", "jsx", "tsx"],
   "angular": ["angularjs", "angular.js", "angular2+", "angular 2"],
   "vue": ["vuejs", "vue.js", "vue 3"],
   "docker": ["containerization", "containers", "container"],
   "kubernetes": ["k8s", "container orchestration", "k8"],
-  "aws": ["amazon web services", "amazon aws", "cloud", "amazon cloud"],
+  "aws": ["amazon web services", "amazon aws", "cloud", "amazon cloud", "ec2", "s3", "lambda", "dynamodb", "rds", "cloudfront"],
   "azure": ["microsoft azure", "azure cloud", "ms azure"],
   "gcp": ["google cloud platform", "google cloud", "gcloud"],
   "sql": ["structured query language", "mysql", "postgresql", "mssql", "oracle", "postgres"],
@@ -85,7 +99,7 @@ export const synonymMap: Record<string, string[]> = {
   "api": ["rest api", "restful", "web services", "rest", "api development"],
   "graphql": ["graph ql", "gql"],
   "microservices": ["micro services", "service-oriented architecture", "soa"],
-  "seo": ["search engine optimization", "organic search", "search optimization"],
+  "seo": ["search engine optimization", "organic search", "search optimization", "on-page seo", "off-page seo", "technical seo"],
   "sem": ["search engine marketing", "paid search", "search marketing"],
   "ctr": ["click-through rate", "click through rate", "clickthrough rate"],
   "cpc": ["cost per click", "pay per click", "ppc"],
@@ -101,7 +115,7 @@ export const synonymMap: Record<string, string[]> = {
   "ibc": ["international building code"],
   "asce": ["american society of civil engineers", "asce 7"],
   "eurocode": ["european code", "en 1990", "en 1991"],
-  "product management": ["product manager", "pm", "product owner", "po"],
+  "product management": ["product manager", "pm", "product owner", "po", "apm", "rpm"],
   "agile": ["scrum", "kanban", "sprint", "agile methodology"],
   "data science": ["data scientist", "data analysis", "analytics", "data analytics"],
   "tableau": ["data visualization", "bi tool", "business intelligence"],
@@ -122,7 +136,7 @@ export const synonymMap: Record<string, string[]> = {
   "cybersecurity": ["information security", "infosec", "security"],
   "salesforce": ["sfdc", "crm platform"],
   "hubspot": ["marketing automation", "inbound marketing"],
-  "google analytics": ["ga", "web analytics", "analytics"],
+  "google analytics": ["ga", "web analytics", "analytics", "ga4", "universal analytics"],
   "photoshop": ["ps", "adobe photoshop"],
   "illustrator": ["ai", "adobe illustrator"],
   "figma": ["design tool", "ui design tool"],
@@ -130,7 +144,12 @@ export const synonymMap: Record<string, string[]> = {
   "confluence": ["documentation", "wiki"],
   "slack": ["team communication", "messaging"],
   "excel": ["spreadsheet", "microsoft excel"],
-  "powerpoint": ["presentation", "microsoft powerpoint", "ppt"]
+  "powerpoint": ["presentation", "microsoft powerpoint", "ppt"],
+  "civil 3d": ["autocad civil 3d", "c3d"],
+  "bluebeam": ["bluebeam revu", "revu"],
+  "leed": ["leed ap", "leed ga", "leadership in energy and environmental design"],
+  "pe license": ["professional engineer", "p.e.", "pe"],
+  "eit": ["engineer in training", "e.i.t.", "fundamentals of engineering", "fe"]
 };
 
 // Role classification training data with weighted patterns

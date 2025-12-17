@@ -15,6 +15,7 @@ import type * as ai_chatbot from "../ai/chatbot.js";
 import type * as ai_config_keywords from "../ai/config/keywords.js";
 import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
 import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
+import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
 import type * as ai_prompts from "../ai/prompts.js";
@@ -50,6 +51,7 @@ declare const fullApi: ApiFromModules<{
   "ai/config/keywords": typeof ai_config_keywords;
   "ai/config/metricTemplates": typeof ai_config_metricTemplates;
   "ai/contentAnalysis": typeof ai_contentAnalysis;
+  "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
   "ai/prompts": typeof ai_prompts;
