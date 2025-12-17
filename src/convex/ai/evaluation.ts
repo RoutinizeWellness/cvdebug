@@ -1,6 +1,9 @@
 import { internalAction } from "../_generated/server";
 import { classifyRole, RoleCategory } from "./config/keywords";
 
+const internalAny = require("../_generated/api").internal;
+const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
+
 export const evaluateRoleClassification = internalAction({
   args: {},
   handler: async (ctx) => {
@@ -93,11 +96,19 @@ export const evaluateRoleClassification = internalAction({
 
     let correct = 0;
     const results = [];
+    const categoryStats: Record<string, { correct: number; total: number }> = {};
 
     for (const test of testCases) {
       const { category, confidence } = classifyRole(test.text);
       const isCorrect = category === test.expected;
       if (isCorrect) correct++;
+      
+      // Track per-category accuracy
+      if (!categoryStats[test.expected]) {
+        categoryStats[test.expected] = { correct: 0, total: 0 };
+      }
+      categoryStats[test.expected].total++;
+      if (isCorrect) categoryStats[test.expected].correct++;
       
       results.push({
         text: test.text.substring(0, 50) + "...",
@@ -111,11 +122,27 @@ export const evaluateRoleClassification = internalAction({
     const accuracy = (correct / testCases.length) * 100;
     
     console.log(`[Evaluation] Role Classification Accuracy: ${accuracy.toFixed(1)}%`);
+    console.log(`[Evaluation] Category Breakdown:`);
+    Object.entries(categoryStats).forEach(([cat, stats]) => {
+      const catAccuracy = (stats.correct / stats.total) * 100;
+      console.log(`  ${cat}: ${catAccuracy.toFixed(1)}% (${stats.correct}/${stats.total})`);
+    });
     console.table(results);
+
+    // Store results for ML learning
+    await runMutation(ctx, internalAny.mlLearning.storeEvaluationResults, {
+      accuracy,
+      results: {
+        overall: { correct, total: testCases.length },
+        byCategory: categoryStats,
+        details: results
+      }
+    });
 
     return {
       accuracy,
-      results
+      results,
+      categoryStats
     };
   }
 });

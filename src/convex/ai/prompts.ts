@@ -24,25 +24,46 @@ Your goal is to provide a brutally honest, data-driven, and constructive critiqu
 "${cleanText.substring(0, 30000)}"
 
 ### SCORING RUBRIC (0-100):
-- **90-100 (Exceptional):** Perfect tailoring, top 1% impact, clear authority, quantifiable metrics in every bullet.
-- **80-89 (Strong):** Solid experience, good metrics, minor formatting or keyword gaps.
-- **70-79 (Good):** Competent but generic. Lacks "wow" factor or specific metrics.
-- **60-69 (Average):** Basic duties listed, passive language, poor formatting, missing critical keywords.
-- **<60 (Weak):** Unparseable, irrelevant, or completely lacking in substance.
+- **90-100 (Exceptional):** Perfect tailoring, top 1% impact, clear authority, quantifiable metrics in every bullet. Zero parsing issues.
+- **80-89 (Strong):** Solid experience, good metrics, minor formatting or keyword gaps. 1-2 missing critical keywords.
+- **70-79 (Good):** Competent but generic. Lacks "wow" factor or specific metrics. 3-5 missing keywords.
+- **60-69 (Average):** Basic duties listed, passive language, poor formatting, missing critical keywords (6-10).
+- **<60 (Weak):** Unparseable, irrelevant, or completely lacking in substance. 10+ missing keywords or major parsing failures.
 
 ### EVALUATION INSTRUCTIONS:
 
 1.  **Role Classification:** Determine the most specific role category (Engineering, Software Engineering, Marketing, Product Management, Data Science, or General).
-2.  **Keyword Analysis:**
+    - Look for technical tools, methodologies, and domain-specific terminology
+    - Consider job titles, certifications, and project descriptions
+    - Confidence threshold: >70% for specific category, otherwise "General"
+
+2.  **Keyword Analysis (CRITICAL):**
     *   Identify *hard skills* missing from the resume that are critical for the Target Role.
-    *   Check for *contextual usage*. Does the candidate just list "Python" or do they say "Built data pipelines using Python"?
-3.  **Impact Assessment:**
-    *   Count the number of bullet points with specific metrics (%, $, #).
-    *   Identify "weak verbs" (e.g., "Helped", "Worked on") and suggest "power verbs" (e.g., "Architected", "Spearheaded").
-4.  **Formatting Check:**
-    *   Is the contact info complete?
-    *   Are headers clear?
-    *   Is the layout ATS-friendly (no tables/columns)?
+    *   Check for *contextual usage*. Does the candidate just list "Python" or do they say "Built data pipelines using Python processing 10TB daily"?
+    *   **Prioritization Logic:**
+        - **CRITICAL (10 pts impact):** Appears 3+ times in JD, or is a core requirement (e.g., "Python" for Data Scientist)
+        - **IMPORTANT (7 pts impact):** Appears 2 times in JD, or is a strong differentiator
+        - **NICE-TO-HAVE (3 pts impact):** Appears 1 time or is a general skill
+    *   **Context Scoring:** Keyword with metrics/results = 1.5x weight, keyword in recent experience = 1.2x weight
+
+3.  **Impact Assessment (ENHANCED):**
+    *   Count the number of bullet points with specific metrics (%, $, #, time saved, users impacted).
+    *   **Target:** 8+ quantified bullets for scores >80
+    *   Identify "weak verbs" (e.g., "Helped", "Worked on", "Responsible for") and suggest "power verbs" (e.g., "Architected", "Spearheaded", "Optimized").
+    *   **STAR Method Check:** Does each bullet follow Situation-Task-Action-Result?
+    *   **Buzzword Detection:** Flag overused terms without substance ("synergy", "rockstar", "guru", "ninja")
+
+4.  **Formatting Check (ATS Parsing):**
+    *   Is the contact info complete and parseable?
+    *   Are headers clear and standard (Experience, Education, Skills)?
+    *   Is the layout ATS-friendly (no tables/columns, no images in text)?
+    *   **File Format:** PDF preferred, Word acceptable, images/scans problematic
+    *   **Date Consistency:** All dates in same format (Month YYYY recommended)
+
+5.  **Smart Metric Suggestions (NEW):**
+    *   For each technology/skill mentioned WITHOUT metrics, provide a specific template
+    *   Example: "Python" → "Built [system] using Python processing [X] records/day, reducing [metric] by [Y%]"
+    *   Tailor suggestions to the detected role category
 
 ### OUTPUT FORMAT (JSON ONLY):
 Return a raw JSON object with this exact structure. Do not include markdown formatting or code blocks.
@@ -59,26 +80,31 @@ Return a raw JSON object with this exact structure. Do not include markdown form
   "missingKeywords": [
     { 
       "keyword": "Specific Term", 
-      "priority": "critical" | "important", 
+      "priority": "critical" | "important" | "nice-to-have", 
       "frequency": <estimated count in JD>, 
       "impact": <points lost>, 
-      "section": "Experience", 
-      "context": "Brief advice on how to integrate this keyword naturally." 
+      "section": "Experience" | "Skills" | "Summary", 
+      "context": "Add this to [section] by describing how you used it in [specific scenario]. Example: 'Implemented [keyword] to achieve [result]'",
+      "relatedSkills": ["skill1", "skill2"]
     }
   ],
   "formatIssues": [
     { 
       "issue": "Short description", 
       "severity": "high" | "medium" | "low", 
-      "fix": "Actionable instruction", 
+      "fix": "Actionable instruction with specific example", 
       "location": "Section Name", 
-      "atsImpact": "Why this hurts parsing" 
+      "atsImpact": "Why this hurts parsing",
+      "priority": <number 1-10>
     }
   ],
   "metricSuggestions": [
     { 
-      "tech": "Skill/Tool", 
-      "metrics": ["Example metric 1", "Example metric 2"] 
+      "tech": "Skill/Tool mentioned in resume", 
+      "currentUsage": "How it's currently mentioned (if at all)",
+      "suggestedMetric": "Specific template with [placeholders]",
+      "example": "Real-world example of strong usage",
+      "impact": "Why this matters for ATS/recruiters"
     }
   ],
   "analysis": "Markdown formatted report string. Use H1, H2, H3 for structure. Be direct and encouraging but firm on improvements."
@@ -86,24 +112,51 @@ Return a raw JSON object with this exact structure. Do not include markdown form
 
 ### ANALYSIS REPORT TEMPLATE (Markdown):
 # 🎯 Executive Summary
-**Score: [Score]/100** | **Role:** [Category]
-[2-3 sentences summarizing the candidate's level and fit]
+**Score: [Score]/100** | **Role:** [Category] | **Confidence:** [X]%
+[2-3 sentences summarizing the candidate's level and fit. Be specific about strengths and gaps.]
 
-## 🚨 Critical Fixes (Top 3)
-1. **[Issue]**: [Fix]
-2. **[Issue]**: [Fix]
-3. **[Issue]**: [Fix]
+## 🚨 Critical Fixes (Top 3 - Highest Impact)
+1. **[Issue]** (+[X] points potential): [Specific fix with example]
+2. **[Issue]** (+[X] points potential): [Specific fix with example]
+3. **[Issue]** (+[X] points potential): [Specific fix with example]
 
 ## 🔑 Keyword Gap Analysis
-- **Critical Missing:** [List]
-- **Contextual Improvements:** [Advice]
+### Critical Missing (Must Add)
+- **[Keyword]** (Appears [X]x in JD): [Specific integration advice]
+
+### Important Missing (Should Add)
+- **[Keyword]**: [Context for adding]
+
+### Contextual Improvements
+[Advice on improving existing keyword usage with metrics]
 
 ## 📊 Content Impact Review
-- **Metrics:** Found [X] quantified achievements. Target is 8+.
-- **Verbs:** [Comment on action verbs].
+- **Metrics Found:** [X]/8+ quantified achievements. ${hasJobDescription ? 'Target is 10+ for this role.' : 'Target is 8+ for strong resumes.'}
+- **STAR Method:** [X]% of bullets follow Situation-Task-Action-Result
+- **Action Verbs:** [Comment on strength/weakness with examples]
+- **Buzzwords Detected:** [List if any, with replacement suggestions]
 
-## 💡 Pro Tips for [Role]
-[Specific advice]
+## 💡 Smart Metric Suggestions
+[For each skill/tech without metrics, provide specific template]
+
+**Example:**
+- **Current:** "Experience with Python"
+- **Suggested:** "Built data pipeline using Python processing 5TB daily, reducing processing time by 40%"
+- **Why it matters:** Demonstrates scale, impact, and technical depth
+
+## 🎯 Pro Tips for [Role]
+[Specific, actionable advice tailored to the role category]
+
+## 📈 Competitive Benchmark
+- **Your Score:** [Score]%
+- **Industry Average:** 62%
+- **Top 25% Threshold:** 75%
+- **Top 10% Threshold:** 85%
+
+${hasJobDescription ? '**JD Alignment:** [X]% keyword match | [Y] critical skills missing' : ''}
+
+---
+**Next Steps:** [Prioritized action items with estimated time to complete]
 `;
 }
 

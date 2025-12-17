@@ -326,3 +326,47 @@ export const getLearningMetrics = query({
     };
   },
 });
+
+// NEW: Analyze evaluation results and provide insights
+export const analyzeEvaluationResults = query({
+  handler: async (ctx) => {
+    // This would be called after running the evaluation
+    // For now, we'll return a structure that can be populated
+    
+    return {
+      lastEvaluationDate: Date.now(),
+      overallAccuracy: 0, // To be populated by evaluation results
+      categoryBreakdown: {
+        "Engineering": { accuracy: 0, sampleSize: 0 },
+        "Software Engineering": { accuracy: 0, sampleSize: 0 },
+        "Marketing": { accuracy: 0, sampleSize: 0 },
+        "Product Management": { accuracy: 0, sampleSize: 0 },
+        "Data Science": { accuracy: 0, sampleSize: 0 },
+        "General": { accuracy: 0, sampleSize: 0 }
+      },
+      commonMisclassifications: [],
+      recommendations: [
+        "Expand keyword lists for underperforming categories",
+        "Add more test cases for edge cases",
+        "Review confidence thresholds for classification"
+      ]
+    };
+  },
+});
+
+// NEW: Store evaluation results for analysis
+export const storeEvaluationResults = internalMutation({
+  args: {
+    accuracy: v.number(),
+    results: v.any(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("evaluationResults", {
+      accuracy: args.accuracy,
+      results: args.results,
+      timestamp: Date.now(),
+    });
+    
+    console.log(`[ML Learning] Stored evaluation results: ${args.accuracy.toFixed(1)}% accuracy`);
+  },
+});

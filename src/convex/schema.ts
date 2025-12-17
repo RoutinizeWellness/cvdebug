@@ -135,6 +135,13 @@ const schema = defineSchema(
     lastUpdated: v.number(),
   }),
 
+  // NEW: Store evaluation results
+  evaluationResults: defineTable({
+    accuracy: v.number(),
+    results: v.any(),
+    timestamp: v.number(),
+  }),
+
   waitlist: defineTable({
     email: v.string(),
   }).index("by_email", ["email"]),
