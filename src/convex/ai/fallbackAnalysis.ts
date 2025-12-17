@@ -6,6 +6,7 @@ import {
 } from "./config/keywords";
 import { getMetricsForCategory } from "./config/metricTemplates";
 import { checkBuzzwords, checkCapitalization, checkRepetitiveStarts } from "./qualityChecks";
+import { analyzeBulletPoints, analyzeSoftSkills } from "./contentAnalysis";
 
 // Enhanced ML-based fallback analysis with adaptive learning
 export function generateFallbackAnalysis(
@@ -66,6 +67,10 @@ export function generateFallbackAnalysis(
   
   console.log(`[Role Classification] Category: ${adjustedCategory}, Confidence: ${(confidence * 100).toFixed(1)}%`);
   
+  // ===== NEW: CONTENT QUALITY ANALYSIS =====
+  const bulletAnalysis = analyzeBulletPoints(ocrText);
+  const softSkillsAnalysis = analyzeSoftSkills(ocrText);
+
   // ===== ENHANCED TF-IDF WITH LEARNED KEYWORD WEIGHTS =====
   
   const findKeywordWithSynonyms = (keyword: string, text: string): { found: boolean, matches: number, matchedTerm: string } => {
@@ -351,6 +356,16 @@ export function generateFallbackAnalysis(
   else if (metricCount >= 3) completenessScore += 7;
   else if (metricCount >= 1) completenessScore += 3;
   
+  // NEW: Integrate Bullet Point Quality Score
+  // We blend the bullet analysis score into completeness
+  const bulletQualityContribution = (bulletAnalysis.score / 100) * 10; // Max 10 points
+  completenessScore += bulletQualityContribution;
+
+  // NEW: Integrate Soft Skills Score
+  // Small bonus for soft skills
+  const softSkillsContribution = (softSkillsAnalysis.score / 100) * 5; // Max 5 points
+  completenessScore += softSkillsContribution;
+
   // ENHANCED SENTIMENT ANALYSIS
   // 1. Power Phrases (Action + Metric + Result)
   const powerPhrasePatterns = [
@@ -417,6 +432,10 @@ export function generateFallbackAnalysis(
   
   // Cap sentiment contribution to completeness score
   const sentimentContribution = Math.max(0, Math.min(15, sentimentScore));
+  // We adjust the cap here since we added bullet quality and soft skills
+  // Total completeness potential: Metrics(15) + Bullets(10) + SoftSkills(5) + Sentiment(15) + Length(5) + Summary(2) = 52
+  // We cap it at 30 * multiplier
+  
   completenessScore += sentimentContribution;
   
   // Resume length analysis
@@ -467,6 +486,10 @@ ${foundKeywords.slice(0, 5).map(k => `  • ${k.keyword} (freq: ${k.frequency}, 
 - Date consistency: ${hasConsistentDates ? '✅' : '❌'}
 
 **Completeness & Impact: ${Math.round(completenessScore)}/30 points**
+- **Bullet Point Quality:** ${bulletAnalysis.score > 70 ? 'Strong' : 'Needs Improvement'}
+  - ${bulletAnalysis.strongBullets.length} high-impact bullets found
+  - ${bulletAnalysis.weakBullets.length} weak bullets detected
+- **Soft Skills:** ${softSkillsAnalysis.found.length} detected (${softSkillsAnalysis.found.slice(0, 3).join(', ')})
 - Quantified achievements: ${metricCount} metrics found
 - Strong action verbs: ${strongVerbMatches} detected
 - Resume length: ${ocrText.length > 1500 ? 'Adequate' : 'Could be expanded'}
@@ -486,7 +509,7 @@ ${missingKeywords.length === 0 ? 'No critical keywords missing - good job!' : ''
 
 ---
 
-### ⚠️ Format Issues Detected
+### ⚠️ Format & Content Issues
 
 ${formatIssues.map((issue, i) => `
 ${i + 1}. **${issue.issue}** (Severity: ${issue.severity.toUpperCase()})
@@ -495,7 +518,13 @@ ${i + 1}. **${issue.issue}** (Severity: ${issue.severity.toUpperCase()})
    - Fix: ${issue.fix}
 `).join('\n')}
 
-${formatIssues.length === 0 ? '✅ No major format issues detected!' : ''}
+${bulletAnalysis.issues.map((issue, i) => `
+${formatIssues.length + i + 1}. **Content Quality Issue**
+   - Issue: ${issue}
+   - Fix: Use the "Action + Task + Result" formula for your bullet points.
+`).join('\n')}
+
+${formatIssues.length === 0 && bulletAnalysis.issues.length === 0 ? '✅ No major issues detected!' : ''}
 
 ---
 
@@ -521,6 +550,7 @@ ${totalScore < 50 ? `
 2. **Strengthen impact statements** (+${Math.min(8, 30 - completenessScore)} points potential)
    - Use more quantifiable metrics (%, $, numbers)
    - Replace weak verbs with strong action verbs
+   - **Improve Bullet Points:** ${bulletAnalysis.weakBullets.length > 0 ? `Rewrite weak bullets like "${bulletAnalysis.weakBullets[0].substring(0, 30)}..."` : 'Ensure all bullets have metrics'}
 
 3. **Polish formatting** (+${Math.min(5, 30 - formatScore)} points potential)
    - ${formatIssues.length > 0 ? formatIssues[0].fix : 'Ensure consistent formatting throughout'}

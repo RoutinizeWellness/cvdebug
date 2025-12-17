@@ -52,6 +52,14 @@ export const dataKeywords = [
   "looker", "metabase", "data modeling", "dimensional modeling", "star schema"
 ];
 
+export const softSkills = [
+  "communication", "leadership", "problem solving", "teamwork", "collaboration",
+  "adaptability", "creativity", "critical thinking", "time management", "emotional intelligence",
+  "negotiation", "conflict resolution", "decision making", "mentoring", "presentation",
+  "strategic planning", "project management", "stakeholder management", "client facing", 
+  "analytical", "detail oriented", "organization", "flexibility", "interpersonal skills"
+];
+
 // Enhanced synonym mapping for semantic matching with weighted importance
 export const synonymMap: Record<string, string[]> = {
   "javascript": ["js", "ecmascript", "es6", "es2015", "es2020", "node.js", "nodejs"],
