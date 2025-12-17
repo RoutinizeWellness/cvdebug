@@ -46,7 +46,7 @@ export function FeatureGridSection() {
                 Diagnostic Tool vs. General Advice
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                ChatGPT gives generic advice. <span className="font-bold text-foreground">ResumeATS is a technical diagnostic tool</span> that checks 20+ specific ATS factors (margins, metadata, keyword density) to give you a precise quantitative score.
+                ChatGPT gives generic advice. <span className="font-bold text-foreground">CVDebug is a technical diagnostic tool</span> that checks 20+ specific ATS factors (margins, metadata, keyword density) to give you a precise quantitative score.
               </p>
             </div>
 

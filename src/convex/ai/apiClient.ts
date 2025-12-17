@@ -16,7 +16,7 @@ export async function callOpenRouter(
       "Authorization": `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       "HTTP-Referer": "https://convex.dev",
-      "X-Title": "ResumeATS",
+      "X-Title": "CVDebug",
     },
     body: JSON.stringify(request)
   });

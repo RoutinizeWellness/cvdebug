@@ -68,7 +68,7 @@ export function HeroSection() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">your resume?</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
-              <span className="font-bold text-foreground">ResumeATS is a diagnostic tool, not a magic solution.</span> We analyze 20+ technical factors to help you pass automated filters. One-time payment, no subscriptions.
+              <span className="font-bold text-foreground">CVDebug is a diagnostic tool, not a magic solution.</span> We analyze 20+ technical factors to help you pass automated filters. One-time payment, no subscriptions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button size="lg" className="h-12 md:h-14 px-8 text-base rounded-full shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all font-bold" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
