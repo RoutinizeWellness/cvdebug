@@ -422,6 +422,63 @@ export const sendPurchaseConfirmationEmail = internalAction({
   },
 });
 
+// NEW: Email for users who scanned but didn't unlock (5 days later)
+export const sendConversionFollowUpEmail = internalAction({
+  args: { 
+    email: v.string(), 
+    name: v.optional(v.string()), 
+    score: v.number(),
+    errorCount: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "there";
+    const subject = `Tu CV sigue roto (Score: ${args.score}/100)`;
+    
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hola ${firstName},</p>
+        
+        <p>Vi que escaneaste tu CV pero no desbloqueaste el reporte.</p>
+        
+        <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: bold; color: #991b1b;">⚠️ Tu Score: ${args.score}/100</p>
+          <p style="margin: 8px 0 0 0; color: #7f1d1d;">Sigues teniendo ${args.errorCount} errores que los reclutadores van a ver.</p>
+        </div>
+
+        <p><strong>¿Vale la pena perder el trabajo por $5?</strong></p>
+        
+        <p>Desbloquea ahora y descubre:</p>
+        <ul>
+          <li>✅ La lista completa de los ${args.errorCount} errores</li>
+          <li>✅ Cómo arreglar cada uno paso a paso</li>
+          <li>✅ Palabras clave que te faltan</li>
+          <li>✅ Problemas de formato que bloquean tu CV</li>
+        </ul>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard?unlock=true" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Desbloquear Reporte - $4.99
+          </a>
+        </div>
+
+        <p style="font-size: 12px; color: #666; text-align: center;">Pago único • Sin suscripción • Acceso instantáneo</p>
+        
+        <p>Saludos,<br>El equipo de CVDebug</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent Conversion Follow-Up Email to ${args.email}`);
+    } catch (error) { 
+      console.error("Failed to send Conversion Follow-Up Email:", error); 
+    }
+  },
+});
+
 // Test Email Function - Send test email
 export const sendTestEmail = internalAction({
   args: { email: v.optional(v.string()) },

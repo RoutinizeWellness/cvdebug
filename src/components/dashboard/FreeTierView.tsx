@@ -23,8 +23,7 @@ export function FreeTierView({
 }: FreeTierViewProps) {
   const target = 75;
   const gap = Math.max(0, target - score);
-  const firstCriticalKeyword = criticalKeywords[0];
-  const remainingCriticalCount = Math.max(0, criticalKeywords.length - 1);
+  const totalErrors = missingCount + formatCount;
 
   if (showBlurredPreview) {
     return (
@@ -65,78 +64,46 @@ export function FreeTierView({
               
               <div>
                 <h3 className="text-2xl font-black text-foreground mb-2">
-                  {missingCount} Critical Issues Found!
+                  {totalErrors} Errores Detectados
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Your resume is missing keywords that could be blocking your applications.
+                  Tu CV tiene problemas que están bloqueando tus aplicaciones.
                 </p>
               </div>
 
-              {firstCriticalKeyword && (
-                <div className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-4 text-left animate-in slide-in-from-bottom-2 duration-500">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                      <Check className="h-4 w-4 text-green-600" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
-                        🎁 FREE SAMPLE - Error #1 Revealed
-                      </p>
-                      <p className="text-sm font-bold text-foreground mb-2">
-                        ❌ Missing Critical Keyword: "{typeof firstCriticalKeyword === 'string' ? firstCriticalKeyword : firstCriticalKeyword.keyword}"
-                      </p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {firstCriticalKeyword.context || `This keyword appears ${firstCriticalKeyword.frequency || 'multiple'} times in the job description. Add it to your ${firstCriticalKeyword.section || 'Skills'} section.`}
-                      </p>
-                    </div>
+              <div className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-6 text-center">
+                <div className="text-6xl font-black text-red-500 mb-2">{score}/100</div>
+                <p className="text-sm font-bold text-foreground mb-4">Tu Score ATS</p>
+                
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
+                    <div className="text-3xl font-black text-red-500 mb-1">{missingCount}</div>
+                    <p className="text-xs text-muted-foreground">Palabras Clave Faltantes</p>
                   </div>
-                  <div className="bg-background/50 rounded-lg p-2 text-xs text-muted-foreground border-l-2 border-green-500/30">
-                    💡 <strong>Quick Fix:</strong> Add to {firstCriticalKeyword.section || 'Skills'} section
-                    {firstCriticalKeyword.impact && ` • Potential +${firstCriticalKeyword.impact} points`}
+                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
+                    <div className="text-3xl font-black text-yellow-500 mb-1">{formatCount}</div>
+                    <p className="text-xs text-muted-foreground">Errores de Formato</p>
                   </div>
                 </div>
-              )}
 
-              {remainingCriticalCount > 0 && (
-                <div className="bg-muted/30 border border-border rounded-xl p-4 text-left space-y-2">
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
-                    🔒 {remainingCriticalCount} More Critical Errors (Locked)
+                <div className="bg-muted/30 border border-border rounded-lg p-4 text-left">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <Lock className="h-3 w-3" /> Detalles Bloqueados
                   </p>
-                  {criticalKeywords.slice(1, 4).map((item: any, i: number) => (
-                    <div key={i} className="flex items-start gap-2 bg-background/50 rounded-lg p-2 border border-border/50">
-                      <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-foreground">
-                          ❌ Missing Keyword: <span className="blur-sm select-none">████████</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Solution: <span className="blur-sm select-none">████████████████</span>
-                        </p>
+                  <div className="space-y-2">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm">
+                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                        <span className="blur-sm select-none flex-1">████████████████</span>
+                        <Lock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                       </div>
-                      <Lock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                    </div>
-                  ))}
-                  {remainingCriticalCount > 3 && (
-                    <p className="text-xs text-center text-muted-foreground pt-2">
-                      + {remainingCriticalCount - 3} more critical errors...
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {formatCount > 0 && (
-                <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 text-left">
-                  <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                    <p className="text-xs font-bold text-yellow-700">
-                      🔒 {formatCount} Format Issues Detected
-                    </p>
+                    ))}
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    ATS parsing errors: <span className="blur-sm select-none">████████████</span>
+                  <p className="text-xs text-center text-muted-foreground mt-3">
+                    + {Math.max(0, totalErrors - 3)} errores más...
                   </p>
                 </div>
-              )}
+              </div>
 
               <div className="space-y-3">
                 <Button 
@@ -147,8 +114,8 @@ export function FreeTierView({
                   size="lg"
                   className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 animate-in zoom-in duration-300"
                 >
-                  <AlertCircle className="mr-2 h-5 w-5" />
-                  Unlock All {missingCount + formatCount} Errors - $4.99
+                  <Lock className="mr-2 h-5 w-5" />
+                  Ver los {totalErrors} Errores y Cómo Arreglarlos - $4.99
                 </Button>
                 <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">

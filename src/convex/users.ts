@@ -43,8 +43,8 @@ export const currentUser = query({
 });
 
 export const storeUser = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: { deviceFingerprint: v.optional(v.string()) },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
 
@@ -61,8 +61,22 @@ export const storeUser = mutation({
         name: identity.name,
         email: identity.email,
         lastSeen: Date.now(),
+        deviceFingerprint: args.deviceFingerprint || user.deviceFingerprint,
       });
       return user._id;
+    }
+
+    // Check if this device has already used a free trial
+    let freeTrialBlocked = false;
+    if (args.deviceFingerprint) {
+      const existingDeviceUser = await ctx.db
+        .query("users")
+        .withIndex("by_device_fingerprint", (q) => q.eq("deviceFingerprint", args.deviceFingerprint))
+        .first();
+      
+      if (existingDeviceUser && existingDeviceUser.freeTrialUsed) {
+        freeTrialBlocked = true;
+      }
     }
 
     // Check for existing user by email (e.g. created via Admin Manual Grant) to link accounts
@@ -78,6 +92,7 @@ export const storeUser = mutation({
            tokenIdentifier: identity.subject,
            name: identity.name || existingUserByEmail.name,
            lastSeen: Date.now(),
+           deviceFingerprint: args.deviceFingerprint || existingUserByEmail.deviceFingerprint,
          });
          return existingUserByEmail._id;
       }
@@ -92,10 +107,12 @@ export const storeUser = mutation({
       name: identity.name,
       email: identity.email,
       subscriptionTier: "free",
-      credits: 2, // Default to 2 credits for free tier
+      credits: freeTrialBlocked ? 0 : 2, // Block credits if device already used trial
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
       emailVariant,
       lastSeen: Date.now(),
+      deviceFingerprint: args.deviceFingerprint,
+      freeTrialUsed: false,
     });
 
     // Send onboarding email (Email #1)
@@ -316,6 +333,40 @@ export const getBetaStatus = query({
       total,
       remaining: Math.max(0, total - displayClaimed),
       isSoldOut: displayClaimed >= total
+    };
+  },
+});
+
+export const markFreeTrialUsed = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (user) {
+      await ctx.db.patch(user._id, {
+        freeTrialUsed: true,
+      });
+    }
+  },
+});
+
+export const checkDeviceFingerprint = query({
+  args: { deviceFingerprint: v.string() },
+  handler: async (ctx, args) => {
+    const existingUser = await ctx.db
+      .query("users")
+      .withIndex("by_device_fingerprint", (q) => q.eq("deviceFingerprint", args.deviceFingerprint))
+      .first();
+
+    return {
+      freeTrialUsed: existingUser?.freeTrialUsed || false,
+      hasExistingAccount: !!existingUser,
     };
   },
 });

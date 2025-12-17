@@ -13,18 +13,22 @@ const schema = defineSchema(
       trialEndsOn: v.optional(v.number()),
       emailVariant: v.optional(v.string()),
       lastSeen: v.optional(v.number()),
+      deviceFingerprint: v.optional(v.string()),
+      freeTrialUsed: v.optional(v.boolean()),
       // Email tracking flags - Onboarding
       onboardingEmailSent: v.optional(v.boolean()),
       activationEmail24hSent: v.optional(v.boolean()),
       // Email tracking flags - Conversion
       postScanEmailSent: v.optional(v.boolean()),
       conversionReminderSent: v.optional(v.boolean()),
+      conversionFollowUpSent: v.optional(v.boolean()),
       // Email tracking flags - Re-engagement
       winBackEmail30dSent: v.optional(v.boolean()),
     })
     .index("by_token", ["tokenIdentifier"])
     .index("by_email", ["email"])
-    .index("by_subscription_tier", ["subscriptionTier"]),
+    .index("by_subscription_tier", ["subscriptionTier"])
+    .index("by_device_fingerprint", ["deviceFingerprint"]),
   resumes: defineTable({
     userId: v.string(),
     title: v.string(),
