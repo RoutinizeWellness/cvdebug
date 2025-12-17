@@ -17,7 +17,11 @@ import {
   ScanLine,
   Target,
   Link2,
-  Building
+  Building,
+  CheckCircle2,
+  XCircle,
+  FileSearch,
+  AlertTriangle
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -306,99 +310,199 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden print:block print:overflow-visible">
-          {/* Left Panel - Details */}
-          <div className={`w-full lg:w-80 xl:w-96 border-r border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:block print:w-full print:border-none`}>
-            <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-              <div className="p-6 flex flex-col gap-6">
-                
-                {isFree ? (
-                  <FreeTierView 
-                    score={displayResume?.score || 0}
-                    missingCount={displayResume?.missingKeywords?.length || 0}
-                    formatCount={displayResume?.formatIssues?.length || 0}
-                    criticalKeywords={criticalKeywords}
-                    showBlurredPreview={showBlurredPreview}
-                    setShowPricing={setShowPricing}
-                    setShowBlurredPreview={setShowBlurredPreview}
-                  />
-                ) : (
-                  <>
-                    <ResumeStats 
-                      score={displayResume?.score || 0}
-                      scoreBreakdown={displayResume?.scoreBreakdown}
-                    />
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+          {/* Main Content - Full Width Bento Grid */}
+          <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
+            <div className="p-4 md:p-8 max-w-7xl mx-auto">
+              
+              {isFree ? (
+                <FreeTierView 
+                  score={displayResume?.score || 0}
+                  missingCount={displayResume?.missingKeywords?.length || 0}
+                  formatCount={displayResume?.formatIssues?.length || 0}
+                  criticalKeywords={criticalKeywords}
+                  showBlurredPreview={showBlurredPreview}
+                  setShowPricing={setShowPricing}
+                  setShowBlurredPreview={setShowBlurredPreview}
+                />
+              ) : (
+                <div className="space-y-6">
+                  {/* Hero Section - Score Gauge */}
+                  <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-green-500/5"></div>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-8">
+                          <div>
+                            <h2 className="text-3xl font-black text-white mb-2">
+                              {displayResume?.score >= 80 ? "🎉 Top 10% Candidate" : 
+                               displayResume?.score >= 51 ? "⚠️ Needs Optimization" : 
+                               "🚨 ATS Invisible"}
+                            </h2>
+                            <p className="text-slate-400">Your resume's ATS compatibility score</p>
+                          </div>
+                        </div>
+                        
+                        {/* Radial Progress Gauge */}
+                        <div className="flex items-center justify-center mb-8">
+                          <div className="relative w-64 h-64">
+                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                              <circle
+                                cx="100"
+                                cy="100"
+                                r="85"
+                                stroke="currentColor"
+                                strokeWidth="12"
+                                fill="none"
+                                className="text-slate-800"
+                              />
+                              <circle
+                                cx="100"
+                                cy="100"
+                                r="85"
+                                stroke="currentColor"
+                                strokeWidth="12"
+                                fill="none"
+                                strokeDasharray={`${(displayResume?.score || 0) * 5.34} 534`}
+                                className={
+                                  displayResume?.score >= 80 ? "text-green-500" :
+                                  displayResume?.score >= 51 ? "text-yellow-500" :
+                                  "text-red-500"
+                                }
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                              <span className="text-6xl font-black text-white">{displayResume?.score || 0}</span>
+                              <span className="text-slate-400 text-sm font-medium">/ 100</span>
+                            </div>
+                          </div>
+                        </div>
 
-                    <CriticalIssues 
-                      criticalKeywords={criticalKeywords}
-                      totalImpact={totalImpact}
-                    />
+                        {/* Quick Stats */}
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+                            <div className="text-2xl font-bold text-white">{displayResume?.scoreBreakdown?.format || 0}%</div>
+                            <div className="text-xs text-slate-400 mt-1">Parse Rate</div>
+                          </div>
+                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+                            <div className="text-2xl font-bold text-white">{displayResume?.scoreBreakdown?.keywords || 0}%</div>
+                            <div className="text-xs text-slate-400 mt-1">Keyword Match</div>
+                          </div>
+                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+                            <div className="text-2xl font-bold text-white">{displayResume?.missingKeywords?.length || 0}</div>
+                            <div className="text-xs text-slate-400 mt-1">Missing Skills</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                    <ImportantIssues 
-                      formatIssues={displayResume?.formatIssues}
-                      importantKeywords={importantKeywords}
-                    />
-                  </>
-                )}
-
-                <ScoreHistory />
-
-                <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-4">
-                  <h4 className="text-xs font-bold text-blue-700 mb-2 flex items-center gap-2 uppercase tracking-wider">
-                    <Building className="h-3 w-3" /> Users got interviews at
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
-                      Fortune 500
-                    </span>
-                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
-                      FAANG
-                    </span>
-                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-background border border-blue-200 text-[10px] font-medium text-blue-800 shadow-sm">
-                      Leading Startups
-                    </span>
+                    {/* Score History Card */}
+                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
+                      <ScoreHistory />
+                    </div>
                   </div>
-                </div>
 
-                <Separator className="print:hidden" />
+                  {/* Analysis Grid - Bento Layout */}
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Keywords Card */}
+                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
+                      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <Target className="h-5 w-5 text-purple-400" />
+                        Keywords Analysis
+                      </h3>
+                      <div className="space-y-3">
+                        <div>
+                          <div className="text-xs text-slate-400 mb-2">Found Keywords</div>
+                          <div className="flex flex-wrap gap-2">
+                            {displayResume?.missingKeywords?.slice(0, 5).map((kw: any, i: number) => (
+                              <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-medium">
+                                <CheckCircle2 className="h-3 w-3" />
+                                {typeof kw === 'string' ? kw : kw.keyword}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-slate-400 mb-2">Missing Keywords</div>
+                          <div className="flex flex-wrap gap-2">
+                            {criticalKeywords.slice(0, 5).map((kw: any, i: number) => (
+                              <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-medium">
+                                <XCircle className="h-3 w-3" />
+                                {typeof kw === 'string' ? kw : kw.keyword}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                {!isFree && (
-                  <div>
-                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-primary" /> AI Recommendations
+                    {/* Format Issues Card */}
+                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
+                      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <FileSearch className="h-5 w-5 text-purple-400" />
+                        Formatting Check
+                      </h3>
+                      <div className="space-y-2">
+                        {displayResume?.formatIssues?.slice(0, 4).map((issue: any, i: number) => (
+                          <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/30">
+                            {issue.severity === 'high' ? (
+                              <XCircle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
+                            ) : (
+                              <AlertTriangle className="h-4 w-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-medium text-white">{issue.issue}</div>
+                              <div className="text-xs text-slate-400 mt-1">{issue.location}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Critical Issues */}
+                  {criticalKeywords.length > 0 && (
+                    <div className="bg-gradient-to-br from-red-950/50 to-slate-900/90 backdrop-blur-xl border-2 border-red-500/30 rounded-3xl p-6">
+                      <CriticalIssues 
+                        criticalKeywords={criticalKeywords}
+                        totalImpact={totalImpact}
+                      />
+                    </div>
+                  )}
+
+                  {/* AI Recommendations - Expandable */}
+                  <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
+                    <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-purple-400" />
+                      AI Recommendations
                     </h3>
-                    <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar print:max-h-none print:overflow-visible">
+                    <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                       {renderAnalysis(displayResume?.analysis || "")}
                     </div>
                   </div>
-                )}
 
-                <Separator className="print:hidden" />
-
-                <div className="print:hidden">
-                  <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Info className="h-4 w-4" /> Metadata
-                  </h3>
-                  <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
-                    <p className="text-muted-foreground font-medium">Filename</p>
-                    <p className="text-foreground truncate font-medium" title={displayResume?.title}>{displayResume?.title}</p>
-                    
-                    <p className="text-muted-foreground font-medium">Date</p>
-                    <p className="text-foreground">{displayResume ? new Date(displayResume._creationTime).toLocaleDateString(undefined, { dateStyle: 'medium' }) : 'N/A'}</p>
-                    
-                    <p className="text-muted-foreground font-medium">Category</p>
-                    <p className="text-foreground">
-                      {displayResume?.category ? (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-secondary text-secondary-foreground">
-                          {displayResume.category}
-                        </span>
-                      ) : "Uncategorized"}
-                    </p>
+                  {/* Social Proof */}
+                  <div className="bg-gradient-to-br from-blue-950/30 to-slate-900/90 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-6">
+                    <h4 className="text-sm font-bold text-blue-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                      <Building className="h-4 w-4" /> Users got interviews at
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
+                        Fortune 500
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
+                        FAANG
+                      </span>
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
+                        Leading Startups
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ScrollArea>
-          </div>
+              )}
+            </div>
+          </ScrollArea>
 
           {/* Center Image/Preview */}
           <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
