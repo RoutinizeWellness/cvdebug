@@ -1,0 +1,119 @@
+import { motion } from "framer-motion";
+import { TrendingUp, TrendingDown, Clock, FileText, Layers } from "lucide-react";
+
+interface ScoreCardProps {
+  score: number;
+  wordCount?: number;
+  pageCount?: number;
+  parsingTime?: number;
+}
+
+export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0 }: ScoreCardProps) {
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return { stroke: "stroke-green-500", text: "text-green-500", bg: "bg-green-500/10" };
+    if (score >= 50) return { stroke: "stroke-yellow-500", text: "text-yellow-500", bg: "bg-yellow-500/10" };
+    return { stroke: "stroke-red-500", text: "text-red-500", bg: "bg-red-500/10" };
+  };
+
+  const getVerdict = (score: number) => {
+    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-green-500" };
+    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-yellow-500" };
+    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-red-500" };
+  };
+
+  const colors = getScoreColor(score);
+  const verdict = getVerdict(score);
+  const VerdictIcon = verdict.icon;
+  
+  const circumference = 2 * Math.PI * 90;
+  const strokeDashoffset = circumference - (score / 100) * circumference;
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+      {/* Col 1: Radial Progress */}
+      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center">
+        <div className="relative w-48 h-48">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              stroke="currentColor"
+              strokeWidth="8"
+              fill="none"
+              className="text-zinc-800"
+            />
+            <motion.circle
+              cx="100"
+              cy="100"
+              r="90"
+              stroke="currentColor"
+              strokeWidth="8"
+              fill="none"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              className={colors.stroke}
+              initial={{ strokeDashoffset: circumference }}
+              animate={{ strokeDashoffset }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <motion.span 
+              className={`text-6xl font-bold ${colors.text}`}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              {score}
+            </motion.span>
+            <span className="text-sm text-zinc-400 font-medium mt-1">Match Rate</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Col 2: Verdict */}
+      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 flex flex-col justify-center">
+        <div className="flex items-start gap-3 mb-4">
+          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+            <VerdictIcon className={`h-5 w-5 ${verdict.color}`} />
+          </div>
+          <div className="flex-1">
+            <h3 className={`text-xl font-bold ${verdict.color} mb-1`}>{verdict.title}</h3>
+            <p className="text-sm text-zinc-400 leading-relaxed">{verdict.subtitle}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Col 3: Stats */}
+      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-zinc-400" />
+              <span className="text-sm text-zinc-400">Word Count</span>
+            </div>
+            <span className="text-lg font-bold text-zinc-100">{wordCount}</span>
+          </div>
+          <div className="h-px bg-zinc-800"></div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Layers className="h-4 w-4 text-zinc-400" />
+              <span className="text-sm text-zinc-400">Page Count</span>
+            </div>
+            <span className="text-lg font-bold text-zinc-100">{pageCount}</span>
+          </div>
+          <div className="h-px bg-zinc-800"></div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-zinc-400" />
+              <span className="text-sm text-zinc-400">Parsing Time</span>
+            </div>
+            <span className="text-lg font-bold text-zinc-100">{parsingTime}s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

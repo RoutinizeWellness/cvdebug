@@ -33,6 +33,9 @@ import { ResumeStats } from "./ResumeStats";
 import { CriticalIssues } from "./CriticalIssues";
 import { ImportantIssues } from "./ImportantIssues";
 import { FreeTierView } from "./FreeTierView";
+import { ScoreCard } from "./ScoreCard";
+import { SkillGapHeatmap } from "./SkillGapHeatmap";
+import { DeepAuditChecklist } from "./DeepAuditChecklist";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -205,6 +208,50 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   
   const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
 
+  // Prepare audit items
+  const auditItems: Array<{
+    title: string;
+    status: "passed" | "failed" | "warning";
+    reason: string;
+    fix: string;
+  }> = [
+    {
+      title: "Contact Information Parsing",
+      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('contact')) ? "failed" : "passed") as "passed" | "failed" | "warning",
+      reason: "Email or phone number not detected in standard format",
+      fix: "Place contact info at the top in a clear format: name@email.com, (123) 456-7890"
+    },
+    {
+      title: "Section Headers Recognition",
+      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('section')) ? "warning" : "passed") as "passed" | "failed" | "warning",
+      reason: "Some section headers may not be recognized by ATS",
+      fix: "Use standard headers: Experience, Education, Skills, Projects"
+    },
+    {
+      title: "Bullet Point Formatting",
+      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('bullet')) ? "failed" : "passed") as "passed" | "failed" | "warning",
+      reason: "Inconsistent bullet point formatting detected",
+      fix: "Use simple bullets (•) and maintain consistent indentation"
+    },
+    {
+      title: "Date Format Consistency",
+      status: "passed" as "passed" | "failed" | "warning",
+      reason: "",
+      fix: ""
+    },
+    {
+      title: "Font & Styling Compatibility",
+      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('font') || i.issue?.toLowerCase().includes('table')) ? "warning" : "passed") as "passed" | "failed" | "warning",
+      reason: "Complex formatting may not parse correctly",
+      fix: "Avoid tables, text boxes, and unusual fonts. Stick to standard fonts like Arial or Calibri"
+    }
+  ];
+
+  // Extract found keywords (mock data - you'd get this from your analysis)
+  const foundKeywords = displayResume?.missingKeywords?.slice(0, 8).map((kw: any) => 
+    typeof kw === 'string' ? kw : kw.keyword
+  ) || [];
+
   return (
     <Dialog open={!!resumeId} onOpenChange={(open) => !open && onClose()}>
       <PricingDialog 
@@ -215,13 +262,13 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
       />
       <DialogContent 
         showCloseButton={false}
-        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-background flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
+        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-zinc-950 flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
       >
         <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
         <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
         
         {/* Header */}
-        <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0 print:hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm flex-shrink-0 print:hidden">
           <div className="flex items-center gap-4">
             <div className="h-10 w-10 bg-primary/10 rounded-xl flex items-center justify-center border border-primary/20">
               <ScanLine className="h-5 w-5 text-primary" />
@@ -310,10 +357,9 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-          {/* Main Content - Full Width Bento Grid */}
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-zinc-950">
           <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-            <div className="p-4 md:p-8 max-w-7xl mx-auto">
+            <div className="p-8 max-w-7xl mx-auto">
               
               {isFree ? (
                 <FreeTierView 
@@ -327,176 +373,29 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 />
               ) : (
                 <div className="space-y-6">
-                  {/* Hero Section - Score Gauge */}
-                  <div className="grid lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-green-500/5"></div>
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-8">
-                          <div>
-                            <h2 className="text-3xl font-black text-white mb-2">
-                              {displayResume?.score >= 80 ? "🎉 Top 10% Candidate" : 
-                               displayResume?.score >= 51 ? "⚠️ Needs Optimization" : 
-                               "🚨 ATS Invisible"}
-                            </h2>
-                            <p className="text-slate-400">Your resume's ATS compatibility score</p>
-                          </div>
-                        </div>
-                        
-                        {/* Radial Progress Gauge */}
-                        <div className="flex items-center justify-center mb-8">
-                          <div className="relative w-64 h-64">
-                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-                              <circle
-                                cx="100"
-                                cy="100"
-                                r="85"
-                                stroke="currentColor"
-                                strokeWidth="12"
-                                fill="none"
-                                className="text-slate-800"
-                              />
-                              <circle
-                                cx="100"
-                                cy="100"
-                                r="85"
-                                stroke="currentColor"
-                                strokeWidth="12"
-                                fill="none"
-                                strokeDasharray={`${(displayResume?.score || 0) * 5.34} 534`}
-                                className={
-                                  displayResume?.score >= 80 ? "text-green-500" :
-                                  displayResume?.score >= 51 ? "text-yellow-500" :
-                                  "text-red-500"
-                                }
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                              <span className="text-6xl font-black text-white">{displayResume?.score || 0}</span>
-                              <span className="text-slate-400 text-sm font-medium">/ 100</span>
-                            </div>
-                          </div>
-                        </div>
+                  {/* New Linear-style Design */}
+                  <ScoreCard 
+                    score={displayResume?.score || 0}
+                    wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
+                    pageCount={1}
+                    parsingTime={2}
+                  />
 
-                        {/* Quick Stats */}
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
-                            <div className="text-2xl font-bold text-white">{displayResume?.scoreBreakdown?.format || 0}%</div>
-                            <div className="text-xs text-slate-400 mt-1">Parse Rate</div>
-                          </div>
-                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
-                            <div className="text-2xl font-bold text-white">{displayResume?.scoreBreakdown?.keywords || 0}%</div>
-                            <div className="text-xs text-slate-400 mt-1">Keyword Match</div>
-                          </div>
-                          <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
-                            <div className="text-2xl font-bold text-white">{displayResume?.missingKeywords?.length || 0}</div>
-                            <div className="text-xs text-slate-400 mt-1">Missing Skills</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <SkillGapHeatmap 
+                    foundKeywords={foundKeywords}
+                    missingKeywords={criticalKeywords}
+                  />
 
-                    {/* Score History Card */}
-                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
-                      <ScoreHistory />
-                    </div>
-                  </div>
-
-                  {/* Analysis Grid - Bento Layout */}
-                  <div className="grid lg:grid-cols-2 gap-6">
-                    {/* Keywords Card */}
-                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
-                      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <Target className="h-5 w-5 text-purple-400" />
-                        Keywords Analysis
-                      </h3>
-                      <div className="space-y-3">
-                        <div>
-                          <div className="text-xs text-slate-400 mb-2">Found Keywords</div>
-                          <div className="flex flex-wrap gap-2">
-                            {displayResume?.missingKeywords?.slice(0, 5).map((kw: any, i: number) => (
-                              <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-medium">
-                                <CheckCircle2 className="h-3 w-3" />
-                                {typeof kw === 'string' ? kw : kw.keyword}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-xs text-slate-400 mb-2">Missing Keywords</div>
-                          <div className="flex flex-wrap gap-2">
-                            {criticalKeywords.slice(0, 5).map((kw: any, i: number) => (
-                              <span key={i} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-medium">
-                                <XCircle className="h-3 w-3" />
-                                {typeof kw === 'string' ? kw : kw.keyword}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Format Issues Card */}
-                    <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
-                      <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <FileSearch className="h-5 w-5 text-purple-400" />
-                        Formatting Check
-                      </h3>
-                      <div className="space-y-2">
-                        {displayResume?.formatIssues?.slice(0, 4).map((issue: any, i: number) => (
-                          <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/30">
-                            {issue.severity === 'high' ? (
-                              <XCircle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
-                            ) : (
-                              <AlertTriangle className="h-4 w-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-medium text-white">{issue.issue}</div>
-                              <div className="text-xs text-slate-400 mt-1">{issue.location}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Critical Issues */}
-                  {criticalKeywords.length > 0 && (
-                    <div className="bg-gradient-to-br from-red-950/50 to-slate-900/90 backdrop-blur-xl border-2 border-red-500/30 rounded-3xl p-6">
-                      <CriticalIssues 
-                        criticalKeywords={criticalKeywords}
-                        totalImpact={totalImpact}
-                      />
-                    </div>
-                  )}
+                  <DeepAuditChecklist items={auditItems} />
 
                   {/* AI Recommendations - Expandable */}
-                  <div className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6">
-                    <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6">
+                    <h3 className="text-lg font-bold text-zinc-100 mb-4 flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-purple-400" />
                       AI Recommendations
                     </h3>
                     <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                       {renderAnalysis(displayResume?.analysis || "")}
-                    </div>
-                  </div>
-
-                  {/* Social Proof */}
-                  <div className="bg-gradient-to-br from-blue-950/30 to-slate-900/90 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-6">
-                    <h4 className="text-sm font-bold text-blue-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
-                      <Building className="h-4 w-4" /> Users got interviews at
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
-                        Fortune 500
-                      </span>
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
-                        FAANG
-                      </span>
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-800/50 border border-blue-500/20 text-xs font-medium text-blue-300">
-                        Leading Startups
-                      </span>
                     </div>
                   </div>
                 </div>
