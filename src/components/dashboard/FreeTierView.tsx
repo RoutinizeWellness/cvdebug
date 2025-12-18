@@ -30,33 +30,33 @@ export function FreeTierView({
       <div className="space-y-6">
         <div className="relative">
           <div className="filter blur-md pointer-events-none select-none">
-            <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+            <div className="bg-zinc-900 border-2 border-zinc-800 rounded-xl shadow-sm overflow-hidden">
               <div className="p-6 space-y-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Match Rate</h3>
+                    <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Match Rate</h3>
                     <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-5xl font-black text-foreground">{score}%</span>
-                      <span className="text-sm text-muted-foreground font-medium">/ 100</span>
+                      <span className="text-5xl font-black text-zinc-100">{score}%</span>
+                      <span className="text-sm text-zinc-500 font-medium">/ 100</span>
                     </div>
                   </div>
                 </div>
                 <Progress value={score} className="h-3" />
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
-                    <p className="text-xs text-muted-foreground font-medium mb-1">Missing Keywords</p>
-                    <p className="text-lg font-bold text-red-500">{missingCount}</p>
+                  <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
+                    <p className="text-xs text-zinc-400 font-medium mb-1">Missing Keywords</p>
+                    <p className="text-lg font-bold text-red-400">{missingCount}</p>
                   </div>
-                  <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
-                    <p className="text-xs text-muted-foreground font-medium mb-1">Format Issues</p>
-                    <p className="text-lg font-bold text-yellow-500">{formatCount}</p>
+                  <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
+                    <p className="text-xs text-zinc-400 font-medium mb-1">Format Issues</p>
+                    <p className="text-lg font-bold text-yellow-400">{formatCount}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/95 backdrop-blur-sm">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/95 backdrop-blur-sm">
             <div className="text-center space-y-6 p-8 max-w-md">
               <div className="h-16 w-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
                 <AlertCircle className="h-8 w-8 text-white" />
@@ -71,35 +71,35 @@ export function FreeTierView({
                 </p>
               </div>
 
-              <div className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-6 text-center">
-                <div className="text-6xl font-black text-red-500 mb-2">{score}/100</div>
-                <p className="text-sm font-bold text-foreground mb-4">Your ATS Score</p>
+              <div className="bg-red-500/20 border-2 border-red-500/50 rounded-xl p-6 text-center shadow-lg">
+                <div className="text-6xl font-black text-red-400 mb-2">{score}/100</div>
+                <p className="text-sm font-bold text-zinc-100 mb-4">Your ATS Score</p>
                 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
-                    <div className="text-3xl font-black text-red-500 mb-1">{missingCount}</div>
-                    <p className="text-xs text-muted-foreground">Missing Keywords</p>
+                  <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-red-500/30">
+                    <div className="text-3xl font-black text-red-400 mb-1">{missingCount}</div>
+                    <p className="text-xs text-zinc-300">Missing Keywords</p>
                   </div>
-                  <div className="bg-background/50 rounded-lg p-4 border border-border/50">
-                    <div className="text-3xl font-black text-yellow-500 mb-1">{formatCount}</div>
-                    <p className="text-xs text-muted-foreground">Format Issues</p>
+                  <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-yellow-500/30">
+                    <div className="text-3xl font-black text-yellow-400 mb-1">{formatCount}</div>
+                    <p className="text-xs text-zinc-300">Format Issues</p>
                   </div>
                 </div>
 
-                <div className="bg-muted/30 border border-border rounded-lg p-4 text-left">
-                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
+                <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-lg p-4 text-left">
+                  <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                     <Lock className="h-3 w-3" /> Locked Details
                   </p>
                   <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
                       <div key={i} className="flex items-center gap-2 text-sm">
-                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
-                        <span className="blur-sm select-none flex-1">████████████████</span>
-                        <Lock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                        <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
+                        <span className="blur-sm select-none flex-1 text-zinc-400">████████████████</span>
+                        <Lock className="h-3 w-3 text-zinc-500 flex-shrink-0" />
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-center text-muted-foreground mt-3">
+                  <p className="text-xs text-center text-zinc-400 mt-3">
                     + {Math.max(0, totalErrors - 3)} more errors...
                   </p>
                 </div>
@@ -143,72 +143,72 @@ export function FreeTierView({
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-        <div className="p-6 space-y-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Match Rate</h3>
-              <div className="flex items-baseline gap-2 mt-1">
-                <span className="text-5xl font-black text-foreground">{score}%</span>
-                <span className="text-sm text-muted-foreground font-medium">/ 100</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="inline-flex items-center gap-1.5 bg-primary/10 text-primary px-2.5 py-1 rounded-full text-xs font-bold">
-                <AlertCircle className="h-3.5 w-3.5" />
-                Target: {target}%+
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Progress value={score} className="h-3" />
-            <div className="flex justify-between text-xs text-muted-foreground font-medium">
-              <span>Current: {score}%</span>
-              <span>Target: {target}%</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
-              <p className="text-xs text-muted-foreground font-medium mb-1">Gap to target</p>
-              <p className="text-lg font-bold text-red-500">{gap > 0 ? `${gap}%` : "Target Met!"}</p>
-            </div>
-            <div className="bg-muted/30 rounded-lg p-3 border border-border/50">
-              <p className="text-xs text-muted-foreground font-medium mb-1">Est. fix time</p>
-              <p className="text-lg font-bold text-foreground">~10 mins</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-red-500/5 border border-red-500/10 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
-                  <AlertCircle className="h-4 w-4 text-red-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-foreground">Missing {missingCount} keywords</p>
-                  <p className="text-xs text-muted-foreground">Critical for ATS visibility</p>
+    return (
+      <div className="space-y-6">
+        <div className="bg-zinc-900 border-2 border-zinc-800 rounded-xl shadow-sm overflow-hidden">
+          <div className="p-6 space-y-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Match Rate</h3>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <span className="text-5xl font-black text-zinc-100">{score}%</span>
+                  <span className="text-sm text-zinc-500 font-medium">/ 100</span>
                 </div>
               </div>
-              <Lock className="h-4 w-4 text-muted-foreground" />
-            </div>
-
-            <div className="flex items-center justify-between p-3 bg-yellow-500/5 border border-yellow-500/10 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-foreground">{formatCount} format issues</p>
-                  <p className="text-xs text-muted-foreground">Parsing errors detected</p>
+              <div className="text-right">
+                <div className="inline-flex items-center gap-1.5 bg-primary/20 text-primary px-2.5 py-1 rounded-full text-xs font-bold border border-primary/30">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  Target: {target}%+
                 </div>
               </div>
-              <Lock className="h-4 w-4 text-muted-foreground" />
             </div>
-          </div>
+
+            <div className="space-y-2">
+              <Progress value={score} className="h-3" />
+              <div className="flex justify-between text-xs text-zinc-400 font-medium">
+                <span>Current: {score}%</span>
+                <span>Target: {target}%</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
+                <p className="text-xs text-zinc-400 font-medium mb-1">Gap to target</p>
+                <p className="text-lg font-bold text-red-400">{gap > 0 ? `${gap}%` : "Target Met!"}</p>
+              </div>
+              <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
+                <p className="text-xs text-zinc-400 font-medium mb-1">Est. fix time</p>
+                <p className="text-lg font-bold text-zinc-100">~10 mins</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-red-500/10 border-2 border-red-500/30 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center border border-red-500/30">
+                    <AlertCircle className="h-4 w-4 text-red-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-zinc-100">Missing {missingCount} keywords</p>
+                    <p className="text-xs text-zinc-400">Critical for ATS visibility</p>
+                  </div>
+                </div>
+                <Lock className="h-4 w-4 text-zinc-500" />
+              </div>
+
+              <div className="flex items-center justify-between p-3 bg-yellow-500/10 border-2 border-yellow-500/30 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full bg-yellow-500/20 flex items-center justify-center border border-yellow-500/30">
+                    <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-zinc-100">{formatCount} format issues</p>
+                    <p className="text-xs text-zinc-400">Parsing errors detected</p>
+                  </div>
+                </div>
+                <Lock className="h-4 w-4 text-zinc-500" />
+              </div>
+            </div>
 
           <div className="pt-2">
             <Button 
