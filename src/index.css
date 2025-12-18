@@ -131,3 +131,10 @@
     cursor: pointer;
   }
 }
+
+/* Hide Clerk Branding & Development Badge */
+.cl-footer, 
+.cl-internal-b3fm6y,
+.cl-development-badge {
+  display: none !important;
+}

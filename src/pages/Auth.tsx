@@ -156,13 +156,6 @@ export default function AuthPage() {
         {/* Trust Indicators */}
         <div className="mt-8 flex items-center justify-center gap-6 text-xs text-muted-foreground animate-in fade-in duration-700 delay-500">
           <div className="flex items-center gap-1.5">
-            <div className="h-4 w-4 rounded-full bg-green-500/20 flex items-center justify-center">
-              <div className="h-2 w-2 rounded-full bg-green-500"></div>
-            </div>
-            <span className="font-medium">Secure Login</span>
-          </div>
-          <div className="h-4 w-px bg-border"></div>
-          <div className="flex items-center gap-1.5">
             <span className="font-medium">10K+ Users</span>
           </div>
           <div className="h-4 w-px bg-border"></div>
