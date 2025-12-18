@@ -353,12 +353,12 @@ export function generateFallbackAnalysis(
     const matches = ocrText.match(pattern);
     if (matches) metricCount += matches.length;
   });
-  
-  // Score based on metric density
-  if (metricCount >= 8) completenessScore += 15;
-  else if (metricCount >= 5) completenessScore += 11;
-  else if (metricCount >= 3) completenessScore += 7;
-  else if (metricCount >= 1) completenessScore += 3;
+
+  // Score based on metric density (Stricter thresholds for realism)
+  if (metricCount >= 12) completenessScore += 15;
+  else if (metricCount >= 8) completenessScore += 10;
+  else if (metricCount >= 5) completenessScore += 6;
+  else if (metricCount >= 2) completenessScore += 3;
   
   // NEW: Integrate Bullet Point Quality Score
   // We blend the bullet analysis score into completeness
@@ -436,9 +436,6 @@ export function generateFallbackAnalysis(
   
   // Cap sentiment contribution to completeness score
   const sentimentContribution = Math.max(0, Math.min(15, sentimentScore));
-  // We adjust the cap here since we added bullet quality and soft skills
-  // Total completeness potential: Metrics(15) + Bullets(10) + SoftSkills(5) + Sentiment(15) + Length(5) + Summary(2) = 52
-  // We cap it at 30 * multiplier
   
   completenessScore += sentimentContribution;
   
@@ -454,7 +451,19 @@ export function generateFallbackAnalysis(
   
   // ===== FINAL SCORE CALCULATION =====
   
-  const totalScore = Math.min(100, Math.max(0, keywordScore + formatScore + completenessScore));
+  let rawScore = keywordScore + formatScore + completenessScore;
+
+  // Apply "Realism Curve" - harder to get high scores
+  // Most resumes naturally fall between 40-70. We compress the top end to make >75 hard.
+  if (rawScore > 60) {
+    // For every point above 60, you only get 0.6 points
+    // Example: Raw 80 -> 60 + (20 * 0.6) = 72
+    // Example: Raw 90 -> 60 + (30 * 0.6) = 78
+    // Example: Raw 100 -> 60 + (40 * 0.6) = 84
+    rawScore = 60 + (rawScore - 60) * 0.6;
+  }
+  
+  const totalScore = Math.round(Math.min(100, Math.max(0, rawScore)));
   
   // ===== ENHANCED METRIC SUGGESTIONS (Role-Specific & Context-Aware) =====
   
