@@ -435,38 +435,38 @@ export const sendConversionFollowUpEmail = internalAction({
     if (!resend) return;
 
     const firstName = args.name?.split(" ")[0] || "there";
-    const subject = `Tu CV sigue roto (Score: ${args.score}/100)`;
+    const subject = `Your resume still has issues (Score: ${args.score}/100)`;
     
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <p>Hola ${firstName},</p>
+        <p>Hi ${firstName},</p>
         
-        <p>Vi que escaneaste tu CV pero no desbloqueaste el reporte.</p>
+        <p>I noticed you scanned your resume but didn't unlock the full report.</p>
         
         <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0; border-radius: 4px;">
-          <p style="margin: 0; font-weight: bold; color: #991b1b;">⚠️ Tu Score: ${args.score}/100</p>
-          <p style="margin: 8px 0 0 0; color: #7f1d1d;">Sigues teniendo ${args.errorCount} errores que los reclutadores van a ver.</p>
+          <p style="margin: 0; font-weight: bold; color: #991b1b;">⚠️ Your Score: ${args.score}/100</p>
+          <p style="margin: 8px 0 0 0; color: #7f1d1d;">You still have ${args.errorCount} errors that recruiters will see.</p>
         </div>
 
-        <p><strong>¿Vale la pena perder el trabajo por $5?</strong></p>
+        <p><strong>Is it worth losing the job over $5?</strong></p>
         
-        <p>Desbloquea ahora y descubre:</p>
+        <p>Unlock now and discover:</p>
         <ul>
-          <li>✅ La lista completa de los ${args.errorCount} errores</li>
-          <li>✅ Cómo arreglar cada uno paso a paso</li>
-          <li>✅ Palabras clave que te faltan</li>
-          <li>✅ Problemas de formato que bloquean tu CV</li>
+          <li>✅ The complete list of ${args.errorCount} errors</li>
+          <li>✅ How to fix each one step by step</li>
+          <li>✅ Missing keywords you need</li>
+          <li>✅ Format issues blocking your resume</li>
         </ul>
 
         <div style="text-align: center; margin: 30px 0;">
           <a href="https://resume-ats-optimizer.convex.site/dashboard?unlock=true" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
-            Desbloquear Reporte - $4.99
+            Unlock Report - $4.99
           </a>
         </div>
 
-        <p style="font-size: 12px; color: #666; text-align: center;">Pago único • Sin suscripción • Acceso instantáneo</p>
+        <p style="font-size: 12px; color: #666; text-align: center;">One-time payment • No subscription • Instant access</p>
         
-        <p>Saludos,<br>El equipo de CVDebug</p>
+        <p>Best regards,<br>The CVDebug Team</p>
       </div>
     `;
 
