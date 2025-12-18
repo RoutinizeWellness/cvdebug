@@ -44,6 +44,11 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
+    // Mark free trial as used immediately upon creating a resume
+    if (!user.freeTrialUsed) {
+      await ctx.db.patch(user._id, { freeTrialUsed: true });
+    }
+
     const url = await ctx.storage.getUrl(args.storageId);
     if (!url) {
       throw new Error("Failed to get file URL");

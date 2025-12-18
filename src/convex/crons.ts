@@ -21,6 +21,9 @@ crons.interval("conversion_flow", { hours: 1 }, internal.crons.runConversionFlow
 // 3. Re-Engagement Flow (Email #7: 30-day check-in)
 crons.interval("reengagement_flow", { hours: 24 }, internal.crons.runReengagementFlow, {});
 
+// 4. Conversion Follow-up (Email: 5 days after scan if still free)
+crons.interval("conversion_followup", { hours: 1 }, internal.crons.runConversionFollowUp, {});
+
 // --- Activation Flow Logic ---
 // Email #2: 24h reminder if no scans
 export const runActivationFlow = internalMutation({
@@ -178,6 +181,52 @@ export const runReengagementFlow = internalMutation({
         await ctx.scheduler.runAfter(0, internal.marketing.sendWinBackEmail, {
           email: user.email,
           name: user.name,
+        });
+      }
+    }
+  },
+});
+
+// --- Conversion Follow-up Logic ---
+export const runConversionFollowUp = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const day = 24 * 60 * 60 * 1000;
+    
+    // Look for resumes created between 5 days and 5 days + 1 hour ago
+    const fiveDaysAgoStart = now - (5 * day) - (60 * 60 * 1000);
+    const fiveDaysAgoEnd = now - (5 * day);
+
+    const resumes = await ctx.db
+      .query("resumes")
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), fiveDaysAgoStart),
+          q.lt(q.field("_creationTime"), fiveDaysAgoEnd)
+        )
+      )
+      .take(50);
+
+    for (const resume of resumes) {
+      if (!resume.userId) continue;
+
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId))
+        .unique();
+
+      // Send if user exists, is free, hasn't received this email, and resume is completed
+      if (user && user.email && user.subscriptionTier === "free" && !user.conversionFollowUpSent && resume.status === "completed") {
+        
+        await ctx.db.patch(user._id, { conversionFollowUpSent: true });
+        
+        const errorCount = (resume.missingKeywords?.length || 0) + (resume.formatIssues?.length || 0);
+        
+        await ctx.scheduler.runAfter(0, internal.marketing.sendConversionFollowUpEmail, {
+          email: user.email,
+          name: user.name,
+          score: resume.score || 0,
+          errorCount,
         });
       }
     }
