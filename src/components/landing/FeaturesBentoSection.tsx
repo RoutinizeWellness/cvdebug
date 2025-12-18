@@ -15,7 +15,7 @@ export function FeaturesBentoSection() {
               <span className="material-symbols-outlined">database</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">Professional Parsing</h3>
+              <h3 className="text-xl font-bold mb-2">🔍 Professional Parsing</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 We use enterprise-grade parsers to show you exactly how systems like Workday interpret your work history.
               </p>
@@ -29,7 +29,7 @@ export function FeaturesBentoSection() {
               <span className="material-symbols-outlined">image</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">The Image Trap</h3>
+              <h3 className="text-xl font-bold mb-2">🖼️ The Image Trap</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Detects invisible text and layout issues caused by designing in creative tools like Canva or Figma.
               </p>
@@ -43,7 +43,7 @@ export function FeaturesBentoSection() {
               <span className="material-symbols-outlined">target</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">Keyword Match</h3>
+              <h3 className="text-xl font-bold mb-2">🎯 Keyword Match</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Scan your resume against specific Job Descriptions to see missing hard skills and keywords instantly.
               </p>
@@ -57,7 +57,7 @@ export function FeaturesBentoSection() {
               <span className="material-symbols-outlined">trending_up</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">ROI Driven</h3>
+              <h3 className="text-xl font-bold mb-2">📈 ROI Driven</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Users with an 80+ score get 3x more callbacks on average. Data-backed optimization.
               </p>

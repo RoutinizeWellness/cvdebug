@@ -8,7 +8,7 @@ export function HeroVisualizerSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7c3bed] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7c3bed]"></span>
           </span>
-          New ATS Parser Engine v2.0
+          ✨ New ATS Parser Engine v2.0
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-4xl">
@@ -34,7 +34,7 @@ export function HeroVisualizerSection() {
         <div className="relative w-full max-w-5xl aspect-[16/9] md:aspect-[21/9] bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden shadow-2xl flex flex-col md:flex-row group">
           {/* Human View */}
           <div className="flex-1 bg-white p-6 md:p-8 text-left border-r border-gray-200 md:border-r-0 relative overflow-hidden">
-            <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Human View</div>
+            <div className="absolute top-4 right-4 bg-gray-100 text-gray-600 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">👤 Human View</div>
             
             {/* Fake Resume Content */}
             <div className="flex flex-col gap-4 opacity-40 blur-[0.5px] scale-95 origin-top-left select-none pointer-events-none">
@@ -63,7 +63,7 @@ export function HeroVisualizerSection() {
 
           {/* Robot View (Terminal) */}
           <div className="flex-1 bg-[#0f0f0f] p-6 md:p-8 text-left font-mono text-xs md:text-sm overflow-hidden relative border-l border-white/5">
-            <div className="absolute top-4 right-4 bg-[#7c3bed]/20 text-[#7c3bed] text-xs font-bold px-2 py-1 rounded uppercase tracking-wider border border-[#7c3bed]/30">Robot View</div>
+            <div className="absolute top-4 right-4 bg-[#7c3bed]/20 text-[#7c3bed] text-xs font-bold px-2 py-1 rounded uppercase tracking-wider border border-[#7c3bed]/30">🤖 Robot View</div>
             
             <div className="flex flex-col gap-1 text-gray-400">
               <div className="flex gap-2">
@@ -76,7 +76,7 @@ export function HeroVisualizerSection() {
               </div>
               <div className="flex gap-2 bg-red-500/10 -mx-6 px-6 py-1 border-l-2 border-red-500">
                 <span className="text-gray-600">03</span>
-                <span className="text-red-400">Error: Column structure not recognized.</span>
+                <span className="text-red-400">❌ Error: Column structure not recognized.</span>
               </div>
               <div className="flex gap-2">
                 <span className="text-gray-600">04</span>

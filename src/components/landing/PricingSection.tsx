@@ -5,7 +5,7 @@ export function PricingSection() {
       
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">The Repair Shop</h2>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">💰 The Repair Shop</h2>
           <p className="text-gray-400">Simple pricing. No recurring subscriptions.</p>
         </div>
 
@@ -13,7 +13,7 @@ export function PricingSection() {
           {/* Free Tier */}
           <div className="p-8 rounded-2xl bg-[#050505] border border-white/10 flex flex-col gap-6 h-full">
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">Free Audit</h3>
+              <h3 className="text-xl font-bold text-white mb-2">🆓 Free Audit</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-black text-white">$0</span>
                 <span className="text-sm text-gray-500 font-medium">/ forever</span>
@@ -41,10 +41,10 @@ export function PricingSection() {
           {/* Pro Tier */}
           <div className="p-8 rounded-2xl bg-[#0F0A1F] border border-[#7c3bed] shadow-[0_0_40px_-10px_rgba(124,59,237,0.3)] flex flex-col gap-6 relative h-full transform md:-translate-y-4">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#7c3bed] text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg whitespace-nowrap">
-              MOST POPULAR - PAY ONCE
+              ⭐ MOST POPULAR - PAY ONCE
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">Pro Pass</h3>
+              <h3 className="text-xl font-bold text-white mb-2">🚀 Pro Pass</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-black text-white">$4.99</span>
                 <span className="text-sm text-gray-400 font-medium">/ one-time</span>
