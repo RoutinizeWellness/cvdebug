@@ -10,15 +10,15 @@ interface ScoreCardProps {
 
 export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0 }: ScoreCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return { stroke: "stroke-green-500", text: "text-green-500", bg: "bg-green-500/10" };
-    if (score >= 50) return { stroke: "stroke-yellow-500", text: "text-yellow-500", bg: "bg-yellow-500/10" };
-    return { stroke: "stroke-red-500", text: "text-red-500", bg: "bg-red-500/10" };
+    if (score >= 80) return { stroke: "stroke-emerald-500", text: "text-emerald-500", bg: "bg-emerald-500/20" };
+    if (score >= 50) return { stroke: "stroke-amber-500", text: "text-amber-500", bg: "bg-amber-500/20" };
+    return { stroke: "stroke-rose-500", text: "text-rose-500", bg: "bg-rose-500/20" };
   };
 
   const getVerdict = (score: number) => {
-    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-green-500" };
-    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-yellow-500" };
-    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-red-500" };
+    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-emerald-500" };
+    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-amber-500" };
+    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-rose-500" };
   };
 
   const colors = getScoreColor(score);
@@ -31,7 +31,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
       {/* Col 1: Radial Progress */}
-      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center">
+      <div className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center shadow-lg">
         <div className="relative w-48 h-48">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
             <circle
@@ -39,16 +39,16 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
               cy="100"
               r="90"
               stroke="currentColor"
-              strokeWidth="8"
+              strokeWidth="10"
               fill="none"
-              className="text-zinc-800"
+              className="text-zinc-700"
             />
             <motion.circle
               cx="100"
               cy="100"
               r="90"
               stroke="currentColor"
-              strokeWidth="8"
+              strokeWidth="10"
               fill="none"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
@@ -68,49 +68,49 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
             >
               {score}
             </motion.span>
-            <span className="text-sm text-zinc-400 font-medium mt-1">Match Rate</span>
+            <span className="text-sm text-zinc-300 font-medium mt-1">Match Rate</span>
           </div>
         </div>
       </div>
 
       {/* Col 2: Verdict */}
-      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 flex flex-col justify-center">
+      <div className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 flex flex-col justify-center shadow-lg">
         <div className="flex items-start gap-3 mb-4">
-          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0 border-2 ${colors.stroke.replace('stroke-', 'border-')}`}>
             <VerdictIcon className={`h-5 w-5 ${verdict.color}`} />
           </div>
           <div className="flex-1">
             <h3 className={`text-xl font-bold ${verdict.color} mb-1`}>{verdict.title}</h3>
-            <p className="text-sm text-zinc-400 leading-relaxed">{verdict.subtitle}</p>
+            <p className="text-sm text-zinc-300 leading-relaxed">{verdict.subtitle}</p>
           </div>
         </div>
       </div>
 
       {/* Col 3: Stats */}
-      <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6">
+      <div className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 shadow-lg">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-zinc-400" />
-              <span className="text-sm text-zinc-400">Word Count</span>
+              <FileText className="h-4 w-4 text-zinc-300" />
+              <span className="text-sm text-zinc-300">Word Count</span>
             </div>
-            <span className="text-lg font-bold text-zinc-100">{wordCount}</span>
+            <span className="text-lg font-bold text-white">{wordCount}</span>
           </div>
-          <div className="h-px bg-zinc-800"></div>
+          <div className="h-px bg-zinc-700"></div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Layers className="h-4 w-4 text-zinc-400" />
-              <span className="text-sm text-zinc-400">Page Count</span>
+              <Layers className="h-4 w-4 text-zinc-300" />
+              <span className="text-sm text-zinc-300">Page Count</span>
             </div>
-            <span className="text-lg font-bold text-zinc-100">{pageCount}</span>
+            <span className="text-lg font-bold text-white">{pageCount}</span>
           </div>
-          <div className="h-px bg-zinc-800"></div>
+          <div className="h-px bg-zinc-700"></div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-zinc-400" />
-              <span className="text-sm text-zinc-400">Parsing Time</span>
+              <Clock className="h-4 w-4 text-zinc-300" />
+              <span className="text-sm text-zinc-300">Parsing Time</span>
             </div>
-            <span className="text-lg font-bold text-zinc-100">{parsingTime}s</span>
+            <span className="text-lg font-bold text-white">{parsingTime}s</span>
           </div>
         </div>
       </div>

@@ -44,9 +44,17 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
-    // Mark free trial as used immediately upon creating a resume
+    // Mark free trial as used and deduct a credit immediately upon creating a resume
     if (!user.freeTrialUsed) {
-      await ctx.db.patch(user._id, { freeTrialUsed: true });
+      await ctx.db.patch(user._id, { 
+        freeTrialUsed: true,
+        credits: Math.max(0, (user.credits ?? 2) - 1)
+      });
+    } else {
+      // Deduct credit for subsequent scans
+      await ctx.db.patch(user._id, { 
+        credits: Math.max(0, (user.credits ?? 0) - 1)
+      });
     }
 
     const url = await ctx.storage.getUrl(args.storageId);
