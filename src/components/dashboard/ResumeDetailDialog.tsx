@@ -432,7 +432,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       <div className="h-1 w-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
                       <h2 className="text-2xl font-black text-zinc-50 tracking-tight">AI Recommendations</h2>
                     </div>
-                    <div className="bg-zinc-900/50 backdrop-blur border-2 border-zinc-800 rounded-xl p-6 shadow-lg">
+                    <div className="bg-zinc-800/40 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 shadow-lg">
                       <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                         {renderAnalysis(displayResume?.analysis || "")}
                       </div>
