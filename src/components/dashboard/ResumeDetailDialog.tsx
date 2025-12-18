@@ -375,7 +375,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-zinc-950">
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#23220f]">
           <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
             <div className="p-8 max-w-7xl mx-auto">
               
@@ -394,8 +394,8 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   {/* Score Overview Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full"></div>
-                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">Score Overview</h2>
+                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
+                      <h2 className="text-2xl font-black text-white tracking-tight">Score Overview</h2>
                     </div>
                     <ScoreCard 
                       score={displayResume?.score || 0}
@@ -408,8 +408,8 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   {/* Keyword Analysis Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"></div>
-                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">Keyword Analysis</h2>
+                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
+                      <h2 className="text-2xl font-black text-white tracking-tight">Keyword Analysis</h2>
                     </div>
                     <SkillGapHeatmap 
                       foundKeywords={foundKeywords}
@@ -420,8 +420,8 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   {/* ATS Compatibility Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"></div>
-                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">ATS Compatibility</h2>
+                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
+                      <h2 className="text-2xl font-black text-white tracking-tight">ATS Compatibility</h2>
                     </div>
                     <DeepAuditChecklist items={auditItems} />
                   </div>
@@ -429,10 +429,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   {/* AI Recommendations Section */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
-                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">AI Recommendations</h2>
+                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
+                      <h2 className="text-2xl font-black text-white tracking-tight">AI Recommendations</h2>
                     </div>
-                    <div className="bg-zinc-800/40 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 shadow-lg">
+                    <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
                       <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
                         {renderAnalysis(displayResume?.analysis || "")}
                       </div>

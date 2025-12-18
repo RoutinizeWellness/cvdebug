@@ -31,7 +31,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
       {/* Col 1: Radial Progress */}
-      <div className="bg-zinc-800/60 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 flex flex-col items-center justify-center shadow-lg">
+      <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 flex flex-col items-center justify-center shadow-lg">
         <div className="relative w-48 h-48">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
             <circle
@@ -74,7 +74,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
       </div>
 
       {/* Col 2: Verdict */}
-      <div className={`bg-zinc-800/60 backdrop-blur border-2 ${colors.border} rounded-xl p-6 flex flex-col justify-center shadow-lg`}>
+      <div className={`bg-white/[0.03] backdrop-blur border ${colors.border} rounded-2xl p-6 flex flex-col justify-center shadow-lg`}>
         <div className="flex items-start gap-3 mb-4">
           <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0 border-2 ${colors.border}`}>
             <VerdictIcon className={`h-5 w-5 ${verdict.color}`} />
@@ -87,7 +87,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
       </div>
 
       {/* Col 3: Stats */}
-      <div className="bg-zinc-800/60 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 shadow-lg">
+      <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

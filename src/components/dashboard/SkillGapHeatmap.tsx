@@ -23,7 +23,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
   };
 
   return (
-    <div className="bg-zinc-800/40 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 shadow-lg">
+    <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
       
       {/* Missing Keywords - Priority First */}
       {missingKeywords.length > 0 && (
