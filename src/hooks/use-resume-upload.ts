@@ -59,7 +59,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         jobDescription: jobDescription.trim() || undefined,
       });
 
-      // Set processing state to show upsell overlay
       setProcessingResumeId(resumeId);
 
       toast.success(jobDescription.trim() 
@@ -67,13 +66,13 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         : "Resume uploaded! AI is analyzing..."
       );
       
-      // Process the file
       await processFile(file, resumeId);
       setJobDescription("");
 
     } catch (error) {
       console.error(error);
-      toast.error("Failed to upload resume");
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      toast.error(`Failed to upload resume: ${errorMsg}`);
       setProcessingResumeId(null);
     } finally {
       setIsUploading(false);
@@ -86,14 +85,12 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       let text = "";
 
       if (file.type === "application/pdf") {
-        // PDF Processing with enhanced error handling and fallback
         const pdfVersion = pdfjsLib.version || "4.0.379"; 
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
         
         const arrayBuffer = await file.arrayBuffer();
         
         try {
-          // Try standard PDF text extraction
           const pdf = await pdfjsLib.getDocument({ 
             data: arrayBuffer,
             useSystemFonts: true,
@@ -104,10 +101,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
             
-            // Enhanced text extraction with better spacing
             const pageText = content.items
               .map((item: any) => {
-                // Preserve spacing between text items
                 const str = item.str || "";
                 const hasEOL = item.hasEOL;
                 return hasEOL ? str + "\n" : str + " ";
@@ -117,23 +112,21 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             text += pageText + "\n";
           }
           
-          // If extracted text is too short or seems corrupted, try OCR fallback
           if (text.trim().length < 50 || (text.match(/[^\x00-\x7F]/g) || []).length / text.length > 0.5) {
             console.log("PDF text extraction yielded poor results, attempting OCR fallback...");
             toast.info("PDF text layer is unclear, using OCR for better accuracy...");
             
-            // Convert PDF to image and use OCR
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            text = ""; // Reset text
-            
-            // Initialize worker ONCE for all pages to prevent resource exhaustion
+            let ocrText = "";
+            let ocrErrors: any[] = [];
+
             const worker = await createWorker("eng");
             
             try {
               for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
-                const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+                const viewport = page.getViewport({ scale: 2.0 });
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
                 
@@ -142,7 +135,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                   viewport: viewport
                 }).promise;
                 
-                // Convert canvas to blob and run OCR
                 const blob = await new Promise<Blob | null>((resolve) => {
                   canvas.toBlob((b) => resolve(b), 'image/png');
                 });
@@ -151,56 +143,63 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                   const imageUrl = URL.createObjectURL(blob);
                   try {
                     const ret = await worker.recognize(imageUrl);
-                    text += ret.data.text + "\n";
+                    ocrText += ret.data.text + "\n";
                   } catch (ocrError) {
-                    console.error(`OCR failed for page ${i}:`, ocrError);
+                    console.error(`OCR failed for PDF page ${i}:`, ocrError);
+                    ocrErrors.push(ocrError);
                   } finally {
                     URL.revokeObjectURL(imageUrl);
                   }
+                } else {
+                  console.warn(`Could not create image blob for PDF page ${i}. Skipping OCR for this page.`);
+                  ocrErrors.push(new Error(`Failed to create image blob for PDF page ${i}`));
                 }
               }
             } finally {
               await worker.terminate();
             }
+            
+            text = ocrText;
+            
+            if (!text.trim() && ocrErrors.length > 0) {
+              const firstError = ocrErrors[0];
+              throw new Error(`Failed to extract text from PDF via OCR. It might be corrupted or severely malformed. Details: ${firstError?.message || "Unknown OCR error."}`);
+            }
           }
         } catch (pdfError) {
           console.error("PDF parsing failed:", pdfError);
-          // We cannot recover if PDF.js cannot even open the document. 
-          // Trying to pass a PDF file blob to Tesseract as an image will cause "Error attempting to read image".
-          throw new Error("Could not parse this PDF file. It may be corrupted, password protected, or in an unsupported format. Please try saving it as a new PDF or converting to Word.");
+          throw new Error(`Could not parse this PDF file. It may be corrupted, password protected, or in an unsupported format. Please try saving it as a new PDF or converting to Word. Original issue: ${pdfError instanceof Error ? pdfError.message : String(pdfError)}`);
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-        // Word (.docx) Processing
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         text = result.value;
       } else {
-        // Image OCR Processing
         try {
           const worker = await createWorker("eng");
           const imageUrl = URL.createObjectURL(file);
           try {
             const ret = await worker.recognize(imageUrl);
             text = ret.data.text;
+          } catch (ocrError: any) {
+             const errorMessage = ocrError?.message?.includes("attempting to read image") 
+                                  ? "The image file appears to be corrupted or in an unsupported format. Please try a different image (JPG/PNG)." 
+                                  : `Could not read text from this image. Please ensure it is clear and readable. Original OCR issue: ${ocrError?.message || "Unknown error."}`;
+             throw new Error(errorMessage);
           } finally {
             URL.revokeObjectURL(imageUrl);
             await worker.terminate();
           }
         } catch (ocrError: any) {
-          console.error("Image OCR failed:", ocrError);
-          if (ocrError?.message?.includes("attempting to read image")) {
-             throw new Error("The image file appears to be corrupted or in an unsupported format. Please try a different image (JPG/PNG).");
-          }
-          throw new Error("Could not read text from this image. Please ensure it is clear and readable.");
+          console.error("Image OCR processing failed:", ocrError);
+          throw new Error(`Failed to process image for text extraction. Original issue: ${ocrError instanceof Error ? ocrError.message : String(ocrError)}`);
         }
       }
 
       if (!text.trim()) {
-        toast.error("No text could be extracted from the file. Please try converting your PDF to a different format or ensure it contains readable text.");
-        return;
+        throw new Error("No text could be extracted from the file. Please try converting your document to a different format or ensure it contains readable text.");
       }
 
-      // Clean text before sending
       const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
       console.log("DEBUG: Extracted text length:", cleanText.length);
@@ -210,18 +209,16 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         throw new Error(`Extracted text is too short (${cleanText.length} chars). Please ensure the file contains selectable text.`);
       }
 
-      // Send extracted text to backend for AI analysis
       await updateResumeOcr({ id: resumeId, ocrText: cleanText });
       
       toast.success("✅ Text extracted successfully! AI analysis in progress...");
       
-      // Don't clear processing state here - let it clear when analysis completes
     } catch (error: any) {
       console.error("Processing Error:", error);
-      toast.error(`Text extraction failed: ${error.message || "Please try a different file format."}`);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      toast.error(`Text extraction failed: ${errorMsg}`);
       setProcessingResumeId(null);
       
-      // Delete the failed resume
       try {
         await deleteResume({ id: resumeId });
       } catch (deleteError) {
