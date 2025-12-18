@@ -64,31 +64,31 @@ export function FreeTierView({
               
               <div>
                 <h3 className="text-2xl font-black text-foreground mb-2">
-                  {totalErrors} Errores Detectados
+                  {totalErrors} Errors Detected
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Tu CV tiene problemas que están bloqueando tus aplicaciones.
+                  Your resume has issues blocking your applications.
                 </p>
               </div>
 
               <div className="bg-red-500/10 border-2 border-red-500/30 rounded-xl p-6 text-center">
                 <div className="text-6xl font-black text-red-500 mb-2">{score}/100</div>
-                <p className="text-sm font-bold text-foreground mb-4">Tu Score ATS</p>
+                <p className="text-sm font-bold text-foreground mb-4">Your ATS Score</p>
                 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-background/50 rounded-lg p-4 border border-border/50">
                     <div className="text-3xl font-black text-red-500 mb-1">{missingCount}</div>
-                    <p className="text-xs text-muted-foreground">Palabras Clave Faltantes</p>
+                    <p className="text-xs text-muted-foreground">Missing Keywords</p>
                   </div>
                   <div className="bg-background/50 rounded-lg p-4 border border-border/50">
                     <div className="text-3xl font-black text-yellow-500 mb-1">{formatCount}</div>
-                    <p className="text-xs text-muted-foreground">Errores de Formato</p>
+                    <p className="text-xs text-muted-foreground">Format Errors</p>
                   </div>
                 </div>
 
                 <div className="bg-muted/30 border border-border rounded-lg p-4 text-left">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <Lock className="h-3 w-3" /> Detalles Bloqueados
+                    <Lock className="h-3 w-3" /> Locked Details
                   </p>
                   <div className="space-y-2">
                     {[1, 2, 3].map((i) => (
@@ -100,7 +100,7 @@ export function FreeTierView({
                     ))}
                   </div>
                   <p className="text-xs text-center text-muted-foreground mt-3">
-                    + {Math.max(0, totalErrors - 3)} errores más...
+                    + {Math.max(0, totalErrors - 3)} more errors...
                   </p>
                 </div>
               </div>
@@ -115,7 +115,7 @@ export function FreeTierView({
                   className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 animate-in zoom-in duration-300"
                 >
                   <Lock className="mr-2 h-5 w-5" />
-                  Ver los {totalErrors} Errores y Cómo Arreglarlos - $4.99
+                  See All {totalErrors} Errors & How to Fix Them - $4.99
                 </Button>
                 <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
