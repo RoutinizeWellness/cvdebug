@@ -127,29 +127,40 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             const context = canvas.getContext('2d');
             text = ""; // Reset text
             
-            for (let i = 1; i <= pdf.numPages; i++) {
-              const page = await pdf.getPage(i);
-              const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
-              canvas.width = viewport.width;
-              canvas.height = viewport.height;
-              
-              await page.render({
-                canvasContext: context!,
-                viewport: viewport
-              }).promise;
-              
-              // Convert canvas to blob and run OCR
-              const blob = await new Promise<Blob>((resolve) => {
-                canvas.toBlob((b) => resolve(b!), 'image/png');
-              });
-              
-              const worker = await createWorker("eng");
-              const imageUrl = URL.createObjectURL(blob);
-              const ret = await worker.recognize(imageUrl);
-              URL.revokeObjectURL(imageUrl);
+            // Initialize worker ONCE for all pages to prevent resource exhaustion
+            const worker = await createWorker("eng");
+            
+            try {
+              for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                
+                await page.render({
+                  canvasContext: context!,
+                  viewport: viewport
+                }).promise;
+                
+                // Convert canvas to blob and run OCR
+                const blob = await new Promise<Blob | null>((resolve) => {
+                  canvas.toBlob((b) => resolve(b), 'image/png');
+                });
+                
+                if (blob) {
+                  const imageUrl = URL.createObjectURL(blob);
+                  try {
+                    const ret = await worker.recognize(imageUrl);
+                    text += ret.data.text + "\n";
+                  } catch (ocrError) {
+                    console.error(`OCR failed for page ${i}:`, ocrError);
+                  } finally {
+                    URL.revokeObjectURL(imageUrl);
+                  }
+                }
+              }
+            } finally {
               await worker.terminate();
-              
-              text += ret.data.text + "\n";
             }
           }
         } catch (pdfError) {
@@ -157,12 +168,20 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           toast.info("PDF format not standard, using OCR for text extraction...");
           
           // Full OCR fallback for completely unreadable PDFs
-          const worker = await createWorker("eng");
-          const imageUrl = URL.createObjectURL(file);
-          const ret = await worker.recognize(imageUrl);
-          URL.revokeObjectURL(imageUrl);
-          await worker.terminate();
-          text = ret.data.text;
+          try {
+            const worker = await createWorker("eng");
+            const imageUrl = URL.createObjectURL(file);
+            try {
+              const ret = await worker.recognize(imageUrl);
+              text = ret.data.text;
+            } finally {
+              URL.revokeObjectURL(imageUrl);
+              await worker.terminate();
+            }
+          } catch (ocrError) {
+            console.error("Full OCR fallback failed:", ocrError);
+            throw new Error("Could not read text from this file. Please try a standard PDF or Word document.");
+          }
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         // Word (.docx) Processing
@@ -171,12 +190,20 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         text = result.value;
       } else {
         // Image OCR Processing
-        const worker = await createWorker("eng");
-        const imageUrl = URL.createObjectURL(file);
-        const ret = await worker.recognize(imageUrl);
-        URL.revokeObjectURL(imageUrl);
-        await worker.terminate();
-        text = ret.data.text;
+        try {
+          const worker = await createWorker("eng");
+          const imageUrl = URL.createObjectURL(file);
+          try {
+            const ret = await worker.recognize(imageUrl);
+            text = ret.data.text;
+          } finally {
+            URL.revokeObjectURL(imageUrl);
+            await worker.terminate();
+          }
+        } catch (ocrError) {
+          console.error("Image OCR failed:", ocrError);
+          throw new Error("Could not read text from this image. Please ensure it is clear and readable.");
+        }
       }
 
       if (!text.trim()) {
