@@ -390,30 +390,52 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   setShowBlurredPreview={setShowBlurredPreview}
                 />
               ) : (
-                <div className="space-y-6">
-                  {/* New Linear-style Design */}
-                  <ScoreCard 
-                    score={displayResume?.score || 0}
-                    wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
-                    pageCount={1}
-                    parsingTime={2}
-                  />
+                <div className="space-y-8">
+                  {/* Score Overview Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-1 w-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full"></div>
+                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">Score Overview</h2>
+                    </div>
+                    <ScoreCard 
+                      score={displayResume?.score || 0}
+                      wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
+                      pageCount={1}
+                      parsingTime={2}
+                    />
+                  </div>
 
-                  <SkillGapHeatmap 
-                    foundKeywords={foundKeywords}
-                    missingKeywords={criticalKeywords}
-                  />
+                  {/* Keyword Analysis Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"></div>
+                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">Keyword Analysis</h2>
+                    </div>
+                    <SkillGapHeatmap 
+                      foundKeywords={foundKeywords}
+                      missingKeywords={criticalKeywords}
+                    />
+                  </div>
 
-                  <DeepAuditChecklist items={auditItems} />
+                  {/* ATS Compatibility Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-1 w-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"></div>
+                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">ATS Compatibility</h2>
+                    </div>
+                    <DeepAuditChecklist items={auditItems} />
+                  </div>
 
-                  {/* AI Recommendations - Expandable */}
-                  <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6">
-                    <h3 className="text-lg font-bold text-zinc-100 mb-4 flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-purple-400" />
-                      AI Recommendations
-                    </h3>
-                    <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-                      {renderAnalysis(displayResume?.analysis || "")}
+                  {/* AI Recommendations Section */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-1 w-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
+                      <h2 className="text-2xl font-black text-zinc-50 tracking-tight">AI Recommendations</h2>
+                    </div>
+                    <div className="bg-zinc-900/50 backdrop-blur border-2 border-zinc-800 rounded-xl p-6 shadow-lg">
+                      <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                        {renderAnalysis(displayResume?.analysis || "")}
+                      </div>
                     </div>
                   </div>
                 </div>

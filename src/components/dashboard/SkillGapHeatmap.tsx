@@ -23,15 +23,16 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
   };
 
   return (
-    <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 mb-8">
-      <h3 className="text-lg font-bold text-zinc-100 mb-6">Keyword Analysis</h3>
+    <div className="bg-zinc-900/50 backdrop-blur border-2 border-zinc-800 rounded-xl p-6 shadow-lg">
       
       {/* Missing Keywords - Priority First */}
       {missingKeywords.length > 0 && (
         <div className="mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <X className="h-4 w-4 text-red-500" />
-            <span className="text-sm font-medium text-zinc-400">Missing Skills ({missingKeywords.length})</span>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-8 w-8 rounded-lg bg-red-500/20 border-2 border-red-500/40 flex items-center justify-center">
+              <X className="h-4 w-4 text-red-400" />
+            </div>
+            <span className="text-base font-bold text-zinc-100">Missing Skills ({missingKeywords.length})</span>
           </div>
           <motion.div 
             className="flex flex-wrap gap-2"
@@ -56,9 +57,11 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
       {/* Found Keywords */}
       {foundKeywords.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Check className="h-4 w-4 text-green-500" />
-            <span className="text-sm font-medium text-zinc-400">Found Skills ({foundKeywords.length})</span>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-8 w-8 rounded-lg bg-green-500/20 border-2 border-green-500/40 flex items-center justify-center">
+              <Check className="h-4 w-4 text-green-400" />
+            </div>
+            <span className="text-base font-bold text-zinc-100">Found Skills ({foundKeywords.length})</span>
           </div>
           <motion.div 
             className="flex flex-wrap gap-2"

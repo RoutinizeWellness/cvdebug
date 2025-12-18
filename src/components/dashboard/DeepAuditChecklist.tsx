@@ -43,8 +43,7 @@ export function DeepAuditChecklist({ items }: DeepAuditChecklistProps) {
   };
 
   return (
-    <div className="bg-zinc-900/50 backdrop-blur border border-zinc-800 rounded-xl p-6 mb-8">
-      <h3 className="text-lg font-bold text-zinc-100 mb-6">Deep Audit</h3>
+    <div className="bg-zinc-900/50 backdrop-blur border-2 border-zinc-800 rounded-xl p-6 shadow-lg">
       
       <div className="space-y-2">
         {items.map((item, index) => (

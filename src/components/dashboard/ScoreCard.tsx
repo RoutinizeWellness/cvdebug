@@ -10,15 +10,15 @@ interface ScoreCardProps {
 
 export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0 }: ScoreCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return { stroke: "stroke-emerald-500", text: "text-emerald-500", bg: "bg-emerald-500/20" };
-    if (score >= 50) return { stroke: "stroke-amber-500", text: "text-amber-500", bg: "bg-amber-500/20" };
-    return { stroke: "stroke-rose-500", text: "text-rose-500", bg: "bg-rose-500/20" };
+    if (score >= 80) return { stroke: "stroke-emerald-400", text: "text-emerald-400", bg: "bg-emerald-500/20", border: "border-emerald-500/40" };
+    if (score >= 50) return { stroke: "stroke-amber-400", text: "text-amber-400", bg: "bg-amber-500/20", border: "border-amber-500/40" };
+    return { stroke: "stroke-rose-400", text: "text-rose-400", bg: "bg-rose-500/20", border: "border-rose-500/40" };
   };
 
   const getVerdict = (score: number) => {
-    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-emerald-500" };
-    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-amber-500" };
-    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-rose-500" };
+    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-emerald-400" };
+    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-amber-400" };
+    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-rose-400" };
   };
 
   const colors = getScoreColor(score);
@@ -74,14 +74,14 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
       </div>
 
       {/* Col 2: Verdict */}
-      <div className="bg-zinc-900/80 backdrop-blur border-2 border-zinc-700 rounded-xl p-6 flex flex-col justify-center shadow-lg">
+      <div className={`bg-zinc-900/80 backdrop-blur border-2 ${colors.border} rounded-xl p-6 flex flex-col justify-center shadow-lg`}>
         <div className="flex items-start gap-3 mb-4">
-          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0 border-2 ${colors.stroke.replace('stroke-', 'border-')}`}>
+          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0 border-2 ${colors.border}`}>
             <VerdictIcon className={`h-5 w-5 ${verdict.color}`} />
           </div>
           <div className="flex-1">
             <h3 className={`text-xl font-bold ${verdict.color} mb-1`}>{verdict.title}</h3>
-            <p className="text-sm text-zinc-300 leading-relaxed">{verdict.subtitle}</p>
+            <p className="text-sm text-zinc-200 leading-relaxed">{verdict.subtitle}</p>
           </div>
         </div>
       </div>
