@@ -82,7 +82,7 @@ export function FreeTierView({
                   </div>
                   <div className="bg-background/50 rounded-lg p-4 border border-border/50">
                     <div className="text-3xl font-black text-yellow-500 mb-1">{formatCount}</div>
-                    <p className="text-xs text-muted-foreground">Format Errors</p>
+                    <p className="text-xs text-muted-foreground">Format Issues</p>
                   </div>
                 </div>
 
