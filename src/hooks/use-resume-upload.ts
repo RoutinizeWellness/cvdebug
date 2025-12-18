@@ -164,24 +164,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             }
           }
         } catch (pdfError) {
-          console.error("PDF parsing failed, attempting OCR fallback:", pdfError);
-          toast.info("PDF format not standard, using OCR for text extraction...");
-          
-          // Full OCR fallback for completely unreadable PDFs
-          try {
-            const worker = await createWorker("eng");
-            const imageUrl = URL.createObjectURL(file);
-            try {
-              const ret = await worker.recognize(imageUrl);
-              text = ret.data.text;
-            } finally {
-              URL.revokeObjectURL(imageUrl);
-              await worker.terminate();
-            }
-          } catch (ocrError) {
-            console.error("Full OCR fallback failed:", ocrError);
-            throw new Error("Could not read text from this file. Please try a standard PDF or Word document.");
-          }
+          console.error("PDF parsing failed:", pdfError);
+          // We cannot recover if PDF.js cannot even open the document. 
+          // Trying to pass a PDF file blob to Tesseract as an image will cause "Error attempting to read image".
+          throw new Error("Could not parse this PDF file. It may be corrupted, password protected, or in an unsupported format. Please try saving it as a new PDF or converting to Word.");
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         // Word (.docx) Processing
@@ -200,8 +186,11 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             URL.revokeObjectURL(imageUrl);
             await worker.terminate();
           }
-        } catch (ocrError) {
+        } catch (ocrError: any) {
           console.error("Image OCR failed:", ocrError);
+          if (ocrError?.message?.includes("attempting to read image")) {
+             throw new Error("The image file appears to be corrupted or in an unsupported format. Please try a different image (JPG/PNG).");
+          }
           throw new Error("Could not read text from this image. Please ensure it is clear and readable.");
         }
       }
