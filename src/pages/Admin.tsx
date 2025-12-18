@@ -564,6 +564,7 @@ export default function AdminPage() {
                       <TableHead>Email</TableHead>
                       <TableHead>Plan</TableHead>
                       <TableHead>Credits</TableHead>
+                      <TableHead>Scans</TableHead>
                       <TableHead>Registered</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -596,6 +597,21 @@ export default function AdminPage() {
                           <Badge variant="outline">
                             {userData.credits ?? 1}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <Badge variant={userData.resumeCount > 0 ? "default" : "secondary"} className="w-fit">
+                              {userData.resumeCount || 0} scans
+                            </Badge>
+                            {userData.freeTrialUsed && (
+                              <span className="text-[10px] text-orange-500 mt-1">Free trial used</span>
+                            )}
+                            {userData.lastScanDate && (
+                              <span className="text-[10px] text-muted-foreground mt-1">
+                                Last: {new Date(userData.lastScanDate).toLocaleDateString()}
+                              </span>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col">
@@ -637,7 +653,7 @@ export default function AdminPage() {
                     ))}
                     {filteredUsers.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={6} className="h-24 text-center">
+                        <TableCell colSpan={7} className="h-24 text-center">
                           No users found matching "{searchTerm}".
                         </TableCell>
                       </TableRow>

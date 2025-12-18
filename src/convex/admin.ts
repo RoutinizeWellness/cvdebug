@@ -18,7 +18,24 @@ export const getUsers = query({
       }
 
       const users = await ctx.db.query("users").order("desc").collect();
-      return users;
+      
+      // Enhance user data with resume counts
+      const usersWithStats = await Promise.all(
+        users.map(async (user) => {
+          const resumes = await ctx.db
+            .query("resumes")
+            .withIndex("by_user", (q) => q.eq("userId", user.tokenIdentifier))
+            .collect();
+          
+          return {
+            ...user,
+            resumeCount: resumes.length,
+            lastScanDate: resumes.length > 0 ? Math.max(...resumes.map(r => r._creationTime)) : null,
+          };
+        })
+      );
+      
+      return usersWithStats;
     } catch (error) {
       console.error("Error fetching users:", error);
       return [];
