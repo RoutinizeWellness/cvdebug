@@ -355,10 +355,10 @@ export function generateFallbackAnalysis(
   });
 
   // Score based on metric density (Stricter thresholds for realism)
-  if (metricCount >= 12) completenessScore += 15;
-  else if (metricCount >= 8) completenessScore += 10;
-  else if (metricCount >= 5) completenessScore += 6;
-  else if (metricCount >= 2) completenessScore += 3;
+  if (metricCount >= 15) completenessScore += 15;
+  else if (metricCount >= 10) completenessScore += 10;
+  else if (metricCount >= 6) completenessScore += 6;
+  else if (metricCount >= 3) completenessScore += 3;
   
   // NEW: Integrate Bullet Point Quality Score
   // We blend the bullet analysis score into completeness
@@ -455,12 +455,14 @@ export function generateFallbackAnalysis(
 
   // Apply "Realism Curve" - harder to get high scores
   // Most resumes naturally fall between 40-70. We compress the top end to make >75 hard.
-  if (rawScore > 60) {
-    // For every point above 60, you only get 0.6 points
-    // Example: Raw 80 -> 60 + (20 * 0.6) = 72
-    // Example: Raw 90 -> 60 + (30 * 0.6) = 78
-    // Example: Raw 100 -> 60 + (40 * 0.6) = 84
-    rawScore = 60 + (rawScore - 60) * 0.6;
+  // REVISED CURVE: Stricter compression starting at 55
+  if (rawScore > 55) {
+    // For every point above 55, you only get 0.6 points
+    // Example: Raw 65 -> 55 + (10 * 0.6) = 61
+    // Example: Raw 80 -> 55 + (25 * 0.6) = 70
+    // Example: Raw 95 -> 55 + (40 * 0.6) = 79
+    // Example: Raw 100 -> 55 + (45 * 0.6) = 82
+    rawScore = 55 + (rawScore - 55) * 0.6;
   }
   
   const totalScore = Math.round(Math.min(100, Math.max(0, rawScore)));
