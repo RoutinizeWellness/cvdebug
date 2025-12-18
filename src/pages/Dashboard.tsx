@@ -4,17 +4,21 @@ import { useAuth } from "@/hooks/use-auth";
 import { useMutation, useQuery } from "convex/react";
 import { 
   Loader2, 
-  Search, 
   Upload, 
   FileUp,
-  Filter,
   Plus,
   Sparkles,
   CheckCircle2,
   X,
-  Check,
-  AlertCircle,
-  Star
+  Eye,
+  Trash2,
+  FileText,
+  File,
+  Target,
+  Settings,
+  CreditCard,
+  FolderOpen,
+  LayoutTemplate
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -22,7 +26,6 @@ import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
-import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
 import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
@@ -37,14 +40,12 @@ import {
 import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 
-// Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState("resumes");
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
@@ -54,7 +55,7 @@ export default function Dashboard() {
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
-  const [showNewFeatureBanner, setShowNewFeatureBanner] = useState(true);
+  const [targetedScanEnabled, setTargetedScanEnabled] = useState(false);
   const processedPaymentRef = useRef(false);
   
   const {
@@ -72,10 +73,14 @@ export default function Dashboard() {
   const storeUser = useMutation(apiAny.users.storeUser);
   const purchaseCredits = useMutation(apiAny.users.purchaseCredits);
   const currentUser = useQuery(apiAny.users.currentUser);
+  const deleteResume = useMutation(apiAny.resumes.deleteResume);
+  
+  const resumes = useQuery(apiAny.resumes.getResumes, { 
+    category: categoryFilter || undefined
+  });
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      // Preserve query params (like payment=success) when redirecting to auth
       const currentSearch = window.location.search;
       navigate(`/auth${currentSearch}`);
     }
@@ -83,13 +88,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Ensure user is stored in the database when they visit the dashboard
       storeUser();
     }
   }, [isAuthenticated, storeUser]);
 
   useEffect(() => {
-    // Wait for auth to be ready
     if (isLoading) return;
 
     const plan = searchParams.get("plan");
@@ -97,37 +100,30 @@ export default function Dashboard() {
     const resumeId = searchParams.get("resumeId");
 
     if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
-      // Prevent double processing
       if (processedPaymentRef.current) return;
-      
-      // If not authenticated yet, wait (or let the auth redirect handle it)
       if (!isAuthenticated) return;
 
       processedPaymentRef.current = true;
       setIsProcessingPayment(true);
 
-      // 1. Ensure user exists in DB first
       storeUser()
         .then(() => {
-          // 2. Then purchase credits
           return purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" });
         })
         .then(() => {
-          // 3. Check if there's a pending resume to auto-unlock
           if (resumeId) {
             setPendingResumeId(resumeId);
             toast.success("Payment successful! Unlocking your resume report...");
           } else {
             setShowPaymentSuccess(true);
           }
-          // Remove query params to prevent replay
           setSearchParams({});
           navigate("/dashboard", { replace: true });
         })
         .catch((error) => {
           console.error("Credit update failed:", error);
           toast.error("Payment recorded but credit update failed. Please contact support.");
-          processedPaymentRef.current = false; // Allow retry if it failed
+          processedPaymentRef.current = false;
         })
         .finally(() => {
           setIsProcessingPayment(false);
@@ -142,20 +138,11 @@ export default function Dashboard() {
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);
 
-  const deleteResume = useMutation(apiAny.resumes.deleteResume);
-  
-  const resumes = useQuery(apiAny.resumes.getResumes, { 
-    search: search || undefined,
-    category: categoryFilter || undefined
-  });
-
-  // Track processing resumes - check if resume exists and is still processing
   const processingResume = resumes?.find((r: any) => 
     r._id === processingResumeId && 
     (r.status === "processing" || (!r.status && (!r.score || r.score === 0)))
   );
 
-  // Handle completion/failure of processing
   useEffect(() => {
     if (processingResumeId && resumes) {
       const resume = resumes.find((r: any) => r._id === processingResumeId);
@@ -176,7 +163,6 @@ export default function Dashboard() {
     }
   }, [resumes, processingResumeId, setProcessingResumeId]);
 
-  // Auto-unlock resume after payment
   useEffect(() => {
     if (pendingResumeId && resumes && currentUser) {
       const resume = resumes.find((r: any) => r._id === pendingResumeId);
@@ -198,8 +184,20 @@ export default function Dashboard() {
     }
   };
 
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-green-500";
+    if (score >= 50) return "text-yellow-500";
+    return "text-zinc-500";
+  };
+
+  const getScoreBgColor = (score: number) => {
+    if (score >= 80) return "bg-green-500";
+    if (score >= 50) return "bg-yellow-500";
+    return "bg-zinc-500";
+  };
+
   return (
-    <div className="relative flex h-screen w-full bg-background text-foreground font-sans overflow-hidden">
+    <div className="flex h-screen w-full bg-[#050505] text-white overflow-hidden">
       <input
         type="file"
         ref={fileInputRef}
@@ -235,43 +233,6 @@ export default function Dashboard() {
               ) : (
                 <div className="flex justify-center py-4"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
               )}
-              
-              <div className="bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-300 dark:border-amber-700 rounded-xl p-5 mb-4">
-                <p className="text-sm text-amber-900 dark:text-amber-100 font-bold text-center mb-2">
-                  💳 Think of credits like arcade tokens
-                </p>
-                <p className="text-xs text-amber-800 dark:text-amber-200 text-center">
-                  Each scan costs <span className="font-black text-amber-900 dark:text-amber-100">1 token</span>. Upload → Spend 1 credit → Get full report.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-2 border-green-200 dark:border-green-800 rounded-xl p-5 space-y-4 text-left">
-                <h4 className="text-base font-black text-green-900 dark:text-green-100 flex items-center gap-2">
-                  💡 How to use your credits:
-                </h4>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <div className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</div>
-                    <div>
-                      <p className="text-sm font-bold text-green-900 dark:text-green-100">To unlock your CURRENT report:</p>
-                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Click <span className="font-bold">"Upload Resume"</span> or view any blurred report <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</div>
-                    <div>
-                      <p className="text-sm font-bold text-green-900 dark:text-green-100">To check a NEW resume version later:</p>
-                      <p className="text-xs text-green-800 dark:text-green-200 mt-1">Just upload it anytime <span className="bg-green-200 dark:bg-green-900 px-1.5 py-0.5 rounded font-bold">(Costs 1 credit)</span></p>
-                    </div>
-                  </div>
-                </div>
-                <div className="pt-2 border-t border-green-200 dark:border-green-800">
-                  <p className="text-xs font-bold text-green-700 dark:text-green-300 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4" />
-                    Your credits never expire.
-                  </p>
-                </div>
-              </div>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-center gap-2 flex-col sm:flex-row">
@@ -307,17 +268,15 @@ export default function Dashboard() {
       />
 
       <main 
-        className="flex-1 h-full overflow-y-auto relative scroll-smooth"
+        className="flex-1 flex flex-col h-full overflow-hidden bg-[#050505] relative"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        {/* Processing Upsell Overlay */}
         {processingResumeId && processingResume && (
           <ProcessingOverlay />
         )}
 
-        {/* Payment Processing Overlay */}
         {isProcessingPayment && (
           <div className="absolute inset-0 z-50 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
             <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mb-6 animate-pulse">
@@ -328,7 +287,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Drag Overlay */}
         {isDragging && (
           <div className="absolute inset-0 z-50 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
             <div className="h-32 w-32 bg-primary/10 rounded-full flex items-center justify-center mb-6 border-4 border-dashed border-primary animate-pulse">
@@ -339,131 +297,191 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="container mx-auto px-6 py-8 max-w-7xl">
-          {/* New Feature Announcement Banner */}
-          {showNewFeatureBanner && currentView === 'resumes' && (
-            <div className="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500/10 via-primary/10 to-pink-500/10 border-2 border-primary/30 shadow-lg animate-in slide-in-from-top duration-500">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(120,119,198,0.1),rgba(255,255,255,0))]"></div>
-              <div className="relative p-6 flex items-start gap-4">
-                <div className="flex-shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg animate-pulse">
-                  <Sparkles className="h-6 w-6 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-primary to-purple-600 text-white shadow-sm">
-                      ✨ NEW FEATURE
-                    </span>
-                    <h3 className="text-xl font-black text-foreground">Smart Metric Suggestions</h3>
-                  </div>
-                  <p className="text-sm text-foreground/80 leading-relaxed mb-3">
-                    Get AI-powered, quantifiable metrics for every technology in your stack! Now included in all paid reports ($4.99).
-                  </p>
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
-                      <Check className="h-3.5 w-3.5 text-green-600" />
-                      <span className="font-medium">Realistic metrics for Redis, Docker, AWS, etc.</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
-                      <Check className="h-3.5 w-3.5 text-green-600" />
-                      <span className="font-medium">Copy-paste ready bullet points</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 bg-background/50 px-3 py-1.5 rounded-lg border border-border/50">
-                      <Check className="h-3.5 w-3.5 text-green-600" />
-                      <span className="font-medium">Tailored to your role</span>
-                    </div>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => setShowNewFeatureBanner(false)}
-                  className="flex-shrink-0 p-2 hover:bg-background/50 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
-                  title="Dismiss"
+        {/* Header */}
+        <header className="h-20 shrink-0 px-8 flex items-center justify-between border-b border-zinc-800/50 bg-[#050505]/80 backdrop-blur-sm z-10">
+          <div className="flex flex-col">
+            <h2 className="text-xl font-bold text-white tracking-tight">Welcome back, {user?.firstName || 'there'}</h2>
+            <p className="text-sm text-zinc-500">Ready to optimize your career profile?</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-3 bg-[#0A0A0A] border border-zinc-800 rounded-xl p-1.5 pr-4 pl-4 shadow-sm">
+              <div className="flex flex-col items-end mr-2">
+                <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Credits</span>
+                <span className="text-sm font-semibold text-white">{currentUser?.credits || 0} Scans Left</span>
+              </div>
+              <div className="h-8 w-px bg-zinc-800 mx-1"></div>
+              <button 
+                onClick={() => setShowPricing(true)}
+                className="flex items-center gap-2 bg-gradient-to-r from-[#7C3AED] to-purple-600 hover:from-[#6D28D9] hover:to-purple-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition-all shadow-lg shadow-purple-500/25"
+              >
+                <Sparkles className="h-4 w-4" />
+                Upgrade to Pro
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+          <div className="max-w-5xl mx-auto flex flex-col gap-8 pb-10">
+            {currentView === 'resumes' && (
+              <>
+                {/* Upload Hero Section */}
+                <div 
+                  className="relative group rounded-2xl border-2 border-dashed border-zinc-700 bg-[#0A0A0A]/50 hover:bg-[#0A0A0A] hover:border-[#7C3AED]/50 transition-all duration-300 cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
                 >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {currentView === 'resumes' && (
-            <div className="flex flex-col gap-8">
-              {/* Header Section */}
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                  <h1 className="text-4xl font-black tracking-tight text-foreground mb-2">
-                    {categoryFilter ? `${categoryFilter} Resumes` : "Your Resumes"}
-                  </h1>
-                  <p className="text-muted-foreground text-lg">
-                    Manage and optimize your resumes for ATS compatibility.
-                  </p>
-                </div>
-                
-                <div className="flex gap-3">
-                  <Button 
-                    size="lg"
-                    className="font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploading}
-                  >
-                    {isUploading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Plus className="mr-2 h-5 w-5" />}
-                    Upload New Resume
-                  </Button>
-                </div>
-              </div>
-
-              {/* Search & Filter Bar */}
-              <div className="bg-card border border-border rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-                <div className="relative flex-1 w-full">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input 
-                    className="w-full bg-background rounded-xl border border-border py-2.5 pl-10 pr-4 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                    placeholder="Search by name, content, or keywords..." 
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-                
-                <div className="w-px h-8 bg-border hidden lg:block" />
-                
-                <div className="w-full lg:w-auto flex-1">
-                  <div className="relative">
-                    <textarea
-                      className="w-full h-[42px] min-h-[42px] max-h-[100px] bg-background rounded-xl border border-border py-2.5 px-4 text-sm text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-y"
-                      placeholder="Paste Job Description for tailored scoring..."
-                      value={jobDescription}
-                      onChange={(e) => setJobDescription(e.target.value)}
-                    />
-                    {jobDescription && (
-                      <div className="absolute right-2 top-2 flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                          Tailored Mode
-                        </span>
-                        <span className="flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                        </span>
-                      </div>
-                    )}
-                    {jobDescription && (
-                      <div className="absolute -bottom-6 left-0 text-[10px] text-muted-foreground">
-                        💡 Your next upload will be scored against this job description
-                      </div>
-                    )}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#7C3AED]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                  <div className="flex flex-col items-center justify-center py-16 px-6 text-center relative z-10">
+                    <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-700 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-[#7C3AED]/50 group-hover:shadow-[0_0_30px_-5px_rgba(124,58,237,0.3)] transition-all duration-300">
+                      <Upload className="h-8 w-8 text-zinc-400 group-hover:text-[#7C3AED] transition-colors" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">Drop your Resume here</h3>
+                    <p className="text-zinc-500 mb-8 max-w-sm mx-auto">
+                      Supports PDF, DOCX formats up to 5MB. We'll analyze it instantly.
+                    </p>
+                    <button className="flex items-center gap-2 bg-white text-black hover:bg-zinc-200 font-bold py-3 px-8 rounded-xl transition-colors shadow-lg shadow-white/5">
+                      <FileUp className="h-5 w-5" />
+                      Select File
+                    </button>
                   </div>
                 </div>
-              </div>
 
-              <ResumeGrid 
-                resumes={resumes} 
-                setSelectedResume={(resume: any) => setSelectedResumeId(resume?._id || null)} 
-                handleDelete={handleDelete} 
-              />
-            </div>
-          )}
+                {/* Targeted Scan Toggle */}
+                <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 text-[#7C3AED]">
+                      <Target className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-white">Targeted Scan</h4>
+                      <p className="text-sm text-zinc-500 mt-0.5">Compare your resume against a specific job description for a match score.</p>
+                    </div>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                    <input 
+                      className="sr-only peer" 
+                      type="checkbox" 
+                      checked={targetedScanEnabled}
+                      onChange={(e) => setTargetedScanEnabled(e.target.checked)}
+                    />
+                    <div className="w-11 h-6 bg-zinc-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#7C3AED]"></div>
+                    <span className="ml-3 text-sm font-medium text-zinc-400 peer-checked:text-white">Enable</span>
+                  </label>
+                </div>
 
-          {currentView === 'templates' && <TemplatesView />}
-          {currentView === 'linkedin' && <LinkedInView />}
-          {currentView === 'cover-letter' && <CoverLetterView />}
+                {/* Recent Activity Section */}
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-white">Recent Scans</h3>
+                    <button className="text-sm text-[#7C3AED] hover:text-[#6D28D9] font-medium">View All</button>
+                  </div>
+
+                  {/* Table Container */}
+                  <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-zinc-800 bg-zinc-900/50">
+                            <th className="py-4 px-6 text-xs font-semibold text-zinc-500 uppercase tracking-wider">File Name</th>
+                            <th className="py-4 px-6 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Date</th>
+                            <th className="py-4 px-6 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Target Role</th>
+                            <th className="py-4 px-6 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Score</th>
+                            <th className="py-4 px-6 text-xs font-semibold text-zinc-500 uppercase tracking-wider text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-800">
+                          {resumes === undefined ? (
+                            <tr>
+                              <td colSpan={5} className="py-12 text-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-2" />
+                                <p className="text-zinc-500">Loading resumes...</p>
+                              </td>
+                            </tr>
+                          ) : resumes.length === 0 ? (
+                            <tr>
+                              <td colSpan={5} className="py-12 text-center">
+                                <FileText className="h-12 w-12 text-zinc-700 mx-auto mb-4" />
+                                <p className="text-zinc-500">No resumes yet. Upload one to get started!</p>
+                              </td>
+                            </tr>
+                          ) : (
+                            resumes.map((resume: any) => (
+                              <tr key={resume._id} className="group hover:bg-zinc-900/30 transition-colors">
+                                <td className="py-4 px-6">
+                                  <div className="flex items-center gap-3">
+                                    <div className={`w-8 h-8 rounded flex items-center justify-center shrink-0 ${
+                                      resume.mimeType === 'application/pdf' 
+                                        ? 'bg-red-500/10 text-red-500' 
+                                        : 'bg-blue-500/10 text-blue-500'
+                                    }`}>
+                                      {resume.mimeType === 'application/pdf' ? (
+                                        <FileText className="h-5 w-5" />
+                                      ) : (
+                                        <File className="h-5 w-5" />
+                                      )}
+                                    </div>
+                                    <span className="text-sm font-medium text-white group-hover:text-[#7C3AED] transition-colors truncate max-w-xs">
+                                      {resume.title}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-6">
+                                  <span className="text-sm text-zinc-400">
+                                    {new Date(resume._creationTime).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                  </span>
+                                </td>
+                                <td className="py-4 px-6">
+                                  <span className="text-sm text-zinc-300">
+                                    {resume.category || <span className="italic text-zinc-500">General Scan</span>}
+                                  </span>
+                                </td>
+                                <td className="py-4 px-6">
+                                  <div className="flex items-center gap-2">
+                                    <div className="h-1.5 w-16 bg-zinc-800 rounded-full overflow-hidden">
+                                      <div 
+                                        className={`h-full rounded-full ${getScoreBgColor(resume.score || 0)}`}
+                                        style={{ width: `${resume.score || 0}%` }}
+                                      ></div>
+                                    </div>
+                                    <span className={`text-xs font-bold ${getScoreColor(resume.score || 0)}`}>
+                                      {resume.score || 0}%
+                                    </span>
+                                  </div>
+                                </td>
+                                <td className="py-4 px-6 text-right">
+                                  <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button 
+                                      className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                                      title="View Report"
+                                      onClick={() => setSelectedResumeId(resume._id)}
+                                    >
+                                      <Eye className="h-[18px] w-[18px]" />
+                                    </button>
+                                    <button 
+                                      className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                      title="Delete"
+                                      onClick={() => handleDelete(resume._id)}
+                                    >
+                                      <Trash2 className="h-[18px] w-[18px]" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {currentView === 'templates' && <TemplatesView />}
+            {currentView === 'linkedin' && <LinkedInView />}
+            {currentView === 'cover-letter' && <CoverLetterView />}
+          </div>
         </div>
       </main>
 
