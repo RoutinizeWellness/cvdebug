@@ -119,10 +119,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   };
 
   const renderAnalysis = (text: string) => {
-    if (!text) return <p className="text-muted-foreground italic">Analysis pending...</p>;
+    if (!text) return <p className="text-zinc-400 italic">Analysis pending...</p>;
     
     if (!text.includes("###")) {
-      return <div className="whitespace-pre-wrap text-sm text-muted-foreground">{text}</div>;
+      return <div className="whitespace-pre-wrap text-sm text-zinc-300">{text}</div>;
     }
 
     const parts = text.split("###").filter(part => part.trim());
@@ -135,49 +135,67 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           const content = lines.slice(1).filter(line => line.trim());
 
           let icon = null;
-          let headerClass = "text-foreground";
-          let bgClass = "bg-muted/30";
-          let borderClass = "border-border/50";
+          let headerClass = "text-zinc-100";
+          let bgClass = "bg-zinc-800/50";
+          let borderClass = "border-zinc-700";
 
           if (title.includes("🎯") || title.includes("Tailored")) {
-            icon = <Target className="h-4 w-4 text-green-600" />;
-            headerClass = "text-green-700 dark:text-green-400";
-            bgClass = "bg-green-500/5";
-            borderClass = "border-green-500/20";
+            icon = <Target className="h-4 w-4 text-green-400" />;
+            headerClass = "text-green-400";
+            bgClass = "bg-green-500/10";
+            borderClass = "border-green-500/30";
           } else if (title.includes("🤖") || title.includes("Parsing")) {
-            icon = <Cpu className="h-4 w-4 text-blue-600" />;
-            headerClass = "text-blue-700 dark:text-blue-400";
-            bgClass = "bg-blue-500/5";
-            borderClass = "border-blue-500/20";
+            icon = <Cpu className="h-4 w-4 text-blue-400" />;
+            headerClass = "text-blue-400";
+            bgClass = "bg-blue-500/10";
+            borderClass = "border-blue-500/30";
+          } else if (title.includes("📊") || title.includes("Score")) {
+            icon = <ScanLine className="h-4 w-4 text-purple-400" />;
+            headerClass = "text-purple-400";
+            bgClass = "bg-purple-500/10";
+            borderClass = "border-purple-500/30";
+          } else if (title.includes("🔑") || title.includes("Missing")) {
+            icon = <AlertTriangle className="h-4 w-4 text-red-400" />;
+            headerClass = "text-red-400";
+            bgClass = "bg-red-500/10";
+            borderClass = "border-red-500/30";
+          } else if (title.includes("⚠️") || title.includes("Format")) {
+            icon = <AlertTriangle className="h-4 w-4 text-yellow-400" />;
+            headerClass = "text-yellow-400";
+            bgClass = "bg-yellow-500/10";
+            borderClass = "border-yellow-500/30";
           }
 
           return (
-            <div key={index} className={`rounded-xl ${bgClass} p-5 border ${borderClass} hover:shadow-md transition-all duration-200`}>
+            <div key={index} className={`rounded-xl ${bgClass} p-5 border-2 ${borderClass} hover:shadow-lg transition-all duration-200`}>
               <h4 className={`font-bold ${headerClass} mb-4 text-base flex items-center gap-2`}>
                 {icon}
                 {title}
               </h4>
-              <div className="space-y-3 text-sm text-foreground/90">
+              <div className="space-y-3 text-sm text-zinc-200">
                 {content.map((line, i) => {
                   const trimmed = line.trim();
                   
-                  if (/^\d+\./.test(trimmed)) {
-                    const [number, ...rest] = trimmed.split(/\.\s+/);
-                    return (
-                      <div key={i} className="flex items-start gap-3 p-3 bg-background/50 rounded-lg border border-border/30">
-                        <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center">
-                          {number}
-                        </span>
-                        <span className="flex-1 leading-relaxed font-medium">{rest.join('. ')}</span>
-                      </div>
-                    );
+                  if (/^\d+\*?\*?/.test(trimmed)) {
+                    const match = trimmed.match(/^(\d+)\*?\*?\s*(.+)/);
+                    if (match) {
+                      const [, number, text] = match;
+                      return (
+                        <div key={i} className="flex items-start gap-3 p-3 bg-zinc-900/50 rounded-lg border border-zinc-700">
+                          <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary/20 text-primary font-bold text-xs flex items-center justify-center border border-primary/30">
+                            {number}
+                          </span>
+                          <span className="flex-1 leading-relaxed font-medium text-zinc-100">{text}</span>
+                        </div>
+                      );
+                    }
                   }
                   
                   if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
                     return (
                       <div key={i} className="flex items-start gap-3 pl-2">
                         <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
-                        <span className="flex-1 leading-relaxed">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                        <span className="flex-1 leading-relaxed text-zinc-200">{trimmed.replace(/^[-•*]\s*/, "")}</span>
                       </div>
                     );
                   }
@@ -185,15 +203,15 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   if (trimmed.includes("**")) {
                     const parts = trimmed.split("**");
                     return (
-                      <p key={i} className="leading-relaxed">
+                      <p key={i} className="leading-relaxed text-zinc-200">
                         {parts.map((part, idx) => 
-                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-foreground">{part}</strong> : part
+                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-zinc-50">{part}</strong> : part
                         )}
                       </p>
                     );
                   }
                   
-                  return <p key={i} className="leading-relaxed">{trimmed}</p>;
+                  return <p key={i} className="leading-relaxed text-zinc-200">{trimmed}</p>;
                 })}
               </div>
             </div>
