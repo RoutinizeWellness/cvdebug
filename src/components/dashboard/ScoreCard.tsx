@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Clock, FileText, Layers } from "lucide-react";
+import { TrendingUp, TrendingDown, Clock, FileText, Layers, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ScoreCardProps {
   score: number;
@@ -10,107 +11,84 @@ interface ScoreCardProps {
 
 export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0 }: ScoreCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return { stroke: "stroke-emerald-400", text: "text-emerald-400", bg: "bg-emerald-500/20", border: "border-emerald-500/40" };
-    if (score >= 50) return { stroke: "stroke-amber-400", text: "text-amber-400", bg: "bg-amber-500/20", border: "border-amber-500/40" };
-    return { stroke: "stroke-rose-400", text: "text-rose-400", bg: "bg-rose-500/20", border: "border-rose-500/40" };
-  };
-
-  const getVerdict = (score: number) => {
-    if (score >= 80) return { title: "High Interview Chance", subtitle: "Strong keyword alignment with JD", icon: TrendingUp, color: "text-emerald-400" };
-    if (score >= 50) return { title: "Moderate Interview Chance", subtitle: "Some critical skills missing", icon: TrendingDown, color: "text-amber-400" };
-    return { title: "Low Interview Chance", subtitle: "Missing critical hard skills from JD", icon: TrendingDown, color: "text-rose-400" };
+    if (score >= 80) return { stroke: "stroke-green-500", text: "text-green-500", bg: "bg-green-100 dark:bg-green-500/20", border: "border-green-200 dark:border-green-500/30", status: "Excellent" };
+    if (score >= 50) return { stroke: "stroke-orange-500", text: "text-orange-500", bg: "bg-orange-100 dark:bg-orange-500/20", border: "border-orange-200 dark:border-orange-500/30", status: "Needs Optimization" };
+    return { stroke: "stroke-red-500", text: "text-red-500", bg: "bg-red-100 dark:bg-red-500/20", border: "border-red-200 dark:border-red-500/30", status: "Critical Issues" };
   };
 
   const colors = getScoreColor(score);
-  const verdict = getVerdict(score);
-  const VerdictIcon = verdict.icon;
   
-  const circumference = 2 * Math.PI * 90;
+  const circumference = 2 * Math.PI * 42;
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-      {/* Col 1: Radial Progress */}
-      <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 flex flex-col items-center justify-center shadow-lg">
-        <div className="relative w-48 h-48">
-          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
-            <circle
-              cx="100"
-              cy="100"
-              r="90"
-              stroke="currentColor"
-              strokeWidth="10"
-              fill="none"
-              className="text-zinc-700"
+    <div className="glass-card rounded-lg p-8 relative overflow-hidden">
+      <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+      
+      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start relative z-10">
+        {/* Left: Gauge */}
+        <div className="flex-shrink-0 relative flex items-center justify-center">
+          <svg className="size-64 md:size-72" viewBox="0 0 100 100">
+            <circle 
+              className="text-stone-200 dark:text-stone-800 stroke-current" 
+              cx="50" 
+              cy="50" 
+              fill="transparent" 
+              r="42" 
+              strokeWidth="8"
             />
-            <motion.circle
-              cx="100"
-              cy="100"
-              r="90"
-              stroke="currentColor"
-              strokeWidth="10"
-              fill="none"
+            <motion.circle 
+              className={`${colors.stroke} stroke-current`}
+              cx="50" 
+              cy="50" 
+              fill="transparent" 
+              r="42" 
+              strokeWidth="8"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"
-              className={colors.stroke}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset }}
               transition={{ duration: 1.5, ease: "easeOut" }}
+              style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
             />
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             <motion.span 
-              className={`text-6xl font-bold ${colors.text}`}
+              className={`text-5xl font-bold text-stone-900 dark:text-white`}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               {score}
             </motion.span>
-            <span className="text-sm text-zinc-300 font-medium mt-1">Match Rate</span>
+            <span className="text-sm font-medium text-stone-500 dark:text-stone-400 mt-1">out of 100</span>
           </div>
         </div>
-      </div>
 
-      {/* Col 2: Verdict */}
-      <div className={`bg-white/[0.03] backdrop-blur border ${colors.border} rounded-2xl p-6 flex flex-col justify-center shadow-lg`}>
-        <div className="flex items-start gap-3 mb-4">
-          <div className={`h-10 w-10 rounded-lg ${colors.bg} flex items-center justify-center flex-shrink-0 border-2 ${colors.border}`}>
-            <VerdictIcon className={`h-5 w-5 ${verdict.color}`} />
-          </div>
-          <div className="flex-1">
-            <h3 className={`text-xl font-bold ${verdict.color} mb-1`}>{verdict.title}</h3>
-            <p className="text-sm text-zinc-200 leading-relaxed">{verdict.subtitle}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Col 3: Stats */}
-      <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-zinc-300" />
-              <span className="text-sm text-zinc-300">Word Count</span>
+        {/* Right: Content */}
+        <div className="flex flex-col gap-6 flex-1 w-full text-center lg:text-left">
+          <div>
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${colors.bg} ${colors.text} text-xs font-bold uppercase tracking-wider mb-4 border ${colors.border}`}>
+              <span className={`size-2 rounded-full ${colors.text.replace('text-', 'bg-')} animate-pulse`}></span>
+              {colors.status}
             </div>
-            <span className="text-lg font-bold text-white">{wordCount}</span>
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+              Your resume is {score >= 80 ? 'optimized' : score >= 50 ? 'partially visible' : 'invisible'} to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">{score >= 80 ? '90%' : score >= 50 ? '60%' : '40%'} of bots</span>.
+            </h1>
+            <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+              {score >= 80 
+                ? 'Great job! Your resume is well-optimized for ATS systems.' 
+                : score >= 50 
+                ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
+                : 'We found critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
+            </p>
           </div>
-          <div className="h-px bg-zinc-700"></div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Layers className="h-4 w-4 text-zinc-300" />
-              <span className="text-sm text-zinc-300">Page Count</span>
-            </div>
-            <span className="text-lg font-bold text-white">{pageCount}</span>
-          </div>
-          <div className="h-px bg-zinc-700"></div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-zinc-300" />
-              <span className="text-sm text-zinc-300">Parsing Time</span>
-            </div>
-            <span className="text-lg font-bold text-white">{parsingTime}s</span>
+          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+            <Button className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]">
+              <Download className="h-5 w-5" />
+              Download Report
+            </Button>
           </div>
         </div>
       </div>

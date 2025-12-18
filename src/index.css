@@ -8,6 +8,9 @@
 
 /* DO NOT CHANGE */
 @theme inline {
+  --color-primary: #f9f506;
+  --color-background-light: #f8f8f5;
+  --color-background-dark: #23220f;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

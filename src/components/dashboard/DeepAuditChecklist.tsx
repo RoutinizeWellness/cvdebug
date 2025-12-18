@@ -43,53 +43,26 @@ export function DeepAuditChecklist({ items }: DeepAuditChecklistProps) {
   };
 
   return (
-    <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
+    <div className="glass-card rounded-lg p-6 flex flex-col gap-4">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white">
+          <CheckCircle2 className="h-5 w-5" />
+        </div>
+        <h3 className="text-lg font-bold">Formatting Audit</h3>
+      </div>
       
-      <div className="space-y-2">
+      <div className="flex flex-col gap-3">
         {items.map((item, index) => (
-          <div key={index} className="border border-zinc-800 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              className="w-full flex items-center justify-between p-4 hover:bg-zinc-800/50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                {getStatusIcon(item.status)}
-                <span className="text-sm font-medium text-zinc-100">{item.title}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                {getStatusBadge(item.status)}
-                <ChevronDown 
-                  className={`h-4 w-4 text-zinc-400 transition-transform ${expandedIndex === index ? 'rotate-180' : ''}`}
-                />
-              </div>
-            </button>
-            
-            <AnimatePresence>
-              {expandedIndex === index && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-4 pt-0 border-t border-zinc-800 space-y-3">
-                    {item.reason && (
-                      <div className="bg-zinc-800/50 rounded-lg p-3">
-                        <p className="text-xs font-medium text-zinc-400 mb-1">Why it failed:</p>
-                        <p className="text-sm text-zinc-300 leading-relaxed">{item.reason}</p>
-                      </div>
-                    )}
-                    {item.fix && (
-                      <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3">
-                        <p className="text-xs font-medium text-blue-400 mb-1">How to fix:</p>
-                        <p className="text-sm text-zinc-300 leading-relaxed">{item.fix}</p>
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
+          <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-100 dark:border-stone-700">
+            {getStatusIcon(item.status)}
+            <div className="flex-1">
+              <p className="text-sm font-bold text-stone-900 dark:text-white">{item.title}</p>
+              {item.status === "passed" ? (
+                <p className="text-xs text-stone-500">Correct format for ATS.</p>
+              ) : (
+                <p className="text-xs text-red-600 dark:text-red-400">{item.reason}</p>
               )}
-            </AnimatePresence>
+            </div>
           </div>
         ))}
       </div>

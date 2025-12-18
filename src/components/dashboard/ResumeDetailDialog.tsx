@@ -375,9 +375,9 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#23220f]">
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-background-light dark:bg-background-dark">
           <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-            <div className="p-8 max-w-7xl mx-auto">
+            <div className="p-8 max-w-7xl mx-auto font-display">
               
               {isFree ? (
                 <FreeTierView 
@@ -391,51 +391,71 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 />
               ) : (
                 <div className="space-y-8">
-                  {/* Score Overview Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
-                      <h2 className="text-2xl font-black text-white tracking-tight">Score Overview</h2>
-                    </div>
-                    <ScoreCard 
-                      score={displayResume?.score || 0}
-                      wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
-                      pageCount={1}
-                      parsingTime={2}
-                    />
-                  </div>
+                  <ScoreCard 
+                    score={displayResume?.score || 0}
+                    wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
+                    pageCount={1}
+                    parsingTime={2}
+                  />
 
-                  {/* Keyword Analysis Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
-                      <h2 className="text-2xl font-black text-white tracking-tight">Keyword Analysis</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                    <div className="lg:col-span-4">
+                      <DeepAuditChecklist items={auditItems} />
                     </div>
-                    <SkillGapHeatmap 
-                      foundKeywords={foundKeywords}
-                      missingKeywords={criticalKeywords}
-                    />
-                  </div>
+                    
+                    <div className="lg:col-span-4">
+                      <SkillGapHeatmap 
+                        foundKeywords={foundKeywords}
+                        missingKeywords={criticalKeywords}
+                      />
+                    </div>
 
-                  {/* ATS Compatibility Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
-                      <h2 className="text-2xl font-black text-white tracking-tight">ATS Compatibility</h2>
-                    </div>
-                    <DeepAuditChecklist items={auditItems} />
-                  </div>
-
-                  {/* AI Recommendations Section */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="h-1 w-12 bg-gradient-to-r from-[#f9f506] to-[#fcf82d] rounded-full"></div>
-                      <h2 className="text-2xl font-black text-white tracking-tight">AI Recommendations</h2>
-                    </div>
-                    <div className="bg-white/[0.03] backdrop-blur border border-white/[0.08] rounded-2xl p-6 shadow-lg">
-                      <div className="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-                        {renderAnalysis(displayResume?.analysis || "")}
+                    <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white">
+                          <Target className="h-5 w-5" />
+                        </div>
+                        <h3 className="text-lg font-bold">Role Match</h3>
                       </div>
+                      <div className="flex flex-col gap-5 mt-2">
+                        <div className="flex flex-col gap-1">
+                          <div className="flex justify-between text-sm font-medium">
+                            <span>Full Stack Developer</span>
+                            <span className="text-green-500">80%</span>
+                          </div>
+                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-green-500 rounded-r-full" style={{width: '80%'}}></div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex justify-between text-sm font-medium">
+                            <span>Frontend Engineer</span>
+                            <span className="text-primary">65%</span>
+                          </div>
+                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary rounded-r-full" style={{width: '65%'}}></div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex justify-between text-sm font-medium">
+                            <span>Backend Engineer</span>
+                            <span className="text-orange-500">45%</span>
+                          </div>
+                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                            <div className="h-full bg-orange-500 rounded-r-full" style={{width: '45%'}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card rounded-lg p-6">
+                    <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
+                      AI Recommendations
+                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
+                    </h2>
+                    <div className="max-h-[500px] overflow-y-auto pr-2">
+                      {renderAnalysis(displayResume?.analysis || "")}
                     </div>
                   </div>
                 </div>
