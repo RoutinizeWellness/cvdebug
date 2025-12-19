@@ -12,10 +12,10 @@ export function FeaturesBentoSection() {
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-[#7c3bed]/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="size-12 rounded-lg bg-[#7c3bed]/10 flex items-center justify-center text-[#7c3bed] group-hover:scale-110 transition-transform duration-300">
-              <span className="material-symbols-outlined">database</span>
+              <span className="text-2xl">🔍</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">🔍 Professional Parsing</h3>
+              <h3 className="text-xl font-bold mb-2">Professional Parsing</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 We use enterprise-grade parsers to show you exactly how systems like Workday interpret your work history.
               </p>
@@ -26,10 +26,10 @@ export function FeaturesBentoSection() {
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-red-500/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="size-12 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform duration-300">
-              <span className="material-symbols-outlined">image</span>
+              <span className="text-2xl">🖼️</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">🖼️ The Image Trap</h3>
+              <h3 className="text-xl font-bold mb-2">The Image Trap</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Detects invisible text and layout issues caused by designing in creative tools like Canva or Figma.
               </p>
@@ -40,10 +40,10 @@ export function FeaturesBentoSection() {
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-[#7c3bed]/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="size-12 rounded-lg bg-[#7c3bed]/10 flex items-center justify-center text-[#7c3bed] group-hover:scale-110 transition-transform duration-300">
-              <span className="material-symbols-outlined">target</span>
+              <span className="text-2xl">🎯</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">🎯 Keyword Match</h3>
+              <h3 className="text-xl font-bold mb-2">Keyword Match</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Scan your resume against specific Job Descriptions to see missing hard skills and keywords instantly.
               </p>
@@ -54,10 +54,10 @@ export function FeaturesBentoSection() {
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-[#22C55E]/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[#22C55E]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <div className="size-12 rounded-lg bg-[#22C55E]/10 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform duration-300">
-              <span className="material-symbols-outlined">trending_up</span>
+              <span className="text-2xl">📈</span>
             </div>
             <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">📈 ROI Driven</h3>
+              <h3 className="text-xl font-bold mb-2">ROI Driven</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
                 Users with an 80+ score get 3x more callbacks on average. Data-backed optimization.
               </p>

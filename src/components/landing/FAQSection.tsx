@@ -20,7 +20,7 @@ export function FAQSection() {
           <details className="group bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden transition-all duration-300 open:border-[#7c3bed]/50">
             <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">What is the "Image Trap"?</h3>
-              <span className="material-symbols-outlined transform group-open:rotate-180 transition-transform text-gray-400">expand_more</span>
+              <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
             <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed">
               Many modern resume templates (from Canva or Photoshop) export text as flattened images or complex vector shapes. While they look good to humans, ATS robots see blank pages. Our tool detects this instantly.
@@ -31,7 +31,7 @@ export function FAQSection() {
           <details className="group bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden transition-all duration-300 open:border-[#7c3bed]/50">
             <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Does this work for all industries?</h3>
-              <span className="material-symbols-outlined transform group-open:rotate-180 transition-transform text-gray-400">expand_more</span>
+              <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
             <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed">
               Yes, but it is optimized for technical and corporate roles where ATS usage is heaviest (Tech, Finance, Healthcare, Engineering).
