@@ -54,8 +54,8 @@ export default function AuthPage() {
 
   const clerkAppearance = {
     elements: {
-      rootBox: "w-full",
-      card: "shadow-none border-none w-full bg-transparent p-0",
+      rootBox: "w-full flex justify-center",
+      card: "shadow-none border-none w-full bg-transparent p-0 flex flex-col items-center",
       headerTitle: "hidden",
       headerSubtitle: "hidden",
       header: "hidden",
@@ -63,16 +63,29 @@ export default function AuthPage() {
       footerAction: "hidden",
       footerActionLink: "hidden",
       footerActionText: "hidden",
-      formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(249,245,6,0.5)] hover:shadow-[0_0_25px_-5px_rgba(249,245,6,0.6)] transition-all rounded-lg py-3 font-semibold",
+      formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(249,245,6,0.5)] hover:shadow-[0_0_25px_-5px_rgba(249,245,6,0.6)] transition-all rounded-lg py-3 font-semibold w-full",
       formFieldLabel: "text-zinc-300 text-sm font-medium",
-      formFieldInput: "bg-[#121212] border-zinc-800 text-white placeholder:text-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary/50 rounded-lg h-11 transition-colors",
+      formFieldInput: "bg-[#121212] border-zinc-800 text-white placeholder:text-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary/50 rounded-lg h-11 transition-colors w-full",
+      formFieldRow: "w-full",
+      formFieldInputGroup: "w-full",
+      form: "w-full flex flex-col gap-4",
       identityPreviewText: "hidden",
       identityPreviewEditButton: "hidden",
       footerPages: "hidden",
       footerPagesLink: "hidden",
-      socialButtonsBlockButton: "bg-[#121212] border border-zinc-800 text-white hover:bg-zinc-900 transition-colors rounded-lg",
+      socialButtonsBlockButton: "bg-[#121212] border border-zinc-800 text-white hover:bg-zinc-900 hover:border-primary/30 transition-all rounded-lg w-full",
+      socialButtonsBlockButtonText: "text-white font-medium",
+      socialButtonsIconButton: "text-white",
       dividerLine: "bg-zinc-800",
       dividerText: "text-zinc-600 text-xs uppercase tracking-wider",
+      formFieldAction: "text-primary hover:text-primary/80",
+      otpCodeFieldInput: "bg-[#121212] border-zinc-800 text-white focus:border-primary focus:ring-1 focus:ring-primary/50",
+      formResendCodeLink: "text-primary hover:text-primary/80",
+      identityPreview: "bg-[#121212] border-zinc-800 rounded-lg",
+      formFieldSuccessText: "text-green-400",
+      formFieldErrorText: "text-red-400",
+      alertText: "text-zinc-300",
+      alert: "bg-[#121212] border-zinc-800 rounded-lg",
     }
   };
 
