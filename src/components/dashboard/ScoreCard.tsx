@@ -20,14 +20,14 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
     };
     if (score >= 50) return { 
       status: "Needs Optimization",
-      message: "partially visible",
-      percentage: "60%",
+      message: "invisible to",
+      percentage: "40%",
       color: "orange"
     };
     return { 
       status: "Critical Issues",
-      message: "invisible",
-      percentage: "40%",
+      message: "invisible to",
+      percentage: "60%",
       color: "red"
     };
   };
@@ -48,18 +48,18 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
               {statusInfo.status}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
-              Your resume is {statusInfo.message} to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">{statusInfo.percentage} of bots</span>.
+              Your resume is {statusInfo.message} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">{statusInfo.percentage} of bots</span>.
             </h1>
             <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
                 : score >= 50 
                 ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
-                : 'We found critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
+                : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
             </p>
           </div>
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <Button className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-primary-foreground font-bold text-base hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(124,59,237,0.3)]">
+            <Button className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]">
               <Download className="h-5 w-5" />
               Download Report
             </Button>

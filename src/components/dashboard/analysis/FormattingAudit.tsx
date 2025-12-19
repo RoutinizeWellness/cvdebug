@@ -18,7 +18,7 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
         <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white">
           <CheckCircle2 className="h-5 w-5" />
         </div>
-        <h3 className="text-lg font-bold text-white">Formatting Audit</h3>
+        <h3 className="text-lg font-bold text-stone-900 dark:text-white">Formatting Audit</h3>
       </div>
       <div className="flex flex-col gap-3">
         {items.map((item, idx) => (

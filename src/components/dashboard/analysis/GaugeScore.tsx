@@ -7,7 +7,7 @@ interface GaugeScoreProps {
 export function GaugeScore({ score }: GaugeScoreProps) {
   const getScoreColor = (score: number) => {
     if (score >= 80) return "stroke-green-500";
-    if (score >= 50) return "stroke-orange-500";
+    if (score >= 50) return "stroke-primary";
     return "stroke-red-500";
   };
 
