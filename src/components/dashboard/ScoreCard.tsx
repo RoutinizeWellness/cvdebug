@@ -11,9 +11,9 @@ interface ScoreCardProps {
 
 export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0 }: ScoreCardProps) {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return { stroke: "stroke-green-500", text: "text-green-500", bg: "bg-green-100 dark:bg-green-500/20", border: "border-green-200 dark:border-green-500/30", status: "Excellent" };
-    if (score >= 50) return { stroke: "stroke-orange-500", text: "text-orange-500", bg: "bg-orange-100 dark:bg-orange-500/20", border: "border-orange-200 dark:border-orange-500/30", status: "Needs Optimization" };
-    return { stroke: "stroke-red-500", text: "text-red-500", bg: "bg-red-100 dark:bg-red-500/20", border: "border-red-200 dark:border-red-500/30", status: "Critical Issues" };
+    if (score >= 80) return { stroke: "stroke-green-500", text: "text-green-500", bg: "bg-green-500/20", border: "border-green-500/30", status: "Excellent" };
+    if (score >= 50) return { stroke: "stroke-orange-500", text: "text-orange-500", bg: "bg-orange-500/20", border: "border-orange-500/30", status: "Needs Optimization" };
+    return { stroke: "stroke-red-500", text: "text-red-500", bg: "bg-red-500/20", border: "border-red-500/30", status: "Critical Issues" };
   };
 
   const colors = getScoreColor(score);
@@ -30,7 +30,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
         <div className="flex-shrink-0 relative flex items-center justify-center">
           <svg className="size-64 md:size-72" viewBox="0 0 100 100">
             <circle 
-              className="text-stone-200 dark:text-stone-800 stroke-current" 
+              className="text-stone-800 stroke-current" 
               cx="50" 
               cy="50" 
               fill="transparent" 
@@ -55,14 +55,14 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             <motion.span 
-              className={`text-5xl font-bold text-stone-900 dark:text-white`}
+              className={`text-5xl font-bold text-white`}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               {score}
             </motion.span>
-            <span className="text-sm font-medium text-stone-500 dark:text-stone-400 mt-1">out of 100</span>
+            <span className="text-sm font-medium text-stone-400 mt-1">out of 100</span>
           </div>
         </div>
 
@@ -73,10 +73,10 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
               <span className={`size-2 rounded-full ${colors.text.replace('text-', 'bg-')} animate-pulse`}></span>
               {colors.status}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
               Your resume is {score >= 80 ? 'optimized' : score >= 50 ? 'partially visible' : 'invisible'} to <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">{score >= 80 ? '90%' : score >= 50 ? '60%' : '40%'} of bots</span>.
             </h1>
-            <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+            <p className="text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
                 : score >= 50 

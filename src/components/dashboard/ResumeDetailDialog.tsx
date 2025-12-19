@@ -293,7 +293,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             </div>
             <div className="overflow-hidden">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold leading-tight tracking-tight truncate">ATS Analysis Report</h2>
+                <h2 className="text-lg font-bold leading-tight tracking-tight truncate text-white">ATS Analysis Report</h2>
                 {displayResume?.category && (
                   <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold border border-primary/20 uppercase tracking-wider">
                     {displayResume.category}
@@ -375,7 +375,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-background-light dark:bg-background-dark">
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#050505]">
           <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
             <div className="p-8 max-w-7xl mx-auto font-display">
               
@@ -412,36 +412,36 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
 
                     <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white">
+                        <div className="p-2 rounded-full bg-stone-800 text-white">
                           <Target className="h-5 w-5" />
                         </div>
-                        <h3 className="text-lg font-bold">Role Match</h3>
+                        <h3 className="text-lg font-bold text-white">Role Match</h3>
                       </div>
                       <div className="flex flex-col gap-5 mt-2">
                         <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium">
+                          <div className="flex justify-between text-sm font-medium text-stone-300">
                             <span>Full Stack Developer</span>
                             <span className="text-green-500">80%</span>
                           </div>
-                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
                             <div className="h-full bg-green-500 rounded-r-full" style={{width: '80%'}}></div>
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium">
+                          <div className="flex justify-between text-sm font-medium text-stone-300">
                             <span>Frontend Engineer</span>
                             <span className="text-primary">65%</span>
                           </div>
-                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
                             <div className="h-full bg-primary rounded-r-full" style={{width: '65%'}}></div>
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium">
+                          <div className="flex justify-between text-sm font-medium text-stone-300">
                             <span>Backend Engineer</span>
                             <span className="text-orange-500">45%</span>
                           </div>
-                          <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
                             <div className="h-full bg-orange-500 rounded-r-full" style={{width: '45%'}}></div>
                           </div>
                         </div>
@@ -450,7 +450,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   </div>
 
                   <div className="glass-card rounded-lg p-6">
-                    <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
+                    <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
                       AI Recommendations
                       <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
                     </h2>
@@ -465,7 +465,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
 
           {/* Center Image/Preview */}
           <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
-            <div className="absolute inset-0 bg-[radial-gradient(#00000011_1px,transparent_1px)] [background-size:16px_16px] opacity-50"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
             
             <button 
               onClick={() => setIsImmersive(!isImmersive)}
@@ -489,12 +489,12 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   title="Resume Preview"
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center text-center p-6 bg-white rounded-lg shadow-xl max-w-md">
-                  <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mb-6">
-                    <FileText className="h-10 w-10 text-muted-foreground" />
+                <div className="flex flex-col items-center justify-center text-center p-6 bg-zinc-900 rounded-lg shadow-xl max-w-md border border-zinc-800">
+                  <div className="h-20 w-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                    <FileText className="h-10 w-10 text-zinc-400" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-foreground">Preview Not Available</h3>
-                  <p className="text-muted-foreground mb-8">
+                  <h3 className="text-xl font-bold mb-2 text-white">Preview Not Available</h3>
+                  <p className="text-zinc-400 mb-8">
                     This file type cannot be previewed directly in the browser. You can download it to view the content.
                   </p>
                   <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
@@ -517,42 +517,42 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold">NEW</span>
                     </h3>
                     <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-lg p-4 mb-4 shadow-sm">
-                      <p className="text-xs text-foreground font-medium leading-relaxed">
+                      <p className="text-xs text-zinc-300 font-medium leading-relaxed">
                         <span className="font-bold text-primary">✨ Optimized for ATS:</span> We've rewritten your resume content to include missing keywords and improve readability for tracking systems.
                       </p>
                     </div>
-                    <div className="bg-background rounded-lg border border-border p-3 text-xs text-foreground font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+                    <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-300 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
                       {displayResume.rewrittenText}
                     </div>
-                    <Separator className="my-6" />
+                    <Separator className="my-6 bg-zinc-800" />
                   </div>
                 )}
 
                 <div>
-                  <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Eye className="h-4 w-4" /> ATS Raw View
                   </h3>
                   <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
                     <div className="flex gap-2">
                       <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-yellow-700 font-medium leading-relaxed">
+                      <p className="text-xs text-yellow-500 font-medium leading-relaxed">
                         This is exactly what the ATS sees. If your text is missing, garbled, or out of order here, the ATS cannot read your resume.
                       </p>
                     </div>
                   </div>
-                  <div className="bg-background rounded-lg border border-border p-3 text-xs text-muted-foreground font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+                  <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-400 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
                     {displayResume?.ocrText ? displayResume.ocrText : "No text extracted."}
                   </div>
                 </div>
                 
-                <Separator />
+                <Separator className="bg-zinc-800" />
 
                 <div>
-                  <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <FileText className="h-4 w-4" /> Notes
                   </h3>
                   <textarea 
-                    className="w-full h-40 bg-background border border-border rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-muted-foreground/50" 
+                    className="w-full h-40 bg-zinc-900 border border-zinc-800 rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-zinc-600 text-zinc-300" 
                     placeholder="Add a note about this resume..."
                   ></textarea>
                 </div>

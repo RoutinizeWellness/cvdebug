@@ -133,6 +133,10 @@
   [role="button"]:not([disabled]) {
     cursor: pointer;
   }
+
+  .glass-card {
+    @apply bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden;
+  }
 }
 
 /* Hide Clerk Branding & Development Badge */
