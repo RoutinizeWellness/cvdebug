@@ -36,6 +36,10 @@ import { FreeTierView } from "./FreeTierView";
 import { ScoreCard } from "./ScoreCard";
 import { SkillGapHeatmap } from "./SkillGapHeatmap";
 import { DeepAuditChecklist } from "./DeepAuditChecklist";
+import { GaugeScore } from "./analysis/GaugeScore";
+import { FormattingAudit } from "./analysis/FormattingAudit";
+import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
+import { RoleMatchCard } from "./analysis/RoleMatchCard";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -399,54 +403,21 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   />
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-                    <div className="lg:col-span-4">
-                      <DeepAuditChecklist items={auditItems} />
-                    </div>
+                    <FormattingAudit items={auditItems} />
                     
-                    <div className="lg:col-span-4">
-                      <SkillGapHeatmap 
-                        foundKeywords={foundKeywords}
-                        missingKeywords={criticalKeywords}
-                      />
-                    </div>
+                    <KeywordHeatmap 
+                      foundKeywords={foundKeywords}
+                      missingKeywords={criticalKeywords}
+                      onUnlock={() => setShowPricing(true)}
+                    />
 
-                    <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="p-2 rounded-full bg-stone-800 text-white">
-                          <Target className="h-5 w-5" />
-                        </div>
-                        <h3 className="text-lg font-bold text-white">Role Match</h3>
-                      </div>
-                      <div className="flex flex-col gap-5 mt-2">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium text-stone-300">
-                            <span>Full Stack Developer</span>
-                            <span className="text-green-500">80%</span>
-                          </div>
-                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-green-500 rounded-r-full" style={{width: '80%'}}></div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium text-stone-300">
-                            <span>Frontend Engineer</span>
-                            <span className="text-primary">65%</span>
-                          </div>
-                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-primary rounded-r-full" style={{width: '65%'}}></div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <div className="flex justify-between text-sm font-medium text-stone-300">
-                            <span>Backend Engineer</span>
-                            <span className="text-orange-500">45%</span>
-                          </div>
-                          <div className="w-full h-3 bg-stone-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-orange-500 rounded-r-full" style={{width: '45%'}}></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <RoleMatchCard 
+                      roles={[
+                        { name: "Full Stack Developer", percentage: 80, color: "green" },
+                        { name: "Frontend Engineer", percentage: 65, color: "purple" },
+                        { name: "Backend Engineer", percentage: 45, color: "orange" }
+                      ]}
+                    />
                   </div>
 
                   <div className="glass-card rounded-lg p-6">
