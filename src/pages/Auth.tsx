@@ -84,9 +84,7 @@ export default function AuthPage() {
       <div className="relative w-full max-w-[440px] z-10">
         {/* Logo Header */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center mb-4 border border-primary/30 shadow-[0_0_20px_-5px_rgba(124,59,237,0.3)]">
-            <Logo variant="light" />
-          </div>
+          <Logo showText={false} className="mb-4" iconClassName="h-14 w-14" />
           <h1 className="text-2xl font-bold tracking-tight text-white">CVDebug</h1>
           <p className="text-zinc-500 text-sm mt-1">Resume ATS Optimization</p>
         </div>
