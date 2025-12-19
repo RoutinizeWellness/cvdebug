@@ -5,16 +5,16 @@ export function SocialProofSection() {
         <p className="text-center text-sm font-medium text-gray-500 mb-8">Trusted by 2,000+ job seekers at top tech companies</p>
         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
           <div className="h-8 flex items-center gap-2 text-white font-bold text-xl">
-            <span className="material-symbols-outlined">search</span> GOOGLE
+            <span className="text-2xl">🔍</span> GOOGLE
           </div>
           <div className="h-8 flex items-center gap-2 text-white font-bold text-xl">
-            <span className="material-symbols-outlined">all_inclusive</span> META
+            <span className="text-2xl">♾️</span> META
           </div>
           <div className="h-8 flex items-center gap-2 text-white font-bold text-xl">
-            <span className="material-symbols-outlined">memory</span> NVIDIA
+            <span className="text-2xl">🧠</span> NVIDIA
           </div>
           <div className="h-8 flex items-center gap-2 text-white font-bold text-xl">
-            <span className="material-symbols-outlined">grid_view</span> MICROSOFT
+            <span className="text-2xl">🪟</span> MICROSOFT
           </div>
         </div>
       </div>
