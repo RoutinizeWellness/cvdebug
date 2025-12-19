@@ -112,9 +112,9 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             text += pageText + "\n";
           }
           
-          if (text.trim().length < 50 || (text.match(/[^\x00-\x7F]/g) || []).length / text.length > 0.5) {
-            console.log("PDF text extraction yielded poor results, attempting OCR fallback...");
-            toast.info("PDF text layer is unclear, using OCR for better accuracy...");
+          if (text.trim().length < 50) {
+            console.log("PDF text extraction yielded minimal text, attempting OCR fallback...");
+            toast.info("PDF format not standard, using OCR for text extraction...");
             
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -161,14 +161,35 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             
             text = ocrText;
             
-            if (!text.trim() && ocrErrors.length > 0) {
-              const firstError = ocrErrors[0];
-              throw new Error(`Failed to extract text from PDF via OCR. It might be corrupted or severely malformed. Details: ${firstError?.message || "Unknown OCR error."}`);
+            if (!text.trim()) {
+              if (ocrErrors.length > 0) {
+                console.error("OCR failed for all pages:", ocrErrors);
+              }
+              throw new Error("Could not extract text from this PDF. Please try: 1) Re-saving as a new PDF from Word, 2) Using 'Save As PDF' instead of 'Export', or 3) Uploading as a .docx file instead.");
             }
           }
         } catch (pdfError) {
           console.error("PDF parsing failed:", pdfError);
-          throw new Error(`Could not parse this PDF file. It may be corrupted, password protected, or in an unsupported format. Please try saving it as a new PDF or converting to Word. Original issue: ${pdfError instanceof Error ? pdfError.message : String(pdfError)}`);
+          // If PDF parsing completely fails, try OCR as last resort
+          toast.info("PDF format not recognized, attempting OCR extraction...");
+          
+          try {
+            const worker = await createWorker("eng");
+            const imageUrl = URL.createObjectURL(file);
+            try {
+              const ret = await worker.recognize(imageUrl);
+              text = ret.data.text;
+              if (!text.trim()) {
+                throw new Error("OCR produced no text");
+              }
+            } finally {
+              URL.revokeObjectURL(imageUrl);
+              await worker.terminate();
+            }
+          } catch (ocrError) {
+            console.error("OCR fallback also failed:", ocrError);
+            throw new Error("Could not read text from this file. Please try: 1) Re-saving as a new PDF using 'Print to PDF', 2) Converting to Word (.docx) format, or 3) Ensuring the file contains selectable text (not just images).");
+          }
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         const arrayBuffer = await file.arrayBuffer();

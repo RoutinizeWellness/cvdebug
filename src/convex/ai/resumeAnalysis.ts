@@ -28,7 +28,7 @@ export const analyzeResume = internalAction({
         id: args.id,
         title: "Resume",
         category: "Uncategorized",
-        analysis: "Resume text is too short or unreadable. Please try a different file format (PDF/Word).",
+        analysis: "Resume text is too short or unreadable. Please try:\n\n1. Re-save your resume using 'Print to PDF' or 'Save As PDF'\n2. Convert to Word (.docx) format\n3. Ensure the file contains selectable text (not scanned images)\n4. Try a different PDF viewer to re-export the file",
         score: 0,
         status: "failed",
       });
