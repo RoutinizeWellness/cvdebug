@@ -39,7 +39,7 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-16 md:py-24 bg-background relative overflow-hidden">
+    <section id="how-it-works" className="py-16 md:py-24 bg-zinc-950 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <motion.div
@@ -79,7 +79,7 @@ export function HowItWorksSection() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-br from-primary/5 via-purple-500/5 to-primary/5 border border-primary/10 rounded-3xl p-8 md:p-12 shadow-xl">
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-xl">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -95,15 +95,15 @@ export function HowItWorksSection() {
                 Your Credits Work Like Arcade Tokens
               </h3>
               <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl px-6 py-4 text-base shadow-lg">
-                <span className="text-4xl">🎮</span>
-                <div className="text-left">
-                  <p className="text-amber-900 dark:text-amber-100 font-black text-lg">
-                    1 Scan = 1 Credit
-                  </p>
-                  <p className="text-amber-800 dark:text-amber-200 text-sm font-medium">
-                    Simple, transparent, no surprises
-                  </p>
-                </div>
+                  <span className="text-4xl">🎮</span>
+                  <div className="text-left">
+                    <p className="text-amber-100 font-black text-lg">
+                      1 Scan = 1 Credit
+                    </p>
+                    <p className="text-amber-200 text-sm font-medium">
+                      Simple, transparent, no surprises
+                    </p>
+                  </div>
               </div>
             </motion.div>
           </div>
@@ -120,7 +120,7 @@ export function HowItWorksSection() {
                 transition={{ duration: 0.5, delay: i * 0.15 }}
                 className="relative flex flex-col items-center text-center group"
               >
-                <div className="h-20 w-20 md:h-24 md:w-24 bg-background border-2 border-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
+                <div className="h-20 w-20 md:h-24 md:w-24 bg-zinc-950 border-2 border-primary/30 rounded-2xl flex items-center justify-center mb-6 shadow-xl group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl"></div>
                   <step.icon className="h-9 w-9 md:h-11 md:w-11 text-primary relative z-10" />
                 </div>
