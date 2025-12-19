@@ -15,6 +15,10 @@ export function Logo({
   showText = true,
   variant = "default"
 }: LogoProps) {
+  const gradientClass = variant === "light" 
+    ? "from-white via-primary to-white" 
+    : "from-foreground via-primary to-foreground";
+
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <div className="relative">
@@ -33,7 +37,10 @@ export function Logo({
       
       {showText && (
         <div className={cn("flex flex-col leading-none", textClassName)}>
-          <span className="font-black text-xl tracking-tighter bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent drop-shadow-sm" style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif", letterSpacing: "-0.02em" }}>
+          <span className={cn(
+            "font-black text-xl tracking-tighter bg-gradient-to-r bg-clip-text text-transparent drop-shadow-sm",
+            gradientClass
+          )} style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif", letterSpacing: "-0.02em" }}>
             CVdebug
           </span>
         </div>

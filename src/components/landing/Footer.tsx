@@ -13,10 +13,7 @@ export function Footer() {
       <TermsDialog open={showTerms} onOpenChange={setShowTerms} />
       
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="CVDebug Logo" className="h-6 w-6" />
-          <span className="text-white font-bold text-sm tracking-tight">CVDebug</span>
-        </div>
+        <Logo variant="light" iconClassName="h-6 w-auto" textClassName="text-lg" />
         <div className="flex items-center gap-8">
           <button onClick={() => setShowTerms(true)} className="text-sm text-gray-500 hover:text-white transition-colors">Terms of Service</button>
           <button onClick={() => setShowPrivacy(true)} className="text-sm text-gray-500 hover:text-white transition-colors">Privacy Policy</button>

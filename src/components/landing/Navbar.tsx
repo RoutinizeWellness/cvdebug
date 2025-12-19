@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { X } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 export function Navbar() {
   const navigate = useNavigate();
@@ -10,9 +11,8 @@ export function Navbar() {
     <>
       <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#050505]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src="/logo.png" alt="CVDebug Logo" className="h-8 w-8" />
-            <h1 className="text-white text-lg font-bold tracking-tight">CVDebug</h1>
+          <div className="cursor-pointer" onClick={() => navigate("/")}>
+            <Logo variant="light" />
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a className="text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#features">Features</a>
@@ -40,10 +40,7 @@ export function Navbar() {
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}></div>
           <div className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-[#050505] border-l border-white/10 shadow-2xl animate-in slide-in-from-right duration-300">
             <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="CVDebug Logo" className="h-8 w-8" />
-                <h1 className="text-white text-lg font-bold tracking-tight">CVDebug</h1>
-              </div>
+              <Logo variant="light" />
               <button 
                 className="text-gray-400 hover:text-white transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
