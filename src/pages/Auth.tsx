@@ -18,7 +18,6 @@ export default function AuthPage() {
   const plan = searchParams.get("plan");
   const payment = searchParams.get("payment");
   
-  // Store user in database immediately after authentication
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
       storeUser().catch(err => {
@@ -27,7 +26,6 @@ export default function AuthPage() {
     }
   }, [isAuthenticated, isLoading, storeUser]);
   
-  // Construct redirect URL preserving both plan and payment status
   let redirectUrl = "/dashboard";
   const params = new URLSearchParams();
   if (plan) params.append("plan", plan);
@@ -39,7 +37,7 @@ export default function AuthPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
         <div className="animate-pulse flex flex-col items-center gap-4">
           <div className="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center">
             <Loader2 className="h-6 w-6 text-primary animate-spin" />
@@ -55,39 +53,32 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-purple-500/10 to-background opacity-60"></div>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent"></div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden relative px-4">
+      {/* Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
       
-      {/* Floating Orbs */}
-      <div className="absolute top-20 left-20 h-64 w-64 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-20 h-80 w-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      
-      <div className="w-full max-w-md p-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="text-center mb-8 flex flex-col items-center">
-          <div className="mb-6 scale-150 animate-in zoom-in duration-500">
-            <Logo />
+      <div className="relative w-full max-w-[420px] z-10">
+        {/* Logo Header */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mb-4 border border-primary/30">
+            <Logo variant="light" />
           </div>
-          <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent animate-in slide-in-from-bottom-2 duration-500 delay-100">
-            {isSignIn ? "Welcome back" : "Join the Beta Launch"}
-          </h1>
-          <p className="text-muted-foreground mt-3 text-base animate-in slide-in-from-bottom-2 duration-500 delay-200">
-            {isSignIn ? "Enter your credentials to access your dashboard" : "Get 15 days free access with our Beta Launch offer."}
-          </p>
-          
-          {!isSignIn && (
-            <div className="mt-4 flex items-center gap-2 bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-full px-4 py-2 animate-in slide-in-from-bottom-2 duration-500 delay-300">
-              <span className="flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-xs font-bold text-primary">Limited Beta Access Available</span>
-            </div>
-          )}
+          <h1 className="text-xl font-bold tracking-tight text-white">CVDebug</h1>
         </div>
 
-        <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl p-6 animate-in slide-in-from-bottom-3 duration-500 delay-200">
+        {/* Main Card */}
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-lg shadow-[0_0_100px_-20px_rgba(124,59,237,0.15)] p-8 w-full">
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-white mb-2">
+              {isSignIn ? "Welcome Back" : "Debug your resume visibility."}
+            </h2>
+            <p className="text-zinc-400 text-sm">
+              {isSignIn 
+                ? "Enter your details to access your resume analytics." 
+                : "Join CVDebug to optimize your CV for Applicant Tracking Systems."}
+            </p>
+          </div>
+
           {isSignIn ? (
             <SignIn 
               routing="hash"
@@ -103,13 +94,16 @@ export default function AuthPage() {
                   footerAction: "hidden",
                   footerActionLink: "hidden",
                   footerActionText: "hidden",
-                  formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
-                  formFieldLabel: "text-foreground",
-                  formFieldInput: "bg-background border-border text-foreground",
+                  formButtonPrimary: "bg-[#7c3bed] hover:bg-[#6d32d6] text-white shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)] hover:shadow-[0_0_25px_-5px_rgba(124,59,237,0.6)] transition-all rounded-lg py-3 font-semibold",
+                  formFieldLabel: "text-white text-sm font-medium",
+                  formFieldInput: "bg-[#121212] border-zinc-800 text-white placeholder:text-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary/50 rounded-lg h-11 transition-colors",
                   identityPreviewText: "hidden",
                   identityPreviewEditButton: "hidden",
                   footerPages: "hidden",
                   footerPagesLink: "hidden",
+                  socialButtonsBlockButton: "bg-[#121212] border border-zinc-800 text-white hover:bg-zinc-900 transition-colors rounded-lg",
+                  dividerLine: "bg-zinc-800",
+                  dividerText: "text-zinc-600 text-xs uppercase tracking-wider",
                 }
               }}
             />
@@ -128,40 +122,39 @@ export default function AuthPage() {
                   footerAction: "hidden",
                   footerActionLink: "hidden",
                   footerActionText: "hidden",
-                  formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20",
-                  formFieldLabel: "text-foreground",
-                  formFieldInput: "bg-background border-border text-foreground",
+                  formButtonPrimary: "bg-[#7c3bed] hover:bg-[#6d32d6] text-white shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)] hover:shadow-[0_0_25px_-5px_rgba(124,59,237,0.6)] transition-all rounded-lg py-3 font-semibold",
+                  formFieldLabel: "text-zinc-300 text-sm font-medium",
+                  formFieldInput: "bg-zinc-900/50 border-zinc-800 text-white placeholder:text-zinc-600 focus:border-primary focus:bg-zinc-900 focus:ring-1 focus:ring-primary/50 rounded-lg py-3 transition-all",
                   identityPreviewText: "hidden",
                   identityPreviewEditButton: "hidden",
                   footerPages: "hidden",
                   footerPagesLink: "hidden",
+                  socialButtonsBlockButton: "bg-zinc-900/50 border border-zinc-800 text-white hover:bg-zinc-800 hover:border-zinc-700 transition-colors rounded-lg",
+                  dividerLine: "bg-zinc-800",
+                  dividerText: "text-zinc-600 text-xs uppercase tracking-wider",
                 }
               }}
             />
           )}
           
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">
-              {isSignIn ? "Don't have an account? " : "Already have an account? "}
+            <span className="text-zinc-400">
+              {isSignIn ? "New to CVDebug? " : "Already have an account? "}
             </span>
             <button 
               onClick={() => setIsSignIn(!isSignIn)}
-              className="font-bold text-primary hover:underline transition-all hover:scale-105 inline-block"
+              className="font-semibold text-primary hover:text-primary/80 hover:underline transition-all"
             >
-              {isSignIn ? "Sign up & Get Beta Access" : "Sign in"}
+              {isSignIn ? "Create an account" : "Log In"}
             </button>
           </div>
         </div>
         
-        {/* Trust Indicators */}
-        <div className="mt-8 flex items-center justify-center gap-6 text-xs text-muted-foreground animate-in fade-in duration-700 delay-500">
-          <div className="flex items-center gap-1.5">
-            <span className="font-medium">10K+ Users</span>
-          </div>
-          <div className="h-4 w-px bg-border"></div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-medium">No Credit Card</span>
-          </div>
+        {/* Footer Links */}
+        <div className="mt-8 flex justify-center space-x-6 text-xs text-zinc-600">
+          <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
+          <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
+          <a href="#" className="hover:text-zinc-400 transition-colors">Docs</a>
         </div>
       </div>
     </div>
