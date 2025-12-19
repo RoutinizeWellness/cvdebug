@@ -63,7 +63,7 @@ export default function AuthPage() {
       footerAction: "hidden",
       footerActionLink: "hidden",
       footerActionText: "hidden",
-      formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)] hover:shadow-[0_0_25px_-5px_rgba(124,59,237,0.6)] transition-all rounded-lg py-3 font-semibold",
+      formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_-5px_rgba(249,245,6,0.5)] hover:shadow-[0_0_25px_-5px_rgba(249,245,6,0.6)] transition-all rounded-lg py-3 font-semibold",
       formFieldLabel: "text-zinc-300 text-sm font-medium",
       formFieldInput: "bg-[#121212] border-zinc-800 text-white placeholder:text-zinc-600 focus:border-primary focus:ring-1 focus:ring-primary/50 rounded-lg h-11 transition-colors",
       identityPreviewText: "hidden",
@@ -79,7 +79,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden relative px-4 py-8">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
       
       <div className="relative w-full max-w-[440px] z-10">
         {/* Logo Header */}
@@ -90,7 +90,7 @@ export default function AuthPage() {
         </div>
 
         {/* Main Card */}
-        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl shadow-[0_0_100px_-20px_rgba(124,59,237,0.15)] p-8 w-full">
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl shadow-[0_0_100px_-20px_rgba(249,245,6,0.15)] p-8 w-full">
           <div className="mb-6 text-center">
             <h2 className="text-2xl font-bold tracking-tight text-white mb-2">
               {isSignIn ? "Welcome Back" : "Get Started"}
