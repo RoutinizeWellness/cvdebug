@@ -1,0 +1,2 @@
+    cleaned = cleaned.replace(jsonBlockStart, '').replace(jsonBlockEnd, '').trim();
+>>>>>>> REPLACE

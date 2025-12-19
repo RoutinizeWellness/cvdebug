@@ -53,6 +53,7 @@ export const analyzeResume = internalAction({
     let analysisResult;
     let usedFallback = false;
 
+    // Always use fallback if no API key OR if API call fails/times out
     if (!apiKey) {
       console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
       analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
@@ -64,15 +65,28 @@ export const analyzeResume = internalAction({
         
         console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 
-        const content = await callOpenRouter(apiKey, {
+        // Add timeout wrapper - 30 seconds max
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error("API request timeout after 30s")), 30000)
+        );
+
+        const apiPromise = callOpenRouter(apiKey, {
           model: model,
           messages: [{ role: "user", content: prompt }],
           response_format: { type: "json_object" }
         });
+
+        const content = await Promise.race([apiPromise, timeoutPromise]) as string;
         
         console.log("[AI Analysis] Received response, length:", content.length);
 
         analysisResult = extractJSON(content);
+        
+        // Validate the response has required fields
+        if (!analysisResult.score || !analysisResult.analysis) {
+          throw new Error("Invalid API response structure");
+        }
+        
         console.log("[AI Analysis] Successfully parsed AI response");
         
       } catch (error: any) {
@@ -82,21 +96,41 @@ export const analyzeResume = internalAction({
       }
     }
 
+    // Ensure we have valid analysis result
+    if (!analysisResult || !analysisResult.score) {
+      console.error("[AI Analysis] Invalid analysis result, generating fallback");
+      analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
+      usedFallback = true;
+    }
+
     const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
     
-    await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
-      id: args.id,
-      title,
-      category,
-      analysis,
-      score,
-      scoreBreakdown,
-      missingKeywords,
-      formatIssues,
-      metricSuggestions: metricSuggestions || [],
-      status: "completed",
-    });
-    
-    console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (ML-based: ${usedFallback})`);
+    try {
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        id: args.id,
+        title: title || "Resume",
+        category: category || "General",
+        analysis: analysis || "Analysis completed.",
+        score: score || 0,
+        scoreBreakdown,
+        missingKeywords,
+        formatIssues,
+        metricSuggestions: metricSuggestions || [],
+        status: "completed",
+      });
+      
+      console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (ML-based: ${usedFallback})`);
+    } catch (updateError: any) {
+      console.error("[AI Analysis] Failed to update resume metadata:", updateError.message);
+      // Try one more time with minimal data
+      await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        id: args.id,
+        title: "Resume",
+        category: "General",
+        analysis: "Analysis completed with errors. Please try re-uploading.",
+        score: score || 0,
+        status: "completed",
+      });
+    }
   },
 });
