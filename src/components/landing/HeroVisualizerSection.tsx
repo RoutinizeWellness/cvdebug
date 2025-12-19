@@ -1,4 +1,15 @@
+import { useNavigate } from "react-router";
+
 export function HeroVisualizerSection() {
+  const navigate = useNavigate();
+
+  const scrollToHowItWorks = () => {
+    const element = document.getElementById('how-it-works');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative w-full pt-20 pb-20 md:pt-32 md:pb-32 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%, rgba(124, 59, 237, 0.15) 0%, rgba(5, 5, 5, 0) 70%)' }}>
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center z-10 relative">
@@ -20,11 +31,17 @@ export function HeroVisualizerSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mb-16">
-          <button className="flex items-center justify-center h-12 px-8 bg-[#7c3bed] hover:bg-[#6d28d9] text-white text-base font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)]">
+          <button 
+            onClick={() => navigate("/auth")}
+            className="flex items-center justify-center h-12 px-8 bg-[#7c3bed] hover:bg-[#6d28d9] text-white text-base font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)]"
+          >
             <span className="mr-2 text-xl">🐛</span>
             Debug my Resume (Free Scan)
           </button>
-          <button className="flex items-center justify-center h-12 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-base font-medium rounded-lg transition-colors">
+          <button 
+            onClick={scrollToHowItWorks}
+            className="flex items-center justify-center h-12 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-base font-medium rounded-lg transition-colors"
+          >
             <span className="mr-2 text-xl">▶️</span>
             Watch Demo
           </button>

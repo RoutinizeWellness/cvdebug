@@ -4,6 +4,7 @@ import { Navbar } from "@/components/landing/Navbar";
 import { HeroVisualizerSection } from "@/components/landing/HeroVisualizerSection";
 import { SocialProofSection } from "@/components/landing/SocialProofSection";
 import { FeaturesBentoSection } from "@/components/landing/FeaturesBentoSection";
+import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { PricingSection } from "@/components/landing/PricingSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { Footer } from "@/components/landing/Footer";
@@ -20,6 +21,7 @@ export default function Landing() {
       <Navbar />
       <HeroVisualizerSection />
       <SocialProofSection />
+      <HowItWorksSection />
       <FeaturesBentoSection />
       <PricingSection />
       <FAQSection />
