@@ -24,15 +24,15 @@ export function PricingSection() {
             </button>
             <div className="space-y-4 pt-4 border-t border-white/10">
               <div className="flex items-center gap-3 text-sm text-gray-300">
-                <span className="material-symbols-outlined text-[#22C55E] text-[20px]">check</span>
+                <span className="text-xl">✅</span>
                 Basic Resume Score
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-300">
-                <span className="material-symbols-outlined text-[#22C55E] text-[20px]">check</span>
+                <span className="text-xl">✅</span>
                 Top 3 Critical Errors
               </div>
               <div className="flex items-center gap-3 text-sm text-gray-300">
-                <span className="material-symbols-outlined text-[#22C55E] text-[20px]">check</span>
+                <span className="text-xl">✅</span>
                 Format Audit
               </div>
             </div>
@@ -55,23 +55,23 @@ export function PricingSection() {
             </button>
             <div className="space-y-4 pt-4 border-t border-[#7c3bed]/20">
               <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="material-symbols-outlined text-[#7c3bed] text-[20px]">check_circle</span>
+                <span className="text-xl">✅</span>
                 Full Keyword Report
               </div>
               <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="material-symbols-outlined text-[#7c3bed] text-[20px]">check_circle</span>
+                <span className="text-xl">✅</span>
                 AI-Powered Bullet Points
               </div>
               <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="material-symbols-outlined text-[#7c3bed] text-[20px]">check_circle</span>
+                <span className="text-xl">✅</span>
                 Priority Parsing (Zero Wait)
               </div>
               <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="material-symbols-outlined text-[#7c3bed] text-[20px]">check_circle</span>
+                <span className="text-xl">✅</span>
                 Unlimited Retries & Re-scans
               </div>
               <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="material-symbols-outlined text-[#7c3bed] text-[20px]">check_circle</span>
+                <span className="text-xl">✅</span>
                 Lifetime Access
               </div>
             </div>
