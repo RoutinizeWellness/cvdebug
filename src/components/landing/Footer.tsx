@@ -14,9 +14,7 @@ export function Footer() {
       
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center size-6 rounded bg-[#7c3bed]/20 text-[#7c3bed] border border-[#7c3bed]/30">
-            <span className="material-symbols-outlined text-[14px]">terminal</span>
-          </div>
+          <img src="/logo.png" alt="CVDebug Logo" className="h-6 w-6" />
           <span className="text-white font-bold text-sm tracking-tight">CVDebug</span>
         </div>
         <div className="flex items-center gap-8">

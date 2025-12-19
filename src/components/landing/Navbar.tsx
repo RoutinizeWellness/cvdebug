@@ -11,9 +11,7 @@ export function Navbar() {
       <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#050505]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <div className="flex items-center justify-center size-8 rounded bg-[#7c3bed]/20 text-[#7c3bed] border border-[#7c3bed]/30">
-              <span className="material-symbols-outlined text-[20px]">terminal</span>
-            </div>
+            <img src="/logo.png" alt="CVDebug Logo" className="h-8 w-8" />
             <h1 className="text-white text-lg font-bold tracking-tight">CVDebug</h1>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -43,9 +41,7 @@ export function Navbar() {
           <div className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-[#050505] border-l border-white/10 shadow-2xl animate-in slide-in-from-right duration-300">
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <div className="flex items-center justify-center size-8 rounded bg-[#7c3bed]/20 text-[#7c3bed] border border-[#7c3bed]/30">
-                  <span className="material-symbols-outlined text-[20px]">terminal</span>
-                </div>
+                <img src="/logo.png" alt="CVDebug Logo" className="h-8 w-8" />
                 <h1 className="text-white text-lg font-bold tracking-tight">CVDebug</h1>
               </div>
               <button 

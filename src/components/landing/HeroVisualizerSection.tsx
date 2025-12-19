@@ -21,11 +21,11 @@ export function HeroVisualizerSection() {
 
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mb-16">
           <button className="flex items-center justify-center h-12 px-8 bg-[#7c3bed] hover:bg-[#6d28d9] text-white text-base font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_20px_-5px_rgba(124,59,237,0.5)]">
-            <span className="material-symbols-outlined mr-2 text-[20px]">bug_report</span>
+            <span className="mr-2 text-xl">🐛</span>
             Debug my Resume (Free Scan)
           </button>
           <button className="flex items-center justify-center h-12 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-base font-medium rounded-lg transition-colors">
-            <span className="material-symbols-outlined mr-2 text-[20px]">play_circle</span>
+            <span className="mr-2 text-xl">▶️</span>
             Watch Demo
           </button>
         </div>
