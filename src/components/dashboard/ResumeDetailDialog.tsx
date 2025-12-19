@@ -40,6 +40,9 @@ import { GaugeScore } from "./analysis/GaugeScore";
 import { FormattingAudit } from "./analysis/FormattingAudit";
 import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
 import { RoleMatchCard } from "./analysis/RoleMatchCard";
+import { ActionableFixes } from "./analysis/ActionableFixes";
+import { ImpactScore } from "./analysis/ImpactScore";
+import { AIProTip } from "./analysis/AIProTip";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -417,6 +420,40 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         { name: "Frontend Engineer", percentage: 65, color: "purple" },
                         { name: "Backend Engineer", percentage: 45, color: "orange" }
                       ]}
+                    />
+                  </div>
+
+                  {/* New Actionable Fixes Section */}
+                  <ActionableFixes 
+                    fixes={[
+                      {
+                        title: "Missing Quantification",
+                        description: "Your resume lacks specific numbers and metrics that demonstrate impact. ATS systems and recruiters look for quantifiable achievements.",
+                        impact: "Adding metrics can increase your ATS score by 15-20 points and significantly improve recruiter engagement.",
+                        example: "Instead of 'Improved system performance', write 'Optimized database queries, reducing load time by 45% and improving user experience for 50K+ daily users'"
+                      },
+                      {
+                        title: "Weak Action Verbs",
+                        description: "Several bullet points start with passive or weak verbs like 'responsible for' or 'worked on'. Strong action verbs make your achievements more compelling.",
+                        impact: "Using powerful action verbs can improve readability and make your resume 30% more likely to pass initial screening.",
+                        example: "Replace 'Responsible for managing team' with 'Led cross-functional team of 8 engineers to deliver 3 major features ahead of schedule'"
+                      },
+                      {
+                        title: "Column Parsing Error",
+                        description: "Your resume uses a multi-column layout that ATS systems struggle to parse correctly. This can cause your information to be read out of order or missed entirely.",
+                        impact: "Fixing layout issues can prevent automatic rejection and improve parsing accuracy by 40%.",
+                        example: "Convert to a single-column layout with clear section headers. Use standard fonts (Arial, Calibri) and avoid text boxes or tables."
+                      }
+                    ]}
+                  />
+
+                  {/* New Impact Score and AI Pro Tip Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ImpactScore score={displayResume?.scoreBreakdown?.completeness || 0} maxScore={30} />
+                    
+                    <AIProTip 
+                      tip={`For ${displayResume?.category || 'your'} roles, focus on highlighting technical depth and project scale. Include specific technologies, team sizes, and measurable outcomes. Quantify everything: users impacted, performance improvements, cost savings, and timeline achievements.`}
+                      category={displayResume?.category || "General"}
                     />
                   </div>
 
