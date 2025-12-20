@@ -24,7 +24,7 @@ export function HowItWorksSection() {
     {
       icon: CreditCard,
       title: "Complete Payment",
-      description: "Choose your plan ($4.99 for 1 scan or $14.99 for 7-day unlimited access) and checkout securely via Stripe."
+      description: "Choose your plan (€4.99 for 1 scan or €19.99 for 7-day unlimited access) and checkout securely via Stripe."
     },
     {
       icon: CheckCircle,
@@ -98,14 +98,14 @@ export function HowItWorksSection() {
                 <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 border-2 border-zinc-700 rounded-2xl p-6 text-left">
                   <div className="text-2xl mb-2">🎯</div>
                   <p className="text-white font-black text-lg mb-1">Single Scan</p>
-                  <p className="text-zinc-400 text-sm mb-3">$4.99 - One complete analysis</p>
+                  <p className="text-zinc-400 text-sm mb-3">€4.99 - One complete analysis</p>
                   <p className="text-zinc-500 text-xs">Perfect for testing one application</p>
                 </div>
                 <div className="bg-gradient-to-br from-primary/20 to-purple-500/20 border-2 border-primary rounded-2xl p-6 text-left relative overflow-hidden">
                   <div className="absolute top-2 right-2 bg-primary text-black text-[10px] font-black px-2 py-1 rounded-full">BEST VALUE</div>
                   <div className="text-2xl mb-2">🚀</div>
                   <p className="text-white font-black text-lg mb-1">Interview Sprint</p>
-                  <p className="text-primary font-black text-sm mb-3">$14.99 - 7 days unlimited</p>
+                  <p className="text-primary font-black text-sm mb-3">€19.99 - 7 days unlimited</p>
                   <p className="text-zinc-300 text-xs">Track multiple jobs, AI tools, continuous monitoring</p>
                 </div>
               </div>

@@ -64,8 +64,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     const planDetails = {
       single_scan: { 
         name: "Single Scan", 
-        price: "$4.99", 
-        originalPrice: "$9.99",
+        price: "€4.99", 
+        originalPrice: "€9.99",
         period: "one-time", 
         features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Detailed Analysis Report"],
         badge: "Quick Fix",
@@ -74,8 +74,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
       },
       interview_sprint: { 
         name: "7-Day Interview Sprint", 
-        price: "$14.99", 
-        originalPrice: "$49.99",
+        price: "€19.99", 
+        originalPrice: "€49.99",
         period: "7 days unlimited access", 
         features: ["Unlimited Scans for 7 Days", "AI Keyword Recommendations", "Job Application Tracker", "Targeted Match History", "Priority Support"],
         badge: "Most Popular 🚀",
@@ -203,7 +203,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-2">
               <h3 className="font-bold text-xl text-muted-foreground">FREE Preview</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black tracking-tight">$0</span>
+                <span className="text-4xl font-black tracking-tight">€0</span>
               </div>
               <p className="text-sm text-muted-foreground">Basic scan to see where you stand.</p>
             </div>
@@ -253,7 +253,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black tracking-tight">$4.99</span>
+                  <span className="text-4xl font-black tracking-tight">€4.99</span>
                 </div>
                 <span className="text-xs text-muted-foreground mt-1">One-time payment</span>
               </div>
@@ -308,12 +308,12 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-black tracking-tighter text-primary">$14.99</span>
-                  <span className="text-xl text-muted-foreground line-through decoration-red-500/50 decoration-2">$49.99</span>
+                  <span className="text-5xl font-black tracking-tighter text-primary">€19.99</span>
+                  <span className="text-xl text-muted-foreground line-through decoration-red-500/50 decoration-2">€49.99</span>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <Badge className="bg-green-500/10 text-green-500 hover:bg-green-500/20 border-green-500/20 font-bold">
-                    SAVE 70%
+                    SAVE 60%
                   </Badge>
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
                     7 Days Unlimited Access

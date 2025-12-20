@@ -15,7 +15,7 @@ export function PricingSection() {
             <div>
               <h3 className="text-xl font-bold text-white mb-2">🆓 Free Preview</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-white">$0</span>
+                <span className="text-4xl font-black text-white">€0</span>
               </div>
               <p className="text-sm text-zinc-400 mt-2">Basic scan to see where you stand.</p>
             </div>
@@ -43,7 +43,7 @@ export function PricingSection() {
             <div>
               <h3 className="text-xl font-bold text-white mb-2">⚡ Single Scan</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-white">$4.99</span>
+                <span className="text-4xl font-black text-white">€4.99</span>
                 <span className="text-sm text-zinc-500 font-medium">/ one-time</span>
               </div>
               <p className="text-sm text-zinc-400 mt-2">One complete analysis. Perfect for testing one application.</p>
@@ -79,10 +79,10 @@ export function PricingSection() {
             <div>
               <h3 className="text-xl font-bold text-white mb-2">🎯 Interview Sprint</h3>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-white">$14.99</span>
-                <span className="text-lg text-zinc-500 line-through decoration-red-500/50">$49.99</span>
+                <span className="text-4xl font-black text-white">€19.99</span>
+                <span className="text-lg text-zinc-500 line-through decoration-red-500/50">€49.99</span>
               </div>
-              <p className="text-xs text-primary font-bold mt-1">70% OFF - 7 days unlimited</p>
+              <p className="text-xs text-primary font-bold mt-1">60% OFF - 7 days unlimited</p>
               <p className="text-sm text-zinc-300 mt-2">Track multiple jobs, AI tools, continuous monitoring.</p>
             </div>
             <button className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25">
