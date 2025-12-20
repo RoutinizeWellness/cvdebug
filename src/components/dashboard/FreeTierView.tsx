@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { AlertCircle, Check, AlertTriangle, Lock, Star } from "lucide-react";
+import { Lock, Download, Share2 } from "lucide-react";
+import { GaugeScore } from "./analysis/GaugeScore";
 
 interface FreeTierViewProps {
   score: number;
@@ -21,264 +21,217 @@ export function FreeTierView({
   setShowPricing,
   setShowBlurredPreview
 }: FreeTierViewProps) {
-  const target = 75;
-  const gap = Math.max(0, target - score);
-  const totalErrors = missingCount + formatCount;
+  return (
+    <div className="space-y-8">
+      {/* Hero Section with Gauge - Matching Premium Layout */}
+      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
+        {/* Background Glow */}
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        {/* Left: Gauge */}
+        <GaugeScore score={score} />
 
-  if (showBlurredPreview) {
-    return (
-      <div className="space-y-6">
-        <div className="relative">
-          <div className="filter blur-md pointer-events-none select-none">
-            <div className="bg-zinc-900 border-2 border-zinc-800 rounded-xl shadow-sm overflow-hidden">
-              <div className="p-6 space-y-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Match Rate</h3>
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-5xl font-black text-zinc-100">{score}%</span>
-                      <span className="text-sm text-zinc-500 font-medium">/ 100</span>
+        {/* Right: Content */}
+        <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
+          <div>
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
+              score >= 80 
+                ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
+                : score >= 50
+                ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
+                : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
+            } text-xs font-bold uppercase tracking-wider mb-4 border`}>
+              <span className={`size-2 rounded-full animate-pulse ${
+                score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-orange-500' : 'bg-red-500'
+              }`}></span>
+              {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
+            </div>
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+              Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
+              </span>.
+            </h1>
+            <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+              {score >= 80 
+                ? 'Great job! Your resume is well-optimized for ATS systems.' 
+                : score >= 50 
+                ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
+                : 'We found critical errors that might be getting you rejected automatically. Unlock to see details and boost your interview chances by 2x.'}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+            <Button 
+              onClick={() => setShowPricing(true)}
+              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
+            >
+              <Lock className="h-5 w-5" />
+              Unlock Full Report - $4.99
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bento Grid - Blurred Premium Content */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 relative">
+        {/* Blurred Content */}
+        <div className="lg:col-span-12 filter blur-md pointer-events-none select-none opacity-50">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+            {/* Formatting Audit */}
+            <div className="lg:col-span-4 glass-card rounded-lg p-6">
+              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Formatting Audit</h3>
+              <div className="space-y-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50">
+                    <div className="h-5 w-5 rounded-full bg-stone-300 dark:bg-stone-700"></div>
+                    <div className="flex-1">
+                      <div className="h-4 bg-stone-300 dark:bg-stone-700 rounded mb-2"></div>
+                      <div className="h-3 bg-stone-200 dark:bg-stone-800 rounded"></div>
                     </div>
                   </div>
-                </div>
-                <Progress value={score} className="h-3" />
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
-                    <p className="text-xs text-zinc-400 font-medium mb-1">Missing Keywords</p>
-                    <p className="text-lg font-bold text-red-400">{missingCount}</p>
+                ))}
+              </div>
+            </div>
+
+            {/* Keywords */}
+            <div className="lg:col-span-4 glass-card rounded-lg p-6">
+              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Keywords</h3>
+              <div className="flex flex-wrap gap-2">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-full bg-stone-300 dark:bg-stone-700 text-xs">
+                    Keyword
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Role Match */}
+            <div className="lg:col-span-4 glass-card rounded-lg p-6">
+              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Role Match</h3>
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i}>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm">Role Name</span>
+                      <span className="text-sm">XX%</span>
+                    </div>
+                    <div className="h-3 bg-stone-300 dark:bg-stone-700 rounded-full"></div>
                   </div>
-                  <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
-                    <p className="text-xs text-zinc-400 font-medium mb-1">Format Issues</p>
-                    <p className="text-lg font-bold text-yellow-400">{formatCount}</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/95 backdrop-blur-sm">
-            <div className="text-center space-y-6 p-8 max-w-md">
-              <div className="h-16 w-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                <AlertCircle className="h-8 w-8 text-white" />
+        {/* Unlock Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm rounded-lg">
+          <div className="text-center space-y-6 p-8 max-w-md">
+            <div className="h-16 w-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center mx-auto">
+              <Lock className="h-8 w-8 text-stone-900" />
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-black text-white mb-2">
+                {missingCount + formatCount} Issues Found
+              </h3>
+              <p className="text-stone-300 mb-4">
+                Unlock detailed analysis to see exactly what's blocking your applications
+              </p>
+            </div>
+
+            <div className="bg-red-500/20 border-2 border-red-500/50 rounded-xl p-6 text-left">
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-red-500/30">
+                  <div className="text-3xl font-black text-red-400 mb-1">{missingCount}</div>
+                  <p className="text-xs text-zinc-300">Missing Keywords</p>
+                </div>
+                <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-yellow-500/30">
+                  <div className="text-3xl font-black text-yellow-400 mb-1">{formatCount}</div>
+                  <p className="text-xs text-zinc-300">Format Issues</p>
+                </div>
               </div>
-              
-              <div>
-                <h3 className="text-2xl font-black text-foreground mb-2">
-                  {totalErrors} Errors Detected
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  Your resume has issues blocking your applications.
+
+              <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-lg p-4">
+                <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Lock className="h-3 w-3" /> Locked Details
+                </p>
+                <div className="space-y-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="h-4 w-4 rounded-full bg-red-500/30"></div>
+                      <div className="blur-sm select-none flex-1 h-4 bg-zinc-700 rounded"></div>
+                      <Lock className="h-3 w-3 text-zinc-500" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-center text-zinc-400 mt-3">
+                  + {Math.max(0, missingCount + formatCount - 3)} more issues...
                 </p>
               </div>
-
-              <div className="bg-red-500/20 border-2 border-red-500/50 rounded-xl p-6 text-center shadow-lg">
-                <div className="text-6xl font-black text-red-400 mb-2">{score}/100</div>
-                <p className="text-sm font-bold text-zinc-100 mb-4">Your ATS Score</p>
-                
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-red-500/30">
-                    <div className="text-3xl font-black text-red-400 mb-1">{missingCount}</div>
-                    <p className="text-xs text-zinc-300">Missing Keywords</p>
-                  </div>
-                  <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-yellow-500/30">
-                    <div className="text-3xl font-black text-yellow-400 mb-1">{formatCount}</div>
-                    <p className="text-xs text-zinc-300">Format Issues</p>
-                  </div>
-                </div>
-
-                <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-lg p-4 text-left">
-                  <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <Lock className="h-3 w-3" /> Locked Details
-                  </p>
-                  <div className="space-y-2">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm">
-                        <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
-                        <span className="blur-sm select-none flex-1 text-zinc-400">████████████████</span>
-                        <Lock className="h-3 w-3 text-zinc-500 flex-shrink-0" />
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-xs text-center text-zinc-400 mt-3">
-                    + {Math.max(0, totalErrors - 3)} more errors...
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Button 
-                  onClick={() => {
-                    setShowPricing(true);
-                    setShowBlurredPreview(false);
-                  }} 
-                  size="lg"
-                  className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 animate-in zoom-in duration-300"
-                >
-                  <Lock className="mr-2 h-5 w-5" />
-                  See All {totalErrors} Errors & How to Fix Them - $4.99
-                </Button>
-                <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Check className="h-3 w-3 text-green-600" />
-                    <span>One-time payment</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Check className="h-3 w-3 text-green-600" />
-                    <span>Instant access</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Check className="h-3 w-3 text-green-600" />
-                    <span>No subscription</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-xs text-muted-foreground">
-                <p className="font-medium">⚡ <strong className="text-foreground">2,847 users</strong> unlocked their reports this week</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-    return (
-      <div className="space-y-6">
-        <div className="bg-zinc-900 border-2 border-zinc-800 rounded-xl shadow-sm overflow-hidden">
-          <div className="p-6 space-y-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Match Rate</h3>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-5xl font-black text-zinc-100">{score}%</span>
-                  <span className="text-sm text-zinc-500 font-medium">/ 100</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="inline-flex items-center gap-1.5 bg-primary/20 text-primary px-2.5 py-1 rounded-full text-xs font-bold border border-primary/30">
-                  <AlertCircle className="h-3.5 w-3.5" />
-                  Target: {target}%+
-                </div>
-              </div>
             </div>
 
-            <div className="space-y-2">
-              <Progress value={score} className="h-3" />
-              <div className="flex justify-between text-xs text-zinc-400 font-medium">
-                <span>Current: {score}%</span>
-                <span>Target: {target}%</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
-                <p className="text-xs text-zinc-400 font-medium mb-1">Gap to target</p>
-                <p className="text-lg font-bold text-red-400">{gap > 0 ? `${gap}%` : "Target Met!"}</p>
-              </div>
-              <div className="bg-zinc-800/50 rounded-lg p-3 border-2 border-zinc-700">
-                <p className="text-xs text-zinc-400 font-medium mb-1">Est. fix time</p>
-                <p className="text-lg font-bold text-zinc-100">~10 mins</p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-red-500/10 border-2 border-red-500/30 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center border border-red-500/30">
-                    <AlertCircle className="h-4 w-4 text-red-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-zinc-100">Missing {missingCount} keywords</p>
-                    <p className="text-xs text-zinc-400">Critical for ATS visibility</p>
-                  </div>
-                </div>
-                <Lock className="h-4 w-4 text-zinc-500" />
-              </div>
-
-              <div className="flex items-center justify-between p-3 bg-yellow-500/10 border-2 border-yellow-500/30 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-yellow-500/20 flex items-center justify-center border border-yellow-500/30">
-                    <AlertTriangle className="h-4 w-4 text-yellow-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-zinc-100">{formatCount} format issues</p>
-                    <p className="text-xs text-zinc-400">Parsing errors detected</p>
-                  </div>
-                </div>
-                <Lock className="h-4 w-4 text-zinc-500" />
-              </div>
-            </div>
-
-          <div className="pt-2">
             <Button 
-              onClick={() => setShowPricing(true)} 
-              className="w-full h-12 font-bold text-base shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+              onClick={() => setShowPricing(true)}
+              size="lg"
+              className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90 text-stone-900"
             >
-              Unlock Full Analysis - $4.99
+              <Lock className="mr-2 h-5 w-5" />
+              Unlock All {missingCount + formatCount} Issues - $4.99
             </Button>
-            <p className="text-center text-[10px] text-muted-foreground mt-3">
-              One-time payment • No subscription
-            </p>
-          </div>
-        </div>
+            
+            <div className="flex items-center justify-center gap-4 text-xs text-stone-400">
+              <span>✓ One-time payment</span>
+              <span>✓ Instant access</span>
+              <span>✓ No subscription</span>
+            </div>
 
-        <div className="bg-muted/30 p-6 border-t border-border">
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">
-            What you get for $4.99:
-          </p>
-          <div className="space-y-2.5">
-            {[
-              "List of all missing keywords",
-              "Exact sections to add them",
-              "Format issues with specific fixes",
-              "💎 AI Metric Suggestions for your tech stack",
-              "Downloadable PDF report",
-              "Priority email support"
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2.5">
-                <div className="h-4 w-4 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
-                  <Check className="h-2.5 w-2.5 text-green-600" />
-                </div>
-                <span className="text-xs font-medium text-foreground/80">{item}</span>
-              </div>
-            ))}
+            <p className="text-xs text-stone-400">
+              ⚡ <strong className="text-white">2,847 users</strong> unlocked their reports this week
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="space-y-3">
-        <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-          <Star className="h-3 w-3 text-yellow-500 fill-yellow-500" /> Recent Success Stories
-        </h3>
-        <div className="grid gap-3">
-          <div className="bg-card border border-border rounded-xl p-4 shadow-sm">
-            <div className="flex gap-1 mb-2">
-              {[1,2,3,4,5].map(i => <Star key={i} className="h-3 w-3 text-yellow-500 fill-yellow-500" />)}
-            </div>
-            <p className="text-xs text-foreground leading-relaxed mb-2">
-              "I was stuck at 65% match. Unlocked the report, added the missing keywords, and got an interview request the next morning."
-            </p>
-            <div className="flex items-center gap-2">
-              <div className="h-5 w-5 rounded-full bg-muted overflow-hidden">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" alt="Sarah" />
+      {/* Lower Section - Also Blurred */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+        {/* Blurred Content */}
+        <div className="lg:col-span-3 filter blur-md pointer-events-none select-none opacity-50">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 glass-card rounded-lg p-6">
+              <h2 className="text-2xl font-bold mb-6">Actionable Fixes</h2>
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="border rounded-lg p-4">
+                    <div className="h-5 bg-stone-300 dark:bg-stone-700 rounded mb-2"></div>
+                    <div className="h-4 bg-stone-200 dark:bg-stone-800 rounded"></div>
+                  </div>
+                ))}
               </div>
-              <span className="text-[10px] font-bold text-muted-foreground">Sarah J. • Hired at TechCorp</span>
+            </div>
+            <div className="flex flex-col gap-6">
+              <div className="glass-card rounded-lg p-6">
+                <div className="h-32 bg-stone-300 dark:bg-stone-700 rounded"></div>
+              </div>
+              <div className="glass-card rounded-lg p-6">
+                <div className="h-32 bg-stone-300 dark:bg-stone-700 rounded"></div>
+              </div>
             </div>
           </div>
-          <div className="bg-card border border-border rounded-xl p-4 shadow-sm">
-            <div className="flex gap-1 mb-2">
-              {[1,2,3,4,5].map(i => <Star key={i} className="h-3 w-3 text-yellow-500 fill-yellow-500" />)}
-            </div>
-            <p className="text-xs text-foreground leading-relaxed mb-2">
-              "The format checker found a table that was breaking my resume. Fixed it in 5 mins."
+        </div>
+
+        {/* Unlock Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm rounded-lg">
+          <div className="text-center space-y-4 p-6">
+            <Lock className="h-12 w-12 text-primary mx-auto" />
+            <h3 className="text-xl font-bold text-white">Premium Content Locked</h3>
+            <p className="text-stone-300 text-sm">
+              Get step-by-step fixes and AI-powered tips
             </p>
-            <div className="flex items-center gap-2">
-              <div className="h-5 w-5 rounded-full bg-muted overflow-hidden">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mike" alt="Mike" />
-              </div>
-              <span className="text-[10px] font-bold text-muted-foreground">Mike T. • Product Manager</span>
-            </div>
+            <Button 
+              onClick={() => setShowPricing(true)}
+              className="bg-primary text-stone-900 font-bold hover:bg-primary/90"
+            >
+              Unlock Now - $4.99
+            </Button>
           </div>
         </div>
       </div>
