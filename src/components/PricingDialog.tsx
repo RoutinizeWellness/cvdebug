@@ -288,67 +288,82 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </Button>
           </div>
 
-          {/* Interview Sprint - The Focus */}
-          <div className="group relative rounded-2xl border-2 border-primary bg-card p-6 flex flex-col gap-5 shadow-[0_0_50px_-12px_rgba(249,245,6,0.3)] hover:shadow-[0_0_60px_-12px_rgba(249,245,6,0.4)] transition-all duration-300 transform scale-105">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg animate-pulse">
-              🚀 Most Popular
+          {/* Interview Sprint - The Grand Slam Offer */}
+          <div className="group relative rounded-2xl border-2 border-primary bg-card p-6 flex flex-col gap-5 shadow-[0_0_50px_-12px_rgba(249,245,6,0.3)] hover:shadow-[0_0_60px_-12px_rgba(249,245,6,0.4)] transition-all duration-300 transform scale-105 z-10">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary via-yellow-400 to-primary text-black text-xs font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-xl animate-pulse border-2 border-black/10">
+              🏆 The Grand Slam Offer
             </div>
 
-            <div className="space-y-2">
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
-                <Rocket className="h-6 w-6 text-primary" />
+            <div className="space-y-2 pt-2">
+              <div className="flex items-center justify-between">
+                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                  <Rocket className="h-6 w-6 text-primary" />
+                </div>
+                <div className="text-[10px] font-bold bg-red-500/10 text-red-500 px-2 py-1 rounded border border-red-500/20 animate-pulse">
+                  Limited Time Only
+                </div>
               </div>
-              <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
-                7-Day Interview Sprint
+              <h3 className="font-black text-2xl text-foreground flex items-center gap-2">
+                Interview Sprint
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black tracking-tight">$14.99</span>
-                  <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$49.99</span>
+                  <span className="text-5xl font-black tracking-tighter text-primary">$14.99</span>
+                  <span className="text-xl text-muted-foreground line-through decoration-red-500/50 decoration-2">$49.99</span>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
-                    70% OFF
+                  <Badge className="bg-green-500/10 text-green-500 hover:bg-green-500/20 border-green-500/20 font-bold">
+                    SAVE 70%
                   </Badge>
-                  <span className="text-[10px] font-medium text-muted-foreground">
-                    Unlimited scans for 7 days
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">
+                    7 Days Unlimited Access
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-foreground/80 font-medium">Unlimited scans for 7 days. AI Bullet Point Rewriter. Dashboard to track your applications. <span className="text-primary">Most successful for job seekers.</span></p>
+              <p className="text-sm text-foreground/80 font-medium leading-relaxed">
+                Everything you need to land the job. Unlimited AI scans, cover letters, and tracking for one week. <span className="text-primary font-bold">The ultimate career accelerator.</span>
+              </p>
             </div>
             
             <Separator className="bg-primary/20" />
 
             <div className="space-y-3 flex-1">
               {[
-                "✨ Unlimited Scans (7 Days)",
-                "🎯 AI Keyword Recommendations",
-                "📊 Job Application Tracker",
-                "🔄 Targeted Match History",
-                "⚡ Priority Support"
+                "✨ Unlimited AI Resume Scans",
+                "📝 Tailored Cover Letters & DMs",
+                "🎯 Keyword Sniper & Gap Analysis",
+                "📊 Full Application Tracking System",
+                "⚡ Priority 24/7 Support"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
+                  <div className="h-5 w-5 rounded-full bg-primary text-black flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                    <Check className="h-3 w-3 font-bold" />
                   </div>
                   <span className="text-sm font-bold text-foreground">{feature}</span>
                 </div>
               ))}
             </div>
 
-            <div className="bg-muted/50 rounded-lg p-3 border border-primary/20">
-              <p className="text-xs text-center font-medium text-muted-foreground">
-                ⭐ Used by candidates at <span className="font-bold text-foreground">Google, Meta & NVIDIA</span>
+            <div className="bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-4 border border-zinc-700/50 shadow-inner">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-6 w-6 rounded-full bg-zinc-700 border-2 border-zinc-800"></div>
+                  ))}
+                </div>
+                <span className="text-xs font-bold text-white">Joined by 1,200+ candidates</span>
+              </div>
+              <p className="text-[10px] text-zinc-400 leading-tight">
+                "This tool helped me land interviews at <span className="text-white font-bold">Google</span> and <span className="text-white font-bold">Netflix</span> in just one week."
               </p>
             </div>
             
             <Button 
-              className="w-full h-14 font-bold text-base shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-black rounded-xl transition-all hover:scale-[1.02]" 
+              className="w-full h-14 font-black text-lg shadow-[0_0_30px_-5px_rgba(249,245,6,0.4)] bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]" 
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
             >
-              {isLoading === "interview_sprint" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Start Interview Sprint →"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "GET THE GRAND SLAM 🚀"}
             </Button>
           </div>
         </div>
