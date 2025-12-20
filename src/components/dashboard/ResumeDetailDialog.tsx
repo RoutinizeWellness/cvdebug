@@ -61,7 +61,11 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [showBlurredPreview, setShowBlurredPreview] = useState(true);
+  const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
+  const [jobDescription, setJobDescription] = useState("");
+  const [isReanalyzing, setIsReanalyzing] = useState(false);
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
+  const analyzeResume = useAction(apiAny.ai.analyzeResume);
   
   const user = useQuery(apiAny.users.currentUser);
   const isFree = user?.subscriptionTier === "free";
@@ -73,7 +77,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
     if (displayResume && isFree) {
       setShowBlurredPreview(true);
     }
-  }, [displayResume?._id, isFree]);
+    if (displayResume?.jobDescription) {
+      setJobDescription(displayResume.jobDescription);
+    }
+  }, [displayResume?._id, isFree, displayResume?.jobDescription]);
 
   const handleDownloadReport = () => {
     if (isFree) {
@@ -123,6 +130,36 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
       toast.error("Failed to optimize resume. Please try again.");
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleReanalyzeWithJD = async () => {
+    if (!displayResume?.ocrText) {
+      toast.error("No text available to analyze.");
+      return;
+    }
+
+    if (!jobDescription.trim()) {
+      toast.error("Please enter a job description.");
+      return;
+    }
+
+    setIsReanalyzing(true);
+    toast.info("🎯 Re-analyzing resume with your job description...");
+    
+    try {
+      await analyzeResume({
+        id: displayResume._id,
+        ocrText: displayResume.ocrText,
+        jobDescription: jobDescription.trim(),
+      });
+      toast.success("✅ Analysis complete! Your resume has been tailored to the job description.");
+      setShowJobDescriptionInput(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to re-analyze resume. Please try again.");
+    } finally {
+      setIsReanalyzing(false);
     }
   };
 
@@ -411,6 +448,16 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               variant="outline" 
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
+              onClick={() => setShowJobDescriptionInput(!showJobDescriptionInput)}
+              disabled={!displayResume}
+            >
+              <Target className="h-4 w-4" />
+              {displayResume?.jobDescription ? "Update JD" : "Add Job Description"}
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="hidden sm:flex gap-2 font-bold"
               onClick={handleShareLink}
               title="Copy shareable link"
               disabled={!displayResume}
@@ -468,6 +515,64 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#050505] print:bg-white">
+          {/* Job Description Input Panel */}
+          {showJobDescriptionInput && displayResume && (
+            <div className="border-b border-zinc-800 bg-zinc-900/50 p-4 print:hidden">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex items-start gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Target className="h-4 w-4 text-primary" />
+                      <h3 className="text-sm font-bold text-white">Tailor Analysis to Job Description</h3>
+                      {displayResume.jobDescription && (
+                        <span className="text-xs text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
+                          Currently Tailored
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-zinc-400 mb-3">
+                      Paste the job description to get a tailored ATS analysis with specific keyword matching and role-specific recommendations.
+                    </p>
+                    <textarea
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      placeholder="Paste the full job description here..."
+                      className="w-full h-32 bg-zinc-900 border border-zinc-800 rounded-lg text-sm p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-zinc-600 text-zinc-300"
+                    />
+                    <div className="flex gap-2 mt-3">
+                      <Button
+                        onClick={handleReanalyzeWithJD}
+                        disabled={isReanalyzing || !jobDescription.trim()}
+                        className="bg-primary text-black font-bold hover:bg-primary/90"
+                      >
+                        {isReanalyzing ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Re-analyzing...
+                          </>
+                        ) : (
+                          <>
+                            <Target className="h-4 w-4 mr-2" />
+                            Re-analyze with Job Description
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setShowJobDescriptionInput(false);
+                          setJobDescription(displayResume.jobDescription || "");
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {!displayResume ? (
             <div className="flex-1 flex flex-col items-center justify-center text-zinc-400 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
