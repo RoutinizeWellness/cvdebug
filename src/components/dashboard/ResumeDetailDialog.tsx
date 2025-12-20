@@ -344,7 +344,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
       />
       <DialogContent 
         showCloseButton={false}
-        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-zinc-950 flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible"
+        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-zinc-950 flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible print:bg-white"
       >
         <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
         <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
@@ -443,7 +443,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#050505]">
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#050505] print:bg-white">
           {!displayResume ? (
             <div className="flex-1 flex flex-col items-center justify-center text-zinc-400 gap-4">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -457,7 +457,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
           ) : (
             <>
               <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-                <div className="p-8 max-w-7xl mx-auto font-display">
+                <div className="p-8 max-w-7xl mx-auto font-display print:text-black">
                   
                   {isFree ? (
                     <FreeTierView 
@@ -472,7 +472,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   ) : (
                     <div className="space-y-8">
                       {/* Hero Section with Gauge - Matching HTML exactly */}
-                      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
+                      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden print:border print:border-gray-300 print:bg-white print:shadow-none">
                         {/* Background Glow */}
                         <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
                         
@@ -528,7 +528,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </div>
 
                       {/* Bento Grid - Matching HTML exactly */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 print:gap-4">
                         <FormattingAudit items={auditItems} />
                         
                         <KeywordHeatmap 
@@ -547,7 +547,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </div>
 
                       {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 print:gap-4 print:grid-cols-1">
                         {/* Actionable Fixes (Left - 2 columns) */}
                         <div className="lg:col-span-2">
                           <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
@@ -712,7 +712,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </div>
 
                       {/* AI Recommendations Section */}
-                      <div className="glass-card rounded-lg p-6">
+                      <div className="glass-card rounded-lg p-6 print:border print:border-gray-300 print:bg-white print:shadow-none print:break-inside-avoid">
                         <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
                           AI Recommendations
                           <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
