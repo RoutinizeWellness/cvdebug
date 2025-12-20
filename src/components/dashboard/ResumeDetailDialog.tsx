@@ -423,36 +423,139 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     />
                   </div>
 
-                  {/* New Actionable Fixes Section */}
+                  {/* Actionable Fixes Section - Dynamic Data */}
                   <ActionableFixes 
-                    fixes={[
-                      {
-                        title: "Missing Quantification",
-                        description: "Your resume lacks specific numbers and metrics that demonstrate impact. ATS systems and recruiters look for quantifiable achievements.",
-                        impact: "Adding metrics can increase your ATS score by 15-20 points and significantly improve recruiter engagement.",
-                        example: "Instead of 'Improved system performance', write 'Optimized database queries, reducing load time by 45% and improving user experience for 50K+ daily users'"
-                      },
-                      {
-                        title: "Weak Action Verbs",
-                        description: "Several bullet points start with passive or weak verbs like 'responsible for' or 'worked on'. Strong action verbs make your achievements more compelling.",
-                        impact: "Using powerful action verbs can improve readability and make your resume 30% more likely to pass initial screening.",
-                        example: "Replace 'Responsible for managing team' with 'Led cross-functional team of 8 engineers to deliver 3 major features ahead of schedule'"
-                      },
-                      {
-                        title: "Column Parsing Error",
-                        description: "Your resume uses a multi-column layout that ATS systems struggle to parse correctly. This can cause your information to be read out of order or missed entirely.",
-                        impact: "Fixing layout issues can prevent automatic rejection and improve parsing accuracy by 40%.",
-                        example: "Convert to a single-column layout with clear section headers. Use standard fonts (Arial, Calibri) and avoid text boxes or tables."
+                    fixes={(() => {
+                      const fixes: Array<{title: string; description: string; impact: string; example: string}> = [];
+                      
+                      // Check for missing quantification
+                      const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
+                      if (metricCount < 5) {
+                        fixes.push({
+                          title: "Missing Quantification",
+                          description: `Your resume has only ${metricCount} quantifiable metrics. ATS systems and recruiters look for specific numbers that demonstrate impact.`,
+                          impact: "Adding 8-10 metrics can increase your ATS score by 15-20 points and significantly improve recruiter engagement.",
+                          example: "Instead of 'Improved system performance', write 'Optimized database queries, reducing load time by 45% and improving user experience for 50K+ daily users'"
+                        });
                       }
-                    ]}
+                      
+                      // Check for weak action verbs
+                      const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
+                      const weakCount = weakPhrases.reduce((count, phrase) => {
+                        return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
+                      }, 0);
+                      
+                      if (weakCount > 0) {
+                        fixes.push({
+                          title: "Weak Action Verbs",
+                          description: `Found ${weakCount} instances of passive language like 'responsible for' or 'worked on'. Strong action verbs make your achievements more compelling.`,
+                          impact: "Using powerful action verbs can improve readability and make your resume 30% more likely to pass initial screening.",
+                          example: "Replace 'Responsible for managing team' with 'Led cross-functional team of 8 engineers to deliver 3 major features ahead of schedule'"
+                        });
+                      }
+                      
+                      // Check for format issues from analysis
+                      const hasContactIssue = displayResume?.formatIssues?.some((i: any) => 
+                        i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
+                      );
+                      
+                      if (hasContactIssue) {
+                        fixes.push({
+                          title: "Missing Contact Information",
+                          description: "Your resume is missing critical contact information. ATS systems cannot reach you without proper email and phone details.",
+                          impact: "Missing contact info leads to automatic rejection. This is a critical fix that takes 2 minutes.",
+                          example: "Add your email (firstname.lastname@email.com) and phone number (+1-555-123-4567) at the top of your resume in a clear, standard format."
+                        });
+                      }
+                      
+                      // Check for section header issues
+                      const hasSectionIssue = displayResume?.formatIssues?.some((i: any) => 
+                        i.issue?.toLowerCase().includes('section') || i.issue?.toLowerCase().includes('header')
+                      );
+                      
+                      if (hasSectionIssue) {
+                        fixes.push({
+                          title: "Missing Standard Section Headers",
+                          description: "ATS systems cannot identify key sections of your resume. Standard headers like 'Experience', 'Education', and 'Skills' are essential for parsing.",
+                          impact: "Fixing section headers can improve parsing accuracy by 40% and prevent your experience from being missed.",
+                          example: "Use clear, standard headers: 'EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS'. Avoid creative names like 'My Journey' or 'What I've Done'."
+                        });
+                      }
+                      
+                      // Add missing keyword fix if applicable
+                      if (displayResume?.missingKeywords && displayResume.missingKeywords.length > 0) {
+                        const topMissing = displayResume.missingKeywords.slice(0, 3).map((kw: any) => 
+                          typeof kw === 'string' ? kw : kw.keyword
+                        ).join(', ');
+                        
+                        fixes.push({
+                          title: "Critical Keywords Missing",
+                          description: `Your resume is missing ${displayResume.missingKeywords.length} important keywords that ATS systems scan for: ${topMissing}${displayResume.missingKeywords.length > 3 ? ', and more' : ''}.`,
+                          impact: `Adding these keywords could increase your match score by ${Math.min(displayResume.missingKeywords.length * 3, 25)} points.`,
+                          example: `Integrate "${topMissing}" naturally into your experience bullets. Example: "Developed scalable ${topMissing.split(',')[0]} solutions that improved system reliability by 35%"`
+                        });
+                      }
+                      
+                      // If no issues found, add a generic improvement suggestion
+                      if (fixes.length === 0) {
+                        fixes.push({
+                          title: "Enhance Impact Statements",
+                          description: "While your resume is well-structured, you can further strengthen it by adding more specific metrics and outcomes to your achievements.",
+                          impact: "Even strong resumes benefit from additional quantification. This can push your score from good to excellent.",
+                          example: "For each bullet point, ask: What was the measurable result? Add numbers like '30% faster', '50K users', or '$2M in savings'."
+                        });
+                      }
+                      
+                      return fixes;
+                    })()}
                   />
 
-                  {/* New Impact Score and AI Pro Tip Section */}
+                  {/* Impact Score and AI Pro Tip Section - Dynamic Data */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ImpactScore score={displayResume?.scoreBreakdown?.completeness || 0} maxScore={30} />
+                    <ImpactScore 
+                      score={displayResume?.scoreBreakdown?.completeness || 0} 
+                      maxScore={30} 
+                    />
                     
                     <AIProTip 
-                      tip={`For ${displayResume?.category || 'your'} roles, focus on highlighting technical depth and project scale. Include specific technologies, team sizes, and measurable outcomes. Quantify everything: users impacted, performance improvements, cost savings, and timeline achievements.`}
+                      tip={(() => {
+                        const category = displayResume?.category || "General";
+                        const score = displayResume?.score || 0;
+                        
+                        if (category === "Software Engineering" || category === "Engineering") {
+                          if (score < 50) {
+                            return "Focus on adding technical metrics: system scale (requests/sec, data volume), performance improvements (latency reduction %), and team impact. Include your tech stack in every bullet point.";
+                          } else if (score < 75) {
+                            return "Strengthen your impact by quantifying user reach and system reliability. Example: 'Built microservices handling 10M+ daily requests with 99.9% uptime, serving 2M active users.'";
+                          } else {
+                            return "Your technical content is strong. Consider adding leadership metrics (mentored X engineers), architectural decisions, and business impact ($X saved, Y% revenue increase).";
+                          }
+                        } else if (category === "Marketing") {
+                          if (score < 50) {
+                            return "Add campaign metrics: conversion rates, ROI, audience growth, and engagement rates. Include tools used (Google Analytics, HubSpot, Salesforce).";
+                          } else if (score < 75) {
+                            return "Enhance your marketing impact with A/B test results, customer acquisition costs, and revenue attribution. Show data-driven decision making.";
+                          } else {
+                            return "Excellent marketing metrics. Consider adding strategic initiatives, cross-functional leadership, and long-term brand impact to stand out further.";
+                          }
+                        } else if (category === "Data Science" || category === "Analytics") {
+                          if (score < 50) {
+                            return "Quantify your data impact: model accuracy improvements, data volume processed, and business decisions influenced. List your tech stack (Python, SQL, TensorFlow).";
+                          } else if (score < 75) {
+                            return "Add more context on model deployment, production impact, and stakeholder influence. Example: 'Deployed ML model predicting churn with 92% accuracy, reducing customer loss by 15%.'";
+                          } else {
+                            return "Strong data science profile. Highlight end-to-end ownership, cross-functional collaboration, and measurable business outcomes to reach top-tier status.";
+                          }
+                        } else {
+                          if (score < 50) {
+                            return "Start by adding numbers to every achievement: percentages, dollar amounts, time saved, or people impacted. Use strong action verbs like 'Led', 'Architected', 'Optimized'.";
+                          } else if (score < 75) {
+                            return "Good foundation. Enhance by showing progression (promoted, increased responsibility), leadership (team size, mentoring), and strategic impact (company-wide initiatives).";
+                          } else {
+                            return "Excellent resume structure. Fine-tune by ensuring every bullet follows the 'Action + Task + Result' formula with specific metrics and outcomes.";
+                          }
+                        }
+                      })()}
                       category={displayResume?.category || "General"}
                     />
                   </div>
