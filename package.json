@@ -14,6 +14,7 @@
     "@clerk/clerk-react": "^5.57.1",
     "@convex-dev/auth": "^0.0.86",
     "@faker-js/faker": "^9.8.0",
+    "@fingerprintjs/fingerprintjs": "^5.0.1",
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.0.1",
     "@jridgewell/trace-mapping": "^0.3.25",
@@ -86,6 +87,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/fingerprintjs__fingerprintjs": "^3.0.2",
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",

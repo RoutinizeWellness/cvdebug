@@ -55,31 +55,54 @@ export const storeUser = mutation({
       .unique();
 
     if (user !== null) {
-      // If we've seen this user before but their name/email has changed, update it.
-      // Also update lastSeen for re-engagement tracking
+      // Update existing user
       await ctx.db.patch(user._id, {
         name: identity.name,
         email: identity.email,
         lastSeen: Date.now(),
         deviceFingerprint: args.deviceFingerprint || user.deviceFingerprint,
       });
+      
+      // Update device usage tracking
+      if (args.deviceFingerprint) {
+        const fingerprint = args.deviceFingerprint;
+        const deviceUsage = await ctx.db
+          .query("deviceUsage")
+          .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
+          .first();
+        
+        if (deviceUsage) {
+          await ctx.db.patch(deviceUsage._id, {
+            lastUsedAt: Date.now(),
+          });
+        }
+      }
+      
       return user._id;
     }
 
-    // Check if this device has already used a free trial
+    // ANTI-CHEAT: Check if this device has already consumed credits
+    let initialCredits = 1; // HARD LIMIT: ONE FREE SCAN
+    let isPotentialDuplicate = false;
     let freeTrialBlocked = false;
+
     if (args.deviceFingerprint) {
-      const existingDeviceUser = await ctx.db
-        .query("users")
-        .withIndex("by_device_fingerprint", (q) => q.eq("deviceFingerprint", args.deviceFingerprint))
+      const fingerprint = args.deviceFingerprint;
+      const existingDeviceUsage = await ctx.db
+        .query("deviceUsage")
+        .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
         .first();
       
-      if (existingDeviceUser && existingDeviceUser.freeTrialUsed) {
+      if (existingDeviceUsage && existingDeviceUsage.creditsConsumed > 0) {
+        // This device has already used credits on another account
+        initialCredits = 0;
+        isPotentialDuplicate = true;
         freeTrialBlocked = true;
+        console.log(`[ANTI-CHEAT] Device ${args.deviceFingerprint} flagged as duplicate. Credits set to 0.`);
       }
     }
 
-    // Check for existing user by email (e.g. created via Admin Manual Grant) to link accounts
+    // Check for existing user by email (e.g. created via Admin Manual Grant)
     if (identity.email) {
       const existingUserByEmail = await ctx.db
         .query("users")
@@ -87,12 +110,12 @@ export const storeUser = mutation({
         .unique();
       
       if (existingUserByEmail) {
-         // Link this user to the Clerk ID
          await ctx.db.patch(existingUserByEmail._id, {
            tokenIdentifier: identity.subject,
            name: identity.name || existingUserByEmail.name,
            lastSeen: Date.now(),
            deviceFingerprint: args.deviceFingerprint || existingUserByEmail.deviceFingerprint,
+           isPotentialDuplicate: isPotentialDuplicate || existingUserByEmail.isPotentialDuplicate,
          });
          return existingUserByEmail._id;
       }
@@ -101,19 +124,32 @@ export const storeUser = mutation({
     // Assign A/B test variant
     const emailVariant = Math.random() < 0.5 ? "A" : "B";
 
-    // If it's a new user, create them in the database
+    // Create new user with STRICT ONE FREE SCAN policy
     const userId = await ctx.db.insert("users", {
       tokenIdentifier: identity.subject,
       name: identity.name,
       email: identity.email,
       subscriptionTier: "free",
-      credits: freeTrialBlocked ? 0 : 2, // EXACTLY 2 free credits, 0 if device blocked
-      trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
+      credits: initialCredits, // ONE FREE SCAN (or 0 if device blocked)
+      trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
       emailVariant,
       lastSeen: Date.now(),
       deviceFingerprint: args.deviceFingerprint,
-      freeTrialUsed: freeTrialBlocked, // Mark as used if device blocked
+      freeTrialUsed: freeTrialBlocked,
+      isPotentialDuplicate,
     });
+
+    // Track device usage
+    if (args.deviceFingerprint) {
+      await ctx.db.insert("deviceUsage", {
+        visitorId: args.deviceFingerprint,
+        userId: identity.subject,
+        email: identity.email,
+        creditsConsumed: 0,
+        firstUsedAt: Date.now(),
+        lastUsedAt: Date.now(),
+      });
+    }
 
     // Send onboarding email (Email #1)
     if (identity.email) {

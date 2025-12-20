@@ -3,32 +3,48 @@ import { v } from "convex/values";
 
 const schema = defineSchema(
   {
-    users: defineTable({
-      tokenIdentifier: v.string(),
-      email: v.optional(v.string()),
-      name: v.optional(v.string()),
-      subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
-      credits: v.optional(v.number()),
-      endsOn: v.optional(v.number()),
-      trialEndsOn: v.optional(v.number()),
-      emailVariant: v.optional(v.string()),
-      lastSeen: v.optional(v.number()),
-      deviceFingerprint: v.optional(v.string()),
-      freeTrialUsed: v.optional(v.boolean()),
-      // Email tracking flags - Onboarding
-      onboardingEmailSent: v.optional(v.boolean()),
-      activationEmail24hSent: v.optional(v.boolean()),
-      // Email tracking flags - Conversion
-      postScanEmailSent: v.optional(v.boolean()),
-      conversionReminderSent: v.optional(v.boolean()),
-      conversionFollowUpSent: v.optional(v.boolean()),
-      // Email tracking flags - Re-engagement
-      winBackEmail30dSent: v.optional(v.boolean()),
-    })
-    .index("by_token", ["tokenIdentifier"])
-    .index("by_email", ["email"])
-    .index("by_subscription_tier", ["subscriptionTier"])
-    .index("by_device_fingerprint", ["deviceFingerprint"]),
+  users: defineTable({
+    tokenIdentifier: v.string(),
+    email: v.optional(v.string()),
+    name: v.optional(v.string()),
+    subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
+    credits: v.optional(v.number()),
+    endsOn: v.optional(v.number()),
+    trialEndsOn: v.optional(v.number()),
+    emailVariant: v.optional(v.string()),
+    lastSeen: v.optional(v.number()),
+    deviceFingerprint: v.optional(v.string()),
+    freeTrialUsed: v.optional(v.boolean()),
+    isPotentialDuplicate: v.optional(v.boolean()),
+    // Email tracking flags - Onboarding
+    onboardingEmailSent: v.optional(v.boolean()),
+    activationEmail24hSent: v.optional(v.boolean()),
+    // Email tracking flags - Conversion
+    postScanEmailSent: v.optional(v.boolean()),
+    conversionReminderSent: v.optional(v.boolean()),
+    conversionFollowUpSent: v.optional(v.boolean()),
+    // Email tracking flags - Re-engagement
+    winBackEmail30dSent: v.optional(v.boolean()),
+    // New anti-cheat email flags
+    invisibilityAlertSent: v.optional(v.boolean()),
+    fomoGapEmailSent: v.optional(v.boolean()),
+  })
+  .index("by_token", ["tokenIdentifier"])
+  .index("by_email", ["email"])
+  .index("by_subscription_tier", ["subscriptionTier"])
+  .index("by_device_fingerprint", ["deviceFingerprint"]),
+
+  // NEW: Device usage tracking for anti-cheat
+  deviceUsage: defineTable({
+    visitorId: v.string(),
+    userId: v.string(),
+    email: v.optional(v.string()),
+    creditsConsumed: v.number(),
+    firstUsedAt: v.number(),
+    lastUsedAt: v.number(),
+  })
+  .index("by_visitor_id", ["visitorId"])
+  .index("by_user_id", ["userId"]),
   resumes: defineTable({
     userId: v.string(),
     title: v.string(),

@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/dialog";
 import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
+import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
 
 const apiAny = api as any;
 
@@ -56,6 +57,8 @@ export default function Dashboard() {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
   const [targetedScanEnabled, setTargetedScanEnabled] = useState(false);
+  const [showCreditsExhausted, setShowCreditsExhausted] = useState(false);
+  const [lastScannedScore, setLastScannedScore] = useState<number | undefined>();
   const processedPaymentRef = useRef(false);
   
   const {
@@ -257,6 +260,16 @@ export default function Dashboard() {
         </DialogContent>
       </Dialog>
 
+      <CreditsExhaustedModal 
+        open={showCreditsExhausted}
+        onOpenChange={setShowCreditsExhausted}
+        currentScore={lastScannedScore}
+        onUpgrade={() => {
+          setShowCreditsExhausted(false);
+          setShowPricing(true);
+        }}
+      />
+
       <Chatbot />
       
       <Sidebar 
@@ -305,10 +318,27 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-3 bg-[#0A0A0A] border border-zinc-800 rounded-xl p-1.5 pr-4 pl-4 shadow-sm">
-              <div className="flex flex-col items-end mr-2">
-                <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Credits</span>
-                <span className="text-sm font-semibold text-white">{currentUser?.credits || 0} Scans Left</span>
-              </div>
+              {currentUser && (currentUser.credits ?? 0) > 0 ? (
+                <>
+                  <div className="flex flex-col items-end mr-2">
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Free Scan</span>
+                    <span className="text-sm font-semibold text-green-400">1 Credit Remaining</span>
+                  </div>
+                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-1">
+                    <span className="text-xs font-bold text-yellow-400">⚠️ Use it wisely</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-col items-end mr-2">
+                    <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Status</span>
+                    <span className="text-sm font-semibold text-red-400">Free Scan Used</span>
+                  </div>
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-1">
+                    <span className="text-xs font-bold text-red-400">🔒 Upgrade to Continue</span>
+                  </div>
+                </>
+              )}
               <div className="h-8 w-px bg-zinc-800 mx-1"></div>
               <button 
                 onClick={() => setShowPricing(true)}

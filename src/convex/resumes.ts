@@ -44,19 +44,35 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
-    // STRICT CREDIT ENFORCEMENT: Check credits BEFORE allowing any scan
+    // HARD PAYWALL: Check credits BEFORE allowing any scan
     const currentCredits = user.credits ?? 0;
     
-    // Block if no credits available
+    // STRICT GATE: Block if no credits available
     if (currentCredits <= 0) {
-      throw new Error("No credits remaining. Please purchase credits to continue scanning resumes.");
+      throw new Error("CREDITS_EXHAUSTED");
     }
 
     // Deduct credit IMMEDIATELY and atomically
     await ctx.db.patch(user._id, { 
       credits: Math.max(0, currentCredits - 1),
-      freeTrialUsed: true, // Always mark trial as used when scanning
+      freeTrialUsed: true,
     });
+
+    // Update device usage tracking
+    if (user.deviceFingerprint) {
+      const fingerprint = user.deviceFingerprint;
+      const deviceUsage = await ctx.db
+        .query("deviceUsage")
+        .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
+        .first();
+      
+      if (deviceUsage) {
+        await ctx.db.patch(deviceUsage._id, {
+          creditsConsumed: deviceUsage.creditsConsumed + 1,
+          lastUsedAt: Date.now(),
+        });
+      }
+    }
 
     const url = await ctx.storage.getUrl(args.storageId);
     if (!url) {

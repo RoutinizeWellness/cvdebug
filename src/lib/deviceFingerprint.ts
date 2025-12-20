@@ -1,5 +1,30 @@
-// Simple device fingerprinting using browser characteristics
-export function generateDeviceFingerprint(): string {
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
+
+// Initialize FingerprintJS agent
+let fpPromise: Promise<any> | null = null;
+
+export async function getDeviceFingerprint(): Promise<string> {
+  try {
+    // Initialize the agent at application startup (lazy load)
+    if (!fpPromise) {
+      fpPromise = FingerprintJS.load();
+    }
+
+    // Get the visitor identifier
+    const fp = await fpPromise;
+    const result = await fp.get();
+    
+    // The visitorId is a unique identifier for this device/browser
+    return result.visitorId;
+  } catch (error) {
+    console.error('Failed to generate device fingerprint:', error);
+    // Fallback to basic fingerprinting if FingerprintJS fails
+    return generateBasicFingerprint();
+  }
+}
+
+// Fallback basic fingerprinting
+function generateBasicFingerprint(): string {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
@@ -30,4 +55,9 @@ export function generateDeviceFingerprint(): string {
   }
   
   return Math.abs(hash).toString(36);
+}
+
+// Legacy function for backward compatibility
+export function generateDeviceFingerprint(): string {
+  return generateBasicFingerprint();
 }

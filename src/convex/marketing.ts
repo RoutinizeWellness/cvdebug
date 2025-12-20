@@ -479,6 +479,121 @@ export const sendConversionFollowUpEmail = internalAction({
   },
 });
 
+// NEW: Email for "The Abandoner" - signed up but no scans after 1 hour
+export const sendInvisibilityAlertEmail = internalAction({
+  args: { 
+    email: v.string(), 
+    name: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "there";
+    const subject = "⚠️ Your resume is invisible to recruiters";
+    
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hi ${firstName},</p>
+        
+        <p>You signed up for CVDebug an hour ago, but you haven't scanned your resume yet.</p>
+        
+        <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: bold; color: #991b1b;">⚠️ Here's the truth:</p>
+          <p style="margin: 8px 0 0 0; color: #7f1d1d;">75% of resumes are rejected by ATS before a human ever sees them.</p>
+        </div>
+
+        <p><strong>Is your resume one of them?</strong></p>
+        
+        <p>You have <strong>1 free diagnostic scan</strong> waiting. It takes 30 seconds to find out if your resume is ATS-compatible or getting auto-rejected.</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Use My Free Scan Now
+          </a>
+        </div>
+
+        <p style="font-size: 12px; color: #666; text-align: center;">This scan expires in 14 days. Don't waste it.</p>
+        
+        <p>Best regards,<br>The CVDebug Team</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent Invisibility Alert Email to ${args.email}`);
+    } catch (error) { 
+      console.error("Failed to send Invisibility Alert Email:", error); 
+    }
+  },
+});
+
+// NEW: Email for "The Power User" - used free scan but hasn't paid after 24h
+export const sendFomoGapEmail = internalAction({
+  args: { 
+    email: v.string(), 
+    name: v.optional(v.string()),
+    score: v.number(),
+    missingKeywords: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const resend = getResend();
+    if (!resend) return;
+
+    const firstName = args.name?.split(" ")[0] || "there";
+    const subject = `${firstName}, you're only ${args.missingKeywords} keywords away from the Green Zone`;
+    
+    const html = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <p>Hi ${firstName},</p>
+        
+        <p>Yesterday you scanned your resume and got a score of <strong>${args.score}%</strong>.</p>
+        
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; margin: 20px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: bold; color: #92400e;">📊 You're close to the 85%+ "Green Zone"</p>
+          <p style="margin: 8px 0 0 0; color: #92400e;">But you're missing <strong>${args.missingKeywords} critical keywords</strong> that recruiters are searching for.</p>
+        </div>
+
+        <p><strong>Here's what happens next:</strong></p>
+        <ul style="color: #4b5563;">
+          <li>Your competitors are optimizing their resumes right now</li>
+          <li>They're adding the exact keywords ATS systems scan for</li>
+          <li>They're moving to the top of the candidate pile</li>
+        </ul>
+
+        <p style="font-size: 18px; font-weight: bold; color: #1f2937;">Don't let them take your interview slot.</p>
+
+        <p>For $4.99, you'll get:</p>
+        <ul style="color: #4b5563;">
+          <li>✅ All ${args.missingKeywords} missing keywords revealed</li>
+          <li>✅ Exact sections where to add them</li>
+          <li>✅ ATS-optimized formatting guide</li>
+          <li>✅ Instant score boost to 85%+</li>
+        </ul>
+
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="https://resume-ats-optimizer.convex.site/dashboard?unlock=true" style="background-color: #ea580c; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+            Unlock My Keywords - $4.99
+          </a>
+        </div>
+
+        <p style="font-size: 12px; color: #666; text-align: center;">One-time payment • No subscription • Instant access</p>
+        
+        <p>Best regards,<br>The CVDebug Team</p>
+        
+        <p style="font-size: 11px; color: #999; margin-top: 30px;">P.S. Every day you wait is another day your competition gets ahead. Secure your interview now.</p>
+      </div>
+    `;
+
+    try {
+      await resend.emails.send({ from: FROM_EMAIL, to: args.email, subject, html });
+      console.log(`Sent FOMO Gap Email to ${args.email}`);
+    } catch (error) { 
+      console.error("Failed to send FOMO Gap Email:", error); 
+    }
+  },
+});
+
 // Test Email Function - Send test email
 export const sendTestEmail = internalAction({
   args: { email: v.optional(v.string()) },

@@ -24,6 +24,12 @@ crons.interval("reengagement_flow", { hours: 24 }, internal.crons.runReengagemen
 // 4. Conversion Follow-up (Email: 5 days after scan if still free)
 crons.interval("conversion_followup", { hours: 1 }, internal.crons.runConversionFollowUp, {});
 
+// NEW: Abandoner Flow (Email: 1h after signup, no scans)
+crons.interval("abandoner_flow", { hours: 1 }, internal.crons.runAbandonerFlow, {});
+
+// NEW: Power User FOMO (Email: 24h after scan, no purchase)
+crons.interval("power_user_fomo", { hours: 1 }, internal.crons.runPowerUserFomo, {});
+
 // --- Activation Flow Logic ---
 // Email #2: 24h reminder if no scans
 export const runActivationFlow = internalMutation({
@@ -227,6 +233,88 @@ export const runConversionFollowUp = internalMutation({
           name: user.name,
           score: resume.score || 0,
           errorCount,
+        });
+      }
+    }
+  },
+});
+
+// --- Abandoner Flow Logic ---
+export const runAbandonerFlow = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const hour = 60 * 60 * 1000;
+    
+    // Find users who signed up 1-2 hours ago with 0 scans
+    const users = await ctx.db
+      .query("users")
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (2 * hour)),
+          q.lt(q.field("_creationTime"), now - (1 * hour)),
+          q.eq(q.field("invisibilityAlertSent"), undefined)
+        )
+      )
+      .take(50);
+
+    for (const user of users) {
+      // Check if they have any scans
+      const resume = await ctx.db
+        .query("resumes")
+        .withIndex("by_user", q => q.eq("userId", user.tokenIdentifier))
+        .first();
+
+      // If no scans and still have credits, send abandoner email
+      if (!resume && user.email && (user.credits ?? 0) > 0) {
+        await ctx.db.patch(user._id, { invisibilityAlertSent: true });
+        await ctx.scheduler.runAfter(0, internal.marketing.sendInvisibilityAlertEmail, {
+          email: user.email,
+          name: user.name,
+        });
+      }
+    }
+  },
+});
+
+// --- Power User FOMO Flow Logic ---
+export const runPowerUserFomo = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    const hour = 60 * 60 * 1000;
+    
+    // Find resumes scanned 24-25 hours ago
+    const resumes = await ctx.db
+      .query("resumes")
+      .filter(q => 
+        q.and(
+          q.gt(q.field("_creationTime"), now - (25 * hour)),
+          q.lt(q.field("_creationTime"), now - (24 * hour))
+        )
+      )
+      .take(50);
+
+    for (const resume of resumes) {
+      if (!resume.userId || resume.score === undefined) continue;
+
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId))
+        .unique();
+
+      // Send if: user is free tier, has 0 credits, hasn't received email, resume completed
+      if (user && user.email && user.subscriptionTier === "free" && 
+          (user.credits ?? 0) === 0 && !user.fomoGapEmailSent && 
+          resume.status === "completed") {
+        
+        await ctx.db.patch(user._id, { fomoGapEmailSent: true });
+        
+        const missingKeywords = resume.missingKeywords?.length || 0;
+        
+        await ctx.scheduler.runAfter(0, internal.marketing.sendFomoGapEmail, {
+          email: user.email,
+          name: user.name,
+          score: resume.score,
+          missingKeywords,
         });
       }
     }

@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router";
 import { Loader2 } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
 const apiAny: any = api;
 
@@ -19,12 +20,16 @@ export default function AuthPage() {
   const payment = searchParams.get("payment");
   
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-      storeUser().catch(err => {
-        console.error("Failed to store user:", err);
+    if (isAuthenticated) {
+      // Capture device fingerprint and store user
+      getDeviceFingerprint().then(fingerprint => {
+        storeUser({ deviceFingerprint: fingerprint });
+      }).catch(err => {
+        console.error("Failed to get fingerprint:", err);
+        storeUser(); // Fallback without fingerprint
       });
     }
-  }, [isAuthenticated, isLoading, storeUser]);
+  }, [isAuthenticated, storeUser]);
   
   let redirectUrl = "/dashboard";
   const params = new URLSearchParams();
