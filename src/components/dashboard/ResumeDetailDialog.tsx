@@ -273,16 +273,46 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
     }
   ];
 
-  // Extract found keywords from the analysis
-  // foundKeywords should come from a separate field, not from missingKeywords
-  const foundKeywords = displayResume?.foundKeywords || [];
+  // Extract found keywords from the analysis text
+  // Parse the analysis to find the "Found X relevant keywords" section
+  const extractFoundKeywords = (analysisText: string, ocrText: string): string[] => {
+    if (!analysisText) return [];
+    
+    // Try to extract keywords from the analysis report
+    const keywordSection = analysisText.match(/Found (\d+) relevant keywords[\s\S]*?(?=\n\n|Missing|Format)/);
+    if (keywordSection) {
+      const keywordLines = keywordSection[0].split('\n').filter(line => line.includes('•'));
+      const keywords = keywordLines.map(line => {
+        const match = line.match(/• (.+?) \(freq:/);
+        return match ? match[1] : null;
+      }).filter(Boolean);
+      
+      if (keywords.length > 0) return keywords as string[];
+    }
+    
+    // Fallback: extract common tech keywords from OCR text
+    if (ocrText) {
+      const techKeywords = [
+        'React', 'JavaScript', 'TypeScript', 'Python', 'Java', 'Node.js', 'AWS', 'Docker', 
+        'Kubernetes', 'SQL', 'MongoDB', 'Git', 'API', 'REST', 'GraphQL', 'CI/CD', 'Agile', 
+        'Scrum', 'HTML', 'CSS', 'Angular', 'Vue', 'Express', 'Django', 'Flask', 'PostgreSQL',
+        'Redis', 'Jenkins', 'Terraform', 'Azure', 'GCP', 'Microservices', 'TDD', 'Jira'
+      ];
+      
+      const found = techKeywords.filter(keyword => 
+        new RegExp(`\\b${keyword}\\b`, 'i').test(ocrText)
+      );
+      
+      return found.slice(0, 10);
+    }
+    
+    return [];
+  };
   
-  // If no foundKeywords field exists, extract some keywords from the resume text as a fallback
-  const fallbackFoundKeywords = !foundKeywords || foundKeywords.length === 0
-    ? (displayResume?.ocrText?.match(/\b(React|JavaScript|TypeScript|Python|Java|Node\.js|AWS|Docker|Kubernetes|SQL|MongoDB|Git|API|REST|GraphQL|CI\/CD|Agile|Scrum)\b/gi) || [])
-        .filter((v: string, i: number, a: string[]) => a.indexOf(v) === i) // unique values
-        .slice(0, 8)
-    : foundKeywords;
+  const foundKeywords = extractFoundKeywords(
+    displayResume?.analysis || '', 
+    displayResume?.ocrText || ''
+  );
 
   return (
     <Dialog open={!!resumeId} onOpenChange={(open) => !open && onClose()}>
@@ -482,7 +512,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         <FormattingAudit items={auditItems} />
                         
                         <KeywordHeatmap 
-                          foundKeywords={fallbackFoundKeywords}
+                          foundKeywords={foundKeywords}
                           missingKeywords={displayResume?.missingKeywords || []}
                           isFree={false}
                         />

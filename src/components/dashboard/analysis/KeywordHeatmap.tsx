@@ -45,8 +45,10 @@ export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock, isFre
             ))
           )}
           {(!foundKeywords || foundKeywords.length === 0) && (!missingKeywords || missingKeywords.length === 0) && (
-            <div className="flex items-center justify-center w-full h-full">
-              <p className="text-zinc-400 text-sm">No keywords detected in resume</p>
+            <div className="flex items-center justify-center w-full h-full min-h-[120px]">
+              <p className="text-zinc-400 text-sm" data-testid="no-keywords-message">
+                No keywords detected in resume
+              </p>
             </div>
           )}
         </div>
