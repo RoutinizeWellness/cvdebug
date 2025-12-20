@@ -44,6 +44,7 @@ import { RoleMatchCard } from "./analysis/RoleMatchCard";
 import { ActionableFixes } from "./analysis/ActionableFixes";
 import { ImpactScore } from "./analysis/ImpactScore";
 import { AIProTip } from "./analysis/AIProTip";
+import { ImageTrapAlert } from "./ImageTrapAlert";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -588,6 +589,16 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
                 <div className="p-8 max-w-7xl mx-auto font-display print:text-black">
                   
+                  {/* Image Trap Alert - Show at the top for all users */}
+                  {displayResume?.textLayerIntegrity !== undefined && (
+                    <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+                      <ImageTrapAlert 
+                        textLayerIntegrity={displayResume.textLayerIntegrity}
+                        hasImageTrap={displayResume.hasImageTrap}
+                      />
+                    </div>
+                  )}
+
                   {isFree ? (
                     <FreeTierView 
                       score={displayResume?.score || 0}

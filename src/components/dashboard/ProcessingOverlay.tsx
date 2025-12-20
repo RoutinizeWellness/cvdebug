@@ -1,4 +1,4 @@
-import { Loader2, AlertCircle, Star } from "lucide-react";
+import { Loader2, AlertCircle, Star, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export function ProcessingOverlay() {
@@ -27,6 +27,11 @@ export function ProcessingOverlay() {
       title: "Keyword Impact",
       text: "Including the right keywords from the job description can increase your chances of an interview by 50%.",
       highlight: "increase your chances"
+    },
+    {
+      title: "Image Trap Warning",
+      text: "30% of resumes have invisible text layer issues that make them unreadable by ATS. Our OCR health check catches these critical errors.",
+      highlight: "invisible text layer issues"
     }
   ];
 
@@ -146,6 +151,14 @@ export function ProcessingOverlay() {
           <div className="bg-card border border-border rounded-xl p-4 text-center">
             <p className="text-2xl font-black text-primary">10K+</p>
             <p className="text-xs text-muted-foreground mt-1">Resumes Fixed</p>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-3">
+          <Shield className="h-8 w-8 text-blue-400 flex-shrink-0" />
+          <div className="text-left">
+            <p className="text-sm font-bold text-blue-400">OCR Health Check Running</p>
+            <p className="text-xs text-blue-300/80">Scanning for Image Trap issues and text layer integrity...</p>
           </div>
         </div>
 
