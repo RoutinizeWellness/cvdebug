@@ -40,7 +40,7 @@ export function HeroVisualizerSection() {
           </button>
           <button 
             onClick={scrollToHowItWorks}
-            className="flex items-center justify-center h-12 px-8 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-base font-medium rounded-lg transition-colors"
+            className="flex items-center justify-center h-12 px-8 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary/30 text-white text-base font-medium rounded-lg transition-all hover:scale-[1.02]"
           >
             <span className="mr-2 text-xl">▶️</span>
             Watch Demo

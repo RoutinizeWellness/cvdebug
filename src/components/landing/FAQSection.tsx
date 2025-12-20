@@ -8,7 +8,7 @@ export function FAQSection() {
           {/* FAQ Item 1 */}
           <details className="group bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden transition-all duration-300 open:border-[#7c3bed]/50">
             <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
-              <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Do you sell my data?</h3>
+              <h3 className="text-base font-medium text-white group-hover:text-primary transition-colors">Do you sell my data?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
             <div className="px-6 pb-6 pt-0 text-gray-200 text-sm leading-relaxed">
@@ -19,7 +19,7 @@ export function FAQSection() {
           {/* FAQ Item 2 */}
           <details className="group bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden transition-all duration-300 open:border-[#7c3bed]/50">
             <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
-              <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">What is the "Image Trap"?</h3>
+              <h3 className="text-base font-medium text-white group-hover:text-primary transition-colors">What is the "Image Trap"?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
             <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">
@@ -30,7 +30,7 @@ export function FAQSection() {
           {/* FAQ Item 3 */}
           <details className="group bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden transition-all duration-300 open:border-[#7c3bed]/50">
             <summary className="flex items-center justify-between p-6 cursor-pointer select-none">
-              <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Does this work for all industries?</h3>
+              <h3 className="text-base font-medium text-white group-hover:text-primary transition-colors">Does this work for all industries?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
             <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">

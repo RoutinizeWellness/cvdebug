@@ -19,7 +19,7 @@ export function PricingSection() {
                 <span className="text-sm text-gray-500 font-medium">/ forever</span>
               </div>
             </div>
-            <button className="w-full h-12 rounded-lg bg-[#0a0a0a] border border-white/10 hover:bg-[#121212] hover:border-white/20 text-white font-bold transition-all">
+            <button className="w-full h-12 rounded-lg bg-[#0a0a0a] border border-white/10 hover:bg-[#121212] hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]">
               Scan for Free
             </button>
             <div className="space-y-4 pt-4 border-t border-white/10">
@@ -50,7 +50,7 @@ export function PricingSection() {
                 <span className="text-sm text-gray-400 font-medium">/ one-time</span>
               </div>
             </div>
-            <button className="w-full h-12 rounded-lg bg-[#7c3bed] hover:bg-[#6d28d9] text-white font-bold transition-all shadow-lg shadow-[#7c3bed]/25">
+            <button className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25">
               Get Pro Access
             </button>
             <div className="space-y-4 pt-4 border-t border-[#7c3bed]/20">

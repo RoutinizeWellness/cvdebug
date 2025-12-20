@@ -20,7 +20,7 @@ export function Navbar() {
             <a className="text-sm font-medium text-gray-300 hover:text-white transition-colors" href="#faq">FAQ</a>
           </div>
           <button 
-            className="hidden md:flex items-center justify-center h-9 px-4 bg-[#22C55E] hover:bg-[#16a34a] text-black text-sm font-bold rounded-lg transition-colors shadow-[0_0_15px_-3px_rgba(34,197,94,0.4)]"
+            className="hidden md:flex items-center justify-center h-9 px-4 bg-primary hover:bg-primary/90 text-black text-sm font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_15px_-3px_rgba(249,245,6,0.4)]"
             onClick={() => navigate("/auth")}
           >
             Get Started
@@ -71,7 +71,7 @@ export function Navbar() {
                 FAQ
               </a>
               <button 
-                className="mt-4 flex items-center justify-center h-12 px-6 bg-[#22C55E] hover:bg-[#16a34a] text-black text-base font-bold rounded-lg transition-colors shadow-[0_0_15px_-3px_rgba(34,197,94,0.4)]"
+                className="mt-4 flex items-center justify-center h-12 px-6 bg-primary hover:bg-primary/90 text-black text-base font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_15px_-3px_rgba(249,245,6,0.4)]"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   navigate("/auth");
