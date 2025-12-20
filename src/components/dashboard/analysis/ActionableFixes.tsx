@@ -50,7 +50,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                 animate={{ rotate: expandedIndex === index ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <ChevronDown className="h-5 w-5 text-stone-500" />
+                <ChevronDown className="h-5 w-5 text-zinc-400" />
               </motion.div>
             </button>
 
@@ -65,7 +65,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                 >
                   <div className="p-4 pt-0 space-y-3 border-t border-stone-200 dark:border-stone-700">
                     <div>
-                      <p className="text-sm text-stone-600 dark:text-stone-400 mb-2">
+                      <p className="text-sm text-zinc-300 mb-2">
                         {fix.description}
                       </p>
                     </div>
@@ -77,7 +77,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                           <p className="text-xs font-bold text-white mb-1">
                             Impact
                           </p>
-                          <p className="text-xs text-stone-600 dark:text-stone-400">
+                          <p className="text-xs text-zinc-300">
                             {fix.impact}
                           </p>
                         </div>
@@ -88,7 +88,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       <p className="text-xs font-bold text-white mb-1">
                         Example Fix
                       </p>
-                      <p className="text-xs text-stone-700 dark:text-stone-300 font-mono">
+                      <p className="text-xs text-zinc-300 font-mono">
                         {fix.example}
                       </p>
                     </div>

@@ -461,7 +461,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     <KeywordHeatmap 
                       foundKeywords={foundKeywords}
                       missingKeywords={criticalKeywords}
-                      onUnlock={() => setShowPricing(true)}
+                      isFree={false}
                     />
 
                     <RoleMatchCard 

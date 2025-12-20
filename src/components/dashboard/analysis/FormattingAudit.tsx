@@ -38,7 +38,7 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
             <div>
               <p className="text-sm font-bold text-white">{item.title}</p>
               <p className={`text-xs ${
-                item.status === "passed" ? "text-stone-500 dark:text-stone-400" : "text-red-600 dark:text-red-400"
+                item.status === "passed" ? "text-zinc-400" : "text-red-400"
               }`}>
                 {item.status === "passed" ? item.reason : item.fix}
               </p>

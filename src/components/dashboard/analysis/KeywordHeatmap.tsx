@@ -3,10 +3,49 @@ import { CheckCircle2, Lock } from "lucide-react";
 interface KeywordHeatmapProps {
   foundKeywords: string[];
   missingKeywords: any[];
-  onUnlock: () => void;
+  onUnlock?: () => void;
+  isFree?: boolean;
 }
 
-export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock }: KeywordHeatmapProps) {
+export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock, isFree = false }: KeywordHeatmapProps) {
+  // For paid users, show all keywords without blur
+  if (!isFree) {
+    return (
+      <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-white">
+              <CheckCircle2 className="h-5 w-5" />
+            </div>
+            <h3 className="text-lg font-bold text-white">Keywords</h3>
+          </div>
+          <span className="text-xs font-bold bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded-md">
+            High Impact
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2 content-start">
+          {foundKeywords.map((kw, idx) => (
+            <span 
+              key={idx}
+              className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold flex items-center gap-1"
+            >
+              <CheckCircle2 className="h-3 w-3" /> {kw}
+            </span>
+          ))}
+          {missingKeywords.map((kw, idx) => (
+            <span 
+              key={idx}
+              className="px-3 py-1.5 rounded-full border border-red-500 text-red-300 text-xs font-bold"
+            >
+              {typeof kw === 'string' ? kw : kw.keyword}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // For free users, show blurred preview with unlock button
   return (
     <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4 relative overflow-hidden group">
       <div className="flex items-center justify-between mb-2">
@@ -24,7 +63,7 @@ export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock }: Key
         {foundKeywords.slice(0, 2).map((kw, idx) => (
           <span 
             key={idx}
-            className="px-3 py-1.5 rounded-full bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold flex items-center gap-1"
+            className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold flex items-center gap-1"
           >
             <CheckCircle2 className="h-3 w-3" /> {kw}
           </span>
@@ -32,7 +71,7 @@ export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock }: Key
         {missingKeywords.slice(0, 2).map((kw, idx) => (
           <span 
             key={idx}
-            className="px-3 py-1.5 rounded-full border border-red-500 text-white text-xs font-bold"
+            className="px-3 py-1.5 rounded-full border border-red-500 text-red-300 text-xs font-bold"
           >
             {typeof kw === 'string' ? kw : kw.keyword}
           </span>
