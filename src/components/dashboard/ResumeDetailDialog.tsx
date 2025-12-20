@@ -273,40 +273,60 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
     }
   ];
 
-  // Extract found keywords from the analysis text
-  // Parse the analysis to find the "Found X relevant keywords" section
+  // Extract found keywords from the analysis text and OCR
   const extractFoundKeywords = (analysisText: string, ocrText: string): string[] => {
-    if (!analysisText) return [];
+    const keywords: string[] = [];
     
-    // Try to extract keywords from the analysis report
-    const keywordSection = analysisText.match(/Found (\d+) relevant keywords[\s\S]*?(?=\n\n|Missing|Format)/);
-    if (keywordSection) {
-      const keywordLines = keywordSection[0].split('\n').filter(line => line.includes('•'));
-      const keywords = keywordLines.map(line => {
-        const match = line.match(/• (.+?) \(freq:/);
-        return match ? match[1] : null;
-      }).filter(Boolean);
-      
-      if (keywords.length > 0) return keywords as string[];
+    // Method 1: Try to extract from analysis report's keyword section
+    if (analysisText) {
+      const keywordSection = analysisText.match(/Found (\d+) relevant keywords[\s\S]*?(?=\n\n|Missing|Format)/);
+      if (keywordSection) {
+        const keywordLines = keywordSection[0].split('\n').filter(line => line.includes('•'));
+        const extracted = keywordLines.map(line => {
+          const match = line.match(/• (.+?) \(freq:/);
+          return match ? match[1].trim() : null;
+        }).filter(Boolean) as string[];
+        
+        if (extracted.length > 0) {
+          keywords.push(...extracted);
+        }
+      }
     }
     
-    // Fallback: extract common tech keywords from OCR text
-    if (ocrText) {
-      const techKeywords = [
-        'React', 'JavaScript', 'TypeScript', 'Python', 'Java', 'Node.js', 'AWS', 'Docker', 
-        'Kubernetes', 'SQL', 'MongoDB', 'Git', 'API', 'REST', 'GraphQL', 'CI/CD', 'Agile', 
-        'Scrum', 'HTML', 'CSS', 'Angular', 'Vue', 'Express', 'Django', 'Flask', 'PostgreSQL',
-        'Redis', 'Jenkins', 'Terraform', 'Azure', 'GCP', 'Microservices', 'TDD', 'Jira'
+    // Method 2: Scan OCR text for common technical keywords
+    if (ocrText && keywords.length < 5) {
+      const commonKeywords = [
+        // Programming Languages
+        'JavaScript', 'TypeScript', 'Python', 'Java', 'C\\+\\+', 'C#', 'Ruby', 'Go', 'Rust', 'PHP', 'Swift', 'Kotlin',
+        // Frontend
+        'React', 'Angular', 'Vue', 'Next\\.js', 'HTML', 'CSS', 'Tailwind', 'Bootstrap', 'jQuery',
+        // Backend
+        'Node\\.js', 'Express', 'Django', 'Flask', 'Spring', 'Laravel', 'FastAPI',
+        // Databases
+        'SQL', 'MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'DynamoDB', 'Cassandra', 'Oracle',
+        // Cloud & DevOps
+        'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Jenkins', 'CI/CD', 'Terraform', 'Ansible',
+        // Tools & Methodologies
+        'Git', 'GitHub', 'GitLab', 'Jira', 'Agile', 'Scrum', 'REST', 'GraphQL', 'API', 'Microservices',
+        // Data & ML
+        'TensorFlow', 'PyTorch', 'Pandas', 'NumPy', 'Spark', 'Hadoop', 'Machine Learning', 'Data Science'
       ];
       
-      const found = techKeywords.filter(keyword => 
-        new RegExp(`\\b${keyword}\\b`, 'i').test(ocrText)
-      );
+      const ocrLower = ocrText.toLowerCase();
+      const found = commonKeywords.filter(keyword => {
+        const regex = new RegExp(`\\b${keyword.toLowerCase()}\\b`, 'i');
+        return regex.test(ocrLower);
+      });
       
-      return found.slice(0, 10);
+      // Add unique keywords not already in the list
+      found.forEach(kw => {
+        if (!keywords.some(k => k.toLowerCase() === kw.toLowerCase())) {
+          keywords.push(kw);
+        }
+      });
     }
     
-    return [];
+    return keywords.slice(0, 15); // Return up to 15 keywords
   };
   
   const foundKeywords = extractFoundKeywords(
