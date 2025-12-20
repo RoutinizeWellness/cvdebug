@@ -1,5 +1,1 @@
-[
-  {
-    "file_path": "src/components/dashboard/analysis/KeywordHeatmap.tsx",
-    "reason": "Modified KeywordHeatmap.tsx to ensure proper visual separation of text elements and prevent concatenation issues. Wrapped the 'High Impact' span in a dedicated div and added a data-testid to the 'No keywords detected' message for better debugging.",
-    "diff": "
+{"type":"executeCommandTool","command":"pnpm prune"}

@@ -231,9 +231,6 @@ importers:
       '@eslint/js':
         specifier: ^9.25.0
         version: 9.28.0
-      '@types/fingerprintjs__fingerprintjs':
-        specifier: ^3.0.2
-        version: 3.0.2
       '@types/node':
         specifier: ^22.15.29
         version: 22.15.29
@@ -2003,10 +2000,6 @@ packages:
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
-
-  '@types/fingerprintjs__fingerprintjs@3.0.2':
-    resolution: {integrity: sha512-jjQ03OYO/7qKtI/vOKZ9hSXtHxHWJkwsMSMSFszY+Y+JcOnjbRlvodk+zxXSxKNQweiDTJo4PfsXtOJLC9+auQ==}
-    deprecated: This is a stub types definition. @fingerprintjs/fingerprintjs provides its own type definitions, so you do not need this installed.
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -5247,10 +5240,6 @@ snapshots:
   '@types/draco3d@1.4.10': {}
 
   '@types/estree@1.0.7': {}
-
-  '@types/fingerprintjs__fingerprintjs@3.0.2':
-    dependencies:
-      '@fingerprintjs/fingerprintjs': 5.0.1
 
   '@types/json-schema@7.0.15': {}
 
