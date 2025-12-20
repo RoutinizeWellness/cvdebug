@@ -36,10 +36,17 @@ export const checkTextLayerIntegrity = internalAction({
     if (hasInvisibleChars) integrityScore -= 20;
     if (whitespaceRatio > 0.5) integrityScore -= 20;
     
+    // STRICT CHECK for "Image Trap" / Encoding issues requested by user
+    // If readability is below 95% (simulated here by readableRatio < 0.95 for strictness), 
+    // we flag it as a specific high-priority alert.
+    // Note: Real OCR vs Text extraction comparison requires the original PDF buffer which we don't have here,
+    // so we use heuristics on the extracted text quality.
+    const isEncodingBroken = readableRatio < 0.95 || hasInvisibleChars;
+
     integrityScore = Math.max(0, integrityScore);
     
     // Determine if it's an "Image Trap"
-    const hasImageTrap = integrityScore < 50;
+    const hasImageTrap = integrityScore < 50 || isEncodingBroken;
     
     await runMutation(internalAny.cvHealthMonitor.updateHealthStatus, {
       resumeId: args.resumeId,

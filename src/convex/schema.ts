@@ -111,6 +111,21 @@ const schema = defineSchema(
   .index("by_application", ["applicationId"])
   .index("by_user", ["userId"]),
 
+  // NEW: LinkedIn DMs - AI-generated recruiter messages
+  linkedinDMs: defineTable({
+    userId: v.string(),
+    applicationId: v.optional(v.id("applications")),
+    recruiterName: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
+    variations: v.array(v.object({
+      tone: v.string(),
+      content: v.string(),
+    })),
+    generatedAt: v.number(),
+  })
+  .index("by_user", ["userId"])
+  .index("by_application", ["applicationId"]),
+
   resumes: defineTable({
     userId: v.string(),
     projectId: v.optional(v.id("projects")), // NEW: Link to project

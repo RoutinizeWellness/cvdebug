@@ -208,12 +208,13 @@ Provide a detailed optimization report in JSON format with the following structu
   "score": number (0-100),
   "headline": {
     "current": "Current headline string",
-    "suggested": "Suggested punchy, keyword-rich headline",
+    "suggested": "Suggested punchy, keyword-rich headline based on top 3 matching keywords",
     "critique": "Why the change is needed"
   },
   "about": {
     "critique": "Analysis of the About section (storytelling, hook, call to action)",
-    "suggestions": "Specific improvements"
+    "suggestions": "Specific improvements",
+    "rewritten": "A complete rewrite of the About section to be Recruiter-Search Friendly using identified ATS keywords"
   },
   "experience": {
     "critique": "Analysis of experience descriptions",
@@ -229,5 +230,50 @@ Focus on:
 2. **First Impressions**: Professional headline and engaging About section.
 3. **Social Proof**: Recommendations, skills endorsements, and project highlights.
 4. **Alignment**: Matching the profile to the target role/industry.
+`;
+}
+
+export function buildRecruiterDMPrompt(
+  profileText: string,
+  jobDescription: string,
+  recruiterName?: string,
+  missingKeywords?: string[]
+): string {
+  const recruiter = recruiterName || "the Hiring Manager";
+  const keywordsContext = missingKeywords && missingKeywords.length > 0 
+    ? `Highlight these key skills that might be missing from the resume but are present in the profile: ${missingKeywords.join(", ")}`
+    : "";
+
+  return `You are an expert Career Coach and Networking Specialist.
+Generate 3 distinct LinkedIn Direct Messages (DMs) to send to ${recruiter} regarding a job application.
+
+**Context:**
+- **Candidate Profile:** "${profileText.substring(0, 2000)}..."
+- **Target Job:** "${jobDescription.substring(0, 2000)}..."
+- **Goal:** Get the recruiter to look at the application/resume.
+- **Constraint:** Keep it under 150 words per message.
+
+${keywordsContext}
+
+**Output Format (JSON):**
+{
+  "variations": [
+    {
+      "tone": "Casual",
+      "subject": "Quick question re: [Role]",
+      "content": "..."
+    },
+    {
+      "tone": "Professional",
+      "subject": "Application for [Role] - [Candidate Name]",
+      "content": "..."
+    },
+    {
+      "tone": "Technical/Direct",
+      "subject": "[Skill 1] & [Skill 2] Engineer for [Role]",
+      "content": "..."
+    }
+  ]
+}
 `;
 }
