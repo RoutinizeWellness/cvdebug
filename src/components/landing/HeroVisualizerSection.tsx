@@ -27,7 +27,7 @@ export function HeroVisualizerSection() {
         </h1>
 
         <p className="text-lg md:text-xl text-gray-200 max-w-2xl mb-10 leading-relaxed">
-          Track every application, monitor CV health in real-time, and generate AI cover letters that bridge your keyword gaps. Never send a broken resume again.
+          Track every application, <span className="text-primary font-bold">match against any Job Description</span>, and generate AI cover letters that bridge your keyword gaps.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mb-16">

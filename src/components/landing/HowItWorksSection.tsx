@@ -10,8 +10,8 @@ export function HowItWorksSection() {
     },
     {
       icon: Zap,
-      title: "2. Track Applications",
-      description: "Add companies you're applying to. We analyze each job description and show your match score."
+      title: "2. Paste Job Description",
+      description: "Don't just guess. Paste the exact Job Description (JD) to see your match score and missing keywords."
     },
     {
       icon: Target,
@@ -50,7 +50,7 @@ export function HowItWorksSection() {
           >
             <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">How it works</h2>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Your complete job search command center with continuous CV monitoring and AI-powered application tools.
+              Your complete job search command center. <span className="text-primary font-bold">Match your resume to any Job Description</span> and get AI-powered fixes.
             </p>
           </motion.div>
         </div>
@@ -67,11 +67,11 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: i * 0.2 }}
               className="relative flex flex-col items-center text-center group"
             >
-              <div className="h-20 w-20 md:h-24 md:w-24 bg-background border-2 border-border rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative">
+              <div className={`h-20 w-20 md:h-24 md:w-24 bg-background border-2 ${i === 1 ? 'border-primary shadow-[0_0_30px_-5px_rgba(249,245,6,0.3)] scale-110' : 'border-border'} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative`}>
                 <div className="absolute inset-0 bg-primary/10 rounded-2xl transform rotate-6 group-hover:rotate-12 transition-transform -z-10"></div>
-                <step.icon className="h-8 w-8 md:h-10 md:w-10 text-primary" />
+                <step.icon className={`h-8 w-8 md:h-10 md:w-10 ${i === 1 ? 'text-primary' : 'text-primary'}`} />
               </div>
-              <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+              <h3 className={`text-xl font-bold mb-3 ${i === 1 ? 'text-primary' : ''}`}>{step.title}</h3>
               <p className="text-muted-foreground leading-relaxed max-w-xs text-sm md:text-base">
                 {step.description}
               </p>
