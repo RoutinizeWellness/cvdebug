@@ -37,7 +37,7 @@ export const createCheckoutSession = action({
       // Use env vars for product IDs, or default to the plan names
       const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
       // Update default to match what the user likely has if they don't set env var, but keep env var as primary
-      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_spring"; 
+      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint"; 
 
       const products = {
         single_scan: productSingle,

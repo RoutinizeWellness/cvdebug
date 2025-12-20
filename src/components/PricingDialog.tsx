@@ -291,7 +291,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           {/* Interview Sprint - The Grand Slam Offer */}
           <div className="group relative rounded-2xl border-2 border-primary bg-card p-6 flex flex-col gap-5 shadow-[0_0_50px_-12px_rgba(249,245,6,0.3)] hover:shadow-[0_0_60px_-12px_rgba(249,245,6,0.4)] transition-all duration-300 transform scale-105 z-10">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary via-yellow-400 to-primary text-black text-xs font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-xl animate-pulse border-2 border-black/10">
-              🏆 The Grand Slam Offer
+              🚀 Best Value
             </div>
 
             <div className="space-y-2 pt-2">
@@ -363,7 +363,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
             >
-              {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "GET THE GRAND SLAM 🚀"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Start Interview Sprint 🚀"}
             </Button>
           </div>
         </div>
