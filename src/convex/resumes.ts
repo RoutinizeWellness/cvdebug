@@ -44,24 +44,19 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
-    // Check if user has credits available (must have at least 1 credit to scan)
+    // STRICT CREDIT ENFORCEMENT: Check credits BEFORE allowing any scan
     const currentCredits = user.credits ?? 0;
-    if (currentCredits <= 0 && user.freeTrialUsed) {
+    
+    // Block if no credits available
+    if (currentCredits <= 0) {
       throw new Error("No credits remaining. Please purchase credits to continue scanning resumes.");
     }
 
-    // Mark free trial as used and deduct a credit immediately upon creating a resume
-    if (!user.freeTrialUsed) {
-      await ctx.db.patch(user._id, { 
-        freeTrialUsed: true,
-        credits: Math.max(0, (user.credits ?? 2) - 1)
-      });
-    } else {
-      // Deduct credit for subsequent scans
-      await ctx.db.patch(user._id, { 
-        credits: Math.max(0, currentCredits - 1)
-      });
-    }
+    // Deduct credit IMMEDIATELY and atomically
+    await ctx.db.patch(user._id, { 
+      credits: Math.max(0, currentCredits - 1),
+      freeTrialUsed: true, // Always mark trial as used when scanning
+    });
 
     const url = await ctx.storage.getUrl(args.storageId);
     if (!url) {

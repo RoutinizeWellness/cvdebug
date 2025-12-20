@@ -107,12 +107,12 @@ export const storeUser = mutation({
       name: identity.name,
       email: identity.email,
       subscriptionTier: "free",
-      credits: freeTrialBlocked ? 0 : 2, // Block credits if device already used trial
+      credits: freeTrialBlocked ? 0 : 2, // EXACTLY 2 free credits, 0 if device blocked
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000), // 15-day trial
       emailVariant,
       lastSeen: Date.now(),
       deviceFingerprint: args.deviceFingerprint,
-      freeTrialUsed: false,
+      freeTrialUsed: freeTrialBlocked, // Mark as used if device blocked
     });
 
     // Send onboarding email (Email #1)
