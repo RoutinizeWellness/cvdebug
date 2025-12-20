@@ -18,7 +18,7 @@ export function GaugeScore({ score }: GaugeScoreProps) {
     <div className="flex-shrink-0 relative flex items-center justify-center">
       <svg className="size-64 md:size-72" viewBox="0 0 100 100">
         <circle 
-          className="text-stone-200 dark:text-stone-800 stroke-current" 
+          className="text-stone-800 stroke-current" 
           cx="50" 
           cy="50" 
           fill="transparent" 
@@ -43,14 +43,14 @@ export function GaugeScore({ score }: GaugeScoreProps) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         <motion.span 
-          className="text-5xl font-bold text-stone-900 dark:text-white"
+          className="text-5xl font-bold text-white"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           {score}
         </motion.span>
-        <span className="text-sm font-medium text-stone-500 dark:text-stone-400 mt-1">out of 100</span>
+        <span className="text-sm font-medium text-zinc-400 mt-1">out of 100</span>
       </div>
     </div>
   );

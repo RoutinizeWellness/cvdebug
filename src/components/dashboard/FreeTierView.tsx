@@ -50,12 +50,12 @@ export function FreeTierView({
               }`}></span>
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
-                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
-                          Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                            {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
-                          </span>.
-                        </h1>
-                        <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
+              Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
+              </span>.
+            </h1>
+            <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
                 : score >= 50 
@@ -66,9 +66,9 @@ export function FreeTierView({
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
             <Button 
               onClick={() => setShowPricing(true)}
-              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
+              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-black font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
             >
-              <Lock className="h-5 w-5" />
+              <Lock className="h-5 w-5 text-black" />
               Unlock Full Report - $4.99
             </Button>
           </div>
@@ -176,9 +176,9 @@ export function FreeTierView({
             <Button 
               onClick={() => setShowPricing(true)}
               size="lg"
-              className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90 text-stone-900"
+              className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90 text-black"
             >
-              <Lock className="mr-2 h-5 w-5" />
+              <Lock className="mr-2 h-5 w-5 text-black" />
               Unlock All {totalIssues} Issues - $4.99
             </Button>
             
@@ -232,7 +232,7 @@ export function FreeTierView({
             </p>
             <Button 
               onClick={() => setShowPricing(true)}
-              className="bg-primary text-stone-900 font-bold hover:bg-primary/90"
+              className="bg-primary text-black font-bold hover:bg-primary/90"
             >
               Unlock Now - $4.99
             </Button>
