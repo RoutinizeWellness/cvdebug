@@ -6,20 +6,39 @@ interface ImpactScoreProps {
 }
 
 export function ImpactScore({ score, maxScore }: ImpactScoreProps) {
+  const getScoreColor = () => {
+    const percentage = (score / maxScore) * 100;
+    if (percentage >= 80) return "text-green-400";
+    if (percentage >= 50) return "text-primary";
+    return "text-orange-400";
+  };
+
+  const getIconColor = () => {
+    const percentage = (score / maxScore) * 100;
+    if (percentage >= 80) return "text-green-400";
+    if (percentage >= 50) return "text-primary";
+    return "text-orange-400";
+  };
+
+  const getMessage = () => {
+    const percentage = (score / maxScore) * 100;
+    if (percentage >= 80) return "Excellent! Strong quantifiable achievements.";
+    if (percentage >= 50) return "Good progress. Add more metrics to improve.";
+    return "Add quantifiable metrics to strengthen impact.";
+  };
+
   return (
-    <div className="glass-card rounded-lg p-6 flex flex-col items-center justify-center text-center gap-2">
-      <TrendingUp className="h-10 w-10 text-stone-400" />
-      <h3 className="text-lg font-medium text-stone-500 dark:text-stone-400">Impact Score</h3>
-      <div className="text-5xl font-black text-stone-900 dark:text-white">
-        {score}
-        <span className="text-2xl text-stone-400 font-normal">/{maxScore}</span>
+    <div className="glass-card rounded-lg p-6 flex flex-col items-center justify-center text-center gap-4">
+      <div className={`p-3 rounded-full bg-zinc-800 ${getIconColor()}`}>
+        <TrendingUp className="h-8 w-8" />
       </div>
-      <p className="text-xs text-stone-500 max-w-[200px]">
-        {score >= 8
-          ? "Excellent! Strong quantifiable achievements."
-          : score >= 5
-          ? "Good progress. Add more metrics."
-          : "Your resume describes duties, not achievements."}
+      <h3 className="text-lg font-bold text-white">Impact Score</h3>
+      <div className={`text-6xl font-black ${getScoreColor()}`}>
+        {score}
+        <span className="text-3xl text-zinc-400 font-normal">/{maxScore}</span>
+      </div>
+      <p className="text-sm text-zinc-300 max-w-[220px] leading-relaxed">
+        {getMessage()}
       </p>
     </div>
   );
