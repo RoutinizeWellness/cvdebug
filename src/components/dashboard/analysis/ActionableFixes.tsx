@@ -23,7 +23,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
   return (
     <div className="glass-card rounded-lg p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-white">
+        <div className="p-2 rounded-full bg-stone-800 text-primary">
           <Zap className="h-5 w-5" />
         </div>
         <h3 className="text-lg font-bold text-white">Actionable Fixes</h3>
