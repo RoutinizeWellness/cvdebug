@@ -43,14 +43,15 @@ export function GaugeScore({ score }: GaugeScoreProps) {
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         <motion.span 
-          className="text-5xl font-bold text-white"
+          className="text-5xl font-bold !text-white"
+          style={{ color: '#ffffff' }}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           {score}
         </motion.span>
-        <span className="text-sm font-medium text-zinc-400 mt-1">out of 100</span>
+        <span className="text-sm font-medium !text-zinc-400 mt-1" style={{ color: '#a1a1aa' }}>out of 100</span>
       </div>
     </div>
   );
