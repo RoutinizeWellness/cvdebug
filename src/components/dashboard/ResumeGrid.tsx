@@ -11,9 +11,11 @@ interface ResumeGridProps {
   resumes: any[] | undefined;
   setSelectedResume: (resume: any) => void;
   handleDelete: (id: any) => void;
+  categoryFilter?: string | null;
+  onUpload?: () => void;
 }
 
-export function ResumeGrid({ resumes, setSelectedResume, handleDelete }: ResumeGridProps) {
+export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload }: ResumeGridProps) {
   if (resumes === undefined) {
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-4">
@@ -33,6 +35,11 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete }: ResumeG
         <p className="text-muted-foreground max-w-sm text-center mb-8">
           Upload your resume to get an instant ATS score and AI-powered feedback.
         </p>
+        {onUpload && (
+          <Button onClick={onUpload} className="font-bold">
+            Upload Resume
+          </Button>
+        )}
       </div>
     );
   }

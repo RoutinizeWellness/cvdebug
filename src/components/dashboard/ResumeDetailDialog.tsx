@@ -595,6 +595,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       <ImageTrapAlert 
                         textLayerIntegrity={displayResume.textLayerIntegrity}
                         hasImageTrap={displayResume.hasImageTrap}
+                        resumeId={displayResume._id}
                       />
                     </div>
                   )}

@@ -1,47 +1,18 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
-import { Plus, FolderOpen, ArrowRight, LayoutTemplate, Target } from "lucide-react";
+import { Plus, FolderOpen, ArrowRight, Target } from "lucide-react";
 import { useState } from "react";
 import { CreateProjectDialog } from "./CreateProjectDialog";
-import { ProjectBoard } from "./ProjectBoard";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 
-export function ProjectsView() {
+interface ProjectsViewProps {
+  onSelectProject: (id: Id<"projects">) => void;
+}
+
+export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   const projects = useQuery(api.projects.getProjects, { status: "active" });
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [selectedProjectId, setSelectedProjectId] = useState<Id<"projects"> | null>(null);
-
-  if (selectedProjectId) {
-    const project = projects?.find((p: Doc<"projects">) => p._id === selectedProjectId);
-    return (
-      <div className="h-full flex flex-col">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              onClick={() => setSelectedProjectId(null)}
-              className="text-zinc-400 hover:text-white"
-            >
-              ← Back to Projects
-            </Button>
-            <div className="h-6 w-px bg-zinc-800" />
-            <div>
-              <h2 className="text-2xl font-bold text-white">{project?.name}</h2>
-              <p className="text-sm text-zinc-500">{project?.targetRole}</p>
-            </div>
-          </div>
-          <Button className="bg-primary text-black hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Application
-          </Button>
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <ProjectBoard projectId={selectedProjectId} />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -83,7 +54,7 @@ export function ProjectsView() {
           {projects.map((project: Doc<"projects">) => (
             <div 
               key={project._id}
-              onClick={() => setSelectedProjectId(project._id)}
+              onClick={() => onSelectProject(project._id)}
               className="group bg-[#0A0A0A] border border-zinc-800 hover:border-primary/50 rounded-xl p-6 cursor-pointer transition-all hover:shadow-lg hover:shadow-primary/5"
             >
               <div className="flex justify-between items-start mb-4">

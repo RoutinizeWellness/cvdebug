@@ -1,14 +1,1 @@
-{
-  "type": "tool_call",
-  "tool_number": 1,
-  "tool_name": "readFilesToContextTool",
-  "input_args": {
-    "file_paths": [
-      "src/convex/marketing.ts",
-      "src/pages/Dashboard.tsx",
-      "src/components/dashboard/ResumeDetailDialog.tsx",
-      "src/components/dashboard/Sidebar.tsx"
-    ],
-    "replace_files_in_context": true
-  }
-}
+{"type":"tool_call","tool_number":1,"tool_name":"readFilesToContextTool","input_args":{"file_paths":["src/components/dashboard/ProjectBoard.tsx","src/components/dashboard/ProjectsView.tsx","src/components/dashboard/ResumeGrid.tsx"],"replace_files_in_context":true}}

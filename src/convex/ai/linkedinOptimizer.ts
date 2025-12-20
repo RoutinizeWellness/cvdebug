@@ -3,7 +3,7 @@
 import { action } from "../_generated/server";
 import { v } from "convex/values";
 import { buildLinkedInPrompt, buildRecruiterDMPrompt } from "./prompts";
-import { callOpenRouter } from "./apiClient";
+import { callOpenRouter, extractJSON } from "./apiClient";
 
 export const optimizeLinkedIn = action({
   args: {
@@ -23,8 +23,11 @@ export const optimizeLinkedIn = action({
       response_format: { type: "json_object" }
     });
 
-    const jsonStr = content.replace(/"/g, '"');
-    return JSON.parse(jsonStr);
+    const result = extractJSON(content);
+    if (!result) {
+        throw new Error("Failed to parse AI response");
+    }
+    return result;
   },
 });
 
@@ -52,6 +55,10 @@ export const generateRecruiterDMs = action({
       response_format: { type: "json_object" }
     });
 
-    return JSON.parse(content);
+    const result = extractJSON(content);
+    if (!result) {
+        throw new Error("Failed to parse AI response");
+    }
+    return result;
   },
 });

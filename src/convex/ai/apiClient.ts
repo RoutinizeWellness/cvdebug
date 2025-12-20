@@ -65,7 +65,7 @@ export function extractJSON(content: string): any {
 
     // Strategy 2: Clean up markdown and try parsing
     let cleaned = content.trim();
-    // Remove code block delimiters and possible markdown syntax to isolate json
+    // Remove markdown code block delimiters and possible markdown syntax to isolate json
     cleaned = cleaned.replace(/^```(?:json)?\s*([\s\S]*?)```$/i, '$1').trim();
 
     // Try parsing the cleaned string directly
