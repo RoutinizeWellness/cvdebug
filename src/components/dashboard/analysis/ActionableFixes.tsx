@@ -23,10 +23,10 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
   return (
     <div className="glass-card rounded-lg p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-900 dark:text-white">
+        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-white">
           <Zap className="h-5 w-5" />
         </div>
-        <h3 className="text-lg font-bold text-stone-900 dark:text-white">Actionable Fixes</h3>
+        <h3 className="text-lg font-bold text-white">Actionable Fixes</h3>
         <span className="ml-auto text-xs font-bold bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-md">
           {fixes.length} Issues
         </span>
@@ -44,7 +44,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
             >
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-                <span className="font-bold text-stone-900 dark:text-white">{fix.title}</span>
+                <span className="font-bold text-white">{fix.title}</span>
               </div>
               <motion.div
                 animate={{ rotate: expandedIndex === index ? 180 : 0 }}
@@ -74,7 +74,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       <div className="flex items-start gap-2 mb-2">
                         <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-xs font-bold text-stone-900 dark:text-white mb-1">
+                          <p className="text-xs font-bold text-white mb-1">
                             Impact
                           </p>
                           <p className="text-xs text-stone-600 dark:text-stone-400">
@@ -85,7 +85,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                     </div>
 
                     <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
-                      <p className="text-xs font-bold text-stone-900 dark:text-white mb-1">
+                      <p className="text-xs font-bold text-white mb-1">
                         Example Fix
                       </p>
                       <p className="text-xs text-stone-700 dark:text-stone-300 font-mono">

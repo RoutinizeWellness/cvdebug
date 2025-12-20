@@ -20,7 +20,7 @@ export function AIProTip({ tip, category = "General" }: AIProTipProps) {
           <h3 className="font-bold text-black uppercase text-xs tracking-wider">AI Pro Tip</h3>
         </div>
 
-        <p className="text-stone-900 font-bold leading-snug">
+        <p className="text-black font-bold leading-snug">
           {tip}
         </p>
       </div>
