@@ -28,6 +28,7 @@ export const createResume = mutation({
     jobDescription: v.optional(v.string()),
     jobTitle: v.optional(v.string()),
     company: v.optional(v.string()),
+    projectId: v.optional(v.id("projects")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -87,6 +88,7 @@ export const createResume = mutation({
     // Create resume - use identity.subject for consistency
     const resumeId = await ctx.db.insert("resumes", {
       userId: identity.subject,
+      projectId: args.projectId,
       title: args.title,
       url,
       storageId: args.storageId,
@@ -123,6 +125,12 @@ export const updateResumeOcr = mutation({
 
     console.log(`[OCR] Text extracted for resume ${args.id}, length: ${args.ocrText.length} chars`);
 
+    // Trigger CV health check
+    await ctx.scheduler.runAfter(0, internalAny.cvHealthMonitor.checkTextLayerIntegrity, {
+      resumeId: args.id,
+      ocrText: args.ocrText,
+    });
+
     // Trigger AI analysis with job description if available
     await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
       id: args.id,
@@ -130,7 +138,7 @@ export const updateResumeOcr = mutation({
       jobDescription: resume.jobDescription,
     });
 
-    console.log(`[OCR] AI analysis scheduled for resume ${args.id}, JD provided: ${!!resume.jobDescription}`);
+    console.log(`[OCR] AI analysis and health check scheduled for resume ${args.id}, JD provided: ${!!resume.jobDescription}`);
   },
 });
 
