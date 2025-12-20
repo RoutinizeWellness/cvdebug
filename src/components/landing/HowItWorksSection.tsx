@@ -24,7 +24,7 @@ export function HowItWorksSection() {
     {
       icon: CreditCard,
       title: "Complete Payment",
-      description: "Choose your plan ($4.99 for 1 scan or $19.99 for 5 scans) and checkout securely via Stripe."
+      description: "Choose your plan ($4.99 for 1 scan or $14.99 for 7-day unlimited access) and checkout securely via Stripe."
     },
     {
       icon: CheckCircle,

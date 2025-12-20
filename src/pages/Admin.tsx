@@ -88,12 +88,12 @@ export default function AdminPage() {
   // Manual Grant State
   const [grantEmail, setGrantEmail] = useState("");
   const [grantName, setGrantName] = useState("");
-  const [grantPlan, setGrantPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
+  const [grantPlan, setGrantPlan] = useState<"single_scan" | "interview_sprint">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
   
   // Webhook Simulation State
   const [webhookEmail, setWebhookEmail] = useState("");
-  const [webhookPlan, setWebhookPlan] = useState<"single_scan" | "bulk_pack">("single_scan");
+  const [webhookPlan, setWebhookPlan] = useState<"single_scan" | "interview_sprint">("single_scan");
   const [isSimulatingWebhook, setIsSimulatingWebhook] = useState(false);
   
   // Bulk Grant State
@@ -127,7 +127,7 @@ export default function AdminPage() {
     try {
       await updateUserPlan({
         userId: editingUser._id as Id<"users">,
-        plan: editForm.plan as "free" | "single_scan" | "bulk_pack",
+        plan: editForm.plan as "free" | "single_scan" | "interview_sprint",
         credits: Number(editForm.credits)
       });
       toast.success("User updated successfully");
@@ -235,7 +235,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleTestPayment = async (plan: "single_scan" | "bulk_pack") => {
+  const handleTestPayment = async (plan: "single_scan" | "interview_sprint") => {
     setIsTestingPayment(plan);
     try {
       const url = await createCheckoutSession({
@@ -394,14 +394,14 @@ export default function AdminPage() {
                     Test Single ($4.99)
                   </Button>
                   <Button 
-                    onClick={() => handleTestPayment("bulk_pack")} 
+                    onClick={() => handleTestPayment("interview_sprint")} 
                     disabled={!!isTestingPayment}
                     variant="outline"
                     size="sm"
                     className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                   >
-                    {isTestingPayment === "bulk_pack" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
-                    Test Bulk ($19.99)
+                    {isTestingPayment === "interview_sprint" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
+                    Test Sprint ($14.99)
                   </Button>
                 </div>
               </div>
@@ -422,14 +422,14 @@ export default function AdminPage() {
                     />
                     <Select 
                       value={webhookPlan} 
-                      onValueChange={(val: "single_scan" | "bulk_pack") => setWebhookPlan(val)}
+                      onValueChange={(val: "single_scan" | "interview_sprint") => setWebhookPlan(val)}
                     >
                       <SelectTrigger className="h-8 w-[130px] text-xs bg-background">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="single_scan">Single Scan</SelectItem>
-                        <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                        <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -480,14 +480,14 @@ export default function AdminPage() {
                 <Label htmlFor="grant-plan">Plan to Grant</Label>
                 <Select 
                   value={grantPlan} 
-                  onValueChange={(val: "single_scan" | "bulk_pack") => setGrantPlan(val)}
+                  onValueChange={(val: "single_scan" | "interview_sprint") => setGrantPlan(val)}
                 >
                   <SelectTrigger id="grant-plan">
                     <SelectValue placeholder="Select plan" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="single_scan">Single Scan</SelectItem>
-                    <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                    <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -587,7 +587,7 @@ export default function AdminPage() {
                         <TableCell>{userData.email || "No email"}</TableCell>
                         <TableCell>
                           <Badge 
-                            variant={userData.subscriptionTier === "bulk_pack" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
+                            variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
                             className="capitalize"
                           >
                             {(userData.subscriptionTier || "free").replace("_", " ")}
@@ -690,7 +690,7 @@ export default function AdminPage() {
                 <SelectContent>
                   <SelectItem value="free">Free</SelectItem>
                   <SelectItem value="single_scan">Single Scan</SelectItem>
-                  <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                  <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
                 </SelectContent>
               </Select>
             </div>

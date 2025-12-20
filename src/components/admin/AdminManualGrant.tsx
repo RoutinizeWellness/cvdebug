@@ -10,8 +10,8 @@ interface AdminManualGrantProps {
   setGrantEmail: (value: string) => void;
   grantName: string;
   setGrantName: (value: string) => void;
-  grantPlan: "single_scan" | "bulk_pack";
-  setGrantPlan: (value: "single_scan" | "bulk_pack") => void;
+  grantPlan: "single_scan" | "interview_sprint";
+  setGrantPlan: (value: "single_scan" | "interview_sprint") => void;
   handleGrantPurchase: () => void;
   isGranting: boolean;
 }
@@ -58,14 +58,14 @@ export function AdminManualGrant({
             <Label htmlFor="grant-plan">Plan to Grant</Label>
             <Select 
               value={grantPlan} 
-              onValueChange={(val: "single_scan" | "bulk_pack") => setGrantPlan(val)}
+              onValueChange={(val: "single_scan" | "interview_sprint") => setGrantPlan(val)}
             >
               <SelectTrigger id="grant-plan">
                 <SelectValue placeholder="Select plan" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="single_scan">Single Scan</SelectItem>
-                <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -83,7 +83,7 @@ export function AdminUserTable({
                     <TableCell>{userData.email || "No email"}</TableCell>
                     <TableCell>
                       <Badge 
-                        variant={userData.subscriptionTier === "bulk_pack" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
+                        variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
                         className="capitalize"
                       >
                         {(userData.subscriptionTier || "free").replace("_", " ")}

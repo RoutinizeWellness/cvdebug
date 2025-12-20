@@ -5,12 +5,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, CreditCard, Zap, Building2, Sparkles } from "lucide-react";
 
 interface AdminPaymentTestingProps {
-  handleTestPayment: (plan: "single_scan" | "bulk_pack") => void;
+  handleTestPayment: (plan: "single_scan" | "interview_sprint") => void;
   isTestingPayment: string | null;
   webhookEmail: string;
   setWebhookEmail: (value: string) => void;
-  webhookPlan: "single_scan" | "bulk_pack";
-  setWebhookPlan: (value: "single_scan" | "bulk_pack") => void;
+  webhookPlan: "single_scan" | "interview_sprint";
+  setWebhookPlan: (value: "single_scan" | "interview_sprint") => void;
   handleSimulateWebhook: () => void;
   isSimulatingWebhook: boolean;
 }
@@ -53,14 +53,14 @@ export function AdminPaymentTesting({
                 Test Single ($4.99)
               </Button>
               <Button 
-                onClick={() => handleTestPayment("bulk_pack")} 
+                onClick={() => handleTestPayment("interview_sprint")} 
                 disabled={!!isTestingPayment}
                 variant="outline"
                 size="sm"
                 className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
               >
-                {isTestingPayment === "bulk_pack" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
-                Test Bulk ($19.99)
+                {isTestingPayment === "interview_sprint" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
+                Test Sprint ($14.99)
               </Button>
             </div>
           </div>
@@ -81,14 +81,14 @@ export function AdminPaymentTesting({
                 />
                 <Select 
                   value={webhookPlan} 
-                  onValueChange={(val: "single_scan" | "bulk_pack") => setWebhookPlan(val)}
+                  onValueChange={(val: "single_scan" | "interview_sprint") => setWebhookPlan(val)}
                 >
                   <SelectTrigger className="h-8 w-[130px] text-xs bg-background">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="single_scan">Single Scan</SelectItem>
-                    <SelectItem value="bulk_pack">Bulk Pack</SelectItem>
+                    <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
