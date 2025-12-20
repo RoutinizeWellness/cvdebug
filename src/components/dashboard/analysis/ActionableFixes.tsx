@@ -36,11 +36,11 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
         {fixes.map((fix, index) => (
           <div
             key={index}
-            className="border border-stone-200 dark:border-stone-700 rounded-lg overflow-hidden bg-white dark:bg-stone-900/50"
+            className="border border-stone-700 rounded-lg overflow-hidden bg-stone-900/50"
           >
             <button
               onClick={() => toggleAccordion(index)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-stone-50 dark:hover:bg-stone-800/50 transition-colors"
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-stone-800/50 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
@@ -63,14 +63,14 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-4 pt-0 space-y-3 border-t border-stone-200 dark:border-stone-700">
+                  <div className="p-4 pt-0 space-y-3 border-t border-stone-700">
                     <div>
                       <p className="text-sm text-zinc-300 mb-2">
                         {fix.description}
                       </p>
                     </div>
 
-                    <div className="bg-stone-50 dark:bg-stone-800/50 rounded-lg p-3">
+                    <div className="bg-stone-800/50 rounded-lg p-3">
                       <div className="flex items-start gap-2 mb-2">
                         <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                         <div>

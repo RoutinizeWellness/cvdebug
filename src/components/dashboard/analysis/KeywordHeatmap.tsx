@@ -23,23 +23,30 @@ export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock, isFre
             High Impact
           </span>
         </div>
-        <div className="flex flex-wrap gap-2 content-start">
-          {foundKeywords.map((kw, idx) => (
-            <span 
-              key={idx}
-              className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold flex items-center gap-1"
-            >
-              <CheckCircle2 className="h-3 w-3" /> {kw}
-            </span>
-          ))}
-          {missingKeywords.map((kw, idx) => (
-            <span 
-              key={idx}
-              className="px-3 py-1.5 rounded-full border border-red-500 text-red-300 text-xs font-bold"
-            >
-              {typeof kw === 'string' ? kw : kw.keyword}
-            </span>
-          ))}
+        <div className="flex flex-wrap gap-2 content-start min-h-[120px]">
+          {foundKeywords && foundKeywords.length > 0 ? (
+            foundKeywords.map((kw, idx) => (
+              <span 
+                key={`found-${idx}`}
+                className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold flex items-center gap-1"
+              >
+                <CheckCircle2 className="h-3 w-3" /> {kw}
+              </span>
+            ))
+          ) : null}
+          {missingKeywords && missingKeywords.length > 0 ? (
+            missingKeywords.map((kw, idx) => (
+              <span 
+                key={`missing-${idx}`}
+                className="px-3 py-1.5 rounded-full border-2 border-red-500 bg-red-500/10 text-red-300 text-xs font-bold"
+              >
+                {typeof kw === 'string' ? kw : kw.keyword}
+              </span>
+            ))
+          ) : null}
+          {(!foundKeywords || foundKeywords.length === 0) && (!missingKeywords || missingKeywords.length === 0) && (
+            <p className="text-zinc-400 text-sm">No keywords analyzed yet</p>
+          )}
         </div>
       </div>
     );

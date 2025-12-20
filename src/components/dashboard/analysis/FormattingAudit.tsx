@@ -26,8 +26,8 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
             key={idx}
             className={`flex items-start gap-3 p-3 rounded-xl border ${
               item.status === "passed" 
-                ? "bg-stone-50 dark:bg-stone-800/50 border-stone-100 dark:border-stone-700"
-                : "bg-red-50 dark:bg-red-900/20 border-red-100 dark:border-red-900/30"
+                ? "bg-stone-900/50 border-stone-700"
+                : "bg-red-900/20 border-red-900/30"
             }`}
           >
             {item.status === "passed" ? (
@@ -40,7 +40,7 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
               <p className={`text-xs ${
                 item.status === "passed" ? "text-zinc-400" : "text-red-400"
               }`}>
-                {item.status === "passed" ? item.reason : item.fix}
+                {item.status === "passed" ? (item.reason || "Passed") : item.fix}
               </p>
             </div>
           </div>
