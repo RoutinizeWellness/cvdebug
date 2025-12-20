@@ -14,12 +14,12 @@ export function KeywordHeatmap({ foundKeywords, missingKeywords, onUnlock, isFre
       <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800">
-              <CheckCircle2 className="h-5 w-5 text-white" />
+            <div className="p-2 rounded-full bg-stone-800">
+              <CheckCircle2 className="h-5 w-5 text-primary" />
             </div>
             <h3 className="text-lg font-bold text-white">Keywords</h3>
           </div>
-          <span className="text-xs font-bold bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-1 rounded-md">
+          <span className="text-xs font-bold bg-green-900 text-green-300 px-2 py-1 rounded-md border border-green-700">
             High Impact
           </span>
         </div>

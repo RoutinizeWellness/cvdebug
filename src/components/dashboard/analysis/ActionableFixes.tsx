@@ -23,10 +23,10 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
   return (
     <div className="glass-card rounded-lg p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-full bg-stone-800 text-primary">
-          <Zap className="h-5 w-5" />
+        <div className="p-2 rounded-full bg-stone-800">
+          <Zap className="h-5 w-5 text-primary" />
         </div>
-        <h3 className="text-lg font-bold text-white">Actionable Fixes</h3>
+        <h3 className="text-lg font-bold" style={{ color: '#ffffff' }}>Actionable Fixes</h3>
         <span className="ml-auto text-xs font-bold bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-md">
           {fixes.length} Issues
         </span>

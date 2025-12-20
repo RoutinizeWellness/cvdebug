@@ -29,15 +29,15 @@ export function ImpactScore({ score, maxScore }: ImpactScoreProps) {
 
   return (
     <div className="glass-card rounded-lg p-6 flex flex-col items-center justify-center text-center gap-4">
-      <div className={`p-3 rounded-full bg-zinc-800 ${getIconColor()}`}>
+      <div className={`p-3 rounded-full ${getIconColor()}`} style={{ backgroundColor: 'rgba(39, 39, 42, 1)' }}>
         <TrendingUp className="h-8 w-8" />
       </div>
-      <h3 className="text-lg font-bold text-white">Impact Score</h3>
+      <h3 className="text-lg font-bold" style={{ color: '#ffffff' }}>Impact Score</h3>
       <div className="text-6xl font-black">
         <span className={getScoreColor()}>{score}</span>
-        <span className="text-3xl text-white font-normal">/{maxScore}</span>
+        <span className="text-3xl font-normal" style={{ color: '#ffffff' }}>/{maxScore}</span>
       </div>
-      <p className="text-sm text-white max-w-[220px] leading-relaxed">
+      <p className="text-sm max-w-[220px] leading-relaxed" style={{ color: '#ffffff' }}>
         {getMessage()}
       </p>
     </div>
