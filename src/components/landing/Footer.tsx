@@ -15,17 +15,17 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <Logo variant="light" iconClassName="h-6 w-auto" textClassName="text-lg" />
         <div className="flex items-center gap-8">
-          <button onClick={() => setShowTerms(true)} className="text-sm text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+          <button onClick={() => setShowTerms(true)} className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2">
             <span>📄</span> Terms of Service
           </button>
-          <button onClick={() => setShowPrivacy(true)} className="text-sm text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+          <button onClick={() => setShowPrivacy(true)} className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2">
             <span>🔒</span> Privacy Policy
           </button>
-          <a className="text-sm text-gray-500 hover:text-white transition-colors flex items-center gap-2" href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer">
+          <a className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2" href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer">
             <span>🐦</span> Twitter <span>↗️</span>
           </a>
         </div>
-        <div className="text-xs text-gray-600">
+        <div className="text-xs text-gray-500">
           © 2024 CVDebug. All rights reserved.
         </div>
       </div>

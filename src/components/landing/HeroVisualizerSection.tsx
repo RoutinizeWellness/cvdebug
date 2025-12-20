@@ -26,7 +26,7 @@ export function HeroVisualizerSection() {
           Is your Resume <br className="hidden md:block" />Invisible to Robots?
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mb-10 leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-300 max-w-2xl mb-10 leading-relaxed">
           90% of resumes are auto-rejected before a human sees them. We show you exactly what the ATS sees, so you can fix parsing errors and get hired.
         </p>
 

@@ -6,7 +6,7 @@ export function PricingSection() {
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">💰 The Repair Shop</h2>
-          <p className="text-gray-400">Simple pricing. No recurring subscriptions.</p>
+          <p className="text-gray-300">Simple pricing. No recurring subscriptions.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">

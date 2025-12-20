@@ -11,7 +11,7 @@ export function FAQSection() {
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Do you sell my data?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
-            <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed">
+            <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">
               Never. Your resume is parsed in memory and stored securely only for your session. We do not sell data to recruiters or third parties.
             </div>
           </details>
@@ -22,7 +22,7 @@ export function FAQSection() {
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">What is the "Image Trap"?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
-            <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed">
+            <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">
               Many modern resume templates (from Canva or Photoshop) export text as flattened images or complex vector shapes. While they look good to humans, ATS robots see blank pages. Our tool detects this instantly.
             </div>
           </details>
@@ -33,7 +33,7 @@ export function FAQSection() {
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Does this work for all industries?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
-            <div className="px-6 pb-6 pt-0 text-gray-400 text-sm leading-relaxed">
+            <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">
               Yes, but it is optimized for technical and corporate roles where ATS usage is heaviest (Tech, Finance, Healthcare, Engineering).
             </div>
           </details>
