@@ -14,10 +14,10 @@ export function HeroVisualizerSection() {
     <section className="relative w-full pt-20 pb-20 md:pt-32 md:pb-32 overflow-hidden" style={{ background: 'radial-gradient(circle at 50% 0%, rgba(124, 59, 237, 0.15) 0%, rgba(5, 5, 5, 0) 70%)' }}>
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center text-center z-10 relative">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7c3bed]/10 border border-[#7c3bed]/20 text-[#7c3bed] text-xs font-semibold mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-8">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7c3bed] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7c3bed]"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
           </span>
           ✨ New ATS Parser Engine v2.0
         </div>
