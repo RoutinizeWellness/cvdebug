@@ -26,6 +26,8 @@ export const createResume = mutation({
     mimeType: v.string(),
     category: v.optional(v.string()),
     jobDescription: v.optional(v.string()),
+    jobTitle: v.optional(v.string()),
+    company: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -33,8 +35,6 @@ export const createResume = mutation({
       throw new Error("Not authenticated");
     }
 
-    // User should already exist from storeUser mutation
-    // We don't create users here to avoid duplicates
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
@@ -44,19 +44,24 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
-    // HARD PAYWALL: Check credits BEFORE allowing any scan
-    const currentCredits = user.credits ?? 0;
+    // Check if user has active Interview Sprint
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     
-    // STRICT GATE: Block if no credits available
-    if (currentCredits <= 0) {
-      throw new Error("CREDITS_EXHAUSTED");
-    }
+    if (!hasActiveSprint) {
+      // HARD PAYWALL: Check credits BEFORE allowing any scan
+      const currentCredits = user.credits ?? 0;
+      
+      // STRICT GATE: Block if no credits available
+      if (currentCredits <= 0) {
+        throw new Error("CREDITS_EXHAUSTED");
+      }
 
-    // Deduct credit IMMEDIATELY and atomically
-    await ctx.db.patch(user._id, { 
-      credits: Math.max(0, currentCredits - 1),
-      freeTrialUsed: true,
-    });
+      // Deduct credit IMMEDIATELY and atomically
+      await ctx.db.patch(user._id, { 
+        credits: Math.max(0, currentCredits - 1),
+        freeTrialUsed: true,
+      });
+    }
 
     // Update device usage tracking
     if (user.deviceFingerprint) {
@@ -79,7 +84,7 @@ export const createResume = mutation({
       throw new Error("Failed to get file URL");
     }
 
-    // Create resume without deducting credits - use identity.subject for consistency
+    // Create resume - use identity.subject for consistency
     const resumeId = await ctx.db.insert("resumes", {
       userId: identity.subject,
       title: args.title,
@@ -88,8 +93,10 @@ export const createResume = mutation({
       mimeType: args.mimeType,
       category: args.category,
       jobDescription: args.jobDescription,
-      detailsUnlocked: false, // Details locked by default
-      status: "processing", // Set initial status
+      jobTitle: args.jobTitle,
+      company: args.company,
+      detailsUnlocked: hasActiveSprint || false,
+      status: "processing",
     });
 
     // AI analysis will be triggered after OCR extraction in updateResumeOcr

@@ -52,7 +52,7 @@ export default function Dashboard() {
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
   const [showPricing, setShowPricing] = useState(false);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
-  const [initialPlan, setInitialPlan] = useState<"single_scan" | "bulk_pack" | null>(null);
+  const [initialPlan, setInitialPlan] = useState<"single_scan" | "interview_sprint" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
@@ -102,7 +102,7 @@ export default function Dashboard() {
     const payment = searchParams.get("payment");
     const resumeId = searchParams.get("resumeId");
 
-    if (payment === "success" && (plan === "single_scan" || plan === "bulk_pack")) {
+    if (payment === "success" && (plan === "single_scan" || plan === "interview_sprint")) {
       if (processedPaymentRef.current) return;
       if (!isAuthenticated) return;
 
@@ -111,7 +111,7 @@ export default function Dashboard() {
 
       storeUser()
         .then(() => {
-          return purchaseCredits({ plan: plan as "single_scan" | "bulk_pack" });
+          return purchaseCredits({ plan: plan as "single_scan" | "interview_sprint" });
         })
         .then(() => {
           if (resumeId) {
@@ -135,8 +135,8 @@ export default function Dashboard() {
       toast.info("Payment cancelled.");
       setSearchParams({});
       navigate("/dashboard", { replace: true });
-    } else if (plan === "single_scan" || plan === "bulk_pack") {
-      setInitialPlan(plan as "single_scan" | "bulk_pack");
+    } else if (plan === "single_scan" || plan === "interview_sprint") {
+      setInitialPlan(plan as "single_scan" | "interview_sprint");
       setShowPricing(true);
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);

@@ -87,7 +87,7 @@ export const resetUserFlags = mutation({
 export const simulatePurchase = mutation({
   args: { 
     email: v.string(), 
-    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")) 
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")) 
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -97,15 +97,20 @@ export const simulatePurchase = mutation({
 
     if (!user) return "User not found";
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
     const currentCredits = user.credits ?? 0;
 
-    await ctx.db.patch(user._id, {
+    const updates: any = {
       credits: currentCredits + creditsToAdd,
       subscriptionTier: args.plan,
-    });
+    };
+    
+    if (args.plan === "interview_sprint") {
+      updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
 
-    // Send confirmation email
+    await ctx.db.patch(user._id, updates);
+
     if (user.email) {
       await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
         email: user.email,

@@ -32,6 +32,7 @@ import type * as billing from "../billing.js";
 import type * as billingActions from "../billingActions.js";
 import type * as crons from "../crons.js";
 import type * as http from "../http.js";
+import type * as jobTracker from "../jobTracker.js";
 import type * as marketing from "../marketing.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as resumes from "../resumes.js";
@@ -72,6 +73,7 @@ declare const fullApi: ApiFromModules<{
   billingActions: typeof billingActions;
   crons: typeof crons;
   http: typeof http;
+  jobTracker: typeof jobTracker;
   marketing: typeof marketing;
   mlLearning: typeof mlLearning;
   resumes: typeof resumes;

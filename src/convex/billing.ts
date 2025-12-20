@@ -31,13 +31,13 @@ export const handleWebhook = httpAction(async (ctx, request) => {
       // customer_id from Autumn is the Clerk tokenIdentifier (identity.subject)
       // Map product_id to plan
       const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
-      const productBulk = process.env.PRODUCT_BULK_PACK || "bulk_pack";
+      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint";
       
-      let plan: "single_scan" | "bulk_pack";
+      let plan: "single_scan" | "interview_sprint";
       if (product_id === productSingle) {
         plan = "single_scan";
-      } else if (product_id === productBulk) {
-        plan = "bulk_pack";
+      } else if (product_id === productSprint) {
+        plan = "interview_sprint";
       } else {
         console.error(`[Webhook] Unknown product_id: ${product_id}`);
         return new Response("Unknown product", { status: 400 });

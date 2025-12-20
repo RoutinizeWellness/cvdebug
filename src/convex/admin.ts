@@ -105,13 +105,13 @@ export const getAdminStats = query({
 
     const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
     const singleScanUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan")).collect();
-    const bulkPackUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "bulk_pack")).collect();
+    const sprintUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint")).collect();
 
     return {
       free: freeUsers.length,
       singleScan: singleScanUsers.length,
-      bulkPack: bulkPackUsers.length,
-      total: freeUsers.length + singleScanUsers.length + bulkPackUsers.length
+      interviewSprint: sprintUsers.length,
+      total: freeUsers.length + singleScanUsers.length + sprintUsers.length
     };
   }
 });
@@ -124,20 +124,20 @@ export const fixInconsistentUsers = mutation({
       throw new Error("Unauthorized");
     }
 
-    // Find users who have credits > 2 (default free is 2) but are still marked as "free"
+    // Find users who have credits > 1 (default free is 1) but are still marked as "free"
     // This implies they bought credits but the tier wasn't updated
     const allUsers = await ctx.db.query("users").collect();
     let fixedCount = 0;
 
     for (const user of allUsers) {
-      if (user.subscriptionTier === "free" && (user.credits || 0) > 2) {
-        // Heuristic: If they have > 2 credits, they likely paid.
-        // 3 credits = 2 (free) + 1 (single scan)
-        // 7 credits = 2 (free) + 5 (bulk pack)
+      if (user.subscriptionTier === "free" && (user.credits || 0) > 1) {
+        // Heuristic: If they have > 1 credits, they likely paid.
+        // 2 credits = 1 (free) + 1 (single scan)
+        // If they have sprint access, they're on interview_sprint
         
-        let newTier: "single_scan" | "bulk_pack" = "single_scan";
-        if ((user.credits || 0) >= 7) {
-          newTier = "bulk_pack";
+        let newTier: "single_scan" | "interview_sprint" = "single_scan";
+        if (user.sprintExpiresAt && user.sprintExpiresAt > Date.now()) {
+          newTier = "interview_sprint";
         }
 
         await ctx.db.patch(user._id, {
@@ -160,7 +160,6 @@ export const fixSpecificReportedUsers = mutation({
     }
 
     // Specific users reported with missing credits from payments
-    // We include their IDs to ensure we find them or create them if missing
     const fixes = [
       { 
         email: "juratbupt@gmail.com", 
@@ -186,7 +185,7 @@ export const fixSpecificReportedUsers = mutation({
       { 
         email: "lyp@oregonstate.edu", 
         id: "user_36cqEBADYopX7SoGUqp9nduJyWclyp",
-        creditsToAdd: 1, // Ensure this duplicate ID also has access if used
+        creditsToAdd: 1,
         plan: "single_scan",
         name: "Phillip Ly (Alt)"
       }
@@ -196,13 +195,11 @@ export const fixSpecificReportedUsers = mutation({
     let fixedCount = 0;
 
     for (const fix of fixes) {
-      // 1. Try to find by Token Identifier (Clerk ID)
       let user = await ctx.db
         .query("users")
         .withIndex("by_token", (q) => q.eq("tokenIdentifier", fix.id))
         .unique();
 
-      // 2. If not found by ID, try by Email
       if (!user) {
         user = await ctx.db
           .query("users")
@@ -211,28 +208,23 @@ export const fixSpecificReportedUsers = mutation({
       }
 
       if (user) {
-        // Update existing user
         const currentCredits = user.credits || 0;
-        // Only add credits if they seem low (avoid double adding if run multiple times)
-        // But since this is a manual fix for reported issues, we'll ensure they have AT LEAST the amount
         const newCredits = Math.max(currentCredits, fix.creditsToAdd);
         
         await ctx.db.patch(user._id, {
-          subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
+          subscriptionTier: fix.plan as "single_scan" | "interview_sprint",
           credits: newCredits,
-          // Ensure token identifier is correct if we found by email
           tokenIdentifier: user.tokenIdentifier || fix.id 
         });
         
         logs.push(`✅ Updated ${fix.email} (${user._id}): Set to ${fix.plan}, Credits ${currentCredits} -> ${newCredits}`);
         fixedCount++;
       } else {
-        // 3. Create user if they don't exist
         const newUserId = await ctx.db.insert("users", {
           tokenIdentifier: fix.id,
           name: fix.name,
           email: fix.email,
-          subscriptionTier: fix.plan as "single_scan" | "bulk_pack",
+          subscriptionTier: fix.plan as "single_scan" | "interview_sprint",
           credits: fix.creditsToAdd,
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
           emailVariant: "A",
@@ -263,7 +255,6 @@ export const fixKnownMissingUsers = mutation({
       "user_36cqEBADYopX7SoGUqp9nduJyWclyp"
     ];
 
-    // Also try to match by email parts if ID fails, based on user report
     const emailPatterns = [
       "oregonstate.edu",
       "gmail.com" 
@@ -272,7 +263,6 @@ export const fixKnownMissingUsers = mutation({
     let fixedCount = 0;
     let logs = [];
 
-    // 1. Fix by ID
     for (const id of idsToFix) {
       const user = await ctx.db
         .query("users")
@@ -281,7 +271,7 @@ export const fixKnownMissingUsers = mutation({
 
       if (user) {
         logs.push(`Found user by ID: ${user.name} (${user.email})`);
-        if (user.subscriptionTier !== "single_scan" && user.subscriptionTier !== "bulk_pack") {
+        if (user.subscriptionTier !== "single_scan" && user.subscriptionTier !== "interview_sprint") {
            const currentCredits = user.credits || 0;
            const newCredits = currentCredits < 1 ? 1 : currentCredits;
            
@@ -299,13 +289,10 @@ export const fixKnownMissingUsers = mutation({
       }
     }
 
-    // 2. Fallback: Fix by Email if they look like the reported users and are still free
-    // This is a heuristic to catch them if the ID was wrong but email matches
     if (fixedCount < 4) {
        const potentialUsers = await ctx.db.query("users").collect();
        for (const user of potentialUsers) {
           if (user.subscriptionTier === "free" && user.email) {
-             // Check if this looks like one of the reported users
              const isMatch = 
                 (user.email.includes("oregonstate.edu") && user.name?.includes("Phillip")) ||
                 (user.email.includes("gmail.com") && user.name?.includes("Aditya")) ||
@@ -330,7 +317,7 @@ export const fixKnownMissingUsers = mutation({
 export const grantPurchase = mutation({
   args: { 
     identifier: v.string(), 
-    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
     name: v.optional(v.string())
   },
   handler: async (ctx, args) => {
@@ -339,13 +326,11 @@ export const grantPurchase = mutation({
       throw new Error("Unauthorized");
     }
 
-    // Try to find by email first
     let user = await ctx.db
       .query("users")
       .withIndex("by_email", (q) => q.eq("email", args.identifier))
       .unique();
 
-    // If not found, try by tokenIdentifier
     if (!user) {
       user = await ctx.db
         .query("users")
@@ -353,16 +338,22 @@ export const grantPurchase = mutation({
         .unique();
     }
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
+    const sprintDuration = args.plan === "interview_sprint" ? 7 * 24 * 60 * 60 * 1000 : undefined;
 
     if (user) {
       const currentCredits = user.credits ?? 0;
-      await ctx.db.patch(user._id, {
+      const updates: any = {
         subscriptionTier: args.plan,
         credits: currentCredits + creditsToAdd,
-      });
+      };
+      
+      if (sprintDuration) {
+        updates.sprintExpiresAt = Date.now() + sprintDuration;
+      }
+      
+      await ctx.db.patch(user._id, updates);
 
-      // Send confirmation email
       if (user.email) {
         await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: user.email,
@@ -372,12 +363,11 @@ export const grantPurchase = mutation({
         });
       }
 
-      return `Successfully granted ${args.plan} (+${creditsToAdd} credits) to ${user.email || user.name}`;
+      return `Successfully granted ${args.plan} to ${user.email || user.name}`;
     } else {
-      // User not found - Create them if identifier is an email
       if (args.identifier.includes("@")) {
-        const newUserId = await ctx.db.insert("users", {
-          tokenIdentifier: `manual_${Date.now()}_${Math.random().toString(36).substring(7)}`, // Temporary ID
+        const newUserData: any = {
+          tokenIdentifier: `manual_${Date.now()}_${Math.random().toString(36).substring(7)}`,
           name: args.name || "Valued Customer",
           email: args.identifier,
           subscriptionTier: args.plan,
@@ -385,9 +375,14 @@ export const grantPurchase = mutation({
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
           emailVariant: "A",
           lastSeen: Date.now(),
-        });
+        };
+        
+        if (sprintDuration) {
+          newUserData.sprintExpiresAt = Date.now() + sprintDuration;
+        }
+        
+        const newUserId = await ctx.db.insert("users", newUserData);
 
-        // Send confirmation email
         await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: args.identifier,
           name: args.name,
@@ -395,7 +390,7 @@ export const grantPurchase = mutation({
           credits: creditsToAdd
         });
 
-        return `Created NEW user ${args.identifier} with ${args.plan} and ${creditsToAdd} credits. They will be linked when they login.`;
+        return `Created NEW user ${args.identifier} with ${args.plan}. They will be linked when they login.`;
       } else {
         throw new Error(`User not found and identifier '${args.identifier}' is not a valid email to create a new user.`);
       }
@@ -413,7 +408,6 @@ export const processBulkGrants = mutation({
       throw new Error("Unauthorized");
     }
 
-    // Extract emails using regex
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
     const matches = args.rawText.match(emailRegex) || [];
     
@@ -421,7 +415,6 @@ export const processBulkGrants = mutation({
       return "No emails found in the provided text.";
     }
 
-    // Count occurrences of each email to determine credits
     const emailCounts: Record<string, number> = {};
     for (const email of matches) {
       const normalized = email.toLowerCase();
@@ -432,13 +425,9 @@ export const processBulkGrants = mutation({
     let successCount = 0;
 
     for (const [email, count] of Object.entries(emailCounts)) {
-      // Determine plan based on count (heuristic)
-      // 1-4 occurrences = single_scan * count
-      // 5+ occurrences = bulk_pack (or just give them lots of credits)
       const creditsToAdd = count; 
-      const plan = count >= 5 ? "bulk_pack" : "single_scan";
+      const plan = count >= 5 ? "interview_sprint" : "single_scan";
 
-      // Find or Create User
       let user = await ctx.db
         .query("users")
         .withIndex("by_email", (q) => q.eq("email", email))
@@ -446,15 +435,20 @@ export const processBulkGrants = mutation({
 
       if (user) {
         const currentCredits = user.credits || 0;
-        await ctx.db.patch(user._id, {
+        const updates: any = {
           credits: currentCredits + creditsToAdd,
           subscriptionTier: plan
-        });
+        };
+        
+        if (plan === "interview_sprint") {
+          updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        }
+        
+        await ctx.db.patch(user._id, updates);
         logs.push(`✅ ${email}: Added ${creditsToAdd} credits (Total: ${currentCredits + creditsToAdd})`);
         successCount++;
       } else {
-        // Create new user
-        await ctx.db.insert("users", {
+        const newUserData: any = {
           tokenIdentifier: `bulk_${Date.now()}_${Math.random().toString(36).substring(7)}`,
           name: email.split("@")[0],
           email: email,
@@ -463,7 +457,13 @@ export const processBulkGrants = mutation({
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
           emailVariant: "A",
           lastSeen: Date.now(),
-        });
+        };
+        
+        if (plan === "interview_sprint") {
+          newUserData.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        }
+        
+        await ctx.db.insert("users", newUserData);
         logs.push(`✨ ${email}: Created new user with ${creditsToAdd} credits`);
         successCount++;
       }
@@ -476,7 +476,7 @@ export const processBulkGrants = mutation({
 export const updateUserPlan = mutation({
   args: {
     userId: v.id("users"),
-    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
     credits: v.number(),
   },
   handler: async (ctx, args) => {
@@ -485,10 +485,16 @@ export const updateUserPlan = mutation({
       throw new Error("Unauthorized");
     }
 
-    await ctx.db.patch(args.userId, {
+    const updates: any = {
       subscriptionTier: args.plan,
       credits: args.credits,
-    });
+    };
+    
+    if (args.plan === "interview_sprint") {
+      updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    await ctx.db.patch(args.userId, updates);
   },
 });
 
@@ -506,7 +512,7 @@ export const deleteUser = mutation({
 export const simulateWebhookEvent = action({
   args: {
     email: v.string(),
-    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -514,7 +520,6 @@ export const simulateWebhookEvent = action({
       throw new Error("Unauthorized");
     }
 
-    // Get user to find their ID (tokenIdentifier) which is required for the webhook logic
     const user = await ctx.runQuery(internalAny.users.getUserByEmail, { email: args.email });
     if (!user) {
       throw new Error(`User with email ${args.email} not found. Please ensure the user exists first.`);
@@ -526,7 +531,6 @@ export const simulateWebhookEvent = action({
 
     console.log(`Simulating webhook for user ${user.email} (${user.tokenIdentifier})`);
 
-    // Directly update the user's subscription (simulating what the webhook would do)
     await ctx.runMutation(internalAny.users.updateSubscription, {
       tokenIdentifier: user.tokenIdentifier,
       plan: args.plan,

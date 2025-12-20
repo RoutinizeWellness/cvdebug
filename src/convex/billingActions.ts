@@ -6,7 +6,7 @@ import { Autumn } from "autumn-js";
 
 export const createCheckoutSession = action({
   args: {
-    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
     origin: v.string(),
     resumeId: v.optional(v.string()),
   },
@@ -36,11 +36,11 @@ export const createCheckoutSession = action({
 
       // Use env vars for product IDs, or default to the plan names
       const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
-      const productBulk = process.env.PRODUCT_BULK_PACK || "bulk_pack";
+      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint";
 
       const products = {
         single_scan: productSingle,
-        bulk_pack: productBulk,
+        interview_sprint: productSprint,
       };
 
       const productId = products[args.plan];

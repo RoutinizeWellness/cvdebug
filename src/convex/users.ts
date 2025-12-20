@@ -23,19 +23,19 @@ export const currentUser = query({
     if (identity.email === "tiniboti@gmail.com") {
       return {
         ...identity,
-        subscriptionTier: "bulk_pack",
+        subscriptionTier: "interview_sprint",
         credits: 999999,
+        sprintExpiresAt: Date.now() + (365 * 24 * 60 * 60 * 1000),
         trialEndsOn: undefined,
         _id: user?._id,
       };
     }
       
-    // Prefer the local DB subscription tier, but fallback to "free"
-    // Default credits to 1 for new users (Free tier)
     return {
       ...identity,
       subscriptionTier: user?.subscriptionTier || "free",
       credits: user?.credits ?? 1,
+      sprintExpiresAt: user?.sprintExpiresAt,
       trialEndsOn: user?.trialEndsOn,
       _id: user?._id,
     };
@@ -184,7 +184,7 @@ export const getUserByEmail = internalQuery({
 export const updateSubscription = internalMutation({
   args: { 
     tokenIdentifier: v.string(), 
-    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
   },
   handler: async (ctx, args) => {
     console.log(`[updateSubscription] START - Called with args:`, args);
@@ -194,19 +194,24 @@ export const updateSubscription = internalMutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
     console.log(`[updateSubscription] Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
 
     if (user) {
       const currentCredits = user.credits ?? 1;
       console.log(`[updateSubscription] Found user ${user._id} (${user.email}). Updating credits from ${currentCredits} to ${currentCredits + creditsToAdd}`);
       
-      await ctx.db.patch(user._id, { 
+      const updates: any = { 
         credits: currentCredits + creditsToAdd,
         subscriptionTier: args.plan
-      });
+      };
+      
+      if (args.plan === "interview_sprint") {
+        updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+      }
+      
+      await ctx.db.patch(user._id, updates);
 
-      // Send confirmation email
       if (user.email) {
         console.log(`[updateSubscription] Scheduling confirmation email for ${user.email}`);
         await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
@@ -222,15 +227,20 @@ export const updateSubscription = internalMutation({
        
        if (identity && identity.subject === args.tokenIdentifier) {
           console.log(`[updateSubscription] Identity verified. Creating new user for ${identity.email}`);
-          await ctx.db.insert("users", {
+          const newUserData: any = {
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
             name: identity.name,
             subscriptionTier: args.plan,
             credits: 1 + creditsToAdd,
-          });
+          };
           
-          // Send confirmation email if we have email
+          if (args.plan === "interview_sprint") {
+            newUserData.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+          }
+          
+          await ctx.db.insert("users", newUserData);
+          
           if (identity.email) {
             console.log(`[updateSubscription] Scheduling confirmation email for new user ${identity.email}`);
             await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
@@ -250,7 +260,7 @@ export const updateSubscription = internalMutation({
 
 export const purchaseCredits = mutation({
   args: { 
-    plan: v.union(v.literal("single_scan"), v.literal("bulk_pack")),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -261,11 +271,9 @@ export const purchaseCredits = mutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
 
-    // Recovery: If user not found by token (e.g. deleted manually), try email or create
     if (!user) {
       console.log(`User not found by token ${identity.subject}, attempting recovery...`);
       
-      // Try by email
       if (identity.email) {
         user = await ctx.db
           .query("users")
@@ -273,7 +281,6 @@ export const purchaseCredits = mutation({
           .unique();
           
         if (user) {
-          // Link found user
           await ctx.db.patch(user._id, {
             tokenIdentifier: identity.subject,
             name: identity.name || user.name,
@@ -282,37 +289,40 @@ export const purchaseCredits = mutation({
         }
       }
       
-      // If still not found, create new user
       if (!user) {
          const userId = await ctx.db.insert("users", {
           tokenIdentifier: identity.subject,
           name: identity.name,
           email: identity.email,
           subscriptionTier: "free",
-          credits: 2,
+          credits: 1,
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
-          emailVariant: "A", // Default
+          emailVariant: "A",
           lastSeen: Date.now(),
         });
         
-        // Fetch the newly created user
         user = await ctx.db.get(userId);
       }
     }
 
     if (!user) throw new Error("User could not be found or created");
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : args.plan === "bulk_pack" ? 5 : 0;
+    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
     const currentCredits = user.credits ?? 0;
 
     console.log(`[PURCHASE] Adding ${creditsToAdd} credits to user ${user._id} (${user.email}) for plan ${args.plan}`);
 
-    await ctx.db.patch(user._id, {
+    const updates: any = {
       credits: currentCredits + creditsToAdd,
       subscriptionTier: args.plan,
-    });
+    };
     
-    // Send confirmation email
+    if (args.plan === "interview_sprint") {
+      updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    await ctx.db.patch(user._id, updates);
+    
     if (user.email) {
       await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
         email: user.email,
@@ -329,35 +339,24 @@ export const purchaseCredits = mutation({
 export const getBetaStatus = query({
   args: {},
   handler: async (ctx) => {
-    // Count paid users (single_scan or bulk_pack) - OPTIMIZED to avoid .collect()
-    // Use take() with a reasonable limit instead of loading all users
     const singleScanUsers = await ctx.db.query("users")
       .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "single_scan"))
-      .take(100); // Limit to prevent excessive database reads
+      .take(100);
       
-    const bulkPackUsers = await ctx.db.query("users")
-      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "bulk_pack"))
-      .take(100); // Limit to prevent excessive database reads
+    const sprintUsers = await ctx.db.query("users")
+      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "interview_sprint"))
+      .take(100);
 
-    // Deduplicate by email to prevent counting duplicate accounts
     const uniqueEmails = new Set<string>();
-    [...singleScanUsers, ...bulkPackUsers].forEach(user => {
+    [...singleScanUsers, ...sprintUsers].forEach(user => {
       if (user.email) uniqueEmails.add(user.email);
     });
     
     const realCount = uniqueEmails.size;
-    // console.log("Beta Status Count:", realCount);
-    
-    // Marketing logic: Create urgency by showing most spots are taken
-    // "Invented" data as requested to make it look urgent
-    // Base of 92 claimed spots + actual users
     const baseCount = 97; 
     
-    // Calculate total claimed, ensuring we don't show "Sold Out" (100) purely from fake data
-    // We want to leave at least 3-4 spots to drive action
     let displayClaimed = baseCount + realCount;
     
-    // Cap at 99 to always leave at least 1 spot open for urgency
     if (displayClaimed > 99) {
         displayClaimed = 99;
     }

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router";
 
 const apiAny = api;
 
-export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "bulk_pack" | null; resumeId?: string }) {
+export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "interview_sprint" | null; resumeId?: string }) {
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
   const user = useQuery(apiAny.users.currentUser);
   const betaStatus = useQuery(apiAny.users.getBetaStatus);
@@ -21,12 +21,12 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   const navigate = useNavigate();
   
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "bulk_pack" | null>(initialPlan || null);
+  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | null>(initialPlan || null);
   
   const currentPlan = user?.subscriptionTier || "free";
   const isTrial = user?.trialEndsOn && user.trialEndsOn > Date.now();
 
-  const handleUpgrade = async (plan: "single_scan" | "bulk_pack") => {
+  const handleUpgrade = async (plan: "single_scan" | "interview_sprint") => {
     if (!isAuthenticated) {
       toast.error("Please log in to purchase credits");
       onOpenChange(false);
@@ -56,7 +56,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     }
   };
 
-  const initiateCheckout = (plan: "single_scan" | "bulk_pack") => {
+  const initiateCheckout = (plan: "single_scan" | "interview_sprint") => {
     setCheckoutPlan(plan);
   };
 
@@ -68,19 +68,19 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         originalPrice: "$9.99",
         period: "one-time", 
         features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Detailed Analysis Report"],
-        badge: "Beta Launch 🚀",
+        badge: "Quick Fix",
         icon: Zap,
         color: "text-orange-500"
       },
-      bulk_pack: { 
-        name: "Bundle (5 Scans)", 
-        price: "$19.99", 
-        originalPrice: "$49.95",
-        period: "credits never expire", 
-        features: ["5 Full ATS Scans", "Test Different Resume Versions", "Tailor for 5+ Job Descriptions", "Credits Never Expire"],
-        badge: "Best Value",
-        icon: Building2,
-        color: "text-blue-500"
+      interview_sprint: { 
+        name: "7-Day Interview Sprint", 
+        price: "$14.99", 
+        originalPrice: "$49.99",
+        period: "7 days unlimited access", 
+        features: ["Unlimited Scans for 7 Days", "AI Keyword Recommendations", "Job Application Tracker", "Targeted Match History", "Priority Support"],
+        badge: "Most Popular 🚀",
+        icon: Rocket,
+        color: "text-primary"
       }
     }[checkoutPlan];
 
@@ -242,118 +242,113 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </Button>
           </div>
 
-          {/* Single Scan */}
-          <div className="group relative rounded-2xl border-2 border-orange-500/20 bg-card p-6 flex flex-col gap-5 hover:border-orange-500 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1">
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-bl-xl rounded-tr-lg uppercase tracking-wider shadow-sm z-10">
-              BETA ★
-            </div>
-            
+          {/* Single Scan - The Anchor */}
+          <div className="group relative rounded-2xl border border-zinc-800 bg-card p-6 flex flex-col gap-5 hover:border-zinc-700 transition-all duration-300">
             <div className="space-y-2">
-              <div className="h-12 w-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-2">
-                <Zap className="h-6 w-6 text-orange-600" />
+              <div className="h-12 w-12 rounded-xl bg-zinc-800 flex items-center justify-center mb-2">
+                <Zap className="h-6 w-6 text-zinc-400" />
               </div>
-              <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
+              <h3 className="font-bold text-xl text-foreground">
                 Single Scan
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-black tracking-tight">$4.99</span>
-                  <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$9.99</span>
                 </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="secondary" className="bg-green-500/10 text-green-600 hover:bg-green-500/20 border-green-500/20">
-                    50% OFF
-                  </Badge>
-                  <span className="text-[10px] font-bold text-orange-600 flex items-center gap-1 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">
-                    <Rocket className="h-3 w-3" /> Limited: {claimed}/100 claimed
-                  </span>
-                </div>
+                <span className="text-xs text-muted-foreground mt-1">One-time payment</span>
               </div>
-              <p className="text-sm text-muted-foreground">Perfect for optimizing a resume for one specific job application.</p>
+              <p className="text-sm text-muted-foreground">One-time fix for this file. No history. No AI advice.</p>
             </div>
             
             <Separator />
 
             <div className="space-y-3 flex-1">
               {[
-                "Full ATS Analysis Score",
-                "Missing Keywords Report",
-                "Formatting & Structure Check",
-                "Detailed Analysis Report"
+                "1 Full ATS Analysis",
+                "Basic Keyword Report",
+                "Format Check",
+                "PDF Sanitization"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-orange-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-orange-600" />
+                  <div className="h-5 w-5 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-zinc-400" />
                   </div>
-                  <span className="text-sm font-medium text-foreground/80">{feature}</span>
+                  <span className="text-sm font-medium text-muted-foreground">{feature}</span>
                 </div>
               ))}
             </div>
             
             <Button 
-              className="w-full h-12 font-bold text-base shadow-lg shadow-orange-500/20 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transition-all rounded-xl" 
+              variant="outline"
+              className="w-full h-12 font-bold text-base rounded-xl" 
               onClick={() => handleUpgrade("single_scan")}
               disabled={!!isLoading}
             >
-              {isLoading === "single_scan" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Get Full Analysis"}
+              {isLoading === "single_scan" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Get Single Scan"}
             </Button>
           </div>
 
-          {/* Bulk Pack */}
-          <div className="group relative rounded-2xl border border-border bg-card p-6 flex flex-col gap-5 hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-foreground text-background text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg border border-border">
-              Most Popular
+          {/* Interview Sprint - The Focus */}
+          <div className="group relative rounded-2xl border-2 border-primary bg-card p-6 flex flex-col gap-5 shadow-[0_0_50px_-12px_rgba(249,245,6,0.3)] hover:shadow-[0_0_60px_-12px_rgba(249,245,6,0.4)] transition-all duration-300 transform scale-105">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg animate-pulse">
+              🚀 Most Popular
             </div>
 
             <div className="space-y-2">
-              <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center mb-2">
-                <Building2 className="h-6 w-6 text-blue-600" />
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                <Rocket className="h-6 w-6 text-primary" />
               </div>
               <h3 className="font-bold text-xl text-foreground flex items-center gap-2">
-                Bundle (5 Scans)
+                7-Day Interview Sprint
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black tracking-tight">$19.99</span>
-                  <span className="text-lg text-muted-foreground line-through">$49.95</span>
+                  <span className="text-4xl font-black tracking-tight">$14.99</span>
+                  <span className="text-lg text-muted-foreground line-through decoration-red-500/50">$49.99</span>
                 </div>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border-blue-500/20">
-                    SAVE $25
+                  <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+                    70% OFF
                   </Badge>
                   <span className="text-[10px] font-medium text-muted-foreground">
-                    Just $4.00 per scan
+                    Unlimited scans for 7 days
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Best for active job seekers applying to multiple companies.</p>
+              <p className="text-sm text-foreground/80 font-medium">Unlimited scans for 7 days. AI Bullet Point Rewriter. Dashboard to track your applications. <span className="text-primary">Most successful for job seekers.</span></p>
             </div>
             
-            <Separator />
+            <Separator className="bg-primary/20" />
 
             <div className="space-y-3 flex-1">
               {[
-                "5 Full ATS Scans",
-                "Test Different Resume Versions",
-                "Tailor for 5+ Job Descriptions",
-                "Credits Never Expire"
+                "✨ Unlimited Scans (7 Days)",
+                "🎯 AI Keyword Recommendations",
+                "📊 Job Application Tracker",
+                "🔄 Targeted Match History",
+                "⚡ Priority Support"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-blue-600" />
+                  <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-foreground/80">{feature}</span>
+                  <span className="text-sm font-bold text-foreground">{feature}</span>
                 </div>
               ))}
             </div>
+
+            <div className="bg-muted/50 rounded-lg p-3 border border-primary/20">
+              <p className="text-xs text-center font-medium text-muted-foreground">
+                ⭐ Used by candidates at <span className="font-bold text-foreground">Google, Meta & NVIDIA</span>
+              </p>
+            </div>
             
             <Button 
-              variant="outline" 
-              className="w-full h-12 font-bold text-base border-2 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 dark:hover:bg-blue-950/30 dark:hover:text-blue-400 rounded-xl transition-all" 
-              onClick={() => handleUpgrade("bulk_pack")}
+              className="w-full h-14 font-bold text-base shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-black rounded-xl transition-all hover:scale-[1.02]" 
+              onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
             >
-              {isLoading === "bulk_pack" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Buy Bundle"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Start Interview Sprint →"}
             </Button>
           </div>
         </div>
