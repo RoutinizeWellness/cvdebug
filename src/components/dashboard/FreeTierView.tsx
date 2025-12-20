@@ -40,10 +40,10 @@ export function FreeTierView({
           <div>
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
               score >= 80 
-                ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
+                ? 'bg-green-500/20 text-green-200 border-green-500/30'
                 : score >= 50
-                ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
-                : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
+                ? 'bg-orange-500/20 text-orange-200 border-orange-500/30'
+                : 'bg-red-500/20 text-red-200 border-red-500/30'
             } text-xs font-bold uppercase tracking-wider mb-4 border`}>
               <span className={`size-2 rounded-full animate-pulse ${
                 score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-orange-500' : 'bg-red-500'
@@ -82,14 +82,14 @@ export function FreeTierView({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
             {/* Formatting Audit */}
             <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Formatting Audit</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Formatting Audit</h3>
               <div className="space-y-3">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50">
-                    <div className="h-5 w-5 rounded-full bg-stone-300 dark:bg-stone-700"></div>
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-stone-800/50">
+                    <div className="h-5 w-5 rounded-full bg-stone-700"></div>
                     <div className="flex-1">
-                      <div className="h-4 bg-stone-300 dark:bg-stone-700 rounded mb-2"></div>
-                      <div className="h-3 bg-stone-200 dark:bg-stone-800 rounded"></div>
+                      <div className="h-4 bg-stone-700 rounded mb-2"></div>
+                      <div className="h-3 bg-stone-800 rounded"></div>
                     </div>
                   </div>
                 ))}
@@ -98,10 +98,10 @@ export function FreeTierView({
 
             {/* Keywords */}
             <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Keywords</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Keywords</h3>
               <div className="flex flex-wrap gap-2">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <span key={i} className="px-3 py-1.5 rounded-full bg-stone-300 dark:bg-stone-700 text-xs">
+                  <span key={i} className="px-3 py-1.5 rounded-full bg-stone-700 text-zinc-300 text-xs">
                     Keyword
                   </span>
                 ))}
@@ -110,15 +110,15 @@ export function FreeTierView({
 
             {/* Role Match */}
             <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-4">Role Match</h3>
+              <h3 className="text-lg font-bold text-white mb-4">Role Match</h3>
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i}>
-                    <div className="flex justify-between mb-2">
+                    <div className="flex justify-between mb-2 text-zinc-300">
                       <span className="text-sm">Role Name</span>
                       <span className="text-sm">XX%</span>
                     </div>
-                    <div className="h-3 bg-stone-300 dark:bg-stone-700 rounded-full"></div>
+                    <div className="h-3 bg-stone-700 rounded-full"></div>
                   </div>
                 ))}
               </div>
@@ -201,22 +201,22 @@ export function FreeTierView({
         <div className="lg:col-span-3 filter blur-md pointer-events-none select-none opacity-50">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 glass-card rounded-lg p-6">
-              <h2 className="text-2xl font-bold mb-6">Actionable Fixes</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Actionable Fixes</h2>
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="border rounded-lg p-4">
-                    <div className="h-5 bg-stone-300 dark:bg-stone-700 rounded mb-2"></div>
-                    <div className="h-4 bg-stone-200 dark:bg-stone-800 rounded"></div>
+                  <div key={i} className="border border-stone-700 rounded-lg p-4">
+                    <div className="h-5 bg-stone-700 rounded mb-2"></div>
+                    <div className="h-4 bg-stone-800 rounded"></div>
                   </div>
                 ))}
               </div>
             </div>
             <div className="flex flex-col gap-6">
               <div className="glass-card rounded-lg p-6">
-                <div className="h-32 bg-stone-300 dark:bg-stone-700 rounded"></div>
+                <div className="h-32 bg-stone-700 rounded"></div>
               </div>
               <div className="glass-card rounded-lg p-6">
-                <div className="h-32 bg-stone-300 dark:bg-stone-700 rounded"></div>
+                <div className="h-32 bg-stone-700 rounded"></div>
               </div>
             </div>
           </div>
