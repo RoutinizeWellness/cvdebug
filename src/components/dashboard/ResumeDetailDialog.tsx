@@ -127,10 +127,34 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   };
 
   const renderAnalysis = (text: string) => {
-    if (!text) return <p className="text-zinc-400 italic">Analysis pending...</p>;
+    if (!text || text.trim().length === 0) {
+      return (
+        <div className="flex items-center justify-center py-8">
+          <p className="text-zinc-400 italic">Analysis pending...</p>
+        </div>
+      );
+    }
+    
+    // Check if the text contains an error message
+    if (text.toLowerCase().includes("error") || text.toLowerCase().includes("failed")) {
+      return (
+        <div className="bg-red-950/30 border border-red-900/50 rounded-lg p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-1" />
+            <div>
+              <h4 className="text-red-400 font-bold mb-2">Analysis Error</h4>
+              <p className="text-zinc-300 text-sm mb-4">{text}</p>
+              <p className="text-zinc-400 text-xs">
+                Please try re-uploading your resume or contact support if the issue persists.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
     
     if (!text.includes("###")) {
-      return <div className="whitespace-pre-wrap text-sm text-zinc-300">{text}</div>;
+      return <div className="whitespace-pre-wrap text-sm text-zinc-300 leading-relaxed">{text}</div>;
     }
 
     const parts = text.split("###").filter(part => part.trim());
@@ -718,7 +742,19 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                           <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
                         </h2>
                         <div className="max-h-[500px] overflow-y-auto pr-2">
-                          {renderAnalysis(displayResume?.analysis || "")}
+                          {displayResume?.analysis && displayResume.analysis.trim().length > 0 ? (
+                            renderAnalysis(displayResume.analysis)
+                          ) : (
+                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                              <div className="h-16 w-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                                <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+                              </div>
+                              <p className="text-zinc-300 text-lg font-semibold mb-2">Analysis in Progress</p>
+                              <p className="text-zinc-400 text-sm max-w-md">
+                                Your resume is being analyzed by our AI. This typically takes 10-30 seconds. Please refresh the page in a moment.
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
