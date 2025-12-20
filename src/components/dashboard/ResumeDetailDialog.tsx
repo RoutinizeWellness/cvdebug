@@ -398,13 +398,63 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 />
               ) : (
                 <div className="space-y-8">
-                  <ScoreCard 
-                    score={displayResume?.score || 0}
-                    wordCount={displayResume?.ocrText?.split(/\s+/).length || 0}
-                    pageCount={1}
-                    parsingTime={2}
-                  />
+                  {/* Hero Section with Gauge - Matching HTML exactly */}
+                  <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
+                    {/* Background Glow */}
+                    <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+                    
+                    {/* Left: Gauge */}
+                    <GaugeScore score={displayResume?.score || 0} />
 
+                    {/* Right: Content */}
+                    <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
+                      <div>
+                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
+                          (displayResume?.score || 0) >= 80 
+                            ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
+                            : (displayResume?.score || 0) >= 50
+                            ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
+                            : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
+                        } text-xs font-bold uppercase tracking-wider mb-4 border`}>
+                          <span className={`size-2 rounded-full animate-pulse ${
+                            (displayResume?.score || 0) >= 80 ? 'bg-green-500' : (displayResume?.score || 0) >= 50 ? 'bg-orange-500' : 'bg-red-500'
+                          }`}></span>
+                          {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
+                        </div>
+                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+                          Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                            {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
+                          </span>.
+                        </h1>
+                        <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+                          {(displayResume?.score || 0) >= 80 
+                            ? 'Great job! Your resume is well-optimized for ATS systems.' 
+                            : (displayResume?.score || 0) >= 50 
+                            ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
+                            : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <Button 
+                          onClick={handleDownloadReport}
+                          className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
+                        >
+                          <Download className="h-5 w-5" />
+                          Download Report
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={handleShareLink}
+                          className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
+                        >
+                          <Link2 className="h-5 w-5" />
+                          Share Results
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bento Grid - Matching HTML exactly */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
                     <FormattingAudit items={auditItems} />
                     
@@ -423,8 +473,33 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     />
                   </div>
 
-                  {/* Actionable Fixes Section - Dynamic Data */}
-                  <ActionableFixes 
+                  {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Actionable Fixes (Left - 2 columns) */}
+                    <div className="lg:col-span-2">
+                      <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
+                        Actionable Fixes
+                        <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                          {(() => {
+                            const fixes: any[] = [];
+                            const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
+                            if (metricCount < 5) fixes.push(1);
+                            
+                            const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
+                            const weakCount = weakPhrases.reduce((count, phrase) => {
+                              return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
+                            }, 0);
+                            if (weakCount > 0) fixes.push(1);
+                            
+                            if (displayResume?.formatIssues?.some((i: any) => 
+                              i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
+                            )) fixes.push(1);
+                            
+                            return fixes.length;
+                          })()} Critical
+                        </span>
+                      </h2>
+                      <ActionableFixes 
                     fixes={(() => {
                       const fixes: Array<{title: string; description: string; impact: string; example: string}> = [];
                       
@@ -510,14 +585,16 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     })()}
                   />
 
-                  {/* Impact Score and AI Pro Tip Section - Dynamic Data */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ImpactScore 
-                      score={displayResume?.scoreBreakdown?.completeness || 0} 
-                      maxScore={30} 
-                    />
-                    
-                    <AIProTip 
+                    </div>
+
+                    {/* Right Column: Impact & Pro Tip */}
+                    <div className="flex flex-col gap-6">
+                      <ImpactScore 
+                        score={displayResume?.scoreBreakdown?.completeness || 0} 
+                        maxScore={30} 
+                      />
+                      
+                      <AIProTip 
                       tip={(() => {
                         const category = displayResume?.category || "General";
                         const score = displayResume?.score || 0;
@@ -556,10 +633,12 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                           }
                         }
                       })()}
-                      category={displayResume?.category || "General"}
-                    />
+                        category={displayResume?.category || "General"}
+                      />
+                    </div>
                   </div>
 
+                  {/* AI Recommendations Section */}
                   <div className="glass-card rounded-lg p-6">
                     <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
                       AI Recommendations
