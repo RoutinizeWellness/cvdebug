@@ -272,10 +272,16 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
     }
   ];
 
-  // Extract found keywords (mock data - you'd get this from your analysis)
-  const foundKeywords = displayResume?.missingKeywords?.slice(0, 8).map((kw: any) => 
-    typeof kw === 'string' ? kw : kw.keyword
-  ) || [];
+  // Extract found keywords from the analysis
+  // foundKeywords should come from a separate field, not from missingKeywords
+  const foundKeywords = displayResume?.foundKeywords || [];
+  
+  // If no foundKeywords field exists, extract some keywords from the resume text as a fallback
+  const fallbackFoundKeywords = !foundKeywords || foundKeywords.length === 0
+    ? (displayResume?.ocrText?.match(/\b(React|JavaScript|TypeScript|Python|Java|Node\.js|AWS|Docker|Kubernetes|SQL|MongoDB|Git|API|REST|GraphQL|CI\/CD|Agile|Scrum)\b/gi) || [])
+        .filter((v: string, i: number, a: string[]) => a.indexOf(v) === i) // unique values
+        .slice(0, 8)
+    : foundKeywords;
 
   return (
     <Dialog open={!!resumeId} onOpenChange={(open) => !open && onClose()}>
@@ -459,8 +465,8 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     <FormattingAudit items={auditItems} />
                     
                     <KeywordHeatmap 
-                      foundKeywords={foundKeywords}
-                      missingKeywords={criticalKeywords}
+                      foundKeywords={fallbackFoundKeywords}
+                      missingKeywords={displayResume?.missingKeywords || []}
                       isFree={false}
                     />
 
