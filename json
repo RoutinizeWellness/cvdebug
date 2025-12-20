@@ -1,3 +1,5 @@
-{
-  "plan": "1. Verify that the build errors are resolved.\n2. Confirm that the ML learning cron job is correctly registered in `src/convex/crons.ts`.\n3. Verify that `src/convex/ai/resumeAnalysis.ts` correctly imports and uses the new `generateFallbackAnalysis` from `src/convex/ai/fallbackAnalysis.ts`."
-}
+[
+  {
+    "file_path": "src/components/dashboard/analysis/KeywordHeatmap.tsx",
+    "reason": "Modified KeywordHeatmap.tsx to ensure proper visual separation of text elements and prevent concatenation issues. Wrapped the 'High Impact' span in a dedicated div and added a data-testid to the 'No keywords detected' message for better debugging.",
+    "diff": "
