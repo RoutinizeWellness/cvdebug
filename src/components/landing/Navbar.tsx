@@ -15,9 +15,9 @@ export function Navbar() {
             <Logo variant="light" />
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a className="text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#features">Features</a>
-            <a className="text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#pricing">Pricing</a>
-            <a className="text-sm font-medium text-gray-400 hover:text-white transition-colors" href="#faq">FAQ</a>
+            <a className="text-sm font-medium text-gray-300 hover:text-white transition-colors" href="#features">Features</a>
+            <a className="text-sm font-medium text-gray-300 hover:text-white transition-colors" href="#pricing">Pricing</a>
+            <a className="text-sm font-medium text-gray-300 hover:text-white transition-colors" href="#faq">FAQ</a>
           </div>
           <button 
             className="hidden md:flex items-center justify-center h-9 px-4 bg-[#22C55E] hover:bg-[#16a34a] text-black text-sm font-bold rounded-lg transition-colors shadow-[0_0_15px_-3px_rgba(34,197,94,0.4)]"
