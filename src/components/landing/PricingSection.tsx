@@ -6,7 +6,7 @@ export function PricingSection() {
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">💰 The Repair Shop</h2>
-          <p className="text-gray-300">Simple pricing. No recurring subscriptions.</p>
+          <p className="text-gray-200">Simple pricing. No recurring subscriptions.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -23,7 +23,7 @@ export function PricingSection() {
               Scan for Free
             </button>
             <div className="space-y-4 pt-4 border-t border-white/10">
-              <div className="flex items-center gap-3 text-sm text-gray-300">
+              <div className="flex items-center gap-3 text-sm text-gray-200">
                 <span className="text-xl">✅</span>
                 Basic Resume Score
               </div>

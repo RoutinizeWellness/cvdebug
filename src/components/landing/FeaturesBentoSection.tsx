@@ -4,7 +4,7 @@ export function FeaturesBentoSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Why your resume is failing</h2>
-          <p className="text-gray-300 text-lg max-w-2xl">We reverse-engineered the top parsing engines (Workday, Greenhouse, Lever) to give you an unfair advantage.</p>
+          <p className="text-gray-200 text-lg max-w-2xl">We reverse-engineered the top parsing engines (Workday, Greenhouse, Lever) to give you an unfair advantage.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -16,7 +16,7 @@ export function FeaturesBentoSection() {
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">Professional Parsing</h3>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-200 leading-relaxed">
                 We use enterprise-grade parsers to show you exactly how systems like Workday interpret your work history.
               </p>
             </div>
@@ -30,7 +30,7 @@ export function FeaturesBentoSection() {
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">The Image Trap</h3>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-200 leading-relaxed">
                 Detects invisible text and layout issues caused by designing in creative tools like Canva or Figma.
               </p>
             </div>
@@ -44,7 +44,7 @@ export function FeaturesBentoSection() {
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">Keyword Match</h3>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-200 leading-relaxed">
                 Scan your resume against specific Job Descriptions to see missing hard skills and keywords instantly.
               </p>
             </div>
@@ -58,7 +58,7 @@ export function FeaturesBentoSection() {
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">ROI Driven</h3>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-sm text-gray-200 leading-relaxed">
                 Users with an 80+ score get 3x more callbacks on average. Data-backed optimization.
               </p>
             </div>

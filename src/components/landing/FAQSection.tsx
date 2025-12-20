@@ -11,7 +11,7 @@ export function FAQSection() {
               <h3 className="text-base font-medium text-white group-hover:text-[#7c3bed] transition-colors">Do you sell my data?</h3>
               <span className="transform group-open:rotate-180 transition-transform text-xl">👇</span>
             </summary>
-            <div className="px-6 pb-6 pt-0 text-gray-300 text-sm leading-relaxed">
+            <div className="px-6 pb-6 pt-0 text-gray-200 text-sm leading-relaxed">
               Never. Your resume is parsed in memory and stored securely only for your session. We do not sell data to recruiters or third parties.
             </div>
           </details>
