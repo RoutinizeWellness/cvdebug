@@ -46,8 +46,74 @@ const schema = defineSchema(
   })
   .index("by_visitor_id", ["visitorId"])
   .index("by_user_id", ["userId"]),
+
+  // NEW: PROJECT MODEL - The core of the new architecture
+  projects: defineTable({
+    userId: v.string(),
+    name: v.string(), // e.g., "Senior Dev Hunt 2026"
+    targetRole: v.string(), // e.g., "Senior Software Engineer"
+    description: v.optional(v.string()),
+    masterCvId: v.optional(v.id("resumes")), // Reference to the base CV
+    status: v.optional(v.union(
+      v.literal("active"),
+      v.literal("paused"),
+      v.literal("completed")
+    )),
+    healthStatus: v.optional(v.union(
+      v.literal("healthy"), // Green light - CV is ATS-ready
+      v.literal("warning"), // Yellow - Minor issues detected
+      v.literal("critical") // Red - CV has parsing errors
+    )),
+    lastHealthCheck: v.optional(v.number()),
+  })
+  .index("by_user", ["userId"])
+  .index("by_user_and_status", ["userId", "status"]),
+
+  // NEW: APPLICATIONS - Track each job application within a project
+  applications: defineTable({
+    projectId: v.id("projects"),
+    userId: v.string(),
+    companyName: v.string(),
+    jobTitle: v.string(),
+    jobDescriptionText: v.optional(v.string()),
+    jobUrl: v.optional(v.string()),
+    matchScore: v.optional(v.number()), // 0-100 score
+    status: v.optional(v.union(
+      v.literal("draft"),
+      v.literal("applied"),
+      v.literal("interviewing"),
+      v.literal("rejected"),
+      v.literal("accepted")
+    )),
+    appliedDate: v.optional(v.number()),
+    // Keyword gap analysis
+    missingKeywords: v.optional(v.array(v.string())),
+    matchedKeywords: v.optional(v.array(v.string())),
+    // Cover letter
+    coverLetterId: v.optional(v.id("coverLetters")),
+    // Notes
+    notes: v.optional(v.string()),
+  })
+  .index("by_project", ["projectId"])
+  .index("by_user", ["userId"])
+  .index("by_user_and_status", ["userId", "status"])
+  .index("by_project_and_status", ["projectId", "status"]),
+
+  // NEW: COVER LETTERS - AI-generated tailored cover letters
+  coverLetters: defineTable({
+    applicationId: v.id("applications"),
+    userId: v.string(),
+    content: v.string(),
+    generatedAt: v.number(),
+    version: v.number(), // Allow regeneration
+    keywordsBridged: v.optional(v.array(v.string())), // Keywords explicitly mentioned
+  })
+  .index("by_application", ["applicationId"])
+  .index("by_user", ["userId"]),
+
   resumes: defineTable({
     userId: v.string(),
+    projectId: v.optional(v.id("projects")), // NEW: Link to project
     title: v.string(),
     url: v.string(),
     storageId: v.id("_storage"),
@@ -58,6 +124,10 @@ const schema = defineSchema(
     status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
     score: v.optional(v.number()),
     analysis: v.optional(v.string()),
+    // NEW: Text layer integrity check
+    textLayerIntegrity: v.optional(v.number()), // 0-100 score
+    hasImageTrap: v.optional(v.boolean()), // True if CV has invisible text issues
+    lastIntegrityCheck: v.optional(v.number()),
     missingKeywords: v.optional(v.array(v.union(
       v.string(),
       v.object({
@@ -99,6 +169,7 @@ const schema = defineSchema(
     }))),
   })
     .index("by_user", ["userId"])
+    .index("by_project", ["projectId"])
     .index("by_user_and_category", ["userId", "category"])
     .searchIndex("search_ocr", {
       searchField: "ocrText",

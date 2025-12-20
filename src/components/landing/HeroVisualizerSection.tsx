@@ -19,15 +19,15 @@ export function HeroVisualizerSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
           </span>
-          ✨ New ATS Parser Engine v2.0
+          ✨ Project-Based Job Search Manager
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-4xl">
-          Is your Resume <br className="hidden md:block" />Invisible to Robots?
+          Manage Your Entire <br className="hidden md:block" />Job Search in One Place
         </h1>
 
         <p className="text-lg md:text-xl text-gray-200 max-w-2xl mb-10 leading-relaxed">
-          90% of resumes are auto-rejected before a human sees them. We show you exactly what the ATS sees, so you can fix parsing errors and get hired.
+          Create projects, track applications, and get AI-powered insights for every company you apply to. Stop treating your job search like scattered files—manage it like a pro.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mb-16">
@@ -35,8 +35,8 @@ export function HeroVisualizerSection() {
             onClick={() => navigate("/auth")}
             className="flex items-center justify-center h-12 px-8 bg-primary hover:bg-primary/90 text-black text-base font-bold rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_20px_-5px_rgba(249,245,6,0.5)]"
           >
-            <span className="mr-2 text-xl">🐛</span>
-            Debug my Resume (Free Scan)
+            <span className="mr-2 text-xl">🎯</span>
+            Start Your First Project (Free)
           </button>
           <button 
             onClick={scrollToHowItWorks}
@@ -80,7 +80,7 @@ export function HeroVisualizerSection() {
 
           {/* Robot View (Terminal) */}
           <div className="flex-1 bg-[#0f0f0f] p-6 md:p-8 text-left font-mono text-xs md:text-sm overflow-hidden relative border-l border-white/5">
-            <div className="absolute top-4 right-4 bg-[#7c3bed]/20 text-[#7c3bed] text-xs font-bold px-2 py-1 rounded uppercase tracking-wider border border-[#7c3bed]/30">🤖 Robot View</div>
+            <div className="absolute top-4 right-4 bg-primary/20 text-primary text-xs font-bold px-2 py-1 rounded uppercase tracking-wider border border-primary/30">🤖 Robot View</div>
             
             <div className="flex flex-col gap-1 text-gray-400">
               <div className="flex gap-2">
