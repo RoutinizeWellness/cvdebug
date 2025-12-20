@@ -28,6 +28,7 @@ import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
+import { JobTrackerView } from "@/components/dashboard/JobTrackerView";
 import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import {
   Dialog,
@@ -511,6 +512,7 @@ export default function Dashboard() {
             {currentView === 'templates' && <TemplatesView />}
             {currentView === 'linkedin' && <LinkedInView />}
             {currentView === 'cover-letter' && <CoverLetterView />}
+            {currentView === 'job-tracker' && <JobTrackerView />}
           </div>
         </div>
       </main>
