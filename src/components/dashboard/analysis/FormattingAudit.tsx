@@ -26,8 +26,8 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
             key={idx}
             className={`flex items-start gap-3 p-4 rounded-xl border ${
               item.status === "passed" 
-                ? "bg-stone-900/80 border-stone-700"
-                : "bg-red-900/30 border-red-700"
+                ? "bg-zinc-950 border-zinc-800"
+                : "bg-red-950/40 border-red-900/50"
             }`}
           >
             {item.status === "passed" ? (
@@ -36,9 +36,9 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
               <XCircle className="h-5 w-5 text-red-500 shrink-0" />
             )}
             <div className="flex-1">
-              <p className="text-sm font-bold text-white mb-1">{item.title}</p>
+              <p className="text-sm font-bold text-zinc-100 mb-1">{item.title}</p>
               <p className={`text-xs leading-relaxed ${
-                item.status === "passed" ? "text-zinc-300" : "text-red-300"
+                item.status === "passed" ? "text-zinc-400" : "text-red-200"
               }`}>
                 {item.status === "passed" ? (item.reason || "Passed") : item.fix}
               </p>

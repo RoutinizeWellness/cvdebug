@@ -21,7 +21,8 @@ import {
   CheckCircle2,
   XCircle,
   FileSearch,
-  AlertTriangle
+  AlertTriangle,
+  Loader2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -338,6 +339,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleShareLink}
               title="Copy shareable link"
+              disabled={!displayResume}
             >
               <Link2 className="h-4 w-4" />
               Share Link
@@ -347,7 +349,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleOptimize}
-              disabled={isGenerating}
+              disabled={isGenerating || !displayResume}
             >
               <Wand2 className="h-4 w-4" />
               {isGenerating ? "Optimizing..." : "AI Rewrite"}
@@ -357,6 +359,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleDownloadFile}
+              disabled={!displayResume}
             >
               <Download className="h-4 w-4" />
               Download
@@ -366,6 +369,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               size="sm" 
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleDownloadReport}
+              disabled={!displayResume}
             >
               <Printer className="h-4 w-4" />
               Print Report
@@ -375,6 +379,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               className="p-2 hover:bg-red-500/10 text-red-500 rounded-lg transition-colors"
               onClick={() => displayResume && onDelete(displayResume._id)}
               title="Delete"
+              disabled={!displayResume}
             >
               <Trash2 className="h-4 w-4" />
             </button>
@@ -389,372 +394,386 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
         </div>
 
         <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#050505]">
-          <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-            <div className="p-8 max-w-7xl mx-auto font-display">
-              
-              {isFree ? (
-                <FreeTierView 
-                  score={displayResume?.score || 0}
-                  missingCount={displayResume?.missingKeywords?.length || 0}
-                  formatCount={displayResume?.formatIssues?.length || 0}
-                  criticalKeywords={criticalKeywords}
-                  showBlurredPreview={showBlurredPreview}
-                  setShowPricing={setShowPricing}
-                  setShowBlurredPreview={setShowBlurredPreview}
-                />
-              ) : (
-                <div className="space-y-8">
-                  {/* Hero Section with Gauge - Matching HTML exactly */}
-                  <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
-                    {/* Background Glow */}
-                    <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
-                    
-                    {/* Left: Gauge */}
-                    <GaugeScore score={displayResume?.score || 0} />
+          {!displayResume ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-zinc-400 gap-4">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p>Loading analysis data...</p>
+              {allResumes === undefined && (
+                <p className="text-xs text-red-400 bg-red-950/30 px-3 py-1 rounded-full border border-red-900/50">
+                  Network error: Unable to fetch data. Please check your connection.
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
+                <div className="p-8 max-w-7xl mx-auto font-display">
+                  
+                  {isFree ? (
+                    <FreeTierView 
+                      score={displayResume?.score || 0}
+                      missingCount={displayResume?.missingKeywords?.length || 0}
+                      formatCount={displayResume?.formatIssues?.length || 0}
+                      criticalKeywords={criticalKeywords}
+                      showBlurredPreview={showBlurredPreview}
+                      setShowPricing={setShowPricing}
+                      setShowBlurredPreview={setShowBlurredPreview}
+                    />
+                  ) : (
+                    <div className="space-y-8">
+                      {/* Hero Section with Gauge - Matching HTML exactly */}
+                      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
+                        {/* Background Glow */}
+                        <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+                        
+                        {/* Left: Gauge */}
+                        <GaugeScore score={displayResume?.score || 0} />
 
-                    {/* Right: Content */}
-                    <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
-                      <div>
-                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
-                          (displayResume?.score || 0) >= 80 
-                            ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
-                            : (displayResume?.score || 0) >= 50
-                            ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
-                            : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
-                        } text-xs font-bold uppercase tracking-wider mb-4 border`}>
-                          <span className={`size-2 rounded-full animate-pulse ${
-                            (displayResume?.score || 0) >= 80 ? 'bg-green-500' : (displayResume?.score || 0) >= 50 ? 'bg-orange-500' : 'bg-red-500'
-                          }`}></span>
-                          {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
+                        {/* Right: Content */}
+                        <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
+                          <div>
+                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
+                              (displayResume?.score || 0) >= 80 
+                                ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
+                                : (displayResume?.score || 0) >= 50
+                                ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
+                                : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
+                            } text-xs font-bold uppercase tracking-wider mb-4 border`}>
+                              <span className={`size-2 rounded-full animate-pulse ${
+                                (displayResume?.score || 0) >= 80 ? 'bg-green-500' : (displayResume?.score || 0) >= 50 ? 'bg-orange-500' : 'bg-red-500'
+                              }`}></span>
+                              {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
+                            </div>
+                            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
+                              Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                                {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
+                              </span>.
+                            </h1>
+                            <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
+                              {(displayResume?.score || 0) >= 80 
+                                ? 'Great job! Your resume is well-optimized for ATS systems.' 
+                                : (displayResume?.score || 0) >= 50 
+                                ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
+                                : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                            <Button 
+                              onClick={handleDownloadReport}
+                              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
+                            >
+                              <Download className="h-5 w-5" />
+                              Download Report
+                            </Button>
+                            <Button 
+                              variant="outline"
+                              onClick={handleShareLink}
+                              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
+                            >
+                              <Link2 className="h-5 w-5" />
+                              Share Results
+                            </Button>
+                          </div>
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
-                          Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                            {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
-                          </span>.
-                        </h1>
-                        <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
-                          {(displayResume?.score || 0) >= 80 
-                            ? 'Great job! Your resume is well-optimized for ATS systems.' 
-                            : (displayResume?.score || 0) >= 50 
-                            ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
-                            : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
-                        </p>
                       </div>
-                      <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                        <Button 
-                          onClick={handleDownloadReport}
-                          className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
-                        >
-                          <Download className="h-5 w-5" />
-                          Download Report
-                        </Button>
-                        <Button 
-                          variant="outline"
-                          onClick={handleShareLink}
-                          className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
-                        >
-                          <Link2 className="h-5 w-5" />
-                          Share Results
-                        </Button>
+
+                      {/* Bento Grid - Matching HTML exactly */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                        <FormattingAudit items={auditItems} />
+                        
+                        <KeywordHeatmap 
+                          foundKeywords={fallbackFoundKeywords}
+                          missingKeywords={displayResume?.missingKeywords || []}
+                          isFree={false}
+                        />
+
+                        <RoleMatchCard 
+                          roles={[
+                            { name: "Full Stack Developer", percentage: 80, color: "green" },
+                            { name: "Frontend Engineer", percentage: 65, color: "purple" },
+                            { name: "Backend Engineer", percentage: 45, color: "orange" }
+                          ]}
+                        />
+                      </div>
+
+                      {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Actionable Fixes (Left - 2 columns) */}
+                        <div className="lg:col-span-2">
+                          <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
+                            Actionable Fixes
+                            <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                              {(() => {
+                                const fixes: any[] = [];
+                                const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
+                                if (metricCount < 5) fixes.push(1);
+                                
+                                const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
+                                const weakCount = weakPhrases.reduce((count, phrase) => {
+                                  return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
+                                }, 0);
+                                if (weakCount > 0) fixes.push(1);
+                                
+                                if (displayResume?.formatIssues?.some((i: any) => 
+                                  i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
+                                )) fixes.push(1);
+                                
+                                return fixes.length;
+                              })()} Critical
+                            </span>
+                          </h2>
+                          <ActionableFixes 
+                        fixes={(() => {
+                          const fixes: Array<{title: string; description: string; impact: string; example: string}> = [];
+                          
+                          // Check for missing quantification
+                          const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
+                          if (metricCount < 5) {
+                            fixes.push({
+                              title: "Missing Quantification",
+                              description: `Your resume has only ${metricCount} quantifiable metrics. ATS systems and recruiters look for specific numbers that demonstrate impact.`,
+                              impact: "Adding 8-10 metrics can increase your ATS score by 15-20 points and significantly improve recruiter engagement.",
+                              example: "Instead of 'Improved system performance', write 'Optimized database queries, reducing load time by 45% and improving user experience for 50K+ daily users'"
+                            });
+                          }
+                          
+                          // Check for weak action verbs
+                          const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
+                          const weakCount = weakPhrases.reduce((count, phrase) => {
+                            return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
+                          }, 0);
+                          
+                          if (weakCount > 0) {
+                            fixes.push({
+                              title: "Weak Action Verbs",
+                              description: `Found ${weakCount} instances of passive language like 'responsible for' or 'worked on'. Strong action verbs make your achievements more compelling.`,
+                              impact: "Using powerful action verbs can improve readability and make your resume 30% more likely to pass initial screening.",
+                              example: "Replace 'Responsible for managing team' with 'Led cross-functional team of 8 engineers to deliver 3 major features ahead of schedule'"
+                            });
+                          }
+                          
+                          // Check for format issues from analysis
+                          const hasContactIssue = displayResume?.formatIssues?.some((i: any) => 
+                            i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
+                          );
+                          
+                          if (hasContactIssue) {
+                            fixes.push({
+                              title: "Missing Contact Information",
+                              description: "Your resume is missing critical contact information. ATS systems cannot reach you without proper email and phone details.",
+                              impact: "Missing contact info leads to automatic rejection. This is a critical fix that takes 2 minutes.",
+                              example: "Add your email (firstname.lastname@email.com) and phone number (+1-555-123-4567) at the top of your resume in a clear, standard format."
+                            });
+                          }
+                          
+                          // Check for section header issues
+                          const hasSectionIssue = displayResume?.formatIssues?.some((i: any) => 
+                            i.issue?.toLowerCase().includes('section') || i.issue?.toLowerCase().includes('header')
+                          );
+                          
+                          if (hasSectionIssue) {
+                            fixes.push({
+                              title: "Missing Standard Section Headers",
+                              description: "ATS systems cannot identify key sections of your resume. Standard headers like 'Experience', 'Education', and 'Skills' are essential for parsing.",
+                              impact: "Fixing section headers can improve parsing accuracy by 40% and prevent your experience from being missed.",
+                              example: "Use clear, standard headers: 'EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS'. Avoid creative names like 'My Journey' or 'What I've Done'."
+                            });
+                          }
+                          
+                          // Add missing keyword fix if applicable
+                          if (displayResume?.missingKeywords && displayResume.missingKeywords.length > 0) {
+                            const topMissing = displayResume.missingKeywords.slice(0, 3).map((kw: any) => 
+                              typeof kw === 'string' ? kw : kw.keyword
+                            ).join(', ');
+                            
+                            fixes.push({
+                              title: "Critical Keywords Missing",
+                              description: `Your resume is missing ${displayResume.missingKeywords.length} important keywords that ATS systems scan for: ${topMissing}${displayResume.missingKeywords.length > 3 ? ', and more' : ''}.`,
+                              impact: `Adding these keywords could increase your match score by ${Math.min(displayResume.missingKeywords.length * 3, 25)} points.`,
+                              example: `Integrate "${topMissing}" naturally into your experience bullets. Example: "Developed scalable ${topMissing.split(',')[0]} solutions that improved system reliability by 35%"`
+                            });
+                          }
+                          
+                          // If no issues found, add a generic improvement suggestion
+                          if (fixes.length === 0) {
+                            fixes.push({
+                              title: "Enhance Impact Statements",
+                              description: "While your resume is well-structured, you can further strengthen it by adding more specific metrics and outcomes to your achievements.",
+                              impact: "Even strong resumes benefit from additional quantification. This can push your score from good to excellent.",
+                              example: "For each bullet point, ask: What was the measurable result? Add numbers like '30% faster', '50K users', or '$2M in savings'."
+                            });
+                          }
+                          
+                          return fixes;
+                        })()}
+                      />
+
+                        </div>
+
+                        {/* Right Column: Impact & Pro Tip */}
+                        <div className="flex flex-col gap-6">
+                          <ImpactScore 
+                            score={displayResume?.scoreBreakdown?.completeness || 0} 
+                            maxScore={30} 
+                          />
+                          
+                          <AIProTip 
+                          tip={(() => {
+                            const category = displayResume?.category || "General";
+                            const score = displayResume?.score || 0;
+                            
+                            if (category === "Software Engineering" || category === "Engineering") {
+                              if (score < 50) {
+                                return "Focus on adding technical metrics: system scale (requests/sec, data volume), performance improvements (latency reduction %), and team impact. Include your tech stack in every bullet point.";
+                              } else if (score < 75) {
+                                return "Strengthen your impact by quantifying user reach and system reliability. Example: 'Built microservices handling 10M+ daily requests with 99.9% uptime, serving 2M active users.'";
+                              } else {
+                                return "Your technical content is strong. Consider adding leadership metrics (mentored X engineers), architectural decisions, and business impact ($X saved, Y% revenue increase).";
+                              }
+                            } else if (category === "Marketing") {
+                              if (score < 50) {
+                                return "Add campaign metrics: conversion rates, ROI, audience growth, and engagement rates. Include tools used (Google Analytics, HubSpot, Salesforce).";
+                              } else if (score < 75) {
+                                return "Enhance your marketing impact with A/B test results, customer acquisition costs, and revenue attribution. Show data-driven decision making.";
+                              } else {
+                                return "Excellent marketing metrics. Consider adding strategic initiatives, cross-functional leadership, and long-term brand impact to stand out further.";
+                              }
+                            } else if (category === "Data Science" || category === "Analytics") {
+                              if (score < 50) {
+                                return "Quantify your data impact: model accuracy improvements, data volume processed, and business decisions influenced. List your tech stack (Python, SQL, TensorFlow).";
+                              } else if (score < 75) {
+                                return "Add more context on model deployment, production impact, and stakeholder influence. Example: 'Deployed ML model predicting churn with 92% accuracy, reducing customer loss by 15%.'";
+                              } else {
+                                return "Strong data science profile. Highlight end-to-end ownership, cross-functional collaboration, and measurable business outcomes to reach top-tier status.";
+                              }
+                            } else {
+                              if (score < 50) {
+                                return "Start by adding numbers to every achievement: percentages, dollar amounts, time saved, or people impacted. Use strong action verbs like 'Led', 'Architected', 'Optimized'.";
+                              } else if (score < 75) {
+                                return "Good foundation. Enhance by showing progression (promoted, increased responsibility), leadership (team size, mentoring), and strategic impact (company-wide initiatives).";
+                              } else {
+                                return "Excellent resume structure. Fine-tune by ensuring every bullet follows the 'Action + Task + Result' formula with specific metrics and outcomes.";
+                              }
+                            }
+                          })()}
+                            category={displayResume?.category || "General"}
+                          />
+                        </div>
+                      </div>
+
+                      {/* AI Recommendations Section */}
+                      <div className="glass-card rounded-lg p-6">
+                        <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
+                          AI Recommendations
+                          <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
+                        </h2>
+                        <div className="max-h-[500px] overflow-y-auto pr-2">
+                          {renderAnalysis(displayResume?.analysis || "")}
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Bento Grid - Matching HTML exactly */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-                    <FormattingAudit items={auditItems} />
-                    
-                    <KeywordHeatmap 
-                      foundKeywords={fallbackFoundKeywords}
-                      missingKeywords={displayResume?.missingKeywords || []}
-                      isFree={false}
-                    />
-
-                    <RoleMatchCard 
-                      roles={[
-                        { name: "Full Stack Developer", percentage: 80, color: "green" },
-                        { name: "Frontend Engineer", percentage: 65, color: "purple" },
-                        { name: "Backend Engineer", percentage: 45, color: "orange" }
-                      ]}
-                    />
-                  </div>
-
-                  {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Actionable Fixes (Left - 2 columns) */}
-                    <div className="lg:col-span-2">
-                      <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
-                        Actionable Fixes
-                        <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                          {(() => {
-                            const fixes: any[] = [];
-                            const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
-                            if (metricCount < 5) fixes.push(1);
-                            
-                            const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
-                            const weakCount = weakPhrases.reduce((count, phrase) => {
-                              return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
-                            }, 0);
-                            if (weakCount > 0) fixes.push(1);
-                            
-                            if (displayResume?.formatIssues?.some((i: any) => 
-                              i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
-                            )) fixes.push(1);
-                            
-                            return fixes.length;
-                          })()} Critical
-                        </span>
-                      </h2>
-                      <ActionableFixes 
-                    fixes={(() => {
-                      const fixes: Array<{title: string; description: string; impact: string; example: string}> = [];
-                      
-                      // Check for missing quantification
-                      const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
-                      if (metricCount < 5) {
-                        fixes.push({
-                          title: "Missing Quantification",
-                          description: `Your resume has only ${metricCount} quantifiable metrics. ATS systems and recruiters look for specific numbers that demonstrate impact.`,
-                          impact: "Adding 8-10 metrics can increase your ATS score by 15-20 points and significantly improve recruiter engagement.",
-                          example: "Instead of 'Improved system performance', write 'Optimized database queries, reducing load time by 45% and improving user experience for 50K+ daily users'"
-                        });
-                      }
-                      
-                      // Check for weak action verbs
-                      const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
-                      const weakCount = weakPhrases.reduce((count, phrase) => {
-                        return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
-                      }, 0);
-                      
-                      if (weakCount > 0) {
-                        fixes.push({
-                          title: "Weak Action Verbs",
-                          description: `Found ${weakCount} instances of passive language like 'responsible for' or 'worked on'. Strong action verbs make your achievements more compelling.`,
-                          impact: "Using powerful action verbs can improve readability and make your resume 30% more likely to pass initial screening.",
-                          example: "Replace 'Responsible for managing team' with 'Led cross-functional team of 8 engineers to deliver 3 major features ahead of schedule'"
-                        });
-                      }
-                      
-                      // Check for format issues from analysis
-                      const hasContactIssue = displayResume?.formatIssues?.some((i: any) => 
-                        i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
-                      );
-                      
-                      if (hasContactIssue) {
-                        fixes.push({
-                          title: "Missing Contact Information",
-                          description: "Your resume is missing critical contact information. ATS systems cannot reach you without proper email and phone details.",
-                          impact: "Missing contact info leads to automatic rejection. This is a critical fix that takes 2 minutes.",
-                          example: "Add your email (firstname.lastname@email.com) and phone number (+1-555-123-4567) at the top of your resume in a clear, standard format."
-                        });
-                      }
-                      
-                      // Check for section header issues
-                      const hasSectionIssue = displayResume?.formatIssues?.some((i: any) => 
-                        i.issue?.toLowerCase().includes('section') || i.issue?.toLowerCase().includes('header')
-                      );
-                      
-                      if (hasSectionIssue) {
-                        fixes.push({
-                          title: "Missing Standard Section Headers",
-                          description: "ATS systems cannot identify key sections of your resume. Standard headers like 'Experience', 'Education', and 'Skills' are essential for parsing.",
-                          impact: "Fixing section headers can improve parsing accuracy by 40% and prevent your experience from being missed.",
-                          example: "Use clear, standard headers: 'EXPERIENCE', 'EDUCATION', 'SKILLS', 'PROJECTS'. Avoid creative names like 'My Journey' or 'What I've Done'."
-                        });
-                      }
-                      
-                      // Add missing keyword fix if applicable
-                      if (displayResume?.missingKeywords && displayResume.missingKeywords.length > 0) {
-                        const topMissing = displayResume.missingKeywords.slice(0, 3).map((kw: any) => 
-                          typeof kw === 'string' ? kw : kw.keyword
-                        ).join(', ');
-                        
-                        fixes.push({
-                          title: "Critical Keywords Missing",
-                          description: `Your resume is missing ${displayResume.missingKeywords.length} important keywords that ATS systems scan for: ${topMissing}${displayResume.missingKeywords.length > 3 ? ', and more' : ''}.`,
-                          impact: `Adding these keywords could increase your match score by ${Math.min(displayResume.missingKeywords.length * 3, 25)} points.`,
-                          example: `Integrate "${topMissing}" naturally into your experience bullets. Example: "Developed scalable ${topMissing.split(',')[0]} solutions that improved system reliability by 35%"`
-                        });
-                      }
-                      
-                      // If no issues found, add a generic improvement suggestion
-                      if (fixes.length === 0) {
-                        fixes.push({
-                          title: "Enhance Impact Statements",
-                          description: "While your resume is well-structured, you can further strengthen it by adding more specific metrics and outcomes to your achievements.",
-                          impact: "Even strong resumes benefit from additional quantification. This can push your score from good to excellent.",
-                          example: "For each bullet point, ask: What was the measurable result? Add numbers like '30% faster', '50K users', or '$2M in savings'."
-                        });
-                      }
-                      
-                      return fixes;
-                    })()}
-                  />
-
-                    </div>
-
-                    {/* Right Column: Impact & Pro Tip */}
-                    <div className="flex flex-col gap-6">
-                      <ImpactScore 
-                        score={displayResume?.scoreBreakdown?.completeness || 0} 
-                        maxScore={30} 
-                      />
-                      
-                      <AIProTip 
-                      tip={(() => {
-                        const category = displayResume?.category || "General";
-                        const score = displayResume?.score || 0;
-                        
-                        if (category === "Software Engineering" || category === "Engineering") {
-                          if (score < 50) {
-                            return "Focus on adding technical metrics: system scale (requests/sec, data volume), performance improvements (latency reduction %), and team impact. Include your tech stack in every bullet point.";
-                          } else if (score < 75) {
-                            return "Strengthen your impact by quantifying user reach and system reliability. Example: 'Built microservices handling 10M+ daily requests with 99.9% uptime, serving 2M active users.'";
-                          } else {
-                            return "Your technical content is strong. Consider adding leadership metrics (mentored X engineers), architectural decisions, and business impact ($X saved, Y% revenue increase).";
-                          }
-                        } else if (category === "Marketing") {
-                          if (score < 50) {
-                            return "Add campaign metrics: conversion rates, ROI, audience growth, and engagement rates. Include tools used (Google Analytics, HubSpot, Salesforce).";
-                          } else if (score < 75) {
-                            return "Enhance your marketing impact with A/B test results, customer acquisition costs, and revenue attribution. Show data-driven decision making.";
-                          } else {
-                            return "Excellent marketing metrics. Consider adding strategic initiatives, cross-functional leadership, and long-term brand impact to stand out further.";
-                          }
-                        } else if (category === "Data Science" || category === "Analytics") {
-                          if (score < 50) {
-                            return "Quantify your data impact: model accuracy improvements, data volume processed, and business decisions influenced. List your tech stack (Python, SQL, TensorFlow).";
-                          } else if (score < 75) {
-                            return "Add more context on model deployment, production impact, and stakeholder influence. Example: 'Deployed ML model predicting churn with 92% accuracy, reducing customer loss by 15%.'";
-                          } else {
-                            return "Strong data science profile. Highlight end-to-end ownership, cross-functional collaboration, and measurable business outcomes to reach top-tier status.";
-                          }
-                        } else {
-                          if (score < 50) {
-                            return "Start by adding numbers to every achievement: percentages, dollar amounts, time saved, or people impacted. Use strong action verbs like 'Led', 'Architected', 'Optimized'.";
-                          } else if (score < 75) {
-                            return "Good foundation. Enhance by showing progression (promoted, increased responsibility), leadership (team size, mentoring), and strategic impact (company-wide initiatives).";
-                          } else {
-                            return "Excellent resume structure. Fine-tune by ensuring every bullet follows the 'Action + Task + Result' formula with specific metrics and outcomes.";
-                          }
-                        }
-                      })()}
-                        category={displayResume?.category || "General"}
-                      />
-                    </div>
-                  </div>
-
-                  {/* AI Recommendations Section */}
-                  <div className="glass-card rounded-lg p-6">
-                    <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
-                      AI Recommendations
-                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
-                    </h2>
-                    <div className="max-h-[500px] overflow-y-auto pr-2">
-                      {renderAnalysis(displayResume?.analysis || "")}
-                    </div>
-                  </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </ScrollArea>
+              </ScrollArea>
 
-          {/* Center Image/Preview */}
-          <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
-            <div className="absolute inset-0 bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
-            
-            <button 
-              onClick={() => setIsImmersive(!isImmersive)}
-              className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 text-white rounded-lg backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 hidden lg:block"
-              title={isImmersive ? "Exit Fullscreen" : "Enter Fullscreen"}
-            >
-              {isImmersive ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
-            </button>
-
-            <div className="w-full h-full flex items-center justify-center relative z-10">
-              {displayResume?.mimeType.startsWith("image/") ? (
-                <img 
-                  className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
-                  src={displayResume?.url} 
-                  alt={displayResume?.title} 
-                />
-              ) : displayResume?.mimeType === "application/pdf" ? (
-                <iframe 
-                  src={displayResume?.url} 
-                  className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
-                  title="Resume Preview"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-center p-6 bg-zinc-900 rounded-lg shadow-xl max-w-md border border-zinc-800">
-                  <div className="h-20 w-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
-                    <FileText className="h-10 w-10 text-zinc-400" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 text-white">Preview Not Available</h3>
-                  <p className="text-zinc-400 mb-8">
-                    This file type cannot be previewed directly in the browser. You can download it to view the content.
-                  </p>
-                  <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
-                    <Download className="h-4 w-4 mr-2" /> Download File
-                  </Button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Panel - Actions */}
-          <div className={`w-full lg:w-80 xl:w-96 border-l border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
-            <ScrollArea className="flex-1 h-full">
-              <div className="p-6 flex flex-col gap-8">
-                {displayResume?.rewrittenText && (
-                  <div className="relative">
-                    <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-purple-600 rounded-r-full"></div>
-                    <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 animate-pulse" /> AI Rewritten Version
-                      <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold">NEW</span>
-                    </h3>
-                    <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-lg p-4 mb-4 shadow-sm">
-                      <p className="text-xs text-zinc-300 font-medium leading-relaxed">
-                        <span className="font-bold text-primary">✨ Optimized for ATS:</span> We've rewritten your resume content to include missing keywords and improve readability for tracking systems.
-                      </p>
-                    </div>
-                    <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-300 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
-                      {displayResume.rewrittenText}
-                    </div>
-                    <Separator className="my-6 bg-zinc-800" />
-                  </div>
-                )}
-
-                <div>
-                  <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <Eye className="h-4 w-4" /> ATS Raw View
-                  </h3>
-                  <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
-                    <div className="flex gap-2">
-                      <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-yellow-500 font-medium leading-relaxed">
-                        This is exactly what the ATS sees. If your text is missing, garbled, or out of order here, the ATS cannot read your resume.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-400 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
-                    {displayResume?.ocrText ? displayResume.ocrText : "No text extracted."}
-                  </div>
-                </div>
+              {/* Center Image/Preview */}
+              <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
+                <div className="absolute inset-0 bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
                 
-                <Separator className="bg-zinc-800" />
+                <button 
+                  onClick={() => setIsImmersive(!isImmersive)}
+                  className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 text-white rounded-lg backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 hidden lg:block"
+                  title={isImmersive ? "Exit Fullscreen" : "Enter Fullscreen"}
+                >
+                  {isImmersive ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                </button>
 
-                <div>
-                  <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <FileText className="h-4 w-4" /> Notes
-                  </h3>
-                  <textarea 
-                    className="w-full h-40 bg-zinc-900 border border-zinc-800 rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-zinc-600 text-zinc-300" 
-                    placeholder="Add a note about this resume..."
-                  ></textarea>
+                <div className="w-full h-full flex items-center justify-center relative z-10">
+                  {displayResume?.mimeType.startsWith("image/") ? (
+                    <img 
+                      className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
+                      src={displayResume?.url} 
+                      alt={displayResume?.title} 
+                    />
+                  ) : displayResume?.mimeType === "application/pdf" ? (
+                    <iframe 
+                      src={displayResume?.url} 
+                      className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                      title="Resume Preview"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-center p-6 bg-zinc-900 rounded-lg shadow-xl max-w-md border border-zinc-800">
+                      <div className="h-20 w-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                        <FileText className="h-10 w-10 text-zinc-400" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2 text-white">Preview Not Available</h3>
+                      <p className="text-zinc-400 mb-8">
+                        This file type cannot be previewed directly in the browser. You can download it to view the content.
+                      </p>
+                      <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
+                        <Download className="h-4 w-4 mr-2" /> Download File
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
-            </ScrollArea>
-          </div>
+
+              {/* Right Panel - Actions */}
+              <div className={`w-full lg:w-80 xl:w-96 border-l border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
+                <ScrollArea className="flex-1 h-full">
+                  <div className="p-6 flex flex-col gap-8">
+                    {displayResume?.rewrittenText && (
+                      <div className="relative">
+                        <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-purple-600 rounded-r-full"></div>
+                        <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+                          <Sparkles className="h-4 w-4 animate-pulse" /> AI Rewritten Version
+                          <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold">NEW</span>
+                        </h3>
+                        <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-lg p-4 mb-4 shadow-sm">
+                          <p className="text-xs text-zinc-300 font-medium leading-relaxed">
+                            <span className="font-bold text-primary">✨ Optimized for ATS:</span> We've rewritten your resume content to include missing keywords and improve readability for tracking systems.
+                          </p>
+                        </div>
+                        <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-300 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+                          {displayResume.rewrittenText}
+                        </div>
+                        <Separator className="my-6 bg-zinc-800" />
+                      </div>
+                    )}
+
+                    <div>
+                      <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <Eye className="h-4 w-4" /> ATS Raw View
+                      </h3>
+                      <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
+                        <div className="flex gap-2">
+                          <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-xs text-yellow-500 font-medium leading-relaxed">
+                            This is exactly what the ATS sees. If your text is missing, garbled, or out of order here, the ATS cannot read your resume.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-400 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+                        {displayResume?.ocrText ? displayResume.ocrText : "No text extracted."}
+                      </div>
+                    </div>
+                    
+                    <Separator className="bg-zinc-800" />
+
+                    <div>
+                      <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <FileText className="h-4 w-4" /> Notes
+                      </h3>
+                      <textarea 
+                        className="w-full h-40 bg-zinc-900 border border-zinc-800 rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-zinc-600 text-zinc-300" 
+                        placeholder="Add a note about this resume..."
+                      ></textarea>
+                    </div>
+                  </div>
+                </ScrollArea>
+              </div>
+            </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

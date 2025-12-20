@@ -36,15 +36,15 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
         {fixes.map((fix, index) => (
           <div
             key={index}
-            className="border border-stone-700 rounded-lg overflow-hidden bg-stone-900/50"
+            className="border border-stone-700 rounded-lg overflow-hidden bg-zinc-950"
           >
             <button
               onClick={() => toggleAccordion(index)}
-              className="w-full flex items-center justify-between p-4 text-left hover:bg-stone-800/50 transition-colors"
+              className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-900 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
-                <span className="font-bold text-white">{fix.title}</span>
+                <span className="font-bold text-zinc-100">{fix.title}</span>
               </div>
               <motion.div
                 animate={{ rotate: expandedIndex === index ? 180 : 0 }}
@@ -70,14 +70,14 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       </p>
                     </div>
 
-                    <div className="bg-stone-800/50 rounded-lg p-3">
+                    <div className="bg-zinc-900 rounded-lg p-3 border border-zinc-800">
                       <div className="flex items-start gap-2 mb-2">
                         <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                         <div>
                           <p className="text-xs font-bold text-white mb-1">
                             Impact
                           </p>
-                          <p className="text-xs text-zinc-300">
+                          <p className="text-xs text-zinc-400">
                             {fix.impact}
                           </p>
                         </div>
@@ -85,7 +85,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                     </div>
 
                     <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
-                      <p className="text-xs font-bold text-white mb-1">
+                      <p className="text-xs font-bold text-primary mb-1">
                         Example Fix
                       </p>
                       <p className="text-xs text-zinc-300 font-mono">
