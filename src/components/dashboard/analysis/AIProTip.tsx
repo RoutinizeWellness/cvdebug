@@ -7,21 +7,20 @@ interface AIProTipProps {
 
 export function AIProTip({ tip, category = "General" }: AIProTipProps) {
   return (
-    <div className="glass-card rounded-lg p-6 relative overflow-hidden">
-      <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div className="bg-primary rounded-lg p-6 relative overflow-hidden">
+      <div className="absolute -right-4 -top-4 text-black/10">
+        <Sparkles className="h-24 w-24" />
+      </div>
       
       <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 rounded-full bg-primary/20 text-primary border border-primary/30">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <h3 className="text-lg font-bold text-stone-900 dark:text-white">AI Pro Tip</h3>
-          <span className="ml-auto text-xs font-bold bg-primary/20 text-primary px-2 py-1 rounded-md border border-primary/30">
-            {category}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="bg-black text-primary p-1 rounded-md">
+            <Sparkles className="h-4 w-4 block" />
           </span>
+          <h3 className="font-bold text-black uppercase text-xs tracking-wider">AI Pro Tip</h3>
         </div>
 
-        <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+        <p className="text-stone-900 font-bold leading-snug">
           {tip}
         </p>
       </div>

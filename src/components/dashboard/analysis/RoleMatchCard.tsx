@@ -3,6 +3,17 @@ interface RoleMatchCardProps {
 }
 
 export function RoleMatchCard({ roles }: RoleMatchCardProps) {
+  const getColorClasses = (color: string) => {
+    const colorMap: Record<string, string> = {
+      green: "text-green-500 bg-green-500",
+      purple: "text-purple-500 bg-purple-500",
+      orange: "text-orange-500 bg-orange-500",
+      yellow: "text-primary bg-primary",
+      red: "text-red-500 bg-red-500"
+    };
+    return colorMap[color] || "text-stone-500 bg-stone-500";
+  };
+
   return (
     <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
       <div className="flex items-center gap-3 mb-2">
@@ -14,20 +25,25 @@ export function RoleMatchCard({ roles }: RoleMatchCardProps) {
         <h3 className="text-lg font-bold text-stone-900 dark:text-white">Role Match</h3>
       </div>
       <div className="flex flex-col gap-5 mt-2">
-        {roles.map((role, idx) => (
-          <div key={idx} className="flex flex-col gap-1">
-            <div className="flex justify-between text-sm font-medium text-stone-900 dark:text-stone-300">
-              <span>{role.name}</span>
-              <span className={`text-${role.color}-500`}>{role.percentage}%</span>
+        {roles.map((role, idx) => {
+          const colorClasses = getColorClasses(role.color);
+          const [textColor, bgColor] = colorClasses.split(' ');
+          
+          return (
+            <div key={idx} className="flex flex-col gap-1">
+              <div className="flex justify-between text-sm font-medium text-stone-900 dark:text-stone-300">
+                <span>{role.name}</span>
+                <span className={textColor}>{role.percentage}%</span>
+              </div>
+              <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full ${bgColor} rounded-r-full`} 
+                  style={{ width: `${role.percentage}%` }}
+                />
+              </div>
             </div>
-            <div className="w-full h-3 bg-stone-200 dark:bg-stone-800 rounded-full overflow-hidden">
-              <div 
-                className={`h-full bg-${role.color}-500 rounded-r-full`} 
-                style={{ width: `${role.percentage}%` }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
