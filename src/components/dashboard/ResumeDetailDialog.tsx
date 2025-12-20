@@ -421,12 +421,12 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                           }`}></span>
                           {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
                         </div>
-                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
                           Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
                             {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
                           </span>.
                         </h1>
-                        <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+                        <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
                           {(displayResume?.score || 0) >= 80 
                             ? 'Great job! Your resume is well-optimized for ATS systems.' 
                             : (displayResume?.score || 0) >= 50 

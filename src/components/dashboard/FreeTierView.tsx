@@ -50,12 +50,12 @@ export function FreeTierView({
               }`}></span>
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
-              Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
-              </span>.
-            </h1>
-            <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+                        <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
+                          Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                            {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
+                          </span>.
+                        </h1>
+                        <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
                 : score >= 50 
@@ -128,19 +128,19 @@ export function FreeTierView({
 
         {/* Unlock Overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm rounded-lg">
-          <div className="text-center space-y-6 p-8 max-w-md">
-            <div className="h-16 w-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center mx-auto">
-              <Lock className="h-8 w-8 text-stone-900" />
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-black text-white mb-2">
-                {totalIssues} Issues Found
-              </h3>
-              <p className="text-stone-300 mb-4">
-                Unlock detailed analysis to see exactly what's blocking your applications
-              </p>
-            </div>
+            <div className="text-center space-y-6 p-8 max-w-md">
+              <div className="h-16 w-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center mx-auto">
+                <Lock className="h-8 w-8 text-black" />
+              </div>
+              
+              <div>
+                <h3 className="text-2xl font-black text-white mb-2">
+                  {totalIssues} Issues Found
+                </h3>
+                <p className="text-zinc-200 mb-4 font-medium">
+                  Unlock detailed analysis to see exactly what's blocking your applications
+                </p>
+              </div>
 
             <div className="bg-red-500/20 border-2 border-red-500/50 rounded-xl p-6 text-left">
               <div className="grid grid-cols-2 gap-4 mb-4">
