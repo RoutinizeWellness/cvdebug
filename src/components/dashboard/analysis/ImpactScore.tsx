@@ -33,11 +33,11 @@ export function ImpactScore({ score, maxScore }: ImpactScoreProps) {
         <TrendingUp className="h-8 w-8" />
       </div>
       <h3 className="text-lg font-bold text-white">Impact Score</h3>
-      <div className={`text-6xl font-black ${getScoreColor()}`}>
-        {score}
-        <span className="text-3xl text-zinc-400 font-normal">/{maxScore}</span>
+      <div className="text-6xl font-black">
+        <span className={getScoreColor()}>{score}</span>
+        <span className="text-3xl text-white font-normal">/{maxScore}</span>
       </div>
-      <p className="text-sm text-zinc-300 max-w-[220px] leading-relaxed">
+      <p className="text-sm text-white max-w-[220px] leading-relaxed">
         {getMessage()}
       </p>
     </div>

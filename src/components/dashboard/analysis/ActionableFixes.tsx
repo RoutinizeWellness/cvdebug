@@ -77,7 +77,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                           <p className="text-xs font-bold text-white mb-1">
                             Impact
                           </p>
-                          <p className="text-xs text-zinc-400">
+                          <p className="text-xs text-white">
                             {fix.impact}
                           </p>
                         </div>
