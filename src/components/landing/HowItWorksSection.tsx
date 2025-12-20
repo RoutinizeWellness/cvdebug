@@ -5,18 +5,18 @@ export function HowItWorksSection() {
   const steps = [
     {
       icon: Upload,
-      title: "1. Upload or Import",
-      description: "Upload your resume PDF/Word or paste your LinkedIn profile text."
+      title: "1. Create Your Project",
+      description: "Upload your master CV and create a job search project (e.g., 'Senior Dev Hunt 2025')."
     },
     {
       icon: Zap,
-      title: "2. AI Analysis",
-      description: "We check for keywords, formatting errors, and profile completeness."
+      title: "2. Track Applications",
+      description: "Add companies you're applying to. We analyze each job description and show your match score."
     },
     {
       icon: Target,
-      title: "3. Get Hired",
-      description: "Fix the issues, beat the ATS, and get invited to the interview."
+      title: "3. AI-Powered Tools",
+      description: "Generate tailored cover letters, optimize LinkedIn, and get real-time CV health alerts."
     }
   ];
 
@@ -50,7 +50,7 @@ export function HowItWorksSection() {
           >
             <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-6">How it works</h2>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Our AI analyzes your resume and LinkedIn profile exactly like a recruiter would.
+              Your complete job search command center with continuous CV monitoring and AI-powered application tools.
             </p>
           </motion.div>
         </div>
@@ -92,18 +92,22 @@ export function HowItWorksSection() {
                 After You Purchase
               </div>
               <h3 className="text-3xl md:text-5xl font-black tracking-tight mb-6 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Your Credits Work Like Arcade Tokens
+                Choose Your Plan
               </h3>
-              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/40 dark:to-orange-900/40 border-2 border-amber-400 dark:border-amber-600 rounded-2xl px-6 py-4 text-base shadow-lg">
-                  <span className="text-4xl">🎮</span>
-                  <div className="text-left">
-                    <p className="text-amber-100 font-black text-lg">
-                      1 Scan = 1 Credit
-                    </p>
-                    <p className="text-amber-200 text-sm font-medium">
-                      Simple, transparent, no surprises
-                    </p>
-                  </div>
+              <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 border-2 border-zinc-700 rounded-2xl p-6 text-left">
+                  <div className="text-2xl mb-2">🎯</div>
+                  <p className="text-white font-black text-lg mb-1">Single Scan</p>
+                  <p className="text-zinc-400 text-sm mb-3">$4.99 - One complete analysis</p>
+                  <p className="text-zinc-500 text-xs">Perfect for testing one application</p>
+                </div>
+                <div className="bg-gradient-to-br from-primary/20 to-purple-500/20 border-2 border-primary rounded-2xl p-6 text-left relative overflow-hidden">
+                  <div className="absolute top-2 right-2 bg-primary text-black text-[10px] font-black px-2 py-1 rounded-full">BEST VALUE</div>
+                  <div className="text-2xl mb-2">🚀</div>
+                  <p className="text-white font-black text-lg mb-1">Interview Sprint</p>
+                  <p className="text-primary font-black text-sm mb-3">$14.99 - 7 days unlimited</p>
+                  <p className="text-zinc-300 text-xs">Track multiple jobs, AI tools, continuous monitoring</p>
+                </div>
               </div>
             </motion.div>
           </div>

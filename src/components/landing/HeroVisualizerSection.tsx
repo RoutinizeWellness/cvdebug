@@ -19,15 +19,15 @@ export function HeroVisualizerSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
           </span>
-          ✨ Project-Based Job Search Manager
+          ✨ Career Application Command Center
         </div>
 
         <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 max-w-4xl">
-          Manage Your Entire <br className="hidden md:block" />Job Search in One Place
+          Your Job Search HQ <br className="hidden md:block" />With AI-Powered Safety Checks
         </h1>
 
         <p className="text-lg md:text-xl text-gray-200 max-w-2xl mb-10 leading-relaxed">
-          Create projects, track applications, and get AI-powered insights for every company you apply to. Stop treating your job search like scattered files—manage it like a pro.
+          Track every application, monitor CV health in real-time, and generate AI cover letters that bridge your keyword gaps. Never send a broken resume again.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mb-16">
