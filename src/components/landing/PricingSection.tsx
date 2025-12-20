@@ -27,13 +27,13 @@ export function PricingSection() {
                 <span className="text-xl">✅</span>
                 Score 0-100
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
-                Top 3 keywords missing
+              <div className="flex items-center gap-3 text-sm text-zinc-500 line-through opacity-50">
+                <span className="text-xl">❌</span>
+                Missing Keywords Report
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
-                Top 2 format issues
+              <div className="flex items-center gap-3 text-sm text-zinc-500 line-through opacity-50">
+                <span className="text-xl">❌</span>
+                Format Issues Check
               </div>
             </div>
           </div>

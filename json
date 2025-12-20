@@ -1,1 +1,14 @@
-{"type":"executeCommandTool","command":"pnpm prune"}
+{
+  "type": "tool_call",
+  "tool_number": 1,
+  "tool_name": "readFilesToContextTool",
+  "input_args": {
+    "file_paths": [
+      "src/convex/marketing.ts",
+      "src/pages/Dashboard.tsx",
+      "src/components/dashboard/ResumeDetailDialog.tsx",
+      "src/components/dashboard/Sidebar.tsx"
+    ],
+    "replace_files_in_context": true
+  }
+}

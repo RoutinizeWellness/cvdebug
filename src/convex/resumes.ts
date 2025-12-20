@@ -294,8 +294,24 @@ export const getResumes = query({
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .order("desc")
       .take(50);
+    
+    // Redact sensitive analysis details for locked resumes
+    const redactedResults = results.map(resume => {
+      if (!resume.detailsUnlocked) {
+        return {
+          ...resume,
+          missingKeywords: undefined,
+          formatIssues: undefined,
+          scoreBreakdown: undefined,
+          metricSuggestions: undefined,
+          // Keep basic info and score
+        };
+      }
+      return resume;
+    });
+
     console.log("[getResumes] All resumes count:", results.length);
-    return results;
+    return redactedResults;
   },
 });
 

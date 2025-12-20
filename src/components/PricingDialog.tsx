@@ -217,17 +217,17 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 </div>
                 <span className="text-sm font-medium text-foreground/80">Score 0-100</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-primary" />
+              <div className="flex items-center gap-3 text-muted-foreground/50">
+                <div className="h-5 w-5 rounded-full bg-muted/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <X className="h-3 w-3" />
                 </div>
-                <span className="text-sm font-medium text-foreground/80">Top 3 keywords missing (of 10)</span>
+                <span className="text-sm font-medium line-through">Missing Keywords Report</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-primary" />
+              <div className="flex items-center gap-3 text-muted-foreground/50">
+                <div className="h-5 w-5 rounded-full bg-muted/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <X className="h-3 w-3" />
                 </div>
-                <span className="text-sm font-medium text-foreground/80">Top 2 format issues (of 5)</span>
+                <span className="text-sm font-medium line-through">Format Issues Check</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground/80">
                 <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">

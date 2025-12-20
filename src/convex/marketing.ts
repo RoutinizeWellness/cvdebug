@@ -90,7 +90,7 @@ export const sendActivationReminderEmail = internalAction({
           </a>
         </div>
         
-        <p>Best regards,<br>The ResumeATS Team</p>
+        <p>Best regards,<br>The CVDebug Team</p>
       </div>
     `;
 
@@ -139,7 +139,7 @@ export const sendParsingErrorEmail = internalAction({
           </a>
         </div>
         
-        <p>Best regards,<br>The ResumeATS Team</p>
+        <p>Best regards,<br>The CVDebug Team</p>
       </div>
     `;
 
@@ -217,7 +217,7 @@ export const sendRecoveryEmail = internalAction({
 
         <p style="font-size: 12px; color: #666; text-align: center;">One-time payment • No subscription • Instant access</p>
         
-        <p>Best regards,<br>The ResumeATS Team</p>
+        <p>Best regards,<br>The CVDebug Team</p>
       </div>
     `;
 

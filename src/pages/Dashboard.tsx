@@ -26,10 +26,11 @@ import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
+import { JobTrackerView } from "@/components/dashboard/JobTrackerView";
+import { ProjectsView } from "@/components/dashboard/ProjectsView";
+import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
-import { JobTrackerView } from "@/components/dashboard/JobTrackerView";
-import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import {
   Dialog,
   DialogContent,
