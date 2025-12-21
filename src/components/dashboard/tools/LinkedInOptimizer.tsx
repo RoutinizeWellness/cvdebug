@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,26 +7,23 @@ import {
   Linkedin, 
   Sparkles, 
   Lock, 
-  Check, 
   Loader2, 
-  AlertCircle, 
   Copy, 
   CheckCircle2,
   TrendingUp,
-  Search,
-  Calendar,
-  RefreshCw,
-  Cloud,
-  FileText,
-  X,
-  ArrowRight
+  Search
 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
+import { LinkedInHeader } from "./linkedin/LinkedInHeader";
+import { ScoreGauge } from "./linkedin/ScoreGauge";
+import { KeywordCloud } from "./linkedin/KeywordCloud";
+import { HeadlineOptimizer } from "./linkedin/HeadlineOptimizer";
+import { QuickFixList } from "./linkedin/QuickFixList";
+import { Badge } from "@/components/ui/badge";
 
 const apiAny = api as any;
 
@@ -35,7 +31,6 @@ export function LinkedInOptimizer() {
   const optimizeLinkedIn = useAction(apiAny.ai.linkedinOptimizer.optimizeLinkedIn);
   const generateRecruiterDMs = useAction(apiAny.ai.linkedinOptimizer.generateRecruiterDMs);
   const latestOptimization = useQuery(apiAny.linkedinProfile.getLatestOptimization);
-  const allOptimizations = useQuery(apiAny.linkedinProfile.getAllOptimizations);
   const recruiterDMs = useQuery(apiAny.linkedinProfile.getRecruiterDMs);
   
   const [linkedinUrl, setLinkedinUrl] = useState("");
@@ -48,7 +43,6 @@ export function LinkedInOptimizer() {
   const [isGeneratingDM, setIsGeneratingDM] = useState(false);
   const [dmResults, setDmResults] = useState<any[]>([]);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  const [showAllKeywords, setShowAllKeywords] = useState(false);
 
   const handleAnalyzeUrl = () => {
     if (!linkedinUrl) {
@@ -123,21 +117,13 @@ export function LinkedInOptimizer() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const handleCopyText = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
-  };
-
   // Use latest optimization if no new result
   const displayResult = result || latestOptimization;
   const score = displayResult?.score || 0;
-  const scoreColor = score >= 80 ? "text-primary" : score >= 60 ? "text-yellow-500" : "text-red-500";
-  const scoreBg = score >= 80 ? "bg-primary" : score >= 60 ? "bg-yellow-500" : "bg-red-500";
 
   // Get matched and missing keywords from real data
   const matchedKeywords = displayResult?.experience?.matchedKeywords || [];
   const missingKeywords = displayResult?.experience?.missingKeywords || [];
-  const allKeywords = [...matchedKeywords, ...missingKeywords];
 
   // Get last scanned time
   const lastScanned = displayResult?.generatedAt 
@@ -162,27 +148,17 @@ export function LinkedInOptimizer() {
 
       <main className="flex-1 p-6 overflow-y-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-            <div className="flex flex-col gap-2">
-              <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white">
-                LinkedIn Profile Audit
-              </h1>
-              <div className="flex items-center gap-2 text-zinc-400 text-sm">
-                <Calendar className="h-4 w-4" />
-                <span>Last scanned: {lastScanned}</span>
-                {(linkedinUrl || displayResult?.linkedinUrl) && (
-                  <>
-                    <span className="mx-1">•</span>
-                    <span className="truncate max-w-[200px]">{linkedinUrl || displayResult?.linkedinUrl}</span>
-                  </>
-                )}
-              </div>
-            </div>
-            <TabsList className="grid w-full md:w-auto grid-cols-2">
-              <TabsTrigger value="optimize">Profile Optimizer</TabsTrigger>
-              <TabsTrigger value="dm">Recruiter DM</TabsTrigger>
-            </TabsList>
-          </div>
+          <LinkedInHeader 
+            lastScanned={lastScanned}
+            linkedinUrl={linkedinUrl || displayResult?.linkedinUrl}
+            isAnalyzing={isAnalyzing}
+            onRefresh={handleOptimize}
+          />
+
+          <TabsList className="grid w-full md:w-auto grid-cols-2 mb-8">
+            <TabsTrigger value="optimize">Profile Optimizer</TabsTrigger>
+            <TabsTrigger value="dm">Recruiter DM</TabsTrigger>
+          </TabsList>
 
           <TabsContent value="optimize" className="space-y-8">
             {/* Input Section */}
@@ -268,40 +244,10 @@ export function LinkedInOptimizer() {
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {/* Top Stats Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  {/* Score Card */}
-                  <div className="lg:col-span-4 bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <TrendingUp className="h-24 w-24" />
-                    </div>
-                    <h3 className="text-zinc-400 text-sm font-semibold uppercase tracking-wider mb-6">
-                      Recruiter Visibility Score
-                    </h3>
-                    <div className="flex items-center gap-6">
-                      {/* Circular Gauge */}
-                      <div 
-                        className="relative size-32 rounded-full flex items-center justify-center"
-                        style={{ background: `conic-gradient(${score >= 80 ? '#7c3bed' : score >= 60 ? '#eab308' : '#ef4444'} ${score}%, #27272a 0)` }}
-                      >
-                        <div className="absolute inset-[10px] bg-zinc-900 rounded-full flex flex-col items-center justify-center">
-                          <span className="text-3xl font-black text-white">{score}</span>
-                          <span className="text-[10px] text-zinc-400 uppercase font-bold">
-                            {score >= 80 ? "Great" : score >= 60 ? "Good" : "Poor"}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex-1 flex flex-col gap-2">
-                        <p className="text-white font-medium leading-snug">
-                          {displayResult.headline?.critique || "Your profile visibility analysis"}
-                        </p>
-                        {score < 80 && (
-                          <div className="flex items-center gap-1 text-red-400 text-xs font-medium">
-                            <AlertCircle className="h-4 w-4" />
-                            <span>Invisible to {100 - score}% of recruiters</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ScoreGauge 
+                    score={score}
+                    critique={displayResult.headline?.critique}
+                  />
 
                   {/* Secondary Stats */}
                   <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -319,11 +265,11 @@ export function LinkedInOptimizer() {
                       <div>
                         <p className="text-zinc-400 text-sm font-medium mb-1">Keyword Coverage</p>
                         <p className="text-2xl font-bold text-white">
-                          {matchedKeywords.length}/{allKeywords.length}
+                          {matchedKeywords.length}/{matchedKeywords.length + missingKeywords.length}
                         </p>
                         <p className="text-zinc-400 text-xs mt-1">
                           {matchedKeywords.length > 0 
-                            ? `${Math.round((matchedKeywords.length / Math.max(allKeywords.length, 1)) * 100)}% match rate`
+                            ? `${Math.round((matchedKeywords.length / Math.max(matchedKeywords.length + missingKeywords.length, 1)) * 100)}% match rate`
                             : "No keywords analyzed yet"}
                         </p>
                       </div>
@@ -355,139 +301,24 @@ export function LinkedInOptimizer() {
                   </div>
                 </div>
 
-                {/* Headline Optimizer */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-white text-lg font-bold flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-primary" />
-                      Headline Optimizer
-                    </h3>
-                    <Button 
-                      size="sm" 
-                      variant="ghost"
-                      onClick={handleOptimize}
-                      disabled={isAnalyzing}
-                    >
-                      <RefreshCw className={`h-4 w-4 mr-2 ${isAnalyzing ? 'animate-spin' : ''}`} />
-                      Re-scan
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-                    {/* Current */}
-                    <div className="p-6 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-zinc-900/50">
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-xs font-bold uppercase tracking-wider text-red-400 flex items-center gap-1">
-                          <X className="h-4 w-4" /> Current Headline
-                        </span>
-                      </div>
-                      <div className="p-4 rounded-lg border border-red-900/30 bg-red-900/10 text-zinc-300 font-mono text-sm leading-relaxed">
-                        {displayResult.headline?.current || "Software Engineer looking for new opportunities in tech."}
-                      </div>
-                      <p className="mt-3 text-xs text-red-400/80">
-                        {displayResult.headline?.critique || "Analysis: Too generic. Misses specific stack and value proposition."}
-                      </p>
-                    </div>
-
-                    {/* Optimized */}
-                    <div className="p-6 bg-black/50 relative">
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 blur-2xl rounded-full"></div>
-                      <div className="flex justify-between items-center mb-4 relative z-10">
-                        <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1">
-                          <Sparkles className="h-4 w-4" /> AI Recommendation
-                        </span>
-                        <button 
-                          onClick={() => handleCopyText(displayResult.headline?.suggested || "")}
-                          className="text-xs flex items-center gap-1 text-white hover:text-primary transition-colors"
-                        >
-                          <Copy className="h-3 w-3" /> Copy
-                        </button>
-                      </div>
-                      <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-white font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(124,59,237,0.1)]">
-                        {displayResult.headline?.suggested || "Senior Frontend Engineer | React, TypeScript, Next.js | Building Scalable SaaS Architectures"}
-                      </div>
-                      <p className="mt-3 text-xs text-primary/80">
-                        Improvement: Includes high-value keywords and role seniority.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <HeadlineOptimizer 
+                  current={displayResult.headline?.current}
+                  suggested={displayResult.headline?.suggested}
+                  critique={displayResult.headline?.critique}
+                />
 
                 {/* Main Content Split */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Keyword Cloud */}
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col h-full">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                        <Cloud className="h-5 w-5 text-primary" />
-                        ATS Keywords
-                      </h3>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs text-zinc-400 mb-4 uppercase tracking-wider font-semibold">
-                        Found in your profile
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {matchedKeywords.length > 0 ? (
-                          matchedKeywords.slice(0, 4).map((kw: string, i: number) => (
-                            <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
-                              {kw}
-                            </Badge>
-                          ))
-                        ) : (
-                          <p className="text-xs text-zinc-500 italic">No matched keywords yet. Analyze your profile first.</p>
-                        )}
-                      </div>
-                      <p className="text-xs text-zinc-400 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
-                        Missing (Critical)
-                        <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {missingKeywords.length > 0 ? (
-                          missingKeywords.slice(0, showAllKeywords ? undefined : 5).map((kw: any, i: number) => (
-                            <Badge 
-                              key={i} 
-                              variant="outline"
-                              className="border-dashed border-red-500/40 text-red-400 hover:bg-red-500/10 cursor-help"
-                              title="Critical keyword missing from your profile"
-                            >
-                              {typeof kw === 'string' ? kw : kw.keyword}
-                            </Badge>
-                          ))
-                        ) : (
-                          <p className="text-xs text-zinc-500 italic">
-                            {hasData ? "Great! No critical keywords missing." : "Analyze your profile to see missing keywords."}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    {allKeywords.length > 5 && (
-                      <div className="mt-6 pt-6 border-t border-zinc-800">
-                        <button 
-                          onClick={() => setShowAllKeywords(!showAllKeywords)}
-                          className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
-                        >
-                          {showAllKeywords ? "Show less" : `View all ${allKeywords.length} keywords`} 
-                          <ArrowRight className={`h-4 w-4 transition-transform ${showAllKeywords ? 'rotate-90' : ''}`} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  <KeywordCloud 
+                    matchedKeywords={matchedKeywords}
+                    missingKeywords={missingKeywords}
+                    hasData={hasData}
+                  />
 
                   {/* Bio Audit */}
                   <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                        <FileText className="h-5 w-5 text-primary" />
-                        About Section Rewrite
-                      </h3>
-                      <div className="flex gap-2">
-                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-red-400">
-                          <span className="size-2 rounded-full bg-red-400"></span> Issues
-                        </span>
-                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-primary">
-                          <span className="size-2 rounded-full bg-primary"></span> Fixed
-                        </span>
-                      </div>
+                      <h3 className="text-white font-bold text-lg">About Section Rewrite</h3>
                     </div>
                     <div className="bg-black rounded-lg p-5 font-mono text-sm leading-7 text-zinc-300 border border-zinc-800 whitespace-pre-wrap">
                       {displayResult.about?.rewritten || displayResult.about?.suggestions || "Your optimized About section will appear here..."}
@@ -502,7 +333,10 @@ export function LinkedInOptimizer() {
                       </Button>
                       <Button 
                         className="flex-1 bg-primary hover:bg-primary/90"
-                        onClick={() => handleCopyText(displayResult.about?.rewritten || displayResult.about?.suggestions || "")}
+                        onClick={() => {
+                          navigator.clipboard.writeText(displayResult.about?.rewritten || displayResult.about?.suggestions || "");
+                          toast.success("Copied to clipboard!");
+                        }}
                       >
                         Copy Optimized Bio
                       </Button>
@@ -510,47 +344,7 @@ export function LinkedInOptimizer() {
                   </div>
                 </div>
 
-                {/* Quick Fix List */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-                  <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
-                    Quick Fixes
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {displayResult.actionableTips?.slice(0, 6).map((tip: any, i: number) => {
-                      const tipText = typeof tip === 'string' ? tip : tip.tip;
-                      const isDone = typeof tip === 'object' && tip.completed === true;
-                      
-                      return (
-                        <div 
-                          key={i}
-                          className={`flex items-start gap-3 p-3 rounded-lg border ${
-                            isDone 
-                              ? 'bg-green-500/5 border-green-500/10' 
-                              : 'bg-red-500/5 border-red-500/10 hover:bg-red-500/10 transition-colors cursor-pointer group'
-                          }`}
-                        >
-                          <div className={`rounded-full p-0.5 mt-0.5 ${
-                            isDone 
-                              ? 'bg-green-500 text-white' 
-                              : 'bg-zinc-900 border border-red-500 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors'
-                          }`}>
-                            {isDone ? (
-                              <Check className="h-3 w-3" />
-                            ) : (
-                              <X className="h-3 w-3" />
-                            )}
-                          </div>
-                          <div>
-                            <p className={`text-sm font-medium ${isDone ? 'text-white/70 line-through' : 'text-white font-bold'}`}>
-                              {tipText}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                <QuickFixList tips={displayResult.actionableTips || []} />
               </div>
             )}
           </TabsContent>
