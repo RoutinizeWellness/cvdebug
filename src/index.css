@@ -127,27 +127,19 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply text-foreground font-sans antialiased;
-    /* Solid white background */
-    background: #FFFFFF;
-    background-attachment: fixed;
+    @apply bg-background text-foreground;
   }
-  
-  .dark body {
-    /* Dark mode: Keep deep purple gradient */
-    background: linear-gradient(135deg, #2D1B3D 0%, #4A2F5C 25%, #6B4A7D 50%, #4A2F5C 75%, #2D1B3D 100%);
-    background-attachment: fixed;
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-  
   button:not([disabled]),
   [role="button"]:not([disabled]) {
     cursor: pointer;
   }
-
-  .glass-card {
-    @apply bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-purple-200/30 dark:border-purple-500/20 rounded-xl overflow-hidden shadow-lg;
+  
+  /* Glass Panel Effect for ATS Robot Vision */
+  .glass-panel {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
   }
 }
 
