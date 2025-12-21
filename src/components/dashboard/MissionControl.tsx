@@ -1,8 +1,6 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Settings, Bell, TrendingUp, CheckCircle, AlertTriangle, Download, Lightbulb, Terminal, MoreHorizontal, Target, Shield, Gauge, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -67,7 +65,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     switch (type) {
       case "INFO": return "text-blue-400";
       case "WARN": return "text-yellow-500";
-      case "AI": return "text-purple-400";
+      case "AI": return "text-[#8B5CF6]";
       case "SUCCESS": return "text-emerald-400";
       default: return "text-slate-400";
     }
@@ -75,28 +73,6 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   return (
     <div className="space-y-6 pb-24 md:pb-6">
-      {/* Top Navigation Bar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="size-8 rounded bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white shadow-lg shadow-primary/20">
-            <Terminal className="h-5 w-5" />
-          </div>
-          <h1 className="text-white text-lg font-bold tracking-tight">
-            CVDebug <span className="text-slate-500 font-normal mx-2">/</span> 
-            <span className="text-primary font-mono text-sm">Mission Control</span>
-          </h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <span className="text-xs font-mono text-slate-400">SYSTEM ONLINE</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main 3-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Column 1: Metrics (Left) */}
@@ -110,7 +86,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
             <div className="flex items-center justify-between w-full mb-4">
               <h3 className="text-slate-100 font-semibold flex items-center gap-2">
-                <Gauge className="h-4 w-4 text-primary" />
+                <span className="material-symbols-outlined text-primary text-sm">speed</span>
                 Match Score
               </h3>
               <span className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">
@@ -155,11 +131,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           >
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-slate-100 font-semibold flex items-center gap-2">
-                <Shield className="h-4 w-4 text-purple-400" />
+                <span className="material-symbols-outlined text-[#8B5CF6] text-sm">health_and_safety</span>
                 Integrity Health
               </h3>
               <button className="text-slate-500 hover:text-white transition-colors">
-                <MoreHorizontal className="h-4 w-4" />
+                <span className="material-symbols-outlined text-lg">more_horiz</span>
               </button>
             </div>
             
@@ -173,7 +149,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 <div className="h-full bg-emerald-500 rounded-full" style={{ width: "80%" }}></div>
               </div>
               <p className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1">
-                <TrendingUp className="h-3 w-3" />
+                <span className="material-symbols-outlined text-[12px]">trending_up</span>
                 +2% from last scan
               </p>
             </div>
@@ -188,7 +164,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 <div className="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${integrityScore}%` }}></div>
               </div>
               <p className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1">
-                <CheckCircle className="h-3 w-3" />
+                <span className="material-symbols-outlined text-[12px]">check_circle</span>
                 No critical errors found
               </p>
             </div>
@@ -219,7 +195,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             <div className="p-5 border-b border-slate-700/50 flex justify-between items-center bg-slate-800/30">
               <div>
                 <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                  <Target className="h-5 w-5 text-primary" />
+                  <span className="material-symbols-outlined text-primary">gps_fixed</span>
                   Keyword Sniper
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">Targeting Job ID: #SWE-2024-L5</p>
@@ -242,7 +218,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   <div key={idx} className="group flex items-center justify-between p-3 rounded-lg hover:bg-slate-700/30 border border-transparent hover:border-slate-600 transition-all cursor-default">
                     <div className="flex items-center gap-3">
                       <div className="p-1.5 rounded bg-slate-800 text-emerald-400">
-                        <CheckCircle className="h-4 w-4" />
+                        <span className="material-symbols-outlined text-lg">check</span>
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-white">{keyword.name}</span>
@@ -268,7 +244,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   >
                     <div className="flex items-center gap-3">
                       <div className="p-1.5 rounded bg-rose-900/50 text-rose-400 animate-pulse">
-                        <AlertTriangle className="h-4 w-4" />
+                        <span className="material-symbols-outlined text-lg">priority_high</span>
                       </div>
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-white group-hover:text-rose-200">{keyword.name}</span>
@@ -276,7 +252,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       </div>
                     </div>
                     <button className="px-3 py-1.5 rounded text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition-colors flex items-center gap-1 shadow-[0_0_10px_rgba(244,63,94,0.1)]">
-                      <Sparkles className="h-3 w-3" />
+                      <span className="material-symbols-outlined text-xs">auto_fix_high</span>
                       Fix with AI
                     </button>
                   </motion.div>
@@ -287,7 +263,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             {/* Bottom Action */}
             <div className="p-4 border-t border-slate-700/50 bg-slate-800/30 backdrop-blur">
               <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
-                <Download className="h-4 w-4" />
+                <span className="material-symbols-outlined text-lg">download</span>
                 Export Keyword Report
               </Button>
             </div>
@@ -305,7 +281,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           >
             <div className="p-5 border-b border-slate-700/50">
               <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-amber-400" />
+                <span className="material-symbols-outlined text-amber-400">lightbulb</span>
                 Actionable Intelligence
               </h3>
             </div>
@@ -349,7 +325,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           >
             <div className="bg-[#0b1120] px-4 py-2 border-b border-slate-800 flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <Terminal className="h-3 w-3 text-slate-500" />
+                <span className="material-symbols-outlined text-xs text-slate-500">terminal</span>
                 <span className="text-xs font-mono font-bold text-slate-400">SYSTEM CONSOLE</span>
               </div>
               <div className="flex gap-1.5">
@@ -386,14 +362,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
           >
-            <div className="glass-panel border-l-4 border-l-purple-500 p-4 rounded-lg shadow-2xl flex items-start gap-4 max-w-sm bg-slate-900/90 backdrop-blur-xl">
-              <div className="p-2 rounded-full bg-purple-500/20 text-purple-400">
-                <Sparkles className="h-5 w-5" />
+            <div className="glass-panel border-l-4 border-l-[#8B5CF6] p-4 rounded-lg shadow-2xl flex items-start gap-4 max-w-sm bg-slate-900/90 backdrop-blur-xl">
+              <div className="p-2 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6]">
+                <span className="material-symbols-outlined">auto_awesome</span>
               </div>
               <div className="flex-1">
                 <h4 className="text-white font-semibold text-sm">AI Suggestions Ready</h4>
                 <p className="text-slate-400 text-xs mt-1">I've generated 3 phrasing alternatives for your "Kubernetes" experience.</p>
-                <button className="mt-2 text-xs font-medium text-purple-400 hover:text-white transition-colors">
+                <button className="mt-2 text-xs font-medium text-[#8B5CF6] hover:text-white transition-colors">
                   Review Suggestions →
                 </button>
               </div>
@@ -401,7 +377,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 className="text-slate-500 hover:text-white"
                 onClick={() => setShowAISuggestion(false)}
               >
-                <X className="h-4 w-4" />
+                <span className="material-symbols-outlined text-sm">close</span>
               </button>
             </div>
           </motion.div>
