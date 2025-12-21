@@ -86,25 +86,83 @@ export const analyzeResume = internalAction({
       }
 
       // Ensure we have valid analysis result
-      if (!analysisResult || !analysisResult.score) {
+      if (!analysisResult || typeof analysisResult.score !== 'number') {
         console.error("[AI Analysis] Invalid analysis result, generating fallback");
         analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
         usedFallback = true;
       }
 
-      // Ensure all required fields have valid values
+      // Ensure all required fields have valid values with strict validation
       const safeAnalysisResult = {
-        title: analysisResult.title || "Resume",
-        category: analysisResult.category || "General",
-        score: Math.max(0, Math.min(100, analysisResult.score || 0)),
-        analysis: analysisResult.analysis || "Analysis completed.",
-        scoreBreakdown: analysisResult.scoreBreakdown || { keywords: 0, format: 0, completeness: 0 },
-        missingKeywords: Array.isArray(analysisResult.missingKeywords) ? analysisResult.missingKeywords : [],
-        formatIssues: Array.isArray(analysisResult.formatIssues) ? analysisResult.formatIssues : [],
-        metricSuggestions: Array.isArray(analysisResult.metricSuggestions) ? analysisResult.metricSuggestions : [],
+        title: String(analysisResult.title || "Resume").substring(0, 200),
+        category: String(analysisResult.category || "General"),
+        score: Math.round(Math.max(0, Math.min(100, Number(analysisResult.score) || 0))),
+        analysis: String(analysisResult.analysis || "Analysis completed."),
+        scoreBreakdown: {
+          keywords: Math.round(Number(analysisResult.scoreBreakdown?.keywords) || 0),
+          format: Math.round(Number(analysisResult.scoreBreakdown?.format) || 0),
+          completeness: Math.round(Number(analysisResult.scoreBreakdown?.completeness) || 0),
+        },
+        missingKeywords: Array.isArray(analysisResult.missingKeywords) 
+          ? analysisResult.missingKeywords.slice(0, 20).map((kw: any) => {
+              if (typeof kw === 'string') {
+                return {
+                  keyword: kw,
+                  priority: "important",
+                  section: "Experience",
+                  context: `Add "${kw}" to relevant sections with specific examples.`,
+                  frequency: 1,
+                  impact: 5,
+                  synonyms: []
+                };
+              }
+              return {
+                keyword: String(kw.keyword || ""),
+                priority: String(kw.priority || "important"),
+                section: String(kw.section || "Experience"),
+                context: String(kw.context || ""),
+                frequency: Number(kw.frequency) || 1,
+                impact: Number(kw.impact) || 5,
+                synonyms: Array.isArray(kw.synonyms) ? kw.synonyms.map(String) : []
+              };
+            }).filter((kw: any) => kw.keyword.length > 0)
+          : [],
+        formatIssues: Array.isArray(analysisResult.formatIssues)
+          ? analysisResult.formatIssues.slice(0, 20).map((issue: any) => {
+              if (typeof issue === 'string') {
+                return {
+                  issue: issue,
+                  severity: "medium",
+                  fix: "Review and update this section.",
+                  location: "Overall",
+                  atsImpact: "May affect parsing"
+                };
+              }
+              return {
+                issue: String(issue.issue || ""),
+                severity: String(issue.severity || "medium"),
+                fix: String(issue.fix || ""),
+                location: String(issue.location || "Overall"),
+                atsImpact: String(issue.atsImpact || "")
+              };
+            }).filter((issue: any) => issue.issue.length > 0)
+          : [],
+        metricSuggestions: Array.isArray(analysisResult.metricSuggestions)
+          ? analysisResult.metricSuggestions.slice(0, 10).map((suggestion: any) => ({
+              tech: String(suggestion.tech || ""),
+              metrics: Array.isArray(suggestion.metrics) 
+                ? suggestion.metrics.map(String).slice(0, 5)
+                : []
+            })).filter((s: any) => s.tech.length > 0 && s.metrics.length > 0)
+          : [],
       };
       
       try {
+        console.log(`[AI Analysis] Attempting to update resume ${args.id} with validated data`);
+        console.log(`[AI Analysis] Score: ${safeAnalysisResult.score}, Category: ${safeAnalysisResult.category}`);
+        console.log(`[AI Analysis] Missing keywords count: ${safeAnalysisResult.missingKeywords.length}`);
+        console.log(`[AI Analysis] Format issues count: ${safeAnalysisResult.formatIssues.length}`);
+        
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: safeAnalysisResult.title,
@@ -118,22 +176,26 @@ export const analyzeResume = internalAction({
           status: "completed",
         });
         
-        console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback})`);
+        console.log(`[AI Analysis] ✅ Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback})`);
       } catch (updateError: any) {
-        console.error("[AI Analysis] Failed to update resume metadata:", updateError.message);
+        console.error("[AI Analysis] ❌ Failed to update resume metadata:", updateError);
+        console.error("[AI Analysis] Error details:", JSON.stringify(updateError, null, 2));
+        
         // Try one more time with absolute minimal data
         try {
+          console.log(`[AI Analysis] Attempting minimal fallback update for resume ${args.id}`);
           await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
             id: args.id,
             title: "Resume",
             category: "General",
             analysis: "Analysis completed. Your resume has been processed.",
-            score: safeAnalysisResult.score,
+            score: Math.round(safeAnalysisResult.score),
             status: "completed",
           });
-          console.log(`[AI Analysis] Fallback update succeeded for resume ${args.id}`);
+          console.log(`[AI Analysis] ✅ Fallback update succeeded for resume ${args.id}`);
         } catch (fallbackError: any) {
-          console.error("[AI Analysis] Fallback update also failed:", fallbackError.message);
+          console.error("[AI Analysis] ❌ Fallback update also failed:", fallbackError);
+          console.error("[AI Analysis] Fallback error details:", JSON.stringify(fallbackError, null, 2));
           throw fallbackError;
         }
       }
