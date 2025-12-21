@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { AnimatePresence } from "framer-motion";
@@ -9,22 +9,24 @@ import { ProgressTimeline } from "@/components/onboarding/ProgressTimeline";
 import { StepUploadCV } from "@/components/onboarding/StepUploadCV";
 import { StepTargetJob } from "@/components/onboarding/StepTargetJob";
 import { StepScanning } from "@/components/onboarding/StepScanning";
+import { Id } from "@/convex/_generated/dataModel";
 
 const apiAny = api as any;
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [resumeId, setResumeId] = useState<Id<"resumes"> | null>(null);
   const [targetCompany, setTargetCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
 
   const createProject = useMutation(apiAny.projects.createProject);
+  const resume = useQuery(apiAny.resumes.getResumeInternal, resumeId ? { id: resumeId } : "skip");
 
-  const handleFileComplete = (file: File) => {
-    setUploadedFile(file);
-    toast.success("Resume uploaded successfully");
-    setTimeout(() => setCurrentStep(2), 800);
+  const handleResumeComplete = (uploadedResumeId: string) => {
+    setResumeId(uploadedResumeId as Id<"resumes">);
+    toast.success("Resume uploaded successfully! Moving to next step...");
+    setTimeout(() => setCurrentStep(2), 1000);
   };
 
   const handleInitializeScan = async () => {
@@ -33,22 +35,42 @@ export default function Onboarding() {
       return;
     }
 
+    if (!resumeId) {
+      toast.error("Please upload a resume first");
+      return;
+    }
+
     setCurrentStep(3);
 
-    setTimeout(async () => {
-      try {
-        await createProject({
-          name: `${targetCompany} Application`,
-          targetRole: targetCompany,
-          description: jobDescription.substring(0, 200),
-        });
+    try {
+      const projectId = await createProject({
+        name: `${targetCompany} Application`,
+        targetRole: targetCompany,
+        description: jobDescription.substring(0, 200),
+        masterCvId: resumeId,
+      });
+
+      toast.success("Project created! Waiting for AI analysis...");
+    } catch (error) {
+      console.error("Failed to create project:", error);
+      toast.error("Failed to initialize scan");
+      return;
+    }
+  };
+
+  // Monitor resume analysis completion
+  useEffect(() => {
+    if (currentStep === 3 && resume) {
+      if (resume.status === "completed") {
         toast.success("Analysis complete! Redirecting to dashboard...");
         setTimeout(() => navigate("/dashboard"), 2000);
-      } catch (error) {
-        toast.error("Failed to initialize scan");
+      } else if (resume.status === "failed") {
+        toast.error("Analysis failed. Please try again.");
+        setCurrentStep(1);
+        setResumeId(null);
       }
-    }, 5000);
-  };
+    }
+  }, [resume, currentStep, navigate]);
 
   return (
     <div className="min-h-screen bg-[#0F172A] text-white font-sans selection:bg-secondary/30">
@@ -74,7 +96,11 @@ export default function Onboarding() {
             <div className="lg:col-span-2 flex flex-col gap-10">
               <AnimatePresence mode="wait">
                 {currentStep === 1 && (
-                  <StepUploadCV onComplete={handleFileComplete} />
+                  <StepUploadCV 
+                    onComplete={handleResumeComplete}
+                    jobDescription={jobDescription}
+                    setJobDescription={setJobDescription}
+                  />
                 )}
 
                 {currentStep === 2 && (

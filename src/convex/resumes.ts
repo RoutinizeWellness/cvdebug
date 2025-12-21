@@ -345,7 +345,7 @@ export const getResumes = query({
   },
 });
 
-export const getResumeInternal = internalQuery({
+export const getResumeInternal = query({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
     return await ctx.db.get(args.id);

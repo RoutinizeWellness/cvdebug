@@ -4,15 +4,18 @@ import { motion } from "framer-motion";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 
 interface StepUploadCVProps {
-  onComplete: (file: File) => void;
+  onComplete: (resumeId: string) => void;
+  jobDescription: string;
+  setJobDescription: (val: string) => void;
 }
 
-export function StepUploadCV({ onComplete }: StepUploadCVProps) {
+export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: StepUploadCVProps) {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [jobDescription, setJobDescription] = useState("");
   
   const {
+    isUploading,
     isDragging,
+    processingResumeId,
     fileInputRef,
     handleFileUpload,
     handleDragOver,
@@ -20,13 +23,18 @@ export function StepUploadCV({ onComplete }: StepUploadCVProps) {
     handleDrop
   } = useResumeUpload(jobDescription, setJobDescription);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setUploadedFile(file);
-      onComplete(file);
+      await handleFileUpload(e);
     }
   };
+
+  // When processing completes, notify parent
+  if (processingResumeId && !isUploading) {
+    onComplete(processingResumeId);
+  }
 
   return (
     <motion.div
@@ -63,15 +71,19 @@ export function StepUploadCV({ onComplete }: StepUploadCVProps) {
             <div className="flex-1 min-w-0">
               <p className="text-white text-sm font-medium truncate">{uploadedFile.name}</p>
               <p className="text-slate-500 text-xs">
-                {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB • Uploaded just now
+                {isUploading ? "Processing..." : `${(uploadedFile.size / 1024 / 1024).toFixed(2)} MB • Uploaded`}
               </p>
             </div>
-            <button
-              onClick={() => setUploadedFile(null)}
-              className="text-slate-400 hover:text-white"
-            >
-              <Trash2 className="h-5 w-5" />
-            </button>
+            {!isUploading && (
+              <button
+                onClick={() => {
+                  setUploadedFile(null);
+                }}
+                className="text-slate-400 hover:text-white"
+              >
+                <Trash2 className="h-5 w-5" />
+              </button>
+            )}
           </div>
         ) : (
           <label 
@@ -83,9 +95,10 @@ export function StepUploadCV({ onComplete }: StepUploadCVProps) {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".pdf,.docx,.doc"
+              accept=".pdf,.docx,.doc,image/jpeg,image/png,image/webp"
               onChange={handleFileChange}
               className="hidden"
+              disabled={isUploading}
             />
             <div className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors bg-slate-900/30 ${
               isDragging ? "border-[#3B82F6] bg-slate-900/50" : "border-slate-700 hover:border-[#3B82F6] group-hover:bg-slate-900/50"
@@ -93,7 +106,7 @@ export function StepUploadCV({ onComplete }: StepUploadCVProps) {
               <Upload className="h-12 w-12 text-slate-500 mx-auto mb-4 group-hover:text-[#3B82F6] transition-colors" />
               <p className="text-white font-medium mb-1">Drop your resume here</p>
               <p className="text-slate-500 text-sm">or click to browse</p>
-              <p className="text-slate-600 text-xs mt-2">PDF, DOCX up to 10MB</p>
+              <p className="text-slate-600 text-xs mt-2">PDF, DOCX, or Image up to 10MB</p>
             </div>
           </label>
         )}
