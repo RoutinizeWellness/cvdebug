@@ -9,8 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Target, AlertTriangle, CheckCircle2, ArrowRight, Copy, Briefcase } from "lucide-react";
+import { Target, AlertTriangle, CheckCircle2, ArrowRight, Copy, Briefcase, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 interface KeywordSniperPanelProps {
   open: boolean;
@@ -20,6 +23,12 @@ interface KeywordSniperPanelProps {
 }
 
 export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLetter }: KeywordSniperPanelProps) {
+  const [expandedKeyword, setExpandedKeyword] = useState<string | null>(null);
+  const [keywordPhrases, setKeywordPhrases] = useState<Record<string, any>>({});
+  const [loadingKeyword, setLoadingKeyword] = useState<string | null>(null);
+  
+  const generatePhrases = useAction(api.keywordSniper.generateKeywordPhrases);
+
   if (!job) return null;
 
   const missingKeywords = job.missingKeywords || [];
@@ -30,6 +39,30 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
     toast.success("Copied to clipboard");
   };
 
+  const handleGeneratePhrases = async (keyword: string) => {
+    setLoadingKeyword(keyword);
+    try {
+      const result = await generatePhrases({
+        missingKeyword: keyword,
+        resumeText: job.resumeText || "",
+        jobDescription: job.jobDescriptionText || "",
+        targetRole: job.jobTitle || "",
+      });
+      
+      setKeywordPhrases(prev => ({
+        ...prev,
+        [keyword]: result
+      }));
+      setExpandedKeyword(keyword);
+      toast.success(`Generated ${result.phrases.length} phrases for "${keyword}"`);
+    } catch (error) {
+      toast.error("Failed to generate phrases. Please try again.");
+      console.error(error);
+    } finally {
+      setLoadingKeyword(null);
+    }
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full sm:max-w-md bg-[#0A0A0A] border-l border-zinc-800 text-zinc-200 p-0 flex flex-col">
@@ -37,7 +70,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
           <SheetHeader className="space-y-4">
             <div className="flex items-center justify-between">
               <Badge variant="outline" className="bg-zinc-900 text-zinc-400 border-zinc-700">
-                Target Analysis
+                Keyword Sniper
               </Badge>
               <div className={`flex items-center gap-2 font-mono font-bold ${
                 score >= 80 ? "text-[#00FF41]" : score >= 50 ? "text-yellow-500" : "text-red-500"
@@ -71,27 +104,80 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {missingKeywords.map((keyword: string, i: number) => (
-                    <div key={i} className="group p-3 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-bold text-white">{keyword}</span>
-                        <Badge variant="destructive" className="text-[10px] uppercase">Missing</Badge>
+                  {missingKeywords.map((keyword: string, i: number) => {
+                    const isExpanded = expandedKeyword === keyword;
+                    const phrases = keywordPhrases[keyword];
+                    const isLoading = loadingKeyword === keyword;
+
+                    return (
+                      <div key={i} className="group rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors">
+                        <div className="p-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-bold text-white">{keyword}</span>
+                            <Badge variant="destructive" className="text-[10px] uppercase">Missing</Badge>
+                          </div>
+                          <p className="text-xs text-zinc-500 mb-3">
+                            Frequently appears in job descriptions for this role.
+                          </p>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="h-8 text-xs bg-primary/10 border-primary/50 text-primary hover:bg-primary hover:text-black w-full justify-center font-bold"
+                            onClick={() => handleGeneratePhrases(keyword)}
+                            disabled={isLoading}
+                          >
+                            {isLoading ? (
+                              <>
+                                <Loader2 className="h-3 w-3 mr-2 animate-spin" />
+                                Generating...
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="h-3 w-3 mr-2" />
+                                Generate AI Phrases
+                              </>
+                            )}
+                          </Button>
+                        </div>
+
+                        {/* AI-Generated Phrases */}
+                        {isExpanded && phrases && (
+                          <div className="border-t border-zinc-800 p-3 space-y-3 bg-zinc-950/50">
+                            <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase">
+                              <Sparkles className="h-3 w-3" />
+                              AI-Generated Phrases
+                            </div>
+                            {phrases.phrases.map((phrase: any, idx: number) => (
+                              <div key={idx} className="p-3 rounded bg-zinc-900 border border-zinc-800 space-y-2">
+                                <div className="flex items-start justify-between gap-2">
+                                  <p className="text-xs text-zinc-200 leading-relaxed flex-1">{phrase.text}</p>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-6 w-6 p-0 hover:bg-primary/20"
+                                    onClick={() => copyToClipboard(phrase.text)}
+                                  >
+                                    <Copy className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {phrase.metrics?.map((metric: string, mIdx: number) => (
+                                    <Badge key={mIdx} variant="outline" className="text-[9px] bg-primary/10 text-primary border-primary/30">
+                                      {metric}
+                                    </Badge>
+                                  ))}
+                                </div>
+                                <p className="text-[10px] text-zinc-500 italic">{phrase.context}</p>
+                              </div>
+                            ))}
+                            <div className="text-[10px] text-zinc-500 flex items-center gap-1">
+                              <span className="font-bold text-primary">Tip:</span> Add to {phrases.placementSuggestion} section
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <p className="text-xs text-zinc-500 mb-3">
-                        Frequently appears in job descriptions for this role.
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="h-7 text-xs bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-white w-full justify-start"
-                          onClick={() => copyToClipboard(`I have extensive experience with ${keyword}, specifically...`)}
-                        >
-                          <Copy className="h-3 w-3 mr-2" /> Copy Context Template
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -106,7 +192,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   <div className="h-6 w-6 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-zinc-200">Update your Resume</p>
-                    <p className="text-xs text-zinc-500">Add the missing keywords to your Skills or Experience section.</p>
+                    <p className="text-xs text-zinc-500">Use the AI-generated phrases above to add missing keywords naturally.</p>
                   </div>
                 </div>
                 <div 

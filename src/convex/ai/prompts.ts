@@ -164,6 +164,47 @@ ${hasJobDescription ? '**JD Alignment:** [X]% keyword match | [Y] critical skill
 `;
 }
 
+export function buildKeywordSniperPrompt(
+  missingKeyword: string,
+  resumeText: string,
+  jobDescription: string,
+  targetRole: string
+): string {
+  return `You are an expert Resume Writer and ATS Optimization Specialist.
+Your task is to generate 3 REAL, SPECIFIC, and ACTIONABLE bullet point phrases that naturally incorporate the keyword "${missingKeyword}" into a resume.
+
+**Context:**
+- **Missing Keyword:** "${missingKeyword}"
+- **Target Role:** "${targetRole}"
+- **Job Description:** "${jobDescription.substring(0, 1000)}..."
+- **Current Resume Excerpt:** "${resumeText.substring(0, 1000)}..."
+
+**Requirements:**
+1. Each phrase must follow the STAR method (Situation-Task-Action-Result)
+2. Include specific metrics (%, $, #, time saved, users impacted)
+3. Use strong action verbs (Architected, Spearheaded, Optimized, etc.)
+4. Naturally weave in "${missingKeyword}" without keyword stuffing
+5. Make it sound authentic and specific to the role
+6. Each phrase should be 1-2 sentences maximum
+
+**Output Format (JSON):**
+{
+  "keyword": "${missingKeyword}",
+  "phrases": [
+    {
+      "text": "Complete bullet point with ${missingKeyword} naturally integrated",
+      "metrics": ["specific metric mentioned"],
+      "actionVerb": "primary action verb used",
+      "context": "Brief explanation of why this works"
+    }
+  ],
+  "placementSuggestion": "Experience" | "Skills" | "Summary",
+  "priority": "critical" | "important" | "nice-to-have"
+}
+
+Generate exactly 3 distinct phrases that showcase different aspects of using ${missingKeyword}.`;
+}
+
 export function buildRewritePrompt(ocrText: string, jobDescription?: string): string {
   return `You are an expert Resume Writer and ATS Optimization Specialist.
 Your task is to REWRITE the following resume content to be perfectly optimized for Applicant Tracking Systems (ATS) and human recruiters.

@@ -37,6 +37,7 @@ import type * as cvHealthMonitor from "../cvHealthMonitor.js";
 import type * as gamification from "../gamification.js";
 import type * as http from "../http.js";
 import type * as jobTracker from "../jobTracker.js";
+import type * as keywordSniper from "../keywordSniper.js";
 import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as mlLearning from "../mlLearning.js";
@@ -84,6 +85,7 @@ declare const fullApi: ApiFromModules<{
   gamification: typeof gamification;
   http: typeof http;
   jobTracker: typeof jobTracker;
+  keywordSniper: typeof keywordSniper;
   linkedinProfile: typeof linkedinProfile;
   marketing: typeof marketing;
   mlLearning: typeof mlLearning;

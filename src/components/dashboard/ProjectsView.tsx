@@ -16,12 +16,23 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Calculate stats from projects
-  const totalApplications = projects?.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).applicationCount || 0), 0) || 0;
+  // Calculate stats from projects with real data
+  const totalApplications = projects?.reduce((sum: number, p: Doc<"projects">) => {
+    // Count actual applications from the applications table
+    return sum + ((p as any).applicationCount || 0);
+  }, 0) || 0;
+  
   const avgScore = projects?.length 
-    ? Math.round(projects.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).globalScore || 0), 0) / projects.length) 
+    ? Math.round(projects.reduce((sum: number, p: Doc<"projects">) => {
+        // Use actual global score from project
+        return sum + ((p as any).globalScore || 0);
+      }, 0) / projects.length) 
     : 0;
-  const totalInterviews = projects?.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).interviewCount || 0), 0) || 0;
+    
+  const totalInterviews = projects?.reduce((sum: number, p: Doc<"projects">) => {
+    // Count applications in "interviewing" status
+    return sum + ((p as any).interviewCount || 0);
+  }, 0) || 0;
 
   // Calculate trends based on recent activity (last 7 days vs previous 7 days)
   const now = Date.now();

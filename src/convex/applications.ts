@@ -1,9 +1,6 @@
 import { v } from "convex/values";
-import { mutation, query, internalMutation } from "./_generated/server";
+import { mutation, query, internalQuery } from "./_generated/server";
 import { getCurrentUser } from "./users";
-import { internal } from "./_generated/api";
-
-const internalAny = require("./_generated/api").internal;
 
 export const createApplication = mutation({
   args: {
@@ -12,116 +9,36 @@ export const createApplication = mutation({
     jobTitle: v.string(),
     jobDescriptionText: v.optional(v.string()),
     jobUrl: v.optional(v.string()),
-    notes: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Not authenticated");
-
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
-
-    const project = await ctx.db.get(args.projectId);
-    if (!project || project.userId !== identity.subject) {
-      throw new Error("Project not found or unauthorized");
-    }
+    if (!user) throw new Error("Unauthorized");
 
     const applicationId = await ctx.db.insert("applications", {
       projectId: args.projectId,
-      userId: identity.subject,
+      userId: user._id,
       companyName: args.companyName,
       jobTitle: args.jobTitle,
       jobDescriptionText: args.jobDescriptionText,
       jobUrl: args.jobUrl,
-      notes: args.notes,
       status: "draft",
+      missingKeywords: [],
+      matchedKeywords: [],
     });
-
-    // MODULE 1: Trigger automatic "Targeted Scan" when JD is added
-    if (args.jobDescriptionText && project.masterCvId) {
-      await ctx.scheduler.runAfter(0, internalAny.applications.analyzeKeywordGap, {
-        applicationId,
-        resumeId: project.masterCvId,
-        jobDescription: args.jobDescriptionText,
-      });
-      
-      // Trigger targeted CV analysis against this specific JD
-      await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
-        id: project.masterCvId,
-        ocrText: "", // Will be fetched in the action
-        jobDescription: args.jobDescriptionText,
-      });
-    }
 
     return applicationId;
   },
 });
 
-export const analyzeKeywordGap = internalMutation({
-  args: {
-    applicationId: v.id("applications"),
-    resumeId: v.id("resumes"),
-    jobDescription: v.string(),
-  },
-  handler: async (ctx, args) => {
-    const resume = await ctx.db.get(args.resumeId);
-    if (!resume || !resume.ocrText) return;
-
-    const resumeText = resume.ocrText.toLowerCase();
-    const jdText = args.jobDescription.toLowerCase();
-
-    // Extract keywords from JD (simple word frequency)
-    const jdWords = jdText.match(/\b[a-z]{3,}\b/g) || [];
-    const wordFreq: Record<string, number> = {};
-    jdWords.forEach(word => {
-      wordFreq[word] = (wordFreq[word] || 0) + 1;
-    });
-
-    // Find missing keywords (appear in JD but not in resume)
-    const missingKeywords: string[] = [];
-    const matchedKeywords: string[] = [];
-
-    Object.entries(wordFreq)
-      .filter(([_, freq]) => freq >= 2) // Only keywords mentioned 2+ times
-      .sort(([_, a], [__, b]) => b - a)
-      .slice(0, 20)
-      .forEach(([word]) => {
-        if (!resumeText.includes(word)) {
-          missingKeywords.push(word);
-        } else {
-          matchedKeywords.push(word);
-        }
-      });
-
-    // Calculate match score
-    const totalKeywords = missingKeywords.length + matchedKeywords.length;
-    const matchScore = totalKeywords > 0 
-      ? Math.round((matchedKeywords.length / totalKeywords) * 100)
-      : 0;
-
-    await ctx.db.patch(args.applicationId, {
-      missingKeywords,
-      matchedKeywords,
-      matchScore,
-    });
-  },
-});
-
 export const getApplicationsByProject = query({
-  args: {
-    projectId: v.id("projects"),
-  },
+  args: { projectId: v.id("projects") },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return [];
-
     return await ctx.db
       .query("applications")
       .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
-      .order("desc")
       .collect();
   },
 });
@@ -136,59 +53,21 @@ export const updateApplicationStatus = mutation({
       v.literal("rejected"),
       v.literal("accepted")
     ),
-    appliedDate: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Not authenticated");
-
-    const application = await ctx.db.get(args.applicationId);
-    if (!application) throw new Error("Application not found");
-
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity || application.userId !== identity.subject) {
-      throw new Error("Unauthorized");
-    }
+    if (!user) throw new Error("Unauthorized");
 
     await ctx.db.patch(args.applicationId, {
       status: args.status,
-      appliedDate: args.appliedDate || (args.status === "applied" ? Date.now() : undefined),
+      appliedDate: args.status === "applied" ? Date.now() : undefined,
     });
   },
 });
 
-export const checkStaleApplications = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const now = Date.now();
-    const fortyEightHoursAgo = now - (48 * 60 * 60 * 1000);
-
-    // Find applications that haven't been updated in 48 hours and are in "applied" status
-    const allApplications = await ctx.db.query("applications").collect();
-    
-    for (const app of allApplications) {
-      const isStale = app._creationTime < fortyEightHoursAgo && 
-                      app.status === "applied" &&
-                      (!app.appliedDate || app.appliedDate < fortyEightHoursAgo);
-      
-      if (isStale) {
-        // Get user email
-        const user = await ctx.db
-          .query("users")
-          .withIndex("by_token", (q) => q.eq("tokenIdentifier", app.userId))
-          .unique();
-        
-        if (user && user.email) {
-          // Schedule engagement email
-          await ctx.scheduler.runAfter(0, internalAny.marketing.sendStatusEngagementEmail, {
-            email: user.email,
-            name: user.name || "there",
-            companyName: app.companyName,
-            jobTitle: app.jobTitle,
-            applicationId: app._id,
-          });
-        }
-      }
-    }
+export const getApplicationInternal = internalQuery({
+  args: { applicationId: v.id("applications") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.applicationId);
   },
 });
