@@ -1,28 +1,22 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, Search, MoreHorizontal, CheckCircle, AlertCircle, AlertTriangle, Sparkles } from "lucide-react";
+import { Plus, Search, MoreHorizontal, CheckCircle, AlertTriangle, AlertCircle, Clock } from "lucide-react";
 import { useState } from "react";
 import { CreateProjectDialog } from "./CreateProjectDialog";
 import { Id, Doc } from "@/convex/_generated/dataModel";
+import { useNavigate } from "react-router";
 
 interface ProjectsViewProps {
   onSelectProject: (id: Id<"projects">) => void;
 }
 
 export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
+  const navigate = useNavigate();
   const projects = useQuery(api.projects.getProjects, { status: "active" });
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "high" | "review" | "archived">("all");
-
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "from-blue-500 to-blue-600";
-    if (score >= 60) return "from-purple-500 to-purple-600";
-    if (score >= 40) return "from-yellow-500 to-yellow-600";
-    return "from-red-500 to-red-600";
-  };
 
   const getScoreGradient = (score: number) => {
     if (score >= 80) return `conic-gradient(#3B82F6 ${score}%, #334155 0)`;
@@ -68,9 +62,45 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
     return "Low";
   };
 
+  const formatTimeAgo = (timestamp: number) => {
+    const now = Date.now();
+    const diff = now - timestamp;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return `${Math.floor(days / 7)}w ago`;
+  };
+
   return (
     <div className="space-y-6">
-      {/* Filters & Search */}
+      {/* Top Action Bar */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
+          <div className="hidden md:flex items-center bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 w-full sm:w-64 focus-within:ring-1 focus-within:ring-primary transition-all">
+            <Search className="h-4 w-4 text-slate-400" />
+            <input 
+              className="bg-transparent border-none text-sm text-white placeholder-slate-500 focus:ring-0 w-full ml-2 p-0 h-auto outline-none" 
+              placeholder="Search projects, tags..."
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        <Button 
+          onClick={() => navigate("/onboarding")}
+          className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-0.5 flex items-center gap-2"
+        >
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          Upload New Master CV
+        </Button>
+      </div>
+
+      {/* Filters & Sort */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-wrap gap-2">
           <button
@@ -117,7 +147,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
 
         <div className="flex items-center gap-2 text-sm text-slate-400">
           <span>Sort by:</span>
-          <button className="flex items-center gap-1 font-medium text-white hover:text-blue-400 transition-colors">
+          <button className="flex items-center gap-1 font-medium text-white hover:text-primary transition-colors">
             Last Updated
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -128,7 +158,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
 
       {/* Projects Grid */}
       {projects === undefined ? (
-        <div className="text-center py-12 text-zinc-500">Loading projects...</div>
+        <div className="text-center py-12 text-slate-500">Loading projects...</div>
       ) : projects.length === 0 ? (
         <div className="text-center py-20 bg-slate-900/50 border-2 border-dashed border-slate-700 rounded-2xl">
           <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -140,7 +170,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
           </p>
           <Button 
             onClick={() => setShowCreateDialog(true)}
-            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold"
+            className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-semibold"
           >
             Create Your First Project
           </Button>
@@ -156,14 +186,16 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
               <div 
                 key={project._id}
                 onClick={() => onSelectProject(project._id)}
-                className="group relative bg-slate-900 rounded-xl border border-slate-800 p-5 shadow-lg hover:border-blue-500/50 hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group relative bg-[#1E293B] rounded-xl border border-slate-800 p-5 shadow-lg hover:border-primary/50 hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               >
                 {/* Header */}
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-0.5 flex items-center justify-center">
-                      <div className="w-full h-full bg-slate-900 rounded-lg flex items-center justify-center">
-                        <Sparkles className="h-5 w-5 text-blue-400" />
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary p-0.5 flex items-center justify-center">
+                      <div className="w-full h-full bg-[#1E293B] rounded-lg flex items-center justify-center">
+                        <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
                       </div>
                     </div>
                     <div>
@@ -180,7 +212,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 </div>
 
                 {/* Score Section */}
-                <div className="flex items-center justify-between bg-slate-950/50 rounded-lg p-3 mb-4 border border-slate-800/50">
+                <div className="flex items-center justify-between bg-slate-900/50 rounded-lg p-3 mb-4 border border-slate-800/50">
                   <div className="flex items-center gap-3">
                     {/* Circular Progress */}
                     <div className="relative w-12 h-12 flex items-center justify-center">
@@ -188,7 +220,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                         className="w-full h-full rounded-full p-[3px]"
                         style={{ background: getScoreGradient(score) }}
                       >
-                        <div className="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+                        <div className="w-full h-full bg-[#1E293B] rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold font-mono">{score}%</span>
                         </div>
                       </div>
@@ -215,12 +247,10 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                   </div>
                   <div className="flex items-center justify-between pt-2 border-t border-slate-800">
                     <span className="text-slate-500 text-xs flex items-center gap-1">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {new Date(project._creationTime).toLocaleDateString()}
+                      <Clock className="h-3.5 w-3.5" />
+                      {formatTimeAgo(project._creationTime)}
                     </span>
-                    <button className="text-sm font-medium text-blue-400 hover:text-white transition-colors">
+                    <button className="text-sm font-medium text-primary hover:text-white transition-colors">
                       View Details
                     </button>
                   </div>
@@ -232,9 +262,9 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
           {/* New Project Card */}
           <div 
             onClick={() => setShowCreateDialog(true)}
-            className="bg-slate-900/50 rounded-xl border-2 border-dashed border-slate-700 p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-blue-500 hover:bg-slate-800 transition-all group min-h-[250px]"
+            className="bg-[#1E293B]/50 rounded-xl border-2 border-dashed border-slate-700 p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-slate-800 transition-all group min-h-[250px]"
           >
-            <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
+            <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-primary transition-colors">
               <Plus className="h-8 w-8 text-slate-400 group-hover:text-white" />
             </div>
             <div>
