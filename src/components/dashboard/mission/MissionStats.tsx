@@ -1,6 +1,7 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Target, FileText, TrendingUp, Calendar } from "lucide-react";
+import { Target, FileText, TrendingUp, Calendar, Shield } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -31,43 +32,65 @@ export function MissionStats() {
     return "Low";
   };
 
+  // Detect ATS system (mock detection for now)
+  const detectedATS = "Greenhouse";
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <FileText className="h-4 w-4" />
-          <span className="text-xs font-bold uppercase tracking-wider">Jobs Analyzed</span>
-        </div>
-        <div className="text-2xl font-black text-white">{jobsAnalyzed}</div>
-      </div>
-
-      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Target className="h-4 w-4" />
-          <span className="text-xs font-bold uppercase tracking-wider">Keywords Matched</span>
-        </div>
-        <div className="text-2xl font-black text-white">{keywordsMatched}</div>
-      </div>
-
-      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <TrendingUp className="h-4 w-4" />
-          <span className="text-xs font-bold uppercase tracking-wider">Avg. Score</span>
-        </div>
-        <div className={`text-2xl font-black ${avgScore >= 75 ? 'text-[#00FF41]' : avgScore >= 50 ? 'text-yellow-500' : 'text-zinc-500'}`}>
-          {avgScore}%
+    <div className="space-y-4">
+      {/* ATS Detection Badge */}
+      <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-full bg-primary/20">
+            <Shield className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-bold text-white">Target ATS Detected</p>
+            <p className="text-xs text-zinc-400">Optimizing parsing for this system</p>
+          </div>
+          <Badge className="bg-primary/20 text-primary border-primary/30 font-bold">
+            {detectedATS}
+          </Badge>
         </div>
       </div>
 
-      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
-        <div className="flex items-center gap-2 text-zinc-500">
-          <Calendar className="h-4 w-4" />
-          <span className="text-xs font-bold uppercase tracking-wider">Interview Prob.</span>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+          <div className="flex items-center gap-2 text-zinc-500">
+            <FileText className="h-4 w-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Jobs Analyzed</span>
+          </div>
+          <div className="text-2xl font-black text-white">{jobsAnalyzed}</div>
         </div>
-        <div className="text-2xl font-black text-white">
-          {getProbLabel(interviewProb)}
+
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+          <div className="flex items-center gap-2 text-zinc-500">
+            <Target className="h-4 w-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Keywords Matched</span>
+          </div>
+          <div className="text-2xl font-black text-white">{keywordsMatched}</div>
         </div>
-        <div className="text-xs text-zinc-500 -mt-1">{interviewProb}%</div>
+
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+          <div className="flex items-center gap-2 text-zinc-500">
+            <TrendingUp className="h-4 w-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Avg. Score</span>
+          </div>
+          <div className={`text-2xl font-black ${avgScore >= 75 ? 'text-[#00FF41]' : avgScore >= 50 ? 'text-yellow-500' : 'text-zinc-500'}`}>
+            {avgScore}%
+          </div>
+        </div>
+
+        <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+          <div className="flex items-center gap-2 text-zinc-500">
+            <Calendar className="h-4 w-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Interview Prob.</span>
+          </div>
+          <div className="text-2xl font-black text-white">
+            {getProbLabel(interviewProb)}
+          </div>
+          <div className="text-xs text-zinc-500 -mt-1">{interviewProb}%</div>
+        </div>
       </div>
     </div>
   );

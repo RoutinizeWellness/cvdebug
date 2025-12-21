@@ -1,4 +1,4 @@
-import { FileText, Loader2, Eye, Trash2, RefreshCw, MoreVertical } from "lucide-react";
+import { FileText, Loader2, Eye, Trash2, RefreshCw, MoreVertical, Plus, FolderPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,9 +15,10 @@ interface ResumeGridProps {
   handleDelete: (id: any) => void;
   categoryFilter?: string | null;
   onUpload?: () => void;
+  onCreateProject?: () => void;
 }
 
-export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload }: ResumeGridProps) {
+export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload, onCreateProject }: ResumeGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
@@ -109,11 +110,20 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
         <p className="text-muted-foreground max-w-sm text-center mb-8">
           Upload your resume to get an instant ATS score and AI-powered feedback.
         </p>
-        {onUpload && (
-          <Button onClick={onUpload} className="font-bold">
-            Upload Resume
-          </Button>
-        )}
+        <div className="flex gap-3">
+          {onUpload && (
+            <Button onClick={onUpload} className="font-bold">
+              <Plus className="h-4 w-4 mr-2" />
+              Upload Resume
+            </Button>
+          )}
+          {onCreateProject && (
+            <Button onClick={onCreateProject} variant="outline" className="font-bold">
+              <FolderPlus className="h-4 w-4 mr-2" />
+              Create Project
+            </Button>
+          )}
+        </div>
       </div>
     );
   }
@@ -134,8 +144,17 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
         </div>
 
-        {/* View Toggle */}
+        {/* Action Buttons */}
         <div className="flex items-center gap-2">
+          {onCreateProject && (
+            <Button
+              onClick={onCreateProject}
+              className="bg-primary text-white font-bold hover:bg-primary/90"
+            >
+              <FolderPlus className="h-4 w-4 mr-2" />
+              Create Project
+            </Button>
+          )}
           <Button
             variant={viewMode === "list" ? "default" : "outline"}
             size="sm"
