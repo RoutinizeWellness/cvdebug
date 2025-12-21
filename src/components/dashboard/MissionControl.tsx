@@ -3,7 +3,10 @@ import { api } from "@/convex/_generated/api";
 import { Target, TrendingUp, AlertTriangle, CheckCircle2, Crosshair, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { GamificationPanel } from "./mission/GamificationPanel";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 
 const apiAny = api as any;
 
@@ -17,6 +20,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const resumes = useQuery(apiAny.resumes.getResumes);
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
   const projects = useQuery(apiAny.projects.getProjects);
+  const checkGapAlert = useMutation(apiAny.gamification.checkGapAlert);
   
   // Get the most recent completed resume, or the most recent one if none are completed
   const masterResume = useMemo(() => {
@@ -175,6 +179,27 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     return logs;
   }, [masterResume, jobsAnalyzed, avgScore, latestJob, actionItems]);
 
+  // Check for gap alerts
+  useEffect(() => {
+    if (masterResume?.overallScore) {
+      const missingCount = masterResume.missingKeywords?.length || 0;
+      checkGapAlert({
+        resumeScore: masterResume.overallScore,
+        missingKeywordsCount: missingCount,
+      }).then((alert) => {
+        if (alert) {
+          toast.warning(alert.message, {
+            action: {
+              label: alert.action,
+              onClick: () => onNavigate("resumes"),
+            },
+            duration: 10000,
+          });
+        }
+      });
+    }
+  }, [masterResume?.overallScore, checkGapAlert]);
+
   return (
     <div className="flex flex-col gap-6 h-full">
       {/* Header Stats Area */}
@@ -278,6 +303,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
         </div>
       </div>
+
+      {/* NEW: Gamification Panel */}
+      <GamificationPanel resumeId={masterResume?._id} />
 
       {/* Main Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 flex-1">

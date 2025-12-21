@@ -20,6 +20,36 @@ export function HowItWorksSection() {
     }
   ];
 
+  const sprintFeatures = [
+    {
+      icon: "🛡️",
+      title: "El Escudo Técnico",
+      features: [
+        "Scans Ilimitados (7 días) - Edita 100 veces sin costo extra",
+        "Image Trap Detector siempre activo",
+        "Priority Parsing - Vía rápida del servidor"
+      ]
+    },
+    {
+      icon: "⚡",
+      title: "Generador de Impacto",
+      features: [
+        "Keyword Sniper - 3 frases reales por keyword faltante",
+        "Cover Letter AI Forge - Cartas instantáneas",
+        "Recruiter DM Generator - Mensajes LinkedIn optimizados"
+      ]
+    },
+    {
+      icon: "🎮",
+      title: "Gamificación",
+      features: [
+        "Badges de Progreso (Ready for Google, Top 5%)",
+        "Probability Score en tiempo real",
+        "Alertas de Gap - Nudges cuando te estancas"
+      ]
+    }
+  ];
+
   const postPaymentSteps = [
     {
       icon: CreditCard,
@@ -110,6 +140,30 @@ export function HowItWorksSection() {
                 </div>
               </div>
             </motion.div>
+          </div>
+
+          <div className="mt-12 grid md:grid-cols-3 gap-6">
+            {sprintFeatures.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="bg-zinc-950 border border-primary/20 rounded-xl p-6"
+              >
+                <div className="text-4xl mb-3">{feature.icon}</div>
+                <h4 className="text-lg font-bold text-white mb-3">{feature.title}</h4>
+                <ul className="space-y-2">
+                  {feature.features.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-zinc-400">
+                      <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 relative mb-10">

@@ -106,7 +106,7 @@ export const storeUser = mutation({
     if (identity.email) {
       const existingUserByEmail = await ctx.db
         .query("users")
-        .withIndex("by_email", (q) => q.eq("email", identity.email))
+        .withIndex("by_email", (q) => q.eq("email", identity.email || ""))
         .unique();
       
       if (existingUserByEmail) {
@@ -128,7 +128,7 @@ export const storeUser = mutation({
     const userId = await ctx.db.insert("users", {
       tokenIdentifier: identity.subject,
       name: identity.name,
-      email: identity.email,
+      email: identity.email || "",
       subscriptionTier: "free",
       credits: initialCredits, // ONE FREE SCAN (or 0 if device blocked)
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
@@ -154,8 +154,8 @@ export const storeUser = mutation({
     // Send onboarding email (Email #1)
     if (identity.email) {
       await ctx.scheduler.runAfter(0, internalAny.marketing.sendOnboardingEmail, {
-        email: identity.email,
-        name: identity.name,
+      email: identity.email || "",
+      name: identity.name,
         variant: emailVariant,
       });
     }
@@ -293,7 +293,7 @@ export const purchaseCredits = mutation({
          const userId = await ctx.db.insert("users", {
           tokenIdentifier: identity.subject,
           name: identity.name,
-          email: identity.email,
+          email: identity.email || "",
           subscriptionTier: "free",
           credits: 1,
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),

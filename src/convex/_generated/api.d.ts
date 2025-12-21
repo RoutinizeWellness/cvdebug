@@ -34,6 +34,7 @@ import type * as billingActions from "../billingActions.js";
 import type * as coverLetters from "../coverLetters.js";
 import type * as crons from "../crons.js";
 import type * as cvHealthMonitor from "../cvHealthMonitor.js";
+import type * as gamification from "../gamification.js";
 import type * as http from "../http.js";
 import type * as jobTracker from "../jobTracker.js";
 import type * as linkedinProfile from "../linkedinProfile.js";
@@ -80,6 +81,7 @@ declare const fullApi: ApiFromModules<{
   coverLetters: typeof coverLetters;
   crons: typeof crons;
   cvHealthMonitor: typeof cvHealthMonitor;
+  gamification: typeof gamification;
   http: typeof http;
   jobTracker: typeof jobTracker;
   linkedinProfile: typeof linkedinProfile;

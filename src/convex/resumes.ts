@@ -142,6 +142,33 @@ export const updateResumeOcr = mutation({
   },
 });
 
+export const analyzeResume = mutation({
+  args: {
+    id: v.id("resumes"),
+    ocrText: v.string(),
+    jobDescription: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Not authenticated");
+
+    // Check if user has active Interview Sprint for priority parsing
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    const hasPriorityParsing = hasActiveSprint || user.hasPriorityParsing;
+
+    // Priority parsing: schedule immediately for sprint users
+    const delay = hasPriorityParsing ? 0 : 2000;
+
+    await ctx.scheduler.runAfter(delay, internalAny.ai.analyzeResume, {
+      id: args.id,
+      ocrText: args.ocrText,
+      jobDescription: args.jobDescription,
+    });
+
+    return { success: true, priorityParsing: hasPriorityParsing };
+  },
+});
+
 export const updateResumeMetadata = internalMutation({
   args: {
     id: v.id("resumes"),

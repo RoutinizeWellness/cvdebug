@@ -5,11 +5,19 @@ const schema = defineSchema(
   {
   users: defineTable({
     tokenIdentifier: v.string(),
-    email: v.optional(v.string()),
+    email: v.string(),
     name: v.optional(v.string()),
     subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
     credits: v.optional(v.number()),
     sprintExpiresAt: v.optional(v.number()),
+    hasPriorityParsing: v.optional(v.boolean()),
+    badges: v.optional(v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      earnedAt: v.number(),
+      icon: v.string(),
+    }))),
+    lastGapAlert: v.optional(v.number()),
     endsOn: v.optional(v.number()),
     trialEndsOn: v.optional(v.number()),
     emailVariant: v.optional(v.string()),
@@ -169,6 +177,7 @@ const schema = defineSchema(
     textLayerIntegrity: v.optional(v.number()), // 0-100 score
     hasImageTrap: v.optional(v.boolean()), // True if CV has invisible text issues
     lastIntegrityCheck: v.optional(v.number()),
+    matchedKeywords: v.optional(v.array(v.string())),
     missingKeywords: v.optional(v.array(v.union(
       v.string(),
       v.object({
