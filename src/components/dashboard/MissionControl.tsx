@@ -18,7 +18,21 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
   const projects = useQuery(apiAny.projects.getProjects);
   
-  const masterResume = resumes && resumes.length > 0 ? resumes[0] : null;
+  // Get the most recent completed resume, or the most recent one if none are completed
+  const masterResume = useMemo(() => {
+    if (!resumes || resumes.length === 0) return null;
+    
+    // First try to find a completed resume with analysis data
+    const completedResume = resumes.find((r: any) => 
+      r.status === "completed" && 
+      (r.matchedKeywords?.length || r.missingKeywords?.length)
+    );
+    
+    if (completedResume) return completedResume;
+    
+    // Otherwise return the most recent one
+    return resumes[0];
+  }, [resumes]);
   const latestJob = jobHistory && jobHistory.length > 0 ? jobHistory[0] : null;
   
   const jobsAnalyzed = jobHistory?.length || 0;
@@ -33,6 +47,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   // Extract real skills from latest resume analysis
   const skills = useMemo(() => {
     if (!masterResume) {
+      return [];
+    }
+    
+    // Check if resume is still processing
+    if (masterResume.status === "processing") {
       return [];
     }
     
@@ -288,7 +307,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
             </div>
 
-            {skills.length > 0 ? (
+            {masterResume?.status === "processing" ? (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center gap-3 text-primary">
+                  <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-sm font-mono">Analyzing resume... This may take 30-60 seconds</span>
+                </div>
+              </div>
+            ) : skills.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {skills.map((skill, idx) => (
                   <div
