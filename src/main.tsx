@@ -3,6 +3,7 @@ import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { InstrumentationProvider } from "@/instrumentation.tsx";
 import AuthPage from "@/pages/Auth.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
+import Onboarding from "@/pages/Onboarding.tsx";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ConvexReactClient } from "convex/react";
@@ -60,6 +61,7 @@ createRoot(document.getElementById("root")!).render(
               
               {/* Level 2: Auth & Onboarding */}
               <Route path="/auth" element={<AuthPage />} />
+              <Route path="/onboarding" element={<Onboarding />} />
               
               {/* Level 3-5: Private Dashboard (handles internal routing) */}
               <Route path="/dashboard" element={<Dashboard />} />
