@@ -53,12 +53,27 @@ createRoot(document.getElementById("root")!).render(
           <BrowserRouter>
             <RouteSyncer />
             <Routes>
+              {/* Level 1: Public Funnel */}
               <Route path="/" element={<Landing />} />
               <Route path="/pricing" element={<PricingPage />} />
+              
+              {/* Level 2: Auth & Onboarding */}
               <Route path="/auth" element={<AuthPage />} />
+              
+              {/* Level 3-5: Private Dashboard (handles internal routing) */}
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/projects" element={<Dashboard />} />
+              <Route path="/dashboard/resumes" element={<Dashboard />} />
+              <Route path="/dashboard/mission/:projectId" element={<Dashboard />} />
+              <Route path="/dashboard/tools/cover-letter" element={<Dashboard />} />
+              <Route path="/dashboard/tools/linkedin" element={<Dashboard />} />
+              <Route path="/dashboard/settings" element={<Dashboard />} />
+              
+              {/* Admin */}
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/admin/waitlist" element={<AdminWaitlist />} />
+              
+              {/* 404 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

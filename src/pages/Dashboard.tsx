@@ -59,7 +59,7 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPricing, setShowPricing] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState("mission"); // Default to 'mission'
+  const [currentView, setCurrentView] = useState("projects"); // Default to Project Hub
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
@@ -219,7 +219,29 @@ export default function Dashboard() {
 
   const renderContent = () => {
     switch (currentView) {
+      case 'projects':
+        // Level 3: Project Hub (All Projects)
+        if (selectedProject) {
+          // Level 4: Mission Control (Project-Specific)
+          return (
+            <ProjectBoard 
+              projectId={selectedProject} 
+              onBack={() => setSelectedProject(null)} 
+              onGenerateCoverLetter={handleGenerateCoverLetter}
+            />
+          );
+        }
+        return (
+          <ProjectsView 
+            onSelectProject={(id: Id<"projects">) => setSelectedProject(id)} 
+          />
+        );
       case 'mission':
+        // Redirect to projects if no project selected
+        if (!selectedProject) {
+          setCurrentView('projects');
+          return null;
+        }
         return (
           <MissionControl 
             onNavigate={setCurrentView} 
