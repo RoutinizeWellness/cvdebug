@@ -17,7 +17,7 @@ export default function Landing() {
   const remaining = betaStatus?.remaining ?? 53;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-primary/30 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-white font-sans selection:bg-primary/30 selection:text-white overflow-x-hidden">
       <Navbar />
       <HeroVisualizerSection />
       <SocialProofSection />

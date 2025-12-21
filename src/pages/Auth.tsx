@@ -42,7 +42,7 @@ export default function AuthPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse flex flex-col items-center gap-4">
           <div className="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center">
             <Loader2 className="h-6 w-6 text-primary animate-spin" />
@@ -95,7 +95,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden relative px-4 py-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-transparent text-white overflow-hidden relative px-4 py-8">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
       

@@ -25,7 +25,7 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col font-sans selection:bg-primary/20">
+    <div className="min-h-screen bg-transparent flex flex-col font-sans selection:bg-primary/20">
       <Navbar />
       <main className="flex-1 py-20">
         <div className="container mx-auto px-6">

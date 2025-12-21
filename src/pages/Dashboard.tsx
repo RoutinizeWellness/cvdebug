@@ -285,7 +285,7 @@ export default function Dashboard() {
   if (!currentUser) return null;
 
   return (
-    <div className="flex h-screen bg-black text-foreground font-sans selection:bg-primary/30">
+    <div className="flex h-screen bg-transparent text-foreground font-sans selection:bg-primary/30">
       <Sidebar 
         categoryFilter={categoryFilter} 
         setCategoryFilter={setCategoryFilter}
@@ -294,8 +294,8 @@ export default function Dashboard() {
         setCurrentView={setCurrentView}
       />
       
-      <main 
-        className="flex-1 flex flex-col overflow-hidden relative bg-black"
+        <main 
+        className="flex-1 flex flex-col overflow-hidden relative bg-transparent"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
