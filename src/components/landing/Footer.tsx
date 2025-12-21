@@ -8,25 +8,47 @@ export function Footer() {
   const [showTerms, setShowTerms] = useState(false);
 
   return (
-    <footer className="w-full py-12 border-t border-gray-200 bg-white">
+    <footer className="border-t border-slate-800 bg-slate-950/50 backdrop-blur-sm pt-16 pb-8">
       <PrivacyDialog open={showPrivacy} onOpenChange={setShowPrivacy} />
       <TermsDialog open={showTerms} onOpenChange={setShowTerms} />
       
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-        <Logo variant="default" iconClassName="h-6 w-auto" textClassName="text-lg" />
-        <div className="flex items-center gap-8">
-          <button onClick={() => setShowTerms(true)} className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
-            <span>📄</span> Terms of Service
-          </button>
-          <button onClick={() => setShowPrivacy(true)} className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
-            <span>🔒</span> Privacy Policy
-          </button>
-          <a className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2" href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer">
-            <span>🐦</span> Twitter <span>↗️</span>
-          </a>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
+          <div className="flex flex-col gap-4 max-w-sm">
+            <Logo variant="default" />
+            <p className="text-slate-400 text-sm leading-relaxed">
+              The developer-first toolkit for navigating the modern, automated job market. Debug your career today.
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap gap-12 md:gap-24">
+            <div className="flex flex-col gap-3">
+              <h4 className="text-white font-semibold text-sm">Product</h4>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#features">Features</a>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#pricing">Pricing</a>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">Changelog</a>
+            </div>
+            <div className="flex flex-col gap-3">
+              <h4 className="text-white font-semibold text-sm">Company</h4>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">About</a>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">Blog</a>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">Contact</a>
+            </div>
+            <div className="flex flex-col gap-3">
+              <h4 className="text-white font-semibold text-sm">Legal</h4>
+              <button onClick={() => setShowPrivacy(true)} className="text-slate-400 text-sm hover:text-primary transition-colors text-left">Privacy</button>
+              <button onClick={() => setShowTerms(true)} className="text-slate-400 text-sm hover:text-primary transition-colors text-left">Terms</button>
+            </div>
+          </div>
         </div>
-        <div className="text-xs text-gray-500">
-          © 2024 CVDebug. All rights reserved.
+        
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-slate-500 text-xs">© 2024 CVDebug. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a className="text-slate-500 hover:text-white transition-colors" href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer">
+              <span className="text-xl">🐦</span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

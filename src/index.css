@@ -5,12 +5,14 @@
 
 /* Import Google Font for CVdebug branding */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 /* DO NOT CHANGE */
 @theme inline {
-  --color-primary: #A37FBC;
+  --color-primary: #8B5CF6;
+  --color-secondary: #3B82F6;
   --color-background-light: #f8f8f5;
-  --color-background-dark: #23220f;
+  --color-background-dark: #0F172A;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -58,11 +60,12 @@
   --card-foreground: oklch(0.15 0.04 280);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.20 0.04 280);
-  /* Primary #A37FBC (Purple from logo) */
-  --primary: oklch(0.60 0.15 300);
+  /* Primary #8B5CF6 (Vibrant Violet) */
+  --primary: oklch(0.62 0.24 290);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0.02 300);
-  --secondary-foreground: oklch(0.20 0.04 280);
+  /* Secondary #3B82F6 (Electric Blue) */
+  --secondary: oklch(0.60 0.20 250);
+  --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.96 0.02 300);
   --muted-foreground: oklch(0.55 0.04 280);
   --accent: oklch(0.94 0.04 300);
@@ -87,39 +90,40 @@
 }
 
 .dark {
-  /* Dark Mode - Purple Primary Theme with Dark Purple/White Gradient */
-  --background: oklch(0.18 0.06 280);
+  /* Dark Mode - Slate Theme with Vibrant Accents */
+  --background: oklch(0.12 0.02 250);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.22 0.06 280);
+  --card: oklch(0.16 0.02 250);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.22 0.06 280);
+  --popover: oklch(0.16 0.02 250);
   --popover-foreground: oklch(0.98 0 0);
-  /* Primary #A37FBC (Purple from logo) */
-  --primary: oklch(0.65 0.12 300);
+  /* Primary #8B5CF6 (Vibrant Violet) */
+  --primary: oklch(0.62 0.24 290);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.25 0.06 280);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.25 0.06 280);
-  --muted-foreground: oklch(0.65 0.02 280);
-  --accent: oklch(0.28 0.08 300);
+  /* Secondary #3B82F6 (Electric Blue) */
+  --secondary: oklch(0.60 0.20 250);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.20 0.02 250);
+  --muted-foreground: oklch(0.65 0.02 250);
+  --accent: oklch(0.24 0.04 250);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.30 0.06 280);
-  --input: oklch(0.30 0.06 280);
-  --ring: oklch(0.65 0.12 300);
+  --border: oklch(0.24 0.02 250);
+  --input: oklch(0.24 0.02 250);
+  --ring: oklch(0.62 0.24 290);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.18 0.06 280);
+  --sidebar: oklch(0.12 0.02 250);
   --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.65 0.12 300);
+  --sidebar-primary: oklch(0.62 0.24 290);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.25 0.06 280);
+  --sidebar-accent: oklch(0.20 0.02 250);
   --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.30 0.06 280);
-  --sidebar-ring: oklch(0.65 0.12 300);
+  --sidebar-border: oklch(0.24 0.02 250);
+  --sidebar-ring: oklch(0.62 0.24 290);
 }
 
 @layer base {
@@ -128,6 +132,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
@@ -142,13 +147,25 @@
     border: 1px solid rgba(59, 130, 246, 0.2);
   }
 
-  /* Glass Card Effect for Auth */
+  /* Glass Card Effect */
   .glass-card {
-    background: rgba(30, 41, 59, 0.6);
+    background: rgba(30, 41, 59, 0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(148, 163, 184, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Glass Nav Effect */
+  .glass-nav {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  /* Hero Glow Background */
+  .bg-hero-glow {
+    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
   }
   
   /* Shimmer animation for button */
@@ -180,24 +197,6 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(71, 85, 105, 0.8);
   }
-}
-
-/* Auth Page Enhancements */
-.clerk-form-field-input-group::before {
-  content: '';
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-.clerk-form-field-input-group:focus-within::before {
-  opacity: 1;
 }
 
 /* Scanning line animation for auth blueprint */
