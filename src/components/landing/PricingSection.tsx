@@ -29,7 +29,7 @@ export function PricingSection() {
             </div>
             <button 
               onClick={() => handlePlanSelect('free')}
-              className="w-full h-12 rounded-lg bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]"
+              className="w-full h-12 rounded-lg bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02] cursor-pointer"
             >
               Try Free
             </button>
@@ -61,7 +61,7 @@ export function PricingSection() {
             </div>
             <button 
               onClick={() => handlePlanSelect('single_scan')}
-              className="w-full h-12 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]"
+              className="w-full h-12 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02] cursor-pointer"
             >
               Get Single Scan
             </button>
@@ -101,7 +101,7 @@ export function PricingSection() {
             </div>
             <button 
               onClick={() => handlePlanSelect('interview_sprint')}
-              className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25"
+              className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25 cursor-pointer"
             >
               Start Interview Sprint
             </button>

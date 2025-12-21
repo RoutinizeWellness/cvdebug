@@ -354,6 +354,10 @@ export const sanitizePdf = mutation({
       textLayerIntegrity: 100,
       hasImageTrap: false,
       analysis: resume.analysis + "\n\n[System] PDF Text Layer Sanitized. Hidden text artifacts removed.",
+      // Add a timestamp for when sanitization occurred
+      // We can't add new fields to the schema dynamically without defining them, 
+      // but we can update existing ones. Assuming we might want to track this.
+      // For now, updating the analysis text is sufficient for the user to see it happened.
     });
 
     return { success: true };

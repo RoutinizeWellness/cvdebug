@@ -46,7 +46,15 @@ export function extractJSON(content: string): any {
   try {
     console.log("[extractJSON] Starting JSON extraction, content length:", content.length);
     
-    // Strategy 1: Try to find JSON object within markdown code blocks or raw text
+    // Strategy 1: Try parsing the content directly (cleanest case)
+    try {
+      const parsed = JSON.parse(content);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch (e) {
+      // Continue to other strategies
+    }
+
+    // Strategy 2: Extract from markdown code blocks (
     const start = content.indexOf('{');
     const end = content.lastIndexOf('}');
     
@@ -63,7 +71,7 @@ export function extractJSON(content: string): any {
       }
     }
 
-    // Strategy 2: Clean up markdown and try parsing
+    // Strategy 3: Clean up markdown and try parsing
     let cleaned = content.trim();
     // Remove markdown code block delimiters and possible markdown syntax to isolate json
     cleaned = cleaned.replace(/^```(?:json)?\s*([\s\S]*?)```$/i, '$1').trim();

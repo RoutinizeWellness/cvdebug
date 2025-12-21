@@ -1,0 +1,42 @@
+    let match;
+    while ((match = codeBlockRegex.exec(content)) !== null) {
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) {
+        console.log("[extractJSON] Failed to parse code block, trying next match");
+      }
+    }
+
+    // Strategy 3: Find the outermost JSON object using brace matching
+    // This handles cases with text before/after the JSON
+    const firstOpen = content.indexOf('{');
+    const lastClose = content.lastIndexOf('}');
+    
+    if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
+      const jsonStr = content.substring(firstOpen, lastClose + 1);
+      try {
+        const parsed = JSON.parse(jsonStr);
+        if (parsed && typeof parsed === 'object') return parsed;
+      } catch (e) {
+        console.log("[extractJSON] Failed to parse substring, trying cleanup");
+      }
+    }
+
+    // Strategy 4: Aggressive cleanup (remove non-JSON characters from start/end)
+    // This is a fallback for messy outputs
+    try {
+      const cleaned = content.replace(/^[^{]*({[\s\S]*})[^}]*$/, '$1');
+      const parsed = JSON.parse(cleaned);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch (e) {
+      console.log("[extractJSON] Failed to parse cleaned content");
+    }
+
+    console.error("[extractJSON] All extraction strategies failed");
+    return null;
+  } catch (err) {
+    console.error("[extractJSON] Unexpected error:", err);
+    return null;
+  }
+}
