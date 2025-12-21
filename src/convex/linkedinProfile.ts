@@ -18,6 +18,23 @@ export const getLatestOptimization = query({
   },
 });
 
+// Alias for backward compatibility
+export const getProfile = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const optimization = await ctx.db
+      .query("linkedinOptimizations")
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+      .order("desc")
+      .first();
+
+    return optimization;
+  },
+});
+
 // Get all LinkedIn optimizations for the current user
 export const getAllOptimizations = query({
   args: {},
