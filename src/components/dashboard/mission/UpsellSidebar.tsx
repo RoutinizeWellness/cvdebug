@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Mail, MessageSquare, Linkedin, Sparkles, ArrowRight, Lock } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { RecruiterDMGenerator } from "@/components/dashboard/tools/RecruiterDMGenerator";
+import { useState } from "react";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -10,6 +12,7 @@ const apiAny = api as any;
 export function UpsellSidebar() {
   const currentUser = useQuery(apiAny.users.currentUser);
   const isSprintActive = currentUser?.subscriptionTier === "interview_sprint";
+  const [showDMGenerator, setShowDMGenerator] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -44,7 +47,10 @@ export function UpsellSidebar() {
       </Card>
 
       {/* Card 2: Recruiter DM */}
-      <Card className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative">
+      <Card 
+        className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative"
+        onClick={() => setShowDMGenerator(true)}
+      >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <ArrowRight className="h-4 w-4 text-zinc-500" />
         </div>
@@ -108,6 +114,8 @@ export function UpsellSidebar() {
           )}
         </div>
       </div>
+
+      <RecruiterDMGenerator open={showDMGenerator} onOpenChange={setShowDMGenerator} />
     </div>
   );
 }
