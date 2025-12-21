@@ -141,6 +141,15 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(59, 130, 246, 0.2);
   }
+
+  /* Glass Card Effect for Auth */
+  .glass-card {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
   
   /* Shimmer animation for button */
   @keyframes shimmer {
