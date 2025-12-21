@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export function HeroVisualizerSection() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function HeroVisualizerSection() {
   };
 
   return (
-    <section className="relative w-full pt-20 pb-32 overflow-hidden bg-white">
+    <section className="relative w-full pt-24 pb-32 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
       {/* Subtle gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none"></div>
       
@@ -54,11 +55,12 @@ export function HeroVisualizerSection() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.button 
               onClick={() => navigate("/auth")}
-              className="px-8 py-4 bg-primary hover:bg-primary/90 text-white text-lg font-bold rounded-xl transition-all shadow-lg shadow-primary/25"
+              className="group px-8 py-4 bg-primary hover:bg-primary/90 text-white text-lg font-bold rounded-xl transition-all shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
               whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -10px rgba(163, 127, 188, 0.4)" }}
               whileTap={{ scale: 0.98 }}
             >
-              Start Free Analysis →
+              Start Free Analysis
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
             <motion.button 
               onClick={scrollToHowItWorks}
