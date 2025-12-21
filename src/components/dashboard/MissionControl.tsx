@@ -3,7 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { Target, TrendingUp, AlertTriangle, CheckCircle2, Crosshair, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { GamificationPanel } from "./mission/GamificationPanel";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
@@ -47,6 +47,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const matchScore = latestJob?.score || 0;
   const hasImageTrap = masterResume?.hasImageTrap || masterResume?.textLayerIntegrity < 90;
   const integrityScore = masterResume?.textLayerIntegrity || (hasImageTrap ? 0 : 100);
+
+  // Calculate active missions
+  const activeMissions = useMemo(() => {
+    if (!jobHistory) return 0;
+    return jobHistory.filter((job: any) => 
+      job.status === 'applied' || job.status === 'interviewing'
+    ).length;
+  }, [jobHistory]);
 
   // Extract real skills from latest resume analysis
   const skills = useMemo(() => {
@@ -202,6 +210,52 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   return (
     <div className="flex flex-col gap-6 h-full">
+      {/* Active Missions Widget */}
+      {activeMissions > 0 ? (
+        <div className="bg-gradient-to-r from-primary/20 to-purple-500/20 border-2 border-primary rounded-xl p-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="relative flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-full bg-primary/20 border border-primary">
+                <Target className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white">
+                  Active Missions: <span className="text-primary">{activeMissions}</span>
+                </h2>
+                <p className="text-zinc-300 text-sm mt-1">
+                  {activeMissions === 1 ? '1 Application' : `${activeMissions} Applications`} in Progress
+                </p>
+              </div>
+            </div>
+            <Button 
+              onClick={() => onNavigate('projects')}
+              className="bg-primary hover:bg-primary/90 text-black font-bold"
+            >
+              View All Missions
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-zinc-900/50 border-2 border-dashed border-zinc-700 rounded-xl p-8 text-center">
+          <div className="inline-flex p-4 rounded-full bg-zinc-800 mb-4">
+            <Target className="h-8 w-8 text-zinc-500" />
+          </div>
+          <h3 className="text-xl font-bold text-white mb-2">No Active Missions</h3>
+          <p className="text-zinc-400 mb-6 max-w-md mx-auto">
+            Start your job hunt by uploading your master CV and creating your first mission
+          </p>
+          <div className="flex gap-3 justify-center">
+            <Button onClick={onUpload} className="bg-primary hover:bg-primary/90 text-black font-bold">
+              Upload Master CV
+            </Button>
+            <Button onClick={() => onNavigate('projects')} variant="outline">
+              Create Mission
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Header Stats Area */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Title & Application Status */}
