@@ -59,7 +59,7 @@ export default function Dashboard() {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState("mission"); // Default to 'mission'
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
-  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+  const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
 
   const currentUser = useQuery(apiAny.users.currentUser);
@@ -181,7 +181,7 @@ export default function Dashboard() {
     if (pendingResumeId && resumes && currentUser) {
       const resume = resumes.find((r: any) => r._id === pendingResumeId);
       if (resume) {
-        setSelectedResumeId(pendingResumeId);
+        setSelectedResumeId(resume._id);
         setPendingResumeId(null);
         toast.success("🎉 Resume report unlocked! Your credits have been applied.");
       }
@@ -279,7 +279,12 @@ export default function Dashboard() {
         setCurrentView={setCurrentView}
       />
       
-      <main className="flex-1 flex flex-col overflow-hidden relative bg-black">
+      <main 
+        className="flex-1 flex flex-col overflow-hidden relative bg-black"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         {/* Mobile Header */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-950">
           <Logo />
@@ -293,11 +298,53 @@ export default function Dashboard() {
             {renderContent()}
           </div>
         </div>
+
+        {/* Drag Overlay */}
+        {isDragging && (
+          <div className="absolute inset-0 z-50 bg-primary/10 border-2 border-dashed border-primary flex items-center justify-center backdrop-blur-sm">
+            <div className="text-center">
+              <Upload className="h-12 w-12 text-primary mx-auto mb-4 animate-bounce" />
+              <h3 className="text-2xl font-bold text-white">Drop your resume here</h3>
+            </div>
+          </div>
+        )}
       </main>
 
       <PricingDialog 
         open={showPricing} 
         onOpenChange={setShowPricing} 
+      />
+
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept=".pdf,.docx,.doc,.txt"
+        onChange={handleFileUpload}
+      />
+
+      {/* Overlays and Modals */}
+      {(isUploading || !!processingResumeId || isProcessingPayment) && (
+        <ProcessingOverlay 
+          isUploading={isUploading} 
+          isProcessing={!!processingResumeId || isProcessingPayment} 
+        />
+      )}
+      
+      <ResumeDetailDialog 
+        resumeId={selectedResumeId} 
+        onClose={() => setSelectedResumeId(null)}
+        onDelete={handleDelete}
+      />
+
+      <CreditsExhaustedModal 
+        open={showCreditsExhausted} 
+        onOpenChange={setShowCreditsExhausted} 
+        onUpgrade={() => {
+          setShowCreditsExhausted(false);
+          setShowPricing(true);
+        }}
       />
     </div>
   );

@@ -1,7 +1,12 @@
 import { Loader2, AlertCircle, Star, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export function ProcessingOverlay() {
+interface ProcessingOverlayProps {
+  isUploading?: boolean;
+  isProcessing?: boolean;
+}
+
+export function ProcessingOverlay({ isUploading, isProcessing }: ProcessingOverlayProps) {
   const [currentStat, setCurrentStat] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [fadeStat, setFadeStat] = useState(true);
@@ -93,8 +98,12 @@ export function ProcessingOverlay() {
           <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto animate-pulse">
             <Loader2 className="h-10 w-10 text-primary animate-spin" />
           </div>
-          <h3 className="text-3xl font-black text-foreground">Analyzing Your Resume...</h3>
-          <p className="text-muted-foreground text-lg">Our AI is scanning for ATS compatibility issues</p>
+          <h3 className="text-3xl font-black text-foreground">
+            {isUploading ? "Uploading Resume..." : "Analyzing Your Resume..."}
+          </h3>
+          <p className="text-muted-foreground text-lg">
+            {isUploading ? "Please wait while we upload your file" : "Our AI is scanning for ATS compatibility issues"}
+          </p>
         </div>
 
         {/* Rotating Stats */}
