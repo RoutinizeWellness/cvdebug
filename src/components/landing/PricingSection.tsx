@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { CheckCircle2 } from "lucide-react";
 
 export function PricingSection() {
   const navigate = useNavigate();
@@ -8,122 +9,120 @@ export function PricingSection() {
   };
 
   return (
-    <section className="w-full py-24 bg-zinc-950 relative overflow-hidden" id="pricing">
+    <section className="w-full py-24 bg-background relative overflow-hidden" id="pricing">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
       
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-white">Pay Per Use Pricing</h2>
-          <p className="text-zinc-400 text-lg">No subscriptions. No hidden fees. Just pay for what you need.</p>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4">Simple Pricing</h2>
+          <p className="text-muted-foreground text-xl">Pay once. Fix forever. No subscriptions.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Free Tier */}
-          <div className="p-8 rounded-2xl bg-zinc-900 border border-zinc-800 flex flex-col gap-6 h-full hover:border-primary/30 transition-all">
+          <div className="p-8 rounded-2xl bg-card border-2 border-border flex flex-col gap-6 h-full hover:border-primary/30 transition-all">
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">🆓 Free Preview</h3>
+              <h3 className="text-2xl font-bold mb-2">Free Preview</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-white">€0</span>
+                <span className="text-5xl font-black">€0</span>
               </div>
-              <p className="text-sm text-zinc-400 mt-2">Basic scan to see where you stand.</p>
+              <p className="text-sm text-muted-foreground mt-2">See your ATS score</p>
             </div>
             <button 
               onClick={() => handlePlanSelect('free')}
-              className="w-full h-12 rounded-lg bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02] cursor-pointer"
+              className="w-full h-12 rounded-xl bg-muted hover:bg-accent border-2 border-border hover:border-primary/30 font-bold transition-all hover:scale-[1.02]"
             >
               Try Free
             </button>
-            <div className="space-y-4 pt-4 border-t border-zinc-800">
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
-                Score 0-100
+            <div className="space-y-3 pt-4 border-t border-border">
+              <div className="flex items-center gap-3 text-sm">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                Basic Score (0-100)
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-500 line-through opacity-50">
-                <span className="text-xl">❌</span>
-                Missing Keywords Report
+              <div className="flex items-center gap-3 text-sm text-muted-foreground line-through">
+                <span className="text-xl">✕</span>
+                Keyword Analysis
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-500 line-through opacity-50">
-                <span className="text-xl">❌</span>
-                Format Issues Check
+              <div className="flex items-center gap-3 text-sm text-muted-foreground line-through">
+                <span className="text-xl">✕</span>
+                Format Fixes
               </div>
             </div>
           </div>
 
           {/* Single Scan */}
-          <div className="p-8 rounded-2xl bg-zinc-900 border border-zinc-800 flex flex-col gap-6 h-full hover:border-primary/30 transition-all">
+          <div className="p-8 rounded-2xl bg-card border-2 border-border flex flex-col gap-6 h-full hover:border-primary/30 transition-all">
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">⚡ Single Scan</h3>
+              <h3 className="text-2xl font-bold mb-2">Single Scan</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-white">€4.99</span>
-                <span className="text-sm text-zinc-500 font-medium">/ one-time</span>
+                <span className="text-5xl font-black">€4.99</span>
               </div>
-              <p className="text-sm text-zinc-400 mt-2">One complete analysis. Perfect for testing one application.</p>
+              <p className="text-sm text-muted-foreground mt-2">One complete fix</p>
             </div>
             <button 
               onClick={() => handlePlanSelect('single_scan')}
-              className="w-full h-12 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02] cursor-pointer"
+              className="w-full h-12 rounded-xl bg-muted hover:bg-accent border-2 border-border hover:border-primary/30 font-bold transition-all hover:scale-[1.02]"
             >
               Get Single Scan
             </button>
-            <div className="space-y-4 pt-4 border-t border-zinc-800">
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
+            <div className="space-y-3 pt-4 border-t border-border">
+              <div className="flex items-center gap-3 text-sm">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 Full ATS Analysis
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
-                Basic Keyword Report
+              <div className="flex items-center gap-3 text-sm">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                Keyword Report
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
+              <div className="flex items-center gap-3 text-sm">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 Format Check
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-300">
-                <span className="text-xl">✅</span>
+              <div className="flex items-center gap-3 text-sm">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 PDF Sanitization
               </div>
             </div>
           </div>
 
-          {/* Interview Sprint - Most Popular */}
-          <div className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border-2 border-primary shadow-[0_0_40px_-10px_rgba(249,245,6,0.3)] flex flex-col gap-6 relative h-full transform md:-translate-y-4">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-black text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg whitespace-nowrap">
-              🚀 Best Value
+          {/* Interview Sprint */}
+          <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border-2 border-primary shadow-[0_0_40px_-10px] shadow-primary/30 flex flex-col gap-6 relative h-full transform md:-translate-y-4">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg">
+              🚀 BEST VALUE
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white mb-2">🎯 Interview Sprint</h3>
+              <h3 className="text-2xl font-bold mb-2">Interview Sprint</h3>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-white">€19.99</span>
-                <span className="text-lg text-zinc-500 line-through decoration-red-500/50">€49.99</span>
+                <span className="text-5xl font-black">€19.99</span>
+                <span className="text-lg text-muted-foreground line-through">€49.99</span>
               </div>
               <p className="text-xs text-primary font-bold mt-1">60% OFF - 7 days unlimited</p>
-              <p className="text-sm text-zinc-300 mt-2">Track multiple jobs, AI tools, continuous monitoring.</p>
             </div>
             <button 
               onClick={() => handlePlanSelect('interview_sprint')}
-              className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25 cursor-pointer"
+              className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25"
             >
-              Start Interview Sprint
+              Start Sprint
             </button>
-            <div className="space-y-4 pt-4 border-t border-primary/20">
-              <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="text-xl">✅</span>
+            <div className="space-y-3 pt-4 border-t border-primary/20">
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 Unlimited Scans (7 Days)
               </div>
-              <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="text-xl">✅</span>
-                AI Keyword Recommendations
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                AI Keyword Suggestions
               </div>
-              <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="text-xl">✅</span>
-                Job Application Tracker
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                Cover Letter Generator
               </div>
-              <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="text-xl">✅</span>
-                Targeted Match History
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                LinkedIn Optimizer
               </div>
-              <div className="flex items-center gap-3 text-sm text-white font-medium">
-                <span className="text-xl">✅</span>
+              <div className="flex items-center gap-3 text-sm font-medium">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 Priority Support
               </div>
             </div>
