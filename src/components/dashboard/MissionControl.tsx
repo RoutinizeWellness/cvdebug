@@ -32,25 +32,26 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   // Extract real skills from latest resume analysis
   const skills = useMemo(() => {
-    if (!masterResume?.missingKeywords && !masterResume?.matchedKeywords) {
+    if (!masterResume) {
       return [];
     }
     
-    const matched = (masterResume.matchedKeywords || []).map((kw: string) => ({
+    const matched = (masterResume.matchedKeywords || []).slice(0, 5).map((kw: string) => ({
       name: kw,
       matched: true,
       relevance: 100,
       type: "high" as const
     }));
     
-    const missing = (masterResume.missingKeywords || []).slice(0, 8).map((kw: string) => ({
-      name: kw,
+    const missingKws = masterResume.missingKeywords || [];
+    const missing = missingKws.slice(0, 8).map((kw: any) => ({
+      name: typeof kw === 'string' ? kw : kw.keyword,
       matched: false,
       relevance: 20,
       type: "critical" as const
     }));
     
-    return [...matched.slice(0, 5), ...missing].slice(0, 8);
+    return [...matched, ...missing].slice(0, 8);
   }, [masterResume]);
 
   // Generate real action items from resume analysis

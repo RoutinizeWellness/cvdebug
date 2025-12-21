@@ -2,6 +2,7 @@ import { synonymMap, getKeywordsForCategory, type RoleCategory } from "../config
 
 export interface KeywordResult {
   foundKeywords: Array<{keyword: string, frequency: number, weight: number}>;
+  matchedKeywords: string[];
   missingKeywords: Array<{
     keyword: string;
     priority: string;
@@ -295,5 +296,10 @@ export function calculateKeywordScore(
     keywordScore = Math.min(40, keywordScore * scoringMultiplier);
   }
   
-  return { foundKeywords, missingKeywords, keywordScore };
+  return { 
+    foundKeywords, 
+    matchedKeywords: foundKeywords.map(kw => kw.keyword), // Add flat array for UI compatibility
+    missingKeywords, 
+    keywordScore 
+  };
 }

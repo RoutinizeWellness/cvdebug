@@ -156,6 +156,7 @@ export const updateResumeMetadata = internalMutation({
       format: v.number(),
       completeness: v.number(),
     })),
+    matchedKeywords: v.optional(v.array(v.string())),
     missingKeywords: v.optional(v.array(v.union(
       v.string(),
       v.object({
@@ -193,6 +194,7 @@ export const updateResumeMetadata = internalMutation({
     if (args.score !== undefined) updates.score = args.score;
     if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
     if (args.missingKeywords) updates.missingKeywords = args.missingKeywords;
+    if (args.matchedKeywords) updates.matchedKeywords = args.matchedKeywords;
     if (args.formatIssues) updates.formatIssues = args.formatIssues;
     if (args.metricSuggestions) updates.metricSuggestions = args.metricSuggestions;
 
@@ -301,6 +303,7 @@ export const getResumes = query({
         return {
           ...resume,
           missingKeywords: undefined,
+          matchedKeywords: undefined,
           formatIssues: undefined,
           scoreBreakdown: undefined,
           metricSuggestions: undefined,
