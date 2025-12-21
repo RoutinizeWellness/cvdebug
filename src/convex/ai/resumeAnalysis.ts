@@ -6,9 +6,7 @@ import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateFallbackAnalysis } from "./fallbackAnalysis";
 
-const runMutation = (ctx: any, fn: any, args: any) => (ctx as any).runMutation(fn, args);
-const runQuery = (ctx: any, fn: any, args: any) => (ctx as any).runQuery(fn, args);
-
+// Use require to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
 
 export const analyzeResume = internalAction({
@@ -25,7 +23,7 @@ export const analyzeResume = internalAction({
 
       if (!cleanText || cleanText.trim().length < 20) {
         console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
-        await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",
           category: "Uncategorized",
@@ -41,23 +39,13 @@ export const analyzeResume = internalAction({
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
-      // Fetch ML learning configuration
-      let mlConfig;
-      try {
-        mlConfig = await runQuery(ctx, internalAny.mlLearning.getMLConfig, {});
-        console.log("[ML Learning] Loaded adaptive learning configuration");
-      } catch (error) {
-        console.log("[ML Learning] No configuration found, using defaults");
-        mlConfig = undefined;
-      }
-
       let analysisResult;
       let usedFallback = false;
 
       // Always use fallback if no API key OR if API call fails/times out
       if (!apiKey) {
         console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
-        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
+        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
         usedFallback = true;
       } else {
         try {
@@ -92,7 +80,7 @@ export const analyzeResume = internalAction({
           
         } catch (error: any) {
           console.error("[AI Analysis] OpenRouter failed, using ML-based analysis:", error.message);
-          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
+          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
           usedFallback = true;
         }
       }
@@ -100,14 +88,14 @@ export const analyzeResume = internalAction({
       // Ensure we have valid analysis result
       if (!analysisResult || !analysisResult.score) {
         console.error("[AI Analysis] Invalid analysis result, generating fallback");
-        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, mlConfig);
+        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
         usedFallback = true;
       }
 
       const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
       
       try {
-        await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: title || "Resume",
           category: category || "General",
@@ -124,7 +112,7 @@ export const analyzeResume = internalAction({
       } catch (updateError: any) {
         console.error("[AI Analysis] Failed to update resume metadata:", updateError.message);
         // Try one more time with minimal data
-        await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",
           category: "General",
@@ -137,7 +125,7 @@ export const analyzeResume = internalAction({
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
       // Attempt to mark as failed so client doesn't hang
       try {
-        await runMutation(ctx, internalAny.resumes.updateResumeMetadata, {
+        await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",
           category: "Error",

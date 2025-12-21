@@ -1,13 +1,1 @@
-import { Id } from "@/convex/_generated/dataModel";
-import { Logo } from "@/components/Logo";
-import { useAuth } from "@/hooks/useAuth";
-import { useQuery } from "@/convex/_generated/dataModel";
-
-interface ProjectBoardProps {
-  projectId: Id<"projects">;
-}
-
-const { user, signOut, isAuthenticated, isLoading } = useAuth();
-const user = useQuery(apiAny.users.currentUser);
-
-if (!currentUser) return null;
+const internalAny = require("../_generated/api").internal;
