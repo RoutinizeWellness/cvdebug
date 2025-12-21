@@ -23,9 +23,29 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
     : 0;
   const totalInterviews = projects?.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).interviewCount || 0), 0) || 0;
 
-  // Calculate real trends (compare to previous period - mock for now, but structure is ready)
-  const appTrend = totalApplications > 0 ? Math.min(Math.round((totalApplications / 10) * 5), 25) : 0;
-  const scoreTrend = avgScore > 0 ? Math.min(Math.round(avgScore / 20), 15) : 0;
+  // Calculate trends based on recent activity (last 7 days vs previous 7 days)
+  const now = Date.now();
+  const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+  const fourteenDaysAgo = now - 14 * 24 * 60 * 60 * 1000;
+  
+  const recentProjects = projects?.filter((p: Doc<"projects">) => p._creationTime >= sevenDaysAgo) || [];
+  const previousProjects = projects?.filter((p: Doc<"projects">) => 
+    p._creationTime >= fourteenDaysAgo && p._creationTime < sevenDaysAgo
+  ) || [];
+  
+  const recentApps = recentProjects.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).applicationCount || 0), 0);
+  const previousApps = previousProjects.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).applicationCount || 0), 0);
+  
+  const appTrend = previousApps > 0 ? Math.round(((recentApps - previousApps) / previousApps) * 100) : (recentApps > 0 ? 100 : 0);
+  
+  const recentAvgScore = recentProjects.length > 0
+    ? Math.round(recentProjects.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).globalScore || 0), 0) / recentProjects.length)
+    : 0;
+  const previousAvgScore = previousProjects.length > 0
+    ? Math.round(previousProjects.reduce((sum: number, p: Doc<"projects">) => sum + ((p as any).globalScore || 0), 0) / previousProjects.length)
+    : 0;
+  
+  const scoreTrend = previousAvgScore > 0 ? Math.round(((recentAvgScore - previousAvgScore) / previousAvgScore) * 100) : (recentAvgScore > 0 ? 100 : 0);
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-primary";

@@ -519,7 +519,7 @@ export function LinkedInOptimizer() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {displayResult.actionableTips?.slice(0, 6).map((tip: any, i: number) => {
                       const tipText = typeof tip === 'string' ? tip : tip.tip;
-                      const isDone = i < 2; // Mock: first 2 are done
+                      const isDone = typeof tip === 'object' && tip.completed === true;
                       
                       return (
                         <div 
