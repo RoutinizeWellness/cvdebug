@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: "https://accounts.cvdebug.com",
+      domain: process.env.CLERK_JWT_ISSUER_DOMAIN || "https://accounts.cvdebug.com",
       applicationID: "convex",
     },
   ],
