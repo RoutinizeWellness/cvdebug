@@ -24,7 +24,11 @@ import { useState } from "react";
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
-export function ApplicationCommander() {
+interface ApplicationCommanderProps {
+  onGenerateCoverLetter: (applicationId: string) => void;
+}
+
+export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationCommanderProps) {
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
@@ -165,6 +169,7 @@ export function ApplicationCommander() {
         open={!!selectedJob} 
         onOpenChange={(open) => !open && setSelectedJob(null)} 
         job={selectedJob} 
+        onGenerateCoverLetter={onGenerateCoverLetter}
       />
     </>
   );

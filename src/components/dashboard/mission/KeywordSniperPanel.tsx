@@ -16,9 +16,10 @@ interface KeywordSniperPanelProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   job: any;
+  onGenerateCoverLetter: (applicationId: string) => void;
 }
 
-export function KeywordSniperPanel({ open, onOpenChange, job }: KeywordSniperPanelProps) {
+export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLetter }: KeywordSniperPanelProps) {
   if (!job) return null;
 
   const missingKeywords = job.missingKeywords || [];
@@ -108,10 +109,19 @@ export function KeywordSniperPanel({ open, onOpenChange, job }: KeywordSniperPan
                     <p className="text-xs text-zinc-500">Add the missing keywords to your Skills or Experience section.</p>
                   </div>
                 </div>
-                <div className="flex gap-3 p-3 rounded-lg bg-zinc-900/30 border border-zinc-800/50">
+                <div 
+                  className="flex gap-3 p-3 rounded-lg bg-zinc-900/30 border border-zinc-800/50 cursor-pointer hover:bg-zinc-900/50 transition-colors group"
+                  onClick={() => {
+                    onGenerateCoverLetter(job._id);
+                    onOpenChange(false);
+                  }}
+                >
                   <div className="h-6 w-6 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
                   <div className="space-y-1">
-                    <p className="text-sm font-medium text-zinc-200">Generate Cover Letter</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-zinc-200 group-hover:text-purple-400 transition-colors">Generate Cover Letter</p>
+                      <ArrowRight className="h-3 w-3 text-zinc-500 group-hover:text-purple-400 transition-colors" />
+                    </div>
                     <p className="text-xs text-zinc-500">Use the AI Cover Letter tool to naturally weave these keywords in.</p>
                   </div>
                 </div>

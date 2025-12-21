@@ -9,7 +9,11 @@ import { useState } from "react";
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
-export function UpsellSidebar() {
+interface UpsellSidebarProps {
+  onNavigate: (view: string) => void;
+}
+
+export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
   const currentUser = useQuery(apiAny.users.currentUser);
   const isSprintActive = currentUser?.subscriptionTier === "interview_sprint";
   const [showDMGenerator, setShowDMGenerator] = useState(false);
@@ -26,7 +30,10 @@ export function UpsellSidebar() {
       </div>
 
       {/* Card 1: AI Cover Letter */}
-      <Card className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative">
+      <Card 
+        className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative"
+        onClick={() => onNavigate('cover-letter')}
+      >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <ArrowRight className="h-4 w-4 text-zinc-500" />
         </div>
@@ -66,7 +73,10 @@ export function UpsellSidebar() {
       </Card>
 
       {/* Card 3: LinkedIn Optimizer */}
-      <Card className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative">
+      <Card 
+        className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all group cursor-pointer overflow-hidden relative"
+        onClick={() => onNavigate('linkedin')}
+      >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <ArrowRight className="h-4 w-4 text-zinc-500" />
         </div>

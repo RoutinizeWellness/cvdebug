@@ -9,7 +9,11 @@ import { useState } from "react";
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
-export function MasterCVHealth() {
+interface MasterCVHealthProps {
+  onUpload: () => void;
+}
+
+export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
   const resumes = useQuery(apiAny.resumes.getResumes);
   const sanitizePdf = useMutation(apiAny.resumes.sanitizePdf);
   const [isSanitizing, setIsSanitizing] = useState(false);
@@ -29,7 +33,11 @@ export function MasterCVHealth() {
             <p className="text-sm text-zinc-400">Upload your resume to start monitoring its health.</p>
           </div>
         </div>
-        <Button variant="outline" className="border-zinc-700 hover:bg-zinc-800 text-white">
+        <Button 
+          variant="outline" 
+          className="border-zinc-700 hover:bg-zinc-800 text-white"
+          onClick={onUpload}
+        >
           <Upload className="mr-2 h-4 w-4" /> Upload CV
         </Button>
       </div>
@@ -114,7 +122,11 @@ export function MasterCVHealth() {
                 Fix Integrity Now
               </Button>
             ) : (
-              <Button variant="outline" className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-white font-medium">
+              <Button 
+                variant="outline" 
+                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-white font-medium"
+                onClick={onUpload}
+              >
                 <Upload className="mr-2 h-4 w-4" /> Hot-Swap CV
               </Button>
             )}

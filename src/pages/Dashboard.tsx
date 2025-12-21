@@ -218,7 +218,13 @@ export default function Dashboard() {
   const renderContent = () => {
     switch (currentView) {
       case 'mission':
-        return <MissionControl />;
+        return (
+          <MissionControl 
+            onNavigate={setCurrentView} 
+            onGenerateCoverLetter={handleGenerateCoverLetter}
+            onUpload={() => fileInputRef.current?.click()}
+          />
+        );
       case 'projects':
         if (selectedProject) {
           return (
@@ -251,7 +257,13 @@ export default function Dashboard() {
           />
         );
       default:
-        return <MissionControl />;
+        return (
+          <MissionControl 
+            onNavigate={setCurrentView} 
+            onGenerateCoverLetter={handleGenerateCoverLetter}
+            onUpload={() => fileInputRef.current?.click()}
+          />
+        );
     }
   };
 
