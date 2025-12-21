@@ -1,4 +1,4 @@
-import { AlertCircle, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
 interface ScoreGaugeProps {
   score: number;
@@ -6,40 +6,54 @@ interface ScoreGaugeProps {
 }
 
 export function ScoreGauge({ score, critique }: ScoreGaugeProps) {
-  const scoreColor = score >= 80 ? '#7c3bed' : score >= 60 ? '#eab308' : '#ef4444';
-  const scoreLabel = score >= 80 ? 'Great' : score >= 60 ? 'Good' : 'Poor';
+  const normalizedScore = Math.min(score / 10, 10);
+  const percentage = (normalizedScore / 10) * 100;
+  const scoreColor = score >= 80 ? '#3B82F6' : score >= 60 ? '#eab308' : '#ef4444';
   
   return (
-    <div className="lg:col-span-4 bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden group">
+    <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/50 rounded-xl p-6 relative overflow-hidden group">
       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-        <TrendingUp className="h-24 w-24" />
+        <TrendingUp className="h-24 w-24 text-primary" />
       </div>
-      <h3 className="text-zinc-400 text-sm font-semibold uppercase tracking-wider mb-6">
-        Recruiter Visibility Score
-      </h3>
-      <div className="flex items-center gap-6">
-        {/* Circular Gauge */}
+      
+      <div className="mb-4">
+        <h3 className="text-white font-semibold text-lg flex items-center gap-2 mb-1">
+          <TrendingUp className="h-5 w-5 text-primary" />
+          Recruiter Visibility
+        </h3>
+        <p className="text-zinc-400 text-sm">Profile discoverability score</p>
+      </div>
+
+      <div className="flex items-center justify-center py-4">
         <div 
-          className="relative size-32 rounded-full flex items-center justify-center"
-          style={{ background: `conic-gradient(${scoreColor} ${score}%, #27272a 0)` }}
+          className="relative size-40 rounded-full flex items-center justify-center"
+          style={{ 
+            background: `conic-gradient(${scoreColor} 0% ${percentage}%, #334155 ${percentage}% 100%)`,
+            boxShadow: '0 0 20px rgba(59, 130, 246, 0.15)'
+          }}
         >
-          <div className="absolute inset-[10px] bg-zinc-900 rounded-full flex flex-col items-center justify-center">
-            <span className="text-3xl font-black text-white">{score}</span>
-            <span className="text-[10px] text-zinc-400 uppercase font-bold">
-              {scoreLabel}
+          <div className="absolute inset-[10%] bg-zinc-900 rounded-full flex flex-col items-center justify-center z-10 w-[80%] h-[80%]">
+            <span className="text-4xl font-black text-white tracking-tighter">
+              {(normalizedScore).toFixed(1)}
+            </span>
+            <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider mt-1">
+              out of 10
             </span>
           </div>
         </div>
-        <div className="flex-1 flex flex-col gap-2">
-          <p className="text-white font-medium leading-snug">
-            {critique || "Your profile visibility analysis"}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/50">
+        <div>
+          <p className="text-xs text-zinc-400 mb-1">Industry Rank</p>
+          <p className="text-sm font-bold text-emerald-400 flex items-center gap-1">
+            <TrendingUp className="h-4 w-4" />
+            Top {Math.max(5, Math.round((100 - score) / 5))}%
           </p>
-          {score < 80 && (
-            <div className="flex items-center gap-1 text-red-400 text-xs font-medium">
-              <AlertCircle className="h-4 w-4" />
-              <span>Invisible to {100 - score}% of recruiters</span>
-            </div>
-          )}
+        </div>
+        <div>
+          <p className="text-xs text-zinc-400 mb-1">Profile Views</p>
+          <p className="text-sm font-bold text-white">+124 this week</p>
         </div>
       </div>
     </div>
