@@ -47,6 +47,15 @@ export const optimizeLinkedIn = action({
     if (!result) {
         throw new Error("Failed to parse AI response");
     }
+
+    // Store the optimization result
+    await ctx.runMutation(internalAny.linkedinProfile.storeOptimization, {
+      profileText: args.profileText,
+      linkedinUrl: args.linkedinUrl,
+      jobDescription: args.jobDescription,
+      result,
+    });
+
     return result;
   },
 });
@@ -57,6 +66,7 @@ export const generateRecruiterDMs = action({
     jobDescription: v.string(),
     recruiterName: v.optional(v.string()),
     missingKeywords: v.optional(v.array(v.string())),
+    applicationId: v.optional(v.id("applications")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -96,6 +106,18 @@ export const generateRecruiterDMs = action({
     if (!result) {
         throw new Error("Failed to parse AI response");
     }
+
+    // Store the DM variations
+    if (result.variations && Array.isArray(result.variations)) {
+      await ctx.runMutation(internalAny.linkedinProfile.storeRecruiterDMs, {
+        profileText: args.profileText,
+        jobDescription: args.jobDescription,
+        recruiterName: args.recruiterName,
+        variations: result.variations,
+        applicationId: args.applicationId,
+      });
+    }
+
     return result;
   },
 });

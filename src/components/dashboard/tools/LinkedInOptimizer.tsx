@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -34,6 +34,9 @@ const apiAny = api as any;
 export function LinkedInOptimizer() {
   const optimizeLinkedIn = useAction(apiAny.ai.linkedinOptimizer.optimizeLinkedIn);
   const generateRecruiterDMs = useAction(apiAny.ai.linkedinOptimizer.generateRecruiterDMs);
+  const latestOptimization = useQuery(apiAny.linkedinProfile.getLatestOptimization);
+  const allOptimizations = useQuery(apiAny.linkedinProfile.getAllOptimizations);
+  const recruiterDMs = useQuery(apiAny.linkedinProfile.getRecruiterDMs);
   
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [profileText, setProfileText] = useState("");
@@ -45,6 +48,7 @@ export function LinkedInOptimizer() {
   const [isGeneratingDM, setIsGeneratingDM] = useState(false);
   const [dmResults, setDmResults] = useState<any[]>([]);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [showAllKeywords, setShowAllKeywords] = useState(false);
 
   const handleAnalyzeUrl = () => {
     if (!linkedinUrl) {
@@ -124,9 +128,21 @@ export function LinkedInOptimizer() {
     toast.success("Copied to clipboard!");
   };
 
-  const score = result?.score || 72;
+  // Use latest optimization if no new result
+  const displayResult = result || latestOptimization;
+  const score = displayResult?.score || 72;
   const scoreColor = score >= 80 ? "text-primary" : score >= 60 ? "text-yellow-500" : "text-red-500";
   const scoreBg = score >= 80 ? "bg-primary" : score >= 60 ? "bg-yellow-500" : "bg-red-500";
+
+  // Get matched and missing keywords
+  const matchedKeywords = displayResult?.experience?.matchedKeywords || ["JavaScript", "React", "CSS3", "Git"];
+  const missingKeywords = displayResult?.experience?.missingKeywords || ["TypeScript", "Docker", "CI/CD", "AWS", "Unit Testing"];
+  const allKeywords = [...matchedKeywords, ...missingKeywords];
+
+  // Get last scanned time
+  const lastScanned = displayResult?.generatedAt 
+    ? new Date(displayResult.generatedAt).toLocaleString()
+    : "Never";
 
   return (
     <div className="h-full flex flex-col">
@@ -150,11 +166,11 @@ export function LinkedInOptimizer() {
               </h1>
               <div className="flex items-center gap-2 text-zinc-400 text-sm">
                 <Calendar className="h-4 w-4" />
-                <span>Last scanned: 2 mins ago</span>
-                {linkedinUrl && (
+                <span>Last scanned: {lastScanned}</span>
+                {(linkedinUrl || displayResult?.linkedinUrl) && (
                   <>
                     <span className="mx-1">•</span>
-                    <span className="truncate max-w-[200px]">{linkedinUrl}</span>
+                    <span className="truncate max-w-[200px]">{linkedinUrl || displayResult?.linkedinUrl}</span>
                   </>
                 )}
               </div>
@@ -245,7 +261,7 @@ export function LinkedInOptimizer() {
             )}
 
             {/* Results Section */}
-            {result && (
+            {displayResult && (
               <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {/* Top Stats Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -272,7 +288,7 @@ export function LinkedInOptimizer() {
                       </div>
                       <div className="flex-1 flex flex-col gap-2">
                         <p className="text-white font-medium leading-snug">
-                          {result.headline?.critique || "Your profile visibility analysis"}
+                          {displayResult.headline?.critique || "Your profile visibility analysis"}
                         </p>
                         {score < 80 && (
                           <div className="flex items-center gap-1 text-red-400 text-xs font-medium">
@@ -314,7 +330,7 @@ export function LinkedInOptimizer() {
                       <div>
                         <p className="text-zinc-400 text-sm font-medium mb-1">Searchability Gap</p>
                         <p className="text-2xl font-bold text-white">
-                          {result.experience?.missingKeywords?.length || 5} Keywords
+                          {missingKeywords.length} Keywords
                         </p>
                         <p className="text-zinc-400 text-xs mt-1">Missing critical terms for target role</p>
                       </div>
@@ -348,10 +364,10 @@ export function LinkedInOptimizer() {
                         </span>
                       </div>
                       <div className="p-4 rounded-lg border border-red-900/30 bg-red-900/10 text-zinc-300 font-mono text-sm leading-relaxed">
-                        {result.headline?.current || "Software Engineer looking for new opportunities in tech."}
+                        {displayResult.headline?.current || "Software Engineer looking for new opportunities in tech."}
                       </div>
                       <p className="mt-3 text-xs text-red-400/80">
-                        {result.headline?.critique || "Analysis: Too generic. Misses specific stack and value proposition."}
+                        {displayResult.headline?.critique || "Analysis: Too generic. Misses specific stack and value proposition."}
                       </p>
                     </div>
 
@@ -363,14 +379,14 @@ export function LinkedInOptimizer() {
                           <Sparkles className="h-4 w-4" /> AI Recommendation
                         </span>
                         <button 
-                          onClick={() => handleCopyText(result.headline?.suggested || "")}
+                          onClick={() => handleCopyText(displayResult.headline?.suggested || "")}
                           className="text-xs flex items-center gap-1 text-white hover:text-primary transition-colors"
                         >
                           <Copy className="h-3 w-3" /> Copy
                         </button>
                       </div>
                       <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-white font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(124,59,237,0.1)]">
-                        {result.headline?.suggested || "Senior Frontend Engineer | React, TypeScript, Next.js | Building Scalable SaaS Architectures"}
+                        {displayResult.headline?.suggested || "Senior Frontend Engineer | React, TypeScript, Next.js | Building Scalable SaaS Architectures"}
                       </div>
                       <p className="mt-3 text-xs text-primary/80">
                         Improvement: Includes high-value keywords and role seniority.
@@ -394,7 +410,7 @@ export function LinkedInOptimizer() {
                         Found in your profile
                       </p>
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {["JavaScript", "React", "CSS3", "Git"].map((kw, i) => (
+                        {matchedKeywords.slice(0, 4).map((kw, i) => (
                           <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
                             {kw}
                           </Badge>
@@ -405,7 +421,7 @@ export function LinkedInOptimizer() {
                         <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {(result.experience?.missingKeywords || ["TypeScript", "Docker", "CI/CD", "AWS", "Unit Testing"]).slice(0, 5).map((kw: any, i: number) => (
+                        {missingKeywords.slice(0, showAllKeywords ? undefined : 5).map((kw: any, i: number) => (
                           <Badge 
                             key={i} 
                             variant="outline"
@@ -418,9 +434,13 @@ export function LinkedInOptimizer() {
                       </div>
                     </div>
                     <div className="mt-6 pt-6 border-t border-zinc-800">
-                      <a className="text-primary text-sm font-medium hover:underline flex items-center gap-1" href="#">
-                        View all keywords <ArrowRight className="h-4 w-4" />
-                      </a>
+                      <button 
+                        onClick={() => setShowAllKeywords(!showAllKeywords)}
+                        className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+                      >
+                        {showAllKeywords ? "Show less" : `View all ${allKeywords.length} keywords`} 
+                        <ArrowRight className={`h-4 w-4 transition-transform ${showAllKeywords ? 'rotate-90' : ''}`} />
+                      </button>
                     </div>
                   </div>
 
@@ -441,7 +461,7 @@ export function LinkedInOptimizer() {
                       </div>
                     </div>
                     <div className="bg-black rounded-lg p-5 font-mono text-sm leading-7 text-zinc-300 border border-zinc-800 whitespace-pre-wrap">
-                      {result.about?.rewritten || result.about?.suggestions || "Your optimized About section will appear here..."}
+                      {displayResult.about?.rewritten || displayResult.about?.suggestions || "Your optimized About section will appear here..."}
                     </div>
                     <div className="mt-4 flex gap-3">
                       <Button 
@@ -453,7 +473,7 @@ export function LinkedInOptimizer() {
                       </Button>
                       <Button 
                         className="flex-1 bg-primary hover:bg-primary/90"
-                        onClick={() => handleCopyText(result.about?.rewritten || result.about?.suggestions || "")}
+                        onClick={() => handleCopyText(displayResult.about?.rewritten || displayResult.about?.suggestions || "")}
                       >
                         Copy Optimized Bio
                       </Button>
@@ -468,7 +488,7 @@ export function LinkedInOptimizer() {
                     Quick Fixes
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {result.actionableTips?.slice(0, 6).map((tip: any, i: number) => {
+                    {displayResult.actionableTips?.slice(0, 6).map((tip: any, i: number) => {
                       const tipText = typeof tip === 'string' ? tip : tip.tip;
                       const isDone = i < 2; // Mock: first 2 are done
                       

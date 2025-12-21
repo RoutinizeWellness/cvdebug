@@ -36,6 +36,7 @@ import type * as crons from "../crons.js";
 import type * as cvHealthMonitor from "../cvHealthMonitor.js";
 import type * as http from "../http.js";
 import type * as jobTracker from "../jobTracker.js";
+import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as projects from "../projects.js";
@@ -81,6 +82,7 @@ declare const fullApi: ApiFromModules<{
   cvHealthMonitor: typeof cvHealthMonitor;
   http: typeof http;
   jobTracker: typeof jobTracker;
+  linkedinProfile: typeof linkedinProfile;
   marketing: typeof marketing;
   mlLearning: typeof mlLearning;
   projects: typeof projects;

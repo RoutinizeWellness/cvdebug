@@ -126,6 +126,32 @@ const schema = defineSchema(
   .index("by_user", ["userId"])
   .index("by_application", ["applicationId"]),
 
+  // LinkedIn Profile Optimizations - Store audit results
+  linkedinOptimizations: defineTable({
+    userId: v.string(),
+    profileText: v.string(),
+    linkedinUrl: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
+    score: v.number(),
+    headline: v.optional(v.object({
+      current: v.string(),
+      suggested: v.string(),
+      critique: v.string(),
+    })),
+    about: v.optional(v.object({
+      rewritten: v.string(),
+      suggestions: v.optional(v.string()),
+    })),
+    experience: v.optional(v.object({
+      missingKeywords: v.array(v.string()),
+      matchedKeywords: v.optional(v.array(v.string())),
+    })),
+    actionableTips: v.array(v.string()),
+    generatedAt: v.number(),
+  })
+  .index("by_user", ["userId"])
+  .index("by_user_and_date", ["userId", "generatedAt"]),
+
   resumes: defineTable({
     userId: v.string(),
     projectId: v.optional(v.id("projects")), // NEW: Link to project
