@@ -3,6 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { Target, TrendingUp, AlertTriangle, CheckCircle2, Crosshair, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useMemo } from "react";
 
 const apiAny = api as any;
 
@@ -15,6 +16,7 @@ interface MissionControlProps {
 export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: MissionControlProps) {
   const resumes = useQuery(apiAny.resumes.getResumes);
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
+  const projects = useQuery(apiAny.projects.getProjects);
   
   const masterResume = resumes && resumes.length > 0 ? resumes[0] : null;
   const latestJob = jobHistory && jobHistory.length > 0 ? jobHistory[0] : null;
@@ -24,55 +26,133 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     ? Math.round(jobHistory.reduce((acc: number, curr: any) => acc + (curr.score || 0), 0) / jobHistory.length)
     : 0;
   
-  const matchScore = latestJob?.score || 87;
+  const matchScore = latestJob?.score || 0;
   const hasImageTrap = masterResume?.hasImageTrap || masterResume?.textLayerIntegrity < 90;
   const integrityScore = masterResume?.textLayerIntegrity || (hasImageTrap ? 0 : 100);
 
-  // Mock skill data - in production, this would come from analysis
-  const skills = [
-    { name: "Python", matched: true, relevance: 100, type: "high" },
-    { name: "System Design", matched: true, relevance: 90, type: "high" },
-    { name: "Kubernetes", matched: false, relevance: 20, type: "critical" },
-    { name: "React", matched: true, relevance: 85, type: "medium" },
-    { name: "SQL", matched: true, relevance: 100, type: "high" },
-    { name: "gRPC", matched: false, relevance: 10, type: "medium" },
-    { name: "Cloud", matched: true, relevance: 75, type: "medium" },
-    { name: "Testing", matched: false, relevance: 0, type: "critical" },
-  ];
+  // Extract real skills from latest resume analysis
+  const skills = useMemo(() => {
+    if (!masterResume?.missingKeywords && !masterResume?.matchedKeywords) {
+      return [];
+    }
+    
+    const matched = (masterResume.matchedKeywords || []).map((kw: string) => ({
+      name: kw,
+      matched: true,
+      relevance: 100,
+      type: "high" as const
+    }));
+    
+    const missing = (masterResume.missingKeywords || []).slice(0, 8).map((kw: string) => ({
+      name: kw,
+      matched: false,
+      relevance: 20,
+      type: "critical" as const
+    }));
+    
+    return [...matched.slice(0, 5), ...missing].slice(0, 8);
+  }, [masterResume]);
 
-  const actionItems = [
-    { 
-      id: 1, 
-      title: 'Inject "Kubernetes" into Experience Section', 
-      description: "Recommendation based on 12 job description hits.",
-      priority: "critical",
-      completed: false
-    },
-    { 
-      id: 2, 
-      title: 'Quantify impact in "E-commerce API" Project', 
-      description: 'Add metrics (e.g., "Reduced latency by 20%")',
-      priority: "impact",
-      completed: false
-    },
-    { 
-      id: 3, 
-      title: 'Add "gRPC" keyword to Skills', 
-      description: "Found in 'Preferred Qualifications'",
-      priority: "keyword",
-      completed: false
-    },
-  ];
+  // Generate real action items from resume analysis
+  const actionItems = useMemo(() => {
+    const items = [];
+    
+    if (masterResume?.missingKeywords && masterResume.missingKeywords.length > 0) {
+      items.push({
+        id: 1,
+        title: `Add "${masterResume.missingKeywords[0]}" to your resume`,
+        description: `Critical keyword missing from ${jobsAnalyzed} job descriptions`,
+        priority: "critical" as const,
+        completed: false
+      });
+    }
+    
+    if (masterResume?.formatIssues && masterResume.formatIssues.length > 0) {
+      items.push({
+        id: 2,
+        title: masterResume.formatIssues[0],
+        description: "ATS parsing issue detected",
+        priority: "impact" as const,
+        completed: false
+      });
+    }
+    
+    if (latestJob && latestJob.missingKeywords && latestJob.missingKeywords.length > 0) {
+      items.push({
+        id: 3,
+        title: `Optimize for "${latestJob.jobTitle || 'target role'}"`,
+        description: `${latestJob.missingKeywords.length} keywords missing for this position`,
+        priority: "keyword" as const,
+        completed: false
+      });
+    }
+    
+    // Add default items if no real data
+    if (items.length === 0) {
+      items.push({
+        id: 1,
+        title: 'Upload your resume to get started',
+        description: 'Begin tracking your job applications',
+        priority: "critical" as const,
+        completed: false
+      });
+    }
+    
+    return items;
+  }, [masterResume, latestJob, jobsAnalyzed]);
 
-  const consoleLog = [
-    { type: "command", text: "root@cvdebug:~$ scan --target=google" },
-    { type: "warn", text: '[WARN] Missing keyword "Kubernetes" in Job History.' },
-    { type: "info", text: '[INFO] "Python" match confirmed (Weight: 0.95).' },
-    { type: "info", text: "[INFO] Readability score analysis complete." },
-    { type: "error", text: '[ERR] Gap found: "Testing" module missing.' },
-    { type: "info", text: "[INFO] Generating optimization tasks..." },
-    { type: "success", text: "[SUCCESS] 3 actionable items created." },
-  ];
+  // Generate real console log from system events
+  const consoleLog = useMemo(() => {
+    const logs = [];
+    
+    logs.push({ type: "command", text: "root@cvdebug:~$ scan --initialize" });
+    
+    if (masterResume) {
+      logs.push({ 
+        type: "info", 
+        text: `[INFO] Resume loaded: ${masterResume.title || 'Untitled'} (${masterResume._creationTime ? new Date(masterResume._creationTime).toLocaleDateString() : 'Unknown date'})` 
+      });
+      
+      if (masterResume.textLayerIntegrity !== undefined) {
+        if (masterResume.textLayerIntegrity >= 90) {
+          logs.push({ type: "success", text: `[SUCCESS] Text integrity: ${masterResume.textLayerIntegrity}% - OPTIMAL` });
+        } else {
+          logs.push({ type: "warn", text: `[WARN] Text integrity: ${masterResume.textLayerIntegrity}% - NEEDS ATTENTION` });
+        }
+      }
+      
+      if (masterResume.hasImageTrap) {
+        logs.push({ type: "error", text: "[ERR] IMAGE TRAP DETECTED - ATS parsers will fail" });
+      }
+    }
+    
+    if (jobsAnalyzed > 0) {
+      logs.push({ type: "info", text: `[INFO] Analyzed ${jobsAnalyzed} job applications` });
+      logs.push({ type: "info", text: `[INFO] Average match score: ${avgScore}%` });
+    }
+    
+    if (latestJob) {
+      logs.push({ 
+        type: "info", 
+        text: `[INFO] Latest target: ${latestJob.company || 'Unknown'} - ${latestJob.jobTitle || 'Unknown role'}` 
+      });
+      
+      if (latestJob.missingKeywords && latestJob.missingKeywords.length > 0) {
+        logs.push({ 
+          type: "warn", 
+          text: `[WARN] Missing ${latestJob.missingKeywords.length} critical keywords` 
+        });
+      }
+    }
+    
+    if (actionItems.length > 0) {
+      logs.push({ type: "success", text: `[SUCCESS] ${actionItems.length} optimization tasks generated` });
+    }
+    
+    logs.push({ type: "command", text: "root@cvdebug:~$ monitor --active" });
+    
+    return logs;
+  }, [masterResume, jobsAnalyzed, avgScore, latestJob, actionItems]);
 
   return (
     <div className="flex flex-col gap-6 h-full">
@@ -83,16 +163,16 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <div>
             <div className="flex items-center gap-3 mb-2">
               <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-primary text-black tracking-widest uppercase">
-                Target Locked
+                {latestJob ? "Target Locked" : "Awaiting Target"}
               </span>
               <span className="text-zinc-400 text-xs font-mono">
-                ID: #{latestJob?._id?.slice(-8) || "GGL-8829-X"}
+                ID: #{latestJob?._id?.slice(-8) || "INIT-0000"}
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white uppercase leading-none">
-              {latestJob?.company || "Google"}{" "}
+              {latestJob?.company || "No Active"}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600">
-                {latestJob?.jobTitle ? "Inc." : "Inc."}
+                {latestJob?.jobTitle || "Target"}
               </span>
             </h1>
           </div>
@@ -114,19 +194,23 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
               {/* Step 2 */}
               <div className="flex flex-col items-center gap-2 group cursor-pointer">
-                <div className="w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_#7c3bed] flex items-center justify-center">
-                  <div className="w-2 h-2 bg-black rounded-full"></div>
+                <div className={`w-4 h-4 rounded-full ${jobsAnalyzed > 0 ? 'bg-primary shadow-[0_0_10px_#7c3bed]' : 'bg-zinc-700 border border-zinc-500'} flex items-center justify-center`}>
+                  {jobsAnalyzed > 0 && <div className="w-2 h-2 bg-black rounded-full"></div>}
                 </div>
-                <span className="text-primary text-xs font-bold uppercase tracking-wider">Applied</span>
+                <span className={`text-xs font-bold uppercase tracking-wider ${jobsAnalyzed > 0 ? 'text-primary' : 'text-zinc-400'}`}>Applied</span>
               </div>
 
-              {/* Step 3 (Active) */}
+              {/* Step 3 (Active if has jobs) */}
               <div className="flex flex-col items-center gap-2 group cursor-pointer">
-                <div className="w-6 h-6 rounded-full bg-zinc-950 border-2 border-primary flex items-center justify-center relative">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-ping absolute"></div>
-                  <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                <div className={`${jobsAnalyzed > 0 ? 'w-6 h-6' : 'w-4 h-4'} rounded-full ${jobsAnalyzed > 0 ? 'bg-zinc-950 border-2 border-primary' : 'bg-zinc-700 border border-zinc-500'} flex items-center justify-center relative`}>
+                  {jobsAnalyzed > 0 && (
+                    <>
+                      <div className="w-2 h-2 bg-primary rounded-full animate-ping absolute"></div>
+                      <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                    </>
+                  )}
                 </div>
-                <span className="text-white text-sm font-bold uppercase tracking-wider">Interviewing</span>
+                <span className={`${jobsAnalyzed > 0 ? 'text-sm' : 'text-xs'} font-bold uppercase tracking-wider ${jobsAnalyzed > 0 ? 'text-white' : 'text-zinc-400'}`}>Interviewing</span>
               </div>
 
               {/* Step 4 */}
@@ -167,8 +251,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
             </div>
             <div className="w-full mt-4 flex justify-between text-xs font-mono text-zinc-400 border-t border-white/5 pt-3">
-              <span>Last Scan: 2m ago</span>
-              <span className="text-primary">OPTIMIZED</span>
+              <span>Last Scan: {latestJob ? 'Recent' : 'N/A'}</span>
+              <span className="text-primary">{matchScore >= 70 ? 'OPTIMIZED' : 'NEEDS WORK'}</span>
             </div>
           </div>
         </div>
@@ -187,7 +271,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   SKILL HEATMAP ANALYSIS
                 </h3>
                 <p className="text-sm text-zinc-400 mt-1 font-mono">
-                  Comparing Resume v2.4 against Job Description
+                  {masterResume ? `Analyzing ${masterResume.title || 'Resume'}` : 'No resume uploaded'}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -202,59 +286,65 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {skills.map((skill, idx) => (
-                <div
-                  key={idx}
-                  className={`p-3 rounded flex flex-col gap-2 transition-colors cursor-help group ${
-                    skill.matched
-                      ? "bg-primary/10 border border-primary/40 hover:bg-primary/20"
-                      : "bg-zinc-950 border border-zinc-700 hover:border-red-500/50"
-                  }`}
-                >
-                  {skill.matched && (
-                    <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  )}
-                  <div className="flex justify-between items-start">
-                    <span className={`font-bold text-sm ${skill.matched ? "text-white" : "text-zinc-300"}`}>
-                      {skill.name}
-                    </span>
-                    {skill.matched ? (
-                      <CheckCircle2 className="h-4 w-4 text-primary" />
-                    ) : skill.type === "critical" ? (
-                      <AlertTriangle className="h-4 w-4 text-red-500" />
-                    ) : (
-                      <AlertTriangle className="h-4 w-4 text-orange-500" />
-                    )}
-                  </div>
-                  <div className="h-1 w-full bg-zinc-950 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${
-                        skill.matched ? "bg-primary" : skill.type === "critical" ? "bg-red-500" : "bg-orange-500"
-                      }`}
-                      style={{ width: `${skill.relevance}%` }}
-                    ></div>
-                  </div>
-                  <span
-                    className={`text-[10px] font-mono uppercase ${
+            {skills.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {skills.map((skill, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-3 rounded flex flex-col gap-2 transition-colors cursor-help group ${
                       skill.matched
-                        ? "text-primary/80"
-                        : skill.type === "critical"
-                        ? "text-red-400"
-                        : "text-orange-400"
+                        ? "bg-primary/10 border border-primary/40 hover:bg-primary/20"
+                        : "bg-zinc-950 border border-zinc-700 hover:border-red-500/50"
                     }`}
                   >
-                    {skill.matched
-                      ? skill.type === "high"
-                        ? "High Relevance"
-                        : "Med Relevance"
-                      : skill.type === "critical"
-                      ? "Critical Gap"
-                      : "Med Gap"}
-                  </span>
-                </div>
-              ))}
-            </div>
+                    <div className="flex justify-between items-start">
+                      <span className={`font-bold text-sm ${skill.matched ? "text-white" : "text-zinc-300"}`}>
+                        {skill.name}
+                      </span>
+                      {skill.matched ? (
+                        <CheckCircle2 className="h-4 w-4 text-primary" />
+                      ) : skill.type === "critical" ? (
+                        <AlertTriangle className="h-4 w-4 text-red-500" />
+                      ) : (
+                        <AlertTriangle className="h-4 w-4 text-orange-500" />
+                      )}
+                    </div>
+                    <div className="h-1 w-full bg-zinc-950 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${
+                          skill.matched ? "bg-primary" : skill.type === "critical" ? "bg-red-500" : "bg-orange-500"
+                        }`}
+                        style={{ width: `${skill.relevance}%` }}
+                      ></div>
+                    </div>
+                    <span
+                      className={`text-[10px] font-mono uppercase ${
+                        skill.matched
+                          ? "text-primary/80"
+                          : skill.type === "critical"
+                          ? "text-red-400"
+                          : "text-orange-400"
+                      }`}
+                    >
+                      {skill.matched
+                        ? skill.type === "high"
+                          ? "High Relevance"
+                          : "Med Relevance"
+                        : skill.type === "critical"
+                        ? "Critical Gap"
+                        : "Med Gap"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-zinc-500">
+                <p>Upload a resume to see skill analysis</p>
+                <Button onClick={onUpload} className="mt-4" variant="outline">
+                  Upload Resume
+                </Button>
+              </div>
+            )}
           </div>
 
           {/* Actionable Intelligence */}
@@ -307,9 +397,10 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <Button
                 onClick={() => latestJob && onGenerateCoverLetter(latestJob._id)}
                 className="w-full bg-primary/10 hover:bg-primary hover:text-black border border-primary/50 text-primary font-bold uppercase"
+                disabled={!latestJob}
               >
                 <Activity className="mr-2 h-4 w-4" />
-                Auto-Generate Cover Letter
+                {latestJob ? 'Auto-Generate Cover Letter' : 'No Active Target'}
               </Button>
             </div>
           </div>
@@ -341,17 +432,17 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div className="p-3 bg-zinc-900 border border-white/5 rounded">
                 <div className="flex justify-between text-xs text-zinc-400 mb-1 font-mono">
                   <span>ATS PARSE RATE</span>
-                  <span className="text-white">98%</span>
+                  <span className="text-white">{masterResume ? '98%' : 'N/A'}</span>
                 </div>
-                <Progress value={98} className="h-1.5" />
+                <Progress value={masterResume ? 98 : 0} className="h-1.5" />
               </div>
 
               <div className="p-3 bg-zinc-900 border border-white/5 rounded">
                 <div className="flex justify-between text-xs text-zinc-400 mb-1 font-mono">
                   <span>KEYWORD DENSITY</span>
-                  <span className="text-yellow-400">OPTIMAL</span>
+                  <span className="text-yellow-400">{matchScore >= 70 ? 'OPTIMAL' : 'LOW'}</span>
                 </div>
-                <Progress value={85} className="h-1.5 [&>div]:bg-yellow-400" />
+                <Progress value={matchScore} className="h-1.5 [&>div]:bg-yellow-400" />
               </div>
             </div>
           </div>
