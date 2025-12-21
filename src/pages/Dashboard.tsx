@@ -48,6 +48,8 @@ import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
 import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
 import { MissionControl } from "@/components/dashboard/MissionControl";
+import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
+import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
 
 const apiAny = api as any;
 
@@ -225,6 +227,55 @@ export default function Dashboard() {
             onUpload={() => fileInputRef.current?.click()}
           />
         );
+      case 'tools':
+        // Mobile AI Tools Hub
+        return (
+          <div className="space-y-6 pb-24 md:pb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-white">AI Tools</h1>
+            <div className="grid grid-cols-1 gap-4">
+              <button
+                onClick={() => setCurrentView('cover-letter')}
+                className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border-2 border-primary/30 text-left hover:border-primary/60 transition-all"
+              >
+                <h3 className="text-lg font-bold text-white mb-2">Cover Letter Generator</h3>
+                <p className="text-sm text-slate-400">AI-powered cover letters with keyword optimization</p>
+              </button>
+              <button
+                onClick={() => setCurrentView('linkedin')}
+                className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border-2 border-blue-500/30 text-left hover:border-blue-500/60 transition-all"
+              >
+                <h3 className="text-lg font-bold text-white mb-2">LinkedIn Optimizer</h3>
+                <p className="text-sm text-slate-400">Optimize your profile for recruiters</p>
+              </button>
+            </div>
+          </div>
+        );
+      case 'profile':
+        // Mobile Profile/Settings
+        return (
+          <div className="space-y-6 pb-24 md:pb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-white">Profile</h1>
+            <div className="space-y-4">
+              <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-bold text-white">Credits</h3>
+                  <span className="text-2xl font-black text-primary">
+                    {currentUser?.credits || 0}
+                  </span>
+                </div>
+                <Button 
+                  onClick={() => setShowPricing(true)}
+                  className="w-full bg-primary hover:bg-primary/90 text-black font-bold"
+                >
+                  Buy More Credits
+                </Button>
+              </div>
+              {currentUser?.sprintExpiresAt && (
+                <SprintProgressBar />
+              )}
+            </div>
+          </div>
+        );
       case 'projects':
         if (selectedProject) {
           return (
@@ -294,8 +345,8 @@ export default function Dashboard() {
         setCurrentView={setCurrentView}
       />
       
-        <main 
-        className="flex-1 flex flex-col overflow-hidden relative bg-transparent"
+      <main 
+        className="flex-1 flex flex-col overflow-hidden relative bg-transparent pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -324,6 +375,13 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* Mobile Tab Bar */}
+      <MobileTabBar 
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        onUpload={() => fileInputRef.current?.click()}
+      />
 
       <PricingDialog 
         open={showPricing} 

@@ -9,6 +9,8 @@ import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { SprintProgressBar } from "./SprintProgressBar";
 import { TargetInsight } from "./TargetInsight";
+import { MobileMissionCard } from "./MobileMissionCard";
+import { MobileKeywordChecklist } from "./MobileKeywordChecklist";
 
 const apiAny = api as any;
 
@@ -23,6 +25,10 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
   const projects = useQuery(apiAny.projects.getProjects);
   const checkGapAlert = useMutation(apiAny.gamification.checkGapAlert);
+  
+  // Add missing state variables
+  const [selectedJob, setSelectedJob] = useState<any>(null);
+  const [showKeywordSniper, setShowKeywordSniper] = useState(false);
   
   // Get the most recent completed resume, or the most recent one if none are completed
   const masterResume = useMemo(() => {
@@ -211,7 +217,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   }, [masterResume?.overallScore, checkGapAlert]);
 
   return (
-    <div className="flex flex-col gap-6 h-full">
+    <div className="space-y-6 pb-24 md:pb-6">
       {/* Active Missions Widget */}
       {activeMissions > 0 ? (
         <div className="bg-gradient-to-r from-primary/20 to-purple-500/20 border-2 border-primary rounded-xl p-6 relative overflow-hidden">
@@ -258,11 +264,26 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         </div>
       )}
 
-      {/* NEW: Sprint Progress Bar for Interview Sprint users */}
-      <SprintProgressBar />
+      {/* Mobile: Horizontal Stats Carousel */}
+      <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
+        <div className="flex gap-4 min-w-max">
+          <div className="flex-shrink-0 w-32 p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p className="text-xs text-slate-400 mb-1">Match Rate</p>
+            <p className="text-2xl font-black text-primary">{avgScore}%</p>
+          </div>
+          <div className="flex-shrink-0 w-32 p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p className="text-xs text-slate-400 mb-1">Active</p>
+            <p className="text-2xl font-black text-white">{activeMissions}</p>
+          </div>
+          <div className="flex-shrink-0 w-32 p-4 rounded-xl bg-slate-900 border border-slate-800">
+            <p className="text-xs text-slate-400 mb-1">Integrity</p>
+            <p className="text-2xl font-black text-emerald-400">98%</p>
+          </div>
+        </div>
+      </div>
 
-      {/* Header Stats Area */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      {/* Desktop: Keep existing grid */}
+      <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Title & Application Status */}
         <div className="md:col-span-8 lg:col-span-9 flex flex-col gap-6">
           <div>
@@ -366,6 +387,63 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <span className="text-primary">{matchScore >= 70 ? 'OPTIMIZED' : 'NEEDS WORK'}</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* NEW: Sprint Progress Bar for Interview Sprint users */}
+      <SprintProgressBar />
+
+      {/* Mobile: Mission Cards List */}
+      <div className="md:hidden space-y-3">
+        {jobHistory && jobHistory.length > 0 ? (
+          jobHistory.slice(0, 10).map((job: any) => (
+            <MobileMissionCard
+              key={job._id}
+              job={job}
+              onClick={() => {
+                setSelectedJob(job);
+                setShowKeywordSniper(true);
+              }}
+            />
+          ))
+        ) : (
+          <div className="text-center py-12 text-slate-400">
+            <p className="text-sm">No active missions yet</p>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: Job History Table - Simplified for now */}
+      <div className="hidden md:block">
+        <div className="bg-zinc-900 border border-primary/20 rounded-lg p-6">
+          <h3 className="text-lg font-bold text-white mb-4">Recent Applications</h3>
+          {jobHistory && jobHistory.length > 0 ? (
+            <div className="space-y-2">
+              {jobHistory.slice(0, 5).map((job: any) => (
+                <div 
+                  key={job._id}
+                  onClick={() => {
+                    setSelectedJob(job);
+                    setShowKeywordSniper(true);
+                  }}
+                  className="p-4 bg-zinc-800 rounded-lg hover:bg-zinc-700 cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-bold text-white">{job.jobTitle}</h4>
+                      <p className="text-sm text-zinc-400">{job.company}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-black text-primary">{job.score || 0}%</p>
+                      <p className="text-xs text-zinc-500">Match Score</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-zinc-400 text-center py-8">No applications yet</p>
+          )}
         </div>
       </div>
 
