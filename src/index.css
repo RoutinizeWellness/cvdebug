@@ -127,3 +127,19 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+/* AI Highlight styles for Writing Forge */
+.ai-highlight {
+  text-decoration: underline;
+  text-decoration-color: #8B5CF6;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+  transition: all 0.2s ease;
+}
+
+.ai-highlight:hover {
+  background-color: rgba(139, 92, 246, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+}
