@@ -78,7 +78,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         originalPrice: "€49.99",
         period: "7 days unlimited access", 
         features: ["Unlimited Scans for 7 Days", "AI Keyword Recommendations", "Job Application Tracker", "Targeted Match History", "Priority Support"],
-        badge: "Most Popular 🚀",
+        badge: "Best Value 🚀",
         icon: Rocket,
         color: "text-primary"
       }

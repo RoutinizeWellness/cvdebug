@@ -88,7 +88,7 @@ export function PricingSection() {
           {/* Interview Sprint - Most Popular */}
           <div className="p-8 rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-950 border-2 border-primary shadow-[0_0_40px_-10px_rgba(249,245,6,0.3)] flex flex-col gap-6 relative h-full transform md:-translate-y-4">
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-black text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg whitespace-nowrap">
-              🚀 MOST POPULAR
+              🚀 Best Value
             </div>
             <div>
               <h3 className="text-xl font-bold text-white mb-2">🎯 Interview Sprint</h3>
