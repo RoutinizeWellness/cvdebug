@@ -21,7 +21,7 @@ export function HowItWorksSection() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-muted/30 relative overflow-hidden">
+    <section id="how-it-works" className="py-24 bg-gray-50 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div
@@ -30,10 +30,10 @@ export function HowItWorksSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-gray-900">
               How It Works
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-gray-600">
               Three steps to stop getting auto-rejected
             </p>
           </motion.div>
@@ -49,13 +49,20 @@ export function HowItWorksSection() {
               transition={{ duration: 0.5, delay: i * 0.2 }}
               className="relative flex flex-col items-center text-center group"
             >
-              <div className={`h-24 w-24 bg-card border-2 ${i === 1 ? 'border-primary shadow-[0_0_30px_-5px] shadow-primary/50 scale-110' : 'border-border'} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary group-hover:scale-110 transition-all duration-300 z-10 relative`}>
-                <step.icon className={`h-10 w-10 ${i === 1 ? 'text-primary' : 'text-primary'}`} />
-              </div>
-              <h3 className={`text-2xl font-bold mb-3 ${i === 1 ? 'text-primary' : ''}`}>{step.title}</h3>
-              <p className="text-muted-foreground leading-relaxed max-w-xs">
+              <motion.div 
+                className="h-20 w-20 bg-white border-2 border-gray-200 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:border-primary group-hover:shadow-xl transition-all duration-300 z-10 relative"
+                whileHover={{ scale: 1.1, y: -5 }}
+              >
+                <step.icon className="h-9 w-9 text-primary" />
+              </motion.div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">{step.title}</h3>
+              <p className="text-gray-600 leading-relaxed max-w-xs">
                 {step.description}
               </p>
+              
+              {i < steps.length - 1 && (
+                <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/30 to-transparent"></div>
+              )}
             </motion.div>
           ))}
         </div>
