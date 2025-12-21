@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router";
+
 export function PricingSection() {
+  const navigate = useNavigate();
+
+  const handlePlanSelect = (plan: string) => {
+    navigate(`/auth?plan=${plan}`);
+  };
+
   return (
     <section className="w-full py-24 bg-zinc-950 relative overflow-hidden" id="pricing">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -19,7 +27,10 @@ export function PricingSection() {
               </div>
               <p className="text-sm text-zinc-400 mt-2">Basic scan to see where you stand.</p>
             </div>
-            <button className="w-full h-12 rounded-lg bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]">
+            <button 
+              onClick={() => handlePlanSelect('free')}
+              className="w-full h-12 rounded-lg bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]"
+            >
               Try Free
             </button>
             <div className="space-y-4 pt-4 border-t border-zinc-800">
@@ -48,7 +59,10 @@ export function PricingSection() {
               </div>
               <p className="text-sm text-zinc-400 mt-2">One complete analysis. Perfect for testing one application.</p>
             </div>
-            <button className="w-full h-12 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]">
+            <button 
+              onClick={() => handlePlanSelect('single_scan')}
+              className="w-full h-12 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-primary/30 text-white font-bold transition-all hover:scale-[1.02]"
+            >
               Get Single Scan
             </button>
             <div className="space-y-4 pt-4 border-t border-zinc-800">
@@ -85,7 +99,10 @@ export function PricingSection() {
               <p className="text-xs text-primary font-bold mt-1">60% OFF - 7 days unlimited</p>
               <p className="text-sm text-zinc-300 mt-2">Track multiple jobs, AI tools, continuous monitoring.</p>
             </div>
-            <button className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25">
+            <button 
+              onClick={() => handlePlanSelect('interview_sprint')}
+              className="w-full h-12 rounded-lg bg-primary hover:bg-primary/90 text-black font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25"
+            >
               Start Interview Sprint
             </button>
             <div className="space-y-4 pt-4 border-t border-primary/20">
