@@ -289,6 +289,20 @@ const schema = defineSchema(
   waitlist: defineTable({
     email: v.string(),
   }).index("by_email", ["email"]),
+
+  payments: defineTable({
+    userId: v.id("users"),
+    tokenIdentifier: v.string(),
+    email: v.string(),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    transactionId: v.string(),
+    amount: v.number(),
+    status: v.string(),
+    purchasedAt: v.number(),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_transaction_id", ["transactionId"])
+    .index("by_email", ["email"]),
   },
   {
     schemaValidation: false,

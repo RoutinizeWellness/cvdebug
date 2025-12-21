@@ -1,14 +1,37 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
+import { useQuery, useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { RocketIcon, CheckCircle2, Timer, Download, ArrowRight, Mail } from "lucide-react";
+import { RocketIcon, CheckCircle2, Timer, Download, ArrowRight, Mail, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+const apiAny: any = api;
 
 export default function PaymentSuccess() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const orderId = searchParams.get("orderId") || "#CVD-8920-XJ";
-  const email = searchParams.get("email") || "user@example.com";
+  const transactionId = searchParams.get("transaction_id") || searchParams.get("orderId");
+  
+  // Fetch latest payment if no transaction ID provided
+  const latestPayment = useQuery(apiAny.billing.getUserLatestPayment);
+  const generateReceipt = useAction(apiAny.receipts.generateReceipt);
+  
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  // Use transaction ID from URL or latest payment
+  const effectiveTransactionId = transactionId || latestPayment?.transactionId;
+  const payment = useQuery(
+    apiAny.billing.getPaymentByTransaction,
+    effectiveTransactionId ? { transactionId: effectiveTransactionId } : "skip"
+  );
+
+  const orderId = payment?.transactionId || "#CVD-PENDING";
+  const email = payment?.userEmail || searchParams.get("email") || "user@example.com";
+  const userName = payment?.userName || "User";
+  const plan = payment?.plan || "interview_sprint";
+  const amount = payment?.amount || 19.99;
 
   const [timeLeft, setTimeLeft] = useState({
     days: 6,
@@ -35,6 +58,36 @@ export default function PaymentSuccess() {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleDownloadReceipt = async () => {
+    if (!effectiveTransactionId) {
+      toast.error("No transaction ID available");
+      return;
+    }
+
+    setIsDownloading(true);
+    try {
+      const receipt = await generateReceipt({ transactionId: effectiveTransactionId });
+      
+      // Create a blob and download
+      const blob = new Blob([receipt.text], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `CVDebug-Receipt-${receipt.data.orderId}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Receipt downloaded successfully");
+    } catch (error) {
+      console.error("Failed to download receipt:", error);
+      toast.error("Failed to download receipt");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   // Confetti animation
   const confettiColors = ["#3B82F6", "#8B5CF6", "#FFFFFF"];
@@ -87,7 +140,7 @@ export default function PaymentSuccess() {
             System Operational
           </div>
           <div className="bg-gradient-to-br from-primary to-purple-600 rounded-full size-9 border border-slate-700 flex items-center justify-center text-white font-bold text-sm">
-            U
+            {userName.charAt(0).toUpperCase()}
           </div>
         </div>
       </header>
@@ -133,7 +186,7 @@ export default function PaymentSuccess() {
 
             {/* Headline */}
             <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 tracking-tight">
-              Sprint Activated.
+              {plan === "interview_sprint" ? "Sprint Activated." : "Scan Unlocked."}
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
                 Let's land that job.
@@ -142,59 +195,63 @@ export default function PaymentSuccess() {
 
             {/* Subtext */}
             <p className="text-slate-400 text-base sm:text-lg max-w-md mb-10 leading-relaxed">
-              Your 7-day intense preparation roadmap has been generated. Access your dashboard to begin the sprint.
+              {plan === "interview_sprint" 
+                ? "Your 7-day intense preparation roadmap has been generated. Access your dashboard to begin the sprint."
+                : "Your resume scan is now unlocked. Access your dashboard to view the full analysis."}
             </p>
 
-            {/* Timer Section */}
-            <div className="w-full max-w-lg mb-10">
-              <div className="flex items-center justify-center gap-2 mb-3">
-                <Timer className="h-4 w-4 text-[#8B5CF6] animate-pulse" />
-                <p className="text-slate-400 text-xs uppercase tracking-widest font-mono">
-                  Access Expiration Countdown
-                </p>
+            {/* Timer Section - Only for Sprint */}
+            {plan === "interview_sprint" && (
+              <div className="w-full max-w-lg mb-10">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Timer className="h-4 w-4 text-[#8B5CF6] animate-pulse" />
+                  <p className="text-slate-400 text-xs uppercase tracking-widest font-mono">
+                    Access Expiration Countdown
+                  </p>
+                </div>
+                <div className="grid grid-cols-4 gap-3 sm:gap-4 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 backdrop-blur-sm shadow-[0_0_15px_rgba(59,130,246,0.1)] animate-[subtle-pulse_3s_infinite]">
+                  {/* Days */}
+                  <div className="flex flex-col items-center">
+                    <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
+                        {String(timeLeft.days).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 font-mono uppercase">Days</span>
+                  </div>
+
+                  {/* Hours */}
+                  <div className="flex flex-col items-center">
+                    <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
+                        {String(timeLeft.hours).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 font-mono uppercase">Hours</span>
+                  </div>
+
+                  {/* Minutes */}
+                  <div className="flex flex-col items-center">
+                    <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
+                        {String(timeLeft.minutes).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 font-mono uppercase">Mins</span>
+                  </div>
+
+                  {/* Seconds */}
+                  <div className="flex flex-col items-center">
+                    <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[#8B5CF6]">
+                        {String(timeLeft.seconds).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 font-mono uppercase">Secs</span>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-4 gap-3 sm:gap-4 p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 backdrop-blur-sm shadow-[0_0_15px_rgba(59,130,246,0.1)] animate-[subtle-pulse_3s_infinite]">
-                {/* Days */}
-                <div className="flex flex-col items-center">
-                  <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
-                    <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
-                      {String(timeLeft.days).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-500 font-mono uppercase">Days</span>
-                </div>
-
-                {/* Hours */}
-                <div className="flex flex-col items-center">
-                  <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
-                    <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
-                      {String(timeLeft.hours).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-500 font-mono uppercase">Hours</span>
-                </div>
-
-                {/* Minutes */}
-                <div className="flex flex-col items-center">
-                  <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
-                    <span className="text-2xl sm:text-3xl font-mono font-bold text-white">
-                      {String(timeLeft.minutes).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-500 font-mono uppercase">Mins</span>
-                </div>
-
-                {/* Seconds */}
-                <div className="flex flex-col items-center">
-                  <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
-                    <span className="text-2xl sm:text-3xl font-mono font-bold text-[#8B5CF6]">
-                      {String(timeLeft.seconds).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <span className="text-xs text-slate-500 font-mono uppercase">Secs</span>
-                </div>
-              </div>
-            </div>
+            )}
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
@@ -209,9 +266,15 @@ export default function PaymentSuccess() {
 
               <Button
                 variant="outline"
+                onClick={handleDownloadReceipt}
+                disabled={isDownloading || !effectiveTransactionId}
                 className="flex items-center justify-center gap-2 bg-transparent border border-slate-600 hover:border-slate-400 hover:bg-slate-800/30 transition-all text-slate-300 font-medium py-6 px-8 rounded-lg w-full sm:w-auto h-auto"
               >
-                <Download className="h-4 w-4" />
+                {isDownloading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
                 Download Receipt
               </Button>
             </div>

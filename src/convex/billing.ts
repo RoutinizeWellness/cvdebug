@@ -1,4 +1,6 @@
 import { httpAction } from "./_generated/server";
+import { query } from "./_generated/server";
+import { v } from "convex/values";
 
 // Cast internal to any to avoid type instantiation issues
 const internalAny = require("./_generated/api").internal;
@@ -24,7 +26,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
     console.log("[Webhook] Payload data:", JSON.stringify(payload.data, null, 2));
     
     if (payload.event === "checkout.completed") {
-      const { customer_id, product_id, metadata } = payload.data;
+      const { customer_id, product_id, metadata, transaction_id, amount } = payload.data;
       
       console.log(`[Webhook] Processing checkout for customer_id: ${customer_id}, product_id: ${product_id}`);
       
@@ -44,6 +46,14 @@ export const handleWebhook = httpAction(async (ctx, request) => {
       }
 
       console.log(`[Webhook] Mapped product to plan: ${plan}`);
+
+      // Store payment record
+      await ctx.runMutation(internalAny.billing.storePaymentRecord, {
+        tokenIdentifier: customer_id,
+        plan,
+        transactionId: transaction_id,
+        amount: amount || (plan === "single_scan" ? 4.99 : 19.99),
+      });
 
       // Update user subscription and credits using customer_id as tokenIdentifier
       await ctx.runMutation(internalAny.users.updateSubscription, {
@@ -73,4 +83,86 @@ export const handleWebhook = httpAction(async (ctx, request) => {
     console.error("[Webhook] Error:", error);
     return new Response(`Webhook error: ${error.message}`, { status: 400 });
   }
+});
+
+export const storePaymentRecord = internalAny.billing?.storePaymentRecord || require("./_generated/server").internalMutation({
+  args: {
+    tokenIdentifier: v.string(),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    transactionId: v.string(),
+    amount: v.number(),
+  },
+  handler: async (ctx: any, args: any) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q: any) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
+
+    if (!user) {
+      console.error(`[storePaymentRecord] User not found: ${args.tokenIdentifier}`);
+      return;
+    }
+
+    await ctx.db.insert("payments", {
+      userId: user._id,
+      tokenIdentifier: args.tokenIdentifier,
+      email: user.email,
+      plan: args.plan,
+      transactionId: args.transactionId,
+      amount: args.amount,
+      status: "completed",
+      purchasedAt: Date.now(),
+    });
+
+    console.log(`[storePaymentRecord] Payment record stored for ${user.email}`);
+  },
+});
+
+export const getPaymentByTransaction = query({
+  args: { transactionId: v.string() },
+  handler: async (ctx, args) => {
+    const payment = await ctx.db
+      .query("payments")
+      .withIndex("by_transaction_id", (q) => q.eq("transactionId", args.transactionId))
+      .unique();
+
+    if (!payment) return null;
+
+    const user = await ctx.db.get(payment.userId);
+
+    return {
+      ...payment,
+      userName: user?.name || "User",
+      userEmail: user?.email || "",
+    };
+  },
+});
+
+export const getUserLatestPayment = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (!user) return null;
+
+    const payment = await ctx.db
+      .query("payments")
+      .withIndex("by_user_id", (q) => q.eq("userId", user._id))
+      .order("desc")
+      .first();
+
+    if (!payment) return null;
+
+    return {
+      ...payment,
+      userName: user.name || "User",
+      userEmail: user.email || "",
+    };
+  },
 });

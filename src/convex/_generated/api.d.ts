@@ -42,6 +42,7 @@ import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as projects from "../projects.js";
+import type * as receipts from "../receipts.js";
 import type * as resumes from "../resumes.js";
 import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
@@ -90,6 +91,7 @@ declare const fullApi: ApiFromModules<{
   marketing: typeof marketing;
   mlLearning: typeof mlLearning;
   projects: typeof projects;
+  receipts: typeof receipts;
   resumes: typeof resumes;
   testEmail: typeof testEmail;
   testing: typeof testing;

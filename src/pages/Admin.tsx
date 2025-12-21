@@ -362,9 +362,9 @@ export default function AdminPage() {
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh Stats
             </Button>
-            <div className="w-9 h-9 rounded-full bg-slate-700 overflow-hidden border border-slate-600">
+              <div className="w-9 h-9 rounded-full bg-slate-700 overflow-hidden border border-slate-600">
               <div className="w-full h-full bg-primary/20 flex items-center justify-center text-white font-bold text-sm">
-                {user.name?.charAt(0) || "A"}
+                {user.email?.charAt(0).toUpperCase() || "A"}
               </div>
             </div>
           </div>
