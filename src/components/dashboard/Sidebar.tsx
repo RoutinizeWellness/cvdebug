@@ -1,4 +1,4 @@
-import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail, LogOut, Shield } from "lucide-react";
+import { FileText, Grid, Sparkles, Briefcase, Code, Share, DollarSign, Palette, BarChart, Users, Settings, File, LayoutTemplate, Linkedin, Mail, LogOut, Shield, LayoutDashboard } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -63,6 +63,13 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Main</p>
           </div>
           
+          <NavItem 
+            active={currentView === 'mission'}
+            icon={LayoutDashboard}
+            label="Mission Control"
+            onClick={() => setCurrentView('mission')}
+          />
+
           <NavItem 
             active={currentView === 'resumes' && !categoryFilter}
             icon={Grid}

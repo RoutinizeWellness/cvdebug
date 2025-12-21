@@ -47,6 +47,7 @@ import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
 import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
+import { MissionControl } from "@/components/dashboard/MissionControl";
 
 const apiAny = api as any;
 
@@ -56,7 +57,7 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPricing, setShowPricing] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState("resumes"); // 'resumes', 'projects', 'templates', 'linkedin', 'cover-letter'
+  const [currentView, setCurrentView] = useState("mission"); // Default to 'mission'
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
@@ -216,6 +217,8 @@ export default function Dashboard() {
 
   const renderContent = () => {
     switch (currentView) {
+      case 'mission':
+        return <MissionControl />;
       case 'projects':
         if (selectedProject) {
           return (
@@ -238,7 +241,6 @@ export default function Dashboard() {
       case 'cover-letter':
         return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} />;
       case 'resumes':
-      default:
         return (
           <ResumeGrid 
             resumes={resumes}
@@ -248,6 +250,8 @@ export default function Dashboard() {
             onUpload={() => fileInputRef.current?.click()} 
           />
         );
+      default:
+        return <MissionControl />;
     }
   };
 
@@ -263,7 +267,7 @@ export default function Dashboard() {
         setCurrentView={setCurrentView}
       />
       
-      <main className="flex-1 flex flex-col overflow-hidden relative">
+      <main className="flex-1 flex flex-col overflow-hidden relative bg-black">
         {/* Mobile Header */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-950">
           <Logo />
@@ -272,8 +276,8 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8">
-          <div className="max-w-7xl mx-auto space-y-8">
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8">
+          <div className="max-w-[1600px] mx-auto h-full">
             {renderContent()}
           </div>
         </div>

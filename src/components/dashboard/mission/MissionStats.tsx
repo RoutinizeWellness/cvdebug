@@ -1,0 +1,60 @@
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Target, FileText, TrendingUp, Calendar } from "lucide-react";
+
+// Cast to any to avoid deep type instantiation errors
+const apiAny = api as any;
+
+export function MissionStats() {
+  const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
+  
+  const jobsAnalyzed = jobHistory?.length || 0;
+  const avgScore = jobHistory && jobHistory.length > 0
+    ? Math.round(jobHistory.reduce((acc: number, curr: any) => acc + (curr.score || 0), 0) / jobHistory.length)
+    : 0;
+  
+  // Mock data for now, can be real later
+  const keywordsMatched = jobHistory 
+    ? jobHistory.reduce((acc: number, curr: any) => acc + (curr.missingKeywords ? 20 - curr.missingKeywords.length : 20), 0)
+    : 0;
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <FileText className="h-4 w-4" />
+          <span className="text-xs font-bold uppercase tracking-wider">Jobs Analyzed</span>
+        </div>
+        <div className="text-2xl font-black text-white">{jobsAnalyzed}</div>
+      </div>
+
+      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <Target className="h-4 w-4" />
+          <span className="text-xs font-bold uppercase tracking-wider">Keywords Matched</span>
+        </div>
+        <div className="text-2xl font-black text-white">{keywordsMatched}</div>
+      </div>
+
+      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <TrendingUp className="h-4 w-4" />
+          <span className="text-xs font-bold uppercase tracking-wider">Avg. Score</span>
+        </div>
+        <div className={`text-2xl font-black ${avgScore >= 75 ? 'text-[#00FF41]' : avgScore >= 50 ? 'text-yellow-500' : 'text-zinc-500'}`}>
+          {avgScore}%
+        </div>
+      </div>
+
+      <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
+        <div className="flex items-center gap-2 text-zinc-500">
+          <Calendar className="h-4 w-4" />
+          <span className="text-xs font-bold uppercase tracking-wider">Interview Prob.</span>
+        </div>
+        <div className="text-2xl font-black text-white">
+          {avgScore > 70 ? "High" : avgScore > 50 ? "Medium" : "Low"}
+        </div>
+      </div>
+    </div>
+  );
+}
