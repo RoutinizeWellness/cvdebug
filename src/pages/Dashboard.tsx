@@ -248,13 +248,28 @@ export default function Dashboard() {
         return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} />;
       case 'resumes':
         return (
-          <ResumeGrid 
-            resumes={resumes}
-            setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
-            handleDelete={handleDelete}
-            categoryFilter={categoryFilter} 
-            onUpload={() => fileInputRef.current?.click()} 
-          />
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-white">All Resumes</h1>
+                <p className="text-zinc-400 mt-1">View and manage your uploaded resumes</p>
+              </div>
+              <Button 
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-primary text-black font-bold hover:bg-primary/90"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Upload Resume
+              </Button>
+            </div>
+            <ResumeGrid 
+              resumes={resumes}
+              setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
+              handleDelete={handleDelete}
+              categoryFilter={categoryFilter} 
+              onUpload={() => fileInputRef.current?.click()} 
+            />
+          </div>
         );
       default:
         return (
