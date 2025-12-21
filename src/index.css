@@ -128,21 +128,13 @@
   }
   body {
     @apply text-foreground font-sans antialiased;
-    /* Purple to White gradient background */
-    background: linear-gradient(135deg, #A37FBC 0%, #E8D5F0 25%, #FFFFFF 50%, #E8D5F0 75%, #A37FBC 100%);
+    /* Solid white background */
+    background: #FFFFFF;
     background-attachment: fixed;
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-  
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
   }
   
   .dark body {
-    /* Dark mode: Deep purple to lighter purple gradient */
+    /* Dark mode: Keep deep purple gradient */
     background: linear-gradient(135deg, #2D1B3D 0%, #4A2F5C 25%, #6B4A7D 50%, #4A2F5C 75%, #2D1B3D 100%);
     background-attachment: fixed;
     background-size: 400% 400%;
