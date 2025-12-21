@@ -68,10 +68,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     }
     
     if (masterResume?.formatIssues && masterResume.formatIssues.length > 0) {
+      const firstIssue = masterResume.formatIssues[0];
       items.push({
         id: 2,
-        title: masterResume.formatIssues[0],
-        description: "ATS parsing issue detected",
+        title: typeof firstIssue === 'string' ? firstIssue : firstIssue.issue || "Format issue detected",
+        description: typeof firstIssue === 'string' ? "ATS parsing issue detected" : firstIssue.atsImpact || "ATS parsing issue detected",
         priority: "impact" as const,
         completed: false
       });
