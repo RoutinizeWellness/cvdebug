@@ -406,6 +406,44 @@ export const checkDeviceFingerprint = query({
   },
 });
 
+export const getUserInternal = internalQuery({
+  args: { subject: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.subject))
+      .unique();
+
+    // Admin Override
+    if (user && user.email === "tiniboti@gmail.com") {
+      return {
+        ...user,
+        subscriptionTier: "interview_sprint",
+        credits: 999999,
+        sprintExpiresAt: Date.now() + (365 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    return user;
+  },
+});
+
+export const deductCreditInternal = internalMutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) throw new Error("User not found");
+    
+    // Admin check (redundant if handled in getUserInternal but good for safety)
+    if (user.email === "tiniboti@gmail.com") return;
+
+    const currentCredits = user.credits ?? 0;
+    await ctx.db.patch(args.userId, {
+      credits: Math.max(0, currentCredits - 1),
+    });
+  },
+});
+
 /**
  * Use this function internally to get the current user data.
  */

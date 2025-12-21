@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Mail, Sparkles, FileText, Loader2, Copy, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,7 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
-export function CoverLetterGenerator() {
+interface CoverLetterGeneratorProps {
+  initialApplicationId?: string;
+}
+
+export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGeneratorProps) {
   const projects = useQuery(apiAny.projects.getProjects);
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   
@@ -22,9 +26,25 @@ export function CoverLetterGenerator() {
   
   const generateCoverLetter = useMutation(apiAny.coverLetters.generateCoverLetter);
   
-  const [selectedApplication, setSelectedApplication] = useState<string>("");
+  const [selectedApplication, setSelectedApplication] = useState<string>(initialApplicationId || "");
   const [isGenerating, setIsGenerating] = useState(false);
   const [copiedLetter, setCopiedLetter] = useState<string | null>(null);
+
+  // Effect to set project if initialApplicationId is provided
+  // Note: This is tricky because we need to find the project for the application first.
+  // For now, we'll rely on the user selecting the project if it's not automatically set,
+  // or we could fetch the application details to get the projectId.
+  // Let's try to fetch the application details if initialApplicationId is set.
+  const initialAppDetails = useQuery(apiAny.applications.getApplicationInternal, 
+    initialApplicationId ? { id: initialApplicationId as any } : "skip"
+  );
+
+  useEffect(() => {
+    if (initialAppDetails && initialAppDetails.projectId) {
+      setSelectedProjectId(initialAppDetails.projectId);
+      setSelectedApplication(initialAppDetails._id);
+    }
+  }, [initialAppDetails]);
 
   const coverLetters = useQuery(apiAny.coverLetters.getCoverLettersByApplication,
     selectedApplication ? { applicationId: selectedApplication as any } : "skip"

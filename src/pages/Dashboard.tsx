@@ -46,6 +46,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
+import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
 
 const apiAny = api as any;
 
@@ -58,6 +59,7 @@ export default function Dashboard() {
   const [currentView, setCurrentView] = useState("resumes"); // 'resumes', 'projects', 'templates', 'linkedin', 'cover-letter'
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+  const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
 
   const currentUser = useQuery(apiAny.users.currentUser);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
@@ -207,6 +209,11 @@ export default function Dashboard() {
     return "bg-zinc-500";
   };
 
+  const handleGenerateCoverLetter = (applicationId: string) => {
+    setPreSelectedApplicationId(applicationId);
+    setCurrentView("cover-letter");
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'projects':
@@ -215,6 +222,7 @@ export default function Dashboard() {
             <ProjectBoard 
               projectId={selectedProject} 
               onBack={() => setSelectedProject(null)} 
+              onGenerateCoverLetter={handleGenerateCoverLetter}
             />
           );
         }
@@ -228,7 +236,7 @@ export default function Dashboard() {
       case 'linkedin':
         return <LinkedInView />;
       case 'cover-letter':
-        return <CoverLetterView />;
+        return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} />;
       case 'resumes':
       default:
         return (

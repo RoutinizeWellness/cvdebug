@@ -5,12 +5,14 @@ import { DragDropContext, Droppable, Draggable, DroppableProvided, DraggableProv
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft } from "lucide-react";
+import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search } from "lucide-react";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
   onBack?: () => void;
+  onGenerateCoverLetter?: (applicationId: string) => void;
 }
 
 const COLUMNS = [
@@ -21,7 +23,7 @@ const COLUMNS = [
   { id: "rejected", title: "Rejected", color: "bg-red-500" },
 ];
 
-export function ProjectBoard({ projectId, onBack }: ProjectBoardProps) {
+export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: ProjectBoardProps) {
   const applications = useQuery(api.applications.getApplicationsByProject, { projectId });
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
 
@@ -34,7 +36,7 @@ export function ProjectBoard({ projectId, onBack }: ProjectBoardProps) {
     try {
       await updateStatus({
         applicationId: draggableId as Id<"applications">,
-        status: newStatus,
+        status: newStatus as any,
       });
     } catch (error) {
       toast.error("Failed to update status");
@@ -90,7 +92,7 @@ export function ProjectBoard({ projectId, onBack }: ProjectBoardProps) {
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-colors cursor-grab active:cursor-grabbing"
+                                className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-colors cursor-grab active:cursor-grabbing group"
                               >
                                 <CardContent className="p-4 space-y-3">
                                   <div className="flex justify-between items-start">
@@ -117,9 +119,33 @@ export function ProjectBoard({ projectId, onBack }: ProjectBoardProps) {
                                       <Calendar className="h-3 w-3" />
                                       {new Date(app._creationTime).toLocaleDateString()}
                                     </div>
-                                    <Button variant="ghost" size="icon" className="h-6 w-6 text-zinc-500 hover:text-white">
-                                      <MoreHorizontal className="h-3 w-3" />
-                                    </Button>
+                                    <div className="flex gap-1">
+                                      {onGenerateCoverLetter && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <Button 
+                                                variant="ghost" 
+                                                size="icon" 
+                                                className="h-6 w-6 text-zinc-500 hover:text-primary hover:bg-primary/10"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  onGenerateCoverLetter(app._id);
+                                                }}
+                                              >
+                                                <Search className="h-3 w-3" />
+                                              </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>Generate Cover Letter</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                      <Button variant="ghost" size="icon" className="h-6 w-6 text-zinc-500 hover:text-white">
+                                        <MoreHorizontal className="h-3 w-3" />
+                                      </Button>
+                                    </div>
                                   </div>
                                 </CardContent>
                               </Card>

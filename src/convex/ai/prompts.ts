@@ -208,7 +208,7 @@ Provide a detailed optimization report in JSON format with the following structu
   "score": number (0-100),
   "headline": {
     "current": "Current headline string",
-    "suggested": "Suggested punchy, keyword-rich headline based on top 3 matching keywords",
+    "suggested": "Generate a high-impact LinkedIn Headline based on the top 3 highest-rated keywords from the profile/JD match.",
     "critique": "Why the change is needed"
   },
   "about": {

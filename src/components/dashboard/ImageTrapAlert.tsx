@@ -49,14 +49,13 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId }: I
         </div>
         <div className="flex-1">
           <h3 className="text-base font-bold text-white flex items-center gap-2">
-            Critical: \"Image Trap\" Detected
+            ⚠️ RED ALERT: Your latest edit broke your PDF encoding.
             <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] uppercase tracking-wider">
-              Auto-Reject Risk
+              Critical
             </span>
           </h3>
           <p className="text-sm text-zinc-300 mt-1 leading-relaxed">
-            This PDF contains hidden text layers or encoding errors (Integrity: {textLayerIntegrity}%) that confuse ATS parsers. 
-            Recruiters may see garbled text or blank pages.
+            Engineers from the company will see a blank page. The text layer integrity is {textLayerIntegrity}%.
           </p>
           
           <div className="mt-4 flex flex-wrap gap-3">
@@ -70,7 +69,7 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId }: I
               {isSanitizing ? (
                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sanitizing...</>
               ) : (
-                <><ShieldCheck className="mr-2 h-4 w-4" /> Sanitize PDF Text Layer</>
+                <><ShieldCheck className="mr-2 h-4 w-4" /> Click to Fix via PDF Sanitizer</>
               )}
             </Button>
             <Button size="sm" variant="outline" className="bg-transparent border-red-500/30 text-red-400 hover:bg-red-950/30 hover:text-red-300">

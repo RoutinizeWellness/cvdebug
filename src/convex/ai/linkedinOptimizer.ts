@@ -5,6 +5,9 @@ import { v } from "convex/values";
 import { buildLinkedInPrompt, buildRecruiterDMPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 
+// Use require to avoid deep type instantiation issues with the internal object
+const internalAny = require("../_generated/api").internal;
+
 export const optimizeLinkedIn = action({
   args: {
     profileText: v.string(),
@@ -12,6 +15,23 @@ export const optimizeLinkedIn = action({
     linkedinUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Check credits/subscription
+    const user = await ctx.runQuery(internalAny.users.getUserInternal, { subject: identity.subject });
+    if (!user) throw new Error("User not found");
+
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint) {
+      const currentCredits = user.credits ?? 0;
+      if (currentCredits <= 0) {
+        throw new Error("CREDITS_EXHAUSTED");
+      }
+      // Deduct credit
+      await ctx.runMutation(internalAny.users.deductCreditInternal, { userId: user._id });
+    }
+
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
@@ -39,6 +59,23 @@ export const generateRecruiterDMs = action({
     missingKeywords: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Check credits/subscription
+    const user = await ctx.runQuery(internalAny.users.getUserInternal, { subject: identity.subject });
+    if (!user) throw new Error("User not found");
+
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint) {
+      const currentCredits = user.credits ?? 0;
+      if (currentCredits <= 0) {
+        throw new Error("CREDITS_EXHAUSTED");
+      }
+      // Deduct credit
+      await ctx.runMutation(internalAny.users.deductCreditInternal, { userId: user._id });
+    }
+
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
