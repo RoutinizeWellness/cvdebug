@@ -7,6 +7,8 @@ import { useMemo, useEffect, useState } from "react";
 import { GamificationPanel } from "./mission/GamificationPanel";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import { SprintProgressBar } from "./SprintProgressBar";
+import { TargetInsight } from "./TargetInsight";
 
 const apiAny = api as any;
 
@@ -256,6 +258,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         </div>
       )}
 
+      {/* NEW: Sprint Progress Bar for Interview Sprint users */}
+      <SprintProgressBar />
+
       {/* Header Stats Area */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Title & Application Status */}
@@ -265,6 +270,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-primary text-black tracking-widest uppercase">
                 {latestJob ? "Target Locked" : "Awaiting Target"}
               </span>
+              {latestJob && (
+                <TargetInsight
+                  company={latestJob.company || "Unknown Company"}
+                  atsSystem="Greenhouse"
+                />
+              )}
               <span className="text-zinc-400 text-xs font-mono">
                 ID: #{latestJob?._id?.slice(-8) || "INIT-0000"}
               </span>
