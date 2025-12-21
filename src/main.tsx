@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound.tsx";
 import AdminWaitlist from "./pages/AdminWaitlist.tsx";
 import AdminPage from "./pages/Admin.tsx";
 import PricingPage from "./pages/Pricing.tsx";
+import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import "./types/global.d.ts";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
@@ -68,6 +69,9 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/dashboard/tools/cover-letter" element={<Dashboard />} />
               <Route path="/dashboard/tools/linkedin" element={<Dashboard />} />
               <Route path="/dashboard/settings" element={<Dashboard />} />
+              
+              {/* Payment Success */}
+              <Route path="/payment/success" element={<PaymentSuccess />} />
               
               {/* Admin */}
               <Route path="/admin" element={<AdminPage />} />
