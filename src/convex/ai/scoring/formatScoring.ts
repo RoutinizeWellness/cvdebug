@@ -16,9 +16,12 @@ export function calculateFormatScore(
   let formatScore = 0;
   const formatIssues: Array<{issue: string, severity: string, fix: string, location: string, atsImpact: string}> = [];
   
+  // Enhanced contact information detection
   const emailMatch = ocrText.match(/[\w.-]+@[\w.-]+\.\w+/);
-  const phoneMatch = ocrText.match(/\+?[\d\s()-]{10,}/);
+  const phoneMatch = ocrText.match(/\+?[\d\s().-]{10,}/);
   const hasLinkedIn = ocrText.toLowerCase().includes("linkedin") || ocrText.toLowerCase().includes("linked.in");
+  const hasGithub = ocrText.toLowerCase().includes("github.com");
+  const hasPortfolio = /portfolio|website|personal site/i.test(ocrText) || /https?:\/\/[\w.-]+\.\w+/i.test(ocrText);
   
   if (emailMatch) {
     formatScore += 5;
@@ -46,11 +49,25 @@ export function calculateFormatScore(
   
   if (hasLinkedIn) {
     formatScore += 3;
+  } else {
+    formatIssues.push({
+      issue: "Missing LinkedIn profile",
+      severity: "medium",
+      fix: "Add your LinkedIn profile URL to increase credibility",
+      location: "Header",
+      atsImpact: "Recruiters expect to see LinkedIn profiles for verification"
+    });
   }
   
-  const hasExperience = /experience|work history|employment/i.test(ocrText);
-  const hasEducation = /education|academic|degree/i.test(ocrText);
-  const hasSkills = /skills|technical skills|competencies/i.test(ocrText);
+  if (hasGithub || hasPortfolio) {
+    formatScore += 2;
+  }
+  
+  // Enhanced section detection
+  const hasExperience = /experience|work history|employment|professional background/i.test(ocrText);
+  const hasEducation = /education|academic|degree|university|college/i.test(ocrText);
+  const hasSkills = /skills|technical skills|competencies|technologies|tools/i.test(ocrText);
+  const hasProjects = /projects|portfolio|work samples/i.test(ocrText);
   
   if (hasExperience) formatScore += 6;
   else formatIssues.push({
@@ -62,24 +79,48 @@ export function calculateFormatScore(
   });
   
   if (hasEducation) formatScore += 4;
-  if (hasSkills) formatScore += 4;
+  else formatIssues.push({
+    issue: "Missing 'Education' section",
+    severity: "medium",
+    fix: "Add an 'Education' section with your degrees and institutions",
+    location: "Body",
+    atsImpact: "Many ATS systems require education information"
+  });
   
+  if (hasSkills) formatScore += 4;
+  else formatIssues.push({
+    issue: "Missing 'Skills' section",
+    severity: "medium",
+    fix: "Add a dedicated 'Skills' section listing your technical and professional competencies",
+    location: "Body",
+    atsImpact: "ATS keyword matching relies heavily on a skills section"
+  });
+  
+  if (hasProjects) formatScore += 2;
+  
+  // Enhanced date format consistency check
   const datePatterns = [
-    /\d{1,2}\/\d{4}/g,
-    /\d{4}-\d{2}/g,
-    /[A-Z][a-z]+ \d{4}/g
+    { pattern: /\d{1,2}\/\d{4}/g, name: "MM/YYYY" },
+    { pattern: /\d{4}-\d{2}/g, name: "YYYY-MM" },
+    { pattern: /[A-Z][a-z]+ \d{4}/g, name: "Month YYYY" },
+    { pattern: /\d{4}/g, name: "YYYY only" }
   ];
   
-  const dateMatches = datePatterns.map(pattern => (ocrText.match(pattern) || []).length);
-  const hasConsistentDates = dateMatches.filter(count => count > 0).length <= 1;
+  const dateMatches = datePatterns.map(({ pattern, name }) => ({
+    name,
+    count: (ocrText.match(pattern) || []).length
+  }));
   
-  if (hasConsistentDates) {
+  const usedFormats = dateMatches.filter(d => d.count > 0);
+  const hasConsistentDates = usedFormats.length <= 1;
+  
+  if (hasConsistentDates && usedFormats.length > 0) {
     formatScore += 3;
-  } else {
+  } else if (usedFormats.length > 1) {
     formatIssues.push({
       issue: "Inconsistent date formats",
       severity: "medium",
-      fix: "Use a single date format throughout (recommended: 'Month YYYY' e.g., 'January 2020')",
+      fix: `Use a single date format throughout (recommended: 'Month YYYY' e.g., 'January 2020'). Found: ${usedFormats.map(f => f.name).join(", ")}`,
       location: "Experience section",
       atsImpact: "Confuses ATS timeline parsing, may misorder your experience"
     });
@@ -111,6 +152,21 @@ export function calculateFormatScore(
     });
   } else {
     formatScore += 2;
+  }
+  
+  // Check for bullet point formatting
+  const bulletPoints = ocrText.match(/^[•\-\*]\s/gm);
+  if (bulletPoints && bulletPoints.length >= 5) {
+    formatScore += 2;
+  }
+  
+  // Check for proper spacing and structure
+  const lines = ocrText.split('\n');
+  const nonEmptyLines = lines.filter(l => l.trim().length > 0);
+  const avgLineLength = nonEmptyLines.reduce((sum, l) => sum + l.length, 0) / nonEmptyLines.length;
+  
+  if (avgLineLength > 30 && avgLineLength < 120) {
+    formatScore += 1;
   }
   
   const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.format || 0);

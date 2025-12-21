@@ -17,13 +17,16 @@ export function calculateCompletenessScore(
   const bulletAnalysis = analyzeBulletPoints(ocrText);
   const softSkillsAnalysis = analyzeSoftSkills(ocrText);
   
+  // Enhanced metric detection patterns
   const metricPatterns = [
     /\d+%/g,
-    /\$[\d,]+/g,
-    /\d+\+?\s*(users|customers|clients)/gi,
-    /increased|improved|reduced|optimized/gi,
+    /\$[\d,]+(?:\.\d{2})?[KMB]?/g,
+    /\d+\+?\s*(users|customers|clients|employees|projects|applications)/gi,
+    /increased|improved|reduced|optimized|enhanced|accelerated|streamlined/gi,
     /\d+x\s/g,
-    /\d+\s*(million|billion|thousand)/gi,
+    /\d+\s*(million|billion|thousand|hundred)/gi,
+    /\d+[-–]\d+%/g, // Range percentages
+    /\d+\s*to\s*\d+/gi, // "10 to 20" format
   ];
   
   let metricCount = 0;
@@ -32,21 +35,25 @@ export function calculateCompletenessScore(
     if (matches) metricCount += matches.length;
   });
 
-  if (metricCount >= 15) completenessScore += 15;
-  else if (metricCount >= 10) completenessScore += 10;
-  else if (metricCount >= 6) completenessScore += 6;
-  else if (metricCount >= 3) completenessScore += 3;
+  // Enhanced metric scoring with diminishing returns
+  if (metricCount >= 20) completenessScore += 18;
+  else if (metricCount >= 15) completenessScore += 15;
+  else if (metricCount >= 10) completenessScore += 12;
+  else if (metricCount >= 6) completenessScore += 8;
+  else if (metricCount >= 3) completenessScore += 4;
   
-  const bulletQualityContribution = (bulletAnalysis.score / 100) * 10;
+  const bulletQualityContribution = (bulletAnalysis.score / 100) * 12;
   completenessScore += bulletQualityContribution;
 
-  const softSkillsContribution = (softSkillsAnalysis.score / 100) * 5;
+  const softSkillsContribution = (softSkillsAnalysis.score / 100) * 6;
   completenessScore += softSkillsContribution;
 
+  // Enhanced power phrase detection
   const powerPhrasePatterns = [
-    /\b(increased|reduced|improved|grew|saved|generated)\b.{0,30}\b(\d+%|\$\d+)\b/i,
-    /\b(achieved|delivered|completed)\b.{0,30}\b(under budget|ahead of schedule)\b/i,
-    /\b(led|managed|spearheaded)\b.{0,30}\b(team|project|initiative)\b.{0,30}\b(result|outcome|success)\b/i
+    /\b(increased|reduced|improved|grew|saved|generated|boosted|maximized|minimized)\b.{0,40}\b(\d+%|\$\d+|\d+x)/i,
+    /\b(achieved|delivered|completed|exceeded|surpassed)\b.{0,40}\b(under budget|ahead of schedule|on time|\d+%)/i,
+    /\b(led|managed|spearheaded|directed|orchestrated)\b.{0,40}\b(team|project|initiative|program)\b.{0,50}\b(result|outcome|success|impact|\d+)/i,
+    /\b(launched|deployed|shipped|released)\b.{0,40}\b(product|feature|service|platform)\b.{0,50}\b(\d+|success|adoption)/i,
   ];
   
   let powerPhraseCount = 0;
@@ -55,9 +62,11 @@ export function calculateCompletenessScore(
     if (matches) powerPhraseCount += matches.length;
   });
 
+  // Weak phrases that reduce score
   const weakPhrases = [
     "responsible for", "duties included", "worked on", "helped with", "assisted in", 
-    "attempted to", "tried to", "participated in", "familiar with"
+    "attempted to", "tried to", "participated in", "familiar with", "exposure to",
+    "involved in", "contributed to"
   ];
   
   let weakPhraseCount = 0;
@@ -67,40 +76,61 @@ export function calculateCompletenessScore(
     if (matches) weakPhraseCount += matches.length;
   });
 
-  const growthWords = ["learned", "adapted", "upskilled", "certified", "trained", "mentored", "volunteered"];
+  // Growth and learning indicators
+  const growthWords = [
+    "learned", "adapted", "upskilled", "certified", "trained", "mentored", 
+    "volunteered", "developed", "mastered", "acquired", "earned"
+  ];
   let growthCount = 0;
   const text = ocrText.toLowerCase();
   growthWords.forEach(word => {
     if (text.includes(word)) growthCount++;
   });
 
+  // Enhanced sentiment scoring
   let sentimentScore = 0;
   
   const strongVerbs = new RegExp(`\\b(${actionVerbs.join('|')})\\b`, 'gi');
   const strongVerbMatches = (ocrText.match(strongVerbs) || []).length;
   
-  if (strongVerbMatches >= 8) sentimentScore += 8;
+  // Progressive scoring for action verbs
+  if (strongVerbMatches >= 12) sentimentScore += 10;
+  else if (strongVerbMatches >= 8) sentimentScore += 8;
   else if (strongVerbMatches >= 5) sentimentScore += 5;
   else if (strongVerbMatches >= 2) sentimentScore += 2;
   
-  sentimentScore += (powerPhraseCount * 1.5);
-  sentimentScore -= (weakPhraseCount * 0.5);
-  sentimentScore += (growthCount * 0.5);
+  sentimentScore += (powerPhraseCount * 2.0);
+  sentimentScore -= (weakPhraseCount * 0.8);
+  sentimentScore += (growthCount * 0.7);
 
   const foundBuzzwords = checkBuzzwords(ocrText);
   if (foundBuzzwords.length > 0) {
-    sentimentScore -= (foundBuzzwords.length * 0.5);
+    sentimentScore -= (foundBuzzwords.length * 0.7);
   }
   
-  const sentimentContribution = Math.max(0, Math.min(15, sentimentScore));
+  const sentimentContribution = Math.max(0, Math.min(18, sentimentScore));
   
   completenessScore += sentimentContribution;
   
-  if (ocrText.length > 1500) completenessScore += 5;
+  // Length and structure bonuses
+  if (ocrText.length > 2000) completenessScore += 6;
+  else if (ocrText.length > 1500) completenessScore += 5;
   else if (ocrText.length > 800) completenessScore += 3;
   
-  const hasSummary = /summary|objective|profile/i.test(ocrText);
+  const hasSummary = /summary|objective|profile|about/i.test(ocrText);
   if (hasSummary) completenessScore += 2;
+  
+  // Check for section headers
+  const sectionHeaders = [
+    /\bexperience\b/i,
+    /\beducation\b/i,
+    /\bskills\b/i,
+    /\bprojects\b/i,
+    /\bcertifications?\b/i
+  ];
+  
+  const headerCount = sectionHeaders.filter(pattern => pattern.test(ocrText)).length;
+  completenessScore += Math.min(4, headerCount);
   
   const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.completeness || 0);
   completenessScore = Math.max(0, Math.min(30, completenessScore * scoringMultiplier));
