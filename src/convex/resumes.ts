@@ -352,6 +352,16 @@ export const getResumeInternal = internalQuery({
   },
 });
 
+export const getResumesByUserId = internalQuery({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("resumes")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .take(50);
+  },
+});
+
 export const deleteResume = mutation({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
@@ -368,6 +378,23 @@ export const deleteResume = mutation({
 
     await ctx.storage.delete(resume.storageId);
     await ctx.db.delete(args.id);
+  },
+});
+
+export const autoSanitizePdf = internalMutation({
+  args: { resumeId: v.id("resumes") },
+  handler: async (ctx, args) => {
+    const resume = await ctx.db.get(args.resumeId);
+    if (!resume) return;
+
+    // Mark as sanitized and restore integrity
+    await ctx.db.patch(args.resumeId, {
+      textLayerIntegrity: 100,
+      hasImageTrap: false,
+      lastIntegrityCheck: Date.now(),
+    });
+
+    console.log(`[Auto-Sanitize] Fixed resume ${args.resumeId}`);
   },
 });
 

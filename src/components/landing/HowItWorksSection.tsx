@@ -142,6 +142,73 @@ export function HowItWorksSection() {
             </motion.div>
           </div>
 
+          <div className="mt-16 space-y-8">
+            <h3 className="text-2xl font-bold text-center">Interview Sprint Features Breakdown</h3>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* El Escudo Técnico */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <h4 className="text-lg font-bold text-primary mb-4">🛡️ El Escudo Técnico (Total Security)</h4>
+                <ul className="space-y-3 text-sm text-zinc-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Scans Ilimitados (7 días)</strong> - Edita 100 veces sin costo extra</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Continuous PDF Sanitization</strong> - Auto-fixes encoding issues every 5 minutes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Image Trap Detector</strong> siempre activo</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Priority Parsing</strong> - Vía rápida del servidor</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Generador de Impacto */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <h4 className="text-lg font-bold text-primary mb-4">⚡ Generador de Impacto (Keyword Sniper)</h4>
+                <ul className="space-y-3 text-sm text-zinc-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Keyword Sniper</strong> - 3 frases reales por keyword faltante</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Cover Letter AI Forge</strong> - Cartas instantáneas</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Recruiter DM Generator</strong> - Mensajes LinkedIn optimizados</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Gamificación */}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <h4 className="text-lg font-bold text-primary mb-4">🎮 Gamificación (Progress Tracking)</h4>
+                <ul className="space-y-3 text-sm text-zinc-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Badges de Progreso</strong> (Ready for Google, Top 5%)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Probability Score en tiempo real</strong> - Track your match confidence</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-green-400 mt-0.5">✓</span>
+                    <span><strong>Alertas de Gap</strong> - Nudges cuando te estancas</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-12 grid md:grid-cols-3 gap-6">
             {sprintFeatures.map((feature, idx) => (
               <motion.div

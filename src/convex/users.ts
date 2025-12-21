@@ -444,6 +444,20 @@ export const deductCreditInternal = internalMutation({
   },
 });
 
+export const getActiveSprintUsers = internalQuery({
+  args: {},
+  handler: async (ctx) => {
+    const now = Date.now();
+    
+    // Get all users with active sprint
+    const allUsers = await ctx.db.query("users").take(1000);
+    
+    return allUsers.filter(user => 
+      user.sprintExpiresAt && user.sprintExpiresAt > now
+    );
+  },
+});
+
 /**
  * Use this function internally to get the current user data.
  */

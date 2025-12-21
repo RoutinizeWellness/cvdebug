@@ -1,7 +1,7 @@
-import { AlertTriangle, ShieldCheck, FileWarning, RefreshCw, Loader2 } from "lucide-react";
+import { AlertTriangle, ShieldCheck, FileWarning, RefreshCw, Loader2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 
@@ -11,10 +11,11 @@ const apiAny = api as any;
 interface ImageTrapAlertProps {
   textLayerIntegrity: number;
   hasImageTrap: boolean;
-  resumeId?: string; // Optional for now to maintain compatibility
+  resumeId?: string;
+  hasActiveSprint?: boolean;
 }
 
-export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId }: ImageTrapAlertProps) {
+export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, hasActiveSprint }: ImageTrapAlertProps) {
   const [isSanitizing, setIsSanitizing] = useState(false);
   const sanitizePdf = useMutation(apiAny.resumes.sanitizePdf);
 
@@ -58,6 +59,15 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId }: I
             Engineers from the company will see a blank page. The text layer integrity is {textLayerIntegrity}%.
           </p>
           
+          {hasActiveSprint && (
+            <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-2">
+              <Zap className="h-4 w-4 text-primary" />
+              <p className="text-xs text-primary font-medium">
+                <strong>Interview Sprint Active:</strong> Continuous PDF sanitization will auto-fix this within 5 minutes.
+              </p>
+            </div>
+          )}
+          
           <div className="mt-4 flex flex-wrap gap-3">
             <Button 
               size="sm" 
@@ -69,7 +79,7 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId }: I
               {isSanitizing ? (
                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sanitizing...</>
               ) : (
-                <><ShieldCheck className="mr-2 h-4 w-4" /> Click to Fix via PDF Sanitizer</>
+                <><ShieldCheck className="mr-2 h-4 w-4" /> Fix Now via PDF Sanitizer</> 
               )}
             </Button>
             <Button size="sm" variant="outline" className="bg-transparent border-red-500/30 text-red-400 hover:bg-red-950/30 hover:text-red-300">

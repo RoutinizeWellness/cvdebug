@@ -6,7 +6,13 @@ const crons = cronJobs();
 // Cast internal to any to avoid type instantiation issues
 const internalAny = require("./_generated/api").internal;
 
-// Cron jobs will be added here as needed
-// Minimum interval is 5 minutes to prevent abuse
+// Continuous PDF Sanitization for Interview Sprint users
+// Runs every 5 minutes to check and fix PDF integrity issues
+crons.interval(
+  "continuous_pdf_sanitization",
+  { minutes: 5 },
+  internalAny.cvHealthMonitor.runContinuousSanitization,
+  {}
+);
 
 export default crons;

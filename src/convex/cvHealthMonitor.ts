@@ -37,10 +37,6 @@ export const checkTextLayerIntegrity = internalAction({
     if (whitespaceRatio > 0.5) integrityScore -= 20;
     
     // STRICT CHECK for "Image Trap" / Encoding issues requested by user
-    // If readability is below 95% (simulated here by readableRatio < 0.95 for strictness), 
-    // we flag it as a specific high-priority alert.
-    // Note: Real OCR vs Text extraction comparison requires the original PDF buffer which we don't have here,
-    // so we use heuristics on the extracted text quality.
     const isEncodingBroken = readableRatio < 0.95 || hasInvisibleChars;
 
     integrityScore = Math.max(0, integrityScore);
@@ -133,5 +129,57 @@ export const updateHealthStatus = internalMutation({
       hasImageTrap: args.hasImageTrap,
       lastIntegrityCheck: args.lastIntegrityCheck,
     });
+  },
+});
+
+// NEW: Continuous PDF Sanitization for Interview Sprint users
+export const runContinuousSanitization = internalAction({
+  args: {},
+  handler: async (ctx, args) => {
+    const runQuery = (fn: any, queryArgs: any) => (ctx as any).runQuery(fn, queryArgs);
+    const runMutation = (fn: any, mutationArgs: any) => (ctx as any).runMutation(fn, mutationArgs);
+
+    console.log("[Continuous Sanitization] Starting scan...");
+
+    // Get all users with active Interview Sprint
+    const allUsers = await runQuery(internalAny.users.getActiveSprintUsers, {});
+    
+    console.log(`[Continuous Sanitization] Found ${allUsers.length} active sprint users`);
+
+    for (const user of allUsers) {
+      // Get all resumes for this user
+      const resumes = await runQuery(internalAny.resumes.getResumesByUserId, {
+        userId: user.tokenIdentifier,
+      });
+
+      for (const resume of resumes) {
+        // Skip if checked recently (within last 5 minutes)
+        if (resume.lastIntegrityCheck && (Date.now() - resume.lastIntegrityCheck) < 5 * 60 * 1000) {
+          continue;
+        }
+
+        // Skip if no OCR text available
+        if (!resume.ocrText || resume.ocrText.length < 50) {
+          continue;
+        }
+
+        // Run integrity check
+        const result = await (ctx as any).runAction(internalAny.cvHealthMonitor.checkTextLayerIntegrity, {
+          resumeId: resume._id,
+          ocrText: resume.ocrText,
+        });
+
+        // Auto-fix if integrity is below 95% for sprint users
+        if (result.hasImageTrap || result.integrityScore < 95) {
+          console.log(`[Continuous Sanitization] Auto-fixing resume ${resume._id} for user ${user.email} (score: ${result.integrityScore})`);
+          
+          await runMutation(internalAny.resumes.autoSanitizePdf, {
+            resumeId: resume._id,
+          });
+        }
+      }
+    }
+
+    console.log("[Continuous Sanitization] Scan complete");
   },
 });
