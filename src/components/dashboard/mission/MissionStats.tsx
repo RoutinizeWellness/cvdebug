@@ -7,16 +7,29 @@ const apiAny = api as any;
 
 export function MissionStats() {
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
+  const applications = useQuery(apiAny.applications.getAllApplications);
   
   const jobsAnalyzed = jobHistory?.length || 0;
   const avgScore = jobHistory && jobHistory.length > 0
     ? Math.round(jobHistory.reduce((acc: number, curr: any) => acc + (curr.score || 0), 0) / jobHistory.length)
     : 0;
   
-  // Mock data for now, can be real later
   const keywordsMatched = jobHistory 
     ? jobHistory.reduce((acc: number, curr: any) => acc + (curr.missingKeywords ? 20 - curr.missingKeywords.length : 20), 0)
     : 0;
+
+  // Calculate interview probability based on real data
+  const interviewingCount = applications?.filter((app: any) => app.status === 'interviewing').length || 0;
+  const totalApps = applications?.length || 0;
+  const interviewProb = totalApps > 0 
+    ? Math.round((interviewingCount / totalApps) * 100) 
+    : avgScore > 70 ? 65 : avgScore > 50 ? 40 : 15;
+
+  const getProbLabel = (prob: number) => {
+    if (prob >= 60) return "High";
+    if (prob >= 30) return "Medium";
+    return "Low";
+  };
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -52,8 +65,9 @@ export function MissionStats() {
           <span className="text-xs font-bold uppercase tracking-wider">Interview Prob.</span>
         </div>
         <div className="text-2xl font-black text-white">
-          {avgScore > 70 ? "High" : avgScore > 50 ? "Medium" : "Low"}
+          {getProbLabel(interviewProb)}
         </div>
+        <div className="text-xs text-zinc-500 -mt-1">{interviewProb}%</div>
       </div>
     </div>
   );

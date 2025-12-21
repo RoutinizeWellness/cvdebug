@@ -130,19 +130,22 @@ export function LinkedInOptimizer() {
 
   // Use latest optimization if no new result
   const displayResult = result || latestOptimization;
-  const score = displayResult?.score || 72;
+  const score = displayResult?.score || 0;
   const scoreColor = score >= 80 ? "text-primary" : score >= 60 ? "text-yellow-500" : "text-red-500";
   const scoreBg = score >= 80 ? "bg-primary" : score >= 60 ? "bg-yellow-500" : "bg-red-500";
 
-  // Get matched and missing keywords
-  const matchedKeywords = displayResult?.experience?.matchedKeywords || ["JavaScript", "React", "CSS3", "Git"];
-  const missingKeywords = displayResult?.experience?.missingKeywords || ["TypeScript", "Docker", "CI/CD", "AWS", "Unit Testing"];
+  // Get matched and missing keywords from real data
+  const matchedKeywords = displayResult?.experience?.matchedKeywords || [];
+  const missingKeywords = displayResult?.experience?.missingKeywords || [];
   const allKeywords = [...matchedKeywords, ...missingKeywords];
 
   // Get last scanned time
   const lastScanned = displayResult?.generatedAt 
     ? new Date(displayResult.generatedAt).toLocaleString()
     : "Never";
+  
+  // Show empty state if no data
+  const hasData = displayResult && score > 0;
 
   return (
     <div className="h-full flex flex-col">
@@ -307,14 +310,22 @@ export function LinkedInOptimizer() {
                         <div className="p-2 bg-green-500/10 rounded-lg text-green-400">
                           <TrendingUp className="h-5 w-5" />
                         </div>
-                        <span className="text-xs font-medium px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
-                          +12% vs last week
-                        </span>
+                        {hasData && score >= 70 && (
+                          <span className="text-xs font-medium px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                            Strong Profile
+                          </span>
+                        )}
                       </div>
                       <div>
-                        <p className="text-zinc-400 text-sm font-medium mb-1">Market Positioning</p>
-                        <p className="text-2xl font-bold text-white">Top 15%</p>
-                        <p className="text-zinc-400 text-xs mt-1">Compared to 1,400+ similar candidates</p>
+                        <p className="text-zinc-400 text-sm font-medium mb-1">Keyword Coverage</p>
+                        <p className="text-2xl font-bold text-white">
+                          {matchedKeywords.length}/{allKeywords.length}
+                        </p>
+                        <p className="text-zinc-400 text-xs mt-1">
+                          {matchedKeywords.length > 0 
+                            ? `${Math.round((matchedKeywords.length / Math.max(allKeywords.length, 1)) * 100)}% match rate`
+                            : "No keywords analyzed yet"}
+                        </p>
                       </div>
                     </div>
 
@@ -323,16 +334,22 @@ export function LinkedInOptimizer() {
                         <div className="p-2 bg-primary/10 rounded-lg text-primary">
                           <Search className="h-5 w-5" />
                         </div>
-                        <span className="text-xs font-medium px-2 py-1 bg-primary/20 text-primary rounded-full">
-                          High Priority
-                        </span>
+                        {missingKeywords.length > 0 && (
+                          <span className="text-xs font-medium px-2 py-1 bg-primary/20 text-primary rounded-full">
+                            Action Needed
+                          </span>
+                        )}
                       </div>
                       <div>
                         <p className="text-zinc-400 text-sm font-medium mb-1">Searchability Gap</p>
                         <p className="text-2xl font-bold text-white">
-                          {missingKeywords.length} Keywords
+                          {missingKeywords.length} {missingKeywords.length === 1 ? 'Keyword' : 'Keywords'}
                         </p>
-                        <p className="text-zinc-400 text-xs mt-1">Missing critical terms for target role</p>
+                        <p className="text-zinc-400 text-xs mt-1">
+                          {missingKeywords.length > 0 
+                            ? "Missing critical terms for target role"
+                            : "All key terms present"}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -410,38 +427,50 @@ export function LinkedInOptimizer() {
                         Found in your profile
                       </p>
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {matchedKeywords.slice(0, 4).map((kw: string, i: number) => (
-                          <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
-                            {kw}
-                          </Badge>
-                        ))}
+                        {matchedKeywords.length > 0 ? (
+                          matchedKeywords.slice(0, 4).map((kw: string, i: number) => (
+                            <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
+                              {kw}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-xs text-zinc-500 italic">No matched keywords yet. Analyze your profile first.</p>
+                        )}
                       </div>
                       <p className="text-xs text-zinc-400 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
                         Missing (Critical)
                         <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {missingKeywords.slice(0, showAllKeywords ? undefined : 5).map((kw: any, i: number) => (
-                          <Badge 
-                            key={i} 
-                            variant="outline"
-                            className="border-dashed border-red-500/40 text-red-400 hover:bg-red-500/10 cursor-help"
-                            title="Found in 80% of job descriptions matching your target"
-                          >
-                            {typeof kw === 'string' ? kw : kw.keyword}
-                          </Badge>
-                        ))}
+                        {missingKeywords.length > 0 ? (
+                          missingKeywords.slice(0, showAllKeywords ? undefined : 5).map((kw: any, i: number) => (
+                            <Badge 
+                              key={i} 
+                              variant="outline"
+                              className="border-dashed border-red-500/40 text-red-400 hover:bg-red-500/10 cursor-help"
+                              title="Critical keyword missing from your profile"
+                            >
+                              {typeof kw === 'string' ? kw : kw.keyword}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-xs text-zinc-500 italic">
+                            {hasData ? "Great! No critical keywords missing." : "Analyze your profile to see missing keywords."}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <div className="mt-6 pt-6 border-t border-zinc-800">
-                      <button 
-                        onClick={() => setShowAllKeywords(!showAllKeywords)}
-                        className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
-                      >
-                        {showAllKeywords ? "Show less" : `View all ${allKeywords.length} keywords`} 
-                        <ArrowRight className={`h-4 w-4 transition-transform ${showAllKeywords ? 'rotate-90' : ''}`} />
-                      </button>
-                    </div>
+                    {allKeywords.length > 5 && (
+                      <div className="mt-6 pt-6 border-t border-zinc-800">
+                        <button 
+                          onClick={() => setShowAllKeywords(!showAllKeywords)}
+                          className="text-primary text-sm font-medium hover:underline flex items-center gap-1"
+                        >
+                          {showAllKeywords ? "Show less" : `View all ${allKeywords.length} keywords`} 
+                          <ArrowRight className={`h-4 w-4 transition-transform ${showAllKeywords ? 'rotate-90' : ''}`} />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Bio Audit */}
