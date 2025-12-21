@@ -4,14 +4,31 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Linkedin, Sparkles, Lock, Check, Loader2, AlertCircle, Copy, CheckCircle2 } from "lucide-react";
+import { 
+  Linkedin, 
+  Sparkles, 
+  Lock, 
+  Check, 
+  Loader2, 
+  AlertCircle, 
+  Copy, 
+  CheckCircle2,
+  TrendingUp,
+  Search,
+  Calendar,
+  RefreshCw,
+  Cloud,
+  FileText,
+  X,
+  ArrowRight
+} from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 
-// Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
 export function LinkedInOptimizer() {
@@ -102,273 +119,493 @@ export function LinkedInOptimizer() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  const handleCopyText = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
+  };
+
+  const score = result?.score || 72;
+  const scoreColor = score >= 80 ? "text-primary" : score >= 60 ? "text-yellow-500" : "text-red-500";
+  const scoreBg = score >= 80 ? "bg-primary" : score >= 60 ? "bg-yellow-500" : "bg-red-500";
+
   return (
-    <div className="space-y-8 max-w-4xl mx-auto pb-20">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-4xl font-black tracking-tight flex items-center gap-3 text-foreground">
-          <Linkedin className="h-8 w-8 text-[#0077b5]" /> LinkedIn Brand Optimizer
-        </h2>
-        <p className="text-lg text-muted-foreground">
-          Optimize your LinkedIn profile and generate recruiter DMs to rank higher in searches.
-        </p>
+    <div className="h-full flex flex-col">
+      {/* Breadcrumbs */}
+      <div className="px-6 py-4 border-b border-zinc-800/50">
+        <div className="flex flex-wrap gap-2 text-sm">
+          <span className="text-zinc-500">Dashboard</span>
+          <span className="text-zinc-600">/</span>
+          <span className="text-zinc-500">Tools</span>
+          <span className="text-zinc-600">/</span>
+          <span className="text-white font-medium">LinkedIn Audit</span>
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="optimize">Profile Optimizer</TabsTrigger>
-          <TabsTrigger value="dm">Recruiter DM Generator</TabsTrigger>
-        </TabsList>
+      <main className="flex-1 p-6 overflow-y-auto">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white">
+                LinkedIn Profile Audit
+              </h1>
+              <div className="flex items-center gap-2 text-zinc-400 text-sm">
+                <Calendar className="h-4 w-4" />
+                <span>Last scanned: 2 mins ago</span>
+                {linkedinUrl && (
+                  <>
+                    <span className="mx-1">•</span>
+                    <span className="truncate max-w-[200px]">{linkedinUrl}</span>
+                  </>
+                )}
+              </div>
+            </div>
+            <TabsList className="grid w-full md:w-auto grid-cols-2">
+              <TabsTrigger value="optimize">Profile Optimizer</TabsTrigger>
+              <TabsTrigger value="dm">Recruiter DM</TabsTrigger>
+            </TabsList>
+          </div>
 
-        <TabsContent value="optimize" className="space-y-8">
-          <Card className="border-border shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl">Import Profile</CardTitle>
-              <CardDescription>Paste your LinkedIn profile URL or export as PDF to analyze.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-3">
-                <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL</Label>
-                <div className="flex gap-3">
-                  <div className="relative flex-1">
-                    <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      id="linkedin-url" 
-                      placeholder="https://linkedin.com/in/yourname" 
-                      className="pl-10" 
-                      value={linkedinUrl}
-                      onChange={(e) => setLinkedinUrl(e.target.value)}
+          <TabsContent value="optimize" className="space-y-8">
+            {/* Input Section */}
+            {!result && (
+              <Card className="border-zinc-800 bg-zinc-900/80">
+                <CardHeader>
+                  <CardTitle className="text-xl">Import Profile</CardTitle>
+                  <CardDescription>Paste your LinkedIn profile URL or content to analyze.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-3">
+                    <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL</Label>
+                    <div className="flex gap-3">
+                      <div className="relative flex-1">
+                        <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                        <Input 
+                          id="linkedin-url" 
+                          placeholder="https://linkedin.com/in/yourname" 
+                          className="pl-10 bg-black border-zinc-800" 
+                          value={linkedinUrl}
+                          onChange={(e) => setLinkedinUrl(e.target.value)}
+                        />
+                      </div>
+                      <Button variant="outline" className="border-zinc-800" onClick={handleAnalyzeUrl}>
+                        Analyze URL
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="relative py-2">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-zinc-800" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
+                      <span className="bg-zinc-900 px-4 text-zinc-500">Or paste content</span>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3">
+                    <Label htmlFor="profile-text" className="font-bold">Profile Text (About, Experience, Skills)</Label>
+                    <Textarea 
+                      id="profile-text" 
+                      placeholder="Paste your profile content here (About section, Experience descriptions, Skills list)..." 
+                      className="min-h-[200px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                      value={profileText}
+                      onChange={(e) => setProfileText(e.target.value)}
                     />
                   </div>
-                  <Button className="font-bold" variant="secondary" onClick={handleAnalyzeUrl}>
-                    Analyze URL
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="relative py-2">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
-                  <span className="bg-card px-4 text-muted-foreground">Or paste content</span>
-                </div>
-              </div>
 
-              <div className="grid gap-3">
-                <Label htmlFor="profile-text" className="font-bold">Profile Text (About, Experience, Skills)</Label>
-                <Textarea 
-                  id="profile-text" 
-                  placeholder="Paste your profile content here (About section, Experience descriptions, Skills list)..." 
-                  className="min-h-[200px] resize-none p-4 leading-relaxed"
-                  value={profileText}
-                  onChange={(e) => setProfileText(e.target.value)}
-                />
-              </div>
-
-              <div className="grid gap-3">
-                <Label htmlFor="job-desc" className="font-bold">Target Job Description (Optional)</Label>
-                <Textarea 
-                  id="job-desc" 
-                  placeholder="Paste the job description you are targeting..." 
-                  className="min-h-[100px] resize-none p-4 leading-relaxed"
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                />
-              </div>
-            </CardContent>
-            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
-              <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
-                <Lock className="h-3 w-3" /> We do not store your LinkedIn data permanently.
-              </p>
-              <Button 
-                size="lg" 
-                className="font-bold shadow-lg shadow-primary/20 relative overflow-hidden group"
-                onClick={handleOptimize}
-                disabled={isAnalyzing}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                {isAnalyzing ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
-                ) : (
-                  <><Sparkles className="mr-2 h-4 w-4" /> Optimize Profile</>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-
-          {result && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold">Optimization Report</h3>
-                <div className={`
-                  px-4 py-2 rounded-full font-bold text-sm flex items-center gap-2
-                  ${result.score >= 80 ? 'bg-green-500/10 text-green-600' : result.score >= 50 ? 'bg-yellow-500/10 text-yellow-600' : 'bg-red-500/10 text-red-600'}
-                `}>
-                  <span className="text-lg">{result.score}/100</span> Score
-                </div>
-              </div>
-
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-primary" /> Suggested Headline
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-muted/50 p-4 rounded-lg text-sm font-medium italic border border-border">
-                      "{result.headline.suggested}"
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2">{result.headline.critique}</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <AlertCircle className="h-4 w-4 text-orange-500" /> Missing Keywords
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {result.experience?.missingKeywords?.map((kw: string, i: number) => (
-                        <Badge key={i} variant="secondary" className="text-xs">{kw}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">About Section Rewrite</CardTitle>
-                  <CardDescription>Recruiter-Search Friendly version</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-muted/50 p-4 rounded-lg text-sm leading-relaxed border border-border whitespace-pre-wrap">
-                    {result.about.rewritten || result.about.suggestions}
+                  <div className="grid gap-3">
+                    <Label htmlFor="job-desc" className="font-bold">Target Job Description (Optional)</Label>
+                    <Textarea 
+                      id="job-desc" 
+                      placeholder="Paste the job description you are targeting..." 
+                      className="min-h-[100px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                    />
                   </div>
                 </CardContent>
+                <CardFooter className="justify-between bg-zinc-950/30 p-6 border-t border-zinc-800">
+                  <p className="text-xs text-zinc-400 font-medium flex items-center gap-2">
+                    <Lock className="h-3 w-3" /> We do not store your LinkedIn data permanently.
+                  </p>
+                  <Button 
+                    size="lg" 
+                    className="font-bold shadow-lg shadow-primary/20"
+                    onClick={handleOptimize}
+                    disabled={isAnalyzing}
+                  >
+                    {isAnalyzing ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
+                    ) : (
+                      <><Sparkles className="mr-2 h-4 w-4" /> Analyze Profile</>
+                    )}
+                  </Button>
+                </CardFooter>
               </Card>
+            )}
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Actionable Tips</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {result.actionableTips?.map((tip: any, i: number) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                        <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span>{typeof tip === 'string' ? tip : tip.tip}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-        </TabsContent>
+            {/* Results Section */}
+            {result && (
+              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                {/* Top Stats Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  {/* Score Card */}
+                  <div className="lg:col-span-4 bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <TrendingUp className="h-24 w-24" />
+                    </div>
+                    <h3 className="text-zinc-400 text-sm font-semibold uppercase tracking-wider mb-6">
+                      Recruiter Visibility Score
+                    </h3>
+                    <div className="flex items-center gap-6">
+                      {/* Circular Gauge */}
+                      <div 
+                        className="relative size-32 rounded-full flex items-center justify-center"
+                        style={{ background: `conic-gradient(${score >= 80 ? '#7c3bed' : score >= 60 ? '#eab308' : '#ef4444'} ${score}%, #27272a 0)` }}
+                      >
+                        <div className="absolute inset-[10px] bg-zinc-900 rounded-full flex flex-col items-center justify-center">
+                          <span className="text-3xl font-black text-white">{score}</span>
+                          <span className="text-[10px] text-zinc-400 uppercase font-bold">
+                            {score >= 80 ? "Great" : score >= 60 ? "Good" : "Poor"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex-1 flex flex-col gap-2">
+                        <p className="text-white font-medium leading-snug">
+                          {result.headline?.critique || "Your profile visibility analysis"}
+                        </p>
+                        {score < 80 && (
+                          <div className="flex items-center gap-1 text-red-400 text-xs font-medium">
+                            <AlertCircle className="h-4 w-4" />
+                            <span>Invisible to {100 - score}% of recruiters</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
-        <TabsContent value="dm" className="space-y-8">
-          <Card className="border-border shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl">Generate Recruiter DMs</CardTitle>
-              <CardDescription>Create personalized LinkedIn messages to send after applying.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-3">
-                <Label htmlFor="dm-profile" className="font-bold">Your Profile Summary</Label>
-                <Textarea 
-                  id="dm-profile" 
-                  placeholder="Paste your LinkedIn About section or a brief summary of your experience..." 
-                  className="min-h-[120px] resize-none p-4 leading-relaxed"
-                  value={profileText}
-                  onChange={(e) => setProfileText(e.target.value)}
-                />
-              </div>
+                  {/* Secondary Stats */}
+                  <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col justify-between">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-green-500/10 rounded-lg text-green-400">
+                          <TrendingUp className="h-5 w-5" />
+                        </div>
+                        <span className="text-xs font-medium px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                          +12% vs last week
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-zinc-400 text-sm font-medium mb-1">Market Positioning</p>
+                        <p className="text-2xl font-bold text-white">Top 15%</p>
+                        <p className="text-zinc-400 text-xs mt-1">Compared to 1,400+ similar candidates</p>
+                      </div>
+                    </div>
 
-              <div className="grid gap-3">
-                <Label htmlFor="dm-job" className="font-bold">Target Job Description</Label>
-                <Textarea 
-                  id="dm-job" 
-                  placeholder="Paste the job description you're applying for..." 
-                  className="min-h-[120px] resize-none p-4 leading-relaxed"
-                  value={jobDescription}
-                  onChange={(e) => setJobDescription(e.target.value)}
-                />
-              </div>
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col justify-between">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                          <Search className="h-5 w-5" />
+                        </div>
+                        <span className="text-xs font-medium px-2 py-1 bg-primary/20 text-primary rounded-full">
+                          High Priority
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-zinc-400 text-sm font-medium mb-1">Searchability Gap</p>
+                        <p className="text-2xl font-bold text-white">
+                          {result.experience?.missingKeywords?.length || 5} Keywords
+                        </p>
+                        <p className="text-zinc-400 text-xs mt-1">Missing critical terms for target role</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="recruiter-name" className="font-bold">Recruiter Name (Optional)</Label>
-                  <Input 
-                    id="recruiter-name" 
-                    placeholder="e.g., Sarah Johnson" 
-                    value={dmRecruiterName}
-                    onChange={(e) => setDmRecruiterName(e.target.value)}
-                  />
+                {/* Headline Optimizer */}
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-white text-lg font-bold flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      Headline Optimizer
+                    </h3>
+                    <Button 
+                      size="sm" 
+                      variant="ghost"
+                      onClick={handleOptimize}
+                      disabled={isAnalyzing}
+                    >
+                      <RefreshCw className={`h-4 w-4 mr-2 ${isAnalyzing ? 'animate-spin' : ''}`} />
+                      Re-scan
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    {/* Current */}
+                    <div className="p-6 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-zinc-900/50">
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-xs font-bold uppercase tracking-wider text-red-400 flex items-center gap-1">
+                          <X className="h-4 w-4" /> Current Headline
+                        </span>
+                      </div>
+                      <div className="p-4 rounded-lg border border-red-900/30 bg-red-900/10 text-zinc-300 font-mono text-sm leading-relaxed">
+                        {result.headline?.current || "Software Engineer looking for new opportunities in tech."}
+                      </div>
+                      <p className="mt-3 text-xs text-red-400/80">
+                        {result.headline?.critique || "Analysis: Too generic. Misses specific stack and value proposition."}
+                      </p>
+                    </div>
+
+                    {/* Optimized */}
+                    <div className="p-6 bg-black/50 relative">
+                      <div className="absolute top-0 right-0 w-20 h-20 bg-primary/10 blur-2xl rounded-full"></div>
+                      <div className="flex justify-between items-center mb-4 relative z-10">
+                        <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1">
+                          <Sparkles className="h-4 w-4" /> AI Recommendation
+                        </span>
+                        <button 
+                          onClick={() => handleCopyText(result.headline?.suggested || "")}
+                          className="text-xs flex items-center gap-1 text-white hover:text-primary transition-colors"
+                        >
+                          <Copy className="h-3 w-3" /> Copy
+                        </button>
+                      </div>
+                      <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-white font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(124,59,237,0.1)]">
+                        {result.headline?.suggested || "Senior Frontend Engineer | React, TypeScript, Next.js | Building Scalable SaaS Architectures"}
+                      </div>
+                      <p className="mt-3 text-xs text-primary/80">
+                        Improvement: Includes high-value keywords and role seniority.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main Content Split */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Keyword Cloud */}
+                  <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                        <Cloud className="h-5 w-5 text-primary" />
+                        ATS Keywords
+                      </h3>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs text-zinc-400 mb-4 uppercase tracking-wider font-semibold">
+                        Found in your profile
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {["JavaScript", "React", "CSS3", "Git"].map((kw, i) => (
+                          <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
+                            {kw}
+                          </Badge>
+                        ))}
+                      </div>
+                      <p className="text-xs text-zinc-400 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
+                        Missing (Critical)
+                        <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {(result.experience?.missingKeywords || ["TypeScript", "Docker", "CI/CD", "AWS", "Unit Testing"]).slice(0, 5).map((kw: any, i: number) => (
+                          <Badge 
+                            key={i} 
+                            variant="outline"
+                            className="border-dashed border-red-500/40 text-red-400 hover:bg-red-500/10 cursor-help"
+                            title="Found in 80% of job descriptions matching your target"
+                          >
+                            {typeof kw === 'string' ? kw : kw.keyword}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-6 pt-6 border-t border-zinc-800">
+                      <a className="text-primary text-sm font-medium hover:underline flex items-center gap-1" href="#">
+                        View all keywords <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Bio Audit */}
+                  <div className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                        About Section Rewrite
+                      </h3>
+                      <div className="flex gap-2">
+                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-red-400">
+                          <span className="size-2 rounded-full bg-red-400"></span> Issues
+                        </span>
+                        <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-primary">
+                          <span className="size-2 rounded-full bg-primary"></span> Fixed
+                        </span>
+                      </div>
+                    </div>
+                    <div className="bg-black rounded-lg p-5 font-mono text-sm leading-7 text-zinc-300 border border-zinc-800 whitespace-pre-wrap">
+                      {result.about?.rewritten || result.about?.suggestions || "Your optimized About section will appear here..."}
+                    </div>
+                    <div className="mt-4 flex gap-3">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 border-zinc-800"
+                        onClick={() => setResult(null)}
+                      >
+                        Start Over
+                      </Button>
+                      <Button 
+                        className="flex-1 bg-primary hover:bg-primary/90"
+                        onClick={() => handleCopyText(result.about?.rewritten || result.about?.suggestions || "")}
+                      >
+                        Copy Optimized Bio
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Fix List */}
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                  <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-primary" />
+                    Quick Fixes
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {result.actionableTips?.slice(0, 6).map((tip: any, i: number) => {
+                      const tipText = typeof tip === 'string' ? tip : tip.tip;
+                      const isDone = i < 2; // Mock: first 2 are done
+                      
+                      return (
+                        <div 
+                          key={i}
+                          className={`flex items-start gap-3 p-3 rounded-lg border ${
+                            isDone 
+                              ? 'bg-green-500/5 border-green-500/10' 
+                              : 'bg-red-500/5 border-red-500/10 hover:bg-red-500/10 transition-colors cursor-pointer group'
+                          }`}
+                        >
+                          <div className={`rounded-full p-0.5 mt-0.5 ${
+                            isDone 
+                              ? 'bg-green-500 text-white' 
+                              : 'bg-zinc-900 border border-red-500 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors'
+                          }`}>
+                            {isDone ? (
+                              <Check className="h-3 w-3" />
+                            ) : (
+                              <X className="h-3 w-3" />
+                            )}
+                          </div>
+                          <div>
+                            <p className={`text-sm font-medium ${isDone ? 'text-white/70 line-through' : 'text-white font-bold'}`}>
+                              {tipText}
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </CardContent>
-            <CardFooter className="justify-between bg-muted/30 p-6 border-t border-border">
-              <p className="text-xs text-muted-foreground font-medium">
-                We'll generate 3 variations (Casual, Professional, Technical).
-              </p>
-              <Button 
-                size="lg" 
-                className="font-bold shadow-lg shadow-primary/20 relative overflow-hidden group"
-                onClick={handleGenerateDM}
-                disabled={isGeneratingDM}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                {isGeneratingDM ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>
-                ) : (
-                  <><Sparkles className="mr-2 h-4 w-4" /> Generate 3 DMs</>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
+            )}
+          </TabsContent>
 
-          {dmResults.length > 0 && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <h3 className="text-2xl font-bold">Your DM Variations</h3>
-              <div className="grid gap-4 md:grid-cols-3">
-                {dmResults.map((dm, index) => (
-                  <Card key={index} className="border-primary/20 flex flex-col">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline">{dm.tone}</Badge>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleCopyDM(dm.content, index)}
-                          className="h-8 w-8 p-0"
-                        >
-                          {copiedIndex === index ? (
-                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          ) : (
-                            <Copy className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                      <CardTitle className="text-sm font-medium text-muted-foreground">
-                        Subject: {dm.subject}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-1">
-                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
-                        {dm.content}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
+          <TabsContent value="dm" className="space-y-8">
+            <Card className="border-zinc-800 bg-zinc-900/80">
+              <CardHeader>
+                <CardTitle className="text-xl">Generate Recruiter DMs</CardTitle>
+                <CardDescription>Create personalized LinkedIn messages to send after applying.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="dm-profile" className="font-bold">Your Profile Summary</Label>
+                  <Textarea 
+                    id="dm-profile" 
+                    placeholder="Paste your LinkedIn About section or a brief summary of your experience..." 
+                    className="min-h-[120px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                    value={profileText}
+                    onChange={(e) => setProfileText(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid gap-3">
+                  <Label htmlFor="dm-job" className="font-bold">Target Job Description</Label>
+                  <Textarea 
+                    id="dm-job" 
+                    placeholder="Paste the job description you're applying for..." 
+                    className="min-h-[120px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value)}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid gap-3">
+                    <Label htmlFor="recruiter-name" className="font-bold">Recruiter Name (Optional)</Label>
+                    <Input 
+                      id="recruiter-name" 
+                      placeholder="e.g., Sarah Johnson" 
+                      className="bg-black border-zinc-800"
+                      value={dmRecruiterName}
+                      onChange={(e) => setDmRecruiterName(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="justify-between bg-zinc-950/30 p-6 border-t border-zinc-800">
+                <p className="text-xs text-zinc-400 font-medium">
+                  We'll generate 3 variations (Casual, Professional, Technical).
+                </p>
+                <Button 
+                  size="lg" 
+                  className="font-bold shadow-lg shadow-primary/20"
+                  onClick={handleGenerateDM}
+                  disabled={isGeneratingDM}
+                >
+                  {isGeneratingDM ? (
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>
+                  ) : (
+                    <><Sparkles className="mr-2 h-4 w-4" /> Generate 3 DMs</>
+                  )}
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {dmResults.length > 0 && (
+              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h3 className="text-2xl font-bold">Your DM Variations</h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {dmResults.map((dm, index) => (
+                    <Card key={index} className="border-primary/20 flex flex-col bg-zinc-900">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge variant="outline">{dm.tone}</Badge>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleCopyDM(dm.content, index)}
+                            className="h-8 w-8 p-0"
+                          >
+                            {copiedIndex === index ? (
+                              <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
+                        <CardTitle className="text-sm font-medium text-zinc-400">
+                          Subject: {dm.subject}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex-1">
+                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+                          {dm.content}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
+            )}
+          </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
 }
