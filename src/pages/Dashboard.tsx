@@ -34,7 +34,7 @@ import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
-import { TemplatesView, LinkedInView, CoverLetterView } from "@/components/dashboard/ToolsViews";
+import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import {
   Dialog,
   DialogContent,
@@ -344,6 +344,8 @@ export default function Dashboard() {
             />
           </div>
         );
+      case 'writing-forge':
+        return <WritingForge />;
       default:
         return (
           <MissionControl 
