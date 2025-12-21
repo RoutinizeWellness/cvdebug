@@ -73,6 +73,53 @@ export const checkTextLayerIntegrity = internalAction({
   },
 });
 
+export const compareOCRvsTextExtraction = internalAction({
+  args: {
+    resumeId: v.id("resumes"),
+    ocrText: v.string(),
+    extractedText: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const runMutation = (fn: any, mutationArgs: any) => (ctx as any).runMutation(fn, mutationArgs);
+
+    // Calculate character-level similarity
+    const ocrLength = args.ocrText.length;
+    const extractedLength = args.extractedText.length;
+    
+    // Simple variance calculation
+    const lengthVariance = Math.abs(ocrLength - extractedLength) / Math.max(ocrLength, extractedLength);
+    
+    // Word-level comparison
+    const ocrWords: string[] = args.ocrText.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
+    const extractedWords: string[] = args.extractedText.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
+    
+    const commonWords = ocrWords.filter((word: string) => extractedWords.includes(word));
+    const wordVariance = 1 - (commonWords.length / Math.max(ocrWords.length, extractedWords.length));
+    
+    // MODULE 2: If variance > 5%, trigger 'Broken PDF' alert
+    const isBrokenPDF = lengthVariance > 0.05 || wordVariance > 0.05;
+    
+    let integrityScore = 100;
+    if (isBrokenPDF) {
+      integrityScore = Math.max(0, 100 - (lengthVariance * 100) - (wordVariance * 100));
+    }
+
+    await runMutation(internalAny.cvHealthMonitor.updateHealthStatus, {
+      resumeId: args.resumeId,
+      textLayerIntegrity: Math.round(integrityScore),
+      hasImageTrap: isBrokenPDF,
+      lastIntegrityCheck: Date.now(),
+    });
+
+    return {
+      integrityScore: Math.round(integrityScore),
+      hasImageTrap: isBrokenPDF,
+      lengthVariance,
+      wordVariance,
+    };
+  },
+});
+
 export const updateHealthStatus = internalMutation({
   args: {
     resumeId: v.id("resumes"),

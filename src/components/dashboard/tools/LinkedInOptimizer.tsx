@@ -410,7 +410,7 @@ export function LinkedInOptimizer() {
                         Found in your profile
                       </p>
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {matchedKeywords.slice(0, 4).map((kw, i) => (
+                        {matchedKeywords.slice(0, 4).map((kw: string, i: number) => (
                           <Badge key={i} className="bg-green-500/10 border-green-500/30 text-green-400">
                             {kw}
                           </Badge>

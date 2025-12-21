@@ -2,6 +2,8 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUser } from "./users";
 
+const internalAny = require("./_generated/api").internal;
+
 export const createProject = mutation({
   args: {
     name: v.string(),
@@ -57,6 +59,106 @@ export const getProjects = query({
       .withIndex("by_user", (q) => q.eq("userId", identity.subject))
       .order("desc")
       .collect();
+  },
+});
+
+export const getProjectStats = query({
+  args: {
+    projectId: v.id("projects"),
+  },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return null;
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const project = await ctx.db.get(args.projectId);
+    if (!project || project.userId !== identity.subject) {
+      return null;
+    }
+
+    // Get all applications for this project
+    const applications = await ctx.db
+      .query("applications")
+      .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
+      .collect();
+
+    const totalApplications = applications.length;
+    const appliedCount = applications.filter(a => a.status === "applied" || a.status === "interviewing").length;
+    const interviewingCount = applications.filter(a => a.status === "interviewing").length;
+    const rejectedCount = applications.filter(a => a.status === "rejected").length;
+    const acceptedCount = applications.filter(a => a.status === "accepted").length;
+
+    // Calculate Average Success Probability (based on match scores)
+    const scoresSum = applications.reduce((sum, app) => sum + (app.matchScore || 0), 0);
+    const averageSuccessProbability = totalApplications > 0 
+      ? Math.round(scoresSum / totalApplications) 
+      : 0;
+
+    return {
+      totalApplications,
+      appliedCount,
+      interviewingCount,
+      rejectedCount,
+      acceptedCount,
+      averageSuccessProbability,
+      conversionRate: appliedCount > 0 ? Math.round((interviewingCount / appliedCount) * 100) : 0,
+    };
+  },
+});
+
+export const validateMasterCVIntegrity = mutation({
+  args: {
+    projectId: v.id("projects"),
+  },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Not authenticated");
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const project = await ctx.db.get(args.projectId);
+    if (!project || project.userId !== identity.subject) {
+      throw new Error("Unauthorized");
+    }
+
+    if (!project.masterCvId) {
+      return { status: "no_cv", message: "No master CV attached" };
+    }
+
+    const resume = await ctx.db.get(project.masterCvId);
+    if (!resume) {
+      return { status: "error", message: "Master CV not found" };
+    }
+
+    // Check if integrity check is recent (within last 24 hours)
+    const lastCheck = resume.lastIntegrityCheck || 0;
+    const now = Date.now();
+    const hoursSinceCheck = (now - lastCheck) / (1000 * 60 * 60);
+
+    if (hoursSinceCheck < 24 && resume.textLayerIntegrity !== undefined) {
+      return {
+        status: "cached",
+        integrityScore: resume.textLayerIntegrity,
+        hasImageTrap: resume.hasImageTrap,
+        lastCheck,
+      };
+    }
+
+    // Trigger fresh integrity check
+    if (resume.ocrText) {
+      await ctx.scheduler.runAfter(0, internalAny.cvHealthMonitor.checkTextLayerIntegrity, {
+        resumeId: project.masterCvId,
+        ocrText: resume.ocrText,
+      });
+    }
+
+    return {
+      status: "checking",
+      message: "Integrity check in progress",
+    };
   },
 });
 

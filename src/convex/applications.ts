@@ -37,11 +37,18 @@ export const createApplication = mutation({
       status: "draft",
     });
 
-    // Schedule keyword gap analysis if JD provided
+    // MODULE 1: Trigger automatic "Targeted Scan" when JD is added
     if (args.jobDescriptionText && project.masterCvId) {
       await ctx.scheduler.runAfter(0, internalAny.applications.analyzeKeywordGap, {
         applicationId,
         resumeId: project.masterCvId,
+        jobDescription: args.jobDescriptionText,
+      });
+      
+      // Trigger targeted CV analysis against this specific JD
+      await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+        id: project.masterCvId,
+        ocrText: "", // Will be fetched in the action
         jobDescription: args.jobDescriptionText,
       });
     }
@@ -147,5 +154,41 @@ export const updateApplicationStatus = mutation({
       status: args.status,
       appliedDate: args.appliedDate || (args.status === "applied" ? Date.now() : undefined),
     });
+  },
+});
+
+export const checkStaleApplications = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const now = Date.now();
+    const fortyEightHoursAgo = now - (48 * 60 * 60 * 1000);
+
+    // Find applications that haven't been updated in 48 hours and are in "applied" status
+    const allApplications = await ctx.db.query("applications").collect();
+    
+    for (const app of allApplications) {
+      const isStale = app._creationTime < fortyEightHoursAgo && 
+                      app.status === "applied" &&
+                      (!app.appliedDate || app.appliedDate < fortyEightHoursAgo);
+      
+      if (isStale) {
+        // Get user email
+        const user = await ctx.db
+          .query("users")
+          .withIndex("by_token", (q) => q.eq("tokenIdentifier", app.userId))
+          .unique();
+        
+        if (user && user.email) {
+          // Schedule engagement email
+          await ctx.scheduler.runAfter(0, internalAny.marketing.sendStatusEngagementEmail, {
+            email: user.email,
+            name: user.name || "there",
+            companyName: app.companyName,
+            jobTitle: app.jobTitle,
+            applicationId: app._id,
+          });
+        }
+      }
+    }
   },
 });
