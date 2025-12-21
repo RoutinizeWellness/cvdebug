@@ -2,8 +2,6 @@ import { Navbar } from "@/components/landing/Navbar";
 import { HeroVisualizerSection } from "@/components/landing/HeroVisualizerSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { PricingSection } from "@/components/landing/PricingSection";
-import { FAQSection } from "@/components/landing/FAQSection";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Landing() {
