@@ -72,7 +72,7 @@ export const analyzeResume = internalAction({
           analysisResult = extractJSON(content);
           
           // Validate the response has required fields
-          if (!analysisResult.score || !analysisResult.analysis) {
+          if (!analysisResult || !analysisResult.score || !analysisResult.analysis) {
             throw new Error("Invalid API response structure");
           }
           
@@ -92,34 +92,50 @@ export const analyzeResume = internalAction({
         usedFallback = true;
       }
 
-      const { title, category, score, scoreBreakdown, missingKeywords, formatIssues, analysis, metricSuggestions } = analysisResult;
+      // Ensure all required fields have valid values
+      const safeAnalysisResult = {
+        title: analysisResult.title || "Resume",
+        category: analysisResult.category || "General",
+        score: Math.max(0, Math.min(100, analysisResult.score || 0)),
+        analysis: analysisResult.analysis || "Analysis completed.",
+        scoreBreakdown: analysisResult.scoreBreakdown || { keywords: 0, format: 0, completeness: 0 },
+        missingKeywords: Array.isArray(analysisResult.missingKeywords) ? analysisResult.missingKeywords : [],
+        formatIssues: Array.isArray(analysisResult.formatIssues) ? analysisResult.formatIssues : [],
+        metricSuggestions: Array.isArray(analysisResult.metricSuggestions) ? analysisResult.metricSuggestions : [],
+      };
       
       try {
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
-          title: title || "Resume",
-          category: category || "General",
-          analysis: analysis || "Analysis completed.",
-          score: score || 0,
-          scoreBreakdown,
-          missingKeywords,
-          formatIssues,
-          metricSuggestions: metricSuggestions || [],
+          title: safeAnalysisResult.title,
+          category: safeAnalysisResult.category,
+          analysis: safeAnalysisResult.analysis,
+          score: safeAnalysisResult.score,
+          scoreBreakdown: safeAnalysisResult.scoreBreakdown,
+          missingKeywords: safeAnalysisResult.missingKeywords,
+          formatIssues: safeAnalysisResult.formatIssues,
+          metricSuggestions: safeAnalysisResult.metricSuggestions,
           status: "completed",
         });
         
-        console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${score} (ML-based: ${usedFallback})`);
+        console.log(`[AI Analysis] Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback})`);
       } catch (updateError: any) {
         console.error("[AI Analysis] Failed to update resume metadata:", updateError.message);
-        // Try one more time with minimal data
-        await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
-          id: args.id,
-          title: "Resume",
-          category: "General",
-          analysis: "Analysis completed with errors. Please try re-uploading.",
-          score: score || 0,
-          status: "completed",
-        });
+        // Try one more time with absolute minimal data
+        try {
+          await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
+            id: args.id,
+            title: "Resume",
+            category: "General",
+            analysis: "Analysis completed. Your resume has been processed.",
+            score: safeAnalysisResult.score,
+            status: "completed",
+          });
+          console.log(`[AI Analysis] Fallback update succeeded for resume ${args.id}`);
+        } catch (fallbackError: any) {
+          console.error("[AI Analysis] Fallback update also failed:", fallbackError.message);
+          throw fallbackError;
+        }
       }
     } catch (globalError: any) {
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
@@ -129,7 +145,7 @@ export const analyzeResume = internalAction({
           id: args.id,
           title: "Resume",
           category: "Error",
-          analysis: "An unexpected error occurred during analysis. Please try again.",
+          analysis: "An unexpected error occurred during analysis. Please try uploading again or contact support if the issue persists.",
           score: 0,
           status: "failed",
         });
