@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Target, AlertTriangle, CheckCircle2, ArrowRight, Copy, Briefcase, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { SnippetForge } from "../SnippetForge";
@@ -143,26 +144,45 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   </div>
                   
                   {missingKeywords.length === 0 ? (
-                    <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center gap-3 text-green-400">
+                    <motion.div 
+                      className="p-4 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center gap-3 text-green-400"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <CheckCircle2 className="h-5 w-5" />
                       <p className="text-sm font-medium">No critical gaps found! You're a strong match.</p>
-                    </div>
+                    </motion.div>
                   ) : (
                     <div className="space-y-2">
                       {missingKeywords.slice(0, 5).map((keyword: string, i: number) => (
-                        <div 
+                        <motion.div 
                           key={i} 
-                          className="p-3 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors cursor-pointer"
+                          className="p-3 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors cursor-pointer relative"
                           onClick={() => {
                             setActiveTab('missing');
                             setExpandedKeyword(keyword);
                           }}
+                          whileHover={{ x: 4 }}
+                          animate={{ 
+                            borderColor: i === 0 ? ["rgba(239, 68, 68, 0.2)", "rgba(239, 68, 68, 0.4)", "rgba(239, 68, 68, 0.2)"] : undefined
+                          }}
+                          transition={{ 
+                            borderColor: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                          }}
                         >
+                          {i === 0 && (
+                            <motion.div
+                              className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full"
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                            />
+                          )}
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-white">{keyword}</span>
                             <ArrowRight className="h-4 w-4 text-zinc-500" />
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   )}

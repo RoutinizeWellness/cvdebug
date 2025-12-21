@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const apiAny = api as any;
 
@@ -57,7 +58,12 @@ export function SprintProgressBar() {
   if (!currentUser?.sprintExpiresAt) return null;
 
   return (
-    <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-6 space-y-6">
+    <motion.div 
+      className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-6 space-y-6"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -118,13 +124,21 @@ export function SprintProgressBar() {
         ))}
       </div>
 
-      {progressPercentage === 100 && (
-        <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-          <p className="text-sm font-bold text-emerald-400 text-center">
-            🎉 All stages complete! You're ready to dominate your job search.
-          </p>
-        </div>
-      )}
-    </div>
+      <AnimatePresence>
+        {progressPercentage === 100 && (
+          <motion.div 
+            className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <p className="text-sm font-bold text-emerald-400 text-center">
+              🎉 All stages complete! You're ready to dominate your job search.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }

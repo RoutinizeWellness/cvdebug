@@ -1,5 +1,6 @@
 import { FileText, Loader2, Eye, Trash2, RefreshCw, MoreVertical, Plus, FolderPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -301,10 +302,17 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
         // Grid View (existing implementation)
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredResumes.map((resume) => (
-            <div 
+            <motion.div 
               key={resume._id} 
-              className="group relative flex flex-col rounded-2xl border-2 border-zinc-700 bg-zinc-900/80 shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-primary/70 hover:-translate-y-1 overflow-hidden cursor-pointer"
+              className="group relative flex flex-col rounded-2xl border-2 border-zinc-700 bg-zinc-900/80 shadow-lg overflow-hidden cursor-pointer"
               onClick={() => setSelectedResume(resume)}
+              whileHover={{ 
+                y: -4, 
+                borderColor: "rgba(163, 127, 188, 0.7)",
+                backgroundColor: "rgba(39, 39, 42, 0.9)",
+                boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.5)"
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {/* Preview Area */}
               <div className="relative w-full aspect-[3/4] bg-zinc-800 overflow-hidden">
@@ -383,7 +391,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                   </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

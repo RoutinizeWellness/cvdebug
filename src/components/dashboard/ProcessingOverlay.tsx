@@ -1,5 +1,6 @@
 import { Loader2, AlertCircle, Star, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProcessingOverlayProps {
   isUploading?: boolean;
@@ -107,24 +108,38 @@ export function ProcessingOverlay({ isUploading, isProcessing }: ProcessingOverl
         </div>
 
         {/* Rotating Stats */}
-        <div className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/20 rounded-2xl p-8 space-y-4 animate-in slide-in-from-bottom duration-500 min-h-[160px] flex items-center transition-all">
-          <div className={`flex items-start gap-4 w-full transition-opacity duration-300 ${fadeStat ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-              <AlertCircle className="h-6 w-6 text-red-600" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-foreground mb-2">{stats[currentStat].title}</h4>
-              <p className="text-base text-foreground/80 leading-relaxed">
-                {stats[currentStat].text.split(stats[currentStat].highlight).map((part, i, arr) => (
-                  <span key={i}>
-                    {part}
-                    {i < arr.length - 1 && <strong className="text-red-600">{stats[currentStat].highlight}</strong>}
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
-        </div>
+        <motion.div 
+          className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/20 rounded-2xl p-8 space-y-4 min-h-[160px] flex items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentStat}
+              className="flex items-start gap-4 w-full"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-xl font-bold text-foreground mb-2">{stats[currentStat].title}</h4>
+                <p className="text-base text-foreground/80 leading-relaxed">
+                  {stats[currentStat].text.split(stats[currentStat].highlight).map((part, i, arr) => (
+                    <span key={i}>
+                      {part}
+                      {i < arr.length - 1 && <strong className="text-red-600">{stats[currentStat].highlight}</strong>}
+                    </span>
+                  ))}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
 
         {/* Rotating Testimonials */}
         <div className="bg-card border-2 border-border rounded-2xl p-6 space-y-4 animate-in slide-in-from-bottom duration-700 delay-200 min-h-[180px] flex flex-col justify-center transition-all">

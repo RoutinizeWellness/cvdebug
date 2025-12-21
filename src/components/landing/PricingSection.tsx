@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function PricingSection() {
   const navigate = useNavigate();
@@ -86,10 +87,18 @@ export function PricingSection() {
           </div>
 
           {/* Interview Sprint */}
-          <div className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border-2 border-primary shadow-[0_0_40px_-10px] shadow-primary/30 flex flex-col gap-6 relative h-full transform md:-translate-y-4">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg">
+          <motion.div 
+            className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border-2 border-primary shadow-[0_0_40px_-10px] shadow-primary/30 flex flex-col gap-6 relative h-full transform md:-translate-y-4"
+            whileHover={{ y: -8, boxShadow: "0 0 60px -10px rgba(163, 127, 188, 0.5)" }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <motion.div 
+              className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
               🚀 BEST VALUE
-            </div>
+            </motion.div>
             <div>
               <h3 className="text-2xl font-bold mb-2">Interview Sprint</h3>
               <div className="flex items-baseline gap-2">
@@ -98,12 +107,21 @@ export function PricingSection() {
               </div>
               <p className="text-xs text-primary font-bold mt-1">60% OFF - 7 days unlimited</p>
             </div>
-            <button 
+            <motion.button 
               onClick={() => handlePlanSelect('interview_sprint')}
-              className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold transition-all hover:scale-[1.02] shadow-lg shadow-primary/25"
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-primary via-purple-500 to-primary text-primary-foreground font-bold shadow-lg shadow-primary/25 relative overflow-hidden"
+              style={{ backgroundSize: "200% 100%" }}
+              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              whileHover={{ 
+                y: -4, 
+                boxShadow: "0 0 30px rgba(163, 127, 188, 0.6)",
+                scale: 1.02
+              }}
+              whileTap={{ scale: 0.98 }}
             >
               Start Sprint
-            </button>
+            </motion.button>
             <div className="space-y-3 pt-4 border-t border-primary/20">
               <div className="flex items-center gap-3 text-sm font-medium">
                 <CheckCircle2 className="h-5 w-5 text-primary" />
@@ -126,7 +144,7 @@ export function PricingSection() {
                 Priority Support
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
