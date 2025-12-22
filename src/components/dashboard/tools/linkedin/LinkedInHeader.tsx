@@ -1,41 +1,50 @@
-import { Button } from "@/components/ui/button";
-import { History, RefreshCw } from "lucide-react";
+import { Calendar, RefreshCw } from "lucide-react";
 
 interface LinkedInHeaderProps {
   lastScanned: string;
-  linkedinUrl?: string;
-  isAnalyzing: boolean;
-  onRefresh: () => void;
+  profileUrl?: string;
+  onRescan: () => void;
+  isScanning: boolean;
 }
 
-export function LinkedInHeader({ lastScanned, linkedinUrl, isAnalyzing, onRefresh }: LinkedInHeaderProps) {
+export function LinkedInHeader({ lastScanned, profileUrl, onRescan, isScanning }: LinkedInHeaderProps) {
   return (
-    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-      <div>
-        <h1 className="text-3xl font-black text-white tracking-tight mb-2 font-display">
-          LinkedIn SEO Audit
-        </h1>
-        <p className="text-slate-400 max-w-xl">
-          Recruiter Visibility Analysis. Last scan completed <span className="text-slate-300 font-mono">{lastScanned}</span>.
-        </p>
+    <>
+      {/* Breadcrumbs */}
+      <div className="flex flex-wrap gap-2 mb-6 text-sm">
+        <span className="text-slate-500">Dashboard</span>
+        <span className="text-slate-600">/</span>
+        <span className="text-slate-500">Tools</span>
+        <span className="text-slate-600">/</span>
+        <span className="text-white font-medium">LinkedIn Audit</span>
       </div>
-      <div className="flex gap-3">
-        <Button 
-          variant="outline"
-          className="border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-300 hover:text-white"
+
+      {/* Page Heading & Actions */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">
+            LinkedIn Profile Audit
+          </h1>
+          <div className="flex items-center gap-2 text-slate-400 text-sm">
+            <Calendar className="h-4 w-4" />
+            <span>Last scanned: {lastScanned}</span>
+            {profileUrl && (
+              <>
+                <span className="mx-1">•</span>
+                <span>Profile: {profileUrl}</span>
+              </>
+            )}
+          </div>
+        </div>
+        <button
+          onClick={onRescan}
+          disabled={isScanning}
+          className="flex items-center gap-2 bg-primary hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-primary/20"
         >
-          <History className="h-4 w-4 mr-2" />
-          History
-        </Button>
-        <Button 
-          onClick={onRefresh}
-          disabled={isAnalyzing}
-          className="bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-90 text-white font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all border border-blue-500/20"
-        >
-          <RefreshCw className={`h-4 w-4 mr-2 ${isAnalyzing ? 'animate-spin' : ''}`} />
-          Re-scan Profile
-        </Button>
+          <RefreshCw className={`h-5 w-5 ${isScanning ? "animate-spin" : ""}`} />
+          <span>{isScanning ? "Scanning..." : "Re-scan Profile"}</span>
+        </button>
       </div>
-    </div>
+    </>
   );
 }
