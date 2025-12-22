@@ -12,6 +12,15 @@ export function calculateCompletenessScore(
   ocrText: string,
   mlConfig?: any
 ): CompletenessResult {
+  // Early exit for empty or too short text
+  if (!ocrText || ocrText.trim().length < 50) {
+    return {
+      completenessScore: 0,
+      bulletAnalysis: { score: 0, feedback: "Text too short" },
+      softSkillsAnalysis: { score: 0, feedback: "Insufficient text" }
+    };
+  }
+
   let completenessScore = 0;
   
   const bulletAnalysis = analyzeBulletPoints(ocrText);

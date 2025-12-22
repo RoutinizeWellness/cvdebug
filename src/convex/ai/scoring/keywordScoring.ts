@@ -61,7 +61,10 @@ function fuzzyMatch(keyword: string, text: string, threshold: number = 0.85): bo
     const distance = levenshteinDistance(keywordLower, word);
     const similarity = 1 - (distance / Math.max(keywordLower.length, word.length));
     
-    if (similarity >= threshold) return true;
+    // Dynamic threshold: stricter for shorter words to avoid false positives
+    const dynamicThreshold = keywordLower.length < 5 ? 0.92 : threshold;
+    
+    if (similarity >= dynamicThreshold) return true;
   }
   
   return false;

@@ -105,19 +105,28 @@ export const getProjectStats = query({
     const acceptedCount = applications.filter(a => a.status === "accepted").length;
 
     // Calculate Average Success Probability (based on match scores)
+    let validScoreCount = 0;
     const scoresSum = applications.reduce((sum, app) => {
       let score = (app as any).matchScore || 0;
       // Calculate score from keywords if not explicitly stored
-      if (!score && ((app.matchedKeywords?.length || 0) + (app.missingKeywords?.length || 0) > 0)) {
+      if (!score) {
         const matched = app.matchedKeywords?.length || 0;
-        const total = matched + (app.missingKeywords?.length || 0);
-        score = Math.round((matched / total) * 100);
+        const missing = app.missingKeywords?.length || 0;
+        const total = matched + missing;
+        if (total > 0) {
+          score = Math.round((matched / total) * 100);
+        }
       }
-      return sum + score;
+      
+      if (score > 0) {
+        validScoreCount++;
+        return sum + score;
+      }
+      return sum;
     }, 0);
 
-    const averageSuccessProbability = totalApplications > 0 
-      ? Math.round(scoresSum / totalApplications) 
+    const averageSuccessProbability = validScoreCount > 0 
+      ? Math.round(scoresSum / validScoreCount) 
       : 0;
 
     return {

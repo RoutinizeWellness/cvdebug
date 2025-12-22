@@ -45,10 +45,14 @@ export const getApplicationsByProject = query({
       let matchScore = (app as any).matchScore || 0;
       
       // Calculate match score dynamically if not present
-      if (!matchScore && ((app.matchedKeywords?.length || 0) + (app.missingKeywords?.length || 0) > 0)) {
+      if (!matchScore) {
         const matched = app.matchedKeywords?.length || 0;
-        const total = matched + (app.missingKeywords?.length || 0);
-        matchScore = Math.round((matched / total) * 100);
+        const missing = app.missingKeywords?.length || 0;
+        const total = matched + missing;
+        
+        if (total > 0) {
+          matchScore = Math.round((matched / total) * 100);
+        }
       }
       
       return { ...app, matchScore };
