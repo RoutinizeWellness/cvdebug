@@ -6,7 +6,7 @@ import Dashboard from "@/pages/Dashboard.tsx";
 import Onboarding from "@/pages/Onboarding.tsx";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { ConvexReactClient } from "convex/react";
+import { ConvexReactClient, useMutation } from "convex/react";
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
@@ -18,6 +18,8 @@ import AdminPage from "./pages/Admin.tsx";
 import PricingPage from "./pages/Pricing.tsx";
 import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import "./types/global.d.ts";
+import { api } from "@/convex/_generated/api";
+import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
 const convex = new ConvexReactClient(convexUrl || "https://placeholder.convex.cloud");
@@ -52,12 +54,33 @@ function RouteSyncer() {
   return null;
 }
 
+function UserSyncer() {
+  const { isSignedIn } = useAuth();
+  const storeUser = useMutation(api.users.storeUser);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      getDeviceFingerprint()
+        .then((fingerprint) => {
+          storeUser({ deviceFingerprint: fingerprint });
+        })
+        .catch((err) => {
+          console.error("Failed to get fingerprint:", err);
+          storeUser({});
+        });
+    }
+  }, [isSignedIn, storeUser]);
+
+  return null;
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <VlyToolbar />
     <InstrumentationProvider>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
         <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+          <UserSyncer />
           <BrowserRouter>
             <RouteSyncer />
             <Routes>
