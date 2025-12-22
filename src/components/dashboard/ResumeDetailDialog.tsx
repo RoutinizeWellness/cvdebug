@@ -673,17 +673,15 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         <FormattingAudit items={auditItems} />
                         
                         <KeywordHeatmap 
-                          foundKeywords={foundKeywords}
+                          matchedKeywords={foundKeywords}
                           missingKeywords={displayResume?.missingKeywords || []}
-                          isFree={false}
+                          isPremium={false}
                         />
 
                         <RoleMatchCard 
-                          roles={[
-                            { name: "Full Stack Developer", percentage: 80, color: "green" },
-                            { name: "Frontend Engineer", percentage: 65, color: "purple" },
-                            { name: "Backend Engineer", percentage: 45, color: "orange" }
-                          ]}
+                          role={displayResume?.category || "General"}
+                          matchScore={displayResume?.score || 0}
+                          confidence={85}
                         />
                       </div>
 
@@ -804,8 +802,9 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         {/* Right Column: Impact & Pro Tip */}
                         <div className="flex flex-col gap-6">
                           <ImpactScore 
-                            score={displayResume?.scoreBreakdown?.completeness || 0} 
-                            maxScore={30} 
+                            score={displayResume?.score || 0} 
+                            quantifiedBullets={displayResume?.quantifiedBullets || 0}
+                            totalBullets={displayResume?.totalBullets || 0}
                           />
                           
                           <AIProTip 
@@ -847,7 +846,6 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                               }
                             }
                           })()}
-                            category={displayResume?.category || "General"}
                           />
                         </div>
                       </div>

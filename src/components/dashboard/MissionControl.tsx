@@ -8,10 +8,18 @@ import { IntegrityPanel } from "./mission/IntegrityPanel";
 import { BulletPointSniper } from "./mission/BulletPointSniper";
 import { ActionableIntelligence } from "./mission/ActionableIntelligence";
 import { SystemConsole } from "./mission/SystemConsole";
-import { Sparkles, X, Bot, Eye } from "lucide-react";
+import { Sparkles, X, Bot, Eye, Lock } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ATSRawTextView } from "./ATSRawTextView";
+import { RoleMatchCard } from "./analysis/RoleMatchCard";
+import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
+import { ImpactScore } from "./analysis/ImpactScore";
+import { AIProTip } from "./analysis/AIProTip";
+import { CriticalIssues } from "./CriticalIssues";
+import { FormattingAudit } from "./analysis/FormattingAudit";
+import { ActionableFixes } from "./analysis/ActionableFixes";
+import { Button } from "@/components/ui/button";
 
 const apiAny = api as any;
 
@@ -29,6 +37,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
   const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
   const [showRobotView, setShowRobotView] = useState(false);
+  const currentUser = useQuery(apiAny.users.currentUser);
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
@@ -52,20 +61,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   // Extract keywords dynamically
   const matchedKeywords = useMemo(() => {
     if (!masterResume || !masterResume.matchedKeywords) return [];
-    return masterResume.matchedKeywords.slice(0, 15).map((kw: string) => ({
-      name: kw,
-      category: "Skill",
-      impact: "High"
-    }));
+    return masterResume.matchedKeywords;
   }, [masterResume]);
 
   const missingKeywords = useMemo(() => {
     if (!masterResume || !masterResume.missingKeywords) return [];
-    return masterResume.missingKeywords.slice(0, 5).map((kw: any) => ({
-      name: typeof kw === 'string' ? kw : kw.keyword,
-      category: "Missing",
-      impact: "Critical"
-    }));
+    return masterResume.missingKeywords.map((kw: any) => 
+      typeof kw === 'string' ? kw : kw.keyword
+    );
   }, [masterResume]);
 
   // Extract actionable issues dynamically
@@ -77,20 +80,74 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       issues.push(...masterResume.formatIssues.map((issue: any) => ({
         title: typeof issue === 'string' ? issue : issue.issue,
         description: typeof issue === 'string' ? "Formatting issue detected" : issue.fix || "Fix required",
-        severity: "Medium"
+        severity: "Medium",
+        impact: "Medium Impact",
+        example: "Remove complex formatting"
       })));
     }
 
     if (masterResume.missingKeywords && masterResume.missingKeywords.length > 0) {
-      issues.push({
-        title: "Missing Critical Keywords",
-        description: `Found ${masterResume.missingKeywords.length} missing keywords that could improve your score.`,
-        severity: "High"
+      masterResume.missingKeywords.slice(0, 3).forEach((kw: any) => {
+        const keyword = typeof kw === 'string' ? kw : kw.keyword;
+        issues.push({
+          title: `Missing Keyword: ${keyword}`,
+          description: `Your resume is missing "${keyword}", which is critical for this role.`,
+          severity: "High",
+          impact: "High Impact",
+          example: `Integrated ${keyword} into workflow...`,
+          missingKeyword: keyword
+        });
       });
     }
 
-    return issues.slice(0, 5);
+    return issues;
   }, [masterResume]);
+
+  // Formatting Audit Items
+  const formattingAuditItems = useMemo(() => {
+    if (!masterResume) return [];
+    const items = [];
+    
+    // Mock checks based on data availability
+    items.push({
+      title: "Text Layer Integrity",
+      status: (masterResume.textLayerIntegrity > 90 ? "passed" : "failed") as "passed" | "failed" | "warning",
+      reason: "Text is selectable and readable by ATS.",
+      fix: "Re-save PDF using 'Save as PDF' not 'Print to PDF'."
+    });
+
+    items.push({
+      title: "File Format",
+      status: (masterResume.mimeType === "application/pdf" || masterResume.mimeType?.includes("word") ? "passed" : "warning") as "passed" | "failed" | "warning",
+      reason: "Standard file format detected.",
+      fix: "Use PDF or DOCX format."
+    });
+
+    if (masterResume.formatIssues) {
+      masterResume.formatIssues.forEach((issue: any) => {
+        items.push({
+          title: "Formatting Issue",
+          status: "failed" as "passed" | "failed" | "warning",
+          reason: "",
+          fix: typeof issue === 'string' ? issue : issue.fix
+        });
+      });
+    }
+
+    return items;
+  }, [masterResume]);
+
+  // Critical Issues
+  const criticalIssues = useMemo(() => {
+    const issues = [];
+    if (hasImageTrap) {
+      issues.push({ type: "error", message: "Image Trap Detected: Invisible text layer found." });
+    }
+    if (matchScore < 40 && !isProcessing) {
+      issues.push({ type: "error", message: "Low Match Score: Resume may be auto-rejected." });
+    }
+    return issues;
+  }, [hasImageTrap, matchScore, isProcessing]);
 
   // Generate dynamic logs based on resume state
   useEffect(() => {
@@ -175,10 +232,16 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     }
   };
 
+  const isPremium = currentUser?.subscriptionTier === "interview_sprint" || currentUser?.subscriptionTier === "single_scan";
+
   return (
     <div className="space-y-6 pb-24 md:pb-6">
       {/* Header Actions */}
-      <div className="flex justify-end items-center gap-4 mb-2">
+      <div className="flex justify-between items-center mb-2">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Mission Control</h1>
+          <p className="text-slate-400 text-sm">ATS Analysis & Optimization Center</p>
+        </div>
         <div className="flex items-center gap-2 bg-slate-900/50 p-2 rounded-lg border border-slate-800">
           <Switch 
             id="robot-view" 
@@ -192,49 +255,77 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         </div>
       </div>
 
-      {/* Main 3-Column Grid */}
+      {/* Critical Issues Banner */}
+      <CriticalIssues issues={criticalIssues} />
+
+      {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Column 1: Metrics (Left) */}
-        <div className="lg:col-span-3 flex flex-col gap-6">
+        
+        {/* Left Column: Score & Core Metrics */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
           <SpeedometerCard score={matchScore} />
           
-          <IntegrityPanel 
-            integrityScore={integrityScore} 
-            hasImageTrap={hasImageTrap} 
+          <RoleMatchCard 
+            role={masterResume?.category || "General"} 
+            matchScore={matchScore} 
+            confidence={85} 
           />
 
-          {/* Quick Stats Mini-grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="glass-panel rounded-xl p-4 flex flex-col items-center justify-center gap-1 text-center bg-slate-900/70 backdrop-blur-xl border border-slate-800/50">
-              <span className="text-2xl font-bold text-white">{resumes ? resumes.length : "0"}</span>
-              <span className="text-xs text-slate-400 uppercase tracking-wide">CVs Active</span>
-            </div>
-            <div className="glass-panel rounded-xl p-4 flex flex-col items-center justify-center gap-1 text-center bg-slate-900/70 backdrop-blur-xl border border-slate-800/50">
-              <span className="text-2xl font-bold text-white">
-                {masterResume?.processingDuration 
-                  ? `${(masterResume.processingDuration / 1000).toFixed(1)}s` 
-                  : masterResume ? "1.2s" : "-"}
-              </span>
-              <span className="text-xs text-slate-400 uppercase tracking-wide">Load Time</span>
-            </div>
-          </div>
+          <ImpactScore 
+            score={matchScore} 
+            quantifiedBullets={masterResume?.quantifiedBullets || 0} 
+            totalBullets={masterResume?.totalBullets || 20} 
+          />
+
+          <AIProTip 
+            tip={masterResume?.aiTip || "Quantify your achievements. Resumes with numbers get 40% more interviews."} 
+          />
         </div>
 
-        {/* Column 2: Keyword Sniper (Center) */}
-        <div className="lg:col-span-5 flex flex-col min-h-[500px]">
+        {/* Center Column: Keywords & Fixes */}
+        <div className="lg:col-span-5 flex flex-col gap-6">
+          <KeywordHeatmap 
+            matchedKeywords={matchedKeywords} 
+            missingKeywords={missingKeywords} 
+            isPremium={isPremium}
+            onUnlock={() => onNavigate("pricing")}
+          />
+
+          <ActionableFixes fixes={actionableIssues} />
+          
           <BulletPointSniper 
-            matchedKeywords={matchedKeywords}
-            missingKeywords={missingKeywords}
+            matchedKeywords={matchedKeywords.map((k: string) => ({ name: k, category: "Skill", impact: "High" }))}
+            missingKeywords={missingKeywords.map((k: string) => ({ name: k, category: "Missing", impact: "Critical" }))}
             onSnipe={handleSnipeKeyword}
             snipingKeyword={snipingKeyword}
             isProcessing={isProcessing}
           />
         </div>
 
-        {/* Column 3: Actions & Console (Right) */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          <ActionableIntelligence issues={actionableIssues} />
+        {/* Right Column: Audit & Console */}
+        <div className="lg:col-span-3 flex flex-col gap-6">
+          <FormattingAudit items={formattingAuditItems} />
+          
+          <IntegrityPanel 
+            integrityScore={integrityScore} 
+            hasImageTrap={hasImageTrap} 
+          />
+
           <SystemConsole logs={consoleLogs} />
+
+          {!isPremium && (
+            <div className="glass-panel p-6 rounded-xl border border-purple-500/30 bg-gradient-to-b from-purple-900/20 to-slate-900 text-center">
+              <Lock className="h-8 w-8 text-purple-400 mx-auto mb-3" />
+              <h3 className="font-bold text-white mb-2">Unlock Full Report</h3>
+              <p className="text-xs text-slate-400 mb-4">Get unlimited scans, cover letters, and LinkedIn optimization.</p>
+              <Button 
+                onClick={() => onNavigate("pricing")}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                Upgrade Now
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
