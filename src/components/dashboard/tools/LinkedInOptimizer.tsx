@@ -2,7 +2,8 @@ import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
-import { TrendingUp, Search, Loader2 } from "lucide-react";
+import { TrendingUp, Search, Loader2, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ScoreGauge } from "./linkedin/ScoreGauge";
 import { KeywordCloud } from "./linkedin/KeywordCloud";
 import { HeadlineOptimizer } from "./linkedin/HeadlineOptimizer";
@@ -45,20 +46,22 @@ export function LinkedInOptimizer() {
     return `${days} days ago`;
   };
 
-  const score = latestOptimization?.score || 72;
-  const currentHeadline = latestOptimization?.headline?.current || "Software Engineer looking for new opportunities in tech.";
-  const optimizedHeadline = latestOptimization?.headline?.optimized || "Senior Frontend Engineer | React, TypeScript, Next.js | Building Scalable SaaS Architectures & Design Systems";
+  // Extract real data from latest optimization or show empty state
+  const score = latestOptimization?.score || 0;
+  const currentHeadline = latestOptimization?.headline?.current || "";
+  const optimizedHeadline = latestOptimization?.headline?.optimized || "";
   
-  const foundKeywords = ["JavaScript", "React", "CSS3", "Git"];
-  const missingKeywords = ["TypeScript", "Docker", "CI/CD", "AWS", "Unit Testing"];
+  // Extract keywords from optimization result
+  const foundKeywords = latestOptimization?.keywordsFound || [];
+  const missingKeywords = latestOptimization?.keywordsMissing || [];
 
-  const quickFixes = [
-    { id: "1", title: "Profile Picture Found", completed: true },
-    { id: "2", title: "Experience Section Populated", completed: true },
-    { id: "3", title: "Claim Custom URL", description: "Change /in/alex-chen-18392 to /in/alexchen", completed: false },
-    { id: "4", title: 'Add "Open to Work"', description: "Increases visibility by 2x", completed: false },
-    { id: "5", title: "Add 3 Skills", description: "You are below the recommended 5 skills", completed: false },
-  ];
+  // Extract actionable tips as quick fixes
+  const quickFixes = latestOptimization?.actionableTips?.map((tip: any, index: number) => ({
+    id: `tip-${index}`,
+    title: tip.title || tip,
+    description: tip.description,
+    completed: tip.completed || false,
+  })) || [];
 
   return (
     <div className="h-full flex flex-col">
@@ -72,6 +75,26 @@ export function LinkedInOptimizer() {
       </div>
 
       <main className="flex-1 px-6 pb-6 overflow-y-auto">
+        {/* Show empty state if no optimization data */}
+        {!latestOptimization ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 max-w-md">
+              <TrendingUp className="h-16 w-16 text-slate-700 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">No LinkedIn Analysis Yet</h3>
+              <p className="text-slate-400 text-sm mb-6">
+                Click "Re-scan Profile" to analyze your LinkedIn profile and get AI-powered optimization suggestions.
+              </p>
+              <Button
+                onClick={handleRescan}
+                className="bg-primary hover:bg-primary/90 text-white font-bold"
+              >
+                <Sparkles className="h-5 w-5 mr-2" />
+                Scan Your Profile
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <>
         {/* Top Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
           {/* Score Card */}
@@ -139,18 +162,22 @@ export function LinkedInOptimizer() {
         </div>
 
         {/* Headline Optimizer */}
-        <HeadlineOptimizer 
-          currentHeadline={currentHeadline}
-          optimizedHeadline={optimizedHeadline}
-        />
+        {currentHeadline && optimizedHeadline && (
+          <HeadlineOptimizer 
+            currentHeadline={currentHeadline}
+            optimizedHeadline={optimizedHeadline}
+          />
+        )}
 
         {/* Main Content Split */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Keyword Cloud */}
-          <KeywordCloud 
-            foundKeywords={foundKeywords}
-            missingKeywords={missingKeywords}
-          />
+          {(foundKeywords.length > 0 || missingKeywords.length > 0) && (
+            <KeywordCloud 
+              foundKeywords={foundKeywords}
+              missingKeywords={missingKeywords}
+            />
+          )}
 
           {/* Bio Audit - Placeholder for now */}
           <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-6">
@@ -162,7 +189,9 @@ export function LinkedInOptimizer() {
         </div>
 
         {/* Quick Fix List */}
-        <QuickFixList fixes={quickFixes} />
+        {quickFixes.length > 0 && <QuickFixList fixes={quickFixes} />}
+        </>
+        )}
       </main>
     </div>
   );
