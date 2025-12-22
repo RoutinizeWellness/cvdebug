@@ -1,4 +1,4 @@
-import { query, mutation, action } from "./_generated/server";
+import { query, mutation, action, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
@@ -537,5 +537,66 @@ export const simulateWebhookEvent = action({
     });
 
     return `✅ Simulated payment processed for ${args.email}. Credits updated directly.`;
+  }
+});
+
+export const importUsersFromCSVInternal = internalMutation({
+  args: {
+    csvData: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const lines = args.csvData.split('\n');
+    let count = 0;
+    let updatedCount = 0;
+    const logs = [];
+    
+    // Skip header
+    const startIndex = lines[0].startsWith('id,') ? 1 : 0;
+
+    for (let i = startIndex; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      // Handle CSV parsing (basic split by comma)
+      const parts = line.split(',');
+      const id = parts[0];
+      const firstName = parts[1];
+      const lastName = parts[2];
+      const email = parts[4];
+      
+      if (!id || !email) continue;
+
+      const name = `${firstName || ''} ${lastName || ''}`.trim() || email.split('@')[0];
+
+      // Check if user exists
+      let user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", id)).unique();
+      if (!user) {
+        user = await ctx.db.query("users").withIndex("by_email", q => q.eq("email", email)).unique();
+      }
+
+      if (user) {
+        // Update if needed
+        if (user.tokenIdentifier !== id) {
+             await ctx.db.patch(user._id, {
+                tokenIdentifier: id,
+             });
+             updatedCount++;
+        }
+      } else {
+        // Create
+        await ctx.db.insert("users", {
+            tokenIdentifier: id,
+            name: name,
+            email: email,
+            subscriptionTier: "free",
+            credits: 1,
+            trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+            emailVariant: "A",
+            lastSeen: Date.now(),
+        });
+        count++;
+      }
+    }
+    return `Processed ${lines.length - startIndex} records. Created ${count} new users. Updated ${updatedCount} existing users.`;
   }
 });
