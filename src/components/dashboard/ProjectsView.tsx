@@ -250,7 +250,13 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                       <Clock className="h-3.5 w-3.5" />
                       {formatTimeAgo(project._creationTime)}
                     </span>
-                    <button className="text-sm font-medium text-primary hover:text-white transition-colors">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSelectProject(project._id);
+                      }}
+                      className="text-sm font-medium text-primary hover:text-white transition-colors"
+                    >
                       View Details
                     </button>
                   </div>

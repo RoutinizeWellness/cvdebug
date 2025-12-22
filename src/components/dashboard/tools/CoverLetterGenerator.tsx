@@ -65,14 +65,16 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
     : "DRAFT_PREVIEW.md";
 
   const handleGenerate = async () => {
-    if (!selectedApplication) {
-      toast.error("Please select an application first.");
+    if (!selectedProjectId) {
+      toast.error("Please select a project first.");
       return;
     }
 
     setIsGenerating(true);
     try {
-      await generateCoverLetter({ applicationId: selectedApplication as any });
+      await generateCoverLetter({ 
+        applicationId: selectedApplication ? (selectedApplication as any) : undefined 
+      });
       toast.success("Cover letter generation started! Check back in a moment.");
     } catch (error: any) {
       console.error(error);
@@ -140,12 +142,13 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
 
             {/* Application Selector */}
             <div className="flex flex-col gap-2">
-              <Label className="text-sm font-medium text-zinc-300">Target Application</Label>
+              <Label className="text-sm font-medium text-zinc-300">Target Application (Optional)</Label>
               <Select value={selectedApplication} onValueChange={setSelectedApplication} disabled={!selectedProjectId}>
                 <SelectTrigger className="bg-black border-zinc-800">
-                  <SelectValue placeholder="Choose an application..." />
+                  <SelectValue placeholder="Choose an application (optional)..." />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="">None (Generic Letter)</SelectItem>
                   {applications?.map((app: any) => (
                     <SelectItem key={app._id} value={app._id}>
                       {app.jobTitle} at {app.companyName}
@@ -191,7 +194,7 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
             <div className="mt-auto pt-4">
               <Button 
                 onClick={handleGenerate}
-                disabled={isGenerating || !selectedApplication}
+                disabled={isGenerating || !selectedProjectId}
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 group shadow-lg shadow-primary/20"
               >
                 {isGenerating ? (
