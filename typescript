@@ -1,14 +1,7 @@
-import { ConvexReactClient, useMutation } from "convex/react";
+import React, { useState, useRef, useEffect } from "react";
 
-const users = await ctx.db.query("users").order("desc").take(200);
-
-if (user !== null) {
-  // Update existing user
-  await ctx.db.patch(user._id, {
-    name: identity.name,
-    email: identity.email,
-    lastSeen: Date.now(),
-    deviceFingerprint: args.deviceFingerprint || user.deviceFingerprint,
-  });
-  return user._id;
-}
+useEffect(() => {
+  return () => {
+    abortControllerRef.current?.abort();
+  };
+}, []);

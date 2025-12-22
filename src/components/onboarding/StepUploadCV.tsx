@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { FileText, Trash2, Upload } from "lucide-react";
+import { FileText, Trash2, Upload, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
+import { Button } from "@/components/ui/button";
 
 interface StepUploadCVProps {
   onComplete: (resumeId: string) => void;
@@ -20,7 +21,9 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
     handleFileUpload,
     handleDragOver,
     handleDragLeave,
-    handleDrop
+    handleDrop,
+    cancelUpload,
+    processingStatus
   } = useResumeUpload(jobDescription, setJobDescription);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,11 +73,14 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-white text-sm font-medium truncate">{uploadedFile.name}</p>
-              <p className="text-slate-500 text-xs">
-                {isUploading ? "Processing..." : `${(uploadedFile.size / 1024 / 1024).toFixed(2)} MB • Uploaded`}
-              </p>
+              <div className="flex items-center gap-2">
+                {isUploading && <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />}
+                <p className="text-slate-500 text-xs">
+                  {isUploading ? (processingStatus || "Processing...") : `${(uploadedFile.size / 1024 / 1024).toFixed(2)} MB • Uploaded`}
+                </p>
+              </div>
             </div>
-            {!isUploading && (
+            {!isUploading ? (
               <button
                 onClick={() => {
                   setUploadedFile(null);
@@ -83,6 +89,19 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
               >
                 <Trash2 className="h-5 w-5" />
               </button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  cancelUpload();
+                  setUploadedFile(null);
+                }}
+                className="text-slate-400 hover:text-white hover:bg-slate-800"
+              >
+                <X className="h-4 w-4 mr-1" />
+                Cancel
+              </Button>
             )}
           </div>
         ) : (

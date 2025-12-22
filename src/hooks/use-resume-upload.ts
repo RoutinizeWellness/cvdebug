@@ -15,14 +15,38 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
   const [processingResumeId, setProcessingResumeId] = useState<string | null>(null);
   const [processingStatus, setProcessingStatus] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const generateUploadUrl = useMutation(apiAny.resumes.generateUploadUrl);
   const createResume = useMutation(apiAny.resumes.createResume);
   const updateResumeOcr = useMutation(apiAny.resumes.updateResumeOcr);
   const deleteResume = useMutation(apiAny.resumes.deleteResume);
 
+  const cancelUpload = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    
+    if (processingResumeId) {
+      try {
+        await deleteResume({ id: processingResumeId as any });
+      } catch (e) {
+        console.error("Failed to cleanup resume on cancel", e);
+      }
+    }
+    
+    setIsUploading(false);
+    setProcessingResumeId(null);
+    setProcessingStatus("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    toast.info("Upload cancelled");
+  };
+
   const handleFile = async (file: File) => {
     if (!file) return;
+
+    // Reset abort controller
+    abortControllerRef.current = new AbortController();
 
     const validTypes = [
       "image/jpeg", 
@@ -45,16 +69,23 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
     setIsUploading(true);
     setProcessingStatus("Uploading your resume...");
+    
+    let resumeId = null;
+
     try {
       const postUrl = await generateUploadUrl();
       const result = await fetch(postUrl, {
         method: "POST",
         headers: { "Content-Type": file.type },
         body: file,
+        signal: abortControllerRef.current.signal,
       });
+      
+      if (!result.ok) throw new Error("Upload failed");
+      
       const { storageId } = await result.json();
 
-      const resumeId = await createResume({
+      resumeId = await createResume({
         storageId,
         title: file.name,
         mimeType: file.type,
@@ -69,18 +100,38 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         : "Resume uploaded! AI is analyzing..."
       );
       
-      await processFile(file, resumeId);
+      // Add timeout to processing (90 seconds max)
+      const processingPromise = processFile(file, resumeId);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Processing timed out. The file might be too complex or corrupted.")), 90000)
+      );
+
+      await Promise.race([processingPromise, timeoutPromise]);
+      
       setJobDescription("");
 
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log("Upload cancelled by user");
+        return; // Already handled in cancelUpload
+      }
+      
       console.error(error);
       const errorMsg = error instanceof Error ? error.message : String(error);
       toast.error(`Failed to upload resume: ${errorMsg}`);
       setProcessingResumeId(null);
       setProcessingStatus("");
+      
+      if (resumeId) {
+        try {
+          await deleteResume({ id: resumeId });
+        } catch (e) { console.error("Cleanup failed", e); }
+      }
     } finally {
-      setIsUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (!abortControllerRef.current?.signal.aborted) {
+        setIsUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
     }
   };
 
@@ -96,13 +147,20 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         const arrayBuffer = await file.arrayBuffer();
         
         try {
-          const pdf = await pdfjsLib.getDocument({ 
+          const loadingTask = pdfjsLib.getDocument({ 
             data: arrayBuffer,
             useSystemFonts: true,
             standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfVersion}/standard_fonts/`,
-          }).promise;
+          });
           
-          for (let i = 1; i <= pdf.numPages; i++) {
+          const pdf = await loadingTask.promise;
+          
+          // Limit pages to avoid hanging on massive docs
+          const maxPages = Math.min(pdf.numPages, 15);
+          
+          for (let i = 1; i <= maxPages; i++) {
+            if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
+            
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
             
@@ -117,7 +175,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             text += pageText + "\n";
           }
           
-          if (text.trim().length < 50) {
+          // Lower threshold for text detection (LaTeX PDFs might have weird encoding but some text)
+          if (text.trim().length < 20) {
             console.log("PDF text extraction yielded minimal text, attempting OCR fallback...");
             toast.info("PDF format not standard, using OCR for text extraction...");
             setProcessingStatus("Running OCR on image-based PDF...");
@@ -130,7 +189,11 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             const worker = await createWorker("eng");
             
             try {
-              for (let i = 1; i <= pdf.numPages; i++) {
+              for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) { // Limit OCR to first 5 pages to prevent timeout
+                if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
+                
+                setProcessingStatus(`Scanning page ${i} of ${Math.min(pdf.numPages, 5)}...`);
+                
                 const page = await pdf.getPage(i);
                 const viewport = page.getViewport({ scale: 2.0 });
                 canvas.width = viewport.width;
@@ -156,9 +219,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                   } finally {
                     URL.revokeObjectURL(imageUrl);
                   }
-                } else {
-                  console.warn(`Could not create image blob for PDF page ${i}. Skipping OCR for this page.`);
-                  ocrErrors.push(new Error(`Failed to create image blob for PDF page ${i}`));
                 }
               }
             } finally {
@@ -168,13 +228,12 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             text = ocrText;
             
             if (!text.trim()) {
-              if (ocrErrors.length > 0) {
-                console.error("OCR failed for all pages:", ocrErrors);
-              }
               throw new Error("Could not extract text from this PDF. Please try: 1) Re-saving as a new PDF from Word, 2) Using 'Save As PDF' instead of 'Export', or 3) Uploading as a .docx file instead.");
             }
           }
-        } catch (pdfError) {
+        } catch (pdfError: any) {
+          if (pdfError.message === "Aborted") throw pdfError;
+          
           console.error("PDF parsing failed:", pdfError);
           // If PDF parsing completely fails, try OCR as last resort
           toast.info("PDF format not recognized, attempting OCR extraction...");
@@ -233,8 +292,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
       console.log("DEBUG: Extracted text length:", cleanText.length);
-      console.log("DEBUG: Extracted text preview:", cleanText.substring(0, 200));
-
+      
       if (cleanText.length < 20) {
         throw new Error(`Extracted text is too short (${cleanText.length} chars). Please ensure the file contains selectable text.`);
       }
@@ -245,18 +303,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       toast.success("✅ Text extracted successfully! AI analysis in progress...");
       
     } catch (error: any) {
-      console.error("Processing Error:", error);
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      toast.error(`Text extraction failed: ${errorMsg}`);
-      setProcessingResumeId(null);
-      
-      try {
-        await deleteResume({ id: resumeId });
-      } catch (deleteError) {
-        console.error("Failed to delete failed resume:", deleteError);
-      }
-    } finally {
-      setProcessingStatus("");
+      if (error.message === "Aborted") throw error;
+      throw error; // Re-throw to be handled by handleFile
     }
   };
 
@@ -295,6 +343,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     handleFileUpload,
     handleDragOver,
     handleDragLeave,
-    handleDrop
+    handleDrop,
+    cancelUpload
   };
 }
