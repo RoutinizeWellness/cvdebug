@@ -39,6 +39,8 @@ export const analyzeResume = internalAction({
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
+      const startTime = Date.now(); // Start timing
+
       let analysisResult;
       let usedFallback = false;
 
@@ -157,6 +159,9 @@ export const analyzeResume = internalAction({
           : [],
       };
       
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+
       try {
         console.log(`[AI Analysis] Attempting to update resume ${args.id} with validated data`);
         console.log(`[AI Analysis] Score: ${safeAnalysisResult.score}, Category: ${safeAnalysisResult.category}`);
@@ -169,6 +174,7 @@ export const analyzeResume = internalAction({
           category: safeAnalysisResult.category,
           analysis: safeAnalysisResult.analysis,
           score: safeAnalysisResult.score,
+          processingDuration: duration, // Pass duration
           scoreBreakdown: safeAnalysisResult.scoreBreakdown,
           missingKeywords: safeAnalysisResult.missingKeywords,
           formatIssues: safeAnalysisResult.formatIssues,

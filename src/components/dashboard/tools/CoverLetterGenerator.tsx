@@ -262,28 +262,32 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
                 <div className="font-mono text-sm md:text-base leading-relaxed text-zinc-300 max-w-none">
                   <p className="mb-4 text-zinc-500">// Generated based on selected application</p>
                   <div className="whitespace-pre-wrap">
-                    {latestLetter.content.split(/(\b(?:kubernetes|docker|python|ci\/cd|microservices|cloud-native|react|typescript|node\.js|aws|azure|gcp)\b)/gi).map((part: string, i: number) => {
-                      // Check if this part is a keyword from the bridged list
-                      const isKeyword = latestLetter.keywordsBridged?.some((kw: string) => 
-                        kw.toLowerCase() === part.toLowerCase()
-                      );
+                    {(() => {
+                      // Dynamic regex construction
+                      const keywordsToHighlight = latestLetter.keywordsBridged?.length 
+                        ? latestLetter.keywordsBridged 
+                        : ["kubernetes", "docker", "python", "ci/cd", "microservices", "cloud-native", "react", "typescript", "node.js", "aws", "azure", "gcp"];
                       
-                      // Also highlight if it matches our hardcoded list for demo purposes if bridged list is empty
-                      const isHardcodedMatch = !latestLetter.keywordsBridged?.length && 
-                        /^(kubernetes|docker|python|ci\/cd|microservices|cloud-native|react|typescript|node\.js|aws|azure|gcp)$/i.test(part);
-
-                      return (isKeyword || isHardcodedMatch) ? (
-                        <span 
-                          key={i}
-                          className="bg-green-500/20 text-green-400 border-b border-green-500 px-1 rounded mx-0.5 font-bold cursor-help"
-                          title="Gap bridged: Added based on JD requirement"
-                        >
-                          {part}
-                        </span>
-                      ) : (
-                        <span key={i}>{part}</span>
-                      );
-                    })}
+                      // Escape special characters for regex
+                      const escapedKeywords = keywordsToHighlight.map((k: string) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+                      const pattern = new RegExp(`(\\b(?:${escapedKeywords.join('|')})\\b)`, 'gi');
+                      
+                      return latestLetter.content.split(pattern).map((part: string, i: number) => {
+                        const isMatch = keywordsToHighlight.some((kw: string) => kw.toLowerCase() === part.toLowerCase());
+                        
+                        return isMatch ? (
+                          <span 
+                            key={i}
+                            className="bg-green-500/20 text-green-400 border-b border-green-500 px-1 rounded mx-0.5 font-bold cursor-help"
+                            title="Gap bridged: Added based on JD requirement"
+                          >
+                            {part}
+                          </span>
+                        ) : (
+                          <span key={i}>{part}</span>
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
               ) : (

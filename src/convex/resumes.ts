@@ -189,6 +189,7 @@ export const updateResumeMetadata = internalMutation({
     analysis: v.optional(v.string()),
     rewrittenText: v.optional(v.string()),
     score: v.optional(v.number()),
+    processingDuration: v.optional(v.number()),
     status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
     scoreBreakdown: v.optional(v.object({
       keywords: v.number(),
@@ -231,6 +232,7 @@ export const updateResumeMetadata = internalMutation({
     if (args.analysis) updates.analysis = args.analysis;
     if (args.rewrittenText) updates.rewrittenText = args.rewrittenText;
     if (args.score !== undefined) updates.score = args.score;
+    if (args.processingDuration !== undefined) updates.processingDuration = args.processingDuration;
     if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
     if (args.missingKeywords) updates.missingKeywords = args.missingKeywords;
     if (args.matchedKeywords) updates.matchedKeywords = args.matchedKeywords;

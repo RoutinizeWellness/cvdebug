@@ -189,7 +189,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </div>
             <div className="glass-panel rounded-xl p-4 flex flex-col items-center justify-center gap-1 text-center bg-slate-900/70 backdrop-blur-xl border border-slate-800/50">
               <span className="text-2xl font-bold text-white">
-                {masterResume ? "1.2s" : "-"}
+                {masterResume?.processingDuration 
+                  ? `${(masterResume.processingDuration / 1000).toFixed(1)}s` 
+                  : masterResume ? "1.2s" : "-"}
               </span>
               <span className="text-xs text-slate-400 uppercase tracking-wide">Load Time</span>
             </div>
