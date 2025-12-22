@@ -36,10 +36,23 @@ export const getApplicationsByProject = query({
     const user = await getCurrentUser(ctx);
     if (!user) return [];
 
-    return await ctx.db
+    const applications = await ctx.db
       .query("applications")
       .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
       .collect();
+
+    return applications.map(app => {
+      let matchScore = (app as any).matchScore || 0;
+      
+      // Calculate match score dynamically if not present
+      if (!matchScore && ((app.matchedKeywords?.length || 0) + (app.missingKeywords?.length || 0) > 0)) {
+        const matched = app.matchedKeywords?.length || 0;
+        const total = matched + (app.missingKeywords?.length || 0);
+        matchScore = Math.round((matched / total) * 100);
+      }
+      
+      return { ...app, matchScore };
+    });
   },
 });
 

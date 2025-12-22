@@ -1,1 +1,46 @@
-const internalAny = require("../_generated/api").internal;
+const COLUMNS = [
+  { id: "draft", title: "Draft", color: "bg-zinc-500" },
+  { id: "applied", title: "Applied", color: "bg-blue-500" },
+  { id: "interviewing", title: "Interviewing", color: "bg-yellow-500" },
+  { id: "accepted", title: "Offer", color: "bg-green-500" },
+  { id: "rejected", title: "Rejected", color: "bg-red-500" },
+];
+
+// Enhance user data with resume counts
+const usersWithStats = await Promise.all(
+  users.map(async (user) => {
+    const resumes = await ctx.db
+      .query("resumes")
+      .withIndex("by_user", (q) => q.eq("userId", user.tokenIdentifier))
+      .collect();
+    
+    return {
+      ...user,
+      resumeCount: resumes.length,
+      lastScanDate: resumes.length > 0 ? Math.max(...resumes.map(r => r._creationTime)) : null,
+    };
+  })
+);
+
+const handleAnalyzeUrl = () => {
+  if (!linkedinUrl) {
+    toast.error("Please enter a LinkedIn URL");
+    return;
+  }
+  toast.info("Direct LinkedIn scraping is restricted by privacy policies.", {
+    description: "Please copy and paste your profile content into the text box below.",
+    duration: 5000,
+  });
+};
+
+          <div 
+            onClick={() => setShowCreateDialog(true)}
+            className="bg-[#1E293B]/50 rounded-xl border-2 border-dashed border-slate-700 p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-slate-800 transition-all group min-h-[250px]"
+          >
+            <div className="bg-black p-3 rounded-lg border-l-2 border-primary">
+              <h4 className="text-white text-xs font-bold mb-1">Tone Check</h4>
+              <p className="text-xs text-zinc-400">
+                The tone is set to '{tone}' with active voice usage.
+              </p>
+            </div>
+          </div>

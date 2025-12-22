@@ -44,21 +44,35 @@ export const getProjects = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return [];
 
+    let projects;
     if (args.status) {
-      return await ctx.db
+      projects = await ctx.db
         .query("projects")
         .withIndex("by_user_and_status", (q) => 
           q.eq("userId", identity.subject).eq("status", args.status)
         )
         .order("desc")
         .collect();
+    } else {
+      projects = await ctx.db
+        .query("projects")
+        .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+        .order("desc")
+        .collect();
     }
 
-    return await ctx.db
-      .query("projects")
-      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
-      .order("desc")
-      .collect();
+    // Enrich with Master CV score (globalScore)
+    return await Promise.all(projects.map(async (project) => {
+      let globalScore = 0;
+      if (project.masterCvId) {
+        const cv = await ctx.db.get(project.masterCvId);
+        if (cv) {
+          // Use score from resume if available
+          globalScore = (cv as any).score || 0;
+        }
+      }
+      return { ...project, globalScore };
+    }));
   },
 });
 
@@ -91,7 +105,17 @@ export const getProjectStats = query({
     const acceptedCount = applications.filter(a => a.status === "accepted").length;
 
     // Calculate Average Success Probability (based on match scores)
-    const scoresSum = applications.reduce((sum, app) => sum + (app.matchScore || 0), 0);
+    const scoresSum = applications.reduce((sum, app) => {
+      let score = (app as any).matchScore || 0;
+      // Calculate score from keywords if not explicitly stored
+      if (!score && ((app.matchedKeywords?.length || 0) + (app.missingKeywords?.length || 0) > 0)) {
+        const matched = app.matchedKeywords?.length || 0;
+        const total = matched + (app.missingKeywords?.length || 0);
+        score = Math.round((matched / total) * 100);
+      }
+      return sum + score;
+    }, 0);
+
     const averageSuccessProbability = totalApplications > 0 
       ? Math.round(scoresSum / totalApplications) 
       : 0;

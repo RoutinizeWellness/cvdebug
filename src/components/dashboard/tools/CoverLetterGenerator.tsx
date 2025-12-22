@@ -58,6 +58,12 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
     selectedApplication ? { applicationId: selectedApplication as any } : "skip"
   );
 
+  // Get selected application details for dynamic filename
+  const selectedAppDetails = applications?.find((a: any) => a._id === selectedApplication);
+  const fileName = selectedAppDetails 
+    ? `Cover_Letter_${selectedAppDetails.companyName.replace(/\s+/g, '_')}.md` 
+    : "DRAFT_PREVIEW.md";
+
   const handleGenerate = async () => {
     if (!selectedApplication) {
       toast.error("Please select an application first.");
@@ -211,7 +217,7 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
             <div className="h-12 border-b border-zinc-800 bg-black/50 flex items-center justify-between px-4">
               <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span>DRAFT_PREVIEW.md</span>
+                <span>{fileName}</span>
               </div>
               <div className="flex items-center gap-1">
                 {latestLetter && (
