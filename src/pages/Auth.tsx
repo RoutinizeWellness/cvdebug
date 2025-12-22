@@ -54,7 +54,7 @@ export default function AuthPage() {
   }
 
   if (isAuthenticated) {
-    return <Navigate to={redirectUrl} />;
+    return <Navigate to={redirectUrl} replace />;
   }
 
   const clerkAppearance = {
@@ -224,12 +224,14 @@ export default function AuthPage() {
                 <SignIn 
                   routing="hash"
                   forceRedirectUrl={redirectUrl}
+                  signUpUrl="#"
                   appearance={clerkAppearance}
                 />
               ) : (
                 <SignUp 
                   routing="hash"
                   forceRedirectUrl={redirectUrl}
+                  signInUrl="#"
                   appearance={clerkAppearance}
                 />
               )}
