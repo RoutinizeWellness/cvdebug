@@ -218,17 +218,19 @@ export const buildRewritePrompt = (text: string, jobDescription?: string) => {
   `;
 };
 
-export const buildBulletPointPrompt = (keyword: string, context?: string) => {
+export const buildBulletPointPrompt = (keyword: string, context?: string, jobDescription?: string) => {
   return `
     You are an expert resume writer. Generate 3 powerful, metric-driven bullet points 
     demonstrating the skill or keyword: "${keyword}".
     
     ${context ? `Context from resume: "${context}"` : ""}
+    ${jobDescription ? `Target Job Description Context: "${jobDescription.substring(0, 500)}..."` : ""}
     
     Requirements:
     - Use strong action verbs (e.g., Orchestrated, Engineered, Spearheaded).
     - Include specific metrics (%, $, time saved) placeholders like [X]% or $[Y]k.
     - Make them sound professional and senior-level.
+    - If a Job Description is provided, tailor the phrasing to match its tone and requirements.
     - Return ONLY the 3 bullet points as a JSON array of strings.
   `;
 };

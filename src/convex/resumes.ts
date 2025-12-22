@@ -47,7 +47,26 @@ export const createResume = mutation({
 
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     
-    if (!hasActiveSprint) {
+    // RE-SCAN LOGIC: Check if this is a re-scan within a project window (e.g., 24h)
+    let isFreeRescan = false;
+    if (args.projectId) {
+      const existingResumes = await ctx.db
+        .query("resumes")
+        .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
+        .order("desc")
+        .take(1);
+      
+      if (existingResumes.length > 0) {
+        const lastResumeTime = existingResumes[0]._creationTime;
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        if (Date.now() - lastResumeTime < twentyFourHours) {
+          isFreeRescan = true;
+          console.log(`[Billing] Free re-scan detected for project ${args.projectId}`);
+        }
+      }
+    }
+
+    if (!hasActiveSprint && !isFreeRescan) {
       const currentCredits = user.credits ?? 0;
       
       if (currentCredits <= 0) {
@@ -254,6 +273,24 @@ export const updateResumeMetadata = internalMutation({
             resumeId: args.id,
           });
           console.log(`[Email] Parsing error email scheduled for ${user.email}`);
+        }
+      }
+    }
+
+    // NEW: Trigger Low Score Tips Email (if score < 60 and not sent yet)
+    if (args.score !== undefined && args.score > 0 && args.score < 60) {
+      const resume = await ctx.db.get(args.id);
+      if (resume && !resume.lowScoreEmailSent && resume.userId) {
+        const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
+        if (user && user.email) {
+          await ctx.db.patch(args.id, { lowScoreEmailSent: true });
+          await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleLowScoreFollowUp, {
+            userId: resume.userId,
+            email: user.email,
+            resumeId: args.id,
+            score: args.score,
+          });
+          console.log(`[Email] Low score follow-up scheduled for ${user.email}`);
         }
       }
     }

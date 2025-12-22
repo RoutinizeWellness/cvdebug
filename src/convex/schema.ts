@@ -227,6 +227,7 @@ const schema = defineSchema(
     parsingErrorEmailSent: v.optional(v.boolean()),
     postScanEmailSent: v.optional(v.boolean()),
     conversionReminderEmailSent: v.optional(v.boolean()),
+    lowScoreEmailSent: v.optional(v.boolean()), // NEW: Track low score tips email
     metricSuggestions: v.optional(v.array(v.object({
       tech: v.string(),
       metrics: v.array(v.string()),

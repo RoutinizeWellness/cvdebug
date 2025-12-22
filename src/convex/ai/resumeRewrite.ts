@@ -52,6 +52,7 @@ export const generateBulletPoints = action({
   args: {
     keyword: v.string(),
     context: v.optional(v.string()),
+    jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -60,7 +61,7 @@ export const generateBulletPoints = action({
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
-    const prompt = buildBulletPointPrompt(args.keyword, args.context);
+    const prompt = buildBulletPointPrompt(args.keyword, args.context, args.jobDescription);
 
     try {
       const response = await callOpenRouter(apiKey, {

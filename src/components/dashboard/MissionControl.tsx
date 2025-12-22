@@ -8,7 +8,10 @@ import { IntegrityPanel } from "./mission/IntegrityPanel";
 import { BulletPointSniper } from "./mission/BulletPointSniper";
 import { ActionableIntelligence } from "./mission/ActionableIntelligence";
 import { SystemConsole } from "./mission/SystemConsole";
-import { Sparkles, X } from "lucide-react";
+import { Sparkles, X, Bot, Eye } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { ATSRawTextView } from "./ATSRawTextView";
 
 const apiAny = api as any;
 
@@ -25,6 +28,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const [showAISuggestion, setShowAISuggestion] = useState(false);
   const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
   const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
+  const [showRobotView, setShowRobotView] = useState(false);
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
@@ -147,7 +151,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     try {
       const bullets = await generateBulletPoints({ 
         keyword,
-        context: masterResume?.ocrText?.substring(0, 500) // Pass some context if available
+        context: masterResume?.ocrText?.substring(0, 500), // Pass some context if available
+        jobDescription: masterResume?.jobDescription // Pass JD for targeted generation
       });
       
       setSnipingKeyword(null);
@@ -172,6 +177,21 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   return (
     <div className="space-y-6 pb-24 md:pb-6">
+      {/* Header Actions */}
+      <div className="flex justify-end items-center gap-4 mb-2">
+        <div className="flex items-center gap-2 bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <Switch 
+            id="robot-view" 
+            checked={showRobotView}
+            onCheckedChange={setShowRobotView}
+          />
+          <Label htmlFor="robot-view" className="text-xs font-medium text-slate-400 flex items-center gap-1 cursor-pointer">
+            <Bot className="h-3 w-3" />
+            Robot View
+          </Label>
+        </div>
+      </div>
+
       {/* Main 3-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Column 1: Metrics (Left) */}
@@ -257,6 +277,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Robot View Dialog */}
+      <ATSRawTextView 
+        open={showRobotView} 
+        onOpenChange={setShowRobotView}
+        ocrText={masterResume?.ocrText || ""}
+        resumeTitle={masterResume?.title || "Resume"}
+      />
     </div>
   );
 }
