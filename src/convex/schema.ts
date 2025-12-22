@@ -160,6 +160,19 @@ const schema = defineSchema(
   .index("by_user", ["userId"])
   .index("by_user_and_date", ["userId", "generatedAt"]),
 
+  // NEW: Project Timeline for gamification
+  projectTimeline: defineTable({
+    projectId: v.id("projects"),
+    userId: v.string(),
+    type: v.string(), // "resume_uploaded", "resume_analyzed", "cover_letter_generated", etc.
+    title: v.string(),
+    description: v.string(),
+    timestamp: v.number(),
+    dayNumber: v.number(), // Day 1, Day 2, etc. relative to project creation
+  })
+  .index("by_project", ["projectId"])
+  .index("by_user", ["userId"]),
+
   resumes: defineTable({
     userId: v.string(),
     projectId: v.optional(v.id("projects")), // NEW: Link to project

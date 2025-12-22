@@ -45,26 +45,21 @@ export const createResume = mutation({
       throw new Error("User not found. Please refresh the page.");
     }
 
-    // Check if user has active Interview Sprint
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     
     if (!hasActiveSprint) {
-      // HARD PAYWALL: Check credits BEFORE allowing any scan
       const currentCredits = user.credits ?? 0;
       
-      // STRICT GATE: Block if no credits available
       if (currentCredits <= 0) {
         throw new Error("CREDITS_EXHAUSTED");
       }
 
-      // Deduct credit IMMEDIATELY and atomically
       await ctx.db.patch(user._id, { 
         credits: Math.max(0, currentCredits - 1),
         freeTrialUsed: true,
       });
     }
 
-    // Update device usage tracking
     if (user.deviceFingerprint) {
       const fingerprint = user.deviceFingerprint;
       const deviceUsage = await ctx.db
@@ -85,7 +80,6 @@ export const createResume = mutation({
       throw new Error("Failed to get file URL");
     }
 
-    // Create resume - use identity.subject for consistency
     const resumeId = await ctx.db.insert("resumes", {
       userId: identity.subject,
       projectId: args.projectId,
@@ -101,7 +95,25 @@ export const createResume = mutation({
       status: "processing",
     });
 
-    // AI analysis will be triggered after OCR extraction in updateResumeOcr
+    // Add timeline event if part of a project
+    if (args.projectId) {
+      await ctx.scheduler.runAfter(0, internalAny.projectTimeline.addTimelineEvent, {
+        projectId: args.projectId,
+        type: "resume_uploaded",
+        title: "Resume Uploaded",
+        description: `Uploaded ${args.title} for analysis`,
+      });
+    }
+
+    // Schedule abandonment email for free users
+    if (!hasActiveSprint && user.credits === 1) {
+      await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
+        userId: identity.subject,
+        email: user.email,
+        resumeId,
+      });
+    }
+
     return resumeId;
   },
 });

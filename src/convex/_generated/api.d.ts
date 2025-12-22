@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as abandonmentEmails from "../abandonmentEmails.js";
 import type * as admin from "../admin.js";
 import type * as ai from "../ai.js";
 import type * as ai_apiClient from "../ai/apiClient.js";
@@ -31,6 +32,7 @@ import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as billing from "../billing.js";
 import type * as billingActions from "../billingActions.js";
+import type * as bulkExport from "../bulkExport.js";
 import type * as coverLetters from "../coverLetters.js";
 import type * as crons from "../crons.js";
 import type * as cvHealthMonitor from "../cvHealthMonitor.js";
@@ -41,6 +43,7 @@ import type * as keywordSniper from "../keywordSniper.js";
 import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as mlLearning from "../mlLearning.js";
+import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
 import type * as receipts from "../receipts.js";
 import type * as resumes from "../resumes.js";
@@ -57,6 +60,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  abandonmentEmails: typeof abandonmentEmails;
   admin: typeof admin;
   ai: typeof ai;
   "ai/apiClient": typeof ai_apiClient;
@@ -80,6 +84,7 @@ declare const fullApi: ApiFromModules<{
   "auth/emailOtp": typeof auth_emailOtp;
   billing: typeof billing;
   billingActions: typeof billingActions;
+  bulkExport: typeof bulkExport;
   coverLetters: typeof coverLetters;
   crons: typeof crons;
   cvHealthMonitor: typeof cvHealthMonitor;
@@ -90,6 +95,7 @@ declare const fullApi: ApiFromModules<{
   linkedinProfile: typeof linkedinProfile;
   marketing: typeof marketing;
   mlLearning: typeof mlLearning;
+  projectTimeline: typeof projectTimeline;
   projects: typeof projects;
   receipts: typeof receipts;
   resumes: typeof resumes;
