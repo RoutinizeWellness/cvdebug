@@ -32,7 +32,7 @@ interface MissionControlProps {
 export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: MissionControlProps) {
   const resumes = useQuery(apiAny.resumes.getResumes);
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
-  const generateBulletPoints = useAction(apiAny.ai.resumeRewrite.generateBulletPoints);
+  const generateBulletPoints = useAction(apiAny.keywordSniper.generateKeywordPhrases);
   const [showAISuggestion, setShowAISuggestion] = useState(false);
   const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
   const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
@@ -203,21 +203,32 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   const handleSnipeKeyword = async (keyword: string) => {
     setSnipingKeyword(keyword);
-    toast.info(`Generating bullet points for "${keyword}"...`);
+    toast.info(`Generating power statements for "${keyword}"...`);
     
     try {
-      const bullets = await generateBulletPoints({ 
-        keyword,
-        context: masterResume?.ocrText?.substring(0, 500), // Pass some context if available
-        jobDescription: masterResume?.jobDescription // Pass JD for targeted generation
+      const result = await generateBulletPoints({ 
+        missingKeyword: keyword,
+        resumeText: masterResume?.ocrText || "",
+        jobDescription: masterResume?.jobDescription || "",
+        targetRole: masterResume?.category || "Professional"
       });
       
       setSnipingKeyword(null);
-      return bullets;
+      
+      // Transform the result to match BulletPointSniper's expected format
+      if (result && result.phrases && result.phrases.length >= 3) {
+        return {
+          performance: result.phrases[0]?.text || "",
+          business: result.phrases[1]?.text || "",
+          leadership: result.phrases[2]?.text || ""
+        };
+      }
+      
+      return null;
     } catch (error) {
       console.error(error);
       setSnipingKeyword(null);
-      toast.error("Failed to generate bullet points. Please try again.");
+      toast.error("Failed to generate power statements. Please try again.");
       return null;
     }
   };
