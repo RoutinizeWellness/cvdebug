@@ -1,7 +1,2 @@
-import React, { useState, useRef, useEffect } from "react";
-
-useEffect(() => {
-  return () => {
-    abortControllerRef.current?.abort();
-  };
-}, []);
+const resumeId = selectedResumeId === "none" ? undefined : selectedResumeId;
+<SelectItem value="none">None (Generic Letter)</SelectItem>
