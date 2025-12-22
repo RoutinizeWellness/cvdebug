@@ -17,6 +17,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const resumes = useQuery(apiAny.resumes.getResumes);
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
   const [showAISuggestion, setShowAISuggestion] = useState(true);
+  const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
@@ -50,6 +51,23 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       impact: "Critical"
     }));
   }, [masterResume]);
+
+  // NEW: Bullet Point Sniper Handler
+  const handleSnipeKeyword = (keyword: string) => {
+    setSnipingKeyword(keyword);
+    toast.success(`Generating bullet points for "${keyword}"...`);
+    
+    // Simulate AI generation (replace with actual API call)
+    setTimeout(() => {
+      setSnipingKeyword(null);
+      toast.success("3 bullet points generated! Check Writing Forge.", {
+        action: {
+          label: "View",
+          onClick: () => onNavigate("writing-forge")
+        }
+      });
+    }, 2000);
+  };
 
   // Console logs
   const consoleLogs = [
@@ -196,9 +214,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div>
                 <h3 className="text-white font-bold text-lg flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">gps_fixed</span>
-                  Keyword Sniper
+                  Bullet Point Sniper
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Targeting Job ID: #SWE-2024-L5</p>
+                <p className="text-xs text-slate-400 mt-1">Click [Snipe it] to generate AI bullet points</p>
               </div>
               <div className="flex gap-2">
                 <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs border border-emerald-500/20 font-mono">
@@ -229,11 +247,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   </div>
                 ))}
 
-                {/* Missing Keywords */}
+                {/* Missing Keywords - WITH SNIPE BUTTON */}
                 {missingKeywords.map((keyword: any, idx: number) => (
                   <motion.div 
                     key={`missing-${idx}`}
-                    className="group flex items-center justify-between p-3 rounded-lg bg-rose-500/5 border border-rose-500/20 hover:bg-rose-500/10 transition-all cursor-pointer"
+                    className="group flex items-center justify-between p-3 rounded-lg bg-rose-500/5 border border-rose-500/20 hover:bg-rose-500/10 transition-all"
                     whileHover={{ x: 4 }}
                     animate={idx === 0 ? { 
                       borderColor: ["rgba(244, 63, 94, 0.2)", "rgba(244, 63, 94, 0.4)", "rgba(244, 63, 94, 0.2)"]
@@ -251,9 +269,22 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                         <span className="text-[10px] text-rose-300/70 font-mono">{keyword.category} • Missing</span>
                       </div>
                     </div>
-                    <button className="px-3 py-1.5 rounded text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition-colors flex items-center gap-1 shadow-[0_0_10px_rgba(244,63,94,0.1)]">
-                      <span className="material-symbols-outlined text-xs">auto_fix_high</span>
-                      Fix with AI
+                    <button 
+                      onClick={() => handleSnipeKeyword(keyword.name)}
+                      disabled={snipingKeyword === keyword.name}
+                      className="px-3 py-1.5 rounded text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition-colors flex items-center gap-1 shadow-[0_0_10px_rgba(244,63,94,0.1)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {snipingKeyword === keyword.name ? (
+                        <>
+                          <span className="material-symbols-outlined text-xs animate-spin">progress_activity</span>
+                          Sniping...
+                        </>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-xs">auto_fix_high</span>
+                          Snipe it
+                        </>
+                      )}
                     </button>
                   </motion.div>
                 ))}
