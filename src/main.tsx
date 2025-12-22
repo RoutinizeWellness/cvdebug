@@ -21,8 +21,13 @@ import "./types/global.d.ts";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
 const convex = new ConvexReactClient(convexUrl || "https://placeholder.convex.cloud");
-// Using Test Key for Sandbox environment to prevent "Failed to load script" errors from custom production domains
-const CLERK_PUBLISHABLE_KEY = "pk_test_aG9wZWZ1bC1kb2UtNTYuY2xlcmsuYWNjb3VudHMuZGV2JA";
+
+// Determine environment to select the correct Clerk Key
+// Sandbox/Dev uses the Test Key to avoid "Failed to load script" errors from custom production domains
+const isSandbox = typeof window !== "undefined" && (window.location.hostname.includes("vly.sh") || window.location.hostname.includes("localhost"));
+const CLERK_PUBLISHABLE_KEY = isSandbox 
+  ? "pk_test_aG9wZWZ1bC1kb2UtNTYuY2xlcmsuYWNjb3VudHMuZGV2JA" // Dev/Sandbox Key
+  : (import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_aG9wZWZ1bC1kb2UtNTYuY2xlcmsuYWNjb3VudHMuZGV2JA"); // Prod Key (fallback to dev if not set)
 
 function RouteSyncer() {
   const location = useLocation();
