@@ -173,3 +173,146 @@ export const sendAbandonmentEmail = internalAction({
     }
   },
 });
+
+export const sendOnboardingEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+    variant: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.error("[Email] Resend API key not configured");
+      return;
+    }
+
+    const firstName = args.name?.split(" ")[0] || "there";
+
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: "CVDebug <welcome@cvdebug.com>",
+          to: args.email,
+          subject: "Welcome to CVDebug - Your ATS Safety Net",
+          html: `
+            <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #8b5cf6; margin-bottom: 16px;">Welcome to CVDebug! 🎉</h2>
+              
+              <p>Hi ${firstName},</p>
+              
+              <p>Thanks for joining CVDebug! You're now equipped with AI-powered tools to ensure your resume gets past the robots and into human hands.</p>
+              
+              <div style="background: #f3f4f6; border-radius: 8px; padding: 16px; margin: 24px 0;">
+                <h3 style="margin: 0 0 12px 0; color: #1f2937;">Here's what you can do:</h3>
+                <ul style="margin: 0; padding-left: 20px; color: #4b5563;">
+                  <li style="margin-bottom: 8px;">Upload your resume for instant ATS analysis</li>
+                  <li style="margin-bottom: 8px;">See exactly what robots see with "Robot View"</li>
+                  <li style="margin-bottom: 8px;">Get AI-powered keyword optimization</li>
+                  <li style="margin-bottom: 8px;">Generate tailored cover letters</li>
+                </ul>
+              </div>
+              
+              <a href="https://cvdebug.com/dashboard" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 16px 0;">
+                Start Your First Scan →
+              </a>
+              
+              <p style="font-size: 14px; color: #6b7280; margin-top: 24px;">
+                Need help? Just reply to this email.<br>
+                - The CVDebug Team
+              </p>
+            </div>
+          `,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("[Email] Onboarding email failed:", await response.text());
+      } else {
+        console.log(`[Email] Onboarding email sent to ${args.email}`);
+      }
+    } catch (error: any) {
+      console.error("[Email] Error sending onboarding email:", error.message);
+    }
+  },
+});
+
+export const sendPurchaseConfirmationEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    credits: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.error("[Email] Resend API key not configured");
+      return;
+    }
+
+    const firstName = args.name?.split(" ")[0] || "there";
+    const planName = args.plan === "interview_sprint" ? "Interview Sprint (7 Days)" : "Single Scan";
+
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: "CVDebug <billing@cvdebug.com>",
+          to: args.email,
+          subject: `Payment Confirmed - ${planName}`,
+          html: `
+            <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #10b981; margin-bottom: 16px;">✅ Payment Confirmed!</h2>
+              
+              <p>Hi ${firstName},</p>
+              
+              <p>Your payment has been processed successfully. You now have access to:</p>
+              
+              <div style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 8px; padding: 16px; margin: 24px 0;">
+                <h3 style="margin: 0 0 12px 0; color: #065f46;">${planName}</h3>
+                ${args.plan === "interview_sprint" ? `
+                  <ul style="margin: 0; padding-left: 20px; color: #047857;">
+                    <li style="margin-bottom: 8px;">Unlimited resume scans for 7 days</li>
+                    <li style="margin-bottom: 8px;">AI keyword suggestions</li>
+                    <li style="margin-bottom: 8px;">Cover letter generator</li>
+                    <li style="margin-bottom: 8px;">LinkedIn optimizer</li>
+                    <li style="margin-bottom: 8px;">Priority support</li>
+                  </ul>
+                ` : `
+                  <p style="margin: 0; color: #047857;">1 complete resume analysis with full ATS report</p>
+                `}
+              </div>
+              
+              <a href="https://cvdebug.com/dashboard" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 16px 0;">
+                Go to Dashboard →
+              </a>
+              
+              <p style="font-size: 14px; color: #6b7280; margin-top: 24px;">
+                Questions? Reply to this email anytime.<br>
+                - The CVDebug Team
+              </p>
+            </div>
+          `,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("[Email] Purchase confirmation email failed:", await response.text());
+      } else {
+        console.log(`[Email] Purchase confirmation email sent to ${args.email}`);
+      }
+    } catch (error: any) {
+      console.error("[Email] Error sending purchase confirmation email:", error.message);
+    }
+  },
+});
