@@ -19,7 +19,7 @@ export const getUsers = query({
       }
 
       console.log("Fetching users for admin...");
-      const users = await ctx.db.query("users").order("desc").take(200); // Limit to 200 for performance
+      const users = await ctx.db.query("users").order("desc").take(500); // Increased limit to 500
       console.log(`Found ${users.length} users`);
       
       // Enhance user data with resume counts
@@ -251,69 +251,43 @@ export const fixKnownMissingUsers = mutation({
       throw new Error("Unauthorized");
     }
 
-    const idsToFix = [
-      "user_36Zmp3s64EbsVfdDLX96yQ3SJCKjuratbupt",
-      "user_36eucfnySMbebZiqtME2txTRtNCadty9",
-      "user_36crk9hfwis3yHRHsvuYwIfxicrlyp",
-      "user_36cqEBADYopX7SoGUqp9nduJyWclyp"
-    ];
-
-    const emailPatterns = [
-      "oregonstate.edu",
-      "gmail.com" 
+    const usersToSync = [
+      { email: "shreyasbedi1@gmail.com", name: "Shrey Bedi" },
+      { email: "adty910@gmail.com", name: "Aditya Ganesh Kumar" },
+      { email: "omingakirstinecyril@gmail.com", name: "Kirstine Cyril Ominga" },
+      { email: "tiniboti@gmail.com", name: "Tini Boti" },
+      { email: "karenarasimhababu2002@gmail.com", name: "Narasimha Kare" }
     ];
 
     let fixedCount = 0;
     let logs = [];
 
-    for (const id of idsToFix) {
-      const user = await ctx.db
+    for (const u of usersToSync) {
+      const existing = await ctx.db
         .query("users")
-        .withIndex("by_token", (q) => q.eq("tokenIdentifier", id))
+        .withIndex("by_email", (q) => q.eq("email", u.email))
         .unique();
 
-      if (user) {
-        logs.push(`Found user by ID: ${user.name} (${user.email})`);
-        if (user.subscriptionTier !== "single_scan" && user.subscriptionTier !== "interview_sprint") {
-           const currentCredits = user.credits || 0;
-           const newCredits = currentCredits < 1 ? 1 : currentCredits;
-           
-           await ctx.db.patch(user._id, {
-             subscriptionTier: "single_scan",
-             credits: newCredits
-           });
-           fixedCount++;
-           logs.push(`Updated ${user.email} to single_scan`);
-        } else {
-          logs.push(`User ${user.email} is already ${user.subscriptionTier}`);
-        }
+      if (!existing) {
+        // Create user with a temporary token that will be updated on next login
+        await ctx.db.insert("users", {
+          tokenIdentifier: `clerk_import_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+          name: u.name,
+          email: u.email,
+          subscriptionTier: "free",
+          credits: 1,
+          trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+          emailVariant: "A",
+          lastSeen: Date.now(),
+        });
+        fixedCount++;
+        logs.push(`Created ${u.email}`);
       } else {
-        logs.push(`User with ID ${id} not found`);
+        logs.push(`Exists ${u.email}`);
       }
     }
 
-    if (fixedCount < 4) {
-       const potentialUsers = await ctx.db.query("users").collect();
-       for (const user of potentialUsers) {
-          if (user.subscriptionTier === "free" && user.email) {
-             const isMatch = 
-                (user.email.includes("oregonstate.edu") && user.name?.includes("Phillip")) ||
-                (user.email.includes("gmail.com") && user.name?.includes("Aditya")) ||
-                (user.email.includes("gmail.com") && user.name?.includes("JULAITI"));
-             
-             if (isMatch) {
-                await ctx.db.patch(user._id, {
-                   subscriptionTier: "single_scan",
-                   credits: Math.max(user.credits || 0, 1)
-                });
-                fixedCount++;
-                logs.push(`Found & Fixed by Email Match: ${user.name} (${user.email})`);
-             }
-          }
-       }
-    }
-
-    return `Fixed ${fixedCount} users. Logs: ${logs.join(", ")}`;
+    return `Synced ${fixedCount} users. Logs: ${logs.join(", ")}`;
   }
 });
 

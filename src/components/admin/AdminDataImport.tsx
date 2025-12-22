@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
-import { UploadCloud, Loader2, FileSpreadsheet } from "lucide-react";
+import { UploadCloud, Loader2, FileSpreadsheet, RefreshCw } from "lucide-react";
 
 export function AdminDataImport() {
   const [isImporting, setIsImporting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   // Cast to any to avoid type issues if the API types haven't regenerated yet
   const importUsers = useMutation((api as any).admin.importUsersFromCSV);
+  const syncMissing = useMutation((api as any).admin.fixKnownMissingUsers);
 
   const handleImport = async () => {
     setIsImporting(true);
@@ -27,8 +29,21 @@ export function AdminDataImport() {
     }
   };
 
+  const handleSync = async () => {
+    setIsSyncing(true);
+    try {
+      const result = await syncMissing();
+      toast.success("Sync Complete", { description: result });
+    } catch (error: any) {
+      console.error(error);
+      toast.error("Sync Failed", { description: error.message });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   return (
-    <div className="glass-panel p-5 rounded-xl border border-slate-700/50 bg-slate-900/50">
+    <div className="glass-panel p-5 rounded-xl border border-slate-700/50 bg-slate-900/50 flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
@@ -47,6 +62,27 @@ export function AdminDataImport() {
         >
           {isImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
           Run Migration
+        </Button>
+      </div>
+
+      <div className="flex items-center justify-between gap-4 border-t border-slate-800 pt-4">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+            <RefreshCw className="h-5 w-5 text-blue-500" />
+          </div>
+          <div>
+            <h3 className="text-base font-display font-bold text-white">Sync Recent Users</h3>
+            <p className="text-slate-400 text-xs">Force sync specific recent Clerk users.</p>
+          </div>
+        </div>
+        <Button 
+          onClick={handleSync} 
+          disabled={isSyncing} 
+          variant="outline" 
+          className="border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white"
+        >
+          {isSyncing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+          Sync Users
         </Button>
       </div>
     </div>
