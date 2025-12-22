@@ -21,6 +21,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
   const createResume = useMutation(apiAny.resumes.createResume);
   const updateResumeOcr = useMutation(apiAny.resumes.updateResumeOcr);
   const deleteResume = useMutation(apiAny.resumes.deleteResume);
+  const triggerServerOcr = useMutation(apiAny.resumes.triggerServerOcr);
 
   const cancelUpload = async () => {
     if (abortControllerRef.current) {
@@ -71,6 +72,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     setProcessingStatus("Uploading your resume...");
     
     let resumeId = null;
+    let storageId = null;
 
     try {
       const postUrl = await generateUploadUrl();
@@ -83,7 +85,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       
       if (!result.ok) throw new Error("Upload failed");
       
-      const { storageId } = await result.json();
+      const uploadResult = await result.json();
+      storageId = uploadResult.storageId;
 
       resumeId = await createResume({
         storageId,
@@ -101,9 +104,9 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       );
       
       // Add timeout to processing (90 seconds max)
-      const processingPromise = processFile(file, resumeId);
+      const processingPromise = processFile(file, resumeId, storageId);
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("Processing timed out. The file might be too complex or corrupted.")), 90000)
+        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 90000)
       );
 
       await Promise.race([processingPromise, timeoutPromise]);
@@ -117,8 +120,31 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       }
       
       console.error(error);
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      toast.error(`Failed to upload resume: ${errorMsg}`);
+      
+      // Check if this is a timeout or processing failure that should trigger server-side OCR
+      if (error.message === "CLIENT_TIMEOUT" || 
+          error.message.includes("Could not extract text") ||
+          error.message.includes("OCR")) {
+        
+        console.log("[Client] Client-side processing failed, triggering server-side OCR fallback");
+        toast.info("⚙️ Client processing timed out. Trying server-side extraction...");
+        
+        try {
+          if (resumeId && storageId) {
+            await triggerServerOcr({ resumeId, storageId });
+            toast.success("Server-side processing initiated. This may take a moment...");
+            setJobDescription("");
+            return; // Don't cleanup, let server handle it
+          }
+        } catch (serverError: any) {
+          console.error("[Client] Server OCR trigger failed:", serverError);
+          toast.error("Both client and server processing failed. Please try a different file format.");
+        }
+      } else {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        toast.error(`Failed to upload resume: ${errorMsg}`);
+      }
+      
       setProcessingResumeId(null);
       setProcessingStatus("");
       
@@ -135,7 +161,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     }
   };
 
-  const processFile = async (file: File, resumeId: any) => {
+  const processFile = async (file: File, resumeId: any, storageId: string) => {
     try {
       let text = "";
       setProcessingStatus("Extracting text from document...");
@@ -155,7 +181,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           
           const pdf = await loadingTask.promise;
           
-          // Limit pages to avoid hanging on massive docs
           const maxPages = Math.min(pdf.numPages, 15);
           
           for (let i = 1; i <= maxPages; i++) {
@@ -175,7 +200,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             text += pageText + "\n";
           }
           
-          // Lower threshold for text detection (LaTeX PDFs might have weird encoding but some text)
           if (text.trim().length < 20) {
             console.log("PDF text extraction yielded minimal text, attempting OCR fallback...");
             toast.info("PDF format not standard, using OCR for text extraction...");
@@ -184,12 +208,11 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             let ocrText = "";
-            let ocrErrors: any[] = [];
 
             const worker = await createWorker("eng");
             
             try {
-              for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) { // Limit OCR to first 5 pages to prevent timeout
+              for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
                 if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
                 
                 setProcessingStatus(`Scanning page ${i} of ${Math.min(pdf.numPages, 5)}...`);
@@ -215,7 +238,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                     ocrText += ret.data.text + "\n";
                   } catch (ocrError) {
                     console.error(`OCR failed for PDF page ${i}:`, ocrError);
-                    ocrErrors.push(ocrError);
                   } finally {
                     URL.revokeObjectURL(imageUrl);
                   }
@@ -235,7 +257,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           if (pdfError.message === "Aborted") throw pdfError;
           
           console.error("PDF parsing failed:", pdfError);
-          // If PDF parsing completely fails, try OCR as last resort
           toast.info("PDF format not recognized, attempting OCR extraction...");
           setProcessingStatus("PDF parsing failed, attempting OCR...");
           
@@ -304,7 +325,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       
     } catch (error: any) {
       if (error.message === "Aborted") throw error;
-      throw error; // Re-throw to be handled by handleFile
+      throw error;
     }
   };
 
