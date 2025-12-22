@@ -13,6 +13,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [processingResumeId, setProcessingResumeId] = useState<string | null>(null);
+  const [processingStatus, setProcessingStatus] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const generateUploadUrl = useMutation(apiAny.resumes.generateUploadUrl);
@@ -43,6 +44,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     }
 
     setIsUploading(true);
+    setProcessingStatus("Uploading your resume...");
     try {
       const postUrl = await generateUploadUrl();
       const result = await fetch(postUrl, {
@@ -60,6 +62,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       });
 
       setProcessingResumeId(resumeId);
+      setProcessingStatus("Analyzing file structure...");
 
       toast.success(jobDescription.trim() 
         ? "Resume uploaded! AI is analyzing against your job description..." 
@@ -74,6 +77,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       const errorMsg = error instanceof Error ? error.message : String(error);
       toast.error(`Failed to upload resume: ${errorMsg}`);
       setProcessingResumeId(null);
+      setProcessingStatus("");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -83,6 +87,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
   const processFile = async (file: File, resumeId: any) => {
     try {
       let text = "";
+      setProcessingStatus("Extracting text from document...");
 
       if (file.type === "application/pdf") {
         const pdfVersion = pdfjsLib.version || "4.0.379"; 
@@ -115,6 +120,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           if (text.trim().length < 50) {
             console.log("PDF text extraction yielded minimal text, attempting OCR fallback...");
             toast.info("PDF format not standard, using OCR for text extraction...");
+            setProcessingStatus("Running OCR on image-based PDF...");
             
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
@@ -172,6 +178,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           console.error("PDF parsing failed:", pdfError);
           // If PDF parsing completely fails, try OCR as last resort
           toast.info("PDF format not recognized, attempting OCR extraction...");
+          setProcessingStatus("PDF parsing failed, attempting OCR...");
           
           try {
             const worker = await createWorker("eng");
@@ -192,11 +199,13 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           }
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+        setProcessingStatus("Reading Word document...");
         const arrayBuffer = await file.arrayBuffer();
         const result = await mammoth.extractRawText({ arrayBuffer });
         text = result.value;
       } else {
         try {
+          setProcessingStatus("Scanning image for text...");
           const worker = await createWorker("eng");
           const imageUrl = URL.createObjectURL(file);
           try {
@@ -230,6 +239,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         throw new Error(`Extracted text is too short (${cleanText.length} chars). Please ensure the file contains selectable text.`);
       }
 
+      setProcessingStatus("Finalizing analysis...");
       await updateResumeOcr({ id: resumeId, ocrText: cleanText });
       
       toast.success("✅ Text extracted successfully! AI analysis in progress...");
@@ -245,6 +255,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       } catch (deleteError) {
         console.error("Failed to delete failed resume:", deleteError);
       }
+    } finally {
+      setProcessingStatus("");
     }
   };
 
@@ -277,6 +289,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     isDragging,
     processingResumeId,
     setProcessingResumeId,
+    processingStatus,
     fileInputRef,
     handleFile,
     handleFileUpload,

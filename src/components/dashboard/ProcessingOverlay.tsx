@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ProcessingOverlayProps {
   isUploading?: boolean;
   isProcessing?: boolean;
+  statusMessage?: string;
 }
 
-export function ProcessingOverlay({ isUploading, isProcessing }: ProcessingOverlayProps) {
+export function ProcessingOverlay({ isUploading, isProcessing, statusMessage }: ProcessingOverlayProps) {
   const [currentStat, setCurrentStat] = useState(0);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [fadeStat, setFadeStat] = useState(true);
@@ -100,7 +101,7 @@ export function ProcessingOverlay({ isUploading, isProcessing }: ProcessingOverl
             <Loader2 className="h-10 w-10 text-primary animate-spin" />
           </div>
           <h3 className="text-3xl font-black text-foreground">
-            {isUploading ? "Uploading Resume..." : "Analyzing Your Resume..."}
+            {statusMessage || (isUploading ? "Uploading Resume..." : "Analyzing Your Resume...")}
           </h3>
           <p className="text-muted-foreground text-lg">
             {isUploading ? "Please wait while we upload your file" : "Our AI is scanning for ATS compatibility issues"}

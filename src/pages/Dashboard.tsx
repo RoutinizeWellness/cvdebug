@@ -80,6 +80,7 @@ export default function Dashboard() {
     isDragging,
     processingResumeId,
     setProcessingResumeId,
+    processingStatus,
     fileInputRef,
     handleFileUpload,
     handleDragOver,
@@ -408,6 +409,7 @@ export default function Dashboard() {
         <ProcessingOverlay 
           isUploading={isUploading} 
           isProcessing={!!processingResumeId || isProcessingPayment} 
+          statusMessage={processingStatus}
         />
       )}
       

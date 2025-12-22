@@ -131,35 +131,31 @@ export const sendAbandonmentEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <alerts@cvdebug.com>",
           to: args.email,
-          subject: `⚠️ ${args.criticalIssuesCount} Critical Issues Detected in Your Resume`,
+          subject: `⚠️ Invisibility Alert: Your Resume might be hidden from ATS`,
           html: `
             <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-              <h2 style="color: #ef4444; margin-bottom: 16px;">⚠️ Urgent: ATS Rejection Risk Detected</h2>
+              <h2 style="color: #ef4444; margin-bottom: 16px;">⚠️ Alert: Your Resume May Be Invisible</h2>
               
               <p>Hi ${firstName},</p>
               
-              <p>We just finished analyzing your resume and found <strong style="color: #ef4444;">${args.criticalIssuesCount} critical issues</strong> that will likely cause automatic rejection by ATS systems.</p>
+              <p>We noticed you started a resume scan but didn't finish reviewing your results. Our initial check flagged potential <strong>"Invisibility Issues"</strong>.</p>
               
               <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px; margin: 24px 0; border-radius: 4px;">
-                <p style="margin: 0; font-weight: 600; color: #991b1b;">Your Current ATS Score: ${args.resumeScore}%</p>
-                <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">Most companies auto-reject resumes below 70%</p>
+                <p style="margin: 0; font-weight: 600; color: #991b1b;">What this means:</p>
+                <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">
+                  ATS robots often can't read resumes with complex formatting, hidden text layers, or graphics. If the robot can't read it, the recruiter never sees it.
+                </p>
               </div>
               
-              <p><strong>Common issues we found:</strong></p>
-              <ul style="color: #374151;">
-                <li>Unreadable text layers (images/graphics)</li>
-                <li>Missing critical keywords from job descriptions</li>
-                <li>Formatting that breaks ATS parsers</li>
-              </ul>
+              <p><strong>We detected ${args.criticalIssuesCount} critical issues</strong> that could be blocking your applications.</p>
               
-              <p>The good news? These are fixable in minutes with our Interview Sprint plan.</p>
+              <p>Don't let a technical glitch cost you an interview. Check your "Robot View" now to see exactly what the ATS sees.</p>
               
-              <a href="https://cvdebug.com/dashboard?upgrade=true" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 16px 0;">
-                Fix My Resume Now →
+              <a href="https://cvdebug.com/dashboard?resumeId=latest" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin: 16px 0;">
+                View My Robot Report →
               </a>
               
               <p style="font-size: 14px; color: #6b7280; margin-top: 24px;">
-                Don't let a fixable resume issue cost you your dream job.<br/>
                 - The CVDebug Team
               </p>
             </div>
