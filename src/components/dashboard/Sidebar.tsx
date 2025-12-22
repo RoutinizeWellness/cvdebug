@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-// Cast to any to avoid deep type instantiation errors
 const apiAny = api;
 
 interface SidebarProps {
@@ -22,18 +21,6 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const currentUser = useQuery(apiAny.users.currentUser);
-  
-  const categories = [
-    { id: "Engineering", label: "Engineering", icon: Code },
-    { id: "Marketing", label: "Marketing", icon: Share },
-    { id: "Sales", label: "Sales", icon: DollarSign },
-    { id: "Design", label: "Design", icon: Palette },
-    { id: "Product", label: "Product", icon: Briefcase },
-    { id: "Finance", label: "Finance", icon: BarChart },
-    { id: "HR", label: "HR", icon: Users },
-    { id: "Operations", label: "Operations", icon: Settings },
-    { id: "Other", label: "Other", icon: File },
-  ];
 
   const NavItem = ({ active, icon: Icon, label, onClick, className }: any) => (
     <button
@@ -71,13 +58,10 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           />
 
           <NavItem 
-            active={currentView === 'resumes' && !categoryFilter}
+            active={currentView === 'projects'}
             icon={Grid}
-            label="All Resumes"
-            onClick={() => {
-              setCurrentView('resumes');
-              setCategoryFilter(null);
-            }}
+            label="Projects Hub"
+            onClick={() => setCurrentView('projects')}
           />
 
           <div className="px-3 pt-6 pb-2">
@@ -116,23 +100,6 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
               />
             </>
           )}
-          
-          <div className="px-3 pt-6 pb-2">
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Categories</p>
-          </div>
-          
-          {categories.map((cat) => (
-            <NavItem 
-              key={cat.id}
-              active={currentView === 'resumes' && categoryFilter === cat.id}
-              icon={cat.icon}
-              label={cat.label}
-              onClick={() => {
-                setCurrentView('resumes');
-                setCategoryFilter(cat.id);
-              }}
-            />
-          ))}
         </div>
 
         {/* Footer Actions */}

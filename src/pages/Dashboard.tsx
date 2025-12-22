@@ -26,7 +26,6 @@ import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
-import { Chatbot } from "@/components/Chatbot";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { JobTrackerView } from "@/components/dashboard/JobTrackerView";
 import { ProjectsView } from "@/components/dashboard/ProjectsView";
@@ -59,7 +58,7 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPricing, setShowPricing] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState("projects"); // Default to Project Hub
+  const [currentView, setCurrentView] = useState("projects");
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
@@ -200,18 +199,6 @@ export default function Dashboard() {
     }
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-500";
-    if (score >= 50) return "text-yellow-500";
-    return "text-zinc-500";
-  };
-
-  const getScoreBgColor = (score: number) => {
-    if (score >= 80) return "bg-green-500";
-    if (score >= 50) return "bg-yellow-500";
-    return "bg-zinc-500";
-  };
-
   const handleGenerateCoverLetter = (applicationId: string) => {
     setPreSelectedApplicationId(applicationId);
     setCurrentView("cover-letter");
@@ -220,9 +207,7 @@ export default function Dashboard() {
   const renderContent = () => {
     switch (currentView) {
       case 'projects':
-        // Level 3: Project Hub (All Projects)
         if (selectedProject) {
-          // Level 4: Mission Control (Project-Specific)
           return (
             <ProjectBoard 
               projectId={selectedProject} 
@@ -237,7 +222,6 @@ export default function Dashboard() {
           />
         );
       case 'mission':
-        // Redirect to projects if no project selected
         if (!selectedProject) {
           setCurrentView('projects');
           return null;
@@ -250,7 +234,6 @@ export default function Dashboard() {
           />
         );
       case 'tools':
-        // Mobile AI Tools Hub
         return (
           <div className="space-y-6 pb-24 md:pb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-white">AI Tools</h1>
@@ -273,7 +256,6 @@ export default function Dashboard() {
           </div>
         );
       case 'profile':
-        // Mobile Profile/Settings
         return (
           <div className="space-y-6 pb-24 md:pb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-white">Profile</h1>
@@ -298,52 +280,12 @@ export default function Dashboard() {
             </div>
           </div>
         );
-      case 'projects':
-        if (selectedProject) {
-          return (
-            <ProjectBoard 
-              projectId={selectedProject} 
-              onBack={() => setSelectedProject(null)} 
-              onGenerateCoverLetter={handleGenerateCoverLetter}
-            />
-          );
-        }
-        return (
-          <ProjectsView 
-            onSelectProject={(id: Id<"projects">) => setSelectedProject(id)} 
-          />
-        );
       case 'templates':
         return <TemplatesView />;
       case 'linkedin':
         return <LinkedInView />;
       case 'cover-letter':
         return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} />;
-      case 'resumes':
-        return (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-white">All Resumes</h1>
-                <p className="text-zinc-400 mt-1">View and manage your uploaded resumes</p>
-              </div>
-              <Button 
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-primary text-black font-bold hover:bg-primary/90"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Upload Resume
-              </Button>
-            </div>
-            <ResumeGrid 
-              resumes={resumes}
-              setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
-              handleDelete={handleDelete}
-              categoryFilter={categoryFilter} 
-              onUpload={() => fileInputRef.current?.click()} 
-            />
-          </div>
-        );
       case 'writing-forge':
         return <WritingForge />;
       default:
