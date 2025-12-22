@@ -205,32 +205,33 @@ Your task is to generate 3 REAL, SPECIFIC, and ACTIONABLE bullet point phrases t
 Generate exactly 3 distinct phrases that showcase different aspects of using ${missingKeyword}.`;
 }
 
-export function buildRewritePrompt(ocrText: string, jobDescription?: string): string {
-  return `You are an expert Resume Writer and ATS Optimization Specialist.
-Your task is to REWRITE the following resume content to be perfectly optimized for Applicant Tracking Systems (ATS) and human recruiters.
+export const buildRewritePrompt = (text: string, jobDescription?: string) => {
+  return `
+    You are an expert resume writer. Rewrite the following resume section to be more impactful, 
+    using strong action verbs and quantifying achievements where possible.
+    ${jobDescription ? `Tailor it to this job description: ${jobDescription}` : ""}
+    
+    Original Text:
+    "${text}"
+    
+    Return only the rewritten text.
+  `;
+};
 
-Target Job Description (if any):
-"${jobDescription || "General professional optimization"}"
-
-Original Resume Text:
-"${ocrText.substring(0, 20000)}"
-
-### INSTRUCTIONS:
-1. **STAR Method**: Rewrite every bullet point using the STAR method (Situation, Task, Action, Result).
-2. **Quantifiable Impact**: Ensure every bullet point includes a metric (%, $, #) or a clear qualitative result. If exact numbers are missing, use placeholders like "[X]%" or "significant".
-3. **Strong Action Verbs**: Start every bullet with a powerful action verb (e.g., "Orchestrated", "Spearheaded", "Engineered"). Avoid passive language like "Responsible for".
-4. **Keyword Integration**: Naturally weave in relevant keywords from the JD or industry standards without keyword stuffing.
-5. **Formatting**: 
-   - Use clear headers: "Professional Summary", "Experience", "Education", "Skills".
-   - Keep the layout clean and simple.
-6. **Tone**: Professional, confident, and concise.
-
-### OUTPUT FORMAT:
-Return ONLY the rewritten resume text in a clean, Markdown format. 
-Do not include explanations, preambles, or "Here is the rewritten resume" text. 
-Just the resume content.
-`;
-}
+export const buildBulletPointPrompt = (keyword: string, context?: string) => {
+  return `
+    You are an expert resume writer. Generate 3 powerful, metric-driven bullet points 
+    demonstrating the skill or keyword: "${keyword}".
+    
+    ${context ? `Context from resume: "${context}"` : ""}
+    
+    Requirements:
+    - Use strong action verbs (e.g., Orchestrated, Engineered, Spearheaded).
+    - Include specific metrics (%, $, time saved) placeholders like [X]% or $[Y]k.
+    - Make them sound professional and senior-level.
+    - Return ONLY the 3 bullet points as a JSON array of strings.
+  `;
+};
 
 export function buildLinkedInPrompt(profileText: string, jobDescription?: string, linkedinUrl?: string): string {
   return `You are an expert LinkedIn Profile Optimizer and Personal Branding Coach.

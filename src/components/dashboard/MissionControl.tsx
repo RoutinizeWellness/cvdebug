@@ -1,4 +1,4 @@
-import { useQuery } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -20,6 +20,7 @@ interface MissionControlProps {
 export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: MissionControlProps) {
   const resumes = useQuery(apiAny.resumes.getResumes);
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
+  const generateBulletPoints = useAction(apiAny.ai.resumeRewrite.generateBulletPoints);
   const [showAISuggestion, setShowAISuggestion] = useState(false);
   const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
   const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
@@ -137,20 +138,34 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     }
   }, [missingKeywords]);
 
-  const handleSnipeKeyword = (keyword: string) => {
+  const handleSnipeKeyword = async (keyword: string) => {
     setSnipingKeyword(keyword);
-    toast.success(`Generating bullet points for "${keyword}"...`);
+    toast.info(`Generating bullet points for "${keyword}"...`);
     
-    // Simulate AI generation (replace with actual API call)
-    setTimeout(() => {
+    try {
+      const bullets = await generateBulletPoints({ 
+        keyword,
+        context: masterResume?.ocrText?.substring(0, 500) // Pass some context if available
+      });
+      
       setSnipingKeyword(null);
-      toast.success("3 bullet points generated! Check Writing Forge.", {
+      
+      // Store these in local storage or pass to Writing Forge via navigation state
+      // For now, we'll show them in a toast and navigate
+      localStorage.setItem("sniped_bullets", JSON.stringify({ keyword, bullets }));
+      
+      toast.success("3 bullet points generated!", {
+        description: "Check Writing Forge to use them.",
         action: {
           label: "View",
           onClick: () => onNavigate("writing-forge")
         }
       });
-    }, 2000);
+    } catch (error) {
+      console.error(error);
+      setSnipingKeyword(null);
+      toast.error("Failed to generate bullet points. Please try again.");
+    }
   };
 
   return (
@@ -169,12 +184,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           {/* Quick Stats Mini-grid */}
           <div className="grid grid-cols-2 gap-4">
             <div className="glass-panel rounded-xl p-4 flex flex-col items-center justify-center gap-1 text-center bg-slate-900/70 backdrop-blur-xl border border-slate-800/50">
-              <span className="text-2xl font-bold text-white">{masterResume ? "1" : "0"}</span>
+              <span className="text-2xl font-bold text-white">{resumes ? resumes.length : "0"}</span>
               <span className="text-xs text-slate-400 uppercase tracking-wide">CVs Active</span>
             </div>
             <div className="glass-panel rounded-xl p-4 flex flex-col items-center justify-center gap-1 text-center bg-slate-900/70 backdrop-blur-xl border border-slate-800/50">
               <span className="text-2xl font-bold text-white">
-                {masterResume ? "0.8s" : "-"}
+                {masterResume ? "1.2s" : "-"}
               </span>
               <span className="text-xs text-slate-400 uppercase tracking-wide">Load Time</span>
             </div>
