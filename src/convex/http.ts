@@ -1,6 +1,7 @@
 import { httpRouter } from "convex/server";
 import { handleWebhook } from "./billing";
 import { httpAction } from "./_generated/server";
+import { Webhook } from "svix";
 
 const http = httpRouter();
 
@@ -17,10 +18,60 @@ http.route({
   method: "POST",
   handler: httpAction(async (ctx, req) => {
     try {
-      const payload = await req.json();
+      // Get the webhook signing secret from environment
+      const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
+      
+      if (!webhookSecret) {
+        console.error("[Clerk Webhook] ⚠️ CLERK_WEBHOOK_SECRET not configured");
+        return new Response(JSON.stringify({ 
+          error: "Webhook secret not configured" 
+        }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      // Get the headers
+      const svix_id = req.headers.get("svix-id");
+      const svix_timestamp = req.headers.get("svix-timestamp");
+      const svix_signature = req.headers.get("svix-signature");
+
+      if (!svix_id || !svix_timestamp || !svix_signature) {
+        console.error("[Clerk Webhook] ⚠️ Missing svix headers");
+        return new Response(JSON.stringify({ 
+          error: "Missing svix headers" 
+        }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      // Get the body
+      const body = await req.text();
+
+      // Verify the webhook signature
+      const wh = new Webhook(webhookSecret);
+      let payload: any;
+
+      try {
+        payload = wh.verify(body, {
+          "svix-id": svix_id,
+          "svix-timestamp": svix_timestamp,
+          "svix-signature": svix_signature,
+        });
+      } catch (err: any) {
+        console.error("[Clerk Webhook] ❌ Signature verification failed:", err.message);
+        return new Response(JSON.stringify({ 
+          error: "Invalid signature" 
+        }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
       const eventType = payload.type;
 
-      console.log(`[Clerk Webhook] ✅ Received event: ${eventType}`);
+      console.log(`[Clerk Webhook] ✅ Received verified event: ${eventType}`);
       console.log(`[Clerk Webhook] Payload:`, JSON.stringify(payload, null, 2));
 
       if (eventType === "user.created" || eventType === "user.updated") {
