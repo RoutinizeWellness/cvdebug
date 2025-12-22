@@ -61,14 +61,17 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   // Extract keywords dynamically
   const matchedKeywords = useMemo(() => {
     if (!masterResume || !masterResume.matchedKeywords) return [];
+    console.log('[MissionControl] Matched keywords:', masterResume.matchedKeywords);
     return masterResume.matchedKeywords;
   }, [masterResume]);
 
   const missingKeywords = useMemo(() => {
     if (!masterResume || !masterResume.missingKeywords) return [];
-    return masterResume.missingKeywords.map((kw: any) => 
+    const keywords = masterResume.missingKeywords.map((kw: any) => 
       typeof kw === 'string' ? kw : kw.keyword
     );
+    console.log('[MissionControl] Missing keywords:', keywords);
+    return keywords;
   }, [masterResume]);
 
   // Extract actionable issues dynamically
@@ -295,8 +298,16 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <ActionableFixes fixes={actionableIssues} />
           
           <BulletPointSniper 
-            matchedKeywords={matchedKeywords.map((k: string) => ({ name: k, category: "Skill", impact: "High" }))}
-            missingKeywords={missingKeywords.map((k: string) => ({ name: k, category: "Missing", impact: "Critical" }))}
+            matchedKeywords={matchedKeywords.map((k: string) => ({ 
+              name: k, 
+              category: "Skill", 
+              impact: "High" 
+            }))}
+            missingKeywords={missingKeywords.map((k: string) => ({ 
+              name: k, 
+              category: "Missing", 
+              impact: "Critical" 
+            }))}
             onSnipe={handleSnipeKeyword}
             snipingKeyword={snipingKeyword}
             isProcessing={isProcessing}
