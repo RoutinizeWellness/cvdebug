@@ -219,20 +219,38 @@ export const buildRewritePrompt = (text: string, jobDescription?: string) => {
 };
 
 export const buildBulletPointPrompt = (keyword: string, context?: string, jobDescription?: string) => {
-  return `
-    You are an expert resume writer. Generate 3 powerful, metric-driven bullet points 
-    demonstrating the skill or keyword: "${keyword}".
-    
-    ${context ? `Context from resume: "${context}"` : ""}
-    ${jobDescription ? `Target Job Description Context: "${jobDescription.substring(0, 500)}..."` : ""}
-    
-    Requirements:
-    - Use strong action verbs (e.g., Orchestrated, Engineered, Spearheaded).
-    - Include specific metrics (%, $, time saved) placeholders like [X]% or $[Y]k.
-    - Make them sound professional and senior-level.
-    - If a Job Description is provided, tailor the phrasing to match its tone and requirements.
-    - Return ONLY the 3 bullet points as a JSON array of strings.
-  `;
+  return `Act as a Principal Technical Recruiter and Senior Engineering Lead from a top-tier Silicon Valley firm. Your goal is to transform weak, passive resume bullet points into high-impact, data-driven "Power Statements."
+
+CORE PRINCIPLES:
+1. FORMULA: Use the Google XYZ Formula: "Accomplished [X] as measured by [Y], by doing [Z]."
+2. ACTION VERBS: Start every bullet with a strong action verb (e.g., Spearheaded, Architected, Orchestrated, Optimized, Engineered). Avoid passive terms like "Responsible for" or "Helped with."
+3. METRICS-FIRST: Prioritize quantifiable impact (%, $, time saved, user growth). If the user doesn't provide a number, generate a realistic but marked bracket [X%] to signal them to fill it in.
+4. KEYWORD INTEGRATION: Seamlessly weave in the target keyword "${keyword}" without making it look forced for the ATS.
+5. SENIOR TONE: Sound authoritative, concise, and focused on business value, not just technical tasks.
+
+TONE GUIDELINES:
+- No fluff. No "passionate" or "hard-working."
+- Focus on "Ownership" and "Scalability."
+- Use industry-standard terminology (e.g., "reduced latency," "driven conversion," "automated infrastructure").
+
+INPUT DATA:
+- Context/Experience: "${context ? context.substring(0, 500) : "General professional experience"}"
+- Targeted Keywords: "${keyword}"
+- Job Role/Context: "${jobDescription ? jobDescription.substring(0, 500) : "General Tech Role"}"
+
+TASK:
+Generate 3 distinct versions of a bullet point demonstrating this skill:
+1. THE PERFORMANCE VERSION: Focus on speed, efficiency, and technical optimization.
+2. THE BUSINESS VERSION: Focus on revenue, user growth, or cost reduction.
+3. THE LEADERSHIP VERSION: Focus on ownership, cross-functional collaboration, or mentoring.
+
+OUTPUT FORMAT:
+Return only a JSON object:
+{
+  "performance": "...",
+  "business": "...",
+  "leadership": "..."
+}`;
 };
 
 export function buildLinkedInPrompt(profileText: string, jobDescription?: string, linkedinUrl?: string): string {

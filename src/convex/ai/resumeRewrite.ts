@@ -72,6 +72,15 @@ export const generateBulletPoints = action({
 
       const result = extractJSON(response);
       
+      // Handle the new specific format (Performance, Business, Leadership)
+      if (result && (result.performance || result.business || result.leadership)) {
+        const bullets = [];
+        if (result.performance) bullets.push(result.performance);
+        if (result.business) bullets.push(result.business);
+        if (result.leadership) bullets.push(result.leadership);
+        if (bullets.length > 0) return bullets;
+      }
+
       // If result is an object with a key like "bulletPoints", extract that
       if (result && !Array.isArray(result) && result.bulletPoints) {
         return result.bulletPoints;
