@@ -157,7 +157,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                         </div>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <Button 
                         variant="ghost" 
                         size="icon" 
