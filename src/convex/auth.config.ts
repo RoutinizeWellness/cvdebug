@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: "https://accounts.cvdebug.com",
+      domain: "https://clerk.cvdebug.com",
       applicationID: "convex",
     },
     {
