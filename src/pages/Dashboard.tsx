@@ -20,7 +20,8 @@ import {
   Settings,
   CreditCard,
   FolderOpen,
-  LayoutTemplate
+  LayoutTemplate,
+  Briefcase
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -58,7 +59,7 @@ export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPricing, setShowPricing] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState("projects");
+  const [currentView, setCurrentView] = useState("mission");
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
@@ -222,16 +223,36 @@ export default function Dashboard() {
           />
         );
       case 'mission':
-        if (!selectedProject) {
-          setCurrentView('projects');
-          return null;
-        }
         return (
           <MissionControl 
             onNavigate={setCurrentView} 
             onGenerateCoverLetter={handleGenerateCoverLetter}
             onUpload={() => fileInputRef.current?.click()}
           />
+        );
+      case 'master-cvs':
+        return (
+          <div className="space-y-6 pb-24 md:pb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-white">Master CVs</h1>
+                <p className="text-slate-400 text-sm mt-1">Your base resume templates</p>
+              </div>
+              <Button 
+                onClick={() => fileInputRef.current?.click()}
+                className="bg-primary hover:bg-primary/90 text-white font-bold"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Upload New CV
+              </Button>
+            </div>
+            <ResumeGrid 
+              resumes={resumes || []}
+              setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
+              handleDelete={handleDelete}
+              onUpload={() => fileInputRef.current?.click()}
+            />
+          </div>
         );
       case 'tools':
         return (

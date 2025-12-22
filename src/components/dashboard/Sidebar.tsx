@@ -59,9 +59,16 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
 
           <NavItem 
             active={currentView === 'projects'}
-            icon={Grid}
-            label="Projects Hub"
+            icon={Briefcase}
+            label="My Applications"
             onClick={() => setCurrentView('projects')}
+          />
+
+          <NavItem 
+            active={currentView === 'master-cvs'}
+            icon={FileText}
+            label="Master CVs"
+            onClick={() => setCurrentView('master-cvs')}
           />
 
           <div className="px-3 pt-6 pb-2">
