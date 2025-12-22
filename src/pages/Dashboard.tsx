@@ -320,7 +320,26 @@ export default function Dashboard() {
     }
   };
 
-  if (!currentUser) return null;
+  if (isLoading || currentUser === undefined) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  if (currentUser === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 flex-col gap-4">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+        <p className="text-slate-400">Setting up your workspace...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-transparent text-foreground font-sans selection:bg-primary/30">
