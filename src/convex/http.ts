@@ -28,29 +28,22 @@ http.route({
         // Extract user data
         const userId = user.id;
         const email = user.email_addresses?.[0]?.email_address || "";
-        const name = `${user.first_name || ""} ${user.last_name || ""}`.trim() || email.split("@")[0];
+        const firstName = user.first_name || "";
+        const lastName = user.last_name || "";
+        const name = `${firstName} ${lastName}`.trim() || email.split("@")[0];
         
-        // Check if user exists
-        const existingUser = await ctx.runQuery(require("./_generated/api").internal.users.getUserInternal, {
+        console.log(`[Clerk Webhook] Processing user: ${email} (${userId})`);
+        
+        // Check if user exists by tokenIdentifier
+        const existingUsers = await ctx.runQuery(require("./_generated/api").internal.users.getUserInternal, {
           subject: userId,
         });
 
-        if (!existingUser) {
-          // Create new user
-          await ctx.runMutation(require("./_generated/api").internal.users.createUserInternal, {
-            tokenIdentifier: userId,
-            email,
-            name,
-          });
-          console.log(`[Clerk Webhook] Created user: ${email}`);
+        if (!existingUsers) {
+          // User doesn't exist, create via storeUser logic
+          console.log(`[Clerk Webhook] User not found, will be created on first login: ${email}`);
         } else {
-          // Update existing user
-          await ctx.runMutation(require("./_generated/api").internal.users.updateUserInternal, {
-            userId: existingUser._id,
-            email,
-            name,
-          });
-          console.log(`[Clerk Webhook] Updated user: ${email}`);
+          console.log(`[Clerk Webhook] User already exists: ${email}`);
         }
       }
 
