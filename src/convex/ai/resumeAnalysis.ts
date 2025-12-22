@@ -6,7 +6,7 @@ import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateFallbackAnalysis } from "./fallbackAnalysis";
 
-// Use require to avoid deep type instantiation issues
+// Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
 
 export const analyzeResume = internalAction({
@@ -47,7 +47,12 @@ export const analyzeResume = internalAction({
       // Always use fallback if no API key OR if API call fails/times out
       if (!apiKey) {
         console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
-        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+        try {
+          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+        } catch (err) {
+          console.error("[AI Analysis] Fallback analysis failed:", err);
+          throw new Error("Failed to generate fallback analysis");
+        }
         usedFallback = true;
       } else {
         try {
@@ -82,7 +87,12 @@ export const analyzeResume = internalAction({
           
         } catch (error: any) {
           console.error("[AI Analysis] OpenRouter failed, using ML-based analysis:", error.message);
-          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+          try {
+            analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+          } catch (err) {
+            console.error("[AI Analysis] Fallback analysis failed after API error:", err);
+            throw err;
+          }
           usedFallback = true;
         }
       }
@@ -90,7 +100,12 @@ export const analyzeResume = internalAction({
       // Ensure we have valid analysis result
       if (!analysisResult || typeof analysisResult.score !== 'number') {
         console.error("[AI Analysis] Invalid analysis result, generating fallback");
-        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+        try {
+          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+        } catch (err) {
+          console.error("[AI Analysis] Final fallback attempt failed:", err);
+          throw err;
+        }
         usedFallback = true;
       }
 

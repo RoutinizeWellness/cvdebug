@@ -1,4 +1,4 @@
-import { classifyRole, type RoleCategory } from "./config/keywords";
+import { classifyRole, type RoleCategory, actionVerbs } from "./config/keywords";
 import { generateSmartMetricSuggestions } from "./config/metricTemplates";
 import { calculateKeywordScore } from "./scoring/keywordScoring";
 import { calculateFormatScore } from "./scoring/formatScoring";
@@ -126,7 +126,7 @@ export function generateFallbackAnalysis(
     if (matches) metricCount += matches.length;
   });
   
-  const { actionVerbs } = require("./config/keywords");
+  // Use imported actionVerbs
   const strongVerbs = new RegExp(`\\b(${actionVerbs.join('|')})\\b`, 'gi');
   const strongVerbMatches = (ocrText.match(strongVerbs) || []).length;
   
