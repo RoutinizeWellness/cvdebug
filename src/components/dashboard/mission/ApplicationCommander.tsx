@@ -44,6 +44,11 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
     return "bg-red-500/10 text-red-500 border-red-500/20";
   };
 
+  const handleViewDetails = (job: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedJob(job);
+  };
+
   return (
     <>
       <div className="rounded-xl border border-zinc-800 bg-[#0A0A0A] overflow-hidden flex flex-col h-full">
@@ -153,7 +158,13 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                       )}
                     </TableCell>
                     <TableCell>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-500 hover:text-white">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-8 w-8 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
+                        onClick={(e) => handleViewDetails(job, e)}
+                        title="View Details"
+                      >
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </TableCell>
