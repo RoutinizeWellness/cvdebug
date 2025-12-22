@@ -8,6 +8,7 @@ import { IntegrityPanel } from "./mission/IntegrityPanel";
 import { BulletPointSniper } from "./mission/BulletPointSniper";
 import { ActionableIntelligence } from "./mission/ActionableIntelligence";
 import { SystemConsole } from "./mission/SystemConsole";
+import { Sparkles, X } from "lucide-react";
 
 const apiAny = api as any;
 
@@ -42,6 +43,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const matchScore = masterResume?.score || 0;
   const integrityScore = masterResume?.textLayerIntegrity || 0;
   const hasImageTrap = masterResume?.hasImageTrap || false;
+  const isProcessing = masterResume?.status === "processing";
 
   // Extract keywords dynamically
   const matchedKeywords = useMemo(() => {
@@ -205,6 +207,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             missingKeywords={missingKeywords}
             onSnipe={handleSnipeKeyword}
             snipingKeyword={snipingKeyword}
+            isProcessing={isProcessing}
           />
         </div>
 
@@ -226,7 +229,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           >
             <div className="glass-panel border-l-4 border-l-[#8B5CF6] p-4 rounded-lg shadow-2xl flex items-start gap-4 max-w-sm bg-slate-900/90 backdrop-blur-xl">
               <div className="p-2 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6]">
-                <span className="material-symbols-outlined">auto_awesome</span>
+                <Sparkles className="h-5 w-5" />
               </div>
               <div className="flex-1">
                 <h4 className="text-white font-semibold text-sm">AI Suggestions Ready</h4>
@@ -248,7 +251,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 className="text-slate-500 hover:text-white"
                 onClick={() => setShowAISuggestion(false)}
               >
-                <span className="material-symbols-outlined text-sm">close</span>
+                <X className="h-4 w-4" />
               </button>
             </div>
           </motion.div>
