@@ -76,19 +76,19 @@ export function LinkedInOptimizer() {
   const hasData = displayResult && score > 0;
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-slate-950">
       {/* Breadcrumbs */}
-      <div className="px-6 py-4 border-b border-zinc-800/50">
+      <div className="px-6 py-4 border-b border-slate-800/50 bg-slate-900/20 backdrop-blur-sm">
         <div className="flex flex-wrap gap-2 text-sm">
-          <span className="text-zinc-500">Tools</span>
-          <span className="text-zinc-600">/</span>
-          <span className="text-zinc-500">Audit Suite</span>
-          <span className="text-zinc-600">/</span>
+          <span className="text-slate-500">Tools</span>
+          <span className="text-slate-600">/</span>
+          <span className="text-slate-500">Audit Suite</span>
+          <span className="text-slate-600">/</span>
           <span className="text-primary font-medium">LinkedIn SEO Report</span>
         </div>
       </div>
 
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main className="flex-1 p-6 overflow-y-auto custom-scrollbar">
         <LinkedInHeader 
           lastScanned={lastScanned}
           linkedinUrl={linkedinUrl || displayResult?.linkedinUrl}
@@ -98,26 +98,26 @@ export function LinkedInOptimizer() {
 
         {/* Input Section */}
         {!result && (
-          <Card className="border-zinc-800 bg-zinc-900/80 mb-6">
+          <Card className="border-slate-800 bg-slate-900/50 backdrop-blur-md mb-6 shadow-xl shadow-black/20">
             <CardHeader>
-              <CardTitle className="text-xl">Import Profile</CardTitle>
-              <CardDescription>Paste your LinkedIn profile URL or content to analyze.</CardDescription>
+              <CardTitle className="text-xl text-white">Import Profile</CardTitle>
+              <CardDescription className="text-slate-400">Paste your LinkedIn profile URL or content to analyze.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-3">
-                <Label htmlFor="linkedin-url" className="font-bold">LinkedIn URL</Label>
+                <Label htmlFor="linkedin-url" className="font-bold text-slate-300">LinkedIn URL</Label>
                 <div className="flex gap-3">
                   <div className="relative flex-1">
-                    <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                    <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                     <Input 
                       id="linkedin-url" 
                       placeholder="https://linkedin.com/in/yourname" 
-                      className="pl-10 bg-black border-zinc-800" 
+                      className="pl-10 bg-slate-950 border-slate-800 text-white placeholder:text-slate-600 focus:border-primary/50" 
                       value={linkedinUrl}
                       onChange={(e) => setLinkedinUrl(e.target.value)}
                     />
                   </div>
-                  <Button variant="outline" className="border-zinc-800" onClick={handleAnalyzeUrl}>
+                  <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white" onClick={handleAnalyzeUrl}>
                     Analyze URL
                   </Button>
                 </div>
@@ -125,42 +125,42 @@ export function LinkedInOptimizer() {
               
               <div className="relative py-2">
                 <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-zinc-800" />
+                  <span className="w-full border-t border-slate-800" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase tracking-wider font-bold">
-                  <span className="bg-zinc-900 px-4 text-zinc-500">Or paste content</span>
+                  <span className="bg-slate-900 px-4 text-slate-500">Or paste content</span>
                 </div>
               </div>
 
               <div className="grid gap-3">
-                <Label htmlFor="profile-text" className="font-bold">Profile Text (About, Experience, Skills)</Label>
+                <Label htmlFor="profile-text" className="font-bold text-slate-300">Profile Text (About, Experience, Skills)</Label>
                 <Textarea 
                   id="profile-text" 
                   placeholder="Paste your profile content here..." 
-                  className="min-h-[200px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                  className="min-h-[200px] resize-none p-4 leading-relaxed bg-slate-950 border-slate-800 text-slate-300 placeholder:text-slate-600 focus:border-primary/50"
                   value={profileText}
                   onChange={(e) => setProfileText(e.target.value)}
                 />
               </div>
 
               <div className="grid gap-3">
-                <Label htmlFor="job-desc" className="font-bold">Target Job Description (Optional)</Label>
+                <Label htmlFor="job-desc" className="font-bold text-slate-300">Target Job Description (Optional)</Label>
                 <Textarea 
                   id="job-desc" 
                   placeholder="Paste the job description you are targeting..." 
-                  className="min-h-[100px] resize-none p-4 leading-relaxed bg-black border-zinc-800"
+                  className="min-h-[100px] resize-none p-4 leading-relaxed bg-slate-950 border-slate-800 text-slate-300 placeholder:text-slate-600 focus:border-primary/50"
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
                 />
               </div>
             </CardContent>
-            <CardFooter className="justify-between bg-zinc-950/30 p-6 border-t border-zinc-800">
-              <p className="text-xs text-zinc-400 font-medium flex items-center gap-2">
+            <CardFooter className="justify-between bg-slate-950/30 p-6 border-t border-slate-800">
+              <p className="text-xs text-slate-500 font-medium flex items-center gap-2">
                 <Lock className="h-3 w-3" /> We do not store your LinkedIn data permanently.
               </p>
               <Button 
                 size="lg" 
-                className="font-bold shadow-lg shadow-primary/20"
+                className="font-bold shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 text-white"
                 onClick={handleOptimize}
                 disabled={isAnalyzing}
               >
@@ -176,7 +176,7 @@ export function LinkedInOptimizer() {
 
         {/* Results Grid */}
         {displayResult && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
             <ScoreGauge 
               score={score}
               critique={displayResult.headline?.critique}

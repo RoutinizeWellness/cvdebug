@@ -26,16 +26,16 @@ export function HeadlineOptimizer({ current, suggested, critique }: HeadlineOpti
   const suggestedWordCount = suggestedText.split(/\s+/).length;
 
   return (
-    <div className="lg:col-span-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/50 rounded-xl p-6 flex flex-col">
+    <div className="lg:col-span-2 bg-slate-900/60 backdrop-blur-xl border border-slate-800/50 rounded-xl p-6 flex flex-col shadow-lg shadow-black/20">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-white font-semibold text-lg flex items-center gap-2 mb-1">
             <Edit className="h-5 w-5 text-primary" />
             Headline Sandbox
           </h3>
-          <p className="text-zinc-400 text-sm">Compare your current headline against our AI-optimized version.</p>
+          <p className="text-slate-400 text-sm">Compare your current headline against our AI-optimized version.</p>
         </div>
-        <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20">
+        <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
           +15% Impact
         </span>
       </div>
@@ -43,18 +43,18 @@ export function HeadlineOptimizer({ current, suggested, critique }: HeadlineOpti
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
         {/* Current Version */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Current Version
           </label>
           <div className="relative group">
             <textarea
               value={currentText}
               onChange={(e) => setCurrentText(e.target.value)}
-              className="w-full h-32 bg-zinc-900/50 border border-zinc-700 rounded-lg p-4 text-zinc-300 font-mono text-sm resize-none focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              className="w-full h-32 bg-slate-950/50 border border-slate-700 rounded-lg p-4 text-slate-300 font-mono text-sm resize-none focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
               spellCheck={false}
             />
             <div className="absolute bottom-3 right-3">
-              <span className="text-xs text-zinc-500">{currentWordCount * 5}/220</span>
+              <span className="text-xs text-slate-500">{currentWordCount * 5}/220</span>
             </div>
           </div>
         </div>
@@ -66,16 +66,16 @@ export function HeadlineOptimizer({ current, suggested, critique }: HeadlineOpti
             Suggested Version
           </label>
           <div className="relative">
-            <div className="w-full h-32 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 border border-primary/30 rounded-lg p-4 font-mono text-sm overflow-y-auto relative">
+            <div className="w-full h-32 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-primary/30 rounded-lg p-4 font-mono text-sm overflow-y-auto relative shadow-inner shadow-black/20">
               <span className="text-white">Senior Full Stack Engineer</span>
-              <span className="text-zinc-500"> | </span>
-              <span className="text-emerald-400 bg-emerald-500/10 px-1 rounded">Building Scalable SaaS</span>
-              <span className="text-zinc-500"> | </span>
+              <span className="text-slate-500"> | </span>
+              <span className="text-emerald-400 bg-emerald-500/10 px-1 rounded border border-emerald-500/20">Building Scalable SaaS</span>
+              <span className="text-slate-500"> | </span>
               <span className="text-white">React, Node.js, AWS Expert</span>
             </div>
             <button 
               onClick={handleApply}
-              className="absolute bottom-3 right-3 text-xs bg-zinc-800 hover:bg-zinc-700 text-white px-2 py-1 rounded border border-zinc-600 transition-colors"
+              className="absolute bottom-3 right-3 text-xs bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded border border-slate-600 transition-colors"
             >
               Apply
             </button>
