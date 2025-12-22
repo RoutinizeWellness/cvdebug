@@ -674,8 +674,9 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         
                         <KeywordHeatmap 
                           matchedKeywords={foundKeywords}
-                          missingKeywords={displayResume?.missingKeywords || []}
-                          isPremium={false}
+                          missingKeywords={displayResume?.missingKeywords?.map((k: any) => typeof k === 'string' ? k : k.keyword) || []}
+                          isPremium={!isFree}
+                          onUnlock={() => setShowPricing(true)}
                         />
 
                         <RoleMatchCard 

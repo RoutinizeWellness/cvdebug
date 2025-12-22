@@ -66,7 +66,7 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
             <div className={`flex flex-wrap gap-2 ${!isPremium ? "blur-sm select-none" : ""}`}>
               {missingKeywords.slice(0, isPremium ? undefined : 5).map((kw, i) => (
                 <Badge key={i} variant="outline" className="border-red-500/30 text-red-400 bg-red-500/5">
-                  {kw}
+                  {typeof kw === 'string' ? kw : (kw as any).keyword || 'Keyword'}
                 </Badge>
               ))}
               {!isPremium && (
