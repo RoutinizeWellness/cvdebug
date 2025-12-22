@@ -1,1 +1,1 @@
-ls -R src/components/admin
+npx convex run migrations:syncClerkUsers

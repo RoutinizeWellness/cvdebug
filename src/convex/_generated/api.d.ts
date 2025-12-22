@@ -43,6 +43,7 @@ import type * as jobTracker from "../jobTracker.js";
 import type * as keywordSniper from "../keywordSniper.js";
 import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
+import type * as migrations_syncClerkUsers from "../migrations/syncClerkUsers.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
@@ -96,6 +97,7 @@ declare const fullApi: ApiFromModules<{
   keywordSniper: typeof keywordSniper;
   linkedinProfile: typeof linkedinProfile;
   marketing: typeof marketing;
+  "migrations/syncClerkUsers": typeof migrations_syncClerkUsers;
   mlLearning: typeof mlLearning;
   projectTimeline: typeof projectTimeline;
   projects: typeof projects;

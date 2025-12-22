@@ -462,6 +462,59 @@ export const getActiveSprintUsers = internalQuery({
   },
 });
 
+export const createUserFromMigration = internalMutation({
+  args: {
+    tokenIdentifier: v.string(),
+    email: v.string(),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    console.log(`[Migration] Creating user: ${args.email}`);
+
+    // Check if user already exists by token
+    const existingByToken = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .first();
+
+    if (existingByToken) {
+      console.log(`[Migration] User already exists by token: ${args.email}`);
+      return existingByToken._id;
+    }
+
+    // Check if user already exists by email
+    const existingByEmail = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .first();
+
+    if (existingByEmail) {
+      console.log(`[Migration] User exists by email, updating token: ${args.email}`);
+      await ctx.db.patch(existingByEmail._id, {
+        tokenIdentifier: args.tokenIdentifier,
+        name: args.name,
+        lastSeen: Date.now(),
+      });
+      return existingByEmail._id;
+    }
+
+    // Create new user with 1 free credit
+    const userId = await ctx.db.insert("users", {
+      tokenIdentifier: args.tokenIdentifier,
+      name: args.name,
+      email: args.email,
+      subscriptionTier: "free",
+      credits: 1,
+      trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
+      emailVariant: "A",
+      lastSeen: Date.now(),
+    });
+
+    console.log(`[Migration] ✅ Created user ${args.email} with ID ${userId}`);
+    return userId;
+  },
+});
+
 /**
  * Use this function internally to get the current user data.
  */
