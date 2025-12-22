@@ -56,7 +56,7 @@ export const storeUser = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
-      .unique();
+      .first();
 
     if (user !== null) {
       // Update existing user
@@ -110,8 +110,8 @@ export const storeUser = mutation({
     if (identity.email) {
       const existingUserByEmail = await ctx.db
         .query("users")
-        .withIndex("by_email", (q) => q.eq("email", identity.email || ""))
-        .unique();
+        .withIndex("by_email", (q) => q.eq("email", identity.email!))
+        .first();
       
       if (existingUserByEmail) {
          await ctx.db.patch(existingUserByEmail._id, {
