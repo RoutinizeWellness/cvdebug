@@ -16,12 +16,13 @@ http.route({
   path: "/clerk-webhook",
   method: "POST",
   handler: httpAction(async (ctx, req) => {
-    const payload = await req.json();
-    const eventType = payload.type;
-
-    console.log(`[Clerk Webhook] Received event: ${eventType}`);
-
     try {
+      const payload = await req.json();
+      const eventType = payload.type;
+
+      console.log(`[Clerk Webhook] ✅ Received event: ${eventType}`);
+      console.log(`[Clerk Webhook] Payload:`, JSON.stringify(payload, null, 2));
+
       if (eventType === "user.created" || eventType === "user.updated") {
         const user = payload.data;
         
@@ -32,28 +33,25 @@ http.route({
         const lastName = user.last_name || "";
         const name = `${firstName} ${lastName}`.trim() || email.split("@")[0];
         
-        console.log(`[Clerk Webhook] Processing user: ${email} (${userId})`);
-        
-        // Check if user exists by tokenIdentifier
-        const existingUsers = await ctx.runQuery(require("./_generated/api").internal.users.getUserInternal, {
-          subject: userId,
-        });
-
-        if (!existingUsers) {
-          // User doesn't exist, create via storeUser logic
-          console.log(`[Clerk Webhook] User not found, will be created on first login: ${email}`);
-        } else {
-          console.log(`[Clerk Webhook] User already exists: ${email}`);
-        }
+        console.log(`[Clerk Webhook] 📧 Processing user: ${email} (${userId})`);
+        console.log(`[Clerk Webhook] ℹ️ Note: User will be created on first login via UserSyncer component`);
       }
 
-      return new Response(JSON.stringify({ success: true }), {
+      return new Response(JSON.stringify({ 
+        success: true, 
+        message: "Webhook received successfully",
+        eventType 
+      }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
     } catch (error: any) {
-      console.error("[Clerk Webhook] Error:", error);
-      return new Response(JSON.stringify({ error: error.message }), {
+      console.error("[Clerk Webhook] ❌ Error:", error);
+      console.error("[Clerk Webhook] Stack:", error.stack);
+      return new Response(JSON.stringify({ 
+        error: error.message,
+        stack: error.stack 
+      }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
