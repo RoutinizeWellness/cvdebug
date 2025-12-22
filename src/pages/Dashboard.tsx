@@ -334,7 +334,7 @@ export default function Dashboard() {
 
   if (currentUser === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 flex-col gap-4">
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 flex-col gap-4">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
         <p className="text-slate-400">Setting up your workspace...</p>
       </div>
@@ -342,7 +342,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-transparent text-foreground font-sans selection:bg-primary/30">
+    <div className="flex h-screen bg-slate-900 text-white font-sans selection:bg-primary/30">
       <Sidebar 
         categoryFilter={categoryFilter} 
         setCategoryFilter={setCategoryFilter}
@@ -352,13 +352,13 @@ export default function Dashboard() {
       />
       
       <main 
-        className="flex-1 flex flex-col overflow-hidden relative bg-transparent pb-20 md:pb-0"
+        className="flex-1 flex flex-col overflow-hidden relative bg-slate-900 pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         {/* Mobile Header */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900">
           <Logo />
           <Button variant="ghost" size="icon" onClick={() => setShowPricing(true)}>
             <Sparkles className="h-5 w-5 text-primary" />

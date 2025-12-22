@@ -38,7 +38,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
 
   return (
     <aside className="w-72 flex-shrink-0 p-4 hidden md:block h-screen sticky top-0">
-      <div className="flex h-full flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-950 p-5 shadow-xl">
+      <div className="flex h-full flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-xl">
         {/* Header */}
         <div className="px-2">
           <Logo />
