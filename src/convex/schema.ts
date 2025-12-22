@@ -128,6 +128,7 @@ const schema = defineSchema(
     variations: v.array(v.object({
       tone: v.string(),
       content: v.string(),
+      subject: v.optional(v.string()),
     })),
     generatedAt: v.number(),
   })

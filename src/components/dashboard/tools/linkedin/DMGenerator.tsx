@@ -1,8 +1,8 @@
 import { MessageSquare, Copy, Sparkles, Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useState } from "react";
-import { useAction } from "convex/react";
+import { useState, useEffect } from "react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 
@@ -14,6 +14,7 @@ interface DMGeneratorProps {
 
 export function DMGenerator({ profileText, jobDescription, missingKeywords }: DMGeneratorProps) {
   const generateDMs = useAction((api as any).ai.linkedinOptimizer.generateRecruiterDMs);
+  const previousDMs = useQuery((api as any).linkedinProfile.getRecruiterDMs);
   
   const [recruiterType, setRecruiterType] = useState("Internal HR");
   const [recruiterName, setRecruiterName] = useState("");
@@ -21,6 +22,13 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedDMs, setGeneratedDMs] = useState<any[]>([]);
   const [selectedVariation, setSelectedVariation] = useState(0);
+
+  // Load previous DMs if available and no current DMs
+  useEffect(() => {
+    if (previousDMs && previousDMs.length > 0 && generatedDMs.length === 0 && !isGenerating) {
+      setGeneratedDMs(previousDMs[0].variations);
+    }
+  }, [previousDMs, generatedDMs.length, isGenerating]);
 
   const handleGenerate = async () => {
     if (!profileText) {
