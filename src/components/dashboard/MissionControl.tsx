@@ -213,22 +213,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       });
       
       setSnipingKeyword(null);
-      
-      // Store these in local storage or pass to Writing Forge via navigation state
-      // For now, we'll show them in a toast and navigate
-      localStorage.setItem("sniped_bullets", JSON.stringify({ keyword, bullets }));
-      
-      toast.success("3 bullet points generated!", {
-        description: "Check Writing Forge to use them.",
-        action: {
-          label: "View",
-          onClick: () => onNavigate("writing-forge")
-        }
-      });
+      return bullets;
     } catch (error) {
       console.error(error);
       setSnipingKeyword(null);
       toast.error("Failed to generate bullet points. Please try again.");
+      return null;
     }
   };
 
@@ -299,6 +289,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             onSnipe={handleSnipeKeyword}
             snipingKeyword={snipingKeyword}
             isProcessing={isProcessing}
+            isPremium={isPremium}
+            onUnlock={() => onNavigate("pricing")}
+            onUpdateResume={onUpload}
           />
         </div>
 

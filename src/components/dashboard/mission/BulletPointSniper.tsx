@@ -1,6 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Crosshair, Check, AlertCircle, Wand2, Loader2, Download, FileText } from "lucide-react";
+import { Crosshair, Check, AlertCircle, Wand2, Loader2, Download, FileText, Copy, Lock, ArrowUpCircle } from "lucide-react";
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 
 interface Keyword {
   name: string;
@@ -11,128 +15,315 @@ interface Keyword {
 interface BulletPointSniperProps {
   matchedKeywords: Keyword[];
   missingKeywords: Keyword[];
-  onSnipe: (keyword: string) => void;
+  onSnipe: (keyword: string) => Promise<any>;
   snipingKeyword: string | null;
   isProcessing?: boolean;
+  isPremium?: boolean;
+  onUnlock?: () => void;
+  onUpdateResume?: () => void;
 }
 
-export function BulletPointSniper({ matchedKeywords, missingKeywords, onSnipe, snipingKeyword, isProcessing = false }: BulletPointSniperProps) {
+export function BulletPointSniper({ 
+  matchedKeywords, 
+  missingKeywords, 
+  onSnipe, 
+  snipingKeyword, 
+  isProcessing = false,
+  isPremium = false,
+  onUnlock,
+  onUpdateResume
+}: BulletPointSniperProps) {
+  const [activeTab, setActiveTab] = useState<"missing" | "found">("missing");
+  const [generatedBullets, setGeneratedBullets] = useState<Record<string, any>>({});
+  const [fixedKeywords, setFixedKeywords] = useState<Set<string>>(new Set());
+  const [copiedState, setCopiedState] = useState<string | null>(null);
+
+  const handleSnipeClick = async (keyword: string) => {
+    if (!isPremium) {
+      onUnlock?.();
+      return;
+    }
+
+    const result = await onSnipe(keyword);
+    if (result) {
+      // Normalize result to ensure we have the 3 types
+      let formattedResult = result;
+      if (Array.isArray(result)) {
+        formattedResult = {
+          performance: result[0] || "Optimized workflow...",
+          business: result[1] || "Increased efficiency...",
+          leadership: result[2] || "Led team implementation..."
+        };
+      }
+      
+      setGeneratedBullets(prev => ({
+        ...prev,
+        [keyword]: formattedResult
+      }));
+    }
+  };
+
+  const handleCopy = (text: string, id: string, keyword: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedState(id);
+    setFixedKeywords(prev => new Set(prev).add(keyword));
+    toast.success("Power Statement copied!");
+    setTimeout(() => setCopiedState(null), 2000);
+  };
+
+  const isEmpty = matchedKeywords.length === 0 && missingKeywords.length === 0;
+
   return (
     <motion.div 
-      className="glass-panel rounded-xl flex flex-col h-full overflow-hidden neon-glow bg-slate-900/70 backdrop-blur-xl border border-slate-800/50"
+      className="glass-panel rounded-xl flex flex-col h-[600px] overflow-hidden neon-glow bg-slate-900/70 backdrop-blur-xl border border-slate-800/50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
       {/* Header */}
-      <div className="p-5 border-b border-slate-700/50 flex justify-between items-center bg-slate-800/30">
-        <div>
-          <h3 className="text-white font-bold text-lg flex items-center gap-2">
-            <Crosshair className="h-5 w-5 text-primary" />
-            Bullet Point Sniper
-          </h3>
-          <p className="text-xs text-slate-400 mt-1">Click [Snipe it] to generate AI bullet points</p>
+      <div className="p-5 border-b border-slate-700/50 bg-slate-800/30">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-white font-bold text-lg flex items-center gap-2">
+              <Crosshair className="h-5 w-5 text-primary" />
+              Bullet Point Sniper
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">Generate AI Power Statements for missing keywords</p>
+          </div>
+          {/* Match Score Counter (Mini) */}
+          <div className="flex flex-col items-end">
+             <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Match Potential</span>
+             <span className="text-xl font-bold text-emerald-400">
+               {Math.min(100, Math.round((matchedKeywords.length + fixedKeywords.size) / (matchedKeywords.length + missingKeywords.length || 1) * 100))}%
+             </span>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs border border-emerald-500/20 font-mono">
-            {matchedKeywords.length} Found
-          </span>
-          <span className="px-2 py-1 rounded bg-rose-500/10 text-rose-400 text-xs border border-rose-500/20 font-mono">
-            {missingKeywords.length} Missing
-          </span>
-        </div>
+
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 bg-slate-900/50">
+            <TabsTrigger value="missing" className="data-[state=active]:bg-rose-500/20 data-[state=active]:text-rose-400 text-xs">
+              Missing ({missingKeywords.length})
+            </TabsTrigger>
+            <TabsTrigger value="found" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 text-xs">
+              Found ({matchedKeywords.length})
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
-      {/* Scrollable List */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
-        <div className="flex flex-col gap-2">
-          {isProcessing ? (
-            <div className="flex flex-col items-center justify-center h-64 text-slate-400 gap-3">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="text-sm font-medium">Analyzing resume keywords...</p>
-              <p className="text-xs text-slate-500">This usually takes 5-10 seconds</p>
+      {/* Content Area */}
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-2 bg-slate-950/30">
+        {isProcessing ? (
+          <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-3">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-sm font-medium">Analyzing resume keywords...</p>
+          </div>
+        ) : isEmpty ? (
+          <div className="flex flex-col items-center justify-center h-full text-center p-6 gap-4">
+            <div className="p-4 rounded-full bg-slate-800/50 border border-slate-700">
+              <FileText className="h-8 w-8 text-slate-500" />
             </div>
-          ) : (
-            <>
-              {/* Matched Keywords */}
-              {matchedKeywords.map((keyword, idx) => (
-                <div key={`matched-${idx}`} className="group flex items-center justify-between p-3 rounded-lg hover:bg-slate-700/30 border border-transparent hover:border-slate-600 transition-all cursor-default">
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded bg-slate-800 text-emerald-400">
-                      <Check className="h-4 w-4" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-white">{keyword.name}</span>
-                      <span className="text-[10px] text-slate-400 font-mono">{keyword.category}</span>
-                    </div>
-                  </div>
-                  <span className="text-xs text-slate-500 group-hover:text-slate-300">{keyword.impact}</span>
-                </div>
-              ))}
+            <div>
+              <h4 className="text-white font-medium mb-1">Ready to Snipe</h4>
+              <p className="text-sm text-slate-400 max-w-[250px] mx-auto">
+                Upload a resume and paste a Job Description to start sniping gaps.
+              </p>
+            </div>
+            <Button variant="outline" onClick={onUpdateResume} className="gap-2">
+              <ArrowUpCircle className="h-4 w-4" />
+              Upload Resume
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2 p-2">
+            {activeTab === "missing" && (
+              <>
+                {missingKeywords.map((keyword, idx) => {
+                  const isFixed = fixedKeywords.has(keyword.name);
+                  const bullets = generatedBullets[keyword.name];
+                  const isSniping = snipingKeyword === keyword.name;
 
-              {/* Missing Keywords - WITH SNIPE BUTTON */}
-              {missingKeywords.map((keyword, idx) => (
-                <motion.div 
-                  key={`missing-${idx}`}
-                  className="group flex items-center justify-between p-3 rounded-lg bg-rose-500/5 border border-rose-500/20 hover:bg-rose-500/10 transition-all"
-                  whileHover={{ x: 4 }}
-                  animate={idx === 0 ? { 
-                    borderColor: ["rgba(244, 63, 94, 0.2)", "rgba(244, 63, 94, 0.4)", "rgba(244, 63, 94, 0.2)"]
-                  } : undefined}
-                  transition={{ 
-                    borderColor: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded bg-rose-900/50 text-rose-400 animate-pulse">
-                      <AlertCircle className="h-4 w-4" />
+                  return (
+                    <motion.div 
+                      key={`missing-${idx}`}
+                      layout
+                      className={`rounded-lg border transition-all overflow-hidden ${
+                        isFixed 
+                          ? "bg-yellow-500/5 border-yellow-500/20" 
+                          : "bg-rose-500/5 border-rose-500/20 hover:bg-rose-500/10"
+                      }`}
+                    >
+                      <div className="p-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-1.5 rounded ${isFixed ? "bg-yellow-500/20 text-yellow-500" : "bg-rose-900/50 text-rose-400"}`}>
+                            {isFixed ? <Check className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className={`text-sm font-medium ${isFixed ? "text-yellow-200" : "text-white"}`}>
+                              {keyword.name}
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono flex items-center gap-2">
+                              {keyword.category} 
+                              <Badge variant="outline" className="text-[9px] h-4 px-1 border-slate-700 text-slate-400">
+                                {keyword.impact} Impact
+                              </Badge>
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {!bullets && !isFixed && (
+                          <Button 
+                            size="sm"
+                            onClick={() => handleSnipeClick(keyword.name)}
+                            disabled={isSniping}
+                            className={`h-8 text-xs font-semibold gap-2 ${
+                              !isPremium 
+                                ? "bg-slate-800 text-slate-400 hover:bg-slate-700" 
+                                : "bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white shadow-[0_0_10px_rgba(244,63,94,0.1)]"
+                            }`}
+                          >
+                            {isSniping ? (
+                              <>
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                                Sniping...
+                              </>
+                            ) : !isPremium ? (
+                              <>
+                                <Lock className="h-3 w-3" />
+                                Unlock
+                              </>
+                            ) : (
+                              <>
+                                <Wand2 className="h-3 w-3" />
+                                Snipe it
+                              </>
+                            )}
+                          </Button>
+                        )}
+                      </div>
+
+                      {/* Generated Bullets Panel */}
+                      <AnimatePresence>
+                        {bullets && (
+                          <motion.div 
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="border-t border-slate-800 bg-slate-900/50"
+                          >
+                            <div className="p-3 space-y-3">
+                              <p className="text-xs text-slate-400 font-medium px-1">Select a Power Statement to copy:</p>
+                              
+                              {/* Performance Version */}
+                              {bullets.performance && (
+                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                  <div className="flex justify-between gap-3">
+                                    <div>
+                                      <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-1 block">Performance</span>
+                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.performance}</p>
+                                    </div>
+                                    <Button
+                                      size="icon"
+                                      variant="ghost"
+                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      onClick={() => handleCopy(bullets.performance, `${keyword.name}-perf`, keyword.name)}
+                                    >
+                                      {copiedState === `${keyword.name}-perf` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Business Version */}
+                              {bullets.business && (
+                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                  <div className="flex justify-between gap-3">
+                                    <div>
+                                      <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 block">Business Value</span>
+                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.business}</p>
+                                    </div>
+                                    <Button
+                                      size="icon"
+                                      variant="ghost"
+                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      onClick={() => handleCopy(bullets.business, `${keyword.name}-biz`, keyword.name)}
+                                    >
+                                      {copiedState === `${keyword.name}-biz` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Leadership Version */}
+                              {bullets.leadership && (
+                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                  <div className="flex justify-between gap-3">
+                                    <div>
+                                      <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-1 block">Leadership</span>
+                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.leadership}</p>
+                                    </div>
+                                    <Button
+                                      size="icon"
+                                      variant="ghost"
+                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      onClick={() => handleCopy(bullets.leadership, `${keyword.name}-lead`, keyword.name)}
+                                    >
+                                      {copiedState === `${keyword.name}-lead` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                                    </Button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+                {missingKeywords.length === 0 && (
+                  <div className="p-8 text-center text-slate-500">
+                    <Check className="h-8 w-8 mx-auto mb-2 text-emerald-500/50" />
+                    <p>No missing keywords found!</p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {activeTab === "found" && (
+              <>
+                {matchedKeywords.map((keyword, idx) => (
+                  <div key={`matched-${idx}`} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 rounded bg-emerald-500/10 text-emerald-400">
+                        <Check className="h-4 w-4" />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-white">{keyword.name}</span>
+                        <span className="text-[10px] text-slate-400 font-mono">{keyword.category}</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-white group-hover:text-rose-200">{keyword.name}</span>
-                      <span className="text-[10px] text-rose-300/70 font-mono">{keyword.category} • Missing</span>
-                    </div>
+                    <span className="text-xs text-slate-500">{keyword.impact}</span>
                   </div>
-                  <button 
-                    onClick={() => onSnipe(keyword.name)}
-                    disabled={snipingKeyword === keyword.name}
-                    className="px-3 py-1.5 rounded text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white transition-colors flex items-center gap-1 shadow-[0_0_10px_rgba(244,63,94,0.1)] disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {snipingKeyword === keyword.name ? (
-                      <>
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                        Sniping...
-                      </>
-                    ) : (
-                      <>
-                        <Wand2 className="h-3 w-3" />
-                        Snipe it
-                      </>
-                    )}
-                  </button>
-                </motion.div>
-              ))}
-              
-              {matchedKeywords.length === 0 && missingKeywords.length === 0 && (
-                <div className="p-8 text-center text-slate-500 flex flex-col items-center gap-3">
-                  <div className="p-3 rounded-full bg-slate-800/50">
-                    <FileText className="h-6 w-6 text-slate-600" />
+                ))}
+                {matchedKeywords.length === 0 && (
+                  <div className="p-8 text-center text-slate-500">
+                    <p>No keywords matched yet.</p>
                   </div>
-                  <div>
-                    <p>No keywords analyzed yet.</p>
-                    <p className="text-xs mt-1">Upload a resume to see keyword analysis.</p>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Bottom Action */}
+      {/* Footer Action */}
       <div className="p-4 border-t border-slate-700/50 bg-slate-800/30 backdrop-blur">
-        <Button className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-lg shadow-primary/25 flex items-center justify-center gap-2">
-          <Download className="h-4 w-4" />
-          Export Keyword Report
+        <Button 
+          onClick={onUpdateResume}
+          className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
+        >
+          <ArrowUpCircle className="h-4 w-4" />
+          Update Resume with Fixes
         </Button>
       </div>
     </motion.div>
