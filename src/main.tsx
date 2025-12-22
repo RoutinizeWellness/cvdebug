@@ -55,21 +55,24 @@ function RouteSyncer() {
 }
 
 function UserSyncer() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId } = useAuth();
   const storeUser = useMutation(api.users.storeUser);
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (isSignedIn && userId) {
+      // Sync user data with Convex backend
       getDeviceFingerprint()
         .then((fingerprint) => {
-          storeUser({ deviceFingerprint: fingerprint });
+          storeUser({ deviceFingerprint: fingerprint })
+            .catch((err) => console.error("UserSyncer: Failed to store user", err));
         })
         .catch((err) => {
-          console.error("Failed to get fingerprint:", err);
-          storeUser({});
+          console.error("UserSyncer: Failed to get fingerprint:", err);
+          storeUser({})
+            .catch((storeErr) => console.error("UserSyncer: Failed to store user (fallback)", storeErr));
         });
     }
-  }, [isSignedIn, storeUser]);
+  }, [isSignedIn, userId, storeUser]);
 
   return null;
 }

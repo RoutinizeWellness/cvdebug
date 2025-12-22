@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Receipt, Pencil, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface AdminUserTableProps {
   users: any[] | undefined;
@@ -39,6 +39,19 @@ export function AdminUserTable({
   }) || [];
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  
+  // Reset to first page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  // Ensure current page is valid when data changes
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
   const paginatedUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleNext = () => {
@@ -52,12 +65,18 @@ export function AdminUserTable({
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Registered Users ({filteredUsers.length})</CardTitle>
+        <div className="flex flex-col gap-1">
+          <CardTitle>Registered Users</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            {users ? `${users.length} total users` : "Loading..."} 
+            {searchTerm && ` • ${filteredUsers.length} matches found`}
+          </p>
+        </div>
         <div className="w-[300px]">
           <Input 
             placeholder="Search users..." 
             value={searchTerm}
-            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="h-9"
           />
         </div>
@@ -162,7 +181,7 @@ export function AdminUserTable({
             {/* Pagination Controls */}
             <div className="flex items-center justify-between">
               <div className="text-sm text-muted-foreground">
-                Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredUsers.length)} to {Math.min(currentPage * itemsPerPage, filteredUsers.length)} of {filteredUsers.length} users
+                Showing {filteredUsers.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to {Math.min(currentPage * itemsPerPage, filteredUsers.length)} of {filteredUsers.length} users
               </div>
               <div className="flex items-center gap-2">
                 <Button 
