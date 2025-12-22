@@ -339,7 +339,7 @@ export default function Dashboard() {
         onDrop={handleDrop}
       >
         {/* Mobile Header */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-zinc-800 bg-zinc-950">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
           <Logo />
           <Button variant="ghost" size="icon" onClick={() => setShowPricing(true)}>
             <Sparkles className="h-5 w-5 text-primary" />

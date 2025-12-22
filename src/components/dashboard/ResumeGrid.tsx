@@ -140,9 +140,9 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             placeholder="Search resumes by name, skill, or ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-zinc-900 border-zinc-800 text-white placeholder:text-zinc-500"
+            className="pl-10 bg-slate-900 border-slate-800 text-white placeholder:text-slate-500"
           />
-          <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+          <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
         </div>
 
         {/* Action Buttons */}
@@ -177,33 +177,33 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
       {/* Table View */}
       {viewMode === "list" ? (
-        <div className="border border-zinc-800 rounded-xl overflow-hidden bg-zinc-900/30">
-          <table className="min-w-full divide-y divide-zinc-800">
-            <thead className="bg-zinc-900">
+        <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/30">
+          <table className="min-w-full divide-y divide-slate-800">
+            <thead className="bg-slate-900">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Resume Name
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider hidden sm:table-cell">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider hidden sm:table-cell">
                   Upload Date
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider hidden md:table-cell">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider hidden md:table-cell">
                   Last Analyzed
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Health Score
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800 bg-transparent">
+            <tbody className="divide-y divide-slate-800 bg-transparent">
               {filteredResumes.map((resume) => (
                 <tr key={resume._id} className="hover:bg-white/[0.02] transition-colors group">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-zinc-800">
+                      <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-800">
                         {getFileIcon(resume.mimeType)}
                       </div>
                       <div className="ml-4">
@@ -213,16 +213,16 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                         >
                           {resume.title}
                         </div>
-                        <div className="text-xs text-zinc-500">
+                        <div className="text-xs text-slate-500">
                           {getFileSize(resume.url)} • {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-400 font-mono hidden sm:table-cell">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400 font-mono hidden sm:table-cell">
                     {formatDate(resume._creationTime)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-300 font-mono hidden md:table-cell">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300 font-mono hidden md:table-cell">
                     {resume.status === 'completed' ? (
                       <span className="flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
@@ -241,7 +241,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => setSelectedResume(resume)}
-                        className="text-zinc-400 hover:text-white p-1.5 hover:bg-white/10 rounded-md transition-colors"
+                        className="text-slate-400 hover:text-white p-1.5 hover:bg-white/10 rounded-md transition-colors"
                         title="View Details"
                       >
                         <Eye className="h-5 w-5" />
@@ -272,18 +272,18 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           </table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-zinc-800">
-            <div className="text-sm text-zinc-500">
-              Showing <span className="font-medium text-zinc-300">1</span> to{" "}
-              <span className="font-medium text-zinc-300">{Math.min(filteredResumes.length, 10)}</span> of{" "}
-              <span className="font-medium text-zinc-300">{filteredResumes.length}</span> results
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800">
+            <div className="text-sm text-slate-500">
+              Showing <span className="font-medium text-slate-300">1</span> to{" "}
+              <span className="font-medium text-slate-300">{Math.min(filteredResumes.length, 10)}</span> of{" "}
+              <span className="font-medium text-slate-300">{filteredResumes.length}</span> results
             </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 disabled
-                className="text-zinc-400 bg-zinc-900 border-zinc-800"
+                className="text-slate-400 bg-slate-900 border-slate-800"
               >
                 Previous
               </Button>
@@ -291,7 +291,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                 variant="outline"
                 size="sm"
                 disabled={filteredResumes.length <= 10}
-                className="text-zinc-400 bg-zinc-900 border-zinc-800"
+                className="text-slate-400 bg-slate-900 border-slate-800"
               >
                 Next
               </Button>
@@ -304,7 +304,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           {filteredResumes.map((resume) => (
             <motion.div 
               key={resume._id} 
-              className="group relative flex flex-col rounded-2xl border-2 border-zinc-700 bg-zinc-900/80 shadow-lg overflow-hidden cursor-pointer"
+              className="group relative flex flex-col rounded-2xl border-2 border-slate-700 bg-slate-900/80 shadow-lg overflow-hidden cursor-pointer"
               onClick={() => setSelectedResume(resume)}
               whileHover={{ 
                 y: -4, 
@@ -315,7 +315,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {/* Preview Area */}
-              <div className="relative w-full aspect-[3/4] bg-zinc-800 overflow-hidden">
+              <div className="relative w-full aspect-[3/4] bg-slate-800 overflow-hidden">
                 {resume.mimeType.startsWith("image/") ? (
                   <img 
                     src={resume.url} 
@@ -323,11 +323,11 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 text-center">
-                    <div className="h-16 w-16 bg-zinc-700 rounded-2xl shadow-sm flex items-center justify-center mb-4">
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 p-6 text-center">
+                    <div className="h-16 w-16 bg-slate-700 rounded-2xl shadow-sm flex items-center justify-center mb-4">
                       {getFileIcon(resume.mimeType)}
                     </div>
-                    <p className="text-xs font-medium text-zinc-300 line-clamp-2 px-4">
+                    <p className="text-xs font-medium text-slate-300 line-clamp-2 px-4">
                       {resume.title}
                     </p>
                   </div>
@@ -338,7 +338,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                   <Button 
                     size="sm" 
                     variant="secondary" 
-                    className="font-bold shadow-lg bg-white text-black hover:bg-zinc-100"
+                    className="font-bold shadow-lg bg-white text-black hover:bg-slate-100"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedResume(resume);
@@ -361,13 +361,13 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     <h4 className="font-bold text-white truncate" title={resume.title}>
                       {resume.title}
                     </h4>
-                    <p className="text-xs text-zinc-400 mt-1">
+                    <p className="text-xs text-slate-400 mt-1">
                       {formatDate(resume._creationTime)}
                     </p>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 text-zinc-400 hover:text-white" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 text-slate-400 hover:text-white" onClick={(e) => e.stopPropagation()}>
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -382,10 +382,10 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                   </DropdownMenu>
                 </div>
 
-                <div className="mt-auto pt-3 border-t border-zinc-700 flex items-center justify-between">
+                <div className="mt-auto pt-3 border-t border-slate-700 flex items-center justify-between">
                   <span className={`
                     inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider
-                    ${resume.category ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-zinc-800 text-zinc-400 border border-zinc-700'}
+                    ${resume.category ? 'bg-primary/20 text-primary border border-primary/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}
                   `}>
                     {resume.category || 'Uncategorized'}
                   </span>
@@ -397,7 +397,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
       )}
 
       {filteredResumes.length === 0 && searchQuery !== "" && (
-        <div className="text-center py-12 text-zinc-400">
+        <div className="text-center py-12 text-slate-400">
           <p>No resumes match your search query.</p>
         </div>
       )}

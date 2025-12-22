@@ -28,17 +28,17 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
         active 
           ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" 
-          : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+          : "text-slate-400 hover:bg-slate-800 hover:text-white"
       } ${className}`}
     >
-      <Icon className={`h-4 w-4 ${active ? "text-primary-foreground" : "text-zinc-500 group-hover:text-white"}`} />
+      <Icon className={`h-4 w-4 ${active ? "text-primary-foreground" : "text-slate-500 group-hover:text-white"}`} />
       {label}
     </button>
   );
 
   return (
     <aside className="w-72 flex-shrink-0 p-4 hidden md:block h-screen sticky top-0">
-      <div className="flex h-full flex-col gap-6 rounded-2xl border border-zinc-800 bg-[#0a0a0a] p-5 shadow-xl">
+      <div className="flex h-full flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-950 p-5 shadow-xl">
         {/* Header */}
         <div className="px-2">
           <Logo />
@@ -47,7 +47,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         {/* Navigation */}
         <div className="flex flex-col gap-1 overflow-y-auto flex-1 pr-2 custom-scrollbar -mr-2">
           <div className="px-3 pb-2">
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Main</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Main</p>
           </div>
           
           <NavItem 
@@ -72,7 +72,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           />
 
           <div className="px-3 pt-6 pb-2">
-            <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Tools</p>
+            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Tools</p>
           </div>
 
           <NavItem 
@@ -97,7 +97,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           {user?.email === "tiniboti@gmail.com" && (
             <>
               <div className="px-3 pt-6 pb-2">
-                <p className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Admin</p>
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Admin</p>
               </div>
               <NavItem 
                 active={false}
@@ -134,18 +134,18 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             </div>
           </div>
           
-          <div className="flex items-center justify-between px-2 pt-2 border-t border-zinc-800">
+          <div className="flex items-center justify-between px-2 pt-2 border-t border-slate-800">
             <UserButton 
               showName={true}
               appearance={{
                 elements: {
                   userButtonBox: "flex flex-row-reverse gap-2",
-                  userButtonOuterIdentifier: "text-sm font-bold text-zinc-200",
-                  avatarBox: "h-9 w-9 border-2 border-zinc-700"
+                  userButtonOuterIdentifier: "text-sm font-bold text-slate-200",
+                  avatarBox: "h-9 w-9 border-2 border-slate-700"
                 }
               }}
             />
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-500 hover:text-red-500 hover:bg-zinc-800" onClick={() => signOut()}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-500 hover:bg-slate-800" onClick={() => signOut()}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
