@@ -75,6 +75,10 @@ export function LinkedInOptimizer() {
     : "Never";
   const hasData = displayResult && score > 0;
 
+  // Use stored text if available and state is empty
+  const activeProfileText = profileText || displayResult?.profileText || "";
+  const activeJobDescription = jobDescription || displayResult?.jobDescription || "";
+
   return (
     <div className="h-full flex flex-col bg-slate-950">
       {/* Breadcrumbs */}
@@ -97,7 +101,7 @@ export function LinkedInOptimizer() {
         />
 
         {/* Input Section */}
-        {!result && (
+        {!displayResult && (
           <Card className="border-slate-800 bg-slate-900/50 backdrop-blur-md mb-6 shadow-xl shadow-black/20">
             <CardHeader>
               <CardTitle className="text-xl text-white">Import Profile</CardTitle>
@@ -194,7 +198,11 @@ export function LinkedInOptimizer() {
               critique={displayResult.headline?.critique}
             />
 
-            <DMGenerator />
+            <DMGenerator 
+              profileText={activeProfileText}
+              jobDescription={activeJobDescription}
+              missingKeywords={missingKeywords}
+            />
           </div>
         )}
       </main>
