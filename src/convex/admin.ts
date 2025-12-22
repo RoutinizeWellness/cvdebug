@@ -14,10 +14,11 @@ export const getUsers = query({
       
       // Security check: Only allow specific admin email
       if (!identity || identity.email !== "tiniboti@gmail.com") {
+        console.log("Admin check failed:", identity?.email);
         return [];
       }
 
-      const users = await ctx.db.query("users").order("desc").collect();
+      const users = await ctx.db.query("users").order("desc").take(200); // Limit to 200 for performance
       
       // Enhance user data with resume counts
       const usersWithStats = await Promise.all(

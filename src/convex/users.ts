@@ -46,7 +46,11 @@ export const storeUser = mutation({
   args: { deviceFingerprint: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
+    if (!identity) {
+      console.log("storeUser called without identity");
+      return null;
+    }
+    console.log("storeUser called for:", identity.email, identity.subject);
 
     // Check if we've already stored this user
     const user = await ctx.db
