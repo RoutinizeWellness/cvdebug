@@ -49,6 +49,7 @@ import { AdminStats } from "@/components/admin/AdminStats";
 import { AdminManualGrant } from "@/components/admin/AdminManualGrant";
 import { AdminBulkGrant } from "@/components/admin/AdminBulkGrant";
 import { AdminPaymentTesting } from "@/components/admin/AdminPaymentTesting";
+import { AdminUserTable } from "@/components/admin/AdminUserTable";
 import { motion } from "framer-motion";
 
 export default function AdminPage() {
@@ -88,6 +89,7 @@ export default function AdminPage() {
   const [isTestingPayment, setIsTestingPayment] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("dashboard");
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
@@ -298,32 +300,50 @@ export default function AdminPage() {
         </div>
         
         <nav className="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1">
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 border border-primary/20 text-white group transition-all" href="#">
-            <LayoutDashboard className="h-5 w-5 text-primary group-hover:text-blue-400" />
+          <button 
+            onClick={() => setCurrentView("dashboard")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "dashboard" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <LayoutDashboard className={`h-5 w-5 ${currentView === "dashboard" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Dashboard</span>
-          </a>
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all" href="#">
-            <Users className="h-5 w-5 text-slate-500" />
+          </button>
+          <button 
+            onClick={() => setCurrentView("users")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "users" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <Users className={`h-5 w-5 ${currentView === "users" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Users</span>
-          </a>
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all" href="#">
-            <BarChart3 className="h-5 w-5 text-slate-500" />
+          </button>
+          <button 
+            onClick={() => setCurrentView("analytics")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "analytics" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <BarChart3 className={`h-5 w-5 ${currentView === "analytics" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Analytics</span>
-          </a>
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all" href="#">
-            <Terminal className="h-5 w-5 text-slate-500" />
+          </button>
+          <button 
+            onClick={() => setCurrentView("logs")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "logs" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <Terminal className={`h-5 w-5 ${currentView === "logs" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Logs & API</span>
-          </a>
+          </button>
           
           <div className="mt-8 px-3 text-xs font-bold text-slate-600 uppercase tracking-wider">Settings</div>
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all" href="#">
-            <Settings className="h-5 w-5 text-slate-500" />
+          <button 
+            onClick={() => setCurrentView("settings")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "settings" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <Settings className={`h-5 w-5 ${currentView === "settings" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">General</span>
-          </a>
-          <a className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800/50 hover:text-white transition-all" href="#">
-            <CreditCard className="h-5 w-5 text-slate-500" />
+          </button>
+          <button 
+            onClick={() => setCurrentView("billing")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "billing" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <CreditCard className={`h-5 w-5 ${currentView === "billing" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Billing</span>
-          </a>
+          </button>
         </nav>
         
         <div className="p-4 border-t border-slate-800">
@@ -373,250 +393,285 @@ export default function AdminPage() {
         {/* Scrollable Content Area */}
         <div className="flex-1 overflow-y-auto p-6 z-0">
           <div className="max-w-7xl mx-auto flex flex-col gap-6">
-            {/* Metrics Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
-              >
-                <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <Users className="h-12 w-12 text-blue-500" />
-                </div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Total Users</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl font-display font-bold text-white">{stats?.total || 0}</h3>
-                  <span className="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-1.5 py-0.5 rounded flex items-center">
-                    <TrendingUp className="h-3 w-3 mr-0.5" />
-                    12%
-                  </span>
-                </div>
-                <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                  <div className="bg-blue-500 h-full rounded-full" style={{ width: '65%' }}></div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
-              >
-                <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <Users className="h-12 w-12 text-violet-500" />
-                </div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Free Users</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl font-display font-bold text-white">{stats?.free || 0}</h3>
-                </div>
-                <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                  <div className="bg-violet-500 h-full rounded-full" style={{ width: '42%' }}></div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
-              >
-                <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <CreditCard className="h-12 w-12 text-amber-500" />
-                </div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Single Scan</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl font-display font-bold text-white text-orange-600">{stats?.singleScan || 0}</h3>
-                </div>
-                <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                  <div className="bg-amber-500 h-full rounded-full" style={{ width: '25%' }}></div>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
-              >
-                <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <BarChart3 className="h-12 w-12 text-emerald-500" />
-                </div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Bulk Pack</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl font-display font-bold text-white text-blue-600">{stats?.bulkPack || 0}</h3>
-                </div>
-                <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                  <div className="bg-emerald-500 h-full rounded-full" style={{ width: '88%' }}></div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Admin Tools */}
-            <AdminManualGrant
-              grantEmail={grantEmail}
-              setGrantEmail={setGrantEmail}
-              grantName={grantName}
-              setGrantName={setGrantName}
-              grantPlan={grantPlan}
-              setGrantPlan={setGrantPlan}
-              handleGrantPurchase={handleGrantPurchase}
-              isGranting={isGranting}
-            />
-
-            <AdminBulkGrant
-              bulkText={bulkText}
-              setBulkText={setBulkText}
-              handleBulkGrant={handleBulkGrant}
-              isBulkProcessing={isBulkProcessing}
-              bulkResult={bulkResult}
-            />
-
-            <AdminPaymentTesting
-              handleTestPayment={handleTestPayment}
-              isTestingPayment={isTestingPayment}
-              webhookEmail={webhookEmail}
-              setWebhookEmail={setWebhookEmail}
-              webhookPlan={webhookPlan}
-              setWebhookPlan={setWebhookPlan}
-              handleSimulateWebhook={handleSimulateWebhook}
-              isSimulatingWebhook={isSimulatingWebhook}
-            />
-
-            {/* Main Split Section */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-[500px]">
-              {/* User Table */}
-              <div className="xl:col-span-2 glass-panel rounded-xl border border-slate-700/50 flex flex-col overflow-hidden">
-                <div className="p-5 border-b border-slate-700/50 flex flex-wrap gap-4 justify-between items-center bg-slate-800/20">
-                  <div>
-                    <h3 className="text-lg font-display font-bold text-white">Recent Users</h3>
-                    <p className="text-slate-400 text-sm">Managing {stats?.total || 0} total accounts</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 h-4 w-4" />
-                      <Input
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="bg-slate-900/50 border-slate-700 text-white pl-9 pr-3 py-1.5 text-sm w-40 md:w-56"
-                        placeholder="Search..."
-                      />
+            {currentView === "dashboard" && (
+              <>
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
+                  >
+                    <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <Users className="h-12 w-12 text-blue-500" />
                     </div>
-                    <Button variant="outline" size="sm" className="border-slate-700 hover:bg-slate-800 text-slate-300">
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filter
-                    </Button>
+                    <p className="text-slate-400 text-sm font-medium mb-1">Total Users</p>
+                    <div className="flex items-baseline gap-2">
+                      <h3 className="text-2xl font-display font-bold text-white">{stats?.total || 0}</h3>
+                      <span className="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-1.5 py-0.5 rounded flex items-center">
+                        <TrendingUp className="h-3 w-3 mr-0.5" />
+                        12%
+                      </span>
+                    </div>
+                    <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
+                      <div className="bg-blue-500 h-full rounded-full" style={{ width: '65%' }}></div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
+                  >
+                    <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <Users className="h-12 w-12 text-violet-500" />
+                    </div>
+                    <p className="text-slate-400 text-sm font-medium mb-1">Free Users</p>
+                    <div className="flex items-baseline gap-2">
+                      <h3 className="text-2xl font-display font-bold text-white">{stats?.free || 0}</h3>
+                    </div>
+                    <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
+                      <div className="bg-violet-500 h-full rounded-full" style={{ width: '42%' }}></div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
+                  >
+                    <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <CreditCard className="h-12 w-12 text-amber-500" />
+                    </div>
+                    <p className="text-slate-400 text-sm font-medium mb-1">Single Scan</p>
+                    <div className="flex items-baseline gap-2">
+                      <h3 className="text-2xl font-display font-bold text-white text-orange-600">{stats?.singleScan || 0}</h3>
+                    </div>
+                    <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
+                      <div className="bg-amber-500 h-full rounded-full" style={{ width: '25%' }}></div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
+                  >
+                    <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <BarChart3 className="h-12 w-12 text-emerald-500" />
+                    </div>
+                    <p className="text-slate-400 text-sm font-medium mb-1">Bulk Pack</p>
+                    <div className="flex items-baseline gap-2">
+                      <h3 className="text-2xl font-display font-bold text-white text-blue-600">{stats?.bulkPack || 0}</h3>
+                    </div>
+                    <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full rounded-full" style={{ width: '88%' }}></div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Admin Tools */}
+                <AdminManualGrant
+                  grantEmail={grantEmail}
+                  setGrantEmail={setGrantEmail}
+                  grantName={grantName}
+                  setGrantName={setGrantName}
+                  grantPlan={grantPlan}
+                  setGrantPlan={setGrantPlan}
+                  handleGrantPurchase={handleGrantPurchase}
+                  isGranting={isGranting}
+                />
+
+                <AdminBulkGrant
+                  bulkText={bulkText}
+                  setBulkText={setBulkText}
+                  handleBulkGrant={handleBulkGrant}
+                  isBulkProcessing={isBulkProcessing}
+                  bulkResult={bulkResult}
+                />
+
+                <AdminPaymentTesting
+                  handleTestPayment={handleTestPayment}
+                  isTestingPayment={isTestingPayment}
+                  webhookEmail={webhookEmail}
+                  setWebhookEmail={setWebhookEmail}
+                  webhookPlan={webhookPlan}
+                  setWebhookPlan={setWebhookPlan}
+                  handleSimulateWebhook={handleSimulateWebhook}
+                  isSimulatingWebhook={isSimulatingWebhook}
+                />
+
+                {/* Main Split Section */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-[500px]">
+                  {/* User Table */}
+                  <div className="xl:col-span-2 glass-panel rounded-xl border border-slate-700/50 flex flex-col overflow-hidden">
+                    <div className="p-5 border-b border-slate-700/50 flex flex-wrap gap-4 justify-between items-center bg-slate-800/20">
+                      <div>
+                        <h3 className="text-lg font-display font-bold text-white">Recent Users</h3>
+                        <p className="text-slate-400 text-sm">Managing {stats?.total || 0} total accounts</p>
+                      </div>
+                      <Button variant="ghost" size="sm" onClick={() => setCurrentView("users")} className="text-primary hover:text-primary/80">
+                        View All Users
+                      </Button>
+                    </div>
+                    
+                    <div className="overflow-x-auto flex-1">
+                      <table className="w-full text-left text-sm text-slate-400">
+                        <thead className="bg-slate-900/30 text-xs uppercase font-semibold text-slate-500">
+                          <tr>
+                            <th className="px-6 py-4">User</th>
+                            <th className="px-6 py-4">Plan</th>
+                            <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4">Last Scan</th>
+                            <th className="px-6 py-4 text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/50">
+                          {filteredUsers.slice(0, 5).map((userData: any) => (
+                            <tr key={userData._id} className="hover:bg-slate-800/30 transition-colors group">
+                              <td className="px-6 py-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-xs border border-slate-600">
+                                    {userData.name?.charAt(0) || "?"}
+                                  </div>
+                                  <div>
+                                    <div className="font-medium text-slate-200">{userData.name || "Anonymous"}</div>
+                                    <div className="text-xs text-slate-500">{userData.email || "No email"}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-3">
+                                <Badge 
+                                  variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
+                                  className="capitalize"
+                                >
+                                  {(userData.subscriptionTier || "free").replace("_", " ")}
+                                </Badge>
+                              </td>
+                              <td className="px-6 py-3">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                                  <span className="text-slate-300">Active</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-3 font-mono text-xs">
+                                {userData.lastScanDate ? new Date(userData.lastScanDate).toLocaleDateString() : "Never"}
+                              </td>
+                              <td className="px-6 py-3 text-right">
+                                <button 
+                                  onClick={() => handleEditClick(userData)}
+                                  className="text-slate-500 hover:text-white transition-colors"
+                                >
+                                  <MoreHorizontal className="h-5 w-5" />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Live Logs Terminal */}
+                  <div className="glass-panel rounded-xl border border-slate-700/50 flex flex-col overflow-hidden h-full shadow-2xl shadow-black/40">
+                    <div className="p-3 bg-[#0d1117] border-b border-slate-800 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Terminal className="h-4 w-4 text-slate-500" />
+                        <span className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider">Live Logs</span>
+                      </div>
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+                      </div>
+                    </div>
+                    <div className="flex-1 bg-[#090e13] p-4 font-mono text-xs overflow-y-auto flex flex-col gap-3 font-medium">
+                      <div className="flex gap-2 opacity-60">
+                        <span className="text-slate-500 min-w-[60px]">10:41:02</span>
+                        <div className="flex-1">
+                          <span className="text-blue-400">[INFO]</span> System initialization complete.
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="text-slate-500 min-w-[60px]">10:42:15</span>
+                        <div className="flex-1">
+                          <span className="text-emerald-400">[200 OK]</span> OpenAI API - Resume Analysis <span className="text-slate-500">#492a</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 border-l-2 border-violet-500/50 pl-2 bg-violet-500/5 py-1 rounded-r">
+                        <span className="text-slate-500 min-w-[52px]">10:43:12</span>
+                        <div className="flex-1 text-violet-200">
+                          <span className="text-violet-400 font-bold">[STRIPE]</span> Payment Succeeded - $29.00
+                          <span className="text-slate-500 text-[10px] block mt-1">user: {user.email}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className="text-slate-500 min-w-[60px]">10:44:05</span>
+                        <div className="flex-1">
+                          <span className="text-amber-400">[WARN]</span> High latency detected on worker-04
+                        </div>
+                      </div>
+                      <div className="animate-pulse flex gap-2 mt-2">
+                        <span className="text-primary">_</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="overflow-x-auto flex-1">
-                  <table className="w-full text-left text-sm text-slate-400">
-                    <thead className="bg-slate-900/30 text-xs uppercase font-semibold text-slate-500">
-                      <tr>
-                        <th className="px-6 py-4">User</th>
-                        <th className="px-6 py-4">Plan</th>
-                        <th className="px-6 py-4">Status</th>
-                        <th className="px-6 py-4">Last Scan</th>
-                        <th className="px-6 py-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800/50">
-                      {filteredUsers.slice(0, 10).map((userData: any) => (
-                        <tr key={userData._id} className="hover:bg-slate-800/30 transition-colors group">
-                          <td className="px-6 py-3">
-                            <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-xs border border-slate-600">
-                                {userData.name?.charAt(0) || "?"}
-                              </div>
-                              <div>
-                                <div className="font-medium text-slate-200">{userData.name || "Anonymous"}</div>
-                                <div className="text-xs text-slate-500">{userData.email || "No email"}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-3">
-                            <Badge 
-                              variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
-                              className="capitalize"
-                            >
-                              {(userData.subscriptionTier || "free").replace("_", " ")}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-3">
-                            <div className="flex items-center gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
-                              <span className="text-slate-300">Active</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-3 font-mono text-xs">
-                            {userData.lastScanDate ? new Date(userData.lastScanDate).toLocaleDateString() : "Never"}
-                          </td>
-                          <td className="px-6 py-3 text-right">
-                            <button 
-                              onClick={() => handleEditClick(userData)}
-                              className="text-slate-500 hover:text-white transition-colors"
-                            >
-                              <MoreHorizontal className="h-5 w-5" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div className="p-4 border-t border-slate-700/50 bg-slate-900/20 flex justify-between items-center">
-                  <span className="text-xs text-slate-500">Showing {Math.min(10, filteredUsers.length)} of {filteredUsers.length} users</span>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" disabled className="text-xs">Previous</Button>
-                    <Button variant="outline" size="sm" className="text-xs">Next</Button>
-                  </div>
+              </>
+            )}
+
+            {currentView === "users" && (
+              <AdminUserTable 
+                users={users}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                handleEditClick={handleEditClick}
+                handleDelete={handleDelete}
+                setHistoryUser={setHistoryUser}
+              />
+            )}
+
+            {currentView === "analytics" && (
+              <div className="flex items-center justify-center h-[400px] text-slate-400">
+                <div className="text-center">
+                  <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <h3 className="text-lg font-bold text-white">Analytics Module</h3>
+                  <p>Detailed analytics and reporting coming soon.</p>
                 </div>
               </div>
+            )}
 
-              {/* Live Logs Terminal */}
-              <div className="glass-panel rounded-xl border border-slate-700/50 flex flex-col overflow-hidden h-full shadow-2xl shadow-black/40">
-                <div className="p-3 bg-[#0d1117] border-b border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Terminal className="h-4 w-4 text-slate-500" />
-                    <span className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider">Live Logs</span>
-                  </div>
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
-                  </div>
-                </div>
-                <div className="flex-1 bg-[#090e13] p-4 font-mono text-xs overflow-y-auto flex flex-col gap-3 font-medium">
-                  <div className="flex gap-2 opacity-60">
-                    <span className="text-slate-500 min-w-[60px]">10:41:02</span>
-                    <div className="flex-1">
-                      <span className="text-blue-400">[INFO]</span> System initialization complete.
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-slate-500 min-w-[60px]">10:42:15</span>
-                    <div className="flex-1">
-                      <span className="text-emerald-400">[200 OK]</span> OpenAI API - Resume Analysis <span className="text-slate-500">#492a</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 border-l-2 border-violet-500/50 pl-2 bg-violet-500/5 py-1 rounded-r">
-                    <span className="text-slate-500 min-w-[52px]">10:43:12</span>
-                    <div className="flex-1 text-violet-200">
-                      <span className="text-violet-400 font-bold">[STRIPE]</span> Payment Succeeded - $29.00
-                      <span className="text-slate-500 text-[10px] block mt-1">user: {user.email}</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-slate-500 min-w-[60px]">10:44:05</span>
-                    <div className="flex-1">
-                      <span className="text-amber-400">[WARN]</span> High latency detected on worker-04
-                    </div>
-                  </div>
-                  <div className="animate-pulse flex gap-2 mt-2">
-                    <span className="text-primary">_</span>
-                  </div>
+            {currentView === "logs" && (
+              <div className="flex items-center justify-center h-[400px] text-slate-400">
+                <div className="text-center">
+                  <Terminal className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <h3 className="text-lg font-bold text-white">System Logs</h3>
+                  <p>Real-time system logs and API monitoring coming soon.</p>
                 </div>
               </div>
-            </div>
+            )}
+
+            {currentView === "settings" && (
+              <div className="flex items-center justify-center h-[400px] text-slate-400">
+                <div className="text-center">
+                  <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <h3 className="text-lg font-bold text-white">Settings</h3>
+                  <p>Global system configuration coming soon.</p>
+                </div>
+              </div>
+            )}
+
+            {currentView === "billing" && (
+              <div className="flex items-center justify-center h-[400px] text-slate-400">
+                <div className="text-center">
+                  <CreditCard className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <h3 className="text-lg font-bold text-white">Billing Management</h3>
+                  <p>Stripe integration settings and billing overview coming soon.</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>
