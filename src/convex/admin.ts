@@ -18,7 +18,9 @@ export const getUsers = query({
         return [];
       }
 
+      console.log("Fetching users for admin...");
       const users = await ctx.db.query("users").order("desc").take(200); // Limit to 200 for performance
+      console.log(`Found ${users.length} users`);
       
       // Enhance user data with resume counts
       const usersWithStats = await Promise.all(

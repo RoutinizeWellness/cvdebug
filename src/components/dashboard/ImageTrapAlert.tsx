@@ -22,6 +22,23 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
   // Only show if there's a problem
   if (textLayerIntegrity >= 95 && !hasImageTrap) return null;
 
+  const isIntegrityIssue = textLayerIntegrity < 95;
+  
+  const title = isIntegrityIssue 
+    ? "⚠️ RED ALERT: Your latest edit broke your PDF encoding."
+    : "⚠️ ATS WARNING: Hidden text or formatting anomalies detected.";
+    
+  const description = isIntegrityIssue
+    ? `Engineers from the company will see a blank page. The text layer integrity is ${textLayerIntegrity}%.`
+    : `Your text layer is intact (${textLayerIntegrity}%), but we detected potential 'keyword stuffing' or hidden text layers that will flag your resume as spam.`;
+
+  const badgeText = isIntegrityIssue ? "Critical" : "Suspicious";
+  const badgeColor = isIntegrityIssue ? "bg-red-500" : "bg-amber-500";
+  const borderColor = isIntegrityIssue ? "border-red-500/30" : "border-amber-500/30";
+  const bgColor = isIntegrityIssue ? "bg-red-500/10" : "bg-amber-500/10";
+  const iconBg = isIntegrityIssue ? "bg-red-500/20" : "bg-amber-500/20";
+  const iconColor = isIntegrityIssue ? "text-red-500" : "text-amber-500";
+
   const handleSanitize = async () => {
     if (!resumeId) {
         toast.error("Cannot sanitize: Resume ID missing");
@@ -43,20 +60,20 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
   };
 
   return (
-    <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 animate-in fade-in slide-in-from-top-2">
+    <div className={`rounded-lg border ${borderColor} ${bgColor} p-4 animate-in fade-in slide-in-from-top-2`}>
       <div className="flex items-start gap-4">
-        <div className="p-2 bg-red-500/20 rounded-full">
-          <AlertTriangle className="h-5 w-5 text-red-500" />
+        <div className={`p-2 ${iconBg} rounded-full`}>
+          <AlertTriangle className={`h-5 w-5 ${iconColor}`} />
         </div>
         <div className="flex-1">
           <h3 className="text-base font-bold text-white flex items-center gap-2">
-            ⚠️ RED ALERT: Your latest edit broke your PDF encoding.
-            <span className="px-2 py-0.5 rounded-full bg-red-500 text-white text-[10px] uppercase tracking-wider">
-              Critical
+            {title}
+            <span className={`px-2 py-0.5 rounded-full ${badgeColor} text-white text-[10px] uppercase tracking-wider`}>
+              {badgeText}
             </span>
           </h3>
           <p className="text-sm text-zinc-300 mt-1 leading-relaxed">
-            Engineers from the company will see a blank page. The text layer integrity is {textLayerIntegrity}%.
+            {description}
           </p>
           
           {hasActiveSprint && (
