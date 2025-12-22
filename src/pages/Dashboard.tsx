@@ -206,6 +206,14 @@ export default function Dashboard() {
     setCurrentView("cover-letter");
   };
 
+  const handleNavigate = (view: string) => {
+    if (view === "pricing") {
+      setShowPricing(true);
+    } else {
+      setCurrentView(view);
+    }
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'projects':
@@ -226,7 +234,7 @@ export default function Dashboard() {
       case 'mission':
         return (
           <MissionControl 
-            onNavigate={setCurrentView} 
+            onNavigate={handleNavigate} 
             onGenerateCoverLetter={handleGenerateCoverLetter}
             onUpload={() => fileInputRef.current?.click()}
           />
@@ -313,7 +321,7 @@ export default function Dashboard() {
       default:
         return (
           <MissionControl 
-            onNavigate={setCurrentView} 
+            onNavigate={handleNavigate} 
             onGenerateCoverLetter={handleGenerateCoverLetter}
             onUpload={() => fileInputRef.current?.click()}
           />
@@ -393,6 +401,7 @@ export default function Dashboard() {
       <PricingDialog 
         open={showPricing} 
         onOpenChange={setShowPricing} 
+        initialPlan={initialPlan}
       />
 
       {/* Hidden File Input */}

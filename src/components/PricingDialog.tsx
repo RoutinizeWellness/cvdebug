@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Check, Zap, Building2, Loader2, ArrowLeft, CreditCard, ShieldCheck, Rocket, Sparkles, Star, X, Lock } from "lucide-react";
 import { useAction, useQuery } from "convex/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -23,6 +23,12 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | null>(initialPlan || null);
   
+  useEffect(() => {
+    if (initialPlan) {
+      setCheckoutPlan(initialPlan);
+    }
+  }, [initialPlan]);
+
   const currentPlan = user?.subscriptionTier || "free";
   const isTrial = user?.trialEndsOn && user.trialEndsOn > Date.now();
 
