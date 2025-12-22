@@ -50,6 +50,7 @@ import { AdminManualGrant } from "@/components/admin/AdminManualGrant";
 import { AdminBulkGrant } from "@/components/admin/AdminBulkGrant";
 import { AdminPaymentTesting } from "@/components/admin/AdminPaymentTesting";
 import { AdminUserTable } from "@/components/admin/AdminUserTable";
+import { AdminDataImport } from "@/components/admin/AdminDataImport";
 import { motion } from "framer-motion";
 
 export default function AdminPage() {
@@ -485,13 +486,16 @@ export default function AdminPage() {
                   isGranting={isGranting}
                 />
 
-                <AdminBulkGrant
-                  bulkText={bulkText}
-                  setBulkText={setBulkText}
-                  handleBulkGrant={handleBulkGrant}
-                  isBulkProcessing={isBulkProcessing}
-                  bulkResult={bulkResult}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <AdminBulkGrant
+                    bulkText={bulkText}
+                    setBulkText={setBulkText}
+                    handleBulkGrant={handleBulkGrant}
+                    isBulkProcessing={isBulkProcessing}
+                    bulkResult={bulkResult}
+                  />
+                  <AdminDataImport />
+                </div>
 
                 <AdminPaymentTesting
                   handleTestPayment={handleTestPayment}
