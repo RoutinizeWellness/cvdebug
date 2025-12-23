@@ -251,13 +251,30 @@ export const updateResumeMetadata = internalMutation({
     if (args.category) updates.category = args.category;
     if (args.analysis) updates.analysis = args.analysis;
     if (args.rewrittenText) updates.rewrittenText = args.rewrittenText;
-    if (args.score !== undefined) updates.score = args.score;
     if (args.processingDuration !== undefined) updates.processingDuration = args.processingDuration;
     if (args.scoreBreakdown) updates.scoreBreakdown = args.scoreBreakdown;
     if (args.missingKeywords) updates.missingKeywords = args.missingKeywords;
     if (args.matchedKeywords) updates.matchedKeywords = args.matchedKeywords;
     if (args.formatIssues) updates.formatIssues = args.formatIssues;
     if (args.metricSuggestions) updates.metricSuggestions = args.metricSuggestions;
+
+    // NEW: Track score history for integrity versioning
+    if (args.score !== undefined) {
+      const currentResume = await ctx.db.get(args.id);
+      if (currentResume && currentResume.score !== undefined && currentResume.score !== args.score) {
+        updates.previousScore = currentResume.score;
+        
+        // Build score history
+        const existingHistory = currentResume.scoreHistory || [];
+        const newHistoryEntry = {
+          score: args.score,
+          timestamp: Date.now(),
+          verifiedBySecondaryModel: false, // Will be updated if verification happens
+        };
+        updates.scoreHistory = [...existingHistory, newHistoryEntry].slice(-10); // Keep last 10 scores
+      }
+      updates.score = args.score;
+    }
 
     await ctx.db.patch(args.id, updates);
 

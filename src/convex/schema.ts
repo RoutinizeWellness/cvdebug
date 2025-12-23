@@ -176,21 +176,33 @@ const schema = defineSchema(
 
   resumes: defineTable({
     userId: v.string(),
-    projectId: v.optional(v.id("projects")), // NEW: Link to project
+    projectId: v.optional(v.id("projects")),
     title: v.string(),
     url: v.string(),
     storageId: v.id("_storage"),
     mimeType: v.string(),
     category: v.optional(v.string()),
+    ocrText: v.optional(v.string()),
+    analysis: v.optional(v.string()),
+    rewrittenText: v.optional(v.string()),
+    score: v.optional(v.number()),
+    previousScore: v.optional(v.number()), // NEW: Track score history
+    scoreHistory: v.optional(v.array(v.object({ // NEW: Full history tracking
+      score: v.number(),
+      timestamp: v.number(),
+      verifiedBySecondaryModel: v.optional(v.boolean()),
+    }))),
+    processingDuration: v.optional(v.number()),
+    status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
+    detailsUnlocked: v.optional(v.boolean()),
+    jobDescription: v.optional(v.string()),
     jobTitle: v.optional(v.string()),
     company: v.optional(v.string()),
-    status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
-    score: v.optional(v.number()),
-    analysis: v.optional(v.string()),
-    // NEW: Text layer integrity check
-    textLayerIntegrity: v.optional(v.number()), // 0-100 score
-    hasImageTrap: v.optional(v.boolean()), // True if CV has invisible text issues
-    lastIntegrityCheck: v.optional(v.number()),
+    scoreBreakdown: v.optional(v.object({
+      keywords: v.number(),
+      format: v.number(),
+      completeness: v.number(),
+    })),
     matchedKeywords: v.optional(v.array(v.string())),
     missingKeywords: v.optional(v.array(v.union(
       v.string(),
@@ -214,31 +226,22 @@ const schema = defineSchema(
         atsImpact: v.optional(v.string()),
       })
     ))),
-    scoreBreakdown: v.optional(v.object({
-      keywords: v.optional(v.number()),
-      format: v.optional(v.number()),
-      completeness: v.optional(v.number()),
-    })),
-    ocrText: v.optional(v.string()),
-    rewrittenText: v.optional(v.string()),
-    jobDescription: v.optional(v.string()),
-    detailsUnlocked: v.optional(v.boolean()),
-    // Email tracking for this specific resume
-    parsingErrorEmailSent: v.optional(v.boolean()),
-    postScanEmailSent: v.optional(v.boolean()),
-    conversionReminderEmailSent: v.optional(v.boolean()),
-    lowScoreEmailSent: v.optional(v.boolean()), // NEW: Track low score tips email
     metricSuggestions: v.optional(v.array(v.object({
       tech: v.string(),
       metrics: v.array(v.string()),
     }))),
+    textLayerIntegrity: v.optional(v.number()),
+    hasImageTrap: v.optional(v.boolean()),
+    lastIntegrityCheck: v.optional(v.number()),
+    parsingErrorEmailSent: v.optional(v.boolean()),
+    lowScoreEmailSent: v.optional(v.boolean()),
   })
     .index("by_user", ["userId"])
     .index("by_project", ["projectId"])
     .index("by_user_and_category", ["userId", "category"])
     .searchIndex("search_ocr", {
       searchField: "ocrText",
-      filterFields: ["userId"],
+      filterFields: ["userId", "category"],
     }),
     
   // ML Learning: User feedback on analysis quality

@@ -39,10 +39,11 @@ export const analyzeResume = internalAction({
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
-      const startTime = Date.now(); // Start timing
+      const startTime = Date.now();
 
       let analysisResult;
       let usedFallback = false;
+      let verificationScore = null;
 
       // Always use fallback if no API key OR if API call fails/times out
       if (!apiKey) {
@@ -61,7 +62,6 @@ export const analyzeResume = internalAction({
           
           console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 
-          // Add timeout wrapper - 30 seconds max
           const timeoutPromise = new Promise((_, reject) => 
             setTimeout(() => reject(new Error("API request timeout after 30s")), 30000)
           );
@@ -78,19 +78,48 @@ export const analyzeResume = internalAction({
 
           analysisResult = extractJSON(content);
           
-          // Validate the response has required fields
           if (!analysisResult || !analysisResult.score || !analysisResult.analysis) {
             throw new Error("Invalid API response structure");
           }
           
           console.log("[AI Analysis] Successfully parsed AI response");
+
+          // NEW: Multi-Model Verification for Sprint users
+          // Check if this is a Sprint user by querying the resume's user
+          const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, { id: args.id });
+          if (resume) {
+            const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
+            const hasActiveSprint = user && user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+            
+            if (hasActiveSprint && analysisResult.score > 0) {
+              console.log("[AI Analysis] Sprint user detected, running verification with secondary model");
+              try {
+                const verificationModel = "deepseek/deepseek-chat";
+                const verificationContent = await callOpenRouter(apiKey, {
+                  model: verificationModel,
+                  messages: [{ role: "user", content: prompt }],
+                  response_format: { type: "json_object" }
+                });
+                
+                const verificationResult = extractJSON(verificationContent);
+                if (verificationResult && verificationResult.score) {
+                  verificationScore = verificationResult.score;
+                  // Average the two scores for maximum accuracy
+                  const originalScore = analysisResult.score;
+                  analysisResult.score = Math.round((originalScore + verificationScore) / 2);
+                  console.log(`[AI Analysis] Verification complete: Original=${originalScore}, Verified=${verificationScore}, Final=${analysisResult.score}`);
+                }
+              } catch (verificationError) {
+                console.log("[AI Analysis] Verification failed, using primary score:", verificationError);
+              }
+            }
+          }
           
         } catch (error: any) {
           console.error("[AI Analysis] Primary AI (Gemini) failed, attempting secondary fallback:", error.message);
           
-          // Try secondary AI provider (DeepSeek or Llama via OpenRouter)
           try {
-            const secondaryModel = "deepseek/deepseek-chat"; // or "meta-llama/llama-3.3-70b-instruct"
+            const secondaryModel = "deepseek/deepseek-chat";
             console.log(`[AI Analysis] Attempting secondary model: ${secondaryModel}`);
             
             const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
@@ -208,7 +237,7 @@ export const analyzeResume = internalAction({
           category: safeAnalysisResult.category,
           analysis: safeAnalysisResult.analysis,
           score: safeAnalysisResult.score,
-          processingDuration: duration, // Pass duration
+          processingDuration: duration,
           scoreBreakdown: safeAnalysisResult.scoreBreakdown,
           missingKeywords: safeAnalysisResult.missingKeywords,
           formatIssues: safeAnalysisResult.formatIssues,
@@ -216,12 +245,11 @@ export const analyzeResume = internalAction({
           status: "completed",
         });
         
-        console.log(`[AI Analysis] ✅ Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback})`);
+        console.log(`[AI Analysis] ✅ Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback}${verificationScore ? `, Verified: ${verificationScore}` : ''})`);
       } catch (updateError: any) {
         console.error("[AI Analysis] ❌ Failed to update resume metadata:", updateError);
         console.error("[AI Analysis] Error details:", JSON.stringify(updateError, null, 2));
         
-        // Try one more time with absolute minimal data
         try {
           console.log(`[AI Analysis] Attempting minimal fallback update for resume ${args.id}`);
           await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
@@ -241,7 +269,6 @@ export const analyzeResume = internalAction({
       }
     } catch (globalError: any) {
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
-      // Attempt to mark as failed so client doesn't hang
       try {
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
