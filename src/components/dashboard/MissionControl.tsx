@@ -237,6 +237,74 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   };
 
   const isPremium = currentUser?.subscriptionTier === "interview_sprint" || currentUser?.subscriptionTier === "single_scan";
+  const isFree = currentUser?.subscriptionTier === "free" || !currentUser?.subscriptionTier;
+
+  // Free users should only see a score preview, not the full analysis
+  if (isFree) {
+    return (
+      <div className="space-y-6 pb-24 md:pb-6">
+        <div className="flex justify-between items-center mb-2">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Mission Control</h1>
+            <p className="text-slate-400 text-sm">ATS Analysis & Optimization Center</p>
+          </div>
+        </div>
+
+        {/* Free Tier: Only show score */}
+        <div className="max-w-2xl mx-auto">
+          <SpeedometerCard score={matchScore} />
+          
+          <div className="mt-8 glass-panel p-8 rounded-xl border border-purple-500/30 bg-gradient-to-b from-purple-900/20 to-slate-900 text-center">
+            <Lock className="h-12 w-12 text-purple-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-white mb-3">Unlock Full ATS Analysis</h3>
+            <p className="text-slate-300 mb-2">
+              Your resume scored <span className="font-bold text-primary">{matchScore}%</span>
+            </p>
+            <p className="text-sm text-slate-400 mb-6">
+              Upgrade to see detailed keyword analysis, formatting issues, actionable fixes, and AI-powered recommendations.
+            </p>
+            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-4 mb-6 text-left">
+              <p className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <Lock className="h-3 w-3" /> Locked Features
+              </p>
+              <div className="space-y-2 text-sm text-slate-400">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
+                  <span>Missing Keywords Report</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
+                  <span>Formatting & Structure Audit</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
+                  <span>AI-Powered Bullet Point Generator</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
+                  <span>Role Match Analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
+                  <span>Impact Score & Pro Tips</span>
+                </div>
+              </div>
+            </div>
+            <Button 
+              onClick={() => onNavigate("pricing")}
+              size="lg"
+              className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-black font-bold"
+            >
+              Unlock Full Report - $4.99
+            </Button>
+            <p className="text-xs text-slate-400 mt-4">
+              ✓ One-time payment • ✓ Instant access • ✓ No subscription
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 pb-24 md:pb-6">

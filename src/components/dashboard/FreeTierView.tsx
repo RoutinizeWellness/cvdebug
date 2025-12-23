@@ -21,10 +21,10 @@ export function FreeTierView({
   setShowPricing,
   setShowBlurredPreview
 }: FreeTierViewProps) {
-  // Ensure we always show at least some issues for realism
-  const totalIssues = Math.max(missingCount + formatCount, 3);
-  const displayMissingCount = Math.max(missingCount, 2);
-  const displayFormatCount = Math.max(formatCount, 1);
+  // Free users should only see the score - show realistic issue counts to encourage upgrade
+  const totalIssues = Math.max(missingCount + formatCount, 5);
+  const displayMissingCount = Math.max(missingCount, 3);
+  const displayFormatCount = Math.max(formatCount, 2);
   return (
     <div className="space-y-8">
       {/* Hero Section with Gauge - Matching Premium Layout */}
