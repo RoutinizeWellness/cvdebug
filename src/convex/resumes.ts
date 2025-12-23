@@ -503,3 +503,35 @@ export const triggerServerOcr = mutation({
     return { success: true };
   },
 });
+
+export const generateSanitizedVersion = mutation({
+  args: { resumeId: v.id("resumes") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const resume = await ctx.db.get(args.resumeId);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new Error("Resume not found or unauthorized");
+    }
+
+    if (!resume.ocrText) {
+      throw new Error("No text available to sanitize. Please upload the resume again.");
+    }
+
+    // Clean the text by removing null bytes, invalid Unicode, and normalizing whitespace
+    const cleanedText = resume.ocrText
+      .replace(/\0/g, '')
+      .replace(/[\uFFFD\uFFFE\uFFFF]/g, '')
+      .replace(/[^\x20-\x7E\n\r\t]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const instructions = "Copy this clean text and paste it into a fresh Google Docs or Word document. Apply simple formatting (headers, bullets) and save as PDF using 'Print to PDF' or 'Save As PDF'.";
+
+    return {
+      cleanedText,
+      instructions,
+    };
+  },
+});
