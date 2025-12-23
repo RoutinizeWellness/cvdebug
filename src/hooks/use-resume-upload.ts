@@ -103,13 +103,30 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         : "Resume uploaded! AI is analyzing..."
       );
       
-      // Add timeout to processing (90 seconds max)
+      // Try fast client-side processing first
       const processingPromise = processFile(file, resumeId, storageId);
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 90000)
+        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 60000) // Reduced to 60s
       );
 
-      await Promise.race([processingPromise, timeoutPromise]);
+      try {
+        await Promise.race([processingPromise, timeoutPromise]);
+      } catch (processingError: any) {
+        // If client-side fails or times out, trigger server-side OCR
+        if (processingError.message === "CLIENT_TIMEOUT" || 
+            processingError.message.includes("Could not extract text") ||
+            processingError.message.includes("OCR")) {
+          
+          console.log("[Client] Client processing failed/timed out, triggering server OCR");
+          toast.info("⚙️ Switching to deep scan mode...");
+          
+          await triggerServerOcr({ resumeId, storageId });
+          toast.success("Deep scan initiated. This may take a moment...");
+          setJobDescription("");
+          return; // Don't cleanup, let server handle it
+        }
+        throw processingError;
+      }
       
       setJobDescription("");
 

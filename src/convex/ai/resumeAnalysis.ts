@@ -86,14 +86,33 @@ export const analyzeResume = internalAction({
           console.log("[AI Analysis] Successfully parsed AI response");
           
         } catch (error: any) {
-          console.error("[AI Analysis] OpenRouter failed, using ML-based analysis:", error.message);
+          console.error("[AI Analysis] Primary AI (Gemini) failed, attempting secondary fallback:", error.message);
+          
+          // Try secondary AI provider (DeepSeek or Llama via OpenRouter)
           try {
-            analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
-          } catch (err) {
-            console.error("[AI Analysis] Fallback analysis failed after API error:", err);
-            throw err;
+            const secondaryModel = "deepseek/deepseek-chat"; // or "meta-llama/llama-3.3-70b-instruct"
+            console.log(`[AI Analysis] Attempting secondary model: ${secondaryModel}`);
+            
+            const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
+            const content = await callOpenRouter(apiKey, {
+              model: secondaryModel,
+              messages: [{ role: "user", content: prompt }],
+              response_format: { type: "json_object" }
+            });
+            
+            analysisResult = extractJSON(content);
+            console.log("[AI Analysis] Secondary AI model succeeded");
+            
+          } catch (secondaryError: any) {
+            console.error("[AI Analysis] Secondary AI also failed, using ML-based analysis:", secondaryError.message);
+            try {
+              analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+            } catch (err) {
+              console.error("[AI Analysis] Fallback analysis failed after all AI attempts:", err);
+              throw err;
+            }
+            usedFallback = true;
           }
-          usedFallback = true;
         }
       }
 

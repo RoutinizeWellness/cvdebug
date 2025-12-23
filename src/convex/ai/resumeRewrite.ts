@@ -51,6 +51,7 @@ export const rewriteResume = action({
 export const generateBulletPoints = action({
   args: {
     keyword: v.string(),
+    currentContext: v.optional(v.string()),
     context: v.optional(v.string()),
     jobDescription: v.optional(v.string()),
   },
@@ -61,7 +62,9 @@ export const generateBulletPoints = action({
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
-    const prompt = buildBulletPointPrompt(args.keyword, args.context, args.jobDescription);
+    const userContext = args.currentContext || args.context;
+
+    const prompt = buildBulletPointPrompt(args.keyword, userContext, args.jobDescription);
 
     try {
       const response = await callOpenRouter(apiKey, {

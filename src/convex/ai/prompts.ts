@@ -1,3 +1,6 @@
+// Global AI Role Definition
+const AI_ROLE = `Act as a Principal Technical Recruiter and ATS Optimization Expert with 20 years of experience in FAANG and Tier-1 recruitment. Your tone is professional, surgical, and honest. You don't give "participation trophies"; you provide data-driven audits to ensure the candidate bypasses automated filters and impresses elite human reviewers.`;
+
 export function buildResumeAnalysisPrompt(
   cleanText: string,
   jobDescription?: string
@@ -7,9 +10,7 @@ export function buildResumeAnalysisPrompt(
     ? `"${jobDescription}"`
     : `"General Industry Standards for the detected role"`;
 
-  return `You are an elite Technical Recruiter and Senior Hiring Manager at a top-tier tech company (FAANG level). 
-You are using an advanced AI-powered Applicant Tracking System (ATS) to evaluate a candidate.
-Your goal is to provide a brutally honest, data-driven, and constructive critique of the resume.
+  return `${AI_ROLE}
 
 **YOUR PERSONA:**
 - You value specific, quantifiable results over buzzwords.
@@ -164,14 +165,50 @@ ${hasJobDescription ? '**JD Alignment:** [X]% keyword match | [Y] critical skill
 `;
 }
 
+export function buildFormatAuditPrompt(ocrText: string): string {
+  return `${AI_ROLE}
+
+AUDIT TASK: Analyze the raw OCR text of this resume for structural integrity and ATS parseability.
+
+CORE CHECKS:
+1. READING ORDER: Identify if there are signs of multi-column layouts that may have scrambled the text during parsing.
+2. SECTION TITLES: Are standard headers used (Experience, Education, Skills)? If a section is named "About Me" instead of "Professional Summary", flag it.
+3. DATE CONSISTENCY: Check for standard date formats (Month YYYY recommended).
+4. NOISE DETECTION: Are there weird characters, null bytes, or excessive special characters that suggest encoding issues?
+
+RAW TEXT TO AUDIT:
+"""
+${ocrText.substring(0, 10000)}
+"""
+
+RETURN JSON FORMAT ONLY:
+{
+  "score": number (0-100),
+  "issues": [
+    {
+      "severity": "CRITICAL" | "WARNING" | "TIP",
+      "issue": "Short descriptive title",
+      "fix": "Actionable step to fix it",
+      "atsImpact": "Why this hurts their chances"
+    }
+  ]
+}`;
+}
+
 export function buildKeywordSniperPrompt(
   missingKeyword: string,
   resumeText: string,
   jobDescription: string,
   targetRole: string
 ): string {
-  return `You are an expert Resume Writer and ATS Optimization Specialist.
-Your task is to generate 3 REAL, SPECIFIC, and ACTIONABLE bullet point phrases that naturally incorporate the keyword "${missingKeyword}" into a resume.
+  return `${AI_ROLE}
+
+MISSION: Compare the Resume against the Job Description (JD). Identify the "High-Impact" keyword gaps for "${missingKeyword}".
+
+ANALYSIS RULES:
+1. SEMANTIC MATCHING: If the JD asks for "AWS" and the CV has "Cloud Architecture (Amazon)", count it as a match but suggest using the explicit term "AWS".
+2. PRIORITIZATION: Focus on hard skills, tools, and methodologies. Ignore soft skills like "team player".
+3. IMPACT ANALYSIS: For every missing keyword, explain WHY it is critical for this specific role.
 
 **Context:**
 - **Missing Keyword:** "${missingKeyword}"
@@ -206,20 +243,37 @@ Generate exactly 3 distinct phrases that showcase different aspects of using ${m
 }
 
 export const buildRewritePrompt = (text: string, jobDescription?: string) => {
-  return `
-    You are an expert resume writer. Rewrite the following resume section to be more impactful, 
-    using strong action verbs and quantifying achievements where possible.
-    ${jobDescription ? `Tailor it to this job description: ${jobDescription}` : ""}
-    
-    Original Text:
-    "${text}"
-    
-    Return only the rewritten text.
+  return `${AI_ROLE}
+
+You are an expert resume writer. Rewrite the following resume section to be more impactful, 
+using strong action verbs and quantifying achievements where possible.
+${jobDescription ? `Tailor it to this job description: ${jobDescription}` : ""}
+
+Original Text:
+"${text}"
+
+Return only the rewritten text.
   `;
 };
 
-export const buildBulletPointPrompt = (keyword: string, context?: string, jobDescription?: string) => {
-  return `Act as a Principal Technical Recruiter and Senior Engineering Lead from a top-tier Silicon Valley firm. Your goal is to transform weak, passive resume bullet points into high-impact, data-driven "Power Statements."
+export const buildBulletPointPrompt = (
+  keyword: string, 
+  currentContext?: string, 
+  jobDescription?: string
+) => {
+  return `${AI_ROLE}
+
+TASK: Create a professional bullet point that integrates the keyword "${keyword}" into the candidate's existing experience.
+
+REQUIREMENTS:
+1. FORMULA: Use Google's XYZ formula: Accomplished [X] as measured by [Y], by doing [Z].
+2. ACTION VERB: Start with a powerful verb (Spearheaded, Engineered, Architected).
+3. DATA DRIVEN: Include a metrics placeholder like [X%] or [$X] for the user to fill.
+4. TARGETED: Make it sound relevant to the provided Job Description.
+5. AUGMENT, DON'T INVENT: If the user provides context, enhance their existing experience rather than creating fictional scenarios.
+
+CANDIDATE'S CONTEXT: "${currentContext ? currentContext.substring(0, 500) : "General professional experience"}"
+TARGET JD: "${jobDescription ? jobDescription.substring(0, 500) : "General Tech Role"}"
 
 CORE PRINCIPLES:
 1. FORMULA: Use the Google XYZ Formula: "Accomplished [X] as measured by [Y], by doing [Z]."
@@ -232,11 +286,6 @@ TONE GUIDELINES:
 - No fluff. No "passionate" or "hard-working."
 - Focus on "Ownership" and "Scalability."
 - Use industry-standard terminology (e.g., "reduced latency," "driven conversion," "automated infrastructure").
-
-INPUT DATA:
-- Context/Experience: "${context ? context.substring(0, 500) : "General professional experience"}"
-- Targeted Keywords: "${keyword}"
-- Job Role/Context: "${jobDescription ? jobDescription.substring(0, 500) : "General Tech Role"}"
 
 TASK:
 Generate 3 distinct versions of a bullet point demonstrating this skill:

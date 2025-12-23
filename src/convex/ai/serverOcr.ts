@@ -2,6 +2,7 @@
 
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
+import Tesseract, { createWorker } from "tesseract.js";
 
 // Use require to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -15,7 +16,7 @@ export const processWithServerOcr = internalAction({
     const startTime = Date.now();
     
     try {
-      console.log(`[Server OCR] Starting server-side OCR for resume ${args.resumeId}`);
+      console.log(`[Server OCR] Starting Tesseract.js OCR for resume ${args.resumeId}`);
       
       // Get the file from storage
       const fileUrl = await ctx.storage.getUrl(args.storageId);
@@ -44,19 +45,35 @@ export const processWithServerOcr = internalAction({
         // Determine content type from response headers or buffer analysis
         const contentType = response.headers.get('content-type') || "unknown";
 
-        // TODO: Integrate robust OCR service here
-        // Recommended services:
-        // - Google Cloud Vision API (best for complex layouts)
-        // - AWS Textract (good for forms and tables)
-        // - Azure Computer Vision (balanced option)
-        // - Tesseract.js in Node (free but less accurate)
-        
-        // For now, attempt basic text extraction
         let extractedText = "";
         
-        try {
-          // Try UTF-8 extraction first
+        // Use Tesseract.js for OCR on images and image-based PDFs
+        if (contentType.includes("image") || contentType.includes("pdf")) {
+          console.log(`[Server OCR] Running Tesseract.js OCR on ${contentType}`);
+          
+          try {
+            const worker = await createWorker('eng');
+            
+            try {
+              const { data: { text } } = await worker.recognize(buffer);
+              extractedText = text;
+              console.log(`[Server OCR] Tesseract extracted ${extractedText.length} characters`);
+            } finally {
+              await worker.terminate();
+            }
+            
+          } catch (ocrError: any) {
+            console.error("[Server OCR] Tesseract failed, trying UTF-8 extraction:", ocrError.message);
+            // Fallback to UTF-8 extraction
+            extractedText = buffer.toString('utf-8');
+          }
+        } else {
+          // Try UTF-8 extraction for non-image files
           extractedText = buffer.toString('utf-8');
+        }
+        
+        // Clean up the text
+        try {
           
           // Clean up the text
           extractedText = extractedText
