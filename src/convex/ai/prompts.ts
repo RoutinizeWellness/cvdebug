@@ -82,6 +82,7 @@ Return a raw JSON object with this exact structure. Do not include markdown form
     "format": <number 0-30>, 
     "completeness": <number 0-30> 
   },
+  "matchedKeywords": ["keyword1", "keyword2", "keyword3"],
   "missingKeywords": [
     { 
       "keyword": "Specific Term", 
