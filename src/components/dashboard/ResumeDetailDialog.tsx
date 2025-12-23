@@ -406,7 +406,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
         open={showPricing} 
         onOpenChange={setShowPricing} 
         initialPlan="single_scan" 
-        resumeId={displayResume?._id}
+        resumeId={displayResume?._id as any}
       />
       <DialogContent 
         showCloseButton={false}

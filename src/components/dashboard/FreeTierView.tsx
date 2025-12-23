@@ -254,10 +254,10 @@ export function FreeTierView({
           <Button 
             onClick={() => setShowPricing(true)}
             size="lg"
-            className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black"
+            className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <Lock className="mr-3 h-6 w-6 text-black" />
-            Unlock Full Report - Only $4.99
+            Unlock Full Report - Only €4.99
           </Button>
           
           <div className="flex items-center justify-center gap-6 text-sm text-zinc-300 font-medium">
