@@ -236,11 +236,13 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
     }
   };
 
-  const isPremium = currentUser?.subscriptionTier === "interview_sprint" || currentUser?.subscriptionTier === "single_scan";
-  const isFree = currentUser?.subscriptionTier === "free" || !currentUser?.subscriptionTier;
+  const hasActiveSprint = currentUser?.sprintExpiresAt && currentUser.sprintExpiresAt > Date.now();
+  const hasPurchasedScan = currentUser?.subscriptionTier === "single_scan" || currentUser?.subscriptionTier === "interview_sprint";
+  const isPremium = hasActiveSprint || hasPurchasedScan;
+  const isFree = !isPremium && (currentUser?.credits ?? 0) <= 0;
 
-  // Free users should only see a score preview, not the full analysis
-  if (isFree) {
+  // Free users with no credits should only see a score preview, not the full analysis
+  if (isFree && masterResume && !masterResume.detailsUnlocked) {
     return (
       <div className="space-y-6 pb-24 md:pb-6">
         <div className="flex justify-between items-center mb-2">

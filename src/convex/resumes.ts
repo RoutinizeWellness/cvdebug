@@ -46,6 +46,7 @@ export const createResume = mutation({
     }
 
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
     
     // RE-SCAN LOGIC: Check if this is a re-scan within a project window (e.g., 24h)
     let isFreeRescan = false;
@@ -110,7 +111,7 @@ export const createResume = mutation({
       jobDescription: args.jobDescription,
       jobTitle: args.jobTitle,
       company: args.company,
-      detailsUnlocked: hasActiveSprint || false,
+      detailsUnlocked: hasActiveSprint || hasPurchasedScan || false,
       status: "processing",
     });
 
