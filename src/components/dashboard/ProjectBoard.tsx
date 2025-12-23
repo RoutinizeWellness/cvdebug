@@ -5,9 +5,11 @@ import { DragDropContext, Droppable, Draggable, DroppableProvided, DraggableProv
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search } from "lucide-react";
+import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useState } from "react";
+import { KeywordSniperPanel } from "./mission/KeywordSniperPanel";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
@@ -26,6 +28,7 @@ const COLUMNS = [
 export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: ProjectBoardProps) {
   const applications = useQuery(api.applications.getApplicationsByProject, { projectId });
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
+  const [selectedApplication, setSelectedApplication] = useState<any>(null);
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
@@ -46,7 +49,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
   if (!applications) return null;
 
   return (
-    <div className="h-full flex flex-col">
+    <>
+      <div className="h-full flex flex-col">
       {onBack && (
         <div className="mb-4">
           <Button 
@@ -120,6 +124,36 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
                                       {new Date(app._creationTime).toLocaleDateString()}
                                     </div>
                                     <div className="flex gap-1">
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button 
+                                              variant="ghost" 
+                                              size="icon" 
+                                              className="h-6 w-6 text-zinc-500 hover:text-white hover:bg-zinc-800"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedApplication({
+                                                  _id: app._id,
+                                                  jobTitle: app.jobTitle,
+                                                  company: app.companyName,
+                                                  score: app.matchScore || 0,
+                                                  missingKeywords: app.missingKeywords || [],
+                                                  matchedKeywords: app.matchedKeywords || [],
+                                                  resumeText: "",
+                                                  jobDescriptionText: app.jobDescriptionText || "",
+                                                  status: app.status,
+                                                });
+                                              }}
+                                            >
+                                              <FileText className="h-3 w-3" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>View Details</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
                                       {onGenerateCoverLetter && (
                                         <TooltipProvider>
                                           <Tooltip>
@@ -142,9 +176,6 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
                                           </Tooltip>
                                         </TooltipProvider>
                                       )}
-                                      <Button variant="ghost" size="icon" className="h-6 w-6 text-zinc-500 hover:text-white">
-                                        <MoreHorizontal className="h-3 w-3" />
-                                      </Button>
                                     </div>
                                   </div>
                                 </CardContent>
@@ -162,5 +193,13 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
         </DragDropContext>
       </div>
     </div>
+
+    <KeywordSniperPanel 
+      open={!!selectedApplication} 
+      onOpenChange={(open) => !open && setSelectedApplication(null)} 
+      job={selectedApplication} 
+      onGenerateCoverLetter={onGenerateCoverLetter || (() => {})}
+    />
+    </>
   );
 }
