@@ -168,6 +168,9 @@ export const analyzeResume = internalAction({
           format: Math.round(Number(analysisResult.scoreBreakdown?.format) || 0),
           completeness: Math.round(Number(analysisResult.scoreBreakdown?.completeness) || 0),
         },
+        matchedKeywords: Array.isArray(analysisResult.matchedKeywords)
+          ? analysisResult.matchedKeywords.slice(0, 50).map(String).filter((kw: string) => kw.length > 0)
+          : [],
         missingKeywords: Array.isArray(analysisResult.missingKeywords) 
           ? analysisResult.missingKeywords.slice(0, 20).map((kw: any) => {
               if (typeof kw === 'string') {
