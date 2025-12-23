@@ -1,5 +1,7 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+
+const apiAny = api as any;
 import { Id } from "@/convex/_generated/dataModel";
 import { DragDropContext, Droppable, Draggable, DroppableProvided, DraggableProvided, DropResult } from "@hello-pangea/dnd";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,6 +30,8 @@ const COLUMNS = [
 export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: ProjectBoardProps) {
   const applications = useQuery(api.applications.getApplicationsByProject, { projectId });
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
+  const analyzeApplicationKeywords = useMutation(apiAny.applications.analyzeApplicationKeywords);
+  const resumes = useQuery(apiAny.resumes.getResumes, {});
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
 
   const onDragEnd = async (result: DropResult) => {
@@ -163,8 +167,25 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
                                               variant="ghost" 
                                               size="icon" 
                                               className="h-6 w-6 text-zinc-500 hover:text-white hover:bg-zinc-800"
-                                              onClick={(e) => {
+                                              onClick={async (e) => {
                                                 e.stopPropagation();
+                                                
+                                                // Get the project's master resume
+                                                const projectResumes = resumes?.filter((r: any) => r.projectId === projectId);
+                                                const masterResume = projectResumes?.[0];
+                                                
+                                                // If we have a resume, analyze the application
+                                                if (masterResume) {
+                                                  try {
+                                                    await analyzeApplicationKeywords({
+                                                      applicationId: app._id,
+                                                      resumeId: masterResume._id,
+                                                    });
+                                                  } catch (error) {
+                                                    console.error("Failed to analyze application:", error);
+                                                  }
+                                                }
+                                                
                                                 setSelectedApplication({
                                                   _id: app._id,
                                                   jobTitle: app.jobTitle,
@@ -172,7 +193,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
                                                   score: app.matchScore || 0,
                                                   missingKeywords: app.missingKeywords || [],
                                                   matchedKeywords: app.matchedKeywords || [],
-                                                  resumeText: "",
+                                                  resumeText: masterResume?.ocrText || "",
                                                   jobDescriptionText: app.jobDescriptionText || "",
                                                   status: app.status,
                                                 });

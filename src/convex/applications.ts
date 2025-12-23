@@ -30,6 +30,61 @@ export const createApplication = mutation({
   },
 });
 
+export const analyzeApplicationKeywords = mutation({
+  args: {
+    applicationId: v.id("applications"),
+    resumeId: v.id("resumes"),
+  },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Unauthorized");
+
+    const application = await ctx.db.get(args.applicationId);
+    const resume = await ctx.db.get(args.resumeId);
+
+    if (!application || !resume) {
+      throw new Error("Application or resume not found");
+    }
+
+    // Extract keywords from resume
+    const resumeMatchedKeywords = resume.matchedKeywords || [];
+    const resumeMissingKeywords = resume.missingKeywords || [];
+
+    // If job description exists, analyze it
+    if (application.jobDescriptionText) {
+      const jdText = application.jobDescriptionText.toLowerCase();
+      
+      // Find which resume keywords appear in the JD
+      const matchedInJD = resumeMatchedKeywords.filter(kw => 
+        jdText.includes(kw.toLowerCase())
+      );
+      
+      // Find which missing keywords from resume are in the JD (critical gaps)
+      const missingInJD = resumeMissingKeywords
+        .filter(kw => {
+          const keyword = typeof kw === 'string' ? kw : kw.keyword;
+          return jdText.includes(keyword.toLowerCase());
+        })
+        .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+
+      await ctx.db.patch(args.applicationId, {
+        matchedKeywords: matchedInJD,
+        missingKeywords: missingInJD,
+      });
+    } else {
+      // No JD, just use resume data
+      await ctx.db.patch(args.applicationId, {
+        matchedKeywords: resumeMatchedKeywords.slice(0, 10),
+        missingKeywords: resumeMissingKeywords
+          .slice(0, 10)
+          .map(kw => typeof kw === 'string' ? kw : kw.keyword),
+      });
+    }
+
+    return { success: true };
+  },
+});
+
 export const getApplicationsByProject = query({
   args: { projectId: v.id("projects") },
   handler: async (ctx, args) => {
