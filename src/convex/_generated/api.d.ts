@@ -51,6 +51,7 @@ import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
 import type * as receipts from "../receipts.js";
 import type * as resumes from "../resumes.js";
+import type * as sprintExpiration from "../sprintExpiration.js";
 import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
 import type * as unlockResume from "../unlockResume.js";
@@ -107,6 +108,7 @@ declare const fullApi: ApiFromModules<{
   projects: typeof projects;
   receipts: typeof receipts;
   resumes: typeof resumes;
+  sprintExpiration: typeof sprintExpiration;
   testEmail: typeof testEmail;
   testing: typeof testing;
   unlockResume: typeof unlockResume;

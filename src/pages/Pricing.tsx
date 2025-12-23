@@ -34,20 +34,20 @@ export default function PricingPage() {
                     Simple, Transparent Pricing
                 </h1>
                 <p className="text-xl text-muted-foreground">
-                    No subscriptions. Just pay for what you need.
-                    <span className="block mt-2 text-primary font-bold">Beta Launch Offer Active!</span>
+                    No subscriptions. No auto-renew. Just results.
+                    <span className="block mt-2 text-primary font-bold">We don't want your money forever. We want you hired.</span>
                 </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
-                {/* Free Tier */}
+                {/* Free Tier - The Diagnostic Hook */}
                 <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
                     <div className="space-y-2">
                         <h3 className="font-bold text-2xl text-muted-foreground">FREE Preview</h3>
                         <div className="flex items-baseline gap-1">
-                            <span className="text-5xl font-black">$0</span>
+                            <span className="text-5xl font-black">€0</span>
                         </div>
-                        <p className="text-muted-foreground">Basic scan to see where you stand.</p>
+                        <p className="text-muted-foreground text-sm">The Diagnostic Hook - See your CV is broken.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
@@ -55,25 +55,31 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Score 0-100</span>
+                            <span className="text-sm">1 Diagnostic Scan (per device)</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Top 3 keywords missing (of 10)</span>
+                            <span className="text-sm">ATS Score (0-100)</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Top 2 format issues (of 5)</span>
+                            <span className="text-sm">Robot View Toggle</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <Check className="h-3.5 w-3.5 text-primary" />
+                            </div>
+                            <span className="text-sm">Image Trap Monitor</span>
                         </div>
                         <div className="flex items-center gap-3 text-muted-foreground/80">
                             <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
                                 <Lock className="h-3.5 w-3.5" />
                             </div>
-                            <span className="text-sm">Detailed recommendations locked</span>
+                            <span className="text-sm">Keywords & fixes locked</span>
                         </div>
                     </div>
                     
@@ -82,7 +88,7 @@ export default function PricingPage() {
                     </Button>
                 </div>
 
-                {/* Single Scan */}
+                {/* Single Scan - The One-Shot Kill */}
                 <div className="rounded-2xl border-2 border-primary bg-card p-8 flex flex-col gap-6 relative shadow-2xl shadow-primary/10 scale-105 z-10">
                     <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-lg uppercase tracking-wider shadow-sm">
                         BETA ★
@@ -94,8 +100,8 @@ export default function PricingPage() {
                         </h3>
                         <div className="flex flex-col">
                             <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black">$4.99</span>
-                                <span className="text-xl text-muted-foreground line-through decoration-red-500/50">$9.99</span>
+                                <span className="text-5xl font-black">€4.99</span>
+                                <span className="text-xl text-muted-foreground line-through decoration-red-500/50">€9.99</span>
                             </div>
                             <p className="text-xs font-bold text-green-600 mt-2 flex items-center gap-1">
                                 50% OFF
@@ -104,14 +110,15 @@ export default function PricingPage() {
                                 <Rocket className="h-3 w-3" /> Limited: {claimed}/100 claimed
                             </p>
                         </div>
-                        <p className="text-muted-foreground">Perfect for optimizing a resume for one specific job application.</p>
+                        <p className="text-muted-foreground text-sm">The One-Shot Kill - Perfect for one dream job.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "Full ATS Analysis Score",
-                            "Missing Keywords Report",
-                            "Formatting & Structure Check",
+                            "1 Full ATS Analysis",
+                            "Complete Keyword Report",
+                            "Formatting Audit + Fixes",
+                            "24h Re-scan Window",
                             "Detailed Analysis Report"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
@@ -121,6 +128,12 @@ export default function PricingPage() {
                                 <span className="text-sm font-medium">{feature}</span>
                             </div>
                         ))}
+                        <div className="flex items-center gap-3 text-muted-foreground/80">
+                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                                <Lock className="h-3.5 w-3.5" />
+                            </div>
+                            <span className="text-sm">AI tools & CRM locked</span>
+                        </div>
                     </div>
                     
                     <Button 
@@ -131,26 +144,29 @@ export default function PricingPage() {
                     </Button>
                 </div>
 
-                {/* Bulk Pack */}
+                {/* Interview Sprint - The Command Center */}
                 <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
                     <div className="space-y-2">
                         <h3 className="font-bold text-2xl text-foreground flex items-center gap-2">
-                            Bundle (5 Scans) <Building2 className="h-5 w-5" />
+                            Interview Sprint <Building2 className="h-5 w-5" />
                         </h3>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-black">$19.99</span>
-                            <span className="text-xl text-muted-foreground line-through">$49.95</span>
+                            <span className="text-5xl font-black">€19.99</span>
+                            <span className="text-xl text-muted-foreground line-through">€49.99</span>
                         </div>
-                        <p className="text-sm font-bold text-green-600">SAVE $25</p>
-                        <p className="text-muted-foreground">Best for active job seekers applying to multiple companies.</p>
+                        <p className="text-sm font-bold text-green-600">SAVE €30</p>
+                        <p className="text-muted-foreground text-sm">The Command Center - 7 days of total power.</p>
                     </div>
                     
                     <div className="space-y-4 flex-1">
                         {[
-                            "5 Full ATS Scans",
-                            "Test Different Resume Versions",
-                            "Tailor for 5+ Job Descriptions",
-                            "Credits Never Expire"
+                            "Unlimited Scans (7 Days)",
+                            "AI Bullet Point Sniper",
+                            "AI Cover Letter Generator",
+                            "LinkedIn Brand Optimizer",
+                            "Project Tracker (CRM)",
+                            "PDF Sanitizer",
+                            "Priority Support (<4h)"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -161,8 +177,8 @@ export default function PricingPage() {
                         ))}
                     </div>
                     
-                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted("bulk_pack")}>
-                        Buy Bundle
+                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted("interview_sprint")}>
+                        Start Sprint
                     </Button>
                 </div>
             </div>

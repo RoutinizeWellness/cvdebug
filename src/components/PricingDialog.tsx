@@ -22,6 +22,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | null>(initialPlan || null);
+  const [showUpsell, setShowUpsell] = useState(false);
   
   useEffect(() => {
     if (initialPlan) {
@@ -40,9 +41,14 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
       return;
     }
 
+    // Show upsell if user is buying Single Scan
+    if (plan === "single_scan" && !showUpsell) {
+      setShowUpsell(true);
+      return;
+    }
+
     setIsLoading(plan);
     try {
-      // Pass window.location.origin to ensure redirects work in all environments (dev/prod)
       const url = await createCheckoutSession({ 
         plan,
         origin: window.location.origin,
@@ -64,7 +70,85 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
   const initiateCheckout = (plan: "single_scan" | "interview_sprint") => {
     setCheckoutPlan(plan);
+    setShowUpsell(false);
   };
+
+  // Upsell Modal
+  if (showUpsell) {
+    return (
+      <Dialog open={open} onOpenChange={(val) => {
+        if (!val) {
+          setShowUpsell(false);
+          setCheckoutPlan(null);
+        }
+        onOpenChange(val);
+      }}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden border-2 border-primary shadow-2xl">
+          <div className="bg-gradient-to-br from-primary/20 via-purple-500/20 to-primary/20 p-8 text-center relative">
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold py-2 text-center tracking-widest uppercase">
+              ⚠️ WAIT! Before You Checkout...
+            </div>
+            <div className="mt-8">
+              <h2 className="text-3xl font-black mb-4">Are You Applying to Only ONE Job?</h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                For just <span className="text-primary font-bold text-2xl">€15 more</span>, get the <span className="font-bold text-white">Interview Sprint</span>.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-8 space-y-6">
+            <div className="bg-zinc-900 rounded-xl p-6 border border-primary/30">
+              <h3 className="font-bold text-xl mb-4 text-primary">7 Days of Unlimited Power:</h3>
+              <ul className="space-y-3 text-sm">
+                {[
+                  "✨ Unlimited AI Resume Scans",
+                  "📝 Unlimited Cover Letters",
+                  "🎯 LinkedIn Profile Optimizer",
+                  "📊 Full Application Tracker (CRM)",
+                  "⚡ Priority Support (<4h response)"
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <div className="h-5 w-5 rounded-full bg-primary text-black flex items-center justify-center flex-shrink-0">
+                      <Check className="h-3 w-3 font-bold" />
+                    </div>
+                    <span className="font-medium">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 text-center">
+              <p className="text-sm font-bold text-green-400">
+                📈 Most candidates land <span className="text-2xl text-green-300">3x more interviews</span> with Interview Sprint
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <Button 
+                className="w-full h-14 font-black text-lg bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black rounded-xl shadow-lg" 
+                onClick={() => handleUpgrade("interview_sprint")}
+                disabled={!!isLoading}
+              >
+                {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "YES! Upgrade to Interview Sprint 🚀"}
+              </Button>
+              
+              <Button 
+                variant="ghost"
+                className="w-full text-zinc-400 hover:text-white" 
+                onClick={() => {
+                  setShowUpsell(false);
+                  handleUpgrade("single_scan");
+                }}
+                disabled={!!isLoading}
+              >
+                {isLoading === "single_scan" ? <Loader2 className="h-5 w-5 animate-spin" /> : "No thanks, just Single Scan (€4.99)"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   if (checkoutPlan) {
     const planDetails = {

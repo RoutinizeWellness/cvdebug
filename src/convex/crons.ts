@@ -15,4 +15,12 @@ crons.interval(
   {}
 );
 
+// Sprint Expiration: Check every 5 minutes and expire Interview Sprint subscriptions after 7 days
+crons.interval(
+  "expire_interview_sprints",
+  { minutes: 5 },
+  internalAny.users.expireInterviewSprints,
+  {}
+);
+
 export default crons;
