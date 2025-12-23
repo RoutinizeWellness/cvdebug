@@ -103,10 +103,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         : "Resume uploaded! AI is analyzing..."
       );
       
-      // Try fast client-side processing first
+      // Try fast client-side processing first with 60s timeout
       const processingPromise = processFile(file, resumeId, storageId);
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 60000) // Reduced to 60s
+        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 60000)
       );
 
       try {

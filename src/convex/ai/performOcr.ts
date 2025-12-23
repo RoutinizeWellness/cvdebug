@@ -17,13 +17,13 @@ export const performOcr = internalAction({
     try {
       console.log(`[Server OCR] Starting Tesseract.js OCR for resume ${args.resumeId}`);
       
-      // Get the file from storage
+      // 1. Get the file URL from storage
       const fileUrl = await ctx.storage.getUrl(args.storageId);
       if (!fileUrl) {
         throw new Error("File not found in storage");
       }
 
-      // Fetch the file with timeout
+      // 2. Fetch the file with timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 45000);
 
@@ -41,34 +41,28 @@ export const performOcr = internalAction({
 
         console.log(`[Server OCR] File fetched successfully, size: ${(fileSize / 1024).toFixed(2)} KB`);
 
-        const contentType = response.headers.get('content-type') || "unknown";
-
+        // 3. Execute Tesseract OCR
+        console.log(`[Server OCR] Running Tesseract.js OCR (eng)`);
+        
+        const worker = await createWorker('eng', 1, {
+          logger: (m: any) => {
+            if (m.status === 'recognizing text') {
+              console.log(`[OCR Progress] ${m.status}: ${Math.round(m.progress * 100)}%`);
+            }
+          }
+        });
+        
         let extractedText = "";
         
-        // Use Tesseract.js for OCR on images and image-based PDFs
-        if (contentType.includes("image") || contentType.includes("pdf")) {
-          console.log(`[Server OCR] Running Tesseract.js OCR on ${contentType}`);
-          
-          try {
-            const worker = await createWorker('eng');
-            
-            try {
-              const { data: { text } } = await worker.recognize(buffer);
-              extractedText = text;
-              console.log(`[Server OCR] Tesseract extracted ${extractedText.length} characters`);
-            } finally {
-              await worker.terminate();
-            }
-            
-          } catch (ocrError: any) {
-            console.error("[Server OCR] Tesseract failed, trying UTF-8 extraction:", ocrError.message);
-            extractedText = buffer.toString('utf-8');
-          }
-        } else {
-          extractedText = buffer.toString('utf-8');
+        try {
+          const { data: { text } } = await worker.recognize(buffer);
+          extractedText = text;
+          console.log(`[Server OCR] Tesseract extracted ${extractedText.length} characters`);
+        } finally {
+          await worker.terminate();
         }
         
-        // Clean up the text
+        // 4. Clean the text (remove non-printable characters)
         extractedText = extractedText
           .replace(/\0/g, '')
           .replace(/[\uFFFD\uFFFE\uFFFF]/g, '')
@@ -83,7 +77,7 @@ export const performOcr = internalAction({
         const processingTime = Date.now() - startTime;
         console.log(`[Server OCR] Successfully extracted ${extractedText.length} characters in ${processingTime}ms`);
         
-        // Update the resume with OCR text
+        // 5. Update the resume with OCR text
         await ctx.runMutation(internalAny.resumes.updateResumeOcr, {
           id: args.resumeId,
           ocrText: extractedText,
