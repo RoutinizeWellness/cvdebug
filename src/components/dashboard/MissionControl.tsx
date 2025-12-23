@@ -20,6 +20,7 @@ import { CriticalIssues } from "./CriticalIssues";
 import { FormattingAudit } from "./analysis/FormattingAudit";
 import { ActionableFixes } from "./analysis/ActionableFixes";
 import { Button } from "@/components/ui/button";
+import { SprintProgressWidget } from "./SprintProgressWidget";
 
 const apiAny = api as any;
 
@@ -309,7 +310,19 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   }
 
   return (
-    <div className="space-y-6 pb-24 md:pb-6">
+    <div className="space-y-6">
+      {/* Sprint Progress Widget - Show for Sprint users */}
+      {currentUser?.subscriptionTier === "interview_sprint" && masterResume?.score && (
+        <SprintProgressWidget
+          currentScore={masterResume.score}
+          previousScore={masterResume.previousScore}
+          targetScore={85}
+        />
+      )}
+
+      {/* Master CV Health Monitor */}
+      <MasterCVHealth resume={masterResume} />
+
       {/* Header Actions */}
       <div className="flex justify-between items-center mb-2">
         <div>

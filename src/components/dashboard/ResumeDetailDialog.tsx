@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   FileText, 
   Download, 
@@ -45,6 +46,8 @@ import { ActionableFixes } from "./analysis/ActionableFixes";
 import { ImpactScore } from "./analysis/ImpactScore";
 import { AIProTip } from "./analysis/AIProTip";
 import { ImageTrapAlert } from "./ImageTrapAlert";
+import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
+import { InterviewPrepMode } from "./InterviewPrepMode";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -65,6 +68,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
   const [jobDescription, setJobDescription] = useState("");
   const [isReanalyzing, setIsReanalyzing] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
   
@@ -585,134 +589,121 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               )}
             </div>
           ) : (
-            <>
-              <ScrollArea className="flex-1 h-full print:h-auto print:overflow-visible">
-                <div className="p-8 max-w-7xl mx-auto font-display print:text-black">
-                  
-                  {/* Image Trap Alert - Show at the top for all users */}
-                  {displayResume?.textLayerIntegrity !== undefined && (
-                    <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                      <ImageTrapAlert 
-                        textLayerIntegrity={displayResume.textLayerIntegrity}
-                        hasImageTrap={displayResume.hasImageTrap}
-                        resumeId={displayResume._id}
-                      />
-                    </div>
-                  )}
+            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+              {/* Left Panel - Analysis Tabs */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
+                <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 flex-shrink-0">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="keywords">Keywords</TabsTrigger>
+                  <TabsTrigger value="format">Format</TabsTrigger>
+                  <TabsTrigger value="simulation">Recruiter View</TabsTrigger>
+                  <TabsTrigger value="interview">Interview Prep</TabsTrigger>
+                  <TabsTrigger value="raw">Raw Text</TabsTrigger>
+                </TabsList>
 
-                  {isFree ? (
-                    <FreeTierView 
-                      score={displayResume?.score || 0}
-                      missingCount={displayResume?.missingKeywords?.length || 0}
-                      formatCount={displayResume?.formatIssues?.length || 0}
-                      criticalKeywords={criticalKeywords}
-                      showBlurredPreview={showBlurredPreview}
-                      setShowPricing={setShowPricing}
-                      setShowBlurredPreview={setShowBlurredPreview}
-                    />
-                  ) : (
-                    <div className="space-y-8">
-                      {/* Hero Section with Gauge - Matching HTML exactly */}
-                      <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden print:border print:border-gray-300 print:bg-white print:shadow-none">
-                        {/* Background Glow */}
-                        <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
-                        
-                        {/* Left: Gauge */}
-                        <GaugeScore score={displayResume?.score || 0} />
+                <TabsContent value="overview" className="flex-1 overflow-auto p-6">
+                  <div className="space-y-8">
+                    {/* Hero Section with Gauge - Matching HTML exactly */}
+                    <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden print:border print:border-gray-300 print:bg-white print:shadow-none">
+                      {/* Background Glow */}
+                      <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+                      
+                      {/* Left: Gauge */}
+                      <GaugeScore score={displayResume?.score || 0} />
 
-                        {/* Right: Content */}
-                        <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
-                          <div>
-                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
-                              (displayResume?.score || 0) >= 80 
-                                ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
-                                : (displayResume?.score || 0) >= 50
-                                ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
-                                : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
-                            } text-xs font-bold uppercase tracking-wider mb-4 border`}>
-                              <span className={`size-2 rounded-full animate-pulse ${
-                                (displayResume?.score || 0) >= 80 ? 'bg-green-500' : (displayResume?.score || 0) >= 50 ? 'bg-orange-500' : 'bg-red-500'
-                              }`}></span>
-                              {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
-                            </div>
-                            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
-                              Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                                {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
-                              </span>.
-                            </h1>
-                            <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
-                              {(displayResume?.score || 0) >= 80 
-                                ? 'Great job! Your resume is well-optimized for ATS systems.' 
-                                : (displayResume?.score || 0) >= 50 
-                                ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
-                                : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
-                            </p>
+                      {/* Right: Content */}
+                      <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
+                        <div>
+                          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
+                            (displayResume?.score || 0) >= 80 
+                              ? 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-200 border-green-200 dark:border-green-500/30'
+                              : (displayResume?.score || 0) >= 50
+                              ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-200 border-orange-200 dark:border-orange-500/30'
+                              : 'bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/30'
+                          } text-xs font-bold uppercase tracking-wider mb-4 border`}>
+                            <span className={`size-2 rounded-full animate-pulse ${
+                              (displayResume?.score || 0) >= 80 ? 'bg-green-500' : (displayResume?.score || 0) >= 50 ? 'bg-orange-500' : 'bg-red-500'
+                            }`}></span>
+                            {(displayResume?.score || 0) >= 80 ? 'Excellent' : (displayResume?.score || 0) >= 50 ? 'Needs Optimization' : 'Critical Issues'}
                           </div>
-                          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                            <Button 
-                              onClick={handleDownloadReport}
-                              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
-                            >
-                              <Download className="h-5 w-5" />
-                              Download Report
-                            </Button>
-                            <Button 
-                              variant="outline"
-                              onClick={handleShareLink}
-                              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
-                            >
-                              <Link2 className="h-5 w-5" />
-                              Share Results
-                            </Button>
-                          </div>
+                          <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
+                            Your resume is {(displayResume?.score || 0) >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
+                              {(displayResume?.score || 0) >= 80 ? '90%' : (displayResume?.score || 0) >= 50 ? '40%' : '60%'} of bots
+                            </span>.
+                          </h1>
+                          <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
+                            {(displayResume?.score || 0) >= 80 
+                              ? 'Great job! Your resume is well-optimized for ATS systems.' 
+                              : (displayResume?.score || 0) >= 50 
+                              ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
+                              : 'We found 3 critical errors that might be getting you rejected automatically. Fix them to boost your interview chances by 2x.'}
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                          <Button 
+                            onClick={handleDownloadReport}
+                            className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-stone-900 font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
+                          >
+                            <Download className="h-5 w-5" />
+                            Download Report
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            onClick={handleShareLink}
+                            className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors"
+                          >
+                            <Link2 className="h-5 w-5" />
+                            Share Results
+                          </Button>
                         </div>
                       </div>
+                    </div>
 
-                      {/* Bento Grid - Matching HTML exactly */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 print:gap-4">
-                        <FormattingAudit items={auditItems} />
-                        
-                        <KeywordHeatmap 
-                          matchedKeywords={foundKeywords}
-                          missingKeywords={displayResume?.missingKeywords?.map((k: any) => typeof k === 'string' ? k : k.keyword) || []}
-                          isPremium={!isFree}
-                          onUnlock={() => setShowPricing(true)}
-                        />
+                    {/* Bento Grid - Matching HTML exactly */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 print:gap-4">
+                      <FormattingAudit items={auditItems} />
+                      
+                      <KeywordHeatmap 
+                        matchedKeywords={foundKeywords}
+                        missingKeywords={displayResume?.missingKeywords?.map((k: any) => typeof k === 'string' ? k : k.keyword) || []}
+                        isPremium={!isFree}
+                        onUnlock={() => setShowPricing(true)}
+                      />
 
-                        <RoleMatchCard 
-                          role={displayResume?.category || "General"}
-                          matchScore={displayResume?.score || 0}
-                          confidence={85}
-                        />
-                      </div>
+                      <RoleMatchCard 
+                        role={displayResume?.category || "General"}
+                        matchScore={displayResume?.score || 0}
+                        confidence={85}
+                      />
+                    </div>
 
-                      {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 print:gap-4 print:grid-cols-1">
-                        {/* Actionable Fixes (Left - 2 columns) */}
-                        <div className="lg:col-span-2">
-                          <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
-                            Actionable Fixes
-                            <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                              {(() => {
-                                const fixes: any[] = [];
-                                const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
-                                if (metricCount < 5) fixes.push(1);
-                                
-                                const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
-                                const weakCount = weakPhrases.reduce((count, phrase) => {
-                                  return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
-                                }, 0);
-                                if (weakCount > 0) fixes.push(1);
-                                
-                                if (displayResume?.formatIssues?.some((i: any) => 
-                                  i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
-                                )) fixes.push(1);
-                                
-                                return fixes.length;
-                              })()} Critical
-                            </span>
-                          </h2>
-                          <ActionableFixes 
+                    {/* Lower Section: Fixes & Impact - Matching HTML exactly */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 print:gap-4 print:grid-cols-1">
+                      {/* Actionable Fixes (Left - 2 columns) */}
+                      <div className="lg:col-span-2">
+                        <h2 className="text-2xl font-bold text-stone-900 dark:text-white flex items-center gap-2 mb-6">
+                          Actionable Fixes
+                          <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                            {(() => {
+                              const fixes: any[] = [];
+                              const metricCount = (displayResume?.ocrText?.match(/\d+%|\$[\d,]+|\d+\+?\s*(users|customers|clients)/gi) || []).length;
+                              if (metricCount < 5) fixes.push(1);
+                              
+                              const weakPhrases = ["responsible for", "worked on", "helped with", "assisted in", "duties included"];
+                              const weakCount = weakPhrases.reduce((count, phrase) => {
+                                return count + (displayResume?.ocrText?.toLowerCase().match(new RegExp(phrase, 'g')) || []).length;
+                              }, 0);
+                              if (weakCount > 0) fixes.push(1);
+                              
+                              if (displayResume?.formatIssues?.some((i: any) => 
+                                i.issue?.toLowerCase().includes('email') || i.issue?.toLowerCase().includes('phone')
+                              )) fixes.push(1);
+                              
+                              return fixes.length;
+                            })()} Critical
+                          </span>
+                        </h2>
+                        <ActionableFixes 
                         fixes={(() => {
                           const fixes: Array<{title: string; description: string; impact: string; example: string}> = [];
                           
@@ -851,32 +842,124 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                         </div>
                       </div>
 
-                      {/* AI Recommendations Section */}
-                      <div className="glass-card rounded-lg p-6 print:border print:border-gray-300 print:bg-white print:shadow-none print:break-inside-avoid">
-                        <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
-                          AI Recommendations
-                          <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
-                        </h2>
-                        <div className="max-h-[500px] overflow-y-auto pr-2">
-                          {displayResume?.analysis && displayResume.analysis.trim().length > 0 ? (
-                            renderAnalysis(displayResume.analysis)
-                          ) : (
-                            <div className="flex flex-col items-center justify-center py-12 text-center">
-                              <div className="h-16 w-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
-                                <Sparkles className="h-8 w-8 text-primary animate-pulse" />
-                              </div>
-                              <p className="text-zinc-300 text-lg font-semibold mb-2">Analysis in Progress</p>
-                              <p className="text-zinc-400 text-sm max-w-md">
-                                Your resume is being analyzed by our AI. This typically takes 10-30 seconds. Please refresh the page in a moment.
-                              </p>
+                    {/* AI Recommendations Section */}
+                    <div className="glass-card rounded-lg p-6 print:border print:border-gray-300 print:bg-white print:shadow-none print:break-inside-avoid">
+                      <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
+                        AI Recommendations
+                        <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">Critical</span>
+                      </h2>
+                      <div className="max-h-[500px] overflow-y-auto pr-2">
+                        {displayResume?.analysis && displayResume.analysis.trim().length > 0 ? (
+                          renderAnalysis(displayResume.analysis)
+                        ) : (
+                          <div className="flex flex-col items-center justify-center py-12 text-center">
+                            <div className="h-16 w-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                              <Sparkles className="h-8 w-8 text-primary animate-pulse" />
                             </div>
-                          )}
+                            <p className="text-zinc-300 text-lg font-semibold mb-2">Analysis in Progress</p>
+                            <p className="text-zinc-400 text-sm max-w-md">
+                              Your resume is being analyzed by our AI. This typically takes 10-30 seconds. Please refresh the page in a moment.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="keywords" className="flex-1 overflow-auto p-6">
+                  <div className="space-y-8">
+                    <div className="glass-card rounded-lg p-6">
+                      <h2 className="text-2xl font-bold text-white mb-6">Keyword Analysis</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">Found Keywords</h3>
+                          <div className="space-y-3">
+                            {foundKeywords.map((kw: string, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-zinc-900/50 rounded-lg border border-zinc-800/50">
+                                <span className="text-zinc-300 font-medium">{kw}</span>
+                                <span className="text-xs text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full">
+                                  {index + 1}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">Missing Keywords</h3>
+                          <div className="space-y-3">
+                            {criticalKeywords.map((kw: any, index: number) => (
+                              <div key={index} className="flex items-center justify-between p-3 bg-red-950/30 rounded-lg border border-red-900/50">
+                                <span className="text-red-400 font-medium">{kw}</span>
+                                <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
+                                  {kw.impact || 5}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              </ScrollArea>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="format" className="flex-1 overflow-auto p-6">
+                  <div className="space-y-8">
+                    <div className="glass-card rounded-lg p-6">
+                      <h2 className="text-2xl font-bold text-white mb-6">Format Issues</h2>
+                      <div className="space-y-4">
+                        {auditItems.map((item: any, index: number) => (
+                          <div key={index} className={`p-4 rounded-lg border ${item.status === "failed" ? "bg-red-950/30 border-red-900/50" : item.status === "warning" ? "bg-yellow-950/30 border-yellow-900/50" : "bg-green-950/30 border-green-900/50"}`}>
+                            <div className="flex items-start justify-between mb-2">
+                              <h3 className={`font-semibold ${item.status === "failed" ? "text-red-400" : item.status === "warning" ? "text-yellow-400" : "text-green-400"}`}>
+                                {item.title}
+                              </h3>
+                              <span className={`px-2 py-0.5 rounded-full text-xs ${
+                                item.status === "failed" ? "bg-red-900/50 text-red-400" : 
+                                item.status === "warning" ? "bg-yellow-900/50 text-yellow-400" : 
+                                "bg-green-900/50 text-green-400"
+                              }`}>
+                                {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
+                              </span>
+                            </div>
+                            <p className="text-zinc-300 text-sm mb-3">{item.reason}</p>
+                            <p className="text-xs text-zinc-400">{item.fix}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="simulation" className="flex-1 overflow-auto p-6">
+                  <LiveRecruiterSimulation
+                    resumeText={displayResume.ocrText || ""}
+                    score={displayResume.score || 0}
+                    missingKeywords={displayResume.missingKeywords?.map(k => typeof k === 'string' ? k : k.keyword) || []}
+                    formatIssues={displayResume.formatIssues?.map(f => typeof f === 'string' ? { issue: f } : f) || []}
+                  />
+                </TabsContent>
+
+                <TabsContent value="interview" className="flex-1 overflow-auto p-6">
+                  <InterviewPrepMode
+                    resumeText={displayResume.ocrText || ""}
+                    jobDescription={displayResume.jobDescription}
+                    jobTitle={displayResume.jobTitle}
+                    company={displayResume.company}
+                  />
+                </TabsContent>
+
+                <TabsContent value="raw" className="flex-1 overflow-auto p-6">
+                  <div className="space-y-8">
+                    <div className="glass-card rounded-lg p-6">
+                      <h2 className="text-2xl font-bold text-white mb-6">Raw Text View</h2>
+                      <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4 text-xs text-zinc-300 font-mono leading-relaxed whitespace-pre-wrap">
+                        {displayResume?.ocrText || "No text extracted."}
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
 
               {/* Center Image/Preview */}
               <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
@@ -974,7 +1057,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   </div>
                 </ScrollArea>
               </div>
-            </>
+            </div>
           )}
         </div>
       </DialogContent>
