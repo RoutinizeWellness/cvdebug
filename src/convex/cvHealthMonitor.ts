@@ -36,13 +36,14 @@ export const checkTextLayerIntegrity = internalAction({
     if (hasInvisibleChars) integrityScore -= 20;
     if (whitespaceRatio > 0.5) integrityScore -= 20;
     
-    // STRICT CHECK for "Image Trap" / Encoding issues requested by user
-    const isEncodingBroken = readableRatio < 0.95 || hasInvisibleChars;
+    // RELAXED CHECK for "Image Trap" / Encoding issues
+    // Normal text has ~60-80% alphanumeric ratio due to punctuation/spaces
+    const isEncodingBroken = readableRatio < 0.50 || hasInvisibleChars;
 
     integrityScore = Math.max(0, integrityScore);
     
-    // Determine if it's an "Image Trap"
-    const hasImageTrap = integrityScore < 50 || isEncodingBroken;
+    // Determine if it's an "Image Trap" - only flag truly broken PDFs
+    const hasImageTrap = integrityScore < 30 || isEncodingBroken;
     
     await runMutation(internalAny.cvHealthMonitor.updateHealthStatus, {
       resumeId: args.resumeId,

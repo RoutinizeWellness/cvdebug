@@ -242,6 +242,7 @@ export const analyzeResume = internalAction({
           score: safeAnalysisResult.score,
           processingDuration: duration,
           scoreBreakdown: safeAnalysisResult.scoreBreakdown,
+          matchedKeywords: safeAnalysisResult.matchedKeywords,
           missingKeywords: safeAnalysisResult.missingKeywords,
           formatIssues: safeAnalysisResult.formatIssues,
           metricSuggestions: safeAnalysisResult.metricSuggestions,
