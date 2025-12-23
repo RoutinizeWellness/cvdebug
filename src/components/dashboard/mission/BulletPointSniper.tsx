@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Keyword {
   name: string;
@@ -15,12 +16,13 @@ interface Keyword {
 interface BulletPointSniperProps {
   matchedKeywords: Keyword[];
   missingKeywords: Keyword[];
-  onSnipe: (keyword: string) => Promise<any>;
+  onSnipe: (keyword: string, userContext?: string) => Promise<any>;
   snipingKeyword: string | null;
   isProcessing?: boolean;
   isPremium?: boolean;
   onUnlock?: () => void;
   onUpdateResume?: () => void;
+  resumeText?: string;
 }
 
 export function BulletPointSniper({ 
@@ -31,12 +33,15 @@ export function BulletPointSniper({
   isProcessing = false,
   isPremium = false,
   onUnlock,
-  onUpdateResume
+  onUpdateResume,
+  resumeText = ""
 }: BulletPointSniperProps) {
   const [activeTab, setActiveTab] = useState<"missing" | "found">("missing");
   const [generatedBullets, setGeneratedBullets] = useState<Record<string, any>>({});
   const [fixedKeywords, setFixedKeywords] = useState<Set<string>>(new Set());
   const [copiedState, setCopiedState] = useState<string | null>(null);
+  const [userContexts, setUserContexts] = useState<Record<string, string>>({});
+  const [showContextInput, setShowContextInput] = useState<string | null>(null);
 
   const handleSnipeClick = async (keyword: string) => {
     if (!isPremium) {
@@ -44,7 +49,13 @@ export function BulletPointSniper({
       return;
     }
 
-    const result = await onSnipe(keyword);
+    // Get user's context for this keyword (if they provided it)
+    const userContext = userContexts[keyword];
+    
+    // If no context provided, try to extract from resume text
+    const contextToUse = userContext || extractKeywordContext(keyword, resumeText);
+
+    const result = await onSnipe(keyword, contextToUse);
     if (result) {
       // Normalize result to ensure we have the 3 types
       let formattedResult = result;
@@ -60,7 +71,21 @@ export function BulletPointSniper({
         ...prev,
         [keyword]: formattedResult
       }));
+      setShowContextInput(null); // Hide context input after generation
     }
+  };
+
+  // Helper to extract context from resume text
+  const extractKeywordContext = (keyword: string, text: string): string => {
+    if (!text) return "";
+    
+    // Find sentences containing the keyword
+    const sentences = text.split(/[.!?]+/);
+    const relevantSentences = sentences.filter(s => 
+      s.toLowerCase().includes(keyword.toLowerCase())
+    );
+    
+    return relevantSentences.slice(0, 2).join(". ").trim();
   };
 
   const handleCopy = (text: string, id: string, keyword: string) => {
@@ -88,7 +113,7 @@ export function BulletPointSniper({
               <Crosshair className="h-5 w-5 text-primary" />
               Bullet Point Sniper
             </h3>
-            <p className="text-xs text-slate-400 mt-1">Generate AI Power Statements for missing keywords</p>
+            <p className="text-xs text-slate-400 mt-1">Generate AI Power Statements that augment YOUR experience</p>
           </div>
           {/* Match Score Counter (Mini) */}
           <div className="flex flex-col items-end">
@@ -142,6 +167,7 @@ export function BulletPointSniper({
                   const isFixed = fixedKeywords.has(keyword.name);
                   const bullets = generatedBullets[keyword.name];
                   const isSniping = snipingKeyword === keyword.name;
+                  const showingContext = showContextInput === keyword.name;
 
                   return (
                     <motion.div 
@@ -172,35 +198,80 @@ export function BulletPointSniper({
                         </div>
                         
                         {!bullets && !isFixed && (
-                          <Button 
-                            size="sm"
-                            onClick={() => handleSnipeClick(keyword.name)}
-                            disabled={isSniping}
-                            className={`h-8 text-xs font-semibold gap-2 ${
-                              !isPremium 
-                                ? "bg-slate-800 text-slate-400 hover:bg-slate-700" 
-                                : "bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white shadow-[0_0_10px_rgba(244,63,94,0.1)]"
-                            }`}
-                          >
-                            {isSniping ? (
-                              <>
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                                Sniping...
-                              </>
-                            ) : !isPremium ? (
-                              <>
-                                <Lock className="h-3 w-3" />
-                                Unlock
-                              </>
-                            ) : (
-                              <>
-                                <Wand2 className="h-3 w-3" />
-                                Snipe it
-                              </>
+                          <div className="flex gap-2">
+                            {!showingContext && (
+                              <Button 
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => setShowContextInput(keyword.name)}
+                                className="h-8 text-xs text-slate-400 hover:text-white"
+                              >
+                                Add Context
+                              </Button>
                             )}
-                          </Button>
+                            <Button 
+                              size="sm"
+                              onClick={() => handleSnipeClick(keyword.name)}
+                              disabled={isSniping}
+                              className={`h-8 text-xs font-semibold gap-2 ${
+                                !isPremium 
+                                  ? "bg-slate-800 text-slate-400 hover:bg-slate-700" 
+                                  : "bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white shadow-[0_0_10px_rgba(244,63,94,0.1)]"
+                              }`}
+                            >
+                              {isSniping ? (
+                                <>
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  Sniping...
+                                </>
+                              ) : !isPremium ? (
+                                <>
+                                  <Lock className="h-3 w-3" />
+                                  Unlock
+                                </>
+                              ) : (
+                                <>
+                                  <Wand2 className="h-3 w-3" />
+                                  Snipe it
+                                </>
+                              )}
+                            </Button>
+                          </div>
                         )}
                       </div>
+
+                      {/* Context Input Panel */}
+                      {showingContext && !bullets && (
+                        <div className="border-t border-slate-800 p-3 bg-slate-900/50 space-y-2">
+                          <label className="text-xs text-slate-400 font-medium">
+                            How did you use {keyword.name}? (Optional - helps AI augment YOUR experience)
+                          </label>
+                          <Textarea
+                            placeholder={`e.g., "Used ${keyword.name} to build a dashboard" or "Implemented ${keyword.name} for data processing"`}
+                            value={userContexts[keyword.name] || ""}
+                            onChange={(e) => setUserContexts(prev => ({ ...prev, [keyword.name]: e.target.value }))}
+                            className="min-h-[60px] bg-slate-950 border-slate-800 text-slate-200 text-xs"
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setShowContextInput(null)}
+                              className="text-xs"
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => handleSnipeClick(keyword.name)}
+                              disabled={isSniping}
+                              className="text-xs bg-primary hover:bg-primary/90"
+                            >
+                              Generate with Context
+                            </Button>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Generated Bullets Panel */}
                       <AnimatePresence>

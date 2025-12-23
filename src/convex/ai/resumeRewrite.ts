@@ -62,6 +62,7 @@ export const generateBulletPoints = action({
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
 
+    // CRITICAL: Use the user's original context to AUGMENT, not invent
     const userContext = args.currentContext || args.context;
 
     const prompt = buildBulletPointPrompt(args.keyword, userContext, args.jobDescription);
@@ -95,18 +96,21 @@ export const generateBulletPoints = action({
       }
 
       // Fallback if JSON extraction fails or structure is weird
+      // IMPORTANT: Even fallback should try to use user context if provided
+      const contextHint = userContext ? `based on your experience with ${args.keyword}` : `using ${args.keyword}`;
       return [
-        `Spearheaded implementation of ${args.keyword}, improving efficiency by 25%.`,
-        `Engineered scalable ${args.keyword} solutions, reducing latency by 40%.`,
-        `Led cross-functional team in ${args.keyword} adoption, resulting in $50k annual savings.`
+        `Spearheaded implementation of ${args.keyword} ${contextHint}, improving efficiency by [X%].`,
+        `Engineered scalable solutions with ${args.keyword}, reducing latency by [Y%] and saving [$Z] annually.`,
+        `Led cross-functional team in ${args.keyword} adoption, resulting in [metric] improvement.`
       ];
     } catch (error) {
       console.error("Error generating bullet points:", error);
       // Return fallback bullets on error so UI doesn't break
+      const contextHint = userContext ? `leveraging your ${args.keyword} expertise` : `with ${args.keyword}`;
       return [
-        `Demonstrated expertise in ${args.keyword} through complex project delivery.`,
-        `Optimized workflows using ${args.keyword}, enhancing team productivity.`,
-        `Integrated ${args.keyword} best practices to ensure system reliability.`
+        `Demonstrated expertise ${contextHint} through complex project delivery.`,
+        `Optimized workflows using ${args.keyword}, enhancing team productivity by [X%].`,
+        `Integrated ${args.keyword} best practices to ensure system reliability and [metric].`
       ];
     }
   },
