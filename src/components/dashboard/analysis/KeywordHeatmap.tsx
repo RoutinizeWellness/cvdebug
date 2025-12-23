@@ -20,13 +20,13 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
   const matchRate = totalKeywords > 0 ? Math.round((matchedKeywords.length / totalKeywords) * 100) : 0;
 
   return (
-    <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50">
+    <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-lg font-bold text-white">Keyword DNA</h3>
-          <p className="text-sm text-slate-400">ATS Match Rate: <span className={matchRate > 70 ? "text-green-400" : "text-orange-400"}>{matchRate}%</span></p>
+          <p className="text-sm text-slate-400">ATS Match Rate: <span className={matchRate > 70 ? "text-green-400" : matchRate > 40 ? "text-orange-400" : "text-red-400"}>{matchRate}%</span></p>
         </div>
-        {matchRate < 50 && (
+        {matchRate < 50 && totalKeywords > 0 && (
           <Badge variant="outline" className="border-orange-500/50 text-orange-400 bg-orange-500/10">
             <AlertTriangle className="h-3 w-3 mr-1" />
             Low Match
@@ -34,19 +34,21 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
         )}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 flex-1">
         <div>
           <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Matched Skills</h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 min-h-[60px]">
             {matchedKeywords.length > 0 ? (
               matchedKeywords.map((kw, i) => (
-                <Badge key={i} className="bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20">
+                <Badge key={i} className="bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500/20 h-fit">
                   <Check className="h-3 w-3 mr-1" />
                   {kw}
                 </Badge>
               ))
             ) : (
-              <p className="text-sm text-slate-500 italic">No keywords matched yet.</p>
+              <div className="flex items-center justify-center w-full py-4">
+                <p className="text-sm text-slate-500 italic">No keywords matched yet. Upload a resume to see matches.</p>
+              </div>
             )}
           </div>
         </div>

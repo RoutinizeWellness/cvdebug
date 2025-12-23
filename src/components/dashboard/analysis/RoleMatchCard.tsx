@@ -9,20 +9,20 @@ interface RoleMatchCardProps {
 
 export function RoleMatchCard({ role, matchScore, confidence }: RoleMatchCardProps) {
   return (
-    <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+    <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50 h-full flex flex-col">
+      <div className="flex items-start justify-between mb-6 gap-4">
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 flex-shrink-0">
             <Briefcase className="h-5 w-5" />
           </div>
-          <div>
-            <h3 className="text-sm font-medium text-slate-400">Target Role</h3>
-            <p className="text-lg font-bold text-white">{role || "General Professional"}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-xs font-medium text-slate-400 mb-1">Target Role</h3>
+            <p className="text-base font-bold text-white break-words">{role || "General Professional"}</p>
           </div>
         </div>
-        <div className="text-right">
-          <span className="text-2xl font-bold text-blue-400">{matchScore}%</span>
-          <p className="text-xs text-slate-500">Match</p>
+        <div className="text-right flex-shrink-0">
+          <span className="text-3xl font-bold text-blue-400 block leading-none">{matchScore}%</span>
+          <p className="text-xs text-slate-500 mt-1">Match</p>
         </div>
       </div>
 
