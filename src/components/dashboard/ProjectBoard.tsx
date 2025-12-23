@@ -17,6 +17,7 @@ interface ProjectBoardProps {
   projectId: Id<"projects">;
   onBack?: () => void;
   onGenerateCoverLetter?: (applicationId: string) => void;
+  initialApplicationId?: string | null;
 }
 
 const COLUMNS = [
@@ -27,12 +28,35 @@ const COLUMNS = [
   { id: "rejected", title: "Rejected", color: "bg-red-500" },
 ];
 
-export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: ProjectBoardProps) {
+export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initialApplicationId }: ProjectBoardProps) {
   const applications = useQuery(api.applications.getApplicationsByProject, { projectId });
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
   const analyzeApplicationKeywords = useMutation(apiAny.applications.analyzeApplicationKeywords);
   const resumes = useQuery(apiAny.resumes.getResumes, {});
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
+
+  // Handle initial application selection (Deep Linking)
+  useState(() => {
+    if (initialApplicationId && applications && resumes && !selectedApplication) {
+      const app = applications.find((a: any) => a._id === initialApplicationId);
+      if (app) {
+        const projectResumes = resumes?.filter((r: any) => r.projectId === projectId);
+        const masterResume = projectResumes?.[0];
+        
+        setSelectedApplication({
+          _id: app._id,
+          jobTitle: app.jobTitle,
+          company: app.companyName,
+          score: app.matchScore || 0,
+          missingKeywords: app.missingKeywords || [],
+          matchedKeywords: app.matchedKeywords || [],
+          resumeText: masterResume?.ocrText || "",
+          jobDescriptionText: app.jobDescriptionText || "",
+          status: app.status,
+        });
+      }
+    }
+  });
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;

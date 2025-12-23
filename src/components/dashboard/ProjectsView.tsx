@@ -257,7 +257,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                       }}
                       className="text-sm font-medium text-primary hover:text-white transition-colors"
                     >
-                      View Details
+                      Open Project Board
                     </button>
                   </div>
                 </div>

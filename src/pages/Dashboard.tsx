@@ -63,6 +63,7 @@ export default function Dashboard() {
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
+  const [initialApplicationId, setInitialApplicationId] = useState<string | null>(null);
 
   const currentUser = useQuery(apiAny.users.currentUser);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
@@ -115,6 +116,17 @@ export default function Dashboard() {
     const plan = searchParams.get("plan");
     const payment = searchParams.get("payment");
     const resumeId = searchParams.get("resumeId");
+    const projectId = searchParams.get("projectId");
+    const applicationId = searchParams.get("applicationId");
+
+    if (projectId && !selectedProject) {
+      setSelectedProject(projectId as Id<"projects">);
+      setCurrentView("projects");
+    }
+
+    if (applicationId) {
+      setInitialApplicationId(applicationId);
+    }
 
     if (payment === "success" && (plan === "single_scan" || plan === "interview_sprint")) {
       if (processedPaymentRef.current) return;
@@ -221,14 +233,28 @@ export default function Dashboard() {
           return (
             <ProjectBoard 
               projectId={selectedProject} 
-              onBack={() => setSelectedProject(null)} 
+              onBack={() => {
+                setSelectedProject(null);
+                setSearchParams(params => {
+                  params.delete("projectId");
+                  params.delete("applicationId");
+                  return params;
+                });
+              }} 
               onGenerateCoverLetter={handleGenerateCoverLetter}
+              initialApplicationId={initialApplicationId}
             />
           );
         }
         return (
           <ProjectsView 
-            onSelectProject={(id: Id<"projects">) => setSelectedProject(id)} 
+            onSelectProject={(id: Id<"projects">) => {
+              setSelectedProject(id);
+              setSearchParams(params => {
+                params.set("projectId", id);
+                return params;
+              });
+            }} 
           />
         );
       case 'mission':
