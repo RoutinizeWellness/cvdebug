@@ -48,26 +48,29 @@ export const createResume = mutation({
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
     
-    // RE-SCAN LOGIC: Check if this is a re-scan within a project window (24h for Single Scan)
+    // RE-SCAN LOGIC: 24h unlimited re-scans for ALL users (including FREE)
+    // This allows users to iterate and see their score improve without penalty
     let isFreeRescan = false;
-    if (args.projectId && user.subscriptionTier === "single_scan") {
-      const existingResumes = await ctx.db
-        .query("resumes")
-        .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
-        .order("desc")
-        .take(1);
-      
-      if (existingResumes.length > 0) {
-        const lastResumeTime = existingResumes[0]._creationTime;
-        const twentyFourHours = 24 * 60 * 60 * 1000;
-        if (Date.now() - lastResumeTime < twentyFourHours) {
-          isFreeRescan = true;
-          console.log(`[Billing] Free 24h re-scan for Single Scan user in project ${args.projectId}`);
-        }
-      }
+    
+    // Check for existing resumes with the same title in the last 24h
+    const existingResumes = await ctx.db
+      .query("resumes")
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+      .order("desc")
+      .take(10);
+    
+    const twentyFourHours = 24 * 60 * 60 * 1000;
+    const recentSameFile = existingResumes.find(r => 
+      r.title === args.title && 
+      (Date.now() - r._creationTime) < twentyFourHours
+    );
+    
+    if (recentSameFile) {
+      isFreeRescan = true;
+      console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
     }
 
-    // CREDIT CONSUMPTION: Only for FREE users on their first scan
+    // CREDIT CONSUMPTION: Only for NEW files, not re-scans
     if (!hasActiveSprint && !isFreeRescan && user.subscriptionTier === "free") {
       const currentCredits = user.credits ?? 0;
       
@@ -75,13 +78,13 @@ export const createResume = mutation({
         throw new Error("CREDITS_EXHAUSTED");
       }
 
-      // Consume the 1 free credit
+      // Consume the 1 free credit only for NEW files
       await ctx.db.patch(user._id, { 
         credits: 0,
         freeTrialUsed: true,
       });
       
-      console.log(`[Billing] FREE user ${user.email} consumed their 1 diagnostic credit`);
+      console.log(`[Billing] FREE user ${user.email} consumed their 1 diagnostic credit for NEW file`);
     }
 
     if (user.deviceFingerprint) {

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { HeroVisualizerSection } from "@/components/landing/HeroVisualizerSection";
+import { QuickIntegrityCheck } from "@/components/landing/QuickIntegrityCheck";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { PricingSection } from "@/components/landing/PricingSection";
@@ -16,6 +17,7 @@ export default function Landing() {
         
         <div className="max-w-7xl mx-auto px-6 flex flex-col gap-24">
           <HeroVisualizerSection />
+          <QuickIntegrityCheck />
           <HowItWorksSection />
           <FeaturesSection />
           <PricingSection />

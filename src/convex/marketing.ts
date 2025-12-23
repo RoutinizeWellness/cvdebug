@@ -540,29 +540,31 @@ export const sendActivationReminderEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #8b5cf6; margin: 0 0 16px 0;">Your Free Resume Scan is Waiting</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">Is Your Resume Still Invisible?</h2>
         <p>Hi ${firstName},</p>
-        <p>You signed up for CVDebug but haven't uploaded your resume yet. Your free ATS analysis is ready whenever you are.</p>
+        <p>You signed up for CVDebug 2 hours ago but haven't uploaded your resume yet.</p>
         
-        <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">What You'll Discover in 2 Minutes:</p>
-          <ul class="checklist">
-            <li>Your ATS compatibility score (0-100)</li>
-            <li>Critical parsing errors that block applications</li>
-            <li>Missing keywords from your target job description</li>
-            <li>Format issues that confuse robots</li>
-          </ul>
+        <div class="alert-box">
+          <p style="margin: 0; font-weight: 600; color: #991b1b;">Here's what you're missing:</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">
+            Our <strong>Robot View</strong> shows you exactly what ATS systems see when they scan your resume. Most users discover their carefully formatted resume is completely unreadable to the robots that decide if you get an interview.
+          </p>
+        </div>
+
+        <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">The Reality:</p>
+          <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1e293b;">75% of resumes are rejected by ATS before a human ever sees them</p>
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard" class="cta-button">Upload My Resume →</a>
+          <a href="https://cvdebug.com/dashboard" class="cta-button">See What Robots See (Free) →</a>
         </div>
 
-        <p style="font-size: 14px; color: #64748b;">75% of resumes are rejected by ATS before a human sees them. Don't let yours be one of them.</p>
+        <p style="font-size: 14px; color: #64748b;">It takes 2 minutes to upload and scan. You'll instantly see if your resume has "Image Traps" or parsing errors that are blocking your applications.</p>
 
         <div class="signature">
-          <p style="margin: 0;"><strong>The CVDebug Team</strong></p>
-          <p style="margin: 4px 0 0 0; font-size: 12px;">Your Principal Technical Recruiter AI</p>
+          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
         </div>
       </div>
     `;
@@ -577,7 +579,7 @@ export const sendActivationReminderEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "Your Free Resume Scan is Waiting",
+          subject: "⚠️ Is Your Resume Still Invisible?",
           html: emailTemplate(content),
         }),
       });
@@ -589,6 +591,97 @@ export const sendActivationReminderEmail = internalAction({
       }
     } catch (error: any) {
       console.error("[Email] Error sending activation reminder email:", error.message);
+    }
+  },
+});
+
+export const sendRoiEmail = internalAction({
+  args: {
+    email: v.string(),
+    name: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
+      console.error("[Email] Resend API key not configured");
+      return;
+    }
+
+    const firstName = args.name?.split(" ")[0] || "there";
+
+    const content = `
+      <div class="content">
+        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">The $100,000 Risk You're Taking</h2>
+        <p>Hi ${firstName},</p>
+        <p>You uploaded your resume to CVDebug yesterday but haven't unlocked the full analysis yet.</p>
+        
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 20px; margin: 24px 0; border-radius: 4px;">
+          <p style="margin: 0; font-weight: 700; color: #92400e; font-size: 18px;">Let's talk about ROI:</p>
+          <p style="margin: 12px 0 0 0; color: #78350f; font-size: 14px; line-height: 1.6;">
+            You're applying for jobs that pay $80,000-$120,000+ per year. If your resume has parsing errors (which 75% do), you're invisible to recruiters. That's potentially <strong>$100,000+ in lost salary</strong> because of a $5 formatting issue.
+          </p>
+        </div>
+
+        <div style="background: #f8fafc; border-radius: 8px; padding: 24px; margin: 24px 0;">
+          <p style="margin: 0 0 16px 0; font-size: 14px; color: #64748b; text-align: center;">The Math:</p>
+          <div style="display: flex; justify-content: space-around; text-align: center;">
+            <div>
+              <p style="margin: 0; font-size: 32px; font-weight: 800; color: #ef4444;">$100k</p>
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">Lost Salary</p>
+            </div>
+            <div style="align-self: center; font-size: 24px; color: #64748b;">vs</div>
+            <div>
+              <p style="margin: 0; font-size: 32px; font-weight: 800; color: #10b981;">$4.99</p>
+              <p style="margin: 4px 0 0 0; font-size: 12px; color: #64748b;">Full Fix</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">What You Get for $4.99:</p>
+          <ul class="checklist">
+            <li>All 15+ missing keywords revealed (not just 2)</li>
+            <li>All 5+ format errors with exact fixes</li>
+            <li>PDF sanitization tool to remove Image Traps</li>
+            <li>Keyword gap analysis vs. job descriptions</li>
+          </ul>
+        </div>
+
+        <div style="text-align: center; margin: 32px 0;">
+          <a href="https://cvdebug.com/pricing" class="cta-button">Unlock Full Report ($4.99) →</a>
+        </div>
+
+        <p style="font-size: 14px; color: #64748b;">This is a one-time investment that could unlock 10+ interviews. The ROI is 20,000:1.</p>
+
+        <div class="signature">
+          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
+        </div>
+      </div>
+    `;
+
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: "CVDebug <cvdebug@cvdebug.com>",
+          to: args.email,
+          subject: "💰 The $100k Risk: $5 vs Your Next Salary",
+          html: emailTemplate(content),
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("[Email] ROI email failed:", await response.text());
+      } else {
+        console.log(`[Email] ROI email sent to ${args.email}`);
+      }
+    } catch (error: any) {
+      console.error("[Email] Error sending ROI email:", error.message);
     }
   },
 });
