@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { KeywordSniperPanel } from "./mission/KeywordSniperPanel";
+import { CreateApplicationDialog } from "./CreateApplicationDialog";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
@@ -34,6 +35,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
   const analyzeApplicationKeywords = useMutation(apiAny.applications.analyzeApplicationKeywords);
   const resumes = useQuery(apiAny.resumes.getResumes, {});
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
 
   // Handle initial application selection (Deep Linking)
   useState(() => {
@@ -110,6 +112,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
               <Button 
                 size="lg"
                 className="w-full bg-primary hover:bg-primary/90 text-black font-semibold gap-2"
+                onClick={() => setShowCreateDialog(true)}
               >
                 <Plus className="h-5 w-5" />
                 Add First Application
@@ -135,7 +138,12 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                       {applications.filter((app: any) => app.status === column.id).length}
                     </Badge>
                   </div>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 text-zinc-500">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-6 w-6 text-zinc-500"
+                    onClick={() => setShowCreateDialog(true)}
+                  >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
@@ -285,6 +293,12 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
       onOpenChange={(open) => !open && setSelectedApplication(null)} 
       job={selectedApplication} 
       onGenerateCoverLetter={onGenerateCoverLetter || (() => {})}
+    />
+    
+    <CreateApplicationDialog 
+      open={showCreateDialog} 
+      onOpenChange={setShowCreateDialog} 
+      projectId={projectId}
     />
     </>
   );
