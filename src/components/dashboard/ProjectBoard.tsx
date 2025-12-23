@@ -65,7 +65,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
         </div>
       )}
 
-      {!hasApplications ? (
+      {!hasApplications && !selectedApplication ? (
         // Empty State
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center max-w-md space-y-6">
