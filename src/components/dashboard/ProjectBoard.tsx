@@ -174,25 +174,33 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
                                                 const projectResumes = resumes?.filter((r: any) => r.projectId === projectId);
                                                 const masterResume = projectResumes?.[0];
                                                 
-                                                // If we have a resume, analyze the application
+                                                // If we have a resume, analyze the application first
                                                 if (masterResume) {
                                                   try {
                                                     await analyzeApplicationKeywords({
                                                       applicationId: app._id,
                                                       resumeId: masterResume._id,
                                                     });
+                                                    
+                                                    // Wait a moment for the mutation to complete and data to refresh
+                                                    await new Promise(resolve => setTimeout(resolve, 500));
                                                   } catch (error) {
                                                     console.error("Failed to analyze application:", error);
+                                                    toast.error("Failed to analyze application");
                                                   }
                                                 }
+                                                
+                                                // Get the updated application data from the applications array
+                                                // The useQuery hook will have refreshed with the new data
+                                                const updatedApp = applications.find((a: any) => a._id === app._id);
                                                 
                                                 setSelectedApplication({
                                                   _id: app._id,
                                                   jobTitle: app.jobTitle,
                                                   company: app.companyName,
-                                                  score: app.matchScore || 0,
-                                                  missingKeywords: app.missingKeywords || [],
-                                                  matchedKeywords: app.matchedKeywords || [],
+                                                  score: updatedApp?.matchScore || app.matchScore || 0,
+                                                  missingKeywords: updatedApp?.missingKeywords || app.missingKeywords || [],
+                                                  matchedKeywords: updatedApp?.matchedKeywords || app.matchedKeywords || [],
                                                   resumeText: masterResume?.ocrText || "",
                                                   jobDescriptionText: app.jobDescriptionText || "",
                                                   status: app.status,
