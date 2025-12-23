@@ -421,6 +421,19 @@ export const getResumes = query({
   },
 });
 
+export const getResume = query({
+  args: { id: v.id("resumes") },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return null;
+
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== user.subject) return null;
+
+    return resume;
+  },
+});
+
 export const getResumeInternal = query({
   args: { id: v.id("resumes") },
   handler: async (ctx, args) => {
