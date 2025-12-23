@@ -167,6 +167,7 @@ export function generateFallbackAnalysis(
       format: Math.round(formatScore),
       completeness: Math.round(completenessScore)
     },
+    matchedKeywords: foundKeywords.map(kw => kw.keyword).slice(0, 50),
     missingKeywords: missingKeywords.slice(0, 10).map(kw => ({
       keyword: kw.keyword,
       priority: kw.priority,
