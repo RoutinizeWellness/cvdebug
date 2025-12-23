@@ -320,9 +320,6 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         />
       )}
 
-      {/* Master CV Health Monitor */}
-      <MasterCVHealth resume={masterResume} />
-
       {/* Header Actions */}
       <div className="flex justify-between items-center mb-2">
         <div>

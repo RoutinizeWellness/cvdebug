@@ -935,8 +935,8 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   <LiveRecruiterSimulation
                     resumeText={displayResume.ocrText || ""}
                     score={displayResume.score || 0}
-                    missingKeywords={displayResume.missingKeywords?.map(k => typeof k === 'string' ? k : k.keyword) || []}
-                    formatIssues={displayResume.formatIssues?.map(f => typeof f === 'string' ? { issue: f } : f) || []}
+                    missingKeywords={displayResume.missingKeywords?.map((k: any) => typeof k === 'string' ? k : k.keyword) || []}
+                    formatIssues={displayResume.formatIssues?.map((f: any) => typeof f === 'string' ? { issue: f } : f) || []}
                   />
                 </TabsContent>
 

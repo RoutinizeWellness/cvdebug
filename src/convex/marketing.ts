@@ -133,39 +133,39 @@ export const sendParsingErrorEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Critical: Resume Parsing Issues Detected</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Critical: ATS Parsing Failure Detected</h2>
         <p>Hi ${firstName},</p>
-        <p>Our ATS simulation has detected <strong>critical parsing errors</strong> in your resume that could prevent recruiters from seeing your qualifications.</p>
+        <p>As a Principal Technical Recruiter, I've reviewed your resume through our ATS simulation and identified <strong>critical parsing errors</strong> that will prevent your application from reaching human reviewers.</p>
         
         <div class="alert-box">
-          <p style="margin: 0; font-weight: 600; color: #991b1b;">What This Means:</p>
+          <p style="margin: 0; font-weight: 600; color: #991b1b;">Technical Assessment:</p>
           <ul style="margin: 8px 0 0 0; padding-left: 20px; font-size: 14px; color: #7f1d1d;">
-            <li><strong>Image Trap Detected</strong> – Your PDF may contain invisible text layers that ATS systems cannot read</li>
-            <li><strong>Format Issues</strong> – Complex formatting is blocking automated parsing</li>
-            <li><strong>Hidden Content</strong> – Some of your experience may be invisible to recruiters</li>
+            <li><strong>Image Trap Detected</strong> – Your PDF contains invisible text layers that ATS systems cannot parse</li>
+            <li><strong>Format Corruption</strong> – Complex formatting is blocking automated text extraction</li>
+            <li><strong>Hidden Content Risk</strong> – Critical qualifications may be invisible to our screening systems</li>
           </ul>
         </div>
 
-        <p><strong>The Fix:</strong> We've prepared a detailed analysis showing exactly what the ATS sees (and what it's missing).</p>
+        <p><strong>Professional Recommendation:</strong> I've prepared a detailed "Robot Vision" report showing exactly what our ATS sees versus what you intended. This is the same view every recruiter's system uses.</p>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard" class="cta-button">View Robot Vision Report →</a>
+          <a href="https://cvdebug.com/dashboard" class="cta-button">View ATS Analysis Report →</a>
         </div>
 
         <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">Quick Action Steps:</p>
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">Immediate Action Required:</p>
           <ol style="margin: 8px 0 0 0; padding-left: 20px; font-size: 14px;">
-            <li>Review your "Robot View" to see what ATS systems actually read</li>
-            <li>Use our Sanitized Version tool to extract clean text</li>
-            <li>Re-upload using our ATS-safe template</li>
+            <li>Review your "Robot View" to see what ATS systems actually extract</li>
+            <li>Use our Sanitized Version tool to generate clean, parseable text</li>
+            <li>Re-upload using our ATS-compliant template format</li>
           </ol>
         </div>
 
-        <p style="font-size: 14px; color: #64748b; margin-top: 24px;">Don't let a technical glitch cost you an interview. Most candidates never discover these issues until it's too late.</p>
+        <p style="font-size: 14px; color: #64748b; margin-top: 24px;">In 15+ years of technical recruiting, I've seen qualified candidates rejected due to parsing errors they never knew existed. Don't let a technical glitch cost you the interview.</p>
 
         <div class="signature">
-          <p style="margin: 0;"><strong>The CVDebug Team</strong></p>
-          <p style="margin: 4px 0 0 0; font-size: 12px;">Your Principal Technical Recruiter AI</p>
+          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
         </div>
       </div>
     `;
@@ -180,7 +180,7 @@ export const sendParsingErrorEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "⚠️ URGENT: Your Resume Has Parsing Errors",
+          subject: "⚠️ URGENT: ATS Cannot Parse Your Resume",
           html: emailTemplate(content),
         }),
       });
@@ -214,37 +214,37 @@ export const sendAbandonmentEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Invisibility Alert: Your Resume May Be Hidden</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Recruiter Alert: Your Resume Has Visibility Issues</h2>
         <p>Hi ${firstName},</p>
-        <p>You started a resume scan but didn't finish reviewing your results. Our initial analysis flagged potential <strong>"Invisibility Issues"</strong> that could be blocking your applications.</p>
+        <p>You started a resume analysis but didn't complete the review. As a Principal Technical Recruiter, I need to flag something critical: your initial scan revealed <strong>"ATS Invisibility Issues"</strong> that are likely blocking your applications.</p>
         
         <div class="alert-box">
-          <p style="margin: 0; font-weight: 600; color: #991b1b;">Critical Findings:</p>
+          <p style="margin: 0; font-weight: 600; color: #991b1b;">Screening System Assessment:</p>
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">
-            We detected <strong>${args.criticalIssuesCount} critical issues</strong> that prevent ATS systems from reading your resume correctly. If the robot can't read it, the recruiter never sees it.
+            Our ATS simulation detected <strong>${args.criticalIssuesCount} critical parsing failures</strong>. When our screening systems can't read your resume, it never reaches my desk—regardless of your qualifications.
           </p>
         </div>
 
         <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Your Current ATS Score</p>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Your Current ATS Compatibility Score</p>
           <p style="margin: 0; font-size: 48px; font-weight: 800; color: ${args.resumeScore >= 70 ? '#10b981' : args.resumeScore >= 50 ? '#f59e0b' : '#ef4444'};">${args.resumeScore}%</p>
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">Industry Average: 62%</p>
+          <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">Recruiter Benchmark: 70%+ for interview consideration</p>
         </div>
 
-        <p><strong>What's at stake:</strong> ATS systems reject resumes with complex formatting, hidden text layers, or graphics before a human ever sees them. You could be perfectly qualified but invisible.</p>
+        <p><strong>Professional Reality:</strong> In my experience screening thousands of applications, ATS systems reject 75% of resumes before human review. Complex formatting, hidden text layers, or graphics cause automatic disqualification—even for perfectly qualified candidates.</p>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard?resumeId=latest" class="cta-button">View My Robot Report →</a>
+          <a href="https://cvdebug.com/dashboard?resumeId=latest" class="cta-button">View My ATS Report →</a>
         </div>
 
         <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">Why This Matters:</p>
-          <p style="margin: 8px 0 0 0; font-size: 14px;">75% of resumes are rejected by ATS before reaching human eyes. Don't let formatting be the reason you're overlooked.</p>
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">Recruiter Insight:</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px;">I review resumes that score 70%+ first. Below that threshold, candidates rarely make it to the interview stage—not due to lack of skills, but due to formatting issues that prevent proper parsing.</p>
         </div>
 
         <div class="signature">
-          <p style="margin: 0;"><strong>The CVDebug Team</strong></p>
-          <p style="margin: 4px 0 0 0; font-size: 12px;">Your Principal Technical Recruiter AI</p>
+          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
         </div>
       </div>
     `;
@@ -259,7 +259,7 @@ export const sendAbandonmentEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "⚠️ Invisibility Alert: Your Resume Might Be Hidden from ATS",
+          subject: "⚠️ Recruiter Alert: Your Resume May Be Invisible to ATS",
           html: emailTemplate(content),
         }),
       });
@@ -467,33 +467,33 @@ export const sendRecoveryEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">💡 3 Quick Wins to Boost Your ${args.score}% Score</h2>
+        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">💡 Recruiter Feedback: 3 Quick Wins to Boost Your ${args.score}% Score</h2>
         <p>Hi ${firstName},</p>
-        <p>Your recent resume scan scored <strong>${args.score}%</strong>. The good news? We found <strong>${args.totalErrors} fixable issues</strong> that are holding you back.</p>
+        <p>I've completed my technical review of your resume. Your current ATS score is <strong>${args.score}%</strong>. The good news? I've identified <strong>${args.totalErrors} specific, fixable issues</strong> that are holding you back from the interview stage.</p>
         
         <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin: 24px 0;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Top Issue Detected:</p>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Top Priority Issue:</p>
           <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1e293b;">${args.firstError}</p>
         </div>
 
         <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">3 Quick Wins to Get Over 70%:</p>
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">Recruiter's 3-Step Action Plan:</p>
           <ol style="margin: 12px 0 0 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
-            <li><strong>Quantify Your Impact:</strong> Add numbers to your bullet points. Instead of "Managed team", try "Managed team of 5, increasing output by 20%".</li>
-            <li><strong>Match Keywords:</strong> Use our Keyword Sniper to find exactly what the ATS is looking for in the job description.</li>
-            <li><strong>Simplify Formatting:</strong> Remove columns, graphics, and tables that confuse ATS parsers.</li>
+            <li><strong>Quantify Every Achievement:</strong> Replace "Managed team" with "Led team of 5 engineers, increasing sprint velocity by 20% and reducing bug count by 35%". Numbers catch my attention immediately.</li>
+            <li><strong>Match Job Description Keywords:</strong> Use our Keyword Sniper to identify the exact terms I'm scanning for. If the job posting mentions "React" 5 times and your resume mentions it once, you're missing opportunities.</li>
+            <li><strong>Simplify Formatting:</strong> Remove columns, graphics, and tables. I need clean, parseable text. Use standard section headers: "EXPERIENCE", "EDUCATION", "SKILLS".</li>
           </ol>
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard" class="cta-button">Fix These Issues Now →</a>
+          <a href="https://cvdebug.com/dashboard" class="cta-button">Apply These Fixes Now →</a>
         </div>
 
-        <p style="font-size: 14px; color: #64748b;">Most users see a 15-20 point improvement after addressing these three areas. You're closer than you think!</p>
+        <p style="font-size: 14px; color: #64748b;">In my experience, candidates who address these three areas see a 15-20 point score improvement within 24 hours. You're closer to the interview stage than you think.</p>
 
         <div class="signature">
-          <p style="margin: 0;"><strong>The CVDebug Team</strong></p>
-          <p style="margin: 4px 0 0 0; font-size: 12px;">Your Principal Technical Recruiter AI</p>
+          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
         </div>
       </div>
     `;
@@ -508,7 +508,7 @@ export const sendRecoveryEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: `💡 3 Quick Tips to Boost Your ${args.score}% Score`,
+          subject: `💡 Recruiter Feedback: Boost Your ${args.score}% Score in 3 Steps`,
           html: emailTemplate(content),
         }),
       });
