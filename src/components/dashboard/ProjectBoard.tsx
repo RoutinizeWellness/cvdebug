@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable, DroppableProvided, DraggableProv
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search, FileText } from "lucide-react";
+import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search, FileText, Briefcase } from "lucide-react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
@@ -48,6 +48,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
 
   if (!applications) return null;
 
+  const hasApplications = applications.length > 0;
+
   return (
     <>
       <div className="h-full flex flex-col">
@@ -62,7 +64,37 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
           </Button>
         </div>
       )}
-      <div className="flex-1 overflow-x-auto pb-4">
+
+      {!hasApplications ? (
+        // Empty State
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center max-w-md space-y-6">
+            <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border border-primary/30">
+              <Briefcase className="h-10 w-10 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">Start Tracking Applications</h3>
+              <p className="text-slate-400 text-sm">
+                Add your first job application to this project and track it through the interview process.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <Button 
+                size="lg"
+                className="w-full bg-primary hover:bg-primary/90 text-black font-semibold gap-2"
+              >
+                <Plus className="h-5 w-5" />
+                Add First Application
+              </Button>
+              <p className="text-xs text-slate-500">
+                Track company, role, status, and match score all in one place
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Existing Kanban Board
+        <div className="flex-1 overflow-x-auto pb-4">
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex gap-4 min-w-max h-full">
             {COLUMNS.map((column) => (
@@ -192,6 +224,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter }: Proje
           </div>
         </DragDropContext>
       </div>
+      )}
     </div>
 
     <KeywordSniperPanel 
