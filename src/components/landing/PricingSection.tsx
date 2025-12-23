@@ -41,15 +41,27 @@ export function PricingSection() {
             <div className="space-y-3 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
-                Basic Score (0-100)
+                ATS Score (0-100)
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                Robot View (ATS Vision)
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                Top 2 Errors Preview
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                Top 2 Keywords Preview
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-600 line-through">
                 <span className="text-xl">✕</span>
-                Keyword Analysis
+                Full Keyword Report
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-600 line-through">
                 <span className="text-xl">✕</span>
-                Format Fixes
+                Complete Format Fixes
               </div>
             </div>
           </motion.div>
@@ -79,11 +91,15 @@ export function PricingSection() {
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
-                Keyword Report
+                Complete Keyword Report
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
-                Format Check
+                Formatting Audit + Fixes
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                Unlimited Re-scans (24h)
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />

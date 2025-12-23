@@ -67,7 +67,19 @@ export default function PricingPage() {
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                 <Check className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <span className="text-sm">Robot View Toggle</span>
+                            <span className="text-sm">Robot View (ATS Vision)</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <Check className="h-3.5 w-3.5 text-primary" />
+                            </div>
+                            <span className="text-sm">Top 2 Critical Errors Preview</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <Check className="h-3.5 w-3.5 text-primary" />
+                            </div>
+                            <span className="text-sm">Top 2 Missing Keywords Preview</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -118,8 +130,9 @@ export default function PricingPage() {
                             "1 Full ATS Analysis",
                             "Complete Keyword Report",
                             "Formatting Audit + Fixes",
-                            "24h Re-scan Window",
-                            "Detailed Analysis Report"
+                            "Unlimited Re-scans (24h)",
+                            "Detailed Analysis Report",
+                            "PDF Sanitization"
                         ].map((feature, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
