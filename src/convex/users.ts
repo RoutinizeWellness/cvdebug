@@ -85,8 +85,9 @@ export const storeUser = mutation({
       return user._id;
     }
 
-    // ANTI-CHEAT: Check if this device has already consumed credits
-    let initialCredits = 1; // HARD LIMIT: ONE FREE SCAN
+    // ANTI-CHEAT: ONE FREE DIAGNOSTIC SCAN PER DEVICE (Fingerprint-based)
+    // Strategy: "The Diagnostic Hook" - Users get 1 free scan to see their CV is broken
+    let initialCredits = 1; // HARD LIMIT: ONE FREE SCAN PER DEVICE
     let isPotentialDuplicate = false;
     let freeTrialBlocked = false;
 
@@ -98,11 +99,11 @@ export const storeUser = mutation({
         .first();
       
       if (existingDeviceUsage && existingDeviceUsage.creditsConsumed > 0) {
-        // This device has already used credits on another account
+        // This device has already used the free diagnostic scan
         initialCredits = 0;
         isPotentialDuplicate = true;
         freeTrialBlocked = true;
-        console.log(`[ANTI-CHEAT] Device ${args.deviceFingerprint} flagged as duplicate. Credits set to 0.`);
+        console.log(`[ANTI-CHEAT] Device ${fingerprint.substring(0, 8)}... already used free scan. Blocking.`);
       }
     }
 
@@ -198,20 +199,24 @@ export const updateSubscription = internalMutation({
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
+    // Single Scan: 1 credit for full analysis + 24h re-scan window
+    // Interview Sprint: Unlimited scans for 7 days (no credits needed)
     const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
     console.log(`[updateSubscription] Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
 
     if (user) {
-      const currentCredits = user.credits ?? 1;
-      console.log(`[updateSubscription] Found user ${user._id} (${user.email}). Updating credits from ${currentCredits} to ${currentCredits + creditsToAdd}`);
+      const currentCredits = user.credits ?? 0;
+      console.log(`[updateSubscription] Found user ${user._id} (${user.email}). Updating from ${user.subscriptionTier} to ${args.plan}`);
       
       const updates: any = { 
-        credits: currentCredits + creditsToAdd,
-        subscriptionTier: args.plan
+        credits: args.plan === "single_scan" ? 1 : currentCredits, // Single Scan gets exactly 1 credit
+        subscriptionTier: args.plan,
+        freeTrialUsed: true, // Mark as used to prevent re-using free scan
       };
       
       if (args.plan === "interview_sprint") {
         updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        updates.credits = 0; // Sprint users don't need credits
       }
       
       await ctx.db.patch(user._id, updates);
@@ -311,18 +316,22 @@ export const purchaseCredits = mutation({
 
     if (!user) throw new Error("User could not be found or created");
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
-    const currentCredits = user.credits ?? 0;
-
-    console.log(`[PURCHASE] Adding ${creditsToAdd} credits to user ${user._id} (${user.email}) for plan ${args.plan}`);
+    console.log(`[PURCHASE] User ${user._id} (${user.email}) purchasing plan: ${args.plan}`);
 
     const updates: any = {
-      credits: currentCredits + creditsToAdd,
       subscriptionTier: args.plan,
+      freeTrialUsed: true, // Prevent re-using free scan after purchase
     };
     
-    if (args.plan === "interview_sprint") {
+    if (args.plan === "single_scan") {
+      // Single Scan: 1 credit + 24h re-scan window
+      updates.credits = 1;
+      console.log(`[PURCHASE] Single Scan: Granting 1 credit with 24h re-scan window`);
+    } else if (args.plan === "interview_sprint") {
+      // Interview Sprint: Unlimited scans for 7 days
       updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+      updates.credits = 0; // No credits needed for sprint
+      console.log(`[PURCHASE] Interview Sprint: 7 days unlimited access granted`);
     }
 
     await ctx.db.patch(user._id, updates);
@@ -332,11 +341,11 @@ export const purchaseCredits = mutation({
         email: user.email,
         name: user.name,
         plan: args.plan,
-        credits: creditsToAdd
+        credits: args.plan === "single_scan" ? 1 : 0
       });
     }
     
-    return { success: true, credits: currentCredits + creditsToAdd };
+    return { success: true, credits: args.plan === "single_scan" ? 1 : 0 };
   },
 });
 

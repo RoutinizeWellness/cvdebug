@@ -48,9 +48,9 @@ export const createResume = mutation({
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
     
-    // RE-SCAN LOGIC: Check if this is a re-scan within a project window (e.g., 24h)
+    // RE-SCAN LOGIC: Check if this is a re-scan within a project window (24h for Single Scan)
     let isFreeRescan = false;
-    if (args.projectId) {
+    if (args.projectId && user.subscriptionTier === "single_scan") {
       const existingResumes = await ctx.db
         .query("resumes")
         .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
@@ -62,22 +62,26 @@ export const createResume = mutation({
         const twentyFourHours = 24 * 60 * 60 * 1000;
         if (Date.now() - lastResumeTime < twentyFourHours) {
           isFreeRescan = true;
-          console.log(`[Billing] Free re-scan detected for project ${args.projectId}`);
+          console.log(`[Billing] Free 24h re-scan for Single Scan user in project ${args.projectId}`);
         }
       }
     }
 
-    if (!hasActiveSprint && !isFreeRescan) {
+    // CREDIT CONSUMPTION: Only for FREE users on their first scan
+    if (!hasActiveSprint && !isFreeRescan && user.subscriptionTier === "free") {
       const currentCredits = user.credits ?? 0;
       
-      if (currentCredits <= 0) {
+      if (currentCredits <= 0 || user.freeTrialUsed) {
         throw new Error("CREDITS_EXHAUSTED");
       }
 
+      // Consume the 1 free credit
       await ctx.db.patch(user._id, { 
-        credits: Math.max(0, currentCredits - 1),
+        credits: 0,
         freeTrialUsed: true,
       });
+      
+      console.log(`[Billing] FREE user ${user.email} consumed their 1 diagnostic credit`);
     }
 
     if (user.deviceFingerprint) {
