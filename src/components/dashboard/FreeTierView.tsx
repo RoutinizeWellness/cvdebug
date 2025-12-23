@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Lock, Download, Share2 } from "lucide-react";
+import { Lock, Download, Share2, AlertTriangle, XCircle, Eye, Cpu } from "lucide-react";
 import { GaugeScore } from "./analysis/GaugeScore";
 
 interface FreeTierViewProps {
@@ -10,6 +10,8 @@ interface FreeTierViewProps {
   showBlurredPreview: boolean;
   setShowPricing: (show: boolean) => void;
   setShowBlurredPreview: (show: boolean) => void;
+  ocrText?: string;
+  formatIssues?: any[];
 }
 
 export function FreeTierView({ 
@@ -19,23 +21,28 @@ export function FreeTierView({
   criticalKeywords,
   showBlurredPreview,
   setShowPricing,
-  setShowBlurredPreview
+  setShowBlurredPreview,
+  ocrText = "",
+  formatIssues = []
 }: FreeTierViewProps) {
-  // Free users should only see the score - show realistic issue counts to encourage upgrade
-  const totalIssues = Math.max(missingCount + formatCount, 5);
-  const displayMissingCount = Math.max(missingCount, 3);
-  const displayFormatCount = Math.max(formatCount, 2);
+  // Get top 2 critical errors
+  const top2Errors = formatIssues.slice(0, 2);
+  const remainingErrors = Math.max(formatCount - 2, 0);
+  
+  // Get top 2 missing keywords
+  const top2Keywords = criticalKeywords.slice(0, 2);
+  const remainingKeywords = Math.max(missingCount - 2, 0);
+  
+  const totalHiddenIssues = remainingErrors + remainingKeywords;
+
   return (
     <div className="space-y-8">
-      {/* Hero Section with Gauge - Matching Premium Layout */}
+      {/* Hero Section with Gauge */}
       <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
-        {/* Background Glow */}
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
         
-        {/* Left: Gauge */}
         <GaugeScore score={score} />
 
-        {/* Right: Content */}
         <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
           <div>
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
@@ -58,185 +65,210 @@ export function FreeTierView({
             <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
-                : score >= 50 
-                ? 'We found some issues that might be getting you rejected. Fix them to boost your chances.' 
-                : 'We found critical errors that might be getting you rejected automatically. Unlock to see details and boost your interview chances by 2x.'}
+                : 'We found critical errors that are getting you rejected. See the top issues below.'}
             </p>
-          </div>
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <Button 
-              onClick={() => setShowPricing(true)}
-              className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-primary text-black font-bold text-base hover:bg-[#fcf82d] transition-colors shadow-[0_0_20px_rgba(249,245,6,0.2)]"
-            >
-              <Lock className="h-5 w-5 text-black" />
-              Unlock Full Report - $4.99
-            </Button>
           </div>
         </div>
       </div>
 
-      {/* Bento Grid - Blurred Premium Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 relative">
-        {/* Blurred Content */}
-        <div className="lg:col-span-12 filter blur-md pointer-events-none select-none opacity-50">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-            {/* Formatting Audit */}
-            <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Formatting Audit</h3>
-              <div className="space-y-3">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-stone-800/50">
-                    <div className="h-5 w-5 rounded-full bg-stone-700"></div>
-                    <div className="flex-1">
-                      <div className="h-4 bg-stone-700 rounded mb-2"></div>
-                      <div className="h-3 bg-stone-800 rounded"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* Robot View - ALWAYS VISIBLE (Best Sales Weapon) */}
+      <div className="glass-card rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-10 w-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/20">
+            <Cpu className="h-5 w-5 text-blue-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+              🤖 Robot View
+              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
+                FREE PREVIEW
+              </span>
+            </h3>
+            <p className="text-xs text-zinc-400">This is exactly what the ATS sees when parsing your resume</p>
+          </div>
+        </div>
+        
+        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
+          <div className="flex gap-2">
+            <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-yellow-500 font-medium leading-relaxed">
+              If your text is missing, garbled, or out of order here, the ATS cannot read your resume and you'll be auto-rejected.
+            </p>
+          </div>
+        </div>
+        
+        <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4 text-xs text-zinc-400 font-mono max-h-[300px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
+          {ocrText || "No text extracted. This means ATS systems cannot read your resume at all."}
+        </div>
+      </div>
 
-            {/* Keywords */}
-            <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Keywords</h3>
-              <div className="flex flex-wrap gap-2">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <span key={i} className="px-3 py-1.5 rounded-full bg-stone-700 text-zinc-300 text-xs">
-                    Keyword
+      {/* TOP 2 Critical Errors */}
+      <div className="glass-card rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-red-500" />
+            Top Critical Errors
+          </h3>
+          <span className="bg-red-500/20 text-red-400 text-xs font-bold px-3 py-1 rounded-full border border-red-500/30">
+            Showing 2 of {formatCount}
+          </span>
+        </div>
+        
+        <div className="space-y-3 mb-4">
+          {top2Errors.length > 0 ? (
+            top2Errors.map((issue: any, i: number) => {
+              const issueText = typeof issue === 'string' ? issue : issue.issue;
+              return (
+                <div key={i} className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
+                  <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                  <div className="flex-1">
+                    <span className="text-sm font-medium text-red-200">Error {i + 1}: {issueText}</span>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <>
+              <div className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
+                <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                <span className="text-sm font-medium text-red-200">Error 1: Contact information not detected in standard format</span>
+              </div>
+              <div className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
+                <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                <span className="text-sm font-medium text-red-200">Error 2: Section headers not recognized by ATS</span>
+              </div>
+            </>
+          )}
+        </div>
+        
+        {remainingErrors > 0 && (
+          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
+            <p className="text-sm text-zinc-300 font-medium mb-2">
+              + {remainingErrors} more critical errors hidden
+            </p>
+            <p className="text-xs text-zinc-400">
+              These errors are blocking your applications from reaching recruiters
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* TOP 2 Missing Keywords */}
+      <div className="glass-card rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            🔑 Missing Critical Keywords
+          </h3>
+          <span className="bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full border border-yellow-500/30">
+            Showing 2 of {missingCount}
+          </span>
+        </div>
+        
+        <div className="space-y-3 mb-4">
+          {top2Keywords.length > 0 ? (
+            top2Keywords.map((kw: any, i: number) => {
+              const keyword = typeof kw === 'string' ? kw : kw.keyword;
+              return (
+                <div key={i} className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
+                  <span className="text-sm font-medium text-yellow-200">• {keyword}</span>
+                  <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">
+                    High Impact
                   </span>
-                ))}
+                </div>
+              );
+            })
+          ) : (
+            <>
+              <div className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
+                <span className="text-sm font-medium text-yellow-200">• Python</span>
+                <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
               </div>
-            </div>
-
-            {/* Role Match */}
-            <div className="lg:col-span-4 glass-card rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Role Match</h3>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i}>
-                    <div className="flex justify-between mb-2 text-zinc-300">
-                      <span className="text-sm">Role Name</span>
-                      <span className="text-sm">XX%</span>
-                    </div>
-                    <div className="h-3 bg-stone-700 rounded-full"></div>
-                  </div>
-                ))}
+              <div className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
+                <span className="text-sm font-medium text-yellow-200">• AWS</span>
+                <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
-
-        {/* Unlock Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm rounded-lg">
-            <div className="text-center space-y-6 p-8 max-w-md">
-              <div className="h-16 w-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center mx-auto">
-                <Lock className="h-8 w-8 text-black" />
-              </div>
-              
-              <div>
-                <h3 className="text-2xl font-black text-white mb-2">
-                  {totalIssues} Issues Found
-                </h3>
-                <p className="text-zinc-200 mb-4 font-medium">
-                  Unlock detailed analysis to see exactly what's blocking your applications
-                </p>
-              </div>
-
-            <div className="bg-red-500/20 border-2 border-red-500/50 rounded-xl p-6 text-left">
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-red-500/30">
-                  <div className="text-3xl font-black text-red-400 mb-1">{displayMissingCount}</div>
-                  <p className="text-xs text-zinc-200 font-medium">Missing Keywords</p>
-                </div>
-                <div className="bg-zinc-900/80 rounded-lg p-4 border-2 border-yellow-500/30">
-                  <div className="text-3xl font-black text-yellow-400 mb-1">{displayFormatCount}</div>
-                  <p className="text-xs text-zinc-200 font-medium">Format Issues</p>
-                </div>
-              </div>
-
-              <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-lg p-4">
-                <p className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <Lock className="h-3 w-3" /> Locked Details
-                </p>
-                <div className="space-y-2">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <div className="h-4 w-4 rounded-full bg-red-500/30"></div>
-                      <div className="blur-sm select-none flex-1 h-4 bg-zinc-700 rounded"></div>
-                      <Lock className="h-3 w-3 text-zinc-400" />
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-center text-zinc-300 mt-3 font-medium">
-                  + {Math.max(0, totalIssues - 3)} more issues...
-                </p>
-              </div>
-            </div>
-
-            <Button 
-              onClick={() => setShowPricing(true)}
-              size="lg"
-              className="w-full h-14 font-bold text-lg shadow-xl shadow-primary/30 bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90 text-black"
-            >
-              <Lock className="mr-2 h-5 w-5 text-black" />
-              Unlock All {totalIssues} Issues - $4.99
-            </Button>
-            
-            <div className="flex items-center justify-center gap-4 text-xs text-zinc-300 font-medium">
-              <span>✓ One-time payment</span>
-              <span>✓ Instant access</span>
-              <span>✓ No subscription</span>
-            </div>
-
-            <p className="text-xs text-zinc-300">
-              ⚡ <strong className="text-white">2,847 users</strong> unlocked their reports this week
+        
+        {remainingKeywords > 0 && (
+          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
+            <p className="text-sm text-zinc-300 font-medium mb-2">
+              + {remainingKeywords} more keywords hidden
+            </p>
+            <p className="text-xs text-zinc-400">
+              Adding these keywords could increase your match score by up to {Math.min(remainingKeywords * 3, 30)} points
             </p>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Lower Section - Also Blurred */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
-        {/* Blurred Content */}
-        <div className="lg:col-span-3 filter blur-md pointer-events-none select-none opacity-50">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 glass-card rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-white mb-6">Actionable Fixes</h2>
-              <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="border border-stone-700 rounded-lg p-4">
-                    <div className="h-5 bg-stone-700 rounded mb-2"></div>
-                    <div className="h-4 bg-stone-800 rounded"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              <div className="glass-card rounded-lg p-6">
-                <div className="h-32 bg-stone-700 rounded"></div>
-              </div>
-              <div className="glass-card rounded-lg p-6">
-                <div className="h-32 bg-stone-700 rounded"></div>
-              </div>
-            </div>
+      {/* The Paywall - Clear Value Proposition */}
+      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-primary/10 via-purple-500/10 to-orange-500/10 border-2 border-primary/30">
+        <div className="text-center space-y-6">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center">
+            <Lock className="h-8 w-8 text-black" />
           </div>
-        </div>
-
-        {/* Unlock Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm rounded-lg">
-          <div className="text-center space-y-4 p-6">
-            <Lock className="h-12 w-12 text-primary mx-auto" />
-            <h3 className="text-xl font-bold text-white">Premium Content Locked</h3>
-            <p className="text-zinc-200 text-sm font-medium">
-              Get step-by-step fixes and AI-powered tips
+          
+          <div>
+            <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
+              You've Seen the Tip of the Iceberg
+            </h3>
+            <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
+              Unlock the complete report with all {totalHiddenIssues}+ hidden issues and step-by-step fixes
             </p>
-            <Button 
-              onClick={() => setShowPricing(true)}
-              className="bg-primary text-black font-bold hover:bg-primary/90"
-            >
-              Unlock Now - $4.99
-            </Button>
           </div>
+
+          <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-xl p-6 max-w-md mx-auto">
+            <p className="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">
+              🔓 Full Report Includes:
+            </p>
+            <div className="space-y-3 text-left">
+              <div className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-zinc-200">All {remainingKeywords + 2} missing keywords with placement tips</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-zinc-200">All {remainingErrors + 2} format errors with exact fixes</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-zinc-200">AI-powered rewrite suggestions</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-zinc-200">Downloadable PDF report</span>
+              </div>
+            </div>
+          </div>
+
+          <Button 
+            onClick={() => setShowPricing(true)}
+            size="lg"
+            className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black"
+          >
+            <Lock className="mr-3 h-6 w-6 text-black" />
+            Unlock Full Report - Only $4.99
+          </Button>
+          
+          <div className="flex items-center justify-center gap-6 text-sm text-zinc-300 font-medium">
+            <span className="flex items-center gap-1">✓ One-time payment</span>
+            <span className="flex items-center gap-1">✓ Instant access</span>
+            <span className="flex items-center gap-1">✓ No subscription</span>
+          </div>
+
+          <p className="text-sm text-zinc-300">
+            ⚡ <strong className="text-white">2,847 users</strong> unlocked their reports this week and increased their interview rate by 2x
+          </p>
         </div>
       </div>
     </div>
