@@ -19,6 +19,7 @@ import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
+import type * as ai_performOcr from "../ai/performOcr.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_qualityChecks from "../ai/qualityChecks.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
@@ -73,6 +74,7 @@ declare const fullApi: ApiFromModules<{
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
+  "ai/performOcr": typeof ai_performOcr;
   "ai/prompts": typeof ai_prompts;
   "ai/qualityChecks": typeof ai_qualityChecks;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;

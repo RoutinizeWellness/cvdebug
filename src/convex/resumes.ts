@@ -474,28 +474,21 @@ export const sanitizePdf = mutation({
 });
 
 export const triggerServerOcr = mutation({
-  args: { 
+  args: {
     resumeId: v.id("resumes"),
     storageId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (!identity) throw new Error("Not authenticated");
+    if (!identity) throw new Error("Unauthorized");
 
     const resume = await ctx.db.get(args.resumeId);
     if (!resume || resume.userId !== identity.subject) {
-      throw new Error("Resume not found or unauthorized");
+      throw new Error("Unauthorized");
     }
 
-    console.log(`[Trigger Server OCR] Scheduling server-side OCR for resume ${args.resumeId}`);
-
-    // Update status to show server processing
-    await ctx.db.patch(args.resumeId, {
-      status: "processing",
-    });
-
-    // Schedule server-side OCR action
-    await ctx.scheduler.runAfter(0, internalAny.ai.serverOcr.processWithServerOcr, {
+    // Schedule the server OCR action
+    await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
       resumeId: args.resumeId,
       storageId: args.storageId,
     });
