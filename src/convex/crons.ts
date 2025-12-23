@@ -19,7 +19,7 @@ crons.interval(
 crons.interval(
   "expire_interview_sprints",
   { minutes: 5 },
-  internalAny.users.expireInterviewSprints,
+  internalAny.sprintExpiration.expireInterviewSprints,
   {}
 );
 
