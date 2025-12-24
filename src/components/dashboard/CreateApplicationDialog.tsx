@@ -92,14 +92,17 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId }: Creat
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="jobDescription">Job Description</Label>
+            <Label htmlFor="jobDescription">Job Description <span className="text-primary text-xs ml-2 font-normal">(Recommended for AI Analysis)</span></Label>
             <Textarea
               id="jobDescription"
-              placeholder="Paste the job description here for AI analysis..."
+              placeholder="Paste the full job description here. AI will instantly analyze it against your resume to find keyword gaps..."
               value={formData.jobDescriptionText}
               onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
               className="bg-zinc-900 border-zinc-700 min-h-[150px]"
             />
+            <p className="text-xs text-slate-500">
+              We'll analyze this against your project's resume to calculate a match score and find missing keywords.
+            </p>
           </div>
 
           <DialogFooter>

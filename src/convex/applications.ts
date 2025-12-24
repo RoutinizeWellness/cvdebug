@@ -14,6 +14,48 @@ export const createApplication = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    // Find the resume for this project to perform initial analysis
+    const resumes = await ctx.db
+      .query("resumes")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .filter((q) => q.eq(q.field("projectId"), args.projectId))
+      .collect();
+    
+    // Use the most recent resume for this project
+    resumes.sort((a, b) => b._creationTime - a._creationTime);
+    const resume = resumes[0];
+
+    let matchedKeywords: string[] = [];
+    let missingKeywords: string[] = [];
+
+    if (resume) {
+      const resumeMatchedKeywords = resume.matchedKeywords || [];
+      const resumeMissingKeywords = resume.missingKeywords || [];
+
+      if (args.jobDescriptionText) {
+        const jdText = args.jobDescriptionText.toLowerCase();
+        
+        // Find which resume keywords appear in the JD
+        matchedKeywords = resumeMatchedKeywords.filter(kw => 
+          jdText.includes(kw.toLowerCase())
+        );
+        
+        // Find which missing keywords from resume are in the JD (critical gaps)
+        missingKeywords = resumeMissingKeywords
+          .filter(kw => {
+            const keyword = typeof kw === 'string' ? kw : kw.keyword;
+            return jdText.includes(keyword.toLowerCase());
+          })
+          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+      } else {
+        // No JD, just use resume data as fallback (top 10)
+        matchedKeywords = resumeMatchedKeywords.slice(0, 10);
+        missingKeywords = resumeMissingKeywords
+          .slice(0, 10)
+          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+      }
+    }
+
     const applicationId = await ctx.db.insert("applications", {
       projectId: args.projectId,
       userId: user._id,
@@ -22,8 +64,8 @@ export const createApplication = mutation({
       jobDescriptionText: args.jobDescriptionText,
       jobUrl: args.jobUrl,
       status: "draft",
-      missingKeywords: [],
-      matchedKeywords: [],
+      missingKeywords,
+      matchedKeywords,
     });
 
     return applicationId;
