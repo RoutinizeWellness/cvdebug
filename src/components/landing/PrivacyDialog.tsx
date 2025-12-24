@@ -52,7 +52,7 @@ export function PrivacyDialog({ open, onOpenChange }: { open: boolean; onOpenCha
 
             <h3 className="font-bold text-foreground text-lg mt-6">5. Contact Us</h3>
             <p>
-              If you have any questions about this Privacy Policy, please contact us at support@resumeatsoptimizer.com.
+              If you have any questions about this Privacy Policy, please contact us at cvdebug@outlook.com.
             </p>
           </div>
         </ScrollArea>

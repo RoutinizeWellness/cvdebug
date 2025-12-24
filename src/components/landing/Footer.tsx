@@ -32,7 +32,7 @@ export function Footer() {
               <h4 className="text-white font-semibold text-sm">Company</h4>
               <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">About</a>
               <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">Blog</a>
-              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="#">Contact</a>
+              <a className="text-slate-400 text-sm hover:text-primary transition-colors" href="mailto:cvdebug@outlook.com">Contact</a>
             </div>
             <div className="flex flex-col gap-3">
               <h4 className="text-white font-semibold text-sm">Legal</h4>
