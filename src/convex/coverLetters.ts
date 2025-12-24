@@ -21,18 +21,12 @@ export const generateCoverLetter = mutation({
       throw new Error("Application not found or unauthorized");
     }
 
-    // Check if user has Interview Sprint or credits
+    // ENFORCEMENT: AI Cover Letter is locked for Free/Single Scan users
+    // Only Interview Sprint users can use this tool
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     
-    if (!hasActiveSprint) {
-      // Deduct $2.99 worth of credits (or implement separate cover letter credits)
-      const currentCredits = user.credits ?? 0;
-      if (currentCredits <= 0) {
-        throw new Error("CREDITS_EXHAUSTED");
-      }
-      await ctx.db.patch(user._id, { 
-        credits: Math.max(0, currentCredits - 1),
-      });
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use AI Cover Letter Generator.");
     }
 
     // Schedule AI generation

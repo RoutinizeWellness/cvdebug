@@ -70,21 +70,21 @@ export const createResume = mutation({
       console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
     }
 
-    // CREDIT CONSUMPTION: Only for NEW files, not re-scans
-    if (!hasActiveSprint && !isFreeRescan && user.subscriptionTier === "free") {
+    // CREDIT CONSUMPTION: Check for all users without active sprint (Free & Single Scan)
+    if (!hasActiveSprint && !isFreeRescan) {
       const currentCredits = user.credits ?? 0;
       
-      if (currentCredits <= 0 || user.freeTrialUsed) {
+      if (currentCredits <= 0 || (user.subscriptionTier === "free" && user.freeTrialUsed)) {
         throw new Error("CREDITS_EXHAUSTED");
       }
 
-      // Consume the 1 free credit only for NEW files
+      // Consume credit
       await ctx.db.patch(user._id, { 
-        credits: 0,
+        credits: currentCredits - 1,
         freeTrialUsed: true,
       });
       
-      console.log(`[Billing] FREE user ${user.email} consumed their 1 diagnostic credit for NEW file`);
+      console.log(`[Billing] User ${user.email} consumed 1 credit for NEW file. Tier: ${user.subscriptionTier}`);
     }
 
     if (user.deviceFingerprint) {
@@ -405,9 +405,11 @@ export const getResumes = query({
       if (!resume.detailsUnlocked) {
         return {
           ...resume,
-          missingKeywords: undefined,
-          matchedKeywords: undefined,
-          formatIssues: undefined,
+          // Preview Mode: Show top 2 items for free/locked users
+          missingKeywords: resume.missingKeywords?.slice(0, 2),
+          matchedKeywords: resume.matchedKeywords?.slice(0, 2),
+          formatIssues: resume.formatIssues?.slice(0, 2),
+          // Hide detailed breakdowns
           scoreBreakdown: undefined,
           metricSuggestions: undefined,
           // Keep basic info and score
@@ -543,6 +545,13 @@ export const generateSanitizedVersion = mutation({
     const resume = await ctx.db.get(args.resumeId);
     if (!resume || resume.userId !== identity.subject) {
       throw new Error("Resume not found or unauthorized");
+    }
+
+    // ENFORCEMENT: PDF Sanitization is locked for Free users (unless they unlocked this specific resume)
+    // Single Scan users have detailsUnlocked=true for their purchased resume
+    // Interview Sprint users have detailsUnlocked=true for all resumes
+    if (!resume.detailsUnlocked) {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Single Scan or Interview Sprint to unlock PDF Sanitization.");
     }
 
     if (!resume.ocrText) {

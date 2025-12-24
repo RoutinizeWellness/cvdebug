@@ -2,9 +2,11 @@
 
 import { v } from "convex/values";
 import { action } from "./_generated/server";
-import { internal } from "./_generated/api";
 import { callOpenRouter } from "./ai/apiClient";
 import { buildKeywordSniperPrompt } from "./ai/prompts";
+
+// Use require to avoid deep type instantiation issues
+const internalAny = require("./_generated/api").internal;
 
 export const generateKeywordPhrases = action({
   args: {
@@ -14,6 +16,19 @@ export const generateKeywordPhrases = action({
     targetRole: v.string(),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    // Check user subscription status
+    const user = await ctx.runQuery(internalAny.users.getUserInternal, { subject: identity.subject });
+    if (!user) throw new Error("User not found");
+
+    // ENFORCEMENT: Keyword Sniper is locked for Free/Single Scan users
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Keyword Sniper.");
+    }
+
     // Get API key from environment
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {

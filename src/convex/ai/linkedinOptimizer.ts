@@ -22,14 +22,10 @@ export const optimizeLinkedIn = action({
     const user = await ctx.runQuery(internalAny.users.getUserInternal, { subject: identity.subject });
     if (!user) throw new Error("User not found");
 
+    // ENFORCEMENT: LinkedIn Optimizer is locked for Free/Single Scan users
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    if (!hasActiveSprint) {
-      const currentCredits = user.credits ?? 0;
-      if (currentCredits <= 0) {
-        throw new Error("CREDITS_EXHAUSTED");
-      }
-      // Deduct credit
-      await ctx.runMutation(internalAny.users.deductCreditInternal, { userId: user._id });
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use LinkedIn Optimizer.");
     }
 
     const apiKey = process.env.OPENROUTER_API_KEY;
@@ -76,14 +72,10 @@ export const generateRecruiterDMs = action({
     const user = await ctx.runQuery(internalAny.users.getUserInternal, { subject: identity.subject });
     if (!user) throw new Error("User not found");
 
+    // ENFORCEMENT: Recruiter DM Generator is locked for Free/Single Scan users
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    if (!hasActiveSprint) {
-      const currentCredits = user.credits ?? 0;
-      if (currentCredits <= 0) {
-        throw new Error("CREDITS_EXHAUSTED");
-      }
-      // Deduct credit
-      await ctx.runMutation(internalAny.users.deductCreditInternal, { userId: user._id });
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Recruiter DM Generator.");
     }
 
     const apiKey = process.env.OPENROUTER_API_KEY;

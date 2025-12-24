@@ -14,6 +14,13 @@ export const createApplication = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    // ENFORCEMENT: Project Tracker (CRM) is locked for Free/Single Scan users
+    // Only Interview Sprint users can create applications
+    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to track applications.");
+    }
+
     // Find the resume for this project to perform initial analysis
     const resumes = await ctx.db
       .query("resumes")
@@ -94,7 +101,14 @@ export const analyzeApplicationKeywords = mutation({
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Unauthorized");
+    if (!user || !user.dbUser) throw new Error("Unauthorized");
+    const dbUser = user.dbUser;
+
+    // ENFORCEMENT: AI Tools are locked for Free/Single Scan users
+    const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Keyword Sniper.");
+    }
 
     const application = await ctx.db.get(args.applicationId);
     const resume = await ctx.db.get(args.resumeId);
@@ -102,6 +116,8 @@ export const analyzeApplicationKeywords = mutation({
     if (!application || !resume) {
       throw new Error("Application or resume not found");
     }
+
+    if (application.userId !== user._id) throw new Error("Unauthorized");
 
     // Extract keywords from resume
     const resumeMatchedKeywords = resume.matchedKeywords || [];
@@ -185,10 +201,19 @@ export const updateApplicationStatus = mutation({
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Unauthorized");
+    if (!user || !user.dbUser) throw new Error("Unauthorized");
+    const dbUser = user.dbUser;
+
+    // ENFORCEMENT: CRM functionality is locked
+    const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to manage application status.");
+    }
 
     const app = await ctx.db.get(args.applicationId);
     if (!app) throw new Error("Application not found");
+    
+    if (app.userId !== user._id) throw new Error("Unauthorized");
 
     const events = app.events || [];
     
