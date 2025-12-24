@@ -50,6 +50,7 @@ import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGe
 import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
+import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStatusModal";
 
 const apiAny = api as any;
 
@@ -73,6 +74,7 @@ export default function Dashboard() {
   const [pendingResumeId, setPendingResumeId] = useState<string | null>(null);
   const [targetedScanEnabled, setTargetedScanEnabled] = useState(false);
   const [showCreditsExhausted, setShowCreditsExhausted] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [lastScannedScore, setLastScannedScore] = useState<number | undefined>();
   const processedPaymentRef = useRef(false);
   
@@ -96,6 +98,16 @@ export default function Dashboard() {
   const resumes = useQuery(apiAny.resumes.getResumes, { 
     category: categoryFilter || undefined
   });
+
+  useEffect(() => {
+    if (currentUser && !isLoading) {
+      const hasSeenModal = localStorage.getItem("hasSeenSubscriptionModal");
+      if (!hasSeenModal) {
+        setShowSubscriptionModal(true);
+        localStorage.setItem("hasSeenSubscriptionModal", "true");
+      }
+    }
+  }, [currentUser, isLoading]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -459,6 +471,15 @@ export default function Dashboard() {
         onOpenChange={setShowCreditsExhausted} 
         onUpgrade={() => {
           setShowCreditsExhausted(false);
+          setShowPricing(true);
+        }}
+      />
+
+      <SubscriptionStatusModal 
+        open={showSubscriptionModal} 
+        onOpenChange={setShowSubscriptionModal}
+        onUpgrade={() => {
+          setShowSubscriptionModal(false);
           setShowPricing(true);
         }}
       />
