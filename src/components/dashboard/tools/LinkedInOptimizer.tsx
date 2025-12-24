@@ -2,11 +2,12 @@ import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
-import { TrendingUp, Search, Loader2, Sparkles, Upload, Wand2 } from "lucide-react";
+import { TrendingUp, Search, Loader2, Sparkles, Upload, Wand2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ScoreGauge } from "./linkedin/ScoreGauge";
 import { KeywordCloud } from "./linkedin/KeywordCloud";
 import { HeadlineOptimizer } from "./linkedin/HeadlineOptimizer";
@@ -15,7 +16,11 @@ import { LinkedInHeader } from "./linkedin/LinkedInHeader";
 
 const apiAny = api as any;
 
-export function LinkedInOptimizer() {
+interface LinkedInOptimizerProps {
+  onUpgrade?: () => void;
+}
+
+export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [showInputDialog, setShowInputDialog] = useState(false);
   const [profileText, setProfileText] = useState("");
@@ -24,9 +29,21 @@ export function LinkedInOptimizer() {
   const [isFixingBio, setIsFixingBio] = useState(false);
   
   const latestOptimization = useQuery(apiAny.linkedinProfile.getLatestOptimization);
+  const currentUser = useQuery(apiAny.users.currentUser);
   const optimizeLinkedIn = useAction(apiAny.ai.linkedinOptimizer.optimizeLinkedIn);
 
+  // Check if user has Interview Sprint plan
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" && 
+    (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
+
   const handleRescan = async () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to optimize your LinkedIn profile"
+      });
+      onUpgrade?.();
+      return;
+    }
     setShowInputDialog(true);
   };
 
@@ -51,7 +68,12 @@ export function LinkedInOptimizer() {
       setJobDescription("");
       setLinkedinUrl("");
     } catch (error: any) {
-      if (error.message === "CREDITS_EXHAUSTED") {
+      if (error.message?.includes("PLAN_RESTRICTION")) {
+        toast.error("Interview Sprint plan required", {
+          description: "This feature is only available with an active Interview Sprint subscription"
+        });
+        onUpgrade?.();
+      } else if (error.message === "CREDITS_EXHAUSTED") {
         toast.error("No credits remaining. Please upgrade to continue.");
       } else {
         toast.error("Failed to scan profile. Please try again.");
@@ -69,7 +91,6 @@ export function LinkedInOptimizer() {
 
     setIsFixingBio(true);
     try {
-      // Copy optimized bio to clipboard
       await navigator.clipboard.writeText(latestOptimization.about.optimized);
       toast.success("✅ Optimized bio copied to clipboard! Paste it into your LinkedIn About section.");
     } catch (error) {
@@ -91,24 +112,17 @@ export function LinkedInOptimizer() {
     return `${days} days ago`;
   };
 
-  // Extract real data from latest optimization or show empty state
   const score = latestOptimization?.score || 0;
   const currentHeadline = latestOptimization?.headline?.current || "";
   const optimizedHeadline = latestOptimization?.headline?.optimized || "";
-  
-  // Extract keywords from optimization result
   const foundKeywords = latestOptimization?.keywordsFound || [];
   const missingKeywords = latestOptimization?.keywordsMissing || [];
-
-  // Extract actionable tips as quick fixes
   const quickFixes = latestOptimization?.actionableTips?.map((tip: any, index: number) => ({
     id: `tip-${index}`,
     title: tip.title || tip,
     description: tip.description,
     completed: tip.completed || false,
   })) || [];
-
-  // Extract bio data
   const currentBio = latestOptimization?.about?.current || "";
   const optimizedBio = latestOptimization?.about?.optimized || "";
   const bioSuggestions = latestOptimization?.about?.suggestions || [];
@@ -116,6 +130,26 @@ export function LinkedInOptimizer() {
   return (
     <div className="h-full flex flex-col">
       <div className="px-6 py-4">
+        {!hasInterviewSprint && (
+          <Alert className="mb-4 bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/30">
+            <Lock className="h-4 w-4 text-primary" />
+            <AlertDescription className="text-sm">
+              <strong className="text-white">Interview Sprint Required</strong>
+              <p className="text-slate-300 mt-1">
+                Upgrade to Interview Sprint to optimize your LinkedIn profile and increase recruiter visibility.
+              </p>
+              <Button 
+                onClick={onUpgrade}
+                size="sm" 
+                className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Upgrade Now
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <LinkedInHeader
           lastScanned={latestOptimization ? formatTimeAgo(latestOptimization.generatedAt) : "Never"}
           profileUrl={latestOptimization?.linkedinUrl}
@@ -205,21 +239,31 @@ export function LinkedInOptimizer() {
       </Dialog>
 
       <main className="flex-1 px-6 pb-6 overflow-y-auto">
-        {/* Show empty state if no optimization data */}
         {!latestOptimization ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 max-w-md">
               <TrendingUp className="h-16 w-16 text-slate-700 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">No LinkedIn Analysis Yet</h3>
               <p className="text-slate-400 text-sm mb-6">
-                Click "Re-scan Profile" to analyze your LinkedIn profile and get AI-powered optimization suggestions.
+                {hasInterviewSprint 
+                  ? "Click \"Re-scan Profile\" to analyze your LinkedIn profile and get AI-powered optimization suggestions."
+                  : "Upgrade to Interview Sprint to analyze your LinkedIn profile and get AI-powered optimization suggestions."}
               </p>
               <Button
-                onClick={handleRescan}
+                onClick={hasInterviewSprint ? handleRescan : onUpgrade}
                 className="bg-primary hover:bg-primary/90 text-white font-bold"
               >
-                <Sparkles className="h-5 w-5 mr-2" />
-                Scan Your Profile
+                {hasInterviewSprint ? (
+                  <>
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Scan Your Profile
+                  </>
+                ) : (
+                  <>
+                    <Lock className="h-5 w-5 mr-2" />
+                    Upgrade to Unlock
+                  </>
+                )}
               </Button>
             </div>
           </div>

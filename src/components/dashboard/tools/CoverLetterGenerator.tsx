@@ -5,18 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Sparkles, Copy, Check, FileText, Download } from "lucide-react";
+import { Loader2, Sparkles, Copy, Check, FileText, Download, Lock, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface CoverLetterGeneratorProps {
   initialApplicationId?: string;
+  onUpgrade?: () => void;
 }
 
-export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGeneratorProps) {
+export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverLetterGeneratorProps) {
   const resumes = useQuery(api.resumes.getResumes) || [];
   const jobHistory = useQuery((api as any).jobTracker.getJobHistory);
+  const currentUser = useQuery((api as any).users.currentUser);
   const generateCoverLetter = useAction(api.coverLetters.generate);
   
   const [selectedResumeId, setSelectedResumeId] = useState<string>("");
@@ -26,6 +29,10 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLetter, setGeneratedLetter] = useState("");
   const [copied, setCopied] = useState(false);
+
+  // Check if user has Interview Sprint plan
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" && 
+    (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   useEffect(() => {
     if (initialApplicationId && jobHistory) {
@@ -39,6 +46,14 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
   }, [initialApplicationId, jobHistory]);
 
   const handleGenerate = async () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to generate AI-powered cover letters"
+      });
+      onUpgrade?.();
+      return;
+    }
+
     if (!jobDescription) {
       toast.error("Please enter a job description");
       return;
@@ -46,12 +61,10 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
 
     setIsGenerating(true);
     try {
-      // If "none" is selected (was empty string), we pass undefined or null to the backend
-      // or handle it as a generic letter request
       const resumeId = (selectedResumeId === "none" || selectedResumeId === "") ? undefined : selectedResumeId;
       
       const result = await generateCoverLetter({
-        resumeId: resumeId as any, // Cast to any if needed, or Id<"resumes">
+        resumeId: resumeId as any,
         jobDescription,
         companyName,
         jobTitle
@@ -59,9 +72,16 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
       
       setGeneratedLetter(result);
       toast.success("Cover letter generated successfully!");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Failed to generate cover letter");
+      if (error.message?.includes("PLAN_RESTRICTION")) {
+        toast.error("Interview Sprint plan required", {
+          description: "This feature is only available with an active Interview Sprint subscription"
+        });
+        onUpgrade?.();
+      } else {
+        toast.error("Failed to generate cover letter");
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -77,11 +97,34 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       <div className="space-y-6">
+        {!hasInterviewSprint && (
+          <Alert className="bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/30">
+            <Lock className="h-4 w-4 text-primary" />
+            <AlertDescription className="text-sm">
+              <strong className="text-white">Interview Sprint Required</strong>
+              <p className="text-slate-300 mt-1">
+                Upgrade to Interview Sprint to generate unlimited AI-powered cover letters tailored to each job.
+              </p>
+              <Button 
+                onClick={onUpgrade}
+                size="sm" 
+                className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Upgrade Now
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <Card className="bg-slate-900 border-slate-800">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />
               Generator Settings
+              {!hasInterviewSprint && (
+                <Lock className="h-4 w-4 text-slate-500 ml-auto" />
+              )}
             </CardTitle>
             <CardDescription>
               Configure the AI to write a tailored cover letter.
@@ -93,6 +136,7 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
               <Select 
                 value={selectedResumeId} 
                 onValueChange={setSelectedResumeId}
+                disabled={!hasInterviewSprint}
               >
                 <SelectTrigger id="resume-select" className="bg-slate-950 border-slate-800">
                   <SelectValue placeholder="Select a resume..." />
@@ -117,6 +161,7 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   className="bg-slate-950 border-slate-800"
+                  disabled={!hasInterviewSprint}
                 />
               </div>
               <div className="space-y-2">
@@ -127,6 +172,7 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
                   className="bg-slate-950 border-slate-800"
+                  disabled={!hasInterviewSprint}
                 />
               </div>
             </div>
@@ -139,18 +185,24 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
                 className="min-h-[200px] bg-slate-950 border-slate-800 font-mono text-sm"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
+                disabled={!hasInterviewSprint}
               />
             </div>
 
             <Button 
               onClick={handleGenerate} 
-              disabled={isGenerating || !jobDescription}
+              disabled={isGenerating || !jobDescription || !hasInterviewSprint}
               className="w-full font-bold"
             >
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Writing Letter...
+                </>
+              ) : !hasInterviewSprint ? (
+                <>
+                  <Lock className="mr-2 h-4 w-4" />
+                  Upgrade to Generate
                 </>
               ) : (
                 <>
@@ -194,6 +246,9 @@ export function CoverLetterGenerator({ initialApplicationId }: CoverLetterGenera
               <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-800 rounded-lg bg-slate-950/50">
                 <FileText className="h-12 w-12 mb-4 opacity-20" />
                 <p>Your cover letter will appear here</p>
+                {!hasInterviewSprint && (
+                  <p className="text-xs text-slate-600 mt-2">Upgrade to Interview Sprint to unlock</p>
+                )}
               </div>
             )}
           </CardContent>

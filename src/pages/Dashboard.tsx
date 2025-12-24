@@ -47,6 +47,7 @@ import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
 import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
+import { LinkedInOptimizer } from "@/components/dashboard/tools/LinkedInOptimizer";
 import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
@@ -238,6 +239,10 @@ export default function Dashboard() {
     }
   };
 
+  const handleUpgrade = () => {
+    setShowPricing(true);
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'projects':
@@ -255,6 +260,7 @@ export default function Dashboard() {
               }} 
               onGenerateCoverLetter={handleGenerateCoverLetter}
               initialApplicationId={initialApplicationId}
+              onUpgrade={handleUpgrade}
             />
           );
         }
@@ -351,9 +357,9 @@ export default function Dashboard() {
       case 'templates':
         return <TemplatesView />;
       case 'linkedin':
-        return <LinkedInView />;
+        return <LinkedInOptimizer onUpgrade={handleUpgrade} />;
       case 'cover-letter':
-        return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} />;
+        return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />;
       case 'writing-forge':
         return <WritingForge />;
       default:
@@ -404,7 +410,6 @@ export default function Dashboard() {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        {/* Mobile Header */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900">
           <Logo />
           <Button variant="ghost" size="icon" onClick={() => setShowPricing(true)}>
@@ -418,7 +423,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Drag Overlay */}
         {isDragging && (
           <div className="absolute inset-0 z-50 bg-primary/10 border-2 border-dashed border-primary flex items-center justify-center backdrop-blur-sm">
             <div className="text-center">
@@ -429,7 +433,6 @@ export default function Dashboard() {
         )}
       </main>
 
-      {/* Mobile Tab Bar */}
       <MobileTabBar 
         currentView={currentView}
         setCurrentView={setCurrentView}
@@ -442,7 +445,6 @@ export default function Dashboard() {
         initialPlan={initialPlan}
       />
 
-      {/* Hidden File Input */}
       <input
         type="file"
         ref={fileInputRef}
@@ -451,7 +453,6 @@ export default function Dashboard() {
         onChange={handleFileUpload}
       />
 
-      {/* Overlays and Modals */}
       {(isUploading || !!processingResumeId || isProcessingPayment) && (
         <ProcessingOverlay 
           isUploading={isUploading} 

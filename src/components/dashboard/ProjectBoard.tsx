@@ -37,6 +37,7 @@ interface ProjectBoardProps {
   onBack?: () => void;
   onGenerateCoverLetter?: (applicationId: string) => void;
   initialApplicationId?: string | null;
+  onUpgrade?: () => void;
 }
 
 const COLUMNS = [
@@ -47,7 +48,7 @@ const COLUMNS = [
   { id: "rejected", title: "Rejected", color: "bg-red-500" },
 ];
 
-export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initialApplicationId }: ProjectBoardProps) {
+export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initialApplicationId, onUpgrade }: ProjectBoardProps) {
   const applications = useQuery(api.applications.getApplicationsByProject, { projectId });
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
   const analyzeApplicationKeywords = useMutation(apiAny.applications.analyzeApplicationKeywords);
@@ -446,11 +447,12 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
       </Dialog>
     )}
     
-    <CreateApplicationDialog 
-      open={showCreateDialog} 
-      onOpenChange={setShowCreateDialog} 
-      projectId={projectId}
-    />
+      <CreateApplicationDialog 
+        open={showCreateDialog} 
+        onOpenChange={setShowCreateDialog} 
+        projectId={projectId}
+        onUpgrade={onUpgrade}
+      />
 
     <RecruiterDMGenerator 
       open={showDMGenerator} 
