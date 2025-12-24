@@ -94,6 +94,7 @@ const schema = defineSchema(
       v.literal("accepted")
     )),
     appliedDate: v.optional(v.number()),
+    lastStatusUpdate: v.optional(v.number()), // For Ghosting Alert
     // Keyword gap analysis
     missingKeywords: v.optional(v.array(v.string())),
     matchedKeywords: v.optional(v.array(v.string())),
@@ -101,6 +102,22 @@ const schema = defineSchema(
     coverLetterId: v.optional(v.id("coverLetters")),
     // Notes
     notes: v.optional(v.string()),
+    // NEW: Application Timeline (Sunk Cost)
+    events: v.optional(v.array(v.object({
+      type: v.string(), // "status_change", "note", "email_sent", "interview_scheduled", "created"
+      title: v.string(),
+      description: v.optional(v.string()),
+      timestamp: v.number(),
+    }))),
+    // NEW: Interview Prep Data
+    interviewPrep: v.optional(v.object({
+      questions: v.array(v.object({
+        question: v.string(),
+        answer: v.optional(v.string()),
+        keyPoints: v.optional(v.array(v.string())),
+      })),
+      generatedAt: v.number(),
+    })),
   })
   .index("by_project", ["projectId"])
   .index("by_user", ["userId"])

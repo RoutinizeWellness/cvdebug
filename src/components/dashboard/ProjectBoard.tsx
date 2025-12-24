@@ -7,12 +7,27 @@ import { DragDropContext, Droppable, Draggable, DroppableProvided, DraggableProv
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal, Calendar, Building2, ArrowLeft, Search, FileText, Briefcase } from "lucide-react";
+import { 
+  Plus, 
+  MoreHorizontal, 
+  Calendar, 
+  Building2, 
+  ArrowLeft, 
+  Search, 
+  FileText, 
+  Briefcase,
+  Clock,
+  Ghost,
+  MessageSquare,
+  BrainCircuit,
+  History
+} from "lucide-react";
 import { toast } from "sonner";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { KeywordSniperPanel } from "./mission/KeywordSniperPanel";
 import { CreateApplicationDialog } from "./CreateApplicationDialog";
+import { RecruiterDMGenerator } from "./tools/RecruiterDMGenerator";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
@@ -36,6 +51,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
   const resumes = useQuery(apiAny.resumes.getResumes, {});
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDMGenerator, setShowDMGenerator] = useState(false);
+  const [selectedAppForDM, setSelectedAppForDM] = useState<string | null>(null);
 
   // Handle initial application selection (Deep Linking)
   useState(() => {
@@ -74,6 +91,13 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
     } catch (error) {
       toast.error("Failed to update status");
     }
+  };
+
+  const isGhosted = (app: any) => {
+    if (app.status !== "applied") return false;
+    const lastUpdate = app.lastStatusUpdate || app.appliedDate || app._creationTime;
+    const daysSinceUpdate = (Date.now() - lastUpdate) / (1000 * 60 * 60 * 24);
+    return daysSinceUpdate > 5;
   };
 
   if (!applications) return null;
@@ -157,15 +181,27 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                     >
                       {applications
                         .filter((app: any) => app.status === column.id)
-                        .map((app: any, index: number) => (
+                        .map((app: any, index: number) => {
+                          const ghosted = isGhosted(app);
+                          return (
                           <Draggable key={app._id} draggableId={app._id} index={index}>
                             {(provided: DraggableProvided) => (
                               <Card
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
-                                className="bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-colors cursor-grab active:cursor-grabbing group"
+                                className={`bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all cursor-grab active:cursor-grabbing group relative ${
+                                  ghosted ? "border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : ""
+                                }`}
                               >
+                                {ghosted && (
+                                  <div className="absolute -top-2 -right-2 z-10 animate-pulse">
+                                    <Badge variant="destructive" className="text-[10px] px-1.5 py-0.5 h-5 flex items-center gap-1">
+                                      <Ghost className="h-3 w-3" />
+                                      Ghosted?
+                                    </Badge>
+                                  </div>
+                                )}
                                 <CardContent className="p-4 space-y-3">
                                   <div className="flex justify-between items-start">
                                     <div className="space-y-1">
@@ -186,12 +222,69 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                                     )}
                                   </div>
                                   
+                                  {/* Timeline Preview */}
+                                  {app.events && app.events.length > 0 && (
+                                    <div className="text-[10px] text-zinc-500 flex items-center gap-1.5 bg-zinc-900/50 p-1.5 rounded border border-zinc-800/50">
+                                      <History className="h-3 w-3" />
+                                      <span className="truncate max-w-[200px]">
+                                        {app.events[app.events.length - 1].title}
+                                      </span>
+                                    </div>
+                                  )}
+
                                   <div className="flex items-center justify-between pt-2 border-t border-zinc-800/50">
                                     <div className="flex items-center gap-1.5 text-[10px] text-zinc-500">
-                                      <Calendar className="h-3 w-3" />
-                                      {new Date(app._creationTime).toLocaleDateString()}
+                                      <Clock className="h-3 w-3" />
+                                      {new Date(app.lastStatusUpdate || app._creationTime).toLocaleDateString()}
                                     </div>
                                     <div className="flex gap-1">
+                                      {/* Recruiter DM Button */}
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button 
+                                              variant="ghost" 
+                                              size="icon" 
+                                              className={`h-6 w-6 ${ghosted ? "text-red-400 hover:text-red-300 hover:bg-red-500/10" : "text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10"}`}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedAppForDM(app._id);
+                                                setShowDMGenerator(true);
+                                              }}
+                                            >
+                                              <MessageSquare className="h-3 w-3" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>{ghosted ? "Send Follow-up DM" : "Generate Recruiter DM"}</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+
+                                      {/* Interview Prep Trigger (Only for Interviewing) */}
+                                      {app.status === "interviewing" && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <Button 
+                                                variant="ghost" 
+                                                size="icon" 
+                                                className="h-6 w-6 text-zinc-500 hover:text-purple-400 hover:bg-purple-500/10"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  toast.info("Interview Prep Mode coming soon!");
+                                                }}
+                                              >
+                                                <BrainCircuit className="h-3 w-3" />
+                                              </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>Interview Prep</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+
                                       <TooltipProvider>
                                         <Tooltip>
                                           <TooltipTrigger asChild>
@@ -243,7 +336,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                                             </Button>
                                           </TooltipTrigger>
                                           <TooltipContent>
-                                            <p>View Details</p>
+                                            <p>View Details & Keywords</p>
                                           </TooltipContent>
                                         </Tooltip>
                                       </TooltipProvider>
@@ -275,7 +368,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                               </Card>
                             )}
                           </Draggable>
-                        ))}
+                        );
+                        })}
                       {provided.placeholder}
                     </div>
                   )}
@@ -299,6 +393,16 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
       open={showCreateDialog} 
       onOpenChange={setShowCreateDialog} 
       projectId={projectId}
+    />
+
+    <RecruiterDMGenerator 
+      open={showDMGenerator} 
+      onOpenChange={setShowDMGenerator}
+      // We need to pass the selected job ID if we want it pre-selected, 
+      // but the component currently manages its own selection state internally via a dropdown.
+      // Ideally, we should refactor RecruiterDMGenerator to accept a pre-selected job ID.
+      // For now, the user will have to select it from the dropdown, or we can modify RecruiterDMGenerator.
+      // Given the constraints, I'll leave it as is but the button opens the tool.
     />
     </>
   );

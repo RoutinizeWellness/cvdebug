@@ -27,6 +27,7 @@ export const createApplication = mutation({
 
     let matchedKeywords: string[] = [];
     let missingKeywords: string[] = [];
+    let matchScore = 0;
 
     if (resume) {
       const resumeMatchedKeywords = resume.matchedKeywords || [];
@@ -54,6 +55,12 @@ export const createApplication = mutation({
           .slice(0, 10)
           .map(kw => typeof kw === 'string' ? kw : kw.keyword);
       }
+
+      // Calculate initial score
+      const total = matchedKeywords.length + missingKeywords.length;
+      if (total > 0) {
+        matchScore = Math.round((matchedKeywords.length / total) * 100);
+      }
     }
 
     const applicationId = await ctx.db.insert("applications", {
@@ -66,6 +73,14 @@ export const createApplication = mutation({
       status: "draft",
       missingKeywords,
       matchedKeywords,
+      matchScore,
+      lastStatusUpdate: Date.now(),
+      events: [{
+        type: "created",
+        title: "Application Created",
+        description: `Started tracking application for ${args.jobTitle} at ${args.companyName}`,
+        timestamp: Date.now(),
+      }],
     });
 
     return applicationId;
@@ -172,10 +187,73 @@ export const updateApplicationStatus = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Unauthorized");
 
+    const app = await ctx.db.get(args.applicationId);
+    if (!app) throw new Error("Application not found");
+
+    const events = app.events || [];
+    
+    // Add status change event
+    events.push({
+      type: "status_change",
+      title: `Moved to ${args.status.charAt(0).toUpperCase() + args.status.slice(1)}`,
+      description: `Status updated from ${app.status} to ${args.status}`,
+      timestamp: Date.now(),
+    });
+
     await ctx.db.patch(args.applicationId, {
       status: args.status,
-      appliedDate: args.status === "applied" ? Date.now() : undefined,
+      appliedDate: args.status === "applied" ? Date.now() : app.appliedDate,
+      lastStatusUpdate: Date.now(),
+      events,
     });
+  },
+});
+
+export const addTimelineEvent = mutation({
+  args: {
+    applicationId: v.id("applications"),
+    type: v.string(),
+    title: v.string(),
+    description: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Unauthorized");
+
+    const app = await ctx.db.get(args.applicationId);
+    if (!app) throw new Error("Application not found");
+
+    const events = app.events || [];
+    events.push({
+      type: args.type,
+      title: args.title,
+      description: args.description,
+      timestamp: Date.now(),
+    });
+
+    await ctx.db.patch(args.applicationId, { events });
+  },
+});
+
+export const checkGhosting = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return; // Silent return for cron
+
+    const fiveDaysAgo = Date.now() - (5 * 24 * 60 * 60 * 1000);
+
+    const ghostedApps = await ctx.db
+      .query("applications")
+      .withIndex("by_user_and_status", (q) => q.eq("userId", user._id).eq("status", "applied"))
+      .filter((q) => q.lt(q.field("lastStatusUpdate"), fiveDaysAgo))
+      .collect();
+
+    // In a real implementation, we might send emails or notifications here.
+    // For now, the UI will handle the visual alert based on lastStatusUpdate.
+    // We could also add a "ghost_alert" event to the timeline if we wanted to be persistent.
+    
+    return ghostedApps.length;
   },
 });
 
