@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery, useAction, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Loader2, MessageSquare, Sparkles, Copy, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
@@ -35,16 +35,15 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
+  const applications = useQuery(apiAny.applications.getApplicationsByProject, 
+    selectedJobId ? { projectId: selectedJobId as any } : "skip"
+  );
   const generateDMs = useAction(apiAny.ai.linkedinOptimizer.generateRecruiterDMs);
+  const addTimelineEvent = useMutation(apiAny.applications.addTimelineEvent);
   
-  // We need a resume text to generate DMs. For now, let's fetch the latest resume.
   const resumes = useQuery(apiAny.resumes.getResumes);
   const latestResume = resumes && resumes.length > 0 ? resumes[0] : null;
 
-  // Helper to call action (since useAction isn't directly imported from convex/react in some setups, 
-  // but here we assume standard setup. If useAction is missing, we use useMutation for wrapper or direct call if client-side allowed)
-  // Actually, in the instructions, it says "useAction for actions".
-  
   const handleGenerate = async () => {
     if (!selectedJobId) {
       toast.error("Please select a job application");
@@ -60,27 +59,26 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
 
     setIsGenerating(true);
     try {
-      // We need the resume text. In a real app, we might store the text or re-OCR.
-      // For this demo, we'll assume we can pass a placeholder or fetch text if available.
-      // The action expects profileText. We'll use a placeholder if text isn't readily available in the resume object
-      // or if we don't want to fetch the full text here.
-      // Ideally, the backend should handle fetching the resume text by ID.
-      // But the action `generateRecruiterDMs` takes `profileText`.
-      // Let's assume `latestResume.content` exists or we pass a summary.
-      // If `content` is not on the object, we might need to fetch it.
-      // For now, let's pass a generic string if content is missing to avoid breaking, 
-      // but in production we'd fetch the text.
-      
-      const profileText = (latestResume as any).content || "Experienced professional with skills in " + ((latestResume as any).skills || []).join(", ");
+      const profileText = (latestResume as any).ocrText || (latestResume as any).content || "Experienced professional";
 
       const result = await generateDMs({
         profileText: profileText,
-        jobDescription: selectedJob.jobDescription || selectedJob.jobTitle, // Fallback
+        jobDescription: selectedJob.jobDescription || selectedJob.jobTitle,
         recruiterName: recruiterName,
         missingKeywords: selectedJob.missingKeywords,
+        applicationId: selectedJobId as any,
       });
 
       setGeneratedDMs(result);
+      
+      // Add timeline event
+      await addTimelineEvent({
+        applicationId: selectedJobId as any,
+        type: "dm_generated",
+        title: "Recruiter DM Generated",
+        description: `Generated ${result.variations?.length || 0} DM variations${recruiterName ? ` for ${recruiterName}` : ''}`,
+      });
+      
       toast.success("DMs Generated!");
     } catch (error: any) {
       console.error(error);
@@ -90,8 +88,8 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
     }
   };
 
-  const copyToClipboard = (text: string, index: number) => {
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = async (text: string, index: number) => {
+    await navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
     toast.success("Copied to clipboard");
@@ -197,5 +195,3 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
     </Dialog>
   );
 }
-
-import { useAction } from "convex/react";

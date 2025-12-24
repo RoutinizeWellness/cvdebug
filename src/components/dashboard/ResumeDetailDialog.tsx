@@ -956,6 +956,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
 
                 <TabsContent value="interview" className="flex-1 overflow-auto p-6">
                   <InterviewPrepMode
+                    applicationId={displayResume._id}
                     resumeText={displayResume.ocrText || ""}
                     jobDescription={displayResume.jobDescription}
                     jobTitle={displayResume.jobTitle}

@@ -1,5 +1,6 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const apiAny = api as any;
 import { Id } from "@/convex/_generated/dataModel";
@@ -28,6 +29,8 @@ import { useState } from "react";
 import { KeywordSniperPanel } from "./mission/KeywordSniperPanel";
 import { CreateApplicationDialog } from "./CreateApplicationDialog";
 import { RecruiterDMGenerator } from "./tools/RecruiterDMGenerator";
+import { ProjectTimeline } from "./ProjectTimeline";
+import { InterviewPrepMode } from "./InterviewPrepMode";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
@@ -53,6 +56,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDMGenerator, setShowDMGenerator] = useState(false);
   const [selectedAppForDM, setSelectedAppForDM] = useState<string | null>(null);
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [showInterviewPrep, setShowInterviewPrep] = useState(false);
 
   // Handle initial application selection (Deep Linking)
   useState(() => {
@@ -238,6 +243,29 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                                       {new Date(app.lastStatusUpdate || app._creationTime).toLocaleDateString()}
                                     </div>
                                     <div className="flex gap-1">
+                                      {/* Timeline Button */}
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Button 
+                                              variant="ghost" 
+                                              size="icon" 
+                                              className="h-6 w-6 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedApplication(app);
+                                                setShowTimeline(true);
+                                              }}
+                                            >
+                                              <History className="h-3 w-3" />
+                                            </Button>
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>View Timeline</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+
                                       {/* Recruiter DM Button */}
                                       <TooltipProvider>
                                         <Tooltip>
@@ -261,7 +289,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                                         </Tooltip>
                                       </TooltipProvider>
 
-                                      {/* Interview Prep Trigger (Only for Interviewing) */}
+                                      {/* Interview Prep Trigger */}
                                       {app.status === "interviewing" && (
                                         <TooltipProvider>
                                           <Tooltip>
@@ -272,7 +300,8 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
                                                 className="h-6 w-6 text-zinc-500 hover:text-purple-400 hover:bg-purple-500/10"
                                                 onClick={(e) => {
                                                   e.stopPropagation();
-                                                  toast.info("Interview Prep Mode coming soon!");
+                                                  setSelectedApplication(app);
+                                                  setShowInterviewPrep(true);
                                                 }}
                                               >
                                                 <BrainCircuit className="h-3 w-3" />
@@ -383,11 +412,39 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
     </div>
 
     <KeywordSniperPanel 
-      open={!!selectedApplication} 
+      open={!!selectedApplication && !showTimeline && !showInterviewPrep} 
       onOpenChange={(open) => !open && setSelectedApplication(null)} 
       job={selectedApplication} 
       onGenerateCoverLetter={onGenerateCoverLetter || (() => {})}
     />
+    
+    {/* Timeline Dialog */}
+    {showTimeline && selectedApplication && (
+      <Dialog open={showTimeline} onOpenChange={setShowTimeline}>
+        <DialogContent className="sm:max-w-[600px] bg-[#0A0A0A] border-zinc-800 text-zinc-200">
+          <ProjectTimeline 
+            events={selectedApplication.events || []}
+            applicationTitle={selectedApplication.jobTitle}
+            companyName={selectedApplication.company || selectedApplication.companyName}
+          />
+        </DialogContent>
+      </Dialog>
+    )}
+
+    {/* Interview Prep Dialog */}
+    {showInterviewPrep && selectedApplication && (
+      <Dialog open={showInterviewPrep} onOpenChange={setShowInterviewPrep}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] bg-[#0A0A0A] border-zinc-800 text-zinc-200">
+          <InterviewPrepMode 
+            applicationId={selectedApplication._id}
+            jobTitle={selectedApplication.jobTitle}
+            company={selectedApplication.company || selectedApplication.companyName}
+            jobDescription={selectedApplication.jobDescriptionText || ""}
+            resumeText={selectedApplication.resumeText || ""}
+          />
+        </DialogContent>
+      </Dialog>
+    )}
     
     <CreateApplicationDialog 
       open={showCreateDialog} 
@@ -398,11 +455,6 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
     <RecruiterDMGenerator 
       open={showDMGenerator} 
       onOpenChange={setShowDMGenerator}
-      // We need to pass the selected job ID if we want it pre-selected, 
-      // but the component currently manages its own selection state internally via a dropdown.
-      // Ideally, we should refactor RecruiterDMGenerator to accept a pre-selected job ID.
-      // For now, the user will have to select it from the dropdown, or we can modify RecruiterDMGenerator.
-      // Given the constraints, I'll leave it as is but the button opens the tool.
     />
     </>
   );
