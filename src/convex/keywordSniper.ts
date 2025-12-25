@@ -47,51 +47,88 @@ export const generateKeywordPhrases = action({
       targetRole
     );
 
-    // Call AI with correct signature
-    const response = await callOpenRouter(apiKey, {
-      model: "openai/gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-    });
-
-    // Parse response
     try {
-      const result = JSON.parse(response);
-      return {
-        keyword: args.missingKeyword,
-        phrases: result.phrases || [],
-        placementSuggestion: result.placementSuggestion || "Experience",
-        priority: result.priority || "important",
-      };
-    } catch (error) {
-      console.error("Failed to parse Keyword Sniper response:", error);
+      console.log(`[Keyword Sniper] Generating phrases for: ${args.missingKeyword}`);
+      const startTime = Date.now();
+
+      // Call AI with correct signature
+      const response = await callOpenRouter(apiKey, {
+        model: "openai/gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+      });
+
+      const duration = Date.now() - startTime;
+      console.log(`[Keyword Sniper] ✅ Generated in ${duration}ms`);
+
+      // Parse response
+      try {
+        const result = JSON.parse(response);
+        return {
+          keyword: args.missingKeyword,
+          phrases: result.phrases || [],
+          placementSuggestion: result.placementSuggestion || "Experience",
+          priority: result.priority || "important",
+        };
+      } catch (parseError) {
+        console.error("[Keyword Sniper] Failed to parse response:", parseError);
+        throw new Error("Invalid AI response format");
+      }
+    } catch (primaryError: any) {
+      console.error("[Keyword Sniper] ❌ Primary AI failed:", primaryError.message);
       
-      // Fallback: Generate basic suggestions
-      return {
-        keyword: args.missingKeyword,
-        phrases: [
-          {
-            text: `Utilized ${args.missingKeyword} to improve system performance by 25%, reducing processing time and enhancing user experience.`,
-            metrics: ["25% improvement"],
-            actionVerb: "Utilized",
-            context: "Generic template - customize with your specific experience"
-          },
-          {
-            text: `Implemented ${args.missingKeyword} across multiple projects, resulting in $50K cost savings and 40% faster delivery times.`,
-            metrics: ["$50K savings", "40% faster"],
-            actionVerb: "Implemented",
-            context: "Focus on business impact and measurable results"
-          },
-          {
-            text: `Led team of 5 engineers in adopting ${args.missingKeyword}, achieving 99.9% uptime and serving 1M+ daily users.`,
-            metrics: ["99.9% uptime", "1M+ users"],
-            actionVerb: "Led",
-            context: "Emphasize leadership and scale"
-          }
-        ],
-        placementSuggestion: "Experience",
-        priority: "important",
-      };
+      // Try fallback model
+      try {
+        console.log("[Keyword Sniper] Attempting fallback model: deepseek-chat");
+        const response = await callOpenRouter(apiKey, {
+          model: "deepseek/deepseek-chat",
+          messages: [{ role: "user", content: prompt }],
+          response_format: { type: "json_object" },
+        });
+
+        console.log("[Keyword Sniper] ✅ Fallback model succeeded");
+
+        const result = JSON.parse(response);
+        return {
+          keyword: args.missingKeyword,
+          phrases: result.phrases || [],
+          placementSuggestion: result.placementSuggestion || "Experience",
+          priority: result.priority || "important",
+        };
+      } catch (fallbackError: any) {
+        console.error("[Keyword Sniper] ❌ Fallback model also failed:", fallbackError.message);
+        
+        // Enhanced template-based fallback with context awareness
+        const contextHint = resumeText.toLowerCase().includes(args.missingKeyword.toLowerCase())
+          ? `building on your existing ${args.missingKeyword} experience`
+          : `demonstrating ${args.missingKeyword} expertise`;
+
+        return {
+          keyword: args.missingKeyword,
+          phrases: [
+            {
+              text: `Leveraged ${args.missingKeyword} to optimize system performance by 30%, reducing processing time and enhancing user experience across 100K+ daily active users.`,
+              metrics: ["30% improvement", "100K+ users"],
+              actionVerb: "Leveraged",
+              context: `Performance-focused bullet ${contextHint}. Customize with your actual metrics.`
+            },
+            {
+              text: `Implemented ${args.missingKeyword} across 5+ enterprise projects, resulting in $200K annual cost savings and 45% faster delivery cycles.`,
+              metrics: ["$200K savings", "45% faster", "5+ projects"],
+              actionVerb: "Implemented",
+              context: `Business impact bullet emphasizing scale and ROI. Replace with your specific achievements.`
+            },
+            {
+              text: `Led cross-functional team of 8 engineers in adopting ${args.missingKeyword} best practices, achieving 99.9% uptime and serving 2M+ requests per day.`,
+              metrics: ["99.9% uptime", "2M+ requests", "8 engineers"],
+              actionVerb: "Led",
+              context: `Leadership bullet showcasing team impact and reliability. Adjust team size and metrics to match your experience.`
+            }
+          ],
+          placementSuggestion: "Experience",
+          priority: "important",
+        };
+      }
     }
   },
 });

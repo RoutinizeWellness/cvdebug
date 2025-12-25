@@ -53,59 +53,120 @@ export const generateCoverLetterAI = internalAction({
     const runQuery = (fn: any, queryArgs: any) => (ctx as any).runQuery(fn, queryArgs);
     const runMutation = (fn: any, mutationArgs: any) => (ctx as any).runMutation(fn, mutationArgs);
 
-    const application = await runQuery(internalAny.applications.getApplicationInternal, {
-      id: args.applicationId,
-    });
-
-    if (!application) throw new Error("Application not found");
-
-    const project = await runQuery(internalAny.projects.getProjectInternal, {
-      id: application.projectId,
-    });
-
-    if (!project || !project.masterCvId) {
-      throw new Error("Project or master CV not found");
-    }
-
-    const resume = await runQuery(internalAny.resumes.getResumeInternal, {
-      id: project.masterCvId,
-    });
-
-    if (!resume || !resume.ocrText) {
-      throw new Error("Resume text not available");
-    }
-
-    const prompt = buildCoverLetterPrompt(
-      resume.ocrText,
-      application.jobTitle,
-      application.companyName,
-      application.jobDescriptionText || "",
-      application.missingKeywords || []
-    );
-
     try {
-      const content = await callOpenRouter(apiKey, {
-        model: "google/gemini-2.0-flash-exp:free",
-        messages: [{ role: "user", content: prompt }],
+      const application = await runQuery(internalAny.applications.getApplicationInternal, {
+        id: args.applicationId,
       });
 
-      // Check existing cover letters for versioning
-      const existingLetters = await runQuery(internalAny.coverLetters.getCoverLettersByApplication, {
-        applicationId: args.applicationId,
+      if (!application) throw new Error("Application not found");
+
+      const project = await runQuery(internalAny.projects.getProjectInternal, {
+        id: application.projectId,
       });
 
-      const version = existingLetters.length + 1;
+      if (!project || !project.masterCvId) {
+        throw new Error("Project or master CV not found");
+      }
 
-      await runMutation(internalAny.coverLetters.saveCoverLetter, {
-        applicationId: args.applicationId,
-        userId: args.userId,
-        content,
-        version,
-        keywordsBridged: application.missingKeywords || [],
+      const resume = await runQuery(internalAny.resumes.getResumeInternal, {
+        id: project.masterCvId,
       });
 
+      if (!resume || !resume.ocrText) {
+        throw new Error("Resume text not available");
+      }
+
+      const prompt = buildCoverLetterPrompt(
+        resume.ocrText,
+        application.jobTitle,
+        application.companyName,
+        application.jobDescriptionText || "",
+        application.missingKeywords || []
+      );
+
+      console.log("[Cover Letter] Starting AI generation");
+      const startTime = Date.now();
+
+      try {
+        const content = await callOpenRouter(apiKey, {
+          model: "google/gemini-2.0-flash-exp:free",
+          messages: [{ role: "user", content: prompt }],
+        });
+
+        const duration = Date.now() - startTime;
+        console.log(`[Cover Letter] ✅ Generated in ${duration}ms`);
+
+        // Check existing cover letters for versioning
+        const existingLetters = await runQuery(internalAny.coverLetters.getCoverLettersByApplication, {
+          applicationId: args.applicationId,
+        });
+
+        const version = existingLetters.length + 1;
+
+        await runMutation(internalAny.coverLetters.saveCoverLetter, {
+          applicationId: args.applicationId,
+          userId: args.userId,
+          content,
+          version,
+          keywordsBridged: application.missingKeywords || [],
+        });
+
+      } catch (primaryError: any) {
+        console.error("[Cover Letter] ❌ Primary AI failed:", primaryError.message);
+        
+        // Try fallback model
+        try {
+          console.log("[Cover Letter] Attempting fallback model: deepseek-chat");
+          const content = await callOpenRouter(apiKey, {
+            model: "deepseek/deepseek-chat",
+            messages: [{ role: "user", content: prompt }],
+          });
+
+          console.log("[Cover Letter] ✅ Fallback model succeeded");
+
+          const existingLetters = await runQuery(internalAny.coverLetters.getCoverLettersByApplication, {
+            applicationId: args.applicationId,
+          });
+
+          const version = existingLetters.length + 1;
+
+          await runMutation(internalAny.coverLetters.saveCoverLetter, {
+            applicationId: args.applicationId,
+            userId: args.userId,
+            content,
+            version,
+            keywordsBridged: application.missingKeywords || [],
+          });
+
+        } catch (fallbackError: any) {
+          console.error("[Cover Letter] ❌ Fallback model also failed:", fallbackError.message);
+          
+          // Generate template-based cover letter
+          const templateContent = generateTemplateCoverLetter(
+            application.jobTitle,
+            application.companyName,
+            application.missingKeywords || []
+          );
+
+          console.log("[Cover Letter] ✅ Using template fallback");
+
+          const existingLetters = await runQuery(internalAny.coverLetters.getCoverLettersByApplication, {
+            applicationId: args.applicationId,
+          });
+
+          const version = existingLetters.length + 1;
+
+          await runMutation(internalAny.coverLetters.saveCoverLetter, {
+            applicationId: args.applicationId,
+            userId: args.userId,
+            content: templateContent,
+            version,
+            keywordsBridged: application.missingKeywords || [],
+          });
+        }
+      }
     } catch (error: any) {
-      console.error("[Cover Letter] Generation failed:", error.message);
+      console.error("[Cover Letter] ❌ CRITICAL ERROR:", error.message);
       throw error;
     }
   },
@@ -143,6 +204,30 @@ ${missingKeywords.slice(0, 10).join(", ")}
 7. Professional but conversational tone
 
 **Output:** Return ONLY the cover letter text, no preamble or explanations.`;
+}
+
+function generateTemplateCoverLetter(
+  jobTitle: string,
+  companyName: string,
+  missingKeywords: string[]
+): string {
+  const keywordPhrase = missingKeywords.length > 0 
+    ? `My experience with ${missingKeywords.slice(0, 3).join(", ")} aligns well with your requirements.`
+    : "My technical background aligns well with your requirements.";
+
+  return `Dear Hiring Manager,
+
+I am writing to express my strong interest in the ${jobTitle} position at ${companyName}. With a proven track record of delivering high-impact results and driving innovation, I am confident I can contribute meaningfully to your team.
+
+${keywordPhrase} Throughout my career, I have consistently demonstrated the ability to tackle complex challenges, collaborate effectively with cross-functional teams, and deliver projects that exceed expectations. I am particularly drawn to ${companyName}'s commitment to excellence and innovation.
+
+I would welcome the opportunity to discuss how my skills and experience can benefit your organization. Thank you for considering my application. I look forward to the possibility of contributing to ${companyName}'s continued success.
+
+Best regards,
+[Your Name]
+
+---
+Note: This is a template cover letter generated due to temporary AI service unavailability. Please customize it with your specific experiences and achievements for best results.`;
 }
 
 export const saveCoverLetter = mutation({
