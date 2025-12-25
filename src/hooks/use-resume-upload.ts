@@ -292,7 +292,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             }
           } catch (ocrError) {
             console.error("OCR fallback also failed:", ocrError);
-            throw new Error("Could not read text from this file. Please try: 1) Re-saving as a new PDF using 'Print to PDF', 2) Converting to Word (.docx) format, or 3) Ensuring the file contains selectable text (not just images).");
+            // Add OCR prefix to trigger server fallback
+            throw new Error("OCR: Could not read text from this file. Please try: 1) Re-saving as a new PDF using 'Print to PDF', 2) Converting to Word (.docx) format, or 3) Ensuring the file contains selectable text (not just images).");
           }
         }
       } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -309,17 +310,24 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             const ret = await worker.recognize(imageUrl);
             text = ret.data.text;
           } catch (ocrError: any) {
-             const errorMessage = ocrError?.message?.includes("attempting to read image") 
-                                  ? "The image file appears to be corrupted or in an unsupported format. Please try a different image (JPG/PNG)." 
-                                  : `Could not read text from this image. Please ensure it is clear and readable. Original OCR issue: ${ocrError?.message || "Unknown error."}`;
-             throw new Error(errorMessage);
+             console.error("Inner OCR Error:", ocrError);
+             const errorStr = ocrError?.message || String(ocrError);
+             // Prefix with OCR to trigger server-side fallback
+             if (errorStr.includes("attempting to read image")) {
+                throw new Error("OCR: The image file appears to be corrupted or in an unsupported format.");
+             }
+             throw new Error(`OCR: Could not read text from this image. ${errorStr}`);
           } finally {
             URL.revokeObjectURL(imageUrl);
             await worker.terminate();
           }
         } catch (ocrError: any) {
           console.error("Image OCR processing failed:", ocrError);
-          throw new Error(`Failed to process image for text extraction. Original issue: ${ocrError instanceof Error ? ocrError.message : String(ocrError)}`);
+          // If it's already our formatted error, rethrow it to preserve the "OCR:" prefix
+          if (ocrError.message && ocrError.message.startsWith("OCR:")) {
+            throw ocrError;
+          }
+          throw new Error(`OCR: Failed to process image. ${ocrError.message || String(ocrError)}`);
         }
       }
 
