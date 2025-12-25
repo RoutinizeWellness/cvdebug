@@ -30,6 +30,7 @@ import type * as ai_scoring_completenessScoring from "../ai/scoring/completeness
 import type * as ai_scoring_formatScoring from "../ai/scoring/formatScoring.js";
 import type * as ai_scoring_keywordScoring from "../ai/scoring/keywordScoring.js";
 import type * as ai_serverOcr from "../ai/serverOcr.js";
+import type * as aiMonitoring from "../aiMonitoring.js";
 import type * as applications from "../applications.js";
 import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
@@ -87,6 +88,7 @@ declare const fullApi: ApiFromModules<{
   "ai/scoring/formatScoring": typeof ai_scoring_formatScoring;
   "ai/scoring/keywordScoring": typeof ai_scoring_keywordScoring;
   "ai/serverOcr": typeof ai_serverOcr;
+  aiMonitoring: typeof aiMonitoring;
   applications: typeof applications;
   auth: typeof auth;
   "auth/emailOtp": typeof auth_emailOtp;

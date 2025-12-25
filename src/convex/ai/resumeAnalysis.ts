@@ -16,6 +16,9 @@ export const analyzeResume = internalAction({
     jobDescription: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const startTime = Date.now();
+    let userId: string | undefined;
+    
     try {
       const apiKey = process.env.OPENROUTER_API_KEY;
       
@@ -39,26 +42,47 @@ export const analyzeResume = internalAction({
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
 
-      const startTime = Date.now();
+      // Get userId for monitoring
+      const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, { id: args.id });
+      userId = resume?.userId;
 
       let analysisResult;
       let usedFallback = false;
       let verificationScore = null;
+      let modelUsed = "fallback";
 
       // Always use fallback if no API key OR if API call fails/times out
       if (!apiKey) {
         console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
         try {
           analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+          usedFallback = true;
+          
+          // Log fallback usage
+          await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+            service: "resumeAnalysis",
+            model: "fallback",
+            userId,
+            duration: Date.now() - startTime,
+          });
         } catch (err) {
           console.error("[AI Analysis] Fallback analysis failed:", err);
+          await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+            service: "resumeAnalysis",
+            model: "fallback",
+            errorType: "fallback_error",
+            errorMessage: String(err),
+            userId,
+            duration: Date.now() - startTime,
+            usedFallback: true,
+          });
           throw new Error("Failed to generate fallback analysis");
         }
-        usedFallback = true;
       } else {
         try {
           const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
           const model = "google/gemini-2.0-flash-exp:free";
+          modelUsed = model;
           
           console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
 
@@ -84,42 +108,58 @@ export const analyzeResume = internalAction({
           
           console.log("[AI Analysis] Successfully parsed AI response");
 
+          // Log success
+          await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+            service: "resumeAnalysis",
+            model: modelUsed,
+            userId,
+            duration: Date.now() - startTime,
+          });
+
           // NEW: Multi-Model Verification for Sprint users
-          // Check if this is a Sprint user by querying the resume's user
-          const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, { id: args.id });
-          if (resume) {
-            const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
-            const hasActiveSprint = user && user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-            
-            if (hasActiveSprint && analysisResult.score > 0) {
-              console.log("[AI Analysis] Sprint user detected, running verification with secondary model");
-              try {
-                const verificationModel = "deepseek/deepseek-chat";
-                const verificationContent = await callOpenRouter(apiKey, {
-                  model: verificationModel,
-                  messages: [{ role: "user", content: prompt }],
-                  response_format: { type: "json_object" }
-                });
-                
-                const verificationResult = extractJSON(verificationContent);
-                if (verificationResult && verificationResult.score) {
-                  verificationScore = verificationResult.score;
-                  // Average the two scores for maximum accuracy
-                  const originalScore = analysisResult.score;
-                  analysisResult.score = Math.round((originalScore + verificationScore) / 2);
-                  console.log(`[AI Analysis] Verification complete: Original=${originalScore}, Verified=${verificationScore}, Final=${analysisResult.score}`);
-                }
-              } catch (verificationError) {
-                console.log("[AI Analysis] Verification failed, using primary score:", verificationError);
+          const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
+          const hasActiveSprint = user && user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+          
+          if (hasActiveSprint && analysisResult.score > 0) {
+            console.log("[AI Analysis] Sprint user detected, running verification with secondary model");
+            try {
+              const verificationModel = "deepseek/deepseek-chat";
+              const verificationContent = await callOpenRouter(apiKey, {
+                model: verificationModel,
+                messages: [{ role: "user", content: prompt }],
+                response_format: { type: "json_object" }
+              });
+              
+              const verificationResult = extractJSON(verificationContent);
+              if (verificationResult && verificationResult.score) {
+                verificationScore = verificationResult.score;
+                // Average the two scores for maximum accuracy
+                const originalScore = analysisResult.score;
+                analysisResult.score = Math.round((originalScore + verificationScore) / 2);
+                console.log(`[AI Analysis] Verification complete: Original=${originalScore}, Verified=${verificationScore}, Final=${analysisResult.score}`);
               }
+            } catch (verificationError) {
+              console.log("[AI Analysis] Verification failed, using primary score:", verificationError);
             }
           }
           
         } catch (error: any) {
           console.error("[AI Analysis] Primary AI (Gemini) failed, attempting secondary fallback:", error.message);
           
+          // Log primary failure
+          await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+            service: "resumeAnalysis",
+            model: modelUsed,
+            errorType: error.message.includes("timeout") ? "timeout" : "api_error",
+            errorMessage: error.message,
+            userId,
+            duration: Date.now() - startTime,
+            usedFallback: false,
+          });
+          
           try {
             const secondaryModel = "deepseek/deepseek-chat";
+            modelUsed = secondaryModel;
             console.log(`[AI Analysis] Attempting secondary model: ${secondaryModel}`);
             
             const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
@@ -132,15 +172,54 @@ export const analyzeResume = internalAction({
             analysisResult = extractJSON(content);
             console.log("[AI Analysis] Secondary AI model succeeded");
             
+            // Log secondary success
+            await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+              service: "resumeAnalysis",
+              model: modelUsed,
+              userId,
+              duration: Date.now() - startTime,
+            });
+            
           } catch (secondaryError: any) {
             console.error("[AI Analysis] Secondary AI also failed, using ML-based analysis:", secondaryError.message);
+            
+            // Log secondary failure
+            await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+              service: "resumeAnalysis",
+              model: modelUsed,
+              errorType: "api_error",
+              errorMessage: secondaryError.message,
+              userId,
+              duration: Date.now() - startTime,
+              usedFallback: false,
+            });
+            
             try {
               analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+              usedFallback = true;
+              
+              // Log fallback success
+              await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+                service: "resumeAnalysis",
+                model: "fallback",
+                userId,
+                duration: Date.now() - startTime,
+              });
             } catch (err) {
               console.error("[AI Analysis] Fallback analysis failed after all AI attempts:", err);
+              
+              // Log fallback failure
+              await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+                service: "resumeAnalysis",
+                model: "fallback",
+                errorType: "fallback_error",
+                errorMessage: String(err),
+                userId,
+                duration: Date.now() - startTime,
+                usedFallback: true,
+              });
               throw err;
             }
-            usedFallback = true;
           }
         }
       }
@@ -273,6 +352,18 @@ export const analyzeResume = internalAction({
       }
     } catch (globalError: any) {
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
+      
+      // Log critical error
+      await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+        service: "resumeAnalysis",
+        model: "unknown",
+        errorType: "critical_error",
+        errorMessage: globalError.message,
+        userId,
+        duration: Date.now() - startTime,
+        usedFallback: false,
+      });
+      
       try {
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,

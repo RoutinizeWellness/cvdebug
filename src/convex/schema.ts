@@ -338,6 +338,47 @@ const schema = defineSchema(
     .index("by_user_id", ["userId"])
     .index("by_transaction_id", ["transactionId"])
     .index("by_email", ["email"]),
+
+  // AI Service Monitoring
+  aiServiceLogs: defineTable({
+    service: v.string(), // "chatbot", "resumeAnalysis", "interviewPrep", etc.
+    model: v.string(), // "gemini-2.0-flash", "deepseek-chat", "fallback"
+    errorType: v.string(), // "success", "timeout", "api_error", "parse_error", "rate_limit"
+    errorMessage: v.optional(v.string()),
+    userId: v.optional(v.string()),
+    duration: v.optional(v.number()),
+    usedFallback: v.boolean(),
+    timestamp: v.number(),
+  })
+    .index("by_timestamp", ["timestamp"])
+    .index("by_service", ["service"])
+    .index("by_user", ["userId"]),
+
+  // User Feedback on AI Features
+  aiFeedback: defineTable({
+    userId: v.string(),
+    featureType: v.union(
+      v.literal("chatbot"),
+      v.literal("resume_analysis"),
+      v.literal("interview_prep"),
+      v.literal("cover_letter"),
+      v.literal("keyword_sniper"),
+      v.literal("linkedin_optimizer"),
+      v.literal("recruiter_dm")
+    ),
+    rating: v.union(
+      v.literal("helpful"),
+      v.literal("somewhat_helpful"),
+      v.literal("not_helpful")
+    ),
+    wasAIGenerated: v.boolean(),
+    comment: v.optional(v.string()),
+    relatedId: v.optional(v.string()),
+    timestamp: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_feature", ["featureType"])
+    .index("by_timestamp", ["timestamp"]),
   },
   {
     schemaValidation: false,
