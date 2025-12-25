@@ -32,8 +32,27 @@ export function MissionStats() {
     return "Low";
   };
 
-  // Detect ATS system (mock detection for now)
-  const detectedATS = "Greenhouse";
+  // Detect ATS system from real application URLs
+  const getDetectedATS = () => {
+    if (!applications || applications.length === 0) return "None Detected";
+    
+    // Check recent applications for known ATS domains
+    for (const app of applications) {
+      if (app.jobUrl) {
+        const url = app.jobUrl.toLowerCase();
+        if (url.includes("greenhouse.io")) return "Greenhouse";
+        if (url.includes("lever.co")) return "Lever";
+        if (url.includes("workday")) return "Workday";
+        if (url.includes("icims")) return "iCIMS";
+        if (url.includes("ashby")) return "Ashby";
+        if (url.includes("bamboohr")) return "BambooHR";
+        if (url.includes("smartrecruiters")) return "SmartRecruiters";
+      }
+    }
+    return "Generic ATS";
+  };
+
+  const detectedATS = getDetectedATS();
 
   return (
     <div className="space-y-4">
@@ -45,7 +64,11 @@ export function MissionStats() {
           </div>
           <div className="flex-1">
             <p className="text-sm font-bold text-white">Target ATS Detected</p>
-            <p className="text-xs text-zinc-400">Optimizing parsing for this system</p>
+            <p className="text-xs text-zinc-400">
+              {detectedATS === "None Detected" 
+                ? "Add job URLs to detect ATS system" 
+                : "Optimizing parsing for this system"}
+            </p>
           </div>
           <Badge className="bg-primary/20 text-primary border-primary/30 font-bold">
             {detectedATS}

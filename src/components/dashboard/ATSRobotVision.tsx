@@ -1,10 +1,42 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Loader2, FileText, AlertTriangle } from "lucide-react";
+
+// Cast to any to avoid deep type instantiation errors
+const apiAny = api as any;
 
 export function ATSRobotVision() {
   const [robotVisionEnabled, setRobotVisionEnabled] = useState(true);
   const [zoomLevel, setZoomLevel] = useState(100);
+  
+  const resumes = useQuery(apiAny.resumes.getResumes);
+  const latestResume = resumes && resumes.length > 0 ? resumes[0] : null;
+  const user = useQuery(apiAny.users.getUser);
+
+  if (resumes === undefined) {
+    return (
+      <div className="h-full flex items-center justify-center bg-[#0F172A] text-white">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
+  if (!latestResume) {
+    return (
+      <div className="h-full flex flex-col items-center justify-center bg-[#0F172A] text-white p-8 text-center">
+        <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4">
+          <FileText className="h-8 w-8 text-slate-500" />
+        </div>
+        <h2 className="text-xl font-bold mb-2">No Resume Found</h2>
+        <p className="text-slate-400 max-w-md">
+          Upload a resume to see how ATS robots interpret your document.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex flex-col bg-[#0F172A] text-white">
@@ -17,7 +49,7 @@ export function ATSRobotVision() {
             </div>
             <div>
               <h1 className="text-lg font-bold text-white">ATS Robot Vision</h1>
-              <p className="text-xs text-slate-400">John_Doe_Resume_2024.pdf</p>
+              <p className="text-xs text-slate-400">{latestResume.title || "Untitled Resume"}</p>
             </div>
           </div>
         </div>
@@ -61,69 +93,55 @@ export function ATSRobotVision() {
         <div className="flex-1 relative bg-slate-900/50 p-8 overflow-auto custom-scrollbar">
           <div className="max-w-3xl mx-auto relative">
             {/* Resume Document with Scan Line */}
-            <div className="relative bg-white rounded-lg shadow-2xl overflow-hidden">
+            <div className="relative bg-white rounded-lg shadow-2xl overflow-hidden min-h-[800px]">
               {/* Scan Line Animation */}
               {robotVisionEnabled && (
                 <div className="scan-line absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-70 z-10" />
               )}
 
-              {/* Resume Image Placeholder */}
+              {/* Resume Content */}
               <div className="relative p-12 bg-white text-black">
                 {/* Header Section Bounding Box */}
                 <div className="relative border-2 border-green-500 rounded p-4 mb-6">
                   <div className="absolute -top-3 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
                     HEADER ✓
                   </div>
-                  <h1 className="text-3xl font-bold mb-2">JOHN DOE</h1>
-                  <p className="text-sm text-gray-600">john.doe@email.com | +1 234 567 8900</p>
+                  <h1 className="text-3xl font-bold mb-2">{user?.name || "Candidate Name"}</h1>
+                  <p className="text-sm text-gray-600">{user?.email || "email@example.com"}</p>
                 </div>
 
-                {/* Summary Section Bounding Box */}
-                <div className="relative border-2 border-green-500 rounded p-4 mb-6">
-                  <div className="absolute -top-3 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    SUMMARY ✓
+                {/* OCR Text Content */}
+                <div className="relative border-2 border-blue-500/50 rounded p-4 mb-6">
+                  <div className="absolute -top-3 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    PARSED CONTENT
                   </div>
-                  <h2 className="text-xl font-bold mb-2">Professional Summary</h2>
-                  <p className="text-sm text-gray-700">
-                    Experienced software engineer with 5+ years in full-stack development...
-                  </p>
-                </div>
-
-                {/* Experience Section Bounding Box */}
-                <div className="relative border-2 border-green-500 rounded p-4 mb-6">
-                  <div className="absolute -top-3 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
-                    EXPERIENCE ✓
-                  </div>
-                  <h2 className="text-xl font-bold mb-3">Work Experience</h2>
-                  <div className="mb-4">
-                    <h3 className="font-bold">Senior Developer</h3>
-                    <p className="text-sm text-gray-600">Tech Corp | 2020 - Present</p>
-                    <ul className="list-disc list-inside text-sm text-gray-700 mt-2">
-                      <li>Led development of microservices architecture</li>
-                      <li>Improved system performance by 40%</li>
-                    </ul>
+                  <div className="whitespace-pre-wrap font-mono text-xs text-gray-700 leading-relaxed">
+                    {latestResume.ocrText || "No text content parsed yet..."}
                   </div>
                 </div>
 
-                {/* Skills Table with Image Trap - Pulsing Error */}
-                <div className="relative border-2 border-red-500 rounded p-4 pulse-error">
-                  <div className="absolute -top-3 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded animate-pulse">
-                    IMAGE TRAP ⚠
-                  </div>
-                  <h2 className="text-xl font-bold mb-3">Technical Skills</h2>
-                  <div className="bg-gray-100 p-4 rounded relative">
-                    <div className="absolute inset-0 flex items-center justify-center bg-red-500/10 backdrop-blur-sm">
-                      <div className="text-center">
-                        <span className="material-symbols-outlined text-[48px] text-red-500 mb-2">
-                          error
-                        </span>
-                        <p className="text-red-600 font-bold text-sm">UNREADABLE CONTENT</p>
-                        <p className="text-xs text-red-500 mt-1">Skills embedded as image</p>
-                      </div>
+                {/* Image Trap Warning if detected */}
+                {latestResume.hasImageTrap && (
+                  <div className="relative border-2 border-red-500 rounded p-4 pulse-error mt-6">
+                    <div className="absolute -top-3 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded animate-pulse">
+                      IMAGE TRAP ⚠
                     </div>
-                    <p className="text-sm text-gray-400 blur-sm">JavaScript • React • Node.js • Python</p>
+                    <div className="bg-gray-100 p-4 rounded relative">
+                      <div className="absolute inset-0 flex items-center justify-center bg-red-500/10 backdrop-blur-sm">
+                        <div className="text-center">
+                          <span className="material-symbols-outlined text-[48px] text-red-500 mb-2">
+                            error
+                          </span>
+                          <p className="text-red-600 font-bold text-sm">UNREADABLE CONTENT</p>
+                          <p className="text-xs text-red-500 mt-1">Content embedded as image</p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-400 blur-sm">
+                        [Complex layout or image-based text detected]
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Robot Vision Status Overlay */}
@@ -203,11 +221,18 @@ export function ATSRobotVision() {
                 Console Output
               </h3>
               <div className="bg-slate-950/50 rounded-lg p-3 font-mono text-xs space-y-1 border border-slate-800">
-                <div className="text-green-400">[✓] Header parsed successfully</div>
-                <div className="text-green-400">[✓] Summary extracted</div>
-                <div className="text-green-400">[✓] Experience section detected</div>
-                <div className="text-red-400">[✗] Skills section: Image content detected</div>
-                <div className="text-yellow-400">[!] Warning: Unreadable content block</div>
+                <div className="text-green-400">[✓] Document loaded</div>
+                <div className="text-green-400">[✓] Text layer extracted</div>
+                {latestResume.ocrText ? (
+                   <div className="text-green-400">[✓] Content length: {latestResume.ocrText.length} chars</div>
+                ) : (
+                   <div className="text-yellow-400">[!] No content extracted</div>
+                )}
+                {latestResume.hasImageTrap ? (
+                  <div className="text-red-400">[✗] Critical: Image trap detected</div>
+                ) : (
+                  <div className="text-green-400">[✓] No image traps detected</div>
+                )}
               </div>
             </div>
 
@@ -221,47 +246,34 @@ export function ATSRobotVision() {
               {/* Contact Block */}
               <div className="bg-slate-800/30 rounded-lg p-3 border border-green-500/30">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-green-400">CONTACT</span>
+                  <span className="text-xs font-bold text-green-400">METADATA</span>
                   <span className="material-symbols-outlined text-[16px] text-green-400">
                     check_circle
                   </span>
                 </div>
                 <div className="text-xs space-y-1 text-slate-300">
-                  <div><span className="text-slate-500">name:</span> "John Doe"</div>
-                  <div><span className="text-slate-500">email:</span> "john.doe@email.com"</div>
-                  <div><span className="text-slate-500">phone:</span> "+1 234 567 8900"</div>
+                  <div><span className="text-slate-500">filename:</span> "{latestResume.title}"</div>
+                  <div><span className="text-slate-500">type:</span> "{latestResume.mimeType}"</div>
+                  <div><span className="text-slate-500">size:</span> {latestResume.ocrText?.length || 0} bytes</div>
                 </div>
               </div>
 
-              {/* Experience Block */}
-              <div className="bg-slate-800/30 rounded-lg p-3 border border-green-500/30">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-green-400">EXPERIENCE</span>
-                  <span className="material-symbols-outlined text-[16px] text-green-400">
-                    check_circle
-                  </span>
+              {/* Parse Failure Block if applicable */}
+              {latestResume.hasImageTrap && (
+                <div className="bg-slate-800/30 rounded-lg p-3 border border-red-500/30">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-red-400">ERRORS</span>
+                    <span className="material-symbols-outlined text-[16px] text-red-400">
+                      error
+                    </span>
+                  </div>
+                  <div className="text-xs space-y-1 text-slate-300">
+                    <div><span className="text-slate-500">error:</span> "Image content detected"</div>
+                    <div><span className="text-slate-500">type:</span> "Unreadable block"</div>
+                    <div><span className="text-slate-500">impact:</span> "Critical"</div>
+                  </div>
                 </div>
-                <div className="text-xs space-y-1 text-slate-300">
-                  <div><span className="text-slate-500">title:</span> "Senior Developer"</div>
-                  <div><span className="text-slate-500">company:</span> "Tech Corp"</div>
-                  <div><span className="text-slate-500">years:</span> "2020 - Present"</div>
-                </div>
-              </div>
-
-              {/* Parse Failure Block */}
-              <div className="bg-slate-800/30 rounded-lg p-3 border border-red-500/30">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-red-400">SKILLS (FAILED)</span>
-                  <span className="material-symbols-outlined text-[16px] text-red-400">
-                    error
-                  </span>
-                </div>
-                <div className="text-xs space-y-1 text-slate-300">
-                  <div><span className="text-slate-500">error:</span> "Image content detected"</div>
-                  <div><span className="text-slate-500">type:</span> "Unreadable block"</div>
-                  <div><span className="text-slate-500">impact:</span> "Critical"</div>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Raw JSON Fragment */}
@@ -271,23 +283,12 @@ export function ATSRobotVision() {
                 Raw JSON
               </h3>
               <div className="bg-slate-950/50 rounded-lg p-3 font-mono text-xs border border-slate-800 overflow-x-auto custom-scrollbar">
-                <pre className="text-slate-400">{`{
-  "sections": [
-    {
-      "type": "header",
-      "status": "success",
-      "data": { ... }
-    },
-    {
-      "type": "skills",
-      "status": "failed",
-      "error": "image_trap",
-      "message": "Content embedded as image"
-    }
-  ],
-  "ats_score": 45,
-  "critical_errors": 1
-}`}</pre>
+                <pre className="text-slate-400">{JSON.stringify({
+                  id: latestResume._id,
+                  status: latestResume.status,
+                  score: latestResume.score,
+                  has_errors: latestResume.hasImageTrap
+                }, null, 2)}</pre>
               </div>
             </div>
           </div>
