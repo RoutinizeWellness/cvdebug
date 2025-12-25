@@ -305,25 +305,37 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="h-3 w-3 text-primary" />
                 </div>
-                <span className="text-sm font-medium text-foreground/80">Score 0-100</span>
+                <span className="text-sm font-medium text-foreground/80">ATS Score (0-100)</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground/80">Robot View (ATS Vision)</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground/80">Top 2 Errors Preview</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="h-3 w-3 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground/80">Top 2 Keywords Preview</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground/50">
                 <div className="h-5 w-5 rounded-full bg-muted/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <X className="h-3 w-3" />
                 </div>
-                <span className="text-sm font-medium line-through">Missing Keywords Report</span>
+                <span className="text-sm font-medium line-through">Full Keyword Report</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground/50">
                 <div className="h-5 w-5 rounded-full bg-muted/50 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <X className="h-3 w-3" />
                 </div>
-                <span className="text-sm font-medium line-through">Format Issues Check</span>
-              </div>
-              <div className="flex items-center gap-3 text-muted-foreground/80">
-                <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Lock className="h-3 w-3" />
-                </div>
-                <span className="text-sm font-medium">Detailed recommendations locked</span>
+                <span className="text-sm font-medium line-through">Complete Format Fixes</span>
               </div>
             </div>
             
@@ -354,9 +366,10 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
             <div className="space-y-3 flex-1">
               {[
-                "1 Full ATS Analysis",
-                "Basic Keyword Report",
-                "Format Check",
+                "Full ATS Analysis",
+                "Complete Keyword Report",
+                "Formatting Audit + Fixes",
+                "Unlimited Re-scans (24h)",
                 "PDF Sanitization"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
@@ -419,11 +432,11 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
             <div className="space-y-3 flex-1">
               {[
-                "✨ Unlimited AI Resume Scans",
-                "📝 Tailored Cover Letters & DMs",
-                "🎯 Keyword Sniper & Gap Analysis",
-                "📊 Full Application Tracking System",
-                "⚡ Priority 24/7 Support"
+                "Unlimited Scans (7 Days)",
+                "AI Keyword Suggestions",
+                "Cover Letter Generator",
+                "LinkedIn Optimizer",
+                "Priority Support"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-primary text-black flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
