@@ -1,6 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query, internalQuery } from "./_generated/server";
 import { getCurrentUser } from "./users";
+import { calculateKeywordScore } from "./ai/scoring/keywordScoring";
+import { RoleCategory } from "./ai/config/keywords";
 
 export const createApplication = mutation({
   args: {
@@ -37,36 +39,55 @@ export const createApplication = mutation({
     let matchScore = 0;
 
     if (resume) {
-      const resumeMatchedKeywords = resume.matchedKeywords || [];
-      const resumeMissingKeywords = resume.missingKeywords || [];
-
-      if (args.jobDescriptionText) {
-        const jdText = args.jobDescriptionText.toLowerCase();
-        
-        // Find which resume keywords appear in the JD
-        matchedKeywords = resumeMatchedKeywords.filter(kw => 
-          jdText.includes(kw.toLowerCase())
+      // If we have both OCR text and a Job Description, use the advanced scoring algorithm
+      if (args.jobDescriptionText && resume.ocrText) {
+        const analysis = calculateKeywordScore(
+          resume.ocrText,
+          (resume.category as RoleCategory) || "General",
+          args.jobDescriptionText
         );
         
-        // Find which missing keywords from resume are in the JD (critical gaps)
-        missingKeywords = resumeMissingKeywords
-          .filter(kw => {
-            const keyword = typeof kw === 'string' ? kw : kw.keyword;
-            return jdText.includes(keyword.toLowerCase());
-          })
-          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+        matchedKeywords = analysis.matchedKeywords;
+        missingKeywords = analysis.missingKeywords.map(k => k.keyword);
+        
+        // Calculate match score based on coverage of JD keywords
+        const totalKeywords = analysis.foundKeywords.length + analysis.missingKeywords.length;
+        if (totalKeywords > 0) {
+           matchScore = Math.round((analysis.foundKeywords.length / totalKeywords) * 100);
+        }
       } else {
-        // No JD, just use resume data as fallback (top 10)
-        matchedKeywords = resumeMatchedKeywords.slice(0, 10);
-        missingKeywords = resumeMissingKeywords
-          .slice(0, 10)
-          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
-      }
+        // Fallback: No JD or no OCR text, use existing resume analysis data
+        const resumeMatchedKeywords = resume.matchedKeywords || [];
+        const resumeMissingKeywords = resume.missingKeywords || [];
 
-      // Calculate initial score
-      const total = matchedKeywords.length + missingKeywords.length;
-      if (total > 0) {
-        matchScore = Math.round((matchedKeywords.length / total) * 100);
+        if (args.jobDescriptionText) {
+          const jdText = args.jobDescriptionText.toLowerCase();
+          
+          // Find which resume keywords appear in the JD
+          matchedKeywords = resumeMatchedKeywords.filter(kw => 
+            jdText.includes(kw.toLowerCase())
+          );
+          
+          // Find which missing keywords from resume are in the JD (critical gaps)
+          missingKeywords = resumeMissingKeywords
+            .filter(kw => {
+              const keyword = typeof kw === 'string' ? kw : kw.keyword;
+              return jdText.includes(keyword.toLowerCase());
+            })
+            .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+        } else {
+          // No JD, just use resume data as fallback (top 10)
+          matchedKeywords = resumeMatchedKeywords.slice(0, 10);
+          missingKeywords = resumeMissingKeywords
+            .slice(0, 10)
+            .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+        }
+
+        // Calculate initial score
+        const total = matchedKeywords.length + missingKeywords.length;
+        if (total > 0) {
+          matchScore = Math.round((matchedKeywords.length / total) * 100);
+        }
       }
     }
 
@@ -119,40 +140,49 @@ export const analyzeApplicationKeywords = mutation({
 
     if (application.userId !== user._id) throw new Error("Unauthorized");
 
-    // Extract keywords from resume
-    const resumeMatchedKeywords = resume.matchedKeywords || [];
-    const resumeMissingKeywords = resume.missingKeywords || [];
+    let matchedKeywords: string[] = [];
+    let missingKeywords: string[] = [];
 
-    // If job description exists, analyze it
-    if (application.jobDescriptionText) {
-      const jdText = application.jobDescriptionText.toLowerCase();
-      
-      // Find which resume keywords appear in the JD
-      const matchedInJD = resumeMatchedKeywords.filter(kw => 
-        jdText.includes(kw.toLowerCase())
+    // Use advanced scoring if we have JD and OCR text
+    if (application.jobDescriptionText && resume.ocrText) {
+      const analysis = calculateKeywordScore(
+        resume.ocrText,
+        (resume.category as RoleCategory) || "General",
+        application.jobDescriptionText
       );
       
-      // Find which missing keywords from resume are in the JD (critical gaps)
-      const missingInJD = resumeMissingKeywords
-        .filter(kw => {
-          const keyword = typeof kw === 'string' ? kw : kw.keyword;
-          return jdText.includes(keyword.toLowerCase());
-        })
-        .map(kw => typeof kw === 'string' ? kw : kw.keyword);
-
-      await ctx.db.patch(args.applicationId, {
-        matchedKeywords: matchedInJD,
-        missingKeywords: missingInJD,
-      });
+      matchedKeywords = analysis.matchedKeywords;
+      missingKeywords = analysis.missingKeywords.map(k => k.keyword);
     } else {
-      // No JD, just use resume data
-      await ctx.db.patch(args.applicationId, {
-        matchedKeywords: resumeMatchedKeywords.slice(0, 10),
-        missingKeywords: resumeMissingKeywords
+      // Fallback logic
+      const resumeMatchedKeywords = resume.matchedKeywords || [];
+      const resumeMissingKeywords = resume.missingKeywords || [];
+
+      if (application.jobDescriptionText) {
+        const jdText = application.jobDescriptionText.toLowerCase();
+        
+        matchedKeywords = resumeMatchedKeywords.filter(kw => 
+          jdText.includes(kw.toLowerCase())
+        );
+        
+        missingKeywords = resumeMissingKeywords
+          .filter(kw => {
+            const keyword = typeof kw === 'string' ? kw : kw.keyword;
+            return jdText.includes(keyword.toLowerCase());
+          })
+          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+      } else {
+        matchedKeywords = resumeMatchedKeywords.slice(0, 10);
+        missingKeywords = resumeMissingKeywords
           .slice(0, 10)
-          .map(kw => typeof kw === 'string' ? kw : kw.keyword),
-      });
+          .map(kw => typeof kw === 'string' ? kw : kw.keyword);
+      }
     }
+
+    await ctx.db.patch(args.applicationId, {
+      matchedKeywords,
+      missingKeywords,
+    });
 
     return { success: true };
   },
@@ -273,10 +303,6 @@ export const checkGhosting = mutation({
       .withIndex("by_user_and_status", (q) => q.eq("userId", user._id).eq("status", "applied"))
       .filter((q) => q.lt(q.field("lastStatusUpdate"), fiveDaysAgo))
       .collect();
-
-    // In a real implementation, we might send emails or notifications here.
-    // For now, the UI will handle the visual alert based on lastStatusUpdate.
-    // We could also add a "ghost_alert" event to the timeline if we wanted to be persistent.
     
     return ghostedApps.length;
   },
