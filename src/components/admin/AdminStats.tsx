@@ -24,7 +24,7 @@ export function AdminStats({ stats }: AdminStatsProps) {
       </Card>
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Free Users</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Free Preview</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{stats.free}</div>
@@ -40,10 +40,10 @@ export function AdminStats({ stats }: AdminStatsProps) {
       </Card>
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Bulk Pack</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Interview Sprint</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-blue-600">{stats.bulkPack}</div>
+          <div className="text-2xl font-bold text-primary">{stats.bulkPack}</div>
         </CardContent>
       </Card>
     </div>

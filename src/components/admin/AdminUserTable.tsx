@@ -94,79 +94,94 @@ export function AdminUserTable({
                   <TableRow>
                     <TableHead>User</TableHead>
                     <TableHead>Email</TableHead>
-                    <TableHead>Plan</TableHead>
-                    <TableHead>Credits</TableHead>
+                    <TableHead>Subscription Tier</TableHead>
+                    <TableHead>Status</TableHead>
                     <TableHead>Registered</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {paginatedUsers.map((userData: any) => (
-                    <TableRow key={userData._id}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
-                            {userData.name?.charAt(0) || "?"}
+                  {paginatedUsers.map((userData: any) => {
+                    const tier = userData.subscriptionTier || "free";
+                    const hasActiveSprint = userData.sprintExpiresAt && userData.sprintExpiresAt > Date.now();
+                    
+                    return (
+                      <TableRow key={userData._id}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                              {userData.name?.charAt(0) || "?"}
+                            </div>
+                            <div className="flex flex-col">
+                              <span>{userData.name || "Anonymous"}</span>
+                              <span className="text-[10px] text-muted-foreground font-mono" title="Convex ID">{userData._id}</span>
+                              <span className="text-[10px] text-primary/60 font-mono" title="Clerk ID">{userData.tokenIdentifier}</span>
+                            </div>
                           </div>
-                          <div className="flex flex-col">
-                            <span>{userData.name || "Anonymous"}</span>
-                            <span className="text-[10px] text-muted-foreground font-mono" title="Convex ID">{userData._id}</span>
-                            <span className="text-[10px] text-primary/60 font-mono" title="Clerk ID">{userData.tokenIdentifier}</span>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{userData.email || "No email"}</TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
-                          className="capitalize"
-                        >
-                          {(userData.subscriptionTier || "free").replace("_", " ")}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">
-                          {userData.credits ?? 1}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium">
-                            {new Date(userData._creationTime).toLocaleDateString(undefined, {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(userData._creationTime).toLocaleTimeString()}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => setHistoryUser({ 
-                              id: userData.tokenIdentifier, 
-                              name: userData.name || "User",
-                              email: userData.email 
-                            })}
-                            title="View Payment History"
+                        </TableCell>
+                        <TableCell>{userData.email || "No email"}</TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={tier === "interview_sprint" ? "default" : tier === "single_scan" ? "outline" : "secondary"}
+                            className="capitalize"
                           >
-                            <Receipt className="h-4 w-4 text-blue-500" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleEditClick(userData)}>
-                            <Pencil className="h-4 w-4 text-muted-foreground" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(userData._id)}>
-                            <Trash2 className="h-4 w-4 text-red-500" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                            {tier === "interview_sprint" ? "Interview Sprint" : tier === "single_scan" ? "Single Scan" : "Free Preview"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {hasActiveSprint ? (
+                            <Badge variant="default" className="bg-green-600">
+                              Active Sprint
+                            </Badge>
+                          ) : tier === "single_scan" ? (
+                            <Badge variant="outline">
+                              Purchased
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">
+                              Free
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium">
+                              {new Date(userData._creationTime).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(userData._creationTime).toLocaleTimeString()}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => setHistoryUser({ 
+                                id: userData.tokenIdentifier, 
+                                name: userData.name || "User",
+                                email: userData.email 
+                              })}
+                              title="View Payment History"
+                            >
+                              <Receipt className="h-4 w-4 text-blue-500" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleEditClick(userData)}>
+                              <Pencil className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleDelete(userData._id)}>
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                   {filteredUsers.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={6} className="h-24 text-center">
