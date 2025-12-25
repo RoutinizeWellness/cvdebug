@@ -298,7 +298,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               size="lg"
               className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-black font-bold"
             >
-              Unlock Full Report - $4.99
+              Unlock Full Report - €4.99
             </Button>
             <p className="text-xs text-slate-400 mt-4">
               ✓ One-time payment • ✓ Instant access • ✓ No subscription

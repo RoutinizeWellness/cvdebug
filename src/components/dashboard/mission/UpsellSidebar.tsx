@@ -118,7 +118,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
                 Get unlimited AI scans, cover letters, and recruiter DMs for 7 days.
               </p>
               <Button size="sm" className="w-full font-bold text-xs bg-white text-black hover:bg-zinc-200">
-                Start Sprint ($19.99)
+                Start Sprint (€19.99)
               </Button>
             </div>
           )}

@@ -144,7 +144,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                     Here are 2: <span className="font-mono text-purple-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
                   </p>
                   <Button size="sm" className="w-full bg-white text-black hover:bg-zinc-200 font-bold h-8 text-xs">
-                    Pay $4.99 to Unlock All {totalMissing - 2} & Fix Score
+                    Pay €4.99 to Unlock All {totalMissing - 2} & Fix Score
                   </Button>
                 </div>
                 {/* Background effect */}
