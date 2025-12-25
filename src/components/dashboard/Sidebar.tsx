@@ -121,15 +121,23 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-yellow-300 fill-yellow-300 animate-pulse" />
                   <span className="font-bold text-sm">
-                    {currentUser?.credits !== undefined ? `${currentUser.credits} Credits` : "Free Plan"}
+                    {currentUser?.subscriptionTier === "interview_sprint" 
+                      ? "Interview Sprint" 
+                      : currentUser?.subscriptionTier === "single_scan"
+                      ? "Single Scan"
+                      : "Free Preview"}
                   </span>
                 </div>
               </div>
               <p className="text-xs text-primary-foreground/80 mb-3 leading-relaxed">
-                {currentUser?.credits === 0 ? "Out of credits. Upgrade now!" : "Get more scans & detailed AI feedback."}
+                {currentUser?.subscriptionTier === "interview_sprint"
+                  ? "Unlimited scans, AI tools & priority support"
+                  : currentUser?.subscriptionTier === "single_scan"
+                  ? "Full ATS analysis & formatting fixes"
+                  : "Upgrade for full analysis & AI tools"}
               </p>
               <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-xs font-bold rounded-lg transition-colors border border-white/10">
-                {currentUser?.credits === 0 ? "Buy Credits" : "View Plans"}
+                {currentUser?.subscriptionTier === "free" || !currentUser?.subscriptionTier ? "View Plans" : "Upgrade Plan"}
               </button>
             </div>
           </div>
