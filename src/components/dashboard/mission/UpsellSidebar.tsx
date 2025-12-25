@@ -47,7 +47,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
           </div>
           <div className="flex items-center gap-2 pt-1">
             <span className="text-[10px] font-bold text-zinc-400 bg-zinc-900 px-2 py-1 rounded border border-zinc-800">
-              {isSprintActive ? "Included" : "$2.99 / Free in Sprint"}
+              {isSprintActive ? "Included" : "€2.99 / Free in Sprint"}
             </span>
           </div>
         </CardContent>

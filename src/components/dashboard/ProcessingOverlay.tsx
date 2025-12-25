@@ -44,7 +44,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage }: 
 
   const testimonials = [
     {
-      text: "I was applying for months with no responses. After fixing the ATS issues this tool found, I got 3 interview requests in one week. The $4.99 was the best investment I made in my job search.",
+      text: "I was applying for months with no responses. After fixing the ATS issues this tool found, I got 3 interview requests in one week. The €4.99 was the best investment I made in my job search.",
       author: "Jennifer M.",
       role: "Software Engineer at Google",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer"

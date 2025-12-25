@@ -6,7 +6,7 @@ export function DifferentiationSection() {
     {
       icon: DollarSign,
       title: "Transparent Pricing",
-      description: "One-time payment of $4.99. No hidden fees, no recurring subscriptions, no surprises.",
+      description: "One-time payment of €4.99. No hidden fees, no recurring subscriptions, no surprises.",
       points: ["No hidden fees", "No forced subscriptions", "Pay once, use forever"]
     },
     {

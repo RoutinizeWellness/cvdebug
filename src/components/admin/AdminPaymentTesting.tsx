@@ -50,7 +50,7 @@ export function AdminPaymentTesting({
                 className="border-green-200 hover:bg-green-50 hover:text-green-700"
               >
                 {isTestingPayment === "single_scan" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Zap className="mr-2 h-3 w-3" />}
-                Test Single ($4.99)
+                Test Single (€4.99)
               </Button>
               <Button 
                 onClick={() => handleTestPayment("interview_sprint")} 
@@ -60,7 +60,7 @@ export function AdminPaymentTesting({
                 className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
               >
                 {isTestingPayment === "interview_sprint" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
-                Test Sprint ($14.99)
+                Test Sprint (€19.99)
               </Button>
             </div>
           </div>
