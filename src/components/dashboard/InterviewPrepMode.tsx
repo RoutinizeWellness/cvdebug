@@ -117,7 +117,8 @@ export function InterviewPrepMode({
           <TabsContent value="questions" className="mt-4">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-4">
-                {prepData.questions?.map((q: any, i: number) => (
+                {prepData.questions && prepData.questions.length > 0 ? (
+                  prepData.questions.map((q: any, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 20 }}
@@ -145,7 +146,13 @@ export function InterviewPrepMode({
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
+                    <HelpCircle className="h-8 w-8 mb-2 opacity-20" />
+                    <p>No questions generated.</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </TabsContent>
@@ -153,7 +160,8 @@ export function InterviewPrepMode({
           <TabsContent value="stories" className="mt-4">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-3">
-                {prepData.storyPrompts?.map((prompt: string, i: number) => (
+                {prepData.storyPrompts && prepData.storyPrompts.length > 0 ? (
+                  prepData.storyPrompts.map((prompt: string, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
@@ -169,7 +177,13 @@ export function InterviewPrepMode({
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
+                    <MessageSquare className="h-8 w-8 mb-2 opacity-20" />
+                    <p>No story prompts generated.</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </TabsContent>
@@ -177,7 +191,8 @@ export function InterviewPrepMode({
           <TabsContent value="weaknesses" className="mt-4">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-3">
-                {prepData.weaknessFraming?.map((frame: string, i: number) => (
+                {prepData.weaknessFraming && prepData.weaknessFraming.length > 0 ? (
+                  prepData.weaknessFraming.map((frame: string, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
@@ -193,7 +208,13 @@ export function InterviewPrepMode({
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
+                    <AlertTriangle className="h-8 w-8 mb-2 opacity-20" />
+                    <p>No weakness framing generated.</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </TabsContent>
@@ -201,7 +222,8 @@ export function InterviewPrepMode({
           <TabsContent value="closing" className="mt-4">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-3">
-                {prepData.closingQuestions?.map((question: string, i: number) => (
+                {prepData.closingQuestions && prepData.closingQuestions.length > 0 ? (
+                  prepData.closingQuestions.map((question: string, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -20 }}
@@ -217,7 +239,13 @@ export function InterviewPrepMode({
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
+                    <CheckCircle2 className="h-8 w-8 mb-2 opacity-20" />
+                    <p>No closing questions generated.</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </TabsContent>
@@ -234,7 +262,8 @@ export function InterviewPrepMode({
                     The AI has analyzed your missing keywords ({missingKeywords.length}) and identified potential weak spots. Be ready to answer these tough questions.
                   </p>
                 </div>
-                {prepData.interrogation?.map((item: any, i: number) => (
+                {prepData.interrogation && prepData.interrogation.length > 0 ? (
+                  prepData.interrogation.map((item: any, i: number) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -264,7 +293,13 @@ export function InterviewPrepMode({
                       </CardContent>
                     </Card>
                   </motion.div>
-                ))}
+                ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-zinc-500">
+                    <Sword className="h-8 w-8 mb-2 opacity-20" />
+                    <p>No interrogation questions generated.</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </TabsContent>
