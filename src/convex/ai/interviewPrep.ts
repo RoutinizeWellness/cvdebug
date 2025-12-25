@@ -10,8 +10,11 @@ export const generateInterviewPrep = action({
     jobDescription: v.string(),
     jobTitle: v.string(),
     company: v.string(),
+    missingKeywords: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
+    const missingKeywordsList = args.missingKeywords?.join(", ") || "None";
+    
     const prompt = `You are a Principal Technical Recruiter preparing a candidate for an interview.
 
 CANDIDATE RESUME:
@@ -21,6 +24,9 @@ JOB POSTING:
 Title: ${args.jobTitle}
 Company: ${args.company}
 Description: ${args.jobDescription}
+
+MISSING KEYWORDS / WEAK SPOTS:
+${missingKeywordsList}
 
 Generate a comprehensive interview prep guide with:
 
@@ -41,6 +47,12 @@ Generate a comprehensive interview prep guide with:
    - Intelligent questions the candidate should ask the interviewer
    - Show genuine interest and strategic thinking
 
+5. INTERROGATION MODE (3 questions):
+   - Based on the MISSING KEYWORDS provided above.
+   - Ask challenging, direct questions to test if they actually know these skills or why they are missing.
+   - If they claim to know a related skill, press them on the specific missing one.
+   - Example: "You list Kubernetes but missed 'Helm'. Explain how you manage package deployments."
+
 Return ONLY valid JSON in this exact format:
 {
   "questions": [
@@ -48,7 +60,10 @@ Return ONLY valid JSON in this exact format:
   ],
   "storyPrompts": ["..."],
   "weaknessFraming": ["..."],
-  "closingQuestions": ["..."]
+  "closingQuestions": ["..."],
+  "interrogation": [
+    {"question": "...", "context": "..."}
+  ]
 }`;
 
     try {
@@ -70,7 +85,8 @@ Return ONLY valid JSON in this exact format:
         questions: parsed.questions || [],
         storyPrompts: parsed.storyPrompts || [],
         weaknessFraming: parsed.weaknessFraming || [],
-        closingQuestions: parsed.closingQuestions || []
+        closingQuestions: parsed.closingQuestions || [],
+        interrogation: parsed.interrogation || []
       };
     } catch (error) {
       console.error("Interview prep generation failed:", error);

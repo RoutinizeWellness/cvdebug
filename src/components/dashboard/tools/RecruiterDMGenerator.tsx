@@ -71,12 +71,15 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
 
       setGeneratedDMs(result);
       
+      const firstVariation = result.variations?.[0];
+      const previewText = firstVariation ? `Subject: "${firstVariation.subject}"\n\n${firstVariation.content}` : "No content generated";
+
       // Add timeline event
       await addTimelineEvent({
         applicationId: selectedJobId as any,
         type: "dm_generated",
         title: "Recruiter DM Generated",
-        description: `Generated ${result.variations?.length || 0} DM variations${recruiterName ? ` for ${recruiterName}` : ''}`,
+        description: previewText,
       });
       
       toast.success("DMs Generated!");

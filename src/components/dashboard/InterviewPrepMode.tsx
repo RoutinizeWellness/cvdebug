@@ -14,7 +14,8 @@ import {
   AlertTriangle, 
   HelpCircle,
   Sparkles,
-  CheckCircle2
+  CheckCircle2,
+  Sword
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -27,6 +28,7 @@ interface InterviewPrepModeProps {
   company: string;
   jobDescription: string;
   resumeText: string;
+  missingKeywords?: string[];
 }
 
 export function InterviewPrepMode({ 
@@ -34,7 +36,8 @@ export function InterviewPrepMode({
   jobTitle, 
   company, 
   jobDescription, 
-  resumeText 
+  resumeText,
+  missingKeywords = []
 }: InterviewPrepModeProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [prepData, setPrepData] = useState<any>(null);
@@ -48,6 +51,7 @@ export function InterviewPrepMode({
         jobDescription,
         jobTitle,
         company,
+        missingKeywords,
       });
       setPrepData(result);
       toast.success("Battle Plan Generated!");
@@ -99,11 +103,15 @@ export function InterviewPrepMode({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="questions" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-zinc-900">
+          <TabsList className="grid w-full grid-cols-5 bg-zinc-900">
             <TabsTrigger value="questions">Questions</TabsTrigger>
             <TabsTrigger value="stories">STAR Stories</TabsTrigger>
             <TabsTrigger value="weaknesses">Weaknesses</TabsTrigger>
             <TabsTrigger value="closing">Your Questions</TabsTrigger>
+            <TabsTrigger value="interrogation" className="text-red-400 data-[state=active]:text-red-400 data-[state=active]:bg-red-500/10">
+              <Sword className="h-3 w-3 mr-2" />
+              Interrogation
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="questions" className="mt-4">
@@ -206,6 +214,53 @@ export function InterviewPrepMode({
                           <CheckCircle2 className="h-4 w-4 text-green-400" />
                         </div>
                         <p className="text-sm text-zinc-300 leading-relaxed">{question}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="interrogation" className="mt-4">
+            <ScrollArea className="h-[500px] pr-4">
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 mb-4">
+                  <h4 className="text-sm font-bold text-red-400 flex items-center gap-2 mb-1">
+                    <Sword className="h-4 w-4" />
+                    Pressure Test Mode
+                  </h4>
+                  <p className="text-xs text-red-300/80">
+                    The AI has analyzed your missing keywords ({missingKeywords.length}) and identified potential weak spots. Be ready to answer these tough questions.
+                  </p>
+                </div>
+                {prepData.interrogation?.map((item: any, i: number) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <Card className="bg-zinc-900/50 border-red-900/30">
+                      <CardContent className="p-4 space-y-3">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                            <AlertTriangle className="h-4 w-4 text-red-400" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-bold text-white text-sm leading-relaxed">
+                              "{item.question}"
+                            </p>
+                          </div>
+                        </div>
+                        <div className="pl-11 space-y-2">
+                          <div className="flex items-start gap-2">
+                            <Target className="h-3 w-3 text-zinc-500 mt-0.5 flex-shrink-0" />
+                            <p className="text-xs text-zinc-400 leading-relaxed italic">
+                              Context: {item.context}
+                            </p>
+                          </div>
+                        </div>
                       </CardContent>
                     </Card>
                   </motion.div>

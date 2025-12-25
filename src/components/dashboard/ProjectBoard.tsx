@@ -442,6 +442,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
             company={selectedApplication.company || selectedApplication.companyName}
             jobDescription={selectedApplication.jobDescriptionText || ""}
             resumeText={selectedApplication.resumeText || ""}
+            missingKeywords={selectedApplication.missingKeywords || []}
           />
         </DialogContent>
       </Dialog>

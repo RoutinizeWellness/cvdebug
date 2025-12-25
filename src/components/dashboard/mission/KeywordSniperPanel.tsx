@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Target, AlertTriangle, CheckCircle2, ArrowRight, Copy, Briefcase, Sparkles, Loader2 } from "lucide-react";
+import { Target, AlertTriangle, CheckCircle2, ArrowRight, Copy, Briefcase, Sparkles, Loader2, FileText, ArrowRightLeft, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,7 +28,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
   const [expandedKeyword, setExpandedKeyword] = useState<string | null>(null);
   const [keywordPhrases, setKeywordPhrases] = useState<Record<string, any>>({});
   const [loadingKeyword, setLoadingKeyword] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'missing'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'missing' | 'diff'>('overview');
   const [showSnippetForge, setShowSnippetForge] = useState(false);
   const [selectedKeywordForForge, setSelectedKeywordForForge] = useState<string | null>(null);
   
@@ -39,6 +39,13 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
   const missingKeywords = job.missingKeywords || [];
   const matchedKeywords = job.matchedKeywords || [];
   const score = job.score || 0;
+  
+  // Check if this is a redacted view (from getResumes)
+  // Note: job object here comes from ProjectBoard which might be constructed from application or resume
+  // We'll assume if we have a large number of missing keywords but only see 2, it might be redacted
+  // But better to rely on the passed data. For now, we'll implement the upsell banner logic based on counts.
+  const totalMissing = job.totalMissingKeywords || missingKeywords.length;
+  const isRedacted = job.isRedacted || (totalMissing > missingKeywords.length);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -111,12 +118,40 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                 onClick={() => setActiveTab('missing')}
                 className="flex-1"
               >
-                Missing Keywords ({missingKeywords.length})
+                Missing ({totalMissing})
+              </Button>
+              <Button
+                variant={activeTab === 'diff' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setActiveTab('diff')}
+                className="flex-1"
+              >
+                Diff View
               </Button>
             </div>
           </div>
 
           <ScrollArea className="flex-1 p-6">
+            {isRedacted && (
+              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 relative overflow-hidden">
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lock className="h-4 w-4 text-purple-400" />
+                    <h3 className="font-bold text-white text-sm">Unlock Full Analysis</h3>
+                  </div>
+                  <p className="text-xs text-zinc-300 mb-3">
+                    Detected <span className="font-bold text-white">{totalMissing} missing keywords</span>. 
+                    Here are 2: <span className="font-mono text-purple-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
+                  </p>
+                  <Button size="sm" className="w-full bg-white text-black hover:bg-zinc-200 font-bold h-8 text-xs">
+                    Pay $4.99 to Unlock All {totalMissing - 2} & Fix Score
+                  </Button>
+                </div>
+                {/* Background effect */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full -mr-10 -mt-10" />
+              </div>
+            )}
+
             {activeTab === 'overview' ? (
               <div className="space-y-8">
                 {/* Matched Keywords */}
@@ -218,6 +253,65 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            ) : activeTab === 'diff' ? (
+              <div className="space-y-6">
+                <div className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
+                  <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                    <ArrowRightLeft className="h-4 w-4 text-blue-400" />
+                    Augmentation Visualizer
+                  </h3>
+                  <p className="text-xs text-zinc-400 mb-4">
+                    See how your Master CV compares to the target job description.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Master CV Base</div>
+                      <div className="h-32 rounded bg-zinc-950 border border-zinc-800 p-2 overflow-hidden relative">
+                        <div className="text-[8px] text-zinc-600 leading-relaxed font-mono opacity-50">
+                          {job.resumeText ? job.resumeText.substring(0, 300) + "..." : "Resume content..."}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-xs font-bold text-blue-500 uppercase tracking-wider">Target Instance</div>
+                      <div className="h-32 rounded bg-blue-950/10 border border-blue-500/20 p-2 overflow-hidden relative">
+                        <div className="space-y-1">
+                          {missingKeywords.slice(0, 3).map((kw: any, i: number) => (
+                            <div key={i} className="flex items-center gap-1">
+                              <div className="w-1 h-1 rounded-full bg-blue-500" />
+                              <div className="h-1.5 bg-blue-500/20 rounded w-16" />
+                              <span className="text-[8px] text-blue-300 font-bold">+{typeof kw === 'string' ? kw : kw.keyword}</span>
+                            </div>
+                          ))}
+                          <div className="h-1.5 bg-zinc-800/50 rounded w-full" />
+                          <div className="h-1.5 bg-zinc-800/50 rounded w-2/3" />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-950/10" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold text-zinc-400 uppercase">Suggested Augmentations</h4>
+                  {missingKeywords.map((keyword: any, i: number) => {
+                    const kw = typeof keyword === 'string' ? keyword : keyword.keyword;
+                    return (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded bg-zinc-900/30 border border-zinc-800/50">
+                        <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 text-xs font-bold">
+                          +
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-zinc-200">Inject "{kw}"</p>
+                          <p className="text-xs text-zinc-500">Recommended for Skills or Experience section</p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ) : (

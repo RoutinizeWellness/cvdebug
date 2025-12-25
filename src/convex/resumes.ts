@@ -406,16 +406,19 @@ export const getResumes = query({
         return {
           ...resume,
           // Preview Mode: Show top 2 items for free/locked users
-          missingKeywords: resume.missingKeywords?.slice(0, 2),
-          matchedKeywords: resume.matchedKeywords?.slice(0, 2),
-          formatIssues: resume.formatIssues?.slice(0, 2),
+          missingKeywords: resume.missingKeywords?.slice(0, 2) || [],
+          matchedKeywords: resume.matchedKeywords?.slice(0, 2) || [],
+          formatIssues: resume.formatIssues?.slice(0, 2) || [],
           // Hide detailed breakdowns
           scoreBreakdown: undefined,
           metricSuggestions: undefined,
-          // Keep basic info and score
+          // Add metadata for upsell
+          isRedacted: true,
+          totalMissingKeywords: resume.missingKeywords?.length || 0,
+          totalFormatIssues: resume.formatIssues?.length || 0,
         };
       }
-      return resume;
+      return { ...resume, isRedacted: false };
     });
 
     console.log("[getResumes] All resumes count:", results.length);
