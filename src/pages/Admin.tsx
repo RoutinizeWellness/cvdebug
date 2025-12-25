@@ -607,7 +607,7 @@ export default function AdminPage() {
                       <div className="flex gap-2 border-l-2 border-violet-500/50 pl-2 bg-violet-500/5 py-1 rounded-r">
                         <span className="text-slate-500 min-w-[52px]">10:43:12</span>
                         <div className="flex-1 text-violet-200">
-                          <span className="text-violet-400 font-bold">[STRIPE]</span> Payment Succeeded - $29.00
+                          <span className="text-violet-400 font-bold">[STRIPE]</span> Payment Succeeded - €19.99
                           <span className="text-slate-500 text-[10px] block mt-1">user: {user.email}</span>
                         </div>
                       </div>
