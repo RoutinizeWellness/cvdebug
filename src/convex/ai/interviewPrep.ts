@@ -2,7 +2,7 @@
 
 import { action } from "../_generated/server";
 import { v } from "convex/values";
-import { callOpenRouter } from "./apiClient";
+import { callOpenRouter, extractJSON } from "./apiClient";
 
 export const generateInterviewPrep = action({
   args: {
@@ -69,22 +69,36 @@ Return ONLY valid JSON in this exact format:
     try {
       const apiKey = process.env.OPENROUTER_API_KEY;
       if (!apiKey) {
+        console.error("[Interview Prep] OPENROUTER_API_KEY not configured");
         throw new Error("OPENROUTER_API_KEY not configured");
       }
+
+      console.log(`[Interview Prep] Generating prep for ${args.jobTitle} at ${args.company}`);
 
       const response = await callOpenRouter(apiKey, {
         model: "google/gemini-2.0-flash-exp:free",
         messages: [{ role: "user", content: prompt }]
       });
 
-      // callOpenRouter returns a string, so we need to parse it
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
+      console.log(`[Interview Prep] Received response, length: ${response.length} chars`);
+      console.log(`[Interview Prep] First 200 chars: ${response.substring(0, 200)}`);
+
+      // Use the robust extractJSON utility instead of regex
+      const parsed = extractJSON(response);
+
+      if (!parsed) {
+        console.error("[Interview Prep] Failed to extract JSON from response");
+        console.error("[Interview Prep] Raw response:", response);
+        throw new Error("Failed to parse AI response - no valid JSON found");
+      }
 
       // Validate response has content
       if (!parsed.questions || !Array.isArray(parsed.questions) || parsed.questions.length === 0) {
-        throw new Error("Empty or invalid AI response");
+        console.error("[Interview Prep] Invalid response structure:", JSON.stringify(parsed));
+        throw new Error("Empty or invalid AI response - missing questions array");
       }
+
+      console.log(`[Interview Prep] Successfully parsed ${parsed.questions.length} questions`);
 
       return {
         questions: parsed.questions || [],
@@ -93,8 +107,14 @@ Return ONLY valid JSON in this exact format:
         closingQuestions: parsed.closingQuestions || [],
         interrogation: parsed.interrogation || []
       };
-    } catch (error) {
-      console.error("Interview prep generation failed:", error);
+    } catch (error: any) {
+      console.error("[Interview Prep] Generation failed:", error);
+      console.error("[Interview Prep] Error details:", {
+        message: error.message,
+        stack: error.stack,
+        jobTitle: args.jobTitle,
+        company: args.company
+      });
       
       // Enhanced fallback with multiple variations based on role type
       const isEngineeringRole = args.jobTitle.toLowerCase().includes('engineer') || 
