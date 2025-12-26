@@ -449,7 +449,7 @@ export default function Dashboard() {
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept=".pdf,.docx,.doc,.txt"
+        accept=".pdf,.docx,.doc,image/jpeg,image/png,image/webp"
         onChange={handleFileUpload}
       />
 

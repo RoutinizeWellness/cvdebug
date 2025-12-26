@@ -49,6 +49,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     // Reset abort controller
     abortControllerRef.current = new AbortController();
 
+    // FILE SIZE VALIDATION (5MB limit)
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error("File too large (Max 5MB). Try compressing your PDF or removing images.");
+      return;
+    }
+
+    // FILE TYPE VALIDATION with specific error messages
     const validTypes = [
       "image/jpeg", 
       "image/png", 
@@ -58,8 +66,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     ];
 
     if (!validTypes.includes(file.type)) {
-      toast.error("Please upload an image (JPG/PNG), PDF, or Word (.docx) file.");
-      return;
+      // Check file extension as fallback (some browsers report incorrect MIME types)
+      const fileName = file.name.toLowerCase();
+      if (fileName.endsWith('.pdf') || fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
+        console.warn(`[Upload] MIME type mismatch: ${file.type} for ${file.name}, proceeding based on extension`);
+      } else {
+        toast.error("File type not supported. Please upload PDF, DOCX, or image files only.");
+        return;
+      }
     }
 
     if (jobDescription.trim()) {
@@ -75,23 +89,34 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     let storageId = null;
 
     try {
-      const postUrl = await generateUploadUrl();
-      const result = await fetch(postUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.type },
-        body: file,
-        signal: abortControllerRef.current.signal,
+      // NETWORK TIMEOUT PROTECTION
+      const uploadTimeout = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("UPLOAD_TIMEOUT")), 30000)
+      );
+
+      const uploadPromise = generateUploadUrl().then(async (postUrl) => {
+        const result = await fetch(postUrl, {
+          method: "POST",
+          headers: { "Content-Type": file.type || "application/octet-stream" },
+          body: file,
+          signal: abortControllerRef.current?.signal,
+        });
+        
+        if (!result.ok) {
+          const errorText = await result.text().catch(() => "Unknown error");
+          throw new Error(`UPLOAD_FAILED: ${result.status} - ${errorText}`);
+        }
+        
+        return result.json();
       });
-      
-      if (!result.ok) throw new Error("Upload failed");
-      
-      const uploadResult = await result.json();
+
+      const uploadResult = await Promise.race([uploadPromise, uploadTimeout]) as any;
       storageId = uploadResult.storageId;
 
       resumeId = await createResume({
         storageId,
         title: file.name,
-        mimeType: file.type,
+        mimeType: file.type || "application/octet-stream",
         jobDescription: jobDescription.trim() || undefined,
       });
 
@@ -136,10 +161,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         return; // Already handled in cancelUpload
       }
       
-      console.error(error);
+      console.error("[Upload Error]", error);
       
-      // Check if this is a timeout or processing failure that should trigger server-side OCR
-      if (error.message === "CLIENT_TIMEOUT" || 
+      // SPECIFIC ERROR MESSAGES based on error type
+      if (error.message === "UPLOAD_TIMEOUT") {
+        toast.error("Upload timed out. Check your internet connection and try again.");
+      } else if (error.message.startsWith("UPLOAD_FAILED")) {
+        toast.error("Upload failed. The file may be corrupted or your connection interrupted. Try again.");
+      } else if (error.message === "CLIENT_TIMEOUT" || 
           error.message.includes("Could not extract text") ||
           error.message.includes("OCR")) {
         
@@ -155,11 +184,13 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           }
         } catch (serverError: any) {
           console.error("[Client] Server OCR trigger failed:", serverError);
-          toast.error("Both client and server processing failed. Please try a different file format.");
+          toast.error("Processing failed. Try: 1) Re-saving as PDF using 'Print to PDF', 2) Converting to .docx, or 3) Ensuring text is selectable (not scanned images).");
         }
+      } else if (error.message.includes("CREDITS_EXHAUSTED")) {
+        toast.error("No credits remaining. Upgrade to continue scanning resumes.");
       } else {
         const errorMsg = error instanceof Error ? error.message : String(error);
-        toast.error(`Failed to upload resume: ${errorMsg}`);
+        toast.error(`Upload failed: ${errorMsg}`);
       }
       
       setProcessingResumeId(null);
