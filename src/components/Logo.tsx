@@ -38,9 +38,9 @@ export function Logo({
       {showText && (
         <div className={cn("flex flex-col leading-none", textClassName)}>
           <span className={cn(
-            "font-black text-xl tracking-tighter bg-gradient-to-r bg-clip-text text-transparent drop-shadow-sm",
+            "font-black text-xl tracking-tight bg-gradient-to-r bg-clip-text text-transparent",
             gradientClass
-          )} style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif", letterSpacing: "-0.02em" }}>
+          )} style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
             CVdebug
           </span>
         </div>
