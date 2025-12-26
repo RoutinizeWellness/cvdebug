@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Lock, Download, Share2, AlertTriangle, XCircle, Eye, Cpu } from "lucide-react";
+import { Lock, Download, Share2, AlertTriangle, XCircle, Eye, Cpu, TrendingUp, Zap } from "lucide-react";
 import { GaugeScore } from "./analysis/GaugeScore";
 
 interface FreeTierViewProps {
@@ -34,9 +34,76 @@ export function FreeTierView({
   const remainingKeywords = Math.max(missingCount - 2, 0);
   
   const totalHiddenIssues = remainingErrors + remainingKeywords;
+  
+  // Calculate projected score (realistic improvement)
+  const projectedScore = Math.min(score + (totalHiddenIssues * 2.5), 94);
 
   return (
     <div className="space-y-8">
+      {/* Founder's Audit - Personal Touch */}
+      <div className="glass-card rounded-lg p-6 border-l-4 border-primary relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-[60px] pointer-events-none"></div>
+        <div className="flex items-start gap-4 relative z-10">
+          <div className="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary/40 flex-shrink-0">
+            <span className="text-2xl">👨‍💻</span>
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+              Founder's Audit
+              <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">
+                by Albert
+              </span>
+            </h3>
+            <p className="text-zinc-300 text-sm leading-relaxed mb-3">
+              I've analyzed your <strong className="text-primary">Robot View</strong> below. Here's why you're being ghosted: 
+              <span className="text-red-400 font-semibold"> {formatCount} critical parsing errors</span> are making your resume invisible to ATS systems, 
+              and <span className="text-yellow-400 font-semibold">{missingCount} missing keywords</span> are killing your match score.
+            </p>
+            <p className="text-zinc-400 text-xs italic">
+              💡 The good news? These are 1-click fixes. Most candidates don't even know this is happening to them.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Projected Score Visual - Fear of Loss */}
+      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-red-950/30 via-orange-950/20 to-green-950/30 border-2 border-orange-500/30 relative overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-6">
+            <TrendingUp className="h-6 w-6 text-orange-400" />
+            <h3 className="text-2xl font-bold text-white">Your Potential Score</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Current Score */}
+            <div className="bg-red-950/40 border-2 border-red-500/40 rounded-xl p-6 text-center">
+              <div className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">Current Score</div>
+              <div className="text-6xl font-black text-red-400 mb-2">{score}%</div>
+              <div className="text-red-300 text-xs">❌ Getting auto-rejected</div>
+            </div>
+            
+            {/* Projected Score */}
+            <div className="bg-green-950/40 border-2 border-green-500/40 rounded-xl p-6 text-center relative">
+              <div className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+                +{Math.round(projectedScore - score)} points
+              </div>
+              <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">With 1-Click Fixes</div>
+              <div className="text-6xl font-black text-green-400 mb-2">{Math.round(projectedScore)}%</div>
+              <div className="text-green-300 text-xs">✅ Passing ATS filters</div>
+            </div>
+          </div>
+          
+          <div className="bg-zinc-900/80 border border-zinc-700 rounded-lg p-4 text-center">
+            <p className="text-zinc-300 text-sm font-medium">
+              <Zap className="inline h-4 w-4 text-yellow-400 mr-1" />
+              <strong className="text-white">Unlock the fixes</strong> that will take you from {score}% to {Math.round(projectedScore)}% in under 5 minutes
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section with Gauge */}
       <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
@@ -67,14 +134,14 @@ export function FreeTierView({
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
-              Your resume is {score >= 80 ? 'optimized' : 'invisible to'} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">
-                {score >= 80 ? '90%' : score >= 50 ? '40%' : '60%'} of bots
-              </span>.
+              You're <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                technically invisible
+              </span> to {score >= 80 ? '10%' : score >= 50 ? '60%' : '85%'} of recruiters.
             </h1>
             <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
-                : 'We found critical errors that are getting you rejected. See the top issues below.'}
+                : 'Your resume has critical errors that are causing automatic rejections. See the top issues below.'}
             </p>
           </div>
         </div>
@@ -162,7 +229,7 @@ export function FreeTierView({
         )}
       </div>
 
-      {/* TOP 2 Missing Keywords */}
+      {/* TOP 2 Missing Keywords + Blurred Rest */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -200,14 +267,28 @@ export function FreeTierView({
           )}
         </div>
         
+        {/* Blurred Keywords Section */}
         {remainingKeywords > 0 && (
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 text-center">
-            <p className="text-sm text-zinc-300 font-medium mb-2">
-              + {remainingKeywords} more keywords hidden
-            </p>
-            <p className="text-xs text-zinc-400">
-              Adding these keywords could increase your match score by up to {Math.min(remainingKeywords * 3, 30)} points
-            </p>
+          <div className="relative">
+            <div className="absolute inset-0 backdrop-blur-md bg-zinc-900/60 rounded-lg z-10 flex items-center justify-center">
+              <div className="text-center p-6">
+                <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
+                <p className="text-white font-bold text-lg mb-1">
+                  {remainingKeywords} Critical Keywords Hidden
+                </p>
+                <p className="text-zinc-300 text-sm">
+                  Missing for your target role
+                </p>
+              </div>
+            </div>
+            <div className="space-y-2 opacity-30 pointer-events-none">
+              {Array.from({ length: Math.min(remainingKeywords, 8) }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
+                  <span className="text-sm font-medium text-yellow-200">• ████████</span>
+                  <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">████</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -221,29 +302,29 @@ export function FreeTierView({
           
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
-              You've Seen the Tip of the Iceberg
+              €5 is the Only Way to Fix This
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
-              Unlock the complete report with all {totalHiddenIssues}+ hidden issues and step-by-step fixes
+              Get all {totalHiddenIssues}+ fixes, keyword placement tips, and a sanitized PDF that actually passes ATS
             </p>
           </div>
 
           <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-xl p-6 max-w-md mx-auto">
             <p className="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">
-              🔓 Full Report Includes:
+              🔓 Instant Fix Package:
             </p>
             <div className="space-y-3 text-left">
               <div className="flex items-start gap-3">
                 <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
-                <span className="text-sm text-zinc-200">All {remainingKeywords + 2} missing keywords with placement tips</span>
+                <span className="text-sm text-zinc-200">All {remainingKeywords + 2} missing keywords with exact placement</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
-                <span className="text-sm text-zinc-200">All {remainingErrors + 2} format errors with exact fixes</span>
+                <span className="text-sm text-zinc-200">All {remainingErrors + 2} format errors with 1-click fixes</span>
               </div>
               <div className="flex items-start gap-3">
                 <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -255,19 +336,25 @@ export function FreeTierView({
                 <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
-                <span className="text-sm text-zinc-200">Downloadable PDF report</span>
+                <span className="text-sm text-zinc-200">Sanitized PDF (ATS-safe download)</span>
               </div>
             </div>
           </div>
 
-          <Button 
-            onClick={() => setShowPricing(true)}
-            size="lg"
-            className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <Lock className="mr-3 h-6 w-6 text-black" />
-            Unlock Full Report - Only €4.99
-          </Button>
+          <div className="space-y-3">
+            <Button 
+              onClick={() => setShowPricing(true)}
+              size="lg"
+              className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Lock className="mr-3 h-6 w-6 text-black" />
+              Instant Fix - Only €4.99
+            </Button>
+            
+            <p className="text-xs text-zinc-400">
+              or upgrade to <button onClick={() => setShowPricing(true)} className="text-primary underline font-semibold">Interview Sprint (€19.99)</button> for unlimited scans + cover letter optimizer
+            </p>
+          </div>
           
           <div className="flex items-center justify-center gap-6 text-sm text-zinc-300 font-medium">
             <span className="flex items-center gap-1">✓ One-time payment</span>

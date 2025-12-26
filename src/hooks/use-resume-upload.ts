@@ -190,7 +190,57 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         toast.error("No credits remaining. Upgrade to continue scanning resumes.");
       } else {
         const errorMsg = error instanceof Error ? error.message : String(error);
-        toast.error(`Upload failed: ${errorMsg}`);
+        
+        // Enhanced error messaging with actionable help
+        if (errorMsg.includes('timeout') || errorMsg.includes('network')) {
+          toast.error(
+            "Upload timed out. Your file might have complex layers.",
+            {
+              description: "Try: 1) 'Print to PDF' to flatten it, or 2) Use our Deep OCR (longer wait, 100% success)",
+              duration: 8000,
+            }
+          );
+        } else if (errorMsg.includes('size') || errorMsg.includes('large')) {
+          toast.error(
+            "File too large (max 5MB).",
+            {
+              description: "Compress your PDF or use 'Print to PDF' with lower quality settings",
+              duration: 6000,
+            }
+          );
+        } else if (errorMsg.includes('type') || errorMsg.includes('format')) {
+          toast.error(
+            "Unsupported file type.",
+            {
+              description: "We accept: PDF, DOCX, DOC, PNG, JPG. Try converting your file.",
+              duration: 6000,
+            }
+          );
+        } else if (errorMsg.includes('text') || errorMsg.includes('ocr')) {
+          toast.error(
+            "Could not extract text from your file.",
+            {
+              description: "Your PDF might have complex layers. Try: 1) 'Print to PDF' to flatten it, 2) Convert to .docx, or 3) Click 'Deep OCR' for advanced scanning",
+              duration: 10000,
+            }
+          );
+        } else if (errorMsg.includes('credit')) {
+          toast.error(
+            "No scans remaining.",
+            {
+              description: "Upgrade to Single Scan (€4.99) or Interview Sprint (€19.99) for unlimited scans",
+              duration: 6000,
+            }
+          );
+        } else {
+          toast.error(
+            "Processing failed.",
+            {
+              description: "Try: 1) Re-saving as PDF using 'Print to PDF', 2) Converting to .docx, or 3) Ensuring text is selectable (not scanned images)",
+              duration: 8000,
+            }
+          );
+        }
       }
       
       setProcessingResumeId(null);
