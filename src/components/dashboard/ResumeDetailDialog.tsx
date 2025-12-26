@@ -68,22 +68,9 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
   const [jobDescription, setJobDescription] = useState("");
   const [isReanalyzing, setIsReanalyzing] = useState(false);
-  const [activeTab, setActiveTab] = useState("robot");
+  const [activeTab, setActiveTab] = useState("overview");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
   
-  // Pulse effect for Robot View if not clicked within 3 seconds
-  useEffect(() => {
-    if (activeTab !== "robot") {
-      const timer = setTimeout(() => {
-        setShowRobotPulse(true);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    } else {
-      setShowRobotPulse(false);
-    }
-  }, [activeTab]);
-
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
   
@@ -92,6 +79,19 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
 
   const allResumes = useQuery(apiAny.resumes.getResumes, {});
   const displayResume = allResumes?.find((r: any) => r._id === resumeId);
+  
+  // Pulse effect for Robot View if not clicked within 5 seconds
+  useEffect(() => {
+    if (activeTab !== "robot" && displayResume) {
+      const timer = setTimeout(() => {
+        setShowRobotPulse(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowRobotPulse(false);
+    }
+  }, [activeTab, displayResume]);
 
   useEffect(() => {
     if (activeTab !== "robot") {
@@ -615,21 +615,21 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               {/* Left Panel - Analysis Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
                 <TabsList className="grid w-full grid-cols-1 md:grid-cols-7 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
+                  <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
                   <TabsTrigger 
                     value="robot" 
-                    className={`relative bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50' : ''}`}
+                    className={`relative bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.6)]' : ''}`}
                   >
                     <span className="flex items-center gap-2 text-sm md:text-base">
-                      🤖 <span className="hidden sm:inline">Robot View</span><span className="sm:hidden">ATS</span>
+                      👁️ <span className="hidden sm:inline">Robot View</span><span className="sm:hidden">👁️ ATS</span>
                     </span>
                     {showRobotPulse && (
-                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-lg"></span>
                       </span>
                     )}
                   </TabsTrigger>
-                  <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
                   <TabsTrigger value="keywords" className="text-sm md:text-base">Keywords</TabsTrigger>
                   <TabsTrigger value="format" className="text-sm md:text-base">Format</TabsTrigger>
                   <TabsTrigger value="simulation" className="text-sm md:text-base hidden md:inline-flex">Recruiter View</TabsTrigger>
@@ -729,6 +729,35 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 </TabsContent>
 
                 <TabsContent value="overview" className="flex-1 overflow-auto p-6">
+                  {/* Prominent Robot View CTA for Free Users */}
+                  {isFree && (
+                    <div 
+                      onClick={() => setActiveTab("robot")}
+                      className="mb-6 bg-gradient-to-r from-green-500/10 via-emerald-500/10 to-green-500/10 border-2 border-green-500/30 rounded-xl p-6 cursor-pointer hover:border-green-500/50 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all group animate-pulse"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="relative">
+                          <div className="h-12 w-12 bg-green-500/20 rounded-full flex items-center justify-center border-2 border-green-500/50 group-hover:scale-110 transition-transform">
+                            <span className="text-2xl">👁️</span>
+                          </div>
+                          <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500"></span>
+                          </span>
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-green-400 mb-1 flex items-center gap-2">
+                            See Your Invisible Resume (Robot View)
+                            <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full animate-pulse">CRITICAL</span>
+                          </h3>
+                          <p className="text-sm text-green-300/80 leading-relaxed">
+                            This is exactly what ATS robots see when they scan your resume. If your text is missing or scrambled here, you're being auto-rejected. <span className="font-bold text-green-400">Click to reveal why you're being ghosted.</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   {isFree ? (
                     <FreeTierView
                       score={displayResume?.score || 0}

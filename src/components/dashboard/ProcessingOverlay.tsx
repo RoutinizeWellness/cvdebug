@@ -1,4 +1,4 @@
-import { Loader2, AlertCircle, Star, Shield } from "lucide-react";
+import { Loader2, AlertCircle, Star, Shield, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -95,8 +95,8 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage }: 
   return (
     <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200 p-6 overflow-y-auto">
       <div className="max-w-2xl w-full space-y-8">
-        {/* Progress Header */}
-        <div className="text-center space-y-4">
+        {/* Progress Header with Steps */}
+        <div className="text-center space-y-6">
           <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto animate-pulse">
             <Loader2 className="h-10 w-10 text-primary animate-spin" />
           </div>
@@ -106,6 +106,46 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage }: 
           <p className="text-muted-foreground text-lg">
             {isUploading ? "Please wait while we upload your file" : "Our AI is scanning for ATS compatibility issues"}
           </p>
+          
+          {/* Progress Steps */}
+          <div className="flex flex-col gap-3 max-w-md mx-auto">
+            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${isUploading ? 'bg-primary/10 border-primary/30' : 'bg-green-500/10 border-green-500/30'}`}>
+              {isUploading ? (
+                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
+              ) : (
+                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+              )}
+              <span className={`text-sm font-medium ${isUploading ? 'text-primary' : 'text-green-400'}`}>
+                1. Parsing text layers...
+              </span>
+            </div>
+            
+            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${!isUploading && statusMessage && !statusMessage.includes('keyword') ? 'bg-primary/10 border-primary/30' : statusMessage?.includes('keyword') ? 'bg-green-500/10 border-green-500/30' : 'bg-zinc-800/50 border-zinc-700/30'}`}>
+              {!isUploading && statusMessage && !statusMessage.includes('keyword') ? (
+                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
+              ) : statusMessage?.includes('keyword') ? (
+                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+              ) : (
+                <div className="h-5 w-5 rounded-full border-2 border-zinc-600 flex-shrink-0" />
+              )}
+              <span className={`text-sm font-medium ${!isUploading && statusMessage && !statusMessage.includes('keyword') ? 'text-primary' : statusMessage?.includes('keyword') ? 'text-green-400' : 'text-zinc-500'}`}>
+                2. Checking critical keywords...
+              </span>
+            </div>
+            
+            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? 'bg-primary/10 border-primary/30' : statusMessage?.includes('complete') ? 'bg-green-500/10 border-green-500/30' : 'bg-zinc-800/50 border-zinc-700/30'}`}>
+              {statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? (
+                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
+              ) : statusMessage?.includes('complete') ? (
+                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+              ) : (
+                <div className="h-5 w-5 rounded-full border-2 border-zinc-600 flex-shrink-0" />
+              )}
+              <span className={`text-sm font-medium ${statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? 'text-primary' : statusMessage?.includes('complete') ? 'text-green-400' : 'text-zinc-500'}`}>
+                3. Simulating recruiter bot scan...
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Rotating Stats */}
