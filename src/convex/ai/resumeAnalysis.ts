@@ -24,13 +24,13 @@ export const analyzeResume = internalAction({
       
       const cleanText = args.ocrText.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
-      if (!cleanText || cleanText.trim().length < 20) {
+      if (!cleanText || cleanText.trim().length < 10) {
         console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",
           category: "Uncategorized",
-          analysis: "Resume text is too short or unreadable. Please try:\n\n1. Re-save your resume using 'Print to PDF' or 'Save As PDF'\n2. Convert to Word (.docx) format\n3. Ensure the file contains selectable text (not scanned images)\n4. Try a different PDF viewer to re-export the file",
+          analysis: "⚠️ Unable to extract readable text from your resume.\n\n**Quick Fixes:**\n1. Save as PDF using 'Print to PDF' (not 'Export')\n2. Upload as .docx instead of PDF\n3. Ensure text is selectable (not a scanned image)\n4. Try opening in a different PDF viewer and re-saving\n\n**Still having issues?** Contact support at cvdebug@outlook.com with your file.",
           score: 0,
           status: "failed",
         });
@@ -347,7 +347,16 @@ export const analyzeResume = internalAction({
         } catch (fallbackError: any) {
           console.error("[AI Analysis] ❌ Fallback update also failed:", fallbackError);
           console.error("[AI Analysis] Fallback error details:", JSON.stringify(fallbackError, null, 2));
-          throw fallbackError;
+          
+          // Last resort: mark as failed with helpful message
+          await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
+            id: args.id,
+            title: "Resume",
+            category: "Error",
+            analysis: "⚠️ Analysis system encountered an error.\n\nThis is unusual and we're investigating. Please:\n1. Try uploading again\n2. Try a different file format (.docx or PDF)\n3. Contact support at cvdebug@outlook.com if this persists\n\nWe apologize for the inconvenience.",
+            score: 0,
+            status: "failed",
+          });
         }
       }
     } catch (globalError: any) {

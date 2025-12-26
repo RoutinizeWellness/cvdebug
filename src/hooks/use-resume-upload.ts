@@ -103,10 +103,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         : "Resume uploaded! AI is analyzing..."
       );
       
-      // Try fast client-side processing first with 60s timeout
+      // Try fast client-side processing first with 90s timeout
       const processingPromise = processFile(file, resumeId, storageId);
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 60000)
+        setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 90000)
       );
 
       try {
@@ -332,15 +332,15 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       }
 
       if (!text.trim()) {
-        throw new Error("No text could be extracted from the file. Please try converting your document to a different format or ensure it contains readable text.");
+        throw new Error("OCR: No readable text found. Please ensure your file contains selectable text (not just images) or try uploading as .docx format.");
       }
 
       const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
       console.log("DEBUG: Extracted text length:", cleanText.length);
       
-      if (cleanText.length < 20) {
-        throw new Error(`Extracted text is too short (${cleanText.length} chars). Please ensure the file contains selectable text.`);
+      if (cleanText.length < 10) {
+        throw new Error(`OCR: Extracted text is too short (${cleanText.length} chars). Your file may be corrupted or contain only images. Try re-saving as PDF or uploading as .docx.`);
       }
 
       setProcessingStatus("Finalizing analysis...");
