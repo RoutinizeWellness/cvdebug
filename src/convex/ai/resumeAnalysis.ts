@@ -26,6 +26,7 @@ export const analyzeResume = internalAction({
 
       if (!cleanText || cleanText.trim().length < 10) {
         console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), marking as failed`);
+        console.log(`[AI Analysis] First 50 chars of text: "${cleanText?.substring(0, 50)}"`);
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",

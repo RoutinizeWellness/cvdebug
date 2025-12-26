@@ -338,6 +338,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
 
       console.log("DEBUG: Extracted text length:", cleanText.length);
+      console.log("DEBUG: First 100 chars:", cleanText.substring(0, 100));
       
       if (cleanText.length < 10) {
         throw new Error(`OCR: Extracted text is too short (${cleanText.length} chars). Your file may be corrupted or contain only images. Try re-saving as PDF or uploading as .docx.`);

@@ -70,8 +70,8 @@ export const performOcr = internalAction({
           .replace(/\s+/g, ' ')
           .trim();
         
-        if (extractedText.length < 50) {
-          throw new Error(`Insufficient text extracted (${extractedText.length} chars)`);
+        if (extractedText.length < 10) {
+          throw new Error(`Insufficient text extracted (${extractedText.length} chars). The file may be a scanned image or contain only graphics.`);
         }
         
         const processingTime = Date.now() - startTime;
