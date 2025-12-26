@@ -41,7 +41,16 @@ export function FreeTierView({
       <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start glass-card rounded-lg p-8 relative overflow-hidden">
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
         
-        <GaugeScore score={score} />
+        <div className="relative">
+          <GaugeScore score={score} />
+          {/* Tooltip Badge */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
+            <div className="bg-green-500 text-black px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg animate-bounce">
+              <span>👁️ See what the bot sees</span>
+              <span className="text-lg">→</span>
+            </div>
+          </div>
+        </div>
 
         <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
           <div>

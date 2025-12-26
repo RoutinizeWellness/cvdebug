@@ -68,7 +68,22 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
   const [jobDescription, setJobDescription] = useState("");
   const [isReanalyzing, setIsReanalyzing] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("robot");
+  const [showRobotPulse, setShowRobotPulse] = useState(false);
+  
+  // Pulse effect for Robot View if not clicked within 3 seconds
+  useEffect(() => {
+    if (activeTab !== "robot") {
+      const timer = setTimeout(() => {
+        setShowRobotPulse(true);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowRobotPulse(false);
+    }
+  }, [activeTab]);
+
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
   
@@ -79,12 +94,19 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const displayResume = allResumes?.find((r: any) => r._id === resumeId);
 
   useEffect(() => {
-    if (displayResume && isFree) {
-      setShowBlurredPreview(true);
+    if (activeTab !== "robot") {
+      const timer = setTimeout(() => {
+        setShowRobotPulse(true);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowRobotPulse(false);
     }
-    if (displayResume?.jobDescription) {
-      setJobDescription(displayResume.jobDescription);
-    }
+  }, [activeTab]);
+
+  useEffect(() => {
+
   }, [displayResume?._id, isFree, displayResume?.jobDescription]);
 
   const handleDownloadReport = () => {
@@ -592,14 +614,119 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               {/* Left Panel - Analysis Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <TabsList className="grid w-full grid-cols-6 bg-slate-800/50 flex-shrink-0">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="keywords">Keywords</TabsTrigger>
-                  <TabsTrigger value="format">Format</TabsTrigger>
-                  <TabsTrigger value="simulation">Recruiter View</TabsTrigger>
-                  <TabsTrigger value="interview">Interview Prep</TabsTrigger>
-                  <TabsTrigger value="raw">Raw Text</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-1 md:grid-cols-7 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
+                  <TabsTrigger 
+                    value="robot" 
+                    className={`relative bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50' : ''}`}
+                  >
+                    <span className="flex items-center gap-2 text-sm md:text-base">
+                      🤖 <span className="hidden sm:inline">Robot View</span><span className="sm:hidden">ATS</span>
+                    </span>
+                    {showRobotPulse && (
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                      </span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
+                  <TabsTrigger value="keywords" className="text-sm md:text-base">Keywords</TabsTrigger>
+                  <TabsTrigger value="format" className="text-sm md:text-base">Format</TabsTrigger>
+                  <TabsTrigger value="simulation" className="text-sm md:text-base hidden md:inline-flex">Recruiter View</TabsTrigger>
+                  <TabsTrigger value="interview" className="text-sm md:text-base">Interview</TabsTrigger>
+                  <TabsTrigger value="raw" className="text-sm md:text-base hidden md:inline-flex">Raw Text</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="robot" className="flex-1 overflow-auto p-0 m-0">
+                  <div className="h-full bg-[#0a0e1a] relative">
+                    {/* Terminal Header */}
+                    <div className="bg-gradient-to-r from-green-950 to-emerald-950 border-b-2 border-green-500/30 px-6 py-3 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span className="text-green-400 font-mono text-sm font-bold">ATS_PARSER_v2.1.0</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span className="text-green-400 font-mono text-xs">LIVE</span>
+                      </div>
+                    </div>
+                    
+                    {/* Robot View Content */}
+                    <div className="p-6 space-y-6">
+                      {/* Info Banner */}
+                      <div className="bg-green-500/10 border-2 border-green-500/30 rounded-lg p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">👁️</div>
+                          <div>
+                            <h3 className="text-green-400 font-bold text-lg mb-1">This is What ATS Robots Actually See</h3>
+                            <p className="text-green-300/80 text-sm">
+                              If your text is missing, scrambled, or out of order below, the ATS cannot read your resume and you'll be auto-rejected.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* OCR Text Display */}
+                      <div className="bg-black/40 border-2 border-green-500/20 rounded-lg p-6">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-green-400 font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
+                          <span className="text-green-500/60 font-mono text-xs">
+                            {displayResume?.ocrText?.length || 0} characters
+                          </span>
+                        </div>
+                        <div className="bg-black/60 rounded border border-green-500/10 p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                          <pre className="text-green-300/90 font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                            {displayResume?.ocrText || "⚠️ NO TEXT EXTRACTED - ATS CANNOT READ THIS RESUME"}
+                          </pre>
+                        </div>
+                      </div>
+
+                      {/* Image Trap Warning */}
+                      {displayResume?.hasImageTrap && (
+                        <div className="bg-red-500/10 border-2 border-red-500/50 rounded-lg p-4 animate-pulse">
+                          <div className="flex items-start gap-3">
+                            <AlertTriangle className="h-6 w-6 text-red-500 flex-shrink-0" />
+                            <div>
+                              <h4 className="text-red-400 font-bold text-lg mb-1">🚨 IMAGE TRAP DETECTED</h4>
+                              <p className="text-red-300/80 text-sm">
+                                Critical content is embedded as an image. ATS systems cannot read this and will auto-reject your application.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Quick Stats */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-green-950/30 border border-green-500/20 rounded-lg p-4">
+                          <div className="text-green-500/60 text-xs font-mono uppercase mb-1">Readability</div>
+                          <div className="text-2xl font-bold text-green-400">
+                            {displayResume?.ocrText && displayResume.ocrText.length > 100 ? '✓ Good' : '✗ Poor'}
+                          </div>
+                        </div>
+                        <div className="bg-green-950/30 border border-green-500/20 rounded-lg p-4">
+                          <div className="text-green-500/60 text-xs font-mono uppercase mb-1">Image Traps</div>
+                          <div className="text-2xl font-bold text-green-400">
+                            {displayResume?.hasImageTrap ? '⚠️ Found' : '✓ None'}
+                          </div>
+                        </div>
+                        <div className="bg-green-950/30 border border-green-500/20 rounded-lg p-4">
+                          <div className="text-green-500/60 text-xs font-mono uppercase mb-1">ATS Score</div>
+                          <div className="text-2xl font-bold text-green-400">
+                            {displayResume?.score || 0}/100
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
 
                 <TabsContent value="overview" className="flex-1 overflow-auto p-6">
                   {isFree ? (
