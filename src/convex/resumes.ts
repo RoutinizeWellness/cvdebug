@@ -1,4 +1,4 @@
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
@@ -11,7 +11,7 @@ export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new ConvexError("NOT_AUTHENTICATED");
     }
 
     // Allow upload without credit check - everyone can scan for free
@@ -33,7 +33,7 @@ export const createResume = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new ConvexError("NOT_AUTHENTICATED");
     }
 
     const user = await ctx.db
@@ -42,7 +42,7 @@ export const createResume = mutation({
       .unique();
 
     if (!user) {
-      throw new Error("User not found. Please refresh the page.");
+      throw new ConvexError("USER_NOT_FOUND_REFRESH");
     }
 
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
@@ -75,7 +75,7 @@ export const createResume = mutation({
       const currentCredits = user.credits ?? 0;
       
       if (currentCredits <= 0 || (user.subscriptionTier === "free" && user.freeTrialUsed)) {
-        throw new Error("CREDITS_EXHAUSTED");
+        throw new ConvexError("CREDITS_EXHAUSTED");
       }
 
       // Consume credit
@@ -104,7 +104,7 @@ export const createResume = mutation({
 
     const url = await ctx.storage.getUrl(args.storageId);
     if (!url) {
-      throw new Error("Failed to get file URL");
+      throw new ConvexError("FAILED_TO_GET_FILE_URL");
     }
 
     const resumeId = await ctx.db.insert("resumes", {
