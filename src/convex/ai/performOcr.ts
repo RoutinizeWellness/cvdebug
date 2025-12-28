@@ -1,7 +1,7 @@
 "use node";
 
 import { internalAction } from "../_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { createWorker } from "tesseract.js";
 
 const internalAny = require("../_generated/api").internal;
@@ -25,7 +25,7 @@ export const performOcr = internalAction({
 
       // 2. Fetch the file with timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000);
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       try {
         const response = await fetch(fileUrl, { signal: controller.signal });
@@ -64,23 +64,25 @@ export const performOcr = internalAction({
         
         // 4. Clean the text (remove non-printable characters)
         extractedText = extractedText
-          .replace(/\0/g, '')
-          .replace(/[\uFFFD\uFFFE\uFFFF]/g, '')
-          .replace(/[^\x20-\x7E\n\r\t]/g, ' ')
-          .replace(/\s+/g, ' ')
+          .replace(/\0/g, "")
+          .replace(/[\uFFFD\uFFFE\uFFFF]/g, "")
+          .replace(/[^\x20-\x7E\n\r\t]/g, " ")
+          .replace(/\s+/g, " ")
           .trim();
-        
-        if (extractedText.length < 10) {
-          throw new Error(`Insufficient text extracted (${extractedText.length} chars). The file may be a scanned image or contain only graphics.`);
+
+        if (extractedText.length < 100) {
+          throw new ConvexError("COMPLEX_FORMAT_DETECTED");
         }
-        
+
         const processingTime = Date.now() - startTime;
-        console.log(`[Server OCR] Successfully extracted ${extractedText.length} characters in ${processingTime}ms`);
-        
-        // 5. Update the resume with OCR text
+        console.log(
+          `[Server OCR] Successfully extracted ${extractedText.length} characters in ${processingTime}ms`
+        );
+
         await ctx.runMutation(internalAny.resumes.updateResumeOcr, {
           id: args.resumeId,
           ocrText: extractedText,
+          forceAccept: true,
         });
         
         return { 
@@ -103,25 +105,35 @@ export const performOcr = internalAction({
       const processingTime = Date.now() - startTime;
       console.error(`[Server OCR] Critical error after ${processingTime}ms:`, error);
       
-      let userMessage = "An unexpected error occurred during server-side processing.";
-      
+      const isComplexFormat =
+        error instanceof ConvexError &&
+        error.message === "COMPLEX_FORMAT_DETECTED";
+
+      let userMessage =
+        "An unexpected error occurred during server-side processing.";
+
       if (error.message.includes("timeout")) {
-        userMessage = "Server processing timed out. This file may be too large or complex.";
+        userMessage =
+          "Server processing timed out. This file may be too large or complex.";
       } else if (error.message.includes("not found")) {
         userMessage = "File could not be accessed. Please try uploading again.";
       } else if (error.message.includes("fetch")) {
-        userMessage = "Network error while processing file. Please check your connection and try again.";
+        userMessage =
+          "Network error while processing file. Please check your connection and try again.";
+      } else if (isComplexFormat) {
+        userMessage =
+          "We detected complex, image-heavy layers that Deep OCR could not fully recover.";
       }
-      
+
       userMessage += "\n\nIf this issue persists, please contact support with the following details:\n";
       userMessage += `- Error: ${error.message}\n`;
       userMessage += `- Resume ID: ${args.resumeId}\n`;
       userMessage += `- Processing time: ${processingTime}ms`;
-      
+
       await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
         id: args.resumeId,
         title: "Resume",
-        category: "System Error",
+        category: isComplexFormat ? "Complex Format" : "System Error",
         analysis: userMessage,
         score: 0,
         status: "failed",

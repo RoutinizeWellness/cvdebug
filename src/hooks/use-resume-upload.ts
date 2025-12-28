@@ -186,6 +186,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           console.error("[Client] Server OCR trigger failed:", serverError);
           toast.error("Processing failed. Try: 1) Re-saving as PDF using 'Print to PDF', 2) Converting to .docx, or 3) Ensuring text is selectable (not scanned images).");
         }
+      } else if (error?.message?.includes("COMPLEX_FORMAT_DETECTED")) {
+        setProcessingStatus(
+          "Your PDF has complex layers. Applying Deep OCR... (please wait ~15s)"
+        );
+        toast.info(
+          "Your PDF has complex layers. Applying Deep OCR... (please wait 15s)"
+        );
+        return;
       } else if (error.message.includes("CREDITS_EXHAUSTED")) {
         toast.error("No credits remaining. Upgrade to continue scanning resumes.");
       } else {

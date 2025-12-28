@@ -149,6 +149,7 @@ export const updateResumeOcr = mutation({
   args: {
     id: v.id("resumes"),
     ocrText: v.string(),
+    forceAccept: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const resume = await ctx.db.get(args.id);
@@ -156,28 +157,49 @@ export const updateResumeOcr = mutation({
       throw new Error("Resume not found");
     }
 
-    // Update OCR text and keep processing status
+    const trimmedText = args.ocrText.trim();
+
+    if (!args.forceAccept && trimmedText.length < 100) {
+      console.warn(
+        `[OCR] Smart fallback triggered for resume ${args.id} (length: ${trimmedText.length})`
+      );
+      if (resume.storageId) {
+        await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
+          resumeId: args.id,
+          storageId: resume.storageId,
+        });
+      }
+      await ctx.db.patch(args.id, { status: "deep_processing" });
+      throw new ConvexError("COMPLEX_FORMAT_DETECTED");
+    }
+
     await ctx.db.patch(args.id, {
-      ocrText: args.ocrText,
+      ocrText: trimmedText,
       status: "processing",
     });
 
-    console.log(`[OCR] Text extracted for resume ${args.id}, length: ${args.ocrText.length} chars`);
+    console.log(
+      `[OCR] Text extracted for resume ${args.id}, length: ${trimmedText.length} chars`
+    );
 
-    // Trigger CV health check
-    await ctx.scheduler.runAfter(0, internalAny.cvHealthMonitor.checkTextLayerIntegrity, {
-      resumeId: args.id,
-      ocrText: args.ocrText,
-    });
+    await ctx.scheduler.runAfter(
+      0,
+      internalAny.cvHealthMonitor.checkTextLayerIntegrity,
+      {
+        resumeId: args.id,
+        ocrText: trimmedText,
+      }
+    );
 
-    // Trigger AI analysis with job description if available
     await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
       id: args.id,
-      ocrText: args.ocrText,
+      ocrText: trimmedText,
       jobDescription: resume.jobDescription,
     });
 
-    console.log(`[OCR] AI analysis and health check scheduled for resume ${args.id}, JD provided: ${!!resume.jobDescription}`);
+    console.log(
+      `[OCR] AI analysis and health check scheduled for resume ${args.id}, JD provided: ${!!resume.jobDescription}`
+    );
   },
 });
 

@@ -417,8 +417,39 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8">
-          <div className="max-w-[1600px] mx-auto h-full">
+        <div
+          className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8"
+        >
+          <div className="max-w-[1600px] mx-auto h-full space-y-6">
+            <div className="relative overflow-hidden rounded-3xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 p-6 md:p-8 shadow-[0_0_60px_rgba(251,191,36,0.15)]">
+              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.4),transparent_50%)]" />
+              <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="space-y-3">
+                  <p className="text-xs uppercase tracking-[0.4em] text-amber-200">
+                    New Year Resolution Hack
+                  </p>
+                  <h2 className="text-2xl md:text-3xl font-black text-white">
+                    2026 is the year you get the job. Stop being invisible.
+                  </h2>
+                  <p className="text-base md:text-lg text-amber-100/80">
+                    New Year Pass: $4.99 for 1 Full Audit + Keyword Sniper (Single Use).
+                  </p>
+                </div>
+                <Button
+                  onClick={() => {
+                    setInitialPlan("single_scan");
+                    setShowPricing(true);
+                  }}
+                  className="relative z-10 bg-amber-400 text-slate-900 font-black px-6 py-4 rounded-2xl shadow-lg shadow-amber-500/40 hover:bg-amber-300 transition-all"
+                >
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Unlock New Year Pass
+                </Button>
+              </div>
+              <p className="relative mt-4 text-sm text-amber-100/70">
+                $4.99 is an impulse fix—your robots see it instantly and so will recruiters.
+              </p>
+            </div>
             {renderContent()}
           </div>
         </div>

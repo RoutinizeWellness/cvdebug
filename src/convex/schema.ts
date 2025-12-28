@@ -210,7 +210,12 @@ const schema = defineSchema(
       verifiedBySecondaryModel: v.optional(v.boolean()),
     }))),
     processingDuration: v.optional(v.number()),
-    status: v.optional(v.union(v.literal("processing"), v.literal("completed"), v.literal("failed"))),
+    status: v.optional(v.union(
+      v.literal("processing"),
+      v.literal("completed"),
+      v.literal("failed"),
+      v.literal("deep_processing")
+    )),
     detailsUnlocked: v.optional(v.boolean()),
     jobDescription: v.optional(v.string()),
     jobTitle: v.optional(v.string()),
