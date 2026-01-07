@@ -187,42 +187,54 @@ export const getUserByEmail = internalQuery({
 });
 
 export const updateSubscription = internalMutation({
-  args: { 
-    tokenIdentifier: v.string(), 
+  args: {
+    tokenIdentifier: v.string(),
     plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
   },
   handler: async (ctx, args) => {
-    console.log(`[updateSubscription] START - Called with args:`, args);
+    console.log(`[updateSubscription] ====== START ======`);
+    console.log(`[updateSubscription] 📥 Input - tokenIdentifier: ${args.tokenIdentifier}, plan: ${args.plan}`);
 
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
+    console.log(`[updateSubscription] 👤 User found:`, user ? `YES (${user.email}, ID: ${user._id})` : 'NO');
+
     // Single Scan: 1 credit for full analysis + 24h re-scan window
     // Interview Sprint: Unlimited scans for 7 days (no credits needed)
     const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
-    console.log(`[updateSubscription] Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
+    console.log(`[updateSubscription] 💳 Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
 
     if (user) {
       const currentCredits = user.credits ?? 0;
-      console.log(`[updateSubscription] Found user ${user._id} (${user.email}). Updating from ${user.subscriptionTier} to ${args.plan}`);
-      
-      const updates: any = { 
+      console.log(`[updateSubscription] 📊 Current state - Tier: ${user.subscriptionTier}, Credits: ${currentCredits}`);
+      console.log(`[updateSubscription] 🔄 Updating to - Tier: ${args.plan}`);
+
+      const updates: any = {
         credits: args.plan === "single_scan" ? 1 : currentCredits, // Single Scan gets exactly 1 credit
         subscriptionTier: args.plan,
         freeTrialUsed: true, // Mark as used to prevent re-using free scan
       };
-      
+
       if (args.plan === "interview_sprint") {
-        updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        const expiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        updates.sprintExpiresAt = expiresAt;
         updates.credits = 0; // Sprint users don't need credits
+        console.log(`[updateSubscription] 📅 Sprint expires at: ${new Date(expiresAt).toISOString()}`);
       }
-      
+
+      console.log(`[updateSubscription] 💾 Updates to apply:`, updates);
       await ctx.db.patch(user._id, updates);
+      console.log(`[updateSubscription] ✅ User patched successfully`);
+
+      // Verify the update
+      const updatedUser = await ctx.db.get(user._id);
+      console.log(`[updateSubscription] 🔍 Verification - New tier: ${updatedUser?.subscriptionTier}, Credits: ${updatedUser?.credits}`);
 
       if (user.email) {
-        console.log(`[updateSubscription] Scheduling confirmation email for ${user.email}`);
+        console.log(`[updateSubscription] 📧 Scheduling confirmation email for ${user.email}`);
         await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
           email: user.email,
           name: user.name,
@@ -231,27 +243,30 @@ export const updateSubscription = internalMutation({
         });
       }
     } else {
-       console.log(`[updateSubscription] User not found by token ${args.tokenIdentifier}. Attempting to create/recover via identity...`);
+       console.log(`[updateSubscription] ⚠️ User not found by token ${args.tokenIdentifier.substring(0, 10)}...`);
+       console.log(`[updateSubscription] 🔍 Attempting to create/recover via identity...`);
        const identity = await ctx.auth.getUserIdentity();
-       
+
        if (identity && identity.subject === args.tokenIdentifier) {
-          console.log(`[updateSubscription] Identity verified. Creating new user for ${identity.email}`);
+          console.log(`[updateSubscription] ✅ Identity verified. Creating new user for ${identity.email}`);
           const newUserData: any = {
             tokenIdentifier: args.tokenIdentifier,
             email: identity.email,
             name: identity.name,
             subscriptionTier: args.plan,
             credits: 1 + creditsToAdd,
+            lastSeen: Date.now(),
           };
-          
+
           if (args.plan === "interview_sprint") {
             newUserData.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
           }
-          
-          await ctx.db.insert("users", newUserData);
-          
+
+          const newUserId = await ctx.db.insert("users", newUserData);
+          console.log(`[updateSubscription] ✅ New user created with ID: ${newUserId}`);
+
           if (identity.email) {
-            console.log(`[updateSubscription] Scheduling confirmation email for new user ${identity.email}`);
+            console.log(`[updateSubscription] 📧 Scheduling confirmation email for new user ${identity.email}`);
             await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
               email: identity.email,
               name: identity.name,
@@ -260,10 +275,12 @@ export const updateSubscription = internalMutation({
             });
           }
        } else {
-          console.error(`[updateSubscription] FAILED: User not found and current identity does not match tokenIdentifier ${args.tokenIdentifier}`);
+          console.error(`[updateSubscription] ❌ FAILED: User not found and identity does not match`);
+          console.error(`[updateSubscription] Identity subject: ${identity?.subject || 'null'}`);
+          console.error(`[updateSubscription] Expected tokenIdentifier: ${args.tokenIdentifier}`);
        }
     }
-    console.log(`[updateSubscription] END`);
+    console.log(`[updateSubscription] ====== END ======`);
   },
 });
 

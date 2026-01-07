@@ -31,117 +31,130 @@ export const createResume = mutation({
     projectId: v.optional(v.id("projects")),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new ConvexError("NOT_AUTHENTICATED");
-    }
-
-    const user = await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
-      .unique();
-
-    if (!user) {
-      throw new ConvexError("USER_NOT_FOUND_REFRESH");
-    }
-
-    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
-    
-    // RE-SCAN LOGIC: 24h unlimited re-scans for ALL users (including FREE)
-    // This allows users to iterate and see their score improve without penalty
-    let isFreeRescan = false;
-    
-    // Check for existing resumes with the same title in the last 24h
-    const existingResumes = await ctx.db
-      .query("resumes")
-      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
-      .order("desc")
-      .take(10);
-    
-    const twentyFourHours = 24 * 60 * 60 * 1000;
-    const recentSameFile = existingResumes.find(r => 
-      r.title === args.title && 
-      (Date.now() - r._creationTime) < twentyFourHours
-    );
-    
-    if (recentSameFile) {
-      isFreeRescan = true;
-      console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
-    }
-
-    // CREDIT CONSUMPTION: Check for all users without active sprint (Free & Single Scan)
-    if (!hasActiveSprint && !isFreeRescan) {
-      const currentCredits = user.credits ?? 0;
-      
-      if (currentCredits <= 0 || (user.subscriptionTier === "free" && user.freeTrialUsed)) {
-        throw new ConvexError("CREDITS_EXHAUSTED");
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        throw new ConvexError("NOT_AUTHENTICATED");
       }
 
-      // Consume credit
-      await ctx.db.patch(user._id, { 
-        credits: currentCredits - 1,
-        freeTrialUsed: true,
-      });
-      
-      console.log(`[Billing] User ${user.email} consumed 1 credit for NEW file. Tier: ${user.subscriptionTier}`);
-    }
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+        .unique();
 
-    if (user.deviceFingerprint) {
-      const fingerprint = user.deviceFingerprint;
-      const deviceUsage = await ctx.db
-        .query("deviceUsage")
-        .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
-        .first();
-      
-      if (deviceUsage) {
-        await ctx.db.patch(deviceUsage._id, {
-          creditsConsumed: deviceUsage.creditsConsumed + 1,
-          lastUsedAt: Date.now(),
+      if (!user) {
+        throw new ConvexError("USER_NOT_FOUND_REFRESH");
+      }
+
+      const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+      const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
+
+      // RE-SCAN LOGIC: 24h unlimited re-scans for ALL users (including FREE)
+      // This allows users to iterate and see their score improve without penalty
+      let isFreeRescan = false;
+
+      // Check for existing resumes with the same title in the last 24h
+      const existingResumes = await ctx.db
+        .query("resumes")
+        .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+        .order("desc")
+        .take(10);
+
+      const twentyFourHours = 24 * 60 * 60 * 1000;
+      const recentSameFile = existingResumes.find(r =>
+        r.title === args.title &&
+        (Date.now() - r._creationTime) < twentyFourHours
+      );
+
+      if (recentSameFile) {
+        isFreeRescan = true;
+        console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
+      }
+
+      // CREDIT CONSUMPTION: Check for all users without active sprint (Free & Single Scan)
+      if (!hasActiveSprint && !isFreeRescan) {
+        const currentCredits = user.credits ?? 0;
+
+        if (currentCredits <= 0 || (user.subscriptionTier === "free" && user.freeTrialUsed)) {
+          throw new ConvexError("CREDITS_EXHAUSTED");
+        }
+
+        // Consume credit
+        await ctx.db.patch(user._id, {
+          credits: currentCredits - 1,
+          freeTrialUsed: true,
+        });
+
+        console.log(`[Billing] User ${user.email} consumed 1 credit for NEW file. Tier: ${user.subscriptionTier}`);
+      }
+
+      if (user.deviceFingerprint) {
+        const fingerprint = user.deviceFingerprint;
+        const deviceUsage = await ctx.db
+          .query("deviceUsage")
+          .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
+          .first();
+
+        if (deviceUsage) {
+          await ctx.db.patch(deviceUsage._id, {
+            creditsConsumed: deviceUsage.creditsConsumed + 1,
+            lastUsedAt: Date.now(),
+          });
+        }
+      }
+
+      const url = await ctx.storage.getUrl(args.storageId);
+      if (!url) {
+        throw new ConvexError("FAILED_TO_GET_FILE_URL");
+      }
+
+      const resumeId = await ctx.db.insert("resumes", {
+        userId: identity.subject,
+        projectId: args.projectId,
+        title: args.title,
+        url,
+        storageId: args.storageId,
+        mimeType: args.mimeType,
+        category: args.category,
+        jobDescription: args.jobDescription,
+        jobTitle: args.jobTitle,
+        company: args.company,
+        detailsUnlocked: hasActiveSprint || hasPurchasedScan || false,
+        status: "processing",
+      });
+
+      // Add timeline event if part of a project
+      if (args.projectId) {
+        await ctx.scheduler.runAfter(0, internalAny.projectTimeline.addTimelineEvent, {
+          projectId: args.projectId,
+          type: "resume_uploaded",
+          title: "Resume Uploaded",
+          description: `Uploaded ${args.title} for analysis`,
         });
       }
+
+      // Schedule abandonment email for free users
+      if (!hasActiveSprint && user.credits === 1) {
+        await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
+          userId: identity.subject,
+          email: user.email,
+          resumeId,
+        });
+      }
+
+      return resumeId;
+    } catch (error: any) {
+      console.error("[createResume] Error:", error);
+      console.error("[createResume] Stack:", error.stack);
+
+      // Re-throw ConvexErrors as-is
+      if (error instanceof ConvexError) {
+        throw error;
+      }
+
+      // Wrap unknown errors in ConvexError
+      throw new ConvexError(`CREATE_RESUME_ERROR: ${error.message || String(error)}`);
     }
-
-    const url = await ctx.storage.getUrl(args.storageId);
-    if (!url) {
-      throw new ConvexError("FAILED_TO_GET_FILE_URL");
-    }
-
-    const resumeId = await ctx.db.insert("resumes", {
-      userId: identity.subject,
-      projectId: args.projectId,
-      title: args.title,
-      url,
-      storageId: args.storageId,
-      mimeType: args.mimeType,
-      category: args.category,
-      jobDescription: args.jobDescription,
-      jobTitle: args.jobTitle,
-      company: args.company,
-      detailsUnlocked: hasActiveSprint || hasPurchasedScan || false,
-      status: "processing",
-    });
-
-    // Add timeline event if part of a project
-    if (args.projectId) {
-      await ctx.scheduler.runAfter(0, internalAny.projectTimeline.addTimelineEvent, {
-        projectId: args.projectId,
-        type: "resume_uploaded",
-        title: "Resume Uploaded",
-        description: `Uploaded ${args.title} for analysis`,
-      });
-    }
-
-    // Schedule abandonment email for free users
-    if (!hasActiveSprint && user.credits === 1) {
-      await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
-        userId: identity.subject,
-        email: user.email,
-        resumeId,
-      });
-    }
-
-    return resumeId;
   },
 });
 
