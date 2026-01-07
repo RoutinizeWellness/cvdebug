@@ -458,6 +458,28 @@ export const getUserInternal = internalQuery({
   },
 });
 
+export const getUserByTokenIdentifier = internalQuery({
+  args: { tokenIdentifier: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .unique();
+
+    // Admin Override
+    if (user && user.email === "tiniboti@gmail.com") {
+      return {
+        ...user,
+        subscriptionTier: "interview_sprint" as const,
+        credits: 999999,
+        sprintExpiresAt: Date.now() + (365 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    return user;
+  },
+});
+
 export const deductCreditInternal = internalMutation({
   args: { userId: v.id("users") },
   handler: async (ctx, args) => {

@@ -109,15 +109,21 @@ export const storePaymentRecord = internalAny.billing?.storePaymentRecord || req
     amount: v.number(),
   },
   handler: async (ctx: any, args: any) => {
+    console.log(`[storePaymentRecord] ====== START ======`);
+    console.log(`[storePaymentRecord] Looking for user with tokenIdentifier: ${args.tokenIdentifier}`);
+
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q: any) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
     if (!user) {
-      console.error(`[storePaymentRecord] User not found: ${args.tokenIdentifier}`);
+      console.error(`[storePaymentRecord] ❌ User not found with tokenIdentifier: ${args.tokenIdentifier}`);
+      console.error(`[storePaymentRecord] This payment CANNOT be recorded. User must exist before payment.`);
       return;
     }
+
+    console.log(`[storePaymentRecord] ✅ Found user: ${user.email} (ID: ${user._id})`);
 
     await ctx.db.insert("payments", {
       userId: user._id,
@@ -130,7 +136,8 @@ export const storePaymentRecord = internalAny.billing?.storePaymentRecord || req
       purchasedAt: Date.now(),
     });
 
-    console.log(`[storePaymentRecord] Payment record stored for ${user.email}`);
+    console.log(`[storePaymentRecord] ✅ Payment record stored for ${user.email}`);
+    console.log(`[storePaymentRecord] ====== END ======`);
   },
 });
 
