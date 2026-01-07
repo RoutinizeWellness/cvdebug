@@ -22,7 +22,7 @@ import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
-const convex = new ConvexReactClient(convexUrl || "https://placeholder.convex.cloud");
+const convex = new ConvexReactClient(convexUrl);
 
 // Determine environment to select the correct Clerk Key
 // Sandbox/Dev uses the Test Key to avoid "Failed to load script" errors from custom production domains
