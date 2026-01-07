@@ -32,10 +32,23 @@ export const createResume = mutation({
   },
   handler: async (ctx, args) => {
     try {
+      console.log("[createResume] ====== START ======");
+      console.log("[createResume] 📥 Args received:", {
+        storageId: args.storageId,
+        title: args.title,
+        mimeType: args.mimeType,
+        hasJobDescription: !!args.jobDescription,
+        hasCategory: !!args.category,
+        hasProjectId: !!args.projectId
+      });
+
       const identity = await ctx.auth.getUserIdentity();
       if (!identity) {
+        console.error("[createResume] ❌ No identity found");
         throw new ConvexError("NOT_AUTHENTICATED");
       }
+
+      console.log("[createResume] ✅ User authenticated:", identity.email);
 
       const user = await ctx.db
         .query("users")
@@ -147,10 +160,16 @@ export const createResume = mutation({
         }
       }
 
+      console.log("[createResume] ✅ Resume created successfully:", resumeId);
+      console.log("[createResume] ====== END SUCCESS ======");
       return resumeId;
     } catch (error: any) {
+      console.error("[createResume] ❌ ====== ERROR ======");
+      console.error("[createResume] Error type:", error?.constructor?.name);
+      console.error("[createResume] Error message:", error?.message);
       console.error("[createResume] Error:", error);
-      console.error("[createResume] Stack:", error.stack);
+      console.error("[createResume] Stack:", error?.stack);
+      console.error("[createResume] ====== END ERROR ======");
 
       // Re-throw ConvexErrors as-is
       if (error instanceof ConvexError) {

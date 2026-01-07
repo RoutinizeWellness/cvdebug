@@ -113,10 +113,26 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       const uploadResult = await Promise.race([uploadPromise, uploadTimeout]) as any;
       storageId = uploadResult.storageId;
 
+      // Validate upload result before proceeding
+      if (!storageId || typeof storageId !== 'string' || storageId.length === 0) {
+        console.error("[Upload] Invalid storageId received:", uploadResult);
+        throw new Error("UPLOAD_FAILED: Invalid storage ID received from server");
+      }
+
+      const fileName = file.name || "resume.pdf";
+      const mimeType = file.type || "application/octet-stream";
+
+      console.log("[Upload] Creating resume with:", {
+        storageId,
+        title: fileName,
+        mimeType,
+        hasJobDescription: !!jobDescription.trim()
+      });
+
       resumeId = await createResume({
         storageId,
-        title: file.name,
-        mimeType: file.type || "application/octet-stream",
+        title: fileName,
+        mimeType: mimeType,
         jobDescription: jobDescription.trim() || undefined,
       });
 
