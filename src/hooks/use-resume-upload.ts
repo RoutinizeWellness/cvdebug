@@ -111,22 +111,38 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       });
 
       const uploadResult = await Promise.race([uploadPromise, uploadTimeout]) as any;
+
+      console.log("[Upload] Upload result received:", uploadResult);
+
       storageId = uploadResult.storageId;
 
-      // Validate upload result before proceeding
+      // CRITICAL: Validate all required fields before proceeding
       if (!storageId || typeof storageId !== 'string' || storageId.length === 0) {
-        console.error("[Upload] Invalid storageId received:", uploadResult);
+        console.error("[Upload] ❌ Invalid storageId received:", uploadResult);
         throw new Error("UPLOAD_FAILED: Invalid storage ID received from server");
       }
 
-      const fileName = file.name || "resume.pdf";
+      if (!file || !file.name) {
+        console.error("[Upload] ❌ Invalid file object:", file);
+        throw new Error("UPLOAD_FAILED: Invalid file object");
+      }
+
+      const fileName = file.name.trim();
       const mimeType = file.type || "application/octet-stream";
 
-      console.log("[Upload] Creating resume with:", {
+      // Final validation before createResume
+      if (!fileName || fileName.length === 0) {
+        console.error("[Upload] ❌ Empty filename");
+        throw new Error("UPLOAD_FAILED: File must have a name");
+      }
+
+      console.log("[Upload] ✅ Validation passed. Creating resume with:", {
         storageId,
         title: fileName,
         mimeType,
-        hasJobDescription: !!jobDescription.trim()
+        hasJobDescription: !!jobDescription.trim(),
+        fileSize: file.size,
+        fileType: file.type
       });
 
       resumeId = await createResume({
