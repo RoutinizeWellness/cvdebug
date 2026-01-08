@@ -1,20 +1,16 @@
-import { Navbar } from "@/components/landing/Navbar";
-import { Footer } from "@/components/landing/Footer";
+import { NewNavbar } from "@/components/landing/NewNavbar";
+import { NewFooter } from "@/components/landing/NewFooter";
 import { Button } from "@/components/ui/button";
-import { Check, Zap, Building2, Rocket, X, Lock } from "lucide-react";
+import { Check, Terminal, RocketIcon, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "convex/react";
-
-// Cast to any to avoid deep type instantiation errors
-import { api } from "@/convex/_generated/api";
-const apiAny: any = api;
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const betaStatus = useQuery(api.users.getBetaStatus);
-  const claimed = betaStatus?.claimed ?? 53;
+  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "quarterly">("monthly");
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -24,180 +20,330 @@ export default function PricingPage() {
     }
   };
 
+  const pricingTiers = [
+    {
+      name: "The Reality Check",
+      description: "Basic syntax check for your document.",
+      price: "$0",
+      period: "forever",
+      features: [
+        "Robot View Preview",
+        "Global ATS Score",
+        "Basic Error Logs",
+      ],
+      buttonText: "Run Scan",
+      buttonVariant: "outline" as const,
+      borderColor: "border-slate-800",
+      hoverBorder: "hover:border-slate-600",
+      plan: "free",
+    },
+    {
+      name: "The Instant Fix",
+      description: "One-time optimization for a specific job.",
+      price: "$4.99",
+      period: "scan",
+      features: [
+        "Everything in Free",
+        "Full Keyword Report",
+        "1-Click Auto-Fixes",
+        "Optimized PDF Export",
+      ],
+      buttonText: "Buy One Scan",
+      buttonVariant: "default" as const,
+      borderColor: "border-blue-900/50",
+      hoverBorder: "hover:border-blue-500/50",
+      plan: "single_scan",
+      highlighted: false,
+    },
+    {
+      name: "The Command Center",
+      description: "Full suite access for serious job hunters.",
+      price: "$19.99",
+      period: "month",
+      features: [
+        "Unlimited ATS Scans",
+        "Job Tracker Pro Dashboard",
+        "AI Cover Letter Generator",
+        "Priority Cloud Processing",
+        "LinkedIn Profile Audit",
+      ],
+      buttonText: "Start Sprint",
+      buttonVariant: "premium" as const,
+      borderColor: "border-indigo-500/30",
+      hoverBorder: "hover:border-indigo-500/50",
+      plan: "interview_sprint",
+      highlighted: true,
+      badge: "BEST VALUE",
+    },
+  ];
+
+  const faqs = [
+    {
+      question: "How does the ATS scoring algorithm work?",
+      answer:
+        "We reverse-engineered the top 5 ATS platforms used by Fortune 500 companies. Our parser checks for parseability, keyword density, and formatting errors that typically cause silent rejections.",
+    },
+    {
+      question: "Can I cancel the Sprint plan anytime?",
+      answer:
+        'Yes. The Interview Sprint is billed monthly. You can cancel directly from your "Command Center" dashboard with one click. No questions asked.',
+    },
+    {
+      question: "What file formats do you support?",
+      answer:
+        'We currently support PDF and DOCX files. For the best results with our "Instant Fix" tool, we recommend uploading a DOCX file so we can directly inject the optimized keywords.',
+    },
+    {
+      question: "Is my data secure?",
+      answer:
+        "Absolutely. We use bank-level AES-256 encryption. Your resume data is never sold to third parties and is only used to generate your report. You can delete your data permanently at any time.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-transparent flex flex-col font-sans selection:bg-primary/20">
-      <Navbar />
-      <main className="flex-1 py-20">
-        <div className="container mx-auto px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                    Simple, Transparent Pricing
-                </h1>
-                <p className="text-xl text-muted-foreground">
-                    No subscriptions. No auto-renew. Just results.
-                    <span className="block mt-2 text-primary font-bold">We don't want your money forever. We want you hired.</span>
-                </p>
-            </div>
+    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-200">
+      <style>{`
+        body {
+          background-color: #0F172A;
+        }
+      `}</style>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
-                {/* Free Tier - The Diagnostic Hook */}
-                <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
-                    <div className="space-y-2">
-                        <h3 className="font-bold text-2xl text-muted-foreground">FREE Preview</h3>
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-5xl font-black">€0</span>
-                        </div>
-                        <p className="text-muted-foreground text-sm">The Diagnostic Hook - See your CV is broken.</p>
+      <NewNavbar />
+
+      <main className="flex-grow flex flex-col items-center pt-16">
+        {/* Hero Section */}
+        <section className="relative w-full max-w-7xl mx-auto px-4 pt-20 pb-12 flex flex-col items-center text-center">
+          {/* Background Glows */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-violet-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm mb-6"
+          >
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            <span className="text-xs font-mono text-slate-300">SYSTEM_STATUS: ONLINE</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative text-4xl md:text-6xl font-black tracking-tight text-white mb-6 leading-tight max-w-4xl"
+          >
+            Debug Your Resume. <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+              Compile Your Career.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative text-slate-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed"
+          >
+            Stop getting rejected by silent algorithms. Optimize your CV syntax, keywords, and
+            formatting to pass every ATS check.
+          </motion.p>
+
+          {/* Toggle (Visual Only) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative flex items-center p-1 bg-slate-800 rounded-lg border border-slate-700"
+          >
+            <button
+              onClick={() => setBillingPeriod("monthly")}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                billingPeriod === "monthly"
+                  ? "bg-slate-700 text-white shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Monthly
+            </button>
+            <button
+              onClick={() => setBillingPeriod("quarterly")}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                billingPeriod === "quarterly"
+                  ? "bg-slate-700 text-white shadow-sm"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Quarterly
+            </button>
+          </motion.div>
+        </section>
+
+        {/* Pricing Cards Grid */}
+        <section className="w-full max-w-7xl mx-auto px-4 pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+            {pricingTiers.map((tier, index) => (
+              <motion.div
+                key={tier.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`group relative flex flex-col rounded-xl border ${tier.borderColor} bg-slate-800 p-6 md:p-8 ${tier.hoverBorder} transition-all duration-300 ${
+                  tier.highlighted
+                    ? "-mt-4 lg:-mt-8 shadow-2xl shadow-indigo-500/10 ring-1 ring-white/10"
+                    : ""
+                }`}
+              >
+                {tier.highlighted && (
+                  <>
+                    {/* Glow Effect Background */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/20 to-blue-500/5 rounded-2xl blur-xl -z-10"></div>
+                    {/* Top Gradient Line */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-violet-500 rounded-t-xl"></div>
+                    {/* Badge */}
+                    <div className="absolute top-5 right-5">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+                        {tier.badge}
+                      </span>
                     </div>
-                    
-                    <div className="space-y-4 flex-1">
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">1 Diagnostic Scan (per device)</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">ATS Score (0-100)</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">Robot View (ATS Vision)</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">Top 2 Critical Errors Preview</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">Top 2 Missing Keywords Preview</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                <Check className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <span className="text-sm">Image Trap Monitor</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-muted-foreground/80">
-                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                                <Lock className="h-3.5 w-3.5" />
-                            </div>
-                            <span className="text-sm">Keywords & fixes locked</span>
-                        </div>
-                    </div>
-                    
-                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted()}>
-                        Try Free
-                    </Button>
+                  </>
+                )}
+
+                <div className={`mb-6 ${tier.highlighted ? "mt-2" : ""}`}>
+                  <h3
+                    className={`${
+                      tier.highlighted ? "text-white text-xl" : "text-white text-lg"
+                    } font-bold mb-2 flex items-center gap-2`}
+                  >
+                    {tier.name}
+                    {tier.highlighted && <RocketIcon className="h-5 w-5 text-indigo-400" />}
+                  </h3>
+                  <p
+                    className={`text-sm ${
+                      tier.highlighted ? "text-indigo-200/70" : "text-slate-400"
+                    }`}
+                  >
+                    {tier.description}
+                  </p>
                 </div>
 
-                {/* Single Scan - The One-Shot Kill */}
-                <div className="rounded-2xl border-2 border-primary bg-card p-8 flex flex-col gap-6 relative shadow-2xl shadow-primary/10 scale-105 z-10">
-                    <div className="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-lg uppercase tracking-wider shadow-sm">
-                        BETA ★
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <h3 className="font-bold text-2xl text-primary flex items-center gap-2">
-                            Single Scan <Zap className="h-5 w-5 fill-primary" />
-                        </h3>
-                        <div className="flex flex-col">
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-black">€4.99</span>
-                                <span className="text-xl text-muted-foreground line-through decoration-red-500/50">€9.99</span>
-                            </div>
-                            <p className="text-xs font-bold text-green-600 mt-2 flex items-center gap-1">
-                                50% OFF
-                            </p>
-                            <p className="text-xs font-bold text-orange-600 mt-1 flex items-center gap-1">
-                                <Rocket className="h-3 w-3" /> Limited: {claimed}/100 claimed
-                            </p>
-                        </div>
-                        <p className="text-muted-foreground text-sm">The One-Shot Kill - Perfect for one dream job.</p>
-                    </div>
-                    
-                    <div className="space-y-4 flex-1">
-                        {[
-                            "1 Full ATS Analysis",
-                            "Complete Keyword Report",
-                            "Formatting Audit + Fixes",
-                            "Unlimited Re-scans (24h)",
-                            "Detailed Analysis Report",
-                            "PDF Sanitization"
-                        ].map((feature, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                    <Check className="h-3.5 w-3.5 text-primary" />
-                                </div>
-                                <span className="text-sm font-medium">{feature}</span>
-                            </div>
-                        ))}
-                        <div className="flex items-center gap-3 text-muted-foreground/80">
-                            <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                                <Lock className="h-3.5 w-3.5" />
-                            </div>
-                            <span className="text-sm">AI tools & CRM locked</span>
-                        </div>
-                    </div>
-                    
-                    <Button 
-                        className="w-full h-12 font-bold text-lg shadow-lg shadow-primary/20 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90" 
-                        onClick={() => handleGetStarted("single_scan")}
+                <div className="mb-8 font-mono">
+                  <span
+                    className={`${
+                      tier.highlighted
+                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300"
+                        : "text-4xl font-bold text-white"
+                    }`}
+                  >
+                    {tier.price}
+                  </span>
+                  <span className="text-slate-500 text-sm">/ {tier.period}</span>
+                </div>
+
+                <ul className="flex-col gap-4 mb-8 flex flex-1">
+                  {tier.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className={`flex items-start gap-3 text-sm ${
+                        tier.highlighted ? "text-white font-medium" : "text-slate-300"
+                      }`}
                     >
-                        Get Full Analysis
-                    </Button>
-                </div>
+                      <CheckCircle2
+                        className={`h-5 w-5 flex-shrink-0 ${
+                          tier.highlighted
+                            ? "text-indigo-400"
+                            : tier.plan === "single_scan"
+                            ? "text-blue-500"
+                            : "text-slate-500"
+                        }`}
+                      />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
 
-                {/* Interview Sprint - The Command Center */}
-                <div className="rounded-2xl border border-border bg-card p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors">
-                    <div className="space-y-2">
-                        <h3 className="font-bold text-2xl text-foreground flex items-center gap-2">
-                            Interview Sprint <Building2 className="h-5 w-5" />
-                        </h3>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-5xl font-black">€19.99</span>
-                            <span className="text-xl text-muted-foreground line-through">€49.99</span>
-                        </div>
-                        <p className="text-sm font-bold text-green-600">SAVE €30</p>
-                        <p className="text-muted-foreground text-sm">The Command Center - 7 days of total power.</p>
-                    </div>
-                    
-                    <div className="space-y-4 flex-1">
-                        {[
-                            "Unlimited Scans (7 Days)",
-                            "AI Bullet Point Sniper",
-                            "AI Cover Letter Generator",
-                            "LinkedIn Brand Optimizer",
-                            "Project Tracker (CRM)",
-                            "PDF Sanitizer",
-                            "Priority Support (<4h)"
-                        ].map((feature, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                    <Check className="h-3.5 w-3.5 text-primary" />
-                                </div>
-                                <span className="text-sm">{feature}</span>
-                            </div>
-                        ))}
-                    </div>
-                    
-                    <Button variant="outline" className="w-full h-12 font-bold" onClick={() => handleGetStarted("interview_sprint")}>
-                        Start Sprint
-                    </Button>
+                {tier.buttonVariant === "premium" ? (
+                  <Button
+                    onClick={() => handleGetStarted(tier.plan)}
+                    className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] transition-all duration-200"
+                  >
+                    {tier.buttonText}
+                  </Button>
+                ) : tier.buttonVariant === "default" ? (
+                  <Button
+                    onClick={() => handleGetStarted(tier.plan)}
+                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-blue-600/50 text-blue-100 font-medium hover:bg-blue-600/10 hover:border-blue-500 transition-all"
+                  >
+                    {tier.buttonText}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleGetStarted(tier.plan)}
+                    variant="outline"
+                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-slate-600 text-white font-medium hover:bg-slate-700 hover:border-slate-500 transition-all"
+                  >
+                    {tier.buttonText}
+                  </Button>
+                )}
+
+                {tier.highlighted && (
+                  <p className="mt-4 text-center text-xs text-slate-500 font-mono">
+                    14-day money-back guarantee
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="w-full max-w-3xl mx-auto px-4 pb-20">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl font-bold text-white mb-8 text-center"
+          >
+            Frequently Asked Questions
+          </motion.h2>
+          <div className="flex flex-col gap-4">
+            {faqs.map((faq, index) => (
+              <motion.details
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="group rounded-lg border border-slate-800 bg-slate-800/50 open:bg-slate-800 open:border-slate-700 transition-all duration-200"
+              >
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-slate-200 hover:text-white font-medium select-none">
+                  <span>{faq.question}</span>
+                  <svg
+                    className="h-5 w-5 text-slate-500 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-4 pt-0 text-slate-400 text-sm leading-relaxed border-t border-transparent group-open:border-slate-700/50 group-open:pt-4">
+                  {faq.answer}
                 </div>
-            </div>
-        </div>
+              </motion.details>
+            ))}
+          </div>
+        </section>
       </main>
-      <Footer />
+
+      <NewFooter />
     </div>
   );
 }
