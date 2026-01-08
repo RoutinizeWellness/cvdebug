@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Sidebar } from "@/components/dashboard/mission-control/Sidebar";
 import { ConfirmationDialog } from "@/components/ui/ConfirmationDialog";
 import { AISuggestionsDialog } from "@/components/ui/AISuggestionsDialog";
-import { Bell, Plus, ChevronRight, Sparkles } from "lucide-react";
+import { UpgradePrompt } from "@/components/ui/UpgradePrompt";
+import { Bell, Plus, ChevronRight, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function ProjectSettings() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isAISuggestionsOpen, setIsAISuggestionsOpen] = useState(false);
+  const [isUpgradePromptOpen, setIsUpgradePromptOpen] = useState(false);
 
   const handleDeleteProject = () => {
     console.log("Project deleted");
@@ -65,24 +67,33 @@ export default function ProjectSettings() {
             </motion.div>
 
             <div className="grid grid-cols-1 gap-6">
-              {/* AI Suggestions Demo Card */}
+              {/* Demo Dialogs Card */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="glass-panel rounded-xl p-6 shadow-glass border border-violet-500/20"
               >
-                <h3 className="text-lg font-semibold text-white mb-2">AI Features</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">UI Components Demo</h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  Test AI-powered resume optimization suggestions.
+                  Test dialog components and interactive UI elements.
                 </p>
-                <button
-                  onClick={() => setIsAISuggestionsOpen(true)}
-                  className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  Open AI Suggestions
-                </button>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => setIsAISuggestionsOpen(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    AI Suggestions
+                  </button>
+                  <button
+                    onClick={() => setIsUpgradePromptOpen(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-primary to-[#2b3bee] hover:brightness-110 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
+                  >
+                    <Zap className="h-4 w-4" />
+                    Upgrade Prompt
+                  </button>
+                </div>
               </motion.div>
 
               {/* General Configuration Card */}
@@ -172,6 +183,17 @@ export default function ProjectSettings() {
         keyword="Project Management"
         onInsert={(suggestion) => console.log("Inserted:", suggestion)}
         onRegenerate={() => console.log("Regenerating suggestions...")}
+      />
+
+      {/* Upgrade Prompt */}
+      <UpgradePrompt
+        isOpen={isUpgradePromptOpen}
+        onClose={() => setIsUpgradePromptOpen(false)}
+        onUpgrade={() => {
+          console.log("Upgrade clicked");
+          setIsUpgradePromptOpen(false);
+          // Navigate to pricing or checkout
+        }}
       />
     </div>
   );
