@@ -57,8 +57,8 @@ export function FreeTierView({
               </span>
             </h3>
             <p className="text-zinc-300 text-sm leading-relaxed mb-3">
-              Bad news first: You're in the <strong className="text-red-400">{percentileRank}% inferior</strong> of candidates for your target role.
-              Recruiters who pass the screening have a <strong className="text-green-400">92% ATS score</strong>. You're at <strong className="text-red-400">{score}%</strong>.
+              Bad news first: You're in the <strong className="text-red-400">bottom {percentileRank}%</strong> of candidates for your target role.
+              Candidates who get interviews have a <strong className="text-green-400">92% ATS score</strong>. You're at <strong className="text-red-400">{score}%</strong>.
               You're missing <strong className="text-yellow-400 font-semibold">{missingCount} critical keywords</strong> they have.
             </p>
             <p className="text-zinc-400 text-xs italic">
@@ -75,34 +75,34 @@ export function FreeTierView({
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-6">
             <AlertTriangle className="h-6 w-6 text-red-400" />
-            <h3 className="text-2xl font-bold text-white">Estás en el {percentileRank}% Inferior de Candidatos</h3>
+            <h3 className="text-2xl font-bold text-white">You're in the Bottom {percentileRank}% of Candidates</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             {/* Your Score - Pain */}
             <div className="bg-red-950/60 border-2 border-red-500/40 rounded-xl p-6 text-center">
-              <div className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">Tu Score</div>
+              <div className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">Your Score</div>
               <div className="text-6xl font-black text-red-400 mb-2">{score}%</div>
-              <div className="text-red-300 text-sm font-semibold">❌ Auto-rechazado por el 90% de empresas</div>
+              <div className="text-red-300 text-sm font-semibold">❌ Auto-rejected by 90% of companies</div>
             </div>
 
             {/* Competitors - Show what they're missing */}
             <div className="bg-green-950/60 border-2 border-green-500/40 rounded-xl p-6 text-center relative">
               <div className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-                {missingPoints} puntos más
+                {missingPoints} points higher
               </div>
-              <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">Los que consiguen la entrevista</div>
+              <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">Those Who Get Interviews</div>
               <div className="text-6xl font-black text-green-400 mb-2">{competitorScore}%</div>
-              <div className="text-green-300 text-sm font-semibold">✅ Pasan el filtro ATS</div>
+              <div className="text-green-300 text-sm font-semibold">✅ Pass ATS filters</div>
             </div>
           </div>
 
           <div className="bg-red-900/40 border-2 border-red-700 rounded-lg p-4 text-center">
             <p className="text-zinc-200 text-sm font-bold mb-2">
-              Te faltan <span className="text-yellow-400">{missingCount} keywords críticas</span> que ellos tienen
+              You're missing <span className="text-yellow-400">{missingCount} critical keywords</span> they have
             </p>
             <p className="text-zinc-400 text-xs">
-              [Desbloquear lista completa por $4.99]
+              [Unlock full list for $4.99]
             </p>
           </div>
         </div>
@@ -306,10 +306,10 @@ export function FreeTierView({
           
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
-              El 90% de los que se quedan aquí no reciben ni una llamada
+              90% who stay here never get a single call
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
-              Desbloquea las {missingCount} keywords exactas + {formatCount} fixes críticos que necesitas para llegar al 92%
+              Unlock the {missingCount} exact keywords + {formatCount} critical fixes you need to reach 92%
             </p>
           </div>
 
@@ -362,8 +362,8 @@ export function FreeTierView({
                   <span className="text-xl">👨‍💻</span>
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-white font-bold mb-1">Albert revisa tu CV personalmente</h4>
-                  <p className="text-zinc-300 text-xs">Video de 3 min con feedback brutal + todos los fixes</p>
+                  <h4 className="text-white font-bold mb-1">Albert reviews your CV personally</h4>
+                  <p className="text-zinc-300 text-xs">3-min video with brutal feedback + all fixes</p>
                 </div>
                 <span className="text-purple-400 font-black text-xl">€49</span>
               </div>
@@ -372,7 +372,7 @@ export function FreeTierView({
                 size="sm"
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
               >
-                Quiero la revisión manual →
+                I want the manual review →
               </Button>
             </div>
 

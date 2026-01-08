@@ -21,8 +21,11 @@ import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
-// Force production deployment
-const convexUrl = import.meta.env.VITE_CONVEX_URL || "https://shocking-meerkat-209.convex.cloud";
+// Force production deployment - use prod URL unless explicitly in dev
+const isLocalDev = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.includes("vly.sh"));
+const convexUrl = isLocalDev
+  ? (import.meta.env.VITE_CONVEX_URL || "https://next-cod-660.convex.cloud")
+  : "https://shocking-meerkat-209.convex.cloud";
 const convex = new ConvexReactClient(convexUrl);
 
 // Determine environment to select the correct Clerk Key
