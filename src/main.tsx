@@ -17,6 +17,10 @@ import AdminWaitlist from "./pages/AdminWaitlist.tsx";
 import AdminPage from "./pages/Admin.tsx";
 import PricingPage from "./pages/Pricing.tsx";
 import PaymentSuccess from "./pages/PaymentSuccess.tsx";
+import ATSScannerNurses from "./pages/industry/ATSScannerNurses.tsx";
+import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
+import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
+import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -93,7 +97,13 @@ createRoot(document.getElementById("root")!).render(
               {/* Level 1: Public Funnel */}
               <Route path="/" element={<Landing />} />
               <Route path="/pricing" element={<PricingPage />} />
-              
+
+              {/* Industry-Specific Landing Pages */}
+              <Route path="/ats-scanner-for-nurses" element={<ATSScannerNurses />} />
+              <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
+              <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
+              <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
+
               {/* Level 2: Auth & Onboarding */}
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/onboarding" element={<Onboarding />} />
