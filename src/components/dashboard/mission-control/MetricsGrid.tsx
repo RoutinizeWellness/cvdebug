@@ -121,7 +121,7 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
               <div className="flex items-baseline gap-2 mt-1">
                 <p className="text-white text-4xl font-mono font-bold">
                   {metric.value}
-                  {metric.subtitle && (
+                  {metric.subtitle && metric.variant !== "danger" && (
                     <span className="text-xl text-slate-500">{metric.subtitle}</span>
                   )}
                 </p>
@@ -134,14 +134,21 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
 
               {metric.trend && (
                 <div
-                  className={`flex items-center gap-1 mt-2 text-xs font-mono w-fit px-2 py-1 rounded ${colors.trend}`}
+                  className={`flex items-center gap-1 mt-2 text-xs font-mono ${
+                    metric.variant === "danger" ? "" : "w-fit px-2 py-1 rounded " + colors.trend
+                  }`}
                 >
                   {metric.variant !== "danger" ? (
-                    <TrendIcon className="h-3.5 w-3.5" />
+                    <>
+                      <TrendIcon className="h-3.5 w-3.5" />
+                      {metric.trend.value} {metric.trend.label}
+                    </>
                   ) : (
-                    <Zap className="h-3.5 w-3.5" />
+                    <>
+                      <ArrowDown className="h-3.5 w-3.5" />
+                      {metric.trend.label} {metric.trend.value}
+                    </>
                   )}
-                  {metric.trend.label} {metric.trend.value}
                 </div>
               )}
             </div>

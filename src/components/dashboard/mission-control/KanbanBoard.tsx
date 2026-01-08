@@ -1,4 +1,4 @@
-import { Columns3 } from "lucide-react";
+import { Columns3, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface KanbanCard {
@@ -160,7 +160,7 @@ export function KanbanBoard() {
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
-                      <span className="material-symbols-outlined text-[12px]">schedule</span>
+                      <Clock className="h-3 w-3" />
                       {card.daysAgo}d ago
                     </div>
                   )}
