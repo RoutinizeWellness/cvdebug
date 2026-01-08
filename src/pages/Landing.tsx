@@ -3,6 +3,7 @@ import { NewHeroSection } from "@/components/landing/NewHeroSection";
 import { NewSocialProofSection } from "@/components/landing/NewSocialProofSection";
 import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSection";
 import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
+import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
 import { useEffect } from "react";
@@ -34,6 +35,7 @@ export default function Landing() {
         <NewSocialProofSection />
         <ComparisonVisualSection />
         <NewFeaturesGrid />
+        <EnterpriseSection />
         <FinalCTASection />
       </main>
 
