@@ -1,0 +1,249 @@
+import { motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, CloudUpload, FileUp } from "lucide-react";
+import { useState, useRef } from "react";
+
+interface CVUploadProps {
+  isActive: boolean;
+  uploadedFile: File | null;
+  onFileUpload: (file: File) => void;
+  onBack: () => void;
+  onNext: () => void;
+}
+
+export default function CVUpload({
+  isActive,
+  uploadedFile,
+  onFileUpload,
+  onBack,
+  onNext,
+}: CVUploadProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [logs, setLogs] = useState([
+    { text: "Initializing upload sequence...", type: "info" },
+    { text: "Parsing binary data...", type: "default" },
+    { text: "Simulating Recruiter Bot [v2.4.1]...", type: "secondary" },
+    { text: "Waiting for file input_", type: "pulse" },
+  ]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file && (file.type === "application/pdf" || file.type.includes("word"))) {
+      onFileUpload(file);
+      updateLogs(file.name);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onFileUpload(file);
+      updateLogs(file.name);
+    }
+  };
+
+  const updateLogs = (fileName: string) => {
+    setLogs([
+      { text: "Initializing upload sequence...", type: "info" },
+      { text: "Parsing binary data...", type: "default" },
+      { text: "Simulating Recruiter Bot [v2.4.1]...", type: "secondary" },
+      { text: `File detected: ${fileName}`, type: "success" },
+      { text: "Ready to scan_", type: "pulse" },
+    ]);
+  };
+
+  if (!isActive) return null;
+
+  return (
+    <motion.div
+      className="glass-panel rounded-xl p-8 md:p-12 relative overflow-hidden border-t-2 border-t-secondary/50 shadow-2xl"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4 }}
+    >
+      {/* Background Icon */}
+      <div className="absolute top-0 right-0 p-4 opacity-20 pointer-events-none">
+        <FileUp className="h-36 w-36 text-secondary" />
+      </div>
+
+      <div className="relative z-10 flex flex-col gap-8">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <motion.h1
+            className="text-3xl md:text-4xl font-bold text-white tracking-tight"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            Upload your CV
+          </motion.h1>
+          <motion.p
+            className="text-slate-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            Drag &amp; drop your resume here (PDF or DOCX) to begin the analysis.
+          </motion.p>
+        </div>
+
+        {/* Drag & Drop Zone */}
+        <div className="w-full max-w-2xl mx-auto">
+          <label
+            className={`group relative flex flex-col items-center justify-center w-full h-64 rounded-2xl border-2 border-dashed transition-all cursor-pointer overflow-hidden ${
+              isDragging
+                ? "border-secondary bg-slate-800/50"
+                : uploadedFile
+                ? "border-primary bg-primary/5"
+                : "border-slate-600 bg-slate-900/30 hover:bg-slate-800/50 hover:border-secondary"
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {/* Hover Gradient Effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-b from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+              animate={
+                uploadedFile
+                  ? {}
+                  : {
+                      scale: [1, 1.05, 1],
+                    }
+              }
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+
+            <div className="flex flex-col items-center justify-center pt-5 pb-6 relative z-10">
+              <motion.div
+                className={`mb-4 p-4 rounded-full transition-colors ${
+                  uploadedFile
+                    ? "bg-primary/20"
+                    : "bg-slate-800/80 group-hover:bg-secondary/20"
+                }`}
+                whileHover={{ scale: 1.1, rotate: 5 }}
+              >
+                <CloudUpload
+                  className={`h-10 w-10 transition-colors ${
+                    uploadedFile
+                      ? "text-primary"
+                      : "text-slate-400 group-hover:text-secondary"
+                  }`}
+                />
+              </motion.div>
+
+              {uploadedFile ? (
+                <div className="text-center">
+                  <p className="mb-2 text-sm text-white font-semibold">
+                    {uploadedFile.name}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    {(uploadedFile.size / 1024).toFixed(2)} KB • Click to change
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className="mb-2 text-sm text-slate-300">
+                    <span className="font-semibold text-secondary">Click to upload</span>{" "}
+                    or drag and drop
+                  </p>
+                  <p className="text-xs text-slate-500">PDF or DOCX (MAX. 10MB)</p>
+                </>
+              )}
+            </div>
+
+            <input
+              ref={fileInputRef}
+              className="hidden"
+              id="dropzone-file"
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
+
+        {/* Terminal Log */}
+        <div className="w-full max-w-2xl mx-auto bg-[#0A0E17] rounded-lg border border-slate-800 p-4 font-mono text-xs md:text-sm shadow-inner relative overflow-hidden">
+          {/* Accent line */}
+          <div className="absolute top-0 left-0 w-1 h-full bg-secondary opacity-50" />
+
+          {/* Terminal Header */}
+          <div className="flex items-center gap-2 mb-3 border-b border-slate-800 pb-2">
+            <div className="flex gap-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+              <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+            </div>
+            <span className="text-slate-500 text-[10px] uppercase tracking-widest ml-2">
+              System Logs
+            </span>
+          </div>
+
+          {/* Logs */}
+          <div className="space-y-1 text-slate-300">
+            {logs.map((log, index) => (
+              <motion.p
+                key={index}
+                className={`before:content-['>_'] before:text-secondary ${
+                  log.type === "info"
+                    ? "text-slate-500"
+                    : log.type === "secondary"
+                    ? "text-secondary"
+                    : log.type === "success"
+                    ? "text-green-400"
+                    : log.type === "pulse"
+                    ? "animate-pulse"
+                    : ""
+                }`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                {log.text}
+              </motion.p>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-between items-center pt-4">
+          <button
+            onClick={onBack}
+            className="px-6 py-3 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white transition-all font-medium flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </button>
+
+          <button
+            onClick={onNext}
+            disabled={!uploadedFile}
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-secondary to-primary text-white font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            Scan CV
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
