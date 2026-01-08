@@ -52,6 +52,8 @@ import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
 import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStatusModal";
+import { ResumeBuilder } from "@/components/resume/ResumeBuilder";
+import { ResumePreview } from "@/components/resume/ResumePreview";
 
 const apiAny = api as any;
 
@@ -78,6 +80,9 @@ export default function Dashboard() {
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const [lastScannedScore, setLastScannedScore] = useState<number | undefined>();
   const processedPaymentRef = useRef(false);
+  const [showResumeBuilder, setShowResumeBuilder] = useState(false);
+  const [editingResumeId, setEditingResumeId] = useState<Id<"resumes"> | null>(null);
+  const [previewResumeId, setPreviewResumeId] = useState<Id<"resumes"> | null>(null);
   
   const {
     isUploading,
@@ -243,6 +248,16 @@ export default function Dashboard() {
     setShowPricing(true);
   };
 
+  const handleCreateManualResume = () => {
+    setEditingResumeId(null);
+    setShowResumeBuilder(true);
+  };
+
+  const handleEditResume = (resumeId: Id<"resumes">) => {
+    setEditingResumeId(resumeId);
+    setShowResumeBuilder(true);
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case 'projects':
@@ -299,11 +314,12 @@ export default function Dashboard() {
                 Upload New CV
               </Button>
             </div>
-            <ResumeGrid 
+            <ResumeGrid
               resumes={resumes || []}
               setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
               handleDelete={handleDelete}
               onUpload={() => fileInputRef.current?.click()}
+              onCreateManual={handleCreateManualResume}
             />
           </div>
         );
@@ -507,14 +523,38 @@ export default function Dashboard() {
         }}
       />
 
-      <SubscriptionStatusModal 
-        open={showSubscriptionModal} 
+      <SubscriptionStatusModal
+        open={showSubscriptionModal}
         onOpenChange={setShowSubscriptionModal}
         onUpgrade={() => {
           setShowSubscriptionModal(false);
           setShowPricing(true);
         }}
       />
+
+      {showResumeBuilder && (
+        <ResumeBuilder
+          resumeId={editingResumeId}
+          onClose={() => {
+            setShowResumeBuilder(false);
+            setEditingResumeId(null);
+          }}
+          onSave={() => {
+            // Refetch resumes is automatic with Convex
+          }}
+        />
+      )}
+
+      {previewResumeId && resumes && (
+        <ResumePreview
+          resume={resumes.find((r: any) => r._id === previewResumeId)}
+          onClose={() => setPreviewResumeId(null)}
+          onEdit={() => {
+            setPreviewResumeId(null);
+            handleEditResume(previewResumeId);
+          }}
+        />
+      )}
     </div>
   );
 }

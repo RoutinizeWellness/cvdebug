@@ -529,7 +529,10 @@ export const deleteResume = mutation({
       throw new Error("Resume not found or unauthorized");
     }
 
-    await ctx.storage.delete(resume.storageId);
+    // Only delete storage if it exists (manual resumes don't have storage)
+    if (resume.storageId) {
+      await ctx.storage.delete(resume.storageId);
+    }
     await ctx.db.delete(args.id);
   },
 });
@@ -634,5 +637,177 @@ export const generateSanitizedVersion = mutation({
       cleanedText,
       instructions,
     };
+  },
+});
+
+// Manual Resume Creation and Update
+export const createResumeManually = mutation({
+  args: {
+    fileName: v.string(),
+    personalInfo: v.object({
+      fullName: v.string(),
+      email: v.string(),
+      phone: v.string(),
+      location: v.string(),
+      linkedin: v.optional(v.string()),
+      website: v.optional(v.string()),
+      summary: v.string(),
+    }),
+    experience: v.array(v.object({
+      id: v.string(),
+      company: v.string(),
+      position: v.string(),
+      location: v.string(),
+      startDate: v.string(),
+      endDate: v.string(),
+      current: v.boolean(),
+      description: v.string(),
+    })),
+    education: v.array(v.object({
+      id: v.string(),
+      institution: v.string(),
+      degree: v.string(),
+      field: v.string(),
+      location: v.string(),
+      startDate: v.string(),
+      endDate: v.string(),
+      current: v.boolean(),
+      gpa: v.optional(v.string()),
+    })),
+    skills: v.array(v.string()),
+    projects: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.string(),
+      technologies: v.array(v.string()),
+      link: v.optional(v.string()),
+    })),
+    certifications: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      issuer: v.string(),
+      date: v.string(),
+    })),
+    languages: v.array(v.object({
+      id: v.string(),
+      language: v.string(),
+      proficiency: v.string(),
+    })),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new ConvexError("USER_NOT_FOUND");
+    }
+
+    // Create resume with manual data
+    const resumeId = await ctx.db.insert("resumes", {
+      userId: identity.subject,
+      title: args.fileName,
+      mimeType: "application/json", // Mark as manually created
+      url: "", // No file URL for manual resumes
+      storageId: undefined as any, // No storage for manual resumes
+      personalInfo: args.personalInfo,
+      experience: args.experience,
+      education: args.education,
+      skills: args.skills,
+      projects: args.projects,
+      certifications: args.certifications,
+      languages: args.languages,
+      detailsUnlocked: true,
+      status: "completed",
+      score: 0, // Manual resumes don't have scores initially
+    });
+
+    console.log("[createResumeManually] Resume created:", resumeId);
+    return resumeId;
+  },
+});
+
+export const updateResumeManually = mutation({
+  args: {
+    id: v.id("resumes"),
+    personalInfo: v.object({
+      fullName: v.string(),
+      email: v.string(),
+      phone: v.string(),
+      location: v.string(),
+      linkedin: v.optional(v.string()),
+      website: v.optional(v.string()),
+      summary: v.string(),
+    }),
+    experience: v.array(v.object({
+      id: v.string(),
+      company: v.string(),
+      position: v.string(),
+      location: v.string(),
+      startDate: v.string(),
+      endDate: v.string(),
+      current: v.boolean(),
+      description: v.string(),
+    })),
+    education: v.array(v.object({
+      id: v.string(),
+      institution: v.string(),
+      degree: v.string(),
+      field: v.string(),
+      location: v.string(),
+      startDate: v.string(),
+      endDate: v.string(),
+      current: v.boolean(),
+      gpa: v.optional(v.string()),
+    })),
+    skills: v.array(v.string()),
+    projects: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.string(),
+      technologies: v.array(v.string()),
+      link: v.optional(v.string()),
+    })),
+    certifications: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      issuer: v.string(),
+      date: v.string(),
+    })),
+    languages: v.array(v.object({
+      id: v.string(),
+      language: v.string(),
+      proficiency: v.string(),
+    })),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new ConvexError("UNAUTHORIZED");
+    }
+
+    await ctx.db.patch(args.id, {
+      personalInfo: args.personalInfo,
+      experience: args.experience,
+      education: args.education,
+      skills: args.skills,
+      projects: args.projects,
+      certifications: args.certifications,
+      languages: args.languages,
+    });
+
+    console.log("[updateResumeManually] Resume updated:", args.id);
+    return args.id;
   },
 });

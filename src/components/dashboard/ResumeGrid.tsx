@@ -1,4 +1,4 @@
-import { FileText, Loader2, Eye, Trash2, RefreshCw, MoreVertical, Plus, FolderPlus } from "lucide-react";
+import { FileText, Loader2, Eye, Trash2, RefreshCw, MoreVertical, Plus, FolderPlus, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
@@ -17,9 +17,10 @@ interface ResumeGridProps {
   categoryFilter?: string | null;
   onUpload?: () => void;
   onCreateProject?: () => void;
+  onCreateManual?: () => void;
 }
 
-export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload, onCreateProject }: ResumeGridProps) {
+export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload, onCreateProject, onCreateManual }: ResumeGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
@@ -118,6 +119,12 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               Upload Resume
             </Button>
           )}
+          {onCreateManual && (
+            <Button onClick={onCreateManual} variant="outline" className="font-bold">
+              <Edit className="h-4 w-4 mr-2" />
+              Create Manually
+            </Button>
+          )}
           {onCreateProject && (
             <Button onClick={onCreateProject} variant="outline" className="font-bold">
               <FolderPlus className="h-4 w-4 mr-2" />
@@ -147,10 +154,20 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
+          {onCreateManual && (
+            <Button
+              onClick={onCreateManual}
+              className="bg-primary text-white font-bold hover:bg-primary/90"
+            >
+              <Edit className="h-4 w-4 mr-2" />
+              Create Manually
+            </Button>
+          )}
           {onCreateProject && (
             <Button
               onClick={onCreateProject}
-              className="bg-primary text-white font-bold hover:bg-primary/90"
+              variant="outline"
+              className="font-bold"
             >
               <FolderPlus className="h-4 w-4 mr-2" />
               Create Project
