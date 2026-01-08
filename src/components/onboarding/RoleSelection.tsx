@@ -1,5 +1,19 @@
 import { motion } from "framer-motion";
-import { CheckCircle, Code, DollarSign, Heart, Shield } from "lucide-react";
+import {
+  CheckCircle,
+  Code,
+  DollarSign,
+  Heart,
+  Shield,
+  BarChart3,
+  Briefcase,
+  GraduationCap,
+  Megaphone,
+  Palette,
+  Users,
+  Wrench,
+  TrendingUp
+} from "lucide-react";
 
 interface RoleSelectionProps {
   isCompleted: boolean;
@@ -17,16 +31,64 @@ const roles = [
     subtitle: "System Design",
   },
   {
+    id: "data-analyst",
+    icon: BarChart3,
+    label: "Data Analyst",
+    subtitle: "Insights & BI",
+  },
+  {
     id: "finance",
     icon: DollarSign,
     label: "Finance",
     subtitle: "Compliance",
   },
   {
+    id: "product-manager",
+    icon: Briefcase,
+    label: "Product Manager",
+    subtitle: "Strategy",
+  },
+  {
     id: "nursing",
     icon: Heart,
     label: "Nursing",
     subtitle: "Patient Care",
+  },
+  {
+    id: "marketing",
+    icon: Megaphone,
+    label: "Marketing",
+    subtitle: "Digital Growth",
+  },
+  {
+    id: "design",
+    icon: Palette,
+    label: "Designer",
+    subtitle: "UI/UX",
+  },
+  {
+    id: "sales",
+    icon: TrendingUp,
+    label: "Sales",
+    subtitle: "Business Dev",
+  },
+  {
+    id: "hr",
+    icon: Users,
+    label: "Human Resources",
+    subtitle: "Talent Ops",
+  },
+  {
+    id: "education",
+    icon: GraduationCap,
+    label: "Education",
+    subtitle: "Teaching",
+  },
+  {
+    id: "engineering",
+    icon: Wrench,
+    label: "Engineering",
+    subtitle: "Hardware/Mech",
   },
   {
     id: "admin",
@@ -68,7 +130,7 @@ export default function RoleSelection({
         )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
         {roles.map((role) => {
           const Icon = role.icon;
           const isSelected = selectedRole === role.id;
