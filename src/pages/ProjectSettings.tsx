@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/dashboard/mission-control/Sidebar";
 import { ConfirmationDialog } from "@/components/ui/ConfirmationDialog";
 import { AISuggestionsDialog } from "@/components/ui/AISuggestionsDialog";
 import { UpgradePrompt } from "@/components/ui/UpgradePrompt";
+import { NotificationPopup, useNotifications } from "@/components/ui/NotificationPopup";
 import { Bell, Plus, ChevronRight, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -11,6 +12,7 @@ export default function ProjectSettings() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isAISuggestionsOpen, setIsAISuggestionsOpen] = useState(false);
   const [isUpgradePromptOpen, setIsUpgradePromptOpen] = useState(false);
+  const { notifications, addNotification, removeNotification } = useNotifications();
 
   const handleDeleteProject = () => {
     console.log("Project deleted");
@@ -92,6 +94,20 @@ export default function ProjectSettings() {
                   >
                     <Zap className="h-4 w-4" />
                     Upgrade Prompt
+                  </button>
+                  <button
+                    onClick={() =>
+                      addNotification({
+                        type: "success",
+                        title: "CV Uploaded Successfully!",
+                        message: "System has finished parsing",
+                        fileName: "alex_resume_v4.pdf",
+                      })
+                    }
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
+                  >
+                    <Bell className="h-4 w-4" />
+                    Show Notification
                   </button>
                 </div>
               </motion.div>
@@ -194,6 +210,13 @@ export default function ProjectSettings() {
           setIsUpgradePromptOpen(false);
           // Navigate to pricing or checkout
         }}
+      />
+
+      {/* Notification Popups */}
+      <NotificationPopup
+        notifications={notifications}
+        onDismiss={removeNotification}
+        position="top-right"
       />
     </div>
   );
