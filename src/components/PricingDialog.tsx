@@ -83,22 +83,22 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         }
         onOpenChange(val);
       }}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-0 border-2 border-primary shadow-2xl bg-zinc-950">
-          <div className="glass-card p-6 sm:p-8 text-center relative">
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold py-2 text-center tracking-widest uppercase">
+        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-0 border-2 border-primary shadow-2xl bg-zinc-900">
+          <div className="bg-zinc-950 p-6 sm:p-8 text-center relative border-b border-zinc-800">
+            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white text-xs font-bold py-2 text-center tracking-widest uppercase shadow-lg">
               ⚠️ WAIT! Before You Checkout...
             </div>
             <div className="mt-8">
-              <h2 className="text-2xl sm:text-3xl font-black mb-4 text-white">Are You Applying to Only ONE Job?</h2>
-              <p className="text-base sm:text-lg text-zinc-300 mb-6">
-                For just <span className="text-primary font-bold text-xl sm:text-2xl">€15 more</span>, get the <span className="font-bold text-white">Interview Sprint</span>.
+              <h2 className="text-2xl sm:text-3xl font-black mb-4 text-white drop-shadow-lg">Are You Applying to Only ONE Job?</h2>
+              <p className="text-base sm:text-lg text-zinc-100 mb-6">
+                For just <span className="text-primary font-black text-xl sm:text-2xl drop-shadow-md">€15 more</span>, get the <span className="font-black text-white">Interview Sprint</span>.
               </p>
             </div>
           </div>
 
-          <div className="p-6 sm:p-8 space-y-6 bg-zinc-950">
-            <div className="glass-card rounded-xl p-5 sm:p-6 border border-primary/30">
-              <h3 className="font-bold text-lg sm:text-xl mb-4 text-primary">7 Days of Unlimited Power:</h3>
+          <div className="p-6 sm:p-8 space-y-6 bg-zinc-900">
+            <div className="bg-zinc-950 rounded-xl p-5 sm:p-6 border-2 border-primary/40 shadow-lg">
+              <h3 className="font-bold text-lg sm:text-xl mb-4 text-primary drop-shadow-md">7 Days of Unlimited Power:</h3>
               <ul className="space-y-3 text-xs sm:text-sm">
                 {[
                   "✨ Unlimited AI Resume Scans",
@@ -108,18 +108,18 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                   "⚡ Priority Support (<4h response)"
                 ].map((feature, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    <div className="h-5 w-5 rounded-full bg-primary text-black flex items-center justify-center flex-shrink-0">
+                    <div className="h-5 w-5 rounded-full bg-primary text-black flex items-center justify-center flex-shrink-0 shadow-sm">
                       <Check className="h-3 w-3 font-bold" />
                     </div>
-                    <span className="font-medium text-zinc-200">{feature}</span>
+                    <span className="font-semibold text-white">{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-3 sm:p-4 text-center">
-              <p className="text-xs sm:text-sm font-bold text-green-400">
-                📈 Most candidates land <span className="text-xl sm:text-2xl text-green-300">3x more interviews</span> with Interview Sprint
+            <div className="bg-green-500/20 border-2 border-green-500/50 rounded-xl p-3 sm:p-4 text-center shadow-lg">
+              <p className="text-xs sm:text-sm font-bold text-green-300">
+                📈 Most candidates land <span className="text-xl sm:text-2xl text-green-200 drop-shadow-md">3x more interviews</span> with Interview Sprint
               </p>
             </div>
 

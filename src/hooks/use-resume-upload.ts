@@ -146,12 +146,27 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       });
 
       const trimmedJobDesc = jobDescription.trim();
-      resumeId = await createResume({
-        storageId,
+
+      // Build args object with explicit typing
+      const createResumeArgs: {
+        storageId: string;
+        title: string;
+        mimeType: string;
+        jobDescription?: string;
+      } = {
+        storageId: storageId,
         title: fileName,
         mimeType: mimeType,
-        ...(trimmedJobDesc && { jobDescription: trimmedJobDesc }),
-      });
+      };
+
+      // Only add jobDescription if it has content
+      if (trimmedJobDesc) {
+        createResumeArgs.jobDescription = trimmedJobDesc;
+      }
+
+      console.log("[Upload] 🚀 Calling createResume with args:", createResumeArgs);
+
+      resumeId = await createResume(createResumeArgs);
 
       setProcessingResumeId(resumeId);
       setProcessingStatus("Analyzing file structure...");
