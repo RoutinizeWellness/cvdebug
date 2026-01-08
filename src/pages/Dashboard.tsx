@@ -137,6 +137,42 @@ export default function Dashboard() {
     const resumeId = searchParams.get("resumeId");
     const projectId = searchParams.get("projectId");
     const applicationId = searchParams.get("applicationId");
+    const fromPreview = searchParams.get("from") === "preview";
+
+    // Handle preview conversion: auto-upload CV from preview
+    if (fromPreview && isAuthenticated) {
+      const previewData = sessionStorage.getItem("previewData");
+      if (previewData) {
+        try {
+          const { text, fileName, timestamp } = JSON.parse(previewData);
+          // Check if data is recent (within 10 minutes)
+          if (Date.now() - timestamp < 600000) {
+            toast.success("Welcome! Uploading your resume from preview...");
+            // Create a fake file object to trigger upload
+            const blob = new Blob([text], { type: "text/plain" });
+            const file = new (File as any)([blob], fileName || "preview-resume.txt", { type: "text/plain" });
+
+            // Trigger upload automatically
+            setTimeout(() => {
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              if (fileInputRef.current) {
+                fileInputRef.current.files = dataTransfer.files;
+                fileInputRef.current.dispatchEvent(new Event("change", { bubbles: true }));
+              }
+            }, 1000);
+          }
+          sessionStorage.removeItem("previewData");
+        } catch (error) {
+          console.error("Failed to restore preview data:", error);
+        }
+      }
+      // Remove from param to avoid re-triggering
+      setSearchParams(params => {
+        params.delete("from");
+        return params;
+      });
+    }
 
     if (projectId && !selectedProject) {
       setSelectedProject(projectId as Id<"projects">);

@@ -23,6 +23,7 @@ import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATS
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
+import PreviewScan from "./pages/PreviewScan.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -98,6 +99,7 @@ createRoot(document.getElementById("root")!).render(
             <Routes>
               {/* Level 1: Public Funnel */}
               <Route path="/" element={<Landing />} />
+              <Route path="/preview" element={<PreviewScan />} />
               <Route path="/pricing" element={<PricingPage />} />
 
               {/* Industry-Specific Landing Pages */}

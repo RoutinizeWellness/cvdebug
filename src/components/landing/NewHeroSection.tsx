@@ -108,30 +108,31 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex items-center justify-center gap-x-6"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button
-            onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-blue-600"
+            onClick={() => navigate("/preview")}
+            className="glow-button relative flex h-14 min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-8 text-lg font-bold text-white transition-all hover:scale-105"
           >
-            Scan My Resume Now
+            See Robot View - Free
+            <ArrowRight className="h-5 w-5" />
           </Button>
           <button
-            onClick={() => {
-              const element = document.getElementById("how-it-works");
-              element?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="group text-sm font-semibold leading-6 text-white hover:text-primary transition-colors"
+            onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
+            className="group flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-primary/10 px-8 text-base font-semibold text-white hover:bg-primary/20 hover:border-primary/50 transition-all"
           >
-            See how it works{" "}
-            <span
-              aria-hidden="true"
-              className="inline-block transition-transform group-hover:translate-x-1"
-            >
-              →
-            </span>
+            Sign Up for Full Access
           </button>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-4 text-sm text-slate-500"
+        >
+          No credit card • No sign up required • Instant results in 10 seconds
+        </motion.p>
       </div>
     </section>
   );
