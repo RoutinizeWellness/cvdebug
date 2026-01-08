@@ -1,12 +1,37 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { useState, useEffect } from "react";
 
 export function NewHeroSection() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [savedCount, setSavedCount] = useState(141);
+  const [unlockedToday, setUnlockedToday] = useState(7);
+
+  useEffect(() => {
+    // Simulate live counter updates
+    const savedInterval = setInterval(() => {
+      setSavedCount(prev => {
+        const change = Math.random() > 0.7 ? 1 : 0;
+        return prev + change;
+      });
+    }, 15000);
+
+    const todayInterval = setInterval(() => {
+      setUnlockedToday(prev => {
+        const change = Math.random() > 0.6 ? 1 : 0;
+        return Math.min(prev + change, 15);
+      });
+    }, 20000);
+
+    return () => {
+      clearInterval(savedInterval);
+      clearInterval(todayInterval);
+    };
+  }, []);
 
   return (
     <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
@@ -28,21 +53,32 @@ export function NewHeroSection() {
       </div>
 
       <div className="mx-auto max-w-4xl py-12 sm:py-20 lg:py-24 text-center">
+        {/* Live Stats Counters */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 flex justify-center"
+          transition={{ duration: 0.5 }}
+          className="mb-8 flex flex-col sm:flex-row gap-3 justify-center items-center"
         >
-          <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium leading-6 text-primary ring-1 ring-inset ring-primary/20 backdrop-blur-sm">
-            New: ATS 2.0 Parser Support{" "}
-            <span className="text-slate-400 mx-1">|</span>{" "}
-            <a
-              href="#changelog"
-              className="font-semibold text-primary hover:text-primary/80"
-            >
-              Read changelog <span aria-hidden="true">→</span>
-            </a>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-emerald-500/30">
+            <div className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </div>
+            <TrendingUp className="h-4 w-4 text-emerald-400" />
+            <span className="text-sm font-mono text-slate-300">
+              <span className="text-emerald-400 font-bold">{savedCount}</span> people saved from ghosting this week
+            </span>
+          </div>
+
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-primary/30">
+            <div className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </div>
+            <span className="text-sm font-mono text-slate-300">
+              <span className="text-primary font-bold">{unlockedToday}</span> interviews unlocked today
+            </span>
           </div>
         </motion.div>
 

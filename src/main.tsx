@@ -21,6 +21,7 @@ import ATSScannerNurses from "./pages/industry/ATSScannerNurses.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
+import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -103,6 +104,9 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
               <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
+
+              {/* Company-Specific Optimize Pages */}
+              <Route path="/optimize/google-sde" element={<GoogleSDEOptimize />} />
 
               {/* Level 2: Auth & Onboarding */}
               <Route path="/auth" element={<AuthPage />} />
