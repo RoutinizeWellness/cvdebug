@@ -147,26 +147,31 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
       const trimmedJobDesc = jobDescription.trim();
 
-      // Build args object with explicit typing
-      const createResumeArgs: {
-        storageId: string;
-        title: string;
-        mimeType: string;
-        jobDescription?: string;
-      } = {
-        storageId: storageId,
+      console.log("[Upload] 🚀 About to call createResume with:", {
+        storageId_raw: storageId,
+        storageId_type: typeof storageId,
+        storageId_length: storageId?.length,
         title: fileName,
         mimeType: mimeType,
-      };
+        hasJobDescription: !!trimmedJobDesc
+      });
 
-      // Only add jobDescription if it has content
-      if (trimmedJobDesc) {
-        createResumeArgs.jobDescription = trimmedJobDesc;
+      // Call mutation directly - Convex will handle type validation
+      try {
+        resumeId = await createResume({
+          storageId: storageId,
+          title: fileName,
+          mimeType: mimeType,
+          ...(trimmedJobDesc && { jobDescription: trimmedJobDesc }),
+        });
+        console.log("[Upload] ✅ createResume succeeded, resumeId:", resumeId);
+      } catch (createError: any) {
+        console.error("[Upload] ❌ createResume failed with error:", createError);
+        console.error("[Upload] ❌ Error message:", createError?.message);
+        console.error("[Upload] ❌ Error code:", createError?.code);
+        console.error("[Upload] ❌ Error data:", createError?.data);
+        throw createError;
       }
-
-      console.log("[Upload] 🚀 Calling createResume with args:", createResumeArgs);
-
-      resumeId = await createResume(createResumeArgs);
 
       setProcessingResumeId(resumeId);
       setProcessingStatus("Analyzing file structure...");
