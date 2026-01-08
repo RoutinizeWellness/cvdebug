@@ -21,6 +21,7 @@ import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 
+// Production: shocking-meerkat-209
 const convexUrl = import.meta.env.VITE_CONVEX_URL as string;
 const convex = new ConvexReactClient(convexUrl);
 
