@@ -20,12 +20,11 @@ import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
+import { getBackendUrl } from "@/config/backend";
 
-// Force production deployment - use prod URL unless explicitly in dev
-const isLocalDev = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname.includes("vly.sh"));
-const convexUrl = isLocalDev
-  ? (import.meta.env.VITE_CONVEX_URL || "https://next-cod-660.convex.cloud")
-  : "https://shocking-meerkat-209.convex.cloud";
+// Use hardcoded backend configuration
+const convexUrl = getBackendUrl();
+console.log("[CVDebug] Using Convex backend:", convexUrl);
 const convex = new ConvexReactClient(convexUrl);
 
 // Determine environment to select the correct Clerk Key
