@@ -1,30 +1,31 @@
-import { Navbar } from "@/components/landing/Navbar";
-import { HeroVisualizerSection } from "@/components/landing/HeroVisualizerSection";
-import { QuickIntegrityCheck } from "@/components/landing/QuickIntegrityCheck";
-import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { PricingSection } from "@/components/landing/PricingSection";
-import { Footer } from "@/components/landing/Footer";
+import { NewNavbar } from "@/components/landing/NewNavbar";
+import { NewHeroSection } from "@/components/landing/NewHeroSection";
+import { NewSocialProofSection } from "@/components/landing/NewSocialProofSection";
+import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSection";
+import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
+import { FinalCTASection } from "@/components/landing/FinalCTASection";
+import { NewFooter } from "@/components/landing/NewFooter";
 
 export default function Landing() {
   return (
-    <div className="bg-slate-900 text-white min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30">
-      <Navbar />
-      
-      <main className="flex-grow pt-24 pb-12 relative">
-        {/* Background Ambient Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-hero-glow pointer-events-none -z-10"></div>
-        
-        <div className="max-w-7xl mx-auto px-6 flex flex-col gap-24">
-          <HeroVisualizerSection />
-          <QuickIntegrityCheck />
-          <HowItWorksSection />
-          <FeaturesSection />
-          <PricingSection />
-        </div>
+    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+      <style>{`
+        body {
+          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+        }
+      `}</style>
+
+      <NewNavbar />
+
+      <main className="flex-grow pt-16">
+        <NewHeroSection />
+        <NewSocialProofSection />
+        <ComparisonVisualSection />
+        <NewFeaturesGrid />
+        <FinalCTASection />
       </main>
-      
-      <Footer />
+
+      <NewFooter />
     </div>
   );
 }
