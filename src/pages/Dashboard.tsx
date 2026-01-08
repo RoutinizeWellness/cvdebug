@@ -48,6 +48,7 @@ import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
 import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
 import { LinkedInOptimizer } from "@/components/dashboard/tools/LinkedInOptimizer";
+import { BulletRewriter } from "@/components/dashboard/BulletRewriter";
 import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
@@ -329,6 +330,13 @@ export default function Dashboard() {
             <h1 className="text-2xl md:text-3xl font-bold text-white">AI Tools</h1>
             <div className="grid grid-cols-1 gap-4">
               <button
+                onClick={() => setCurrentView('bullet-rewriter')}
+                className="p-6 rounded-2xl bg-gradient-to-br from-secondary/10 to-pink-500/10 border-2 border-secondary/30 text-left hover:border-secondary/60 transition-all"
+              >
+                <h3 className="text-lg font-bold text-white mb-2">AI Bullet Rewriter</h3>
+                <p className="text-sm text-slate-400">Transform weak bullets into impact-driven achievements using Google XYZ formula</p>
+              </button>
+              <button
                 onClick={() => setCurrentView('cover-letter')}
                 className="p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border-2 border-primary/30 text-left hover:border-primary/60 transition-all"
               >
@@ -376,6 +384,8 @@ export default function Dashboard() {
         return <LinkedInOptimizer onUpgrade={handleUpgrade} />;
       case 'cover-letter':
         return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />;
+      case 'bullet-rewriter':
+        return <BulletRewriter />;
       case 'writing-forge':
         return <WritingForge />;
       default:

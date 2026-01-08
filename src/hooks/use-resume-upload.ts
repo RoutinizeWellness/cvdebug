@@ -374,9 +374,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             try {
               // Set OCR parameters for better accuracy
               await worker.setParameters({
-                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
                 preserve_interword_spaces: '1', // Better spacing preservation
-              });
+              } as any);
 
               for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
                 if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
@@ -443,9 +442,8 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             try {
               // Set OCR parameters for better accuracy
               await worker.setParameters({
-                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
                 preserve_interword_spaces: '1', // Better spacing preservation
-              });
+              } as any);
 
               const result = await worker.recognize(imageUrl);
               text = result.data.text;

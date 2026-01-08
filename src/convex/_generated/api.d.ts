@@ -12,6 +12,7 @@ import type * as abandonmentEmails from "../abandonmentEmails.js";
 import type * as admin from "../admin.js";
 import type * as ai from "../ai.js";
 import type * as ai_apiClient from "../ai/apiClient.js";
+import type * as ai_bulletRewriter from "../ai/bulletRewriter.js";
 import type * as ai_chatbot from "../ai/chatbot.js";
 import type * as ai_config_keywords from "../ai/config/keywords.js";
 import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
@@ -70,6 +71,7 @@ declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   ai: typeof ai;
   "ai/apiClient": typeof ai_apiClient;
+  "ai/bulletRewriter": typeof ai_bulletRewriter;
   "ai/chatbot": typeof ai_chatbot;
   "ai/config/keywords": typeof ai_config_keywords;
   "ai/config/metricTemplates": typeof ai_config_metricTemplates;

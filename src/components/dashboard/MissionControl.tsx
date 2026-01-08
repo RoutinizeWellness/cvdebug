@@ -21,6 +21,7 @@ import { FormattingAudit } from "./analysis/FormattingAudit";
 import { ActionableFixes } from "./analysis/ActionableFixes";
 import { Button } from "@/components/ui/button";
 import { SprintProgressWidget } from "./SprintProgressWidget";
+import { ScoreEvolutionChart } from "./ScoreEvolutionChart";
 
 const apiAny = api as any;
 
@@ -422,6 +423,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </div>
           )}
         </div>
+      </div>
+
+      {/* Score Evolution Chart - Full Width */}
+      <div className="mt-6">
+        <ScoreEvolutionChart />
       </div>
 
       {/* AI Suggestion Toast */}

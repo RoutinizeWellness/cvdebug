@@ -90,10 +90,8 @@ export const performOcr = internalAction({
             try {
               // Set OCR parameters for better accuracy
               await worker.setParameters({
-                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
-                tessedit_char_whitelist: undefined, // Allow all characters
                 preserve_interword_spaces: '1', // Better spacing preservation
-              });
+              } as any);
 
               const result = await worker.recognize(buffer);
               extractedText = result.data.text;
