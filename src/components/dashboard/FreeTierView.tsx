@@ -28,15 +28,17 @@ export function FreeTierView({
   // Get top 2 critical errors
   const top2Errors = formatIssues.slice(0, 2);
   const remainingErrors = Math.max(formatCount - 2, 0);
-  
+
   // Get top 2 missing keywords
   const top2Keywords = criticalKeywords.slice(0, 2);
   const remainingKeywords = Math.max(missingCount - 2, 0);
-  
+
   const totalHiddenIssues = remainingErrors + remainingKeywords;
-  
-  // Calculate projected score (realistic improvement)
-  const projectedScore = Math.min(score + (totalHiddenIssues * 2.5), 94);
+
+  // Calculate percentile rank (Hormozi: mostrar pérdida/dolor)
+  const percentileRank = Math.max(5, 100 - score); // Si score es 71%, estás en el 29% inferior
+  const competitorScore = 92; // Los que consiguen entrevistas
+  const missingPoints = competitorScore - score;
 
   return (
     <div className="space-y-8">
@@ -55,50 +57,52 @@ export function FreeTierView({
               </span>
             </h3>
             <p className="text-zinc-300 text-sm leading-relaxed mb-3">
-              I've analyzed your <strong className="text-primary">Robot View</strong> below. Here's why you're being ghosted: 
-              <span className="text-red-400 font-semibold"> {formatCount} critical parsing errors</span> are making your resume invisible to ATS systems, 
-              and <span className="text-yellow-400 font-semibold">{missingCount} missing keywords</span> are killing your match score.
+              Bad news first: You're in the <strong className="text-red-400">{percentileRank}% inferior</strong> of candidates for your target role.
+              Recruiters who pass the screening have a <strong className="text-green-400">92% ATS score</strong>. You're at <strong className="text-red-400">{score}%</strong>.
+              You're missing <strong className="text-yellow-400 font-semibold">{missingCount} critical keywords</strong> they have.
             </p>
             <p className="text-zinc-400 text-xs italic">
-              💡 The good news? These are 1-click fixes. Most candidates don't even know this is happening to them.
+              💡 I can show you the exact {missingCount} keywords you need. But I need $4.99 to unlock the list.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Projected Score Visual - Fear of Loss */}
-      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-red-950/30 via-orange-950/20 to-green-950/30 border-2 border-orange-500/30 relative overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none"></div>
-        
+      {/* Pain Point Visual - Hormozi Style */}
+      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-red-950/40 via-red-900/30 to-red-950/40 border-2 border-red-500/30 relative overflow-hidden">
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-red-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="h-6 w-6 text-orange-400" />
-            <h3 className="text-2xl font-bold text-white">Your Potential Score</h3>
+            <AlertTriangle className="h-6 w-6 text-red-400" />
+            <h3 className="text-2xl font-bold text-white">Estás en el {percentileRank}% Inferior de Candidatos</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Current Score */}
-            <div className="bg-red-950/40 border-2 border-red-500/40 rounded-xl p-6 text-center">
-              <div className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">Current Score</div>
+            {/* Your Score - Pain */}
+            <div className="bg-red-950/60 border-2 border-red-500/40 rounded-xl p-6 text-center">
+              <div className="text-red-400 text-sm font-bold uppercase tracking-wider mb-2">Tu Score</div>
               <div className="text-6xl font-black text-red-400 mb-2">{score}%</div>
-              <div className="text-red-300 text-xs">❌ Getting auto-rejected</div>
+              <div className="text-red-300 text-sm font-semibold">❌ Auto-rechazado por el 90% de empresas</div>
             </div>
-            
-            {/* Projected Score */}
-            <div className="bg-green-950/40 border-2 border-green-500/40 rounded-xl p-6 text-center relative">
-              <div className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full animate-pulse">
-                +{Math.round(projectedScore - score)} points
+
+            {/* Competitors - Show what they're missing */}
+            <div className="bg-green-950/60 border-2 border-green-500/40 rounded-xl p-6 text-center relative">
+              <div className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
+                {missingPoints} puntos más
               </div>
-              <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">With 1-Click Fixes</div>
-              <div className="text-6xl font-black text-green-400 mb-2">{Math.round(projectedScore)}%</div>
-              <div className="text-green-300 text-xs">✅ Passing ATS filters</div>
+              <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">Los que consiguen la entrevista</div>
+              <div className="text-6xl font-black text-green-400 mb-2">{competitorScore}%</div>
+              <div className="text-green-300 text-sm font-semibold">✅ Pasan el filtro ATS</div>
             </div>
           </div>
-          
-          <div className="bg-zinc-900/80 border border-zinc-700 rounded-lg p-4 text-center">
-            <p className="text-zinc-300 text-sm font-medium">
-              <Zap className="inline h-4 w-4 text-yellow-400 mr-1" />
-              <strong className="text-white">Unlock the fixes</strong> that will take you from {score}% to {Math.round(projectedScore)}% in under 5 minutes
+
+          <div className="bg-red-900/40 border-2 border-red-700 rounded-lg p-4 text-center">
+            <p className="text-zinc-200 text-sm font-bold mb-2">
+              Te faltan <span className="text-yellow-400">{missingCount} keywords críticas</span> que ellos tienen
+            </p>
+            <p className="text-zinc-400 text-xs">
+              [Desbloquear lista completa por $4.99]
             </p>
           </div>
         </div>
@@ -302,10 +306,10 @@ export function FreeTierView({
           
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
-              €5 is the Only Way to Fix This
+              El 90% de los que se quedan aquí no reciben ni una llamada
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
-              Get all {totalHiddenIssues}+ fixes, keyword placement tips, and a sanitized PDF that actually passes ATS
+              Desbloquea las {missingCount} keywords exactas + {formatCount} fixes críticos que necesitas para llegar al 92%
             </p>
           </div>
 
@@ -342,7 +346,7 @@ export function FreeTierView({
           </div>
 
           <div className="space-y-3">
-            <Button 
+            <Button
               onClick={() => setShowPricing(true)}
               size="lg"
               className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -350,7 +354,28 @@ export function FreeTierView({
               <Lock className="mr-3 h-6 w-6 text-black" />
               Instant Fix - Only €4.99
             </Button>
-            
+
+            {/* Manual Review Option - $49 */}
+            <div className="bg-gradient-to-r from-purple-950/50 to-blue-950/50 border-2 border-purple-500/30 rounded-lg p-4 max-w-md mx-auto">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="h-10 w-10 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-purple-500/30">
+                  <span className="text-xl">👨‍💻</span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-bold mb-1">Albert revisa tu CV personalmente</h4>
+                  <p className="text-zinc-300 text-xs">Video de 3 min con feedback brutal + todos los fixes</p>
+                </div>
+                <span className="text-purple-400 font-black text-xl">€49</span>
+              </div>
+              <Button
+                onClick={() => setShowPricing(true)}
+                size="sm"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+              >
+                Quiero la revisión manual →
+              </Button>
+            </div>
+
             <p className="text-xs text-zinc-400">
               or upgrade to <button onClick={() => setShowPricing(true)} className="text-primary underline font-semibold">Interview Sprint (€19.99)</button> for unlimited scans + cover letter optimizer
             </p>

@@ -214,37 +214,41 @@ export const sendAbandonmentEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Recruiter Alert: Your Resume Has Visibility Issues</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">The Ghosting Season</h2>
         <p>Hi ${firstName},</p>
-        <p>You started a resume analysis but didn't complete the review. As a Principal Technical Recruiter, I need to flag something critical: your initial scan revealed <strong>"ATS Invisibility Issues"</strong> that are likely blocking your applications.</p>
-        
+        <p>He visto que tu score se quedó en <strong>${args.resumeScore}%</strong>.</p>
+
         <div class="alert-box">
-          <p style="margin: 0; font-weight: 600; color: #991b1b;">Screening System Assessment:</p>
+          <p style="margin: 0; font-weight: 600; color: #991b1b;">La verdad brutal:</p>
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">
-            Our ATS simulation detected <strong>${args.criticalIssuesCount} critical parsing failures</strong>. When our screening systems can't read your resume, it never reaches my desk—regardless of your qualifications.
+            El <strong>90% de los que se quedan en este rango no reciben ni una llamada</strong>. No es porque no sean buenos, es porque el ATS los hace invisibles.
           </p>
         </div>
 
-        <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">Your Current ATS Compatibility Score</p>
-          <p style="margin: 0; font-size: 48px; font-weight: 800; color: ${args.resumeScore >= 70 ? '#10b981' : args.resumeScore >= 50 ? '#f59e0b' : '#ef4444'};">${args.resumeScore}%</p>
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #64748b;">Recruiter Benchmark: 70%+ for interview consideration</p>
+        <div style="background: #7f1d1d; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #fca5a5;">Tu Score ATS</p>
+          <p style="margin: 0; font-size: 48px; font-weight: 800; color: #fecaca;">${args.resumeScore}%</p>
+          <p style="margin: 8px 0 0 0; font-size: 12px; color: #fca5a5;">Los que consiguen entrevista tienen 92%+</p>
         </div>
 
-        <p><strong>Professional Reality:</strong> In my experience screening thousands of applications, ATS systems reject 75% of resumes before human review. Complex formatting, hidden text layers, or graphics cause automatic disqualification—even for perfectly qualified candidates.</p>
+        <p>He bajado el Single Scan a <strong>$4.99</strong> por 24h para que dejes de ser invisible.</p>
+
+        <p><strong>No quiero tus $5 si no te consigo la entrevista.</strong></p>
+
+        <p>Si desbloqueas tu reporte hoy y en 7 días no has conseguido más respuestas, te devuelvo el dinero. Sin preguntas.</p>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard?resumeId=latest" class="cta-button">View My ATS Report →</a>
+          <a href="https://cvdebug.com/dashboard?action=unlock&special=true" class="cta-button" style="background: #dc2626;">🔓 Desbloquear por $4.99 (24h solo)</a>
         </div>
 
         <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">Recruiter Insight:</p>
-          <p style="margin: 8px 0 0 0; font-size: 14px;">I review resumes that score 70%+ first. Below that threshold, candidates rarely make it to the interview stage—not due to lack of skills, but due to formatting issues that prevent proper parsing.</p>
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">Por qué te escribo esto:</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px;">Veo tu talent. Tienes ${args.criticalIssuesCount} errores críticos que están matando tus aplicaciones. Son arreglables en 5 minutos. Pero solo si sabes cuáles son.</p>
         </div>
 
         <div class="signature">
-          <p style="margin: 0;"><strong>Your Principal Technical Recruiter AI</strong></p>
-          <p style="margin: 4px 0 0 0; font-size: 12px;">CVDebug Team</p>
+          <p style="margin: 0;"><strong>Albert</strong></p>
+          <p style="margin: 4px 0 0 0; font-size: 12px;">Founder, CVDebug</p>
         </div>
       </div>
     `;
@@ -257,9 +261,9 @@ export const sendAbandonmentEmail = internalAction({
           Authorization: `Bearer ${RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: "CVDebug <cvdebug@cvdebug.com>",
+          from: "Albert from CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "⚠️ Recruiter Alert: Your Resume May Be Invisible to ATS",
+          subject: "Tu score de ${args.resumeScore}% está en el 90% que nunca recibe llamadas",
           html: emailTemplate(content),
         }),
       });
