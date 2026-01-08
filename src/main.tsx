@@ -22,6 +22,7 @@ import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.ts
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
+import ProjectSettings from "./pages/ProjectSettings.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -120,7 +121,10 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/dashboard/tools/cover-letter" element={<Dashboard />} />
               <Route path="/dashboard/tools/linkedin" element={<Dashboard />} />
               <Route path="/dashboard/settings" element={<Dashboard />} />
-              
+
+              {/* Project Settings Demo */}
+              <Route path="/project-settings" element={<ProjectSettings />} />
+
               {/* Payment Success */}
               <Route path="/payment/success" element={<PaymentSuccess />} />
               
