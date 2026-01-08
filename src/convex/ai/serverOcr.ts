@@ -7,6 +7,31 @@ import Tesseract, { createWorker } from "tesseract.js";
 // Use require to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
 
+/**
+ * Enhanced text cleaning function that preserves structure while removing noise
+ */
+function cleanExtractedText(text: string): string {
+  return text
+    // Remove null bytes and replacement characters
+    .replace(/\0/g, "")
+    .replace(/[\uFFFD\uFFFE\uFFFF]/g, "")
+    // Preserve line breaks but normalize them
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    // Remove excessive line breaks (more than 2 consecutive)
+    .replace(/\n{3,}/g, "\n\n")
+    // Clean up control characters but keep tabs, newlines
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
+    // Normalize spaces (replace multiple spaces with single space)
+    .replace(/ {2,}/g, " ")
+    // Remove spaces at start/end of lines
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n')
+    // Final trim
+    .trim();
+}
+
 export const processWithServerOcr = internalAction({
   args: {
     resumeId: v.id("resumes"),
@@ -24,14 +49,14 @@ export const processWithServerOcr = internalAction({
         throw new Error("File not found in storage");
       }
 
-      // Fetch the file with timeout
+      // Fetch the file with extended timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 60000); // Increased to 60s
 
       try {
         const response = await fetch(fileUrl, { signal: controller.signal });
         clearTimeout(timeoutId);
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
         }
@@ -46,61 +71,82 @@ export const processWithServerOcr = internalAction({
         const contentType = response.headers.get('content-type') || "unknown";
 
         let extractedText = "";
-        
-        // Use Tesseract.js for OCR on images and image-based PDFs
+        let confidence = 0;
+        let method = "utf8_extraction";
+
+        // Use Enhanced Tesseract.js for OCR on images and image-based PDFs
         if (contentType.includes("image") || contentType.includes("pdf")) {
-          console.log(`[Server OCR] Running Tesseract.js OCR on ${contentType}`);
-          
+          console.log(`[Server OCR] Running enhanced Tesseract.js OCR on ${contentType} with multi-language support`);
+
           try {
-            const worker = await createWorker('eng');
-            
+            // Multi-language support for better accuracy
+            const worker = await createWorker(['eng', 'spa', 'fra'], 1, {
+              logger: (m: any) => {
+                if (m.status === 'recognizing text') {
+                  console.log(`[OCR Progress] ${m.status}: ${Math.round(m.progress * 100)}%`);
+                } else if (m.status === 'loading language traineddata') {
+                  console.log(`[OCR Progress] Loading language data: ${m.progress.toFixed(2)}%`);
+                }
+              }
+            });
+
             try {
-              const { data: { text } } = await worker.recognize(buffer);
-              extractedText = text;
-              console.log(`[Server OCR] Tesseract extracted ${extractedText.length} characters`);
+              // Set OCR parameters for better accuracy
+              await worker.setParameters({
+                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
+                tessedit_char_whitelist: undefined, // Allow all characters
+                preserve_interword_spaces: '1', // Better spacing preservation
+              });
+
+              const result = await worker.recognize(buffer);
+              extractedText = result.data.text;
+              confidence = result.data.confidence || 0;
+              method = "enhanced_tesseract_ocr";
+
+              console.log(`[Server OCR] Tesseract extracted ${extractedText.length} characters with ${confidence.toFixed(2)}% confidence`);
+
+              // Log low confidence warning
+              if (confidence < 60) {
+                console.warn(`[Server OCR] Low OCR confidence detected: ${confidence.toFixed(2)}%. Text quality may be poor.`);
+              }
             } finally {
               await worker.terminate();
             }
-            
+
           } catch (ocrError: any) {
-            console.error("[Server OCR] Tesseract failed, trying UTF-8 extraction:", ocrError.message);
+            console.error("[Server OCR] Enhanced Tesseract failed, trying UTF-8 extraction:", ocrError.message);
             // Fallback to UTF-8 extraction
             extractedText = buffer.toString('utf-8');
+            method = "utf8_fallback";
           }
         } else {
           // Try UTF-8 extraction for non-image files
           extractedText = buffer.toString('utf-8');
         }
-        
-        // Clean up the text
+
+        // Clean up the text with enhanced cleaning
         try {
-          
-          // Clean up the text
-          extractedText = extractedText
-            .replace(/\0/g, '')
-            .replace(/[\uFFFD\uFFFE\uFFFF]/g, '')
-            .replace(/[^\x20-\x7E\n\r\t]/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-          
+          extractedText = cleanExtractedText(extractedText);
+
           if (extractedText.length < 50) {
             throw new Error(`Insufficient text extracted (${extractedText.length} chars)`);
           }
-          
+
           const processingTime = Date.now() - startTime;
-          console.log(`[Server OCR] Successfully extracted ${extractedText.length} characters in ${processingTime}ms`);
-          
+          console.log(`[Server OCR] Successfully extracted ${extractedText.length} characters in ${processingTime}ms using ${method}`);
+
           // Update the resume with OCR text
           await ctx.runMutation(internalAny.resumes.updateResumeOcr, {
             id: args.resumeId,
             ocrText: extractedText,
           });
-          
-          return { 
-            success: true, 
+
+          return {
+            success: true,
             textLength: extractedText.length,
             processingTime,
-            method: "utf8_extraction"
+            confidence: confidence > 0 ? confidence.toFixed(2) : undefined,
+            method
           };
           
         } catch (extractionError: any) {
@@ -160,9 +206,9 @@ export const processWithServerOcr = internalAction({
         
       } catch (fetchError: any) {
         clearTimeout(timeoutId);
-        
+
         if (fetchError.name === 'AbortError') {
-          throw new Error("File fetch timeout after 45 seconds");
+          throw new Error("File fetch timeout after 60 seconds");
         }
         throw fetchError;
       }

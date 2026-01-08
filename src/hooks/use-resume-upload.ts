@@ -360,43 +360,60 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           }
           
           if (text.trim().length < 20) {
-            console.log("PDF text extraction yielded minimal text, attempting OCR fallback...");
-            toast.info("PDF format not standard, using OCR for text extraction...");
-            setProcessingStatus("Running OCR on image-based PDF...");
-            
+            console.log("PDF text extraction yielded minimal text, attempting enhanced OCR fallback...");
+            toast.info("PDF format not standard, using enhanced OCR for text extraction...");
+            setProcessingStatus("Running enhanced OCR on image-based PDF...");
+
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             let ocrText = "";
 
-            const worker = await createWorker("eng");
-            
+            // Multi-language support for better accuracy
+            const worker = await createWorker(['eng', 'spa', 'fra']);
+
             try {
+              // Set OCR parameters for better accuracy
+              await worker.setParameters({
+                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
+                preserve_interword_spaces: '1', // Better spacing preservation
+              });
+
               for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
                 if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
-                
-                setProcessingStatus(`Scanning page ${i} of ${Math.min(pdf.numPages, 5)}...`);
-                
+
+                setProcessingStatus(`Scanning page ${i} of ${Math.min(pdf.numPages, 5)} with enhanced OCR...`);
+
                 const page = await pdf.getPage(i);
-                const viewport = page.getViewport({ scale: 2.0 });
+                // Higher scale for better OCR accuracy
+                const viewport = page.getViewport({ scale: 2.5 });
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
-                
+
                 await page.render({
                   canvasContext: context!,
                   viewport: viewport
                 }).promise;
-                
+
                 const blob = await new Promise<Blob | null>((resolve) => {
                   canvas.toBlob((b) => resolve(b), 'image/png');
                 });
-                
+
                 if (blob) {
                   const imageUrl = URL.createObjectURL(blob);
                   try {
-                    const ret = await worker.recognize(imageUrl);
-                    ocrText += ret.data.text + "\n";
+                    const result = await worker.recognize(imageUrl);
+                    const pageText = result.data.text;
+                    const confidence = result.data.confidence || 0;
+
+                    console.log(`[Client OCR] Page ${i} extracted with ${confidence.toFixed(2)}% confidence`);
+
+                    if (confidence < 60) {
+                      console.warn(`[Client OCR] Low confidence on page ${i}: ${confidence.toFixed(2)}%`);
+                    }
+
+                    ocrText += pageText + "\n";
                   } catch (ocrError) {
-                    console.error(`OCR failed for PDF page ${i}:`, ocrError);
+                    console.error(`Enhanced OCR failed for PDF page ${i}:`, ocrError);
                   } finally {
                     URL.revokeObjectURL(imageUrl);
                   }
@@ -405,7 +422,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             } finally {
               await worker.terminate();
             }
-            
+
             text = ocrText;
             
             if (!text.trim()) {
@@ -416,15 +433,30 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           if (pdfError.message === "Aborted") throw pdfError;
           
           console.error("PDF parsing failed:", pdfError);
-          toast.info("PDF format not recognized, attempting OCR extraction...");
-          setProcessingStatus("PDF parsing failed, attempting OCR...");
-          
+          toast.info("PDF format not recognized, attempting enhanced OCR extraction...");
+          setProcessingStatus("PDF parsing failed, attempting enhanced OCR...");
+
           try {
-            const worker = await createWorker("eng");
+            // Multi-language support for better accuracy
+            const worker = await createWorker(['eng', 'spa', 'fra']);
             const imageUrl = URL.createObjectURL(file);
             try {
-              const ret = await worker.recognize(imageUrl);
-              text = ret.data.text;
+              // Set OCR parameters for better accuracy
+              await worker.setParameters({
+                tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
+                preserve_interword_spaces: '1', // Better spacing preservation
+              });
+
+              const result = await worker.recognize(imageUrl);
+              text = result.data.text;
+              const confidence = result.data.confidence || 0;
+
+              console.log(`[Client OCR] PDF extracted with ${confidence.toFixed(2)}% confidence`);
+
+              if (confidence < 60) {
+                console.warn(`[Client OCR] Low confidence: ${confidence.toFixed(2)}%`);
+              }
+
               if (!text.trim()) {
                 throw new Error("OCR produced no text");
               }
@@ -433,7 +465,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
               await worker.terminate();
             }
           } catch (ocrError) {
-            console.error("OCR fallback also failed:", ocrError);
+            console.error("Enhanced OCR fallback also failed:", ocrError);
             // Add OCR prefix to trigger server fallback
             throw new Error("OCR: Could not read text from this file. Please try: 1) Re-saving as a new PDF using 'Print to PDF', 2) Converting to Word (.docx) format, or 3) Ensuring the file contains selectable text (not just images).");
           }
@@ -445,26 +477,41 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         text = result.value;
       } else {
         try {
-          setProcessingStatus("Scanning image for text...");
-          const worker = await createWorker("eng");
+          setProcessingStatus("Scanning image with enhanced OCR...");
+          // Multi-language support for better accuracy
+          const worker = await createWorker(['eng', 'spa', 'fra']);
           const imageUrl = URL.createObjectURL(file);
           try {
-            const ret = await worker.recognize(imageUrl);
-            text = ret.data.text;
+            // Set OCR parameters for better accuracy
+            await worker.setParameters({
+              tessedit_pageseg_mode: '1', // Automatic page segmentation with OSD
+              preserve_interword_spaces: '1', // Better spacing preservation
+            });
+
+            const result = await worker.recognize(imageUrl);
+            text = result.data.text;
+            const confidence = result.data.confidence || 0;
+
+            console.log(`[Client OCR] Image extracted with ${confidence.toFixed(2)}% confidence`);
+
+            if (confidence < 60) {
+              console.warn(`[Client OCR] Low confidence: ${confidence.toFixed(2)}%`);
+              toast.info(`Image quality may be low (${confidence.toFixed(0)}% confidence). Consider using a higher resolution scan.`);
+            }
           } catch (ocrError: any) {
-             console.error("Inner OCR Error:", ocrError);
-             const errorStr = ocrError?.message || String(ocrError);
-             // Prefix with OCR to trigger server-side fallback
-             if (errorStr.includes("attempting to read image")) {
-                throw new Error("OCR: The image file appears to be corrupted or in an unsupported format.");
-             }
-             throw new Error(`OCR: Could not read text from this image. ${errorStr}`);
+            console.error("Inner OCR Error:", ocrError);
+            const errorStr = ocrError?.message || String(ocrError);
+            // Prefix with OCR to trigger server-side fallback
+            if (errorStr.includes("attempting to read image")) {
+              throw new Error("OCR: The image file appears to be corrupted or in an unsupported format.");
+            }
+            throw new Error(`OCR: Could not read text from this image. ${errorStr}`);
           } finally {
             URL.revokeObjectURL(imageUrl);
             await worker.terminate();
           }
         } catch (ocrError: any) {
-          console.error("Image OCR processing failed:", ocrError);
+          console.error("Enhanced image OCR processing failed:", ocrError);
           // If it's already our formatted error, rethrow it to preserve the "OCR:" prefix
           if (ocrError.message && ocrError.message.startsWith("OCR:")) {
             throw ocrError;
@@ -477,11 +524,30 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         throw new Error("OCR: No readable text found. Please ensure your file contains selectable text (not just images) or try uploading as .docx format.");
       }
 
-      const cleanText = text.replace(/\0/g, '').replace(/[\uFFFD\uFFFE\uFFFF]/g, '');
+      // Enhanced text cleaning function
+      const cleanText = text
+        // Remove null bytes and replacement characters
+        .replace(/\0/g, "")
+        .replace(/[\uFFFD\uFFFE\uFFFF]/g, "")
+        // Preserve line breaks but normalize them
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
+        // Remove excessive line breaks (more than 2 consecutive)
+        .replace(/\n{3,}/g, "\n\n")
+        // Clean up control characters but keep tabs, newlines
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
+        // Normalize spaces (replace multiple spaces with single space)
+        .replace(/ {2,}/g, " ")
+        // Remove spaces at start/end of lines
+        .split('\n')
+        .map(line => line.trim())
+        .join('\n')
+        // Final trim
+        .trim();
 
       console.log("DEBUG: Extracted text length:", cleanText.length);
       console.log("DEBUG: First 100 chars:", cleanText.substring(0, 100));
-      
+
       if (cleanText.length < 10) {
         throw new Error(`OCR: Extracted text is too short (${cleanText.length} chars). Your file may be corrupted or contain only images. Try re-saving as PDF or uploading as .docx.`);
       }
