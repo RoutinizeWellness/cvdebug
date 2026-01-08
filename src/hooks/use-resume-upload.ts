@@ -145,11 +145,12 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         fileType: file.type
       });
 
+      const trimmedJobDesc = jobDescription.trim();
       resumeId = await createResume({
         storageId,
         title: fileName,
         mimeType: mimeType,
-        jobDescription: jobDescription.trim() || undefined,
+        ...(trimmedJobDesc && { jobDescription: trimmedJobDesc }),
       });
 
       setProcessingResumeId(resumeId);
