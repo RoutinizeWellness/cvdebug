@@ -81,12 +81,12 @@ export function SettingsView() {
     : "No active subscription";
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative w-full pb-8">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay"></div>
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="layout-container flex flex-col max-w-[1200px] mx-auto px-6 py-8 md:px-10 md:py-12 relative z-10">
+      <div className="layout-container flex flex-col max-w-[1200px] mx-auto relative z-10">
         {/* Page Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div className="flex flex-col gap-2">

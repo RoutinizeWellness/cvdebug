@@ -73,7 +73,7 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="w-full flex flex-col pb-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
         <div className="flex items-center gap-4">
@@ -105,7 +105,7 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
       </div>
 
       {/* Keyword Sniper Tool */}
-      <div className="flex-1 overflow-hidden">
+      <div className="w-full">
         <KeywordSniperTool
           missingKeywords={missingKeywords.map((kw: any) =>
             typeof kw === "string"

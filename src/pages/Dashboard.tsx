@@ -481,8 +481,8 @@ export default function Dashboard() {
         setCurrentView={setCurrentView}
       />
       
-      <main 
-        className="flex-1 flex flex-col overflow-hidden relative bg-slate-900 pb-20 md:pb-0"
+      <main
+        className="flex-1 flex flex-col overflow-y-auto relative bg-slate-900 pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -494,10 +494,8 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        <div
-          className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8"
-        >
-          <div className="max-w-[1600px] mx-auto h-full space-y-6">
+        <div className="flex-1 p-4 md:p-6 lg:p-8">
+          <div className="max-w-[1600px] mx-auto space-y-6">
             <div
               onClick={() => setShowNewYearPromo(true)}
               className="relative overflow-hidden rounded-3xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 p-6 md:p-8 shadow-[0_0_60px_rgba(251,191,36,0.15)] cursor-pointer hover:border-amber-400/60 hover:shadow-[0_0_80px_rgba(251,191,36,0.2)] transition-all"

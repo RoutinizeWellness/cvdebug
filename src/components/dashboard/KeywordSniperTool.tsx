@@ -106,10 +106,10 @@ export function KeywordSniperTool({
   };
 
   return (
-    <div className="grid grid-cols-12 gap-6 h-full w-full">
+    <div className="grid grid-cols-12 gap-6 w-full min-h-[600px]">
       {/* Left Panel: Target Keywords */}
-      <section className="col-span-3 flex flex-col gap-4 min-w-[300px] h-full overflow-hidden">
-        <div className="glass-panel rounded-xl p-5 flex flex-col h-full">
+      <section className="col-span-3 flex flex-col gap-4 min-w-[280px]">
+        <div className="glass-panel rounded-xl p-5 flex flex-col max-h-[800px]">
           <div className="mb-6">
             <h3 className="font-display font-bold text-lg text-white mb-1">Target Keywords</h3>
             <p className="text-xs text-slate-400">Missing signals detected in job description</p>
@@ -195,7 +195,7 @@ export function KeywordSniperTool({
       </section>
 
       {/* Center Panel: The Lab */}
-      <section className="col-span-6 flex flex-col h-full overflow-hidden">
+      <section className="col-span-6 flex flex-col max-h-[800px]">
         <div className="flex justify-between items-end mb-4">
           <div>
             <h1 className="font-display font-bold text-3xl text-white tracking-tight leading-none">The Lab</h1>
@@ -311,8 +311,8 @@ export function KeywordSniperTool({
       </section>
 
       {/* Right Panel: Live Score Tracker */}
-      <section className="col-span-3 h-full min-w-[280px]">
-        <div className="glass-panel rounded-xl p-6 h-full flex flex-col">
+      <section className="col-span-3 min-w-[280px]">
+        <div className="glass-panel rounded-xl p-6 max-h-[800px] flex flex-col">
           <div className="flex items-center justify-between mb-8">
             <h3 className="font-display font-bold text-lg text-white">Live Score</h3>
             <div className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-1 rounded-full">
