@@ -36,6 +36,7 @@ import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
+import { NewYearPromoModal } from "@/components/NewYearPromoModal";
 import {
   Dialog,
   DialogContent,
@@ -85,6 +86,7 @@ export default function Dashboard() {
   const [showResumeBuilder, setShowResumeBuilder] = useState(false);
   const [editingResumeId, setEditingResumeId] = useState<Id<"resumes"> | null>(null);
   const [previewResumeId, setPreviewResumeId] = useState<Id<"resumes"> | null>(null);
+  const [showNewYearPromo, setShowNewYearPromo] = useState(false);
   
   const {
     isUploading,
@@ -493,7 +495,10 @@ export default function Dashboard() {
           className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 lg:p-8"
         >
           <div className="max-w-[1600px] mx-auto h-full space-y-6">
-            <div className="relative overflow-hidden rounded-3xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 p-6 md:p-8 shadow-[0_0_60px_rgba(251,191,36,0.15)]">
+            <div
+              onClick={() => setShowNewYearPromo(true)}
+              className="relative overflow-hidden rounded-3xl border border-amber-400/40 bg-gradient-to-br from-amber-500/20 via-slate-900 to-slate-950 p-6 md:p-8 shadow-[0_0_60px_rgba(251,191,36,0.15)] cursor-pointer hover:border-amber-400/60 hover:shadow-[0_0_80px_rgba(251,191,36,0.2)] transition-all"
+            >
               <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.4),transparent_50%)]" />
               <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="space-y-3">
@@ -508,9 +513,9 @@ export default function Dashboard() {
                   </p>
                 </div>
                 <Button
-                  onClick={() => {
-                    setInitialPlan("single_scan");
-                    setShowPricing(true);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowNewYearPromo(true);
                   }}
                   className="relative z-10 bg-amber-400 text-slate-900 font-black px-6 py-4 rounded-2xl shadow-lg shadow-amber-500/40 hover:bg-amber-300 transition-all"
                 >
@@ -611,6 +616,16 @@ export default function Dashboard() {
           }}
         />
       )}
+
+      <NewYearPromoModal
+        open={showNewYearPromo}
+        onOpenChange={setShowNewYearPromo}
+        onUnlock={() => {
+          setShowNewYearPromo(false);
+          setInitialPlan("single_scan");
+          setShowPricing(true);
+        }}
+      />
     </div>
   );
 }

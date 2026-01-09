@@ -245,3 +245,15 @@
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+/* New Year Promo Modal Styles */
+.glow-text {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+.bg-fireworks {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(127, 13, 242, 0.1) 0%, transparent 60%);
+}
