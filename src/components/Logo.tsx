@@ -25,23 +25,23 @@ export function Logo({
         {/* Glow effect behind logo */}
         <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        <img 
-          src="https://harmless-tapir-303.convex.cloud/api/storage/5768dbac-7c15-4d7f-bf24-73eff8671dc0" 
-          alt="CVdebug Logo" 
+        <img
+          src="https://harmless-tapir-303.convex.cloud/api/storage/5768dbac-7c15-4d7f-bf24-73eff8671dc0"
+          alt="CVDebug Logo"
           className={cn(
             "h-8 w-auto relative z-10 drop-shadow-lg transition-transform duration-300 hover:scale-110",
             iconClassName
           )}
         />
       </div>
-      
+
       {showText && (
         <div className={cn("flex flex-col leading-none", textClassName)}>
           <span className={cn(
             "font-black text-xl tracking-tight bg-gradient-to-r bg-clip-text text-transparent",
             gradientClass
           )} style={{ fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
-            CVdebug
+            CVDebug
           </span>
         </div>
       )}
