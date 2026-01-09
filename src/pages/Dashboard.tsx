@@ -36,6 +36,7 @@ import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
+import { SettingsView } from "@/components/dashboard/SettingsView";
 import { NewYearPromoModal } from "@/components/NewYearPromoModal";
 import {
   Dialog,
@@ -436,6 +437,8 @@ export default function Dashboard() {
         return <WritingForge />;
       case 'keyword-sniper':
         return <KeywordSniperView onBack={() => setCurrentView('tools')} />;
+      case 'settings':
+        return <SettingsView />;
       default:
         return (
           <MissionControl 

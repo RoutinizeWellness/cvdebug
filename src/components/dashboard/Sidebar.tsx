@@ -134,10 +134,10 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             />
 
             <NavItem
-              active={false}
+              active={currentView === 'settings'}
               icon="settings"
               label="Settings"
-              onClick={() => {/* Settings */}}
+              onClick={() => setCurrentView('settings')}
             />
 
             {user?.email === "tiniboti@gmail.com" && (
