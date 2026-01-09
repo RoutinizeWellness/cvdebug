@@ -6,6 +6,8 @@ import { Logo } from "@/components/Logo";
 import { useNavigate } from "react-router";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
+import { useState } from "react";
 
 const apiAny = api;
 
@@ -21,6 +23,16 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const currentUser = useQuery(apiAny.users.currentUser);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
 
   const NavItem = ({ active, icon: Icon, label, onClick, className }: any) => (
     <button
@@ -153,12 +165,18 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
                 }
               }}
             />
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-500 hover:bg-slate-800" onClick={() => signOut()}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-red-500 hover:bg-slate-800" onClick={() => setShowLogoutDialog(true)}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
+
+      <LogoutConfirmDialog
+        open={showLogoutDialog}
+        onOpenChange={setShowLogoutDialog}
+        onConfirm={handleSignOut}
+      />
     </aside>
   );
 }

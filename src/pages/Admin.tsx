@@ -52,10 +52,11 @@ import { AdminPaymentTesting } from "@/components/admin/AdminPaymentTesting";
 import { AdminUserTable } from "@/components/admin/AdminUserTable";
 import { AdminDataImport } from "@/components/admin/AdminDataImport";
 import { AdminPaymentsView } from "@/components/admin/AdminPaymentsView";
+import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
 import { motion } from "framer-motion";
 
 export default function AdminPage() {
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
@@ -92,6 +93,7 @@ export default function AdminPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user && user.email !== "tiniboti@gmail.com") {
@@ -258,6 +260,15 @@ export default function AdminPage() {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
+
   const filteredUsers = users?.filter((user: any) => {
     const search = searchTerm.toLowerCase();
     return (
@@ -349,7 +360,10 @@ export default function AdminPage() {
         </nav>
         
         <div className="p-4 border-t border-slate-800">
-          <button className="flex items-center gap-3 w-full px-3 py-2 text-slate-400 hover:text-red-400 transition-colors">
+          <button
+            onClick={() => setShowLogoutDialog(true)}
+            className="flex items-center gap-3 w-full px-3 py-2 text-slate-400 hover:text-red-400 transition-colors"
+          >
             <LogOut className="h-5 w-5" />
             <span className="text-sm font-medium">Logout</span>
           </button>
@@ -725,12 +739,19 @@ export default function AdminPage() {
       </Dialog>
 
       {/* Payment History Dialog */}
-      <PaymentHistoryDialog 
-        isOpen={!!historyUser} 
-        onClose={() => setHistoryUser(null)} 
-        userId={historyUser?.id || ""} 
-        userName={historyUser?.name || ""} 
+      <PaymentHistoryDialog
+        isOpen={!!historyUser}
+        onClose={() => setHistoryUser(null)}
+        userId={historyUser?.id || ""}
+        userName={historyUser?.name || ""}
         userEmail={historyUser?.email}
+      />
+
+      {/* Logout Confirmation Dialog */}
+      <LogoutConfirmDialog
+        open={showLogoutDialog}
+        onOpenChange={setShowLogoutDialog}
+        onConfirm={handleSignOut}
       />
     </div>
   );
