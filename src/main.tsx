@@ -23,16 +23,22 @@ import ICUNurseATSOptimizer from "./pages/industry/ICUNurseATSOptimizer.tsx";
 import ERNurseATSOptimizer from "./pages/industry/ERNurseATSOptimizer.tsx";
 import TravelNurseATSOptimizer from "./pages/industry/TravelNurseATSOptimizer.tsx";
 import PediatricNurseATSOptimizer from "./pages/industry/PediatricNurseATSOptimizer.tsx";
+import PsychiatricNurseResumeScanner from "./pages/industry/PsychiatricNurseResumeScanner.tsx";
+import NursePractitionerATSOptimizer from "./pages/industry/NursePractitionerATSOptimizer.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
 import SeniorFrontendEngineerATS from "./pages/industry/SeniorFrontendEngineerATS.tsx";
 import BackendEngineerJavaATS from "./pages/industry/BackendEngineerJavaATS.tsx";
 import FullStackEngineerATSOptimizer from "./pages/industry/FullStackEngineerATSOptimizer.tsx";
+import MachineLearningEngineerATS from "./pages/industry/MachineLearningEngineerATS.tsx";
 import DevOpsEngineerKubernetesATS from "./pages/industry/DevOpsEngineerKubernetesATS.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
+import Blog from "./pages/Blog.tsx";
+import HowToBeatATSResumeScanners from "./pages/blog/HowToBeatATSResumeScanners.tsx";
+import UnderstandingATSRobotView from "./pages/blog/UnderstandingATSRobotView.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -118,11 +124,14 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/er-nurse-ats-optimizer" element={<ERNurseATSOptimizer />} />
               <Route path="/travel-nurse-ats-optimizer" element={<TravelNurseATSOptimizer />} />
               <Route path="/pediatric-nurse-ats-optimizer" element={<PediatricNurseATSOptimizer />} />
+              <Route path="/psychiatric-nurse-resume-scanner" element={<PsychiatricNurseResumeScanner />} />
+              <Route path="/nurse-practitioner-ats-optimizer" element={<NursePractitionerATSOptimizer />} />
 
               {/* Industry-Specific Landing Pages - Tech & Other */}
               <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
               <Route path="/backend-engineer-java-ats" element={<BackendEngineerJavaATS />} />
               <Route path="/full-stack-engineer-ats-optimizer" element={<FullStackEngineerATSOptimizer />} />
+              <Route path="/machine-learning-engineer-ats" element={<MachineLearningEngineerATS />} />
               <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
@@ -130,6 +139,11 @@ createRoot(document.getElementById("root")!).render(
 
               {/* Company-Specific Optimize Pages */}
               <Route path="/optimize/google-sde" element={<GoogleSDEOptimize />} />
+
+              {/* Blog */}
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/how-to-beat-ats-resume-scanners" element={<HowToBeatATSResumeScanners />} />
+              <Route path="/blog/understanding-ats-robot-view" element={<UnderstandingATSRobotView />} />
 
               {/* Level 2: Auth & Onboarding */}
               <Route path="/auth" element={<AuthPage />} />

@@ -33,11 +33,14 @@ const urls: SitemapURL[] = [
   { loc: '/er-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/travel-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/pediatric-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/psychiatric-nurse-resume-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/nurse-practitioner-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 
   // Tech niche pages
   { loc: '/senior-frontend-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/backend-engineer-java-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/full-stack-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/machine-learning-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/devops-engineer-kubernetes-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/software-engineer-keyword-sniper', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 
@@ -47,6 +50,11 @@ const urls: SitemapURL[] = [
 
   // Company-specific pages
   { loc: '/optimize/google-sde', lastmod: today, changefreq: 'monthly', priority: 0.7 },
+
+  // Blog
+  { loc: '/blog', lastmod: today, changefreq: 'weekly', priority: 0.9 },
+  { loc: '/blog/how-to-beat-ats-resume-scanners', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/blog/understanding-ats-robot-view', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 ];
 
 const generateSitemap = (): string => {
