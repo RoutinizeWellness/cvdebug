@@ -5,12 +5,10 @@ import { Check, Terminal, RocketIcon, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "quarterly">("monthly");
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -148,35 +146,6 @@ export default function PricingPage() {
             Stop getting rejected by silent algorithms. Optimize your CV syntax, keywords, and
             formatting to pass every ATS check.
           </motion.p>
-
-          {/* Toggle (Visual Only) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative flex items-center p-1 bg-slate-800 rounded-lg border border-slate-700"
-          >
-            <button
-              onClick={() => setBillingPeriod("monthly")}
-              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
-                billingPeriod === "monthly"
-                  ? "bg-slate-700 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              Monthly
-            </button>
-            <button
-              onClick={() => setBillingPeriod("quarterly")}
-              className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
-                billingPeriod === "quarterly"
-                  ? "bg-slate-700 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              Quarterly
-            </button>
-          </motion.div>
         </section>
 
         {/* Pricing Cards Grid */}
