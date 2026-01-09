@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { Logo } from "@/components/Logo";
 
 export function NewNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,15 +35,10 @@ export function NewNavbar() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 cursor-pointer"
+            className="cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-white shadow-lg shadow-primary/20">
-              <Terminal className="h-5 w-5" />
-            </div>
-            <span className="text-lg font-bold tracking-tight text-white">
-              CVDebug
-            </span>
+            <Logo showText={true} />
           </motion.div>
 
           {/* Desktop Navigation */}

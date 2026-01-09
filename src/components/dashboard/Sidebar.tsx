@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Logo } from "@/components/Logo";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
 import { useState, useEffect } from "react";
 
@@ -85,12 +86,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       {/* Logo & Nav */}
       <div className="flex flex-col gap-8 p-6">
         {/* Logo */}
-        <div className="flex items-center gap-3 px-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <span className="material-symbols-outlined text-white text-[20px]">terminal</span>
-          </div>
-          <h1 className="text-white text-xl font-bold tracking-tight">CVDebug</h1>
-        </div>
+        <Logo className="px-2" showText={true} />
 
         {/* Navigation */}
         <nav className="flex flex-col gap-2">

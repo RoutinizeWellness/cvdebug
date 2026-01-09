@@ -121,9 +121,8 @@ export default function AuthPage() {
         <div className="relative z-20 flex flex-col justify-between h-full p-12">
           {/* Logo */}
           <div>
-            <div className="flex items-center gap-2 mb-8">
-              <Terminal className="text-primary text-3xl h-8 w-8" />
-              <span className="text-2xl font-bold tracking-tight text-white">CVDebug</span>
+            <div className="mb-8">
+              <Logo showText={true} iconClassName="h-10 w-auto" textClassName="text-2xl" />
             </div>
           </div>
 

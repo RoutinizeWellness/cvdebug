@@ -5,6 +5,7 @@ import StepIndicator from "./StepIndicator";
 import RoleSelection from "./RoleSelection";
 import CVUpload from "./CVUpload";
 import ScanPreview from "./ScanPreview";
+import { Logo } from "@/components/Logo";
 
 export type OnboardingStep = 1 | 2 | 3;
 
@@ -79,14 +80,7 @@ export default function OnboardingLayout({
 
       {/* Header */}
       <div className="w-full max-w-5xl flex justify-between items-center mb-10">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-white font-bold font-mono text-sm">
-            CV
-          </div>
-          <span className="text-xl font-bold text-white tracking-tight">
-            CVDebug
-          </span>
-        </div>
+        <Logo showText={true} />
         <button className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1">
           <HelpCircle className="h-4 w-4" />
           Help Center
