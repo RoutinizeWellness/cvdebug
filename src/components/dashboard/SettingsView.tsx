@@ -10,9 +10,7 @@ import {
   TrendingUp,
   Lock,
   AlertTriangle,
-  Key,
   ExternalLink,
-  Copy,
   BookOpen,
   HelpCircle
 } from "lucide-react";
@@ -26,7 +24,6 @@ export function SettingsView() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [shareAnalytics, setShareAnalytics] = useState(true);
-  const [showApiKey, setShowApiKey] = useState(false);
 
   // Calculate sprint progress
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
@@ -58,15 +55,6 @@ export function SettingsView() {
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
-  };
-
-  const handleCopyApiKey = () => {
-    navigator.clipboard.writeText("sk_live_...9x8z");
-    toast.success("API key copied to clipboard");
-  };
-
-  const handleRegenerateKey = () => {
-    toast.success("API key regenerated");
   };
 
   const handleDeleteAccount = () => {
@@ -355,44 +343,6 @@ export function SettingsView() {
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-
-          {/* API Usage Logs (Mini Section) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="lg:col-span-3 glass-panel rounded-xl p-6 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4"
-          >
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-slate-800 rounded-lg">
-                <Key className="h-5 w-5 text-slate-400" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-white font-display">API Access</h4>
-                <div className="flex items-center gap-2 mt-1">
-                  <code className="text-xs font-mono text-slate-400 bg-slate-900 px-2 py-1 rounded border border-slate-800">
-                    {showApiKey ? "sk_live_1234567890abcdef9x8z" : "sk_live_...9x8z"}
-                  </code>
-                  <button
-                    onClick={handleCopyApiKey}
-                    className="text-blue-400 hover:text-blue-300 text-xs font-medium flex items-center gap-1"
-                  >
-                    <Copy className="h-3 w-3" />
-                    Copy
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-auto">
-              <Button
-                onClick={handleRegenerateKey}
-                variant="outline"
-                className="w-full md:w-auto border-slate-700 text-slate-300 hover:bg-slate-800"
-              >
-                Regenerate Key
-              </Button>
             </div>
           </motion.div>
         </div>
