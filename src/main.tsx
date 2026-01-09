@@ -18,6 +18,7 @@ import AdminPage from "./pages/Admin.tsx";
 import PricingPage from "./pages/Pricing.tsx";
 import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import ATSScannerNurses from "./pages/industry/ATSScannerNurses.tsx";
+import MedSurgNurseATSOptimizer from "./pages/industry/MedSurgNurseATSOptimizer.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
@@ -104,6 +105,7 @@ createRoot(document.getElementById("root")!).render(
 
               {/* Industry-Specific Landing Pages */}
               <Route path="/ats-scanner-for-nurses" element={<ATSScannerNurses />} />
+              <Route path="/med-surg-nurse-ats-optimizer" element={<MedSurgNurseATSOptimizer />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
               <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
