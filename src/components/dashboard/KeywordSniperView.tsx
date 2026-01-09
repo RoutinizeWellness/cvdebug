@@ -25,8 +25,22 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
   const missingKeywords = masterResume?.missingKeywords || [];
   const currentScore = masterResume?.score || 0;
 
-  // Example bullet point from resume (in real implementation, would be editable/selectable)
-  const currentBullet = "Responsible for managing cloud infrastructure and ensuring system uptime for production environments.";
+  // Extract bullet points from resume OCR text
+  const extractBulletPoints = (ocrText: string): string[] => {
+    if (!ocrText) return [];
+    const lines = ocrText.split('\n');
+    const bullets = lines
+      .filter(line =>
+        line.trim().match(/^[-•*]/) || // Lines starting with bullets
+        (line.length > 20 && line.length < 200 && !line.match(/^[A-Z\s]+$/)) // Sentence-like lines
+      )
+      .map(line => line.replace(/^[-•*]\s*/, '').trim())
+      .filter(line => line.length > 0);
+    return bullets;
+  };
+
+  const bullets = extractBulletPoints(masterResume?.ocrText || "");
+  const currentBullet = bullets[0] || "Led cross-functional teams to deliver projects on time and within budget, resulting in increased efficiency.";
 
   const handleApplySuggestion = (newText: string) => {
     toast.success("Suggestion applied! Your resume has been updated.");
