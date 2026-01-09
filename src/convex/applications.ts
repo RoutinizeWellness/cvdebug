@@ -14,12 +14,13 @@ export const createApplication = mutation({
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Unauthorized");
+    if (!user || !user.dbUser) throw new Error("Unauthorized");
+    const dbUser = user.dbUser;
 
     // ENFORCEMENT: Project Tracker (CRM) is locked for Free/Single Scan users
     // Only Interview Sprint users can create applications
-    const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+    const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
+    if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
       throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to track applications.");
     }
 
