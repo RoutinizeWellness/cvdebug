@@ -1,0 +1,32 @@
+# robots.txt for CVDebug
+# https://cvdebug.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://cvdebug.com/sitemap.xml
+
+# Disallow private/internal pages
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /project-settings
+
+# Allow all niche landing pages
+Allow: /ats-scanner-for-nurses
+Allow: /med-surg-nurse-ats-optimizer
+Allow: /icu-nurse-ats-optimizer
+Allow: /er-nurse-ats-optimizer
+Allow: /travel-nurse-ats-optimizer
+Allow: /senior-frontend-engineer-ats
+Allow: /devops-engineer-kubernetes-ats
+Allow: /software-engineer-keyword-sniper
+Allow: /resume-debug-for-data-analysts
+Allow: /finance-internship-ats-optimizer
+Allow: /optimize/google-sde
+
+# Crawl delay (be polite)
+Crawl-delay: 1
