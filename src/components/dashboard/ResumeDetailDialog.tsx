@@ -50,6 +50,7 @@ import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
 import { ATSSimulation } from "./ATSSimulation";
 import { SniperModeTeaser } from "./SniperModeTeaser";
+import { ATSAnalysisReport } from "./ATSAnalysisReport";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -616,10 +617,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               {/* Left Panel - Analysis Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <TabsList className="grid w-full grid-cols-1 md:grid-cols-7 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
+                <TabsList className="grid w-full grid-cols-1 md:grid-cols-8 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
                   <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
-                  <TabsTrigger 
-                    value="robot" 
+                  <TabsTrigger
+                    value="robot"
                     className={`relative bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.6)]' : ''}`}
                   >
                     <span className="flex items-center gap-2 text-sm md:text-base">
@@ -632,6 +633,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </span>
                     )}
                   </TabsTrigger>
+                  <TabsTrigger value="ats-report" className="text-sm md:text-base bg-gradient-to-r from-primary/20 to-indigo-500/20 border border-primary/30">📊 Report</TabsTrigger>
                   <TabsTrigger value="keywords" className="text-sm md:text-base">Keywords</TabsTrigger>
                   <TabsTrigger value="format" className="text-sm md:text-base">Format</TabsTrigger>
                   <TabsTrigger value="simulation" className="text-sm md:text-base hidden md:inline-flex">Recruiter View</TabsTrigger>
@@ -728,6 +730,26 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </div>
                     </div>
                   </div>
+                </TabsContent>
+
+                <TabsContent value="ats-report" className="flex-1 overflow-auto p-6">
+                  <ATSAnalysisReport
+                    resume={displayResume}
+                    onEditWithSniper={() => {
+                      onClose();
+                      // Navigate to keyword sniper - you can implement this with a callback prop
+                      toast.info("Opening Keyword Sniper Tool...");
+                    }}
+                    onOpenWritingForge={() => {
+                      onClose();
+                      // Navigate to writing forge - you can implement this with a callback prop
+                      toast.info("Opening Writing Forge...");
+                    }}
+                    onDownloadPDF={() => {
+                      toast.success("Generating PDF report...");
+                      // Implement PDF generation
+                    }}
+                  />
                 </TabsContent>
 
                 <TabsContent value="overview" className="flex-1 overflow-auto p-6">
