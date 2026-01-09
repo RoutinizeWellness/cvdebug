@@ -25,6 +25,12 @@ import TravelNurseATSOptimizer from "./pages/industry/TravelNurseATSOptimizer.ts
 import PediatricNurseATSOptimizer from "./pages/industry/PediatricNurseATSOptimizer.tsx";
 import PsychiatricNurseResumeScanner from "./pages/industry/PsychiatricNurseResumeScanner.tsx";
 import NursePractitionerATSOptimizer from "./pages/industry/NursePractitionerATSOptimizer.tsx";
+import CCUCVUNurseATSOptimizer from "./pages/industry/CCUCVUNurseATSOptimizer.tsx";
+import DialysisNurseATSScanner from "./pages/industry/DialysisNurseATSScanner.tsx";
+import HomeHealthNurseATSOptimizer from "./pages/industry/HomeHealthNurseATSOptimizer.tsx";
+import SchoolNurseATSResumeScanner from "./pages/industry/SchoolNurseATSResumeScanner.tsx";
+import CaseManagerNurseATSOptimizer from "./pages/industry/CaseManagerNurseATSOptimizer.tsx";
+import InfectionControlNurseATS from "./pages/industry/InfectionControlNurseATS.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
@@ -33,6 +39,10 @@ import BackendEngineerJavaATS from "./pages/industry/BackendEngineerJavaATS.tsx"
 import FullStackEngineerATSOptimizer from "./pages/industry/FullStackEngineerATSOptimizer.tsx";
 import MachineLearningEngineerATS from "./pages/industry/MachineLearningEngineerATS.tsx";
 import DevOpsEngineerKubernetesATS from "./pages/industry/DevOpsEngineerKubernetesATS.tsx";
+import IOSEngineerSwiftATSOptimizer from "./pages/industry/IOSEngineerSwiftATSOptimizer.tsx";
+import AndroidEngineerKotlinATS from "./pages/industry/AndroidEngineerKotlinATS.tsx";
+import CloudArchitectAWSATSScanner from "./pages/industry/CloudArchitectAWSATSScanner.tsx";
+import SiteReliabilityEngineerATS from "./pages/industry/SiteReliabilityEngineerATS.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
@@ -126,6 +136,12 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/pediatric-nurse-ats-optimizer" element={<PediatricNurseATSOptimizer />} />
               <Route path="/psychiatric-nurse-resume-scanner" element={<PsychiatricNurseResumeScanner />} />
               <Route path="/nurse-practitioner-ats-optimizer" element={<NursePractitionerATSOptimizer />} />
+              <Route path="/ccu-cvu-nurse-ats-optimizer" element={<CCUCVUNurseATSOptimizer />} />
+              <Route path="/dialysis-nurse-ats-scanner" element={<DialysisNurseATSScanner />} />
+              <Route path="/home-health-nurse-ats-optimizer" element={<HomeHealthNurseATSOptimizer />} />
+              <Route path="/school-nurse-ats-resume-scanner" element={<SchoolNurseATSResumeScanner />} />
+              <Route path="/case-manager-nurse-ats-optimizer" element={<CaseManagerNurseATSOptimizer />} />
+              <Route path="/infection-control-nurse-ats" element={<InfectionControlNurseATS />} />
 
               {/* Industry-Specific Landing Pages - Tech & Other */}
               <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
@@ -133,6 +149,10 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/full-stack-engineer-ats-optimizer" element={<FullStackEngineerATSOptimizer />} />
               <Route path="/machine-learning-engineer-ats" element={<MachineLearningEngineerATS />} />
               <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
+              <Route path="/ios-engineer-swift-ats-optimizer" element={<IOSEngineerSwiftATSOptimizer />} />
+              <Route path="/android-engineer-kotlin-ats" element={<AndroidEngineerKotlinATS />} />
+              <Route path="/cloud-architect-aws-ats-scanner" element={<CloudArchitectAWSATSScanner />} />
+              <Route path="/site-reliability-engineer-ats" element={<SiteReliabilityEngineerATS />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
               <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />

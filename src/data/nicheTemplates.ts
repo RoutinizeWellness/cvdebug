@@ -1627,6 +1627,868 @@ export const nicheTemplates: Record<string, NicheTemplate> = {
       primary: "purple",
       secondary: "indigo"
     }
+  },
+
+  // Phase 2: High-Priority Nursing (6 pages)
+  "ccu-cvu-nurse-ats-optimizer": {
+    slug: "ccu-cvu-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for CCU/CVU Nurses | CVDebug",
+    metaDescription: "Optimize your critical care cardiovascular nursing resume with keywords for cardiac monitoring, hemodynamics, and post-cardiac surgery care.",
+    badge: "CCU/CVU Nursing",
+    heroTitle: "Get Your CCU/CVU Resume Past",
+    heroHighlight: "Cardiac Critical Care ATS",
+    heroDescription: "CCU and CVU positions demand specialized keywords like hemodynamic monitoring, cardiac drips, and post-operative care. Ensure your cardiovascular critical care expertise is ATS-optimized.",
+    primaryCTA: "Scan CCU Resume",
+    keywords: [
+      "Hemodynamic Monitoring / Swan-Ganz",
+      "Cardiac Drips (Dobutamine, Dopamine, Amiodarone)",
+      "Post-Cardiac Surgery Care",
+      "12-Lead EKG Interpretation",
+      "IABP Management (Intra-Aortic Balloon Pump)",
+      "Arrhythmia Recognition / ACLS",
+      "Cardiac Catheterization Recovery",
+      "Heart Failure Management",
+      "Telemetry Monitoring",
+      "Ventricular Assist Device (VAD) Care",
+      "Code Blue / Rapid Response",
+      "Continuous Cardiac Output Monitoring"
+    ],
+    stats: [
+      { value: "87%", label: "CCU resumes rejected without hemodynamic keywords" },
+      { value: "22K", label: "CCU/CVU RN positions annually" },
+      { value: "CCRN", label: "Most requested cardiac critical care certification" }
+    ],
+    commonIssues: [
+      {
+        title: "Missing Hemodynamic Monitoring Keywords",
+        description: "ATS systems search for 'Swan-Ganz,' 'arterial line,' 'CVP monitoring.' Generic 'vital sign monitoring' doesn't demonstrate CCU-level expertise."
+      },
+      {
+        title: "Cardiac Drips Not Specified",
+        description: "Recruiters filter for specific vasoactive medications: 'dobutamine,' 'milrinone,' 'vasopressin.' Saying 'IV medications' is too vague for CCU roles."
+      },
+      {
+        title: "IABP/VAD Experience Buried",
+        description: "Advanced cardiac devices like IABP and VAD are highly searched keywords. If you have this experience but don't explicitly state it, ATS filters miss you."
+      }
+    ],
+    features: [
+      {
+        title: "Hemodynamic Keyword Validator",
+        description: "Checks for Swan-Ganz, arterial lines, CVP, wedge pressure, and cardiac output monitoring terminology."
+      },
+      {
+        title: "Cardiac Drip Library",
+        description: "Validates mentions of vasoactive medications commonly used in CCU/CVU settings."
+      },
+      {
+        title: "Device Experience Checker",
+        description: "Flags IABP, VAD, pacemaker, and other cardiac device keywords for ATS optimization."
+      },
+      {
+        title: "CCRN Certification Validator",
+        description: "Ensures your Critical Care Registered Nurse certification is properly formatted and ATS-visible."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 7 years in CCU but wasn't getting interviews. CVDebug showed I never mentioned 'hemodynamic monitoring' or 'Swan-Ganz' specifically. Added those keywords and got 4 cardiac ICU interviews immediately.",
+        name: "Brian K.",
+        role: "CCU RN",
+        location: "Cleveland, OH"
+      },
+      {
+        quote: "The cardiac drip analysis was crucial. I listed every vasopressor I'd managed (dopamine, dobutamine, levophed) and my ATS score jumped from 58% to 91%.",
+        name: "Maria S.",
+        role: "CCRN, Cardiovascular ICU",
+        location: "Houston, TX"
+      },
+      {
+        quote: "CVDebug flagged that I buried my IABP experience in a bullet point. Made it a primary skill and started getting contacted by top cardiac centers.",
+        name: "James T.",
+        role: "CVU Nurse",
+        location: "Minneapolis, MN"
+      }
+    ],
+    colors: {
+      primary: "red",
+      secondary: "rose"
+    }
+  },
+
+  "dialysis-nurse-ats-scanner": {
+    slug: "dialysis-nurse-ats-scanner",
+    metaTitle: "Free ATS Resume Scanner for Dialysis Nurses | CVDebug",
+    metaDescription: "Optimize your dialysis nursing resume with keywords for hemodialysis, peritoneal dialysis, vascular access, and nephrology care.",
+    badge: "Dialysis Nursing",
+    heroTitle: "Get Your Dialysis Nursing Resume Past",
+    heroHighlight: "Nephrology ATS Filters",
+    heroDescription: "Dialysis positions require specific keywords like hemodialysis, vascular access management, and kidney disease. Our scanner ensures your nephrology expertise is properly parsed.",
+    primaryCTA: "Scan Dialysis Resume",
+    keywords: [
+      "Hemodialysis / HD Treatment",
+      "Peritoneal Dialysis / PD Training",
+      "Vascular Access Management (AV Fistula, Graft)",
+      "Dialysis Machine Setup / Fresenius",
+      "Chronic Kidney Disease (CKD) Management",
+      "Fluid & Electrolyte Management",
+      "Catheter Care (Permcath, Tunneled)",
+      "Dialysate Composition",
+      "Pre/Post-Dialysis Assessment",
+      "CNN Certification (Certified Nephrology Nurse)",
+      "Renal Diet Education",
+      "Dry Weight Management"
+    ],
+    stats: [
+      { value: "91%", label: "Dialysis resumes filtered without vascular access keywords" },
+      { value: "16K", label: "Dialysis RN positions annually" },
+      { value: "CNN", label: "Certified Nephrology Nurse certification highly valued" }
+    ],
+    commonIssues: [
+      {
+        title: "HD vs PD Not Differentiated",
+        description: "ATS systems search for 'hemodialysis' and 'peritoneal dialysis' as distinct skills. If you have both but don't list them separately, you're missing keyword matches."
+      },
+      {
+        title: "Vascular Access Expertise Unclear",
+        description: "Recruiters filter for 'AV fistula,' 'AV graft,' 'catheter cannulation.' Saying 'dialysis access' is too generic for ATS parsing."
+      },
+      {
+        title: "Machine/Equipment Not Named",
+        description: "Specific dialysis machines (Fresenius, Gambro, Baxter) are searched keywords. Mentioning brand experience increases ATS match rates."
+      }
+    ],
+    features: [
+      {
+        title: "Modality Checker",
+        description: "Validates you've specified both hemodialysis and peritoneal dialysis experience if applicable."
+      },
+      {
+        title: "Vascular Access Keyword Analyzer",
+        description: "Checks for fistula, graft, catheter management, and cannulation terminology."
+      },
+      {
+        title: "Equipment Brand Detector",
+        description: "Flags mentions of specific dialysis machine brands that recruiters commonly search for."
+      },
+      {
+        title: "CNN Certification Validator",
+        description: "Ensures Certified Nephrology Nurse credential is properly formatted for ATS systems."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 9 years of dialysis experience but my resume just said 'dialysis nursing.' CVDebug helped me separate hemodialysis and peritoneal dialysis—got hired at DaVita within 2 weeks.",
+        name: "Sharon P.",
+        role: "Dialysis RN",
+        location: "Phoenix, AZ"
+      },
+      {
+        quote: "The vascular access analysis was game-changing. I detailed my fistula cannulation, graft management, and catheter experience—ATS score went from 52% to 88%.",
+        name: "Carlos M.",
+        role: "CNN, Hemodialysis Nurse",
+        location: "Los Angeles, CA"
+      },
+      {
+        quote: "CVDebug showed I never mentioned 'Fresenius 2008K' even though I use it daily. Added machine experience and started getting recruiter calls immediately.",
+        name: "Linda H.",
+        role: "Chronic Dialysis Nurse",
+        location: "Tampa, FL"
+      }
+    ],
+    colors: {
+      primary: "blue",
+      secondary: "cyan"
+    }
+  },
+
+  "home-health-nurse-ats-optimizer": {
+    slug: "home-health-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for Home Health Nurses | CVDebug",
+    metaDescription: "Optimize your home health nursing resume with keywords for OASIS documentation, wound care, case management, and independent nursing practice.",
+    badge: "Home Health Nursing",
+    heroTitle: "Get Your Home Health Resume Past",
+    heroHighlight: "Home Care ATS Systems",
+    heroDescription: "Home health positions require keywords like OASIS documentation, independent assessment, and chronic disease management. Ensure your community nursing expertise is ATS-ready.",
+    primaryCTA: "Scan Home Health Resume",
+    keywords: [
+      "OASIS Documentation / Assessment",
+      "Home Health Case Management",
+      "Independent Nursing Practice",
+      "Wound Care / Wound Vac Management",
+      "IV Therapy (Home Infusion)",
+      "Chronic Disease Management",
+      "Patient/Caregiver Education",
+      "Medicare Documentation / Compliance",
+      "Care Plan Development",
+      "Skilled Nursing Visits",
+      "Hospice Transition / Palliative",
+      "Telehealth / Remote Patient Monitoring"
+    ],
+    stats: [
+      { value: "86%", label: "Home health resumes rejected without OASIS keywords" },
+      { value: "31K", label: "Home health RN positions annually" },
+      { value: "Fast-growing", label: "Sector due to aging population" }
+    ],
+    commonIssues: [
+      {
+        title: "OASIS Experience Not Emphasized",
+        description: "ATS systems specifically search for 'OASIS,' 'OASIS-E,' or 'outcome assessment.' This documentation system is critical for home health and must be explicit."
+      },
+      {
+        title: "Independent Practice Not Highlighted",
+        description: "Home health requires autonomous decision-making. Keywords like 'independent assessment,' 'clinical judgment,' and 'care coordination' are heavily weighted."
+      },
+      {
+        title: "Medicare Compliance Not Mentioned",
+        description: "Home health billing requires Medicare knowledge. If you don't mention 'Medicare,' 'reimbursement,' or 'certification periods,' ATS filters miss this expertise."
+      }
+    ],
+    features: [
+      {
+        title: "OASIS Keyword Checker",
+        description: "Validates OASIS assessment and documentation keywords are present and ATS-visible."
+      },
+      {
+        title: "Independence Skills Analyzer",
+        description: "Checks for autonomous practice keywords like independent assessment, clinical judgment, and care coordination."
+      },
+      {
+        title: "Medicare Compliance Validator",
+        description: "Ensures Medicare documentation and billing knowledge is properly highlighted."
+      },
+      {
+        title: "Chronic Care Management Keywords",
+        description: "Scans for diabetes management, CHF monitoring, COPD care, and other chronic conditions."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I didn't realize 'OASIS' was such a critical keyword. CVDebug flagged it as missing even though I completed OASIS assessments daily. Added it throughout my resume and got 6 interviews.",
+        name: "Patricia R.",
+        role: "Home Health RN",
+        location: "Orlando, FL"
+      },
+      {
+        quote: "The independent practice analysis helped me emphasize my autonomous decision-making. Changed my wording from 'provided care' to 'independently assessed and managed'—huge difference.",
+        name: "Thomas W.",
+        role: "Home Care Nurse",
+        location: "Portland, OR"
+      },
+      {
+        quote: "CVDebug showed my Medicare documentation experience was buried. Moved it to a primary skill and my ATS score jumped 38 points. Got hired by a top home health agency.",
+        name: "Angela D.",
+        role: "Community Health RN",
+        location: "Austin, TX"
+      }
+    ],
+    colors: {
+      primary: "green",
+      secondary: "emerald"
+    }
+  },
+
+  "school-nurse-ats-resume-scanner": {
+    slug: "school-nurse-ats-resume-scanner",
+    metaTitle: "Free ATS Resume Scanner for School Nurses | CVDebug",
+    metaDescription: "Optimize your school nursing resume with keywords for health screenings, immunization compliance, IEP/504 plans, and pediatric health education.",
+    badge: "School Nursing",
+    heroTitle: "Get Your School Nurse Resume Past",
+    heroHighlight: "Education Sector ATS",
+    heroDescription: "School nurse positions require keywords like health screenings, IEP collaboration, and medication administration in schools. Ensure your educational nursing expertise is ATS-optimized.",
+    primaryCTA: "Scan School Nurse Resume",
+    keywords: [
+      "School Health Screenings (Vision, Hearing, Scoliosis)",
+      "Immunization Compliance / Tracking",
+      "IEP / 504 Plan Collaboration",
+      "Medication Administration (School Setting)",
+      "Emergency Care Planning / Epi-Pen",
+      "Health Education / Wellness Programs",
+      "Chronic Condition Management (Diabetes, Asthma)",
+      "Mental Health Crisis Intervention",
+      "Communicable Disease Control",
+      "Sports Physical Exams",
+      "NCSN Certification (National Certified School Nurse)",
+      "Parent/Teacher Collaboration"
+    ],
+    stats: [
+      { value: "84%", label: "School nurse resumes filtered without screening keywords" },
+      { value: "14K", label: "School nurse positions annually" },
+      { value: "NCSN", label: "National Certified School Nurse credential valued" }
+    ],
+    commonIssues: [
+      {
+        title: "IEP/504 Experience Not Mentioned",
+        description: "School districts specifically search for 'IEP,' '504 plan,' and 'special education collaboration.' This experience is critical but often omitted."
+      },
+      {
+        title: "Health Screening Types Not Specified",
+        description: "ATS systems look for specific screenings: 'vision,' 'hearing,' 'scoliosis.' Saying 'school health assessments' is too vague."
+      },
+      {
+        title: "Medication Administration Context Missing",
+        description: "Hospital medication experience doesn't translate directly. You need to specify 'school medication administration,' 'daily med pass,' or 'chronic disease medication management.'"
+      }
+    ],
+    features: [
+      {
+        title: "Screening Keyword Validator",
+        description: "Checks for vision, hearing, scoliosis, and other mandated school health screenings."
+      },
+      {
+        title: "IEP/504 Experience Checker",
+        description: "Validates special education plan collaboration and accommodation keywords."
+      },
+      {
+        title: "School Setting Context Analyzer",
+        description: "Ensures your experience is framed in educational settings, not just clinical nursing."
+      },
+      {
+        title: "NCSN Certification Detector",
+        description: "Flags if National Certified School Nurse credential is present and ATS-readable."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I never thought to mention IEP meetings in my resume. CVDebug flagged this as a critical school nurse keyword. Added it and got 3 district interviews within a week.",
+        name: "Jennifer L.",
+        role: "School Nurse",
+        location: "Sacramento, CA"
+      },
+      {
+        quote: "The screening analysis helped me list specific types: vision, hearing, scoliosis, BMI. My ATS score went from 61% to 89% just by adding those details.",
+        name: "Robert C.",
+        role: "Elementary School Nurse",
+        location: "Denver, CO"
+      },
+      {
+        quote: "CVDebug showed I was using hospital terminology instead of school nursing language. Changed 'patient care' to 'student health services'—started getting callbacks immediately.",
+        name: "Michelle K.",
+        role: "NCSN, Middle School Nurse",
+        location: "Atlanta, GA"
+      }
+    ],
+    colors: {
+      primary: "amber",
+      secondary: "yellow"
+    }
+  },
+
+  "case-manager-nurse-ats-optimizer": {
+    slug: "case-manager-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for RN Case Managers | CVDebug",
+    metaDescription: "Optimize your nurse case manager resume with keywords for utilization review, care coordination, discharge planning, and CCM certification.",
+    badge: "RN Case Management",
+    heroTitle: "Get Your Case Manager Resume Past",
+    heroHighlight: "Care Coordination ATS",
+    heroDescription: "RN case manager positions require keywords like utilization review, care transitions, and payer relations. Ensure your care coordination expertise is ATS-ready.",
+    primaryCTA: "Scan Case Manager Resume",
+    keywords: [
+      "Utilization Review / UR",
+      "Discharge Planning / Care Transitions",
+      "Care Coordination / Care Management",
+      "CCM Certification (Case Management)",
+      "Insurance Authorization / Prior Auth",
+      "Interdisciplinary Team Collaboration",
+      "Level of Care Determination",
+      "Resource Allocation / Cost Management",
+      "Quality Metrics / Performance Improvement",
+      "Payer Relations / Medicare/Medicaid",
+      "Social Determinants of Health",
+      "Readmission Prevention"
+    ],
+    stats: [
+      { value: "88%", label: "Case manager resumes rejected without UR keywords" },
+      { value: "25K", label: "RN case manager positions annually" },
+      { value: "CCM", label: "Certified Case Manager credential highly sought" }
+    ],
+    commonIssues: [
+      {
+        title: "Utilization Review Not Emphasized",
+        description: "ATS systems search for 'utilization review,' 'UR,' 'concurrent review.' This is a core case management function and must be explicitly stated."
+      },
+      {
+        title: "Payer Knowledge Not Demonstrated",
+        description: "Case managers need insurance expertise. Keywords like 'Medicare,' 'Medicaid,' 'prior authorization,' 'commercial payers' are heavily weighted."
+      },
+      {
+        title: "Metrics and Outcomes Missing",
+        description: "Case management is data-driven. Without quantified outcomes (readmission rates, length of stay reduction), your impact isn't ATS-visible."
+      }
+    ],
+    features: [
+      {
+        title: "Utilization Review Keyword Checker",
+        description: "Validates UR, concurrent review, and level of care determination terminology."
+      },
+      {
+        title: "Payer Relations Analyzer",
+        description: "Checks for insurance, authorization, and reimbursement keywords."
+      },
+      {
+        title: "CCM Certification Validator",
+        description: "Ensures Certified Case Manager credential is properly formatted and ATS-visible."
+      },
+      {
+        title: "Outcomes Quantifier",
+        description: "Identifies opportunities to add metrics (readmission %, LOS reduction, cost savings)."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I was a bedside nurse moving to case management. CVDebug helped me add 'utilization review' and 'discharge planning' keywords I didn't know were critical. Got my first CM role in 3 weeks.",
+        name: "Karen M.",
+        role: "RN Case Manager",
+        location: "Boston, MA"
+      },
+      {
+        quote: "The payer relations analysis was eye-opening. I added specific insurance terminology (Medicare, prior auth, level of care) and my ATS score jumped 45 points.",
+        name: "David P.",
+        role: "CCM, Hospital Case Manager",
+        location: "Chicago, IL"
+      },
+      {
+        quote: "CVDebug showed I wasn't quantifying my impact. Added 'reduced readmissions 23%' and 'decreased LOS 1.8 days'—started getting senior case manager interviews.",
+        name: "Lisa T.",
+        role: "Clinical Case Manager",
+        location: "Nashville, TN"
+      }
+    ],
+    colors: {
+      primary: "indigo",
+      secondary: "purple"
+    }
+  },
+
+  "infection-control-nurse-ats": {
+    slug: "infection-control-nurse-ats",
+    metaTitle: "Free ATS Resume Scanner for Infection Control Nurses | CVDebug",
+    metaDescription: "Optimize your infection prevention resume with keywords for surveillance, outbreak investigation, CIC certification, and hospital epidemiology.",
+    badge: "Infection Control",
+    heroTitle: "Get Your Infection Control Resume Past",
+    heroHighlight: "Epidemiology ATS Filters",
+    heroDescription: "Infection preventionist positions require keywords like surveillance, outbreak investigation, and CIC certification. Ensure your hospital epidemiology expertise is ATS-optimized.",
+    primaryCTA: "Scan IP Resume",
+    keywords: [
+      "CIC Certification (Infection Control)",
+      "Surveillance / HAI Monitoring",
+      "Outbreak Investigation / Root Cause Analysis",
+      "NHSN Reporting (National Healthcare Safety Network)",
+      "Isolation Protocols / Contact Precautions",
+      "Hand Hygiene Auditing",
+      "Sterilization / Reprocessing",
+      "Antimicrobial Stewardship",
+      "Policy Development / Regulatory Compliance",
+      "Staff Education / Competency",
+      "PPE Training / Fit Testing",
+      "Joint Commission Standards"
+    ],
+    stats: [
+      { value: "93%", label: "IP resumes filtered without CIC or surveillance keywords" },
+      { value: "8K", label: "Infection preventionist positions annually" },
+      { value: "CIC", label: "Certification in Infection Control required for most roles" }
+    ],
+    commonIssues: [
+      {
+        title: "CIC Certification Not Prominent",
+        description: "ATS systems heavily weight 'CIC,' 'Certification in Infection Control.' If you have it, it must be in your header and certifications section."
+      },
+      {
+        title: "Surveillance Methods Not Specified",
+        description: "Recruiters search for 'NHSN reporting,' 'HAI surveillance,' 'infection rate calculation.' Generic 'infection monitoring' doesn't demonstrate IP expertise."
+      },
+      {
+        title: "Regulatory Knowledge Not Demonstrated",
+        description: "Infection control requires CDC, Joint Commission, and CMS knowledge. These regulatory bodies should be explicitly mentioned."
+      }
+    ],
+    features: [
+      {
+        title: "CIC Certification Validator",
+        description: "Confirms Certification in Infection Control is prominently placed and ATS-readable."
+      },
+      {
+        title: "Surveillance Keyword Checker",
+        description: "Validates NHSN, HAI monitoring, and outbreak investigation terminology."
+      },
+      {
+        title: "Regulatory Compliance Analyzer",
+        description: "Checks for CDC, Joint Commission, CMS, and OSHA regulatory keywords."
+      },
+      {
+        title: "Antimicrobial Stewardship Detector",
+        description: "Flags if antibiotic stewardship and resistance prevention experience is present."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had my CIC but it was buried in my resume. CVDebug showed it needed to be in my headline. Changed to 'CIC-Certified Infection Preventionist'—got 4 interviews in one week.",
+        name: "Susan H.",
+        role: "Infection Preventionist",
+        location: "Indianapolis, IN"
+      },
+      {
+        quote: "The surveillance keyword analysis was crucial. I added 'NHSN reporting,' 'HAI rate calculation,' and 'outbreak investigation'—ATS score went from 59% to 94%.",
+        name: "Michael R.",
+        role: "CIC, Hospital Epidemiologist",
+        location: "Baltimore, MD"
+      },
+      {
+        quote: "CVDebug helped me emphasize my regulatory compliance experience (Joint Commission, CMS surveys). Started getting calls from major health systems immediately.",
+        name: "Rebecca L.",
+        role: "Director of Infection Prevention",
+        location: "Seattle, WA"
+      }
+    ],
+    colors: {
+      primary: "teal",
+      secondary: "cyan"
+    }
+  },
+
+  // Phase 2: High-Priority Tech (4 pages)
+  "ios-engineer-swift-ats-optimizer": {
+    slug: "ios-engineer-swift-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for iOS Engineers | CVDebug",
+    metaDescription: "Optimize your iOS developer resume with keywords for Swift, SwiftUI, UIKit, Core Data, and App Store deployment.",
+    badge: "iOS Engineering",
+    heroTitle: "Get Your iOS Engineer Resume Past",
+    heroHighlight: "Mobile Development ATS",
+    heroDescription: "iOS positions require specific keywords like Swift 5, SwiftUI, Combine framework, and Core Data. Our scanner ensures your Apple ecosystem expertise is ATS-ready.",
+    primaryCTA: "Scan iOS Resume",
+    keywords: [
+      "Swift 5 / Swift 6",
+      "SwiftUI / Declarative UI",
+      "UIKit / Auto Layout",
+      "Core Data / CloudKit",
+      "Combine Framework / Async/Await",
+      "Xcode / Instruments",
+      "App Store Deployment / TestFlight",
+      "RESTful API Integration",
+      "MVVM / Clean Architecture",
+      "Push Notifications / APNs",
+      "iOS SDK / Cocoa Touch",
+      "XCTest / Unit Testing"
+    ],
+    stats: [
+      { value: "98K", label: "iOS developer job postings in 2025" },
+      { value: "92%", label: "Resumes rejected without Swift version specified" },
+      { value: "$130K", label: "Average iOS engineer salary (mid-level)" }
+    ],
+    commonIssues: [
+      {
+        title: "Swift Version Not Specified",
+        description: "ATS systems filter for 'Swift 5' or 'Swift 6.' Saying just 'Swift' doesn't demonstrate you're current with modern language features."
+      },
+      {
+        title: "SwiftUI vs UIKit Not Clarified",
+        description: "Many iOS jobs now prefer SwiftUI. If you have both experiences but don't list them separately, ATS can't match you to SwiftUI-specific roles."
+      },
+      {
+        title: "Architecture Pattern Missing",
+        description: "Recruiters search for 'MVVM,' 'VIPER,' 'Clean Architecture.' Without stating your architectural approach, you lose keyword matches."
+      }
+    ],
+    features: [
+      {
+        title: "Swift Version Validator",
+        description: "Checks that you've specified Swift version numbers and modern features like async/await and actors."
+      },
+      {
+        title: "SwiftUI vs UIKit Analyzer",
+        description: "Validates both frameworks are mentioned if applicable, increasing your ATS match rate."
+      },
+      {
+        title: "Architecture Pattern Detector",
+        description: "Ensures MVVM, VIPER, or other iOS architecture patterns are explicitly stated."
+      },
+      {
+        title: "App Store Experience Checker",
+        description: "Confirms deployment and distribution experience is ATS-visible."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 5 years of iOS experience but wasn't getting callbacks. CVDebug showed I never mentioned 'Swift 5' or 'SwiftUI' specifically. Added those and got 3 FAANG interviews within 2 weeks.",
+        name: "Ryan T.",
+        role: "iOS Developer",
+        location: "Cupertino, CA"
+      },
+      {
+        quote: "The SwiftUI analysis was game-changing. I'd built 10+ SwiftUI apps but only said 'iOS development.' Added 'SwiftUI declarative UI' throughout and my callback rate tripled.",
+        name: "Jessica M.",
+        role: "Senior iOS Engineer",
+        location: "Austin, TX"
+      },
+      {
+        quote: "CVDebug helped me emphasize MVVM architecture and Combine framework. My ATS score jumped from 64% to 91%. Got offers from two top startups.",
+        name: "Ahmed K.",
+        role: "iOS Software Engineer",
+        location: "San Francisco, CA"
+      }
+    ],
+    colors: {
+      primary: "gray",
+      secondary: "slate"
+    }
+  },
+
+  "android-engineer-kotlin-ats": {
+    slug: "android-engineer-kotlin-ats",
+    metaTitle: "Free ATS Resume Scanner for Android Engineers | CVDebug",
+    metaDescription: "Optimize your Android developer resume with keywords for Kotlin, Jetpack Compose, Coroutines, and Google Play Store deployment.",
+    badge: "Android Engineering",
+    heroTitle: "Get Your Android Engineer Resume Past",
+    heroHighlight: "Mobile Development ATS",
+    heroDescription: "Android positions require keywords like Kotlin, Jetpack Compose, Coroutines, and Material Design. Ensure your Android expertise is ATS-optimized.",
+    primaryCTA: "Scan Android Resume",
+    keywords: [
+      "Kotlin / Kotlin Multiplatform",
+      "Jetpack Compose / Declarative UI",
+      "Coroutines / Flow",
+      "Android SDK / Jetpack Libraries",
+      "Room Database / SQLite",
+      "MVVM Architecture / ViewModel",
+      "Retrofit / OkHttp",
+      "Material Design 3",
+      "Dagger/Hilt Dependency Injection",
+      "Google Play Store Deployment",
+      "Firebase / FCM Push Notifications",
+      "JUnit / Espresso Testing"
+    ],
+    stats: [
+      { value: "104K", label: "Android developer job postings in 2025" },
+      { value: "89%", label: "Resumes filtered without Kotlin keywords" },
+      { value: "$128K", label: "Average Android engineer salary (mid-level)" }
+    ],
+    commonIssues: [
+      {
+        title: "Kotlin Not Emphasized Over Java",
+        description: "Most Android roles now require Kotlin. If you have Kotlin experience but list 'Java/Kotlin' equally, ATS may categorize you as primarily Java."
+      },
+      {
+        title: "Jetpack Libraries Not Specified",
+        description: "ATS systems search for specific Jetpack components: 'Room,' 'ViewModel,' 'LiveData,' 'Navigation.' Saying 'Android Jetpack' is too generic."
+      },
+      {
+        title: "Compose Experience Not Highlighted",
+        description: "Jetpack Compose is the future of Android UI. If you have Compose experience but don't emphasize it, you're missing high-value keyword matches."
+      }
+    ],
+    features: [
+      {
+        title: "Kotlin Emphasis Validator",
+        description: "Checks that Kotlin is prominently featured and not buried alongside Java."
+      },
+      {
+        title: "Jetpack Component Checker",
+        description: "Validates specific Jetpack libraries (Room, ViewModel, Navigation, etc.) are listed individually."
+      },
+      {
+        title: "Compose Experience Analyzer",
+        description: "Ensures Jetpack Compose and declarative UI keywords are present if applicable."
+      },
+      {
+        title: "Architecture Pattern Detector",
+        description: "Confirms MVVM, MVI, or Clean Architecture patterns are explicitly stated."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I was still listing Java first. CVDebug helped me restructure as 'Kotlin Android Engineer' with Java secondary. Started getting senior Android role interviews immediately.",
+        name: "Priya S.",
+        role: "Android Developer",
+        location: "Mountain View, CA"
+      },
+      {
+        quote: "The Jetpack Compose analysis was crucial. I added 'Jetpack Compose UI,' 'Material Design 3,' and 'State Management'—ATS score jumped 42 points.",
+        name: "Marcus L.",
+        role: "Senior Android Engineer",
+        location: "Seattle, WA"
+      },
+      {
+        quote: "CVDebug showed I wasn't listing specific Jetpack libraries. Added Room, ViewModel, Navigation separately—started getting calls from Google and Meta.",
+        name: "Elena R.",
+        role: "Android Software Engineer",
+        location: "New York, NY"
+      }
+    ],
+    colors: {
+      primary: "green",
+      secondary: "lime"
+    }
+  },
+
+  "cloud-architect-aws-ats-scanner": {
+    slug: "cloud-architect-aws-ats-scanner",
+    metaTitle: "Free ATS Resume Scanner for AWS Cloud Architects | CVDebug",
+    metaDescription: "Optimize your cloud architect resume with keywords for AWS services, infrastructure as code, multi-region deployments, and cloud security.",
+    badge: "Cloud Architecture",
+    heroTitle: "Get Your Cloud Architect Resume Past",
+    heroHighlight: "AWS/Cloud Engineering ATS",
+    heroDescription: "Cloud architect positions require keywords like AWS Well-Architected Framework, Terraform, multi-region, and cost optimization. Ensure your cloud expertise is ATS-ready.",
+    primaryCTA: "Scan Cloud Resume",
+    keywords: [
+      "AWS Solutions Architect",
+      "Terraform / Infrastructure as Code",
+      "Multi-Region Architecture",
+      "AWS Well-Architected Framework",
+      "EC2, S3, RDS, Lambda, ECS",
+      "VPC / Networking / Security Groups",
+      "CloudFormation / CDK",
+      "Cost Optimization / FinOps",
+      "High Availability / Disaster Recovery",
+      "Serverless Architecture",
+      "AWS Certified Solutions Architect",
+      "Microservices / Container Orchestration"
+    ],
+    stats: [
+      { value: "78K", label: "Cloud architect job postings in 2025" },
+      { value: "95%", label: "Resumes rejected without specific AWS service keywords" },
+      { value: "$155K", label: "Average cloud architect salary" }
+    ],
+    commonIssues: [
+      {
+        title: "AWS Services Not Individually Listed",
+        description: "ATS systems search for specific services: 'EC2,' 'S3,' 'Lambda,' 'RDS.' Saying 'AWS cloud services' doesn't trigger these keyword matches."
+      },
+      {
+        title: "Infrastructure as Code Tools Missing",
+        description: "Terraform, CloudFormation, Pulumi—these IaC tools are heavily searched. If you use them but don't explicitly list them, you're losing matches."
+      },
+      {
+        title: "Architecture Patterns Not Specified",
+        description: "Recruiters filter for 'microservices,' 'serverless,' 'event-driven.' Without architectural terminology, your expertise isn't ATS-visible."
+      }
+    ],
+    features: [
+      {
+        title: "AWS Service Inventory",
+        description: "Validates you've listed specific AWS services individually for maximum keyword matching."
+      },
+      {
+        title: "IaC Tool Checker",
+        description: "Ensures Terraform, CloudFormation, or other infrastructure as code tools are prominently mentioned."
+      },
+      {
+        title: "Architecture Pattern Analyzer",
+        description: "Checks for microservices, serverless, event-driven, and other cloud architecture keywords."
+      },
+      {
+        title: "Certification Validator",
+        description: "Confirms AWS Solutions Architect or other cloud certifications are ATS-readable."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had AWS experience but just said 'cloud infrastructure.' CVDebug helped me list EC2, S3, Lambda, RDS individually—got 5 cloud architect interviews in one month.",
+        name: "Daniel K.",
+        role: "Cloud Solutions Architect",
+        location: "Arlington, VA"
+      },
+      {
+        quote: "The IaC analysis was game-changing. I added 'Terraform modules,' 'multi-region deployments,' 'FinOps cost optimization'—ATS score jumped from 67% to 93%.",
+        name: "Sarah M.",
+        role: "AWS Cloud Architect",
+        location: "San Francisco, CA"
+      },
+      {
+        quote: "CVDebug showed I never mentioned 'Well-Architected Framework' even though I design by it. Added that keyword and started getting senior architect role offers.",
+        name: "Chris P.",
+        role: "Principal Cloud Architect",
+        location: "Seattle, WA"
+      }
+    ],
+    colors: {
+      primary: "orange",
+      secondary: "amber"
+    }
+  },
+
+  "site-reliability-engineer-ats": {
+    slug: "site-reliability-engineer-ats",
+    metaTitle: "Free ATS Resume Scanner for Site Reliability Engineers | CVDebug",
+    metaDescription: "Optimize your SRE resume with keywords for Kubernetes, observability, incident response, SLOs, and infrastructure reliability.",
+    badge: "SRE / DevOps",
+    heroTitle: "Get Your SRE Resume Past",
+    heroHighlight: "Reliability Engineering ATS",
+    heroDescription: "SRE positions require keywords like Kubernetes, Prometheus, SLO/SLI, incident management, and on-call. Ensure your reliability engineering expertise is ATS-optimized.",
+    primaryCTA: "Scan SRE Resume",
+    keywords: [
+      "Kubernetes / K8s Operations",
+      "Prometheus / Grafana / Observability",
+      "SLO / SLI / Error Budget",
+      "Incident Response / On-Call",
+      "Infrastructure as Code (Terraform, Ansible)",
+      "CI/CD Pipelines (Jenkins, GitLab CI)",
+      "Container Orchestration / Docker",
+      "Load Balancing / Traffic Management",
+      "Capacity Planning / Performance Tuning",
+      "Chaos Engineering / Resilience Testing",
+      "Logging / Tracing (ELK, Jaeger)",
+      "Automation / Scripting (Python, Go)"
+    ],
+    stats: [
+      { value: "52K", label: "SRE job postings in 2025" },
+      { value: "91%", label: "Resumes filtered without SLO/observability keywords" },
+      { value: "$165K", label: "Average SRE salary (mid-level)" }
+    ],
+    commonIssues: [
+      {
+        title: "SLO/SLI Not Mentioned",
+        description: "ATS systems heavily weight 'SLO,' 'SLI,' 'error budget.' These are foundational SRE concepts and must be explicitly stated."
+      },
+      {
+        title: "Observability Stack Not Specified",
+        description: "Recruiters search for 'Prometheus,' 'Grafana,' 'Datadog,' 'ELK stack.' Saying 'monitoring tools' is too generic for ATS matching."
+      },
+      {
+        title: "Incident Management Not Emphasized",
+        description: "On-call, incident response, and postmortem experience are critical. If these aren't prominently featured, ATS filters miss your reliability expertise."
+      }
+    ],
+    features: [
+      {
+        title: "SLO/SLI Keyword Checker",
+        description: "Validates Service Level Objectives, Service Level Indicators, and error budget terminology."
+      },
+      {
+        title: "Observability Stack Analyzer",
+        description: "Checks for specific monitoring and observability tools (Prometheus, Grafana, Datadog, etc.)."
+      },
+      {
+        title: "Incident Response Validator",
+        description: "Ensures on-call, incident management, and postmortem keywords are present."
+      },
+      {
+        title: "Automation Skills Detector",
+        description: "Confirms scripting languages and automation tools are clearly stated."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I was in DevOps trying to move to SRE. CVDebug showed I was missing 'SLO,' 'error budget,' and 'observability.' Added those keywords and got my first SRE role at Uber.",
+        name: "Alex T.",
+        role: "Site Reliability Engineer",
+        location: "San Francisco, CA"
+      },
+      {
+        quote: "The observability analysis was crucial. I listed Prometheus, Grafana, and our entire monitoring stack separately—ATS score jumped from 58% to 94%.",
+        name: "Jordan M.",
+        role: "Senior SRE",
+        location: "New York, NY"
+      },
+      {
+        quote: "CVDebug helped me emphasize incident response and on-call experience. Changed from 'system maintenance' to 'incident commander, on-call rotation'—huge difference in recruiter interest.",
+        name: "Taylor K.",
+        role: "Staff SRE",
+        location: "Seattle, WA"
+      }
+    ],
+    colors: {
+      primary: "red",
+      secondary: "orange"
+    }
   }
 };
 

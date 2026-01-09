@@ -26,7 +26,7 @@ const urls: SitemapURL[] = [
   { loc: '/pricing', lastmod: today, changefreq: 'weekly', priority: 0.9 },
   { loc: '/preview', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 
-  // Nursing niche pages
+  // Nursing niche pages (18 pages)
   { loc: '/ats-scanner-for-nurses', lastmod: today, changefreq: 'weekly', priority: 0.9 },
   { loc: '/med-surg-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/icu-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
@@ -35,13 +35,23 @@ const urls: SitemapURL[] = [
   { loc: '/pediatric-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/psychiatric-nurse-resume-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/nurse-practitioner-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/ccu-cvu-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/dialysis-nurse-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/home-health-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/school-nurse-ats-resume-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/case-manager-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/infection-control-nurse-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 
-  // Tech niche pages
+  // Tech niche pages (12 pages)
   { loc: '/senior-frontend-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/backend-engineer-java-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/full-stack-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/machine-learning-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/devops-engineer-kubernetes-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/ios-engineer-swift-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/android-engineer-kotlin-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/cloud-architect-aws-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/site-reliability-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/software-engineer-keyword-sniper', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 
   // Other niche pages
