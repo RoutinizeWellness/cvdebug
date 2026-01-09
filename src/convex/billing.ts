@@ -1,4 +1,4 @@
-import { httpAction } from "./_generated/server";
+import { httpAction, internalMutation } from "./_generated/server";
 import { query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -10,6 +10,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
   const body = await request.text();
 
   console.log("[Webhook] ====== START WEBHOOK ======");
+  console.log("[Webhook] Timestamp:", new Date().toISOString());
   console.log("[Webhook] Signature present:", !!signature);
 
   if (!signature) {
@@ -55,77 +56,103 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 
       console.log(`[Webhook] ✅ Mapped product to plan: ${plan}`);
 
-      // Store payment record
-      console.log(`[Webhook] 💾 Storing payment record...`);
-      await ctx.runMutation(internalAny.billing.storePaymentRecord, {
-        tokenIdentifier: customer_id,
-        plan,
-        transactionId: transaction_id,
-        amount: amount || (plan === "single_scan" ? 4.99 : 19.99),
-      });
-      console.log(`[Webhook] ✅ Payment record stored`);
-
-      // Update user subscription and credits using customer_id as tokenIdentifier
-      console.log(`[Webhook] 🔄 Updating user subscription...`);
-      await ctx.runMutation(internalAny.users.updateSubscription, {
-        tokenIdentifier: customer_id,
-        plan: plan,
-      });
-      console.log(`[Webhook] ✅ User subscription updated`);
-
-      console.log(`[Webhook] 🎉 Credits granted for ${customer_id}`);
-
-      // If resumeId was passed in metadata, unlock that specific resume
-      if (metadata?.resumeId) {
-        console.log(`[Webhook] 🔓 Unlocking resume ${metadata.resumeId} for ${customer_id}`);
-
-        await ctx.runMutation(internalAny.resumes.unlockResumeAfterPurchase, {
-          resumeId: metadata.resumeId,
-          userId: customer_id,
+      // STEP 1: Update user subscription FIRST (most critical)
+      console.log(`[Webhook] 🔄 STEP 1: Updating user subscription...`);
+      try {
+        await ctx.runMutation(internalAny.users.updateSubscription, {
+          tokenIdentifier: customer_id,
+          plan: plan,
         });
+        console.log(`[Webhook] ✅ STEP 1 SUCCESS: User subscription updated`);
+      } catch (error: any) {
+        console.error(`[Webhook] ❌ STEP 1 FAILED: ${error.message}`);
+        throw error; // Critical failure, don't continue
+      }
 
-        console.log(`[Webhook] ✅ Resume unlocked successfully`);
+      // STEP 2: Store payment record
+      console.log(`[Webhook] 💾 STEP 2: Storing payment record...`);
+      try {
+        await ctx.runMutation(internalAny.billing.storePaymentRecord, {
+          tokenIdentifier: customer_id,
+          plan,
+          transactionId: transaction_id,
+          amount: amount || (plan === "single_scan" ? 4.99 : 19.99),
+        });
+        console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored`);
+      } catch (error: any) {
+        console.error(`[Webhook] ⚠️ STEP 2 WARNING: Failed to store payment record - ${error.message}`);
+        // Non-critical, continue
+      }
+
+      console.log(`[Webhook] 🎉 Credits granted successfully for ${customer_id}`);
+
+      // STEP 3: Unlock specific resume if passed in metadata
+      if (metadata?.resumeId) {
+        console.log(`[Webhook] 🔓 STEP 3: Unlocking resume ${metadata.resumeId} for ${customer_id}`);
+        try {
+          await ctx.runMutation(internalAny.resumes.unlockResumeAfterPurchase, {
+            resumeId: metadata.resumeId,
+            userId: customer_id,
+          });
+          console.log(`[Webhook] ✅ STEP 3 SUCCESS: Resume unlocked`);
+        } catch (error: any) {
+          console.error(`[Webhook] ⚠️ STEP 3 WARNING: Resume unlock failed - ${error.message}`);
+          // Non-critical, continue
+        }
       }
 
       console.log("[Webhook] ====== END WEBHOOK SUCCESS ======");
+      console.log(`[Webhook] Summary: Payment processed for ${customer_id}, Plan: ${plan}, Transaction: ${transaction_id}`);
       return new Response("OK", { status: 200 });
     }
 
     console.log(`[Webhook] ⚠️ Event not handled: ${payload.event}`);
     return new Response("Event not handled", { status: 200 });
   } catch (error: any) {
-    console.error("[Webhook] ❌ ERROR:", error);
+    console.error("[Webhook] ❌ CRITICAL ERROR:", error);
     console.error("[Webhook] ❌ Stack:", error.stack);
     console.error("[Webhook] ====== END WEBHOOK ERROR ======");
     return new Response(`Webhook error: ${error.message}`, { status: 400 });
   }
 });
 
-export const storePaymentRecord = internalAny.billing?.storePaymentRecord || require("./_generated/server").internalMutation({
+export const storePaymentRecord = internalMutation({
   args: {
     tokenIdentifier: v.string(),
     plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
     transactionId: v.string(),
     amount: v.number(),
   },
-  handler: async (ctx: any, args: any) => {
+  handler: async (ctx, args) => {
     console.log(`[storePaymentRecord] ====== START ======`);
+    console.log(`[storePaymentRecord] Timestamp: ${new Date().toISOString()}`);
     console.log(`[storePaymentRecord] Looking for user with tokenIdentifier: ${args.tokenIdentifier}`);
 
     const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q: any) => q.eq("tokenIdentifier", args.tokenIdentifier))
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
       .unique();
 
     if (!user) {
       console.error(`[storePaymentRecord] ❌ User not found with tokenIdentifier: ${args.tokenIdentifier}`);
       console.error(`[storePaymentRecord] This payment CANNOT be recorded. User must exist before payment.`);
-      return;
+      throw new Error(`User not found: ${args.tokenIdentifier}`);
     }
 
     console.log(`[storePaymentRecord] ✅ Found user: ${user.email} (ID: ${user._id})`);
 
-    await ctx.db.insert("payments", {
+    // Check if payment already exists (prevent duplicates)
+    const existingPayment = await ctx.db
+      .query("payments")
+      .withIndex("by_transaction_id", (q) => q.eq("transactionId", args.transactionId))
+      .first();
+
+    if (existingPayment) {
+      console.log(`[storePaymentRecord] ⚠️ Payment already recorded for transaction: ${args.transactionId}`);
+      return existingPayment._id;
+    }
+
+    const paymentId = await ctx.db.insert("payments", {
       userId: user._id,
       tokenIdentifier: args.tokenIdentifier,
       email: user.email,
@@ -137,7 +164,11 @@ export const storePaymentRecord = internalAny.billing?.storePaymentRecord || req
     });
 
     console.log(`[storePaymentRecord] ✅ Payment record stored for ${user.email}`);
+    console.log(`[storePaymentRecord] Payment ID: ${paymentId}`);
+    console.log(`[storePaymentRecord] Plan: ${args.plan}, Amount: $${args.amount}`);
     console.log(`[storePaymentRecord] ====== END ======`);
+
+    return paymentId;
   },
 });
 
@@ -187,5 +218,55 @@ export const getUserLatestPayment = query({
       userName: user.name || "User",
       userEmail: user.email || "",
     };
+  },
+});
+
+// New: Get all payments for admin view
+export const getAllPayments = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    // Admin check
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      return [];
+    }
+
+    const payments = await ctx.db.query("payments").order("desc").take(100);
+
+    // Enhance with user data
+    const paymentsWithUsers = await Promise.all(
+      payments.map(async (payment) => {
+        const user = await ctx.db.get(payment.userId);
+        return {
+          ...payment,
+          userName: user?.name || "Unknown",
+          userEmail: user?.email || "Unknown",
+        };
+      })
+    );
+
+    return paymentsWithUsers;
+  },
+});
+
+// New: Get payment history for a specific user (admin only)
+export const getUserPaymentHistory = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    // Admin check
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      return [];
+    }
+
+    const payments = await ctx.db
+      .query("payments")
+      .withIndex("by_user_id", (q) => q.eq("userId", args.userId))
+      .order("desc")
+      .collect();
+
+    return payments;
   },
 });

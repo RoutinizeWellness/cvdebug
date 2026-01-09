@@ -51,6 +51,7 @@ import { AdminBulkGrant } from "@/components/admin/AdminBulkGrant";
 import { AdminPaymentTesting } from "@/components/admin/AdminPaymentTesting";
 import { AdminUserTable } from "@/components/admin/AdminUserTable";
 import { AdminDataImport } from "@/components/admin/AdminDataImport";
+import { AdminPaymentsView } from "@/components/admin/AdminPaymentsView";
 import { motion } from "framer-motion";
 
 export default function AdminPage() {
@@ -668,13 +669,7 @@ export default function AdminPage() {
             )}
 
             {currentView === "billing" && (
-              <div className="flex items-center justify-center h-[400px] text-slate-400">
-                <div className="text-center">
-                  <CreditCard className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <h3 className="text-lg font-bold text-white">Billing Management</h3>
-                  <p>Stripe integration settings and billing overview coming soon.</p>
-                </div>
-              </div>
+              <AdminPaymentsView />
             )}
           </div>
         </div>
