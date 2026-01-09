@@ -1,15 +1,11 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Check, Sparkles } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 interface SubscriptionStatusModalProps {
   open: boolean;
@@ -20,71 +16,131 @@ interface SubscriptionStatusModalProps {
 export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: SubscriptionStatusModalProps) {
   const user = useQuery(api.users.currentUser);
 
+  // Close modal with ESC key
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && open) {
+        onOpenChange(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [open, onOpenChange]);
+
   if (!user) return null;
 
   const isFree = user.subscriptionTier === "free";
+  const isPremium = user.subscriptionTier === "interview_sprint" || user.subscriptionTier === "single_scan";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            Welcome to CVDebug! <span className="text-2xl">👋</span>
-          </DialogTitle>
-          <DialogDescription className="text-base">
-            You are currently on the <span className="font-bold text-primary capitalize">{user.subscriptionTier?.replace("_", " ") || "Free"}</span> plan.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-[480px] p-0 border-0 bg-transparent overflow-visible">
+        {/* Confetti Decorations */}
+        <div className="absolute -top-12 left-12 w-3 h-3 bg-primary rotate-45 opacity-40 animate-pulse" />
+        <div className="absolute -top-8 right-16 w-2 h-2 rounded-full bg-secondary opacity-50" />
+        <div className="absolute -bottom-8 left-20 w-4 h-1 bg-primary -rotate-12 opacity-30" />
+        <div className="absolute -bottom-12 right-20 w-3 h-3 border border-secondary rotate-12 opacity-40" />
+        <div className="absolute top-1/2 -left-12 w-2 h-2 bg-secondary rotate-45 opacity-30" />
+        <div className="absolute bottom-8 -right-12 w-4 h-4 rounded-full border border-primary opacity-20" />
 
-        <div className="py-4">
-          {isFree ? (
-            <div className="space-y-4">
-              <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-800">
-                <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  Unlock Your Career Potential
-                </h4>
-                <p className="text-sm text-slate-400 mb-4">
-                  Upgrade to a paid plan to access powerful features that help you land your dream job faster.
-                </p>
-                <ul className="space-y-2">
-                  {[
-                    "Full ATS Analysis & Scoring",
-                    "Detailed Keyword Reports",
-                    "Formatting Audit & Fixes",
-                    "Unlimited Re-scans (24h window)",
-                    "PDF Sanitization"
-                  ].map((benefit, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                      <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <Check className="h-3 w-3 text-primary" />
-                      </div>
-                      {benefit}
-                    </div>
-                  ))}
-                </ul>
-              </div>
+        {/* Crystalline Border Container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
+          className="glass-panel rounded-xl p-8 border border-primary/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)] relative overflow-hidden"
+        >
+          {/* Internal glow effects */}
+          <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary/20 rounded-full blur-[60px] pointer-events-none" />
+          <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-secondary/20 rounded-full blur-[60px] pointer-events-none" />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center gap-6 w-full text-center">
+            {/* Header Icon & Badge */}
+            <div className="flex flex-col items-center gap-3">
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-6xl"
+              >
+                👋
+              </motion.div>
+              {isPremium && (
+                <div className="inline-flex items-center px-3 py-1 rounded-full border border-secondary/50 bg-secondary/10 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                  <span className="text-xs font-bold tracking-wider text-secondary uppercase">Premium</span>
+                </div>
+              )}
             </div>
-          ) : (
-            <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
-              <p className="text-green-400 font-medium flex items-center gap-2">
-                <Check className="h-5 w-5" />
-                You have full access to premium features!
+
+            {/* Typography */}
+            <div className="space-y-2">
+              <h1 className="text-white text-3xl font-bold tracking-tight leading-tight">
+                Welcome to CVDebug!
+              </h1>
+              <p className="text-slate-400 text-base font-normal leading-relaxed">
+                You are currently on the <span className="text-primary font-medium">{
+                  user.subscriptionTier === "interview_sprint"
+                    ? "interview sprint plan"
+                    : user.subscriptionTier === "single_scan"
+                    ? "single scan plan"
+                    : "free plan"
+                }</span>.
               </p>
             </div>
-          )}
-        </div>
 
-        <DialogFooter className="flex-col sm:flex-row gap-2">
-          {isFree && (
-            <Button onClick={onUpgrade} className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-black font-bold">
-              View Upgrade Options
-            </Button>
-          )}
-          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
-            Continue to Dashboard
-          </Button>
-        </DialogFooter>
+            {/* Feature check */}
+            {isPremium ? (
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/50 border border-slate-700/50">
+                <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
+                <p className="text-slate-200 text-sm font-medium">You have full access to premium features!</p>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                <span className="material-symbols-outlined text-amber-400 text-xl">info</span>
+                <p className="text-slate-200 text-sm font-medium">Upgrade to unlock all features</p>
+              </div>
+            )}
+
+            {/* Spacer */}
+            <div className="h-2" />
+
+            {/* Action Button */}
+            {isFree ? (
+              <button
+                onClick={onUpgrade}
+                className="group/btn relative w-full overflow-hidden rounded-xl p-[1px] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#0F172A] transition-all duration-300 hover:scale-[1.02]"
+              >
+                {/* Gradient Border Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-100" />
+
+                {/* Button Content */}
+                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
+                  <span className="text-white text-base font-bold tracking-wide">View Upgrade Options</span>
+                  <span className="material-symbols-outlined text-white text-lg transition-transform group-hover/btn:translate-x-1">upgrade</span>
+                </div>
+              </button>
+            ) : (
+              <button
+                onClick={() => onOpenChange(false)}
+                className="group/btn relative w-full overflow-hidden rounded-xl p-[1px] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#0F172A] transition-all duration-300 hover:scale-[1.02]"
+              >
+                {/* Gradient Border Background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-100" />
+
+                {/* Button Content */}
+                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-slate-900/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
+                  <span className="text-white text-base font-bold tracking-wide">Continue to Dashboard</span>
+                  <span className="material-symbols-outlined text-white text-lg transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                </div>
+              </button>
+            )}
+
+            {/* Decorative footer text */}
+            <p className="text-xs text-slate-500 mt-2">
+              Press <span className="bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 border border-slate-700">ESC</span> to close
+            </p>
+          </div>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );
