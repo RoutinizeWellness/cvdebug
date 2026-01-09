@@ -26,7 +26,7 @@ const urls: SitemapURL[] = [
   { loc: '/pricing', lastmod: today, changefreq: 'weekly', priority: 0.9 },
   { loc: '/preview', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 
-  // Nursing niche pages (18 pages)
+  // Nursing niche pages (27 pages)
   { loc: '/ats-scanner-for-nurses', lastmod: today, changefreq: 'weekly', priority: 0.9 },
   { loc: '/med-surg-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/icu-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
@@ -41,8 +41,17 @@ const urls: SitemapURL[] = [
   { loc: '/school-nurse-ats-resume-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/case-manager-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/infection-control-nurse-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/rehab-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/wound-care-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/pain-management-nurse-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/ambulatory-care-nurse-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/radiology-nurse-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/transplant-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/cardiology-nurse-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/neurology-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/endoscopy-nurse-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 
-  // Tech niche pages (12 pages)
+  // Tech niche pages (21 pages)
   { loc: '/senior-frontend-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/backend-engineer-java-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/full-stack-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
@@ -52,11 +61,24 @@ const urls: SitemapURL[] = [
   { loc: '/android-engineer-kotlin-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/cloud-architect-aws-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/site-reliability-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/qa-engineer-automation-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/security-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/blockchain-engineer-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/mobile-engineer-react-native-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/embedded-systems-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/golang-backend-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/rust-systems-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/platform-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/solutions-architect-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/software-engineer-keyword-sniper', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 
   // Other niche pages
   { loc: '/resume-debug-for-data-analysts', lastmod: today, changefreq: 'monthly', priority: 0.7 },
   { loc: '/finance-internship-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.7 },
+  { loc: '/financial-analyst-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.7 },
+  { loc: '/marketing-manager-ats-scanner', lastmod: today, changefreq: 'monthly', priority: 0.7 },
+  { loc: '/product-manager-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/ux-designer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 
   // Company-specific pages
   { loc: '/optimize/google-sde', lastmod: today, changefreq: 'monthly', priority: 0.7 },

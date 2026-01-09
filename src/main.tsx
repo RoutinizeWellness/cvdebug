@@ -43,6 +43,29 @@ import IOSEngineerSwiftATSOptimizer from "./pages/industry/IOSEngineerSwiftATSOp
 import AndroidEngineerKotlinATS from "./pages/industry/AndroidEngineerKotlinATS.tsx";
 import CloudArchitectAWSATSScanner from "./pages/industry/CloudArchitectAWSATSScanner.tsx";
 import SiteReliabilityEngineerATS from "./pages/industry/SiteReliabilityEngineerATS.tsx";
+// Phase 3-5 imports
+import RehabNurseATSOptimizer from "./pages/industry/RehabNurseATSOptimizer.tsx";
+import WoundCareNurseATSOptimizer from "./pages/industry/WoundCareNurseATSOptimizer.tsx";
+import PainManagementNurseATS from "./pages/industry/PainManagementNurseATS.tsx";
+import AmbulatoryCareNurseATS from "./pages/industry/AmbulatoryCareNurseATS.tsx";
+import RadiologyNurseATSScanner from "./pages/industry/RadiologyNurseATSScanner.tsx";
+import QAEngineerAutomationATS from "./pages/industry/QAEngineerAutomationATS.tsx";
+import SecurityEngineerATSOptimizer from "./pages/industry/SecurityEngineerATSOptimizer.tsx";
+import BlockchainEngineerATSScanner from "./pages/industry/BlockchainEngineerATSScanner.tsx";
+import MobileEngineerReactNativeATS from "./pages/industry/MobileEngineerReactNativeATS.tsx";
+import EmbeddedSystemsEngineerATS from "./pages/industry/EmbeddedSystemsEngineerATS.tsx";
+import TransplantNurseATSOptimizer from "./pages/industry/TransplantNurseATSOptimizer.tsx";
+import CardiologyNurseATSScanner from "./pages/industry/CardiologyNurseATSScanner.tsx";
+import NeurologyNurseATSOptimizer from "./pages/industry/NeurologyNurseATSOptimizer.tsx";
+import EndoscopyNurseATSScanner from "./pages/industry/EndoscopyNurseATSScanner.tsx";
+import GolangBackendEngineerATS from "./pages/industry/GolangBackendEngineerATS.tsx";
+import RustSystemsEngineerATS from "./pages/industry/RustSystemsEngineerATS.tsx";
+import PlatformEngineerATSOptimizer from "./pages/industry/PlatformEngineerATSOptimizer.tsx";
+import SolutionsArchitectATSScanner from "./pages/industry/SolutionsArchitectATSScanner.tsx";
+import FinancialAnalystATSOptimizer from "./pages/industry/FinancialAnalystATSOptimizer.tsx";
+import MarketingManagerATSScanner from "./pages/industry/MarketingManagerATSScanner.tsx";
+import ProductManagerATSOptimizer from "./pages/industry/ProductManagerATSOptimizer.tsx";
+import UXDesignerATSOptimizer from "./pages/industry/UXDesignerATSOptimizer.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
@@ -142,6 +165,15 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/school-nurse-ats-resume-scanner" element={<SchoolNurseATSResumeScanner />} />
               <Route path="/case-manager-nurse-ats-optimizer" element={<CaseManagerNurseATSOptimizer />} />
               <Route path="/infection-control-nurse-ats" element={<InfectionControlNurseATS />} />
+              <Route path="/rehab-nurse-ats-optimizer" element={<RehabNurseATSOptimizer />} />
+              <Route path="/wound-care-nurse-ats-optimizer" element={<WoundCareNurseATSOptimizer />} />
+              <Route path="/pain-management-nurse-ats" element={<PainManagementNurseATS />} />
+              <Route path="/ambulatory-care-nurse-ats" element={<AmbulatoryCareNurseATS />} />
+              <Route path="/radiology-nurse-ats-scanner" element={<RadiologyNurseATSScanner />} />
+              <Route path="/transplant-nurse-ats-optimizer" element={<TransplantNurseATSOptimizer />} />
+              <Route path="/cardiology-nurse-ats-scanner" element={<CardiologyNurseATSScanner />} />
+              <Route path="/neurology-nurse-ats-optimizer" element={<NeurologyNurseATSOptimizer />} />
+              <Route path="/endoscopy-nurse-ats-scanner" element={<EndoscopyNurseATSScanner />} />
 
               {/* Industry-Specific Landing Pages - Tech & Other */}
               <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
@@ -153,9 +185,22 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/android-engineer-kotlin-ats" element={<AndroidEngineerKotlinATS />} />
               <Route path="/cloud-architect-aws-ats-scanner" element={<CloudArchitectAWSATSScanner />} />
               <Route path="/site-reliability-engineer-ats" element={<SiteReliabilityEngineerATS />} />
+              <Route path="/qa-engineer-automation-ats" element={<QAEngineerAutomationATS />} />
+              <Route path="/security-engineer-ats-optimizer" element={<SecurityEngineerATSOptimizer />} />
+              <Route path="/blockchain-engineer-ats-scanner" element={<BlockchainEngineerATSScanner />} />
+              <Route path="/mobile-engineer-react-native-ats" element={<MobileEngineerReactNativeATS />} />
+              <Route path="/embedded-systems-engineer-ats" element={<EmbeddedSystemsEngineerATS />} />
+              <Route path="/golang-backend-engineer-ats" element={<GolangBackendEngineerATS />} />
+              <Route path="/rust-systems-engineer-ats" element={<RustSystemsEngineerATS />} />
+              <Route path="/platform-engineer-ats-optimizer" element={<PlatformEngineerATSOptimizer />} />
+              <Route path="/solutions-architect-ats-scanner" element={<SolutionsArchitectATSScanner />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
               <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
+              <Route path="/financial-analyst-ats-optimizer" element={<FinancialAnalystATSOptimizer />} />
+              <Route path="/marketing-manager-ats-scanner" element={<MarketingManagerATSScanner />} />
+              <Route path="/product-manager-ats-optimizer" element={<ProductManagerATSOptimizer />} />
+              <Route path="/ux-designer-ats-optimizer" element={<UXDesignerATSOptimizer />} />
 
               {/* Company-Specific Optimize Pages */}
               <Route path="/optimize/google-sde" element={<GoogleSDEOptimize />} />
