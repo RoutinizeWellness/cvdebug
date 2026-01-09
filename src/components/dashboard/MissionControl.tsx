@@ -303,7 +303,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         className="glass-panel rounded-xl p-6 border-l-4 border-l-primary"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white text-lg font-bold">Salud de Carrera</h3>
+          <h3 className="text-white text-lg font-bold">Career Health</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
             visibilityScore >= 85 ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" :
             visibilityScore >= 70 ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
@@ -319,7 +319,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
         <div className="space-y-2 mb-4">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Progreso hacia ELITE (85%+)</span>
+            <span className="text-slate-400">Progress to ELITE (85%+)</span>
             <span className="text-white font-bold font-mono">{visibilityScore}/85</span>
           </div>
           <div className="h-3 bg-slate-800 rounded-full overflow-hidden relative">
