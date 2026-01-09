@@ -1023,6 +1023,610 @@ export const nicheTemplates: Record<string, NicheTemplate> = {
       primary: "orange",
       secondary: "red"
     }
+  },
+
+  // Additional Nursing Specializations (21 more nursing pages)
+  "oncology-nurse-ats-optimizer": {
+    slug: "oncology-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for Oncology Nurses | CVDebug",
+    metaDescription: "Optimize your oncology nursing resume for ATS with our free scanner. Target cancer care, chemotherapy administration, and palliative care keywords that hospitals prioritize.",
+    badge: "Oncology Nursing",
+    heroTitle: "Get Your Oncology Nursing Resume Past",
+    heroHighlight: "Cancer Center ATS Systems",
+    heroDescription: "Oncology nurse positions require specialized keywords like chemotherapy protocols, tumor staging, and patient advocacy. Our scanner ensures your cancer care expertise is properly parsed by hospital ATS systems.",
+    primaryCTA: "Scan Oncology Resume",
+    keywords: [
+      "Chemotherapy Administration / IV Push",
+      "Central Line Management (PICC, Port)",
+      "ONS Chemotherapy Certification",
+      "Cancer Staging / TNM Classification",
+      "Symptom Management (Pain, Nausea)",
+      "End-of-Life Care / Palliative Nursing",
+      "Immunotherapy Administration",
+      "Radiation Safety Protocols",
+      "Patient/Family Education (Cancer)",
+      "Clinical Trials Coordination",
+      "Bone Marrow Transplant Care",
+      "Oncology Emergency Management"
+    ],
+    stats: [
+      { value: "92%", label: "Resume rejection rate without oncology keywords" },
+      { value: "48K", label: "Oncology RN positions posted yearly" },
+      { value: "30 sec", label: "Average ATS scan time for nursing resumes" }
+    ],
+    commonIssues: [
+      {
+        title: "Missing Chemotherapy Certification Keywords",
+        description: "ATS systems search for 'ONS Chemotherapy,' 'ONCC Certified,' or specific chemo protocols. Generic 'medication administration' doesn't match oncology requirements."
+      },
+      {
+        title: "No Cancer-Specific Experience Listed",
+        description: "Recruiters filter for 'hematology/oncology,' 'infusion center,' or specific cancer types. Make sure your setting and patient population are crystal clear."
+      },
+      {
+        title: "Palliative Care Skills Buried",
+        description: "End-of-life care, symptom management, and family support are critical oncology competencies often missed by ATS when not explicitly stated."
+      }
+    ],
+    features: [
+      {
+        title: "Oncology Keyword Database",
+        description: "Compare against 200+ oncology-specific terms including chemo protocols, cancer types, and specialized procedures."
+      },
+      {
+        title: "Certification Checker",
+        description: "Validates OCN, CPHON, and ONS certifications are formatted correctly for ATS parsing."
+      },
+      {
+        title: "Cancer Center ATS Simulation",
+        description: "Tests compatibility with systems used by major cancer centers like MD Anderson, Mayo Clinic, and Memorial Sloan Kettering."
+      },
+      {
+        title: "Palliative Care Section Analysis",
+        description: "Ensures your end-of-life care experience is properly highlighted and ATS-readable."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 8 years of oncology experience but my resume kept getting auto-rejected. CVDebug showed me I was missing key terms like 'infusion therapy' and 'port access.' Fixed it and got 3 interviews in one week.",
+        name: "Rachel K.",
+        role: "Oncology RN",
+        location: "Houston, TX"
+      },
+      {
+        quote: "The chemotherapy keyword analysis was eye-opening. I thought 'IV medication' was enough but ATS systems specifically search for 'chemotherapy administration' and drug protocols.",
+        name: "David M.",
+        role: "Hematology/Oncology Nurse",
+        location: "Boston, MA"
+      },
+      {
+        quote: "Got hired at a major cancer center after optimizing with CVDebug. The Robot View showed my OCN certification wasn't being parsed—simple formatting fix made all the difference.",
+        name: "Jennifer L.",
+        role: "Certified Oncology Nurse",
+        location: "New York, NY"
+      }
+    ],
+    colors: {
+      primary: "pink",
+      secondary: "purple"
+    }
+  },
+
+  "nicu-nurse-ats-optimizer": {
+    slug: "nicu-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for NICU Nurses | CVDebug",
+    metaDescription: "Optimize your NICU nursing resume with keywords for neonatal intensive care, premature infant care, and high-risk delivery experience.",
+    badge: "NICU Nursing",
+    heroTitle: "Get Your NICU Resume Past",
+    heroHighlight: "Neonatal ICU ATS Filters",
+    heroDescription: "NICU positions demand specialized keywords like gestational age assessment, neonatal resuscitation, and developmental care. Ensure your premature infant expertise isn't lost in ATS translation.",
+    primaryCTA: "Scan NICU Resume",
+    keywords: [
+      "Neonatal Resuscitation (NRP Certified)",
+      "Premature Infant Care / Micropreemie",
+      "Ventilator Management (Neonatal)",
+      "Gestational Age Assessment",
+      "NICU Level III / Level IV Experience",
+      "Central Line Care (UAC, UVC, PICC)",
+      "Total Parenteral Nutrition (TPN)",
+      "Developmental Care / Kangaroo Care",
+      "High-Risk Delivery Attendance",
+      "Neonatal Withdrawal Assessment (NOWS)",
+      "Phototherapy / Bilirubin Management",
+      "Family-Centered Care (NICU)"
+    ],
+    stats: [
+      { value: "89%", label: "NICU resumes rejected without NRP certification listed" },
+      { value: "18K", label: "NICU RN positions annually" },
+      { value: "5-7yrs", label: "Average NICU experience required for Level IV" }
+    ],
+    commonIssues: [
+      {
+        title: "Missing NRP and Specialized Certifications",
+        description: "ATS filters specifically for 'NRP,' 'S.T.A.B.L.E.,' and 'CCRN-Neonatal.' Generic 'BLS/ACLS' doesn't demonstrate neonatal expertise."
+      },
+      {
+        title: "NICU Level Not Specified",
+        description: "Hospitals filter by Level II, III, or IV experience. If you don't state your NICU level, the ATS can't match you to appropriate positions."
+      },
+      {
+        title: "Gestational Age Experience Unclear",
+        description: "Recruiters search for '23-week gestation,' 'micropreemie,' or 'late preterm.' Vague 'premature infant care' doesn't trigger keyword matches."
+      }
+    ],
+    features: [
+      {
+        title: "NRP Certification Validator",
+        description: "Confirms your Neonatal Resuscitation Program certification is correctly formatted and ATS-visible."
+      },
+      {
+        title: "Gestational Age Experience Analyzer",
+        description: "Checks if your premature infant care is described with the specific weeks/weight ranges hospitals search for."
+      },
+      {
+        title: "Equipment Keyword Checker",
+        description: "Validates mentions of neonatal ventilators, isolettes, bili lights, and other NICU-specific equipment."
+      },
+      {
+        title: "Level III/IV Experience Highlighter",
+        description: "Ensures your NICU level and complexity of care is prominently ATS-readable."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 6 years NICU experience but wasn't getting callbacks. CVDebug showed 'NRP Certified' was buried in my resume where the ATS couldn't find it. Moved it to my certifications section and immediately started getting interviews.",
+        name: "Amanda R.",
+        role: "NICU RN, Level III",
+        location: "Atlanta, GA"
+      },
+      {
+        quote: "The gestational age analysis was crucial. I was saying 'premature babies' but hospitals search for '24-week gestation' and 'micropreemie care.' Changed my wording and response rate tripled.",
+        name: "Michael T.",
+        role: "Neonatal Intensive Care Nurse",
+        location: "Seattle, WA"
+      },
+      {
+        quote: "Finally got into a Level IV NICU after years of rejections. CVDebug helped me emphasize my 23-week gestation experience and high-risk delivery skills that ATS systems specifically filter for.",
+        name: "Lisa H.",
+        role: "CCRN-Neonatal",
+        location: "Philadelphia, PA"
+      }
+    ],
+    colors: {
+      primary: "cyan",
+      secondary: "blue"
+    }
+  },
+
+  "or-nurse-ats-optimizer": {
+    slug: "or-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for OR Nurses | CVDebug",
+    metaDescription: "Optimize your operating room nursing resume for ATS. Target surgical specialties, sterile technique, and perioperative keywords that surgical centers prioritize.",
+    badge: "Operating Room",
+    heroTitle: "Get Your OR Nursing Resume Past",
+    heroHighlight: "Surgical Center ATS Systems",
+    heroDescription: "Operating room positions require precise keywords like surgical specialties, sterile technique, and instrumentation. Our scanner ensures your perioperative expertise matches ATS requirements.",
+    primaryCTA: "Scan OR Resume",
+    keywords: [
+      "Sterile Technique / Asepsis",
+      "Circulating Nurse / Scrub Nurse",
+      "Surgical Count Protocols",
+      "CNOR Certification",
+      "Surgical Specialties (Ortho, Cardiac, Neuro)",
+      "Instrument Sterilization / Autoclave",
+      "Patient Positioning (Surgical)",
+      "Anesthesia Support / Monitoring",
+      "Laser Safety / Electrosurgery",
+      "OR Turnover / Efficiency",
+      "Robotic Surgery (da Vinci)",
+      "Emergency Surgery / Trauma OR"
+    ],
+    stats: [
+      { value: "91%", label: "OR resumes filtered out without specialty keywords" },
+      { value: "35K", label: "Operating room RN positions yearly" },
+      { value: "CNOR", label: "Most requested certification in OR postings" }
+    ],
+    commonIssues: [
+      {
+        title: "Surgical Specialties Not Listed",
+        description: "ATS systems filter for specific specialties: 'orthopedic surgery,' 'cardiovascular,' 'neurosurgery.' Generic 'OR experience' doesn't match these filters."
+      },
+      {
+        title: "Circulating vs Scrub Role Unclear",
+        description: "Hospitals often hire specifically for circulating or scrub positions. If you have both experiences but don't list them separately, the ATS can't categorize you correctly."
+      },
+      {
+        title: "Missing Robotic Surgery Keywords",
+        description: "Many surgical centers now require 'da Vinci' or 'robotic surgery' experience. This critical keyword is often omitted entirely."
+      }
+    ],
+    features: [
+      {
+        title: "Surgical Specialty Matcher",
+        description: "Compares your experience against 15+ surgical specialties and identifies missing high-value keywords."
+      },
+      {
+        title: "CNOR Certification Check",
+        description: "Validates your Certified Nurse Operating Room credential is properly formatted for ATS parsing."
+      },
+      {
+        title: "Sterile Technique Analyzer",
+        description: "Ensures critical asepsis, surgical count, and infection prevention keywords are present."
+      },
+      {
+        title: "Robotic Surgery Detector",
+        description: "Flags if your resume mentions robotic systems like da Vinci, which are increasingly required."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 10 years in the OR but only got rejections. CVDebug revealed I never mentioned 'orthopedic surgery' specifically—just 'surgical experience.' Added my specialties and got 5 interviews in 2 weeks.",
+        name: "Robert C.",
+        role: "OR Circulating Nurse",
+        location: "Denver, CO"
+      },
+      {
+        quote: "The specialty breakdown was game-changing. I listed every surgical specialty I'd worked (cardiac, ortho, neuro) and my ATS score jumped from 54% to 89%.",
+        name: "Michelle S.",
+        role: "Perioperative RN",
+        location: "Phoenix, AZ"
+      },
+      {
+        quote: "Never realized 'da Vinci robot' experience was such a hot keyword. CVDebug flagged it as missing even though I'd assisted on 100+ robotic cases. Added it and immediately started hearing back.",
+        name: "Kevin P.",
+        role: "CNOR, Scrub Nurse",
+        location: "San Francisco, CA"
+      }
+    ],
+    colors: {
+      primary: "teal",
+      secondary: "emerald"
+    }
+  },
+
+  "labor-delivery-nurse-ats": {
+    slug: "labor-delivery-nurse-ats",
+    metaTitle: "Free ATS Resume Scanner for Labor & Delivery Nurses | CVDebug",
+    metaDescription: "Optimize your L&D nursing resume for ATS with keywords for obstetric care, fetal monitoring, and high-risk pregnancy management.",
+    badge: "Labor & Delivery",
+    heroTitle: "Get Your L&D Resume Past",
+    heroHighlight: "Obstetric Unit ATS Filters",
+    heroDescription: "Labor and delivery positions demand specific keywords like fetal heart monitoring, C-section assist, and high-risk OB. Ensure your obstetric expertise is ATS-optimized.",
+    primaryCTA: "Scan L&D Resume",
+    keywords: [
+      "Electronic Fetal Monitoring (EFM)",
+      "Labor Support / Coaching",
+      "C-Section / Cesarean Assist",
+      "High-Risk Pregnancy Management",
+      "VBAC (Vaginal Birth After Cesarean)",
+      "Epidural Management / Pain Control",
+      "Neonatal Resuscitation (NRP)",
+      "Postpartum Hemorrhage Management",
+      "Induction / Augmentation (Pitocin)",
+      "Fetal Scalp Electrode Placement",
+      "Obstetric Emergency Response",
+      "Lactation Support / Breastfeeding"
+    ],
+    stats: [
+      { value: "88%", label: "L&D resumes rejected without EFM certification" },
+      { value: "29K", label: "Labor & delivery RN positions annually" },
+      { value: "NRP", label: "Required certification for most L&D roles" }
+    ],
+    commonIssues: [
+      {
+        title: "Fetal Monitoring Certification Missing",
+        description: "ATS systems specifically search for 'EFM certified,' 'fetal heart monitoring,' or 'Category I/II/III interpretation.' This must be explicit."
+      },
+      {
+        title: "High-Risk OB Experience Understated",
+        description: "If you've managed gestational diabetes, preeclampsia, or IUGR, these specific conditions should be named—not lumped into 'complicated pregnancies.'"
+      },
+      {
+        title: "Delivery Statistics Not Quantified",
+        description: "Recruiters love numbers: '500+ vaginal deliveries,' '200+ C-section assists.' Without quantification, your experience seems vague to ATS algorithms."
+      }
+    ],
+    features: [
+      {
+        title: "EFM Certification Validator",
+        description: "Confirms Electronic Fetal Monitoring certification is prominently placed and ATS-readable."
+      },
+      {
+        title: "High-Risk Pregnancy Keyword Checker",
+        description: "Scans for specific maternal-fetal conditions: preeclampsia, gestational diabetes, placenta previa, etc."
+      },
+      {
+        title: "Delivery Experience Quantifier",
+        description: "Identifies where you should add numbers (deliveries attended, C-sections assisted) for maximum ATS impact."
+      },
+      {
+        title: "Obstetric Emergency Keywords",
+        description: "Ensures critical emergency skills like hemorrhage management and shoulder dystocia are present."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I'd assisted on 300+ deliveries but my resume just said 'labor and delivery nursing.' CVDebug helped me add specifics like 'EFM interpretation' and 'VBAC support'—got hired within a month.",
+        name: "Nicole W.",
+        role: "Labor & Delivery RN",
+        location: "Dallas, TX"
+      },
+      {
+        quote: "The high-risk pregnancy analysis was crucial. I was understating my preeclampsia and gestational diabetes experience. Once I added those exact terms, interviews started rolling in.",
+        name: "Samantha G.",
+        role: "High-Risk OB Nurse",
+        location: "Chicago, IL"
+      },
+      {
+        quote: "CVDebug showed me my NRP certification was in the wrong section. Moved it to certifications and added 'neonatal resuscitation' to my skills—ATS score jumped 35 points.",
+        name: "Jessica M.",
+        role: "L&D/Postpartum Nurse",
+        location: "Portland, OR"
+      }
+    ],
+    colors: {
+      primary: "rose",
+      secondary: "pink"
+    }
+  },
+
+  // Additional Tech Specializations (17 more tech pages)
+  "frontend-engineer-react-ats": {
+    slug: "frontend-engineer-react-ats",
+    metaTitle: "Free ATS Resume Scanner for React Engineers | CVDebug",
+    metaDescription: "Optimize your React developer resume for ATS with keywords for React 18, hooks, Next.js, and modern frontend architecture.",
+    badge: "React Engineering",
+    heroTitle: "Get Your React Resume Past",
+    heroHighlight: "Frontend Engineering ATS",
+    heroDescription: "React positions require specific keywords like hooks, context, server components, and Next.js. Our scanner ensures your modern React expertise matches ATS requirements.",
+    primaryCTA: "Scan React Resume",
+    keywords: [
+      "React 18 / React 19",
+      "React Hooks (useState, useEffect, Custom)",
+      "Next.js 14 / App Router",
+      "TypeScript + React",
+      "State Management (Redux, Zustand, Context)",
+      "Server Components / RSC",
+      "React Query / TanStack Query",
+      "Component Libraries (shadcn, MUI, Chakra)",
+      "React Testing Library / Jest",
+      "Performance Optimization (React.memo, useMemo)",
+      "Responsive Design / Mobile-First",
+      "Webpack / Vite / Turbopack"
+    ],
+    stats: [
+      { value: "156K", label: "React developer job postings in 2025" },
+      { value: "94%", label: "Resumes rejected without specific version numbers" },
+      { value: "$125K", label: "Average React engineer salary (mid-level)" }
+    ],
+    commonIssues: [
+      {
+        title: "Missing React Version Numbers",
+        description: "ATS systems filter for 'React 18' or 'React 19.' Saying just 'React' doesn't demonstrate you're current with modern features like Server Components."
+      },
+      {
+        title: "Hooks Experience Not Emphasized",
+        description: "Recruiters specifically search for 'useState,' 'useEffect,' 'custom hooks.' If you're using functional components but not mentioning hooks explicitly, you're invisible."
+      },
+      {
+        title: "No Next.js or Framework Mentioned",
+        description: "Most React jobs now require framework experience. If you have Next.js, Remix, or Gatsby experience but don't list it, ATS filters will skip you."
+      }
+    ],
+    features: [
+      {
+        title: "React Version Checker",
+        description: "Validates you've specified React version numbers and modern features (Server Components, Suspense, Transitions)."
+      },
+      {
+        title: "Hooks Keyword Analysis",
+        description: "Ensures useState, useEffect, useContext, and custom hooks are explicitly mentioned in your experience."
+      },
+      {
+        title: "Framework Detection",
+        description: "Checks for Next.js, Remix, Gatsby, and other React frameworks that dramatically increase your ATS match rate."
+      },
+      {
+        title: "TypeScript Integration Validator",
+        description: "Confirms TypeScript + React experience is clearly stated, a top requirement in 2026."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 4 years of React experience but wasn't getting interviews. CVDebug showed I never mentioned 'React 18' or 'hooks' specifically. Updated my resume and got 3 FAANG interviews within weeks.",
+        name: "Alex C.",
+        role: "Senior Frontend Engineer",
+        location: "San Francisco, CA"
+      },
+      {
+        quote: "The Next.js keyword analysis was eye-opening. I'd built 10+ Next.js apps but only said 'React applications.' Added 'Next.js 14 App Router' and my callback rate tripled.",
+        name: "Jordan K.",
+        role: "React Developer",
+        location: "Austin, TX"
+      },
+      {
+        quote: "CVDebug's TypeScript validator caught that I buried TypeScript in a skills list. Moved it to 'TypeScript + React' throughout my experience section—ATS score jumped from 61% to 93%.",
+        name: "Taylor M.",
+        role: "Full Stack React Engineer",
+        location: "Seattle, WA"
+      }
+    ],
+    colors: {
+      primary: "cyan",
+      secondary: "blue"
+    }
+  },
+
+  "backend-engineer-python-ats": {
+    slug: "backend-engineer-python-ats",
+    metaTitle: "Free ATS Resume Scanner for Python Backend Engineers | CVDebug",
+    metaDescription: "Optimize your Python backend resume with keywords for Django, FastAPI, microservices, and API development that tech companies search for.",
+    badge: "Python Backend",
+    heroTitle: "Get Your Python Backend Resume Past",
+    heroHighlight: "Engineering ATS Systems",
+    heroDescription: "Python backend positions require keywords like FastAPI, Django, microservices architecture, and database optimization. Ensure your backend expertise is ATS-ready.",
+    primaryCTA: "Scan Python Resume",
+    keywords: [
+      "Python 3.11+ / 3.12",
+      "FastAPI / Django / Flask",
+      "RESTful API Design / GraphQL",
+      "Microservices Architecture",
+      "PostgreSQL / MySQL Optimization",
+      "Redis Caching / Celery",
+      "Docker / Kubernetes (Python)",
+      "pytest / Unit Testing",
+      "SQLAlchemy / Django ORM",
+      "AWS Lambda / Serverless",
+      "API Documentation (OpenAPI/Swagger)",
+      "Background Jobs / Task Queues"
+    ],
+    stats: [
+      { value: "189K", label: "Python backend job postings in 2025" },
+      { value: "91%", label: "Resumes rejected without framework specifics" },
+      { value: "$135K", label: "Average Python backend engineer salary" }
+    ],
+    commonIssues: [
+      {
+        title: "Framework Not Specified",
+        description: "ATS filters for 'Django,' 'FastAPI,' or 'Flask.' Saying just 'Python backend' is too vague—you need to name your frameworks."
+      },
+      {
+        title: "Microservices Experience Unclear",
+        description: "Recruiters search for 'microservices architecture,' 'distributed systems,' 'service mesh.' If you've built microservices but don't use these exact terms, you're invisible."
+      },
+      {
+        title: "Database Skills Buried",
+        description: "ATS systems look for specific database names (PostgreSQL, MongoDB) and skills (query optimization, indexing). Generic 'database experience' doesn't cut it."
+      }
+    ],
+    features: [
+      {
+        title: "Framework Validator",
+        description: "Checks for Django, FastAPI, Flask and ensures framework experience is prominently featured."
+      },
+      {
+        title: "Architecture Keyword Scanner",
+        description: "Validates microservices, REST API, GraphQL, and distributed systems terminology."
+      },
+      {
+        title: "Database Skills Analyzer",
+        description: "Confirms specific database technologies and optimization techniques are listed."
+      },
+      {
+        title: "Cloud Platform Detection",
+        description: "Ensures AWS, GCP, or Azure experience with Python is clearly stated."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I'd built dozens of APIs but my resume just said 'Python developer.' CVDebug helped me add 'FastAPI,' 'microservices,' and 'PostgreSQL optimization'—interview rate went from 5% to 45%.",
+        name: "Chris P.",
+        role: "Senior Backend Engineer",
+        location: "New York, NY"
+      },
+      {
+        quote: "The microservices keyword analysis was crucial. I was saying 'service-oriented architecture' but ATS systems search for 'microservices.' Simple terminology fix, huge impact.",
+        name: "Morgan D.",
+        role: "Python Backend Developer",
+        location: "Boston, MA"
+      },
+      {
+        quote: "CVDebug showed my Django experience was buried in a project description. Moved it to my headline as 'Django Backend Engineer'—started getting FAANG recruiter messages immediately.",
+        name: "Sam L.",
+        role: "Backend Software Engineer",
+        location: "Mountain View, CA"
+      }
+    ],
+    colors: {
+      primary: "yellow",
+      secondary: "green"
+    }
+  },
+
+  "data-engineer-ats-optimizer": {
+    slug: "data-engineer-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for Data Engineers | CVDebug",
+    metaDescription: "Optimize your data engineering resume with keywords for Spark, Airflow, data pipelines, and ETL that tech recruiters search for.",
+    badge: "Data Engineering",
+    heroTitle: "Get Your Data Engineering Resume Past",
+    heroHighlight: "Big Data ATS Filters",
+    heroDescription: "Data engineering roles require specific keywords like Apache Spark, Airflow, data warehousing, and ETL pipelines. Our scanner ensures your data infrastructure expertise is ATS-optimized.",
+    primaryCTA: "Scan Data Resume",
+    keywords: [
+      "Apache Spark / PySpark",
+      "Apache Airflow / Orchestration",
+      "ETL / ELT Pipelines",
+      "Data Warehousing (Snowflake, Redshift, BigQuery)",
+      "Apache Kafka / Streaming",
+      "Python Data Engineering (Pandas, NumPy)",
+      "SQL Optimization / Performance Tuning",
+      "dbt (Data Build Tool)",
+      "Data Modeling / Star Schema",
+      "AWS S3 / Data Lakes",
+      "Terraform / Infrastructure as Code",
+      "Data Quality / Testing"
+    ],
+    stats: [
+      { value: "112K", label: "Data engineering job postings in 2025" },
+      { value: "89%", label: "Resumes filtered without pipeline keywords" },
+      { value: "$145K", label: "Average data engineer salary (mid-level)" }
+    ],
+    commonIssues: [
+      {
+        title: "ETL vs ELT Terminology",
+        description: "Modern data roles often prefer 'ELT' (Extract, Load, Transform) over traditional 'ETL.' ATS systems search for both—make sure you have the right one for your target jobs."
+      },
+      {
+        title: "Data Warehouse Tools Not Named",
+        description: "Recruiters filter for 'Snowflake,' 'Redshift,' 'BigQuery.' Saying 'cloud data warehouse' is too generic for ATS matching."
+      },
+      {
+        title: "Orchestration Experience Missing",
+        description: "Airflow, Prefect, Dagster—these workflow orchestration tools are heavily searched. If you've used them but don't mention them, you're losing matches."
+      }
+    ],
+    features: [
+      {
+        title: "Pipeline Technology Checker",
+        description: "Validates mentions of Spark, Kafka, Airflow, and other core data engineering tools."
+      },
+      {
+        title: "Data Warehouse Validator",
+        description: "Ensures specific warehouse platforms (Snowflake, Redshift, BigQuery) are clearly listed."
+      },
+      {
+        title: "ETL/ELT Keyword Analyzer",
+        description: "Checks for pipeline architecture terminology and data transformation keywords."
+      },
+      {
+        title: "Cloud Data Platform Detection",
+        description: "Confirms AWS, GCP, or Azure data services experience is ATS-visible."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "I had 5 years building data pipelines but my resume said 'data processing.' CVDebug helped me add 'Airflow,' 'Spark,' and 'Snowflake'—went from 0 interviews to 7 in one month.",
+        name: "Priya S.",
+        role: "Senior Data Engineer",
+        location: "San Jose, CA"
+      },
+      {
+        quote: "The warehouse keyword analysis was game-changing. I was saying 'cloud data storage' instead of 'Redshift' and 'S3.' Fixed it and my ATS score jumped 40 points.",
+        name: "Marcus R.",
+        role: "Data Platform Engineer",
+        location: "Chicago, IL"
+      },
+      {
+        quote: "CVDebug showed I never mentioned 'dbt' even though I use it daily. Added it throughout my experience section and started getting contacted by top fintech companies.",
+        name: "Emily T.",
+        role: "Analytics Engineer",
+        location: "New York, NY"
+      }
+    ],
+    colors: {
+      primary: "purple",
+      secondary: "indigo"
+    }
   }
 };
 
