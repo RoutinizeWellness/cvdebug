@@ -765,6 +765,264 @@ export const nicheTemplates: Record<string, NicheTemplate> = {
       primary: "purple",
       secondary: "pink"
     }
+  },
+
+  "psychiatric-nurse-resume-scanner": {
+    slug: "psychiatric-nurse-resume-scanner",
+    metaTitle: "Free ATS Resume Scanner for Psychiatric Nurses | CVDebug",
+    metaDescription: "Optimize your psychiatric nursing resume for ATS. Mental health RN keywords, crisis intervention, therapeutic communication. Get hired at psychiatric hospitals.",
+    badge: "For Psychiatric Nurses",
+    heroTitle: "Get Your Psychiatric Nursing Resume",
+    heroHighlight: "Past Mental Health ATS Systems",
+    heroDescription: "68% of psychiatric nursing resumes miss critical keywords like 'crisis de-escalation', 'therapeutic alliance', and 'psychiatric assessment tools'. Optimize for mental health facility ATS systems.",
+    primaryCTA: "Scan My Psych Nursing Resume Free",
+    keywords: [
+      "Crisis Intervention / De-escalation",
+      "Therapeutic Communication",
+      "Psychiatric Assessment (MSE)",
+      "Suicide Risk Assessment",
+      "CPI Certification (Crisis Prevention)",
+      "Medication Management (Psych Meds)",
+      "Behavioral Health Documentation",
+      "Trauma-Informed Care",
+      "Milieu Therapy",
+      "Group Therapy Facilitation",
+      "Involuntary Commitment (5150)",
+      "Dual Diagnosis Treatment"
+    ],
+    stats: [
+      { value: "68%", label: "of psychiatric resumes missing crisis keywords" },
+      { value: "1:6", label: "typical patient ratio in psych units" },
+      { value: "85%", label: "of mental health facilities use ATS" }
+    ],
+    commonIssues: [
+      {
+        title: "Crisis Skills Not Emphasized",
+        description: "Psychiatric resumes need 'CPI certified', 'crisis de-escalation', 'safety protocols' prominently displayed. Mental health ATS systems prioritize crisis management experience."
+      },
+      {
+        title: "Therapeutic Modalities Not Listed",
+        description: "Facilities want 'DBT', 'CBT', 'motivational interviewing' explicitly stated. ATS algorithms filter by therapeutic approach keywords."
+      },
+      {
+        title: "Population Experience Missing",
+        description: "Your psych experience needs 'adolescent', 'geriatric', 'forensic', or 'dual diagnosis' specified. ATS filters by patient population."
+      }
+    ],
+    features: [
+      {
+        title: "Psychiatric Keyword Analyzer",
+        description: "Scans for 140+ mental health nursing terms: crisis intervention, therapeutic communication, psychiatric medications, and behavioral health protocols."
+      },
+      {
+        title: "Crisis Certification Validator",
+        description: "Ensures CPI, MOAB, or other crisis certifications are positioned for psychiatric ATS parsing - typically headline or first bullet."
+      },
+      {
+        title: "Population Experience Optimizer",
+        description: "Structures your experience with specific populations (adolescent, forensic, geriatric, dual diagnosis) for mental health facility ATS."
+      },
+      {
+        title: "Behavioral Health ATS Test",
+        description: "Tests against psychiatric hospital ATS systems used by McLean Hospital, Menninger Clinic, and major behavioral health networks."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 30 psychiatric positions - barely any callbacks. CVDebug showed me 'crisis de-escalation' and 'CPI' needed to be in my headline. Fixed it, got 5 interviews at top psych facilities.",
+        name: "Marcus D.",
+        role: "Psychiatric RN",
+        location: "McLean Hospital"
+      },
+      {
+        quote: "Had 6 years mental health experience but ATS wasn't seeing it. The scanner showed my therapeutic modalities were buried. Restructured, ATS score jumped from 41% to 86%.",
+        name: "Rebecca T.",
+        role: "Behavioral Health Nurse",
+        location: "Menninger Clinic"
+      },
+      {
+        quote: "New grad trying to enter psych nursing. This tool showed me how to present my mental health clinical rotations with crisis intervention keywords. Got hired at a forensic psych unit.",
+        name: "Jordan K.",
+        role: "New Grad Psych RN",
+        location: "State Psychiatric Hospital"
+      }
+    ],
+    colors: {
+      primary: "indigo",
+      secondary: "purple"
+    }
+  },
+
+  "nurse-practitioner-ats-optimizer": {
+    slug: "nurse-practitioner-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for Nurse Practitioners | CVDebug",
+    metaDescription: "Optimize your NP resume for ATS. FNP, AGACNP, PMHNP keywords. Prescriptive authority, clinical protocols. Get hired at hospitals and clinics.",
+    badge: "For Nurse Practitioners",
+    heroTitle: "Get Your Nurse Practitioner Resume",
+    heroHighlight: "Past Advanced Practice ATS",
+    heroDescription: "72% of NP resumes lack keywords like 'prescriptive authority', 'evidence-based protocols', and 'collaborative practice agreements'. Optimize for hospital and clinic ATS systems.",
+    primaryCTA: "Scan My NP Resume Free",
+    keywords: [
+      "Prescriptive Authority (DEA License)",
+      "Clinical Protocols / Guidelines",
+      "Collaborative Practice Agreement",
+      "Diagnostic Reasoning",
+      "Family Practice (FNP)",
+      "Acute Care (AGACNP)",
+      "Psychiatric Mental Health (PMHNP)",
+      "Patient Assessment & Diagnosis",
+      "Evidence-Based Practice",
+      "Quality Improvement Initiatives",
+      "Electronic Prescribing (EPCS)",
+      "Clinical Preceptor Experience"
+    ],
+    stats: [
+      { value: "72%", label: "of NP resumes missing prescriptive authority keywords" },
+      { value: "25+", label: "patients per day typical for FNP" },
+      { value: "90%", label: "of healthcare orgs use ATS for NP roles" }
+    ],
+    commonIssues: [
+      {
+        title: "Specialty Not Prominent",
+        description: "NP resumes need 'FNP-C', 'AGACNP-BC', 'PMHNP' in headline. Advanced practice ATS systems filter by specialty certification first."
+      },
+      {
+        title: "Prescriptive Authority Not Emphasized",
+        description: "DEA license, state prescriptive authority, and EPCS experience must be explicit. ATS algorithms prioritize prescribing credentials."
+      },
+      {
+        title: "Clinical Outcomes Not Quantified",
+        description: "Employers want 'Improved HbA1c by 1.2% across diabetic population' not just 'managed chronic disease'. ATS filters by outcome metrics."
+      }
+    ],
+    features: [
+      {
+        title: "Advanced Practice Keyword Scanner",
+        description: "Analyzes for 160+ NP terms: prescriptive authority, clinical protocols, specialty certifications, and advanced practice competencies."
+      },
+      {
+        title: "Specialty Certification Validator",
+        description: "Ensures FNP-C, AGACNP-BC, PMHNP, or other NP certifications are positioned where ATS algorithms scan first."
+      },
+      {
+        title: "Clinical Outcomes Optimizer",
+        description: "Structures your quality metrics, patient outcomes, and evidence-based practice results for advanced practice ATS parsing."
+      },
+      {
+        title: "Healthcare System ATS Test",
+        description: "Tests against major healthcare system ATS used by Kaiser, Mayo Clinic, Cleveland Clinic for NP positions."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 40 FNP positions - mostly rejections. CVDebug showed 'DEA license' and 'prescriptive authority' needed to be prominent. Added them, got 8 interviews including Kaiser.",
+        name: "Amanda R.",
+        role: "Family Nurse Practitioner",
+        location: "Kaiser Permanente"
+      },
+      {
+        quote: "Had AGACNP-BC but wasn't getting callbacks. The scanner showed my specialty cert was buried. Moved to headline, ATS score went from 48% to 91%. Got ICU NP role at Mayo.",
+        name: "David L.",
+        role: "Acute Care Nurse Practitioner",
+        location: "Mayo Clinic"
+      },
+      {
+        quote: "New NP trying to transition from bedside. This tool showed me how to present clinical outcomes and evidence-based practice. Got hired at Cleveland Clinic within 6 weeks.",
+        name: "Maria S.",
+        role: "Nurse Practitioner",
+        location: "Cleveland Clinic"
+      }
+    ],
+    colors: {
+      primary: "teal",
+      secondary: "cyan"
+    }
+  },
+
+  "machine-learning-engineer-ats": {
+    slug: "machine-learning-engineer-ats",
+    metaTitle: "ATS Resume Scanner for Machine Learning Engineers | CVDebug",
+    metaDescription: "Optimize your ML engineer resume for ATS. PyTorch, TensorFlow, model deployment. Get past FAANG and AI company ATS systems.",
+    badge: "For ML Engineers",
+    heroTitle: "Get Your ML Engineering Resume",
+    heroHighlight: "Past AI Company ATS Systems",
+    heroDescription: "70% of ML resumes lack keywords like 'model serving infrastructure', 'A/B testing frameworks', and 'production ML pipelines'. See what OpenAI, Google Brain, and AI companies' ATS see.",
+    primaryCTA: "Scan My ML Resume Free",
+    keywords: [
+      "PyTorch / TensorFlow / JAX",
+      "Model Training & Optimization",
+      "Production ML Pipelines",
+      "Model Serving (TF Serving, TorchServe)",
+      "A/B Testing / Experimentation",
+      "Feature Engineering",
+      "MLOps / Model Monitoring",
+      "Distributed Training (Horovod, Ray)",
+      "Computer Vision / NLP",
+      "Model Deployment (Kubernetes)",
+      "ML Infrastructure Scaling",
+      "Experiment Tracking (MLflow, W&B)"
+    ],
+    stats: [
+      { value: "70%", label: "of ML resumes missing production keywords" },
+      { value: "L5+", label: "level requires deployment experience" },
+      { value: "93%", label: "of AI companies use ATS" }
+    ],
+    commonIssues: [
+      {
+        title: "Research-Heavy, Production-Light",
+        description: "ML resumes need production deployment experience. ATS systems filter by 'model serving', 'A/B testing', 'production pipelines' - not just research papers."
+      },
+      {
+        title: "Scale Not Demonstrated",
+        description: "Companies want 'Deployed model serving 10M predictions/day' not 'trained models'. ATS algorithms prioritize production scale metrics."
+      },
+      {
+        title: "MLOps Skills Missing",
+        description: "Modern ML roles require 'model monitoring', 'feature stores', 'experiment tracking'. ATS systems weight infrastructure experience heavily."
+      }
+    ],
+    features: [
+      {
+        title: "Production ML Keyword Analyzer",
+        description: "Scans for 180+ ML engineering terms: model deployment, MLOps, experimentation, and production infrastructure."
+      },
+      {
+        title: "Scale Metrics Validator",
+        description: "Ensures your model performance (accuracy, latency), prediction volume, and infrastructure scale are quantified for ML ATS parsing."
+      },
+      {
+        title: "Research vs Production Balance",
+        description: "Verifies you show both research (papers, experiments) and production (deployment, monitoring) for senior ML ATS filters."
+      },
+      {
+        title: "AI Company ATS Compatibility",
+        description: "Tests against OpenAI, Google Brain, Meta AI, and AI-focused company ATS configurations."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 50 ML roles - mostly rejections. CVDebug showed I was all research, no production. Added deployment and A/B testing keywords. Got offers from OpenAI and Google Brain.",
+        name: "Alex C.",
+        role: "ML Engineer",
+        location: "OpenAI"
+      },
+      {
+        quote: "Had PhD in ML but wasn't getting callbacks. The scanner showed I needed MLOps and model serving keywords. Added them, ATS score went from 44% to 87%. Interviewing at L6 level.",
+        name: "Priya M.",
+        role: "Senior ML Engineer",
+        location: "Google Brain"
+      },
+      {
+        quote: "Transitioning from data science to ML engineering. This tool showed me exactly what production ML ATS systems scan for. Got ML role at Meta AI within a month.",
+        name: "Kevin R.",
+        role: "ML Engineer",
+        location: "Meta AI"
+      }
+    ],
+    colors: {
+      primary: "orange",
+      secondary: "red"
+    }
   }
 };
 
