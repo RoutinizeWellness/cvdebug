@@ -35,6 +35,7 @@ import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
+import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
 import {
   Dialog,
   DialogContent,
@@ -386,6 +387,13 @@ export default function Dashboard() {
                 <h3 className="text-lg font-bold text-white mb-2">LinkedIn Optimizer</h3>
                 <p className="text-sm text-slate-400">Optimize your profile for recruiters</p>
               </button>
+              <button
+                onClick={() => setCurrentView('keyword-sniper')}
+                className="p-6 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-2 border-amber-500/30 text-left hover:border-amber-500/60 transition-all"
+              >
+                <h3 className="text-lg font-bold text-white mb-2">🎯 Keyword Sniper Tool</h3>
+                <p className="text-sm text-slate-400">AI-powered bullet rewriting with keyword injection and live score tracking</p>
+              </button>
             </div>
           </div>
         );
@@ -424,6 +432,8 @@ export default function Dashboard() {
         return <BulletRewriter />;
       case 'writing-forge':
         return <WritingForge />;
+      case 'keyword-sniper':
+        return <KeywordSniperView onBack={() => setCurrentView('tools')} />;
       default:
         return (
           <MissionControl 
