@@ -49,6 +49,7 @@ import { ImageTrapAlert } from "./ImageTrapAlert";
 import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
 import { ATSSimulation } from "./ATSSimulation";
+import { SniperModeTeaser } from "./SniperModeTeaser";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -1040,6 +1041,20 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
 
                 <TabsContent value="keywords" className="flex-1 overflow-auto p-6">
                   <div className="space-y-8">
+                    {/* Sniper Mode Teaser - Only show if there are missing keywords */}
+                    {criticalKeywords.length > 2 && (
+                      <SniperModeTeaser
+                        totalMissingKeywords={criticalKeywords.length}
+                        visibleKeywords={criticalKeywords.slice(0, 2).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw)}
+                        lockedKeywordsCount={Math.max(0, criticalKeywords.length - 2)}
+                        onUnlock={() => {
+                          setShowPricing(true);
+                        }}
+                        currentScore={displayResume?.score || 0}
+                        potentialScore={Math.min(100, (displayResume?.score || 0) + (criticalKeywords.length * 3))}
+                      />
+                    )}
+
                     <div className="glass-card rounded-lg p-6">
                       <h2 className="text-2xl font-bold text-white mb-6">Keyword Analysis</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1057,16 +1072,28 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                           </div>
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">Missing Keywords</h3>
+                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">
+                            Missing Keywords {criticalKeywords.length > 2 && (
+                              <span className="text-xs text-amber-400 ml-2">(Mostrando 2 de {criticalKeywords.length})</span>
+                            )}
+                          </h3>
                           <div className="space-y-3">
-                            {criticalKeywords.map((kw: any, index: number) => (
+                            {criticalKeywords.slice(0, 2).map((kw: any, index: number) => (
                               <div key={index} className="flex items-center justify-between p-3 bg-red-950/30 rounded-lg border border-red-900/50">
-                                <span className="text-red-400 font-medium">{kw}</span>
+                                <span className="text-red-400 font-medium">{typeof kw === 'string' ? kw : kw.keyword || kw}</span>
                                 <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
                                   {kw.impact || 5}
                                 </span>
                               </div>
                             ))}
+                            {criticalKeywords.length > 2 && (
+                              <div className="p-4 bg-slate-800/50 rounded-lg border-2 border-amber-500/30 flex items-center justify-center gap-2">
+                                <span className="material-symbols-outlined text-amber-400">lock</span>
+                                <span className="text-amber-400 font-medium">
+                                  + {criticalKeywords.length - 2} keywords más bloqueadas
+                                </span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

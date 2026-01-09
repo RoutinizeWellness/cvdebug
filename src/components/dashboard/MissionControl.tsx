@@ -220,6 +220,138 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         </motion.div>
       </section>
 
+      {/* Robot View Widget - Prominent */}
+      <motion.section
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-950/50 via-slate-900 to-slate-950 border-2 border-green-500/30 p-6 shadow-[0_0_60px_rgba(34,197,94,0.15)]"
+      >
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.4),transparent_50%)]" />
+        <div className="relative">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                <span className="text-2xl">👁️</span>
+              </div>
+              <div>
+                <h3 className="text-white text-lg font-bold">Robot View: What ATS Actually Reads</h3>
+                <p className="text-green-400 text-xs font-mono">¿Falta información crítica en tu CV?</p>
+              </div>
+            </div>
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+          </div>
+
+          <div className="bg-[#0a0e1a] rounded-xl border border-green-500/30 p-4 font-mono text-sm max-h-[200px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <span className="text-green-500 shrink-0">[ATS]</span>
+                <span className="text-slate-300">
+                  {masterResume?.ocrText ? masterResume.ocrText.slice(0, 300) + "..." : "Upload a resume to see raw text extraction"}
+                </span>
+              </div>
+              {masterResume && (
+                <>
+                  <div className="flex gap-2">
+                    <span className="text-amber-500 shrink-0">[WARN]</span>
+                    <span className="text-slate-400">
+                      {missingKeywords.length > 0
+                        ? `Missing ${missingKeywords.length} high-impact keywords: ${missingKeywords.slice(0, 2).join(", ")}...`
+                        : "All critical keywords detected"}
+                    </span>
+                  </div>
+                  {visibilityScore < 85 && (
+                    <div className="flex gap-2">
+                      <span className="text-rose-500 shrink-0">[CRIT]</span>
+                      <span className="text-slate-400">
+                        Score {visibilityScore}/100 - Need {85 - visibilityScore} points to reach ELITE tier
+                      </span>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4 flex gap-3">
+            <Button
+              onClick={() => onNavigate("master-cvs")}
+              className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 hover:border-green-500/50"
+            >
+              <span className="material-symbols-outlined mr-2">visibility</span>
+              Ver Vista Completa
+            </Button>
+            {!masterResume && (
+              <Button
+                onClick={onUpload}
+                className="flex-1 bg-primary hover:bg-primary/90"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Subir CV
+              </Button>
+            )}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Career Health Gamification */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-panel rounded-xl p-6 border-l-4 border-l-primary"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white text-lg font-bold">Salud de Carrera</h3>
+          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+            visibilityScore >= 85 ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" :
+            visibilityScore >= 70 ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
+            visibilityScore >= 50 ? "bg-amber-500/20 text-amber-400 border border-amber-500/30" :
+            "bg-slate-700/50 text-slate-400 border border-slate-600"
+          }`}>
+            {visibilityScore >= 85 ? "🏆 ELITE" :
+             visibilityScore >= 70 ? "⭐ PRO" :
+             visibilityScore >= 50 ? "📈 RISING" :
+             "🎯 STARTER"}
+          </span>
+        </div>
+
+        <div className="space-y-2 mb-4">
+          <div className="flex justify-between text-sm">
+            <span className="text-slate-400">Progreso hacia ELITE (85%+)</span>
+            <span className="text-white font-bold font-mono">{visibilityScore}/85</span>
+          </div>
+          <div className="h-3 bg-slate-800 rounded-full overflow-hidden relative">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${Math.min((visibilityScore / 85) * 100, 100)}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className={`h-full ${
+                visibilityScore >= 85 ? "bg-gradient-to-r from-purple-500 to-pink-500" :
+                visibilityScore >= 70 ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
+                "bg-gradient-to-r from-amber-500 to-orange-500"
+              } shadow-[0_0_15px_rgba(59,130,246,0.5)]`}
+            ></motion.div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="bg-slate-800/50 rounded-lg p-3">
+            <p className="text-xs text-slate-400 mb-1">CV Score</p>
+            <p className="text-2xl font-bold text-white">{visibilityScore}</p>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-3">
+            <p className="text-xs text-slate-400 mb-1">Applications</p>
+            <p className="text-2xl font-bold text-white">{activeApplications}</p>
+          </div>
+          <div className="bg-slate-800/50 rounded-lg p-3">
+            <p className="text-xs text-slate-400 mb-1">Interviews</p>
+            <p className="text-2xl font-bold text-white">{applicationsByStatus.interviewing.length}</p>
+          </div>
+        </div>
+      </motion.section>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[400px]">
         {/* Kanban Board */}
         <section className="lg:col-span-2 flex flex-col gap-4">
