@@ -4,8 +4,8 @@
  * Run with: npx tsx scripts/seoAnalytics.ts
  */
 
-import { nicheTemplates, getAllNicheSlugs } from '../src/data/nicheTemplates';
-import { seoPages, getNextPagesToBuild } from '../src/data/seoStrategy';
+import { nicheTemplates, getAllNicheSlugs } from '../src/data/nicheTemplates.js';
+import { seoPages, getNextPagesToBuild } from '../src/data/seoStrategy.js';
 
 interface PageAnalysis {
   url: string;

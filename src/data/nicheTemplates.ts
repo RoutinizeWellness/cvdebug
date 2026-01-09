@@ -507,6 +507,264 @@ export const nicheTemplates: Record<string, NicheTemplate> = {
       primary: "violet",
       secondary: "purple"
     }
+  },
+
+  "pediatric-nurse-ats-optimizer": {
+    slug: "pediatric-nurse-ats-optimizer",
+    metaTitle: "Free ATS Resume Scanner for Pediatric Nurses | CVDebug",
+    metaDescription: "Optimize your pediatric nursing resume for ATS. Specialized scanner for peds RNs with PALS, child development, and family-centered care experience. Get hired at children's hospitals.",
+    badge: "For Pediatric Nurses",
+    heroTitle: "Get Your Pediatric Nursing Resume",
+    heroHighlight: "Past Children's Hospital ATS",
+    heroDescription: "70% of pediatric nursing resumes lack keywords like 'PALS certification', 'child development stages', and 'family-centered care'. See what Children's Hospital, Boston Children's, and CHOP ATS systems see.",
+    primaryCTA: "Scan My Pediatric Resume Free",
+    keywords: [
+      "PALS (Pediatric Advanced Life Support)",
+      "Child Development Assessment",
+      "Family-Centered Care",
+      "Pediatric Medication Dosing",
+      "Age-Appropriate Communication",
+      "Neonatal Resuscitation (NRP)",
+      "Pediatric Pain Assessment (FLACC)",
+      "IV Insertion (Pediatric)",
+      "Growth & Development Monitoring",
+      "Immunization Administration",
+      "Play Therapy Integration",
+      "Parent/Family Education"
+    ],
+    stats: [
+      { value: "70%", label: "of pediatric resumes missing PALS keywords" },
+      { value: "1:4", label: "typical patient ratio in pediatrics" },
+      { value: "88%", label: "of children's hospitals use ATS" }
+    ],
+    commonIssues: [
+      {
+        title: "Generic 'Pediatric Experience' Language",
+        description: "Children's hospitals need 'age-appropriate developmental assessment', 'FLACC pain scoring', and 'family-centered rounds' - not just 'worked with kids'. ATS systems scan for pediatric-specific competencies."
+      },
+      {
+        title: "Age Ranges Not Specified",
+        description: "Hospitals want '0-18 years' or 'neonatal to adolescent' explicitly stated. ATS algorithms filter by age group experience: neonatal, infant, toddler, school-age, adolescent."
+      },
+      {
+        title: "PALS Certification Not Prominent",
+        description: "Your PALS cert needs to be in headline AND first bullet. Pediatric ATS systems prioritize PALS over ACLS for nursing roles in children's hospitals."
+      }
+    ],
+    features: [
+      {
+        title: "Pediatric-Specific Keyword Analyzer",
+        description: "Scans for 150+ pediatric nursing terms: developmental milestones, age-appropriate care, family engagement, and pediatric emergency protocols."
+      },
+      {
+        title: "Age Group Experience Optimizer",
+        description: "Ensures your experience across age ranges (neonate, infant, toddler, school-age, adolescent) is formatted for children's hospital ATS parsing."
+      },
+      {
+        title: "Pediatric Certification Validator",
+        description: "Verifies PALS, NRP, ENPC, CPEN certifications are positioned where pediatric ATS algorithms scan first - typically headline or top 2 bullets."
+      },
+      {
+        title: "Children's Hospital ATS Test",
+        description: "Tests against Boston Children's, CHOP, Children's National, and Nationwide Children's ATS configurations for maximum compatibility."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 25 pediatric positions - barely any responses. CVDebug showed me I was missing 'FLACC scoring' and 'age-appropriate dosing'. Added them, got interviews at Boston Children's and CHOP.",
+        name: "Lisa R.",
+        role: "Pediatric RN",
+        location: "Boston Children's Hospital"
+      },
+      {
+        quote: "Had 4 years peds experience but wasn't getting callbacks. The scanner showed my PALS cert was buried. Moved it to headline, ATS score went from 43% to 88%.",
+        name: "Michael T.",
+        role: "Pediatric ER Nurse",
+        location: "Children's Hospital Los Angeles"
+      },
+      {
+        quote: "New grad wanting to work in pediatrics. This tool showed me how to highlight my peds clinical rotations with specific developmental stages. Got hired at Nationwide Children's.",
+        name: "Emma L.",
+        role: "New Grad Pediatric RN",
+        location: "Nationwide Children's Hospital"
+      }
+    ],
+    colors: {
+      primary: "blue",
+      secondary: "cyan"
+    }
+  },
+
+  "backend-engineer-java-ats": {
+    slug: "backend-engineer-java-ats",
+    metaTitle: "ATS Resume Scanner for Backend Java Engineers | CVDebug",
+    metaDescription: "Optimize your backend Java engineer resume for ATS. Spring Boot, microservices, distributed systems. Get past FAANG and enterprise ATS systems.",
+    badge: "For Backend Java Engineers",
+    heroTitle: "Get Your Backend Java Resume",
+    heroHighlight: "Past Enterprise ATS Systems",
+    heroDescription: "71% of backend engineer resumes lack keywords like 'distributed transactions', 'event-driven architecture', and 'API design patterns'. See what Google, Amazon, and enterprise companies' ATS systems see.",
+    primaryCTA: "Scan My Backend Resume Free",
+    keywords: [
+      "Spring Boot / Spring Cloud",
+      "Microservices Architecture",
+      "RESTful API Design",
+      "Distributed Systems",
+      "Event-Driven Architecture (Kafka)",
+      "Database Optimization (SQL/NoSQL)",
+      "Kubernetes Deployment",
+      "CI/CD Pipelines",
+      "API Gateway / Service Mesh",
+      "Distributed Transactions",
+      "Caching Strategies (Redis)",
+      "Performance Tuning / JVM Optimization"
+    ],
+    stats: [
+      { value: "71%", label: "of backend resumes missing architecture keywords" },
+      { value: "L5+", label: "level requires system design experience" },
+      { value: "91%", label: "of tech companies use ATS for backend roles" }
+    ],
+    commonIssues: [
+      {
+        title: "Generic 'Java Developer' Title",
+        description: "Backend resumes need 'Senior Backend Engineer - Java/Spring Boot/Microservices' with specific technologies. ATS systems filter by technical stack depth."
+      },
+      {
+        title: "Scale Not Quantified",
+        description: "Companies want 'Designed API handling 50M requests/day with 99.99% uptime' not 'built backend services'. ATS algorithms prioritize scale metrics."
+      },
+      {
+        title: "System Design Not Demonstrated",
+        description: "Your distributed system work needs 'event-driven microservices with saga pattern' not just 'microservices development'. Senior ATS filters look for architecture decisions."
+      }
+    ],
+    features: [
+      {
+        title: "Backend Architecture Keyword Scanner",
+        description: "Analyzes for 200+ backend engineering terms: distributed systems patterns, API design, database optimization, and microservices architecture."
+      },
+      {
+        title: "Scale Metrics Validator",
+        description: "Ensures your throughput (requests/sec), uptime (99.9%), and data volume (TB processed) are quantified correctly for backend ATS parsing."
+      },
+      {
+        title: "Tech Stack Depth Checker",
+        description: "Verifies you're showing senior-level depth (not just 'Spring' but 'Spring Cloud Gateway', 'Spring Security OAuth2') for L5+ ATS filters."
+      },
+      {
+        title: "Enterprise ATS Compatibility",
+        description: "Tests against Google, Amazon, Microsoft, Oracle, and enterprise company ATS configurations for backend engineering roles."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 60 backend roles - mostly auto-rejections. CVDebug showed me I needed distributed system keywords and scale numbers. Fixed it, got onsites at Amazon and Google within a month.",
+        name: "Raj K.",
+        role: "Senior Backend Engineer",
+        location: "Amazon Web Services"
+      },
+      {
+        quote: "Had 7 years Java experience but ATS wasn't seeing it as 'senior'. The scanner showed me to add system design patterns and throughput metrics. Now interviewing at L6 level.",
+        name: "Chen W.",
+        role: "Staff Backend Engineer",
+        location: "Google Cloud"
+      },
+      {
+        quote: "Transitioning from monolith to microservices companies. This tool showed me exactly what modern backend ATS systems scan for - event-driven patterns, not just Spring Boot. Got offers from 3 unicorns.",
+        name: "Sarah M.",
+        role: "Principal Engineer",
+        location: "Stripe"
+      }
+    ],
+    colors: {
+      primary: "emerald",
+      secondary: "green"
+    }
+  },
+
+  "full-stack-engineer-ats-optimizer": {
+    slug: "full-stack-engineer-ats-optimizer",
+    metaTitle: "ATS Resume Scanner for Full-Stack Engineers | CVDebug",
+    metaDescription: "Optimize your full-stack engineer resume for ATS. React, Node.js, PostgreSQL, AWS. Get past startup and tech company ATS systems.",
+    badge: "For Full-Stack Engineers",
+    heroTitle: "Get Your Full-Stack Resume",
+    heroHighlight: "Past Tech Startup ATS",
+    heroDescription: "69% of full-stack resumes fail to show both frontend AND backend depth. ATS systems scan for 'end-to-end ownership', 'database design', and 'API development' alongside UI work.",
+    primaryCTA: "Scan My Full-Stack Resume Free",
+    keywords: [
+      "React / Next.js Frontend",
+      "Node.js / Express Backend",
+      "PostgreSQL / MongoDB",
+      "REST API Development",
+      "GraphQL / Apollo",
+      "AWS / Cloud Infrastructure",
+      "Docker / Kubernetes",
+      "CI/CD Pipeline Setup",
+      "Database Schema Design",
+      "End-to-End Feature Ownership",
+      "TypeScript (Frontend + Backend)",
+      "Authentication / Authorization"
+    ],
+    stats: [
+      { value: "69%", label: "of full-stack resumes lack backend depth" },
+      { value: "80%", label: "of startups require full-stack skills" },
+      { value: "87%", label: "of tech companies use ATS" }
+    ],
+    commonIssues: [
+      {
+        title: "Frontend-Heavy, Backend-Light",
+        description: "Full-stack resumes need equal emphasis on both stacks. ATS systems reject candidates showing only React without database design, API development, and infrastructure work."
+      },
+      {
+        title: "No End-to-End Ownership Shown",
+        description: "Startups want 'Owned user authentication feature from design to deployment: React UI, Node.js API, PostgreSQL schema, AWS deployment'. ATS filters by feature ownership."
+      },
+      {
+        title: "Missing DevOps/Infrastructure Skills",
+        description: "Modern full-stack roles require 'Docker containerization', 'CI/CD setup', and 'AWS deployment'. ATS systems weight infrastructure experience highly for full-stack positions."
+      }
+    ],
+    features: [
+      {
+        title: "Full-Stack Balance Analyzer",
+        description: "Scans for balanced keywords across frontend (React, UI), backend (Node, API), database (SQL, schema), and infrastructure (AWS, Docker)."
+      },
+      {
+        title: "Feature Ownership Optimizer",
+        description: "Ensures you demonstrate end-to-end feature ownership from UI to database to deployment - critical for full-stack ATS parsing."
+      },
+      {
+        title: "Startup ATS Compatibility",
+        description: "Tests against Lever, Greenhouse, and startup-focused ATS systems that prioritize versatility and full-stack depth."
+      },
+      {
+        title: "Tech Stack Breadth Validator",
+        description: "Verifies you show competency across the entire stack: frontend, backend, database, infrastructure, and DevOps."
+      }
+    ],
+    testimonials: [
+      {
+        quote: "Applied to 40 startup full-stack roles - crickets. CVDebug showed my resume was 90% frontend. Added backend APIs, database design, AWS work. Got 8 interviews including YC companies.",
+        name: "Alex P.",
+        role: "Full-Stack Engineer",
+        location: "Series B Startup"
+      },
+      {
+        quote: "Had both React and Node experience but wasn't showing end-to-end ownership. The scanner showed me how to present complete features. ATS score went from 51% to 89%.",
+        name: "Jordan L.",
+        role: "Senior Full-Stack Engineer",
+        location: "Shopify"
+      },
+      {
+        quote: "Trying to transition from pure backend to full-stack. This tool showed me what full-stack ATS systems expect - not just 'knows React' but complete feature delivery. Got full-stack role at Notion.",
+        name: "Priya S.",
+        role: "Full-Stack Engineer",
+        location: "Notion"
+      }
+    ],
+    colors: {
+      primary: "purple",
+      secondary: "pink"
+    }
   }
 };
 

@@ -4,7 +4,11 @@
  */
 
 import { writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface SitemapURL {
   loc: string;
@@ -28,9 +32,12 @@ const urls: SitemapURL[] = [
   { loc: '/icu-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/er-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/travel-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/pediatric-nurse-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
 
   // Tech niche pages
   { loc: '/senior-frontend-engineer-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/backend-engineer-java-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
+  { loc: '/full-stack-engineer-ats-optimizer', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/devops-engineer-kubernetes-ats', lastmod: today, changefreq: 'monthly', priority: 0.8 },
   { loc: '/software-engineer-keyword-sniper', lastmod: today, changefreq: 'monthly', priority: 0.7 },
 

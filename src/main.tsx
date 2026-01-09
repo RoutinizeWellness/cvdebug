@@ -22,10 +22,13 @@ import MedSurgNurseATSOptimizer from "./pages/industry/MedSurgNurseATSOptimizer.
 import ICUNurseATSOptimizer from "./pages/industry/ICUNurseATSOptimizer.tsx";
 import ERNurseATSOptimizer from "./pages/industry/ERNurseATSOptimizer.tsx";
 import TravelNurseATSOptimizer from "./pages/industry/TravelNurseATSOptimizer.tsx";
+import PediatricNurseATSOptimizer from "./pages/industry/PediatricNurseATSOptimizer.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
 import SeniorFrontendEngineerATS from "./pages/industry/SeniorFrontendEngineerATS.tsx";
+import BackendEngineerJavaATS from "./pages/industry/BackendEngineerJavaATS.tsx";
+import FullStackEngineerATSOptimizer from "./pages/industry/FullStackEngineerATSOptimizer.tsx";
 import DevOpsEngineerKubernetesATS from "./pages/industry/DevOpsEngineerKubernetesATS.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
@@ -114,9 +117,12 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/icu-nurse-ats-optimizer" element={<ICUNurseATSOptimizer />} />
               <Route path="/er-nurse-ats-optimizer" element={<ERNurseATSOptimizer />} />
               <Route path="/travel-nurse-ats-optimizer" element={<TravelNurseATSOptimizer />} />
+              <Route path="/pediatric-nurse-ats-optimizer" element={<PediatricNurseATSOptimizer />} />
 
               {/* Industry-Specific Landing Pages - Tech & Other */}
               <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
+              <Route path="/backend-engineer-java-ats" element={<BackendEngineerJavaATS />} />
+              <Route path="/full-stack-engineer-ats-optimizer" element={<FullStackEngineerATSOptimizer />} />
               <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
