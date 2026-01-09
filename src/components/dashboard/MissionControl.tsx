@@ -1,27 +1,17 @@
-import { useQuery, useAction } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useMemo, useState, useEffect } from "react";
-import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion";
-import { SpeedometerCard } from "./mission/SpeedometerCard";
-import { IntegrityPanel } from "./mission/IntegrityPanel";
-import { BulletPointSniper } from "./mission/BulletPointSniper";
-import { ActionableIntelligence } from "./mission/ActionableIntelligence";
-import { SystemConsole } from "./mission/SystemConsole";
-import { Sparkles, X, Bot, Eye, Lock } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { ATSRawTextView } from "./ATSRawTextView";
-import { RoleMatchCard } from "./analysis/RoleMatchCard";
-import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
-import { ImpactScore } from "./analysis/ImpactScore";
-import { AIProTip } from "./analysis/AIProTip";
-import { CriticalIssues } from "./CriticalIssues";
-import { FormattingAudit } from "./analysis/FormattingAudit";
-import { ActionableFixes } from "./analysis/ActionableFixes";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { SprintProgressWidget } from "./SprintProgressWidget";
-import { ScoreEvolutionChart } from "./ScoreEvolutionChart";
+import {
+  TrendingUp,
+  AlertCircle,
+  Send,
+  Plus,
+  ArrowRight,
+  Terminal,
+  Wrench
+} from "lucide-react";
 
 const apiAny = api as any;
 
@@ -32,451 +22,392 @@ interface MissionControlProps {
 }
 
 export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: MissionControlProps) {
-  const resumes = useQuery(apiAny.resumes.getResumes);
-  const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
-  const generateBulletPoints = useAction(apiAny.keywordSniper.generateKeywordPhrases);
-  const [showAISuggestion, setShowAISuggestion] = useState(false);
-  const [snipingKeyword, setSnipingKeyword] = useState<string | null>(null);
-  const [consoleLogs, setConsoleLogs] = useState<any[]>([]);
-  const [showRobotView, setShowRobotView] = useState(false);
   const currentUser = useQuery(apiAny.users.currentUser);
+  const resumes = useQuery(apiAny.resumes.getResumes);
+  const applications = useQuery(apiAny.jobTracker.getJobHistory);
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
-    // Prefer completed resumes with analysis
-    const completedResume = resumes.find((r: any) => 
-      r.status === "completed" && 
+    const completedResume = resumes.find((r: any) =>
+      r.status === "completed" &&
       (r.matchedKeywords?.length || r.missingKeywords?.length)
     );
     if (completedResume) return completedResume;
     return resumes[0];
   }, [resumes]);
 
-  const latestJob = jobHistory && jobHistory.length > 0 ? jobHistory[0] : null;
-  
-  // Dynamic Scores
-  const matchScore = masterResume?.score || 0;
-  const integrityScore = masterResume?.textLayerIntegrity || 0;
-  const hasImageTrap = masterResume?.hasImageTrap || false;
-  const isProcessing = masterResume?.status === "processing";
-
-  // Extract keywords dynamically
-  const matchedKeywords = useMemo(() => {
-    if (!masterResume || !masterResume.matchedKeywords) return [];
-    console.log('[MissionControl] Matched keywords:', masterResume.matchedKeywords);
-    return masterResume.matchedKeywords;
-  }, [masterResume]);
+  // Calculate metrics
+  const visibilityScore = masterResume?.score || 0;
+  const activeApplications = applications?.filter((app: any) =>
+    app.status === "applied" || app.status === "interviewing"
+  ).length || 0;
 
   const missingKeywords = useMemo(() => {
     if (!masterResume || !masterResume.missingKeywords) return [];
-    const keywords = masterResume.missingKeywords.map((kw: any) => 
+    return masterResume.missingKeywords.map((kw: any) =>
       typeof kw === 'string' ? kw : kw.keyword
     );
-    console.log('[MissionControl] Missing keywords:', keywords);
-    return keywords;
   }, [masterResume]);
 
-  // Extract actionable issues dynamically
-  const actionableIssues = useMemo(() => {
-    if (!masterResume) return [];
-    const issues = [];
-    
-    if (masterResume.formatIssues) {
-      issues.push(...masterResume.formatIssues.map((issue: any) => ({
-        title: typeof issue === 'string' ? issue : issue.issue,
-        description: typeof issue === 'string' ? "Formatting issue detected" : issue.fix || "Fix required",
-        severity: "Medium",
-        impact: "Medium Impact",
-        example: "Remove complex formatting"
-      })));
-    }
+  const criticalErrorsCount = missingKeywords.slice(0, 3).length;
 
-    if (masterResume.missingKeywords && masterResume.missingKeywords.length > 0) {
-      masterResume.missingKeywords.slice(0, 3).forEach((kw: any) => {
-        const keyword = typeof kw === 'string' ? kw : kw.keyword;
-        issues.push({
-          title: `Missing Keyword: ${keyword}`,
-          description: `Your resume is missing "${keyword}", which is critical for this role.`,
-          severity: "High",
-          impact: "High Impact",
-          example: `Integrated ${keyword} into workflow...`,
-          missingKeyword: keyword
-        });
-      });
-    }
+  // Group applications by status for kanban
+  const applicationsByStatus = useMemo(() => {
+    if (!applications) return { applied: [], interviewing: [], offer: [] };
 
-    return issues;
-  }, [masterResume]);
+    return {
+      applied: applications.filter((app: any) => app.status === "applied").slice(0, 5),
+      interviewing: applications.filter((app: any) => app.status === "interviewing").slice(0, 5),
+      offer: applications.filter((app: any) => app.status === "offer").slice(0, 5)
+    };
+  }, [applications]);
 
-  // Formatting Audit Items
-  const formattingAuditItems = useMemo(() => {
-    if (!masterResume) return [];
-    const items = [];
-    
-    // Mock checks based on data availability
-    items.push({
-      title: "Text Layer Integrity",
-      status: (masterResume.textLayerIntegrity > 90 ? "passed" : "failed") as "passed" | "failed" | "warning",
-      reason: "Text is selectable and readable by ATS.",
-      fix: "Re-save PDF using 'Save as PDF' not 'Print to PDF'."
-    });
+  // Top errors from master resume
+  const topErrors = useMemo(() => {
+    const errors = [];
 
-    items.push({
-      title: "File Format",
-      status: (masterResume.mimeType === "application/pdf" || masterResume.mimeType?.includes("word") ? "passed" : "warning") as "passed" | "failed" | "warning",
-      reason: "Standard file format detected.",
-      fix: "Use PDF or DOCX format."
-    });
-
-    if (masterResume.formatIssues) {
-      masterResume.formatIssues.forEach((issue: any) => {
-        items.push({
-          title: "Formatting Issue",
-          status: "failed" as "passed" | "failed" | "warning",
-          reason: "",
-          fix: typeof issue === 'string' ? issue : issue.fix
-        });
-      });
-    }
-
-    return items;
-  }, [masterResume]);
-
-  // Critical Issues
-  const criticalIssues = useMemo(() => {
-    const issues = [];
-    if (hasImageTrap) {
-      issues.push({ type: "error", message: "Image Trap Detected: Invisible text layer found." });
-    }
-    if (matchScore < 40 && !isProcessing) {
-      issues.push({ type: "error", message: "Low Match Score: Resume may be auto-rejected." });
-    }
-    return issues;
-  }, [hasImageTrap, matchScore, isProcessing]);
-
-  // Generate dynamic logs based on resume state
-  useEffect(() => {
-    if (!masterResume) {
-      setConsoleLogs([{ time: new Date().toLocaleTimeString(), type: "INFO", message: "Waiting for resume upload..." }]);
-      return;
-    }
-
-    const logs = [
-      { time: new Date(masterResume._creationTime).toLocaleTimeString(), type: "INFO", message: `Resume loaded: ${masterResume.title}` },
-    ];
-
-    if (masterResume.status === "processing") {
-      logs.push({ time: new Date().toLocaleTimeString(), type: "WARN", message: "Analysis in progress..." });
-    } else if (masterResume.status === "completed") {
-      logs.push({ time: new Date(masterResume._creationTime + 1000).toLocaleTimeString(), type: "INFO", message: "PDF structure parsed successfully." });
-      
-      if (masterResume.matchedKeywords) {
-        logs.push({ 
-          time: new Date(masterResume._creationTime + 2000).toLocaleTimeString(), 
-          type: "INFO", 
-          message: `Keyword extraction: ${masterResume.matchedKeywords.length} found, ${masterResume.missingKeywords?.length || 0} missing.` 
+    if (masterResume) {
+      // Add missing keywords as errors
+      if (missingKeywords.length > 0) {
+        errors.push({
+          severity: "CRIT",
+          message: `Missing keyword "${missingKeywords[0]}"`,
+          detail: "match_score impact: -15%",
+          color: "text-rose-500"
         });
       }
 
-      if (masterResume.score) {
-        logs.push({ 
-          time: new Date(masterResume._creationTime + 3000).toLocaleTimeString(), 
-          type: "AI", 
-          message: `Scoring complete. Match Score: ${masterResume.score}%` 
+      // Add formatting issues
+      if (masterResume.formatIssues && masterResume.formatIssues.length > 0) {
+        errors.push({
+          severity: "WARN",
+          message: "Date format inconsistency found",
+          detail: `at Experience.block (Line 42)`,
+          color: "text-amber-500"
         });
       }
 
-      logs.push({ 
-        time: new Date().toLocaleTimeString(), 
-        type: "SUCCESS", 
-        message: "Dashboard updated. Ready." 
-      });
-    } else if (masterResume.status === "failed") {
-      logs.push({ time: new Date().toLocaleTimeString(), type: "ERROR", message: "Analysis failed. Please retry." });
-    }
-
-    setConsoleLogs(logs);
-  }, [masterResume]);
-
-  // Show AI suggestion toast if we have missing keywords
-  useEffect(() => {
-    if (missingKeywords.length > 0 && !showAISuggestion) {
-      const timer = setTimeout(() => setShowAISuggestion(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [missingKeywords]);
-
-  const handleSnipeKeyword = async (keyword: string) => {
-    setSnipingKeyword(keyword);
-    toast.info(`Generating power statements for "${keyword}"...`);
-    
-    try {
-      const result = await generateBulletPoints({ 
-        missingKeyword: keyword,
-        resumeText: masterResume?.ocrText || "",
-        jobDescription: masterResume?.jobDescription || "",
-        targetRole: masterResume?.category || "Professional"
-      });
-      
-      setSnipingKeyword(null);
-      
-      // Transform the result to match BulletPointSniper's expected format
-      if (result && result.phrases && result.phrases.length >= 3) {
-        return {
-          performance: result.phrases[0]?.text || "",
-          business: result.phrases[1]?.text || "",
-          leadership: result.phrases[2]?.text || ""
-        };
+      // Add more warnings based on data
+      if (missingKeywords.length > 1) {
+        errors.push({
+          severity: "WARN",
+          message: `Missing keyword '${missingKeywords[1]}'`,
+          detail: "match_score impact: -5%",
+          color: "text-amber-500"
+        });
       }
-      
-      return null;
-    } catch (error) {
-      console.error(error);
-      setSnipingKeyword(null);
-      toast.error("Failed to generate power statements. Please try again.");
-      return null;
     }
-  };
 
-  const hasActiveSprint = currentUser?.sprintExpiresAt && currentUser.sprintExpiresAt > Date.now();
-  const hasPurchasedScan = currentUser?.subscriptionTier === "single_scan" || currentUser?.subscriptionTier === "interview_sprint";
-  const isPremium = hasActiveSprint || hasPurchasedScan;
-  const isFree = !isPremium && (currentUser?.credits ?? 0) <= 0;
+    return errors.slice(0, 3);
+  }, [masterResume, missingKeywords]);
 
-  // Free users with no credits should only see a score preview, not the full analysis
-  if (isFree && masterResume && !masterResume.detailsUnlocked) {
-    return (
-      <div className="space-y-6 pb-24 md:pb-6">
-        <div className="flex justify-between items-center mb-2">
-          <div>
-            <h1 className="text-2xl font-bold text-white">Mission Control</h1>
-            <p className="text-slate-400 text-sm">ATS Analysis & Optimization Center</p>
-          </div>
-        </div>
-
-        {/* Free Tier: Only show score */}
-        <div className="max-w-2xl mx-auto">
-          <SpeedometerCard score={matchScore} />
-          
-          <div className="mt-8 glass-panel p-8 rounded-xl border border-purple-500/30 bg-gradient-to-b from-purple-900/20 to-slate-900 text-center">
-            <Lock className="h-12 w-12 text-purple-400 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-3">Unlock Full ATS Analysis</h3>
-            <p className="text-slate-300 mb-2">
-              Your resume scored <span className="font-bold text-primary">{matchScore}%</span>
-            </p>
-            <p className="text-sm text-slate-400 mb-6">
-              Upgrade to see detailed keyword analysis, formatting issues, actionable fixes, and AI-powered recommendations.
-            </p>
-            <div className="bg-slate-900/50 border border-slate-800 rounded-lg p-4 mb-6 text-left">
-              <p className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-                <Lock className="h-3 w-3" /> Locked Features
-              </p>
-              <div className="space-y-2 text-sm text-slate-400">
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
-                  <span>Missing Keywords Report</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
-                  <span>Formatting & Structure Audit</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
-                  <span>AI-Powered Bullet Point Generator</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
-                  <span>Role Match Analysis</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 w-1.5 rounded-full bg-purple-400"></div>
-                  <span>Impact Score & Pro Tips</span>
-                </div>
-              </div>
-            </div>
-            <Button 
-              onClick={() => onNavigate("pricing")}
-              size="lg"
-              className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-black font-bold"
-            >
-              Unlock Full Report - €4.99
-            </Button>
-            <p className="text-xs text-slate-400 mt-4">
-              ✓ One-time payment • ✓ Instant access • ✓ No subscription
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const userName = currentUser?.name?.split(" ")[0] || "there";
 
   return (
-    <div className="space-y-6">
-      {/* Sprint Progress Widget - Show for Sprint users */}
-      {currentUser?.subscriptionTier === "interview_sprint" && masterResume?.score && (
-        <SprintProgressWidget
-          currentScore={masterResume.score}
-          previousScore={masterResume.previousScore}
-          targetScore={85}
-        />
-      )}
-
-      {/* Header Actions */}
-      <div className="flex justify-between items-center mb-2">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Mission Control</h1>
-          <p className="text-slate-400 text-sm">ATS Analysis & Optimization Center</p>
+    <div className="space-y-8 pb-24 md:pb-6">
+      {/* Page Heading */}
+      <header className="flex flex-wrap justify-between items-end gap-4 border-b border-slate-800 pb-6">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-white text-3xl font-bold tracking-tight">Mission Control</h2>
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <p className="text-slate-400 text-sm font-mono">
+              System Status: Operational // Welcome back, {userName}.
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-2 bg-slate-900/50 p-2 rounded-lg border border-slate-800">
-          <Switch 
-            id="robot-view" 
-            checked={showRobotView}
-            onCheckedChange={setShowRobotView}
-          />
-          <Label htmlFor="robot-view" className="text-xs font-medium text-slate-400 flex items-center gap-1 cursor-pointer">
-            <Bot className="h-3 w-3" />
-            Robot View
-          </Label>
-        </div>
-      </div>
+        <Button
+          onClick={() => onNavigate("projects")}
+          className="flex items-center gap-2 rounded-lg h-10 pl-3 pr-4 bg-gradient-to-r from-primary to-secondary shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] text-white text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <Plus className="h-5 w-5" />
+          <span>New Application</span>
+        </Button>
+      </header>
 
-      {/* Critical Issues Banner */}
-      <CriticalIssues issues={criticalIssues} />
-
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        {/* Left Column: Score & Core Metrics */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          <SpeedometerCard score={matchScore} />
-          
-          <RoleMatchCard 
-            role={masterResume?.category || "General"} 
-            matchScore={matchScore} 
-            confidence={85} 
-          />
-
-          <ImpactScore 
-            score={matchScore} 
-            quantifiedBullets={masterResume?.quantifiedBullets || 0} 
-            totalBullets={masterResume?.totalBullets || 20} 
-          />
-
-          <AIProTip 
-            tip={masterResume?.aiTip || "Quantify your achievements. Resumes with numbers get 40% more interviews."} 
-          />
-        </div>
-
-        {/* Center Column: Keywords & Fixes */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <KeywordHeatmap 
-            matchedKeywords={matchedKeywords} 
-            missingKeywords={missingKeywords} 
-            isPremium={isPremium}
-            onUnlock={() => onNavigate("pricing")}
-          />
-
-          <ActionableFixes fixes={actionableIssues} />
-          
-          <BulletPointSniper 
-            matchedKeywords={matchedKeywords.map((k: string) => ({ 
-              name: k, 
-              category: "Skill", 
-              impact: "High" 
-            }))}
-            missingKeywords={missingKeywords.map((k: string) => ({ 
-              name: k, 
-              category: "Missing", 
-              impact: "Critical" 
-            }))}
-            onSnipe={handleSnipeKeyword}
-            snipingKeyword={snipingKeyword}
-            isProcessing={isProcessing}
-            isPremium={isPremium}
-            onUnlock={() => onNavigate("pricing")}
-            onUpdateResume={onUpload}
-          />
-        </div>
-
-        {/* Right Column: Audit & Console */}
-        <div className="lg:col-span-3 flex flex-col gap-6">
-          <FormattingAudit items={formattingAuditItems} />
-          
-          <IntegrityPanel 
-            integrityScore={integrityScore} 
-            hasImageTrap={hasImageTrap} 
-          />
-
-          <SystemConsole logs={consoleLogs} />
-
-          {!isPremium && (
-            <div className="glass-panel p-6 rounded-xl border border-purple-500/30 bg-gradient-to-b from-purple-900/20 to-slate-900 text-center">
-              <Lock className="h-8 w-8 text-purple-400 mx-auto mb-3" />
-              <h3 className="font-bold text-white mb-2">Unlock Full Report</h3>
-              <p className="text-xs text-slate-400 mb-4">Get unlimited scans, cover letters, and LinkedIn optimization.</p>
-              <Button 
-                onClick={() => onNavigate("pricing")}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                Upgrade Now
-              </Button>
+      {/* Metrics Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Metric 1 - Visibility Score */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-panel rounded-xl p-5 relative overflow-hidden group"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <TrendingUp className="h-16 w-16 text-white" />
+          </div>
+          <div className="flex flex-col gap-1 relative z-10">
+            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+              Visibility Score
+            </p>
+            <div className="flex items-baseline gap-2 mt-1">
+              <p className="text-white text-4xl font-mono font-bold">
+                {visibilityScore}
+                <span className="text-xl text-slate-500">/100</span>
+              </p>
             </div>
-          )}
-        </div>
-      </div>
+            <div className="flex items-center gap-1 mt-2 text-emerald-400 text-xs font-mono bg-emerald-400/10 w-fit px-2 py-1 rounded">
+              <TrendingUp className="h-3.5 w-3.5" />
+              +5% this week
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
+            <div
+              className="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]"
+              style={{ width: `${visibilityScore}%` }}
+            ></div>
+          </div>
+        </motion.div>
 
-      {/* Score Evolution Chart - Full Width */}
-      <div className="mt-6">
-        <ScoreEvolutionChart />
-      </div>
+        {/* Metric 2 - Active Applications */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="glass-panel rounded-xl p-5 relative overflow-hidden group"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Send className="h-16 w-16 text-white" />
+          </div>
+          <div className="flex flex-col gap-1 relative z-10">
+            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+              Active Applications
+            </p>
+            <div className="flex items-baseline gap-2 mt-1">
+              <p className="text-white text-4xl font-mono font-bold">{activeApplications}</p>
+            </div>
+            <div className="flex items-center gap-1 mt-2 text-blue-400 text-xs font-mono bg-blue-400/10 w-fit px-2 py-1 rounded">
+              <span className="material-symbols-outlined text-sm">bolt</span>
+              2 interviews scheduled
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
+            <div className="h-full bg-blue-500 w-[40%] shadow-[0_0_10px_#3b82f6]"></div>
+          </div>
+        </motion.div>
 
-      {/* AI Suggestion Toast */}
-      <AnimatePresence>
-        {showAISuggestion && missingKeywords.length > 0 && (
-          <motion.div 
-            className="fixed bottom-6 right-6 z-50"
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-          >
-            <div className="glass-panel border-l-4 border-l-[#8B5CF6] p-4 rounded-lg shadow-2xl flex items-start gap-4 max-w-sm bg-slate-900/90 backdrop-blur-xl">
-              <div className="p-2 rounded-full bg-[#8B5CF6]/20 text-[#8B5CF6]">
-                <Sparkles className="h-5 w-5" />
+        {/* Metric 3 - Missing Signals */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="glass-panel rounded-xl p-5 relative overflow-hidden group border-rose-500/20"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <AlertCircle className="h-16 w-16 text-rose-500" />
+          </div>
+          <div className="flex flex-col gap-1 relative z-10">
+            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+              Missing Signals
+            </p>
+            <div className="flex items-baseline gap-2 mt-1">
+              <p className="text-white text-4xl font-mono font-bold">{criticalErrorsCount}</p>
+              <span className="text-rose-400 font-bold text-sm bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
+                CRITICAL
+              </span>
+            </div>
+            <div className="flex items-center gap-1 mt-2 text-rose-400 text-xs font-mono">
+              <span className="material-symbols-outlined text-sm">arrow_downward</span>
+              Impacting match score by -15%
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
+            <div className="h-full bg-rose-500 w-[25%] shadow-[0_0_10px_#f43f5e]"></div>
+          </div>
+        </motion.div>
+      </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[400px]">
+        {/* Kanban Board */}
+        <section className="lg:col-span-2 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-white text-lg font-bold flex items-center gap-2">
+              <span className="material-symbols-outlined text-secondary">view_kanban</span>
+              Application Kanban
+            </h3>
+            <button
+              onClick={() => onNavigate("projects")}
+              className="text-xs text-primary hover:text-secondary font-mono transition-colors"
+            >
+              VIEW ALL <ArrowRight className="inline h-3 w-3" />
+            </button>
+          </div>
+
+          <div className="glass-panel p-1 rounded-xl flex-1 overflow-x-auto">
+            <div className="flex gap-3 h-full min-w-[600px] p-3">
+              {/* Column 1: Applied */}
+              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    Applied ({applicationsByStatus.applied.length})
+                  </span>
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                </div>
+
+                {applicationsByStatus.applied.length === 0 ? (
+                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                    No applications yet
+                  </div>
+                ) : (
+                  applicationsByStatus.applied.map((app: any) => (
+                    <div
+                      key={app._id}
+                      className="bg-[#2a374a] p-3 rounded border border-slate-700 hover:border-primary transition-colors cursor-pointer group"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                      </div>
+                      <p className="text-slate-400 text-xs mb-3">{app.company || "Company"}</p>
+                      <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                        <span className="material-symbols-outlined text-xs">schedule</span>
+                        {app._creationTime ? new Date(app._creationTime).toLocaleDateString() : "Recent"}
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
-              <div className="flex-1">
-                <h4 className="text-white font-semibold text-sm">AI Suggestions Ready</h4>
-                <p className="text-slate-400 text-xs mt-1">
-                  I've found {missingKeywords.length} missing keywords for your resume.
-                </p>
-                <button 
-                  className="mt-2 text-xs font-medium text-[#8B5CF6] hover:text-white transition-colors"
-                  onClick={() => {
-                    // Scroll to sniper or highlight it
-                    const sniper = document.querySelector('.lg\\:col-span-5');
-                    sniper?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Review Suggestions →
-                </button>
+
+              {/* Column 2: Interviewing */}
+              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                    Interviewing ({applicationsByStatus.interviewing.length})
+                  </span>
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_#3B82F6]"></div>
+                </div>
+
+                {applicationsByStatus.interviewing.length === 0 ? (
+                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                    No interviews yet
+                  </div>
+                ) : (
+                  applicationsByStatus.interviewing.map((app: any) => (
+                    <div
+                      key={app._id}
+                      className="bg-[#2a374a] p-3 rounded border-l-2 border-l-primary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-blue-500/5 pointer-events-none"></div>
+                      <div className="flex justify-between items-start mb-2 relative z-10">
+                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                      </div>
+                      <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-primary/10 px-2 py-0.5 rounded">
+                          Tech Screen
+                        </div>
+                        <span className="text-[10px] text-slate-500">Tomorrow</span>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
-              <button 
-                className="text-slate-500 hover:text-white"
-                onClick={() => setShowAISuggestion(false)}
+
+              {/* Column 3: Offer */}
+              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-xs font-bold text-secondary uppercase tracking-wider">
+                    Offer ({applicationsByStatus.offer.length})
+                  </span>
+                  <div className="h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_8px_#8B5CF6]"></div>
+                </div>
+
+                {applicationsByStatus.offer.length === 0 ? (
+                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                    No offers yet
+                  </div>
+                ) : (
+                  applicationsByStatus.offer.map((app: any) => (
+                    <div
+                      key={app._id}
+                      className="bg-[#2a374a] p-3 rounded border-l-2 border-l-secondary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-purple-500/5 pointer-events-none"></div>
+                      <div className="flex justify-between items-start mb-2 relative z-10">
+                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                      </div>
+                      <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-secondary/10 px-2 py-0.5 rounded">
+                          Reviewing
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Top Errors Terminal */}
+        <section className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-white text-lg font-bold flex items-center gap-2">
+              <span className="material-symbols-outlined text-rose-500">bug_report</span>
+              Top Errors
+            </h3>
+            <span className="text-xs text-slate-500 font-mono">
+              {masterResume?.title || "No CV loaded"}
+            </span>
+          </div>
+
+          <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-slate-800 overflow-hidden shadow-inner shadow-black/50">
+            {/* Terminal Header */}
+            <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+              </div>
+              <span className="ml-2 text-[10px] text-slate-500 font-mono">console — bash</span>
+            </div>
+
+            {/* Terminal Body */}
+            <div className="p-4 font-mono text-xs flex flex-col gap-3 overflow-y-auto flex-1">
+              {topErrors.length === 0 ? (
+                <div className="flex gap-3">
+                  <span className="text-emerald-500 font-bold shrink-0">[OK]</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-slate-300">No critical errors detected</span>
+                    <span className="text-slate-600">All systems operational</span>
+                  </div>
+                </div>
+              ) : (
+                topErrors.map((error, index) => (
+                  <div key={index} className="flex gap-3 group cursor-pointer">
+                    <span className={`${error.color} font-bold shrink-0`}>[{error.severity}]</span>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-slate-300 group-hover:text-white transition-colors">
+                        {error.message}
+                      </span>
+                      <span className="text-slate-600">{error.detail}</span>
+                    </div>
+                  </div>
+                ))
+              )}
+
+              <div className="flex gap-2 items-center mt-2 animate-pulse">
+                <span className="text-emerald-500">➜</span>
+                <span className="w-2 h-4 bg-slate-500 block"></span>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <div className="p-3 border-t border-slate-800 bg-[#161b22]">
+              <button
+                onClick={() => onNavigate("master-cvs")}
+                className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 text-xs font-bold border border-rose-500/20 hover:border-rose-500/40 transition-all"
               >
-                <X className="h-4 w-4" />
+                <Wrench className="h-4 w-4" />
+                DEBUG MASTER CV
               </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Robot View Dialog */}
-      <ATSRawTextView 
-        open={showRobotView} 
-        onOpenChange={setShowRobotView}
-        ocrText={masterResume?.ocrText || ""}
-        resumeTitle={masterResume?.title || "Resume"}
-      />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
