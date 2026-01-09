@@ -48,6 +48,7 @@ import { AIProTip } from "./analysis/AIProTip";
 import { ImageTrapAlert } from "./ImageTrapAlert";
 import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
+import { ATSSimulation } from "./ATSSimulation";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -1101,12 +1102,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   </div>
                 </TabsContent>
 
-                <TabsContent value="simulation" className="flex-1 overflow-auto p-6">
-                  <LiveRecruiterSimulation
-                    resumeText={displayResume.ocrText || ""}
-                    score={displayResume.score || 0}
-                    missingKeywords={displayResume.missingKeywords?.map((k: any) => typeof k === 'string' ? k : k.keyword) || []}
-                    formatIssues={displayResume.formatIssues?.map((f: any) => typeof f === 'string' ? { issue: f } : f) || []}
+                <TabsContent value="simulation" className="flex-1 overflow-hidden p-0">
+                  <ATSSimulation
+                    resumeId={displayResume._id}
+                    onBack={() => setActiveTab("overview")}
                   />
                 </TabsContent>
 
