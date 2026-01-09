@@ -19,9 +19,14 @@ import PricingPage from "./pages/Pricing.tsx";
 import PaymentSuccess from "./pages/PaymentSuccess.tsx";
 import ATSScannerNurses from "./pages/industry/ATSScannerNurses.tsx";
 import MedSurgNurseATSOptimizer from "./pages/industry/MedSurgNurseATSOptimizer.tsx";
+import ICUNurseATSOptimizer from "./pages/industry/ICUNurseATSOptimizer.tsx";
+import ERNurseATSOptimizer from "./pages/industry/ERNurseATSOptimizer.tsx";
+import TravelNurseATSOptimizer from "./pages/industry/TravelNurseATSOptimizer.tsx";
 import ResumeDebugDataAnalysts from "./pages/industry/ResumeDebugDataAnalysts.tsx";
 import FinanceInternshipATSOptimizer from "./pages/industry/FinanceInternshipATSOptimizer.tsx";
 import SoftwareEngineerKeywordSniper from "./pages/industry/SoftwareEngineerKeywordSniper.tsx";
+import SeniorFrontendEngineerATS from "./pages/industry/SeniorFrontendEngineerATS.tsx";
+import DevOpsEngineerKubernetesATS from "./pages/industry/DevOpsEngineerKubernetesATS.tsx";
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
@@ -103,9 +108,16 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/preview" element={<PreviewScan />} />
               <Route path="/pricing" element={<PricingPage />} />
 
-              {/* Industry-Specific Landing Pages */}
+              {/* Industry-Specific Landing Pages - Nursing */}
               <Route path="/ats-scanner-for-nurses" element={<ATSScannerNurses />} />
               <Route path="/med-surg-nurse-ats-optimizer" element={<MedSurgNurseATSOptimizer />} />
+              <Route path="/icu-nurse-ats-optimizer" element={<ICUNurseATSOptimizer />} />
+              <Route path="/er-nurse-ats-optimizer" element={<ERNurseATSOptimizer />} />
+              <Route path="/travel-nurse-ats-optimizer" element={<TravelNurseATSOptimizer />} />
+
+              {/* Industry-Specific Landing Pages - Tech & Other */}
+              <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
+              <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
               <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
               <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
               <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
