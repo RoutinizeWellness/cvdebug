@@ -34,16 +34,20 @@ export function KeywordSniperTool({
   onApplySuggestion
 }: KeywordSniperToolProps) {
   const [selectedSuggestion, setSelectedSuggestion] = useState<number>(1);
+
+  // Initialize optimization log with scan completion only
   const [optimizationLog, setOptimizationLog] = useState<Array<{
     timestamp: string;
     action: string;
     points: number;
     status: "active" | "completed";
   }>>([
-    { timestamp: "Just now", action: "Added Kubernetes to work experience", points: 5, status: "active" },
-    { timestamp: "2 mins ago", action: "Quantified impact with metrics", points: 8, status: "completed" },
-    { timestamp: "5 mins ago", action: 'Replaced "Helped" with "Orchestrated"', points: 3, status: "completed" },
-    { timestamp: "10 mins ago", action: "Initial scan completed", points: 0, status: "completed" },
+    {
+      timestamp: "Initial scan",
+      action: "Resume analysis completed",
+      points: 0,
+      status: "completed"
+    },
   ]);
 
   // Categorize keywords by priority
@@ -57,50 +61,86 @@ export function KeywordSniperTool({
     [missingKeywords]
   );
 
-  // Generate AI suggestions (mock for now)
+  // Generate AI suggestions dynamically based on real keywords
   const suggestions: Suggestion[] = useMemo(() => {
     const topKeywords = highImpactKeywords.slice(0, 2).map(kw => kw.keyword);
+
+    // Fallback keywords if none available
+    if (topKeywords.length === 0) {
+      topKeywords.push("relevant technologies", "best practices");
+    } else if (topKeywords.length === 1) {
+      topKeywords.push("modern practices");
+    }
+
+    // Action verbs for variety
+    const actionVerbs = ["Orchestrated", "Implemented", "Engineered", "Spearheaded", "Architected"];
+    const verb1 = actionVerbs[0];
+    const verb2 = actionVerbs[1];
+    const verb3 = actionVerbs[2];
+
+    // Calculate score increases based on keyword impact
+    const baseImpact = highImpactKeywords.slice(0, 2).reduce((sum, kw) => sum + (kw.impact || 7), 0);
+    const suggestion1Score = Math.min(Math.round(baseImpact * 1.2), 20);
+    const suggestion2Score = Math.min(Math.round(baseImpact * 0.8), 15);
+    const suggestion3Score = Math.min(Math.round(baseImpact * 1.0), 18);
 
     return [
       {
         id: 1,
-        text: `Orchestrated containerized deployments using ${topKeywords[0] || "Docker"} and ${topKeywords[1] || "Kubernetes"} to maintain 99.99% system uptime across production environments.`,
-        scoreIncrease: 15,
+        text: `${verb1} ${currentBullet.toLowerCase().includes('deploy') ? 'deployments' : 'solutions'} utilizing ${topKeywords[0]} and ${topKeywords[1]} to achieve 99.9% uptime and improve system reliability by 40%.`,
+        scoreIncrease: suggestion1Score,
         keywords: topKeywords,
         hasMetrics: true
       },
       {
         id: 2,
-        text: `Implemented scalable infrastructure workflows utilizing ${topKeywords[0] || "Docker"} for service isolation and ${topKeywords[1] || "Kubernetes"} for orchestration.`,
-        scoreIncrease: 8,
+        text: `${verb2} scalable architecture leveraging ${topKeywords[0]} and ${topKeywords[1]} for enhanced performance and maintainability.`,
+        scoreIncrease: suggestion2Score,
         keywords: topKeywords,
         hasMetrics: false
       },
       {
         id: 3,
-        text: `Refactored legacy deployment scripts into modern ${topKeywords[0] || "Docker"} images, managed via ${topKeywords[1] || "Kubernetes"} clusters to ensure high availability.`,
-        scoreIncrease: 10,
+        text: `${verb3} production-grade systems using ${topKeywords[0]} and ${topKeywords[1]}, reducing deployment time by 60% and increasing team efficiency.`,
+        scoreIncrease: suggestion3Score,
         keywords: topKeywords,
         hasMetrics: true
       }
     ];
-  }, [highImpactKeywords]);
+  }, [highImpactKeywords, currentBullet]);
 
   const newScore = currentScore + (suggestions.find(s => s.id === selectedSuggestion)?.scoreIncrease || 0);
   const scorePercentage = Math.min(newScore, 100);
 
+  // Helper to format relative time
+  const getRelativeTime = () => {
+    return "Just now";
+  };
+
   const handleInjectKeyword = (keyword: string) => {
+    // Calculate points based on keyword priority
+    const keywordData = missingKeywords.find(kw => kw.keyword === keyword);
+    const points = keywordData?.impact || (keywordData?.priority === "high" || keywordData?.priority === "critical" ? 8 : 5);
+
     setOptimizationLog(prev => [{
-      timestamp: "Just now",
-      action: `Added ${keyword} to work experience`,
-      points: 5,
+      timestamp: getRelativeTime(),
+      action: `Injected "${keyword}" keyword`,
+      points,
       status: "active"
-    }, ...prev.slice(0, 3).map(log => ({ ...log, status: "completed" as const }))]);
+    }, ...prev.map(log => ({ ...log, status: "completed" as const }))]);
   };
 
   const handleApplySuggestion = () => {
     const suggestion = suggestions.find(s => s.id === selectedSuggestion);
     if (suggestion) {
+      // Add log entry for applying suggestion
+      setOptimizationLog(prev => [{
+        timestamp: getRelativeTime(),
+        action: `Applied AI suggestion with ${suggestion.keywords.length} keywords`,
+        points: suggestion.scoreIncrease,
+        status: "active"
+      }, ...prev.map(log => ({ ...log, status: "completed" as const }))]);
+
       onApplySuggestion(suggestion.text);
     }
   };
