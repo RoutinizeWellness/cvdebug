@@ -65,26 +65,51 @@ export function NewFeaturesGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer"
             >
-              <div
+              <motion.div
                 className={`absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-gradient-to-br ${
                   glowColors[feature.color as keyof typeof glowColors]
-                } blur-2xl transition-all group-hover:scale-110`}
-              ></div>
-              <div
+                } blur-2xl`}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.8, 0.5]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: index * 0.5
+                }}
+              />
+
+              <motion.div
                 className={`mb-6 inline-flex size-12 items-center justify-center rounded-lg ring-1 ring-inset ${
                   iconColors[feature.color as keyof typeof iconColors]
                 }`}
+                whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+                transition={{ duration: 0.5 }}
               >
                 <feature.icon className="h-6 w-6" />
-              </div>
-              <h3 className="text-lg font-semibold leading-8 text-white">
+              </motion.div>
+
+              <motion.h3
+                className="text-lg font-semibold leading-8 text-white"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: index * 0.1 + 0.3 }}
+              >
                 {feature.title}
-              </h3>
-              <p className="mt-2 text-base leading-7 text-slate-400">
+              </motion.h3>
+
+              <motion.p
+                className="mt-2 text-base leading-7 text-slate-400"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: index * 0.1 + 0.4 }}
+              >
                 {feature.description}
-              </p>
+              </motion.p>
             </motion.div>
           ))}
         </div>

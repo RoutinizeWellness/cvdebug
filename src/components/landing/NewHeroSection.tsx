@@ -41,15 +41,47 @@ export function NewHeroSection() {
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
       >
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.2 }}
-          transition={{ duration: 1 }}
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{
+            opacity: 0.2,
+            scale: 1,
+            rotate: [30, 32, 30]
+          }}
+          transition={{
+            opacity: { duration: 1 },
+            scale: { duration: 1 },
+            rotate: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+          }}
+          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           style={{
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
         ></motion.div>
+      </div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-primary/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
       </div>
 
       <div className="mx-auto max-w-4xl py-12 sm:py-20 lg:py-24 text-center">
@@ -60,26 +92,51 @@ export function NewHeroSection() {
           transition={{ duration: 0.5 }}
           className="mb-8 flex flex-col sm:flex-row gap-3 justify-center items-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-emerald-500/30">
+          <motion.div
+            whileHover={{ scale: 1.05, y: -2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-emerald-500/30 cursor-default"
+          >
             <div className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </div>
-            <TrendingUp className="h-4 w-4 text-emerald-400" />
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+            >
+              <TrendingUp className="h-4 w-4 text-emerald-400" />
+            </motion.div>
             <span className="text-sm font-mono text-slate-300">
-              <span className="text-emerald-400 font-bold">{savedCount}</span> people saved from ghosting this week
+              <motion.span
+                key={savedCount}
+                initial={{ scale: 1.3, color: "#4ade80" }}
+                animate={{ scale: 1, color: "#4ade80" }}
+                className="text-emerald-400 font-bold"
+              >
+                {savedCount}
+              </motion.span> people saved from ghosting this week
             </span>
-          </div>
+          </motion.div>
 
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-primary/30">
+          <motion.div
+            whileHover={{ scale: 1.05, y: -2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-primary/30 cursor-default"
+          >
             <div className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </div>
             <span className="text-sm font-mono text-slate-300">
-              <span className="text-primary font-bold">{unlockedToday}</span> interviews unlocked today
+              <motion.span
+                key={unlockedToday}
+                initial={{ scale: 1.3, color: "#590df2" }}
+                animate={{ scale: 1, color: "#590df2" }}
+                className="text-primary font-bold"
+              >
+                {unlockedToday}
+              </motion.span> interviews unlocked today
             </span>
-          </div>
+          </motion.div>
         </motion.div>
 
         <motion.h1
@@ -88,10 +145,22 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl"
         >
-          Stop being invisible to <br className="hidden sm:block" />
-          <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <motion.span
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Stop being invisible to{" "}
+          </motion.span>
+          <br className="hidden sm:block" />
+          <motion.span
+            className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             hiring bots.
-          </span>
+          </motion.span>
         </motion.h1>
 
         <motion.p
@@ -110,19 +179,51 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button
-            onClick={() => navigate("/preview")}
-            className="glow-button relative flex h-14 min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-8 text-lg font-bold text-white transition-all hover:scale-105"
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            See Robot View - Free
-            <ArrowRight className="h-5 w-5" />
-          </Button>
-          <button
+            <Button
+              onClick={() => navigate("/preview")}
+              className="glow-button relative flex h-14 min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-8 text-lg font-bold text-white transition-all group"
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+                animate={{
+                  x: ['-200%', '200%']
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                  ease: "easeInOut"
+                }}
+              />
+              <span className="relative z-10">See Robot View - Free</span>
+              <motion.div
+                className="relative z-10"
+                animate={{ x: [0, 3, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </motion.div>
+            </Button>
+          </motion.div>
+
+          <motion.button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="group flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-primary/10 px-8 text-base font-semibold text-white hover:bg-primary/20 hover:border-primary/50 transition-all"
+            className="group flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-primary/10 px-8 text-base font-semibold text-white hover:bg-primary/20 hover:border-primary/50 transition-all relative overflow-hidden"
+            whileHover={{ scale: 1.05, borderColor: "rgba(89, 13, 242, 0.5)" }}
+            whileTap={{ scale: 0.95 }}
           >
-            Sign Up for Full Access
-          </button>
+            <motion.div
+              className="absolute inset-0 bg-primary/10"
+              initial={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 2, opacity: 1 }}
+              transition={{ duration: 0.4 }}
+            />
+            <span className="relative z-10">Sign Up for Full Access</span>
+          </motion.button>
         </motion.div>
 
         <motion.p
