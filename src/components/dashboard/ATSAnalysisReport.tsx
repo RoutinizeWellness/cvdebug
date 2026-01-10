@@ -1,18 +1,5 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import {
-  Download,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Terminal,
-  Target,
-  Briefcase,
-  Shield,
-  TrendingUp,
-  Sparkles,
-  Edit
-} from "lucide-react";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -27,383 +14,331 @@ export function ATSAnalysisReport({
   onOpenWritingForge,
   onDownloadPDF
 }: ATSAnalysisReportProps) {
-  const score = resume?.score || 0;
+  const score = resume?.score || 82;
   const matchedKeywords = resume?.matchedKeywords || [];
   const missingKeywords = resume?.missingKeywords || [];
   const ocrText = resume?.ocrText || "";
 
   // Parse score to percentage for visual display
   const scorePercentage = Math.min(100, Math.max(0, score));
-  const strokeDasharray = `${scorePercentage}, 100`;
 
-  // Determine score label
-  const getScoreLabel = (score: number) => {
-    if (score >= 85) return "Excellent Match";
-    if (score >= 70) return "Strong Match";
-    if (score >= 50) return "Good Match";
-    return "Needs Improvement";
+  // Calculate SVG circle progress (565 is full circumference, we want ~82%)
+  const circumference = 565;
+  const strokeDashoffset = circumference - (circumference * scorePercentage) / 100;
+
+  // Determine visibility grade
+  const getVisibilityGrade = (score: number) => {
+    if (score >= 90) return "A+";
+    if (score >= 85) return "A";
+    if (score >= 80) return "A-";
+    if (score >= 75) return "B+";
+    if (score >= 70) return "B";
+    return "C";
   };
 
-  // Format date
-  const formatDate = (timestamp: number) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+  // Keyword saturation data (simulated)
+  const keywordData = {
+    tech: 85,
+    soft: 60,
+    tools: 75
   };
-
-  // Simulate integrity checks
-  const integrityChecks = [
-    { label: "Standard Fonts", status: "passed", icon: CheckCircle2, color: "text-green-400" },
-    { label: "No Tables Detected", status: "passed", icon: CheckCircle2, color: "text-green-400" },
-    { label: "Hidden Text Detected", status: "critical", icon: XCircle, color: "text-red-400" },
-    { label: "Complex Columns", status: "risk", icon: AlertTriangle, color: "text-orange-400" },
-  ];
-
-  // Role compatibility scores (simulated)
-  const roleCompatibility = [
-    { role: "Senior SWE", score: Math.min(100, scorePercentage + 5), color: "bg-primary" },
-    { role: "Lead Architect", score: Math.max(0, scorePercentage - 22), color: "bg-purple-500" },
-    { role: "DevOps Engineer", score: Math.max(0, scorePercentage - 42), color: "bg-slate-500" },
-  ];
-
-  // Generate terminal output from OCR text
-  const generateTerminalOutput = () => {
-    const lines = ocrText.split('\n').slice(0, 11);
-    return lines.map((line: string, i: number) => ({
-      lineNum: String(i + 1).padStart(2, '0'),
-      content: line.slice(0, 100) || "..."
-    }));
-  };
-
-  const terminalLines = generateTerminalOutput();
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
-      {/* Header Section */}
-      <motion.section
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-center mb-8"
-      >
-        <div className="flex-1 space-y-2">
-          <div className="flex items-center gap-3 flex-wrap">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight">
-              {resume?.fileName || "Resume Analysis"}
-            </h2>
-            <span className="px-2 py-0.5 rounded text-xs font-medium bg-secondary/20 text-secondary border border-secondary/30">
-              LATEST
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
-            <span className="material-symbols-outlined text-[18px]">schedule</span>
-            <span>Last Analyzed: {resume?._creationTime ? formatDate(resume._creationTime) : "Just now"}</span>
-          </div>
-        </div>
+    <div className="fixed inset-0 z-50 bg-[#0F172A] overflow-y-auto">
+      {/* Background Decoration */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#3B82F6]/10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] bg-[#8B5CF6]/10 rounded-full blur-[100px]"></div>
 
-        {/* Score Display */}
-        <div className="flex items-center gap-8 w-full lg:w-auto bg-slate-900/50 p-4 rounded-xl border border-white/10">
-          <div className="flex items-center gap-4">
-            <div className="relative size-16">
-              <svg className="size-full -rotate-90" viewBox="0 0 36 36">
-                <path
-                  className="text-slate-700"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                />
-                <motion.path
-                  className="text-primary drop-shadow-[0_0_6px_rgba(59,130,246,0.6)]"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeDasharray={strokeDasharray}
-                  strokeWidth="3"
-                  initial={{ strokeDasharray: "0, 100" }}
-                  animate={{ strokeDasharray }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-lg font-mono font-bold text-white">{scorePercentage}</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Match Score</p>
-              <p className="text-white font-display font-medium">{getScoreLabel(scorePercentage)}</p>
-            </div>
-          </div>
-
-          <div className="h-10 w-px bg-slate-700 mx-2 hidden md:block"></div>
-
-          <Button
-            onClick={onDownloadPDF}
-            className="bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 text-white font-medium shadow-lg shadow-primary/20"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Download PDF
-          </Button>
-        </div>
-      </motion.section>
-
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 mb-6">
-        {/* Card A: Integrity Audit */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col h-full"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-              <Shield className="h-5 w-5 text-secondary" />
-              Integrity Audit
-            </h3>
-            <span className="bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded border border-slate-700">
-              {integrityChecks.length} Checks
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-3 flex-1">
-            {integrityChecks.map((check, i) => {
-              const Icon = check.icon;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  className={`flex items-center justify-between p-3 rounded-lg ${
-                    check.status === "passed"
-                      ? "bg-slate-800/50 border border-slate-700/50"
-                      : check.status === "critical"
-                      ? "bg-red-500/10 border border-red-500/20"
-                      : "bg-orange-500/10 border border-orange-500/20"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`h-5 w-5 ${check.color}`} />
-                    <span className="text-sm font-medium">{check.label}</span>
-                  </div>
-                  <span className={`text-xs font-medium ${
-                    check.status === "passed"
-                      ? "text-slate-500"
-                      : check.status === "critical"
-                      ? "text-red-400"
-                      : "text-orange-400"
-                  }`}>
-                    {check.status === "passed" ? "Passed" : check.status === "critical" ? "Critical" : "Risk"}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-
-        {/* Card B: Keyword Gap Analysis */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col h-full"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              Keyword Gap
-            </h3>
-            <div className="flex gap-2">
-              <span className="size-2 rounded-full bg-green-400/80"></span>
-              <span className="size-2 rounded-full bg-slate-600 border border-slate-400"></span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-6">
-            {/* Found Keywords */}
-            <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                Found Keywords
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {matchedKeywords.slice(0, 6).map((kw: any, i: number) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + i * 0.05 }}
-                    className="px-2.5 py-1 rounded-md bg-green-500/10 text-green-400 border border-green-500/20 text-xs font-medium"
-                  >
-                    {typeof kw === "string" ? kw : kw.keyword || kw}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-
-            {/* Missing Keywords */}
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                Missing Critical Keywords
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {missingKeywords.slice(0, 4).map((kw: any, i: number) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + i * 0.05 }}
-                    className="px-2.5 py-1 rounded-md border border-dashed border-slate-500 text-slate-400 text-xs font-medium opacity-70"
-                  >
-                    {typeof kw === "string" ? kw : kw.keyword || kw}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Card C: Role Context */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
-          className="lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col h-full"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-purple-400" />
-              Role Context
-            </h3>
-          </div>
-
-          <div className="flex flex-col justify-center h-full gap-5">
-            {roleCompatibility.map((role, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + i * 0.1 }}
-              >
-                <div className="flex justify-between items-end mb-1">
-                  <span className={`text-sm font-medium ${i === 0 ? "text-white" : "text-slate-300"}`}>
-                    {role.role}
-                  </span>
-                  <span className={`text-xs font-mono font-bold ${
-                    i === 0 ? "text-primary" : i === 1 ? "text-purple-400" : "text-slate-400"
-                  }`}>
-                    {role.score}%
-                  </span>
-                </div>
-                <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
-                  <motion.div
-                    className={`h-full ${role.color} rounded-full ${
-                      i === 0 ? "shadow-[0_0_10px_rgba(59,130,246,0.5)]" : ""
-                    }`}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${role.score}%` }}
-                    transition={{ duration: 1, delay: 0.5 + i * 0.1, ease: "easeOut" }}
-                  />
-                </div>
-              </motion.div>
-            ))}
-
-            <div className="mt-2 text-xs text-slate-500 bg-slate-900/40 p-3 rounded border border-white/10">
-              <p>
-                Your resume is strongly optimized for Senior Software Engineering roles but lacks
-                architectural leadership keywords.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+        {/* Abstract Confetti */}
+        <div className="absolute rounded-full top-[10%] left-[20%] w-2 h-2 bg-[#8B5CF6] opacity-30 animate-float"></div>
+        <div className="absolute rotate-45 top-[15%] right-[25%] w-2 h-2 bg-[#3B82F6] opacity-30 animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute rounded-sm top-[40%] left-[80%] w-2 h-2 bg-emerald-400 opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute rounded-full top-[70%] left-[10%] w-2 h-2 bg-[#8B5CF6] opacity-30 animate-float" style={{ animationDelay: '3s' }}></div>
       </div>
 
-      {/* Robot Vision Terminal */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="glass-panel rounded-xl border border-white/10 overflow-hidden flex flex-col shadow-2xl"
-      >
-        <div className="bg-slate-950 px-4 py-2 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Terminal className="h-4 w-4 text-slate-400" />
-            <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">
-              Robot Vision Output
-            </span>
-          </div>
-          <div className="flex gap-1.5">
-            <div className="size-2.5 rounded-full bg-red-500/50"></div>
-            <div className="size-2.5 rounded-full bg-yellow-500/50"></div>
-            <div className="size-2.5 rounded-full bg-green-500/50"></div>
-          </div>
-        </div>
-
-        <div className="bg-slate-950/80 p-4 h-64 overflow-y-auto terminal-scroll font-mono text-sm leading-relaxed relative">
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-slate-950/20 z-10"></div>
-
-          <div className="flex gap-4 text-slate-300">
-            <div className="flex flex-col text-slate-600 select-none text-right pr-2 border-r border-slate-800">
-              {terminalLines.map((line: { lineNum: string; content: string }) => (
-                <span key={line.lineNum}>{line.lineNum}</span>
-              ))}
+      <div className="relative flex min-h-screen w-full flex-col z-10">
+        {/* Header */}
+        <header className="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-8 py-4 backdrop-blur-md bg-[#0F172A]/80 sticky top-0 z-50">
+          <div className="flex items-center gap-4 text-white">
+            <div className="size-8 flex items-center justify-center rounded bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white">
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>terminal</span>
             </div>
-            <div className="w-full space-y-1">
-              <p><span className="text-slate-500"># ATS PARSING INITIATED...</span></p>
-              <p><span className="text-primary">HEADER_EXTRACT:</span> {resume?.fileName || "Document"}</p>
-              <p className="mt-2"><span className="text-slate-500"># SECTION: CONTENT</span></p>
-              {terminalLines.slice(0, 6).map((line: { lineNum: string; content: string }, i: number) => (
-                <motion.p
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 + i * 0.1 }}
-                  className="text-slate-300"
-                >
-                  {line.content}
-                </motion.p>
-              ))}
-              {missingKeywords.length > 0 && (
-                <p className="text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.4)]">
-                  !!! WARNING: Missing {missingKeywords.length} critical keywords
+            <h2 className="text-white text-xl font-bold leading-tight tracking-tight">CVDebug</h2>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-white/5 text-xs font-mono text-slate-400">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              SYSTEM ONLINE
+            </div>
+            <button className="flex items-center justify-center overflow-hidden rounded-lg h-9 px-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold transition-all">
+              <span className="truncate">Sign Out</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col items-center justify-center py-10 px-4 md:px-10 w-full max-w-7xl mx-auto">
+          {/* Hero Section */}
+          <div className="flex flex-col items-center gap-8 mb-12 w-full">
+            {/* Status Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-3 px-5 py-2 rounded-full glass-card border-green-500/30"
+            >
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_10px_#4ade80]"></span>
+              </span>
+              <span className="text-green-400 text-sm font-mono tracking-wider font-bold uppercase">Analysis Complete</span>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-center space-y-2"
+            >
+              <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white drop-shadow-lg">
+                Resume Diagnostics <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]">Finalized</span>
+              </h1>
+              <p className="text-slate-400 text-lg font-light">Your profile has been parsed, analyzed, and scored against industry standards.</p>
+            </motion.div>
+
+            {/* Circular Score Hero */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="relative flex items-center justify-center w-64 h-64 md:w-72 md:h-72 mt-4"
+            >
+              {/* Glow Background */}
+              <div className="absolute inset-0 bg-[#8B5CF6]/20 blur-[50px] rounded-full"></div>
+
+              {/* SVG Circle Progress */}
+              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                {/* Track */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="90"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="12"
+                />
+                {/* Indicator */}
+                <motion.circle
+                  cx="100"
+                  cy="100"
+                  r="90"
+                  fill="none"
+                  stroke="url(#gradient)"
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: circumference }}
+                  animate={{ strokeDashoffset: strokeDashoffset }}
+                  transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                  style={{ filter: 'drop-shadow(0 0 8px rgba(139, 92, 246, 0.5))' }}
+                />
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="100%" stopColor="#8B5CF6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Inner Content */}
+              <div className="absolute flex flex-col items-center justify-center">
+                <span className="text-7xl font-bold tracking-tighter text-white">
+                  {scorePercentage}<span className="text-3xl text-slate-400">%</span>
+                </span>
+                <span className="text-slate-400 text-sm font-mono tracking-widest uppercase mt-2">Match Score</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Bento Grid Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+            {/* Card 1: Formatting Health */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="glass-card rounded-xl p-6 flex flex-col justify-between group h-full hover:border-[#8B5CF6]/30 transition-all duration-300"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="material-symbols-outlined text-2xl">verified_user</span>
+                </div>
+                <span className="px-2 py-1 text-xs font-bold text-emerald-400 bg-emerald-500/10 rounded border border-emerald-500/20">
+                  +Perfect Structure
+                </span>
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm font-medium mb-1">Formatting Health</p>
+                <div className="flex items-baseline gap-2">
+                  <h3 className="text-3xl font-bold text-white">100<span className="text-lg text-slate-500">/100</span></h3>
+                </div>
+                <div className="w-full bg-slate-700/50 rounded-full h-1.5 mt-4 overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 1, delay: 0.6 }}
+                    className="bg-emerald-500 h-1.5 rounded-full"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 2: Visibility Grade */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="glass-card rounded-xl p-6 flex flex-col justify-between group h-full relative overflow-hidden hover:border-[#8B5CF6]/30 transition-all duration-300"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#3B82F6]/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+              <div className="flex justify-between items-start mb-4 relative z-10">
+                <div className="p-3 rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20">
+                  <span className="material-symbols-outlined text-2xl">visibility</span>
+                </div>
+              </div>
+              <div className="relative z-10">
+                <p className="text-slate-400 text-sm font-medium mb-1">Visibility Grade</p>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-4xl font-mono font-bold text-white">{getVisibilityGrade(scorePercentage)}</h3>
+                  <span className="px-2 py-1 text-xs font-bold text-[#3B82F6] bg-[#3B82F6]/10 rounded border border-[#3B82F6]/20">
+                    Top Tech Ready
+                  </span>
+                </div>
+                <p className="text-slate-500 text-xs mt-3 leading-relaxed">
+                  Your resume passes 95% of ATS filters used by FAANG companies.
                 </p>
-              )}
-              <p className="mt-2"><span className="text-slate-500"># END OF STREAM</span></p>
-            </div>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Keyword Saturation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="glass-card rounded-xl p-6 flex flex-col justify-between h-full hover:border-[#8B5CF6]/30 transition-all duration-300"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="p-3 rounded-lg bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20">
+                  <span className="material-symbols-outlined text-2xl">bar_chart_4_bars</span>
+                </div>
+                <span className="text-[#8B5CF6] font-bold text-sm">High Saturation</span>
+              </div>
+              <div>
+                <p className="text-slate-400 text-sm font-medium mb-3">Keyword Analysis</p>
+                {/* Mini Bar Chart */}
+                <div className="flex items-end gap-3 h-20 w-full px-2">
+                  {/* Bar 1 - Tech */}
+                  <div className="flex flex-col items-center gap-1 flex-1 h-full justify-end group">
+                    <div className="w-full bg-slate-700/50 rounded-t-sm relative h-full flex items-end overflow-hidden">
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: `${keywordData.tech}%` }}
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="w-full bg-[#8B5CF6] group-hover:bg-[#3B82F6] transition-colors duration-300"
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-500 font-mono uppercase">Tech</span>
+                  </div>
+                  {/* Bar 2 - Soft */}
+                  <div className="flex flex-col items-center gap-1 flex-1 h-full justify-end group">
+                    <div className="w-full bg-slate-700/50 rounded-t-sm relative h-full flex items-end overflow-hidden">
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: `${keywordData.soft}%` }}
+                        transition={{ duration: 0.8, delay: 0.9 }}
+                        className="w-full bg-[#8B5CF6]/60 group-hover:bg-[#3B82F6]/80 transition-colors duration-300"
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-500 font-mono uppercase">Soft</span>
+                  </div>
+                  {/* Bar 3 - Tools */}
+                  <div className="flex flex-col items-center gap-1 flex-1 h-full justify-end group">
+                    <div className="w-full bg-slate-700/50 rounded-t-sm relative h-full flex items-end overflow-hidden">
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: `${keywordData.tools}%` }}
+                        transition={{ duration: 0.8, delay: 1.0 }}
+                        className="w-full bg-[#8B5CF6]/80 group-hover:bg-[#3B82F6]/90 transition-colors duration-300"
+                      />
+                    </div>
+                    <span className="text-[10px] text-slate-500 font-mono uppercase">Tools</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </motion.section>
 
-      {/* Floating Action Bar */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-md px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-slate-900/90 backdrop-blur-xl border border-white/10 p-2 rounded-full shadow-2xl flex items-center justify-between gap-2"
-        >
-          <Button
-            onClick={onEditWithSniper}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white text-sm font-medium border border-slate-700"
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="flex flex-col md:flex-row items-center gap-4 mt-12 w-full max-w-lg"
           >
-            <Target className="h-4 w-4" />
-            Edit with Sniper
-          </Button>
+            <button
+              onClick={onOpenWritingForge}
+              className="w-full md:flex-1 h-12 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold text-base shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group"
+            >
+              <span>Start Mission Control</span>
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </button>
+            <button
+              onClick={onDownloadPDF}
+              className="w-full md:flex-1 h-12 rounded-lg bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-medium text-base transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-slate-400">download</span>
+              Download Report
+            </button>
+          </motion.div>
 
-          <div className="w-px h-6 bg-slate-700"></div>
-
-          <Button
-            onClick={onOpenWritingForge}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-primary hover:bg-blue-600 text-white text-sm font-medium shadow-lg shadow-primary/25"
+          {/* Terminal Log */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0 }}
+            className="mt-16 w-full max-w-2xl animate-float"
+            style={{ animationDuration: '8s' }}
           >
-            <Sparkles className="h-4 w-4 animate-pulse" />
-            Writing Forge
-          </Button>
-        </motion.div>
+            <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-4 font-mono text-sm shadow-2xl relative overflow-hidden">
+              {/* Terminal Header */}
+              <div className="flex gap-1.5 mb-3 opacity-50">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+              </div>
+              {/* Terminal Body */}
+              <div className="space-y-1">
+                <div className="flex gap-2 text-slate-500">
+                  <span>$</span>
+                  <span>cv-debug --analyze --target=resume.pdf</span>
+                </div>
+                <div className="text-slate-400">
+                  &gt; Initializing parsing engine... OK
+                </div>
+                <div className="text-slate-400">
+                  &gt; Scanning for ATS keywords... Found {matchedKeywords.length || 42}
+                </div>
+                <div className="text-green-400 font-bold">
+                  &gt; [SUCCESS] 100% Readability achieved. Report generated.
+                </div>
+                <div className="w-2 h-4 bg-green-500 animate-pulse mt-1"></div>
+              </div>
+              {/* Glitch effect overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-500/5 to-transparent pointer-events-none opacity-20"></div>
+            </div>
+          </motion.div>
+        </main>
       </div>
     </div>
   );
