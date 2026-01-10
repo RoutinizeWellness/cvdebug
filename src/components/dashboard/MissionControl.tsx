@@ -235,7 +235,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
               <div>
                 <h3 className="text-white text-lg font-bold">Robot View: What ATS Actually Reads</h3>
-                <p className="text-green-400 text-xs font-mono">¿Falta información crítica en tu CV?</p>
+                <p className="text-green-400 text-xs font-mono">Is critical information missing from your resume?</p>
               </div>
             </div>
             <span className="relative flex h-3 w-3">
@@ -281,7 +281,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 hover:border-green-500/50"
             >
               <span className="material-symbols-outlined mr-2">visibility</span>
-              Ver Vista Completa
+              View Full Report
             </Button>
             {!masterResume && (
               <Button
@@ -289,7 +289,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 className="flex-1 bg-primary hover:bg-primary/90"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Subir CV
+                Upload Resume
               </Button>
             )}
           </div>

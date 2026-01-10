@@ -83,7 +83,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
             <div className="flex items-center gap-3">
               <Loader2 className="h-6 w-6 text-primary animate-spin" />
               <div>
-                <h2 className="text-white text-xl font-bold">Analizando tu CV...</h2>
+                <h2 className="text-white text-xl font-bold">Analyzing your resume...</h2>
                 <p className="text-slate-400 text-sm font-mono">{fileName || "Resume.pdf"}</p>
               </div>
             </div>
