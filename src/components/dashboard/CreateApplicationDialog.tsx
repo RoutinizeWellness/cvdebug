@@ -1,15 +1,10 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { X, Lock, Sparkles, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
-import { Loader2, Lock, Sparkles } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CreateApplicationDialogProps {
   open: boolean;
@@ -30,7 +25,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
   });
 
   // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" && 
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,116 +66,148 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-[#0A0A0A] border-zinc-800 text-white">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            Add New Application
-            {!hasInterviewSprint && (
-              <Lock className="h-4 w-4 text-slate-500" />
-            )}
-          </DialogTitle>
-        </DialogHeader>
-
-        {!hasInterviewSprint && (
-          <Alert className="bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/30">
-            <Lock className="h-4 w-4 text-primary" />
-            <AlertDescription className="text-sm">
-              <strong className="text-white">Interview Sprint Required</strong>
-              <p className="text-slate-300 mt-1">
-                Upgrade to track applications, get keyword analysis, and receive ghosting alerts.
-              </p>
-              <Button 
-                onClick={onUpgrade}
-                size="sm" 
-                className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold"
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[60] bg-midnight/70 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-lg glass-panel bg-slate-900/60 rounded-2xl border border-slate-700/50 shadow-2xl flex flex-col max-h-[90vh]"
+          >
+            {/* Header */}
+            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-white tracking-tight">
+                  Add New Application
+                </h3>
+                {!hasInterviewSprint && (
+                  <Lock className="h-4 w-4 text-slate-500" />
+                )}
+              </div>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
               >
-                <Sparkles className="h-4 w-4 mr-2" />
-                Upgrade Now
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name</Label>
-              <Input
-                id="companyName"
-                placeholder="e.g., Acme Corp"
-                value={formData.companyName}
-                onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                required
-                className="bg-zinc-900 border-zinc-700"
-                disabled={!hasInterviewSprint}
-              />
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="jobTitle">Job Title</Label>
-              <Input
-                id="jobTitle"
-                placeholder="e.g., Senior Engineer"
-                value={formData.jobTitle}
-                onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                required
-                className="bg-zinc-900 border-zinc-700"
-                disabled={!hasInterviewSprint}
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="jobUrl">Job Posting URL (Optional)</Label>
-            <Input
-              id="jobUrl"
-              placeholder="https://..."
-              value={formData.jobUrl}
-              onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
-              className="bg-zinc-900 border-zinc-700"
-              disabled={!hasInterviewSprint}
-            />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="jobDescription">Job Description <span className="text-primary text-xs ml-2 font-normal">(Recommended for AI Analysis)</span></Label>
-            <Textarea
-              id="jobDescription"
-              placeholder="Paste the full job description here. AI will instantly analyze it against your resume to find keyword gaps..."
-              value={formData.jobDescriptionText}
-              onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
-              className="bg-zinc-900 border-zinc-700 min-h-[150px]"
-              disabled={!hasInterviewSprint}
-            />
-            <p className="text-xs text-slate-500">
-              We'll analyze this against your project's resume to calculate a match score and find missing keywords.
-            </p>
-          </div>
+            {/* Upgrade Alert */}
+            {!hasInterviewSprint && (
+              <div className="mx-6 mt-6 bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-4">
+                <div className="flex gap-3">
+                  <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-white">Interview Sprint Required</p>
+                    <p className="text-xs text-slate-300 mt-1">
+                      Upgrade to track applications, get keyword analysis, and receive ghosting alerts.
+                    </p>
+                    <button
+                      onClick={onUpgrade}
+                      className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold text-sm px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Upgrade Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
-          <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={isLoading || !hasInterviewSprint} 
-              className="bg-primary text-black hover:bg-primary/90"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : !hasInterviewSprint ? (
-                <>
-                  <Lock className="h-4 w-4 mr-2" />
-                  Upgrade to Add
-                </>
-              ) : (
-                "Add Application"
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            {/* Form Content */}
+            <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+              <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
+                <div className="flex flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-300 block">
+                        Company Name
+                      </label>
+                      <input
+                        placeholder="e.g., Acme Corp"
+                        value={formData.companyName}
+                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                        required
+                        disabled={!hasInterviewSprint}
+                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-300 block">
+                        Job Title
+                      </label>
+                      <input
+                        placeholder="e.g., Senior Engineer"
+                        value={formData.jobTitle}
+                        onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+                        required
+                        disabled={!hasInterviewSprint}
+                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-300 block">
+                      Job Posting URL <span className="text-slate-500 font-normal">(Optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://..."
+                      value={formData.jobUrl}
+                      onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
+                      disabled={!hasInterviewSprint}
+                      className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-300 block">
+                      Job Description
+                      <span className="text-primary text-xs ml-2 font-normal">(Recommended for AI Analysis)</span>
+                    </label>
+                    <textarea
+                      placeholder="Paste the job description here for AI-powered keyword matching..."
+                      value={formData.jobDescriptionText}
+                      onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
+                      rows={6}
+                      disabled={!hasInterviewSprint}
+                      className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner resize-none disabled:opacity-50"
+                    />
+                    <p className="text-xs text-slate-500">
+                      Add the job description to get instant keyword gap analysis
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-slate-800 flex gap-3 justify-end">
+                <button
+                  type="button"
+                  onClick={() => onOpenChange(false)}
+                  className="px-6 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading || !hasInterviewSprint}
+                  className="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold rounded-lg transition-colors flex items-center gap-2"
+                >
+                  {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {isLoading ? "Adding..." : "Add Application"}
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }

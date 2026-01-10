@@ -1,6 +1,5 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle, Sparkles, TrendingUp } from "lucide-react";
+import { X, AlertTriangle, Sparkles, TrendingUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CreditsExhaustedModalProps {
   open: boolean;
@@ -10,17 +9,39 @@ interface CreditsExhaustedModalProps {
 }
 
 export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgrade }: CreditsExhaustedModalProps) {
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-gradient-to-br from-zinc-900 to-black border-2 border-red-500/30">
-        <DialogHeader>
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-orange-600 mb-4 animate-pulse">
-            <AlertTriangle className="h-8 w-8 text-white" />
-          </div>
-          <DialogTitle className="text-center text-2xl font-black text-white">
-            Credits Exhausted
-          </DialogTitle>
-          <DialogDescription className="text-center space-y-6 pt-4">
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[60] bg-midnight/70 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full max-w-lg glass-panel bg-slate-900/60 rounded-2xl border border-slate-700/50 shadow-2xl"
+          >
+            {/* Header */}
+            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+              <div className="flex-1 flex flex-col items-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-orange-600 mb-3 animate-pulse">
+                  <AlertTriangle className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white tracking-tight">
+                  Credits Exhausted
+                </h3>
+              </div>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-6">
             <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6">
               <p className="text-lg font-bold text-white mb-2">
                 You've used your free diagnostic scan.
@@ -68,25 +89,27 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
               <p className="text-2xl font-black text-white mb-1">€4.99</p>
               <p className="text-xs text-zinc-400">One-time payment • No subscription • Instant access</p>
             </div>
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="sm:justify-center gap-3 flex-col sm:flex-row">
-          <Button 
-            onClick={onUpgrade}
-            className="w-full sm:w-auto font-bold text-base h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25"
-          >
-            <Sparkles className="mr-2 h-5 w-5" />
-            Unlock Full Report - €4.99
-          </Button>
-          <Button 
-            variant="ghost"
-            onClick={() => onOpenChange(false)} 
-            className="w-full sm:w-auto text-zinc-400 hover:text-white"
-          >
-            Maybe Later
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            </div>
+
+            {/* Footer with Actions */}
+            <div className="px-6 py-4 border-t border-slate-800 flex gap-3 flex-col sm:flex-row">
+              <button
+                onClick={onUpgrade}
+                className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25 rounded-lg text-white flex items-center justify-center gap-2 transition-all"
+              >
+                <Sparkles className="h-5 w-5" />
+                Unlock Full Report - €4.99
+              </button>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="sm:flex-none px-6 h-12 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }
