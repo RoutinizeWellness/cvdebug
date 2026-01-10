@@ -492,7 +492,7 @@ export const getResume = query({
     if (!user) return null;
 
     const resume = await ctx.db.get(args.id);
-    if (!resume || resume.userId !== user.subject) return null;
+    if (!resume || resume.userId !== user._id) return null;
 
     return resume;
   },
