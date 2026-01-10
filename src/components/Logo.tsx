@@ -26,7 +26,7 @@ export function Logo({
         <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         <img
-          src="https://harmless-tapir-303.convex.cloud/api/storage/5768dbac-7c15-4d7f-bf24-73eff8671dc0"
+          src="/logo.png"
           alt="CVDebug Logo"
           className={cn(
             "h-8 w-auto relative z-10 drop-shadow-lg transition-transform duration-300 hover:scale-110",
