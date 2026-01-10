@@ -15,18 +15,11 @@ Disallow: /onboarding
 Disallow: /payment
 Disallow: /project-settings
 
-# Allow all niche landing pages
-Allow: /ats-scanner-for-nurses
-Allow: /med-surg-nurse-ats-optimizer
-Allow: /icu-nurse-ats-optimizer
-Allow: /er-nurse-ats-optimizer
-Allow: /travel-nurse-ats-optimizer
-Allow: /senior-frontend-engineer-ats
-Allow: /devops-engineer-kubernetes-ats
-Allow: /software-engineer-keyword-sniper
-Allow: /resume-debug-for-data-analysts
-Allow: /finance-internship-ats-optimizer
-Allow: /optimize/google-sde
+# Allow all niche landing pages (50+ pages for programmatic SEO)
+Allow: /*-ats-optimizer
+Allow: /*-ats-scanner
+Allow: /*-ats
+Allow: /optimize/*
 
 # Crawl delay (be polite)
 Crawl-delay: 1
