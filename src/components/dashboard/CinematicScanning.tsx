@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
 
 interface ScanLog {
-  status: "OK" | "WARN" | "INFO" | "CRIT";
+  status: "INFO" | "WARN" | "SCAN" | "DEBUG" | "PROC";
   message: string;
   timestamp: string;
+}
+
+interface ChecklistItem {
+  title: string;
+  status: "completed" | "active" | "pending";
+  subtitle: string;
 }
 
 interface CinematicScanningProps {
@@ -17,28 +22,37 @@ interface CinematicScanningProps {
 export function CinematicScanning({ isScanning, progress, fileName }: CinematicScanningProps) {
   const [logs, setLogs] = useState<ScanLog[]>([]);
   const [currentPhase, setCurrentPhase] = useState(0);
+  const [checklist, setChecklist] = useState<ChecklistItem[]>([
+    { title: "File Validation", status: "completed", subtitle: "PDF structure is valid." },
+    { title: "Layout Integrity", status: "pending", subtitle: "Checking margins & text-flow." },
+    { title: "Keyword Match", status: "pending", subtitle: "PENDING" },
+    { title: "Experience Timeline", status: "pending", subtitle: "PENDING" },
+    { title: "Scoring & Report", status: "pending", subtitle: "PENDING" },
+  ]);
 
   const scanningPhases = [
-    { status: "INFO" as const, message: "Initializing AI Parser v2.1.0...", delay: 300 },
-    { status: "OK" as const, message: "PDF structure validated", delay: 600 },
-    { status: "INFO" as const, message: "Extracting text layers (OCR + Native)", delay: 900 },
-    { status: "OK" as const, message: "Text extraction complete: 847 words", delay: 1200 },
-    { status: "INFO" as const, message: "Detecting hierarchical structure...", delay: 1500 },
-    { status: "OK" as const, message: "Estructura jerárquica detectada", delay: 1800 },
-    { status: "WARN" as const, message: "3 secciones ilegibles para ATS antiguos", delay: 2100 },
-    { status: "INFO" as const, message: "Extrayendo Keywords de alto impacto...", delay: 2400 },
-    { status: "INFO" as const, message: "Running semantic analysis (Gemini 2.0 Flash)", delay: 2700 },
-    { status: "OK" as const, message: "42 keywords matched with database", delay: 3000 },
-    { status: "INFO" as const, message: "Analyzing ATS compatibility score...", delay: 3300 },
-    { status: "WARN" as const, message: "Date format inconsistency detected", delay: 3600 },
-    { status: "INFO" as const, message: "Calculating visibility metrics...", delay: 3900 },
-    { status: "OK" as const, message: "Analysis complete - Generating report", delay: 4200 },
+    { status: "INFO" as const, message: "Initializing scan protocols v4.2.0...", delay: 300, checklistIndex: 0 },
+    { status: "INFO" as const, message: "Decoding PDF streams (Layer 1/3)...", delay: 800, checklistIndex: 1 },
+    { status: "WARN" as const, message: "2 hidden text layers detected. Potential parsing conflict.", delay: 1400, checklistIndex: 1 },
+    { status: "SCAN" as const, message: "Cross-referencing 42 industry keywords...", delay: 2000, checklistIndex: 2 },
+    { status: "DEBUG" as const, message: "Verifying contact info formatting...", delay: 2600, checklistIndex: 2 },
+    { status: "PROC" as const, message: "Parsing work history dates...", delay: 3200, checklistIndex: 3 },
+    { status: "INFO" as const, message: "Analyzing experience timeline gaps...", delay: 3800, checklistIndex: 3 },
+    { status: "SCAN" as const, message: "Calculating ATS compatibility score...", delay: 4400, checklistIndex: 4 },
+    { status: "INFO" as const, message: "Generating comprehensive report...", delay: 5000, checklistIndex: 4 },
   ];
 
   useEffect(() => {
     if (!isScanning) {
       setLogs([]);
       setCurrentPhase(0);
+      setChecklist([
+        { title: "File Validation", status: "completed", subtitle: "PDF structure is valid." },
+        { title: "Layout Integrity", status: "pending", subtitle: "Checking margins & text-flow." },
+        { title: "Keyword Match", status: "pending", subtitle: "PENDING" },
+        { title: "Experience Timeline", status: "pending", subtitle: "PENDING" },
+        { title: "Scoring & Report", status: "pending", subtitle: "PENDING" },
+      ]);
       return;
     }
 
@@ -46,13 +60,24 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
       const phase = scanningPhases[currentPhase];
       const timer = setTimeout(() => {
         const now = new Date();
-        const timestamp = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(now.getMilliseconds()).padStart(3, '0')}`;
+        const timestamp = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
         setLogs(prev => [...prev, {
           status: phase.status,
           message: phase.message,
           timestamp
         }]);
+
+        // Update checklist
+        setChecklist(prev => prev.map((item, idx) => {
+          if (idx < phase.checklistIndex) {
+            return { ...item, status: "completed" };
+          } else if (idx === phase.checklistIndex) {
+            return { ...item, status: "active" };
+          }
+          return item;
+        }));
+
         setCurrentPhase(prev => prev + 1);
       }, phase.delay);
 
@@ -63,86 +88,229 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
   if (!isScanning) return null;
 
   const statusColors = {
-    OK: "text-emerald-500",
-    WARN: "text-amber-500",
     INFO: "text-blue-400",
-    CRIT: "text-rose-500"
+    WARN: "text-yellow-400",
+    SCAN: "text-purple-400",
+    DEBUG: "text-green-400",
+    PROC: "text-blue-400"
   };
 
+  const completedCount = checklist.filter(item => item.status === "completed").length;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-md"
-    >
-      <div className="w-full max-w-3xl mx-4">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-t-2xl p-6 border-t-2 border-x-2 border-primary/30">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <Loader2 className="h-6 w-6 text-primary animate-spin" />
-              <div>
-                <h2 className="text-white text-xl font-bold">Analyzing your resume...</h2>
-                <p className="text-slate-400 text-sm font-mono">{fileName || "Resume.pdf"}</p>
+    <div className="fixed inset-0 z-50 bg-[#0F172A] overflow-y-auto">
+      {/* Main Content */}
+      <main className="flex flex-col justify-center py-10 px-4 md:px-8 max-w-7xl mx-auto w-full gap-8 min-h-screen">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+              Analyzing Resume Integrity
+              <span className="animate-pulse text-primary">...</span>
+            </h1>
+            <p className="text-slate-400 text-lg font-light flex items-center gap-2">
+              <span className="material-symbols-outlined text-sm">settings_suggest</span>
+              Simulating ATS parsing engines
+            </p>
+          </div>
+          <div className="bg-primary/10 border border-primary/20 rounded-full px-4 py-2 flex items-center gap-3">
+            <div className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+            </div>
+            <span className="text-primary font-mono text-xs font-bold uppercase tracking-wider">Engine Active</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column: Visualizer & Terminal */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            {/* Central Visualizer Card */}
+            <div className="glass-panel rounded-xl p-8 relative overflow-hidden min-h-[320px] flex items-center justify-center">
+              {/* Background Grid */}
+              <div
+                className="absolute inset-0 z-0 opacity-20"
+                style={{
+                  backgroundImage: 'radial-gradient(#3B82F6 1px, transparent 1px)',
+                  backgroundSize: '24px 24px'
+                }}
+              ></div>
+
+              {/* Resume Ghost Outline */}
+              <div className="relative z-10 w-[240px] h-[340px] border-2 border-slate-600/50 bg-slate-800/30 rounded-lg p-6 flex flex-col gap-4 shadow-2xl backdrop-blur-sm">
+                {/* Header skeleton */}
+                <div className="flex gap-4 mb-4">
+                  <div className="w-16 h-16 rounded-full bg-slate-600/30"></div>
+                  <div className="flex-1 flex flex-col gap-2 justify-center">
+                    <div className="h-3 w-3/4 bg-slate-600/50 rounded"></div>
+                    <div className="h-2 w-1/2 bg-slate-600/30 rounded"></div>
+                  </div>
+                </div>
+                {/* Body skeleton */}
+                <div className="h-2 w-full bg-slate-600/20 rounded"></div>
+                <div className="h-2 w-5/6 bg-slate-600/20 rounded"></div>
+                <div className="h-2 w-full bg-slate-600/20 rounded"></div>
+                <div className="mt-4 h-2 w-1/3 bg-primary/20 rounded"></div>
+                <div className="h-2 w-full bg-slate-600/20 rounded"></div>
+                <div className="h-2 w-full bg-slate-600/20 rounded"></div>
+
+                {/* Scanning Laser Line */}
+                <motion.div
+                  className="absolute left-[-10%] right-[-10%] h-[2px] bg-secondary/80"
+                  style={{
+                    boxShadow: '0 0 15px #8B5CF6, 0 0 30px #3B82F6'
+                  }}
+                  animate={{
+                    top: ['0%', '100%']
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                ></motion.div>
+              </div>
+
+              {/* Floating Status Indicators */}
+              <div className="absolute top-6 left-6 flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-md border border-slate-700 text-xs font-mono text-slate-300">
+                <span className="material-symbols-outlined text-sm text-secondary">visibility</span>
+                <span>OCR Layer: Detected</span>
+              </div>
+              <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-md border border-slate-700 text-xs font-mono text-slate-300">
+                <span className="material-symbols-outlined text-sm text-primary">memory</span>
+                <span>Memory: 45MB</span>
               </div>
             </div>
-            <span className="text-primary text-2xl font-bold font-mono">{progress}%</span>
-          </div>
 
-          {/* Progress Bar */}
-          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.3 }}
-              className="h-full bg-gradient-to-r from-primary to-secondary shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-            />
-          </div>
-        </div>
-
-        {/* Terminal Body */}
-        <div className="bg-[#0d1117] rounded-b-2xl border-2 border-t-0 border-slate-700 p-6 max-h-[400px] overflow-y-auto custom-scrollbar">
-          <div className="space-y-2 font-mono text-sm">
-            <AnimatePresence>
-              {logs.map((log, index) => (
+            {/* Main Progress Bar */}
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-end px-1">
+                <span className="text-white text-sm font-medium tracking-wide">System Scan In Progress</span>
+                <span className="text-primary text-lg font-mono font-bold">{progress}%</span>
+              </div>
+              <div className="h-3 bg-slate-800 rounded-full overflow-hidden relative border border-slate-700">
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.3 }}
-                  className="flex gap-3 items-start"
+                  className="h-full bg-gradient-to-r from-primary via-blue-400 to-primary rounded-full"
+                  style={{
+                    boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
+                  }}
                 >
-                  <span className="text-slate-600 text-xs shrink-0 font-mono">
-                    {log.timestamp}
-                  </span>
-                  <span className={`${statusColors[log.status]} font-bold shrink-0`}>
-                    [{log.status}]
-                  </span>
-                  <span className="text-slate-300">{log.message}</span>
+                  <div className="absolute inset-0 bg-white/20 w-full h-full animate-pulse skew-x-12"></div>
                 </motion.div>
-              ))}
-            </AnimatePresence>
+              </div>
+              <div className="flex justify-between text-xs text-slate-500 font-mono mt-1">
+                <span>Threads: 4 active</span>
+                <span>Est. time remaining: {Math.max(5, Math.round((100 - progress) / 8))}s</span>
+              </div>
+            </div>
 
-            {/* Blinking Cursor */}
-            <motion.div
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-              className="flex gap-3 items-center"
-            >
-              <span className="text-primary">➜</span>
-              <span className="w-2 h-4 bg-slate-500 block"></span>
-            </motion.div>
+            {/* Terminal Widget */}
+            <div className="glass-panel rounded-xl overflow-hidden flex flex-col h-64 shadow-lg">
+              <div className="bg-slate-900/80 px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                </div>
+                <div className="text-xs text-slate-500 font-mono">user@cvdebug-core:~</div>
+              </div>
+              <div className="flex-1 bg-slate-950/90 p-4 font-mono text-sm overflow-y-auto terminal-scroll">
+                <div className="flex flex-col gap-2">
+                  <AnimatePresence>
+                    {logs.map((log, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className={`flex gap-3 text-slate-400 ${log.status === 'WARN' ? 'bg-yellow-500/10 p-1 rounded -mx-1' : ''}`}
+                      >
+                        <span className="text-slate-600">[{log.timestamp}]</span>
+                        <span className={`${statusColors[log.status]} font-bold`}>{log.status}</span>
+                        <span className={log.status === 'WARN' ? 'text-slate-300' : ''}>{log.message}</span>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                  {logs.length > 0 && (
+                    <motion.div
+                      className="flex gap-3 text-slate-400 animate-pulse"
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <span className="text-slate-600">[{new Date().toTimeString().split(' ')[0]}]</span>
+                      <span className="text-blue-400 font-bold">PROC</span>
+                      <span>Processing...</span>
+                      <span className="w-2 h-4 bg-slate-400 block animate-pulse"></span>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Checklist Sidebar */}
+          <div className="lg:col-span-4 flex flex-col">
+            <div className="glass-panel rounded-xl p-6 flex flex-col gap-6 border border-white/5">
+              <h3 className="text-white font-display text-lg font-bold border-b border-white/10 pb-4 flex justify-between items-center">
+                Analysis Queue
+                <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded font-mono">
+                  {completedCount}/{checklist.length}
+                </span>
+              </h3>
+              <div className="flex flex-col gap-6 relative">
+                {/* Connecting Line */}
+                <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-slate-700 -z-10"></div>
+
+                {checklist.map((item, idx) => (
+                  <div key={idx} className={`flex gap-4 items-start ${item.status === 'pending' ? 'opacity-60' : ''}`}>
+                    <div className={`relative z-10 flex-shrink-0 size-10 rounded-full flex items-center justify-center ${
+                      item.status === 'completed'
+                        ? 'bg-slate-900 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                        : item.status === 'active'
+                        ? 'bg-slate-900 border border-primary shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                        : 'bg-slate-800 border border-slate-600'
+                    }`}>
+                      {item.status === 'completed' && (
+                        <span className="material-symbols-outlined text-emerald-500 text-xl">check</span>
+                      )}
+                      {item.status === 'active' && (
+                        <span className="material-symbols-outlined text-primary text-xl animate-spin">sync</span>
+                      )}
+                      {item.status === 'pending' && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-slate-500"></div>
+                      )}
+                    </div>
+                    <div className="flex flex-col pt-1">
+                      <h4 className={`font-medium text-base ${item.status === 'pending' ? 'text-slate-300' : 'text-white'}`}>
+                        {item.title}
+                      </h4>
+                      {item.status === 'completed' && (
+                        <p className="text-emerald-500 text-xs font-mono mt-1 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[10px]">verified</span>
+                          COMPLETED
+                        </p>
+                      )}
+                      {item.status === 'active' && (
+                        <p className="text-primary text-xs font-mono mt-1 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                          ANALYZING
+                        </p>
+                      )}
+                      {item.status === 'pending' && (
+                        <p className="text-slate-500 text-xs font-mono mt-1">PENDING</p>
+                      )}
+                      <p className="text-slate-400 text-xs mt-1">{item.subtitle}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Footer Tip */}
-        <div className="mt-4 text-center">
-          <p className="text-slate-400 text-sm">
-            💡 <span className="text-slate-300">Tip:</span> Nuestro AI escanea más de 40 señales que los ATS reales buscan
-          </p>
-        </div>
-      </div>
-    </motion.div>
+      </main>
+    </div>
   );
 }
