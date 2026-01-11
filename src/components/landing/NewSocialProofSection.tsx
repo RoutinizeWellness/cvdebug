@@ -27,23 +27,28 @@ export function NewSocialProofSection() {
   const companies = [
     {
       name: "Google",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBaoKTnNDmSIsQj8yPbOBpzM6hhAJLYOlsTbVLbY7_qjk31k5svTONvGZvYQ6eNBMiYodJC0aM9-4Syb9dRYyWkTxvcTvQ46p_7bmn1_7HEQPFH8V-wRD3x4KtD6-dvNy0ecpfkZ69lYtxT0ynA61ImfFdYVKsL4KmddgWapZg9Ld9C666NOSkp7jNOhAmpJeoxh8hBSMevl8opyLVvo40_KnUSK-61Q03OMhgL8FlguroRiOgw8sYxgsQu4YUvIJX6NVEy9sfEIw",
+      logo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+      color: "from-blue-500 to-green-500",
     },
     {
       name: "Amazon",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdH0nj4jFe9vc_RyUSNxlgdRkVMGRn9KWxsT8SJ2kfySUOWID-Rvr9LOX1PWAwtoFfPasvIaPgdtF5wS_NOZwP540ZlZ-EOIsjVjiSwLGbDtUxdyDZ_zBel-IGR0Y9OavmpS--KWVrartOCuVur0LDKwGBmYSuQ8VNXSmLiSL3usBfwIZb3akSFt-jN5i9eXyRdPb194khI8X8C3aH18a5snx6gQu3MGpv4MWOzRj6IqPw-LkbsTrUaQ9kNq6qXxiqV8rlxi4ePQ",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+      color: "from-orange-400 to-yellow-500",
     },
     {
       name: "Meta",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuC0dTWCfWsEunVMr7sKzJXqR9wTpM8f42ps0H_oPNNmLxb_SX6NsnX7iX5JfK4Xsm6ZdGeRNwDZuCsYUoTM39i5Vn03_HDbXfeGc9zcs_KK8NhlykMDjP2fgB3SCrMh-k-pOHLxRLajLK9u-_l89Py6k3p02iw_yC4tTXL2kB3OM33ZnVbdUTLbHI72EzkHheNN23Fmptfmj5zptYBqPHpdBHgkAIqPuWHcz-qZ9_nFOiJoN2SIcehTWjFMbfZL9tqYziCnNh8WeA",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+      color: "from-blue-600 to-cyan-500",
     },
     {
       name: "Slack",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCbScCGCgB6OMkKyLk4m4sZGqqbGm3wEIJ3ClDWd4P8GmO97sW6jRx6N5p059tKq0LUFiSLjjddWQbkN_egu87xA-YHxkeouZU2AA1sl-znyKZWHTdKz2xdw9KKts48bpdlugRA-WzjAQy5xEmbl-dZo2-eFkpZknV6PxQqbJnM3fQyInYfa0UNbAPCBrOwPUmasq8jVmHeJ-NiiJBL8ijZ511R8jOxxUvqTH2WKbVyxa0S_GaMljl7_yNR3DkuV9IAZF3QwFM-Rg",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg",
+      color: "from-purple-500 to-pink-500",
     },
     {
       name: "Microsoft",
-      logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCPNpWchoPej87t0uRNISaQ41OvTdSMRrSLi55x5wGm-L-pCOgrCNUNhDYlFuo7k9iZGiJrQrn_6eSBWGQmzuh-_D8c4G-5x2ACtez_MUifguitfG6LhJkJiUU43z7rRqvylzr8ryM1kStyNWDhMk9GUrTIkTaS3dXWxGeCpaygzcmzGpyZW3oRLvn9i6_3NFUSlsoiYNJ0g2tJ6eYjTFLKM04K6Zst9LuXjicmoUeThWeaXosmU_s5OoRRxkgUSgbC39LyP5kG_Q",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+      color: "from-cyan-500 to-blue-600",
     },
   ];
 
@@ -121,9 +126,9 @@ export function NewSocialProofSection() {
                   transition: { duration: 0.3 },
                 }}
               >
-                {/* Glow effect on hover */}
+                {/* Glow effect on hover with company-specific colors */}
                 <motion.div
-                  className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/20 to-secondary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className={`absolute inset-0 rounded-lg bg-gradient-to-r ${company.color} blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                   animate={{
                     scale: [1, 1.2, 1],
                   }}
@@ -134,13 +139,14 @@ export function NewSocialProofSection() {
                   }}
                 />
 
-                {/* Logo */}
+                {/* Logo with enhanced hover effects */}
                 <motion.img
                   src={company.logo}
-                  alt={company.name}
-                  className="relative h-10 w-auto object-contain grayscale group-hover:grayscale-0 transition-all cursor-pointer filter drop-shadow-lg"
+                  alt={`${company.name} - Trusted by job seekers`}
+                  className="relative h-12 w-auto object-contain brightness-75 group-hover:brightness-125 transition-all duration-300 cursor-pointer filter drop-shadow-lg"
+                  loading="lazy"
                   whileHover={{
-                    filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))",
+                    filter: "drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)) brightness(1.3)",
                   }}
                 />
 

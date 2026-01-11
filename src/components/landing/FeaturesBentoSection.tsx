@@ -1,3 +1,5 @@
+import { FolderKanban, AlertTriangle, Target, Sparkles } from "lucide-react";
+
 export function FeaturesBentoSection() {
   return (
     <section className="w-full py-24 bg-[#050505] relative" id="features">
@@ -11,8 +13,8 @@ export function FeaturesBentoSection() {
           {/* Feature 1 */}
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-primary/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
-              <span className="text-2xl">📁</span>
+            <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+              <FolderKanban className="h-6 w-6" strokeWidth={2.5} />
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">Project-Based Tracking</h3>
@@ -25,8 +27,8 @@ export function FeaturesBentoSection() {
           {/* Feature 2 */}
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-red-500/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="size-12 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform duration-300">
-              <span className="text-2xl">🚨</span>
+            <div className="size-12 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+              <AlertTriangle className="h-6 w-6" strokeWidth={2.5} />
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">Real-Time Health Monitor</h3>
@@ -39,8 +41,8 @@ export function FeaturesBentoSection() {
           {/* Feature 3 */}
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-primary/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
-              <span className="text-2xl">🎯</span>
+            <div className="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+              <Target className="h-6 w-6" strokeWidth={2.5} />
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">Keyword Gap Analysis</h3>
@@ -53,8 +55,8 @@ export function FeaturesBentoSection() {
           {/* Feature 4 */}
           <div className="group p-6 rounded-xl bg-[#0a0a0a] border border-white/10 hover:border-[#22C55E]/50 transition-colors flex flex-col gap-4 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-[#22C55E]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="size-12 rounded-lg bg-[#22C55E]/10 flex items-center justify-center text-[#22C55E] group-hover:scale-110 transition-transform duration-300">
-              <span className="text-2xl">✍️</span>
+            <div className="size-12 rounded-lg bg-[#22C55E]/10 flex items-center justify-center text-[#22C55E] group-hover:scale-110 group-hover:rotate-[-6deg] transition-all duration-300">
+              <Sparkles className="h-6 w-6" strokeWidth={2.5} />
             </div>
             <div className="relative z-10">
               <h3 className="text-xl font-bold mb-2">AI Cover Letter Generator</h3>
