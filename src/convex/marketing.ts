@@ -62,7 +62,7 @@ export const sendStatusEngagementEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #1e293b; margin: 0 0 16px 0;">Application Status Update</h2>
+        <h2 style="color: #1e293b; margin: 0 0 16px 0;">📋 Application Status Update</h2>
         <p>Hi ${firstName},</p>
         <p>We noticed you applied to <strong>${args.jobTitle}</strong> at <strong>${args.companyName}</strong> 48 hours ago.</p>
         
@@ -100,7 +100,7 @@ export const sendStatusEngagementEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: `Did you land the interview at ${args.companyName}?`,
+          subject: `📋 Update Your ${args.companyName} Application Status`,
           html: emailTemplate(content),
         }),
       });
@@ -133,7 +133,7 @@ export const sendParsingErrorEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Critical: ATS Parsing Failure Detected</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⚠️ Critical: Your Resume Can't Be Read by ATS</h2>
         <p>Hi ${firstName},</p>
         <p>As a Principal Technical Recruiter, I've reviewed your resume through our ATS simulation and identified <strong>critical parsing errors</strong> that will prevent your application from reaching human reviewers.</p>
         
@@ -180,7 +180,7 @@ export const sendParsingErrorEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "⚠️ URGENT: ATS Cannot Parse Your Resume",
+          subject: "⚠️ URGENT: Your Resume is Unreadable to ATS Systems",
           html: emailTemplate(content),
         }),
       });
@@ -214,36 +214,36 @@ export const sendAbandonmentEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">The Ghosting Season</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">🚨 Why You're Getting Ghosted by Recruiters</h2>
         <p>Hi ${firstName},</p>
-        <p>He visto que tu score se quedó en <strong>${args.resumeScore}%</strong>.</p>
+        <p>I noticed your ATS score stopped at <strong>${args.resumeScore}%</strong>.</p>
 
         <div class="alert-box">
-          <p style="margin: 0; font-weight: 600; color: #991b1b;">La verdad brutal:</p>
+          <p style="margin: 0; font-weight: 600; color: #991b1b;">The Harsh Truth:</p>
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #7f1d1d;">
-            El <strong>90% de los que se quedan en este rango no reciben ni una llamada</strong>. No es porque no sean buenos, es porque el ATS los hace invisibles.
+            <strong>90% of candidates in this range never receive a single callback</strong>. It's not because they lack qualifications – it's because ATS systems make them invisible to recruiters.
           </p>
         </div>
 
         <div style="background: #7f1d1d; border-radius: 8px; padding: 20px; margin: 24px 0; text-align: center;">
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #fca5a5;">Tu Score ATS</p>
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #fca5a5;">Your Current ATS Score</p>
           <p style="margin: 0; font-size: 48px; font-weight: 800; color: #fecaca;">${args.resumeScore}%</p>
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #fca5a5;">Los que consiguen entrevista tienen 92%+</p>
+          <p style="margin: 8px 0 0 0; font-size: 12px; color: #fca5a5;">Candidates who get interviews score 92%+</p>
         </div>
 
-        <p>He bajado el Single Scan a <strong>$4.99</strong> por 24h para que dejes de ser invisible.</p>
+        <p>I've reduced the Single Scan to <strong>$4.99 for 24 hours only</strong> to help you stop being invisible.</p>
 
-        <p><strong>No quiero tus $5 si no te consigo la entrevista.</strong></p>
+        <p><strong>I don't want your $5 if I can't get you the interview.</strong></p>
 
-        <p>Si desbloqueas tu reporte hoy y en 7 días no has conseguido más respuestas, te devuelvo el dinero. Sin preguntas.</p>
+        <p>If you unlock your report today and don't get more responses within 7 days, I'll refund you. No questions asked.</p>
 
         <div style="text-align: center; margin: 32px 0;">
-          <a href="https://cvdebug.com/dashboard?action=unlock&special=true" class="cta-button" style="background: #dc2626;">🔓 Desbloquear por $4.99 (24h solo)</a>
+          <a href="https://cvdebug.com/dashboard?action=unlock&special=true" class="cta-button" style="background: #dc2626;">🔓 Unlock Report for $4.99 (24h Only)</a>
         </div>
 
         <div class="info-box">
-          <p style="margin: 0; font-weight: 600; color: #1e40af;">Por qué te escribo esto:</p>
-          <p style="margin: 8px 0 0 0; font-size: 14px;">Veo tu talent. Tienes ${args.criticalIssuesCount} errores críticos que están matando tus aplicaciones. Son arreglables en 5 minutos. Pero solo si sabes cuáles son.</p>
+          <p style="margin: 0; font-weight: 600; color: #1e40af;">Why I'm Reaching Out:</p>
+          <p style="margin: 8px 0 0 0; font-size: 14px;">I see your talent. You have ${args.criticalIssuesCount} critical errors that are killing your applications. They're fixable in 5 minutes – but only if you know what they are.</p>
         </div>
 
         <div class="signature">
@@ -263,7 +263,7 @@ export const sendAbandonmentEmail = internalAction({
         body: JSON.stringify({
           from: "Albert from CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "Tu score de ${args.resumeScore}% está en el 90% que nunca recibe llamadas",
+          subject: `🚨 Your ${args.resumeScore}% Score: In the 90% Who Never Get Callbacks`,
           html: emailTemplate(content),
         }),
       });
@@ -339,7 +339,7 @@ export const sendOnboardingEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "Welcome to CVDebug – Your ATS Safety Net",
+          subject: "🎉 Welcome to CVDebug – Your ATS Safety Net",
           html: emailTemplate(content),
         }),
       });
@@ -436,7 +436,7 @@ export const sendPurchaseConfirmationEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: `Payment Confirmed – ${planName}`,
+          subject: `✅ Payment Confirmed – ${planName} Activated`,
           html: emailTemplate(content),
         }),
       });
@@ -471,7 +471,7 @@ export const sendRecoveryEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">💡 Recruiter Feedback: 3 Quick Wins to Boost Your ${args.score}% Score</h2>
+        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">💡 3 Quick Wins to Boost Your ${args.score}% ATS Score</h2>
         <p>Hi ${firstName},</p>
         <p>I've completed my technical review of your resume. Your current ATS score is <strong>${args.score}%</strong>. The good news? I've identified <strong>${args.totalErrors} specific, fixable issues</strong> that are holding you back from the interview stage.</p>
         
@@ -512,7 +512,7 @@ export const sendRecoveryEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: `💡 Recruiter Feedback: Boost Your ${args.score}% Score in 3 Steps`,
+          subject: `💡 How to Boost Your ${args.score}% ATS Score: 3 Quick Fixes`,
           html: emailTemplate(content),
         }),
       });
@@ -544,7 +544,7 @@ export const sendActivationReminderEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #dc2626; margin: 0 0 16px 0;">Is Your Resume Still Invisible?</h2>
+        <h2 style="color: #dc2626; margin: 0 0 16px 0;">⏰ Is Your Resume Still Invisible to Recruiters?</h2>
         <p>Hi ${firstName},</p>
         <p>You signed up for CVDebug 2 hours ago but haven't uploaded your resume yet.</p>
         
@@ -583,7 +583,7 @@ export const sendActivationReminderEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "⚠️ Is Your Resume Still Invisible?",
+          subject: "⏰ Your Resume Might Be Invisible – Here's Why",
           html: emailTemplate(content),
         }),
       });
@@ -615,7 +615,7 @@ export const sendRoiEmail = internalAction({
 
     const content = `
       <div class="content">
-        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">The $100,000 Risk You're Taking</h2>
+        <h2 style="color: #f59e0b; margin: 0 0 16px 0;">💰 The $100,000 Risk You're Taking</h2>
         <p>Hi ${firstName},</p>
         <p>You uploaded your resume to CVDebug yesterday but haven't unlocked the full analysis yet.</p>
         
@@ -674,7 +674,7 @@ export const sendRoiEmail = internalAction({
         body: JSON.stringify({
           from: "CVDebug <cvdebug@cvdebug.com>",
           to: args.email,
-          subject: "💰 The $100k Risk: $5 vs Your Next Salary",
+          subject: "💰 $100k Lost vs $5 Fix – The Math You Need to See",
           html: emailTemplate(content),
         }),
       });
