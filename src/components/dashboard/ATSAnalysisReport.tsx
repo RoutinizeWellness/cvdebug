@@ -78,7 +78,7 @@ export function ATSAnalysisReport({
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col items-center justify-center py-6 md:py-10 px-4 md:px-10 w-full max-w-7xl mx-auto">
+        <main className="flex-1 flex flex-col items-center justify-center py-6 md:py-10 px-4 md:px-10 w-full max-w-7xl mx-auto pb-20">
           {/* Hero Section */}
           <div className="flex flex-col items-center gap-6 md:gap-8 mb-8 md:mb-12 w-full">
             {/* Status Badge */}
@@ -285,21 +285,21 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 w-full max-w-5xl mt-8 md:mt-12"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 w-full max-w-5xl mt-10 md:mt-16 px-2"
             >
               {/* Matched Keywords */}
               {matchedKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-4 md:p-6 hover:border-emerald-500/30 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <div className="glass-card rounded-xl p-5 md:p-7 hover:border-emerald-500/30 transition-all duration-300 min-h-[300px] flex flex-col">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
                       <span className="material-symbols-outlined text-xl md:text-2xl">check_circle</span>
                     </div>
-                    <div>
-                      <h3 className="text-white font-bold text-base md:text-lg">Keywords Found</h3>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-bold text-base md:text-lg truncate">Keywords Found</h3>
                       <p className="text-slate-400 text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto custom-scrollbar">
+                  <div className="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar pr-2 flex-1">
                     {matchedKeywords.map((keyword: string, index: number) => (
                       <motion.span
                         key={index}
@@ -317,17 +317,17 @@ export function ATSAnalysisReport({
 
               {/* Missing Keywords */}
               {missingKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-4 md:p-6 hover:border-orange-500/30 transition-all duration-300">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 md:p-3 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                <div className="glass-card rounded-xl p-5 md:p-7 hover:border-orange-500/30 transition-all duration-300 min-h-[300px] flex flex-col">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2 md:p-3 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 shrink-0">
                       <span className="material-symbols-outlined text-xl md:text-2xl">priority_high</span>
                     </div>
-                    <div>
-                      <h3 className="text-white font-bold text-base md:text-lg">Missing Keywords</h3>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-bold text-base md:text-lg truncate">Missing Keywords</h3>
                       <p className="text-slate-400 text-xs md:text-sm">{missingKeywords.length} opportunities to improve</p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto custom-scrollbar">
+                  <div className="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar pr-2 flex-1">
                     {missingKeywords.map((keyword: string, index: number) => (
                       <motion.span
                         key={index}
@@ -374,7 +374,7 @@ export function ATSAnalysisReport({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
-            className="mt-8 md:mt-16 w-full max-w-2xl px-4 animate-float"
+            className="mt-12 md:mt-20 mb-8 w-full max-w-2xl px-4 animate-float"
             style={{ animationDuration: '8s' }}
           >
             <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-3 md:p-4 font-mono text-xs md:text-sm shadow-2xl relative overflow-hidden">
