@@ -60,7 +60,7 @@ export const createResume = mutation({
       }
 
       const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-      const hasPurchasedScan = (user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint");
+      const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" || user.subscriptionTier === "lifetime";
 
       // RE-SCAN LOGIC: 24h unlimited re-scans for ALL users (including FREE)
       // This allows users to iterate and see their score improve without penalty
@@ -84,21 +84,31 @@ export const createResume = mutation({
         console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
       }
 
-      // CREDIT CONSUMPTION: Check for all users without active sprint (Free & Single Scan)
-      if (!hasActiveSprint && !isFreeRescan) {
-        const currentCredits = user.credits ?? 0;
-
-        if (currentCredits <= 0 || (user.subscriptionTier === "free" && user.freeTrialUsed)) {
-          throw new ConvexError("CREDITS_EXHAUSTED");
+      // CREDIT CONSUMPTION: Apply limits based on subscription tier
+      if (!isUnlimitedPlan && !isFreeRescan) {
+        if (user.subscriptionTier === "free") {
+          // Free tier: 5 parses per month
+          const freeScansUsed = user.freeScansUsed ?? 0;
+          if (freeScansUsed >= 5) {
+            throw new ConvexError("CREDITS_EXHAUSTED");
+          }
+          await ctx.db.patch(user._id, {
+            freeScansUsed: freeScansUsed + 1,
+          });
+          console.log(`[Billing] Free user ${user.email} used scan ${freeScansUsed + 1}/5`);
+        } else if (user.subscriptionTier === "basic_pro") {
+          // Basic Pro: 20 parses per month
+          const currentCredits = user.credits ?? 0;
+          if (currentCredits <= 0) {
+            throw new ConvexError("CREDITS_EXHAUSTED");
+          }
+          await ctx.db.patch(user._id, {
+            credits: currentCredits - 1,
+          });
+          console.log(`[Billing] Basic Pro user ${user.email} consumed 1 credit. Remaining: ${currentCredits - 1}/20`);
         }
-
-        // Consume credit
-        await ctx.db.patch(user._id, {
-          credits: currentCredits - 1,
-          freeTrialUsed: true,
-        });
-
-        console.log(`[Billing] User ${user.email} consumed 1 credit for NEW file. Tier: ${user.subscriptionTier}`);
+      } else if (isUnlimitedPlan) {
+        console.log(`[Billing] ${user.subscriptionTier} user ${user.email} has unlimited scans`);
       }
 
       if (user.deviceFingerprint) {
@@ -132,7 +142,7 @@ export const createResume = mutation({
         jobDescription: args.jobDescription,
         jobTitle: args.jobTitle,
         company: args.company,
-        detailsUnlocked: hasActiveSprint || hasPurchasedScan || false,
+        detailsUnlocked: hasActiveSprint || isUnlimitedPlan || false,
         status: "processing",
       });
 

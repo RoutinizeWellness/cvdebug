@@ -107,14 +107,16 @@ export const getAdminStats = query({
     }
 
     const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
-    const singleScanUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan")).collect();
+    const basicProUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "basic_pro")).collect();
     const sprintUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint")).collect();
+    const lifetimeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "lifetime")).collect();
 
     return {
       free: freeUsers.length,
-      singleScan: singleScanUsers.length,
+      basicPro: basicProUsers.length,
       interviewSprint: sprintUsers.length,
-      total: freeUsers.length + singleScanUsers.length + sprintUsers.length
+      lifetime: lifetimeUsers.length,
+      total: freeUsers.length + basicProUsers.length + sprintUsers.length + lifetimeUsers.length
     };
   }
 });
@@ -135,10 +137,10 @@ export const fixInconsistentUsers = mutation({
     for (const user of allUsers) {
       if (user.subscriptionTier === "free" && (user.credits || 0) > 1) {
         // Heuristic: If they have > 1 credits, they likely paid.
-        // 2 credits = 1 (free) + 1 (single scan)
         // If they have sprint access, they're on interview_sprint
-        
-        let newTier: "single_scan" | "interview_sprint" = "single_scan";
+        // Otherwise they're on basic_pro if they have credits
+
+        let newTier: "basic_pro" | "interview_sprint" = "basic_pro";
         if (user.sprintExpiresAt && user.sprintExpiresAt > Date.now()) {
           newTier = "interview_sprint";
         }
@@ -215,9 +217,9 @@ export const fixSpecificReportedUsers = mutation({
         const newCredits = Math.max(currentCredits, fix.creditsToAdd);
         
         await ctx.db.patch(user._id, {
-          subscriptionTier: fix.plan as "single_scan" | "interview_sprint",
+          subscriptionTier: fix.plan as "basic_pro" | "interview_sprint" | "lifetime",
           credits: newCredits,
-          tokenIdentifier: user.tokenIdentifier || fix.id 
+          tokenIdentifier: user.tokenIdentifier || fix.id
         });
         
         logs.push(`✅ Updated ${fix.email} (${user._id}): Set to ${fix.plan}, Credits ${currentCredits} -> ${newCredits}`);
@@ -227,7 +229,7 @@ export const fixSpecificReportedUsers = mutation({
           tokenIdentifier: fix.id,
           name: fix.name,
           email: fix.email,
-          subscriptionTier: fix.plan as "single_scan" | "interview_sprint",
+          subscriptionTier: fix.plan as "basic_pro" | "interview_sprint" | "lifetime",
           credits: fix.creditsToAdd,
           trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
           emailVariant: "A",

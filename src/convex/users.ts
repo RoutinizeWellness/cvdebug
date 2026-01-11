@@ -189,7 +189,7 @@ export const getUserByEmail = internalQuery({
 export const updateSubscription = internalMutation({
   args: {
     tokenIdentifier: v.string(),
-    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(v.literal("free"), v.literal("basic_pro"), v.literal("interview_sprint"), v.literal("lifetime")),
   },
   handler: async (ctx, args) => {
     console.log(`[updateSubscription] ====== START ======`);
@@ -202,9 +202,8 @@ export const updateSubscription = internalMutation({
 
     console.log(`[updateSubscription] 👤 User found:`, user ? `YES (${user.email}, ID: ${user._id})` : 'NO');
 
-    // Single Scan: 1 credit for full analysis + 24h re-scan window
-    // Interview Sprint: Unlimited scans for 7 days (no credits needed)
-    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
+    // Free: 5 parses/month, Basic Pro: 20 parses/month, Interview Sprint: Unlimited, Lifetime: Unlimited
+    const creditsToAdd = args.plan === "basic_pro" ? 20 : 0;
     console.log(`[updateSubscription] 💳 Plan: ${args.plan}, Credits to add: ${creditsToAdd}`);
 
     if (user) {
@@ -213,16 +212,22 @@ export const updateSubscription = internalMutation({
       console.log(`[updateSubscription] 🔄 Updating to - Tier: ${args.plan}`);
 
       const updates: any = {
-        credits: args.plan === "single_scan" ? 1 : currentCredits, // Single Scan gets exactly 1 credit
         subscriptionTier: args.plan,
         freeTrialUsed: true, // Mark as used to prevent re-using free scan
       };
 
-      if (args.plan === "interview_sprint") {
-        const expiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+      if (args.plan === "basic_pro") {
+        updates.credits = 20; // Basic Pro gets 20 parses per month
+        updates.freeScansUsed = 0; // Reset monthly counter
+      } else if (args.plan === "interview_sprint") {
+        const expiresAt = Date.now() + (30 * 24 * 60 * 60 * 1000); // 30 days
         updates.sprintExpiresAt = expiresAt;
         updates.credits = 0; // Sprint users don't need credits
         console.log(`[updateSubscription] 📅 Sprint expires at: ${new Date(expiresAt).toISOString()}`);
+      } else if (args.plan === "lifetime") {
+        updates.credits = 0; // Lifetime users don't need credits
+      } else if (args.plan === "free") {
+        updates.freeScansUsed = 0; // Reset monthly counter
       }
 
       console.log(`[updateSubscription] 💾 Updates to apply:`, updates);
@@ -285,8 +290,8 @@ export const updateSubscription = internalMutation({
 });
 
 export const purchaseCredits = mutation({
-  args: { 
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+  args: {
+    plan: v.union(v.literal("basic_pro"), v.literal("interview_sprint"), v.literal("lifetime")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -339,16 +344,21 @@ export const purchaseCredits = mutation({
       subscriptionTier: args.plan,
       freeTrialUsed: true, // Prevent re-using free scan after purchase
     };
-    
-    if (args.plan === "single_scan") {
-      // Single Scan: 1 credit + 24h re-scan window
-      updates.credits = 1;
-      console.log(`[PURCHASE] Single Scan: Granting 1 credit with 24h re-scan window`);
+
+    if (args.plan === "basic_pro") {
+      // Basic Pro: 20 parses per month
+      updates.credits = 20;
+      updates.freeScansUsed = 0;
+      console.log(`[PURCHASE] Basic Pro: Granting 20 parses per month`);
     } else if (args.plan === "interview_sprint") {
-      // Interview Sprint: Unlimited scans for 7 days
-      updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+      // Interview Sprint: Unlimited scans for 30 days
+      updates.sprintExpiresAt = Date.now() + (30 * 24 * 60 * 60 * 1000);
       updates.credits = 0; // No credits needed for sprint
-      console.log(`[PURCHASE] Interview Sprint: 7 days unlimited access granted`);
+      console.log(`[PURCHASE] Interview Sprint: 30 days unlimited access granted`);
+    } else if (args.plan === "lifetime") {
+      // Lifetime: Unlimited forever
+      updates.credits = 0;
+      console.log(`[PURCHASE] Lifetime: Unlimited access granted`);
     }
 
     await ctx.db.patch(user._id, updates);
@@ -358,41 +368,45 @@ export const purchaseCredits = mutation({
         email: user.email,
         name: user.name,
         plan: args.plan,
-        credits: args.plan === "single_scan" ? 1 : 0
+        credits: args.plan === "basic_pro" ? 20 : 0
       });
     }
     
-    return { success: true, credits: args.plan === "single_scan" ? 1 : 0 };
+    return { success: true, credits: args.plan === "basic_pro" ? 20 : 0 };
   },
 });
 
 export const getBetaStatus = query({
   args: {},
   handler: async (ctx) => {
-    const singleScanUsers = await ctx.db.query("users")
-      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "single_scan"))
+    const basicProUsers = await ctx.db.query("users")
+      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "basic_pro"))
       .take(100);
-      
+
     const sprintUsers = await ctx.db.query("users")
       .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "interview_sprint"))
       .take(100);
 
+    const lifetimeUsers = await ctx.db.query("users")
+      .withIndex("by_subscription_tier", (q) => q.eq("subscriptionTier", "lifetime"))
+      .take(100);
+
     const uniqueEmails = new Set<string>();
-    [...singleScanUsers, ...sprintUsers].forEach(user => {
+    [...basicProUsers, ...sprintUsers, ...lifetimeUsers].forEach(user => {
       if (user.email) uniqueEmails.add(user.email);
     });
-    
+
     const realCount = uniqueEmails.size;
-    const baseCount = 97; 
-    
+    const baseCount = 97;
+
     let displayClaimed = baseCount + realCount;
-    
+
     if (displayClaimed > 99) {
         displayClaimed = 99;
     }
 
     const total = 100;
-    
+
     return {
       claimed: Math.min(displayClaimed, total),
       total,
