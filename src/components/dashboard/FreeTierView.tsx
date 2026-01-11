@@ -143,9 +143,9 @@ export function FreeTierView({
               </span> to {score >= 80 ? '10%' : score >= 50 ? '60%' : '85%'} of recruiters.
             </h1>
             <p className="text-zinc-300 text-lg max-w-2xl mx-auto lg:mx-0">
-              {score >= 80 
-                ? 'Great job! Your resume is well-optimized for ATS systems.' 
-                : 'Your resume has critical errors that are causing automatic rejections. See the top issues below.'}
+              {score >= 80
+                ? 'Your resume needs ATS certification to guarantee it passes automated screening.'
+                : 'Your resume has critical errors that are causing automatic rejections. Get it certified to fix all issues.'}
             </p>
           </div>
         </div>
@@ -176,9 +176,55 @@ export function FreeTierView({
             </p>
           </div>
         </div>
-        
+
         <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-4 text-xs text-zinc-400 font-mono max-h-[300px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
           {ocrText || "No text extracted. This means ATS systems cannot read your resume at all."}
+
+          {/* Show Parsing Error Blocks (Randomly placed for FREE users) */}
+          {formatIssues.length > 0 && (
+            <div className="mt-4 space-y-2">
+              {[...Array(Math.min(3, formatIssues.length))].map((_, i) => (
+                <div key={i} className="bg-red-900/40 border-2 border-red-500/50 rounded p-3 my-2">
+                  <div className="flex items-center gap-2 mb-1">
+                    <AlertTriangle className="h-4 w-4 text-red-400 animate-pulse" />
+                    <span className="text-red-400 font-bold text-xs uppercase tracking-wider">
+                      [PARSING ERROR DETECTED]
+                    </span>
+                  </div>
+                  <div className="text-red-300 text-xs mb-2">
+                    ⚠️ Hidden content blocked by ATS parser
+                  </div>
+                  <div className="bg-red-950/60 rounded px-3 py-2 font-mono text-red-400 text-[10px] blur-sm select-none">
+                    ████████████████████████████<br/>
+                    ████████████████████<br/>
+                    ████████████████████████████████
+                  </div>
+                  <div className="mt-2 text-[10px] text-red-300 italic">
+                    💡 ChatGPT cannot fix this. Only our PDF Sanitizer can repair parsing errors.
+                  </div>
+                </div>
+              ))}
+
+              {formatIssues.length > 3 && (
+                <div className="text-center py-3">
+                  <Lock className="h-4 w-4 text-red-400 mx-auto mb-1" />
+                  <p className="text-red-400 text-[10px] font-bold">
+                    +{formatIssues.length - 3} more parsing errors hidden
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="bg-red-950/20 border border-red-500/30 rounded-lg p-3 mt-3">
+          <div className="flex gap-2">
+            <AlertTriangle className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="text-xs text-red-300 leading-relaxed">
+              <strong className="font-bold">Why ChatGPT Can't Help:</strong> ChatGPT can rewrite text, but it CANNOT fix PDF parsing errors.
+              These errors are in the file structure itself. Our PDF Sanitizer rebuilds your PDF from scratch with ATS-compatible formatting.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -306,16 +352,16 @@ export function FreeTierView({
           
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
-              90% who stay here never get a single call
+              Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Certified</span> by CVDebug
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
-              Unlock the {missingCount} exact keywords + {formatCount} critical fixes you need to reach 92%
+              Unlock {missingCount} exact keywords + {formatCount} critical fixes + ATS-Certified Download
             </p>
           </div>
 
           <div className="bg-zinc-900/80 border-2 border-zinc-700 rounded-xl p-6 max-w-md mx-auto">
             <p className="text-sm font-bold text-zinc-300 uppercase tracking-wider mb-4">
-              🔓 Instant Fix Package:
+              ✅ ATS Certification Package:
             </p>
             <div className="space-y-3 text-left">
               <div className="flex items-start gap-3">
@@ -340,7 +386,13 @@ export function FreeTierView({
                 <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
-                <span className="text-sm text-zinc-200">Sanitized PDF (ATS-safe download)</span>
+                <span className="text-sm text-zinc-200">✅ ATS-Certified PDF download with badge</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-green-400 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-zinc-200">⚡ 3-second One-Click PDF Sanitizer</span>
               </div>
             </div>
           </div>
@@ -352,7 +404,7 @@ export function FreeTierView({
               className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Lock className="mr-3 h-6 w-6 text-black" />
-              Instant Fix - Only €4.99
+              Get Certified - Only €4.99
             </Button>
 
             {/* Manual Review Option - $49 */}

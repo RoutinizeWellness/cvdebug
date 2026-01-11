@@ -86,17 +86,23 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
           )}
           
           <div className="mt-4 flex flex-wrap gap-3">
-            <Button 
-              size="sm" 
-              variant="destructive" 
-              className="font-bold shadow-lg shadow-red-900/20"
+            <Button
+              size="sm"
+              variant="destructive"
+              className="font-bold shadow-lg shadow-red-900/20 relative"
               onClick={handleSanitize}
               disabled={isSanitizing || !resumeId}
             >
               {isSanitizing ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sanitizing...</>
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Rebuilding PDF...</>
               ) : (
-                <><ShieldCheck className="mr-2 h-4 w-4" /> Fix Now via PDF Sanitizer</> 
+                <>
+                  <Zap className="mr-2 h-4 w-4" />
+                  One-Click Fix (3 sec)
+                  <span className="absolute -top-1 -right-1 bg-yellow-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full">
+                    FAST
+                  </span>
+                </>
               )}
             </Button>
             <Button size="sm" variant="outline" className="bg-transparent border-red-500/30 text-red-400 hover:bg-red-950/30 hover:text-red-300">

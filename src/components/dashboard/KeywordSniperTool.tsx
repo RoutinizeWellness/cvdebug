@@ -146,9 +146,9 @@ export function KeywordSniperTool({
   };
 
   return (
-    <div className="grid grid-cols-12 gap-6 w-full min-h-[600px]">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 w-full min-h-[400px] lg:min-h-[600px]">
       {/* Left Panel: Target Keywords */}
-      <section className="col-span-3 flex flex-col gap-4 min-w-[280px]">
+      <section className="lg:col-span-3 flex flex-col gap-4">
         <div className="glass-panel rounded-xl p-5 flex flex-col max-h-[800px]">
           <div className="mb-6">
             <h3 className="font-display font-bold text-lg text-white mb-1">Target Keywords</h3>
@@ -235,8 +235,8 @@ export function KeywordSniperTool({
       </section>
 
       {/* Center Panel: The Lab */}
-      <section className="col-span-6 flex flex-col max-h-[800px]">
-        <div className="flex justify-between items-end mb-4">
+      <section className="lg:col-span-6 flex flex-col max-h-[800px]">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 mb-4">
           <div>
             <h1 className="font-display font-bold text-3xl text-white tracking-tight leading-none">The Lab</h1>
             <p className="text-slate-400 mt-2 font-light">Optimize your experience description</p>
@@ -351,7 +351,7 @@ export function KeywordSniperTool({
       </section>
 
       {/* Right Panel: Live Score Tracker */}
-      <section className="col-span-3 min-w-[280px]">
+      <section className="lg:col-span-3">
         <div className="glass-panel rounded-xl p-6 max-h-[800px] flex flex-col">
           <div className="flex items-center justify-between mb-8">
             <h3 className="font-display font-bold text-lg text-white">Live Score</h3>
