@@ -1,4 +1,4 @@
-import { query, mutation, action, internalMutation } from "./_generated/server";
+import { query, mutation, action, internalMutation, internalAction } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
@@ -482,7 +482,22 @@ export const deleteUser = mutation({
     if (!identity || identity.email !== "tiniboti@gmail.com") {
       throw new Error("Unauthorized");
     }
+
+    // Get user data before deletion
+    const user = await ctx.db.get(args.userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Delete from Convex database
     await ctx.db.delete(args.userId);
+
+    // Schedule deletion from Clerk
+    if (user.tokenIdentifier) {
+      await ctx.scheduler.runAfter(0, internalAny.adminActions.deleteUserFromClerk, {
+        tokenIdentifier: user.tokenIdentifier,
+      });
+    }
   },
 });
 

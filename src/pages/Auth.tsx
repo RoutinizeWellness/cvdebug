@@ -220,17 +220,15 @@ export default function AuthPage() {
               </div>
 
               {isSignIn ? (
-                <SignIn 
+                <SignIn
                   routing="hash"
                   forceRedirectUrl={redirectUrl}
-                  signUpUrl="#"
                   appearance={clerkAppearance}
                 />
               ) : (
-                <SignUp 
+                <SignUp
                   routing="hash"
                   forceRedirectUrl={redirectUrl}
-                  signInUrl="#"
                   appearance={clerkAppearance}
                 />
               )}

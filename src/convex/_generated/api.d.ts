@@ -10,6 +10,7 @@
 
 import type * as abandonmentEmails from "../abandonmentEmails.js";
 import type * as admin from "../admin.js";
+import type * as adminActions from "../adminActions.js";
 import type * as ai from "../ai.js";
 import type * as ai_apiClient from "../ai/apiClient.js";
 import type * as ai_bulletRewriter from "../ai/bulletRewriter.js";
@@ -69,6 +70,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   abandonmentEmails: typeof abandonmentEmails;
   admin: typeof admin;
+  adminActions: typeof adminActions;
   ai: typeof ai;
   "ai/apiClient": typeof ai_apiClient;
   "ai/bulletRewriter": typeof ai_bulletRewriter;
