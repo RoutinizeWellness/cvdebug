@@ -42,13 +42,38 @@ export default function AuthPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
-        <div className="animate-pulse flex flex-col items-center gap-4">
-          <div className="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center">
-            <Loader2 className="h-6 w-6 text-primary animate-spin" />
-          </div>
-          <div className="h-4 w-32 bg-primary/20 rounded"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0F172A] via-[#1a1f35] to-[#0F172A] relative overflow-hidden">
+        {/* Background glow */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full blur-[120px]"></div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="relative z-10 flex flex-col items-center gap-6"
+        >
+          {/* Logo with glow */}
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 to-secondary/30 rounded-full blur-2xl"></div>
+            <div className="relative h-16 w-16 bg-slate-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-slate-700/50 shadow-2xl">
+              <Loader2 className="h-8 w-8 text-primary animate-spin" />
+            </div>
+          </div>
+
+          {/* Loading text */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-2 w-32 bg-slate-800/50 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-primary to-secondary"
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+              />
+            </div>
+            <p className="text-sm text-slate-400 font-mono">Initializing session...</p>
+          </div>
+        </motion.div>
       </div>
     );
   }
@@ -95,35 +120,54 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#0F172A] text-white overflow-hidden relative font-display antialiased">
-      {/* Background ambient glow */}
+    <div className="min-h-screen flex bg-gradient-to-br from-[#0F172A] via-[#1a1f35] to-[#0F172A] text-white overflow-hidden relative font-display antialiased">
+      {/* Enhanced background ambient glow */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-secondary/10 rounded-full blur-[120px] translate-y-1/2 translate-x-1/4"></div>
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/4 -translate-x-1/4"></div>
+        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-gradient-to-tl from-secondary/15 via-purple-500/10 to-transparent rounded-full blur-[140px] translate-y-1/2 translate-x-1/4"></div>
+        <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-gradient-to-br from-primary/10 via-blue-500/8 to-transparent rounded-full blur-[120px] -translate-y-1/4 -translate-x-1/4"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-cyan-500/5 to-pink-500/5 rounded-full blur-[100px]"></div>
       </div>
+
+      {/* Subtle noise texture overlay */}
+      <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.015] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
       
       {/* Left Side - Technical Blueprint */}
-      <div className="hidden lg:flex lg:w-1/2 relative flex-col border-r border-slate-700/30 overflow-hidden bg-slate-900/50">
-        {/* Grid pattern overlay */}
+      <div className="hidden lg:flex lg:w-1/2 relative flex-col border-r border-slate-700/30 overflow-hidden">
+        {/* Glassmorphism backdrop */}
+        <div className="absolute inset-0 bg-slate-900/30 backdrop-blur-3xl"></div>
+
+        {/* Animated grid pattern overlay */}
         <div className="absolute inset-0 z-10 pointer-events-none" style={{
-          backgroundSize: '40px 40px',
-          backgroundImage: 'linear-gradient(to right, rgba(59, 130, 246, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(59, 130, 246, 0.05) 1px, transparent 1px)'
-        }}></div>
-        
+          backgroundSize: '50px 50px',
+          backgroundImage: 'linear-gradient(to right, rgba(59, 130, 246, 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(139, 92, 246, 0.04) 1px, transparent 1px)'
+        }}>
+          {/* Gradient overlay on grid */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/[0.02] to-transparent"></div>
+        </div>
+
         {/* Background image with overlay */}
         <div className="absolute inset-0 z-0">
-          <div className="w-full h-full bg-cover bg-center opacity-40 mix-blend-luminosity" style={{
+          <div className="w-full h-full bg-cover bg-center opacity-30 mix-blend-luminosity" style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80')"
           }}></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/90 to-[#0F172A]/60"></div>
         </div>
 
         <div className="relative z-20 flex flex-col justify-between h-full p-12">
-          {/* Logo */}
+          {/* Logo with premium glow effect */}
           <div>
-            <div className="mb-8">
-              <Logo showText={true} iconClassName="h-10 w-auto" textClassName="text-2xl" />
-            </div>
+            <motion.div
+              className="mb-8 relative inline-block"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {/* Glow effect behind logo */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-xl blur-xl opacity-70"></div>
+              <div className="relative bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-xl px-6 py-4 shadow-2xl">
+                <Logo showText={true} iconClassName="h-10 w-auto" textClassName="text-2xl" />
+              </div>
+            </motion.div>
           </div>
 
           {/* Main content */}
@@ -192,9 +236,13 @@ export default function AuthPage() {
             <p className="text-slate-400 font-body text-sm">Enter your credentials to access the console</p>
           </div>
 
-          {/* Glass card */}
-          <div className="glass-card rounded-2xl p-6 sm:p-8 w-full shadow-2xl shadow-black/40">
-            <div className="flex flex-col gap-6">
+          {/* Enhanced glass card */}
+          <div className="relative">
+            {/* Glow effect behind card */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-2xl blur-xl opacity-40"></div>
+
+            <div className="relative bg-slate-900/40 backdrop-blur-2xl border border-slate-700/50 rounded-2xl p-6 sm:p-8 w-full shadow-2xl shadow-black/40">
+              <div className="flex flex-col gap-6">
               {/* Toggle between Sign In / Sign Up */}
               <div className="bg-slate-900/50 p-1 rounded-lg flex mb-2 border border-slate-800">
                 <button
@@ -232,6 +280,7 @@ export default function AuthPage() {
                   appearance={clerkAppearance}
                 />
               )}
+              </div>
             </div>
           </div>
           
