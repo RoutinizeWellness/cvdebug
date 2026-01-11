@@ -2,13 +2,46 @@ import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { NewNavbar } from "@/components/landing/NewNavbar";
 import { NewFooter } from "@/components/landing/NewFooter";
-import { getAllBlogPosts } from "@/data/blogPosts/blogContent";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useEffect } from "react";
+import { updatePageSEO } from "@/lib/seo";
 
 export default function Blog() {
   const navigate = useNavigate();
-  const allPosts = getAllBlogPosts();
+  const allPosts = useQuery(api.blog.getAllPosts, { limit: 20 });
+  const categories = useQuery(api.blog.getCategories, {});
+
+  useEffect(() => {
+    updatePageSEO({
+      title: 'ATS Resume Tips & Job Search Strategies Blog | CVDebug',
+      description: 'Expert advice on beating ATS systems, optimizing your resume, and landing more interviews. Learn proven strategies to get hired faster.',
+      keywords: [
+        'ATS tips',
+        'resume writing',
+        'job search strategies',
+        'interview preparation',
+        'career advice',
+        'resume optimization',
+        'ATS resume scanner',
+        'job application tips',
+        'resume keywords',
+        'hiring process'
+      ],
+      canonical: 'https://cvdebug.com/blog',
+    });
+  }, []);
+
+  if (!allPosts) {
+    return (
+      <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="text-white text-xl">Loading blog posts...</div>
+      </div>
+    );
+  }
+
   const featuredPost = allPosts[0];
   const recentPosts = allPosts.slice(1);
 
@@ -56,18 +89,26 @@ export default function Blog() {
               <div className="flex items-center gap-6 mb-6 flex-wrap">
                 <div className="flex items-center gap-2 text-slate-400">
                   <Calendar className="w-4 h-4" />
-                  <time dateTime={featuredPost.publishDate}>
-                    {new Date(featuredPost.publishDate).toLocaleDateString('en-US', {
+                  <time>
+                    {featuredPost.publishedAt ? new Date(featuredPost.publishedAt).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
-                    })}
+                    }) : 'Recently'}
                   </time>
                 </div>
-                <div className="flex items-center gap-2 text-slate-400">
-                  <Clock className="w-4 h-4" />
-                  <span>{featuredPost.readingTime}</span>
-                </div>
+                {featuredPost.readingTime && (
+                  <div className="flex items-center gap-2 text-slate-400">
+                    <Clock className="w-4 h-4" />
+                    <span>{featuredPost.readingTime} min read</span>
+                  </div>
+                )}
+                {featuredPost.views && (
+                  <div className="flex items-center gap-2 text-slate-400">
+                    <Eye className="w-4 h-4" />
+                    <span>{featuredPost.views} views</span>
+                  </div>
+                )}
               </div>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 Read Article
@@ -81,7 +122,7 @@ export default function Blog() {
         <section>
           <h2 className="text-3xl font-bold text-white mb-8">Recent Articles</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            {recentPosts.map((post, index) => (
+            {recentPosts.map((post: any, index: number) => (
               <motion.article
                 key={post.slug}
                 initial={{ opacity: 0, y: 20 }}
@@ -102,21 +143,23 @@ export default function Blog() {
                 <div className="flex items-center gap-4 text-slate-400 text-sm mb-4">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <time dateTime={post.publishDate}>
-                      {new Date(post.publishDate).toLocaleDateString('en-US', {
+                    <time>
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric'
-                      })}
+                      }) : 'Recently'}
                     </time>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{post.readingTime}</span>
-                  </div>
+                  {post.readingTime && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{post.readingTime} min</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  {post.tags.map((tag, tagIndex) => (
+                  {post.tags.map((tag: any, tagIndex: number) => (
                     <span
                       key={tagIndex}
                       className="px-2 py-1 bg-slate-800/50 rounded text-slate-400 text-xs"

@@ -71,8 +71,13 @@ import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
 import Blog from "./pages/Blog.tsx";
+import BlogPost from "./pages/BlogPost.tsx";
 import HowToBeatATSResumeScanners from "./pages/blog/HowToBeatATSResumeScanners.tsx";
 import UnderstandingATSRobotView from "./pages/blog/UnderstandingATSRobotView.tsx";
+import AboutUs from "./pages/AboutUs.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import TermsConditions from "./pages/TermsConditions.tsx";
+import ContactUs from "./pages/ContactUs.tsx";
 import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -215,8 +220,15 @@ function AnimatedRoutes() {
 
           {/* Blog */}
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/blog/how-to-beat-ats-resume-scanners" element={<HowToBeatATSResumeScanners />} />
           <Route path="/blog/understanding-ats-robot-view" element={<UnderstandingATSRobotView />} />
+
+          {/* Legal & Info Pages */}
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
+          <Route path="/contact" element={<ContactUs />} />
 
           {/* Level 2: Auth & Onboarding */}
           <Route path="/auth" element={<AuthPage />} />

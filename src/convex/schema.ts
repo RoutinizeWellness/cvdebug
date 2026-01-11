@@ -437,6 +437,34 @@ const schema = defineSchema(
     .index("by_user", ["userId"])
     .index("by_feature", ["featureType"])
     .index("by_timestamp", ["timestamp"]),
+
+  // Blog Posts - SEO optimized content
+  blogPosts: defineTable({
+    title: v.string(),
+    slug: v.string(), // URL-friendly version
+    excerpt: v.string(), // Short description for SEO
+    content: v.string(), // Full markdown/HTML content
+    author: v.string(),
+    category: v.string(), // "ATS Tips", "Resume Writing", "Job Search", etc.
+    tags: v.array(v.string()), // Keywords for SEO
+    featuredImage: v.optional(v.string()), // URL to image
+    published: v.boolean(),
+    publishedAt: v.optional(v.number()),
+    // SEO fields
+    metaTitle: v.optional(v.string()), // Custom SEO title
+    metaDescription: v.optional(v.string()), // Custom SEO description
+    keywords: v.array(v.string()), // SEO keywords
+    canonicalUrl: v.optional(v.string()),
+    readingTime: v.optional(v.number()), // Minutes
+    views: v.optional(v.number()),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_published_and_date", ["published", "publishedAt"])
+    .index("by_category", ["category"])
+    .searchIndex("search_content", {
+      searchField: "content",
+      filterFields: ["published", "category"],
+    }),
   },
   {
     schemaValidation: false,
