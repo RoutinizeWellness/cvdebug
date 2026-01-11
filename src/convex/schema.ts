@@ -121,6 +121,9 @@ const schema = defineSchema(
     // NEW: CV Snapshot (saved when status changes to "interviewing")
     cvSnapshotId: v.optional(v.id("resumes")), // Reference to the exact CV version used
     cvSnapshotKeywords: v.optional(v.array(v.string())), // Keywords present in this CV version
+    // A/B Testing: Track which CV version was used
+    cvVersionName: v.optional(v.string()), // e.g., "V1_React_Focused", "V2_Backend_Heavy"
+    cvVersionScore: v.optional(v.number()), // The ATS score when this CV was used
   })
   .index("by_project", ["projectId"])
   .index("by_user", ["userId"])

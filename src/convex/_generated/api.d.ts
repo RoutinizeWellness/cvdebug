@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as abTesting from "../abTesting.js";
 import type * as abandonmentEmails from "../abandonmentEmails.js";
 import type * as admin from "../admin.js";
 import type * as adminActions from "../adminActions.js";
@@ -44,6 +45,7 @@ import type * as coverLetters from "../coverLetters.js";
 import type * as crons from "../crons.js";
 import type * as cvHealthMonitor from "../cvHealthMonitor.js";
 import type * as devUsers from "../devUsers.js";
+import type * as fluffDetector from "../fluffDetector.js";
 import type * as gamification from "../gamification.js";
 import type * as http from "../http.js";
 import type * as jobTracker from "../jobTracker.js";
@@ -71,6 +73,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  abTesting: typeof abTesting;
   abandonmentEmails: typeof abandonmentEmails;
   admin: typeof admin;
   adminActions: typeof adminActions;
@@ -107,6 +110,7 @@ declare const fullApi: ApiFromModules<{
   crons: typeof crons;
   cvHealthMonitor: typeof cvHealthMonitor;
   devUsers: typeof devUsers;
+  fluffDetector: typeof fluffDetector;
   gamification: typeof gamification;
   http: typeof http;
   jobTracker: typeof jobTracker;

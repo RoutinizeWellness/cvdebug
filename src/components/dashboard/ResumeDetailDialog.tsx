@@ -51,6 +51,7 @@ import { InterviewPrepMode } from "./InterviewPrepMode";
 import { ATSSimulation } from "./ATSSimulation";
 import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
+import { FluffDetector } from "./FluffDetector";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -617,7 +618,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               {/* Left Panel - Analysis Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <TabsList className="grid w-full grid-cols-1 md:grid-cols-8 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
+                <TabsList className="grid w-full grid-cols-1 md:grid-cols-9 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
                   <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
                   <TabsTrigger
                     value="robot"
@@ -634,6 +635,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     )}
                   </TabsTrigger>
                   <TabsTrigger value="ats-report" className="text-sm md:text-base bg-gradient-to-r from-primary/20 to-indigo-500/20 border border-primary/30">📊 Report</TabsTrigger>
+                  <TabsTrigger value="fluff" className="text-sm md:text-base bg-gradient-to-r from-yellow-900/40 to-orange-900/40 border border-yellow-500/30">💨 Fluff</TabsTrigger>
                   <TabsTrigger value="keywords" className="text-sm md:text-base">Keywords</TabsTrigger>
                   <TabsTrigger value="format" className="text-sm md:text-base">Format</TabsTrigger>
                   <TabsTrigger value="simulation" className="text-sm md:text-base hidden md:inline-flex">Recruiter View</TabsTrigger>
@@ -1059,6 +1061,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                       </div>
                     </div>
                   )}
+                </TabsContent>
+
+                <TabsContent value="fluff" className="flex-1 overflow-auto p-6">
+                  {resumeId && <FluffDetector resumeId={resumeId} />}
                 </TabsContent>
 
                 <TabsContent value="keywords" className="flex-1 overflow-auto p-6">
