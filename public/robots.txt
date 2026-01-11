@@ -34,17 +34,31 @@ Allow: /
 Disallow: /dashboard
 Disallow: /admin
 Disallow: /auth
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
 
 User-agent: Bingbot
 Allow: /
 Disallow: /dashboard
 Disallow: /admin
 Disallow: /auth
+Crawl-delay: 0
 
 User-agent: Slurp
 Allow: /
 Disallow: /dashboard
 Disallow: /admin
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
 
 # Block AI training bots (protect content)
 User-agent: GPTBot
@@ -66,4 +80,49 @@ User-agent: Bytespider
 Disallow: /
 
 User-agent: Amazonbot
+Disallow: /
+
+# Social media bots (allow for social sharing previews)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+# News aggregators
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+# Allow Yandex (Russian search engine)
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Allow other international search engines
+User-agent: Yahoo-MMCrawler
+Allow: /
+
+User-agent: DuckDuckGo-Favicons-Bot
+Allow: /
+
+# Block bad bots and scrapers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
 Disallow: /

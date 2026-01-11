@@ -6,21 +6,47 @@ import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { CheckCircle2, Code2, Cpu, Zap } from "lucide-react";
 import { useEffect } from "react";
+import { updatePageSEO, techPageSEO, generateHowToSchema, generateServiceSchema } from "@/lib/seo";
 
 export default function SoftwareEngineerKeywordSniper() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    document.title =
-      "Software Engineer Keyword Sniper | ATS Resume Scanner | CVDebug";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "Snipe missing keywords in your software engineer resume. See what ATS bots see with Robot View. Optimize React, Python, AWS keywords to pass FAANG ATS scans in 10 seconds."
-      );
-    }
+    // Dynamic SEO optimization for software engineer page
+    updatePageSEO({
+      title: techPageSEO.software_engineer.title,
+      description: techPageSEO.software_engineer.description,
+      keywords: techPageSEO.software_engineer.keywords,
+      canonical: 'https://cvdebug.com/software-engineer-keyword-sniper',
+      ogImage: 'https://cvdebug.com/og-tech.jpg',
+      structuredData: {
+        type: 'HowTo',
+        data: generateHowToSchema('Software Engineer', 'Technology'),
+      },
+    });
+
+    // Add Service Schema for software engineering optimization
+    const serviceScript = document.createElement('script');
+    serviceScript.type = 'application/ld+json';
+    serviceScript.id = 'service-schema-swe';
+    serviceScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      ...generateServiceSchema(
+        'Software Engineer Resume ATS Optimization',
+        'Free ATS resume scanner built specifically for software engineers. Optimize SWE resumes for FAANG and tech company ATS systems.',
+        'Software Engineers, Developers, Tech Professionals'
+      ),
+    });
+    document.head.appendChild(serviceScript);
+
+    return () => {
+      const existingScript = document.getElementById('service-schema-swe');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
   }, []);
 
   const engineerFeatures = [

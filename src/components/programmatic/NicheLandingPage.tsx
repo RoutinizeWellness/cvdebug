@@ -21,6 +21,7 @@ import {
   Workflow
 } from "lucide-react";
 import { NicheTemplate } from "@/data/nicheTemplates";
+import { updatePageSEO, generateHowToSchema, generateServiceSchema } from "@/lib/seo";
 
 interface NicheLandingPageProps {
   template: NicheTemplate;
@@ -129,12 +130,62 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
   const category = template.slug.includes('nurse') ? 'nursing' : 'tech';
 
   useEffect(() => {
-    document.title = template.metaTitle;
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", template.metaDescription);
-    }
-  }, [template]);
+    // Extract job title from hero highlight or badge
+    const jobTitle = template.badge.replace('For ', '').replace(' RNs', '').replace(' Engineers', '');
+
+    // Extract keywords from template data
+    const keywords = [
+      ...template.keywords,
+      `${jobTitle} ATS scanner`,
+      `${jobTitle} resume optimizer`,
+      'ATS resume checker',
+      'applicant tracking system',
+    ];
+
+    // Determine industry category for structured data
+    const industryCategory = template.slug.includes('nurse') || template.slug.includes('health')
+      ? 'Healthcare'
+      : template.slug.includes('engineer') || template.slug.includes('developer')
+      ? 'Software Engineering'
+      : template.slug.includes('finance') || template.slug.includes('analyst')
+      ? 'Finance'
+      : 'Professional Services';
+
+    // Update all SEO meta tags dynamically
+    updatePageSEO({
+      title: template.metaTitle,
+      description: template.metaDescription,
+      keywords,
+      canonical: `https://cvdebug.com/${template.slug}`,
+      ogImage: `https://cvdebug.com/og-${category}.jpg`,
+      structuredData: {
+        type: 'HowTo',
+        data: generateHowToSchema(jobTitle, industryCategory),
+      },
+    });
+
+    // Add Service Schema specific to this page
+    const serviceScript = document.createElement('script');
+    serviceScript.type = 'application/ld+json';
+    serviceScript.id = `service-schema-${template.slug}`;
+    serviceScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      ...generateServiceSchema(
+        `${jobTitle} ATS Optimization`,
+        template.metaDescription,
+        `${jobTitle} Professionals`
+      ),
+    });
+    document.head.appendChild(serviceScript);
+
+    return () => {
+      const existingScript = document.getElementById(`service-schema-${template.slug}`);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [template, category]);
 
   return (
     <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">

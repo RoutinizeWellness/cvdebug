@@ -6,20 +6,47 @@ import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { CheckCircle2, Heart, Activity, ShieldCheck } from "lucide-react";
 import { useEffect } from "react";
+import { updatePageSEO, nursingPageSEO, generateHowToSchema, generateServiceSchema } from "@/lib/seo";
 
 export default function ATSScannerNurses() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    document.title = "Free ATS Resume Scanner for Nurses | CVDebug";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "Stop getting ghosted by nursing job applications. See what hiring bots see with our unique Robot View. Scan your nursing resume for ATS parsing errors in 10 seconds."
-      );
-    }
+    // Dynamic SEO optimization for this nursing page
+    updatePageSEO({
+      title: nursingPageSEO.ats_scanner_nurses.title,
+      description: nursingPageSEO.ats_scanner_nurses.description,
+      keywords: nursingPageSEO.ats_scanner_nurses.keywords,
+      canonical: 'https://cvdebug.com/ats-scanner-for-nurses',
+      ogImage: 'https://cvdebug.com/og-nursing.jpg',
+      structuredData: {
+        type: 'HowTo',
+        data: generateHowToSchema('Nursing', 'Healthcare'),
+      },
+    });
+
+    // Add Service Schema for nursing-specific optimization
+    const serviceScript = document.createElement('script');
+    serviceScript.type = 'application/ld+json';
+    serviceScript.id = 'service-schema-nursing';
+    serviceScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      ...generateServiceSchema(
+        'Nursing Resume ATS Optimization',
+        'Free ATS resume scanner built specifically for nurses and healthcare professionals. Optimize nursing resumes for hospital ATS systems.',
+        'Registered Nurses, Licensed Practical Nurses, Healthcare Professionals'
+      ),
+    });
+    document.head.appendChild(serviceScript);
+
+    return () => {
+      const existingScript = document.getElementById('service-schema-nursing');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
   }, []);
 
   const nursingFeatures = [
