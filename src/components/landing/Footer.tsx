@@ -63,7 +63,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-xs">© 2024 CVDebug. All rights reserved.</p>
+          <p className="text-slate-500 text-xs">© 2026 CVDebug Inc. All rights reserved.</p>
           <div className="flex gap-4">
             <a className="text-slate-500 hover:text-white transition-colors" href="https://x.com/Aherme13" target="_blank" rel="noopener noreferrer">
               <span className="text-xl">🐦</span>

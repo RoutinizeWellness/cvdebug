@@ -280,7 +280,7 @@ export function SubscriptionView() {
 
           {/* FAQ or Trust Section Footer */}
           <div className="mt-8 border-t border-slate-800/60 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-            <p>© 2024 CVDebug Inc. All rights reserved.</p>
+            <p>© 2026 CVDebug Inc. All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
               <a className="hover:text-slate-300 transition-colors" href="#">
                 Privacy Policy

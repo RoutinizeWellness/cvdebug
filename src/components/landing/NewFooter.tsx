@@ -26,7 +26,7 @@ export function NewFooter() {
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
           <p className="text-center text-xs leading-5 text-slate-500">
-            © 2024 CVDebug Inc. All rights reserved.
+            © 2026 CVDebug Inc. All rights reserved.
           </p>
         </div>
       </div>
