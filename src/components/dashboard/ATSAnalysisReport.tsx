@@ -279,11 +279,77 @@ export function ATSAnalysisReport({
             </motion.div>
           </div>
 
+          {/* Keywords Section */}
+          {(matchedKeywords.length > 0 || missingKeywords.length > 0) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 w-full max-w-5xl mt-8 md:mt-12"
+            >
+              {/* Matched Keywords */}
+              {matchedKeywords.length > 0 && (
+                <div className="glass-card rounded-xl p-4 md:p-6 hover:border-emerald-500/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="material-symbols-outlined text-xl md:text-2xl">check_circle</span>
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-base md:text-lg">Keywords Found</h3>
+                      <p className="text-slate-400 text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto custom-scrollbar">
+                    {matchedKeywords.map((keyword: string, index: number) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + index * 0.02 }}
+                        className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20 text-xs md:text-sm font-medium hover:bg-emerald-500/20 transition-colors cursor-default"
+                      >
+                        {keyword}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Missing Keywords */}
+              {missingKeywords.length > 0 && (
+                <div className="glass-card rounded-xl p-4 md:p-6 hover:border-orange-500/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 md:p-3 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                      <span className="material-symbols-outlined text-xl md:text-2xl">priority_high</span>
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-base md:text-lg">Missing Keywords</h3>
+                      <p className="text-slate-400 text-xs md:text-sm">{missingKeywords.length} opportunities to improve</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto custom-scrollbar">
+                    {missingKeywords.map((keyword: string, index: number) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + index * 0.02 }}
+                        className="px-3 py-1.5 bg-orange-500/10 text-orange-400 rounded-lg border border-orange-500/20 text-xs md:text-sm font-medium hover:bg-orange-500/20 transition-colors cursor-default"
+                      >
+                        {keyword}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+
           {/* Call to Action */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.9 }}
             className="flex flex-col md:flex-row items-stretch gap-3 md:gap-4 mt-8 md:mt-12 w-full max-w-lg px-4"
           >
             <button
