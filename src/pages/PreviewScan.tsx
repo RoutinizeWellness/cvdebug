@@ -83,7 +83,7 @@ export default function PreviewScan() {
           setProgress(20 + (i / pdf.numPages) * 40);
         }
 
-        // If no text extracted, try OCR
+        // If no text extracted, try OCR with timeout
         if (text.trim().length < 20) {
           addLog("warning", "[OCR] Low text extraction, switching to OCR mode...");
           setProgress(60);
@@ -92,39 +92,77 @@ export default function PreviewScan() {
           const context = canvas.getContext("2d");
           let ocrText = "";
 
-          addLog("info", "[OCR] Initializing Tesseract with multi-language support...");
-          const worker = await createWorker(["eng", "spa", "fra"]);
+          addLog("info", "[OCR] Initializing Tesseract (this may take 30-60s)...");
+
+          // Create a timeout promise for OCR
+          const ocrTimeout = new Promise<string>((_, reject) => {
+            setTimeout(() => reject(new Error("OCR timeout - processing taking too long")), 90000); // 90 second timeout
+          });
+
+          // Create the OCR processing promise
+          const ocrProcessing = (async () => {
+            const worker = await createWorker(["eng"]);
+
+            try {
+              // Process only first 2 pages to reduce time
+              for (let i = 1; i <= Math.min(pdf.numPages, 2); i++) {
+                addLog("info", `[OCR] Processing page ${i}/2 as image...`);
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 1.5 }); // Reduced scale for speed
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                await page.render({ canvasContext: context!, viewport }).promise;
+
+                const blob = await new Promise<Blob | null>((resolve) => {
+                  canvas.toBlob((b) => resolve(b), "image/png", 0.8); // Reduced quality for speed
+                });
+
+                if (blob) {
+                  const imageUrl = URL.createObjectURL(blob);
+                  const result = await worker.recognize(imageUrl);
+                  ocrText += result.data.text + "\n";
+                  URL.revokeObjectURL(imageUrl);
+                  addLog("success", `[OCR] Page ${i} extracted (confidence: ${Math.round((result.data.confidence || 0) * 100)}%)`);
+                }
+
+                setProgress(60 + (i / 2) * 20);
+              }
+              return ocrText;
+            } finally {
+              await worker.terminate();
+            }
+          })();
 
           try {
-            for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) {
-              addLog("info", `[OCR] Processing page ${i} as image...`);
-              const page = await pdf.getPage(i);
-              const viewport = page.getViewport({ scale: 2.0 });
-              canvas.width = viewport.width;
-              canvas.height = viewport.height;
+            // Race between OCR and timeout
+            text = await Promise.race([ocrProcessing, ocrTimeout]);
 
-              await page.render({ canvasContext: context!, viewport }).promise;
-
-              const blob = await new Promise<Blob | null>((resolve) => {
-                canvas.toBlob((b) => resolve(b), "image/png");
-              });
-
-              if (blob) {
-                const imageUrl = URL.createObjectURL(blob);
-                const result = await worker.recognize(imageUrl);
-                ocrText += result.data.text + "\n";
-                URL.revokeObjectURL(imageUrl);
-                addLog("success", `[OCR] Page ${i} extracted (confidence: ${Math.round((result.data.confidence || 0) * 100)}%)`);
-              }
-
-              setProgress(60 + (i / 3) * 20);
+            if (text.trim().length < 20) {
+              throw new Error("OCR extraction insufficient - please try a text-based PDF");
             }
-          } finally {
-            await worker.terminate();
-          }
 
-          text = ocrText;
-          addLog("success", "[OCR] OCR extraction complete");
+            addLog("success", "[OCR] OCR extraction complete");
+          } catch (ocrError: any) {
+            addLog("error", `[OCR] ${ocrError.message}`);
+
+            // If OCR fails or times out, provide helpful error message
+            if (ocrError.message.includes("timeout")) {
+              throw new Error(
+                "Processing is taking longer than expected. Please try:\n" +
+                "• Using a text-based PDF (not a scanned image)\n" +
+                "• Reducing the file size\n" +
+                "• Signing up to use our faster server-side processing"
+              );
+            }
+
+            throw new Error(
+              "Could not extract text from this PDF. Please ensure:\n" +
+              "• The file is a text-based PDF (not a scanned image)\n" +
+              "• Use 'Print to PDF' or 'Save as PDF' instead of scanning\n" +
+              "• Sign up for server-side processing which handles all file types"
+            );
+          }
         } else {
           addLog("success", "[PDF] Native text extraction successful");
         }
@@ -140,16 +178,53 @@ export default function PreviewScan() {
         // Image file
         addLog("info", "[IMAGE] Detected image file, initializing OCR...");
         setProgress(30);
-        const worker = await createWorker(["eng", "spa", "fra"]);
+
         const imageUrl = URL.createObjectURL(file);
+
+        // Create timeout for image OCR
+        const imageOcrTimeout = new Promise<string>((_, reject) => {
+          setTimeout(() => reject(new Error("Image OCR timeout - processing taking too long")), 60000); // 60 second timeout
+        });
+
+        // Create image OCR promise
+        const imageOcrProcessing = (async () => {
+          const worker = await createWorker(["eng"]);
+          try {
+            addLog("info", "[OCR] Running text recognition (this may take 30-60s)...");
+            const result = await worker.recognize(imageUrl);
+            addLog("success", `[OCR] Extraction complete (confidence: ${Math.round((result.data.confidence || 0) * 100)}%)`);
+            return result.data.text;
+          } finally {
+            await worker.terminate();
+          }
+        })();
+
         try {
-          addLog("info", "[OCR] Running text recognition...");
-          const result = await worker.recognize(imageUrl);
-          text = result.data.text;
-          addLog("success", `[OCR] Extraction complete (confidence: ${Math.round((result.data.confidence || 0) * 100)}%)`);
+          text = await Promise.race([imageOcrProcessing, imageOcrTimeout]);
+
+          if (text.trim().length < 20) {
+            throw new Error("Could not extract sufficient text from image");
+          }
+        } catch (imageOcrError: any) {
+          addLog("error", `[OCR] ${imageOcrError.message}`);
+
+          if (imageOcrError.message.includes("timeout")) {
+            throw new Error(
+              "Image processing is taking too long. Please:\n" +
+              "• Upload a PDF version instead\n" +
+              "• Ensure image has clear, readable text\n" +
+              "• Sign up to use faster server-side processing"
+            );
+          }
+
+          throw new Error(
+            "Could not extract text from image. Please:\n" +
+            "• Upload a PDF version of your resume\n" +
+            "• Ensure the image has clear, high-contrast text\n" +
+            "• Sign up for better OCR processing"
+          );
         } finally {
           URL.revokeObjectURL(imageUrl);
-          await worker.terminate();
         }
         setProgress(70);
       }
