@@ -53,12 +53,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   // Group applications by status for kanban
   const applicationsByStatus = useMemo(() => {
-    if (!applications) return { applied: [], interviewing: [], offer: [] };
+    if (!applications) return { applied: [], interviewing: [], accepted: [] };
 
     return {
       applied: applications.filter((app: any) => app.status === "applied").slice(0, 5),
       interviewing: applications.filter((app: any) => app.status === "interviewing").slice(0, 5),
-      offer: applications.filter((app: any) => app.status === "offer").slice(0, 5)
+      accepted: applications.filter((app: any) => app.status === "accepted").slice(0, 5)
     };
   }, [applications]);
 
@@ -437,21 +437,21 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 )}
               </div>
 
-              {/* Column 3: Offer */}
+              {/* Column 3: Accepted */}
               <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-secondary uppercase tracking-wider">
-                    Offer ({applicationsByStatus.offer.length})
+                    Accepted ({applicationsByStatus.accepted.length})
                   </span>
                   <div className="h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_8px_#8B5CF6]"></div>
                 </div>
 
-                {applicationsByStatus.offer.length === 0 ? (
+                {applicationsByStatus.accepted.length === 0 ? (
                   <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
                     No offers yet
                   </div>
                 ) : (
-                  applicationsByStatus.offer.map((app: any) => (
+                  applicationsByStatus.accepted.map((app: any) => (
                     <div
                       key={app._id}
                       className="bg-[#2a374a] p-3 rounded border-l-2 border-l-secondary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
@@ -463,7 +463,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-secondary/10 px-2 py-0.5 rounded">
-                          Reviewing
+                          Accepted
                         </div>
                       </div>
                     </div>
