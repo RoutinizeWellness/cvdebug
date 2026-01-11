@@ -394,7 +394,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#2a374a] p-3 rounded border border-slate-700 hover:border-primary transition-colors cursor-pointer group"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
                       <p className="text-slate-400 text-xs mb-3">{app.company || "Company"}</p>
                       <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
@@ -427,7 +427,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                     >
                       <div className="absolute inset-0 bg-blue-500/5 pointer-events-none"></div>
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
                       <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
@@ -462,7 +462,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                     >
                       <div className="absolute inset-0 bg-purple-500/5 pointer-events-none"></div>
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-white font-semibold text-sm">{app.title || "Position"}</span>
+                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
                       <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
