@@ -618,30 +618,48 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               {/* Left Panel - Analysis Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <TabsList className="grid w-full grid-cols-1 md:grid-cols-9 gap-2 bg-slate-800/50 flex-shrink-0 p-2">
-                  <TabsTrigger value="overview" className="text-sm md:text-base">Overview</TabsTrigger>
-                  <TabsTrigger
-                    value="robot"
-                    className={`relative bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.6)]' : ''}`}
-                  >
-                    <span className="flex items-center gap-2 text-sm md:text-base">
-                      👁️ <span className="hidden sm:inline">Robot View</span><span className="sm:hidden">👁️ ATS</span>
-                    </span>
-                    {showRobotPulse && (
-                      <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-lg"></span>
+                <div className="bg-slate-800/50 flex-shrink-0 p-2 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
+                  <TabsList className="inline-flex w-auto min-w-full gap-2 h-auto">
+                    <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Overview
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="robot"
+                      className={`relative text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.6)]' : ''}`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        👁️ <span>Robot View</span>
                       </span>
-                    )}
-                  </TabsTrigger>
-                  <TabsTrigger value="ats-report" className="text-sm md:text-base bg-gradient-to-r from-primary/20 to-indigo-500/20 border border-primary/30">📊 Report</TabsTrigger>
-                  <TabsTrigger value="fluff" className="text-sm md:text-base bg-gradient-to-r from-yellow-900/40 to-orange-900/40 border border-yellow-500/30">💨 Fluff</TabsTrigger>
-                  <TabsTrigger value="keywords" className="text-sm md:text-base">Keywords</TabsTrigger>
-                  <TabsTrigger value="format" className="text-sm md:text-base">Format</TabsTrigger>
-                  <TabsTrigger value="simulation" className="text-sm md:text-base hidden md:inline-flex">Recruiter View</TabsTrigger>
-                  <TabsTrigger value="interview" className="text-sm md:text-base">Interview</TabsTrigger>
-                  <TabsTrigger value="raw" className="text-sm md:text-base hidden md:inline-flex">Raw Text</TabsTrigger>
-                </TabsList>
+                      {showRobotPulse && (
+                        <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-lg"></span>
+                        </span>
+                      )}
+                    </TabsTrigger>
+                    <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-primary/20 to-indigo-500/20 border border-primary/30">
+                      📊 Report
+                    </TabsTrigger>
+                    <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-yellow-900/40 to-orange-900/40 border border-yellow-500/30">
+                      💨 Fluff
+                    </TabsTrigger>
+                    <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Keywords
+                    </TabsTrigger>
+                    <TabsTrigger value="format" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Format
+                    </TabsTrigger>
+                    <TabsTrigger value="simulation" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Recruiter View
+                    </TabsTrigger>
+                    <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Interview
+                    </TabsTrigger>
+                    <TabsTrigger value="raw" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
+                      Raw Text
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
 
                 <TabsContent value="robot" className="flex-1 overflow-auto p-0 m-0">
                   <div className="h-full bg-[#0a0e1a] relative">

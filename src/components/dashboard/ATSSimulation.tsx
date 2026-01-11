@@ -12,7 +12,7 @@ interface ATSSimulationProps {
 }
 
 export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
-  const resume = useQuery(apiAny.resumes.getResumeById, { id: resumeId });
+  const resume = useQuery(apiAny.resumes.getResume, { id: resumeId });
   const [activeView, setActiveView] = useState<"parsed" | "raw" | "pdf">("parsed");
   const [selectedCandidate, setSelectedCandidate] = useState<number>(0);
 
