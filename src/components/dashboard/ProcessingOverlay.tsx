@@ -1,236 +1,262 @@
-import { Loader2, AlertCircle, Star, Shield, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface ProcessingOverlayProps {
   isUploading?: boolean;
   isProcessing?: boolean;
   statusMessage?: string;
+  progress?: number;
 }
 
-export function ProcessingOverlay({ isUploading, isProcessing, statusMessage }: ProcessingOverlayProps) {
-  const [currentStat, setCurrentStat] = useState(0);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [fadeStat, setFadeStat] = useState(true);
-  const [fadeTestimonial, setFadeTestimonial] = useState(true);
-
-  const stats = [
-    {
-      title: "Did You Know?",
-      text: "75% of resumes are rejected by ATS systems before a human ever sees them. A single formatting error can cost you the interview.",
-      highlight: "75% of resumes"
-    },
-    {
-      title: "Industry Fact",
-      text: "Recruiters spend an average of only 7 seconds scanning a resume. Your key information must be instantly visible.",
-      highlight: "7 seconds"
-    },
-    {
-      title: "ATS Reality",
-      text: "Up to 88% of qualified candidates are ignored simply because their resume formatting confuses the parsing software.",
-      highlight: "88% of qualified candidates"
-    },
-    {
-      title: "Keyword Impact",
-      text: "Including the right keywords from the job description can increase your chances of an interview by 50%.",
-      highlight: "increase your chances"
-    },
-    {
-      title: "Image Trap Warning",
-      text: "30% of resumes have invisible text layer issues that make them unreadable by ATS. Our OCR health check catches these critical errors.",
-      highlight: "invisible text layer issues"
-    }
-  ];
-
-  const testimonials = [
-    {
-      text: "I was applying for months with no responses. After fixing the ATS issues this tool found, I got 3 interview requests in one week. The €4.99 was the best investment I made in my job search.",
-      author: "Jennifer M.",
-      role: "Software Engineer at Google",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer"
-    },
-    {
-      text: "The detailed breakdown showed me exactly why I wasn't getting calls. Fixed the formatting issues and landed my dream job within a month.",
-      author: "Michael T.",
-      role: "Product Manager at Amazon",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael"
-    },
-    {
-      text: "I didn't realize my creative resume was unreadable by ATS. This tool saved my job search by showing me exactly what the robots see.",
-      author: "Sarah L.",
-      role: "Marketing Director",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
-    },
-    {
-      text: "The keyword gap analysis is a game changer. It told me exactly what skills I was missing from my resume compared to the job description.",
-      author: "David K.",
-      role: "Data Scientist",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David"
-    }
-  ];
+export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, progress = 0 }: ProcessingOverlayProps) {
+  const [currentProgress, setCurrentProgress] = useState(0);
+  const [logs, setLogs] = useState<Array<{ time: string; type: string; message: string; color: string }>>([]);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
-    const statInterval = setInterval(() => {
-      setFadeStat(false);
-      setTimeout(() => {
-        setCurrentStat((prev) => (prev + 1) % stats.length);
-        setFadeStat(true);
-      }, 300);
-    }, 5000);
+    // Simulate progress if not provided
+    if (progress === 0 && isProcessing) {
+      const interval = setInterval(() => {
+        setCurrentProgress((prev) => {
+          if (prev >= 95) return prev;
+          return prev + Math.random() * 5;
+        });
+      }, 500);
+      return () => clearInterval(interval);
+    } else {
+      setCurrentProgress(progress);
+    }
+  }, [progress, isProcessing]);
 
-    const testimonialInterval = setInterval(() => {
-      setFadeTestimonial(false);
-      setTimeout(() => {
-        setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-        setFadeTestimonial(true);
-      }, 300);
-    }, 7000);
-
-    return () => {
-      clearInterval(statInterval);
-      clearInterval(testimonialInterval);
-    };
+  useEffect(() => {
+    // Timer
+    const timer = setInterval(() => {
+      setElapsedTime((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    // Add logs progressively
+    const logMessages = [
+      { type: "INIT", message: "Loading core modules...", color: "text-secondary" },
+      { type: "SCAN", message: "Detecting document layout structure...", color: "text-primary" },
+      { type: "INFO", message: "OCR confidence level: 98.2%", color: "text-emerald-400" },
+      { type: "PROC", message: "Extracting experience keywords...", color: "text-primary" },
+      { type: "ANAL", message: "Analyzing ATS compatibility...", color: "text-primary" },
+      { type: "KEYW", message: "Identifying missing keywords...", color: "text-yellow-400" },
+      { type: "FORM", message: "Checking formatting issues...", color: "text-primary" },
+      { type: "SCORE", message: "Calculating ATS score...", color: "text-emerald-400" },
+    ];
+
+    let currentIndex = 0;
+    const logInterval = setInterval(() => {
+      if (currentIndex < logMessages.length) {
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+        setLogs((prev) => [
+          ...prev,
+          {
+            time: timeStr,
+            type: logMessages[currentIndex].type,
+            message: logMessages[currentIndex].message,
+            color: logMessages[currentIndex].color,
+          },
+        ]);
+        currentIndex++;
+      }
+    }, 2000);
+
+    return () => clearInterval(logInterval);
+  }, []);
+
+  const eta = Math.max(0, 15 - elapsedTime);
+
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200 p-6 overflow-y-auto">
-      <div className="max-w-2xl w-full space-y-8">
-        {/* Progress Header with Steps */}
-        <div className="text-center space-y-6">
-          <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto animate-pulse">
-            <Loader2 className="h-10 w-10 text-primary animate-spin" />
+    <div className="fixed inset-0 z-50 bg-[#0F172A] flex flex-col overflow-hidden">
+      {/* Background Grid Effect */}
+      <div className="fixed inset-0 pointer-events-none opacity-20 bg-[size:40px_40px] bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] z-0"></div>
+
+      {/* Top Nav Bar */}
+      <header className="relative z-20 flex items-center justify-between border-b border-white/10 px-8 py-4 bg-slate-900/50 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <div className="size-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white shadow-[0_0_15px_rgba(37,192,244,0.3)]">
+            <span className="material-symbols-outlined text-xl">view_in_ar</span>
           </div>
-          <h3 className="text-3xl font-black text-foreground">
-            {statusMessage || (isUploading ? "Uploading Resume..." : "Analyzing Your Resume...")}
-          </h3>
-          <p className="text-muted-foreground text-lg">
-            {isUploading ? "Please wait while we upload your file" : "Our AI is scanning for ATS compatibility issues"}
-          </p>
-          
-          {/* Progress Steps */}
-          <div className="flex flex-col gap-3 max-w-md mx-auto">
-            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${isUploading ? 'bg-primary/10 border-primary/30' : 'bg-green-500/10 border-green-500/30'}`}>
-              {isUploading ? (
-                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
-              ) : (
-                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-              )}
-              <span className={`text-sm font-medium ${isUploading ? 'text-primary' : 'text-green-400'}`}>
-                1. Parsing text layers...
-              </span>
-            </div>
-            
-            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${!isUploading && statusMessage && !statusMessage.includes('keyword') ? 'bg-primary/10 border-primary/30' : statusMessage?.includes('keyword') ? 'bg-green-500/10 border-green-500/30' : 'bg-zinc-800/50 border-zinc-700/30'}`}>
-              {!isUploading && statusMessage && !statusMessage.includes('keyword') ? (
-                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
-              ) : statusMessage?.includes('keyword') ? (
-                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-              ) : (
-                <div className="h-5 w-5 rounded-full border-2 border-zinc-600 flex-shrink-0" />
-              )}
-              <span className={`text-sm font-medium ${!isUploading && statusMessage && !statusMessage.includes('keyword') ? 'text-primary' : statusMessage?.includes('keyword') ? 'text-green-400' : 'text-zinc-500'}`}>
-                2. Checking critical keywords...
-              </span>
-            </div>
-            
-            <div className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? 'bg-primary/10 border-primary/30' : statusMessage?.includes('complete') ? 'bg-green-500/10 border-green-500/30' : 'bg-zinc-800/50 border-zinc-700/30'}`}>
-              {statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? (
-                <Loader2 className="h-5 w-5 text-primary animate-spin flex-shrink-0" />
-              ) : statusMessage?.includes('complete') ? (
-                <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-              ) : (
-                <div className="h-5 w-5 rounded-full border-2 border-zinc-600 flex-shrink-0" />
-              )}
-              <span className={`text-sm font-medium ${statusMessage?.includes('Simulating') || statusMessage?.includes('Finalizing') ? 'text-primary' : statusMessage?.includes('complete') ? 'text-green-400' : 'text-zinc-500'}`}>
-                3. Simulating recruiter bot scan...
-              </span>
-            </div>
+          <h2 className="text-white text-lg font-bold tracking-tight">
+            CVDebug <span className="text-primary font-mono text-xs ml-2 opacity-80">v2.0 BETA</span>
+          </h2>
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span className="text-primary text-xs font-mono font-medium">ENGINE ONLINE</span>
           </div>
         </div>
+      </header>
 
-        {/* Rotating Stats */}
-        <motion.div 
-          className="bg-gradient-to-br from-red-500/10 to-orange-500/10 border-2 border-red-500/20 rounded-2xl p-8 space-y-4 min-h-[160px] flex items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={currentStat}
-              className="flex items-start gap-4 w-full"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="h-12 w-12 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                <AlertCircle className="h-6 w-6 text-red-600" />
-              </div>
-              <div className="flex-1">
-                <h4 className="text-xl font-bold text-foreground mb-2">{stats[currentStat].title}</h4>
-                <p className="text-base text-foreground/80 leading-relaxed">
-                  {stats[currentStat].text.split(stats[currentStat].highlight).map((part, i, arr) => (
-                    <span key={i}>
-                      {part}
-                      {i < arr.length - 1 && <strong className="text-red-600">{stats[currentStat].highlight}</strong>}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Rotating Testimonials */}
-        <div className="bg-card border-2 border-border rounded-2xl p-6 space-y-4 animate-in slide-in-from-bottom duration-700 delay-200 min-h-[180px] flex flex-col justify-center transition-all">
-          <div className={`transition-opacity duration-300 ${fadeTestimonial ? 'opacity-100' : 'opacity-0'}`}>
-            <div className="flex gap-1 mb-2">
-              {[1,2,3,4,5].map(i => <Star key={i} className="h-4 w-4 text-yellow-500 fill-yellow-500" />)}
-            </div>
-            <p className="text-sm text-foreground leading-relaxed italic mb-4">
-              "{testimonials[currentTestimonial].text}"
+      {/* Main Content Area */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-6 w-full max-w-7xl mx-auto">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-12">
+          {/* Headline */}
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              ANALYZING DOCUMENT
+            </h1>
+            <p className="text-slate-400 font-mono text-sm tracking-wide uppercase">
+              Core Engine / Layer Extraction / Sequence 4A
             </p>
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-muted overflow-hidden">
-                <img src={testimonials[currentTestimonial].avatar} alt={testimonials[currentTestimonial].author} />
+          </div>
+
+          {/* Central 3D Scanning Visualization */}
+          <div className="perspective-[1000px] relative w-full max-w-[320px] aspect-[1/1.4] md:max-w-[380px] group">
+            {/* Glowing backdrop */}
+            <div className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full animate-pulse"></div>
+
+            {/* The 3D Card */}
+            <div className="relative w-full h-full bg-slate-900/60 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden border border-white/20"
+                 style={{ transform: "rotateY(-15deg) rotateX(5deg)", transformStyle: "preserve-3d" }}>
+              {/* Fake Resume Content (Skeleton) */}
+              <div className="p-8 flex flex-col gap-6 h-full opacity-60">
+                <div className="flex gap-4 items-center">
+                  <div className="w-16 h-16 rounded-full bg-slate-600/50"></div>
+                  <div className="flex flex-col gap-2 flex-1">
+                    <div className="h-4 w-3/4 bg-slate-500/50 rounded"></div>
+                    <div className="h-3 w-1/2 bg-slate-600/50 rounded"></div>
+                  </div>
+                </div>
+                <div className="space-y-3 mt-4">
+                  <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                  <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                  <div className="h-2 w-5/6 bg-slate-700/50 rounded"></div>
+                </div>
+                <div className="flex gap-4 mt-2">
+                  <div className="flex-1 space-y-3">
+                    <div className="h-3 w-1/3 bg-slate-600/50 rounded mb-4"></div>
+                    <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                    <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                    <div className="h-2 w-4/5 bg-slate-700/50 rounded"></div>
+                  </div>
+                  <div className="w-1/3 space-y-3">
+                    <div className="h-3 w-1/2 bg-slate-600/50 rounded mb-4"></div>
+                    <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                    <div className="h-2 w-full bg-slate-700/50 rounded"></div>
+                  </div>
+                </div>
+                {/* Highlight boxes for detected zones */}
+                <div className="absolute top-[120px] left-[30px] w-[200px] h-[80px] border border-primary/40 bg-primary/5 rounded">
+                  <div className="absolute -top-3 -right-3 bg-primary text-black text-[9px] font-mono px-1 rounded-sm">
+                    EDUCATION
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-foreground">{testimonials[currentTestimonial].author}</p>
-                <p className="text-xs text-muted-foreground">{testimonials[currentTestimonial].role}</p>
+
+              {/* Scanning Beam */}
+              <motion.div
+                className="absolute left-[-10%] right-[-10%] h-[2px] bg-cyan-400 z-20 shadow-[0_0_15px_2px_rgba(37,192,244,0.6)]"
+                animate={{ top: ["0%", "100%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="absolute left-0 right-0 top-0 bottom-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-30 pointer-events-none"></div>
+            </div>
+
+            {/* Floating tech decorations */}
+            <div className="absolute -left-12 top-1/4 hidden md:flex flex-col gap-2 opacity-60">
+              <div className="h-[1px] w-8 bg-slate-500"></div>
+              <span className="text-[10px] text-primary font-mono rotate-90 origin-left translate-x-3">Y-AXIS</span>
+            </div>
+            <div className="absolute -right-12 bottom-1/3 hidden md:flex flex-col gap-2 opacity-60 items-end">
+              <div className="h-[1px] w-8 bg-slate-500"></div>
+              <span className="text-[10px] text-secondary font-mono -rotate-90 origin-right -translate-x-3">Z-INDEX</span>
+            </div>
+          </div>
+
+          {/* Progress & Logs Section */}
+          <div className="w-full max-w-2xl flex flex-col gap-4">
+            {/* Progress Bar */}
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-end px-1">
+                <span className="text-primary font-mono text-xs tracking-wider">PROCESS_ID: #8X92-CV</span>
+                <span className="text-white font-display text-2xl font-bold">{Math.round(currentProgress)}%</span>
               </div>
+              <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden border border-white/5">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-secondary shadow-[0_0_10px_rgba(59,130,246,0.5)] relative"
+                  initial={{ width: "0%" }}
+                  animate={{ width: `${currentProgress}%` }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="absolute inset-0 bg-white/20 w-full -skew-x-12">
+                    <motion.div
+                      className="h-full w-full bg-white/20"
+                      animate={{ x: ["-100%", "100%"] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+              <div className="flex justify-between text-slate-500 text-xs font-mono mt-1">
+                <span>ETA: {eta}s</span>
+                <span>Memory: {Math.round(24 + currentProgress / 10)}MB</span>
+              </div>
+            </div>
+
+            {/* Terminal Output */}
+            <div className="bg-slate-900/60 backdrop-blur-xl rounded-lg p-4 font-mono text-sm h-40 overflow-hidden flex flex-col relative group hover:border-primary/30 transition-colors border border-white/10">
+              <div className="absolute top-2 right-2 flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-slate-600"></div>
+              </div>
+              <div className="text-xs text-slate-400 border-b border-white/5 pb-2 mb-2 uppercase tracking-widest flex items-center gap-2">
+                <span className="material-symbols-outlined text-[14px]">terminal</span>
+                Live System Logs
+              </div>
+              <div className="flex flex-col gap-1.5 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-white/5 opacity-90">
+                {logs.map((log, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={index === logs.length - 1 ? "text-white" : "text-slate-400"}
+                  >
+                    <span className="text-slate-600 mr-2">{log.time}</span>
+                    <span className={log.color}>[{log.type}]</span> {log.message}
+                    {index === logs.length - 1 && (
+                      <motion.span
+                        className="inline-block w-2 h-4 bg-primary align-middle ml-1"
+                        animate={{ opacity: [1, 0] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                      />
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+              {/* Gradient fade at bottom */}
+              <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#0F172A] to-transparent pointer-events-none"></div>
             </div>
           </div>
         </div>
+      </main>
 
-        {/* Processing Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-card border border-border rounded-xl p-4 text-center">
-            <p className="text-2xl font-black text-primary">98%</p>
-            <p className="text-xs text-muted-foreground mt-1">Accuracy Rate</p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-4 text-center">
-            <p className="text-2xl font-black text-primary">30s</p>
-            <p className="text-xs text-muted-foreground mt-1">Avg Analysis</p>
-          </div>
-          <div className="bg-card border border-border rounded-xl p-4 text-center">
-            <p className="text-2xl font-black text-primary">10K+</p>
-            <p className="text-xs text-muted-foreground mt-1">Resumes Fixed</p>
-          </div>
+      {/* Footer Status */}
+      <footer className="relative z-10 border-t border-white/5 bg-slate-900/50 backdrop-blur text-slate-500 text-xs py-3 px-6 flex justify-between items-center font-mono">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            System Healthy
+          </span>
+          <span className="hidden md:inline text-slate-700">|</span>
+          <span className="hidden md:inline">Server: us-east-1a</span>
         </div>
-
-        <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-4 flex items-center gap-3">
-          <Shield className="h-8 w-8 text-blue-400 flex-shrink-0" />
-          <div className="text-left">
-            <p className="text-sm font-bold text-blue-400">OCR Health Check Running</p>
-            <p className="text-xs text-blue-300/80">Scanning for Image Trap issues and text layer integrity...</p>
-          </div>
+        <div className="flex gap-4">
+          <a className="hover:text-primary transition-colors" href="#">Documentation</a>
+          <a className="hover:text-primary transition-colors" href="#">Support</a>
         </div>
-
-        <p className="text-center text-sm text-muted-foreground">
-          Almost done... Preparing your detailed report
-        </p>
-      </div>
+      </footer>
     </div>
   );
 }
