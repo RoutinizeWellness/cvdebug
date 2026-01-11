@@ -23,6 +23,7 @@ export function BulletRewriter() {
   const [bulletText, setBulletText] = useState("");
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState<"student" | "mid" | "senior">("mid");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<RewriteResult | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -42,6 +43,7 @@ export function BulletRewriter() {
       const context = {
         role: role.trim() || undefined,
         company: company.trim() || undefined,
+        experienceLevel,
       };
 
       const response = await rewriteBullet({
@@ -126,6 +128,27 @@ export function BulletRewriter() {
               className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary resize-none"
               rows={3}
             />
+          </div>
+
+          {/* Experience Level Dropdown */}
+          <div>
+            <label className="text-sm font-medium text-slate-300 mb-2 block">
+              Nivel de Experiencia
+            </label>
+            <select
+              value={experienceLevel}
+              onChange={(e) => setExperienceLevel(e.target.value as "student" | "mid" | "senior")}
+              className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-primary"
+            >
+              <option value="student">Student - Emphasis on curiosity & projects</option>
+              <option value="mid">Mid-Level - Balance of skills & results</option>
+              <option value="senior">Senior - Aggressive ROI & leadership focus</option>
+            </select>
+            <p className="text-xs text-slate-400 mt-1">
+              {experienceLevel === "student" && "Highlights learning, projects, and potential"}
+              {experienceLevel === "mid" && "Focuses on concrete achievements and skills"}
+              {experienceLevel === "senior" && "Emphasizes business impact, ROI, and team leadership"}
+            </p>
           </div>
 
           {/* Optional Context */}

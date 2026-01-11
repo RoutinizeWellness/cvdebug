@@ -243,11 +243,11 @@ export const updateApplicationStatus = mutation({
 
     const app = await ctx.db.get(args.applicationId);
     if (!app) throw new Error("Application not found");
-    
+
     if (app.userId !== user._id) throw new Error("Unauthorized");
 
     const events = app.events || [];
-    
+
     // Add status change event
     events.push({
       type: "status_change",
@@ -256,11 +256,41 @@ export const updateApplicationStatus = mutation({
       timestamp: Date.now(),
     });
 
+    // NEW: Auto-save CV snapshot when status changes to "interviewing"
+    let cvSnapshotId = app.cvSnapshotId;
+    let cvSnapshotKeywords = app.cvSnapshotKeywords;
+
+    if (args.status === "interviewing" && !app.cvSnapshotId) {
+      // Find the most recent resume for this project
+      const resumes = await ctx.db
+        .query("resumes")
+        .withIndex("by_user", (q) => q.eq("userId", user._id))
+        .filter((q) => q.eq(q.field("projectId"), app.projectId))
+        .order("desc")
+        .take(1);
+
+      if (resumes.length > 0) {
+        const resume = resumes[0];
+        cvSnapshotId = resume._id;
+        cvSnapshotKeywords = resume.matchedKeywords || [];
+
+        // Add event for CV snapshot
+        events.push({
+          type: "cv_snapshot",
+          title: "CV Snapshot Saved",
+          description: `Saved version of "${resume.title}" for success tracking`,
+          timestamp: Date.now(),
+        });
+      }
+    }
+
     await ctx.db.patch(args.applicationId, {
       status: args.status,
       appliedDate: args.status === "applied" ? Date.now() : app.appliedDate,
       lastStatusUpdate: Date.now(),
       events,
+      cvSnapshotId,
+      cvSnapshotKeywords,
     });
   },
 });
@@ -313,5 +343,89 @@ export const getApplicationInternal = internalQuery({
   args: { applicationId: v.id("applications") },
   handler: async (ctx, args) => {
     return await ctx.db.get(args.applicationId);
+  },
+});
+
+/**
+ * NEW: Success Analytics - Analyze which CV keywords lead to interviews
+ * This creates a "moat" of personalized data that cannot be replicated
+ */
+export const getSuccessAnalytics = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return null;
+
+    // Get all applications that led to interviews (with CV snapshots)
+    const successfulApps = await ctx.db
+      .query("applications")
+      .withIndex("by_user_and_status", (q) => q.eq("userId", user._id).eq("status", "interviewing"))
+      .filter((q) => q.neq(q.field("cvSnapshotId"), undefined))
+      .collect();
+
+    // Get all applications (for comparison)
+    const allApps = await ctx.db
+      .query("applications")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .collect();
+
+    if (successfulApps.length === 0 || allApps.length < 3) {
+      return null; // Not enough data yet
+    }
+
+    // Analyze keyword success rates
+    const keywordStats: Record<string, { total: number; interviews: number }> = {};
+
+    // Count all keywords across all applications
+    for (const app of allApps) {
+      const keywords = app.cvSnapshotKeywords || app.matchedKeywords || [];
+      for (const keyword of keywords) {
+        if (!keywordStats[keyword]) {
+          keywordStats[keyword] = { total: 0, interviews: 0 };
+        }
+        keywordStats[keyword].total++;
+      }
+    }
+
+    // Count keywords in successful applications
+    for (const app of successfulApps) {
+      const keywords = app.cvSnapshotKeywords || [];
+      for (const keyword of keywords) {
+        if (keywordStats[keyword]) {
+          keywordStats[keyword].interviews++;
+        }
+      }
+    }
+
+    // Calculate success rates and find top performers
+    const keywordInsights = Object.entries(keywordStats)
+      .map(([keyword, stats]) => ({
+        keyword,
+        successRate: stats.total > 0 ? (stats.interviews / stats.total) * 100 : 0,
+        interviews: stats.interviews,
+        total: stats.total,
+      }))
+      .filter((k) => k.total >= 2) // Only keywords used at least twice
+      .sort((a, b) => b.successRate - a.successRate)
+      .slice(0, 10); // Top 10
+
+    // Find the most impactful insight
+    const topKeyword = keywordInsights[0];
+    const averageSuccessRate = (successfulApps.length / allApps.length) * 100;
+
+    return {
+      totalApplications: allApps.length,
+      interviewCount: successfulApps.length,
+      averageSuccessRate: Math.round(averageSuccessRate),
+      topKeywords: keywordInsights,
+      topInsight: topKeyword
+        ? {
+            message: `CVs with "${topKeyword.keyword}" have a ${Math.round(topKeyword.successRate)}% success rate`,
+            keyword: topKeyword.keyword,
+            successRate: Math.round(topKeyword.successRate),
+            lift: Math.round(topKeyword.successRate - averageSuccessRate),
+          }
+        : null,
+    };
   },
 });

@@ -21,6 +21,7 @@ export const rewriteBullet = internalAction({
       role: v.optional(v.string()),
       company: v.optional(v.string()),
       industry: v.optional(v.string()),
+      experienceLevel: v.optional(v.union(v.literal("student"), v.literal("mid"), v.literal("senior"))),
     })),
   },
   handler: async (ctx, args) => {
@@ -93,15 +94,50 @@ export const rewriteBullet = internalAction({
   },
 });
 
-function buildBulletRewritePrompt(bulletPoint: string, context?: { role?: string; company?: string; industry?: string }): string {
+function buildBulletRewritePrompt(bulletPoint: string, context?: { role?: string; company?: string; industry?: string; experienceLevel?: "student" | "mid" | "senior" }): string {
+  const experienceLevel = context?.experienceLevel || "mid";
+
   const contextInfo = context
     ? `
 Context:
 - Role: ${context.role || "Unknown"}
 - Company: ${context.company || "Unknown"}
 - Industry: ${context.industry || "Unknown"}
+- Experience Level: ${experienceLevel}
 `
     : "";
+
+  // Personalized guidelines based on experience level
+  const experienceGuidelines = {
+    student: `
+STUDENT LEVEL - Emphasize curiosity, learning, and project impact:
+- Highlight academic projects, coursework applications, and personal initiatives
+- Focus on technical skills acquired and applied
+- Emphasize problem-solving approach and eagerness to learn
+- Use metrics related to project scope (e.g., "Built X feature serving Y users")
+- Showcase initiative and self-directed learning
+- Keywords: "Developed", "Built", "Learned", "Explored", "Contributed"
+- Example: "Developed a full-stack web app using React and Node.js, serving 500+ users and reducing manual data entry by 60% through automated workflows"`,
+
+    mid: `
+MID-LEVEL - Balance technical skills with measurable results:
+- Focus on concrete achievements and proven capabilities
+- Include both technical metrics and business impact
+- Show ownership of features and processes
+- Use metrics that demonstrate scope and impact
+- Keywords: "Implemented", "Optimized", "Delivered", "Improved", "Managed"
+- Example: "Optimized API response time by 40%, reducing server costs by $15K annually through implementing Redis caching and query optimization"`,
+
+    senior: `
+SENIOR LEVEL - AGGRESSIVE ROI and leadership focus:
+- Lead with business impact: revenue, cost savings, efficiency gains
+- Emphasize team leadership, mentorship, and strategic decisions
+- Show cross-functional impact and organizational influence
+- Use hard numbers: $XXX saved/generated, X% efficiency gain, Y people led
+- Keywords: "Led", "Drove", "Architected", "Scaled", "Transformed"
+- Example: "Led cross-functional team of 8 engineers to architect microservices platform, reducing deployment time by 75% and enabling $2M+ in annual revenue through faster feature delivery"
+- CRITICAL: Every bullet MUST show either: (1) Money impact ($XXX), (2) People led (X team members), or (3) Scale (X users/systems affected)`
+  };
 
   return `You are an expert resume writer specializing in the Google XYZ formula for writing impactful bullet points.
 
@@ -118,8 +154,10 @@ Where:
 - Y = How you measured it (metrics, numbers, percentages)
 - Z = How you did it (the method/approach)
 
-Guidelines:
-1. Start with strong action verbs (Led, Increased, Reduced, Implemented, Optimized, etc.)
+${experienceGuidelines[experienceLevel]}
+
+General Guidelines:
+1. Start with strong action verbs appropriate for the experience level
 2. Include specific metrics and numbers (percentages, dollar amounts, time saved, etc.)
 3. If the original bullet lacks metrics, make reasonable inferences based on the industry/role
 4. Keep it concise (1-2 lines maximum)
@@ -153,5 +191,5 @@ Return your response as valid JSON with this structure:
   ]
 }
 
-Remember: The goal is to transform vague responsibilities into quantifiable achievements that catch recruiters' attention.`;
+Remember: The goal is to transform vague responsibilities into quantifiable achievements that match the experience level and catch recruiters' attention.`;
 }

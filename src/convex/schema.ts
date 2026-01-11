@@ -118,6 +118,9 @@ const schema = defineSchema(
       })),
       generatedAt: v.number(),
     })),
+    // NEW: CV Snapshot (saved when status changes to "interviewing")
+    cvSnapshotId: v.optional(v.id("resumes")), // Reference to the exact CV version used
+    cvSnapshotKeywords: v.optional(v.array(v.string())), // Keywords present in this CV version
   })
   .index("by_project", ["projectId"])
   .index("by_user", ["userId"])

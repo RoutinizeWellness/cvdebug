@@ -12,6 +12,7 @@ import {
   Terminal,
   Wrench
 } from "lucide-react";
+import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
 
 const apiAny = api as any;
 
@@ -351,6 +352,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
         </div>
       </motion.section>
+
+      {/* Success Insights Widget */}
+      <SuccessInsightsWidget />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[400px]">
         {/* Kanban Board */}
