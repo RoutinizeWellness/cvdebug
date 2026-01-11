@@ -10,7 +10,7 @@ import { ConvexReactClient, useMutation } from "convex/react";
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
-import { PageTransition } from "@/components/PageTransition";
+import { motion, AnimatePresence } from "framer-motion";
 import "./index.css";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -137,101 +137,115 @@ function UserSyncer() {
 }
 
 function AnimatedRoutes() {
+  const location = useLocation();
+
   return (
-    <PageTransition>
-      <Routes>
-        {/* Level 1: Public Funnel */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/preview" element={<PreviewScan />} />
-        <Route path="/pricing" element={<PricingPage />} />
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{
+          duration: 0.3,
+          ease: [0.4, 0, 0.2, 1],
+        }}
+        className="w-full h-full"
+      >
+        <Routes location={location}>
+          {/* Level 1: Public Funnel */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/preview" element={<PreviewScan />} />
+          <Route path="/pricing" element={<PricingPage />} />
 
-        {/* Industry-Specific Landing Pages - Nursing */}
-        <Route path="/ats-scanner-for-nurses" element={<ATSScannerNurses />} />
-        <Route path="/med-surg-nurse-ats-optimizer" element={<MedSurgNurseATSOptimizer />} />
-        <Route path="/icu-nurse-ats-optimizer" element={<ICUNurseATSOptimizer />} />
-        <Route path="/er-nurse-ats-optimizer" element={<ERNurseATSOptimizer />} />
-        <Route path="/travel-nurse-ats-optimizer" element={<TravelNurseATSOptimizer />} />
-        <Route path="/pediatric-nurse-ats-optimizer" element={<PediatricNurseATSOptimizer />} />
-        <Route path="/psychiatric-nurse-resume-scanner" element={<PsychiatricNurseResumeScanner />} />
-        <Route path="/nurse-practitioner-ats-optimizer" element={<NursePractitionerATSOptimizer />} />
-        <Route path="/ccu-cvu-nurse-ats-optimizer" element={<CCUCVUNurseATSOptimizer />} />
-        <Route path="/dialysis-nurse-ats-scanner" element={<DialysisNurseATSScanner />} />
-        <Route path="/home-health-nurse-ats-optimizer" element={<HomeHealthNurseATSOptimizer />} />
-        <Route path="/school-nurse-ats-resume-scanner" element={<SchoolNurseATSResumeScanner />} />
-        <Route path="/case-manager-nurse-ats-optimizer" element={<CaseManagerNurseATSOptimizer />} />
-        <Route path="/infection-control-nurse-ats" element={<InfectionControlNurseATS />} />
-        <Route path="/rehab-nurse-ats-optimizer" element={<RehabNurseATSOptimizer />} />
-        <Route path="/wound-care-nurse-ats-optimizer" element={<WoundCareNurseATSOptimizer />} />
-        <Route path="/pain-management-nurse-ats" element={<PainManagementNurseATS />} />
-        <Route path="/ambulatory-care-nurse-ats" element={<AmbulatoryCareNurseATS />} />
-        <Route path="/radiology-nurse-ats-scanner" element={<RadiologyNurseATSScanner />} />
-        <Route path="/transplant-nurse-ats-optimizer" element={<TransplantNurseATSOptimizer />} />
-        <Route path="/cardiology-nurse-ats-scanner" element={<CardiologyNurseATSScanner />} />
-        <Route path="/neurology-nurse-ats-optimizer" element={<NeurologyNurseATSOptimizer />} />
-        <Route path="/endoscopy-nurse-ats-scanner" element={<EndoscopyNurseATSScanner />} />
+          {/* Industry-Specific Landing Pages - Nursing */}
+          <Route path="/ats-scanner-for-nurses" element={<ATSScannerNurses />} />
+          <Route path="/med-surg-nurse-ats-optimizer" element={<MedSurgNurseATSOptimizer />} />
+          <Route path="/icu-nurse-ats-optimizer" element={<ICUNurseATSOptimizer />} />
+          <Route path="/er-nurse-ats-optimizer" element={<ERNurseATSOptimizer />} />
+          <Route path="/travel-nurse-ats-optimizer" element={<TravelNurseATSOptimizer />} />
+          <Route path="/pediatric-nurse-ats-optimizer" element={<PediatricNurseATSOptimizer />} />
+          <Route path="/psychiatric-nurse-resume-scanner" element={<PsychiatricNurseResumeScanner />} />
+          <Route path="/nurse-practitioner-ats-optimizer" element={<NursePractitionerATSOptimizer />} />
+          <Route path="/ccu-cvu-nurse-ats-optimizer" element={<CCUCVUNurseATSOptimizer />} />
+          <Route path="/dialysis-nurse-ats-scanner" element={<DialysisNurseATSScanner />} />
+          <Route path="/home-health-nurse-ats-optimizer" element={<HomeHealthNurseATSOptimizer />} />
+          <Route path="/school-nurse-ats-resume-scanner" element={<SchoolNurseATSResumeScanner />} />
+          <Route path="/case-manager-nurse-ats-optimizer" element={<CaseManagerNurseATSOptimizer />} />
+          <Route path="/infection-control-nurse-ats" element={<InfectionControlNurseATS />} />
+          <Route path="/rehab-nurse-ats-optimizer" element={<RehabNurseATSOptimizer />} />
+          <Route path="/wound-care-nurse-ats-optimizer" element={<WoundCareNurseATSOptimizer />} />
+          <Route path="/pain-management-nurse-ats" element={<PainManagementNurseATS />} />
+          <Route path="/ambulatory-care-nurse-ats" element={<AmbulatoryCareNurseATS />} />
+          <Route path="/radiology-nurse-ats-scanner" element={<RadiologyNurseATSScanner />} />
+          <Route path="/transplant-nurse-ats-optimizer" element={<TransplantNurseATSOptimizer />} />
+          <Route path="/cardiology-nurse-ats-scanner" element={<CardiologyNurseATSScanner />} />
+          <Route path="/neurology-nurse-ats-optimizer" element={<NeurologyNurseATSOptimizer />} />
+          <Route path="/endoscopy-nurse-ats-scanner" element={<EndoscopyNurseATSScanner />} />
 
-        {/* Industry-Specific Landing Pages - Tech & Other */}
-        <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
-        <Route path="/backend-engineer-java-ats" element={<BackendEngineerJavaATS />} />
-        <Route path="/full-stack-engineer-ats-optimizer" element={<FullStackEngineerATSOptimizer />} />
-        <Route path="/machine-learning-engineer-ats" element={<MachineLearningEngineerATS />} />
-        <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
-        <Route path="/ios-engineer-swift-ats-optimizer" element={<IOSEngineerSwiftATSOptimizer />} />
-        <Route path="/android-engineer-kotlin-ats" element={<AndroidEngineerKotlinATS />} />
-        <Route path="/cloud-architect-aws-ats-scanner" element={<CloudArchitectAWSATSScanner />} />
-        <Route path="/site-reliability-engineer-ats" element={<SiteReliabilityEngineerATS />} />
-        <Route path="/qa-engineer-automation-ats" element={<QAEngineerAutomationATS />} />
-        <Route path="/security-engineer-ats-optimizer" element={<SecurityEngineerATSOptimizer />} />
-        <Route path="/blockchain-engineer-ats-scanner" element={<BlockchainEngineerATSScanner />} />
-        <Route path="/mobile-engineer-react-native-ats" element={<MobileEngineerReactNativeATS />} />
-        <Route path="/embedded-systems-engineer-ats" element={<EmbeddedSystemsEngineerATS />} />
-        <Route path="/golang-backend-engineer-ats" element={<GolangBackendEngineerATS />} />
-        <Route path="/rust-systems-engineer-ats" element={<RustSystemsEngineerATS />} />
-        <Route path="/platform-engineer-ats-optimizer" element={<PlatformEngineerATSOptimizer />} />
-        <Route path="/solutions-architect-ats-scanner" element={<SolutionsArchitectATSScanner />} />
-        <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
-        <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
-        <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
-        <Route path="/financial-analyst-ats-optimizer" element={<FinancialAnalystATSOptimizer />} />
-        <Route path="/marketing-manager-ats-scanner" element={<MarketingManagerATSScanner />} />
-        <Route path="/product-manager-ats-optimizer" element={<ProductManagerATSOptimizer />} />
-        <Route path="/ux-designer-ats-optimizer" element={<UXDesignerATSOptimizer />} />
+          {/* Industry-Specific Landing Pages - Tech & Other */}
+          <Route path="/senior-frontend-engineer-ats" element={<SeniorFrontendEngineerATS />} />
+          <Route path="/backend-engineer-java-ats" element={<BackendEngineerJavaATS />} />
+          <Route path="/full-stack-engineer-ats-optimizer" element={<FullStackEngineerATSOptimizer />} />
+          <Route path="/machine-learning-engineer-ats" element={<MachineLearningEngineerATS />} />
+          <Route path="/devops-engineer-kubernetes-ats" element={<DevOpsEngineerKubernetesATS />} />
+          <Route path="/ios-engineer-swift-ats-optimizer" element={<IOSEngineerSwiftATSOptimizer />} />
+          <Route path="/android-engineer-kotlin-ats" element={<AndroidEngineerKotlinATS />} />
+          <Route path="/cloud-architect-aws-ats-scanner" element={<CloudArchitectAWSATSScanner />} />
+          <Route path="/site-reliability-engineer-ats" element={<SiteReliabilityEngineerATS />} />
+          <Route path="/qa-engineer-automation-ats" element={<QAEngineerAutomationATS />} />
+          <Route path="/security-engineer-ats-optimizer" element={<SecurityEngineerATSOptimizer />} />
+          <Route path="/blockchain-engineer-ats-scanner" element={<BlockchainEngineerATSScanner />} />
+          <Route path="/mobile-engineer-react-native-ats" element={<MobileEngineerReactNativeATS />} />
+          <Route path="/embedded-systems-engineer-ats" element={<EmbeddedSystemsEngineerATS />} />
+          <Route path="/golang-backend-engineer-ats" element={<GolangBackendEngineerATS />} />
+          <Route path="/rust-systems-engineer-ats" element={<RustSystemsEngineerATS />} />
+          <Route path="/platform-engineer-ats-optimizer" element={<PlatformEngineerATSOptimizer />} />
+          <Route path="/solutions-architect-ats-scanner" element={<SolutionsArchitectATSScanner />} />
+          <Route path="/resume-debug-for-data-analysts" element={<ResumeDebugDataAnalysts />} />
+          <Route path="/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
+          <Route path="/software-engineer-keyword-sniper" element={<SoftwareEngineerKeywordSniper />} />
+          <Route path="/financial-analyst-ats-optimizer" element={<FinancialAnalystATSOptimizer />} />
+          <Route path="/marketing-manager-ats-scanner" element={<MarketingManagerATSScanner />} />
+          <Route path="/product-manager-ats-optimizer" element={<ProductManagerATSOptimizer />} />
+          <Route path="/ux-designer-ats-optimizer" element={<UXDesignerATSOptimizer />} />
 
-        {/* Company-Specific Optimize Pages */}
-        <Route path="/optimize/google-sde" element={<GoogleSDEOptimize />} />
+          {/* Company-Specific Optimize Pages */}
+          <Route path="/optimize/google-sde" element={<GoogleSDEOptimize />} />
 
-        {/* Blog */}
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/how-to-beat-ats-resume-scanners" element={<HowToBeatATSResumeScanners />} />
-        <Route path="/blog/understanding-ats-robot-view" element={<UnderstandingATSRobotView />} />
+          {/* Blog */}
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/how-to-beat-ats-resume-scanners" element={<HowToBeatATSResumeScanners />} />
+          <Route path="/blog/understanding-ats-robot-view" element={<UnderstandingATSRobotView />} />
 
-        {/* Level 2: Auth & Onboarding */}
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/onboarding" element={<Onboarding />} />
+          {/* Level 2: Auth & Onboarding */}
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/onboarding" element={<Onboarding />} />
 
-        {/* Level 3-5: Private Dashboard (handles internal routing) */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/dashboard/projects" element={<Dashboard />} />
-        <Route path="/dashboard/resumes" element={<Dashboard />} />
-        <Route path="/dashboard/mission/:projectId" element={<Dashboard />} />
-        <Route path="/dashboard/tools/cover-letter" element={<Dashboard />} />
-        <Route path="/dashboard/tools/linkedin" element={<Dashboard />} />
-        <Route path="/dashboard/settings" element={<Dashboard />} />
+          {/* Level 3-5: Private Dashboard (handles internal routing) */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/projects" element={<Dashboard />} />
+          <Route path="/dashboard/resumes" element={<Dashboard />} />
+          <Route path="/dashboard/mission/:projectId" element={<Dashboard />} />
+          <Route path="/dashboard/tools/cover-letter" element={<Dashboard />} />
+          <Route path="/dashboard/tools/linkedin" element={<Dashboard />} />
+          <Route path="/dashboard/settings" element={<Dashboard />} />
 
-        {/* Project Settings Demo */}
-        <Route path="/project-settings" element={<ProjectSettings />} />
+          {/* Project Settings Demo */}
+          <Route path="/project-settings" element={<ProjectSettings />} />
 
-        {/* Payment Success */}
-        <Route path="/payment/success" element={<PaymentSuccess />} />
+          {/* Payment Success */}
+          <Route path="/payment/success" element={<PaymentSuccess />} />
 
-        {/* Admin */}
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/admin/waitlist" element={<AdminWaitlist />} />
+          {/* Admin */}
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/waitlist" element={<AdminWaitlist />} />
 
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </PageTransition>
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
