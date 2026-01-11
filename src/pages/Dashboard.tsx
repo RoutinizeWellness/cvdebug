@@ -37,6 +37,7 @@ import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
 import { SettingsView } from "@/components/dashboard/SettingsView";
+import { SubscriptionView } from "@/components/dashboard/SubscriptionView";
 import { NewYearPromoModal } from "@/components/NewYearPromoModal";
 import {
   Dialog,
@@ -561,6 +562,8 @@ export default function Dashboard() {
         return <KeywordSniperView onBack={() => setCurrentView('tools')} />;
       case 'settings':
         return <SettingsView />;
+      case 'profile':
+        return <SubscriptionView />;
       default:
         return (
           <MissionControl 
