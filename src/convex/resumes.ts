@@ -60,55 +60,52 @@ export const createResume = mutation({
       }
 
       const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-      const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" || user.subscriptionTier === "lifetime";
+      const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" && hasActiveSprint;
+      const hasPaidPlan = user.subscriptionTier === "single_scan" || isUnlimitedPlan;
 
-      // RE-SCAN LOGIC: 24h unlimited re-scans for ALL users (including FREE)
-      // This allows users to iterate and see their score improve without penalty
+      // RE-SCAN LOGIC: 24h unlimited re-scans for PAID users only (Single Scan & Interview Sprint)
+      // Free users get preview only
       let isFreeRescan = false;
 
-      // Check for existing resumes with the same title in the last 24h
-      const existingResumes = await ctx.db
-        .query("resumes")
-        .withIndex("by_user", (q) => q.eq("userId", identity.subject))
-        .order("desc")
-        .take(10);
+      // Check for existing resumes with the same title in the last 24h (PAID users only)
+      if (hasPaidPlan) {
+        const existingResumes = await ctx.db
+          .query("resumes")
+          .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+          .order("desc")
+          .take(10);
 
-      const twentyFourHours = 24 * 60 * 60 * 1000;
-      const recentSameFile = existingResumes.find(r =>
-        r.title === args.title &&
-        (Date.now() - r._creationTime) < twentyFourHours
-      );
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        const recentSameFile = existingResumes.find(r =>
+          r.title === args.title &&
+          (Date.now() - r._creationTime) < twentyFourHours
+        );
 
-      if (recentSameFile) {
-        isFreeRescan = true;
-        console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
+        if (recentSameFile) {
+          isFreeRescan = true;
+          console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
+        }
       }
 
       // CREDIT CONSUMPTION: Apply limits based on subscription tier
       if (!isUnlimitedPlan && !isFreeRescan) {
         if (user.subscriptionTier === "free") {
-          // Free tier: 5 parses per month
-          const freeScansUsed = user.freeScansUsed ?? 0;
-          if (freeScansUsed >= 5) {
-            throw new ConvexError("CREDITS_EXHAUSTED");
-          }
-          await ctx.db.patch(user._id, {
-            freeScansUsed: freeScansUsed + 1,
-          });
-          console.log(`[Billing] Free user ${user.email} used scan ${freeScansUsed + 1}/5`);
-        } else if (user.subscriptionTier === "basic_pro") {
-          // Basic Pro: 20 parses per month
+          // Free tier: Preview only - no credit consumption but limited features
+          console.log(`[Billing] Free user ${user.email} getting preview scan`);
+        } else if (user.subscriptionTier === "single_scan") {
+          // Single Scan: 1 credit + 24h re-scan window
           const currentCredits = user.credits ?? 0;
           if (currentCredits <= 0) {
             throw new ConvexError("CREDITS_EXHAUSTED");
           }
           await ctx.db.patch(user._id, {
             credits: currentCredits - 1,
+            freeTrialUsed: true,
           });
-          console.log(`[Billing] Basic Pro user ${user.email} consumed 1 credit. Remaining: ${currentCredits - 1}/20`);
+          console.log(`[Billing] Single Scan user ${user.email} consumed 1 credit`);
         }
       } else if (isUnlimitedPlan) {
-        console.log(`[Billing] ${user.subscriptionTier} user ${user.email} has unlimited scans`);
+        console.log(`[Billing] Interview Sprint user ${user.email} has unlimited scans`);
       }
 
       if (user.deviceFingerprint) {
@@ -142,7 +139,7 @@ export const createResume = mutation({
         jobDescription: args.jobDescription,
         jobTitle: args.jobTitle,
         company: args.company,
-        detailsUnlocked: hasActiveSprint || isUnlimitedPlan || false,
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
         status: "processing",
       });
 

@@ -32,15 +32,11 @@ export function SubscriptionView() {
 
   const currentPlan = user?.subscriptionTier || "free";
   const isFreeTier = currentPlan === "free";
-  const isBasicPro = currentPlan === "basic_pro";
+  const isSingleScan = currentPlan === "single_scan";
   const isInterviewSprint = currentPlan === "interview_sprint";
-  const isLifetime = currentPlan === "lifetime";
 
-  // Calculate remaining credits for free tier
-  const freeCreditsUsed = user?.freeScansUsed || 0;
-  const freeCreditsTotal = 5;
-  const freeCreditsRemaining = Math.max(0, freeCreditsTotal - freeCreditsUsed);
-  const freeCreditsPercentage = Math.round((freeCreditsUsed / freeCreditsTotal) * 100);
+  // Calculate remaining credits
+  const currentCredits = user?.credits || 0;
 
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
   const daysUntilReset = sprintExpiresAt > Date.now()
@@ -107,35 +103,25 @@ export function SubscriptionView() {
 
               <div>
                 <h3 className="text-2xl font-bold text-white mb-1">
-                  {isFreeTier && "Free Tier"}
-                  {isBasicPro && "Basic Pro"}
+                  {isFreeTier && "Free Preview"}
+                  {isSingleScan && "Single Scan"}
                   {isInterviewSprint && "Interview Sprint"}
-                  {isLifetime && "Lifetime Access"}
                 </h3>
                 <p className="text-slate-400">
-                  {isFreeTier && (
+                  {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis."}
+                  {isSingleScan && (
                     <>
-                      You have <span className="text-white font-medium">{freeCreditsRemaining} resume parses</span> remaining this month. Your credits reset in{" "}
-                      <span className="text-white font-medium">{daysUntilReset} days</span>.
+                      You have <span className="text-white font-medium">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24h.
                     </>
                   )}
-                  {isBasicPro && "You have access to 20 resume parses per month and advanced AI feedback."}
-                  {isInterviewSprint && "You have unlimited resume parses and access to all premium features."}
-                  {isLifetime && "You have lifetime access to all features and future updates."}
+                  {isInterviewSprint && (
+                    <>
+                      You have unlimited scans for <span className="text-white font-medium">{daysUntilReset} days</span>. Expires on{" "}
+                      <span className="text-white font-medium">{new Date(sprintExpiresAt).toLocaleDateString()}</span>.
+                    </>
+                  )}
                 </p>
               </div>
-
-              {isFreeTier && (
-                <>
-                  <div className="w-full bg-slate-800 h-2 rounded-full mt-2 overflow-hidden border border-slate-700/50">
-                    <div
-                      className="bg-primary h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-500"
-                      style={{ width: `${freeCreditsPercentage}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-[-8px]">{freeCreditsPercentage}% of monthly free limit used</p>
-                </>
-              )}
             </div>
 
             <div className="flex items-center gap-4 relative z-10 shrink-0">
@@ -154,8 +140,8 @@ export function SubscriptionView() {
           <div className="flex flex-col gap-6">
             <h3 className="text-xl font-semibold text-white">Upgrade Options</h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Basic Plan */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Single Scan */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -163,32 +149,40 @@ export function SubscriptionView() {
                 className="glass-panel rounded-2xl p-6 flex flex-col h-full border-slate-700/50 hover:border-slate-600 transition-colors"
               >
                 <div className="mb-4">
-                  <h4 className="text-lg font-bold text-white">Basic Pro</h4>
-                  <p className="text-slate-400 text-sm mt-1">For serious job seekers.</p>
+                  <h4 className="text-lg font-bold text-white">Single Scan</h4>
+                  <p className="text-slate-400 text-sm mt-1">One-time payment</p>
                 </div>
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-bold text-white">$12</span>
-                  <span className="text-slate-500">/mo</span>
+                  <span className="text-3xl font-bold text-white">€4.99</span>
+                  <span className="text-slate-500">/once</span>
                 </div>
                 <div className="space-y-3 mb-8 flex-1">
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">20 Resume Parses /mo</p>
+                    <p className="text-sm text-slate-300">Full ATS Analysis</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Advanced AI Feedback</p>
+                    <p className="text-sm text-slate-300">Complete Keyword Report</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Email Support</p>
+                    <p className="text-sm text-slate-300">Formatting Audit + Fixes</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                    <p className="text-sm text-slate-300">Unlimited Re-scans (24h)</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+                    <p className="text-sm text-slate-300">PDF Sanitization</p>
                   </div>
                 </div>
                 <button
-                  disabled={isBasicPro}
+                  disabled={isSingleScan}
                   className="w-full py-3 rounded-xl border border-slate-600 bg-transparent text-white font-medium hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isBasicPro ? "Current Plan" : "Upgrade to Basic"}
+                  {isSingleScan ? "Current Plan" : "Get Single Scan"}
                 </button>
               </motion.div>
 
@@ -200,79 +194,47 @@ export function SubscriptionView() {
                 className="glass-panel relative rounded-2xl p-6 flex flex-col h-full border-violet-500/50 bg-gradient-to-b from-slate-800/80 to-slate-900/90 glow-violet transform hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="absolute -top-3 right-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-violet-500/30">
-                  BEST VALUE
+                  🚀 BEST VALUE - SAVE 60%
                 </div>
                 <div className="mb-4">
                   <h4 className="text-lg font-bold text-white flex items-center gap-2">
                     Interview Sprint
                     <span className="material-symbols-outlined text-violet-400 text-[20px]">rocket_launch</span>
                   </h4>
-                  <p className="text-slate-400 text-sm mt-1">Intensive prep for interview season.</p>
+                  <p className="text-slate-400 text-sm mt-1">7 Days Unlimited Access</p>
+                  <p className="text-slate-500 text-xs mt-1 italic">Joined by 1,200+ candidates</p>
                 </div>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-bold text-white">$29</span>
-                  <span className="text-slate-500">/mo</span>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-3xl font-bold text-white">€19.99</span>
+                  <span className="text-slate-500 line-through text-lg">€49.99</span>
                 </div>
                 <div className="space-y-3 mb-8 flex-1">
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-white">Everything in Basic</p>
+                    <p className="text-sm text-slate-300">Unlimited Scans (7 Days)</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Unlimited Resume Parses</p>
+                    <p className="text-sm text-slate-300">AI Keyword Suggestions</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">AI Mock Interviews (Video)</p>
+                    <p className="text-sm text-slate-300">Cover Letter Generator</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Priority 24/7 Support</p>
+                    <p className="text-sm text-slate-300">LinkedIn Optimizer</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <p className="text-sm text-slate-300">Priority Support</p>
                   </div>
                 </div>
                 <button
                   disabled={isInterviewSprint}
                   className="w-full py-3 rounded-xl bg-primary-gradient text-white font-bold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isInterviewSprint ? "Current Plan" : "Start Sprint"}
-                </button>
-              </motion.div>
-
-              {/* Enterprise / Custom */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="glass-panel rounded-2xl p-6 flex flex-col h-full border-slate-700/50 hover:border-slate-600 transition-colors"
-              >
-                <div className="mb-4">
-                  <h4 className="text-lg font-bold text-white">Lifetime Access</h4>
-                  <p className="text-slate-400 text-sm mt-1">One-time payment, forever access.</p>
-                </div>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-bold text-white">$299</span>
-                  <span className="text-slate-500">/once</span>
-                </div>
-                <div className="space-y-3 mb-8 flex-1">
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-slate-500 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">All Future Updates</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-slate-500 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Exclusive Discord Community</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-slate-500 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Beta Feature Access</p>
-                  </div>
-                </div>
-                <button
-                  disabled={isLifetime}
-                  className="w-full py-3 rounded-xl border border-slate-600 bg-transparent text-white font-medium hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isLifetime ? "Current Plan" : "Get Lifetime"}
+                  {isInterviewSprint ? "Current Plan" : "Start Interview Sprint"}
                 </button>
               </motion.div>
             </div>

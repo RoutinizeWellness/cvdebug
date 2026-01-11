@@ -40,20 +40,17 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 
       // customer_id from Autumn is the Clerk tokenIdentifier (identity.subject)
       // Map product_id to plan
-      const productBasicPro = process.env.PRODUCT_BASIC_PRO || "basic_pro";
+      const productSingleScan = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
       const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint";
-      const productLifetime = process.env.PRODUCT_LIFETIME || "lifetime";
 
-      let plan: "basic_pro" | "interview_sprint" | "lifetime";
-      if (product_id === productBasicPro) {
-        plan = "basic_pro";
+      let plan: "single_scan" | "interview_sprint";
+      if (product_id === productSingleScan) {
+        plan = "single_scan";
       } else if (product_id === productSprint) {
         plan = "interview_sprint";
-      } else if (product_id === productLifetime) {
-        plan = "lifetime";
       } else {
         console.error(`[Webhook] ❌ Unknown product_id: ${product_id}`);
-        console.error(`[Webhook] Expected: ${productBasicPro}, ${productSprint}, or ${productLifetime}`);
+        console.error(`[Webhook] Expected: ${productSingleScan} or ${productSprint}`);
         return new Response("Unknown product", { status: 400 });
       }
 
@@ -79,7 +76,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
           tokenIdentifier: customer_id,
           plan,
           transactionId: transaction_id,
-          amount: amount || (plan === "basic_pro" ? 12 : plan === "interview_sprint" ? 29 : 299),
+          amount: amount || (plan === "single_scan" ? 4.99 : 19.99),
         });
         console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored`);
       } catch (error: any) {
@@ -122,7 +119,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 export const storePaymentRecord = internalMutation({
   args: {
     tokenIdentifier: v.string(),
-    plan: v.union(v.literal("basic_pro"), v.literal("interview_sprint"), v.literal("lifetime")),
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
     transactionId: v.string(),
     amount: v.number(),
   },
