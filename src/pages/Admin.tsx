@@ -64,6 +64,7 @@ export default function AdminPage() {
   const stats = useQuery(apiAny.admin.getAdminStats, shouldFetch ? {} : "skip");
   const updateUserPlan = useMutation(apiAny.admin.updateUserPlan);
   const deleteUser = useMutation(apiAny.admin.deleteUser);
+  const createUserMutation = useMutation(apiAny.admin.createUser);
   const fixInconsistentUsers = useMutation(apiAny.admin.fixInconsistentUsers);
   const fixKnownMissingUsers = useMutation(apiAny.admin.fixKnownMissingUsers);
   const fixSpecificReportedUsers = useMutation(apiAny.admin.fixSpecificReportedUsers);
@@ -75,6 +76,14 @@ export default function AdminPage() {
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editForm, setEditForm] = useState({ plan: "free", credits: 0 });
   const [isSaving, setIsSaving] = useState(false);
+  const [showCreateUserDialog, setShowCreateUserDialog] = useState(false);
+  const [createUserForm, setCreateUserForm] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    plan: "free" as "free" | "single_scan" | "interview_sprint"
+  });
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingKnown, setIsFixingKnown] = useState(false);
   const [isFixingReported, setIsFixingReported] = useState(false);
@@ -257,6 +266,45 @@ export default function AdminPage() {
       toast.error(error.message || "Failed to simulate webhook");
     } finally {
       setIsSimulatingWebhook(false);
+    }
+  };
+
+  const handleCreateUser = async () => {
+    if (!createUserForm.email) {
+      toast.error("Please enter an email address");
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(createUserForm.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsCreatingUser(true);
+    try {
+      const result = await createUserMutation({
+        email: createUserForm.email.trim(),
+        firstName: createUserForm.firstName.trim() || undefined,
+        lastName: createUserForm.lastName.trim() || undefined,
+        plan: createUserForm.plan,
+      });
+      toast.success("User created successfully", {
+        description: result
+      });
+      setShowCreateUserDialog(false);
+      setCreateUserForm({
+        email: "",
+        firstName: "",
+        lastName: "",
+        plan: "free"
+      });
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to create user");
+    } finally {
+      setIsCreatingUser(false);
     }
   };
 
@@ -490,16 +538,57 @@ export default function AdminPage() {
                 </div>
 
                 {/* Admin Tools */}
-                <AdminManualGrant
-                  grantEmail={grantEmail}
-                  setGrantEmail={setGrantEmail}
-                  grantName={grantName}
-                  setGrantName={setGrantName}
-                  grantPlan={grantPlan}
-                  setGrantPlan={setGrantPlan}
-                  handleGrantPurchase={handleGrantPurchase}
-                  isGranting={isGranting}
-                />
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <AdminManualGrant
+                    grantEmail={grantEmail}
+                    setGrantEmail={setGrantEmail}
+                    grantName={grantName}
+                    setGrantName={setGrantName}
+                    grantPlan={grantPlan}
+                    setGrantPlan={setGrantPlan}
+                    handleGrantPurchase={handleGrantPurchase}
+                    isGranting={isGranting}
+                  />
+
+                  {/* Create New User Card */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="glass-panel p-6 rounded-xl border border-slate-700/50 hover:border-primary/30 transition-colors"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-display font-bold text-white">Create New User</h3>
+                        <p className="text-sm text-slate-400">Add users directly to Clerk + Convex</p>
+                      </div>
+                      <Users className="h-8 w-8 text-emerald-500 opacity-20" />
+                    </div>
+
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-slate-300">
+                        <span className="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+                        <span>Creates user in Clerk authentication</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-300">
+                        <span className="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+                        <span>Syncs with Convex database</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-slate-300">
+                        <span className="material-symbols-outlined text-emerald-400 text-[18px]">check_circle</span>
+                        <span>Assign plan on creation</span>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => setShowCreateUserDialog(true)}
+                      className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white shadow-lg shadow-emerald-900/30"
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      Create New User
+                    </Button>
+                  </motion.div>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <AdminBulkGrant
@@ -753,6 +842,91 @@ export default function AdminPage() {
         onOpenChange={setShowLogoutDialog}
         onConfirm={handleSignOut}
       />
+
+      {/* Create User Dialog */}
+      <Dialog open={showCreateUserDialog} onOpenChange={setShowCreateUserDialog}>
+        <DialogContent className="bg-slate-900 border-slate-700 text-white">
+          <DialogHeader>
+            <DialogTitle>Create New User</DialogTitle>
+            <DialogDescription className="text-slate-400">
+              Create a new user account in both Clerk and Convex. The user will be able to log in with their email.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right text-slate-300">Email *</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="user@example.com"
+                value={createUserForm.email}
+                onChange={(e) => setCreateUserForm({...createUserForm, email: e.target.value})}
+                className="col-span-3 bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="firstName" className="text-right text-slate-300">First Name</Label>
+              <Input
+                id="firstName"
+                type="text"
+                placeholder="John"
+                value={createUserForm.firstName}
+                onChange={(e) => setCreateUserForm({...createUserForm, firstName: e.target.value})}
+                className="col-span-3 bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="lastName" className="text-right text-slate-300">Last Name</Label>
+              <Input
+                id="lastName"
+                type="text"
+                placeholder="Doe"
+                value={createUserForm.lastName}
+                onChange={(e) => setCreateUserForm({...createUserForm, lastName: e.target.value})}
+                className="col-span-3 bg-slate-800 border-slate-700 text-white"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="plan" className="text-right text-slate-300">Plan</Label>
+              <Select
+                value={createUserForm.plan}
+                onValueChange={(val: any) => setCreateUserForm({...createUserForm, plan: val})}
+              >
+                <SelectTrigger className="col-span-3 bg-slate-800 border-slate-700">
+                  <SelectValue placeholder="Select plan" />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectItem value="free">Free Preview</SelectItem>
+                  <SelectItem value="single_scan">Single Scan (€4.99)</SelectItem>
+                  <SelectItem value="interview_sprint">Interview Sprint (€19.99)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowCreateUserDialog(false);
+                setCreateUserForm({ email: "", firstName: "", lastName: "", plan: "free" });
+              }}
+              className="border-slate-700"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCreateUser}
+              disabled={isCreatingUser}
+              className="bg-gradient-to-r from-emerald-600 to-green-600"
+            >
+              {isCreatingUser ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Users className="mr-2 h-4 w-4" />}
+              Create User
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
