@@ -15,21 +15,33 @@ export function ATSAnalysisReport({
   onDownloadPDF
 }: ATSAnalysisReportProps) {
   const score = resume?.score || 82;
-  const matchedKeywords = resume?.matchedKeywords || [];
+
+  // Handle matched keywords - can be array of strings or objects
+  const rawMatchedKeywords = resume?.matchedKeywords || [];
+  const matchedKeywords = Array.isArray(rawMatchedKeywords)
+    ? rawMatchedKeywords.map((kw: any) =>
+        typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
+      ).filter((k: string) => k.length > 0)
+    : [];
 
   // Handle missing keywords - can be array of strings or objects
-  const rawMissingKeywords = resume?.missingKeywords || [];
-  const missingKeywords = rawMissingKeywords.map((kw: any) =>
-    typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
-  ).filter((k: string) => k.length > 0);
+  const rawMissingKeywords = resume?.missingKeywords || resume?.criticalKeywords || [];
+  const missingKeywords = Array.isArray(rawMissingKeywords)
+    ? rawMissingKeywords.map((kw: any) =>
+        typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
+      ).filter((k: string) => k.length > 0)
+    : [];
 
   // Debug logging
   console.log('[ATSAnalysisReport] Resume data:', {
     score,
     matchedCount: matchedKeywords.length,
     missingCount: missingKeywords.length,
+    rawMatchedType: typeof rawMatchedKeywords[0],
     rawMissingType: typeof rawMissingKeywords[0],
-    sampleMissing: rawMissingKeywords[0]
+    sampleMatched: rawMatchedKeywords[0],
+    sampleMissing: rawMissingKeywords[0],
+    resumeKeys: Object.keys(resume || {})
   });
 
   const ocrText = resume?.ocrText || "";
@@ -59,7 +71,7 @@ export function ATSAnalysisReport({
   };
 
   return (
-    <div className="relative w-full bg-[#0F172A] min-h-full">
+    <div className="relative w-full bg-[#0F172A] min-h-screen overflow-y-auto">
       {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-cyan-600/10 rounded-full blur-[80px]"></div>
@@ -68,7 +80,7 @@ export function ATSAnalysisReport({
 
       <div className="relative w-full z-10">
         {/* Main Content */}
-        <main className="flex flex-col items-center justify-center py-6 md:py-8 px-4 md:px-6 w-full mx-auto">
+        <main className="flex flex-col items-center justify-start py-6 md:py-8 px-4 md:px-6 w-full max-w-6xl mx-auto">
           {/* Hero Section */}
           <div className="flex flex-col items-center gap-6 md:gap-8 mb-8 md:mb-12 w-full">
             {/* Status Badge */}
@@ -102,7 +114,7 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mt-2"
+              className="relative flex items-center justify-center w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 mt-2"
             >
               {/* Glow Background */}
               <div className="absolute inset-0 bg-cyan-500/20 blur-[50px] rounded-full"></div>
@@ -152,7 +164,7 @@ export function ATSAnalysisReport({
           </div>
 
           {/* Bento Grid Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full max-w-4xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             {/* Card 1: Formatting Health */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -275,21 +287,21 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 w-full max-w-5xl mt-10 md:mt-16 px-2"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 w-full mt-8 md:mt-12"
             >
               {/* Matched Keywords */}
               {matchedKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-5 md:p-7 hover:border-emerald-500/30 transition-all duration-300 min-h-[300px] flex flex-col">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
-                      <span className="material-symbols-outlined text-xl md:text-2xl">check_circle</span>
+                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-emerald-500/30 transition-all duration-300 flex flex-col h-[400px]">
+                  <div className="flex items-center gap-3 mb-4 flex-shrink-0">
+                    <div className="p-2 md:p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                      <span className="material-symbols-outlined text-xl">check_circle</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-base md:text-lg truncate">Keywords Found</h3>
+                      <h3 className="text-white font-bold text-base md:text-lg">Keywords Found</h3>
                       <p className="text-slate-400 text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar pr-2 flex-1">
+                  <div className="flex flex-wrap gap-2 overflow-y-auto custom-scrollbar pr-2 flex-1 content-start">
                     {matchedKeywords.map((keyword: string, index: number) => (
                       <motion.span
                         key={index}
@@ -307,17 +319,17 @@ export function ATSAnalysisReport({
 
               {/* Missing Keywords */}
               {missingKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-5 md:p-7 hover:border-orange-500/30 transition-all duration-300 min-h-[300px] flex flex-col">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="p-2 md:p-3 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 shrink-0">
-                      <span className="material-symbols-outlined text-xl md:text-2xl">priority_high</span>
+                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col h-[400px]">
+                  <div className="flex items-center gap-3 mb-4 flex-shrink-0">
+                    <div className="p-2 md:p-2.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                      <span className="material-symbols-outlined text-xl">priority_high</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-white font-bold text-base md:text-lg truncate">Missing Keywords</h3>
+                      <h3 className="text-white font-bold text-base md:text-lg">Missing Keywords</h3>
                       <p className="text-slate-400 text-xs md:text-sm">{missingKeywords.length} opportunities to improve</p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 max-h-56 overflow-y-auto custom-scrollbar pr-2 flex-1">
+                  <div className="flex flex-wrap gap-2 overflow-y-auto custom-scrollbar pr-2 flex-1 content-start">
                     {missingKeywords.map((keyword: string, index: number) => (
                       <motion.span
                         key={index}
@@ -340,7 +352,7 @@ export function ATSAnalysisReport({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex flex-col md:flex-row items-stretch gap-3 md:gap-4 mt-8 md:mt-12 w-full max-w-lg px-4"
+            className="flex flex-col md:flex-row items-stretch gap-3 md:gap-4 mt-8 w-full max-w-2xl"
           >
             <button
               onClick={onOpenWritingForge}
@@ -364,10 +376,9 @@ export function ATSAnalysisReport({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
-            className="mt-12 md:mt-20 mb-8 w-full max-w-2xl px-4 animate-float"
-            style={{ animationDuration: '8s' }}
+            className="mt-8 mb-6 w-full max-w-2xl"
           >
-            <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-3 md:p-4 font-mono text-xs md:text-sm shadow-2xl relative overflow-hidden">
+            <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-3 font-mono text-xs shadow-2xl relative overflow-hidden">
               {/* Terminal Header */}
               <div className="flex gap-1.5 mb-2 md:mb-3 opacity-50">
                 <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500"></div>
