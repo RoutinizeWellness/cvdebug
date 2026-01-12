@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -15,6 +17,7 @@ export function ATSAnalysisReport({
   onDownloadPDF
 }: ATSAnalysisReportProps) {
   const score = resume?.score || 82;
+  const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
   // Handle matched keywords - can be array of strings or objects
   const rawMatchedKeywords = resume?.matchedKeywords || [];
@@ -104,9 +107,9 @@ export function ATSAnalysisReport({
               className="text-center space-y-2 px-2"
             >
               <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white drop-shadow-lg">
-                ATS Analysis <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-500">Report</span>
+                Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-500">Visibility Score</span>
               </h1>
-              <p className="text-slate-400 text-xs md:text-sm font-light px-4">Parsed and scored against industry standards</p>
+              <p className="text-slate-400 text-xs md:text-sm font-light px-4">How well recruiters can find and read your resume</p>
             </motion.div>
 
             {/* Circular Score Hero */}
@@ -155,10 +158,10 @@ export function ATSAnalysisReport({
 
               {/* Inner Content */}
               <div className="absolute flex flex-col items-center justify-center">
-                <span className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white">
-                  {scorePercentage}<span className="text-xl sm:text-xl md:text-2xl text-slate-400">%</span>
+                <span className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white">
+                  {scorePercentage}<span className="text-2xl sm:text-3xl md:text-4xl text-slate-400">%</span>
                 </span>
-                <span className="text-slate-400 text-[10px] sm:text-xs font-mono tracking-widest uppercase mt-1">Match Score</span>
+                <span className="text-slate-400 text-xs sm:text-sm font-semibold tracking-wider uppercase mt-1">Visible</span>
               </div>
             </motion.div>
           </div>
@@ -210,15 +213,15 @@ export function ATSAnalysisReport({
                 </div>
               </div>
               <div className="relative z-10">
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Visibility Grade</p>
+                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Search Ranking</p>
                 <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                   <h3 className="text-3xl md:text-4xl font-mono font-bold text-white">{getVisibilityGrade(scorePercentage)}</h3>
                   <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-cyan-400 bg-cyan-500/10 rounded border border-cyan-500/20 whitespace-nowrap">
-                    Top Tech
+                    Excellent
                   </span>
                 </div>
                 <p className="text-slate-500 text-[11px] md:text-xs mt-2 md:mt-3 leading-relaxed">
-                  Your resume passes 95% of ATS filters used by FAANG companies.
+                  Recruiters will see your profile in search results
                 </p>
               </div>
             </motion.div>
@@ -237,7 +240,7 @@ export function ATSAnalysisReport({
                 <span className="text-teal-400 font-bold text-xs md:text-sm whitespace-nowrap">High Saturation</span>
               </div>
               <div>
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-2 md:mb-3">Keyword Analysis</p>
+                <p className="text-slate-400 text-xs md:text-sm font-medium mb-2 md:mb-3">Signal Strength</p>
                 {/* Mini Bar Chart */}
                 <div className="flex items-end gap-3 h-20 w-full px-2">
                   {/* Bar 1 - Tech */}
@@ -352,60 +355,84 @@ export function ATSAnalysisReport({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex flex-col md:flex-row items-stretch gap-3 md:gap-4 mt-8 w-full max-w-2xl"
+            className="flex flex-col items-center gap-4 mt-8 w-full max-w-2xl"
           >
+            <div className="flex flex-col md:flex-row items-stretch gap-3 md:gap-4 w-full">
+              <button
+                onClick={onOpenWritingForge}
+                className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm md:text-base shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group"
+              >
+                <span>Start Mission Control</span>
+                <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </button>
+              <button
+                onClick={onDownloadPDF}
+                className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-medium text-sm md:text-base transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <span className="material-symbols-outlined text-lg text-slate-400">download</span>
+                <span className="hidden sm:inline">Download Report</span>
+                <span className="sm:hidden">Download</span>
+              </button>
+            </div>
+
+            {/* Technical Logs Toggle Button */}
             <button
-              onClick={onOpenWritingForge}
-              className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm md:text-base shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group"
+              onClick={() => setShowTechnicalLogs(!showTechnicalLogs)}
+              className="text-slate-500 hover:text-slate-300 text-xs font-medium flex items-center gap-1.5 transition-colors group"
             >
-              <span>Start Mission Control</span>
-              <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </button>
-            <button
-              onClick={onDownloadPDF}
-              className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-transparent border border-white/20 hover:border-white/40 hover:bg-white/5 text-white font-medium text-sm md:text-base transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              <span className="material-symbols-outlined text-lg text-slate-400">download</span>
-              <span className="hidden sm:inline">Download Report</span>
-              <span className="sm:hidden">Download</span>
+              <span>View Technical Logs</span>
+              {showTechnicalLogs ? (
+                <ChevronUp className="h-3.5 w-3.5 group-hover:translate-y-[-2px] transition-transform" />
+              ) : (
+                <ChevronDown className="h-3.5 w-3.5 group-hover:translate-y-[2px] transition-transform" />
+              )}
             </button>
           </motion.div>
 
-          {/* Terminal Log */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0 }}
-            className="mt-8 mb-6 w-full max-w-2xl"
-          >
-            <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-3 font-mono text-xs shadow-2xl relative overflow-hidden">
-              {/* Terminal Header */}
-              <div className="flex gap-1.5 mb-2 md:mb-3 opacity-50">
-                <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500"></div>
-                <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-yellow-500"></div>
-                <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500"></div>
+          {/* Terminal Log - Collapsible */}
+          {showTechnicalLogs && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6 mb-6 w-full max-w-2xl"
+            >
+              <div className="bg-slate-950/80 backdrop-blur border border-slate-800 rounded-lg p-3 font-mono text-xs shadow-2xl relative overflow-hidden">
+                {/* Terminal Header */}
+                <div className="flex gap-1.5 mb-2 md:mb-3 opacity-50">
+                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500"></div>
+                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-yellow-500"></div>
+                  <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500"></div>
+                </div>
+                {/* Terminal Body */}
+                <div className="space-y-1">
+                  <div className="flex gap-2 text-slate-500 overflow-x-auto">
+                    <span className="shrink-0">$</span>
+                    <span className="whitespace-nowrap">cv-debug --analyze --target=resume.pdf</span>
+                  </div>
+                  <div className="text-slate-400">
+                    &gt; Initializing parsing engine... OK
+                  </div>
+                  <div className="text-slate-400">
+                    &gt; Scanning for ATS keywords... Found {matchedKeywords.length || 42}
+                  </div>
+                  <div className="text-slate-400">
+                    &gt; Parsing quality: 100% | Analysis mode: Deep Scan
+                  </div>
+                  <div className="text-slate-400">
+                    &gt; Role classification: Technical | Format: Machine-readable
+                  </div>
+                  <div className="text-green-400 font-bold">
+                    &gt; [SUCCESS] Visibility Score: {scorePercentage}% | Grade: {getVisibilityGrade(scorePercentage)}
+                  </div>
+                  <div className="w-1.5 md:w-2 h-3 md:h-4 bg-green-500 animate-pulse mt-1"></div>
+                </div>
+                {/* Glitch effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-500/5 to-transparent pointer-events-none opacity-20"></div>
               </div>
-              {/* Terminal Body */}
-              <div className="space-y-1">
-                <div className="flex gap-2 text-slate-500 overflow-x-auto">
-                  <span className="shrink-0">$</span>
-                  <span className="whitespace-nowrap">cv-debug --analyze --target=resume.pdf</span>
-                </div>
-                <div className="text-slate-400">
-                  &gt; Initializing parsing engine... OK
-                </div>
-                <div className="text-slate-400">
-                  &gt; Scanning for ATS keywords... Found {matchedKeywords.length || 42}
-                </div>
-                <div className="text-green-400 font-bold">
-                  &gt; [SUCCESS] 100% Readability achieved. Report generated.
-                </div>
-                <div className="w-1.5 md:w-2 h-3 md:h-4 bg-green-500 animate-pulse mt-1"></div>
-              </div>
-              {/* Glitch effect overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-500/5 to-transparent pointer-events-none opacity-20"></div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </main>
       </div>
     </div>
