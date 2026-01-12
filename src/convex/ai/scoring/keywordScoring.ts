@@ -271,30 +271,53 @@ export function calculateKeywordScore(
     
   } else {
     // No JD - use category-based keywords with enhanced matching
+    // CRITICAL: Always generate missing keywords list for users who paid!
     relevantKeywords.forEach(keyword => {
       const result = findKeywordWithSynonyms(keyword, ocrText);
-      
+
       if (result.found) {
         // Context and recency bonuses
         const hasContext = /experience|project|developed|built|designed|implemented/i.test(ocrText);
         const contextBonus = hasContext ? 0.3 : 0;
-        
+
         const firstThird = ocrText.substring(0, ocrText.length * 0.3);
         const isRecent = findKeywordWithSynonyms(keyword, firstThird).found;
         const recencyBonus = isRecent ? 0.2 : 0;
-        
+
         const baseWeight = 1.5;
         const finalWeight = baseWeight + contextBonus + recencyBonus;
-        
+
         foundKeywords.push({
           keyword,
           frequency: result.matches,
           weight: finalWeight
         });
         keywordScore += finalWeight;
+      } else {
+        // KEYWORD MISSING - Add to missing list with actionable context
+        // Determine priority based on how critical the keyword is for the category
+        let priority = "important";
+        let impact = 7;
+
+        // Core keywords should be marked as critical
+        const coreKeywords = relevantKeywords.slice(0, Math.ceil(relevantKeywords.length * 0.3));
+        if (coreKeywords.includes(keyword)) {
+          priority = "critical";
+          impact = 10;
+        }
+
+        missingKeywords.push({
+          keyword,
+          priority,
+          frequency: 1, // Assumed importance for category
+          impact,
+          section: "Experience",
+          context: `Add "${keyword}" to your resume. Example: "Utilized ${keyword} to [accomplish specific outcome] resulting in [measurable impact]"`,
+          synonyms: synonymMap[keyword] || []
+        });
       }
     });
-    
+
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
     keywordScore = Math.min(40, keywordScore * scoringMultiplier);
   }
