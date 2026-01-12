@@ -20,6 +20,9 @@ export function ATSAnalysisReport({
   const score = resume?.score || 82;
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
+  // Extract target role (from job title, project, or resume data)
+  const targetRole = resume?.jobTitle || resume?.project?.targetRole || resume?.targetRole || null;
+
   // Handle matched keywords - can be array of strings or objects
   const rawMatchedKeywords = resume?.matchedKeywords || [];
   const matchedKeywords = Array.isArray(rawMatchedKeywords)
@@ -169,11 +172,25 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-center space-y-2 px-2"
+              className="text-center space-y-3 px-2"
             >
               <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white drop-shadow-lg">
                 Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-500">Visibility Score</span>
               </h1>
+
+              {/* Target Role Badge */}
+              {targetRole && (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-slate-500 text-xs font-medium">Optimized for</span>
+                  <div className="glass-card px-4 py-1.5 rounded-full border border-cyan-500/30 bg-gradient-to-r from-cyan-500/10 to-teal-500/10">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm text-cyan-400">work</span>
+                      <span className="text-white font-semibold text-sm">{targetRole}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <p className="text-slate-400 text-xs md:text-sm font-light px-4">How well recruiters can find and read your resume</p>
             </motion.div>
 
