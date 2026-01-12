@@ -105,8 +105,26 @@ export function LiveRecruiterSimulation({
   const DecisionIcon = decision.icon;
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-teal-500/20">
-      <div className="space-y-6">
+    <Card className="p-0 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-teal-500/20 overflow-hidden">
+      {/* SIMULATION MODE BANNER - Top of component */}
+      <div className="bg-gradient-to-r from-cyan-600 to-teal-600 px-6 py-3 border-b-2 border-cyan-400/50">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center size-8 rounded-full bg-white/20 backdrop-blur-sm">
+            <Eye className="h-4 w-4 text-white animate-pulse" />
+          </div>
+          <div className="flex-1">
+            <h4 className="text-white font-bold text-sm flex items-center gap-2">
+              👁️ SIMULATION MODE
+              <span className="px-2 py-0.5 text-[10px] font-bold bg-white/20 rounded-full">PREVIEW</span>
+            </h4>
+            <p className="text-white/90 text-xs font-medium">
+              This is exactly how a recruiter sees you in Workday/Greenhouse/Lever. Your CV has <strong className="underline">NOT</strong> been sent.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
