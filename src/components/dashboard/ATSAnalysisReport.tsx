@@ -44,41 +44,16 @@ export function ATSAnalysisReport({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0F172A] overflow-y-auto">
+    <div className="relative w-full bg-[#0F172A] min-h-full">
       {/* Background Decoration */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#3B82F6]/10 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-[#8B5CF6]/10 rounded-full blur-[100px]"></div>
-
-        {/* Abstract Confetti - Hidden on mobile */}
-        <div className="hidden md:block absolute rounded-full top-[10%] left-[20%] w-2 h-2 bg-[#8B5CF6] opacity-30 animate-float"></div>
-        <div className="hidden md:block absolute rotate-45 top-[15%] right-[25%] w-2 h-2 bg-[#3B82F6] opacity-30 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="hidden md:block absolute rounded-sm top-[40%] left-[80%] w-2 h-2 bg-emerald-400 opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="hidden md:block absolute rounded-full top-[70%] left-[10%] w-2 h-2 bg-[#8B5CF6] opacity-30 animate-float" style={{ animationDelay: '3s' }}></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#3B82F6]/10 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#8B5CF6]/10 rounded-full blur-[80px]"></div>
       </div>
 
-      <div className="relative flex min-h-screen w-full flex-col z-10">
-        {/* Header */}
-        <header className="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-4 md:px-8 py-3 md:py-4 backdrop-blur-md bg-[#0F172A]/80 sticky top-0 z-50">
-          <div className="flex items-center gap-2 md:gap-4 text-white">
-            <div className="size-7 md:size-8 flex items-center justify-center rounded bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] text-white">
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>terminal</span>
-            </div>
-            <h2 className="text-white text-lg md:text-xl font-bold leading-tight tracking-tight">CVDebug</h2>
-          </div>
-          <div className="flex items-center gap-2 md:gap-4">
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-white/5 text-xs font-mono text-slate-400">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              SYSTEM ONLINE
-            </div>
-            <button className="flex items-center justify-center overflow-hidden rounded-lg h-8 md:h-9 px-3 md:px-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs md:text-sm font-bold transition-all">
-              <span className="truncate">Sign Out</span>
-            </button>
-          </div>
-        </header>
-
+      <div className="relative w-full z-10">
         {/* Main Content */}
-        <main className="flex-1 flex flex-col items-center justify-center py-6 md:py-10 px-4 md:px-10 w-full max-w-7xl mx-auto pb-20">
+        <main className="flex flex-col items-center justify-center py-6 md:py-8 px-4 md:px-6 w-full mx-auto">
           {/* Hero Section */}
           <div className="flex flex-col items-center gap-6 md:gap-8 mb-8 md:mb-12 w-full">
             {/* Status Badge */}
@@ -101,10 +76,10 @@ export function ATSAnalysisReport({
               transition={{ delay: 0.1 }}
               className="text-center space-y-2 px-2"
             >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white drop-shadow-lg">
-                Resume Diagnostics <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]">Finalized</span>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white drop-shadow-lg">
+                ATS Analysis <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]">Report</span>
               </h1>
-              <p className="text-slate-400 text-sm md:text-base lg:text-lg font-light px-4">Your profile has been parsed, analyzed, and scored against industry standards.</p>
+              <p className="text-slate-400 text-xs md:text-sm font-light px-4">Parsed and scored against industry standards</p>
             </motion.div>
 
             {/* Circular Score Hero */}
@@ -112,7 +87,7 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 mt-2 md:mt-4"
+              className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mt-2"
             >
               {/* Glow Background */}
               <div className="absolute inset-0 bg-[#8B5CF6]/20 blur-[50px] rounded-full"></div>
@@ -153,16 +128,16 @@ export function ATSAnalysisReport({
 
               {/* Inner Content */}
               <div className="absolute flex flex-col items-center justify-center">
-                <span className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white">
-                  {scorePercentage}<span className="text-2xl sm:text-2xl md:text-3xl text-slate-400">%</span>
+                <span className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white">
+                  {scorePercentage}<span className="text-xl sm:text-xl md:text-2xl text-slate-400">%</span>
                 </span>
-                <span className="text-slate-400 text-xs sm:text-sm font-mono tracking-widest uppercase mt-1 md:mt-2">Match Score</span>
+                <span className="text-slate-400 text-[10px] sm:text-xs font-mono tracking-widest uppercase mt-1">Match Score</span>
               </div>
             </motion.div>
           </div>
 
           {/* Bento Grid Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full max-w-5xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full max-w-4xl">
             {/* Card 1: Formatting Health */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
