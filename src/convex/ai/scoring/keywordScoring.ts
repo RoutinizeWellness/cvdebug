@@ -200,11 +200,11 @@ export function calculateKeywordScore(
     
     sortedJDKeywords.forEach(({ term, freq, tfidf }) => {
       if (term.length < 3) return;
-      
+
       let weight = 0;
       let priority = "nice-to-have";
       let impact = 3;
-      
+
       // Enhanced priority classification
       if (tfidf > 0.08 || freq >= 5) {
         weight = 6;
@@ -222,9 +222,9 @@ export function calculateKeywordScore(
         weight = 1;
         impact = 3;
       }
-      
+
       const result = findKeywordWithSynonyms(term, ocrText);
-      
+
       if (result.found) {
         // Enhanced context detection
         const contextPatterns = [
@@ -233,20 +233,20 @@ export function calculateKeywordScore(
           new RegExp(`(proficient|expert|skilled|specialized).*${result.matchedTerm}`, 'i'),
           new RegExp(`${result.matchedTerm}.*(proficient|expert|skilled|specialized)`, 'i')
         ];
-        
+
         const hasContext = contextPatterns.some(pattern => pattern.test(text));
         const contextMultiplier = hasContext ? 1.6 : 1.0;
-        
+
         // Recency detection (first 30% of resume)
         const firstThird = ocrText.substring(0, ocrText.length * 0.3);
         const isRecent = findKeywordWithSynonyms(term, firstThird).found;
         const recencyMultiplier = isRecent ? 1.3 : 1.0;
-        
+
         // Frequency bonus
         const frequencyMultiplier = Math.min(1.5, 1.0 + (result.matches * 0.1));
-        
+
         const finalWeight = weight * contextMultiplier * recencyMultiplier * frequencyMultiplier;
-        
+
         foundKeywords.push({
           keyword: term,
           frequency: result.matches,
@@ -254,17 +254,72 @@ export function calculateKeywordScore(
         });
         keywordScore += finalWeight;
       } else {
+        // MISSING KEYWORD - Generate smart, actionable context based on keyword type
+        let section = "Experience";
+        let contextExample: string;
+
+        // Detect keyword type for better recommendations
+        const isToolOrTech = /[A-Z]/.test(term) || term.includes('.') || term.includes('-') || term.includes('/');
+        const isMethodology = /agile|scrum|kanban|waterfall|devops|lean/i.test(term);
+        const isSkill = /design|develop|manage|lead|analyz|optimi|implement|architect|deploy/i.test(term);
+        const isMultiWord = term.includes(' ');
+
+        if (isToolOrTech) {
+          section = "Technical Skills";
+          contextExample = `Add "${term}" to your resume with measurable impact. Example: "Utilized ${term} to ${isMultiWord ? 'streamline' : 'build'} [specific system/feature] reducing [problem] by X% or saving $Y"`;
+        } else if (isMethodology) {
+          section = "Experience & Methodologies";
+          contextExample = `Demonstrate "${term}" experience with concrete outcomes. Example: "Applied ${term} practices to ${isMultiWord ? 'transform team workflow' : 'improve delivery'} achieving X% faster releases and Y% fewer defects"`;
+        } else if (isSkill) {
+          section = "Core Competencies";
+          contextExample = `Highlight your "${term}" capabilities with quantifiable achievements. Example: "Successfully ${term.toLowerCase()}ed [project name] for [company/team] resulting in [specific metric: 40% efficiency gain, $100K revenue increase, etc.]"`;
+        } else {
+          // Default context for domain-specific terms
+          contextExample = `Incorporate "${term}" naturally with business impact. Example: "Leveraged ${term} expertise to [solve specific challenge] delivering [measurable result like 25% cost reduction or 50% time savings]"`;
+        }
+
         missingKeywords.push({
           keyword: term,
           priority,
           frequency: freq,
           impact,
-          section: "Experience",
-          context: `Add "${term}" to relevant experience bullets with specific context and metrics. Example: "Implemented ${term} to achieve [specific result with numbers]"`,
+          section,
+          context: contextExample,
           synonyms: synonymMap[term] || []
         });
       }
     });
+
+    // GUARANTEE: Ensure at least 3-5 high-quality missing keywords even if resume is strong
+    if (missingKeywords.length < 3 && sortedJDKeywords.length > 0) {
+      console.log(`[Keywords] JD analysis found few missing keywords - enhancing with category keywords`);
+
+      // Add some category-relevant keywords not in JD but valuable for the role
+      const categoryKeywords = relevantKeywords.slice(0, 15); // Top 15 from category
+      for (const kw of categoryKeywords) {
+        const result = findKeywordWithSynonyms(kw, ocrText);
+        if (!result.found && missingKeywords.length < 8) {
+          missingKeywords.push({
+            keyword: kw,
+            priority: "important",
+            frequency: 1,
+            impact: 8,
+            section: "Core Skills",
+            context: `While not explicitly in the job description, "${kw}" is a valuable skill for this role. Example: "Applied ${kw} to enhance [system/process] improving [key metric] by X%"`,
+            synonyms: synonymMap[kw] || []
+          });
+        }
+      }
+    }
+
+    // Sort missing keywords by impact and frequency (most valuable first)
+    missingKeywords.sort((a, b) => {
+      const scoreA = a.impact * (a.frequency / 10);
+      const scoreB = b.impact * (b.frequency / 10);
+      return scoreB - scoreA;
+    });
+
+    console.log(`[Keywords] JD-based analysis: ${foundKeywords.length} found, ${missingKeywords.length} missing from ${sortedJDKeywords.length} JD terms`);
     
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
     keywordScore = Math.min(40, keywordScore * scoringMultiplier);
@@ -272,19 +327,45 @@ export function calculateKeywordScore(
   } else {
     // No JD - use category-based keywords with enhanced matching
     // CRITICAL: Always generate missing keywords list for users who paid!
-    relevantKeywords.forEach(keyword => {
+
+    // Divide keywords into tiers for better prioritization
+    const totalKeywords = relevantKeywords.length;
+    const tier1Count = Math.ceil(totalKeywords * 0.25); // Top 25% - Most critical
+    const tier2Count = Math.ceil(totalKeywords * 0.35); // Next 35% - Important
+    // Rest are nice-to-have
+
+    const tier1Keywords = relevantKeywords.slice(0, tier1Count);
+    const tier2Keywords = relevantKeywords.slice(tier1Count, tier1Count + tier2Count);
+    const tier3Keywords = relevantKeywords.slice(tier1Count + tier2Count);
+
+    // Track found and missing by tier
+    let tier1Found = 0;
+    let tier2Found = 0;
+    let tier3Found = 0;
+
+    relevantKeywords.forEach((keyword, index) => {
       const result = findKeywordWithSynonyms(keyword, ocrText);
 
+      // Determine tier
+      let tier: 1 | 2 | 3 = 3;
+      if (index < tier1Count) tier = 1;
+      else if (index < tier1Count + tier2Count) tier = 2;
+
       if (result.found) {
+        // Track tier found
+        if (tier === 1) tier1Found++;
+        else if (tier === 2) tier2Found++;
+        else tier3Found++;
+
         // Context and recency bonuses
-        const hasContext = /experience|project|developed|built|designed|implemented/i.test(ocrText);
+        const hasContext = /experience|project|developed|built|designed|implemented|created|led|managed/i.test(ocrText);
         const contextBonus = hasContext ? 0.3 : 0;
 
         const firstThird = ocrText.substring(0, ocrText.length * 0.3);
         const isRecent = findKeywordWithSynonyms(keyword, firstThird).found;
         const recencyBonus = isRecent ? 0.2 : 0;
 
-        const baseWeight = 1.5;
+        const baseWeight = tier === 1 ? 2.0 : tier === 2 ? 1.5 : 1.0;
         const finalWeight = baseWeight + contextBonus + recencyBonus;
 
         foundKeywords.push({
@@ -294,29 +375,89 @@ export function calculateKeywordScore(
         });
         keywordScore += finalWeight;
       } else {
-        // KEYWORD MISSING - Add to missing list with actionable context
-        // Determine priority based on how critical the keyword is for the category
-        let priority = "important";
-        let impact = 7;
+        // KEYWORD MISSING - Add to missing list with tier-based priority
+        let priority: string;
+        let impact: number;
+        let section: string;
 
-        // Core keywords should be marked as critical
-        const coreKeywords = relevantKeywords.slice(0, Math.ceil(relevantKeywords.length * 0.3));
-        if (coreKeywords.includes(keyword)) {
+        if (tier === 1) {
           priority = "critical";
           impact = 10;
+          section = "Skills & Experience";
+        } else if (tier === 2) {
+          priority = "important";
+          impact = 7;
+          section = "Experience";
+        } else {
+          priority = "nice-to-have";
+          impact = 5;
+          section = "Skills";
+        }
+
+        // Generate context examples based on keyword type
+        let contextExample: string;
+        const isToolOrTech = /[A-Z]/.test(keyword) || keyword.includes('.') || keyword.includes('-');
+        const isSkill = /design|develop|manage|lead|analyz|optimi|implement/i.test(keyword);
+
+        if (isToolOrTech) {
+          contextExample = `Add "${keyword}" to your technical skills and experience sections. Example: "Leveraged ${keyword} to build/optimize [specific feature/system] achieving [quantifiable result like 30% faster performance]"`;
+        } else if (isSkill) {
+          contextExample = `Demonstrate "${keyword}" with concrete examples. Example: "Successfully ${keyword.toLowerCase()}ed [specific project] resulting in [measurable outcome such as $50K cost savings or 40% efficiency gain]"`;
+        } else {
+          contextExample = `Incorporate "${keyword}" naturally in your experience bullets. Example: "Applied ${keyword} expertise to [solve specific problem] delivering [tangible impact with metrics]"`;
         }
 
         missingKeywords.push({
           keyword,
           priority,
-          frequency: 1, // Assumed importance for category
+          frequency: tier === 1 ? 3 : tier === 2 ? 2 : 1,
           impact,
-          section: "Experience",
-          context: `Add "${keyword}" to your resume. Example: "Utilized ${keyword} to [accomplish specific outcome] resulting in [measurable impact]"`,
+          section,
+          context: contextExample,
           synonyms: synonymMap[keyword] || []
         });
       }
     });
+
+    // GUARANTEE: Ensure there are ALWAYS meaningful missing keywords
+    // If user has too many keywords (>80%), add advanced/emerging keywords
+    const coveragePercent = (foundKeywords.length / relevantKeywords.length) * 100;
+    if (coveragePercent > 80 && missingKeywords.length < 5) {
+      console.log(`[Keywords] High coverage (${coveragePercent.toFixed(1)}%) - Adding advanced keywords`);
+
+      // Advanced keywords that show expertise growth
+      const advancedKeywords = [
+        { kw: "CI/CD", ctx: "Implement CI/CD pipelines using tools like GitHub Actions, Jenkins, or GitLab CI to automate deployment and reduce release time by 60%", impact: 9 },
+        { kw: "microservices", ctx: "Architect microservices-based systems to improve scalability and enable independent team deployment, reducing downtime by 40%", impact: 9 },
+        { kw: "cloud architecture", ctx: "Design cloud-native architecture on AWS/Azure/GCP to optimize costs by 35% while improving system reliability to 99.9% uptime", impact: 9 },
+        { kw: "test automation", ctx: "Build automated testing frameworks (Jest, Pytest, Selenium) to increase test coverage from 40% to 90% and catch bugs 3x faster", impact: 8 },
+        { kw: "performance optimization", ctx: "Profile and optimize application performance using tools like New Relic, reducing load times by 50% and improving user retention by 25%", impact: 8 },
+        { kw: "code review", ctx: "Lead code review practices and establish coding standards, reducing bug density by 30% and improving team code quality scores", impact: 8 },
+        { kw: "agile methodology", ctx: "Drive agile/scrum ceremonies (sprint planning, retrospectives) to improve team velocity by 40% and on-time delivery to 95%", impact: 7 },
+        { kw: "technical documentation", ctx: "Create comprehensive technical documentation and API specs, reducing onboarding time for new engineers by 50%", impact: 7 },
+      ];
+
+      for (const adv of advancedKeywords) {
+        const result = findKeywordWithSynonyms(adv.kw, ocrText);
+        if (!result.found) {
+          missingKeywords.push({
+            keyword: adv.kw,
+            priority: "important",
+            frequency: 2,
+            impact: adv.impact,
+            section: "Advanced Skills",
+            context: adv.ctx,
+            synonyms: []
+          });
+        }
+      }
+    }
+
+    // Sort missing keywords by impact (highest first) to show most valuable ones first
+    missingKeywords.sort((a, b) => b.impact - a.impact);
+
+    console.log(`[Keywords] Category-based analysis: ${foundKeywords.length} found, ${missingKeywords.length} missing`);
+    console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Keywords.length}`);
 
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
     keywordScore = Math.min(40, keywordScore * scoringMultiplier);

@@ -69,7 +69,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
         throw error; // Critical failure, don't continue
       }
 
-      // STEP 2: Store payment record
+      // STEP 2: Store payment record (CRITICAL - Must succeed for admin panel sync)
       console.log(`[Webhook] 💾 STEP 2: Storing payment record...`);
       try {
         await ctx.runMutation(internalAny.billing.storePaymentRecord, {
@@ -78,10 +78,11 @@ export const handleWebhook = httpAction(async (ctx, request) => {
           transactionId: transaction_id,
           amount: amount || (plan === "single_scan" ? 4.99 : 19.99),
         });
-        console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored`);
+        console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored - Admin panel will auto-sync`);
       } catch (error: any) {
-        console.error(`[Webhook] ⚠️ STEP 2 WARNING: Failed to store payment record - ${error.message}`);
-        // Non-critical, continue
+        console.error(`[Webhook] ❌ STEP 2 CRITICAL: Failed to store payment record - ${error.message}`);
+        console.error(`[Webhook] This means admin panel won't show this payment automatically!`);
+        // Try to continue anyway since user subscription is already updated
       }
 
       console.log(`[Webhook] 🎉 Credits granted successfully for ${customer_id}`);
