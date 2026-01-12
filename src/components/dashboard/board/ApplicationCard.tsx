@@ -142,7 +142,7 @@ export function ApplicationCard({
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-6 w-6 text-zinc-500 hover:text-purple-400 hover:bg-purple-500/10"
+                          className="h-6 w-6 text-zinc-500 hover:text-teal-400 hover:bg-teal-500/10"
                           onClick={(e) => {
                             e.stopPropagation();
                             onInterviewPrep(app);

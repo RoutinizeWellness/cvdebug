@@ -90,7 +90,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
   const statusColors = {
     INFO: "text-blue-400",
     WARN: "text-yellow-400",
-    SCAN: "text-purple-400",
+    SCAN: "text-teal-400",
     DEBUG: "text-green-400",
     PROC: "text-blue-400"
   };

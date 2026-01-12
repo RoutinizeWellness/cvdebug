@@ -133,22 +133,22 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
 
           <ScrollArea className="flex-1 p-6">
             {isRedacted && (
-              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-purple-500/30 relative overflow-hidden">
+              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-teal-500/30 relative overflow-hidden">
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <Lock className="h-4 w-4 text-purple-400" />
+                    <Lock className="h-4 w-4 text-teal-400" />
                     <h3 className="font-bold text-white text-sm">Unlock Full Analysis</h3>
                   </div>
                   <p className="text-xs text-zinc-300 mb-3">
                     Detected <span className="font-bold text-white">{totalMissing} missing keywords</span>. 
-                    Here are 2: <span className="font-mono text-purple-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
+                    Here are 2: <span className="font-mono text-teal-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
                   </p>
                   <Button size="sm" className="w-full bg-white text-black hover:bg-zinc-200 font-bold h-8 text-xs">
                     Pay €4.99 to Unlock All {totalMissing - 2} & Fix Score
                   </Button>
                 </div>
                 {/* Background effect */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 blur-3xl rounded-full -mr-10 -mt-10" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/20 blur-3xl rounded-full -mr-10 -mt-10" />
               </div>
             )}
 
@@ -243,11 +243,11 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                         onOpenChange(false);
                       }}
                     >
-                      <div className="h-6 w-6 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
+                      <div className="h-6 w-6 rounded-full bg-teal-500/10 text-teal-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <p className="text-sm font-medium text-zinc-200 group-hover:text-purple-400 transition-colors">Generate Cover Letter</p>
-                          <ArrowRight className="h-3 w-3 text-zinc-500 group-hover:text-purple-400 transition-colors" />
+                          <p className="text-sm font-medium text-zinc-200 group-hover:text-teal-400 transition-colors">Generate Cover Letter</p>
+                          <ArrowRight className="h-3 w-3 text-zinc-500 group-hover:text-teal-400 transition-colors" />
                         </div>
                         <p className="text-xs text-zinc-500">Use the AI Cover Letter tool to naturally weave these keywords in.</p>
                       </div>

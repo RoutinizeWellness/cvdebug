@@ -408,21 +408,21 @@ export function FreeTierView({
             </Button>
 
             {/* Manual Review Option - $49 */}
-            <div className="bg-gradient-to-r from-purple-950/50 to-blue-950/50 border-2 border-purple-500/30 rounded-lg p-4 max-w-md mx-auto">
+            <div className="bg-gradient-to-r from-purple-950/50 to-blue-950/50 border-2 border-teal-500/30 rounded-lg p-4 max-w-md mx-auto">
               <div className="flex items-start gap-3 mb-3">
-                <div className="h-10 w-10 bg-purple-500/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-purple-500/30">
+                <div className="h-10 w-10 bg-teal-500/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-teal-500/30">
                   <span className="text-xl">👨‍💻</span>
                 </div>
                 <div className="flex-1">
                   <h4 className="text-white font-bold mb-1">Albert reviews your CV personally</h4>
                   <p className="text-zinc-300 text-xs">3-min video with brutal feedback + all fixes</p>
                 </div>
-                <span className="text-purple-400 font-black text-xl">€49</span>
+                <span className="text-teal-400 font-black text-xl">€49</span>
               </div>
               <Button
                 onClick={() => setShowPricing(true)}
                 size="sm"
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold"
               >
                 I want the manual review →
               </Button>

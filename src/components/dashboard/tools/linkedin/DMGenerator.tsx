@@ -69,7 +69,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
       <div className="mb-4 flex justify-between items-start">
         <div>
           <h3 className="text-white font-semibold text-lg flex items-center gap-2 mb-1">
-            <MessageSquare className="h-5 w-5 text-violet-400" />
+            <MessageSquare className="h-5 w-5 text-cyan-400" />
             DM Generator
           </h3>
           <p className="text-slate-400 text-sm">Draft ice-breakers for recruiters</p>
@@ -173,7 +173,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           <Button
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 border border-violet-500/20 text-white font-medium shadow-lg shadow-violet-900/20"
+            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 border border-cyan-500/20 text-white font-medium shadow-lg shadow-cyan-900/20"
           >
             {isGenerating ? (
               <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>

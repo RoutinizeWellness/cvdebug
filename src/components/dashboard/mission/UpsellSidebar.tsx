@@ -38,8 +38,8 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
           <ArrowRight className="h-4 w-4 text-zinc-500" />
         </div>
         <CardContent className="p-4 space-y-3">
-          <div className="h-8 w-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-            <Mail className="h-4 w-4 text-purple-500" />
+          <div className="h-8 w-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+            <Mail className="h-4 w-4 text-teal-500" />
           </div>
           <div>
             <h4 className="font-bold text-sm text-zinc-200">AI Cover Letter</h4>

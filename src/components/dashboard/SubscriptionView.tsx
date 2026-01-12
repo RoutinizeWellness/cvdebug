@@ -191,15 +191,15 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="glass-panel relative rounded-2xl p-6 flex flex-col h-full border-violet-500/50 bg-gradient-to-b from-slate-800/80 to-slate-900/90 glow-violet transform hover:-translate-y-1 transition-all duration-300"
+                className="glass-panel relative rounded-2xl p-6 flex flex-col h-full border-cyan-500/50 bg-gradient-to-b from-slate-800/80 to-slate-900/90 glow-violet transform hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="absolute -top-3 right-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-violet-500/30">
+                <div className="absolute -top-3 right-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-cyan-500/30">
                   🚀 BEST VALUE - SAVE 60%
                 </div>
                 <div className="mb-4">
                   <h4 className="text-lg font-bold text-white flex items-center gap-2">
                     Interview Sprint
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">rocket_launch</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">rocket_launch</span>
                   </h4>
                   <p className="text-slate-400 text-sm mt-1">7 Days Unlimited Access</p>
                   <p className="text-slate-500 text-xs mt-1 italic">Joined by 1,200+ candidates</p>
@@ -210,23 +210,23 @@ export function SubscriptionView() {
                 </div>
                 <div className="space-y-3 mb-8 flex-1">
                   <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
                     <p className="text-sm text-slate-300">Unlimited Scans (7 Days)</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
                     <p className="text-sm text-slate-300">AI Keyword Suggestions</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
                     <p className="text-sm text-slate-300">Cover Letter Generator</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
                     <p className="text-sm text-slate-300">LinkedIn Optimizer</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-violet-400 text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
                     <p className="text-sm text-slate-300">Priority Support</p>
                   </div>
                 </div>

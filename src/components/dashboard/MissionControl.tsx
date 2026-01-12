@@ -306,7 +306,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white text-lg font-bold">Career Health</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-            visibilityScore >= 85 ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" :
+            visibilityScore >= 85 ? "bg-teal-500/20 text-teal-400 border border-teal-500/30" :
             visibilityScore >= 70 ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
             visibilityScore >= 50 ? "bg-amber-500/20 text-amber-400 border border-amber-500/30" :
             "bg-slate-700/50 text-slate-400 border border-slate-600"
@@ -460,7 +460,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       key={app._id}
                       className="bg-[#2a374a] p-3 rounded border-l-2 border-l-secondary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
                     >
-                      <div className="absolute inset-0 bg-purple-500/5 pointer-events-none"></div>
+                      <div className="absolute inset-0 bg-teal-500/5 pointer-events-none"></div>
                       <div className="flex justify-between items-start mb-2 relative z-10">
                         <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>

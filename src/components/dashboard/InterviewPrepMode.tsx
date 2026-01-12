@@ -89,8 +89,8 @@ export function InterviewPrepMode({
     return (
       <Card className="bg-[#0A0A0A] border-zinc-800">
         <CardContent className="flex flex-col items-center justify-center py-12">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4 border border-purple-500/30">
-            <BrainCircuit className="h-8 w-8 text-purple-400" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4 border border-teal-500/30">
+            <BrainCircuit className="h-8 w-8 text-teal-400" />
           </div>
           <h3 className="text-xl font-bold text-white mb-2">Interview Battle Plan</h3>
           <p className="text-sm text-zinc-400 text-center max-w-md mb-6">
@@ -113,7 +113,7 @@ export function InterviewPrepMode({
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !canGenerate}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Battle Plan...</>
@@ -130,9 +130,9 @@ export function InterviewPrepMode({
     <Card className="bg-[#0A0A0A] border-zinc-800">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-white">
-          <BrainCircuit className="h-5 w-5 text-purple-400" />
+          <BrainCircuit className="h-5 w-5 text-teal-400" />
           Interview Battle Plan
-          <Badge className="ml-auto bg-purple-500/10 text-purple-400 border-purple-500/30">
+          <Badge className="ml-auto bg-teal-500/10 text-teal-400 border-teal-500/30">
             {jobTitle} @ {company}
           </Badge>
         </CardTitle>

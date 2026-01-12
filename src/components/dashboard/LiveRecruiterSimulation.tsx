@@ -105,7 +105,7 @@ export function LiveRecruiterSimulation({
   const DecisionIcon = decision.icon;
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-purple-500/20">
+    <Card className="p-6 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-teal-500/20">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -153,7 +153,7 @@ export function LiveRecruiterSimulation({
         {/* Heatmap Visualization */}
         <div className="space-y-3">
           <h4 className="text-sm font-bold text-white flex items-center gap-2">
-            <span className="material-symbols-outlined text-purple-400 text-[18px]">visibility</span>
+            <span className="material-symbols-outlined text-teal-400 text-[18px]">visibility</span>
             Attention Heatmap
           </h4>
           {heatmapData.map((region, index) => {
@@ -168,7 +168,7 @@ export function LiveRecruiterSimulation({
                 transition={{ delay: index * 0.1 }}
                 className={`p-4 rounded-lg border transition-all ${
                   isActive 
-                    ? "bg-purple-500/20 border-purple-500 shadow-lg shadow-purple-500/20" 
+                    ? "bg-teal-500/20 border-teal-500 shadow-lg shadow-cyan-500/20" 
                     : isPast
                     ? "bg-slate-800/30 border-slate-700"
                     : "bg-slate-800/50 border-slate-700"
@@ -181,7 +181,7 @@ export function LiveRecruiterSimulation({
                       <motion.div
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ repeat: Infinity, duration: 1 }}
-                        className="size-2 rounded-full bg-purple-500"
+                        className="size-2 rounded-full bg-teal-500"
                       />
                     )}
                   </div>

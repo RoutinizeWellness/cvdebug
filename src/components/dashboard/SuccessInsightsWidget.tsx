@@ -17,8 +17,8 @@ export function SuccessInsightsWidget() {
         className="glass-panel rounded-xl p-6 border-l-4 border-l-purple-500"
       >
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-            <Lock className="h-5 w-5 text-purple-400" />
+          <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center">
+            <Lock className="h-5 w-5 text-teal-400" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-white">Success Insights</h3>
@@ -30,7 +30,7 @@ export function SuccessInsightsWidget() {
           <p className="text-sm text-slate-400 mb-2">
             Track 3+ applications and get your first interview to unlock personalized insights
           </p>
-          <div className="flex items-center justify-center gap-2 text-xs text-purple-400 font-mono">
+          <div className="flex items-center justify-center gap-2 text-xs text-teal-400 font-mono">
             <Sparkles className="h-4 w-4" />
             <span>Your personal data moat awaits</span>
           </div>
@@ -59,17 +59,17 @@ export function SuccessInsightsWidget() {
               <p className="text-xs text-slate-400">Your personal data advantage</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
-            <Sparkles className="h-3.5 w-3.5 text-purple-400" />
-            <span className="text-xs font-bold text-purple-400">MOAT</span>
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20">
+            <Sparkles className="h-3.5 w-3.5 text-teal-400" />
+            <span className="text-xs font-bold text-teal-400">MOAT</span>
           </div>
         </div>
 
         {/* Top Insight */}
         {analytics.topInsight && (
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-4 mb-4 border border-purple-500/30">
+          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-4 mb-4 border border-teal-500/30">
             <div className="flex items-start gap-3">
-              <Target className="h-5 w-5 text-purple-400 mt-0.5 shrink-0" />
+              <Target className="h-5 w-5 text-teal-400 mt-0.5 shrink-0" />
               <div className="flex-1">
                 <p className="text-white font-semibold mb-1">{analytics.topInsight.message}</p>
                 <div className="flex items-center gap-4 text-xs">
@@ -93,7 +93,7 @@ export function SuccessInsightsWidget() {
           </div>
           <div className="bg-slate-800/50 rounded-lg p-3 text-center">
             <p className="text-xs text-slate-400 mb-1">Interviews</p>
-            <p className="text-2xl font-bold text-purple-400">{analytics.interviewCount}</p>
+            <p className="text-2xl font-bold text-teal-400">{analytics.interviewCount}</p>
           </div>
           <div className="bg-slate-800/50 rounded-lg p-3 text-center">
             <p className="text-xs text-slate-400 mb-1">Success Rate</p>
@@ -111,7 +111,7 @@ export function SuccessInsightsWidget() {
               {analytics.topKeywords.slice(0, 5).map((kw: any, idx: number) => (
                 <div key={kw.keyword} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-purple-400">#{idx + 1}</span>
+                    <span className="text-xs font-mono text-teal-400">#{idx + 1}</span>
                     <span className="text-sm text-white font-medium">{kw.keyword}</span>
                   </div>
                   <div className="flex items-center gap-3">

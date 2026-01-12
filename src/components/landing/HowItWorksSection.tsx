@@ -84,7 +84,7 @@ export function HowItWorksSection() {
             </div>
             <div className="flex-1 p-6 font-mono text-xs leading-relaxed text-slate-400 overflow-y-auto custom-scrollbar">
               <div className="flex flex-col gap-1">
-                <div><span className="text-slate-600 select-none">01</span> <span className="text-purple-400">GET</span> resume_content <span className="text-slate-500">...loading</span></div>
+                <div><span className="text-slate-600 select-none">01</span> <span className="text-teal-400">GET</span> resume_content <span className="text-slate-500">...loading</span></div>
                 <div><span className="text-slate-600 select-none">02</span> <span className="text-green-400">SUCCESS:</span> Text layer extracted.</div>
                 <div><span className="text-slate-600 select-none">03</span> <span className="text-blue-400">PARSING:</span> Contact Info</div>
                 <div><span className="text-slate-600 select-none">04</span>   Name: "Alex Designer" <span className="text-emerald-400">✓ OK</span></div>

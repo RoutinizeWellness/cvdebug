@@ -220,11 +220,11 @@ export function MachineParsingVision({
 
                   {/* Skills Block */}
                   {extractedFields?.skills && extractedFields.skills.length > 0 && (
-                    <div className="absolute top-[500px] right-[40px] w-[380px] h-[150px] border border-purple-500/50 bg-purple-500/5 rounded p-1">
-                      <span className="bg-purple-500/20 text-purple-300 px-1 w-fit">SECTION: SKILLS_TABLE</span>
+                    <div className="absolute top-[500px] right-[40px] w-[380px] h-[150px] border border-teal-500/50 bg-teal-500/5 rounded p-1">
+                      <span className="bg-teal-500/20 text-teal-300 px-1 w-fit">SECTION: SKILLS_TABLE</span>
                       <div className="grid grid-cols-2 gap-2 mt-4 px-2">
                         {extractedFields.skills.slice(0, 4).map((skill, i) => (
-                          <div key={i} className="h-4 bg-purple-400/20 rounded flex items-center px-2 text-purple-300 text-[9px]">
+                          <div key={i} className="h-4 bg-teal-400/20 rounded flex items-center px-2 text-teal-300 text-[9px]">
                             {skill}
                           </div>
                         ))}
@@ -287,7 +287,7 @@ export function MachineParsingVision({
         <div className="absolute right-0 top-0 bottom-0 w-[380px] bg-zinc-900 border-l border-zinc-800 flex flex-col shadow-xl z-30">
           <div className="px-5 py-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/95 backdrop-blur">
             <h2 className="font-bold text-zinc-100 flex items-center gap-2">
-              <span className="material-symbols-outlined text-purple-400">data_object</span>
+              <span className="material-symbols-outlined text-teal-400">data_object</span>
               Parsed Output
             </h2>
             <button className="text-xs text-primary hover:text-primary/80 font-mono underline decoration-dotted underline-offset-4">

@@ -117,7 +117,7 @@ export function AISuggestionsDialog({
               {/* Header */}
               <div className="flex items-start justify-between p-6 pb-4 border-b border-white/5 bg-gradient-to-r from-slate-800/50 to-transparent">
                 <div className="flex gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-violet-500/20 shrink-0 text-white">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-cyan-500/20 shrink-0 text-white">
                     <Sparkles className="h-7 w-7" />
                   </div>
                   <div className="flex flex-col justify-center">
@@ -128,7 +128,7 @@ export function AISuggestionsDialog({
                       <span className="text-slate-400 text-sm">
                         Optimizing for missing keyword:
                       </span>
-                      <span className="font-mono text-sm font-medium text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded border border-violet-500/20">
+                      <span className="font-mono text-sm font-medium text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
                         {keyword}
                       </span>
                     </div>
@@ -232,7 +232,7 @@ export function AISuggestionsDialog({
               {/* Footer / Action Area */}
               <div className="p-6 pt-4 border-t border-white/5 bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-violet-500 animate-pulse"></div>
+                  <div className="h-2 w-2 rounded-full bg-cyan-500 animate-pulse"></div>
                   <span className="text-xs text-slate-400">AI Model v4.2 • Turbo Mode</span>
                 </div>
                 <div className="flex w-full sm:w-auto items-center gap-3">
@@ -253,7 +253,7 @@ export function AISuggestionsDialog({
               </div>
 
               {/* Decorative Glow */}
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-violet-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-cyan-500/20 rounded-full blur-[80px] pointer-events-none"></div>
               <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
             </motion.div>
           </motion.div>

@@ -369,7 +369,7 @@ export default function AdminPage() {
       {/* Sidebar Navigation */}
       <aside className={`w-64 flex-shrink-0 flex-col border-r border-slate-800 bg-slate-900/50 backdrop-blur-md ${sidebarOpen ? 'flex' : 'hidden'} md:flex`}>
         <div className="h-16 flex items-center px-6 border-b border-slate-800">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 flex items-center justify-center mr-3 shadow-lg shadow-blue-900/20">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 flex items-center justify-center mr-3 shadow-lg shadow-blue-900/20">
             <ShieldAlert className="text-white h-5 w-5" />
           </div>
           <div>
@@ -440,7 +440,7 @@ export default function AdminPage() {
       <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#0F172A] relative">
         {/* Background Gradient Blurs */}
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
         {/* Top Header */}
         <header className="h-16 border-b border-slate-800/50 flex items-center justify-between px-6 bg-slate-900/30 backdrop-blur-sm z-10 shrink-0">
@@ -459,7 +459,7 @@ export default function AdminPage() {
             </div>
             <Button 
               onClick={() => window.location.reload()} 
-              className="bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50"
+              className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh Stats
@@ -569,14 +569,14 @@ export default function AdminPage() {
                     className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Users className="h-12 w-12 text-violet-500" />
+                      <Users className="h-12 w-12 text-cyan-500" />
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Free Users</p>
                     <div className="flex items-baseline gap-2">
                       <h3 className="text-2xl font-display font-bold text-white">{stats?.free || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                      <div className="bg-violet-500 h-full rounded-full" style={{ width: '42%' }}></div>
+                      <div className="bg-cyan-500 h-full rounded-full" style={{ width: '42%' }}></div>
                     </div>
                   </motion.div>
 
@@ -788,10 +788,10 @@ export default function AdminPage() {
                           <span className="text-emerald-400">[200 OK]</span> OpenAI API - Resume Analysis <span className="text-slate-500">#492a</span>
                         </div>
                       </div>
-                      <div className="flex gap-2 border-l-2 border-violet-500/50 pl-2 bg-violet-500/5 py-1 rounded-r">
+                      <div className="flex gap-2 border-l-2 border-cyan-500/50 pl-2 bg-cyan-500/5 py-1 rounded-r">
                         <span className="text-slate-500 min-w-[52px]">10:43:12</span>
-                        <div className="flex-1 text-violet-200">
-                          <span className="text-violet-400 font-bold">[STRIPE]</span> Payment Succeeded - €19.99
+                        <div className="flex-1 text-cyan-200">
+                          <span className="text-cyan-400 font-bold">[STRIPE]</span> Payment Succeeded - €19.99
                           <span className="text-slate-500 text-[10px] block mt-1">user: {user.email}</span>
                         </div>
                       </div>

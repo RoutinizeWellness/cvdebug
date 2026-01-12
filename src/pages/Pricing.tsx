@@ -113,7 +113,7 @@ export default function PricingPage() {
         <section className="relative w-full max-w-7xl mx-auto px-4 pt-20 pb-12 flex flex-col items-center text-center">
           {/* Background Glows */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-violet-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-[80px] pointer-events-none"></div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}

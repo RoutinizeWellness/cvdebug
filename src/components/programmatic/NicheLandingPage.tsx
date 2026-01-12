@@ -81,17 +81,17 @@ const getColorClasses = (color: string) => {
       checkmark: "text-red-400"
     },
     purple: {
-      badge: "bg-purple-500/10 border-purple-500/20 text-purple-300",
-      badgeIcon: "text-purple-400",
+      badge: "bg-teal-500/10 border-teal-500/20 text-teal-300",
+      badgeIcon: "text-teal-400",
       gradient: "from-purple-400 to-pink-400",
-      button: "from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-purple-500/25",
-      keyword: "from-purple-500/20 to-pink-500/20 border-purple-500/30 text-purple-300",
+      button: "from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-cyan-500/25",
+      keyword: "from-purple-500/20 to-pink-500/20 border-teal-500/30 text-teal-300",
       floatingBadge: "from-purple-600 to-pink-600",
-      bg: "bg-purple-500/10",
+      bg: "bg-teal-500/10",
       bgSecondary: "bg-pink-500/10",
-      text: "text-purple-400",
-      border: "border-purple-500/30",
-      checkmark: "text-purple-400"
+      text: "text-teal-400",
+      border: "border-teal-500/30",
+      checkmark: "text-teal-400"
     },
     cyan: {
       badge: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300",
@@ -107,17 +107,17 @@ const getColorClasses = (color: string) => {
       checkmark: "text-cyan-400"
     },
     violet: {
-      badge: "bg-violet-500/10 border-violet-500/20 text-violet-300",
-      badgeIcon: "text-violet-400",
+      badge: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300",
+      badgeIcon: "text-cyan-400",
       gradient: "from-violet-400 to-purple-400",
-      button: "from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 shadow-violet-500/25",
-      keyword: "from-violet-500/20 to-purple-500/20 border-violet-500/30 text-violet-300",
+      button: "from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 shadow-cyan-500/25",
+      keyword: "from-violet-500/20 to-purple-500/20 border-cyan-500/30 text-cyan-300",
       floatingBadge: "from-violet-600 to-purple-600",
-      bg: "bg-violet-500/10",
-      bgSecondary: "bg-purple-500/10",
-      text: "text-violet-400",
-      border: "border-violet-500/30",
-      checkmark: "text-violet-400"
+      bg: "bg-cyan-500/10",
+      bgSecondary: "bg-teal-500/10",
+      text: "text-cyan-400",
+      border: "border-cyan-500/30",
+      checkmark: "text-cyan-400"
     }
   };
 

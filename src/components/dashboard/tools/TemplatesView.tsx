@@ -27,7 +27,7 @@ export function TemplatesView() {
       category: "Design",
       description: "Balanced layout that showcases portfolio links without confusing ATS parsers.",
       tags: ["Visual", "Portfolio", "Hybrid"],
-      color: "bg-purple-500/10 text-purple-500"
+      color: "bg-teal-500/10 text-teal-500"
     }
   ];
 

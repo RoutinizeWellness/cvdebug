@@ -12,7 +12,7 @@ export function ImpactScore({ score, quantifiedBullets, totalBullets }: ImpactSc
   return (
     <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400">
+        <div className="p-2 rounded-lg bg-teal-500/10 text-teal-400">
           <TrendingUp className="h-5 w-5" />
         </div>
         <h3 className="text-lg font-bold text-white">Impact Score</h3>

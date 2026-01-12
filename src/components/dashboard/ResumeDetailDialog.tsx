@@ -251,10 +251,10 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
             bgClass = "bg-blue-950/30";
             borderClass = "border-blue-900/50";
           } else if (title.includes("📊") || title.includes("Score")) {
-            icon = <ScanLine className="h-4 w-4 text-purple-400" />;
-            headerClass = "text-purple-400";
-            bgClass = "bg-purple-950/30";
-            borderClass = "border-purple-900/50";
+            icon = <ScanLine className="h-4 w-4 text-teal-400" />;
+            headerClass = "text-teal-400";
+            bgClass = "bg-teal-950/30";
+            borderClass = "border-teal-900/50";
           } else if (title.includes("🔑") || title.includes("Missing")) {
             icon = <AlertTriangle className="h-4 w-4 text-red-400" />;
             headerClass = "text-red-400";

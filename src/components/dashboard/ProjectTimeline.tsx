@@ -41,7 +41,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
       case "status_change":
         return "text-green-400 bg-green-500/10";
       case "dm_sent":
-        return "text-purple-400 bg-purple-500/10";
+        return "text-teal-400 bg-teal-500/10";
       case "interview_scheduled":
         return "text-yellow-400 bg-yellow-500/10";
       case "rejected":

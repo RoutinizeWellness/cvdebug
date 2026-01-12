@@ -125,10 +125,10 @@ export function SettingsView() {
             transition={{ delay: 0.2 }}
             className="glass-panel rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/10 rounded-full blur-[60px] pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-600/10 rounded-full blur-[60px] pointer-events-none"></div>
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <span className="material-symbols-outlined text-violet-400">monitoring</span>
+                <span className="material-symbols-outlined text-cyan-400">monitoring</span>
                 <h3 className="text-lg font-bold font-display text-white">Match Score</h3>
               </div>
               <div className="flex items-baseline gap-2 mb-6">

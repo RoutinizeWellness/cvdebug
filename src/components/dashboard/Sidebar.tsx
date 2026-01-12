@@ -153,18 +153,18 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         {/* Sprint Countdown Widget */}
         {hasActiveSprint && (
           <div
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-violet-500/30 p-4 cursor-pointer hover:border-violet-500/50 transition-colors group"
+            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-cyan-500/30 p-4 cursor-pointer hover:border-cyan-500/50 transition-colors group"
             style={{ boxShadow: '0 0 20px -5px rgba(139, 92, 246, 0.3)' }}
             onClick={() => setShowPricing(true)}
           >
-            <div className="absolute top-0 right-0 -mt-2 -mr-2 w-16 h-16 bg-violet-500/20 blur-2xl rounded-full"></div>
+            <div className="absolute top-0 right-0 -mt-2 -mr-2 w-16 h-16 bg-cyan-500/20 blur-2xl rounded-full"></div>
 
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-violet-300 uppercase tracking-wide flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse"></span>
+              <span className="text-xs font-bold text-cyan-300 uppercase tracking-wide flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
                 Sprint Active
               </span>
-              <span className="material-symbols-outlined text-violet-400 text-[16px]">timer</span>
+              <span className="material-symbols-outlined text-cyan-400 text-[16px]">timer</span>
             </div>
 
             <div className="flex gap-2 text-white">

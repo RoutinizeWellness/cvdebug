@@ -197,7 +197,7 @@ export function KeywordSniperTool({
             {/* Medium Impact */}
             {mediumImpactKeywords.length > 0 && (
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 flex items-center gap-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-teal-400 mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-sm">trending_up</span>
                   Medium Impact
                 </h4>
@@ -208,10 +208,10 @@ export function KeywordSniperTool({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: (highImpactKeywords.length + i) * 0.1 }}
-                      className="bg-slate-800/40 border border-white/5 rounded-lg p-3 hover:border-purple-400/50 transition-colors group"
+                      className="bg-slate-800/40 border border-white/5 rounded-lg p-3 hover:border-teal-400/50 transition-colors group"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="font-mono text-sm font-medium text-white group-hover:text-purple-400 transition-colors">
+                        <span className="font-mono text-sm font-medium text-white group-hover:text-teal-400 transition-colors">
                           {kw.keyword}
                         </span>
                       </div>
@@ -270,9 +270,9 @@ export function KeywordSniperTool({
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
 
           <div className="p-5 pb-0 flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-purple-400 animate-pulse">auto_awesome</span>
+            <span className="material-symbols-outlined text-teal-400 animate-pulse">auto_awesome</span>
             <h3 className="font-display font-bold text-white">AI Optimization Suggestions</h3>
-            <span className="ml-auto text-xs text-purple-400 border border-purple-400/30 bg-purple-400/10 px-2 py-1 rounded-full font-mono">
+            <span className="ml-auto text-xs text-teal-400 border border-teal-400/30 bg-teal-400/10 px-2 py-1 rounded-full font-mono">
               Target: {highImpactKeywords.slice(0, 2).map(kw => kw.keyword).join(" + ")}
             </span>
           </div>
@@ -288,14 +288,14 @@ export function KeywordSniperTool({
                   onClick={() => setSelectedSuggestion(suggestion.id)}
                   className={`rounded-lg p-5 transition-all relative group cursor-pointer ${
                     selectedSuggestion === suggestion.id
-                      ? "bg-slate-800/80 border-2 border-purple-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
+                      ? "bg-slate-800/80 border-2 border-teal-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
                       : "border border-white/5 bg-slate-800/30 hover:bg-slate-800/50"
                   }`}
                 >
                   <div className="absolute top-4 right-4">
                     <div className={`size-5 rounded-full border-2 flex items-center justify-center ${
                       selectedSuggestion === suggestion.id
-                        ? "border-purple-500 bg-purple-500"
+                        ? "border-teal-500 bg-teal-500"
                         : "border-slate-600 group-hover:border-slate-400"
                     }`}>
                       {selectedSuggestion === suggestion.id && (

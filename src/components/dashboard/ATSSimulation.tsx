@@ -421,24 +421,24 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
             {/* Soft Skills AI Guess */}
             <div className="bg-[#0F172A] border border-slate-700 rounded-lg p-4">
               <h3 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
-                <span className="material-symbols-outlined text-purple-400 text-sm">psychology</span>
+                <span className="material-symbols-outlined text-teal-400 text-sm">psychology</span>
                 Soft Skills AI Inference
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs text-slate-300">
                   <span>Leadership</span>
                   <div className="flex gap-0.5">
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 70 ? "bg-purple-500" : "bg-purple-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 80 ? "bg-purple-500" : "bg-purple-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 90 ? "bg-purple-500" : "bg-purple-500/30"}`}></div>
+                    <div className={`w-8 h-1.5 rounded-full ${score >= 70 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
+                    <div className={`w-8 h-1.5 rounded-full ${score >= 80 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
+                    <div className={`w-8 h-1.5 rounded-full ${score >= 90 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-xs text-slate-300">
                   <span>Communication</span>
                   <div className="flex gap-0.5">
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 60 ? "bg-purple-500" : "bg-purple-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 75 ? "bg-purple-500" : "bg-purple-500/30"}`}></div>
-                    <div className="w-8 h-1.5 rounded-full bg-purple-500/30"></div>
+                    <div className={`w-8 h-1.5 rounded-full ${score >= 60 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
+                    <div className={`w-8 h-1.5 rounded-full ${score >= 75 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
+                    <div className="w-8 h-1.5 rounded-full bg-teal-500/30"></div>
                   </div>
                 </div>
               </div>

@@ -57,7 +57,7 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Missing Critical Skills</h4>
             {!isPremium && (
-              <span className="text-xs text-purple-400 flex items-center gap-1">
+              <span className="text-xs text-teal-400 flex items-center gap-1">
                 <Lock className="h-3 w-3" />
                 Premium Insight
               </span>
@@ -84,9 +84,9 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
               <div className="absolute inset-0 flex items-center justify-center">
                 <Button 
                   onClick={onUnlock}
-                  className="bg-slate-900/80 backdrop-blur-md border border-purple-500/50 text-white hover:bg-slate-800"
+                  className="bg-slate-900/80 backdrop-blur-md border border-teal-500/50 text-white hover:bg-slate-800"
                 >
-                  <Lock className="h-4 w-4 mr-2 text-purple-400" />
+                  <Lock className="h-4 w-4 mr-2 text-teal-400" />
                   Unlock Missing Keywords
                 </Button>
               </div>

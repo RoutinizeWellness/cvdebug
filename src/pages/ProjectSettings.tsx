@@ -74,7 +74,7 @@ export default function ProjectSettings() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="glass-panel rounded-xl p-6 shadow-glass border border-violet-500/20"
+                className="glass-panel rounded-xl p-6 shadow-glass border border-cyan-500/20"
               >
                 <h3 className="text-lg font-semibold text-white mb-2">UI Components Demo</h3>
                 <p className="text-slate-400 text-sm mb-4">

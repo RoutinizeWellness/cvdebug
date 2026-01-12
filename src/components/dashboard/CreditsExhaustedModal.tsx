@@ -85,7 +85,7 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl p-4">
+            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-teal-500/30 rounded-xl p-4">
               <p className="text-2xl font-black text-white mb-1">€4.99</p>
               <p className="text-xs text-zinc-400">One-time payment • No subscription • Instant access</p>
             </div>
@@ -95,7 +95,7 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
             <div className="px-6 py-4 border-t border-slate-800 flex gap-3 flex-col sm:flex-row">
               <button
                 onClick={onUpgrade}
-                className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/25 rounded-lg text-white flex items-center justify-center gap-2 transition-all"
+                className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-cyan-500/25 rounded-lg text-white flex items-center justify-center gap-2 transition-all"
               >
                 <Sparkles className="h-5 w-5" />
                 Unlock Full Report - €4.99

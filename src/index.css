@@ -36,58 +36,58 @@
 
 /* CHANGE VALUES FOR THEME */
 :root {
-  --background: 217 91% 4%; /* Dark by default - Deep Navy */
+  --background: 222 47% 5%; /* Rich Dark Charcoal */
   --foreground: 210 40% 98%;
-  --card: 215 25% 15%; /* Slate Deep */
+  --card: 220 26% 12%; /* Deep Slate */
   --card-foreground: 210 40% 98%;
-  --popover: 215 25% 15%;
+  --popover: 220 26% 12%;
   --popover-foreground: 210 40% 98%;
-  --primary: 262 83% 65%; /* Vibrant Violet */
+  --primary: 173 80% 40%; /* Professional Teal/Cyan */
   --primary-foreground: 210 40% 98%;
-  --secondary: 217 91% 60%; /* Electric Blue */
+  --secondary: 197 71% 48%; /* Cool Ocean Blue */
   --secondary-foreground: 210 40% 98%;
-  --muted: 217 32% 18%;
+  --muted: 220 17% 20%;
   --muted-foreground: 215 16% 70%;
-  --accent: 262 83% 65%;
+  --accent: 173 80% 40%;
   --accent-foreground: 210 40% 98%;
-  --destructive: 0 63% 31%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217 19% 27%;
-  --input: 217 19% 27%;
-  --ring: 262 83% 65%;
+  --border: 220 13% 25%;
+  --input: 220 13% 25%;
+  --ring: 173 80% 40%;
   --radius: 0.5rem;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+  --chart-1: 173 80% 40%;
+  --chart-2: 197 71% 48%;
+  --chart-3: 142 76% 36%;
+  --chart-4: 43 96% 56%;
+  --chart-5: 24 95% 53%;
 }
 
 .dark {
-  --background: 217 91% 4%; /* Deep Navy #020617 */
+  --background: 222 47% 5%; /* Rich Dark Charcoal */
   --foreground: 210 40% 98%;
-  --card: 215 25% 15%; /* Slate Deep #1E293B */
+  --card: 220 26% 12%; /* Deep Slate */
   --card-foreground: 210 40% 98%;
-  --popover: 215 25% 15%;
+  --popover: 220 26% 12%;
   --popover-foreground: 210 40% 98%;
-  --primary: 262 83% 65%; /* Vibrant Violet */
+  --primary: 173 80% 40%; /* Professional Teal/Cyan */
   --primary-foreground: 210 40% 98%;
-  --secondary: 217 91% 60%; /* Electric Blue */
+  --secondary: 197 71% 48%; /* Cool Ocean Blue */
   --secondary-foreground: 210 40% 98%;
-  --muted: 217 32% 18%;
+  --muted: 220 17% 20%;
   --muted-foreground: 215 16% 70%;
-  --accent: 262 83% 65%;
+  --accent: 173 80% 40%;
   --accent-foreground: 210 40% 98%;
-  --destructive: 0 63% 31%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217 19% 27%;
-  --input: 217 19% 27%;
-  --ring: 262 83% 65%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+  --border: 220 13% 25%;
+  --input: 220 13% 25%;
+  --ring: 173 80% 40%;
+  --chart-1: 173 80% 40%;
+  --chart-2: 197 71% 48%;
+  --chart-3: 142 76% 36%;
+  --chart-4: 43 96% 56%;
+  --chart-5: 24 95% 53%;
 }
 
 @layer base {
@@ -160,12 +160,12 @@
 }
 
 .glow-button {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
   transition: all 0.3s ease;
 }
 
 .glow-button:hover {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.5);
   transform: translateY(-1px);
 }
 
@@ -215,15 +215,15 @@
 /* AI Highlight styles for Writing Forge */
 .ai-highlight {
   text-decoration: underline;
-  text-decoration-color: #8B5CF6;
+  text-decoration-color: #06b6d4;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
-  text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+  text-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
   transition: all 0.2s ease;
 }
 
 .ai-highlight:hover {
-  background-color: rgba(139, 92, 246, 0.1);
+  background-color: rgba(6, 182, 212, 0.1);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -248,12 +248,12 @@
 
 /* New Year Promo Modal Styles */
 .glow-text {
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5), 0 0 20px rgba(34, 211, 238, 0.3);
 }
 
 .bg-fireworks {
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(127, 13, 242, 0.1) 0%, transparent 60%);
+    radial-gradient(circle at 20% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(34, 211, 238, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.1) 0%, transparent 60%);
 }

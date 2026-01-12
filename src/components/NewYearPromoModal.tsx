@@ -58,7 +58,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
           <div className="absolute inset-0 bg-fireworks"></div>
           {/* Abstract Fireworks SVG Decoration */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30">
-            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-purple-500 blur-[100px] opacity-20"></div>
+            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-teal-500 blur-[100px] opacity-20"></div>
             <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-blue-500 blur-[100px] opacity-20"></div>
           </div>
         </div>
@@ -132,8 +132,8 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                 >
                   <div className="flex flex-col justify-center p-6 w-full text-center md:text-left">
                     <div className="inline-flex items-center justify-center md:justify-start gap-2 mb-2">
-                      <Rocket className="h-5 w-5 text-purple-500" />
-                      <span className="text-purple-500 font-bold tracking-wider text-sm uppercase">
+                      <Rocket className="h-5 w-5 text-teal-500" />
+                      <span className="text-teal-500 font-bold tracking-wider text-sm uppercase">
                         New Year Pass
                       </span>
                     </div>
