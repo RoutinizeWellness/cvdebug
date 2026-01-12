@@ -1580,6 +1580,906 @@ export const blogPosts: Record<string, BlogPost> = {
         content: "Scan your resume with CVDebug to instantly identify which of these mistakes you're making. Get specific fixes for each issue in under 10 seconds."
       }
     ]
+  },
+
+  "cv-ats-espana-guia-2026": {
+    slug: "cv-ats-espana-guia-2026",
+    title: "Cómo Optimizar tu CV para ATS en España 2026 | Guía Completa",
+    metaTitle: "Optimizar CV para ATS España 2026 | Supera los Filtros Automáticos",
+    metaDescription: "Guía definitiva para optimizar tu currículum ATS en España. Aprende qué buscan los sistemas de seguimiento de candidatos y cómo destacar en InfoJobs, LinkedIn y portales españoles.",
+    author: "Equipo CVDebug",
+    publishDate: "2026-01-12",
+    lastUpdated: "2026-01-12",
+    readingTime: "9 min",
+    category: "Guías España",
+    tags: ["ATS España", "CV España", "InfoJobs", "Búsqueda Empleo", "Currículum"],
+    excerpt: "El 75% de las grandes empresas en España usan sistemas ATS. Descubre cómo optimizar tu CV para portales españoles como InfoJobs, LinkedIn y sistemas internos de RRHH.",
+    coverImage: "/blog-images/cv-ats-espana.jpg",
+    content: [
+      {
+        type: 'paragraph',
+        content: "Si has enviado decenas de solicitudes en InfoJobs, LinkedIn o Indeed y no recibes respuestas, probablemente tu CV no está pasando los filtros ATS (Applicant Tracking System) que las empresas españolas utilizan cada vez más."
+      },
+      {
+        type: 'paragraph',
+        content: "Según un estudio de 2025, el 75% de las empresas del IBEX 35 y más del 60% de las medianas empresas en España utilizan sistemas ATS para filtrar candidatos. Si tu CV no está optimizado, nunca llegará al departamento de RRHH."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "¿Qué es un Sistema ATS y Cómo Funciona en España?"
+      },
+      {
+        type: 'paragraph',
+        content: "Un ATS (Sistema de Seguimiento de Candidatos) es un software que automatiza el proceso de selección. En España, los más comunes son:"
+      },
+      {
+        type: 'list',
+        items: [
+          "InfoJobs Talent - Usado por miles de empresas españolas",
+          "LinkedIn Recruiter - Popular en multinacionales y startups",
+          "Workday - Común en grandes corporaciones (Telefónica, Santander, BBVA)",
+          "SAP SuccessFactors - Usado por empresas del IBEX 35",
+          "Sistemas propios de portales como Indeed, Glassdoor"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Errores Comunes en CVs Españoles que Bloquean el ATS"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "1. Formato PDF con Diseños Complejos"
+      },
+      {
+        type: 'paragraph',
+        content: "Muchos candidatos españoles usan plantillas de Canva o plantillas \"bonitas\" descargadas de internet con:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Columnas múltiples que confunden al ATS",
+          "Texto en imágenes (el ATS no puede leerlo)",
+          "Tablas complejas que rompen el orden de lectura",
+          "Fuentes decorativas que no se reconocen"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Solución: Usa un PDF simple de una columna con fuentes estándar (Arial, Calibri, Times New Roman). El ATS debe poder copiar y pegar el texto sin problemas."
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "2. Títulos de Secciones No Estándar"
+      },
+      {
+        type: 'paragraph',
+        content: "En España es común usar términos creativos, pero el ATS busca términos específicos:"
+      },
+      {
+        type: 'list',
+        items: [
+          "❌ \"Mi Trayectoria\" → ✅ \"Experiencia Profesional\" o \"Experiencia Laboral\"",
+          "❌ \"Mis Estudios\" → ✅ \"Formación Académica\" o \"Educación\"",
+          "❌ \"Lo Que Sé Hacer\" → ✅ \"Competencias\" o \"Habilidades\"",
+          "❌ \"Sobre Mí\" → ✅ \"Perfil Profesional\" o \"Resumen\""
+        ]
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "3. Falta de Palabras Clave del Sector Español"
+      },
+      {
+        type: 'paragraph',
+        content: "Los ATS españoles buscan términos específicos según el sector:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Tecnología: \"Desarrollo Web\", \"Full Stack\", \"JavaScript\", \"Python\", \"SQL\"",
+          "Finanzas: \"Análisis Financiero\", \"Excel Avanzado\", \"SAP\", \"Contabilidad\"",
+          "Marketing: \"Marketing Digital\", \"SEO\", \"Google Analytics\", \"Redes Sociales\"",
+          "Ventas: \"Atención al Cliente\", \"CRM\", \"Salesforce\", \"Negociación\""
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Cómo Optimizar tu CV para InfoJobs y LinkedIn España"
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "Para InfoJobs"
+      },
+      {
+        type: 'list',
+        items: [
+          "Usa el formato de CV que sugiere la plataforma (no subas diseños personalizados)",
+          "Rellena TODOS los campos del perfil - el algoritmo valora la completitud",
+          "Incluye palabras clave exactas de la oferta en tu perfil",
+          "Actualiza tu CV cada 2-3 días para aparecer en las primeras búsquedas",
+          "Añade certificados y formaciones actualizadas (muy valorado por RRHH español)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "Para LinkedIn España"
+      },
+      {
+        type: 'list',
+        items: [
+          "Activa \"Open to Work\" con las ciudades españolas donde buscas (Madrid, Barcelona, Valencia, etc.)",
+          "Optimiza el titular con palabras clave: \"Desarrollador Full Stack | React | Node.js | Madrid\"",
+          "Escribe un extracto con términos que los recruiters españoles buscan",
+          "Obtén recomendaciones y validaciones de habilidades",
+          "Participa en grupos de LinkedIn españoles de tu sector"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Estructura Ideal de CV para ATS España"
+      },
+      {
+        type: 'list',
+        items: [
+          "1. Datos de Contacto - Nombre, teléfono (+34), email, LinkedIn, ciudad (importante en España)",
+          "2. Perfil Profesional - 3-4 líneas con palabras clave del puesto",
+          "3. Experiencia Laboral - Orden cronológico inverso, con logros cuantificados",
+          "4. Formación Académica - Titulación, universidad, año (muy valorado en España)",
+          "5. Idiomas - Nivel certificado (A1-C2) o \"Nativo\", \"Bilingüe\" (crucial para multinacionales)",
+          "6. Competencias Técnicas - Listado claro de herramientas y tecnologías",
+          "7. Certificaciones - Cursos, masters, certificados oficiales"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Particularidades del Mercado Español"
+      },
+      {
+        type: 'paragraph',
+        content: "A diferencia de otros mercados, en España se valora especialmente:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Foto profesional - Aunque controvertido, el 70% de CVs españoles la incluyen",
+          "Idiomas - Inglés es casi obligatorio, otros idiomas son un plus",
+          "Formación continua - Másters, posgrados, certificaciones son muy valorados",
+          "Experiencia en empresas conocidas - Mencionar empresas españolas reconocidas suma puntos",
+          "Ubicación geográfica - Especificar ciudad y disponibilidad de movilidad"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Importante: La RGPD europea obliga a incluir una cláusula de protección de datos en el CV. Añade al final: \"Autorizo el tratamiento de mis datos personales conforme al RGPD (UE) 2016/679.\""
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Errores Específicos en CVs Españoles"
+      },
+      {
+        type: 'list',
+        items: [
+          "Usar \"CV Europass\" - Formato obsoleto que muchos ATS no leen bien",
+          "Incluir DNI o NIE completo - Solo últimos 3 dígitos por seguridad",
+          "Poner fecha de nacimiento - No es necesario y puede generar discriminación",
+          "Hobbies irrelevantes - A menos que aporten valor al puesto",
+          "Referencias - Solo incluir si lo piden expresamente"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Cómo Testear tu CV con CVDebug"
+      },
+      {
+        type: 'paragraph',
+        content: "CVDebug simula cómo los sistemas ATS españoles leen tu CV:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Vista Robot - Ve exactamente qué texto extrae el ATS de tu PDF",
+          "Score ATS - Puntuación de 0-100 de compatibilidad con sistemas españoles",
+          "Análisis de Palabras Clave - Identifica términos que faltan vs ofertas de InfoJobs/LinkedIn",
+          "Reporte de Formato - Detecta problemas de columnas, tablas o imágenes",
+          "Comparación con Ofertas - Analiza el match con descripciones reales de empresas españolas"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Checklist Final para CV ATS España"
+      },
+      {
+        type: 'list',
+        items: [
+          "✅ Formato PDF simple de 1-2 páginas máximo",
+          "✅ Fuente Arial, Calibri o Times New Roman, tamaño 10-12pt",
+          "✅ Secciones con títulos estándar en español",
+          "✅ Palabras clave de la oferta incluidas naturalmente",
+          "✅ Experiencia con logros cuantificados (%, €, fechas)",
+          "✅ Idiomas con nivel certificado (A1-C2, MCER)",
+          "✅ Email profesional (evita hotmail, yahoo - usa Gmail)",
+          "✅ Teléfono con prefijo +34",
+          "✅ Cláusula RGPD al final del documento",
+          "✅ Sin errores ortográficos (tildes correctas)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Con estos ajustes específicos para el mercado español, tu CV tendrá muchas más posibilidades de superar los filtros ATS y llegar a manos de reclutadores reales."
+      },
+      {
+        type: 'cta',
+        content: "Escanea tu CV gratis con CVDebug y descubre en 10 segundos si está optimizado para ATS españoles como InfoJobs y LinkedIn."
+      }
+    ]
+  },
+
+  "infojobs-linkedin-ats-optimization": {
+    slug: "infojobs-linkedin-ats-optimization",
+    title: "Cómo Optimizar tu Perfil para InfoJobs y LinkedIn en 2026",
+    metaTitle: "Optimizar InfoJobs y LinkedIn para ATS | Consigue Más Entrevistas",
+    metaDescription: "Guía paso a paso para optimizar tu perfil de InfoJobs y LinkedIn. Aprende los secretos de los algoritmos ATS y cómo aparecer en las búsquedas de recruiters españoles.",
+    author: "Equipo CVDebug",
+    publishDate: "2026-01-12",
+    lastUpdated: "2026-01-12",
+    readingTime: "7 min",
+    category: "Plataformas Empleo",
+    tags: ["InfoJobs", "LinkedIn", "ATS", "Búsqueda Empleo España"],
+    excerpt: "InfoJobs y LinkedIn son las plataformas #1 para buscar empleo en España. Descubre cómo optimizar tu perfil para que los sistemas ATS y recruiters te encuentren primero.",
+    coverImage: "/blog-images/infojobs-linkedin-optimization.jpg",
+    content: [
+      {
+        type: 'paragraph',
+        content: "InfoJobs tiene más de 15 millones de usuarios en España y LinkedIn supera los 9 millones. Pero tener un perfil no es suficiente - necesitas optimizarlo para que los sistemas ATS y los recruiters te encuentren."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Cómo Funciona el Algoritmo de InfoJobs"
+      },
+      {
+        type: 'paragraph',
+        content: "InfoJobs usa un sistema de puntuación interno que prioriza candidatos según:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Completitud del perfil (100% = máxima visibilidad)",
+          "Actualización reciente (CVs actualizados hace menos de 7 días tienen prioridad)",
+          "Palabras clave coincidentes con la búsqueda",
+          "Tasa de respuesta a ofertas (responder rápido mejora tu ranking)",
+          "Validación de datos (email, teléfono, experiencia verificada)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "Estrategias para InfoJobs"
+      },
+      {
+        type: 'list',
+        items: [
+          "1. Completa TODOS los campos - No dejes nada en blanco, ni siquiera opcional",
+          "2. Actualiza tu CV cada 3 días - Aunque no cambies nada, edita y guarda (resetea el ranking)",
+          "3. Usa el buscador de ofertas diariamente - El algoritmo detecta actividad",
+          "4. Inscríbete a ofertas en las primeras 24 horas - Los recruiters ven primero los primeros candidatos",
+          "5. Personaliza cada inscripción - InfoJobs valora las cartas de presentación personalizadas"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Truco Pro: InfoJobs muestra primero los CVs actualizados recientemente. Edita tu perfil cada lunes, miércoles y viernes para aparecer arriba en las búsquedas."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Cómo Optimizar LinkedIn para Recruiters Españoles"
+      },
+      {
+        type: 'paragraph',
+        content: "LinkedIn tiene 3 algoritmos que debes entender:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Algoritmo de búsqueda (LinkedIn Recruiter) - Cómo te encuentran los recruiters",
+          "Algoritmo de recomendación - Qué perfiles sugiere LinkedIn",
+          "Algoritmo del feed - Qué publicaciones muestran (para aumentar visibilidad)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "Optimización del Titular de LinkedIn"
+      },
+      {
+        type: 'paragraph',
+        content: "El titular es lo primero que ven recruiters. Debe incluir:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Tu puesto o especialización",
+          "2-3 habilidades clave (las más buscadas)",
+          "Ubicación o disponibilidad geográfica",
+          "Valor diferencial o logro destacado"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Ejemplos efectivos:"
+      },
+      {
+        type: 'list',
+        items: [
+          "\"Desarrollador Full Stack | React + Node.js | +50 proyectos | Madrid\"",
+          "\"Marketing Digital | SEO & SEM | Especialista en eCommerce | Barcelona\"",
+          "\"Enfermera UCI | 8 años experiencia | Acreditación SEMICYUC | Valencia\"",
+          "\"Analista Financiero | Excel Avanzado + Power BI | Big 4 | Disponible España\""
+        ]
+      },
+      {
+        type: 'heading',
+        level: 3,
+        content: "Extracto de LinkedIn que Convierte"
+      },
+      {
+        type: 'paragraph',
+        content: "El extracto (\"Acerca de\") debe seguir esta estructura:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Párrafo 1: Quién eres y qué haces (con palabras clave principales)",
+          "Párrafo 2: Tu experiencia y logros destacados (con números)",
+          "Párrafo 3: Qué buscas y cómo contactarte",
+          "Incluir 5-7 palabras clave del sector repartidas naturalmente"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Las primeras 2 líneas del extracto son críticas - ahí aparecen en las búsquedas. Incluye tus palabras clave más importantes."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Sección de Experiencia: Errores Comunes"
+      },
+      {
+        type: 'list',
+        items: [
+          "❌ Copiar y pegar la descripción genérica del puesto",
+          "✅ Escribir logros específicos con métricas (\"Aumenté ventas un 35%\")",
+          "❌ Listar solo responsabilidades",
+          "✅ Mostrar impacto y resultados tangibles",
+          "❌ Dejar fechas incompletas o incoherentes",
+          "✅ Completar mes y año de inicio/fin de cada puesto"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Habilidades: Cómo Elegirlas Estratégicamente"
+      },
+      {
+        type: 'paragraph',
+        content: "LinkedIn permite 50 habilidades, pero solo las primeras 3 se muestran en tu perfil público:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Elige las 3 habilidades MÁS buscadas en tu sector como principales",
+          "Consigue al menos 5 validaciones en cada una (pide a colegas)",
+          "Añade las 47 restantes con términos relacionados que recruiters buscan",
+          "Revisa ofertas de empleo y añade habilidades que se repiten"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Herramientas para encontrar habilidades clave:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Busca 10 ofertas de tu puesto ideal y extrae habilidades comunes",
+          "Mira perfiles de profesionales exitosos en tu área",
+          "Usa la función de LinkedIn \"Añadir habilidad\" - sugiere las más relevantes",
+          "Analiza con CVDebug qué habilidades faltan en tu perfil"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Certificados y Formación: Qué Añadir"
+      },
+      {
+        type: 'paragraph',
+        content: "LinkedIn valora especialmente:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Cursos de LinkedIn Learning con certificado",
+          "Certificaciones oficiales (Google, Microsoft, AWS, etc.)",
+          "Másters y posgrados de universidades reconocidas",
+          "Cursos de Coursera, Udemy, Platzi con certificado verificable",
+          "Formación continua reciente (último año)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Estrategia de Actividad en LinkedIn"
+      },
+      {
+        type: 'paragraph',
+        content: "Ser activo mejora tu visibilidad exponencialmente:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Publica 1-2 veces por semana sobre tu sector",
+          "Comenta en publicaciones de empresas donde quieres trabajar",
+          "Reacciona y comparte contenido relevante de tu industria",
+          "Participa en grupos de LinkedIn españoles de tu área",
+          "Envía 5-10 solicitudes de conexión semanales estratégicas"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Algoritmo secreto de LinkedIn: Los perfiles activos (publican, comentan, conectan) aparecen 3x más en búsquedas de recruiters."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Open to Work: Cómo Usarlo Correctamente"
+      },
+      {
+        type: 'paragraph',
+        content: "Activar \"Open to Work\" correctamente es crucial:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Especifica ciudades concretas (no solo \"España\" - sé específico)",
+          "Elige tipos de empleo realistas (tiempo completo, temporal, freelance)",
+          "Marca \"Solo recruiters\" si no quieres que tu empresa actual lo vea",
+          "Actualiza cada 2-3 semanas para que LinkedIn lo priorice",
+          "Añade \"Disponibilidad inmediata\" si es tu caso (recruiters lo filtran)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Comparativa: InfoJobs vs LinkedIn"
+      },
+      {
+        type: 'paragraph',
+        content: "Cada plataforma tiene sus fortalezas:"
+      },
+      {
+        type: 'list',
+        items: [
+          "InfoJobs - Mejor para: sectores tradicionales, ventas, admin, enfermería, hostelería",
+          "LinkedIn - Mejor para: tech, marketing digital, finanzas, dirección, consulting",
+          "InfoJobs - Más ofertas de pymes y empresas nacionales",
+          "LinkedIn - Más multinacionales y startups",
+          "InfoJobs - Proceso más rápido (respuestas en días)",
+          "LinkedIn - Proceso más lento pero salarios más altos"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Estrategia recomendada: Usa ambas plataformas simultáneamente. InfoJobs para volumen de ofertas, LinkedIn para oportunidades de calidad."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Checklist de Optimización"
+      },
+      {
+        type: 'paragraph',
+        content: "InfoJobs:"
+      },
+      {
+        type: 'list',
+        items: [
+          "✅ Perfil 100% completo (verificado con email y teléfono)",
+          "✅ CV actualizado en los últimos 7 días",
+          "✅ Palabras clave del sector en descripción de experiencia",
+          "✅ Carta de presentación base personalizable",
+          "✅ Foto profesional (opcional pero recomendado)",
+          "✅ Actividad semanal en la plataforma"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "LinkedIn:"
+      },
+      {
+        type: 'list',
+        items: [
+          "✅ Titular optimizado con palabras clave + ubicación",
+          "✅ Extracto con estructura clara y CTAs",
+          "✅ Foto profesional de calidad alta",
+          "✅ Portada personalizada (diseño con Canva)",
+          "✅ 3 habilidades principales con +5 validaciones cada una",
+          "✅ 50 habilidades totales añadidas",
+          "✅ Experiencia con logros cuantificados",
+          "✅ Open to Work activado correctamente",
+          "✅ Al menos 1 publicación o comentario semanal"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Analiza tu CV con CVDebug antes de subirlo a InfoJobs o LinkedIn. Descubre qué palabras clave te faltan y cómo mejorar tu score ATS en 10 segundos."
+      }
+    ]
+  },
+
+  "keywords-cv-tecnologia-espana": {
+    slug: "keywords-cv-tecnologia-espana",
+    title: "100+ Palabras Clave para CVs de Tecnología en España 2026",
+    metaTitle: "Palabras Clave CV Tecnología España | Desarrollador, DevOps, Data",
+    metaDescription: "Lista completa de keywords ATS para CVs de tecnología en España. Palabras clave para desarrolladores, DevOps, data scientists y más que buscan empresas españolas.",
+    author: "Equipo CVDebug",
+    publishDate: "2026-01-12",
+    lastUpdated: "2026-01-12",
+    readingTime: "8 min",
+    category: "Keywords por Sector",
+    tags: ["Palabras Clave", "Tecnología", "Desarrollador", "DevOps", "Data Science"],
+    excerpt: "Las empresas tech españolas buscan keywords específicas en CVs. Descubre más de 100 palabras clave organizadas por especialidad que aumentarán tu match ATS.",
+    coverImage: "/blog-images/keywords-tech-spain.jpg",
+    content: [
+      {
+        type: 'paragraph',
+        content: "El sector tecnológico en España ha crecido un 40% desde 2020. Startups, consultoras y multinacionales buscan perfiles tech con keywords muy específicas. Tu CV debe incluir estas palabras para pasar los filtros ATS."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Palabras Clave para Desarrolladores Full Stack"
+      },
+      {
+        type: 'paragraph',
+        content: "Lenguajes de programación (incluye versiones):"
+      },
+      {
+        type: 'list',
+        items: [
+          "JavaScript / TypeScript (ES6+, Node.js)",
+          "Python (3.x, Django, Flask, FastAPI)",
+          "Java (Spring Boot, Jakarta EE, Maven)",
+          "PHP (Laravel, Symfony)",
+          "C# (.NET Core, ASP.NET)",
+          "Go / Golang (Gin, Echo)",
+          "Ruby (Ruby on Rails)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Frontend (muy demandado en España):"
+      },
+      {
+        type: 'list',
+        items: [
+          "React.js / Next.js (Hooks, Context API)",
+          "Vue.js / Nuxt.js (Composition API, Vuex)",
+          "Angular (Ivy, RxJS, NgRx)",
+          "HTML5 / CSS3 (Flexbox, Grid)",
+          "Tailwind CSS / Bootstrap / Material UI",
+          "Responsive Design / Mobile First",
+          "Webpack / Vite / Rollup",
+          "PWA (Progressive Web Apps)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Backend y APIs:"
+      },
+      {
+        type: 'list',
+        items: [
+          "REST API / RESTful services",
+          "GraphQL (Apollo Server/Client)",
+          "Microservicios / Arquitectura de microservicios",
+          "Node.js / Express.js",
+          "API Gateway / NGINX",
+          "WebSockets / Socket.io",
+          "JWT / OAuth 2.0 / SSO"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Palabras Clave para DevOps / SRE"
+      },
+      {
+        type: 'paragraph',
+        content: "Cloud (esencial en 2026):"
+      },
+      {
+        type: 'list',
+        items: [
+          "AWS (EC2, S3, Lambda, RDS, EKS, CloudFormation)",
+          "Azure (Azure Functions, AKS, Blob Storage)",
+          "Google Cloud Platform / GCP (GKE, Cloud Functions)",
+          "Multi-cloud / Hybrid Cloud"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Contenedores y orquestación:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Docker / Dockerfile / Docker Compose",
+          "Kubernetes / K8s (Helm, Kustomize)",
+          "OpenShift",
+          "Container Registry (ECR, ACR, GCR)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "CI/CD:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Jenkins / Jenkins Pipeline",
+          "GitLab CI/CD",
+          "GitHub Actions",
+          "Azure DevOps / Azure Pipelines",
+          "ArgoCD / Flux",
+          "Terraform / Terragrunt",
+          "Ansible / Chef / Puppet"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Monitorización (muy valorado):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Prometheus / Grafana",
+          "ELK Stack (Elasticsearch, Logstash, Kibana)",
+          "Datadog / New Relic",
+          "AWS CloudWatch",
+          "Splunk"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Palabras Clave para Data Science / IA"
+      },
+      {
+        type: 'paragraph',
+        content: "Machine Learning:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Python (NumPy, Pandas, Scikit-learn)",
+          "TensorFlow / Keras",
+          "PyTorch",
+          "Machine Learning / ML",
+          "Deep Learning / Redes Neuronales",
+          "Computer Vision / OpenCV",
+          "NLP / Natural Language Processing",
+          "MLOps / Model Deployment"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Big Data (creciente demanda en España):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Apache Spark / PySpark",
+          "Hadoop / HDFS",
+          "Kafka / Apache Kafka",
+          "Airflow / Apache Airflow",
+          "Data Pipeline / ETL",
+          "Data Warehouse / Data Lake",
+          "Snowflake / Databricks"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Visualización de datos:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Power BI (Microsoft)",
+          "Tableau",
+          "Looker / Google Data Studio",
+          "Python (Matplotlib, Seaborn, Plotly)",
+          "SQL avanzado (queries complejas, optimización)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Bases de Datos (Imprescindible)"
+      },
+      {
+        type: 'paragraph',
+        content: "SQL:"
+      },
+      {
+        type: 'list',
+        items: [
+          "PostgreSQL / Postgres",
+          "MySQL / MariaDB",
+          "Microsoft SQL Server",
+          "Oracle Database",
+          "SQL Queries / Query Optimization"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "NoSQL:"
+      },
+      {
+        type: 'list',
+        items: [
+          "MongoDB",
+          "Redis / Redis Cache",
+          "Cassandra",
+          "DynamoDB",
+          "Neo4j (grafos)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Metodologías y Soft Skills Tech"
+      },
+      {
+        type: 'paragraph',
+        content: "Metodologías Agile (muy común en empresas españolas):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Scrum (Scrum Master, Product Owner)",
+          "Kanban",
+          "Agile / Desarrollo Ágil",
+          "Sprint Planning / Daily Standup",
+          "JIRA / Confluence",
+          "Git / GitHub / GitLab / Bitbucket",
+          "Code Review / Pull Requests"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Seguridad (muy valorado en 2026):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Seguridad de aplicaciones / AppSec",
+          "OWASP Top 10",
+          "Pentesting / Ethical Hacking",
+          "SSL/TLS / Certificados",
+          "Firewall / WAF",
+          "IAM (Identity and Access Management)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Certificaciones Técnicas Valoradas en España"
+      },
+      {
+        type: 'list',
+        items: [
+          "AWS Certified (Solutions Architect, Developer, SysOps)",
+          "Microsoft Azure (AZ-900, AZ-104, AZ-305)",
+          "Google Cloud Professional",
+          "CKA / CKAD (Certified Kubernetes Administrator/Developer)",
+          "Scrum Master Certification (PSM, CSM)",
+          "CompTIA (Security+, Network+)",
+          "CISSP / CEH (seguridad)"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Palabras Clave por Empresa Española"
+      },
+      {
+        type: 'paragraph',
+        content: "Startups españolas buscan:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Full Stack, Startup Experience, MVP, Product-minded Engineer",
+          "React + Node.js, Firebase, Vercel, Supabase",
+          "Fast learner, Ownership, Autonomía"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Consultoras (Accenture, Deloitte, Everis):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Java Spring Boot, Microservicios, Cloud (AWS/Azure)",
+          "Cliente final, Disponibilidad viajar, Inglés",
+          "SAP, Salesforce, ServiceNow"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Grandes empresas (Telefónica, BBVA, Santander):"
+      },
+      {
+        type: 'list',
+        items: [
+          "Enterprise Architecture, Legacy Systems, Banking Experience",
+          "Mainframe, COBOL (sí, todavía), Core Banking",
+          "Compliance, GDPR, Seguridad"
+        ]
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Cómo Incluir Keywords en tu CV"
+      },
+      {
+        type: 'list',
+        items: [
+          "1. En el Perfil Profesional - Incluye 5-7 keywords principales",
+          "2. En Competencias Técnicas - Lista completa de tecnologías",
+          "3. En Experiencia - Usa keywords en contexto (\"Desarrollé APIs REST con Node.js\")",
+          "4. En Proyectos - Menciona tecnologías concretas usadas",
+          "5. En Certificaciones - Nombres exactos de certificados"
+        ]
+      },
+      {
+        type: 'quote',
+        content: "Importante: No mientas. Solo incluye tecnologías que realmente conoces. Los ATS pasan tu CV, pero las entrevistas técnicas revelan la verdad."
+      },
+      {
+        type: 'heading',
+        level: 2,
+        content: "Errores Comunes con Keywords Tech"
+      },
+      {
+        type: 'list',
+        items: [
+          "❌ Poner solo \"Programación\" sin especificar lenguajes",
+          "❌ Usar términos genéricos como \"Varias tecnologías web\"",
+          "❌ Olvidar versiones (\"React\" vs \"React 18+\")",
+          "❌ No incluir frameworks populares en España (Spring Boot, Laravel)",
+          "❌ Saturar el CV con keywords sin contexto (keyword stuffing)"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Analiza tu CV tech con CVDebug. Compáralo con ofertas reales de InfoJobs, LinkedIn y portales tech españoles. Descubre qué keywords te faltan para aumentar tu match ATS."
+      }
+    ]
   }
 };
 
