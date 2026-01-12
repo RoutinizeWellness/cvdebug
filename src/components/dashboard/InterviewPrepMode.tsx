@@ -44,6 +44,17 @@ export function InterviewPrepMode({
   const generatePrep = useAction(apiAny.ai.interviewPrep.generateInterviewPrep);
 
   const handleGenerate = async () => {
+    // Validation
+    if (!jobDescription || jobDescription.trim().length < 10) {
+      toast.error("Please provide a valid job description to generate interview prep.");
+      return;
+    }
+
+    if (!resumeText || resumeText.trim().length < 50) {
+      toast.error("Resume text is too short. Please upload a valid resume first.");
+      return;
+    }
+
     setIsGenerating(true);
     try {
       const result = await generatePrep({
@@ -56,12 +67,23 @@ export function InterviewPrepMode({
       setPrepData(result);
       toast.success("Battle Plan Generated!");
     } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "Failed to generate prep");
+      console.error("[InterviewPrep Error]:", error);
+
+      // Better error messages
+      if (error.message?.includes("OPENROUTER_API_KEY")) {
+        toast.error("API key not configured. Please contact support.");
+      } else if (error.message?.includes("Server Error")) {
+        toast.error("Failed to generate prep. This feature requires an active subscription with AI credits.");
+      } else {
+        toast.error(error.message || "Failed to generate prep. Please try again.");
+      }
     } finally {
       setIsGenerating(false);
     }
   };
+
+  const canGenerate = jobDescription && jobDescription.trim().length >= 10 &&
+                      resumeText && resumeText.trim().length >= 50;
 
   if (!prepData) {
     return (
@@ -74,10 +96,24 @@ export function InterviewPrepMode({
           <p className="text-sm text-zinc-400 text-center max-w-md mb-6">
             Generate personalized interview prep with expected questions, STAR stories, and strategic talking points.
           </p>
-          <Button 
-            onClick={handleGenerate} 
-            disabled={isGenerating}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold"
+
+          {!canGenerate && (
+            <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg max-w-md">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-yellow-400">
+                  {!jobDescription || jobDescription.trim().length < 10
+                    ? "Missing job description. Please add one in the Overview tab first."
+                    : "Resume text is missing or invalid. Please upload a valid resume."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <Button
+            onClick={handleGenerate}
+            disabled={isGenerating || !canGenerate}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Battle Plan...</>

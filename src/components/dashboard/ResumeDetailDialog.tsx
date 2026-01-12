@@ -74,6 +74,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
   const [isReanalyzing, setIsReanalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
+  const [isPdfCollapsed, setIsPdfCollapsed] = useState(false);
   
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
@@ -1205,10 +1206,19 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               </Tabs>
 
               {/* Center Image/Preview */}
-              <div className={`flex-1 bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
+              <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'flex-1'} bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
-                
-                <button 
+
+                {/* Collapse/Expand Button */}
+                <button
+                  onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
+                  className="absolute top-4 left-4 z-20 p-2 bg-primary/90 hover:bg-primary text-white rounded-lg backdrop-blur-sm transition-all shadow-lg"
+                  title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
+                >
+                  {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
+                </button>
+
+                <button
                   onClick={() => setIsImmersive(!isImmersive)}
                   className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 text-white rounded-lg backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 hidden lg:block"
                   title={isImmersive ? "Exit Fullscreen" : "Enter Fullscreen"}
@@ -1216,34 +1226,36 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   {isImmersive ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
                 </button>
 
-                <div className="w-full h-full flex items-center justify-center relative z-10">
-                  {displayResume?.mimeType.startsWith("image/") ? (
-                    <img 
-                      className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white" 
-                      src={displayResume?.url} 
-                      alt={displayResume?.title} 
-                    />
-                  ) : displayResume?.mimeType === "application/pdf" ? (
-                    <iframe 
-                      src={displayResume?.url} 
-                      className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
-                      title="Resume Preview"
-                    />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-center p-6 bg-zinc-900 rounded-lg shadow-xl max-w-md border border-zinc-800">
-                      <div className="h-20 w-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
-                        <FileText className="h-10 w-10 text-zinc-400" />
+                {!isPdfCollapsed && (
+                  <div className="w-full h-full flex items-center justify-center relative z-10">
+                    {displayResume?.mimeType.startsWith("image/") ? (
+                      <img
+                        className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                        src={displayResume?.url}
+                        alt={displayResume?.title}
+                      />
+                    ) : displayResume?.mimeType === "application/pdf" ? (
+                      <iframe
+                        src={displayResume?.url}
+                        className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                        title="Resume Preview"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-center p-6 bg-zinc-900 rounded-lg shadow-xl max-w-md border border-zinc-800">
+                        <div className="h-20 w-20 bg-zinc-800 rounded-full flex items-center justify-center mb-6">
+                          <FileText className="h-10 w-10 text-zinc-400" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-2 text-white">Preview Not Available</h3>
+                        <p className="text-zinc-400 mb-8">
+                          This file type cannot be previewed directly in the browser. You can download it to view the content.
+                        </p>
+                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
+                          <Download className="h-4 w-4 mr-2" /> Download File
+                        </Button>
                       </div>
-                      <h3 className="text-xl font-bold mb-2 text-white">Preview Not Available</h3>
-                      <p className="text-zinc-400 mb-8">
-                        This file type cannot be previewed directly in the browser. You can download it to view the content.
-                      </p>
-                      <Button onClick={handleDownloadFile} className="font-bold shadow-lg shadow-primary/20">
-                        <Download className="h-4 w-4 mr-2" /> Download File
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Right Panel - Actions */}
