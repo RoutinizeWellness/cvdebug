@@ -9,6 +9,23 @@ import { generateFallbackAnalysis } from "./fallbackAnalysis";
 // Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
 
+// Safe logging helper - doesn't throw if monitoring fails
+async function safeLogSuccess(ctx: any, params: any) {
+  try {
+    await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, params);
+  } catch (err) {
+    console.warn("[AI Analysis] Failed to log success (non-critical):", err);
+  }
+}
+
+async function safeLogFailure(ctx: any, params: any) {
+  try {
+    await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, params);
+  } catch (err) {
+    console.warn("[AI Analysis] Failed to log failure (non-critical):", err);
+  }
+}
+
 export const analyzeResume = internalAction({
   args: {
     id: v.id("resumes"),
@@ -77,25 +94,36 @@ export const analyzeResume = internalAction({
         try {
           analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
           usedFallback = true;
-          
-          // Log fallback usage
-          await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
-            service: "resumeAnalysis",
-            model: "fallback",
-            userId,
-            duration: Date.now() - startTime,
-          });
+
+          // Log fallback usage (non-blocking)
+          try {
+            await safeLogSuccess(ctx, {
+              service: "resumeAnalysis",
+              model: "fallback",
+              userId,
+              duration: Date.now() - startTime,
+            });
+          } catch (logErr) {
+            console.warn("[AI Analysis] Failed to log success, continuing:", logErr);
+          }
         } catch (err) {
           console.error("[AI Analysis] Fallback analysis failed:", err);
-          await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
-            service: "resumeAnalysis",
-            model: "fallback",
-            errorType: "fallback_error",
-            errorMessage: String(err),
-            userId,
-            duration: Date.now() - startTime,
-            usedFallback: true,
-          });
+
+          // Try to log failure (non-blocking)
+          try {
+            await safeLogFailure(ctx, {
+              service: "resumeAnalysis",
+              model: "fallback",
+              errorType: "fallback_error",
+              errorMessage: String(err),
+              userId,
+              duration: Date.now() - startTime,
+              usedFallback: true,
+            });
+          } catch (logErr) {
+            console.warn("[AI Analysis] Failed to log error, continuing:", logErr);
+          }
+
           throw new Error("Failed to generate fallback analysis");
         }
       } else {
@@ -129,7 +157,7 @@ export const analyzeResume = internalAction({
           console.log("[AI Analysis] Successfully parsed AI response");
 
           // Log success
-          await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+          await safeLogSuccess(ctx, {
             service: "resumeAnalysis",
             model: modelUsed,
             userId,
@@ -167,7 +195,7 @@ export const analyzeResume = internalAction({
           console.error("[AI Analysis] Primary AI (Gemini) failed, attempting secondary fallback:", error.message);
           
           // Log primary failure
-          await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+          await safeLogFailure(ctx, {
             service: "resumeAnalysis",
             model: modelUsed,
             errorType: error.message.includes("timeout") ? "timeout" : "api_error",
@@ -193,7 +221,7 @@ export const analyzeResume = internalAction({
             console.log("[AI Analysis] Secondary AI model succeeded");
             
             // Log secondary success
-            await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+            await safeLogSuccess(ctx, {
               service: "resumeAnalysis",
               model: modelUsed,
               userId,
@@ -204,7 +232,7 @@ export const analyzeResume = internalAction({
             console.error("[AI Analysis] Secondary AI also failed, using ML-based analysis:", secondaryError.message);
             
             // Log secondary failure
-            await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+            await safeLogFailure(ctx, {
               service: "resumeAnalysis",
               model: modelUsed,
               errorType: "api_error",
@@ -219,7 +247,7 @@ export const analyzeResume = internalAction({
               usedFallback = true;
               
               // Log fallback success
-              await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
+              await safeLogSuccess(ctx, {
                 service: "resumeAnalysis",
                 model: "fallback",
                 userId,
@@ -229,7 +257,7 @@ export const analyzeResume = internalAction({
               console.error("[AI Analysis] Fallback analysis failed after all AI attempts:", err);
               
               // Log fallback failure
-              await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+              await safeLogFailure(ctx, {
                 service: "resumeAnalysis",
                 model: "fallback",
                 errorType: "fallback_error",
@@ -402,7 +430,7 @@ export const analyzeResume = internalAction({
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
       
       // Log critical error
-      await ctx.runMutation(internalAny.aiMonitoring.logAIFailure, {
+      await safeLogFailure(ctx, {
         service: "resumeAnalysis",
         model: "unknown",
         errorType: "critical_error",
