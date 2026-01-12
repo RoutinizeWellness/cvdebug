@@ -16,7 +16,22 @@ export function ATSAnalysisReport({
 }: ATSAnalysisReportProps) {
   const score = resume?.score || 82;
   const matchedKeywords = resume?.matchedKeywords || [];
-  const missingKeywords = resume?.missingKeywords || [];
+
+  // Handle missing keywords - can be array of strings or objects
+  const rawMissingKeywords = resume?.missingKeywords || [];
+  const missingKeywords = rawMissingKeywords.map((kw: any) =>
+    typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
+  ).filter((k: string) => k.length > 0);
+
+  // Debug logging
+  console.log('[ATSAnalysisReport] Resume data:', {
+    score,
+    matchedCount: matchedKeywords.length,
+    missingCount: missingKeywords.length,
+    rawMissingType: typeof rawMissingKeywords[0],
+    sampleMissing: rawMissingKeywords[0]
+  });
+
   const ocrText = resume?.ocrText || "";
 
   // Parse score to percentage for visual display
