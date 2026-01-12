@@ -61,7 +61,7 @@ export function KeywordSniperTool({
     [missingKeywords]
   );
 
-  // Generate AI suggestions dynamically based on real keywords
+  // Generate AI suggestions dynamically based on real keywords and current bullet context
   const suggestions: Suggestion[] = useMemo(() => {
     const topKeywords = highImpactKeywords.slice(0, 2).map(kw => kw.keyword);
 
@@ -72,11 +72,89 @@ export function KeywordSniperTool({
       topKeywords.push("modern practices");
     }
 
-    // Action verbs for variety
-    const actionVerbs = ["Orchestrated", "Implemented", "Engineered", "Spearheaded", "Architected"];
-    const verb1 = actionVerbs[0];
-    const verb2 = actionVerbs[1];
-    const verb3 = actionVerbs[2];
+    // Detect context from current bullet to provide relevant suggestions
+    const bullet = currentBullet.toLowerCase();
+    const isDatabase = /database|sql|data|query|storage|mongodb|postgres|redis/i.test(bullet);
+    const isAPI = /api|endpoint|rest|graphql|microservice/i.test(bullet);
+    const isFrontend = /frontend|ui|ux|react|vue|angular|component/i.test(bullet);
+    const isBackend = /backend|server|node|python|java|spring/i.test(bullet);
+    const isDevOps = /deploy|ci\/cd|docker|kubernetes|jenkins|pipeline/i.test(bullet);
+    const isCloud = /aws|azure|gcp|cloud|lambda|s3/i.test(bullet);
+    const isPerformance = /performance|optimi[zs]e|speed|latency|cache/i.test(bullet);
+    const isSecurity = /security|auth|encryption|secure|vulnerability/i.test(bullet);
+    const isTeam = /team|lead|mentor|manage|coordinate/i.test(bullet);
+    const isTesting = /test|quality|qa|automation|coverage/i.test(bullet);
+
+    // Context-aware action verbs
+    let actionVerbs: string[];
+    if (isDevOps) {
+      actionVerbs = ["Automated", "Streamlined", "Orchestrated"];
+    } else if (isDatabase) {
+      actionVerbs = ["Optimized", "Architected", "Scaled"];
+    } else if (isFrontend) {
+      actionVerbs = ["Developed", "Enhanced", "Redesigned"];
+    } else if (isTeam) {
+      actionVerbs = ["Led", "Mentored", "Coordinated"];
+    } else {
+      actionVerbs = ["Built", "Implemented", "Developed"];
+    }
+
+    // Context-aware metrics
+    let metrics1, metrics2, metrics3;
+    if (isPerformance) {
+      metrics1 = "reducing latency by 45% and improving response time to <100ms";
+      metrics2 = "increasing throughput by 3x and reducing costs by $50K annually";
+      metrics3 = "cutting load time by 60% and boosting user engagement by 35%";
+    } else if (isDatabase) {
+      metrics1 = "processing 5M+ queries/day with 99.99% uptime";
+      metrics2 = "reducing query time by 70% and handling 10x more concurrent connections";
+      metrics3 = "scaling to 50TB+ data while maintaining sub-second query performance";
+    } else if (isDevOps) {
+      metrics1 = "reducing deployment time from 2 hours to 15 minutes";
+      metrics2 = "achieving 99.9% uptime and zero-downtime deployments";
+      metrics3 = "cutting incident response time by 75% and automating 90% of releases";
+    } else if (isFrontend) {
+      metrics1 = "improving Core Web Vitals scores by 40% and SEO ranking";
+      metrics2 = "reducing bundle size by 50% and achieving 95+ Lighthouse score";
+      metrics3 = "increasing user engagement by 35% and reducing bounce rate by 25%";
+    } else if (isAPI) {
+      metrics1 = "handling 10K+ requests/second with <50ms p95 latency";
+      metrics2 = "scaling to 500K+ daily active users with 99.9% availability";
+      metrics3 = "reducing API response time by 60% while supporting 3x traffic growth";
+    } else if (isCloud) {
+      metrics1 = "reducing cloud costs by 40% while improving performance";
+      metrics2 = "achieving auto-scaling for 10x traffic spikes with zero downtime";
+      metrics3 = "cutting infrastructure expenses by $120K annually through optimization";
+    } else if (isSecurity) {
+      metrics1 = "achieving SOC 2 compliance and zero security incidents";
+      metrics2 = "reducing vulnerabilities by 85% and passing all penetration tests";
+      metrics3 = "implementing zero-trust architecture protecting 100K+ users";
+    } else if (isTesting) {
+      metrics1 = "increasing test coverage from 40% to 95% and reducing bugs by 70%";
+      metrics2 = "automating 90% of test suite, cutting QA time by 60%";
+      metrics3 = "catching 95% of bugs pre-production through comprehensive testing";
+    } else {
+      // Generic metrics as fallback
+      metrics1 = "improving system efficiency by 40% and reducing operational costs";
+      metrics2 = "scaling to support 100K+ users with 99.9% uptime";
+      metrics3 = "reducing processing time by 50% and increasing team productivity by 30%";
+    }
+
+    // Context-aware outcomes without metrics
+    let outcome;
+    if (isDatabase) {
+      outcome = "ensuring data integrity and high availability across distributed systems";
+    } else if (isFrontend) {
+      outcome = "delivering seamless user experiences across all devices and browsers";
+    } else if (isDevOps) {
+      outcome = "enabling rapid, reliable deployments with comprehensive monitoring";
+    } else if (isAPI) {
+      outcome = "providing robust, well-documented APIs for internal and external consumers";
+    } else if (isTeam) {
+      outcome = "fostering collaboration and knowledge sharing across engineering teams";
+    } else {
+      outcome = "ensuring robust, maintainable solutions aligned with business objectives";
+    }
 
     // Calculate score increases based on keyword impact
     const baseImpact = highImpactKeywords.slice(0, 2).reduce((sum, kw) => sum + (kw.impact || 7), 0);
@@ -87,21 +165,21 @@ export function KeywordSniperTool({
     return [
       {
         id: 1,
-        text: `${verb1} ${currentBullet.toLowerCase().includes('deploy') ? 'deployments' : 'solutions'} utilizing ${topKeywords[0]} and ${topKeywords[1]} to achieve 99.9% uptime and improve system reliability by 40%.`,
+        text: `${actionVerbs[0]} ${bullet.split(' ').slice(0, 3).join(' ')} using ${topKeywords[0]} and ${topKeywords[1]}, ${metrics1}`,
         scoreIncrease: suggestion1Score,
         keywords: topKeywords,
         hasMetrics: true
       },
       {
         id: 2,
-        text: `${verb2} scalable architecture leveraging ${topKeywords[0]} and ${topKeywords[1]} for enhanced performance and maintainability.`,
+        text: `${actionVerbs[1]} ${bullet.split(' ').slice(0, 2).join(' ')} leveraging ${topKeywords[0]} and ${topKeywords[1]}, ${outcome}`,
         scoreIncrease: suggestion2Score,
         keywords: topKeywords,
         hasMetrics: false
       },
       {
         id: 3,
-        text: `${verb3} production-grade systems using ${topKeywords[0]} and ${topKeywords[1]}, reducing deployment time by 60% and increasing team efficiency.`,
+        text: `${actionVerbs[2]} ${bullet.split(' ').slice(0, 3).join(' ')} with ${topKeywords[0]} and ${topKeywords[1]}, ${metrics3}`,
         scoreIncrease: suggestion3Score,
         keywords: topKeywords,
         hasMetrics: true

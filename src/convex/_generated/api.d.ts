@@ -40,6 +40,7 @@ import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as billing from "../billing.js";
 import type * as billingActions from "../billingActions.js";
 import type * as blog from "../blog.js";
+import type * as blogGenerator from "../blogGenerator.js";
 import type * as bulkExport from "../bulkExport.js";
 import type * as coverLetters from "../coverLetters.js";
 import type * as crons from "../crons.js";
@@ -105,6 +106,7 @@ declare const fullApi: ApiFromModules<{
   billing: typeof billing;
   billingActions: typeof billingActions;
   blog: typeof blog;
+  blogGenerator: typeof blogGenerator;
   bulkExport: typeof bulkExport;
   coverLetters: typeof coverLetters;
   crons: typeof crons;
