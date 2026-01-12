@@ -29,43 +29,17 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const missingKeywords = resume.missingKeywords || [];
   const formatIssues = resume.formatIssues || [];
 
-  // Mock candidates for the sidebar
-  const candidates = [
-    {
-      id: 0,
-      name: resume.title || "Your Resume",
-      role: resume.category || "Candidate",
-      score: score,
-      appliedTime: "Now",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAb4zu0SsUE2dGZ2lxuqqA4pHfUNum8dArHTeRV4asLEbSWH-dTFoeFen1toHuxYyhCr7F0lrG3rpC1m29KsbbXd7IQX4TUAkMBkWDp81mDQHzoNIJdeYqE5Ywi1eLyNYdzyCruS2UiUoolqEbWJlWmBuB8KwYiwPDiTFanXXN37FYe3wXo__ycyy6Aw0nxLUBrGvegBFKIle88NE_892ns5vNCVUFGrEEg0gVqrZurbaUeaOGNGVsZwb1f0NE6E0cWvlxUsu5K-A"
-    },
-    {
-      id: 1,
-      name: "Sarah Jones",
-      role: "Full Stack Developer",
-      score: 88,
-      appliedTime: "1d ago",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDq37qBUgY-NwV8buYLNHmQrcGIBjvUOsNP8bk4PYYPVy8kFmusDyGvmYnklL1_se1NZot3t2z0HyAGH-Bie7D1Z_dREatTlbU03-7mP8-S_BcznRZiGgOxRwlh8SYTXNfBlHcw0fGPwaNIZmqyR2fFrcWhYtl3wd6S_AKgJLVrfV-UqDngLjWtrApdagH7OwEO_HtKkgQqNdKzIsEWXpGVLpl3EhoOOitHogDMEsRvCnCc8i4dzC9mLO3p0sKMrecRvD2zxiyuEw"
-    },
-    {
-      id: 2,
-      name: "Michael Brown",
-      role: "Web Developer",
-      score: 65,
-      appliedTime: "3d ago",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuC9BISb58fJ9KG-jpT2v_yJA326OXI8EmCDsbP_ZPXzUWiciRLiECmFHIj1-3170hMm3jKga9MT5nsAxE2kKgi7klUNXuD8KizDNQ7fXNs5DyIOurzViH3eFY_aOz0qwCffo4-hPv3ubC4ENZd6WVZRrDdZtgRk8QhwwMrl8ZjNsTvNcw3LBAFersg2Xm2h1oPMgNLevDxFpjxgVNr5tlxVwemNhyPiUhhQr8MIa02hKV5wB5e1DmxT_fNF798XgwXbJYOX8b0BZQ"
-    },
-    {
-      id: 3,
-      name: "Emily Davis",
-      role: "Junior Intern",
-      score: 42,
-      appliedTime: "5h ago",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDb1fsdZs6eR2XkV5m3xJ8QGPATBznSiLlibZ277jKdkHb_zjHNbRABTzsxXbEWkY__6sapdla1YMokoedxWw_T0W-CMpEEUzc1ncpo3KaBejsmOGOO6pwd-L0qxrdOwQ8h4H2idhDtXgtGFJVzaGhXdgjd6pJxCAGFQ4byAegGJDf9_iib6ARdCFoB0BTl95VwdY-PcplVAzq6O150Ppnz1aP5hxiVC6WKlcshgipKQJL77pWiTdJACIo5hheDKFZd_XwYuV37iA"
-    }
-  ];
-
-  const currentCandidate = candidates[selectedCandidate];
+  // Use real resume data
+  const currentCandidate = {
+    id: 0,
+    name: resume.title || "Your Resume",
+    role: resume.category || resume.jobTitle || "Candidate",
+    score: score,
+    appliedTime: "Now",
+    email: "your.email@example.com",
+    location: resume.location || "Location",
+    avatar: "https://ui-avatars.com/api/?name=" + encodeURIComponent(resume.title || "User") + "&background=6366f1&color=fff&size=128"
+  };
   const scoreColor = score >= 80 ? "text-green-400" : score >= 60 ? "text-yellow-500" : "text-orange-500";
   const scoreLabel = score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Fair";
 
@@ -73,9 +47,9 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const seniorityLevel = score >= 85 ? 3 : score >= 70 ? 2 : score >= 50 ? 1 : 0;
 
   return (
-    <div className="h-screen flex flex-col bg-[#0F172A] overflow-hidden">
+    <div className="h-full flex flex-col bg-[#0F172A] overflow-hidden">
       {/* Top Header */}
-      <header className="h-16 flex items-center justify-between px-6 border-b border-slate-700 bg-slate-800 shrink-0 z-20">
+      <header className="h-12 md:h-16 flex items-center justify-between px-3 md:px-6 border-b border-slate-700 bg-slate-800 shrink-0 z-20">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2 text-white">
             <span className="material-symbols-outlined text-primary text-3xl">hub</span>
@@ -120,8 +94,8 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
           {/* Search & Filter */}
           <div className="p-4 border-b border-slate-700 bg-[#0F172A]/50 backdrop-blur-sm sticky top-0 z-10">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-slate-200 font-semibold">Candidates ({candidates.length})</h2>
-              <button className="text-primary text-xs font-medium hover:underline">View All</button>
+              <h2 className="text-slate-200 font-semibold text-sm md:text-base">Your Resume</h2>
+              <button onClick={onBack} className="text-primary text-xs font-medium hover:underline">Back</button>
             </div>
             <div className="relative">
               <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-500 text-[20px]">search</span>
@@ -144,60 +118,43 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
             </div>
           </div>
 
-          {/* Candidate List */}
-          <div className="flex-1 overflow-y-auto p-2 space-y-1">
-            {candidates.map((candidate) => (
-              <motion.div
-                key={candidate.id}
-                whileHover={{ scale: 1.02 }}
-                onClick={() => setSelectedCandidate(candidate.id)}
-                className={`group flex items-center gap-3 p-3 rounded-lg border-l-2 cursor-pointer transition-all ${
-                  selectedCandidate === candidate.id
-                    ? "bg-slate-800 border-primary"
-                    : "border-transparent hover:bg-slate-800 hover:border-slate-600"
-                }`}
-              >
-                <div className="relative shrink-0">
+          {/* Resume Card */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <div className="group flex flex-col gap-3 p-4 rounded-lg border-2 border-primary bg-slate-800">
+                <div className="relative shrink-0 mx-auto">
                   <div
-                    className={`bg-center bg-no-repeat bg-cover rounded-full size-10 ${
-                      selectedCandidate !== candidate.id ? "grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100" : ""
-                    } transition-all`}
-                    style={{ backgroundImage: `url("${candidate.avatar}")` }}
+                    className="bg-center bg-no-repeat bg-cover rounded-full size-20"
+                    style={{ backgroundImage: `url("${currentCandidate.avatar}")` }}
                   ></div>
-                  {selectedCandidate === candidate.id && (
-                    <div className="absolute -bottom-1 -right-1 bg-[#0F172A] rounded-full p-0.5">
-                      <div className="size-2.5 rounded-full bg-green-500"></div>
-                    </div>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start">
-                    <h3 className={`text-sm font-medium truncate ${
-                      selectedCandidate === candidate.id ? "text-white" : "text-slate-300 group-hover:text-white"
-                    }`}>
-                      {candidate.name}
-                    </h3>
-                    <span className={`text-xs font-bold ${
-                      candidate.score >= 80 ? "text-green-400" :
-                      candidate.score >= 60 ? "text-emerald-400/80" :
-                      candidate.score >= 50 ? "text-yellow-500/80" : "text-orange-500/80"
-                    }`}>
-                      {candidate.score}%
-                    </span>
+                  <div className="absolute -bottom-1 -right-1 bg-[#0F172A] rounded-full p-0.5">
+                    <div className="size-3 rounded-full bg-green-500"></div>
                   </div>
-                  <p className={`text-xs truncate ${
-                    selectedCandidate === candidate.id ? "text-slate-400" : "text-slate-500"
-                  }`}>
-                    {candidate.role}
-                  </p>
-                  <p className={`text-[10px] mt-0.5 ${
-                    selectedCandidate === candidate.id ? "text-slate-500" : "text-slate-600"
-                  }`}>
-                    Applied {candidate.appliedTime}
-                  </p>
                 </div>
-              </motion.div>
-            ))}
+                <div className="flex-1 text-center">
+                  <h3 className="text-base font-medium text-white mb-1">
+                      {currentCandidate.name}
+                    </h3>
+                    <span className={`text-3xl font-bold ${scoreColor} mb-2`}>
+                      {currentCandidate.score}%
+                    </span>
+                    <p className="text-xs text-slate-400 mb-1">
+                      {currentCandidate.role}
+                    </p>
+                    <p className="text-[10px] text-slate-500">
+                      Analyzed {currentCandidate.appliedTime}
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-slate-700">
+                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-2">
+                        <span className="material-symbols-outlined text-sm">location_on</span>
+                        <span>{currentCandidate.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-slate-400">
+                        <span className="material-symbols-outlined text-sm">mail</span>
+                        <span className="truncate">{currentCandidate.email}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
           </div>
         </aside>
 
