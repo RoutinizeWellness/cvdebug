@@ -314,8 +314,8 @@ export function calculateKeywordScore(
 
     // Sort missing keywords by impact and frequency (most valuable first)
     missingKeywords.sort((a, b) => {
-      const scoreA = a.impact * (a.frequency / 10);
-      const scoreB = b.impact * (b.frequency / 10);
+      const scoreA = (a.impact || 5) * ((a.frequency || 1) / 10);
+      const scoreB = (b.impact || 5) * ((b.frequency || 1) / 10);
       return scoreB - scoreA;
     });
 
@@ -332,11 +332,7 @@ export function calculateKeywordScore(
     const totalKeywords = relevantKeywords.length;
     const tier1Count = Math.ceil(totalKeywords * 0.25); // Top 25% - Most critical
     const tier2Count = Math.ceil(totalKeywords * 0.35); // Next 35% - Important
-    // Rest are nice-to-have
-
-    const tier1Keywords = relevantKeywords.slice(0, tier1Count);
-    const tier2Keywords = relevantKeywords.slice(tier1Count, tier1Count + tier2Count);
-    const tier3Keywords = relevantKeywords.slice(tier1Count + tier2Count);
+    // Rest are nice-to-have (tier 3)
 
     // Track found and missing by tier
     let tier1Found = 0;
@@ -454,10 +450,11 @@ export function calculateKeywordScore(
     }
 
     // Sort missing keywords by impact (highest first) to show most valuable ones first
-    missingKeywords.sort((a, b) => b.impact - a.impact);
+    missingKeywords.sort((a, b) => (b.impact || 5) - (a.impact || 5));
 
     console.log(`[Keywords] Category-based analysis: ${foundKeywords.length} found, ${missingKeywords.length} missing`);
-    console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Keywords.length}`);
+    const tier3Total = totalKeywords - tier1Count - tier2Count;
+    console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Total}`);
 
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
     keywordScore = Math.min(40, keywordScore * scoringMultiplier);
