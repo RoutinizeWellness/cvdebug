@@ -131,7 +131,7 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
               </Button>
             )}
             <div className="text-[10px] text-zinc-500 text-center">
-              Last scanned: {new Date(masterResume._creationTime).toLocaleDateString()}
+              Last scanned: {new Date(masterResume._creationTime).toLocaleDateString('es-ES')}
             </div>
           </div>
         </div>

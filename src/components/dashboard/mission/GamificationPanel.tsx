@@ -89,7 +89,7 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
                 </div>
                 <p className="text-xs font-bold text-white mb-1">{badge.name}</p>
                 <p className="text-[10px] text-zinc-500">
-                  {new Date(badge.earnedAt).toLocaleDateString()}
+                  {new Date(badge.earnedAt).toLocaleDateString('es-ES')}
                 </p>
               </div>
             ))}

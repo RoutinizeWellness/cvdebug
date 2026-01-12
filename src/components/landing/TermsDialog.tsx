@@ -8,7 +8,7 @@ export function TermsDialog({ open, onOpenChange }: { open: boolean; onOpenChang
         <DialogHeader>
           <DialogTitle>Terms of Service</DialogTitle>
           <DialogDescription>
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: {new Date().toLocaleDateString('es-ES')}
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="flex-1 pr-4">

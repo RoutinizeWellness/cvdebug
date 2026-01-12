@@ -399,7 +399,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       <p className="text-slate-400 text-xs mb-3">{app.company || "Company"}</p>
                       <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
                         <span className="material-symbols-outlined text-xs">schedule</span>
-                        {app._creationTime ? new Date(app._creationTime).toLocaleDateString() : "Recent"}
+                        {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : "Recent"}
                       </div>
                     </div>
                   ))

@@ -94,7 +94,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
                     <div className="flex items-start justify-between gap-2 mb-1">
                       <h4 className="font-semibold text-sm text-white">{event.title}</h4>
                       <Badge variant="outline" className="text-[10px] text-zinc-500 border-zinc-800">
-                        {new Date(event.timestamp).toLocaleDateString()}
+                        {new Date(event.timestamp).toLocaleDateString('es-ES')}
                       </Badge>
                     </div>
                     {event.description && (

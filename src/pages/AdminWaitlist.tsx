@@ -86,7 +86,7 @@ export default function AdminWaitlist() {
                   <TableRow key={entry._id}>
                     <TableCell className="font-medium">{entry.email}</TableCell>
                     <TableCell className="text-right text-muted-foreground">
-                      {new Date(entry._creationTime).toLocaleDateString()} {new Date(entry._creationTime).toLocaleTimeString()}
+                      {new Date(entry._creationTime).toLocaleDateString('es-ES')} {new Date(entry._creationTime).toLocaleTimeString()}
                     </TableCell>
                   </TableRow>
                 ))}

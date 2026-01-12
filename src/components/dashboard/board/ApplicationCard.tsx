@@ -87,7 +87,7 @@ export function ApplicationCard({
             <div className="flex items-center justify-between pt-2 border-t border-zinc-800/50">
               <div className="flex items-center gap-1.5 text-[10px] text-zinc-500">
                 <Clock className="h-3 w-3" />
-                {new Date(app.lastStatusUpdate || app._creationTime).toLocaleDateString()}
+                {new Date(app.lastStatusUpdate || app._creationTime).toLocaleDateString('es-ES')}
               </div>
               <div className="flex gap-1">
                 {/* Timeline Button */}

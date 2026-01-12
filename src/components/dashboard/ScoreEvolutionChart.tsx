@@ -187,7 +187,7 @@ export function ScoreEvolutionChart() {
                   <p className="text-xs font-semibold text-white">Version {i + 1}</p>
                   <p className="text-lg font-bold text-primary">{score}</p>
                   <p className="text-xs text-slate-400">
-                    {new Date(resume._creationTime).toLocaleDateString()}
+                    {new Date(resume._creationTime).toLocaleDateString('es-ES')}
                   </p>
                   {/* Arrow */}
                   <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">

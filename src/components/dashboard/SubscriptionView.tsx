@@ -117,7 +117,7 @@ export function SubscriptionView() {
                   {isInterviewSprint && (
                     <>
                       You have unlimited scans for <span className="text-white font-medium">{daysUntilReset} days</span>. Expires on{" "}
-                      <span className="text-white font-medium">{new Date(sprintExpiresAt).toLocaleDateString()}</span>.
+                      <span className="text-white font-medium">{new Date(sprintExpiresAt).toLocaleDateString('es-ES')}</span>.
                     </>
                   )}
                 </p>

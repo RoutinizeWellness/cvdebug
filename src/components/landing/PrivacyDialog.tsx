@@ -8,7 +8,7 @@ export function PrivacyDialog({ open, onOpenChange }: { open: boolean; onOpenCha
         <DialogHeader>
           <DialogTitle>Privacy Policy</DialogTitle>
           <DialogDescription>
-            Last updated: {new Date().toLocaleDateString()}
+            Last updated: {new Date().toLocaleDateString('es-ES')}
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="flex-1 pr-4">

@@ -666,7 +666,7 @@ export default function AdminPage() {
                                 </div>
                               </td>
                               <td className="px-6 py-3 font-mono text-xs">
-                                {userData.lastScanDate ? new Date(userData.lastScanDate).toLocaleDateString() : "Never"}
+                                {userData.lastScanDate ? new Date(userData.lastScanDate).toLocaleDateString('es-ES') : "Never"}
                               </td>
                               <td className="px-6 py-3 text-right">
                                 <button 
