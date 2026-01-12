@@ -329,7 +329,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               animate={{ width: `${Math.min((visibilityScore / 85) * 100, 100)}%` }}
               transition={{ duration: 1, ease: "easeOut" }}
               className={`h-full ${
-                visibilityScore >= 85 ? "bg-gradient-to-r from-purple-500 to-pink-500" :
+                visibilityScore >= 85 ? "bg-gradient-to-r from-teal-500 to-pink-500" :
                 visibilityScore >= 70 ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
                 "bg-gradient-to-r from-amber-500 to-orange-500"
               } shadow-[0_0_15px_rgba(59,130,246,0.5)]`}

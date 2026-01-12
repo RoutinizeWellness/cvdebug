@@ -57,7 +57,7 @@ export function MissionStats() {
   return (
     <div className="space-y-4">
       {/* ATS Detection Badge */}
-      <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-4">
+      <div className="bg-gradient-to-r from-primary/10 to-teal-500/10 border border-primary/30 rounded-xl p-4">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-full bg-primary/20">
             <Shield className="h-5 w-5 text-primary" />

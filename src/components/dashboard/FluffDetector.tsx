@@ -173,7 +173,7 @@ export function FluffDetector({ resumeId }: FluffDetectorProps) {
             {analysis.powerVerbCategories.map((category: any, index: number) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-lg p-4 border border-blue-500/20"
+                className="bg-gradient-to-br from-blue-600/10 to-teal-600/10 rounded-lg p-4 border border-blue-500/20"
               >
                 <h5 className="text-blue-400 font-semibold mb-2 text-sm">
                   {category.category}

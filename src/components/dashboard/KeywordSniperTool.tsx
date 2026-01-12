@@ -267,7 +267,7 @@ export function KeywordSniperTool({
         {/* AI Suggestions */}
         <div className="flex-1 glass-panel rounded-xl p-1 relative overflow-hidden flex flex-col">
           {/* Glowing border effect */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-teal-500 to-transparent opacity-50"></div>
 
           <div className="p-5 pb-0 flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-teal-400 animate-pulse">auto_awesome</span>

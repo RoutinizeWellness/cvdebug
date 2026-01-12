@@ -448,7 +448,7 @@ export default function Dashboard() {
                   onClick={() => setCurrentView('cover-letter')}
                   className="group relative bg-[#1E293B] border border-slate-700/50 rounded-xl p-6 transition-all duration-300 hover:border-teal-500/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
                     <div className="h-12 w-12 rounded-lg bg-teal-500/20 border border-teal-500/30 flex items-center justify-center flex-shrink-0">
                       <span className="material-symbols-outlined text-teal-400">description</span>

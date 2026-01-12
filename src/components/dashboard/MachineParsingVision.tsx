@@ -79,7 +79,7 @@ export function MachineParsingVision({
                 checked={showMachineView}
                 onChange={() => setShowMachineView(!showMachineView)}
               />
-              <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-purple-600"></div>
+              <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-teal-600"></div>
             </label>
           </div>
 
@@ -258,7 +258,7 @@ export function MachineParsingVision({
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <div className="w-px h-6 bg-zinc-600 mx-1"></div>
-                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:from-primary/90 hover:to-teal-600/90 text-white rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
                   <Wand2 className="h-4 w-4" />
                   <span>Fix Formatting</span>
                 </button>

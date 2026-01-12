@@ -99,7 +99,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
 
             {/* Upgrade Alert */}
             {!hasInterviewSprint && (
-              <div className="mx-6 mt-6 bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/30 rounded-xl p-4">
+              <div className="mx-6 mt-6 bg-gradient-to-r from-primary/10 to-teal-500/10 border border-primary/30 rounded-xl p-4">
                 <div className="flex gap-3">
                   <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <div className="flex-1">

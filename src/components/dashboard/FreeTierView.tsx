@@ -344,7 +344,7 @@ export function FreeTierView({
       </div>
 
       {/* The Paywall - Clear Value Proposition */}
-      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-primary/10 via-purple-500/10 to-orange-500/10 border-2 border-primary/30">
+      <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-primary/10 via-teal-500/10 to-orange-500/10 border-2 border-primary/30">
         <div className="text-center space-y-6">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center">
             <Lock className="h-8 w-8 text-black" />

@@ -14,7 +14,7 @@ export function SuccessInsightsWidget() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel rounded-xl p-6 border-l-4 border-l-purple-500"
+        className="glass-panel rounded-xl p-6 border-l-4 border-l-teal-500"
       >
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-teal-500/20 flex items-center justify-center">
@@ -43,15 +43,15 @@ export function SuccessInsightsWidget() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-panel rounded-xl p-6 border-l-4 border-l-purple-500 relative overflow-hidden"
+      className="glass-panel rounded-xl p-6 border-l-4 border-l-teal-500 relative overflow-hidden"
     >
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent pointer-events-none" />
 
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-pink-500 flex items-center justify-center">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -67,7 +67,7 @@ export function SuccessInsightsWidget() {
 
         {/* Top Insight */}
         {analytics.topInsight && (
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-4 mb-4 border border-teal-500/30">
+          <div className="bg-gradient-to-r from-teal-500/20 to-pink-500/20 rounded-lg p-4 mb-4 border border-teal-500/30">
             <div className="flex items-start gap-3">
               <Target className="h-5 w-5 text-teal-400 mt-0.5 shrink-0" />
               <div className="flex-1">
@@ -120,7 +120,7 @@ export function SuccessInsightsWidget() {
                     </span>
                     <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
+                        className="h-full bg-gradient-to-r from-teal-500 to-pink-500 rounded-full"
                         style={{ width: `${kw.successRate}%` }}
                       />
                     </div>

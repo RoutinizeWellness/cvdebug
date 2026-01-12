@@ -98,7 +98,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       <div className="space-y-6">
         {!hasInterviewSprint && (
-          <Alert className="bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/30">
+          <Alert className="bg-gradient-to-r from-primary/10 to-teal-500/10 border-primary/30">
             <Lock className="h-4 w-4 text-primary" />
             <AlertDescription className="text-sm">
               <strong className="text-white">Interview Sprint Required</strong>

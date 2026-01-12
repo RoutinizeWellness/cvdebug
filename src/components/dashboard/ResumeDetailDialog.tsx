@@ -65,7 +65,6 @@ interface ResumeDetailDialogProps {
 }
 
 export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetailDialogProps) {
-  const [isImmersive, setIsImmersive] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [showBlurredPreview, setShowBlurredPreview] = useState(true);
@@ -616,49 +615,71 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               )}
             </div>
           ) : (
-            <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-              {/* Left Panel - Analysis Tabs */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+              {/* Main Content - Analysis Tabs + PDF Preview */}
+              <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <div className="bg-slate-800/50 flex-shrink-0 p-2 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900">
-                  <TabsList className="inline-flex w-auto min-w-full gap-2 h-auto">
-                    <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Overview
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="robot"
-                      className={`relative text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-green-900/40 to-emerald-900/40 border-2 border-green-500/50 text-green-400 font-bold hover:from-green-900/60 hover:to-emerald-900/60 data-[state=active]:from-green-600 data-[state=active]:to-emerald-600 data-[state=active]:text-black data-[state=active]:border-green-400 transition-all ${showRobotPulse ? 'animate-pulse ring-4 ring-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.6)]' : ''}`}
-                    >
-                      <span className="flex items-center gap-1.5">
-                        👁️ <span>Robot View</span>
-                      </span>
-                      {showRobotPulse && (
-                        <span className="absolute -top-1 -right-1 flex h-3 w-3 z-10">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-lg"></span>
+                <div className="bg-slate-800/30 flex-shrink-0 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900 border-b border-slate-700/50">
+                  <TabsList className="inline-flex w-auto min-w-full gap-1 h-auto bg-transparent">
+                    {/* DIAGNOSIS Group */}
+                    <div className="flex gap-1 pr-3 border-r border-slate-700/50">
+                      <TabsTrigger
+                        value="robot"
+                        className={`relative text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50 ${showRobotPulse ? 'animate-pulse ring-2 ring-green-500/50' : ''}`}
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Cpu className="h-4 w-4" />
+                          <span>Robot View</span>
                         </span>
-                      )}
-                    </TabsTrigger>
-                    <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-primary/20 to-indigo-500/20 border border-primary/30">
-                      📊 Report
-                    </TabsTrigger>
-                    <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2 bg-gradient-to-r from-yellow-900/40 to-orange-900/40 border border-yellow-500/30">
-                      💨 Fluff
-                    </TabsTrigger>
-                    <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Keywords
-                    </TabsTrigger>
-                    <TabsTrigger value="format" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Format
-                    </TabsTrigger>
-                    <TabsTrigger value="simulation" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Recruiter View
-                    </TabsTrigger>
-                    <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Interview
-                    </TabsTrigger>
-                    <TabsTrigger value="raw" className="text-xs sm:text-sm whitespace-nowrap px-3 py-2">
-                      Raw Text
-                    </TabsTrigger>
+                        {showRobotPulse && (
+                          <span className="absolute -top-1 -right-1 flex h-2 w-2 z-10">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                          </span>
+                        )}
+                      </TabsTrigger>
+                      <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-primary data-[state=active]:text-black data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        <span className="flex items-center gap-1.5">
+                          <FileSearch className="h-4 w-4" />
+                          <span>Format</span>
+                        </span>
+                      </TabsTrigger>
+                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-primary data-[state=active]:text-black data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        <span className="flex items-center gap-1.5">
+                          <Target className="h-4 w-4" />
+                          <span>Keywords</span>
+                        </span>
+                      </TabsTrigger>
+                    </div>
+
+                    {/* FIX Group */}
+                    <div className="flex gap-1 px-3 border-r border-slate-700/50">
+                      <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-amber-500 data-[state=active]:text-black data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        <span className="flex items-center gap-1.5">
+                          <Sparkles className="h-4 w-4" />
+                          <span>Fluff</span>
+                        </span>
+                      </TabsTrigger>
+                      <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-600 data-[state=active]:text-white data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        <span className="flex items-center gap-1.5">
+                          <Eye className="h-4 w-4" />
+                          <span>Overview</span>
+                        </span>
+                      </TabsTrigger>
+                    </div>
+
+                    {/* PREP Group */}
+                    <div className="flex gap-1 pl-3">
+                      <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        <span className="flex items-center gap-1.5">
+                          <Building className="h-4 w-4" />
+                          <span>Interview</span>
+                        </span>
+                      </TabsTrigger>
+                      <TabsTrigger value="simulation" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=inactive]:text-slate-400 data-[state=inactive]:hover:text-slate-200 data-[state=inactive]:hover:bg-slate-700/50">
+                        Recruiter
+                      </TabsTrigger>
+                    </div>
                   </TabsList>
                 </div>
 
@@ -1281,7 +1302,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 </TabsContent>
               </Tabs>
 
-              {/* Center Image/Preview */}
+              {/* PDF Preview - Now Full Width When Tabs Don't Need It */}
               <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'flex-1'} bg-black/5 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden`}>
                 <div className="absolute inset-0 bg-[radial-gradient(#ffffff11_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
 
@@ -1292,14 +1313,6 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
-                </button>
-
-                <button
-                  onClick={() => setIsImmersive(!isImmersive)}
-                  className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/70 text-white rounded-lg backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 hidden lg:block"
-                  title={isImmersive ? "Exit Fullscreen" : "Enter Fullscreen"}
-                >
-                  {isImmersive ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
                 </button>
 
                 {!isPdfCollapsed && (
@@ -1333,60 +1346,6 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                   </div>
                 )}
               </div>
-
-              {/* Right Panel - Actions */}
-              <div className={`w-full lg:w-80 xl:w-96 border-l border-border bg-card/30 flex flex-col flex-shrink-0 lg:h-full ${isImmersive ? 'hidden' : ''} print:hidden`}>
-                <ScrollArea className="flex-1 h-full">
-                  <div className="p-6 flex flex-col gap-8">
-                    {displayResume?.rewrittenText && (
-                      <div className="relative">
-                        <div className="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-purple-600 rounded-r-full"></div>
-                        <h3 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
-                          <Sparkles className="h-4 w-4 animate-pulse" /> AI Rewritten Version
-                          <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold">NEW</span>
-                        </h3>
-                        <div className="bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 rounded-lg p-4 mb-4 shadow-sm">
-                          <p className="text-xs text-zinc-300 font-medium leading-relaxed">
-                            <span className="font-bold text-primary">✨ Optimized for ATS:</span> We've rewritten your resume content to include missing keywords and improve readability for tracking systems.
-                          </p>
-                        </div>
-                        <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-300 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
-                          {displayResume.rewrittenText}
-                        </div>
-                        <Separator className="my-6 bg-zinc-800" />
-                      </div>
-                    )}
-
-                    <div>
-                      <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                        <Eye className="h-4 w-4" /> ATS Raw View
-                      </h3>
-                      <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
-                        <div className="flex gap-2">
-                          <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-                          <p className="text-xs text-yellow-500 font-medium leading-relaxed">
-                            This is exactly what the ATS sees. If your text is missing, garbled, or out of order here, the ATS cannot read your resume.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="bg-zinc-900 rounded-lg border border-zinc-800 p-3 text-xs text-zinc-400 font-mono max-h-[500px] overflow-y-auto leading-relaxed whitespace-pre-wrap select-text">
-                        {displayResume?.ocrText ? displayResume.ocrText : "No text extracted."}
-                      </div>
-                    </div>
-                    
-                    <Separator className="bg-zinc-800" />
-
-                    <div>
-                      <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                        <FileText className="h-4 w-4" /> Notes
-                      </h3>
-                      <textarea 
-                        className="w-full h-40 bg-zinc-900 border border-zinc-800 rounded-lg text-sm p-4 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none leading-relaxed transition-all placeholder:text-zinc-600 text-zinc-300" 
-                        placeholder="Add a note about this resume..."
-                      ></textarea>
-                    </div>
-                  </div>
-                </ScrollArea>
               </div>
             </div>
           )}

@@ -9,7 +9,7 @@ export function BoardEmptyState({ onCreateClick }: BoardEmptyStateProps) {
   return (
     <div className="flex-1 flex items-center justify-center">
       <div className="text-center max-w-md space-y-6">
-        <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border border-primary/30">
+        <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-teal-500/20 flex items-center justify-center border border-primary/30">
           <Briefcase className="h-10 w-10 text-primary" />
         </div>
         <div>

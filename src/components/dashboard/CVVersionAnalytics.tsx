@@ -278,7 +278,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="glass-panel rounded-xl p-6 bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-blue-500/20"
+        className="glass-panel rounded-xl p-6 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border-blue-500/20"
       >
         <h4 className="text-lg font-bold text-white mb-3">💡 How to Use This Data</h4>
         <ul className="space-y-2 text-slate-300 text-sm">

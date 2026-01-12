@@ -110,7 +110,7 @@ export function LiveRecruiterSimulation({
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="size-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+            <div className="size-10 rounded-lg bg-gradient-to-br from-teal-500 to-pink-500 flex items-center justify-center">
               <Eye className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -121,7 +121,7 @@ export function LiveRecruiterSimulation({
           <Button
             onClick={startSimulation}
             disabled={isSimulating}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            className="bg-gradient-to-r from-teal-500 to-pink-500 hover:from-teal-600 hover:to-pink-600"
           >
             <Zap className="h-4 w-4 mr-2" />
             {isSimulating ? "Simulating..." : "Start Simulation"}

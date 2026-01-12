@@ -139,7 +139,7 @@ export default function PaymentSuccess() {
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             System Operational
           </div>
-          <div className="bg-gradient-to-br from-primary to-purple-600 rounded-full size-9 border border-slate-700 flex items-center justify-center text-white font-bold text-sm">
+          <div className="bg-gradient-to-br from-primary to-teal-600 rounded-full size-9 border border-slate-700 flex items-center justify-center text-white font-bold text-sm">
             {userName.charAt(0).toUpperCase()}
           </div>
         </div>

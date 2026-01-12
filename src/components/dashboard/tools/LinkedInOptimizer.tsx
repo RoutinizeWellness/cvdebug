@@ -131,7 +131,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
     <div className="h-full flex flex-col">
       <div className="px-6 py-4">
         {!hasInterviewSprint && (
-          <Alert className="mb-4 bg-gradient-to-r from-primary/10 to-purple-500/10 border-primary/30">
+          <Alert className="mb-4 bg-gradient-to-r from-primary/10 to-teal-500/10 border-primary/30">
             <Lock className="h-4 w-4 text-primary" />
             <AlertDescription className="text-sm">
               <strong className="text-white">Interview Sprint Required</strong>
