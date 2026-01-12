@@ -70,6 +70,7 @@ export default function AdminPage() {
   const fixSpecificReportedUsers = useMutation(apiAny.admin.fixSpecificReportedUsers);
   const grantPurchase = useMutation(apiAny.admin.grantPurchase);
   const processBulkGrants = useMutation(apiAny.admin.processBulkGrants);
+  const syncUsersFromPayments = useMutation(apiAny.admin.syncUsersFromPayments);
   const simulateWebhook = useAction(apiAny.admin.simulateWebhookEvent);
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
 
@@ -100,6 +101,8 @@ export default function AdminPage() {
   const [bulkResult, setBulkResult] = useState<string | null>(null);
   const [isTestingPayment, setIsTestingPayment] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncResult, setSyncResult] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentView, setCurrentView] = useState("dashboard");
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -266,6 +269,21 @@ export default function AdminPage() {
       toast.error(error.message || "Failed to simulate webhook");
     } finally {
       setIsSimulatingWebhook(false);
+    }
+  };
+
+  const handleSyncPayments = async () => {
+    setIsSyncing(true);
+    setSyncResult(null);
+    try {
+      const result = await syncUsersFromPayments();
+      setSyncResult(result);
+      toast.success(`Synced ${result.syncedCount} users from ${result.totalPayments} payments`);
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.message || "Failed to sync payments");
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -459,6 +477,68 @@ export default function AdminPage() {
           <div className="max-w-7xl mx-auto flex flex-col gap-6">
             {currentView === "dashboard" && (
               <>
+                {/* Sync Button */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Dashboard</h2>
+                    <p className="text-sm text-slate-400 mt-1">
+                      User metrics and payment synchronization
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleSyncPayments}
+                    disabled={isSyncing}
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 border-primary/30 hover:border-primary/50 hover:bg-primary/10"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                    {isSyncing ? 'Syncing from Autumn...' : 'Sync Payments from Autumn'}
+                  </Button>
+                </div>
+
+                {/* Sync Result */}
+                {syncResult && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="glass-panel p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                        <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-semibold text-emerald-400 mb-1">
+                          Sync Complete: {syncResult.syncedCount} users updated
+                        </h4>
+                        <p className="text-xs text-slate-400 mb-2">
+                          Processed {syncResult.totalPayments} payments from Autumn
+                        </p>
+                        {syncResult.logs && syncResult.logs.length > 0 && (
+                          <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">
+                            {syncResult.logs.map((log: string, i: number) => (
+                              <p key={i} className="text-xs text-slate-500 font-mono">
+                                {log}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => setSyncResult(null)}
+                        className="flex-shrink-0 text-slate-400 hover:text-white"
+                      >
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
                 {/* Metrics Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <motion.div 

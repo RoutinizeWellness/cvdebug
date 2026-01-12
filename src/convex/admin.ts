@@ -375,6 +375,76 @@ export const grantPurchase = mutation({
   },
 });
 
+// Sync users from payments table - fix users who paid but tier not updated
+export const syncUsersFromPayments = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      throw new Error("Unauthorized");
+    }
+
+    console.log("[syncUsersFromPayments] ====== START ======");
+
+    // Get all completed payments
+    const payments = await ctx.db
+      .query("payments")
+      .filter((q) => q.eq(q.field("status"), "completed"))
+      .collect();
+
+    console.log(`[syncUsersFromPayments] Found ${payments.length} completed payments`);
+
+    let syncedCount = 0;
+    const logs: string[] = [];
+
+    for (const payment of payments) {
+      const user = await ctx.db.get(payment.userId);
+
+      if (!user) {
+        logs.push(`⚠️ Payment ${payment.transactionId}: User not found (userId: ${payment.userId})`);
+        continue;
+      }
+
+      // Check if user tier matches payment
+      const expectedTier = payment.plan;
+      const currentTier = user.subscriptionTier;
+
+      if (currentTier !== expectedTier) {
+        console.log(`[syncUsersFromPayments] Mismatch found: ${user.email} has tier "${currentTier}" but paid for "${expectedTier}"`);
+
+        // Update user to match payment
+        const updates: any = {
+          subscriptionTier: expectedTier,
+        };
+
+        if (expectedTier === "single_scan") {
+          updates.credits = Math.max(user.credits || 0, 1); // Ensure at least 1 credit
+        } else if (expectedTier === "interview_sprint") {
+          // Check if sprint is still active or needs renewal
+          if (!user.sprintExpiresAt || user.sprintExpiresAt < Date.now()) {
+            updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+          }
+        }
+
+        await ctx.db.patch(user._id, updates);
+        syncedCount++;
+        logs.push(`✅ Synced ${user.email}: ${currentTier} → ${expectedTier}`);
+      } else {
+        logs.push(`✓ ${user.email}: Already synced (${currentTier})`);
+      }
+    }
+
+    console.log(`[syncUsersFromPayments] ====== END: Synced ${syncedCount}/${payments.length} users ======`);
+
+    return {
+      success: true,
+      syncedCount,
+      totalPayments: payments.length,
+      logs: logs.slice(0, 50), // Limit logs to 50 entries
+    };
+  },
+});
+
 export const processBulkGrants = mutation({
   args: {
     rawText: v.string(),
@@ -387,7 +457,7 @@ export const processBulkGrants = mutation({
 
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
     const matches = args.rawText.match(emailRegex) || [];
-    
+
     if (matches.length === 0) {
       return "No emails found in the provided text.";
     }
