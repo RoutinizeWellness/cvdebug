@@ -62,8 +62,8 @@ export function ATSAnalysisReport({
     <div className="relative w-full bg-[#0F172A] min-h-full">
       {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#3B82F6]/10 rounded-full blur-[80px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#8B5CF6]/10 rounded-full blur-[80px]"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-cyan-600/10 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-teal-600/10 rounded-full blur-[80px]"></div>
       </div>
 
       <div className="relative w-full z-10">
@@ -92,7 +92,7 @@ export function ATSAnalysisReport({
               className="text-center space-y-2 px-2"
             >
               <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-white drop-shadow-lg">
-                ATS Analysis <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6]">Report</span>
+                ATS Analysis <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-teal-500">Report</span>
               </h1>
               <p className="text-slate-400 text-xs md:text-sm font-light px-4">Parsed and scored against industry standards</p>
             </motion.div>
@@ -105,7 +105,7 @@ export function ATSAnalysisReport({
               className="relative flex items-center justify-center w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mt-2"
             >
               {/* Glow Background */}
-              <div className="absolute inset-0 bg-[#8B5CF6]/20 blur-[50px] rounded-full"></div>
+              <div className="absolute inset-0 bg-cyan-500/20 blur-[50px] rounded-full"></div>
 
               {/* SVG Circle Progress */}
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
@@ -131,12 +131,12 @@ export function ATSAnalysisReport({
                   initial={{ strokeDashoffset: circumference }}
                   animate={{ strokeDashoffset: strokeDashoffset }}
                   transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-                  style={{ filter: 'drop-shadow(0 0 8px rgba(139, 92, 246, 0.5))' }}
+                  style={{ filter: 'drop-shadow(0 0 8px rgba(6, 182, 212, 0.5))' }}
                 />
                 <defs>
                   <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#3B82F6" />
-                    <stop offset="100%" stopColor="#8B5CF6" />
+                    <stop offset="0%" stopColor="#06b6d4" />
+                    <stop offset="100%" stopColor="#14b8a6" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -158,7 +158,7 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full hover:border-[#8B5CF6]/30 transition-all duration-300"
+              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full hover:border-cyan-500/30 transition-all duration-300"
             >
               <div className="flex justify-between items-start mb-3 md:mb-4">
                 <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -189,11 +189,11 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full relative overflow-hidden hover:border-[#8B5CF6]/30 transition-all duration-300"
+              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full relative overflow-hidden hover:border-cyan-500/30 transition-all duration-300"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-[#3B82F6]/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-cyan-500/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
               <div className="flex justify-between items-start mb-3 md:mb-4 relative z-10">
-                <div className="p-2 md:p-3 rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/20">
+                <div className="p-2 md:p-3 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                   <span className="material-symbols-outlined text-xl md:text-2xl">visibility</span>
                 </div>
               </div>
@@ -201,7 +201,7 @@ export function ATSAnalysisReport({
                 <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Visibility Grade</p>
                 <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                   <h3 className="text-3xl md:text-4xl font-mono font-bold text-white">{getVisibilityGrade(scorePercentage)}</h3>
-                  <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-[#3B82F6] bg-[#3B82F6]/10 rounded border border-[#3B82F6]/20 whitespace-nowrap">
+                  <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-cyan-400 bg-cyan-500/10 rounded border border-cyan-500/20 whitespace-nowrap">
                     Top Tech
                   </span>
                 </div>
@@ -216,13 +216,13 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between h-full hover:border-[#8B5CF6]/30 transition-all duration-300 sm:col-span-2 lg:col-span-1"
+              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between h-full hover:border-teal-500/30 transition-all duration-300 sm:col-span-2 lg:col-span-1"
             >
               <div className="flex justify-between items-start mb-3 md:mb-4">
-                <div className="p-2 md:p-3 rounded-lg bg-[#8B5CF6]/10 text-[#8B5CF6] border border-[#8B5CF6]/20">
+                <div className="p-2 md:p-3 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20">
                   <span className="material-symbols-outlined text-xl md:text-2xl">bar_chart_4_bars</span>
                 </div>
-                <span className="text-[#8B5CF6] font-bold text-xs md:text-sm whitespace-nowrap">High Saturation</span>
+                <span className="text-teal-400 font-bold text-xs md:text-sm whitespace-nowrap">High Saturation</span>
               </div>
               <div>
                 <p className="text-slate-400 text-xs md:text-sm font-medium mb-2 md:mb-3">Keyword Analysis</p>
@@ -235,7 +235,7 @@ export function ATSAnalysisReport({
                         initial={{ height: 0 }}
                         animate={{ height: `${keywordData.tech}%` }}
                         transition={{ duration: 0.8, delay: 0.8 }}
-                        className="w-full bg-[#8B5CF6] group-hover:bg-[#3B82F6] transition-colors duration-300"
+                        className="w-full bg-teal-500 group-hover:bg-cyan-500 transition-colors duration-300"
                       />
                     </div>
                     <span className="text-[10px] text-slate-500 font-mono uppercase">Tech</span>
@@ -247,7 +247,7 @@ export function ATSAnalysisReport({
                         initial={{ height: 0 }}
                         animate={{ height: `${keywordData.soft}%` }}
                         transition={{ duration: 0.8, delay: 0.9 }}
-                        className="w-full bg-[#8B5CF6]/60 group-hover:bg-[#3B82F6]/80 transition-colors duration-300"
+                        className="w-full bg-teal-500/60 group-hover:bg-cyan-500/80 transition-colors duration-300"
                       />
                     </div>
                     <span className="text-[10px] text-slate-500 font-mono uppercase">Soft</span>
@@ -259,7 +259,7 @@ export function ATSAnalysisReport({
                         initial={{ height: 0 }}
                         animate={{ height: `${keywordData.tools}%` }}
                         transition={{ duration: 0.8, delay: 1.0 }}
-                        className="w-full bg-[#8B5CF6]/80 group-hover:bg-[#3B82F6]/90 transition-colors duration-300"
+                        className="w-full bg-teal-500/80 group-hover:bg-cyan-500/90 transition-colors duration-300"
                       />
                     </div>
                     <span className="text-[10px] text-slate-500 font-mono uppercase">Tools</span>
@@ -344,7 +344,7 @@ export function ATSAnalysisReport({
           >
             <button
               onClick={onOpenWritingForge}
-              className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold text-sm md:text-base shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group"
+              className="w-full md:flex-1 h-11 md:h-12 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm md:text-base shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:shadow-[0_0_30px_rgba(20,184,166,0.6)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group"
             >
               <span>Start Mission Control</span>
               <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
