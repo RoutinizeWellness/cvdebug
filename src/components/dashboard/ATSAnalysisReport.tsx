@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -72,6 +73,70 @@ export function ATSAnalysisReport({
     soft: 60,
     tools: 75
   };
+
+  // Impact Density: Detect quantifiable metrics in resume text
+  const detectMetrics = (text: string) => {
+    if (!text) return { count: 0, examples: [] };
+
+    const metricPatterns = [
+      /\d+[\d,]*\+?\s*(?:users?|customers?|clients?|people|employees?|team members?|records?|transactions?)/gi, // Volume
+      /\d+[\d,]*%/g, // Percentages
+      /\$\d+[\d,]*[KMB]?/gi, // Money
+      /\d+[\d,]*x/gi, // Multipliers (2x, 10x)
+      /\d+[\d,]*\s*(?:million|thousand|billion|M|K|B)/gi, // Large numbers
+      /\d+[\d,]*\s*(?:hours?|days?|weeks?|months?|years?)/gi, // Time saved
+    ];
+
+    const metrics: string[] = [];
+    metricPatterns.forEach(pattern => {
+      const matches = text.match(pattern);
+      if (matches) {
+        metrics.push(...matches);
+      }
+    });
+
+    // Get unique metrics
+    const uniqueMetrics = [...new Set(metrics)];
+
+    return {
+      count: uniqueMetrics.length,
+      examples: uniqueMetrics.slice(0, 5) // First 5 examples
+    };
+  };
+
+  const metricsData = detectMetrics(ocrText);
+  const metricsCount = metricsData.count;
+
+  // Determine impact level
+  const getImpactLevel = (count: number): { level: 'weak' | 'good' | 'elite', color: string, label: string, advice: string } => {
+    if (count === 0 || count <= 4) {
+      return {
+        level: 'weak',
+        color: 'red',
+        label: 'Weak Impact',
+        advice: `Add ${5 - count} more numbers to your bullet points`
+      };
+    }
+    if (count <= 9) {
+      return {
+        level: 'good',
+        color: 'yellow',
+        label: 'Good Impact',
+        advice: 'Add more metrics to reach elite level'
+      };
+    }
+    return {
+      level: 'elite',
+      color: 'green',
+      label: 'Elite Impact',
+      advice: 'Your resume has strong quantification'
+    };
+  };
+
+  const impactLevel = getImpactLevel(metricsCount);
+
+  // Show special banner if keywords are perfect but score < 90
+  const showQuantificationBanner = missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
 
   return (
     <div className="relative w-full bg-[#0F172A] min-h-screen overflow-y-auto">
@@ -166,35 +231,91 @@ export function ATSAnalysisReport({
             </motion.div>
           </div>
 
+          {/* Special Banner - Perfect Keywords but Need Numbers */}
+          {showQuantificationBanner && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="w-full max-w-2xl mb-6 glass-card rounded-xl p-4 md:p-5 border-2 border-yellow-500/50 bg-gradient-to-r from-yellow-500/10 to-amber-500/10"
+            >
+              <div className="flex items-start gap-3 md:gap-4">
+                <div className="flex-shrink-0 p-2 bg-yellow-500/20 rounded-lg">
+                  <span className="material-symbols-outlined text-2xl text-yellow-400">celebration</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-white font-bold text-base md:text-lg mb-1">🎉 Perfect Keywords!</h3>
+                  <p className="text-slate-300 text-sm md:text-base mb-3">
+                    But to hit 100%, you need <span className="font-bold text-yellow-400">MORE NUMBERS</span>. Add metrics to your bullet points now.
+                  </p>
+                  <button
+                    onClick={onOpenWritingForge}
+                    className="text-xs md:text-sm font-semibold text-yellow-400 hover:text-yellow-300 underline underline-offset-2 transition-colors"
+                  >
+                    Fix it now →
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Bento Grid Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            {/* Card 1: Formatting Health */}
+            {/* Card 1: Impact Density (Gauge) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full hover:border-cyan-500/30 transition-all duration-300"
+              className={`glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full transition-all duration-300 ${
+                impactLevel.level === 'weak' ? 'hover:border-red-500/30' :
+                impactLevel.level === 'good' ? 'hover:border-yellow-500/30' :
+                'hover:border-emerald-500/30'
+              }`}
             >
               <div className="flex justify-between items-start mb-3 md:mb-4">
-                <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  <span className="material-symbols-outlined text-xl md:text-2xl">verified_user</span>
+                <div className={`p-2 md:p-3 rounded-lg border ${
+                  impactLevel.level === 'weak' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                  impactLevel.level === 'good' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                  'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                }`}>
+                  <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
                 </div>
-                <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-emerald-400 bg-emerald-500/10 rounded border border-emerald-500/20 whitespace-nowrap">
-                  +Perfect
+                <span className={`px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold rounded border whitespace-nowrap ${
+                  impactLevel.level === 'weak' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
+                  impactLevel.level === 'good' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' :
+                  'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                }`}>
+                  {impactLevel.label}
                 </span>
               </div>
               <div>
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Formatting Health</p>
+                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Impact Density</p>
                 <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">100<span className="text-sm md:text-lg text-slate-500">/100</span></h3>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">{metricsCount}<span className="text-sm md:text-lg text-slate-500">/10+</span></h3>
                 </div>
-                <div className="w-full bg-slate-700/50 rounded-full h-1.5 mt-3 md:mt-4 overflow-hidden">
+                <p className="text-slate-500 text-[11px] md:text-xs mt-2 leading-relaxed">
+                  {impactLevel.advice}
+                </p>
+                {/* Gauge Progress Bar */}
+                <div className="w-full bg-slate-700/50 rounded-full h-2 mt-3 md:mt-4 overflow-hidden relative">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
+                    animate={{ width: `${Math.min(100, (metricsCount / 10) * 100)}%` }}
                     transition={{ duration: 1, delay: 0.6 }}
-                    className="bg-emerald-500 h-1.5 rounded-full"
+                    className={`h-2 rounded-full ${
+                      impactLevel.level === 'weak' ? 'bg-red-500' :
+                      impactLevel.level === 'good' ? 'bg-yellow-500' :
+                      'bg-emerald-500'
+                    }`}
                   />
+                  {/* Threshold markers */}
+                  <div className="absolute top-0 left-[50%] w-0.5 h-2 bg-slate-500/50"></div>
+                  <div className="absolute top-0 left-[100%] w-0.5 h-2 bg-slate-500/50"></div>
+                </div>
+                <div className="flex justify-between text-[9px] md:text-[10px] text-slate-600 mt-1 font-mono">
+                  <span>0</span>
+                  <span>5</span>
+                  <span>10+</span>
                 </div>
               </div>
             </motion.div>
@@ -349,6 +470,9 @@ export function ATSAnalysisReport({
               )}
             </motion.div>
           )}
+
+          {/* Weak Bullet Suggestions */}
+          <WeakBulletSuggestions ocrText={ocrText} metricsCount={metricsCount} />
 
           {/* Call to Action */}
           <motion.div
