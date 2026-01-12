@@ -214,7 +214,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
               <h4 className="text-red-400 font-bold mb-2">Analysis Error</h4>
               <p className="text-zinc-300 text-sm mb-4">{text}</p>
               <p className="text-zinc-400 text-xs">
-                Please try re-uploading your resume or contact support if the issue persists.
+                Please try re-uploading your resume or contact support at cvdebug@outlook.com if the issue persists.
               </p>
             </div>
           </div>

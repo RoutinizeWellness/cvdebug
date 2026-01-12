@@ -211,7 +211,7 @@ export default function Dashboard() {
         })
         .catch((error) => {
           console.error("Credit update failed:", error);
-          toast.error("Payment recorded but credit update failed. Please contact support.");
+          toast.error("Payment recorded but credit update failed. Please contact support at cvdebug@outlook.com");
           processedPaymentRef.current = false;
         })
         .finally(() => {

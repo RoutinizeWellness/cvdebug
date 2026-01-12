@@ -194,7 +194,7 @@ export const performOcr = internalAction({
         "We detected complex, image-heavy layers that Deep OCR could not fully recover even after multiple attempts. Try: 1) Print to PDF to flatten layers, 2) Convert to Word format, or 3) Use a simpler PDF template.";
     }
 
-    userMessage += "\n\nIf this issue persists, please contact support with the following details:\n";
+    userMessage += "\n\nIf this issue persists, please contact support at cvdebug@outlook.com with the following details:\n";
     userMessage += `- Error: ${error.message}\n`;
     userMessage += `- Resume ID: ${args.resumeId}\n`;
     userMessage += `- Processing time: ${processingTime}ms\n`;

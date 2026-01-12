@@ -177,7 +177,7 @@ export const processWithServerOcr = internalAction({
               "1. Save your resume as a standard PDF",
               "2. Try using Word (.docx) format",
               "3. Ensure the file is not corrupted",
-              "4. Contact support if the issue persists"
+              "4. Contact support at cvdebug@outlook.com if the issue persists"
             ];
           }
 
@@ -226,7 +226,7 @@ export const processWithServerOcr = internalAction({
         userMessage = "Network error while processing file. Please check your connection and try again.";
       }
       
-      userMessage += "\n\nIf this issue persists, please contact support with the following details:\n";
+      userMessage += "\n\nIf this issue persists, please contact support at cvdebug@outlook.com with the following details:\n";
       userMessage += `- Error: ${error.message}\n`;
       userMessage += `- Resume ID: ${args.resumeId}\n`;
       userMessage += `- Processing time: ${processingTime}ms`;

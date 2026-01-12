@@ -71,11 +71,11 @@ export function InterviewPrepMode({
 
       // Better error messages
       if (error.message?.includes("OPENROUTER_API_KEY")) {
-        toast.error("API key not configured. Please contact support.");
+        toast.error("API key not configured. Please contact support at cvdebug@outlook.com");
       } else if (error.message?.includes("Server Error")) {
         toast.error("Failed to generate prep. This feature requires an active subscription with AI credits.");
       } else {
-        toast.error(error.message || "Failed to generate prep. Please try again.");
+        toast.error(error.message || "Failed to generate prep. Please try again or contact cvdebug@outlook.com");
       }
     } finally {
       setIsGenerating(false);
