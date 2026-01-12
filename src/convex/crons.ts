@@ -23,4 +23,12 @@ crons.interval(
   {}
 );
 
+// Daily Blog Post Generation: Generate and publish one SEO-optimized blog post every day at 9 AM UTC
+crons.interval(
+  "generate_daily_blog_post",
+  { hours: 24 },
+  internalAny.blogGenerator.generateDailyPost,
+  {}
+);
+
 export default crons;

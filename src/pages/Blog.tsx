@@ -55,14 +55,26 @@ export default function Blog() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative overflow-hidden"
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            CVDebug <span className="text-blue-500">Blog</span>
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Guides, strategies, and insights to help you beat ATS systems and land more interviews.
-          </p>
+          {/* Background decorative elements */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -mt-16"></div>
+          <div className="absolute top-0 right-1/4 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl -mt-16"></div>
+
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
+              <span className="material-symbols-outlined text-cyan-400 text-[20px]">auto_stories</span>
+              <span className="text-cyan-400 font-bold text-sm uppercase tracking-wider">Career Resources</span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-6">
+              CVDebug <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">Blog</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
+              Expert guides, proven strategies, and insider insights to help you{" "}
+              <span className="text-cyan-400 font-bold">beat ATS systems</span> and land more interviews.
+            </p>
+          </div>
         </motion.section>
 
         {/* Featured Post */}
@@ -71,57 +83,80 @@ export default function Blog() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="mb-16"
+            className="mb-16 group"
           >
             <div
               onClick={() => navigate(`/blog/${featuredPost.slug}`)}
-              className="glass-panel rounded-2xl p-8 md:p-12 cursor-pointer hover:border-blue-500/50 transition-all"
+              className="glass-panel rounded-2xl p-8 md:p-12 cursor-pointer hover:border-cyan-500/60 transition-all duration-300 relative overflow-hidden border-2 border-slate-700/50 hover:shadow-[0_0_60px_-12px_rgba(6,182,212,0.4)]"
             >
-              <span className="px-3 py-1 bg-blue-600/20 border border-blue-500/30 rounded-full text-blue-400 text-sm font-semibold">
-                Featured
-              </span>
-              <h2 className="text-4xl font-bold text-white mt-6 mb-4">
-                {featuredPost.title}
-              </h2>
-              <p className="text-lg text-slate-300 mb-6 leading-relaxed">
-                {featuredPost.excerpt}
-              </p>
-              <div className="flex items-center gap-6 mb-6 flex-wrap">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <Calendar className="w-4 h-4" />
-                  <time>
-                    {featuredPost.publishedAt ? new Date(featuredPost.publishedAt).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    }) : 'Recently'}
-                  </time>
+              {/* Background gradient effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-cyan-600 to-teal-600 rounded-full shadow-lg shadow-cyan-500/20">
+                    <span className="material-symbols-outlined text-white text-[18px]">star</span>
+                    <span className="text-white text-sm font-black uppercase tracking-wider">Featured</span>
+                  </div>
+                  <span className="px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-full text-slate-300 text-sm font-semibold">
+                    {featuredPost.category}
+                  </span>
                 </div>
-                {featuredPost.readingTime && (
+
+                <h2 className="text-4xl md:text-5xl font-black text-white mt-6 mb-5 leading-tight group-hover:text-cyan-400 transition-colors">
+                  {featuredPost.title}
+                </h2>
+                <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                  {featuredPost.excerpt}
+                </p>
+
+                <div className="flex items-center gap-6 mb-8 flex-wrap">
                   <div className="flex items-center gap-2 text-slate-400">
-                    <Clock className="w-4 h-4" />
-                    <span>{featuredPost.readingTime} min read</span>
+                    <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                      <Calendar className="w-4 h-4" />
+                    </div>
+                    <time className="text-sm font-medium">
+                      {featuredPost.publishedAt ? new Date(featuredPost.publishedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      }) : 'Recently'}
+                    </time>
                   </div>
-                )}
-                {featuredPost.views && (
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <Eye className="w-4 h-4" />
-                    <span>{featuredPost.views} views</span>
-                  </div>
-                )}
+                  {featuredPost.readingTime && (
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm font-medium">{featuredPost.readingTime} min read</span>
+                    </div>
+                  )}
+                  {featuredPost.views && (
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                        <Eye className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm font-medium">{featuredPost.views.toLocaleString()} views</span>
+                    </div>
+                  )}
+                </div>
+
+                <Button className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold px-6 py-6 text-base shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all group-hover:scale-[1.02]">
+                  Read Full Article
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Read Article
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
             </div>
           </motion.article>
         )}
 
         {/* Recent Posts Grid */}
         <section>
-          <h2 className="text-3xl font-bold text-white mb-8">Recent Articles</h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl md:text-4xl font-black text-white">Recent Articles</h2>
+            <span className="text-slate-500 text-sm font-medium">{recentPosts.length} posts</span>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {recentPosts.map((post: any, index: number) => (
               <motion.article
                 key={post.slug}
@@ -129,44 +164,64 @@ export default function Blog() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
                 onClick={() => navigate(`/blog/${post.slug}`)}
-                className="glass-panel rounded-xl p-6 cursor-pointer hover:border-blue-500/50 transition-all"
+                className="glass-panel rounded-xl p-6 cursor-pointer hover:border-teal-500/50 transition-all duration-300 group relative overflow-hidden flex flex-col h-full hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)]"
               >
-                <span className="px-3 py-1 bg-slate-800 rounded-full text-slate-300 text-xs font-semibold">
-                  {post.category}
-                </span>
-                <h3 className="text-2xl font-bold text-white mt-4 mb-3">
-                  {post.title}
-                </h3>
-                <p className="text-slate-300 mb-4 leading-relaxed">
-                  {post.excerpt}
-                </p>
-                <div className="flex items-center gap-4 text-slate-400 text-sm mb-4">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    <time>
-                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      }) : 'Recently'}
-                    </time>
-                  </div>
-                  {post.readingTime && (
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      <span>{post.readingTime} min</span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  {post.tags.map((tag: any, tagIndex: number) => (
-                    <span
-                      key={tagIndex}
-                      className="px-2 py-1 bg-slate-800/50 rounded text-slate-400 text-xs"
-                    >
-                      {tag}
+                {/* Hover glow effect */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300 text-xs font-bold uppercase tracking-wider">
+                      {post.category}
                     </span>
-                  ))}
+                    {post.views && post.views > 100 && (
+                      <div className="flex items-center gap-1 px-2 py-1 bg-teal-500/10 border border-teal-500/20 rounded-lg">
+                        <span className="material-symbols-outlined text-teal-400 text-[14px]">trending_up</span>
+                        <span className="text-teal-400 text-[10px] font-bold">POPULAR</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-black text-white mt-2 mb-3 leading-tight group-hover:text-teal-400 transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+
+                  <p className="text-slate-300 mb-4 leading-relaxed text-sm line-clamp-3 flex-1">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="flex items-center gap-4 text-slate-400 text-xs mb-4 pt-4 border-t border-slate-800">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-3.5 h-3.5" />
+                      <time className="font-medium">
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        }) : 'Recently'}
+                      </time>
+                    </div>
+                    {post.readingTime && (
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span className="font-medium">{post.readingTime} min</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {post.tags.slice(0, 3).map((tag: any, tagIndex: number) => (
+                      <span
+                        key={tagIndex}
+                        className="px-2 py-1 bg-slate-800/50 border border-slate-700/50 rounded text-slate-400 text-[10px] font-semibold uppercase tracking-wide"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {post.tags.length > 3 && (
+                      <span className="text-slate-500 text-[10px] font-semibold">+{post.tags.length - 3}</span>
+                    )}
+                  </div>
                 </div>
               </motion.article>
             ))}
@@ -178,21 +233,37 @@ export default function Blog() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-blue-500/20 rounded-2xl text-center"
+          className="mt-16 p-8 md:p-12 bg-gradient-to-br from-cyan-600/10 via-teal-600/10 to-cyan-600/10 border-2 border-cyan-500/30 rounded-2xl text-center relative overflow-hidden shadow-[0_0_80px_-12px_rgba(6,182,212,0.3)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to See Your ATS Score?
-          </h2>
-          <p className="text-slate-300 text-lg mb-6 max-w-2xl mx-auto">
-            Stop guessing and start optimizing. Scan your resume and get instant insights.
-          </p>
-          <Button
-            onClick={() => navigate('/')}
-            size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg"
-          >
-            Scan Your Resume for Free
-          </Button>
+          {/* Background decorative elements */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -ml-16 -mt-16"></div>
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl -mr-16 -mb-16"></div>
+
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 mb-4">
+              <span className="material-symbols-outlined text-cyan-400 text-[20px]">rocket_launch</span>
+              <span className="text-cyan-400 font-bold text-sm uppercase tracking-wider">Start Your Journey</span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+              Ready to See Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">ATS Score</span>?
+            </h2>
+            <p className="text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+              Stop guessing and start optimizing. Scan your resume and get{" "}
+              <span className="text-cyan-400 font-bold">instant AI-powered insights</span> in seconds.
+            </p>
+            <Button
+              onClick={() => navigate('/')}
+              size="lg"
+              className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white px-10 py-6 text-lg font-black shadow-[0_0_40px_-5px_rgba(6,182,212,0.5)] hover:shadow-[0_0_50px_-5px_rgba(6,182,212,0.7)] transition-all hover:scale-[1.05]"
+            >
+              <span className="flex items-center gap-2">
+                Scan Your Resume for Free
+                <ArrowRight className="w-5 h-5" />
+              </span>
+            </Button>
+            <p className="text-slate-500 text-sm mt-4">No credit card required • Get results in 10 seconds</p>
+          </div>
         </motion.section>
       </main>
 

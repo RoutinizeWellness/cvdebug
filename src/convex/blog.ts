@@ -114,7 +114,7 @@ export const getCategories = query({
   },
 });
 
-// Create a new blog post (admin function)
+// Create a new blog post (admin/internal function)
 export const createPost = mutation({
   args: {
     title: v.string(),
