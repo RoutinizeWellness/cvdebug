@@ -14,9 +14,10 @@ interface WeakBullet {
 interface WeakBulletSuggestionsProps {
   ocrText: string;
   metricsCount: number;
+  isPaidUser?: boolean;
 }
 
-export function WeakBulletSuggestions({ ocrText, metricsCount }: WeakBulletSuggestionsProps) {
+export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = false }: WeakBulletSuggestionsProps) {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
 
   // Detect weak bullets (sentences without numbers)
@@ -137,8 +138,8 @@ export function WeakBulletSuggestions({ ocrText, metricsCount }: WeakBulletSugge
 
   const weakBullets = detectWeakBullets(ocrText);
 
-  // Don't show if no weak bullets or if metrics are already good
-  if (weakBullets.length === 0 || metricsCount >= 8) {
+  // Don't show if no weak bullets, metrics are good, or user is not paid
+  if (!isPaidUser || weakBullets.length === 0 || metricsCount >= 8) {
     return null;
   }
 

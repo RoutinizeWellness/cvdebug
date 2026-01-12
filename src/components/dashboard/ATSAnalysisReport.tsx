@@ -6,6 +6,7 @@ import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 
 interface ATSAnalysisReportProps {
   resume: any;
+  user?: any;
   onEditWithSniper?: () => void;
   onOpenWritingForge?: () => void;
   onDownloadPDF?: () => void;
@@ -13,12 +14,16 @@ interface ATSAnalysisReportProps {
 
 export function ATSAnalysisReport({
   resume,
+  user,
   onEditWithSniper,
   onOpenWritingForge,
   onDownloadPDF
 }: ATSAnalysisReportProps) {
   const score = resume?.score || 82;
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
+
+  // Check if user has paid plan (single_scan or interview_sprint)
+  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
 
   // Extract target role (from job title, project, or resume data)
   const targetRole = resume?.jobTitle || resume?.project?.targetRole || resume?.targetRole || null;
@@ -138,8 +143,8 @@ export function ATSAnalysisReport({
 
   const impactLevel = getImpactLevel(metricsCount);
 
-  // Show special banner if keywords are perfect but score < 90
-  const showQuantificationBanner = missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
+  // Show special banner if keywords are perfect but score < 90 (ONLY for paid users)
+  const showQuantificationBanner = isPaidUser && missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
 
   return (
     <div className="relative w-full bg-[#0F172A] min-h-screen overflow-y-auto">
@@ -278,64 +283,97 @@ export function ATSAnalysisReport({
 
           {/* Bento Grid Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            {/* Card 1: Impact Density (Gauge) */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className={`glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full transition-all duration-300 ${
-                impactLevel.level === 'weak' ? 'hover:border-red-500/30' :
-                impactLevel.level === 'good' ? 'hover:border-yellow-500/30' :
-                'hover:border-emerald-500/30'
-              }`}
-            >
-              <div className="flex justify-between items-start mb-3 md:mb-4">
-                <div className={`p-2 md:p-3 rounded-lg border ${
-                  impactLevel.level === 'weak' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                  impactLevel.level === 'good' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
-                  'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                }`}>
-                  <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
+            {/* Card 1: Impact Density (Gauge) - PAID USERS ONLY */}
+            {isPaidUser ? (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className={`glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full transition-all duration-300 ${
+                  impactLevel.level === 'weak' ? 'hover:border-red-500/30' :
+                  impactLevel.level === 'good' ? 'hover:border-yellow-500/30' :
+                  'hover:border-emerald-500/30'
+                }`}
+              >
+                <div className="flex justify-between items-start mb-3 md:mb-4">
+                  <div className={`p-2 md:p-3 rounded-lg border ${
+                    impactLevel.level === 'weak' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                    impactLevel.level === 'good' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
+                    'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                  }`}>
+                    <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
+                  </div>
+                  <span className={`px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold rounded border whitespace-nowrap ${
+                    impactLevel.level === 'weak' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
+                    impactLevel.level === 'good' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' :
+                    'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                  }`}>
+                    {impactLevel.label}
+                  </span>
                 </div>
-                <span className={`px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold rounded border whitespace-nowrap ${
-                  impactLevel.level === 'weak' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
-                  impactLevel.level === 'good' ? 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20' :
-                  'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
-                }`}>
-                  {impactLevel.label}
-                </span>
-              </div>
-              <div>
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Impact Density</p>
-                <div className="flex items-baseline gap-2">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">{metricsCount}<span className="text-sm md:text-lg text-slate-500">/10+</span></h3>
+                <div>
+                  <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Impact Density</p>
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white">{metricsCount}<span className="text-sm md:text-lg text-slate-500">/10+</span></h3>
+                  </div>
+                  <p className="text-slate-500 text-[11px] md:text-xs mt-2 leading-relaxed">
+                    {impactLevel.advice}
+                  </p>
+                  {/* Gauge Progress Bar */}
+                  <div className="w-full bg-slate-700/50 rounded-full h-2 mt-3 md:mt-4 overflow-hidden relative">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.min(100, (metricsCount / 10) * 100)}%` }}
+                      transition={{ duration: 1, delay: 0.6 }}
+                      className={`h-2 rounded-full ${
+                        impactLevel.level === 'weak' ? 'bg-red-500' :
+                        impactLevel.level === 'good' ? 'bg-yellow-500' :
+                        'bg-emerald-500'
+                      }`}
+                    />
+                    {/* Threshold markers */}
+                    <div className="absolute top-0 left-[50%] w-0.5 h-2 bg-slate-500/50"></div>
+                    <div className="absolute top-0 left-[100%] w-0.5 h-2 bg-slate-500/50"></div>
+                  </div>
+                  <div className="flex justify-between text-[9px] md:text-[10px] text-slate-600 mt-1 font-mono">
+                    <span>0</span>
+                    <span>5</span>
+                    <span>10+</span>
+                  </div>
                 </div>
-                <p className="text-slate-500 text-[11px] md:text-xs mt-2 leading-relaxed">
-                  {impactLevel.advice}
-                </p>
-                {/* Gauge Progress Bar */}
-                <div className="w-full bg-slate-700/50 rounded-full h-2 mt-3 md:mt-4 overflow-hidden relative">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${Math.min(100, (metricsCount / 10) * 100)}%` }}
-                    transition={{ duration: 1, delay: 0.6 }}
-                    className={`h-2 rounded-full ${
-                      impactLevel.level === 'weak' ? 'bg-red-500' :
-                      impactLevel.level === 'good' ? 'bg-yellow-500' :
-                      'bg-emerald-500'
-                    }`}
-                  />
-                  {/* Threshold markers */}
-                  <div className="absolute top-0 left-[50%] w-0.5 h-2 bg-slate-500/50"></div>
-                  <div className="absolute top-0 left-[100%] w-0.5 h-2 bg-slate-500/50"></div>
+              </motion.div>
+            ) : (
+              /* Card 1 Alternative: Format Health - FREE USERS */
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between group h-full hover:border-cyan-500/30 transition-all duration-300"
+              >
+                <div className="flex justify-between items-start mb-3 md:mb-4">
+                  <div className="p-2 md:p-3 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span className="material-symbols-outlined text-xl md:text-2xl">verified_user</span>
+                  </div>
+                  <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-emerald-400 bg-emerald-500/10 rounded border border-emerald-500/20 whitespace-nowrap">
+                    Perfect
+                  </span>
                 </div>
-                <div className="flex justify-between text-[9px] md:text-[10px] text-slate-600 mt-1 font-mono">
-                  <span>0</span>
-                  <span>5</span>
-                  <span>10+</span>
+                <div>
+                  <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Format Health</p>
+                  <div className="flex items-baseline gap-2">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white">100<span className="text-sm md:text-lg text-slate-500">/100</span></h3>
+                  </div>
+                  <div className="w-full bg-slate-700/50 rounded-full h-1.5 mt-3 md:mt-4 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: 1, delay: 0.6 }}
+                      className="bg-emerald-500 h-1.5 rounded-full"
+                    />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
 
             {/* Card 2: Visibility Grade */}
             <motion.div
@@ -488,8 +526,8 @@ export function ATSAnalysisReport({
             </motion.div>
           )}
 
-          {/* Weak Bullet Suggestions */}
-          <WeakBulletSuggestions ocrText={ocrText} metricsCount={metricsCount} />
+          {/* Weak Bullet Suggestions - PAID USERS ONLY */}
+          <WeakBulletSuggestions ocrText={ocrText} metricsCount={metricsCount} isPaidUser={isPaidUser} />
 
           {/* Call to Action */}
           <motion.div

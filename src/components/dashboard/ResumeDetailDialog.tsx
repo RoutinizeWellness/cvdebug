@@ -777,6 +777,7 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                 <TabsContent value="ats-report" className="flex-1 overflow-auto p-6">
                   <ATSAnalysisReport
                     resume={displayResume}
+                    user={user}
                     onEditWithSniper={() => {
                       onClose();
                       // Navigate to keyword sniper - you can implement this with a callback prop
