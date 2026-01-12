@@ -85,7 +85,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
       }}>
         <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-0 border-2 border-primary shadow-2xl bg-zinc-900">
           <div className="bg-zinc-950 p-6 sm:p-8 text-center relative border-b border-zinc-800">
-            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white text-xs font-bold py-2 text-center tracking-widest uppercase shadow-lg">
+            <div className="absolute top-0 left-0 right-0 bg-orange-600 text-white text-xs font-bold py-2 text-center uppercase">
               ⚠️ WAIT! Before You Checkout...
             </div>
             <div className="mt-8">
@@ -275,7 +275,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
       <DialogContent className="max-w-[95vw] sm:max-w-[900px] max-h-[90vh] p-0 overflow-y-auto gap-0 border border-zinc-800 shadow-2xl bg-zinc-950">
         <div className="p-6 sm:p-8 pb-4 sm:pb-6 text-center relative overflow-hidden glass-card">
            {/* Trial Banner */}
-           <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 text-black text-[10px] font-bold py-1.5 text-center tracking-widest uppercase shadow-sm">
+           <div className="absolute top-0 left-0 right-0 bg-primary text-black text-xs font-bold py-1.5 text-center uppercase">
              Beta Launch Offer: 15-Day Free Trial Included
            </div>
 
@@ -392,8 +392,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </div>
 
           {/* Interview Sprint - The Grand Slam Offer */}
-          <div className="group relative rounded-xl glass-card border-2 border-primary p-5 sm:p-6 flex flex-col gap-4 shadow-[0_0_50px_-12px_rgba(249,245,6,0.3)] hover:shadow-[0_0_60px_-12px_rgba(249,245,6,0.4)] transition-all duration-300 lg:scale-105 z-10">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary via-yellow-400 to-primary text-black text-[10px] sm:text-xs font-black px-4 sm:px-6 py-1.5 sm:py-2 rounded-full uppercase tracking-widest shadow-xl animate-pulse border-2 border-black/10">
+          <div className="group relative rounded-xl glass-card border-2 border-primary p-5 sm:p-6 flex flex-col gap-4 shadow-lg transition-all duration-300 lg:scale-105 z-10">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-black text-xs font-black px-6 py-2 rounded-full uppercase">
               🚀 Best Value
             </div>
 
@@ -402,8 +402,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary/20 flex items-center justify-center mb-2">
                   <Rocket className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                 </div>
-                <div className="text-[9px] sm:text-[10px] font-bold bg-red-500/10 text-red-500 px-2 py-1 rounded border border-red-500/20 animate-pulse">
-                  Limited Time Only
+                <div className="text-xs font-bold bg-red-500/10 text-red-500 px-2 py-1 rounded border border-red-500/20">
+                  Limited Time
                 </div>
               </div>
               <h3 className="font-black text-xl sm:text-2xl text-white flex items-center gap-2">
@@ -462,7 +462,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </div>
             
             <Button
-              className="w-full h-12 sm:h-14 font-black text-base sm:text-lg shadow-[0_0_30px_-5px_rgba(249,245,6,0.4)] bg-gradient-to-r from-primary to-yellow-400 hover:from-primary/90 hover:to-yellow-400/90 text-black rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full h-12 sm:h-14 font-bold text-base sm:text-lg shadow-lg bg-primary hover:bg-primary/90 text-black rounded-xl transition-colors"
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
             >
