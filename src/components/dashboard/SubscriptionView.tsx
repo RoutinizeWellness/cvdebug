@@ -85,52 +85,79 @@ export function SubscriptionView() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group"
+            className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border-2 border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300"
           >
             {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-teal-500/5 rounded-full blur-3xl -ml-12 -mb-12 pointer-events-none"></div>
 
-            <div className="flex flex-col gap-4 relative z-10 max-w-xl">
-              <div className="flex items-center gap-3">
-                <span className="bg-slate-700/50 border border-slate-600 text-slate-300 text-xs font-semibold px-2.5 py-1 rounded-md uppercase tracking-wide">
-                  Current Plan
-                </span>
-                <span className="text-emerald-400 text-sm font-medium flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  Active
-                </span>
+            <div className="flex flex-col gap-5 relative z-10 max-w-xl flex-1">
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-2 bg-slate-800/80 border border-slate-600 text-slate-300 px-3 py-1.5 rounded-lg shadow-sm">
+                  <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
+                  <span className="text-xs font-bold uppercase tracking-wide">Current Plan</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-emerald-400 text-xs font-bold uppercase tracking-wide">Active</span>
+                </div>
               </div>
 
               <div>
-                <h3 className="text-2xl font-bold text-white mb-1">
-                  {isFreeTier && "Free Preview"}
-                  {isSingleScan && "Single Scan"}
-                  {isInterviewSprint && "Interview Sprint"}
-                </h3>
-                <p className="text-slate-400">
-                  {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis."}
+                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 flex items-center gap-2 flex-wrap">
+                  {isFreeTier && (
+                    <>
+                      <span>Free Preview</span>
+                      <span className="material-symbols-outlined text-slate-500 text-[28px]">preview</span>
+                    </>
+                  )}
                   {isSingleScan && (
                     <>
-                      You have <span className="text-white font-medium">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24h.
+                      <span>Single Scan</span>
+                      <span className="material-symbols-outlined text-teal-500 text-[28px]">bolt</span>
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      You have unlimited scans for <span className="text-white font-medium">{daysUntilReset} days</span>. Expires on{" "}
-                      <span className="text-white font-medium">{new Date(sprintExpiresAt).toLocaleDateString('es-ES')}</span>.
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">Interview Sprint</span>
+                      <span className="material-symbols-outlined text-cyan-400 text-[28px]">rocket_launch</span>
+                    </>
+                  )}
+                </h3>
+                <p className="text-slate-300 text-base leading-relaxed">
+                  {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
+                  {isSingleScan && (
+                    <>
+                      You have <span className="text-teal-400 font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
+                    </>
+                  )}
+                  {isInterviewSprint && (
+                    <>
+                      You have <span className="text-cyan-400 font-bold">unlimited scans</span> for{" "}
+                      <span className="text-white font-bold bg-cyan-500/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      <span className="text-white font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 relative z-10 shrink-0">
-              <a className="text-slate-300 hover:text-white text-sm font-medium px-4 py-2 transition-colors" href="#">
-                Billing History
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 shrink-0 w-full sm:w-auto">
+              <a className="text-slate-300 hover:text-white text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-slate-800/50 rounded-lg border border-transparent hover:border-slate-700 text-center" href="#">
+                <span className="flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">receipt_long</span>
+                  Billing History
+                </span>
               </a>
               {!isFreeTier && (
-                <button className="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all shadow-lg hover:shadow-slate-900/40">
-                  Cancel Plan
+                <button className="bg-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-red-500/50 text-white hover:text-red-400 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg hover:shadow-red-900/20">
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="material-symbols-outlined text-[18px]">cancel</span>
+                    Cancel Plan
+                  </span>
                 </button>
               )}
             </div>
@@ -138,52 +165,69 @@ export function SubscriptionView() {
 
           {/* Pricing Section */}
           <div className="flex flex-col gap-6">
-            <h3 className="text-xl font-semibold text-white">Upgrade Options</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-white">Upgrade Options</h3>
+              <span className="text-xs text-slate-500 font-medium">Pay once, use forever</span>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {/* Single Scan */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="glass-panel rounded-2xl p-6 flex flex-col h-full border-slate-700/50 hover:border-slate-600 transition-colors"
+                className="glass-panel rounded-2xl p-6 md:p-7 flex flex-col h-full border-slate-700/50 hover:border-teal-500/50 hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)] transition-all duration-300 group relative overflow-hidden"
               >
-                <div className="mb-4">
-                  <h4 className="text-lg font-bold text-white">Single Scan</h4>
-                  <p className="text-slate-400 text-sm mt-1">One-time payment</p>
+                {/* Subtle background glow */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 group-hover:border-teal-500/30 transition-colors">
+                      <span className="material-symbols-outlined text-slate-400 group-hover:text-teal-400 text-[24px] transition-colors">bolt</span>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold text-white">Single Scan</h4>
+                      <p className="text-slate-500 text-xs mt-0.5 font-medium uppercase tracking-wide">One-time payment</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-4xl font-black text-white">€4.99</span>
+                    <span className="text-slate-500 text-base">/once</span>
+                  </div>
+
+                  <div className="space-y-3.5 mb-8 flex-1">
+                    {[
+                      { icon: "verified", text: "Full ATS Analysis" },
+                      { icon: "key", text: "Complete Keyword Report" },
+                      { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
+                      { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
+                      { icon: "shield_with_heart", text: "PDF Sanitization" }
+                    ].map((feature, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="p-1 rounded-lg bg-teal-500/10 border border-teal-500/20">
+                          <span className="material-symbols-outlined text-teal-400 text-[16px]">{feature.icon}</span>
+                        </div>
+                        <p className="text-sm text-slate-300 font-medium leading-relaxed">{feature.text}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    disabled={isSingleScan}
+                    className="w-full py-3.5 rounded-xl border-2 border-slate-600 bg-slate-800/50 text-white font-bold hover:bg-slate-700/80 hover:border-teal-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                  >
+                    {isSingleScan ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                        Current Plan
+                      </span>
+                    ) : (
+                      "Get Single Scan"
+                    )}
+                  </button>
                 </div>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-bold text-white">€4.99</span>
-                  <span className="text-slate-500">/once</span>
-                </div>
-                <div className="space-y-3 mb-8 flex-1">
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Full ATS Analysis</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Complete Keyword Report</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Formatting Audit + Fixes</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Unlimited Re-scans (24h)</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-primary text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">PDF Sanitization</p>
-                  </div>
-                </div>
-                <button
-                  disabled={isSingleScan}
-                  className="w-full py-3 rounded-xl border border-slate-600 bg-transparent text-white font-medium hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSingleScan ? "Current Plan" : "Get Single Scan"}
-                </button>
               </motion.div>
 
               {/* Interview Sprint (Highlighted) */}
@@ -191,51 +235,94 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="glass-panel relative rounded-2xl p-6 flex flex-col h-full border-cyan-500/50 bg-gradient-to-b from-slate-800/80 to-slate-900/90 glow-violet transform hover:-translate-y-1 transition-all duration-300"
+                className="glass-panel relative rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-cyan-500/60 bg-gradient-to-br from-slate-800/90 via-slate-900/90 to-cyan-950/40 shadow-[0_0_60px_-12px_rgba(6,182,212,0.5)] transform hover:scale-[1.02] hover:shadow-[0_0_80px_-12px_rgba(6,182,212,0.6)] transition-all duration-300 group overflow-hidden"
               >
-                <div className="absolute -top-3 right-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-cyan-500/30">
-                  🚀 BEST VALUE - SAVE 60%
-                </div>
-                <div className="mb-4">
-                  <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                    Interview Sprint
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">rocket_launch</span>
-                  </h4>
-                  <p className="text-slate-400 text-sm mt-1">7 Days Unlimited Access</p>
-                  <p className="text-slate-500 text-xs mt-1 italic">Joined by 1,200+ candidates</p>
-                </div>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-3xl font-bold text-white">€19.99</span>
-                  <span className="text-slate-500 line-through text-lg">€49.99</span>
-                </div>
-                <div className="space-y-3 mb-8 flex-1">
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Unlimited Scans (7 Days)</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">AI Keyword Suggestions</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Cover Letter Generator</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">LinkedIn Optimizer</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-cyan-400 text-[20px]">check_circle</span>
-                    <p className="text-sm text-slate-300">Priority Support</p>
+                {/* Animated background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                {/* Best Value Badge */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+                  <div className="bg-gradient-to-r from-cyan-600 via-teal-500 to-cyan-600 text-white text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-cyan-500/40 border-2 border-cyan-400/30 animate-pulse">
+                    <span className="flex items-center gap-1.5">
+                      🚀 BEST VALUE - SAVE 60%
+                    </span>
                   </div>
                 </div>
-                <button
-                  disabled={isInterviewSprint}
-                  className="w-full py-3 rounded-xl bg-primary-gradient text-white font-bold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isInterviewSprint ? "Current Plan" : "Start Interview Sprint"}
-                </button>
+
+                <div className="relative z-10 pt-2">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 group-hover:shadow-lg group-hover:shadow-cyan-500/20 transition-all">
+                      <span className="material-symbols-outlined text-cyan-400 text-[24px]">rocket_launch</span>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-black text-white flex items-center gap-2">
+                        Interview Sprint
+                      </h4>
+                      <p className="text-cyan-300 text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-baseline gap-3 mb-2">
+                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">€19.99</span>
+                    <span className="text-slate-500 line-through text-xl font-bold">€49.99</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="px-2.5 py-1 rounded-md bg-green-500/10 border border-green-500/30">
+                      <p className="text-green-400 text-xs font-bold">60% OFF</p>
+                    </div>
+                    <p className="text-slate-400 text-xs italic">Joined by 1,200+ candidates</p>
+                  </div>
+
+                  <div className="space-y-3.5 mb-8 flex-1">
+                    {[
+                      { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
+                      { icon: "psychology", text: "AI Keyword Suggestions" },
+                      { icon: "description", text: "Cover Letter Generator" },
+                      { icon: "work", text: "LinkedIn Optimizer" },
+                      { icon: "support_agent", text: "Priority Support" }
+                    ].map((feature, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="p-1 rounded-lg bg-cyan-500/20 border border-cyan-500/40 shadow-sm shadow-cyan-500/20">
+                          <span className="material-symbols-outlined text-cyan-400 text-[16px]">{feature.icon}</span>
+                        </div>
+                        <p className="text-sm text-white font-semibold leading-relaxed">{feature.text}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Social Proof */}
+                  <div className="mb-6 p-4 rounded-xl bg-slate-900/60 border border-slate-700/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="flex -space-x-2">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 border-2 border-slate-900"></div>
+                        ))}
+                      </div>
+                      <span className="text-xs font-bold text-cyan-400">1,200+ Success Stories</span>
+                    </div>
+                    <p className="text-[10px] text-slate-400 leading-tight">
+                      "Got interviews at <span className="text-white font-bold">Google</span> & <span className="text-white font-bold">Netflix</span> in one week"
+                    </p>
+                  </div>
+
+                  <button
+                    disabled={isInterviewSprint}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-black shadow-[0_0_30px_-5px_rgba(6,182,212,0.5)] hover:shadow-[0_0_40px_-5px_rgba(6,182,212,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                  >
+                    {isInterviewSprint ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                        Current Plan
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        Start Interview Sprint
+                        <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                      </span>
+                    )}
+                  </button>
+                </div>
               </motion.div>
             </div>
           </div>
