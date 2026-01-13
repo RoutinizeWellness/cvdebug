@@ -342,20 +342,25 @@ export default function Dashboard() {
         );
       case 'master-cvs':
         return (
-          <div className="space-y-6 pb-24 md:pb-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-white">Master CVs</h1>
-                <p className="text-slate-400 text-sm mt-1">Your base resume templates</p>
+          <div className="space-y-8 pb-24 md:pb-6">
+            {/* Header Section */}
+            <div className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700/50 p-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div className="space-y-2">
+                  <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Master CVs</h1>
+                  <p className="text-slate-600 dark:text-slate-400 text-base">Your base resume templates - manage and optimize</p>
+                </div>
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                >
+                  <Upload className="h-5 w-5" />
+                  Upload New CV
+                </Button>
               </div>
-              <Button 
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-primary hover:bg-primary/90 text-white font-bold"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Upload New CV
-              </Button>
             </div>
+
+            {/* Resume Grid */}
             <ResumeGrid
               resumes={resumes || []}
               setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
@@ -597,30 +602,30 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-slate-900 text-white font-sans selection:bg-primary/30">
-      <Sidebar 
-        categoryFilter={categoryFilter} 
+    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white font-sans selection:bg-primary/30">
+      <Sidebar
+        categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}
         setShowPricing={setShowPricing}
         currentView={currentView}
         setCurrentView={setCurrentView}
       />
-      
+
       <main
-        className="flex-1 flex flex-col overflow-y-auto relative bg-slate-900 pb-20 md:pb-0"
+        className="flex-1 flex flex-col overflow-y-auto relative bg-slate-50/50 dark:bg-transparent pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
           <Logo />
           <Button variant="ghost" size="icon" onClick={() => setShowPricing(true)}>
             <Sparkles className="h-5 w-5 text-primary" />
           </Button>
         </div>
 
-        <div className="flex-1 p-4 md:p-6 lg:p-8">
-          <div className="max-w-[1600px] mx-auto space-y-6">
+        <div className="flex-1 p-6 md:p-10 lg:p-12">
+          <div className="max-w-[1600px] mx-auto space-y-8">
             {renderContent()}
           </div>
         </div>

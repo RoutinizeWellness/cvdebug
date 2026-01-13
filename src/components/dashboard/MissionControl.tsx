@@ -106,60 +106,74 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   return (
     <div className="space-y-8 pb-24 md:pb-6">
-      {/* Page Heading */}
-      <header className="flex flex-wrap justify-between items-end gap-4 border-b border-slate-800 pb-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-white text-3xl font-bold tracking-tight">Mission Control</h2>
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            <p className="text-slate-400 text-sm font-mono">
-              System Status: Operational // Welcome back, {userName}.
+      {/* Page Heading - ResumeWorded Style */}
+      <header className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700/50 p-8">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <h2 className="text-slate-900 dark:text-white text-4xl font-bold tracking-tight">Mission Control</h2>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+              </span>
+            </div>
+            <p className="text-slate-600 dark:text-slate-400 text-base">
+              Welcome back, <span className="font-semibold text-slate-900 dark:text-white">{userName}</span>. Your resume optimization dashboard.
             </p>
           </div>
+          <Button
+            onClick={() => onNavigate("projects")}
+            className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group"
+          >
+            <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+            <span>New Application</span>
+          </Button>
         </div>
-        <Button
-          onClick={() => onNavigate("projects")}
-          className="flex items-center gap-2 rounded-lg h-10 pl-3 pr-4 bg-gradient-to-r from-primary to-secondary shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] text-white text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <Plus className="h-5 w-5" />
-          <span>New Application</span>
-        </Button>
       </header>
 
-      {/* Metrics Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Metrics Grid - ResumeWorded Style */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Metric 1 - Visibility Score */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-panel rounded-xl p-5 relative overflow-hidden group"
+          className="bg-white dark:bg-slate-800/50 rounded-xl p-6 border-2 border-cyan-200 dark:border-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-700 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group cursor-pointer"
+          onClick={() => onNavigate("master-cvs")}
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <TrendingUp className="h-16 w-16 text-white" />
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <TrendingUp className="h-20 w-20 text-cyan-600 dark:text-cyan-400" />
           </div>
-          <div className="flex flex-col gap-1 relative z-10">
-            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
-              Visibility Score
-            </p>
-            <div className="flex items-baseline gap-2 mt-1">
-              <p className="text-white text-4xl font-mono font-bold">
-                {visibilityScore}
-                <span className="text-xl text-slate-500">/100</span>
+          <div className="flex flex-col gap-3 relative z-10">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-600 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">
+                Visibility Score
               </p>
+              <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/20">
+                <TrendingUp className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+              </div>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-emerald-400 text-xs font-mono bg-emerald-400/10 w-fit px-2 py-1 rounded">
-              <TrendingUp className="h-3.5 w-3.5" />
-              +5% this week
+            <div className="flex items-baseline gap-2">
+              <p className="text-slate-900 dark:text-white text-5xl font-bold">
+                {visibilityScore}
+              </p>
+              <span className="text-2xl text-slate-500 dark:text-slate-400 font-semibold">/100</span>
             </div>
-          </div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
-            <div
-              className="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]"
-              style={{ width: `${visibilityScore}%` }}
-            ></div>
+            <p className="text-slate-600 dark:text-slate-400 text-sm mt-2">
+              How recruiters find your resume
+            </p>
+            {/* Progress Bar */}
+            <div className="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-2 mt-4 overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${visibilityScore}%` }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className={`h-2 rounded-full ${
+                  visibilityScore >= 80 ? 'bg-emerald-500' :
+                  visibilityScore >= 60 ? 'bg-yellow-500' :
+                  'bg-red-500'
+                }`}
+              />
+            </div>
           </div>
         </motion.div>
 
