@@ -603,7 +603,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white font-sans selection:bg-blue-100 dark:selection:bg-blue-900/30">
+    <div className="flex h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-[#3B82F6] selection:text-white overflow-hidden">
       <Sidebar
         categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}
@@ -613,20 +613,24 @@ export default function Dashboard() {
       />
 
       <main
-        className="flex-1 flex flex-col overflow-y-auto relative bg-white dark:bg-transparent pb-20 md:pb-0"
+        className="flex-1 flex flex-col relative overflow-hidden bg-slate-50/50 pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+        {/* Gradient blur effects */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-200/20 rounded-full blur-[120px] pointer-events-none mix-blend-multiply"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-[100px] pointer-events-none mix-blend-multiply"></div>
+
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 bg-white shadow-sm relative z-10">
           <Logo />
           <Button variant="ghost" size="icon" onClick={() => setShowPricing(true)}>
             <Sparkles className="h-5 w-5 text-primary" />
           </Button>
         </div>
 
-        <div className="flex-1 p-6 md:p-10 lg:p-12">
-          <div className="max-w-[1600px] mx-auto space-y-8">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 relative z-10">
+          <div className="max-w-6xl mx-auto space-y-8">
             {renderContent()}
           </div>
         </div>
