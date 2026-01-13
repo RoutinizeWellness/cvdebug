@@ -374,32 +374,32 @@ export default function Dashboard() {
         return (
           <div className="space-y-8 pb-24 md:pb-6">
             {/* 2026 New Year Banner */}
-            <div className="relative w-full rounded-2xl overflow-hidden border border-yellow-500/30 group">
+            <div className="relative w-full rounded-2xl overflow-hidden border border-indigo-100 shadow-xl shadow-indigo-100/50 group bg-white">
               <div className="absolute inset-0 z-0">
                 <img
                   alt="Fireworks background"
-                  className="w-full h-full object-cover opacity-30 mix-blend-screen"
+                  className="w-full h-full object-cover opacity-20 mix-blend-overlay"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA0wAv1FuCaB34T2Iy0f_rr8s6w5qzc2v1vnEid0uZWPo9e6s-ifHM1O_9P85DafDswLiya2c1l2zLijjgsBK7Lr81AHFuC0xtjadz8ID_wqi0XeYz9baWd7ZqTncJQc7GltfGLl-iYihEAxjEnf9VYW12XgnfVQkLNXAhrkm9BCH5IuaUxYjJvFETX1D1PaI33uyjLrQpiHnXh_3PVbz5NGpRJW5GKwSMdyHeJhcWSTE5OaqUPhirp-WT6BDEygVny9u5Z5Sd-Q"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#0F172A]/90 to-[#0F172A]/40"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 opacity-90"></div>
               </div>
 
               <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                 <div className="flex flex-col gap-4 max-w-2xl">
-                  <div className="text-yellow-500 text-xs font-bold tracking-[0.2em] uppercase">
+                  <div className="text-yellow-200 text-xs font-bold tracking-[0.2em] uppercase bg-white/10 w-fit px-3 py-1 rounded backdrop-blur-md border border-white/20">
                     New Year Resolution Hack
                   </div>
-                  <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
+                  <h1 className="text-3xl md:text-4xl font-black text-white leading-tight drop-shadow-sm">
                     2026 is the year you get the job. <br className="hidden md:block" />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">
+                    <span className="text-indigo-100">
                       Stop being invisible.
                     </span>
                   </h1>
                   <div className="flex flex-col gap-1">
-                    <p className="text-slate-200 font-medium text-lg">
+                    <p className="text-indigo-50 font-medium text-lg">
                       New Year Pass: <span className="text-white font-bold">$4.99</span> for 1 Full Audit + Keyword Sniper (Single Use).
                     </p>
-                    <p className="text-slate-400 text-sm italic">
+                    <p className="text-indigo-200 text-sm italic">
                       $4.99 is an impulse fix—your robots see it instantly and so will recruiters.
                     </p>
                   </div>
@@ -408,7 +408,7 @@ export default function Dashboard() {
                 <div className="flex-shrink-0">
                   <button
                     onClick={() => setShowPricing(true)}
-                    className="bg-yellow-500 hover:bg-yellow-400 text-slate-900 font-bold py-3 px-6 rounded-lg shadow-[0_0_20px_rgba(234,179,8,0.3)] transition-all transform hover:scale-105 flex items-center gap-2"
+                    className="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 font-bold py-3 px-6 rounded-lg shadow-[0_4px_14px_rgba(250,204,21,0.4)] transition-all transform hover:scale-105 flex items-center gap-2 border border-yellow-300 ring-2 ring-transparent hover:ring-yellow-200"
                   >
                     <span className="material-symbols-outlined text-xl">auto_awesome</span>
                     Unlock New Year Pass
@@ -419,7 +419,8 @@ export default function Dashboard() {
 
             {/* AI Tools Section */}
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <span className="bg-[#3B82F6] w-1.5 h-6 rounded-full inline-block"></span>
                 AI Tools
               </h2>
 
@@ -427,23 +428,23 @@ export default function Dashboard() {
                 {/* AI Bullet Rewriter */}
                 <button
                   onClick={() => setCurrentView('bullet-rewriter')}
-                  className="group relative bg-[#1E293B] border border-slate-700/50 rounded-xl p-6 transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] overflow-hidden"
+                  className="group relative bg-white border border-slate-200 rounded-xl p-6 transition-all duration-300 hover:border-blue-400 hover:shadow-[0_8px_30px_rgba(59,130,246,0.1)] overflow-hidden shadow-sm"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                      <span className="material-symbols-outlined text-blue-400">auto_fix_high</span>
+                    <div className="h-12 w-12 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600 group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">auto_fix_high</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
                         AI Bullet Rewriter
                       </h3>
-                      <p className="text-slate-400 text-sm">
+                      <p className="text-slate-500 text-sm">
                         Transform weak bullets into impact-driven achievements using Google XYZ formula
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-slate-400">arrow_forward</span>
+                      <span className="material-symbols-outlined text-blue-400">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -451,23 +452,23 @@ export default function Dashboard() {
                 {/* Cover Letter Generator */}
                 <button
                   onClick={() => setCurrentView('cover-letter')}
-                  className="group relative bg-[#1E293B] border border-slate-700/50 rounded-xl p-6 transition-all duration-300 hover:border-teal-500/50 hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] overflow-hidden"
+                  className="group relative bg-white border border-slate-200 rounded-xl p-6 transition-all duration-300 hover:border-purple-400 hover:shadow-[0_8px_30px_rgba(168,85,247,0.1)] overflow-hidden shadow-sm"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-teal-500/20 border border-teal-500/30 flex items-center justify-center flex-shrink-0">
-                      <span className="material-symbols-outlined text-teal-400">description</span>
+                    <div className="h-12 w-12 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0 text-purple-600 group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">description</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-white mb-1 group-hover:text-teal-400 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
                         Cover Letter Generator
                       </h3>
-                      <p className="text-slate-400 text-sm">
+                      <p className="text-slate-500 text-sm">
                         AI-powered cover letters with keyword optimization
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-slate-400">arrow_forward</span>
+                      <span className="material-symbols-outlined text-purple-400">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -475,23 +476,23 @@ export default function Dashboard() {
                 {/* LinkedIn Optimizer */}
                 <button
                   onClick={() => setCurrentView('linkedin')}
-                  className="group relative bg-[#1E293B] border border-slate-700/50 rounded-xl p-6 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] overflow-hidden"
+                  className="group relative bg-white border border-slate-200 rounded-xl p-6 transition-all duration-300 hover:border-indigo-400 hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)] overflow-hidden shadow-sm"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">
-                      <span className="material-symbols-outlined text-indigo-400">visibility</span>
+                    <div className="h-12 w-12 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">visibility</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-white mb-1 group-hover:text-indigo-400 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
                         LinkedIn Optimizer
                       </h3>
-                      <p className="text-slate-400 text-sm">
+                      <p className="text-slate-500 text-sm">
                         Optimize your profile for recruiters
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-slate-400">arrow_forward</span>
+                      <span className="material-symbols-outlined text-indigo-400">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -499,26 +500,26 @@ export default function Dashboard() {
                 {/* Keyword Sniper Tool - Featured */}
                 <button
                   onClick={() => setCurrentView('keyword-sniper')}
-                  className="group relative bg-[#1E293B] border border-orange-500/20 rounded-xl p-6 transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_0_20px_rgba(249,115,22,0.1)] overflow-hidden"
+                  className="group relative bg-white border border-orange-200 rounded-xl p-6 transition-all duration-300 hover:border-orange-400 hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] overflow-hidden shadow-sm"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0 shadow-[0_0_10px_rgba(249,115,22,0.2)]">
-                      <span className="material-symbols-outlined text-orange-400">track_changes</span>
+                    <div className="h-12 w-12 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 shadow-sm text-orange-600 group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">track_changes</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2 group-hover:text-orange-400 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
                         Keyword Sniper Tool
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-500/20 text-orange-300 border border-orange-500/30 uppercase tracking-wide">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
                           Featured
                         </span>
                       </h3>
-                      <p className="text-slate-400 text-sm">
+                      <p className="text-slate-500 text-sm">
                         AI-powered bullet rewriting with keyword injection and live score tracking
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <button className="text-xs font-bold text-orange-400 bg-orange-500/10 px-3 py-1.5 rounded-md border border-orange-500/30 uppercase">
+                      <button className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
                         Launch Tool
                       </button>
                     </div>
