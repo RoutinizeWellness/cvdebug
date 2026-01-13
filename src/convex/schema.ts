@@ -468,6 +468,48 @@ const schema = defineSchema(
       searchField: "content",
       filterFields: ["published", "category"],
     }),
+
+  // Product Hunt Launch Tracking
+  productHuntTracking: defineTable({
+    userId: v.optional(v.string()),
+    email: v.optional(v.string()),
+    referrer: v.optional(v.string()),
+    utmSource: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
+    timestamp: v.number(),
+    converted: v.boolean(),
+    convertedAt: v.optional(v.number()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_converted", ["converted"]),
+
+  // Coupons for special offers
+  coupons: defineTable({
+    code: v.string(), // e.g., "PH50", "LAUNCH2026"
+    discountPercent: v.number(), // 50 for 50% off
+    active: v.boolean(),
+    maxUses: v.optional(v.number()), // null = unlimited
+    usedCount: v.number(),
+    expiresAt: v.optional(v.number()),
+    createdBy: v.string(), // admin email
+    description: v.optional(v.string()),
+  })
+    .index("by_code", ["code"])
+    .index("by_active", ["active"]),
+
+  // Coupon usage tracking
+  couponUsages: defineTable({
+    userId: v.string(),
+    email: v.optional(v.string()),
+    couponId: v.id("coupons"),
+    couponCode: v.string(),
+    discountPercent: v.number(),
+    appliedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_coupon", ["couponId"])
+    .index("by_user_and_coupon", ["userId", "couponId"]),
   },
   {
     schemaValidation: false,
