@@ -842,7 +842,10 @@ export function ResumeDetailDialog({
                 </TabsContent>
 
                 <TabsContent value="fluff" className="flex-1 overflow-auto p-6">
-                  {resumeId && <FluffDetector resumeId={resumeId} />}
+                  <FluffDetector
+                    resumeText={displayResume.ocrText || ""}
+                    clarityScore={displayResume?.score || 73}
+                  />
                 </TabsContent>
 
                 <TabsContent value="keywords" className="flex-1 overflow-auto p-6">
