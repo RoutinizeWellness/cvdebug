@@ -15,16 +15,107 @@ export function calculateFormatScore(
 ): FormatResult {
   let formatScore = 0;
   const formatIssues: Array<{issue: string, severity: string, fix: string, location: string, atsImpact: string}> = [];
+
+  // Advanced contact information detection with scoring
+  // Email: Multiple patterns for validation
+  const emailPatterns = [
+    /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,  // Standard email
+    /\b[\w.-]+@[\w.-]+\.(?:com|org|net|edu|gov|io|dev)\b/gi  // Common TLDs
+  ];
+
+  let emailMatch = null;
+  let emailQuality = 0;
+  for (const pattern of emailPatterns) {
+    const matches = ocrText.match(pattern);
+    if (matches && matches.length > 0) {
+      emailMatch = matches[0];
+      // Score email quality
+      if (!/\d{3,}/.test(emailMatch)) emailQuality += 2; // No excessive numbers
+      if (/^[a-z]+\.[a-z]+@/i.test(emailMatch)) emailQuality += 2; // firstname.lastname format
+      if (!/[._-]{2,}/.test(emailMatch)) emailQuality += 1; // No repeated separators
+      break;
+    }
+  }
+
+  // Phone: Enhanced detection with international support
+  const phonePatterns = [
+    /\+\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}/g,  // International
+    /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,  // US format
+    /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/g,  // Simple format
+    /\d{10,}/g  // Fallback: 10+ digits
+  ];
+
+  let phoneMatch = null;
+  let phoneQuality = 0;
+  for (const pattern of phonePatterns) {
+    const matches = ocrText.match(pattern);
+    if (matches && matches.length > 0) {
+      phoneMatch = matches[0];
+      // Score phone quality
+      if (/\+\d{1,3}/.test(phoneMatch)) phoneQuality += 2; // Has country code
+      if (/[\s().-]/.test(phoneMatch)) phoneQuality += 1; // Has formatting
+      break;
+    }
+  }
+
+  // LinkedIn: Advanced detection with profile validation
+  const linkedInPatterns = [
+    /linkedin\.com\/in\/[\w-]+/gi,  // Full profile URL
+    /linked\.in\/[\w-]+/gi,  // Short URL
+    /\blinkedin\b/gi  // Fallback: just mentions LinkedIn
+  ];
+
+  let hasLinkedIn = false;
+  let linkedInQuality = 0;
+  for (const pattern of linkedInPatterns) {
+    if (pattern.test(ocrText)) {
+      hasLinkedIn = true;
+      if (/linkedin\.com\/in\/[\w-]+/i.test(ocrText)) linkedInQuality = 3; // Full URL
+      else if (/linked\.in\/[\w-]+/i.test(ocrText)) linkedInQuality = 2; // Short URL
+      else linkedInQuality = 1; // Just mentions
+      break;
+    }
+  }
+
+  // GitHub: Enhanced detection with username validation
+  const githubPatterns = [
+    /github\.com\/[\w-]+/gi,  // Full profile URL
+    /git\.io\/[\w-]+/gi,  // Short URL
+    /\bgithub\b.*?[\w-]{3,}/gi  // GitHub + username nearby
+  ];
+
+  let hasGithub = false;
+  let githubQuality = 0;
+  for (const pattern of githubPatterns) {
+    if (pattern.test(ocrText)) {
+      hasGithub = true;
+      if (/github\.com\/[\w-]+/i.test(ocrText)) githubQuality = 2;
+      else githubQuality = 1;
+      break;
+    }
+  }
+
+  // Portfolio: Multi-pattern detection with domain validation
+  const portfolioPatterns = [
+    /\b(?:portfolio|personal\s*(?:site|website|page))\b/gi,
+    /https?:\/\/(?:www\.)?[\w-]+\.(?:com|dev|io|me|tech|codes?|design|works?)\b/gi,
+    /\b[\w-]+\.(?:dev|io|me|tech)\b/gi  // Modern TLDs
+  ];
+
+  let hasPortfolio = false;
+  let portfolioQuality = 0;
+  for (const pattern of portfolioPatterns) {
+    if (pattern.test(ocrText)) {
+      hasPortfolio = true;
+      if (/https?:\/\//.test(ocrText)) portfolioQuality = 2; // Has full URL
+      else portfolioQuality = 1;
+      break;
+    }
+  }
   
-  // Enhanced contact information detection
-  const emailMatch = ocrText.match(/[\w.-]+@[\w.-]+\.\w+/);
-  const phoneMatch = ocrText.match(/\+?[\d\s().-]{10,}/);
-  const hasLinkedIn = ocrText.toLowerCase().includes("linkedin") || ocrText.toLowerCase().includes("linked.in");
-  const hasGithub = ocrText.toLowerCase().includes("github.com");
-  const hasPortfolio = /portfolio|website|personal site/i.test(ocrText) || /https?:\/\/[\w.-]+\.\w+/i.test(ocrText);
-  
+  // Score contact info with quality bonuses
   if (emailMatch) {
-    formatScore += 5;
+    formatScore += 5 + emailQuality; // 5-10 points based on quality
   } else {
     formatIssues.push({
       issue: "Missing email address",
@@ -34,9 +125,9 @@ export function calculateFormatScore(
       atsImpact: "ATS cannot contact you without email - automatic rejection"
     });
   }
-  
+
   if (phoneMatch) {
-    formatScore += 5;
+    formatScore += 5 + phoneQuality; // 5-8 points based on quality
   } else {
     formatIssues.push({
       issue: "Missing phone number",
@@ -46,9 +137,9 @@ export function calculateFormatScore(
       atsImpact: "Reduces contact options for recruiters"
     });
   }
-  
+
   if (hasLinkedIn) {
-    formatScore += 3;
+    formatScore += 2 + linkedInQuality; // 3-5 points based on quality
   } else {
     formatIssues.push({
       issue: "Missing LinkedIn profile",
@@ -58,72 +149,193 @@ export function calculateFormatScore(
       atsImpact: "Recruiters expect to see LinkedIn profiles for verification"
     });
   }
-  
-  if (hasGithub || hasPortfolio) {
-    formatScore += 2;
+
+  if (hasGithub) {
+    formatScore += 1 + githubQuality; // 2-3 points for tech roles
   }
-  
-  // Enhanced section detection
-  const hasExperience = /experience|work history|employment|professional background/i.test(ocrText);
-  const hasEducation = /education|academic|degree|university|college/i.test(ocrText);
-  const hasSkills = /skills|technical skills|competencies|technologies|tools/i.test(ocrText);
-  const hasProjects = /projects|portfolio|work samples/i.test(ocrText);
-  
-  if (hasExperience) formatScore += 6;
-  else formatIssues.push({
-    issue: "Missing 'Experience' section header",
-    severity: "high",
-    fix: "Add a clear 'Experience' or 'Work History' section header",
-    location: "Body",
-    atsImpact: "ATS cannot identify your work experience - major parsing failure"
-  });
-  
-  if (hasEducation) formatScore += 4;
-  else formatIssues.push({
-    issue: "Missing 'Education' section",
-    severity: "medium",
-    fix: "Add an 'Education' section with your degrees and institutions",
-    location: "Body",
-    atsImpact: "Many ATS systems require education information"
-  });
-  
-  if (hasSkills) formatScore += 4;
-  else formatIssues.push({
-    issue: "Missing 'Skills' section",
-    severity: "medium",
-    fix: "Add a dedicated 'Skills' section listing your technical and professional competencies",
-    location: "Body",
-    atsImpact: "ATS keyword matching relies heavily on a skills section"
-  });
-  
-  if (hasProjects) formatScore += 2;
-  
-  // Enhanced date format consistency check
-  const datePatterns = [
-    { pattern: /\d{1,2}\/\d{4}/g, name: "MM/YYYY" },
-    { pattern: /\d{4}-\d{2}/g, name: "YYYY-MM" },
-    { pattern: /[A-Z][a-z]+ \d{4}/g, name: "Month YYYY" },
-    { pattern: /\d{4}/g, name: "YYYY only" }
+
+  if (hasPortfolio) {
+    formatScore += 1 + portfolioQuality; // 2-3 points for design/dev roles
+  }
+
+  // Advanced section detection with weighted scoring
+  interface SectionPattern {
+    name: string;
+    patterns: RegExp[];
+    weight: number;
+    required: boolean;
+  }
+
+  const sections: SectionPattern[] = [
+    {
+      name: "Experience",
+      patterns: [
+        /^(?:professional\s+)?experience\s*$/im,  // Exact header match
+        /^work\s+(?:history|experience)\s*$/im,
+        /^employment\s+(?:history|background)\s*$/im,
+        /\b(?:professional|work)\s+(?:experience|history|background)\b/gi  // Fallback
+      ],
+      weight: 6,
+      required: true
+    },
+    {
+      name: "Education",
+      patterns: [
+        /^education\s*$/im,  // Exact header
+        /^academic\s+(?:background|qualifications)\s*$/im,
+        /\b(?:education|academic|degree|university|college|bachelor|master|phd)\b/gi  // Fallback
+      ],
+      weight: 4,
+      required: true
+    },
+    {
+      name: "Skills",
+      patterns: [
+        /^(?:technical\s+)?skills\s*$/im,  // Exact header
+        /^(?:core\s+)?competencies\s*$/im,
+        /^technologies\s*(?:&|and)?\s*tools\s*$/im,
+        /\b(?:skills|competencies|technologies|tools|expertise)\b/gi  // Fallback
+      ],
+      weight: 4,
+      required: true
+    },
+    {
+      name: "Projects",
+      patterns: [
+        /^projects\s*$/im,
+        /^portfolio\s*$/im,
+        /^(?:key|notable)\s+projects\s*$/im,
+        /\b(?:projects|portfolio|work\s+samples)\b/gi
+      ],
+      weight: 2,
+      required: false
+    }
   ];
-  
-  const dateMatches = datePatterns.map(({ pattern, name }) => ({
-    name,
-    count: (ocrText.match(pattern) || []).length
-  }));
-  
-  const usedFormats = dateMatches.filter(d => d.count > 0);
-  const hasConsistentDates = usedFormats.length <= 1;
-  
-  if (hasConsistentDates && usedFormats.length > 0) {
-    formatScore += 3;
-  } else if (usedFormats.length > 1) {
-    formatIssues.push({
-      issue: "Inconsistent date formats",
-      severity: "medium",
-      fix: `Use a single date format throughout (recommended: 'Month YYYY' e.g., 'January 2020'). Found: ${usedFormats.map(f => f.name).join(", ")}`,
-      location: "Experience section",
-      atsImpact: "Confuses ATS timeline parsing, may misorder your experience"
-    });
+
+  // Score each section with quality assessment
+  sections.forEach(section => {
+    let found = false;
+    let qualityScore = 0;
+
+    // Try exact matches first (higher quality)
+    for (let i = 0; i < section.patterns.length; i++) {
+      if (section.patterns[i].test(ocrText)) {
+        found = true;
+        // Earlier patterns (more specific) get bonus
+        qualityScore = section.patterns.length - i;
+        break;
+      }
+    }
+
+    if (found) {
+      formatScore += section.weight + Math.min(qualityScore - 1, 2); // Up to +2 bonus for exact matches
+    } else if (section.required) {
+      formatIssues.push({
+        issue: `Missing '${section.name}' section header`,
+        severity: section.weight >= 5 ? "high" : "medium",
+        fix: `Add a clear '${section.name}' section header to help ATS parse your resume correctly`,
+        location: "Body",
+        atsImpact: section.weight >= 5
+          ? `ATS cannot identify your ${section.name.toLowerCase()} - major parsing failure`
+          : `Many ATS systems require ${section.name.toLowerCase()} information`
+      });
+    }
+  });
+
+  // Detect legacy/problematic sections that hurt ATS parsing
+  const problematicSections = [
+    { pattern: /\b(?:references?|referees?)\b/gi, name: "References" },
+    { pattern: /\b(?:objective|career\s+objective)\b/gi, name: "Objective" }
+  ];
+
+  problematicSections.forEach(({ pattern, name }) => {
+    if (pattern.test(ocrText)) {
+      formatIssues.push({
+        issue: `Contains outdated '${name}' section`,
+        severity: "low",
+        fix: `Remove the '${name}' section - it wastes valuable space and is outdated`,
+        location: "Body",
+        atsImpact: "Takes up space that could be used for achievements and keywords"
+      });
+    }
+  });
+
+  // Advanced date format consistency check with regex precision
+  interface DatePattern {
+    pattern: RegExp;
+    name: string;
+    quality: number; // ATS parsability score
+  }
+
+  const datePatterns: DatePattern[] = [
+    {
+      pattern: /\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{4}\b/gi,
+      name: "Month YYYY",
+      quality: 5  // Best for ATS
+    },
+    {
+      pattern: /\b(?:0?[1-9]|1[0-2])\/\d{4}\b/g,
+      name: "MM/YYYY",
+      quality: 4
+    },
+    {
+      pattern: /\b\d{4}-(?:0[1-9]|1[0-2])\b/g,
+      name: "YYYY-MM",
+      quality: 3
+    },
+    {
+      pattern: /\b(?:0?[1-9]|1[0-2])-\d{4}\b/g,
+      name: "MM-YYYY",
+      quality: 3
+    },
+    {
+      pattern: /\b\d{4}\s*-\s*(?:Present|Current|Now)\b/gi,
+      name: "YYYY - Present",
+      quality: 4
+    },
+    {
+      pattern: /\b\d{4}\b/g,
+      name: "YYYY only",
+      quality: 2  // Least precise
+    }
+  ];
+
+  // Analyze date format usage with quality scoring
+  const dateAnalysis = datePatterns.map(({ pattern, name, quality }) => {
+    const matches = ocrText.match(pattern) || [];
+    return {
+      name,
+      count: matches.length,
+      quality,
+      totalQuality: matches.length * quality
+    };
+  }).filter(d => d.count > 0);
+
+  // Calculate consistency and quality
+  const totalDates = dateAnalysis.reduce((sum, d) => sum + d.count, 0);
+  const hasMultipleFormats = dateAnalysis.length > 2; // Allow 2 formats (date + "Present")
+
+  if (totalDates > 0) {
+    if (!hasMultipleFormats) {
+      // Bonus for consistent format
+      const avgQuality = dateAnalysis.reduce((sum, d) => sum + d.totalQuality, 0) / totalDates;
+      formatScore += Math.round(avgQuality); // 2-5 points based on format quality
+    } else {
+      // Penalty for inconsistent formats
+      const formatsList = dateAnalysis
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 3)
+        .map(d => `${d.name} (${d.count}x)`)
+        .join(", ");
+
+      formatIssues.push({
+        issue: "Inconsistent date formats detected",
+        severity: "medium",
+        fix: `Use a single date format throughout. Recommended: 'Month YYYY' (e.g., 'January 2020'). Currently using: ${formatsList}`,
+        location: "Experience section",
+        atsImpact: "Confuses ATS timeline parsing - may misorder your experience chronologically"
+      });
+    }
   }
 
   const { checkCapitalization, checkRepetitiveStarts } = require("../qualityChecks");
