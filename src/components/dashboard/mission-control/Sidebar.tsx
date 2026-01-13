@@ -26,7 +26,7 @@ export function Sidebar({
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r border-slate-200 bg-[#F8FAFC] hidden md:flex flex-col">
+    <aside className="w-64 flex-shrink-0 border-r border-[#E2E8F0] bg-[#F8FAFC] hidden md:flex flex-col">
       <div className="h-full flex flex-col justify-between p-4">
         <div className="flex flex-col gap-6">
           {/* Logo Area */}
@@ -37,13 +37,13 @@ export function Sidebar({
             className="flex items-center gap-3 px-2"
           >
             <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-              <Terminal className="h-5 w-5 text-slate-900" />
+              <Terminal className="h-5 w-5 text-[#0F172A]" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-slate-900 text-lg font-bold leading-none tracking-tight">
+              <h1 className="text-[#0F172A] text-lg font-bold leading-none tracking-tight">
                 CVDebug
               </h1>
-              <p className="text-slate-500 text-xs font-mono pt-1">v2.4.0 stable</p>
+              <p className="text-[#64748B] text-xs font-mono pt-1">v2.4.0 stable</p>
             </div>
           </motion.div>
 
@@ -58,20 +58,20 @@ export function Sidebar({
                 onClick={() => navigate(item.href)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                   item.active
-                    ? "bg-white border border-slate-200/50"
-                    : "hover:bg-slate-50/50"
+                    ? "bg-[#FFFFFF] border border-[#E2E8F0]/50"
+                    : "hover:bg-[#F8FAFC]/50"
                 }`}
               >
                 <item.icon
                   className={`h-5 w-5 transition-colors ${
                     item.active
                       ? "text-primary"
-                      : "text-slate-500 group-hover:text-slate-900"
+                      : "text-[#64748B] group-hover:text-[#0F172A]"
                   }`}
                 />
                 <p
                   className={`text-sm font-medium ${
-                    item.active ? "text-slate-900" : "text-slate-600"
+                    item.active ? "text-[#0F172A]" : "text-[#475569]"
                   }`}
                 >
                   {item.label}
@@ -98,14 +98,14 @@ export function Sidebar({
               }}
             ></div>
             <div className="flex flex-col overflow-hidden">
-              <span className="text-xs font-semibold text-slate-900 truncate">{userName}</span>
-              <span className="text-[10px] text-slate-500 font-mono truncate">{userPlan}</span>
+              <span className="text-xs font-semibold text-[#0F172A] truncate">{userName}</span>
+              <span className="text-[10px] text-[#64748B] font-mono truncate">{userPlan}</span>
             </div>
           </div>
           <Button
             onClick={onLogout}
             variant="outline"
-            className="flex w-full items-center justify-center gap-2 rounded-lg h-9 px-4 border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-lg h-9 px-4 border border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#475569] hover:text-[#0F172A] text-xs font-bold uppercase tracking-wider transition-colors"
           >
             <LogOut className="h-4 w-4" />
             <span>Log Out</span>

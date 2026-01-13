@@ -19,11 +19,11 @@ export function DeepAuditChecklist({ items }: DeepAuditChecklistProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "passed":
-        return <CheckCircle2 className="h-5 w-5 text-green-500" />;
+        return <CheckCircle2 className="h-5 w-5 text-[#22C55E]" />;
       case "failed":
-        return <XCircle className="h-5 w-5 text-red-500" />;
+        return <XCircle className="h-5 w-5 text-[#EF4444]" />;
       case "warning":
-        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+        return <AlertCircle className="h-5 w-5 text-[#F59E0B]" />;
       default:
         return <AlertCircle className="h-5 w-5 text-zinc-400" />;
     }
@@ -45,10 +45,10 @@ export function DeepAuditChecklist({ items }: DeepAuditChecklistProps) {
   return (
     <div className="glass-card rounded-lg p-6 flex flex-col gap-4">
       <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 rounded-full bg-stone-800 text-slate-900">
+        <div className="p-2 rounded-full bg-stone-800 text-[#0F172A]">
           <CheckCircle2 className="h-5 w-5" />
         </div>
-        <h3 className="text-lg font-bold text-slate-900">Formatting Audit</h3>
+        <h3 className="text-lg font-bold text-[#0F172A]">Formatting Audit</h3>
       </div>
       
       <div className="flex flex-col gap-3">
@@ -56,7 +56,7 @@ export function DeepAuditChecklist({ items }: DeepAuditChecklistProps) {
           <div key={index} className="flex items-start gap-3 p-3 rounded-xl bg-stone-800/50 border border-stone-700">
             {getStatusIcon(item.status)}
             <div className="flex-1">
-              <p className="text-sm font-bold text-slate-900">{item.title}</p>
+              <p className="text-sm font-bold text-[#0F172A]">{item.title}</p>
               {item.status === "passed" ? (
                 <p className="text-xs text-stone-500">Correct format for ATS.</p>
               ) : (

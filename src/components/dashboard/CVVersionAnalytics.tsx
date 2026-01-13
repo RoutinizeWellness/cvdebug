@@ -40,14 +40,14 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         animate={{ opacity: 1, y: 0 }}
         className="glass-panel rounded-xl p-8 text-center"
       >
-        <BarChart3 className="w-16 h-16 text-slate-500 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-slate-900 mb-2">No A/B Testing Data Yet</h3>
-        <p className="text-slate-600 text-sm mb-6">
+        <BarChart3 className="w-16 h-16 text-[#64748B] mx-auto mb-4" />
+        <h3 className="text-xl font-bold text-[#0F172A] mb-2">No A/B Testing Data Yet</h3>
+        <p className="text-[#475569] text-sm mb-6">
           {analytics.message}
         </p>
-        <div className="bg-blue-600/10 border border-blue-500/20 rounded-lg p-4">
+        <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-4">
           <p className="text-blue-400 text-sm font-semibold mb-2">💡 Pro Tip:</p>
-          <p className="text-slate-600 text-sm">
+          <p className="text-[#475569] text-sm">
             When adding applications, label each CV version (e.g., "V1_React", "V2_Backend").
             We'll automatically track which versions get you more interviews!
           </p>
@@ -65,20 +65,20 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
       case "info":
         return <Info className="w-5 h-5 text-blue-400" />;
       default:
-        return <Info className="w-5 h-5 text-slate-500" />;
+        return <Info className="w-5 h-5 text-[#64748B]" />;
     }
   };
 
   const getInsightBg = (type: string) => {
     switch (type) {
       case "success":
-        return "bg-emerald-600/10 border-emerald-500/20";
+        return "bg-[#22C55E]/10 border-emerald-500/20";
       case "warning":
         return "bg-yellow-600/10 border-yellow-500/20";
       case "info":
-        return "bg-blue-600/10 border-blue-500/20";
+        return "bg-[#3B82F6]/10 border-[#3B82F6]/20";
       default:
-        return "bg-slate-50/50 border-slate-200/50";
+        return "bg-[#F8FAFC]/50 border-[#E2E8F0]/50";
     }
   };
 
@@ -92,36 +92,36 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
       >
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">
+            <h3 className="text-2xl font-bold text-[#0F172A] mb-2">
               🧪 A/B Testing Dashboard
             </h3>
-            <p className="text-slate-600 text-sm">
+            <p className="text-[#475569] text-sm">
               Track which CV versions get you more interviews
             </p>
           </div>
           <div className="text-right">
-            <div className="text-3xl font-bold text-slate-900">
+            <div className="text-3xl font-bold text-[#0F172A]">
               {analytics.interviewRate}%
             </div>
-            <div className="text-xs text-slate-500">Overall Interview Rate</div>
+            <div className="text-xs text-[#64748B]">Overall Interview Rate</div>
           </div>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-slate-50/50 rounded-lg p-4">
-            <div className="text-sm text-slate-500 mb-1">Total Applications</div>
-            <div className="text-2xl font-bold text-slate-900">
+          <div className="bg-[#F8FAFC]/50 rounded-lg p-4">
+            <div className="text-sm text-[#64748B] mb-1">Total Applications</div>
+            <div className="text-2xl font-bold text-[#0F172A]">
               {analytics.totalApplications}
             </div>
           </div>
-          <div className="bg-slate-50/50 rounded-lg p-4">
-            <div className="text-sm text-slate-500 mb-1">CV Versions Tested</div>
-            <div className="text-2xl font-bold text-slate-900">
+          <div className="bg-[#F8FAFC]/50 rounded-lg p-4">
+            <div className="text-sm text-[#64748B] mb-1">CV Versions Tested</div>
+            <div className="text-2xl font-bold text-[#0F172A]">
               {analytics.versions.length}
             </div>
           </div>
-          <div className="bg-slate-50/50 rounded-lg p-4">
-            <div className="text-sm text-slate-500 mb-1">Best Version</div>
+          <div className="bg-[#F8FAFC]/50 rounded-lg p-4">
+            <div className="text-sm text-[#64748B] mb-1">Best Version</div>
             <div className="text-sm font-bold text-emerald-400 truncate">
               {analytics.bestVersion?.versionName || "N/A"}
             </div>
@@ -137,7 +137,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
           transition={{ delay: 0.1 }}
           className="space-y-3"
         >
-          <h4 className="text-lg font-bold text-slate-900">📊 Insights</h4>
+          <h4 className="text-lg font-bold text-[#0F172A]">📊 Insights</h4>
           {analytics.insights.map((insight: any, index: number) => (
             <div
               key={index}
@@ -146,8 +146,8 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
               <div className="flex items-start gap-3">
                 {getInsightIcon(insight.type)}
                 <div className="flex-1">
-                  <h5 className="text-slate-900 font-semibold mb-1">{insight.title}</h5>
-                  <p className="text-slate-600 text-sm">{insight.message}</p>
+                  <h5 className="text-[#0F172A] font-semibold mb-1">{insight.title}</h5>
+                  <p className="text-[#475569] text-sm">{insight.message}</p>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         transition={{ delay: 0.2 }}
         className="glass-panel rounded-xl p-6"
       >
-        <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <h4 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
           <Award className="w-5 h-5 text-yellow-400" />
           Version Performance Leaderboard
         </h4>
@@ -175,33 +175,33 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
             return (
               <div
                 key={version.versionName}
-                className={`bg-slate-50/30 rounded-lg p-4 border ${
+                className={`bg-[#F8FAFC]/30 rounded-lg p-4 border ${
                   isWinner
-                    ? "border-emerald-500/50 bg-emerald-600/10"
+                    ? "border-emerald-500/50 bg-[#22C55E]/10"
                     : isLoser
                     ? "border-red-500/30"
-                    : "border-slate-200/50"
+                    : "border-[#E2E8F0]/50"
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div
                       className={`text-2xl font-bold ${
-                        isWinner ? "text-emerald-400" : "text-slate-500"
+                        isWinner ? "text-emerald-400" : "text-[#64748B]"
                       }`}
                     >
                       #{index + 1}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h5 className="text-slate-900 font-bold">{version.versionName}</h5>
+                        <h5 className="text-[#0F172A] font-bold">{version.versionName}</h5>
                         {isWinner && (
-                          <span className="px-2 py-1 bg-emerald-600/20 text-emerald-400 text-xs font-semibold rounded">
+                          <span className="px-2 py-1 bg-[#22C55E]/20 text-emerald-400 text-xs font-semibold rounded">
                             🏆 BEST
                           </span>
                         )}
                       </div>
-                      <p className="text-slate-500 text-xs">
+                      <p className="text-[#64748B] text-xs">
                         {version.totalApplications} applications tracked
                       </p>
                     </div>
@@ -218,30 +218,30 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
                     >
                       {version.successRate}%
                     </div>
-                    <div className="text-xs text-slate-500">Success Rate</div>
+                    <div className="text-xs text-[#64748B]">Success Rate</div>
                   </div>
                 </div>
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-4 gap-3">
-                  <div className="bg-white/50 rounded p-2">
-                    <div className="text-xs text-slate-500">Interviews</div>
-                    <div className="text-lg font-bold text-slate-900">
+                  <div className="bg-[#FFFFFF]/50 rounded p-2">
+                    <div className="text-xs text-[#64748B]">Interviews</div>
+                    <div className="text-lg font-bold text-[#0F172A]">
                       {version.interviews}
                     </div>
                   </div>
-                  <div className="bg-white/50 rounded p-2">
-                    <div className="text-xs text-slate-500">Offers</div>
-                    <div className="text-lg font-bold text-slate-900">{version.offers}</div>
+                  <div className="bg-[#FFFFFF]/50 rounded p-2">
+                    <div className="text-xs text-[#64748B]">Offers</div>
+                    <div className="text-lg font-bold text-[#0F172A]">{version.offers}</div>
                   </div>
-                  <div className="bg-white/50 rounded p-2">
-                    <div className="text-xs text-slate-500">Avg Score</div>
-                    <div className="text-lg font-bold text-slate-900">
+                  <div className="bg-[#FFFFFF]/50 rounded p-2">
+                    <div className="text-xs text-[#64748B]">Avg Score</div>
+                    <div className="text-lg font-bold text-[#0F172A]">
                       {version.averageScore}
                     </div>
                   </div>
-                  <div className="bg-white/50 rounded p-2">
-                    <div className="text-xs text-slate-500">Status</div>
+                  <div className="bg-[#FFFFFF]/50 rounded p-2">
+                    <div className="text-xs text-[#64748B]">Status</div>
                     <div className="flex items-center gap-1">
                       {version.successRate > sortedVersions[0]?.successRate / 2 ? (
                         <TrendingUp className="w-4 h-4 text-emerald-400" />
@@ -254,14 +254,14 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
 
                 {/* Progress Bar */}
                 <div className="mt-3">
-                  <div className="h-2 bg-white/50 rounded-full overflow-hidden">
+                  <div className="h-2 bg-[#FFFFFF]/50 rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all ${
                         version.successRate >= 50
-                          ? "bg-emerald-500"
+                          ? "bg-[#22C55E]"
                           : version.successRate >= 25
                           ? "bg-yellow-500"
-                          : "bg-red-500"
+                          : "bg-[#EF4444]"
                       }`}
                       style={{ width: `${version.successRate}%` }}
                     />
@@ -278,10 +278,10 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="glass-panel rounded-xl p-6 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border-blue-500/20"
+        className="glass-panel rounded-xl p-6 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border-[#3B82F6]/20"
       >
-        <h4 className="text-lg font-bold text-slate-900 mb-3">💡 How to Use This Data</h4>
-        <ul className="space-y-2 text-slate-600 text-sm">
+        <h4 className="text-lg font-bold text-[#0F172A] mb-3">💡 How to Use This Data</h4>
+        <ul className="space-y-2 text-[#475569] text-sm">
           <li className="flex items-start gap-2">
             <span className="text-blue-400 font-bold">1.</span>
             <span>

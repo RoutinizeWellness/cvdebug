@@ -15,10 +15,10 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
   return (
     <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
       <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 rounded-full bg-stone-100 text-slate-900">
+        <div className="p-2 rounded-full bg-stone-100 text-[#0F172A]">
           <CheckCircle2 className="h-5 w-5" />
         </div>
-        <h3 className="text-lg font-bold text-slate-900">Formatting Audit</h3>
+        <h3 className="text-lg font-bold text-[#0F172A]">Formatting Audit</h3>
       </div>
       <div className="flex flex-col gap-3">
         {items.map((item, idx) => (
@@ -31,9 +31,9 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
             }`}
           >
             {item.status === "passed" ? (
-              <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />
+              <CheckCircle2 className="h-5 w-5 text-[#22C55E] shrink-0" />
             ) : (
-              <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+              <XCircle className="h-5 w-5 text-[#EF4444] shrink-0" />
             )}
             <div className="flex-1">
               <p className="text-sm font-bold text-zinc-100 mb-1">{item.title}</p>

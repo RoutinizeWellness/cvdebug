@@ -72,18 +72,18 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
           className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10"
         >
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl md:text-4xl font-bold font-display text-slate-900 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-bold font-display text-[#0F172A] tracking-tight">
               Account & Settings
             </h1>
-            <p className="text-slate-500 font-body">
+            <p className="text-[#64748B] font-body">
               Manage your subscription, security, and view your performance stats.
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+            <button className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors">
               Documentation
             </button>
-            <button className="px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+            <button className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors">
               Support
             </button>
           </div>
@@ -96,32 +96,32 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-2 bg-white border border-slate-200 rounded-xl overflow-hidden relative shadow-sm"
+            className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
             <div className="p-6 md:p-8 flex flex-col justify-between h-full">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-blue-50 text-blue-600 border border-blue-200">
+                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-blue-50 text-[#3B82F6] border border-blue-200">
                       Active
                     </span>
-                    <p className="text-slate-500 text-sm font-medium">Current Plan</p>
+                    <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
                   </div>
-                  <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 mb-1">
+                  <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-1">
                     {planName}
                   </h2>
-                  <p className="text-slate-500 text-sm">Valid until {validUntil}</p>
+                  <p className="text-[#64748B] text-sm">Valid until {validUntil}</p>
                 </div>
-                <div className="size-12 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200">
-                  <span className="material-symbols-outlined text-slate-700">rocket_launch</span>
+                <div className="size-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
+                  <span className="material-symbols-outlined text-[#475569]">rocket_launch</span>
                 </div>
               </div>
 
               {/* Progress Bar Component */}
               <div className="flex flex-col gap-2 mb-8">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-900 font-medium">Sprint Progress</span>
-                  <span className="text-blue-600 font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
+                  <span className="text-[#0F172A] font-medium">Sprint Progress</span>
+                  <span className="text-[#3B82F6] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -129,16 +129,16 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                     style={{ width: `${progressPercentage}%` }}
                   ></div>
                 </div>
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <div className="flex justify-between text-xs text-[#64748B] mt-1">
                   <span>Day {daysElapsed}</span>
                   <span>Day {totalSprintDays}</span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4 pt-4 border-t border-slate-200">
+              <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
                 <button
                   onClick={onOpenPricing}
-                  className="gradient-btn px-5 py-2.5 rounded-lg text-slate-900 text-sm font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-2"
+                  className="gradient-btn px-5 py-2.5 rounded-lg text-[#0F172A] text-sm font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2"
                 >
                   <span>Manage Subscription</span>
                   <span className="material-symbols-outlined text-[18px]">open_in_new</span>
@@ -152,16 +152,16 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-sm"
+            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="material-symbols-outlined text-cyan-600">monitoring</span>
-                <h3 className="text-lg font-bold font-display text-slate-900">Match Score</h3>
+                <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
               </div>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-slate-900 font-display">84%</span>
-                <span className="text-emerald-600 text-sm font-mono flex items-center bg-emerald-50 px-1.5 py-0.5 rounded">
+                <span className="text-4xl font-bold text-[#0F172A] font-display">84%</span>
+                <span className="text-[#22C55E] text-sm font-mono flex items-center bg-emerald-50 px-1.5 py-0.5 rounded">
                   <span className="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
                   +15%
                 </span>
@@ -195,7 +195,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                 <circle className="fill-white stroke-violet-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
               </svg>
               {/* X-Axis Labels */}
-              <div className="flex justify-between text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-wider">
+              <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
                 <span>Wk 1</span>
                 <span>Wk 2</span>
                 <span>Wk 3</span>
@@ -209,46 +209,46 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="lg:col-span-3 bg-white border border-slate-200 rounded-xl p-6 md:p-8 mt-2 shadow-sm"
+            className="lg:col-span-3 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 mt-2 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
-            <h3 className="text-xl font-bold font-display text-slate-900 mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-slate-500">lock</span>
+            <h3 className="text-xl font-bold font-display text-[#0F172A] mb-6 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[#64748B]">lock</span>
               Security & Privacy
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Password Change */}
               <div className="flex flex-col gap-5">
-                <h4 className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                <h4 className="text-sm font-semibold text-[#475569] uppercase tracking-wide">
                   Change Password
                 </h4>
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                    <label className="block text-xs font-medium text-[#475569] mb-1.5">
                       Current Password
                     </label>
                     <input
-                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
                       placeholder="••••••••••••"
                       type="password"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                      <label className="block text-xs font-medium text-[#475569] mb-1.5">
                         New Password
                       </label>
                       <input
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                      <label className="block text-xs font-medium text-[#475569] mb-1.5">
                         Confirm New
                       </label>
                       <input
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />
@@ -256,19 +256,19 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   </div>
                 </div>
                 <div className="mt-2">
-                  <button className="px-4 py-2 rounded-lg bg-white text-slate-900 text-sm font-medium hover:bg-slate-50 border border-slate-900 transition-colors">
+                  <button className="px-4 py-2 rounded-lg bg-[#FFFFFF] text-[#0F172A] text-sm font-medium hover:bg-[#F8FAFC] border border-slate-900 transition-colors">
                     Update Password
                   </button>
                 </div>
               </div>
 
               {/* Data & Danger Zone */}
-              <div className="flex flex-col gap-6 border-t md:border-t-0 md:border-l border-slate-200 pt-6 md:pt-0 md:pl-12">
+              <div className="flex flex-col gap-6 border-t md:border-t-0 md:border-l border-[#E2E8F0] pt-6 md:pt-0 md:pl-12">
                 {/* Privacy Toggle */}
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-1">
-                    <h4 className="text-sm font-medium text-slate-900">Share Analytics Data</h4>
-                    <p className="text-xs text-slate-500 max-w-[280px]">
+                    <h4 className="text-sm font-medium text-[#0F172A]">Share Analytics Data</h4>
+                    <p className="text-xs text-[#64748B] max-w-[280px]">
                       Help us improve CVDebug by sharing anonymous usage statistics.
                     </p>
                   </div>
@@ -276,11 +276,11 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   <button
                     onClick={() => setShareAnalytics(!shareAnalytics)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white ${
-                      shareAnalytics ? 'bg-blue-600' : 'bg-slate-300'
+                      shareAnalytics ? 'bg-[#3B82F6]' : 'bg-slate-300'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition duration-200 ease-in-out ${
+                      className={`inline-block h-4 w-4 transform rounded-full bg-[#FFFFFF] transition duration-200 ease-in-out ${
                         shareAnalytics ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     ></span>
@@ -291,15 +291,15 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
 
                 {/* Danger Zone */}
                 <div className="flex flex-col gap-4">
-                  <h4 className="text-sm font-semibold text-red-600 uppercase tracking-wide flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-[#EF4444] uppercase tracking-wide flex items-center gap-2">
                     <span className="material-symbols-outlined text-sm">warning</span>
                     Danger Zone
                   </h4>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[#64748B]">
                     Deleting your account will remove all your analyzed CVs and reset your sprint progress. This action cannot be undone.
                   </p>
                   <div>
-                    <button className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 hover:border-red-300 transition-colors">
+                    <button className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-[#EF4444] text-sm font-medium hover:bg-red-100 hover:border-red-300 transition-colors">
                       Delete Account Data
                     </button>
                   </div>
@@ -315,7 +315,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
       {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-6 right-6 z-50 animate-slide-up">
-          <div className="bg-white text-slate-900 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
+          <div className="bg-[#FFFFFF] text-[#0F172A] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
             <span className="material-symbols-outlined text-green-400 text-[20px]">check_circle</span>
             <span className="text-sm font-medium">{toastMessage}</span>
           </div>

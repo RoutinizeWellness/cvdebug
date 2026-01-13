@@ -37,15 +37,15 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
   const getEventColor = (type: string) => {
     switch (type) {
       case "created":
-        return "text-blue-400 bg-blue-500/10";
+        return "text-blue-400 bg-[#3B82F6]/10";
       case "status_change":
-        return "text-green-400 bg-green-500/10";
+        return "text-green-400 bg-[#22C55E]/10";
       case "dm_sent":
         return "text-teal-400 bg-teal-500/10";
       case "interview_scheduled":
         return "text-yellow-400 bg-yellow-500/10";
       case "rejected":
-        return "text-red-400 bg-red-500/10";
+        return "text-red-400 bg-[#EF4444]/10";
       default:
         return "text-zinc-400 bg-zinc-500/10";
     }
@@ -56,7 +56,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
   return (
     <Card className="bg-[#0A0A0A] border-zinc-800">
       <CardHeader>
-        <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
+        <CardTitle className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
           Application Timeline
         </CardTitle>
@@ -92,7 +92,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
                   {/* Event content */}
                   <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-800/50">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h4 className="font-semibold text-sm text-slate-900">{event.title}</h4>
+                      <h4 className="font-semibold text-sm text-[#0F172A]">{event.title}</h4>
                       <Badge variant="outline" className="text-[10px] text-zinc-500 border-zinc-800">
                         {new Date(event.timestamp).toLocaleDateString('es-ES')}
                       </Badge>

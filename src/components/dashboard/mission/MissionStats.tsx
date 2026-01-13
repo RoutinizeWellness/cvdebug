@@ -63,7 +63,7 @@ export function MissionStats() {
             <Shield className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-bold text-slate-900">Target ATS Detected</p>
+            <p className="text-sm font-bold text-[#0F172A]">Target ATS Detected</p>
             <p className="text-xs text-zinc-400">
               {detectedATS === "None Detected" 
                 ? "Add job URLs to detect ATS system" 
@@ -83,7 +83,7 @@ export function MissionStats() {
             <FileText className="h-4 w-4" />
             <span className="text-xs font-bold uppercase tracking-wider">Jobs Analyzed</span>
           </div>
-          <div className="text-2xl font-black text-slate-900">{jobsAnalyzed}</div>
+          <div className="text-2xl font-black text-[#0F172A]">{jobsAnalyzed}</div>
         </div>
 
         <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
@@ -91,7 +91,7 @@ export function MissionStats() {
             <Target className="h-4 w-4" />
             <span className="text-xs font-bold uppercase tracking-wider">Keywords Matched</span>
           </div>
-          <div className="text-2xl font-black text-slate-900">{keywordsMatched}</div>
+          <div className="text-2xl font-black text-[#0F172A]">{keywordsMatched}</div>
         </div>
 
         <div className="bg-[#0A0A0A] border border-zinc-800 rounded-xl p-4 flex flex-col justify-between h-24">
@@ -99,7 +99,7 @@ export function MissionStats() {
             <TrendingUp className="h-4 w-4" />
             <span className="text-xs font-bold uppercase tracking-wider">Avg. Score</span>
           </div>
-          <div className={`text-2xl font-black ${avgScore >= 75 ? 'text-[#00FF41]' : avgScore >= 50 ? 'text-yellow-500' : 'text-zinc-500'}`}>
+          <div className={`text-2xl font-black ${avgScore >= 75 ? 'text-[#00FF41]' : avgScore >= 50 ? 'text-[#F59E0B]' : 'text-zinc-500'}`}>
             {avgScore}%
           </div>
         </div>
@@ -109,7 +109,7 @@ export function MissionStats() {
             <Calendar className="h-4 w-4" />
             <span className="text-xs font-bold uppercase tracking-wider">Interview Prob.</span>
           </div>
-          <div className="text-2xl font-black text-slate-900">
+          <div className="text-2xl font-black text-[#0F172A]">
             {getProbLabel(interviewProb)}
           </div>
           <div className="text-xs text-zinc-500 -mt-1">{interviewProb}%</div>

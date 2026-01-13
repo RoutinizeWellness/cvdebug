@@ -208,7 +208,7 @@ export function ResumeDetailDialog({
     if (!text || text.trim().length === 0) {
       return (
         <div className="flex items-center justify-center py-8">
-          <p className="text-slate-500 italic">Analysis pending...</p>
+          <p className="text-[#64748B] italic">Analysis pending...</p>
         </div>
       );
     }
@@ -218,11 +218,11 @@ export function ResumeDetailDialog({
       return (
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-1" />
+            <AlertTriangle className="h-5 w-5 text-[#EF4444] flex-shrink-0 mt-1" />
             <div>
               <h4 className="text-red-700 font-bold mb-2">Analysis Error</h4>
-              <p className="text-slate-700 text-sm mb-4">{text}</p>
-              <p className="text-slate-600 text-xs">
+              <p className="text-[#475569] text-sm mb-4">{text}</p>
+              <p className="text-[#475569] text-xs">
                 Please try re-uploading your resume or contact support at cvdebug@outlook.com if the issue persists.
               </p>
             </div>
@@ -232,7 +232,7 @@ export function ResumeDetailDialog({
     }
 
     if (!text.includes("###")) {
-      return <div className="whitespace-pre-wrap text-sm text-slate-700 leading-relaxed">{text}</div>;
+      return <div className="whitespace-pre-wrap text-sm text-[#475569] leading-relaxed">{text}</div>;
     }
 
     const parts = text.split("###").filter(part => part.trim());
@@ -245,17 +245,17 @@ export function ResumeDetailDialog({
           const content = lines.slice(1).filter(line => line.trim());
 
           let icon = null;
-          let headerClass = "text-slate-900";
-          let bgClass = "bg-white";
-          let borderClass = "border-slate-200";
+          let headerClass = "text-[#0F172A]";
+          let bgClass = "bg-[#FFFFFF]";
+          let borderClass = "border-[#E2E8F0]";
 
           if (title.includes("🎯") || title.includes("Tailored")) {
-            icon = <Target className="h-4 w-4 text-green-600" />;
+            icon = <Target className="h-4 w-4 text-[#22C55E]" />;
             headerClass = "text-green-700";
             bgClass = "bg-green-50";
             borderClass = "border-green-200";
           } else if (title.includes("🤖") || title.includes("Parsing")) {
-            icon = <Cpu className="h-4 w-4 text-blue-600" />;
+            icon = <Cpu className="h-4 w-4 text-[#3B82F6]" />;
             headerClass = "text-blue-700";
             bgClass = "bg-blue-50";
             borderClass = "border-blue-200";
@@ -265,12 +265,12 @@ export function ResumeDetailDialog({
             bgClass = "bg-teal-50";
             borderClass = "border-teal-200";
           } else if (title.includes("🔑") || title.includes("Missing")) {
-            icon = <AlertTriangle className="h-4 w-4 text-red-600" />;
+            icon = <AlertTriangle className="h-4 w-4 text-[#EF4444]" />;
             headerClass = "text-red-700";
             bgClass = "bg-red-50";
             borderClass = "border-red-200";
           } else if (title.includes("⚠️") || title.includes("Format")) {
-            icon = <AlertTriangle className="h-4 w-4 text-yellow-600" />;
+            icon = <AlertTriangle className="h-4 w-4 text-[#F59E0B]" />;
             headerClass = "text-yellow-700";
             bgClass = "bg-yellow-50";
             borderClass = "border-yellow-200";
@@ -282,7 +282,7 @@ export function ResumeDetailDialog({
                 {icon}
                 {title}
               </h4>
-              <div className="space-y-3 text-sm text-slate-700">
+              <div className="space-y-3 text-sm text-[#475569]">
                 {content.map((line, i) => {
                   const trimmed = line.trim();
                   
@@ -291,11 +291,11 @@ export function ResumeDetailDialog({
                     if (match) {
                       const [, number, text] = match;
                       return (
-                        <div key={i} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+                        <div key={i} className="flex items-start gap-3 p-3 bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                           <span className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center border border-blue-200">
                             {number}
                           </span>
-                          <span className="flex-1 leading-relaxed font-medium text-slate-900">{text}</span>
+                          <span className="flex-1 leading-relaxed font-medium text-[#0F172A]">{text}</span>
                         </div>
                       );
                     }
@@ -304,8 +304,8 @@ export function ResumeDetailDialog({
                   if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
                     return (
                       <div key={i} className="flex items-start gap-3 pl-2">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-600 flex-shrink-0" />
-                        <span className="flex-1 leading-relaxed text-slate-700">{trimmed.replace(/^[-•*]\s*/, "")}</span>
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#3B82F6] flex-shrink-0" />
+                        <span className="flex-1 leading-relaxed text-[#475569]">{trimmed.replace(/^[-•*]\s*/, "")}</span>
                       </div>
                     );
                   }
@@ -313,15 +313,15 @@ export function ResumeDetailDialog({
                   if (trimmed.includes("**")) {
                     const parts = trimmed.split("**");
                     return (
-                      <p key={i} className="leading-relaxed text-slate-700">
+                      <p key={i} className="leading-relaxed text-[#475569]">
                         {parts.map((part, idx) =>
-                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-slate-900">{part}</strong> : part
+                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-[#0F172A]">{part}</strong> : part
                         )}
                       </p>
                     );
                   }
 
-                  return <p key={i} className="leading-relaxed text-slate-700">{trimmed}</p>;
+                  return <p key={i} className="leading-relaxed text-[#475569]">{trimmed}</p>;
                 })}
               </div>
             </div>
@@ -446,39 +446,39 @@ export function ResumeDetailDialog({
       />
       <DialogContent
         showCloseButton={false}
-        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-white flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible print:bg-white"
+        className="w-screen h-[100dvh] max-w-none m-0 p-0 rounded-none border-none bg-[#FFFFFF] flex flex-col overflow-hidden shadow-none focus:outline-none top-0 left-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 sm:max-w-none print:h-auto print:overflow-visible print:bg-[#FFFFFF]"
       >
         <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
         <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-white backdrop-blur-sm flex-shrink-0 print:hidden shadow-sm">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#FFFFFF] backdrop-blur-sm flex-shrink-0 print:hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <div className="flex items-center gap-4">
             <div className="h-10 w-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-200">
-              <ScanLine className="h-5 w-5 text-blue-600" />
+              <ScanLine className="h-5 w-5 text-[#3B82F6]" />
             </div>
             <div className="overflow-hidden">
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold leading-tight tracking-tight truncate text-slate-900">ATS Analysis Report</h2>
+                <h2 className="text-lg font-bold leading-tight tracking-tight truncate text-[#0F172A]">ATS Analysis Report</h2>
                 {displayResume?.category && (
-                  <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold border border-blue-200 uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-full bg-blue-50 text-[#3B82F6] text-[10px] font-bold border border-blue-200 uppercase tracking-wider">
                     {displayResume.category}
                   </span>
                 )}
                 {displayResume?.jobDescription && (
-                  <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-600 text-[10px] font-bold border border-green-200 uppercase tracking-wider flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded-full bg-green-50 text-[#22C55E] text-[10px] font-bold border border-green-200 uppercase tracking-wider flex items-center gap-1">
                     <Target className="h-3 w-3" /> Tailored
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono mt-0.5">
+              <div className="flex items-center gap-2 text-[10px] text-[#64748B] font-mono mt-0.5">
                 <span>ID: {resumeId?.slice(-8)}</span>
-                <span className="text-slate-600">|</span>
+                <span className="text-[#475569]">|</span>
                 <span className="flex items-center gap-1"><Cpu className="h-3 w-3" /> VLY-ATS-V2</span>
                 {displayResume?.jobDescription && (
                   <>
-                    <span className="text-slate-600">|</span>
-                    <span className="flex items-center gap-1 text-green-600"><Target className="h-3 w-3" /> Job-Specific</span>
+                    <span className="text-[#475569]">|</span>
+                    <span className="flex items-center gap-1 text-[#22C55E]"><Target className="h-3 w-3" /> Job-Specific</span>
                   </>
                 )}
               </div>
@@ -538,7 +538,7 @@ export function ResumeDetailDialog({
             </Button>
             <div className="w-px h-8 bg-slate-200 mx-1 self-center hidden sm:block" />
             <button
-              className="p-2 hover:bg-red-50 text-red-500 rounded-lg transition-colors border border-transparent hover:border-red-200"
+              className="p-2 hover:bg-red-50 text-[#EF4444] rounded-lg transition-colors border border-transparent hover:border-red-200"
               onClick={() => displayResume && onDelete(displayResume._id)}
               title="Delete"
               disabled={!displayResume}
@@ -546,7 +546,7 @@ export function ResumeDetailDialog({
               <Trash2 className="h-4 w-4" />
             </button>
             <button
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-600 hover:text-slate-900"
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-[#475569] hover:text-[#0F172A]"
               onClick={onClose}
               title="Close"
             >
@@ -555,36 +555,36 @@ export function ResumeDetailDialog({
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#F8FAFC] print:bg-white">
+        <div className="flex-1 flex flex-col overflow-hidden print:block print:overflow-visible bg-[#F8FAFC] print:bg-[#FFFFFF]">
           {/* Job Description Input Panel */}
           {showJobDescriptionInput && displayResume && (
-            <div className="border-b border-slate-200 bg-white p-4 print:hidden shadow-sm">
+            <div className="border-b border-[#E2E8F0] bg-[#FFFFFF] p-4 print:hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-start gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <Target className="h-4 w-4 text-blue-600" />
-                      <h3 className="text-sm font-bold text-slate-900">Tailor Analysis to Job Description</h3>
+                      <Target className="h-4 w-4 text-[#3B82F6]" />
+                      <h3 className="text-sm font-bold text-[#0F172A]">Tailor Analysis to Job Description</h3>
                       {displayResume.jobDescription && (
-                        <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
+                        <span className="text-xs text-[#22C55E] bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
                           Currently Tailored
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 mb-3">
+                    <p className="text-xs text-[#475569] mb-3">
                       Paste the job description to get a tailored ATS analysis with specific keyword matching and role-specific recommendations.
                     </p>
                     <textarea
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
                       placeholder="Paste the full job description here..."
-                      className="w-full h-32 bg-white border border-slate-300 rounded-lg text-sm p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none resize-none leading-relaxed transition-all placeholder:text-slate-500 text-slate-900 shadow-sm"
+                      className="w-full h-32 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-sm p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-[#3B82F6] outline-none resize-none leading-relaxed transition-all placeholder:text-[#64748B] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     />
                     <div className="flex gap-2 mt-3">
                       <Button
                         onClick={handleReanalyzeWithJD}
                         disabled={isReanalyzing || !jobDescription.trim()}
-                        className="bg-blue-600 text-slate-900 font-bold hover:bg-blue-700"
+                        className="bg-[#3B82F6] text-[#0F172A] font-bold hover:bg-blue-700"
                       >
                         {isReanalyzing ? (
                           <>
@@ -604,7 +604,7 @@ export function ResumeDetailDialog({
                           setShowJobDescriptionInput(false);
                           setJobDescription(displayResume.jobDescription || "");
                         }}
-                        className="border-slate-300 text-slate-700 hover:bg-slate-50"
+                        className="border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]"
                       >
                         Cancel
                       </Button>
@@ -616,11 +616,11 @@ export function ResumeDetailDialog({
           )}
 
           {!displayResume ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-slate-600 gap-4">
-              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+            <div className="flex-1 flex flex-col items-center justify-center text-[#475569] gap-4">
+              <Loader2 className="h-8 w-8 animate-spin text-[#3B82F6]" />
               <p>Loading analysis data...</p>
               {allResumes === undefined && (
-                <p className="text-xs text-red-600 bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                <p className="text-xs text-[#EF4444] bg-red-50 px-3 py-1 rounded-full border border-red-200">
                   Network error: Unable to fetch data. Please check your connection.
                 </p>
               )}
@@ -630,13 +630,13 @@ export function ResumeDetailDialog({
               {/* Main Content - Analysis Tabs + PDF Preview */}
               <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <div className="bg-white flex-shrink-0 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 border-b border-slate-200">
+                <div className="bg-[#FFFFFF] flex-shrink-0 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 border-b border-[#E2E8F0]">
                   <TabsList className="inline-flex w-auto min-w-full gap-1 h-auto bg-transparent">
                     {/* DIAGNOSIS Group */}
-                    <div className="flex gap-1 pr-3 border-r border-slate-200">
+                    <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
                       <TabsTrigger
                         value="robot"
-                        className={`relative text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-green-600 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg ${showRobotPulse ? 'animate-pulse ring-2 ring-green-500/50' : ''}`}
+                        className={`relative text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#22C55E] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg ${showRobotPulse ? 'animate-pulse ring-2 ring-green-500/50' : ''}`}
                       >
                         <span className="flex items-center gap-1.5">
                           <Cpu className="h-4 w-4" />
@@ -645,17 +645,17 @@ export function ResumeDetailDialog({
                         {showRobotPulse && (
                           <span className="absolute -top-1 -right-1 flex h-2 w-2 z-10">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                           </span>
                         )}
                       </TabsTrigger>
-                      <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-blue-600 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <FileSearch className="h-4 w-4" />
                           <span>Format</span>
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-blue-600 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Target className="h-4 w-4" />
                           <span>Keywords</span>
@@ -664,14 +664,14 @@ export function ResumeDetailDialog({
                     </div>
 
                     {/* FIX Group */}
-                    <div className="flex gap-1 px-3 border-r border-slate-200">
-                      <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-amber-500 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                    <div className="flex gap-1 px-3 border-r border-[#E2E8F0]">
+                      <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#F59E0B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Sparkles className="h-4 w-4" />
                           <span>Fluff</span>
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Eye className="h-4 w-4" />
                           <span>Overview</span>
@@ -681,13 +681,13 @@ export function ResumeDetailDialog({
 
                     {/* PREP Group */}
                     <div className="flex gap-1 pl-3">
-                      <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-blue-600 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Building className="h-4 w-4" />
                           <span>Interview</span>
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger value="simulation" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-slate-900 data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:text-slate-900 data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="simulation" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         Recruiter
                       </TabsTrigger>
                     </div>
@@ -697,19 +697,19 @@ export function ResumeDetailDialog({
                 <TabsContent value="robot" className="flex-1 overflow-auto p-0 m-0">
                   <div className="h-full bg-[#F8FAFC] relative">
                     {/* Terminal Header */}
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 px-6 py-3 flex items-center justify-between shadow-sm">
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 px-6 py-3 flex items-center justify-between shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                       <div className="flex items-center gap-3">
                         <div className="flex gap-1.5">
                           <div className="w-3 h-3 rounded-full bg-red-400"></div>
                           <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                          <div className="w-3 h-3 rounded-full bg-[#22C55E]"></div>
                         </div>
                         <span className="text-green-700 font-mono text-sm font-bold">ATS_PARSER_v2.1.0</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                         </span>
                         <span className="text-green-700 font-mono text-xs">LIVE</span>
                       </div>
@@ -718,7 +718,7 @@ export function ResumeDetailDialog({
                     {/* Robot View Content */}
                     <div className="p-6 space-y-6">
                       {/* Info Banner */}
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-sm">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                         <div className="flex items-start gap-3">
                           <div className="text-2xl">👁️</div>
                           <div>
@@ -731,15 +731,15 @@ export function ResumeDetailDialog({
                       </div>
 
                       {/* OCR Text Display */}
-                      <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
+                      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-slate-900 font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
-                          <span className="text-slate-600 font-mono text-xs">
+                          <h4 className="text-[#0F172A] font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
+                          <span className="text-[#475569] font-mono text-xs">
                             {displayResume?.ocrText?.length || 0} characters
                           </span>
                         </div>
-                        <div className="bg-slate-50 rounded border border-slate-200 p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
-                          <pre className="text-slate-700 font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                        <div className="bg-[#F8FAFC] rounded border border-[#E2E8F0] p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
+                          <pre className="text-[#475569] font-mono text-xs leading-relaxed whitespace-pre-wrap">
                             {displayResume?.ocrText || "⚠️ NO TEXT EXTRACTED - ATS CANNOT READ THIS RESUME"}
                           </pre>
                         </div>
@@ -747,12 +747,12 @@ export function ResumeDetailDialog({
 
                       {/* Image Trap Warning */}
                       {displayResume?.hasImageTrap && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-sm">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                           <div className="flex items-start gap-3">
-                            <AlertTriangle className="h-6 w-6 text-red-600 flex-shrink-0" />
+                            <AlertTriangle className="h-6 w-6 text-[#EF4444] flex-shrink-0" />
                             <div>
                               <h4 className="text-red-700 font-bold text-lg mb-1">🚨 IMAGE TRAP DETECTED</h4>
-                              <p className="text-red-600 text-sm">
+                              <p className="text-[#EF4444] text-sm">
                                 Critical content is embedded as an image. ATS systems cannot read this and will auto-reject your application.
                               </p>
                             </div>
@@ -762,20 +762,20 @@ export function ResumeDetailDialog({
 
                       {/* Quick Stats */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-sm">
-                          <div className="text-green-600 text-xs font-mono uppercase mb-1">Readability</div>
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">Readability</div>
                           <div className="text-2xl font-bold text-green-700">
                             {displayResume?.ocrText && displayResume.ocrText.length > 100 ? '✓ Good' : '✗ Poor'}
                           </div>
                         </div>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-sm">
-                          <div className="text-green-600 text-xs font-mono uppercase mb-1">Image Traps</div>
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">Image Traps</div>
                           <div className="text-2xl font-bold text-green-700">
                             {displayResume?.hasImageTrap ? '⚠️ Found' : '✓ None'}
                           </div>
                         </div>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-sm">
-                          <div className="text-green-600 text-xs font-mono uppercase mb-1">ATS Score</div>
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">ATS Score</div>
                           <div className="text-2xl font-bold text-green-700">
                             {displayResume?.score || 0}/100
                           </div>
@@ -816,11 +816,11 @@ export function ResumeDetailDialog({
 
                 <TabsContent value="overview" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                   <div className="space-y-8">
-                    <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-                      <h2 className="text-2xl font-bold text-slate-900 mb-6">Format Issues</h2>
+                    <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                      <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
                       <div className="space-y-4">
                         {auditItems.map((item: any, index: number) => (
-                          <div key={index} className={`p-4 rounded-lg border shadow-sm ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
+                          <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
                             <div className="flex items-start justify-between mb-2">
                               <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
                                 {item.title}
@@ -833,8 +833,8 @@ export function ResumeDetailDialog({
                                 {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
                               </span>
                             </div>
-                            <p className="text-slate-700 text-sm mb-3">{item.reason}</p>
-                            <p className="text-xs text-slate-600">{item.fix}</p>
+                            <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
+                            <p className="text-xs text-[#475569]">{item.fix}</p>
                           </div>
                         ))}
                       </div>
@@ -859,11 +859,11 @@ export function ResumeDetailDialog({
 
                 <TabsContent value="format" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                   <div className="space-y-8">
-                    <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-                      <h2 className="text-2xl font-bold text-slate-900 mb-6">Format Issues</h2>
+                    <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                      <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
                       <div className="space-y-4">
                         {auditItems.map((item: any, index: number) => (
-                          <div key={index} className={`p-4 rounded-lg border shadow-sm ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
+                          <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
                             <div className="flex items-start justify-between mb-2">
                               <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
                                 {item.title}
@@ -876,8 +876,8 @@ export function ResumeDetailDialog({
                                 {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
                               </span>
                             </div>
-                            <p className="text-slate-700 text-sm mb-3">{item.reason}</p>
-                            <p className="text-xs text-slate-600">{item.fix}</p>
+                            <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
+                            <p className="text-xs text-[#475569]">{item.fix}</p>
                           </div>
                         ))}
                       </div>
@@ -902,9 +902,9 @@ export function ResumeDetailDialog({
 
                 <TabsContent value="raw" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                   <div className="space-y-8">
-                    <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-                      <h2 className="text-2xl font-bold text-slate-900 mb-6">Raw Text View</h2>
-                      <div className="bg-slate-50 rounded-lg border border-slate-200 p-4 text-xs text-slate-700 font-mono leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                      <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Raw Text View</h2>
+                      <div className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4 text-xs text-[#475569] font-mono leading-relaxed whitespace-pre-wrap">
                         {displayResume?.ocrText || "No text extracted."}
                       </div>
                     </div>
@@ -913,13 +913,13 @@ export function ResumeDetailDialog({
               </Tabs>
 
               {/* PDF Preview - Now Full Width When Tabs Don't Need It */}
-              <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'flex-1'} bg-slate-50 flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden border-l border-slate-200`}>
+              <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'flex-1'} bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden border-l border-[#E2E8F0]`}>
                 <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
 
                 {/* Collapse/Expand Button */}
                 <button
                   onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
-                  className="absolute top-4 left-4 z-20 p-2 bg-blue-600 hover:bg-blue-700 text-slate-900 rounded-lg backdrop-blur-sm transition-all shadow-lg"
+                  className="absolute top-4 left-4 z-20 p-2 bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A] rounded-lg backdrop-blur-sm transition-all shadow-lg"
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
@@ -929,26 +929,26 @@ export function ResumeDetailDialog({
                   <div className="w-full h-full flex items-center justify-center relative z-10">
                     {displayResume?.mimeType.startsWith("image/") ? (
                       <img
-                        className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                        className="h-full w-full object-contain rounded-lg shadow-2xl ring-1 ring-black/10 bg-[#FFFFFF]"
                         src={displayResume?.url}
                         alt={displayResume?.title}
                       />
                     ) : displayResume?.mimeType === "application/pdf" ? (
                       <iframe
                         src={displayResume?.url}
-                        className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-white"
+                        className="w-full h-full rounded-lg shadow-2xl ring-1 ring-black/10 bg-[#FFFFFF]"
                         title="Resume Preview"
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center text-center p-6 bg-white rounded-lg shadow-xl max-w-md border border-slate-200">
-                        <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mb-6 border border-slate-200">
-                          <FileText className="h-10 w-10 text-slate-600" />
+                      <div className="flex flex-col items-center justify-center text-center p-6 bg-[#FFFFFF] rounded-lg shadow-xl max-w-md border border-[#E2E8F0]">
+                        <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center mb-6 border border-[#E2E8F0]">
+                          <FileText className="h-10 w-10 text-[#475569]" />
                         </div>
-                        <h3 className="text-xl font-bold mb-2 text-slate-900">Preview Not Available</h3>
-                        <p className="text-slate-600 mb-8">
+                        <h3 className="text-xl font-bold mb-2 text-[#0F172A]">Preview Not Available</h3>
+                        <p className="text-[#475569] mb-8">
                           This file type cannot be previewed directly in the browser. You can download it to view the content.
                         </p>
-                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-blue-600 hover:bg-blue-700 text-slate-900">
+                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A]">
                           <Download className="h-4 w-4 mr-2" /> Download File
                         </Button>
                       </div>

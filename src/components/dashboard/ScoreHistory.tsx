@@ -32,7 +32,7 @@ export function ScoreHistory() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-xs text-muted-foreground">Improvement</p>
-            <p className={`text-lg font-bold ${improvement >= 0 ? 'text-green-500' : 'text-red-500'} flex items-center gap-1`}>
+            <p className={`text-lg font-bold ${improvement >= 0 ? 'text-[#22C55E]' : 'text-[#EF4444]'} flex items-center gap-1`}>
               {improvement > 0 ? '+' : ''}{improvement} points
               {improvement > 0 && <ArrowUpRight className="h-4 w-4" />}
             </p>

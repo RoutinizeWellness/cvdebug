@@ -32,31 +32,31 @@ export function TopErrors() {
       case "CRIT":
         return "text-rose-500";
       case "WARN":
-        return "text-amber-500";
+        return "text-[#F59E0B]";
       default:
-        return "text-blue-500";
+        return "text-[#3B82F6]";
     }
   };
 
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
+        <h3 className="text-[#0F172A] text-lg font-bold flex items-center gap-2">
           <Bug className="h-5 w-5 text-rose-500" />
           Top Errors
         </h3>
-        <span className="text-xs text-slate-500 font-mono">Master_CV_v4.pdf</span>
+        <span className="text-xs text-[#64748B] font-mono">Master_CV_v4.pdf</span>
       </div>
 
-      <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-slate-200 overflow-hidden shadow-sm shadow-black/50">
+      <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-[#E2E8F0] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] shadow-black/50">
         {/* Terminal Header */}
-        <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-slate-200">
+        <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-[#E2E8F0]">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]"></div>
           </div>
-          <span className="ml-2 text-[10px] text-slate-500 font-mono">console — bash</span>
+          <span className="ml-2 text-[10px] text-[#64748B] font-mono">console — bash</span>
         </div>
 
         {/* Terminal Body */}
@@ -73,10 +73,10 @@ export function TopErrors() {
                 [{error.type}]
               </span>
               <div className="flex flex-col gap-1">
-                <span className="text-slate-600 group-hover:text-slate-900 transition-colors">
+                <span className="text-[#475569] group-hover:text-[#0F172A] transition-colors">
                   {error.message}
                 </span>
-                <span className="text-slate-600">{error.details}</span>
+                <span className="text-[#475569]">{error.details}</span>
               </div>
             </motion.div>
           ))}
@@ -87,13 +87,13 @@ export function TopErrors() {
             transition={{ delay: 0.5 }}
             className="flex gap-2 items-center mt-2 animate-pulse"
           >
-            <span className="text-emerald-500">➜</span>
-            <span className="w-2 h-4 bg-slate-500 block"></span>
+            <span className="text-[#22C55E]">➜</span>
+            <span className="w-2 h-4 bg-[#F8FAFC]0 block"></span>
           </motion.div>
         </div>
 
         {/* Action Button */}
-        <div className="p-3 border-t border-slate-200 bg-[#161b22]">
+        <div className="p-3 border-t border-[#E2E8F0] bg-[#161b22]">
           <Button className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 text-xs font-bold border border-rose-500/20 hover:border-rose-500/40 transition-all">
             <Wrench className="h-4 w-4" />
             DEBUG MASTER CV

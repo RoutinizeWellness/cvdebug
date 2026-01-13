@@ -86,35 +86,35 @@ export function RobotTerminalView({
   const getLogColor = (type: string) => {
     switch (type) {
       case "ok":
-        return "text-green-500";
+        return "text-[#22C55E]";
       case "warn":
-        return "text-yellow-500";
+        return "text-[#F59E0B]";
       case "critical":
       case "fail":
-        return "text-red-500";
+        return "text-[#EF4444]";
       case "command":
         return "text-primary";
       default:
-        return "text-slate-500";
+        return "text-[#64748B]";
     }
   };
 
   return (
-    <div className="bg-[#0c1220] border border-slate-200 rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[500px]">
+    <div className="bg-[#0c1220] border border-[#E2E8F0] rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[500px]">
       {/* Terminal Header */}
-      <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-slate-200">
+      <div className="bg-[#FFFFFF] px-4 py-3 flex items-center justify-between border-b border-[#E2E8F0]">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-[#EF4444]/80"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            <div className="w-3 h-3 rounded-full bg-[#22C55E]/80"></div>
           </div>
-          <div className="ml-4 flex items-center gap-2 px-3 py-1 bg-black/30 rounded text-xs font-mono text-slate-500 border border-slate-200/50">
+          <div className="ml-4 flex items-center gap-2 px-3 py-1 bg-black/30 rounded text-xs font-mono text-[#64748B] border border-[#E2E8F0]/50">
             <Terminal className="h-3.5 w-3.5" />
             system_scan_logs.log
           </div>
         </div>
-        <span className="text-[10px] text-slate-500 font-mono">zsh • 80x24</span>
+        <span className="text-[10px] text-[#64748B] font-mono">zsh • 80x24</span>
       </div>
 
       {/* Terminal Body */}
@@ -122,7 +122,7 @@ export function RobotTerminalView({
         {/* Matrix-like background effect */}
         <div className="absolute inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5"></div>
 
-        <div className="text-slate-600 space-y-1 relative z-10">
+        <div className="text-[#475569] space-y-1 relative z-10">
           {displayedLogs.map((log, index) => (
             <motion.p
               key={index}
@@ -130,7 +130,7 @@ export function RobotTerminalView({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <span className="text-slate-500 select-none mr-3">
+              <span className="text-[#64748B] select-none mr-3">
                 {String(log.line).padStart(2, "0")}
               </span>
               {log.type === "command" ? (
@@ -149,7 +149,7 @@ export function RobotTerminalView({
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
-              <span className="text-slate-500 select-none mr-3">
+              <span className="text-[#64748B] select-none mr-3">
                 {String(logData.length + 1).padStart(2, "0")}
               </span>
               <span className="text-primary">root@cvdebug</span>:

@@ -29,13 +29,13 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
             <FileText className="h-6 w-6 text-zinc-500" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900">No Master CV Found</h3>
+            <h3 className="text-lg font-bold text-[#0F172A]">No Master CV Found</h3>
             <p className="text-sm text-zinc-400">Upload your resume to start monitoring its health.</p>
           </div>
         </div>
         <Button 
           variant="outline" 
-          className="border-zinc-700 hover:bg-zinc-800 text-slate-900"
+          className="border-zinc-700 hover:bg-zinc-800 text-[#0F172A]"
           onClick={onUpload}
         >
           <Upload className="mr-2 h-4 w-4" /> Upload CV
@@ -63,15 +63,15 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
   return (
     <div className="rounded-xl border border-zinc-800 bg-[#0A0A0A] p-6 relative overflow-hidden group">
       {/* Background Glow */}
-      <div className={`absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 rounded-full blur-3xl opacity-20 ${hasImageTrap ? 'bg-red-500' : 'bg-green-500'}`} />
+      <div className={`absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 rounded-full blur-3xl opacity-20 ${hasImageTrap ? 'bg-[#EF4444]' : 'bg-[#22C55E]'}`} />
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         {/* Left: Status */}
         <div className="flex items-start gap-5">
           <div className={`h-14 w-14 rounded-2xl flex items-center justify-center border shadow-lg ${
             hasImageTrap 
-              ? 'bg-red-500/10 border-red-500/30 text-red-500 shadow-red-900/20' 
-              : 'bg-green-500/10 border-green-500/30 text-green-500 shadow-green-900/20'
+              ? 'bg-[#EF4444]/10 border-red-500/30 text-[#EF4444] shadow-red-900/20' 
+              : 'bg-[#22C55E]/10 border-green-500/30 text-[#22C55E] shadow-green-900/20'
           }`}>
             {hasImageTrap ? (
               <AlertTriangle className="h-7 w-7 animate-pulse" />
@@ -82,11 +82,11 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
           
           <div className="space-y-1">
             <div className="flex items-center gap-3">
-              <h3 className="text-lg font-bold text-slate-900 tracking-tight">Master CV Health</h3>
+              <h3 className="text-lg font-bold text-[#0F172A] tracking-tight">Master CV Health</h3>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                 hasImageTrap 
-                  ? 'bg-red-500/10 border-red-500/30 text-red-500' 
-                  : 'bg-green-500/10 border-green-500/30 text-green-500'
+                  ? 'bg-[#EF4444]/10 border-red-500/30 text-[#EF4444]' 
+                  : 'bg-[#22C55E]/10 border-green-500/30 text-[#22C55E]'
               }`}>
                 {hasImageTrap ? 'Critical Issues' : 'System Optimal'}
               </span>
@@ -103,7 +103,7 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
         <div className="flex items-center gap-6">
           <div className="hidden md:block text-right space-y-1">
             <div className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Readability Score</div>
-            <div className={`text-2xl font-black ${hasImageTrap ? 'text-red-500' : 'text-green-500'}`}>
+            <div className={`text-2xl font-black ${hasImageTrap ? 'text-[#EF4444]' : 'text-[#22C55E]'}`}>
               {integrityScore}%
             </div>
           </div>
@@ -124,7 +124,7 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
             ) : (
               <Button 
                 variant="outline" 
-                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-slate-900 font-medium"
+                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-[#0F172A] font-medium"
                 onClick={onUpload}
               >
                 <Upload className="mr-2 h-4 w-4" /> Hot-Swap CV

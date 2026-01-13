@@ -421,7 +421,7 @@ export default function PreviewScan() {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-2">Drop your resume here</h3>
                   <p className="text-slate-400 mb-6">or click to browse files</p>
-                  <p className="text-sm text-slate-500">Supports PDF, Word, and Images • No account needed</p>
+                  <p className="text-sm text-[#64748B]">Supports PDF, Word, and Images • No account needed</p>
                 </div>
               </motion.div>
 
@@ -457,9 +457,9 @@ export default function PreviewScan() {
               <div className="lg:col-span-2 glass-panel rounded-2xl overflow-hidden border border-slate-800/50">
                 <div className="bg-slate-900/80 px-4 py-3 border-b border-slate-800/50 flex items-center gap-3">
                   <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                    <div className="w-3 h-3 rounded-full bg-[#EF4444]/60" />
                     <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                    <div className="w-3 h-3 rounded-full bg-[#22C55E]/60" />
                   </div>
                   <span className="text-xs text-slate-400 font-mono">resume_parser_v2.log</span>
                 </div>
@@ -671,7 +671,7 @@ export default function PreviewScan() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.1 }}
                       className={`flex items-center gap-3 p-3 rounded-lg ${
-                        item.locked ? "bg-primary/5 border border-primary/20" : "bg-green-500/5 border border-green-500/20"
+                        item.locked ? "bg-primary/5 border border-primary/20" : "bg-[#22C55E]/5 border border-green-500/20"
                       }`}
                     >
                       <item.icon className={`h-5 w-5 ${item.locked ? "text-primary" : "text-green-400"}`} />
@@ -688,7 +688,7 @@ export default function PreviewScan() {
                   Create Free Account <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
 
-                <p className="text-center text-xs text-slate-500 mt-4">
+                <p className="text-center text-xs text-[#64748B] mt-4">
                   No credit card required • Takes 30 seconds • Your data stays private
                 </p>
               </div>

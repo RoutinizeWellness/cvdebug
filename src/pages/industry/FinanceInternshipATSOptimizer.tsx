@@ -137,13 +137,13 @@ export default function FinanceInternshipATSOptimizer() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-yellow-500 to-primary px-8 text-base font-bold text-white transition-all hover:bg-blue-600"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-yellow-500 to-primary px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
               >
                 Optimize My Resume (Free)
               </Button>
             </motion.div>
 
-            <p className="mt-4 text-xs text-slate-500">
+            <p className="mt-4 text-xs text-[#64748B]">
               No signup • See results in 10 seconds • Used at Wharton, Harvard, MIT
             </p>
           </div>
@@ -152,7 +152,7 @@ export default function FinanceInternshipATSOptimizer() {
         {/* Target Firms */}
         <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="text-center text-sm font-medium text-slate-500 mb-6">
+            <p className="text-center text-sm font-medium text-[#64748B] mb-6">
               Optimized for ATS systems at:
             </p>
             <div className="flex flex-wrap justify-center gap-6">
@@ -297,7 +297,7 @@ export default function FinanceInternshipATSOptimizer() {
               >
                 Optimize My Resume (Free)
               </Button>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#64748B]">
                 No credit card • Instant results • Confidential
               </p>
             </div>

@@ -14,7 +14,7 @@ export function ImportantIssues({ formatIssues = [], importantKeywords }: Import
         <h3 className="text-sm font-bold text-yellow-700 flex items-center gap-2">
           <AlertTriangle className="h-4 w-4" /> IMPORTANT (Optimize)
         </h3>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${totalIssues === 0 ? "bg-green-500 text-slate-900" : "bg-yellow-500 text-slate-900"}`}>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${totalIssues === 0 ? "bg-[#22C55E] text-[#0F172A]" : "bg-yellow-500 text-[#0F172A]"}`}>
           {totalIssues} Issues
         </span>
       </div>
@@ -23,7 +23,7 @@ export function ImportantIssues({ formatIssues = [], importantKeywords }: Import
         {totalIssues === 0 ? (
           <div className="flex flex-col items-center justify-center py-4 text-center">
             <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
-              <Check className="h-5 w-5 text-green-600" />
+              <Check className="h-5 w-5 text-[#22C55E]" />
             </div>
             <p className="text-sm font-bold text-foreground">0 Issues Found!</p>
             <p className="text-xs text-muted-foreground">Your resume formatting and important keywords look good.</p>

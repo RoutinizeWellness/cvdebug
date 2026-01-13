@@ -66,10 +66,10 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
     <div className="glass-card rounded-lg p-6 flex flex-col gap-6 relative overflow-hidden group">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-full bg-stone-800 text-slate-900">
+          <div className="p-2 rounded-full bg-stone-800 text-[#0F172A]">
             <Check className="h-5 w-5" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900">Skill Heatmap Analysis</h3>
+          <h3 className="text-lg font-bold text-[#0F172A]">Skill Heatmap Analysis</h3>
         </div>
         <span className="text-xs font-bold bg-green-900 text-green-300 px-2 py-1 rounded-md">High Impact</span>
       </div>
@@ -77,7 +77,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
       {/* Hard Skills Section */}
       <div className="space-y-3">
         <h4 className="text-sm font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+          <span className="w-2 h-2 rounded-full bg-[#3B82F6]"></span>
           Hard Skills
         </h4>
         <motion.div 
@@ -90,7 +90,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
             <motion.span
               key={i}
               variants={item}
-              className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500 text-green-300 text-xs font-bold flex items-center gap-1"
+              className="px-3 py-1.5 rounded-full bg-[#22C55E]/20 border border-green-500 text-green-300 text-xs font-bold flex items-center gap-1"
             >
               <Check className="h-3.5 w-3.5" />
               {kw}
@@ -105,7 +105,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
                 variants={item}
                 className="group/skill relative"
               >
-                <span className="px-3 py-1.5 rounded-full border-2 border-red-500 bg-red-500/10 text-red-300 text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-red-500/20 transition-colors">
+                <span className="px-3 py-1.5 rounded-full border-2 border-red-500 bg-[#EF4444]/10 text-red-300 text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 transition-colors">
                   <X className="h-3.5 w-3.5" />
                   {keyword}
                 </span>
@@ -147,7 +147,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
             <motion.span
               key={i}
               variants={item}
-              className="px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500 text-green-300 text-xs font-bold flex items-center gap-1"
+              className="px-3 py-1.5 rounded-full bg-[#22C55E]/20 border border-green-500 text-green-300 text-xs font-bold flex items-center gap-1"
             >
               <Check className="h-3.5 w-3.5" />
               {kw}
@@ -162,7 +162,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
                 variants={item}
                 className="group/skill relative"
               >
-                <span className="px-3 py-1.5 rounded-full border-2 border-red-500 bg-red-500/10 text-red-300 text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-red-500/20 transition-colors">
+                <span className="px-3 py-1.5 rounded-full border-2 border-red-500 bg-[#EF4444]/10 text-red-300 text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 transition-colors">
                   <X className="h-3.5 w-3.5" />
                   {keyword}
                 </span>
@@ -191,11 +191,11 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
       {/* Legend */}
       <div className="flex items-center gap-4 pt-3 border-t border-zinc-800 text-xs text-zinc-400">
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500"></div>
+          <div className="w-3 h-3 rounded-full bg-[#22C55E]/20 border border-green-500"></div>
           <span>Present in CV</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500/10 border-2 border-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-[#EF4444]/10 border-2 border-red-500"></div>
           <span>Missing (hover to generate)</span>
         </div>
       </div>

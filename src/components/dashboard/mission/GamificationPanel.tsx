@@ -27,17 +27,17 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
             <Target className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Interview Probability</h3>
+            <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Interview Probability</h3>
             <p className="text-xs text-zinc-400">Your chances of getting called</p>
           </div>
         </div>
 
         <div className="flex items-end gap-4 mb-4">
-          <div className="text-5xl font-black text-slate-900">
+          <div className="text-5xl font-black text-[#0F172A]">
             {probabilityData?.score || 0}
             <span className="text-2xl text-primary">%</span>
           </div>
-          <div className="flex items-center gap-1 text-green-500 mb-2">
+          <div className="flex items-center gap-1 text-[#22C55E] mb-2">
             <TrendingUp className="h-4 w-4" />
             <span className="text-sm font-bold">+12%</span>
           </div>
@@ -49,7 +49,7 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
           {probabilityData?.factors?.map((factor: any, idx: number) => (
             <div key={idx} className="flex justify-between text-xs">
               <span className="text-zinc-400">{factor.name}</span>
-              <span className="text-slate-900 font-mono">
+              <span className="text-[#0F172A] font-mono">
                 {factor.points}/{factor.max}
               </span>
             </div>
@@ -69,10 +69,10 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
       <Card className="bg-gradient-to-br from-zinc-900 to-zinc-950 border-primary/20 p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-yellow-500/10 rounded-lg">
-            <Trophy className="h-5 w-5 text-yellow-500" />
+            <Trophy className="h-5 w-5 text-[#F59E0B]" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Achievements</h3>
+            <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Achievements</h3>
             <p className="text-xs text-zinc-400">Your progress badges</p>
           </div>
         </div>
@@ -87,7 +87,7 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
                 <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
                   {badge.icon}
                 </div>
-                <p className="text-xs font-bold text-slate-900 mb-1">{badge.name}</p>
+                <p className="text-xs font-bold text-[#0F172A] mb-1">{badge.name}</p>
                 <p className="text-[10px] text-zinc-500">
                   {new Date(badge.earnedAt).toLocaleDateString('es-ES')}
                 </p>

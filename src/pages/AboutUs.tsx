@@ -51,7 +51,7 @@ export default function AboutUs() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            About <span className="text-blue-500">CVDebug</span>
+            About <span className="text-[#3B82F6]">CVDebug</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             We're building the future of job searching with AI-powered tools that help you beat ATS systems and get hired faster.
@@ -99,7 +99,7 @@ export default function AboutUs() {
                 transition={{ duration: 0.5, delay: 0.1 * (index + 3) }}
                 className="glass-panel rounded-xl p-6"
               >
-                <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-[#3B82F6]/20 rounded-lg flex items-center justify-center mb-4">
                   <value.icon className="w-6 h-6 text-blue-400" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
@@ -151,7 +151,7 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-blue-500/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Beat ATS?
@@ -161,7 +161,7 @@ export default function AboutUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

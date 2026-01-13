@@ -67,7 +67,7 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
     switch (variant) {
       case "success":
         return {
-          bar: "bg-emerald-500 shadow-[0_0_10px_#10b981]",
+          bar: "bg-[#22C55E] shadow-[0_0_10px_#10b981]",
           trend: "text-emerald-400 bg-emerald-400/10",
           icon: "text-emerald-400",
           border: "",
@@ -88,7 +88,7 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
         };
       default:
         return {
-          bar: "bg-blue-500 shadow-[0_0_10px_#3b82f6]",
+          bar: "bg-[#3B82F6] shadow-[0_0_10px_#3b82f6]",
           trend: "text-blue-400 bg-blue-400/10",
           icon: "text-blue-400",
           border: "",
@@ -111,18 +111,18 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
             className={`glass-panel rounded-xl p-5 relative overflow-hidden group ${colors.border}`}
           >
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <metric.icon className="h-16 w-16 text-slate-900" />
+              <metric.icon className="h-16 w-16 text-[#0F172A]" />
             </div>
 
             <div className="flex flex-col gap-1 relative z-10">
-              <p className="text-slate-500 text-sm font-medium uppercase tracking-wider">
+              <p className="text-[#64748B] text-sm font-medium uppercase tracking-wider">
                 {metric.title}
               </p>
               <div className="flex items-baseline gap-2 mt-1">
-                <p className="text-slate-900 text-4xl font-mono font-bold">
+                <p className="text-[#0F172A] text-4xl font-mono font-bold">
                   {metric.value}
                   {metric.subtitle && metric.variant !== "danger" && (
-                    <span className="text-xl text-slate-500">{metric.subtitle}</span>
+                    <span className="text-xl text-[#64748B]">{metric.subtitle}</span>
                   )}
                 </p>
                 {metric.subtitle && metric.variant === "danger" && (

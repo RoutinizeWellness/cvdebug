@@ -36,17 +36,17 @@ export function ATSRawTextView({ open, onOpenChange, ocrText, resumeTitle }: ATS
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl h-[80vh] flex flex-col bg-slate-950 border-slate-200">
+      <DialogContent className="max-w-4xl h-[80vh] flex flex-col bg-slate-950 border-[#E2E8F0]">
         <DialogHeader>
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-red-500/10 border border-red-500/20">
-              <AlertTriangle className="h-5 w-5 text-red-500" />
+            <div className="p-2 rounded-lg bg-[#EF4444]/10 border border-red-500/20">
+              <AlertTriangle className="h-5 w-5 text-[#EF4444]" />
             </div>
             <div className="flex-1">
-              <DialogTitle className="text-xl font-bold text-slate-900">
+              <DialogTitle className="text-xl font-bold text-[#0F172A]">
                 ATS Recruiter View (Raw Text)
               </DialogTitle>
-              <DialogDescription className="text-slate-500 mt-1">
+              <DialogDescription className="text-[#64748B] mt-1">
                 This is what automated systems actually see. No formatting, no columns, no design.
               </DialogDescription>
             </div>
@@ -54,7 +54,7 @@ export function ATSRawTextView({ open, onOpenChange, ocrText, resumeTitle }: ATS
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden flex flex-col gap-4">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-[#F59E0B]/10 border border-amber-500/20">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-amber-400">⚠️ Reality Check</span>
             </div>
@@ -63,7 +63,7 @@ export function ATSRawTextView({ open, onOpenChange, ocrText, resumeTitle }: ATS
             </span>
           </div>
 
-          <div className="flex-1 bg-black/50 rounded-lg border border-slate-200 p-6 overflow-y-auto custom-scrollbar font-mono text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
+          <div className="flex-1 bg-black/50 rounded-lg border border-[#E2E8F0] p-6 overflow-y-auto custom-scrollbar font-mono text-xs text-[#475569] leading-relaxed whitespace-pre-wrap">
             {ocrText || "No text extracted. This resume might be unreadable by ATS systems."}
           </div>
 
@@ -71,7 +71,7 @@ export function ATSRawTextView({ open, onOpenChange, ocrText, resumeTitle }: ATS
             <Button
               onClick={handleCopy}
               variant="outline"
-              className="flex-1 border-slate-200 hover:bg-slate-50"
+              className="flex-1 border-[#E2E8F0] hover:bg-[#F8FAFC]"
             >
               <Copy className="h-4 w-4 mr-2" />
               {copied ? "Copied!" : "Copy Raw Text"}
@@ -79,7 +79,7 @@ export function ATSRawTextView({ open, onOpenChange, ocrText, resumeTitle }: ATS
             <Button
               onClick={handleDownload}
               variant="outline"
-              className="flex-1 border-slate-200 hover:bg-slate-50"
+              className="flex-1 border-[#E2E8F0] hover:bg-[#F8FAFC]"
             >
               <Download className="h-4 w-4 mr-2" />
               Download as .txt

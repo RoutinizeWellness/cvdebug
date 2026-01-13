@@ -80,10 +80,10 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                 className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-900 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />
+                  <AlertCircle className="h-5 w-5 text-[#EF4444] shrink-0" />
                   <span className="font-bold text-zinc-100">{fix.title}</span>
                   {fix.missingKeyword && (
-                    <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/30">
+                    <span className="text-xs bg-[#EF4444]/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/30">
                       Missing: {fix.missingKeyword}
                     </span>
                   )}
@@ -116,10 +116,10 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                         <div className="flex items-start gap-2 mb-2">
                           <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-bold text-slate-900 mb-1">
+                            <p className="text-xs font-bold text-[#0F172A] mb-1">
                               Impact
                             </p>
-                            <p className="text-xs text-slate-900">
+                            <p className="text-xs text-[#0F172A]">
                               {fix.impact}
                             </p>
                           </div>
@@ -141,7 +141,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                                 onClick={() => handleCopyBullet(key, hasBullet)}
                               >
                                 {copiedId === key ? (
-                                  <CheckCircle2 className="h-3 w-3 text-green-500" />
+                                  <CheckCircle2 className="h-3 w-3 text-[#22C55E]" />
                                 ) : (
                                   <Copy className="h-3 w-3" />
                                 )}
@@ -156,7 +156,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full bg-primary hover:bg-primary/90 text-slate-900 text-xs h-8"
+                              className="w-full bg-primary hover:bg-primary/90 text-[#0F172A] text-xs h-8"
                               onClick={() => handleGenerateBulletPoint(fix.missingKeyword!, index)}
                               disabled={generatingFor === key}
                             >

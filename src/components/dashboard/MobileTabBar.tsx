@@ -43,7 +43,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
                 
                 <span
                   className={`text-[10px] font-bold transition-colors ${
-                    isActive ? "text-primary" : "text-slate-500"
+                    isActive ? "text-primary" : "text-[#64748B]"
                   }`}
                 >
                   {tab.label}
@@ -71,7 +71,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
               onClick={onUpload}
               className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-[0_0_30px_rgba(59,130,246,0.5)] border-4 border-slate-950"
             >
-              <Upload className="h-6 w-6 text-slate-900" />
+              <Upload className="h-6 w-6 text-[#0F172A]" />
             </Button>
           </motion.div>
         </div>

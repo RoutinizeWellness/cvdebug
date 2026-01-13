@@ -134,7 +134,7 @@ export default function SoftwareEngineerKeywordSniper() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-green-500/10 px-3 py-1 text-sm font-medium leading-6 text-green-400 ring-1 ring-inset ring-green-500/20 backdrop-blur-sm">
+              <div className="rounded-full bg-[#22C55E]/10 px-3 py-1 text-sm font-medium leading-6 text-green-400 ring-1 ring-inset ring-green-500/20 backdrop-blur-sm">
                 <Code2 className="inline h-4 w-4 mr-1" /> Trusted by 2,500+ Software Engineers
               </div>
             </motion.div>
@@ -169,13 +169,13 @@ export default function SoftwareEngineerKeywordSniper() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-500 to-primary px-8 text-base font-bold text-white transition-all hover:bg-blue-600"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-500 to-primary px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
               >
                 Scan My Resume (Free)
               </Button>
             </motion.div>
 
-            <p className="mt-4 text-xs text-slate-500 font-mono">
+            <p className="mt-4 text-xs text-[#64748B] font-mono">
               $ curl -X POST https://cvdebug.io/scan --data @resume.pdf
             </p>
           </div>
@@ -184,7 +184,7 @@ export default function SoftwareEngineerKeywordSniper() {
         {/* Tech Keywords Cloud */}
         <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="text-center text-sm font-medium text-slate-500 mb-6">
+            <p className="text-center text-sm font-medium text-[#64748B] mb-6">
               Optimized keyword detection for:
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -255,8 +255,8 @@ export default function SoftwareEngineerKeywordSniper() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-green-500/10 blur-2xl transition-all group-hover:scale-110"></div>
-                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-green-500/10 text-green-400 ring-1 ring-inset ring-green-500/20">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#22C55E]/10 blur-2xl transition-all group-hover:scale-110"></div>
+                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#22C55E]/10 text-green-400 ring-1 ring-inset ring-green-500/20">
                     <feature.icon className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold leading-8 text-white">{feature.title}</h3>
@@ -285,7 +285,7 @@ export default function SoftwareEngineerKeywordSniper() {
                 >
                   <p className="text-slate-300 mb-4 font-mono text-sm">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full bg-[#22C55E]/20 flex items-center justify-center">
                       <Code2 className="h-5 w-5 text-green-400" />
                     </div>
                     <div>
@@ -309,7 +309,7 @@ export default function SoftwareEngineerKeywordSniper() {
             transition={{ duration: 0.6 }}
             className="glass-card mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
           >
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-green-500/20 blur-[100px]"></div>
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#22C55E]/20 blur-[100px]"></div>
 
             <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to Pass FAANG ATS Filters?
@@ -325,7 +325,7 @@ export default function SoftwareEngineerKeywordSniper() {
               >
                 Run Keyword Sniper (Free)
               </Button>
-              <p className="text-xs text-slate-500 font-mono">
+              <p className="text-xs text-[#64748B] font-mono">
                 // No auth required • Instant scan • Open source friendly
               </p>
             </div>

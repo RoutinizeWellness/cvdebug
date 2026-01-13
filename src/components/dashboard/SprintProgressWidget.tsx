@@ -40,14 +40,14 @@ export function SprintProgressWidget({
           <div className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-primary" />
             <div>
-              <p className="text-xs text-slate-500">Your Ranking</p>
-              <p className="text-2xl font-bold text-slate-900">
+              <p className="text-xs text-[#64748B]">Your Ranking</p>
+              <p className="text-2xl font-bold text-[#0F172A]">
                 Top {100 - percentile}%
               </p>
             </div>
           </div>
           {improvement > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-[#22C55E]/20 border border-emerald-500/30">
               <TrendingUp className="h-3 w-3 text-emerald-400" />
               <span className="text-xs font-bold text-emerald-400">+{improvement}</span>
             </div>
@@ -57,7 +57,7 @@ export function SprintProgressWidget({
         {/* Progress Bar */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-500">Progress to Elite ({targetScore}%)</span>
+            <span className="text-[#64748B]">Progress to Elite ({targetScore}%)</span>
             <span className="text-primary font-bold">{Math.round(progressToTarget)}%</span>
           </div>
           <Progress value={progressToTarget} className="h-2" />
@@ -68,12 +68,12 @@ export function SprintProgressWidget({
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="p-3 rounded-lg bg-slate-50/50 border border-slate-200"
+          className="p-3 rounded-lg bg-[#F8FAFC]/50 border border-[#E2E8F0]"
         >
           <div className="flex items-start gap-2">
             <Target className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
             <div>
-              <p className="text-xs font-medium text-slate-900">
+              <p className="text-xs font-medium text-[#0F172A]">
                 {currentScore >= 85 
                   ? "🎯 Elite Status! You're ahead of 95% of candidates."
                   : currentScore >= 75
@@ -83,7 +83,7 @@ export function SprintProgressWidget({
                   : "🚀 Great start! Address critical issues to jump ahead."}
               </p>
               {currentScore < targetScore && (
-                <p className="text-[10px] text-slate-500 mt-1">
+                <p className="text-[10px] text-[#64748B] mt-1">
                   {targetScore - currentScore} points to Elite tier
                 </p>
               )}
@@ -93,16 +93,16 @@ export function SprintProgressWidget({
 
         {/* Competitive Context */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="p-2 rounded bg-slate-50/30">
-            <p className="text-[10px] text-slate-500 uppercase">Avg</p>
-            <p className="text-sm font-bold text-slate-500">62%</p>
+          <div className="p-2 rounded bg-[#F8FAFC]/30">
+            <p className="text-[10px] text-[#64748B] uppercase">Avg</p>
+            <p className="text-sm font-bold text-[#64748B]">62%</p>
           </div>
-          <div className="p-2 rounded bg-slate-50/30">
-            <p className="text-[10px] text-slate-500 uppercase">You</p>
+          <div className="p-2 rounded bg-[#F8FAFC]/30">
+            <p className="text-[10px] text-[#64748B] uppercase">You</p>
             <p className="text-sm font-bold text-primary">{currentScore}%</p>
           </div>
-          <div className="p-2 rounded bg-slate-50/30">
-            <p className="text-[10px] text-slate-500 uppercase">Elite</p>
+          <div className="p-2 rounded bg-[#F8FAFC]/30">
+            <p className="text-[10px] text-[#64748B] uppercase">Elite</p>
             <p className="text-sm font-bold text-emerald-400">{targetScore}%</p>
           </div>
         </div>

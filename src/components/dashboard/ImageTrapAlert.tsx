@@ -33,11 +33,11 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
     : `Your text layer is intact (${textLayerIntegrity}%), but we detected potential 'keyword stuffing' or hidden text layers that will flag your resume as spam.`;
 
   const badgeText = isIntegrityIssue ? "Critical" : "Suspicious";
-  const badgeColor = isIntegrityIssue ? "bg-red-500" : "bg-amber-500";
+  const badgeColor = isIntegrityIssue ? "bg-[#EF4444]" : "bg-[#F59E0B]";
   const borderColor = isIntegrityIssue ? "border-red-500/30" : "border-amber-500/30";
-  const bgColor = isIntegrityIssue ? "bg-red-500/10" : "bg-amber-500/10";
-  const iconBg = isIntegrityIssue ? "bg-red-500/20" : "bg-amber-500/20";
-  const iconColor = isIntegrityIssue ? "text-red-500" : "text-amber-500";
+  const bgColor = isIntegrityIssue ? "bg-[#EF4444]/10" : "bg-[#F59E0B]/10";
+  const iconBg = isIntegrityIssue ? "bg-[#EF4444]/20" : "bg-[#F59E0B]/20";
+  const iconColor = isIntegrityIssue ? "text-[#EF4444]" : "text-[#F59E0B]";
 
   const handleSanitize = async () => {
     if (!resumeId) {
@@ -66,9 +66,9 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
           <AlertTriangle className={`h-5 w-5 ${iconColor}`} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <h3 className="text-base font-bold text-[#0F172A] flex items-center gap-2">
             {title}
-            <span className={`px-2 py-0.5 rounded-full ${badgeColor} text-slate-900 text-[10px] uppercase tracking-wider`}>
+            <span className={`px-2 py-0.5 rounded-full ${badgeColor} text-[#0F172A] text-[10px] uppercase tracking-wider`}>
               {badgeText}
             </span>
           </h3>

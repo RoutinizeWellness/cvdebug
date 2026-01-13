@@ -140,13 +140,13 @@ export default function ResumeDebugDataAnalysts() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-blue-600"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
               >
                 Debug My Resume (Free)
               </Button>
             </motion.div>
 
-            <p className="mt-4 text-xs text-slate-500 font-mono">
+            <p className="mt-4 text-xs text-[#64748B] font-mono">
               $ ./scan_resume.sh --format=json --verbose
             </p>
           </div>
@@ -155,7 +155,7 @@ export default function ResumeDebugDataAnalysts() {
         {/* Tech Stack Cloud */}
         <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="text-center text-sm font-medium text-slate-500 mb-6">
+            <p className="text-center text-sm font-medium text-[#64748B] mb-6">
               Optimized for ATS systems scanning these skills:
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -296,7 +296,7 @@ export default function ResumeDebugDataAnalysts() {
               >
                 Run ATS Debug (Free)
               </Button>
-              <p className="text-xs text-slate-500 font-mono">
+              <p className="text-xs text-[#64748B] font-mono">
                 // No registration • Instant analysis • GDPR compliant
               </p>
             </div>

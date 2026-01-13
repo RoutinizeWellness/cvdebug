@@ -51,7 +51,7 @@ export function MobileKeywordChecklist({
         </h4>
         <div className="flex flex-wrap gap-2">
           {matchedKeywords.slice(0, 8).map((keyword, i) => (
-            <Badge key={i} className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-xs">
+            <Badge key={i} className="bg-[#22C55E]/20 text-emerald-400 border-emerald-500/30 text-xs">
               {keyword}
             </Badge>
           ))}
@@ -69,7 +69,7 @@ export function MobileKeywordChecklist({
             <motion.button
               key={i}
               onClick={() => handleKeywordClick(keyword)}
-              className="w-full p-3 rounded-lg bg-white/50 border-2 border-primary/30 hover:border-primary/60 transition-all text-left"
+              className="w-full p-3 rounded-lg bg-[#FFFFFF]/50 border-2 border-primary/30 hover:border-primary/60 transition-all text-left"
               whileTap={{ scale: 0.98 }}
               animate={{
                 borderColor: i === 0 ? ["rgba(163, 127, 188, 0.3)", "rgba(163, 127, 188, 0.6)", "rgba(163, 127, 188, 0.3)"] : undefined
@@ -79,7 +79,7 @@ export function MobileKeywordChecklist({
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-900 text-sm">{keyword}</span>
+                <span className="font-bold text-[#0F172A] text-sm">{keyword}</span>
                 <Sparkles className="h-4 w-4 text-primary" />
               </div>
             </motion.button>
@@ -89,9 +89,9 @@ export function MobileKeywordChecklist({
 
       {/* Bottom Sheet for Suggestions */}
       <Sheet open={!!selectedKeyword} onOpenChange={() => setSelectedKeyword(null)}>
-        <SheetContent side="bottom" className="bg-slate-950 border-t border-slate-200 rounded-t-3xl max-h-[80vh]">
+        <SheetContent side="bottom" className="bg-slate-950 border-t border-[#E2E8F0] rounded-t-3xl max-h-[80vh]">
           <SheetHeader className="mb-4">
-            <SheetTitle className="text-slate-900 flex items-center gap-2">
+            <SheetTitle className="text-[#0F172A] flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />
               AI Suggestions for "{selectedKeyword}"
             </SheetTitle>
@@ -109,9 +109,9 @@ export function MobileKeywordChecklist({
           ) : (
             <div className="space-y-3 overflow-y-auto max-h-[60vh] pb-6">
               {suggestions.map((suggestion, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-white border border-slate-200 space-y-3">
+                <div key={idx} className="p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E8F0] space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="text-sm text-slate-700 leading-relaxed flex-1">
+                    <p className="text-sm text-[#475569] leading-relaxed flex-1">
                       {suggestion.text}
                     </p>
                     <Button
@@ -124,7 +124,7 @@ export function MobileKeywordChecklist({
                     </Button>
                   </div>
                   {suggestion.context && (
-                    <p className="text-xs text-slate-500 italic">{suggestion.context}</p>
+                    <p className="text-xs text-[#64748B] italic">{suggestion.context}</p>
                   )}
                 </div>
               ))}

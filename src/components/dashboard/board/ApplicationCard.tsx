@@ -57,7 +57,7 @@ export function ApplicationCard({
           <CardContent className="p-4 space-y-3">
             <div className="flex justify-between items-start">
               <div className="space-y-1">
-                <h4 className="font-bold text-sm text-slate-900 leading-tight">{app.jobTitle}</h4>
+                <h4 className="font-bold text-sm text-[#0F172A] leading-tight">{app.jobTitle}</h4>
                 <div className="flex items-center gap-1.5 text-xs text-zinc-400">
                   <Building2 className="h-3 w-3" />
                   {app.companyName}
@@ -65,9 +65,9 @@ export function ApplicationCard({
               </div>
               {app.matchScore > 0 && (
                 <Badge className={`${
-                  app.matchScore >= 80 ? "bg-green-500/10 text-green-500" :
-                  app.matchScore >= 50 ? "bg-yellow-500/10 text-yellow-500" :
-                  "bg-red-500/10 text-red-500"
+                  app.matchScore >= 80 ? "bg-[#22C55E]/10 text-[#22C55E]" :
+                  app.matchScore >= 50 ? "bg-yellow-500/10 text-[#F59E0B]" :
+                  "bg-[#EF4444]/10 text-[#EF4444]"
                 } border-0`}>
                   {app.matchScore}%
                 </Badge>
@@ -97,7 +97,7 @@ export function ApplicationCard({
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-6 w-6 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10"
+                        className="h-6 w-6 text-zinc-500 hover:text-blue-400 hover:bg-[#3B82F6]/10"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewTimeline(app);
@@ -119,7 +119,7 @@ export function ApplicationCard({
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-red-500/10" : "text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10"}`}
+                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-[#EF4444]/10" : "text-zinc-500 hover:text-blue-400 hover:bg-[#3B82F6]/10"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           onRecruiterDM(app._id);
@@ -164,7 +164,7 @@ export function ApplicationCard({
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-6 w-6 text-zinc-500 hover:text-slate-900 hover:bg-zinc-800"
+                        className="h-6 w-6 text-zinc-500 hover:text-[#0F172A] hover:bg-zinc-800"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewDetails(app);

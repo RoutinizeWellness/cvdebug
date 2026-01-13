@@ -13,12 +13,12 @@ export function ResumeStats({ score, scoreBreakdown }: ResumeStatsProps) {
   const target = 75;
   
   return (
-    <div className="bg-card border border-border rounded-xl p-5 shadow-sm">
+    <div className="bg-card border border-border rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Your Match Rate</h3>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className={`text-4xl font-black ${score >= 75 ? 'text-green-500' : 'text-foreground'}`}>
+            <span className={`text-4xl font-black ${score >= 75 ? 'text-[#22C55E]' : 'text-foreground'}`}>
               {score}%
             </span>
             <span className="text-xs text-muted-foreground font-medium">

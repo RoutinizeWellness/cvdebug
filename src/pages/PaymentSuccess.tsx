@@ -136,7 +136,7 @@ export default function PaymentSuccess() {
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex text-slate-400 text-sm gap-2 font-mono items-center">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
             System Operational
           </div>
           <div className="bg-gradient-to-br from-primary to-teal-600 rounded-full size-9 border border-slate-700 flex items-center justify-center text-white font-bold text-sm">
@@ -217,7 +217,7 @@ export default function PaymentSuccess() {
                         {String(timeLeft.days).padStart(2, "0")}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-500 font-mono uppercase">Days</span>
+                    <span className="text-xs text-[#64748B] font-mono uppercase">Days</span>
                   </div>
 
                   {/* Hours */}
@@ -227,7 +227,7 @@ export default function PaymentSuccess() {
                         {String(timeLeft.hours).padStart(2, "0")}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-500 font-mono uppercase">Hours</span>
+                    <span className="text-xs text-[#64748B] font-mono uppercase">Hours</span>
                   </div>
 
                   {/* Minutes */}
@@ -237,7 +237,7 @@ export default function PaymentSuccess() {
                         {String(timeLeft.minutes).padStart(2, "0")}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-500 font-mono uppercase">Mins</span>
+                    <span className="text-xs text-[#64748B] font-mono uppercase">Mins</span>
                   </div>
 
                   {/* Seconds */}
@@ -247,7 +247,7 @@ export default function PaymentSuccess() {
                         {String(timeLeft.seconds).padStart(2, "0")}
                       </span>
                     </div>
-                    <span className="text-xs text-slate-500 font-mono uppercase">Secs</span>
+                    <span className="text-xs text-[#64748B] font-mono uppercase">Secs</span>
                   </div>
                 </div>
               </div>
@@ -280,7 +280,7 @@ export default function PaymentSuccess() {
             </div>
 
             {/* Footer Meta */}
-            <div className="mt-8 pt-6 border-t border-slate-800/60 w-full flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 font-mono gap-2">
+            <div className="mt-8 pt-6 border-t border-slate-800/60 w-full flex flex-col sm:flex-row justify-between items-center text-xs text-[#64748B] font-mono gap-2">
               <span>
                 Order ID: <span className="text-slate-300">{orderId}</span>
               </span>

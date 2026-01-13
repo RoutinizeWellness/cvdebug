@@ -110,7 +110,7 @@ export default function BlogPost() {
           transition={{ duration: 0.5 }}
         >
           <header className="mb-8">
-            <span className="px-3 py-1 bg-blue-600/20 border border-blue-500/30 rounded-full text-blue-400 text-sm font-semibold">
+            <span className="px-3 py-1 bg-[#3B82F6]/20 border border-[#3B82F6]/30 rounded-full text-blue-400 text-sm font-semibold">
               {post.category}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mt-6 mb-4 leading-tight">
@@ -212,7 +212,7 @@ export default function BlogPost() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                  className="glass-panel rounded-xl p-4 cursor-pointer hover:border-blue-500/50 transition-all"
+                  className="glass-panel rounded-xl p-4 cursor-pointer hover:border-[#3B82F6]/50 transition-all"
                 >
                   <span className="px-2 py-1 bg-slate-800 rounded text-slate-300 text-xs">
                     {relatedPost.category}
@@ -234,7 +234,7 @@ export default function BlogPost() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-blue-500/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Optimize Your Resume?
@@ -245,7 +245,7 @@ export default function BlogPost() {
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg"
+            className="bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-6 text-lg"
           >
             Scan Your Resume for Free
           </Button>

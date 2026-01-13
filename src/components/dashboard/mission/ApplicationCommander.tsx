@@ -34,14 +34,14 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-[#00FF41]";
-    if (score >= 50) return "text-yellow-500";
-    return "text-red-500";
+    if (score >= 50) return "text-[#F59E0B]";
+    return "text-[#EF4444]";
   };
 
   const getScoreBadge = (score: number) => {
     if (score >= 80) return "bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/20";
-    if (score >= 50) return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-    return "bg-red-500/10 text-red-500 border-red-500/20";
+    if (score >= 50) return "bg-yellow-500/10 text-[#F59E0B] border-yellow-500/20";
+    return "bg-[#EF4444]/10 text-[#EF4444] border-red-500/20";
   };
 
   const handleViewDetails = (job: any, e: React.MouseEvent) => {
@@ -57,7 +57,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
             <Briefcase className="h-4 w-4 text-zinc-400" />
             <h3 className="font-bold text-sm text-zinc-200 uppercase tracking-wider">Application Commander</h3>
           </div>
-          <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-slate-900">
+          <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-[#0F172A]">
             View All
           </Button>
         </div>
@@ -89,7 +89,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-bold text-zinc-200 group-hover:text-slate-900 transition-colors">
+                        <span className="font-bold text-zinc-200 group-hover:text-[#0F172A] transition-colors">
                           {job.jobTitle || "Untitled Role"}
                         </span>
                         <span className="text-xs text-zinc-500 flex items-center gap-1">
@@ -129,18 +129,18 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="h-7 text-xs border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-slate-900"
+                            className="h-7 text-xs border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-[#0F172A]"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {job.status || "Applied"} <ChevronDown className="ml-1 h-3 w-3 opacity-50" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="center" className="bg-[#0A0A0A] border-zinc-800">
-                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Interested</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Applied</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Interviewing</DropdownMenuItem>
-                          <DropdownMenuItem className="text-green-500 focus:text-green-400 focus:bg-green-900/20">Offer</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-500 focus:text-red-400 focus:bg-red-900/20">Rejected</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Interested</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Applied</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Interviewing</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#22C55E] focus:text-green-400 focus:bg-green-900/20">Offer</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#EF4444] focus:text-red-400 focus:bg-red-900/20">Rejected</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -151,7 +151,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                           <span>Missing {job.missingKeywords.length} keywords</span>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 text-xs text-green-500">
+                        <div className="flex items-center gap-2 text-xs text-[#22C55E]">
                           <CheckCircle2 className="h-3 w-3" />
                           <span>Strong Match</span>
                         </div>
@@ -161,7 +161,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-8 w-8 text-zinc-500 hover:text-slate-900 hover:bg-zinc-800 transition-colors"
+                        className="h-8 w-8 text-zinc-500 hover:text-[#0F172A] hover:bg-zinc-800 transition-colors"
                         onClick={(e) => handleViewDetails(job, e)}
                         title="View Details"
                       >

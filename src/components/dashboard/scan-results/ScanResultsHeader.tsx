@@ -30,19 +30,19 @@ export function ScanResultsHeader({
     >
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
             SCAN #{scanId}
           </span>
           {hasIssues && (
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/20 animate-pulse">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#EF4444]/10 text-red-400 border border-red-500/20 animate-pulse">
               CRITICAL ISSUES FOUND
             </span>
           )}
         </div>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-3xl font-black text-[#0F172A] tracking-tight">
           Scan Results: {jobTitle}
         </h2>
-        <p className="text-slate-500 text-sm mt-1">
+        <p className="text-[#64748B] text-sm mt-1">
           Analyzed on {scanDate} • {processingTime} processing time
         </p>
       </div>
@@ -52,7 +52,7 @@ export function ScanResultsHeader({
             variant="ghost"
             size="sm"
             onClick={onShare}
-            className="text-slate-600 hover:text-slate-900 transition-colors"
+            className="text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Share2 className="h-4 w-4 mr-2" />
             Share
@@ -63,7 +63,7 @@ export function ScanResultsHeader({
             variant="ghost"
             size="sm"
             onClick={onExportPDF}
-            className="text-slate-600 hover:text-slate-900 transition-colors"
+            className="text-[#475569] hover:text-[#0F172A] transition-colors"
           >
             <Download className="h-4 w-4 mr-2" />
             Export PDF

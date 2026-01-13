@@ -60,8 +60,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       onClick={onClick}
       className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors relative ${
         active
-          ? "text-blue-700 bg-blue-50 shadow-sm ring-1 ring-blue-100"
-          : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+          ? "text-blue-700 bg-blue-50 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ring-1 ring-blue-100"
+          : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
       }`}
     >
       {active && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#3B82F6] rounded-l-lg"></div>}
@@ -75,7 +75,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const hasActiveSprint = currentUser?.sprintExpiresAt && currentUser.sprintExpiresAt > Date.now();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-white border-r border-slate-200 flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] hidden md:flex"
+    <aside className="w-64 flex-shrink-0 bg-[#FFFFFF] border-r border-[#E2E8F0] flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] hidden md:flex"
       style={{ height: '100vh' }}>
 
       {/* Logo & Nav */}
@@ -83,7 +83,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         {/* Logo */}
         <div className="flex items-center gap-2 mb-6">
           <span className="material-symbols-outlined text-3xl text-[#3B82F6]">terminal</span>
-          <h2 className="text-xl font-bold tracking-tight text-slate-900">CVDebug</h2>
+          <h2 className="text-xl font-bold tracking-tight text-[#0F172A]">CVDebug</h2>
         </div>
 
         {/* Navigation */}
@@ -131,7 +131,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       <div className="mt-auto">
         {/* Sprint Countdown Widget */}
         {hasActiveSprint && (
-          <div className="mx-4 mb-4 p-4 rounded-lg bg-white border border-[#E2E8F0] relative overflow-hidden group shadow-sm">
+          <div className="mx-4 mb-4 p-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] relative overflow-hidden group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
             <div className="absolute inset-0 bg-violet-50/50 group-hover:bg-violet-50 transition-colors"></div>
 
             <div className="flex items-center justify-between mb-2 relative z-10">
@@ -141,7 +141,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
               </span>
             </div>
 
-            <div className="flex items-baseline gap-1 font-mono text-slate-900 relative z-10">
+            <div className="flex items-baseline gap-1 font-mono text-[#0F172A] relative z-10">
               <span className="text-xl font-bold">{String(timeRemaining.days).padStart(3, '0')}</span>
               <span className="text-[10px] text-slate-400 mr-2">DAYS</span>
               <span className="text-xl font-bold">{String(timeRemaining.hours).padStart(2, '0')}</span>
@@ -153,16 +153,16 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         )}
 
         {/* User Profile */}
-        <div className="p-4 border-t border-slate-100 bg-white">
-          <div className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer">
+        <div className="p-4 border-t border-slate-100 bg-[#FFFFFF]">
+          <div className="flex items-center gap-3 px-2 py-2 hover:bg-[#F8FAFC] rounded-lg transition-colors cursor-pointer">
             <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 border border-indigo-200 flex items-center justify-center text-xs font-bold text-indigo-700">
               {(currentUser?.name || user?.fullName || "U").charAt(0).toUpperCase()}
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-slate-900">
+              <span className="text-sm font-medium text-[#0F172A]">
                 {currentUser?.name || user?.fullName || "User"}
               </span>
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-[#64748B]">
                 {currentUser?.subscriptionTier === "interview_sprint"
                   ? "Pro Plan"
                   : "Free Plan"}

@@ -103,11 +103,11 @@ export default function AuthPage() {
       identityPreviewEditButton: "hidden",
       footerPages: "hidden",
       footerPagesLink: "hidden",
-      socialButtonsBlockButton: "flex-1 flex items-center justify-center gap-2 h-11 rounded-lg bg-slate-800/50 hover:bg-slate-700/70 border border-slate-700 hover:border-slate-600 transition-all duration-200 text-sm font-medium text-slate-200 hover:text-white shadow-sm hover:shadow-md hover:shadow-primary/10",
+      socialButtonsBlockButton: "flex-1 flex items-center justify-center gap-2 h-11 rounded-lg bg-slate-800/50 hover:bg-slate-700/70 border border-slate-700 hover:border-slate-600 transition-all duration-200 text-sm font-medium text-slate-200 hover:text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-primary/10",
       socialButtonsBlockButtonText: "text-slate-200 font-medium",
       socialButtonsIconButton: "text-white",
       dividerLine: "border-slate-700/60",
-      dividerText: "text-slate-500 text-xs font-mono uppercase tracking-widest mx-4",
+      dividerText: "text-[#64748B] text-xs font-mono uppercase tracking-widest mx-4",
       formFieldAction: "text-xs text-slate-400 hover:text-white transition-colors",
       otpCodeFieldInput: "bg-slate-900/80 border border-slate-700 text-white focus:border-primary focus:ring-2 focus:ring-primary/50 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] rounded-lg transition-all duration-300",
       formResendCodeLink: "text-primary hover:text-blue-400 font-medium",
@@ -249,7 +249,7 @@ export default function AuthPage() {
                   onClick={() => setIsSignIn(true)}
                   className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
                     isSignIn 
-                      ? 'bg-slate-800 text-white shadow-sm border border-slate-700' 
+                      ? 'bg-slate-800 text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-700' 
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -259,7 +259,7 @@ export default function AuthPage() {
                   onClick={() => setIsSignIn(false)}
                   className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${
                     !isSignIn 
-                      ? 'bg-slate-800 text-white shadow-sm border border-slate-700' 
+                      ? 'bg-slate-800 text-white shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-700' 
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -299,11 +299,11 @@ export default function AuthPage() {
 
           {/* System status */}
           <div className="mt-8 flex justify-center gap-6 opacity-40 hover:opacity-100 transition-opacity duration-300">
-            <span className="text-xs font-mono text-slate-500">v2.4.0-stable</span>
+            <span className="text-xs font-mono text-[#64748B]">v2.4.0-stable</span>
             <div className="h-4 w-[1px] bg-slate-700"></div>
             <div className="flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="text-xs font-mono text-slate-500">System Operational</span>
+              <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
+              <span className="text-xs font-mono text-[#64748B]">System Operational</span>
             </div>
           </div>
         </motion.div>

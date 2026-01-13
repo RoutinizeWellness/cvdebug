@@ -7,7 +7,7 @@ interface SpeedometerCardProps {
 export function SpeedometerCard({ score }: SpeedometerCardProps) {
   return (
     <motion.div 
-      className="glass-panel rounded-xl p-6 flex flex-col items-center justify-center relative overflow-hidden group hover:border-primary/30 transition-all duration-300 neon-glow bg-white/70 backdrop-blur-xl border border-slate-200/50"
+      className="glass-panel rounded-xl p-6 flex flex-col items-center justify-center relative overflow-hidden group hover:border-primary/30 transition-all duration-300 neon-glow bg-[#FFFFFF]/70 backdrop-blur-xl border border-[#E2E8F0]/50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
@@ -19,8 +19,8 @@ export function SpeedometerCard({ score }: SpeedometerCardProps) {
         </h3>
         <span className={`text-xs font-mono px-2 py-1 rounded border ${
           score >= 70 ? "text-primary bg-primary/10 border-primary/20" : 
-          score >= 40 ? "text-yellow-500 bg-yellow-500/10 border-yellow-500/20" : 
-          "text-red-500 bg-red-500/10 border-red-500/20"
+          score >= 40 ? "text-[#F59E0B] bg-yellow-500/10 border-yellow-500/20" : 
+          "text-[#EF4444] bg-[#EF4444]/10 border-red-500/20"
         }`}>
           {score >= 70 ? "HIGH PROBABILITY" : score >= 40 ? "NEEDS IMPROVEMENT" : "LOW PROBABILITY"}
         </span>
@@ -45,11 +45,11 @@ export function SpeedometerCard({ score }: SpeedometerCardProps) {
           </defs>
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-4xl font-bold text-slate-900 tracking-tighter">{score}%</span>
-          <span className="text-xs text-slate-500 mt-1">Optimization</span>
+          <span className="text-4xl font-bold text-[#0F172A] tracking-tighter">{score}%</span>
+          <span className="text-xs text-[#64748B] mt-1">Optimization</span>
         </div>
       </div>
-      <p className="text-center text-sm text-slate-500 mt-4 px-2">
+      <p className="text-center text-sm text-[#64748B] mt-4 px-2">
         {score >= 80 ? "Your CV is in the top tier for this role." : 
          score >= 50 ? "Good foundation, but needs keyword optimization." : 
          "Significant improvements needed for ATS visibility."}

@@ -8,16 +8,16 @@ interface KeywordCloudProps {
 
 export function KeywordCloud({ foundKeywords, missingKeywords }: KeywordCloudProps) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col h-full">
+    <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
+        <h3 className="text-[#0F172A] font-bold text-lg flex items-center gap-2">
           <Cloud className="h-5 w-5 text-primary" />
           ATS Keywords
         </h3>
       </div>
       
       <div className="flex-1">
-        <p className="text-xs text-slate-500 mb-4 uppercase tracking-wider font-semibold">
+        <p className="text-xs text-[#64748B] mb-4 uppercase tracking-wider font-semibold">
           Found in your profile
         </p>
         <div className="flex flex-wrap gap-2 mb-6">
@@ -27,16 +27,16 @@ export function KeywordCloud({ foundKeywords, missingKeywords }: KeywordCloudPro
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
-              className="px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-medium"
+              className="px-3 py-1.5 rounded-full bg-[#22C55E]/10 border border-green-500/30 text-green-400 text-xs font-medium"
             >
               {keyword}
             </motion.span>
           ))}
         </div>
 
-        <p className="text-xs text-slate-500 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
+        <p className="text-xs text-[#64748B] mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
           Missing (Critical)
-          <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
+          <span className="size-1.5 rounded-full bg-[#EF4444] animate-pulse"></span>
         </p>
         <div className="flex flex-wrap gap-2">
           {missingKeywords.map((keyword, i) => (
@@ -45,7 +45,7 @@ export function KeywordCloud({ foundKeywords, missingKeywords }: KeywordCloudPro
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
-              className="px-3 py-1.5 rounded-full bg-transparent border border-dashed border-red-500/40 text-red-400 text-xs font-medium group hover:bg-red-500/10 cursor-help transition-colors"
+              className="px-3 py-1.5 rounded-full bg-transparent border border-dashed border-red-500/40 text-red-400 text-xs font-medium group hover:bg-[#EF4444]/10 cursor-help transition-colors"
               title={`Found in 80% of job descriptions matching your target`}
             >
               {keyword}

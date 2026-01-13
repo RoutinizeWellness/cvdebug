@@ -52,21 +52,21 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-lg glass-panel bg-white rounded-2xl border border-slate-200 shadow-2xl flex flex-col max-h-[90vh]"
+            className="w-full max-w-lg glass-panel bg-[#FFFFFF] rounded-2xl border border-[#E2E8F0] shadow-2xl flex flex-col max-h-[90vh]"
           >
             {/* Header */}
-            <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+            <div className="px-6 py-5 border-b border-[#E2E8F0] flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
+                <h3 className="text-xl font-semibold text-[#0F172A] tracking-tight">
                   Create New Job Search Project
                 </h3>
-                <p className="text-slate-500 text-sm mt-0.5 font-light">
+                <p className="text-[#64748B] text-sm mt-0.5 font-light">
                   Configure your new tracking campaign.
                 </p>
               </div>
               <button
                 onClick={() => onOpenChange(false)}
-                className="text-slate-500 hover:text-slate-900 transition-colors p-2 hover:bg-slate-50 rounded-lg"
+                className="text-[#64748B] hover:text-[#0F172A] transition-colors p-2 hover:bg-[#F8FAFC] rounded-lg"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -78,13 +78,13 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                 <div className="flex flex-col gap-6">
                   {/* Project Name */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 block">
+                    <label className="text-sm font-medium text-[#475569] block">
                       Project Name
                     </label>
                     <input
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm"
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                       placeholder="e.g. Senior SWE Hunt at Google"
                       type="text"
                       required
@@ -93,7 +93,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
 
                   {/* Target Role */}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 block">
+                    <label className="text-sm font-medium text-[#475569] block">
                       Target Role
                     </label>
                     <div className="relative">
@@ -101,7 +101,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                         list="role-suggestions"
                         value={formData.targetRole}
                         onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                         placeholder="e.g. Senior Software Engineer, Product Manager..."
                         type="text"
                         required
@@ -126,28 +126,28 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                         <option value="Business Analyst" />
                         <option value="Project Manager" />
                       </datalist>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none h-4 w-4 opacity-50" />
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none h-4 w-4 opacity-50" />
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-[#64748B] mt-1">
                       Type any role or select from suggestions. This helps the AI tune resume suggestions.
                     </p>
                   </div>
 
                   {/* Job Description Section */}
-                  <div className="space-y-3 pt-2 border-t border-slate-200">
+                  <div className="space-y-3 pt-2 border-t border-[#E2E8F0]">
                     <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-slate-700 block">
+                      <label className="text-sm font-medium text-[#475569] block">
                         Job Description{" "}
-                        <span className="text-slate-500 font-normal ml-1">(Optional)</span>
+                        <span className="text-[#64748B] font-normal ml-1">(Optional)</span>
                       </label>
-                      <div className="flex bg-slate-50 rounded-lg p-0.5 border border-slate-200">
+                      <div className="flex bg-[#F8FAFC] rounded-lg p-0.5 border border-[#E2E8F0]">
                         <button
                           type="button"
                           onClick={() => setInputMode("url")}
                           className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
                             inputMode === "url"
-                              ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                              : "text-slate-500 hover:text-slate-900"
+                              ? "bg-[#FFFFFF] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0]"
+                              : "text-[#64748B] hover:text-[#0F172A]"
                           }`}
                         >
                           Link URL
@@ -157,8 +157,8 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                           onClick={() => setInputMode("text")}
                           className={`px-3 py-1 text-xs font-medium rounded-md transition-all ${
                             inputMode === "text"
-                              ? "bg-white text-slate-900 shadow-sm border border-slate-200"
-                              : "text-slate-500 hover:text-slate-900"
+                              ? "bg-[#FFFFFF] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0]"
+                              : "text-[#64748B] hover:text-[#0F172A]"
                           }`}
                         >
                           Paste Text
@@ -168,13 +168,13 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
 
                     {inputMode === "url" ? (
                       <div className="relative group">
-                        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors h-5 w-5" />
+                        <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-[#64748B] group-focus-within:text-primary transition-colors h-5 w-5" />
                         <input
                           value={formData.jobDescriptionUrl}
                           onChange={(e) =>
                             setFormData({ ...formData, jobDescriptionUrl: e.target.value })
                           }
-                          className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm"
+                          className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg pl-10 pr-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                           placeholder="https://linkedin.com/jobs/view/..."
                           type="url"
                         />
@@ -185,7 +185,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                         onChange={(e) =>
                           setFormData({ ...formData, jobDescriptionText: e.target.value })
                         }
-                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm resize-none"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] resize-none"
                         placeholder="Paste the full job description here..."
                         rows={4}
                       />
@@ -207,18 +207,18 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
               </div>
 
               {/* Footer */}
-              <div className="px-6 py-5 border-t border-slate-200 flex items-center justify-end gap-3 bg-slate-50 rounded-b-2xl">
+              <div className="px-6 py-5 border-t border-[#E2E8F0] flex items-center justify-end gap-3 bg-[#F8FAFC] rounded-b-2xl">
                 <button
                   type="button"
                   onClick={() => onOpenChange(false)}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-700 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 hover:border-slate-300 transition-all"
+                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] border border-[#E2E8F0] hover:bg-slate-100 hover:text-[#0F172A] hover:border-[#E2E8F0] transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-900 bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#0F172A] bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Creating..." : "Create Project"}
                 </button>

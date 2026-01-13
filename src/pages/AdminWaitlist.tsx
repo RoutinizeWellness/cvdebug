@@ -54,7 +54,7 @@ export default function AdminWaitlist() {
           <h1 className="text-3xl font-bold tracking-tight">Waitlist Admin</h1>
         </div>
 
-        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <div className="p-6 border-b border-border flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Mail className="h-5 w-5 text-muted-foreground" />

@@ -11,7 +11,7 @@ export function TemplatesView() {
       category: "Technology",
       description: "Clean, single-column layout optimized for engineering roles. Highlights skills and GitHub projects.",
       tags: ["ATS-Verified", "Compact", "Modern"],
-      color: "bg-blue-500/10 text-blue-500"
+      color: "bg-[#3B82F6]/10 text-[#3B82F6]"
     },
     {
       id: "exec-classic",
@@ -19,7 +19,7 @@ export function TemplatesView() {
       category: "Management",
       description: "Traditional serif typography with a focus on leadership metrics and career progression.",
       tags: ["Formal", "Leadership", "Detailed"],
-      color: "bg-amber-500/10 text-amber-500"
+      color: "bg-[#F59E0B]/10 text-[#F59E0B]"
     },
     {
       id: "creative-portfolio",
@@ -49,26 +49,26 @@ export function TemplatesView() {
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent z-10" />
               
               {/* Mock Resume Preview */}
-              <div className="w-full h-full bg-white/5 rounded border border-white/10 p-4 transform group-hover:scale-105 transition-transform duration-500">
-                <div className="h-4 w-1/3 bg-white/20 rounded mb-4" />
-                <div className="h-2 w-full bg-white/10 rounded mb-2" />
-                <div className="h-2 w-2/3 bg-white/10 rounded mb-6" />
+              <div className="w-full h-full bg-[#FFFFFF]/5 rounded border border-white/10 p-4 transform group-hover:scale-105 transition-transform duration-500">
+                <div className="h-4 w-1/3 bg-[#FFFFFF]/20 rounded mb-4" />
+                <div className="h-2 w-full bg-[#FFFFFF]/10 rounded mb-2" />
+                <div className="h-2 w-2/3 bg-[#FFFFFF]/10 rounded mb-6" />
                 
                 <div className="space-y-2">
-                  <div className="h-2 w-full bg-white/10 rounded" />
-                  <div className="h-2 w-full bg-white/10 rounded" />
-                  <div className="h-2 w-5/6 bg-white/10 rounded" />
+                  <div className="h-2 w-full bg-[#FFFFFF]/10 rounded" />
+                  <div className="h-2 w-full bg-[#FFFFFF]/10 rounded" />
+                  <div className="h-2 w-5/6 bg-[#FFFFFF]/10 rounded" />
                 </div>
                 
-                <div className="mt-6 h-3 w-1/4 bg-white/20 rounded mb-2" />
+                <div className="mt-6 h-3 w-1/4 bg-[#FFFFFF]/20 rounded mb-2" />
                 <div className="space-y-2">
-                  <div className="h-2 w-full bg-white/10 rounded" />
-                  <div className="h-2 w-full bg-white/10 rounded" />
+                  <div className="h-2 w-full bg-[#FFFFFF]/10 rounded" />
+                  <div className="h-2 w-full bg-[#FFFFFF]/10 rounded" />
                 </div>
               </div>
 
               <div className="absolute top-3 right-3 z-20">
-                <Badge variant="secondary" className="bg-black/50 backdrop-blur border-white/10 text-slate-900">
+                <Badge variant="secondary" className="bg-black/50 backdrop-blur border-white/10 text-[#0F172A]">
                   <Lock className="h-3 w-3 mr-1" /> Premium
                 </Badge>
               </div>

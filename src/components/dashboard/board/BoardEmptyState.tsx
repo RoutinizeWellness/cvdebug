@@ -13,8 +13,8 @@ export function BoardEmptyState({ onCreateClick }: BoardEmptyStateProps) {
           <Briefcase className="h-10 w-10 text-primary" />
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-slate-900 mb-2">Start Tracking Applications</h3>
-          <p className="text-slate-500 text-sm">
+          <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Start Tracking Applications</h3>
+          <p className="text-[#64748B] text-sm">
             Add your first job application to this project and track it through the interview process.
           </p>
         </div>
@@ -27,7 +27,7 @@ export function BoardEmptyState({ onCreateClick }: BoardEmptyStateProps) {
             <Plus className="h-5 w-5" />
             Add First Application
           </Button>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#64748B]">
             Track company, role, status, and match score all in one place
           </p>
         </div>

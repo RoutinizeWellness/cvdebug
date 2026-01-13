@@ -73,7 +73,7 @@ export default function GoogleSDEOptimize() {
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-panel border border-primary/30">
                 <div className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                 </div>
                 <Users className="h-4 w-4 text-primary" />
                 <span className="text-sm font-mono text-slate-300">
@@ -150,17 +150,17 @@ export default function GoogleSDEOptimize() {
               {/* Terminal Header */}
               <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2 border-b border-slate-800">
                 <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#EF4444]"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-[#22C55E]"></div>
                 </div>
-                <span className="ml-3 text-xs text-slate-500 font-mono">workday-ats-parser — v4.2.1</span>
+                <span className="ml-3 text-xs text-[#64748B] font-mono">workday-ats-parser — v4.2.1</span>
               </div>
 
               {/* Terminal Body */}
               <div className="p-6 font-mono text-sm space-y-3">
-                <div className="text-emerald-500">➜ Parsing resume for: Google L4 SDE Position</div>
-                <div className="text-slate-500">➜ Scanning document structure...</div>
+                <div className="text-[#22C55E]">➜ Parsing resume for: Google L4 SDE Position</div>
+                <div className="text-[#64748B]">➜ Scanning document structure...</div>
 
                 {terminalLogs.map((log, index) => (
                   <motion.div
@@ -172,8 +172,8 @@ export default function GoogleSDEOptimize() {
                   >
                     <span className={`font-bold shrink-0 ${
                       log.type === "CRIT" ? "text-rose-500" :
-                      log.type === "WARN" ? "text-amber-500" :
-                      "text-blue-500"
+                      log.type === "WARN" ? "text-[#F59E0B]" :
+                      "text-[#3B82F6]"
                     }`}>
                       [{log.type}]
                     </span>
@@ -182,7 +182,7 @@ export default function GoogleSDEOptimize() {
                       <span className={`text-xs ${
                         log.impact.includes("REJECTED") ? "text-rose-400" :
                         log.impact.startsWith("-") ? "text-amber-400" :
-                        "text-slate-600"
+                        "text-[#475569]"
                       }`}>
                         match_score impact: {log.impact}
                       </span>
@@ -197,8 +197,8 @@ export default function GoogleSDEOptimize() {
                 </div>
 
                 <div className="flex gap-2 items-center pt-2 animate-pulse">
-                  <span className="text-emerald-500">➜</span>
-                  <span className="w-2 h-4 bg-slate-500 block"></span>
+                  <span className="text-[#22C55E]">➜</span>
+                  <span className="w-2 h-4 bg-[#F8FAFC]0 block"></span>
                 </div>
               </div>
             </motion.div>
@@ -251,7 +251,7 @@ export default function GoogleSDEOptimize() {
                 transition={{ duration: 0.5 }}
                 className="glass-panel rounded-xl p-6 text-center"
               >
-                <CheckCircle2 className="h-12 w-12 text-emerald-500 mx-auto mb-3" />
+                <CheckCircle2 className="h-12 w-12 text-[#22C55E] mx-auto mb-3" />
                 <div className="text-4xl font-bold text-white font-mono mb-2">73%</div>
                 <div className="text-slate-400">of users fixed critical errors</div>
               </motion.div>
@@ -275,7 +275,7 @@ export default function GoogleSDEOptimize() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="glass-panel rounded-xl p-6 text-center"
               >
-                <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto mb-3" />
+                <AlertTriangle className="h-12 w-12 text-[#F59E0B] mx-auto mb-3" />
                 <div className="text-4xl font-bold text-white font-mono mb-2">4.2</div>
                 <div className="text-slate-400">avg. critical errors per resume</div>
               </motion.div>
@@ -306,7 +306,7 @@ export default function GoogleSDEOptimize() {
                 <Terminal className="mr-2 h-5 w-5" />
                 Run Free Scan Now
               </Button>
-              <p className="text-xs text-slate-500 mt-4 font-mono">No credit card required</p>
+              <p className="text-xs text-[#64748B] mt-4 font-mono">No credit card required</p>
             </motion.div>
           </div>
         </section>

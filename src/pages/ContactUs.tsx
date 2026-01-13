@@ -88,7 +88,7 @@ export default function ContactUs() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Get in <span className="text-blue-500">Touch</span>
+            Get in <span className="text-[#3B82F6]">Touch</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Have a question or need help? Our team is here to assist you with anything related to CVDebug.
@@ -142,7 +142,7 @@ export default function ContactUs() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors"
                   placeholder="John Doe"
                 />
               </div>
@@ -158,7 +158,7 @@ export default function ContactUs() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors"
                   placeholder="john@example.com"
                 />
               </div>
@@ -173,7 +173,7 @@ export default function ContactUs() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#3B82F6] transition-colors"
                 >
                   <option value="">Select a subject</option>
                   <option value="technical">Technical Support</option>
@@ -195,7 +195,7 @@ export default function ContactUs() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors resize-none"
                   placeholder="How can we help you?"
                 />
               </div>
@@ -203,7 +203,7 @@ export default function ContactUs() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
+                className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white py-6 text-lg"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
@@ -247,7 +247,7 @@ export default function ContactUs() {
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday</span>
-                  <span className="text-slate-500">Closed</span>
+                  <span className="text-[#64748B]">Closed</span>
                 </div>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function ContactUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-blue-500/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Optimize Your Resume?
@@ -269,7 +269,7 @@ export default function ContactUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

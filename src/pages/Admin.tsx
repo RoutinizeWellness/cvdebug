@@ -358,7 +358,7 @@ export default function AdminPage() {
   if (!user || user.email !== "tiniboti@gmail.com") {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4 bg-[#0F172A]">
-        <ShieldAlert className="h-16 w-16 text-red-500" />
+        <ShieldAlert className="h-16 w-16 text-[#EF4444]" />
         <h1 className="text-2xl font-bold text-white">Access Denied</h1>
         <p className="text-slate-400">You do not have permission to view this page.</p>
         <Button onClick={() => navigate("/")}>Go Home</Button>
@@ -376,7 +376,7 @@ export default function AdminPage() {
           </div>
           <div>
             <h1 className="text-white font-display font-bold text-lg leading-tight tracking-tight">CVDebug</h1>
-            <p className="text-slate-500 text-xs font-mono">v2.4.0-prod</p>
+            <p className="text-[#64748B] text-xs font-mono">v2.4.0-prod</p>
           </div>
         </div>
         
@@ -385,24 +385,24 @@ export default function AdminPage() {
             onClick={() => setCurrentView("dashboard")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "dashboard" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <LayoutDashboard className={`h-5 w-5 ${currentView === "dashboard" ? "text-primary" : "text-slate-500"}`} />
+            <LayoutDashboard className={`h-5 w-5 ${currentView === "dashboard" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Dashboard</span>
           </button>
           <button
             onClick={() => setCurrentView("users")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "users" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <Users className={`h-5 w-5 ${currentView === "users" ? "text-primary" : "text-slate-500"}`} />
+            <Users className={`h-5 w-5 ${currentView === "users" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Users</span>
           </button>
           <button
             onClick={() => setCurrentView("premium")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "premium" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <TrendingUp className={`h-5 w-5 ${currentView === "premium" ? "text-primary" : "text-slate-500"}`} />
+            <TrendingUp className={`h-5 w-5 ${currentView === "premium" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Premium Users</span>
             {stats && (stats.singleScan + stats.interviewSprint) > 0 && (
-              <Badge variant="default" className="ml-auto bg-green-600 text-xs">
+              <Badge variant="default" className="ml-auto bg-[#22C55E] text-xs">
                 {stats.singleScan + stats.interviewSprint}
               </Badge>
             )}
@@ -411,30 +411,30 @@ export default function AdminPage() {
             onClick={() => setCurrentView("analytics")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "analytics" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <BarChart3 className={`h-5 w-5 ${currentView === "analytics" ? "text-primary" : "text-slate-500"}`} />
+            <BarChart3 className={`h-5 w-5 ${currentView === "analytics" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Analytics</span>
           </button>
           <button 
             onClick={() => setCurrentView("logs")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "logs" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <Terminal className={`h-5 w-5 ${currentView === "logs" ? "text-primary" : "text-slate-500"}`} />
+            <Terminal className={`h-5 w-5 ${currentView === "logs" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Logs & API</span>
           </button>
           
-          <div className="mt-8 px-3 text-xs font-bold text-slate-600 uppercase tracking-wider">Settings</div>
+          <div className="mt-8 px-3 text-xs font-bold text-[#475569] uppercase tracking-wider">Settings</div>
           <button 
             onClick={() => setCurrentView("settings")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "settings" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <Settings className={`h-5 w-5 ${currentView === "settings" ? "text-primary" : "text-slate-500"}`} />
+            <Settings className={`h-5 w-5 ${currentView === "settings" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">General</span>
           </button>
           <button 
             onClick={() => setCurrentView("billing")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "billing" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
-            <CreditCard className={`h-5 w-5 ${currentView === "billing" ? "text-primary" : "text-slate-500"}`} />
+            <CreditCard className={`h-5 w-5 ${currentView === "billing" ? "text-primary" : "text-[#64748B]"}`} />
             <span className="text-sm font-medium">Billing</span>
           </button>
         </nav>
@@ -453,7 +453,7 @@ export default function AdminPage() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#0F172A] relative">
         {/* Background Gradient Blurs */}
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#3B82F6]/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
         {/* Top Header */}
@@ -468,7 +468,7 @@ export default function AdminPage() {
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
               <span className="text-xs text-slate-300 font-medium">System Operational</span>
             </div>
             <Button 
@@ -516,10 +516,10 @@ export default function AdminPage() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="glass-panel p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5"
+                    className="glass-panel p-4 rounded-xl border border-emerald-500/30 bg-[#22C55E]/5"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-[#22C55E]/20 flex items-center justify-center">
                         <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -534,7 +534,7 @@ export default function AdminPage() {
                         {syncResult.logs && syncResult.logs.length > 0 && (
                           <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">
                             {syncResult.logs.map((log: string, i: number) => (
-                              <p key={i} className="text-xs text-slate-500 font-mono">
+                              <p key={i} className="text-xs text-[#64748B] font-mono">
                                 {log}
                               </p>
                             ))}
@@ -561,7 +561,7 @@ export default function AdminPage() {
                     className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Users className="h-12 w-12 text-blue-500" />
+                      <Users className="h-12 w-12 text-[#3B82F6]" />
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Total Users</p>
                     <div className="flex items-baseline gap-2">
@@ -572,7 +572,7 @@ export default function AdminPage() {
                       </span>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                      <div className="bg-blue-500 h-full rounded-full" style={{ width: '65%' }}></div>
+                      <div className="bg-[#3B82F6] h-full rounded-full" style={{ width: '65%' }}></div>
                     </div>
                   </motion.div>
 
@@ -601,14 +601,14 @@ export default function AdminPage() {
                     className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <CreditCard className="h-12 w-12 text-amber-500" />
+                      <CreditCard className="h-12 w-12 text-[#F59E0B]" />
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Single Scan</p>
                     <div className="flex items-baseline gap-2">
                       <h3 className="text-2xl font-display font-bold text-white text-orange-600">{stats?.singleScan || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                      <div className="bg-amber-500 h-full rounded-full" style={{ width: '25%' }}></div>
+                      <div className="bg-[#F59E0B] h-full rounded-full" style={{ width: '25%' }}></div>
                     </div>
                   </motion.div>
 
@@ -619,14 +619,14 @@ export default function AdminPage() {
                     className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <BarChart3 className="h-12 w-12 text-emerald-500" />
+                      <BarChart3 className="h-12 w-12 text-[#22C55E]" />
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Bulk Pack</p>
                     <div className="flex items-baseline gap-2">
-                      <h3 className="text-2xl font-display font-bold text-white text-blue-600">{stats?.bulkPack || 0}</h3>
+                      <h3 className="text-2xl font-display font-bold text-white text-[#3B82F6]">{stats?.bulkPack || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                      <div className="bg-emerald-500 h-full rounded-full" style={{ width: '88%' }}></div>
+                      <div className="bg-[#22C55E] h-full rounded-full" style={{ width: '88%' }}></div>
                     </div>
                   </motion.div>
                 </div>
@@ -656,7 +656,7 @@ export default function AdminPage() {
                         <h3 className="text-lg font-display font-bold text-white">Create New User</h3>
                         <p className="text-sm text-slate-400">Add users directly to Clerk + Convex</p>
                       </div>
-                      <Users className="h-8 w-8 text-emerald-500 opacity-20" />
+                      <Users className="h-8 w-8 text-[#22C55E] opacity-20" />
                     </div>
 
                     <div className="space-y-3 mb-4">
@@ -722,7 +722,7 @@ export default function AdminPage() {
                     
                     <div className="overflow-x-auto flex-1">
                       <table className="w-full text-left text-sm text-slate-400">
-                        <thead className="bg-slate-900/30 text-xs uppercase font-semibold text-slate-500">
+                        <thead className="bg-slate-900/30 text-xs uppercase font-semibold text-[#64748B]">
                           <tr>
                             <th className="px-6 py-4">User</th>
                             <th className="px-6 py-4">Plan</th>
@@ -741,7 +741,7 @@ export default function AdminPage() {
                                   </div>
                                   <div>
                                     <div className="font-medium text-slate-200">{userData.name || "Anonymous"}</div>
-                                    <div className="text-xs text-slate-500">{userData.email || "No email"}</div>
+                                    <div className="text-xs text-[#64748B]">{userData.email || "No email"}</div>
                                   </div>
                                 </div>
                               </td>
@@ -755,7 +755,7 @@ export default function AdminPage() {
                               </td>
                               <td className="px-6 py-3">
                                 <div className="flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                                   <span className="text-slate-300">Active</span>
                                 </div>
                               </td>
@@ -765,7 +765,7 @@ export default function AdminPage() {
                               <td className="px-6 py-3 text-right">
                                 <button 
                                   onClick={() => handleEditClick(userData)}
-                                  className="text-slate-500 hover:text-white transition-colors"
+                                  className="text-[#64748B] hover:text-white transition-colors"
                                 >
                                   <MoreHorizontal className="h-5 w-5" />
                                 </button>
@@ -781,7 +781,7 @@ export default function AdminPage() {
                   <div className="glass-panel rounded-xl border border-slate-700/50 flex flex-col overflow-hidden h-full shadow-2xl shadow-black/40">
                     <div className="p-3 bg-[#0d1117] border-b border-slate-800 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Terminal className="h-4 w-4 text-slate-500" />
+                        <Terminal className="h-4 w-4 text-[#64748B]" />
                         <span className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider">Live Logs</span>
                       </div>
                       <div className="flex gap-1.5">
@@ -791,26 +791,26 @@ export default function AdminPage() {
                     </div>
                     <div className="flex-1 bg-[#090e13] p-4 font-mono text-xs overflow-y-auto flex flex-col gap-3 font-medium">
                       <div className="flex gap-2 opacity-60">
-                        <span className="text-slate-500 min-w-[60px]">10:41:02</span>
+                        <span className="text-[#64748B] min-w-[60px]">10:41:02</span>
                         <div className="flex-1">
                           <span className="text-blue-400">[INFO]</span> System initialization complete.
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <span className="text-slate-500 min-w-[60px]">10:42:15</span>
+                        <span className="text-[#64748B] min-w-[60px]">10:42:15</span>
                         <div className="flex-1">
-                          <span className="text-emerald-400">[200 OK]</span> OpenAI API - Resume Analysis <span className="text-slate-500">#492a</span>
+                          <span className="text-emerald-400">[200 OK]</span> OpenAI API - Resume Analysis <span className="text-[#64748B]">#492a</span>
                         </div>
                       </div>
                       <div className="flex gap-2 border-l-2 border-cyan-500/50 pl-2 bg-cyan-500/5 py-1 rounded-r">
-                        <span className="text-slate-500 min-w-[52px]">10:43:12</span>
+                        <span className="text-[#64748B] min-w-[52px]">10:43:12</span>
                         <div className="flex-1 text-cyan-200">
                           <span className="text-cyan-400 font-bold">[STRIPE]</span> Payment Succeeded - €19.99
-                          <span className="text-slate-500 text-[10px] block mt-1">user: {user.email}</span>
+                          <span className="text-[#64748B] text-[10px] block mt-1">user: {user.email}</span>
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <span className="text-slate-500 min-w-[60px]">10:44:05</span>
+                        <span className="text-[#64748B] min-w-[60px]">10:44:05</span>
                         <div className="flex-1">
                           <span className="text-amber-400">[WARN]</span> High latency detected on worker-04
                         </div>

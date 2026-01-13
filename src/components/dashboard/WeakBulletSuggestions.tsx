@@ -684,24 +684,24 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
         <div className="glass-card rounded-xl p-5 md:p-6 border-2 border-amber-500/30 bg-gradient-to-br from-amber-500/5 to-orange-500/5">
           {/* Header */}
           <div className="flex items-start gap-3 mb-4">
-            <div className="flex-shrink-0 p-2 bg-amber-500/20 rounded-lg">
+            <div className="flex-shrink-0 p-2 bg-[#F59E0B]/20 rounded-lg">
               <Lightbulb className="h-5 w-5 text-amber-400" />
             </div>
             <div className="flex-1">
-              <h3 className="text-slate-900 font-bold text-base md:text-lg flex items-center gap-2">
+              <h3 className="text-[#0F172A] font-bold text-base md:text-lg flex items-center gap-2">
                 ⚠️ Weak Bullet Detected
-                <span className="text-xs font-normal text-slate-500">({weakBullets.length} found)</span>
+                <span className="text-xs font-normal text-[#64748B]">({weakBullets.length} found)</span>
               </h3>
-              <p className="text-slate-500 text-xs md:text-sm mt-1">
+              <p className="text-[#64748B] text-xs md:text-sm mt-1">
                 This bullet point lacks quantifiable impact. Add numbers to make it stronger.
               </p>
             </div>
           </div>
 
           {/* Original Bullet */}
-          <div className="bg-white/50 border border-slate-200 rounded-lg p-3 md:p-4 mb-4">
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Original</p>
-            <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+          <div className="bg-[#FFFFFF]/50 border border-[#E2E8F0] rounded-lg p-3 md:p-4 mb-4">
+            <p className="text-xs text-[#64748B] uppercase tracking-wider font-semibold mb-2">Original</p>
+            <p className="text-[#475569] text-sm md:text-base leading-relaxed">
               {currentBullet.original}
             </p>
           </div>
@@ -725,15 +725,15 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
                 className={`w-full text-left p-3 md:p-4 rounded-lg border-2 transition-all duration-300 group ${
                   selectedSuggestionIndex === idx
                     ? 'bg-cyan-500/10 border-cyan-500/50'
-                    : 'bg-slate-50/30 border-slate-200 hover:border-cyan-500/30 hover:bg-slate-50/50'
+                    : 'bg-[#F8FAFC]/30 border-[#E2E8F0] hover:border-cyan-500/30 hover:bg-[#F8FAFC]/50'
                 }`}
               >
                 {/* Type Badge */}
                 <div className="flex items-center gap-2 mb-2">
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                    suggestion.type === 'volume' ? 'bg-blue-500/20 text-blue-400' :
-                    suggestion.type === 'efficiency' ? 'bg-purple-500/20 text-purple-400' :
-                    'bg-green-500/20 text-green-400'
+                    suggestion.type === 'volume' ? 'bg-[#3B82F6]/20 text-blue-400' :
+                    suggestion.type === 'efficiency' ? 'bg-[#8B5CF6]/20 text-[#8B5CF6]' :
+                    'bg-[#22C55E]/20 text-green-400'
                   }`}>
                     {suggestion.type === 'volume' ? '# Volume' :
                      suggestion.type === 'efficiency' ? '% Efficiency' :
@@ -745,12 +745,12 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
                 </div>
 
                 {/* Improved Text */}
-                <p className="text-slate-700 text-sm md:text-base leading-relaxed mb-2 group-hover:text-slate-900 transition-colors">
+                <p className="text-[#475569] text-sm md:text-base leading-relaxed mb-2 group-hover:text-[#0F172A] transition-colors">
                   {suggestion.improved}
                 </p>
 
                 {/* Explanation */}
-                <p className="text-slate-500 text-xs leading-relaxed">
+                <p className="text-[#64748B] text-xs leading-relaxed">
                   {suggestion.explanation}
                 </p>
               </motion.button>
@@ -760,12 +760,12 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* Action Button */}
           <div className="mt-5 flex items-center gap-3">
             <button
-              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-slate-900 font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-[#0F172A] font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             >
               Apply Selected & Continue
             </button>
             <button
-              className="h-10 md:h-11 px-4 rounded-lg border border-slate-600 hover:border-slate-500 text-slate-500 hover:text-slate-600 text-sm font-medium transition-colors"
+              className="h-10 md:h-11 px-4 rounded-lg border border-slate-600 hover:border-slate-500 text-[#64748B] hover:text-[#475569] text-sm font-medium transition-colors"
             >
               Skip
             </button>

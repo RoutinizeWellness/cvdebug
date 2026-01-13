@@ -74,10 +74,10 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
 
             {/* Typography */}
             <div className="space-y-2">
-              <h1 className="text-slate-900 text-3xl font-bold tracking-tight leading-tight">
+              <h1 className="text-[#0F172A] text-3xl font-bold tracking-tight leading-tight">
                 Welcome to CVDebug!
               </h1>
-              <p className="text-slate-500 text-base font-normal leading-relaxed">
+              <p className="text-[#64748B] text-base font-normal leading-relaxed">
                 You are currently on the <span className="text-primary font-medium">{
                   user.subscriptionTier === "interview_sprint"
                     ? "interview sprint plan"
@@ -90,14 +90,14 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
 
             {/* Feature check */}
             {isPremium ? (
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/50 border border-slate-200/50">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFFFFF]/50 border border-[#E2E8F0]/50">
                 <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
-                <p className="text-slate-700 text-sm font-medium">You have full access to premium features!</p>
+                <p className="text-[#475569] text-sm font-medium">You have full access to premium features!</p>
               </div>
             ) : (
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F59E0B]/10 border border-amber-500/20">
                 <span className="material-symbols-outlined text-amber-400 text-xl">info</span>
-                <p className="text-slate-700 text-sm font-medium">Upgrade to unlock all features</p>
+                <p className="text-[#475569] text-sm font-medium">Upgrade to unlock all features</p>
               </div>
             )}
 
@@ -114,9 +114,9 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-100" />
 
                 {/* Button Content */}
-                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-white/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
-                  <span className="text-slate-900 text-base font-bold tracking-wide">View Upgrade Options</span>
-                  <span className="material-symbols-outlined text-slate-900 text-lg transition-transform group-hover/btn:translate-x-1">upgrade</span>
+                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-[#FFFFFF]/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
+                  <span className="text-[#0F172A] text-base font-bold tracking-wide">View Upgrade Options</span>
+                  <span className="material-symbols-outlined text-[#0F172A] text-lg transition-transform group-hover/btn:translate-x-1">upgrade</span>
                 </div>
               </button>
             ) : (
@@ -128,16 +128,16 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
                 <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-100" />
 
                 {/* Button Content */}
-                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-white/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
-                  <span className="text-slate-900 text-base font-bold tracking-wide">Continue to Dashboard</span>
-                  <span className="material-symbols-outlined text-slate-900 text-lg transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                <div className="relative flex items-center justify-center gap-2 rounded-xl bg-[#FFFFFF]/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
+                  <span className="text-[#0F172A] text-base font-bold tracking-wide">Continue to Dashboard</span>
+                  <span className="material-symbols-outlined text-[#0F172A] text-lg transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
                 </div>
               </button>
             )}
 
             {/* Decorative footer text */}
-            <p className="text-xs text-slate-500 mt-2">
-              Press <span className="bg-slate-50 px-1.5 py-0.5 rounded text-slate-500 border border-slate-200">ESC</span> to close
+            <p className="text-xs text-[#64748B] mt-2">
+              Press <span className="bg-[#F8FAFC] px-1.5 py-0.5 rounded text-[#64748B] border border-[#E2E8F0]">ESC</span> to close
             </p>
           </div>
         </motion.div>

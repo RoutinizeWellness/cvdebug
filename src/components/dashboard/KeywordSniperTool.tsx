@@ -307,8 +307,8 @@ export function KeywordSniperTool({
       <section className="lg:col-span-3 flex flex-col gap-4">
         <div className="glass-panel rounded-xl p-5 flex flex-col max-h-[800px]">
           <div className="mb-6">
-            <h3 className="font-display font-bold text-lg text-slate-900 mb-1">Target Keywords</h3>
-            <p className="text-xs text-slate-500">Missing signals detected in job description</p>
+            <h3 className="font-display font-bold text-lg text-[#0F172A] mb-1">Target Keywords</h3>
+            <p className="text-xs text-[#64748B]">Missing signals detected in job description</p>
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 space-y-6 custom-scrollbar">
@@ -325,18 +325,18 @@ export function KeywordSniperTool({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="bg-slate-50/40 border border-white/5 rounded-lg p-3 hover:border-primary/50 transition-colors group cursor-pointer"
+                    className="bg-[#F8FAFC]/40 border border-white/5 rounded-lg p-3 hover:border-primary/50 transition-colors group cursor-pointer"
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <span className="font-mono text-sm font-medium text-slate-900 group-hover:text-primary transition-colors">
+                      <span className="font-mono text-sm font-medium text-[#0F172A] group-hover:text-primary transition-colors">
                         {kw.keyword}
                       </span>
-                      <Badge className="text-[10px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/20 font-mono">
+                      <Badge className="text-[10px] bg-[#EF4444]/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/20 font-mono">
                         CRITICAL
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-slate-500">Frequency: {kw.frequency || 12}x</span>
+                      <span className="text-xs text-[#64748B]">Frequency: {kw.frequency || 12}x</span>
                       <button
                         onClick={() => handleInjectKeyword(kw.keyword)}
                         className="bg-primary/10 hover:bg-primary/20 text-primary text-xs font-medium px-3 py-1.5 rounded border border-primary/20 flex items-center gap-1 transition-all"
@@ -364,18 +364,18 @@ export function KeywordSniperTool({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: (highImpactKeywords.length + i) * 0.1 }}
-                      className="bg-slate-50/40 border border-white/5 rounded-lg p-3 hover:border-teal-400/50 transition-colors group"
+                      className="bg-[#F8FAFC]/40 border border-white/5 rounded-lg p-3 hover:border-teal-400/50 transition-colors group"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="font-mono text-sm font-medium text-slate-900 group-hover:text-teal-400 transition-colors">
+                        <span className="font-mono text-sm font-medium text-[#0F172A] group-hover:text-teal-400 transition-colors">
                           {kw.keyword}
                         </span>
                       </div>
                       <div className="flex items-center justify-between mt-2">
-                        <span className="text-xs text-slate-500">Frequency: {kw.frequency || 5}x</span>
+                        <span className="text-xs text-[#64748B]">Frequency: {kw.frequency || 5}x</span>
                         <button
                           onClick={() => handleInjectKeyword(kw.keyword)}
-                          className="bg-slate-700/50 hover:bg-slate-700 text-slate-600 text-xs font-medium px-3 py-1.5 rounded border border-white/5 flex items-center gap-1 transition-all"
+                          className="bg-slate-700/50 hover:bg-slate-700 text-[#475569] text-xs font-medium px-3 py-1.5 rounded border border-white/5 flex items-center gap-1 transition-all"
                         >
                           <span className="material-symbols-outlined text-[14px]">add_circle</span>
                           Inject
@@ -394,14 +394,14 @@ export function KeywordSniperTool({
       <section className="lg:col-span-6 flex flex-col max-h-[800px]">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 mb-4">
           <div>
-            <h1 className="font-display font-bold text-3xl text-slate-900 tracking-tight leading-none">The Lab</h1>
-            <p className="text-slate-500 mt-2 font-light">Optimize your experience description</p>
+            <h1 className="font-display font-bold text-3xl text-[#0F172A] tracking-tight leading-none">The Lab</h1>
+            <p className="text-[#64748B] mt-2 font-light">Optimize your experience description</p>
           </div>
           <div className="flex gap-2">
-            <button className="text-xs font-mono text-slate-500 hover:text-slate-900 px-3 py-1 bg-slate-50/50 rounded border border-white/5">
+            <button className="text-xs font-mono text-[#64748B] hover:text-[#0F172A] px-3 py-1 bg-[#F8FAFC]/50 rounded border border-white/5">
               Undo
             </button>
-            <button className="text-xs font-mono text-slate-500 hover:text-slate-900 px-3 py-1 bg-slate-50/50 rounded border border-white/5">
+            <button className="text-xs font-mono text-[#64748B] hover:text-[#0F172A] px-3 py-1 bg-[#F8FAFC]/50 rounded border border-white/5">
               Redo
             </button>
           </div>
@@ -410,12 +410,12 @@ export function KeywordSniperTool({
         {/* Original Context */}
         <div className="glass-panel rounded-xl p-6 mb-6">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Current Bullet Point</span>
-            <span className="text-xs bg-slate-700/50 text-slate-600 px-2 py-0.5 rounded">
+            <span className="text-xs font-mono text-[#64748B] uppercase tracking-wider">Current Bullet Point</span>
+            <span className="text-xs bg-slate-700/50 text-[#475569] px-2 py-0.5 rounded">
               {jobTitle} @ {company}
             </span>
           </div>
-          <p className="text-lg text-slate-600 leading-relaxed font-light border-l-2 border-slate-600 pl-4 py-1">
+          <p className="text-lg text-[#475569] leading-relaxed font-light border-l-2 border-slate-600 pl-4 py-1">
             {currentBullet}
           </p>
         </div>
@@ -427,7 +427,7 @@ export function KeywordSniperTool({
 
           <div className="p-5 pb-0 flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-teal-400 animate-pulse">auto_awesome</span>
-            <h3 className="font-display font-bold text-slate-900">AI Optimization Suggestions</h3>
+            <h3 className="font-display font-bold text-[#0F172A]">AI Optimization Suggestions</h3>
             <span className="ml-auto text-xs text-teal-400 border border-teal-400/30 bg-teal-400/10 px-2 py-1 rounded-full font-mono">
               Target: {highImpactKeywords.slice(0, 2).map(kw => kw.keyword).join(" + ")}
             </span>
@@ -444,8 +444,8 @@ export function KeywordSniperTool({
                   onClick={() => setSelectedSuggestion(suggestion.id)}
                   className={`rounded-lg p-5 transition-all relative group cursor-pointer ${
                     selectedSuggestion === suggestion.id
-                      ? "bg-slate-50/80 border-2 border-teal-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
-                      : "border border-white/5 bg-slate-50/30 hover:bg-slate-50/50"
+                      ? "bg-[#F8FAFC]/80 border-2 border-teal-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
+                      : "border border-white/5 bg-[#F8FAFC]/30 hover:bg-[#F8FAFC]/50"
                   }`}
                 >
                   <div className="absolute top-4 right-4">
@@ -455,13 +455,13 @@ export function KeywordSniperTool({
                         : "border-slate-600 group-hover:border-slate-400"
                     }`}>
                       {selectedSuggestion === suggestion.id && (
-                        <span className="material-symbols-outlined text-slate-900 text-[14px] font-bold">check</span>
+                        <span className="material-symbols-outlined text-[#0F172A] text-[14px] font-bold">check</span>
                       )}
                     </div>
                   </div>
 
                   <p className={`text-base leading-relaxed pr-8 transition-colors ${
-                    selectedSuggestion === suggestion.id ? "text-slate-900" : "text-slate-600 group-hover:text-slate-900"
+                    selectedSuggestion === suggestion.id ? "text-[#0F172A]" : "text-[#475569] group-hover:text-[#0F172A]"
                   }`}>
                     {suggestion.text.split(new RegExp(`(${suggestion.keywords.join("|")})`)).map((part, i) =>
                       suggestion.keywords.includes(part) ? (
@@ -480,7 +480,7 @@ export function KeywordSniperTool({
                       +{suggestion.scoreIncrease} Score
                     </span>
                     {suggestion.hasMetrics && (
-                      <span className="text-xs font-mono text-slate-500">Measurable outcome added</span>
+                      <span className="text-xs font-mono text-[#64748B]">Measurable outcome added</span>
                     )}
                   </div>
                 </motion.div>
@@ -488,17 +488,17 @@ export function KeywordSniperTool({
             </AnimatePresence>
           </div>
 
-          <div className="p-5 border-t border-white/10 flex gap-4 bg-white/40">
+          <div className="p-5 border-t border-white/10 flex gap-4 bg-[#FFFFFF]/40">
             <Button
               onClick={handleApplySuggestion}
-              className="flex-1 bg-primary hover:bg-blue-600 text-slate-900 font-medium py-3 px-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all"
+              className="flex-1 bg-primary hover:bg-[#3B82F6] text-[#0F172A] font-medium py-3 px-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all"
             >
               <span className="material-symbols-outlined mr-2">check_circle</span>
               Apply Selected
             </Button>
             <Button
               variant="outline"
-              className="px-6 py-3 rounded-lg border border-white/10 hover:bg-white/5 text-slate-600 hover:text-slate-900 font-medium transition-colors"
+              className="px-6 py-3 rounded-lg border border-white/10 hover:bg-[#FFFFFF]/5 text-[#475569] hover:text-[#0F172A] font-medium transition-colors"
             >
               Edit Manually
             </Button>
@@ -510,7 +510,7 @@ export function KeywordSniperTool({
       <section className="lg:col-span-3">
         <div className="glass-panel rounded-xl p-6 max-h-[800px] flex flex-col">
           <div className="flex items-center justify-between mb-8">
-            <h3 className="font-display font-bold text-lg text-slate-900">Live Score</h3>
+            <h3 className="font-display font-bold text-lg text-[#0F172A]">Live Score</h3>
             <div className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-2 py-1 rounded-full">
               <span className="material-symbols-outlined text-[14px]">arrow_upward</span>
               {suggestions.find(s => s.id === selectedSuggestion)?.scoreIncrease || 0}%
@@ -523,7 +523,7 @@ export function KeywordSniperTool({
               <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
                 {/* Background Circle */}
                 <circle
-                  className="text-slate-800"
+                  className="text-[#0F172A]"
                   cx="50"
                   cy="50"
                   fill="transparent"
@@ -553,22 +553,22 @@ export function KeywordSniperTool({
                   key={scorePercentage}
                   initial={{ scale: 1.2, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="text-5xl font-display font-bold text-slate-900"
+                  className="text-5xl font-display font-bold text-[#0F172A]"
                   style={{ textShadow: "0 0 10px rgba(59, 130, 246, 0.5)" }}
                 >
                   {scorePercentage}
                 </motion.span>
-                <span className="text-sm text-slate-500 uppercase tracking-widest text-[10px] mt-1">Match Score</span>
+                <span className="text-sm text-[#64748B] uppercase tracking-widest text-[10px] mt-1">Match Score</span>
               </div>
             </div>
 
             <div className="w-full mt-4">
-              <div className="flex justify-between text-xs text-slate-500 mb-1">
+              <div className="flex justify-between text-xs text-[#64748B] mb-1">
                 <span>Junior</span>
                 <span>Senior</span>
                 <span>Expert</span>
               </div>
-              <div className="w-full h-1 bg-slate-50 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-[#F8FAFC] rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${scorePercentage}%` }}
@@ -581,7 +581,7 @@ export function KeywordSniperTool({
 
           {/* Optimization Log */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">Optimization Log</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#64748B] mb-4">Optimization Log</h4>
             <div className="relative flex-1">
               {/* Connecting line for timeline */}
               <div className="absolute left-[7px] top-2 bottom-0 w-px bg-slate-700"></div>
@@ -595,14 +595,14 @@ export function KeywordSniperTool({
                     transition={{ delay: i * 0.1 }}
                     className="relative"
                   >
-                    <div className={`absolute -left-[21px] top-1 size-4 rounded-full bg-white border-2 z-10 ${
+                    <div className={`absolute -left-[21px] top-1 size-4 rounded-full bg-[#FFFFFF] border-2 z-10 ${
                       log.status === "active" ? "border-primary" : "border-slate-600"
                     }`}></div>
                     <div className="flex flex-col gap-1">
-                      <span className={`text-xs font-mono ${log.status === "active" ? "text-slate-500" : "text-slate-500"}`}>
+                      <span className={`text-xs font-mono ${log.status === "active" ? "text-[#64748B]" : "text-[#64748B]"}`}>
                         {log.timestamp}
                       </span>
-                      <p className={`text-sm ${log.status === "active" ? "text-slate-700" : "text-slate-500"}`}>
+                      <p className={`text-sm ${log.status === "active" ? "text-[#475569]" : "text-[#64748B]"}`}>
                         {log.action}
                       </p>
                       {log.points > 0 && (
@@ -611,7 +611,7 @@ export function KeywordSniperTool({
                         </span>
                       )}
                       {log.points === 0 && (
-                        <span className="text-xs text-slate-600 font-mono">Baseline set</span>
+                        <span className="text-xs text-[#475569] font-mono">Baseline set</span>
                       )}
                     </div>
                   </motion.div>

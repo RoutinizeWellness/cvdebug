@@ -26,7 +26,7 @@ export function MobileMissionCard({ job, onClick }: MobileMissionCardProps) {
   return (
     <motion.div
       onClick={onClick}
-      className="w-full bg-slate-50 rounded-2xl p-4 border border-slate-200 hover:border-primary/50 transition-all cursor-pointer"
+      className="w-full bg-[#F8FAFC] rounded-2xl p-4 border border-[#E2E8F0] hover:border-primary/50 transition-all cursor-pointer"
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -34,25 +34,25 @@ export function MobileMissionCard({ job, onClick }: MobileMissionCardProps) {
       <div className="flex items-center gap-4">
         {/* Company Logo/Icon */}
         <div className="h-12 w-12 rounded-xl bg-slate-700 flex items-center justify-center flex-shrink-0">
-          <Building2 className="h-6 w-6 text-slate-500" />
+          <Building2 className="h-6 w-6 text-[#64748B]" />
         </div>
 
         {/* Job Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-bold text-slate-900 text-sm truncate">{job.jobTitle}</h3>
+            <h3 className="font-bold text-[#0F172A] text-sm truncate">{job.jobTitle}</h3>
             {/* Health Badge */}
             {hasIntegrityIssue ? (
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                className="w-2 h-2 rounded-full bg-[#EF4444] flex-shrink-0"
               />
             ) : (
-              <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+              <div className="w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
             )}
           </div>
-          <p className="text-xs text-slate-500 truncate">{job.company}</p>
+          <p className="text-xs text-[#64748B] truncate">{job.company}</p>
         </div>
 
         {/* Score Circle */}
@@ -65,7 +65,7 @@ export function MobileMissionCard({ job, onClick }: MobileMissionCardProps) {
               stroke="currentColor"
               strokeWidth="4"
               fill="none"
-              className="text-slate-700"
+              className="text-[#475569]"
             />
             <circle
               cx="32"

@@ -9,7 +9,7 @@ interface IntegrityPanelProps {
 export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: IntegrityPanelProps) {
   return (
     <motion.div 
-      className="glass-panel rounded-xl p-6 flex flex-col gap-5 neon-glow bg-white/70 backdrop-blur-xl border border-slate-200/50"
+      className="glass-panel rounded-xl p-6 flex flex-col gap-5 neon-glow bg-[#FFFFFF]/70 backdrop-blur-xl border border-[#E2E8F0]/50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
@@ -19,7 +19,7 @@ export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: 
           <span className="material-symbols-outlined text-[#8B5CF6] text-sm">health_and_safety</span>
           Integrity Health
         </h3>
-        <button className="text-slate-500 hover:text-slate-900 transition-colors">
+        <button className="text-[#64748B] hover:text-[#0F172A] transition-colors">
           <span className="material-symbols-outlined text-lg">more_horiz</span>
         </button>
       </div>
@@ -27,14 +27,14 @@ export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: 
       {/* Readability */}
       <div className="space-y-2">
         <div className="flex justify-between items-end">
-          <span className="text-sm text-slate-500">Readability</span>
-          <span className="text-sm text-slate-900 font-mono">
+          <span className="text-sm text-[#64748B]">Readability</span>
+          <span className="text-sm text-[#0F172A] font-mono">
             {integrityScore > 80 ? "Grade 8 (Good)" : "Complex"}
           </span>
         </div>
-        <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden">
+        <div className="h-2 w-full bg-[#F8FAFC] rounded-full overflow-hidden">
           <div 
-            className={`h-full rounded-full ${integrityScore > 80 ? "bg-emerald-500" : "bg-yellow-500"}`} 
+            className={`h-full rounded-full ${integrityScore > 80 ? "bg-[#22C55E]" : "bg-yellow-500"}`} 
             style={{ width: `${integrityScore}%` }}
           ></div>
         </div>
@@ -45,15 +45,15 @@ export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: 
       </div>
 
       {/* ATS Parse Rate */}
-      <div className="space-y-2 pt-2 border-t border-slate-200/50">
+      <div className="space-y-2 pt-2 border-t border-[#E2E8F0]/50">
         <div className="flex justify-between items-end">
-          <span className="text-sm text-slate-500">ATS Parse Rate</span>
-          <span className="text-sm text-slate-900 font-mono">{integrityScore}% Success</span>
+          <span className="text-sm text-[#64748B]">ATS Parse Rate</span>
+          <span className="text-sm text-[#0F172A] font-mono">{integrityScore}% Success</span>
         </div>
-        <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden">
+        <div className="h-2 w-full bg-[#F8FAFC] rounded-full overflow-hidden">
           <div 
             className={`h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] ${
-              hasImageTrap ? "bg-red-500" : "bg-primary"
+              hasImageTrap ? "bg-[#EF4444]" : "bg-primary"
             }`} 
             style={{ width: `${integrityScore}%` }}
           ></div>

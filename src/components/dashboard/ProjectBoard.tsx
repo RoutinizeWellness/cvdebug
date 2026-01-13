@@ -27,10 +27,10 @@ interface ProjectBoardProps {
 
 const COLUMNS = [
   { id: "draft", title: "Draft", color: "bg-zinc-500" },
-  { id: "applied", title: "Applied", color: "bg-blue-500" },
+  { id: "applied", title: "Applied", color: "bg-[#3B82F6]" },
   { id: "interviewing", title: "Interviewing", color: "bg-yellow-500" },
-  { id: "accepted", title: "Offer", color: "bg-green-500" },
-  { id: "rejected", title: "Rejected", color: "bg-red-500" },
+  { id: "accepted", title: "Offer", color: "bg-[#22C55E]" },
+  { id: "rejected", title: "Rejected", color: "bg-[#EF4444]" },
 ];
 
 export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initialApplicationId, onUpgrade }: ProjectBoardProps) {
@@ -135,7 +135,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
           <Button 
             variant="ghost" 
             onClick={onBack}
-            className="text-zinc-400 hover:text-slate-900 pl-0 gap-2"
+            className="text-zinc-400 hover:text-[#0F172A] pl-0 gap-2"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Projects
           </Button>

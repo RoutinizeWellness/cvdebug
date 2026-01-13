@@ -52,7 +52,7 @@ function DraggableCard({ card, column }: { card: KanbanCard; column: KanbanColum
       style={style}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white p-3 rounded-lg border border-slate-200 hover:border-slate-300 transition-all cursor-grab active:cursor-grabbing relative overflow-hidden shadow-sm ${
+      className={`bg-[#FFFFFF] p-3 rounded-lg border border-[#E2E8F0] hover:border-[#E2E8F0] transition-all cursor-grab active:cursor-grabbing relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${
         card.status ? `border-l-2` : ""
       }`}
       {...listeners}
@@ -72,9 +72,9 @@ function DraggableCard({ card, column }: { card: KanbanCard; column: KanbanColum
         <GripVertical className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
           <div className="flex justify-between items-start gap-2">
-            <span className="text-slate-900 font-semibold text-sm line-clamp-1">{card.title}</span>
+            <span className="text-[#0F172A] font-semibold text-sm line-clamp-1">{card.title}</span>
             {card.matchScore !== undefined && (
-              <div className="bg-blue-50 text-blue-600 rounded px-2 py-0.5 text-[10px] font-bold border border-blue-200">
+              <div className="bg-blue-50 text-[#3B82F6] rounded px-2 py-0.5 text-[10px] font-bold border border-blue-200">
                 {card.matchScore}%
               </div>
             )}
@@ -82,7 +82,7 @@ function DraggableCard({ card, column }: { card: KanbanCard; column: KanbanColum
         </div>
       </div>
 
-      <p className="text-slate-500 text-xs mb-3 relative z-10 line-clamp-1 pl-6">{card.company}</p>
+      <p className="text-[#64748B] text-xs mb-3 relative z-10 line-clamp-1 pl-6">{card.company}</p>
 
       {card.status ? (
         <div className="flex items-center justify-between mt-2 pl-6">
@@ -115,7 +115,7 @@ function DroppableColumn({ column }: { column: KanbanColumn }) {
     <div
       ref={setNodeRef}
       className={`flex-1 flex flex-col gap-3 min-w-[200px] p-3 rounded-lg transition-colors ${
-        isOver ? "bg-slate-50" : ""
+        isOver ? "bg-[#F8FAFC]" : ""
       }`}
     >
       <div className="flex items-center justify-between px-1">
@@ -136,7 +136,7 @@ function DroppableColumn({ column }: { column: KanbanColumn }) {
 
       {/* Empty state */}
       {column.cards.length === 0 && (
-        <div className="flex-1 flex flex-col items-center justify-center py-8 text-center bg-slate-50 rounded-lg border-2 border-dashed border-slate-200">
+        <div className="flex-1 flex flex-col items-center justify-center py-8 text-center bg-[#F8FAFC] rounded-lg border-2 border-dashed border-[#E2E8F0]">
           <Briefcase className="h-8 w-8 text-slate-300 mb-2" />
           <p className="text-xs text-slate-400">
             No {column.statusKey === "applied" ? "applications" : column.statusKey === "interviewing" ? "interviews" : "offers"} yet
@@ -267,7 +267,7 @@ export function KanbanBoard() {
     >
       <section className="lg:col-span-2 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
+          <h3 className="text-[#0F172A] text-lg font-bold flex items-center gap-2">
             <Columns3 className="h-5 w-5 text-[#3B82F6]" />
             Application Kanban
           </h3>
@@ -276,7 +276,7 @@ export function KanbanBoard() {
           </button>
         </div>
 
-        <div className="bg-white border border-slate-200 p-1 rounded-xl flex-1 overflow-x-auto shadow-sm">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] p-1 rounded-xl flex-1 overflow-x-auto shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <div className="flex gap-3 h-full min-w-[600px] p-2">
             {columns.map((column) => (
               <DroppableColumn key={column.statusKey} column={column} />
@@ -286,12 +286,12 @@ export function KanbanBoard() {
 
         <DragOverlay>
           {activeCard ? (
-            <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-lg rotate-3">
+            <div className="bg-[#FFFFFF] p-3 rounded-lg border border-[#E2E8F0] shadow-lg rotate-3">
               <div className="flex items-start gap-2 mb-2">
                 <GripVertical className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" />
-                <span className="text-slate-900 font-semibold text-sm">{activeCard.title}</span>
+                <span className="text-[#0F172A] font-semibold text-sm">{activeCard.title}</span>
               </div>
-              <p className="text-slate-500 text-xs pl-6">{activeCard.company}</p>
+              <p className="text-[#64748B] text-xs pl-6">{activeCard.company}</p>
             </div>
           ) : null}
         </DragOverlay>

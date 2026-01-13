@@ -154,13 +154,13 @@ export default function ATSScannerNurses() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-blue-600"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
               >
                 Scan My Nursing Resume Free
               </Button>
             </motion.div>
 
-            <p className="mt-4 text-xs text-slate-500">
+            <p className="mt-4 text-xs text-[#64748B]">
               No signup required • See results in 10 seconds
             </p>
           </div>
@@ -286,7 +286,7 @@ export default function ATSScannerNurses() {
               >
                 Scan My Resume Now (Free)
               </Button>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#64748B]">
                 No credit card • HIPAA Compliant • Instant Results
               </p>
             </div>

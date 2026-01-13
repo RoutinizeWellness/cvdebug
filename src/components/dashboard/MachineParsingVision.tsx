@@ -54,12 +54,12 @@ export function MachineParsingVision({
       {/* Header Controls */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50">
         <div className="flex items-center gap-3">
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
             <span className="material-symbols-outlined text-primary">smart_toy</span>
             ATS Robot Vision
           </h3>
           {imageTrapDetected && (
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-red-500/10 border border-red-500/30">
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-[#EF4444]/10 border border-red-500/30">
               <AlertTriangle className="h-3 w-3 text-red-400" />
               <span className="text-xs font-bold text-red-400">Image Trap Detected</span>
             </div>
@@ -79,7 +79,7 @@ export function MachineParsingVision({
                 checked={showMachineView}
                 onChange={() => setShowMachineView(!showMachineView)}
               />
-              <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-teal-600"></div>
+              <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#FFFFFF] after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-primary peer-checked:to-teal-600"></div>
             </label>
           </div>
 
@@ -148,7 +148,7 @@ export function MachineParsingVision({
 
               {/* Resume Container with Bounding Boxes */}
               <div 
-                className="relative bg-white shadow-2xl rounded-sm overflow-hidden transition-all duration-300"
+                className="relative bg-[#FFFFFF] shadow-2xl rounded-sm overflow-hidden transition-all duration-300"
                 style={{ 
                   width: `${800 * (zoom / 100)}px`,
                   minHeight: `${1100 * (zoom / 100)}px`,
@@ -197,8 +197,8 @@ export function MachineParsingVision({
 
                   {/* Image Trap Error */}
                   {imageTrapDetected && (
-                    <div className="absolute top-[500px] left-[40px] w-[300px] h-[150px] border-2 border-red-500 bg-red-500/10 rounded flex items-center justify-center animate-pulse">
-                      <div className="absolute -top-3 left-2 bg-red-600 text-slate-900 px-2 py-0.5 rounded text-[9px] font-bold tracking-widest flex items-center gap-1">
+                    <div className="absolute top-[500px] left-[40px] w-[300px] h-[150px] border-2 border-red-500 bg-[#EF4444]/10 rounded flex items-center justify-center animate-pulse">
+                      <div className="absolute -top-3 left-2 bg-[#EF4444] text-[#0F172A] px-2 py-0.5 rounded text-[9px] font-bold tracking-widest flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
                         DECODING_ERROR
                       </div>
@@ -211,9 +211,9 @@ export function MachineParsingVision({
                       </div>
                       {/* Glitch Lines */}
                       <div className="absolute inset-0 overflow-hidden opacity-30">
-                        <div className="w-full h-1 bg-red-500 absolute top-1/4 animate-ping"></div>
-                        <div className="w-full h-1 bg-red-500 absolute top-2/4 animate-ping" style={{ animationDelay: '75ms' }}></div>
-                        <div className="w-full h-1 bg-red-500 absolute top-3/4 animate-ping" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-full h-1 bg-[#EF4444] absolute top-1/4 animate-ping"></div>
+                        <div className="w-full h-1 bg-[#EF4444] absolute top-2/4 animate-ping" style={{ animationDelay: '75ms' }}></div>
+                        <div className="w-full h-1 bg-[#EF4444] absolute top-3/4 animate-ping" style={{ animationDelay: '150ms' }}></div>
                       </div>
                     </div>
                   )}
@@ -237,28 +237,28 @@ export function MachineParsingVision({
               {/* Floating Toolbar */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 glass-panel rounded-full px-2 py-2 flex items-center gap-2 shadow-2xl z-30 backdrop-blur-xl bg-zinc-900/40 border border-primary/20">
                 <button 
-                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-[#0F172A] hover:bg-[#FFFFFF]/10 rounded-full transition-all" 
                   title="Refresh Scan"
                   onClick={() => setShowMachineView(false)}
                 >
                   <RefreshCw className="h-4 w-4" />
                 </button>
                 <button 
-                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-[#0F172A] hover:bg-[#FFFFFF]/10 rounded-full transition-all" 
                   title="Zoom In"
                   onClick={() => setZoom(Math.min(150, zoom + 10))}
                 >
                   <ZoomIn className="h-4 w-4" />
                 </button>
                 <button 
-                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-[#0F172A] hover:bg-[#FFFFFF]/10 rounded-full transition-all" 
                   title="Zoom Out"
                   onClick={() => setZoom(Math.max(50, zoom - 10))}
                 >
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <div className="w-px h-6 bg-zinc-600 mx-1"></div>
-                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:from-primary/90 hover:to-teal-600/90 text-slate-900 rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:from-primary/90 hover:to-teal-600/90 text-[#0F172A] rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
                   <Wand2 className="h-4 w-4" />
                   <span>Fix Formatting</span>
                 </button>
@@ -270,11 +270,11 @@ export function MachineParsingVision({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-white flex justify-center overflow-auto p-8"
+              className="absolute inset-0 bg-[#FFFFFF] flex justify-center overflow-auto p-8"
             >
               <div className="w-full max-w-4xl">
                 <div className="prose prose-sm max-w-none">
-                  <pre className="whitespace-pre-wrap text-slate-900 font-sans leading-relaxed">{resumeText}</pre>
+                  <pre className="whitespace-pre-wrap text-[#0F172A] font-sans leading-relaxed">{resumeText}</pre>
                 </div>
               </div>
             </motion.div>
@@ -302,10 +302,10 @@ export function MachineParsingVision({
                 <span>SESSION_ID: 0x8F2A9C</span>
                 <span>TS: {new Date().toLocaleTimeString()}</span>
               </div>
-              <div className="text-emerald-500/80">&gt; Initializing OCR engine... OK</div>
-              <div className="text-emerald-500/80">&gt; Loading language models... OK</div>
+              <div className="text-[#22C55E]/80">&gt; Initializing OCR engine... OK</div>
+              <div className="text-[#22C55E]/80">&gt; Loading language models... OK</div>
               {imageTrapDetected && (
-                <div className="text-yellow-500/80">&gt; WARN: Low contrast detected at [500, 40]</div>
+                <div className="text-[#F59E0B]/80">&gt; WARN: Low contrast detected at [500, 40]</div>
               )}
             </div>
 
@@ -316,7 +316,7 @@ export function MachineParsingVision({
                 <div className="border border-zinc-700 bg-zinc-800/30 rounded-lg p-3 group hover:border-primary/50 transition-colors cursor-pointer">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono text-zinc-400 uppercase">Contact Info</span>
-                    <span className="size-2 rounded-full bg-emerald-500"></span>
+                    <span className="size-2 rounded-full bg-[#22C55E]"></span>
                   </div>
                   <div className="font-mono text-xs text-zinc-300 space-y-1">
                     <div className="flex gap-2">
@@ -338,10 +338,10 @@ export function MachineParsingVision({
 
               {/* Experience Card */}
               {extractedFields?.experience && extractedFields.experience.length > 0 && (
-                <div className="border border-zinc-700 bg-zinc-800/30 rounded-lg p-3 group hover:border-blue-500/50 transition-colors cursor-pointer">
+                <div className="border border-zinc-700 bg-zinc-800/30 rounded-lg p-3 group hover:border-[#3B82F6]/50 transition-colors cursor-pointer">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono text-zinc-400 uppercase">Work Experience [1]</span>
-                    <span className="size-2 rounded-full bg-emerald-500"></span>
+                    <span className="size-2 rounded-full bg-[#22C55E]"></span>
                   </div>
                   <div className="font-mono text-xs text-zinc-300 space-y-1 overflow-hidden">
                     {extractedFields.experience[0].company && (
@@ -362,14 +362,14 @@ export function MachineParsingVision({
               {imageTrapDetected && (
                 <div className="border border-red-900/50 bg-red-950/10 rounded-lg p-3 relative overflow-hidden">
                   <div className="absolute right-0 top-0 p-2 opacity-10">
-                    <AlertTriangle className="h-16 w-16 text-red-500" />
+                    <AlertTriangle className="h-16 w-16 text-[#EF4444]" />
                   </div>
                   <div className="flex items-center justify-between mb-2 relative z-10">
                     <span className="text-xs font-mono text-red-400 uppercase flex items-center gap-1">
                       <AlertTriangle className="h-3 w-3" />
                       Parse Failure
                     </span>
-                    <span className="size-2 rounded-full bg-red-500 animate-pulse"></span>
+                    <span className="size-2 rounded-full bg-[#EF4444] animate-pulse"></span>
                   </div>
                   <div className="font-mono text-xs text-red-200/80 space-y-2 relative z-10">
                     <div className="p-2 bg-red-950/40 rounded border border-red-900/50">

@@ -154,7 +154,7 @@ export default function Blog() {
         <section>
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl md:text-4xl font-black text-white">Recent Articles</h2>
-            <span className="text-slate-500 text-sm font-medium">{recentPosts.length} posts</span>
+            <span className="text-[#64748B] text-sm font-medium">{recentPosts.length} posts</span>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {recentPosts.map((post: any, index: number) => (
@@ -219,7 +219,7 @@ export default function Blog() {
                       </span>
                     ))}
                     {post.tags.length > 3 && (
-                      <span className="text-slate-500 text-[10px] font-semibold">+{post.tags.length - 3}</span>
+                      <span className="text-[#64748B] text-[10px] font-semibold">+{post.tags.length - 3}</span>
                     )}
                   </div>
                 </div>
@@ -262,7 +262,7 @@ export default function Blog() {
                 <ArrowRight className="w-5 h-5" />
               </span>
             </Button>
-            <p className="text-slate-500 text-sm mt-4">No credit card required • Get results in 10 seconds</p>
+            <p className="text-[#64748B] text-sm mt-4">No credit card required • Get results in 10 seconds</p>
           </div>
         </motion.section>
       </main>

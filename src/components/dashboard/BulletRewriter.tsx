@@ -102,63 +102,63 @@ export function BulletRewriter() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 mb-4 shadow-sm">
+      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">AI Bullet Rewriter</h2>
-            <p className="text-sm text-slate-500">Transform weak bullets into impact-driven achievements</p>
+            <h2 className="text-2xl font-bold text-[#0F172A]">AI Bullet Rewriter</h2>
+            <p className="text-sm text-[#64748B]">Transform weak bullets into impact-driven achievements</p>
           </div>
         </div>
 
         {/* Google XYZ Formula Explanation */}
         <div className="mt-4 bg-primary/10 border border-primary/20 rounded-lg p-4">
-          <p className="text-sm text-slate-700 font-mono">
+          <p className="text-sm text-[#475569] font-mono">
             <span className="text-primary font-bold">Google XYZ Formula:</span>{" "}
             Accomplished <span className="text-secondary">[X]</span> as measured by{" "}
-            <span className="text-green-600">[Y]</span>, by doing{" "}
-            <span className="text-blue-600">[Z]</span>
+            <span className="text-[#22C55E]">[Y]</span>, by doing{" "}
+            <span className="text-[#3B82F6]">[Z]</span>
           </p>
-          <p className="text-xs text-slate-500 mt-2">
+          <p className="text-xs text-[#64748B] mt-2">
             Example: "Led a team of 10, increasing productivity by 25% through implementing agile workflows"
           </p>
         </div>
       </div>
 
       {/* Input Section */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 mb-4 shadow-sm">
+      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="space-y-4">
           {/* Original Bullet Input */}
           <div>
-            <label className="text-sm font-medium text-slate-700 mb-2 block">
-              Original Bullet Point <span className="text-red-500">*</span>
+            <label className="text-sm font-medium text-[#475569] mb-2 block">
+              Original Bullet Point <span className="text-[#EF4444]">*</span>
             </label>
             <textarea
               value={bulletText}
               onChange={(e) => setBulletText(e.target.value)}
               placeholder="e.g., Managed a team and worked on improving processes"
-              className="w-full bg-white border border-slate-200 rounded-lg p-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary resize-none"
+              className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary resize-none"
               rows={3}
             />
           </div>
 
           {/* Experience Level Dropdown */}
           <div>
-            <label className="text-sm font-medium text-slate-700 mb-2 block">
+            <label className="text-sm font-medium text-[#475569] mb-2 block">
               Nivel de Experiencia
             </label>
             <select
               value={experienceLevel}
               onChange={(e) => setExperienceLevel(e.target.value as "student" | "mid" | "senior")}
-              className="w-full bg-white border border-slate-200 rounded-lg p-3 text-slate-900 focus:outline-none focus:border-primary"
+              className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] focus:outline-none focus:border-primary"
             >
               <option value="student">Student - Emphasis on curiosity & projects</option>
               <option value="mid">Mid-Level - Balance of skills & results</option>
               <option value="senior">Senior - Aggressive ROI & leadership focus</option>
             </select>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-[#64748B] mt-1">
               {experienceLevel === "student" && "Highlights learning, projects, and potential"}
               {experienceLevel === "mid" && "Focuses on concrete achievements and skills"}
               {experienceLevel === "senior" && "Emphasizes business impact, ROI, and team leadership"}
@@ -168,7 +168,7 @@ export function BulletRewriter() {
           {/* Optional Context */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium text-slate-700 mb-2 block">
+              <label className="text-sm font-medium text-[#475569] mb-2 block">
                 Role (Optional)
               </label>
               <input
@@ -176,11 +176,11 @@ export function BulletRewriter() {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="e.g., Senior Software Engineer"
-                className="w-full bg-white border border-slate-200 rounded-lg p-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary"
+                className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary"
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-slate-700 mb-2 block">
+              <label className="text-sm font-medium text-[#475569] mb-2 block">
                 Company (Optional)
               </label>
               <input
@@ -188,7 +188,7 @@ export function BulletRewriter() {
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="e.g., Google"
-                className="w-full bg-white border border-slate-200 rounded-lg p-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary"
+                className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary"
               />
             </div>
           </div>
@@ -226,20 +226,20 @@ export function BulletRewriter() {
           >
             {/* Analysis Insights Panel */}
             {result.analysis && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 border-l-4 border-blue-500 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-                  <Target className="h-5 w-5 text-blue-600" />
+              <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 border-l-4 border-[#3B82F6] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <h3 className="text-lg font-bold text-[#0F172A] mb-3 flex items-center gap-2">
+                  <Target className="h-5 w-5 text-[#3B82F6]" />
                   AI Analysis of Original Bullet
                 </h3>
 
                 {/* Weakness Score */}
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-slate-700">Weakness Score</span>
+                    <span className="text-sm text-[#475569]">Weakness Score</span>
                     <span className={`text-sm font-bold ${
-                      result.analysis.weaknessScore > 50 ? "text-red-600" :
-                      result.analysis.weaknessScore > 30 ? "text-yellow-600" :
-                      "text-green-600"
+                      result.analysis.weaknessScore > 50 ? "text-[#EF4444]" :
+                      result.analysis.weaknessScore > 30 ? "text-[#F59E0B]" :
+                      "text-[#22C55E]"
                     }`}>
                       {result.analysis.weaknessScore}/100
                     </span>
@@ -247,9 +247,9 @@ export function BulletRewriter() {
                   <div className="w-full bg-slate-200 rounded-full h-2">
                     <div
                       className={`h-2 rounded-full transition-all ${
-                        result.analysis.weaknessScore > 50 ? "bg-red-500" :
+                        result.analysis.weaknessScore > 50 ? "bg-[#EF4444]" :
                         result.analysis.weaknessScore > 30 ? "bg-yellow-500" :
-                        "bg-green-500"
+                        "bg-[#22C55E]"
                       }`}
                       style={{ width: `${result.analysis.weaknessScore}%` }}
                     ></div>
@@ -259,11 +259,11 @@ export function BulletRewriter() {
                 {/* Detected Issues */}
                 {result.analysis.weaknessReasons.length > 0 && (
                   <div className="mb-4">
-                    <p className="text-xs text-slate-500 mb-2 font-semibold">Detected Issues:</p>
+                    <p className="text-xs text-[#64748B] mb-2 font-semibold">Detected Issues:</p>
                     <div className="space-y-1">
                       {result.analysis.weaknessReasons.map((reason, idx) => (
                         <div key={idx} className="flex items-start gap-2 text-xs text-red-700">
-                          <span className="text-red-600 mt-0.5">✗</span>
+                          <span className="text-[#EF4444] mt-0.5">✗</span>
                           <span>{reason}</span>
                         </div>
                       ))}
@@ -274,13 +274,13 @@ export function BulletRewriter() {
                 {/* Context Detection */}
                 {result.contextAnalysis && (
                   <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                      <span className="text-slate-500">Detected Role:</span>
-                      <span className="text-slate-900 ml-2 font-semibold">{result.contextAnalysis.detectedRole}</span>
+                    <div className="bg-[#F8FAFC] p-2 rounded border border-[#E2E8F0]">
+                      <span className="text-[#64748B]">Detected Role:</span>
+                      <span className="text-[#0F172A] ml-2 font-semibold">{result.contextAnalysis.detectedRole}</span>
                     </div>
-                    <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                      <span className="text-slate-500">Industry:</span>
-                      <span className="text-slate-900 ml-2 font-semibold">{result.contextAnalysis.detectedIndustry}</span>
+                    <div className="bg-[#F8FAFC] p-2 rounded border border-[#E2E8F0]">
+                      <span className="text-[#64748B]">Industry:</span>
+                      <span className="text-[#0F172A] ml-2 font-semibold">{result.contextAnalysis.detectedIndustry}</span>
                     </div>
                   </div>
                 )}
@@ -295,38 +295,38 @@ export function BulletRewriter() {
             )}
 
             {/* Main Result */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-1">Optimized Version</h3>
+                  <h3 className="text-lg font-bold text-[#0F172A] mb-1">Optimized Version</h3>
                   <div className="flex items-center gap-3 text-xs">
-                    <span className="text-green-600 font-mono">Metric: {result.metric}</span>
-                    <span className="text-slate-500">•</span>
-                    <span className="text-blue-600 font-mono">Impact: {result.impact}</span>
+                    <span className="text-[#22C55E] font-mono">Metric: {result.metric}</span>
+                    <span className="text-[#64748B]">•</span>
+                    <span className="text-[#3B82F6] font-mono">Impact: {result.impact}</span>
                   </div>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => copyToClipboard(result.rewritten, -1)}
-                  className="text-slate-500 hover:text-slate-900"
+                  className="text-[#64748B] hover:text-[#0F172A]"
                 >
                   {copiedIndex === -1 ? (
-                    <Check className="h-4 w-4 text-green-600" />
+                    <Check className="h-4 w-4 text-[#22C55E]" />
                   ) : (
                     <Copy className="h-4 w-4" />
                   )}
                 </Button>
               </div>
-              <p className="text-slate-900 leading-relaxed bg-slate-50 p-4 rounded-lg border border-primary/20">
+              <p className="text-[#0F172A] leading-relaxed bg-[#F8FAFC] p-4 rounded-lg border border-primary/20">
                 {result.rewritten}
               </p>
             </div>
 
             {/* Alternative Versions */}
             {result.alternatives && result.alternatives.length > 0 && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">Alternative Versions</h3>
+              <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <h3 className="text-lg font-bold text-[#0F172A] mb-4">Alternative Versions</h3>
                 <div className="space-y-3">
                   {result.alternatives.map((alt, index) => (
                     <motion.div
@@ -334,26 +334,26 @@ export function BulletRewriter() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="bg-white p-4 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
+                      className="bg-[#FFFFFF] p-4 rounded-lg border border-[#E2E8F0] hover:border-[#E2E8F0] transition-colors"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <div className="text-primary">{getTypeIcon(alt.type)}</div>
-                            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <span className="text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                               {alt.type}
                             </span>
                           </div>
-                          <p className="text-slate-900 text-sm leading-relaxed">{alt.text}</p>
+                          <p className="text-[#0F172A] text-sm leading-relaxed">{alt.text}</p>
                         </div>
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => copyToClipboard(alt.text, index)}
-                          className="text-slate-500 hover:text-slate-900 flex-shrink-0"
+                          className="text-[#64748B] hover:text-[#0F172A] flex-shrink-0"
                         >
                           {copiedIndex === index ? (
-                            <Check className="h-4 w-4 text-green-600" />
+                            <Check className="h-4 w-4 text-[#22C55E]" />
                           ) : (
                             <Copy className="h-4 w-4" />
                           )}

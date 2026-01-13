@@ -102,8 +102,8 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] bg-[#0A0A0A] border-zinc-800 text-zinc-200 max-h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl font-bold text-slate-900">
-            <MessageSquare className="h-5 w-5 text-blue-500" />
+          <DialogTitle className="flex items-center gap-2 text-xl font-bold text-[#0F172A]">
+            <MessageSquare className="h-5 w-5 text-[#3B82F6]" />
             Recruiter DM Generator
           </DialogTitle>
           <DialogDescription className="text-zinc-400">
@@ -153,10 +153,10 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-6 text-xs text-zinc-400 hover:text-slate-900"
+                      className="h-6 text-xs text-zinc-400 hover:text-[#0F172A]"
                       onClick={() => copyToClipboard(dm.subject + "\n\n" + dm.content, i)}
                     >
-                      {copiedIndex === i ? <CheckCircle2 className="h-3 w-3 mr-1 text-green-500" /> : <Copy className="h-3 w-3 mr-1" />}
+                      {copiedIndex === i ? <CheckCircle2 className="h-3 w-3 mr-1 text-[#22C55E]" /> : <Copy className="h-3 w-3 mr-1" />}
                       {copiedIndex === i ? "Copied" : "Copy"}
                     </Button>
                   </div>
@@ -185,7 +185,7 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
           <Button 
             onClick={handleGenerate} 
             disabled={isGenerating || !selectedJobId}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-slate-900 font-bold"
+            className="w-full bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A] font-bold"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>

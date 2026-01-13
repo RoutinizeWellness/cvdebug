@@ -49,7 +49,7 @@ export default function PricingPage() {
       buttonText: "Buy One Scan",
       buttonVariant: "default" as const,
       borderColor: "border-blue-900/50",
-      hoverBorder: "hover:border-blue-500/50",
+      hoverBorder: "hover:border-[#3B82F6]/50",
       plan: "single_scan",
       highlighted: false,
     },
@@ -99,7 +99,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-blue-200">
       <style>{`
         body {
           background-color: #0F172A;
@@ -112,7 +112,7 @@ export default function PricingPage() {
         {/* Hero Section */}
         <section className="relative w-full max-w-7xl mx-auto px-4 pt-20 pb-12 flex flex-col items-center text-center">
           {/* Background Glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#3B82F6]/10 rounded-full blur-[100px] pointer-events-none"></div>
           <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-[80px] pointer-events-none"></div>
 
           <motion.div
@@ -207,7 +207,7 @@ export default function PricingPage() {
                   >
                     {tier.price}
                   </span>
-                  <span className="text-slate-500 text-sm">/ {tier.period}</span>
+                  <span className="text-[#64748B] text-sm">/ {tier.period}</span>
                 </div>
 
                 <ul className="flex-col gap-4 mb-8 flex flex-1">
@@ -223,8 +223,8 @@ export default function PricingPage() {
                           tier.highlighted
                             ? "text-indigo-400"
                             : tier.plan === "single_scan"
-                            ? "text-blue-500"
-                            : "text-slate-500"
+                            ? "text-[#3B82F6]"
+                            : "text-[#64748B]"
                         }`}
                       />
                       <span>{feature}</span>
@@ -242,7 +242,7 @@ export default function PricingPage() {
                 ) : tier.buttonVariant === "default" ? (
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
-                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-blue-600/50 text-blue-100 font-medium hover:bg-blue-600/10 hover:border-blue-500 transition-all"
+                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-[#3B82F6]/50 text-blue-100 font-medium hover:bg-[#3B82F6]/10 hover:border-[#3B82F6] transition-all"
                   >
                     {tier.buttonText}
                   </Button>
@@ -257,7 +257,7 @@ export default function PricingPage() {
                 )}
 
                 {tier.highlighted && (
-                  <p className="mt-4 text-center text-xs text-slate-500 font-mono">
+                  <p className="mt-4 text-center text-xs text-[#64748B] font-mono">
                     14-day money-back guarantee
                   </p>
                 )}
@@ -290,7 +290,7 @@ export default function PricingPage() {
                 <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-slate-200 hover:text-white font-medium select-none">
                   <span>{faq.question}</span>
                   <svg
-                    className="h-5 w-5 text-slate-500 transition-transform group-open:rotate-180"
+                    className="h-5 w-5 text-[#64748B] transition-transform group-open:rotate-180"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

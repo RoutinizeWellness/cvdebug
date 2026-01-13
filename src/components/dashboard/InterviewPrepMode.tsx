@@ -92,7 +92,7 @@ export function InterviewPrepMode({
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500/20 to-blue-500/20 flex items-center justify-center mb-4 border border-teal-500/30">
             <BrainCircuit className="h-8 w-8 text-teal-400" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-2">Interview Battle Plan</h3>
+          <h3 className="text-xl font-bold text-[#0F172A] mb-2">Interview Battle Plan</h3>
           <p className="text-sm text-zinc-400 text-center max-w-md mb-6">
             Generate personalized interview prep with expected questions, STAR stories, and strategic talking points.
           </p>
@@ -100,7 +100,7 @@ export function InterviewPrepMode({
           {!canGenerate && (
             <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg max-w-md">
               <div className="flex items-start gap-2">
-                <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
+                <AlertTriangle className="h-4 w-4 text-[#F59E0B] flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-yellow-400">
                   {!jobDescription || jobDescription.trim().length < 10
                     ? "Missing job description. Please add one in the Overview tab first."
@@ -113,7 +113,7 @@ export function InterviewPrepMode({
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !canGenerate}
-            className="bg-teal-600 hover:bg-teal-700 text-slate-900 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-teal-600 hover:bg-teal-700 text-[#0F172A] font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Battle Plan...</>
@@ -129,7 +129,7 @@ export function InterviewPrepMode({
   return (
     <Card className="bg-[#0A0A0A] border-zinc-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-slate-900">
+        <CardTitle className="flex items-center gap-2 text-[#0F172A]">
           <BrainCircuit className="h-5 w-5 text-teal-400" />
           Interview Battle Plan
           <Badge className="ml-auto bg-teal-500/10 text-teal-400 border-teal-500/30">
@@ -144,7 +144,7 @@ export function InterviewPrepMode({
             <TabsTrigger value="stories">STAR Stories</TabsTrigger>
             <TabsTrigger value="weaknesses">Weaknesses</TabsTrigger>
             <TabsTrigger value="closing">Your Questions</TabsTrigger>
-            <TabsTrigger value="interrogation" className="text-red-400 data-[state=active]:text-red-400 data-[state=active]:bg-red-500/10">
+            <TabsTrigger value="interrogation" className="text-red-400 data-[state=active]:text-red-400 data-[state=active]:bg-[#EF4444]/10">
               <Sword className="h-3 w-3 mr-2" />
               Interrogation
             </TabsTrigger>
@@ -164,11 +164,11 @@ export function InterviewPrepMode({
                     <Card className="bg-zinc-900/50 border-zinc-800">
                       <CardContent className="p-4 space-y-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[#3B82F6]/10 flex items-center justify-center flex-shrink-0">
                             <HelpCircle className="h-4 w-4 text-blue-400" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-semibold text-slate-900 text-sm leading-relaxed">
+                            <p className="font-semibold text-[#0F172A] text-sm leading-relaxed">
                               {q.question}
                             </p>
                           </div>
@@ -268,7 +268,7 @@ export function InterviewPrepMode({
                   >
                     <Card className="bg-zinc-900/50 border-zinc-800">
                       <CardContent className="p-4 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#22C55E]/10 flex items-center justify-center flex-shrink-0">
                           <CheckCircle2 className="h-4 w-4 text-green-400" />
                         </div>
                         <p className="text-sm text-zinc-300 leading-relaxed">{question}</p>
@@ -289,7 +289,7 @@ export function InterviewPrepMode({
           <TabsContent value="interrogation" className="mt-4">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 mb-4">
+                <div className="p-4 rounded-lg bg-[#EF4444]/10 border border-red-500/20 mb-4">
                   <h4 className="text-sm font-bold text-red-400 flex items-center gap-2 mb-1">
                     <Sword className="h-4 w-4" />
                     Pressure Test Mode
@@ -309,11 +309,11 @@ export function InterviewPrepMode({
                     <Card className="bg-zinc-900/50 border-red-900/30">
                       <CardContent className="p-4 space-y-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[#EF4444]/10 flex items-center justify-center flex-shrink-0">
                             <AlertTriangle className="h-4 w-4 text-red-400" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-slate-900 text-sm leading-relaxed">
+                            <p className="font-bold text-[#0F172A] text-sm leading-relaxed">
                               "{item.question}"
                             </p>
                           </div>
@@ -346,7 +346,7 @@ export function InterviewPrepMode({
             onClick={handleGenerate} 
             disabled={isGenerating}
             variant="outline"
-            className="w-full border-zinc-800 text-zinc-400 hover:text-slate-900"
+            className="w-full border-zinc-800 text-zinc-400 hover:text-[#0F172A]"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Regenerating...</>

@@ -42,7 +42,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
   const getHealthBadge = (score: number, status: string) => {
     if (status === 'processing') {
       return (
-        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-700/20 text-slate-500 border border-slate-200/30">
+        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-700/20 text-[#64748B] border border-[#E2E8F0]/30">
           <Loader2 className="h-3 w-3 animate-spin mr-1.5" />
           Analyzing...
         </div>
@@ -60,14 +60,14 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
     if (score >= 80) {
       return (
-        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#22C55E]/10 text-[#22C55E] border border-emerald-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
           {score}% Excellent
         </div>
       );
     } else if (score >= 50) {
       return (
-        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+        <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#F59E0B]/10 text-[#F59E0B] border border-amber-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
           {score}% Moderate
         </div>
@@ -92,9 +92,9 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
   const getFileIcon = (mimeType: string) => {
     if (mimeType === 'application/pdf') {
-      return <FileText className="h-5 w-5 text-red-500" />;
+      return <FileText className="h-5 w-5 text-[#EF4444]" />;
     }
-    return <FileText className="h-5 w-5 text-blue-500" />;
+    return <FileText className="h-5 w-5 text-[#3B82F6]" />;
   };
 
   const getFileSize = (url: string) => {
@@ -105,7 +105,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
   if (filteredResumes.length === 0 && searchQuery === "") {
     return (
       <div className="flex flex-col items-center justify-center py-24 border-2 border-dashed border-border rounded-3xl bg-muted/10">
-        <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mb-6 shadow-sm">
+        <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <FileText className="h-10 w-10 text-muted-foreground/50" />
         </div>
         <h3 className="text-xl font-bold mb-2">No resumes found</h3>
@@ -147,9 +147,9 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             placeholder="Search resumes by name, skill, or ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-500"
+            className="pl-10 bg-[#FFFFFF] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
           />
-          <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+          <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]" />
         </div>
 
         {/* Action Buttons */}
@@ -157,7 +157,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           {onCreateManual && (
             <Button
               onClick={onCreateManual}
-              className="bg-primary text-slate-900 font-bold hover:bg-primary/90"
+              className="bg-primary text-[#0F172A] font-bold hover:bg-primary/90"
             >
               <Edit className="h-4 w-4 mr-2" />
               Create Manually
@@ -194,55 +194,55 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
       {/* Table View */}
       {viewMode === "list" ? (
-        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
+        <div className="border border-[#E2E8F0] rounded-xl overflow-hidden bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
+            <thead className="bg-[#F8FAFC]">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Resume Name
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden sm:table-cell">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider hidden sm:table-cell">
                   Upload Date
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider hidden md:table-cell">
                   Last Analyzed
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Health Score
                 </th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-right text-xs font-semibold text-[#64748B] uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 bg-white">
+            <tbody className="divide-y divide-slate-200 bg-[#FFFFFF]">
               {filteredResumes.map((resume) => (
-                <tr key={resume._id} className="hover:bg-slate-50 transition-colors group">
+                <tr key={resume._id} className="hover:bg-[#F8FAFC] transition-colors group">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 border border-slate-200">
+                      <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 border border-[#E2E8F0]">
                         {getFileIcon(resume.mimeType)}
                       </div>
                       <div className="ml-4">
                         <div
-                          className="text-sm font-medium text-slate-900 group-hover:text-primary transition-colors cursor-pointer"
+                          className="text-sm font-medium text-[#0F172A] group-hover:text-primary transition-colors cursor-pointer"
                           onClick={() => setSelectedResume(resume)}
                         >
                           {resume.title}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-[#64748B]">
                           {getFileSize(resume.url)} • {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-mono hidden sm:table-cell">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[#64748B] font-mono hidden sm:table-cell">
                     {formatDate(resume._creationTime)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-mono hidden md:table-cell">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[#475569] font-mono hidden md:table-cell">
                     {resume.status === 'completed' ? (
                       <span className="flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
                         Just now
                       </span>
                     ) : resume.status === 'processing' ? (
@@ -258,7 +258,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     <div className="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => setSelectedResume(resume)}
-                        className="text-slate-500 hover:text-slate-900 p-1.5 hover:bg-slate-100 rounded-md transition-colors"
+                        className="text-[#64748B] hover:text-[#0F172A] p-1.5 hover:bg-slate-100 rounded-md transition-colors"
                         title="View Details"
                       >
                         <Eye className="h-5 w-5" />
@@ -289,18 +289,18 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           </table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
-            <div className="text-sm text-slate-500">
-              Showing <span className="font-medium text-slate-900">1</span> to{" "}
-              <span className="font-medium text-slate-900">{Math.min(filteredResumes.length, 10)}</span> of{" "}
-              <span className="font-medium text-slate-900">{filteredResumes.length}</span> results
+          <div className="flex items-center justify-between px-6 py-4 border-t border-[#E2E8F0] bg-[#F8FAFC]">
+            <div className="text-sm text-[#64748B]">
+              Showing <span className="font-medium text-[#0F172A]">1</span> to{" "}
+              <span className="font-medium text-[#0F172A]">{Math.min(filteredResumes.length, 10)}</span> of{" "}
+              <span className="font-medium text-[#0F172A]">{filteredResumes.length}</span> results
             </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 disabled
-                className="text-slate-500 bg-white border-slate-200"
+                className="text-[#64748B] bg-[#FFFFFF] border-[#E2E8F0]"
               >
                 Previous
               </Button>
@@ -308,7 +308,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                 variant="outline"
                 size="sm"
                 disabled={filteredResumes.length <= 10}
-                className="text-slate-500 bg-white border-slate-200"
+                className="text-[#64748B] bg-[#FFFFFF] border-[#E2E8F0]"
               >
                 Next
               </Button>
@@ -321,7 +321,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           {filteredResumes.map((resume) => (
             <motion.div
               key={resume._id}
-              className="group relative flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden cursor-pointer"
+              className="group relative flex flex-col rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] overflow-hidden cursor-pointer"
               onClick={() => setSelectedResume(resume)}
               whileHover={{
                 y: -4,
@@ -331,7 +331,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {/* Preview Area */}
-              <div className="relative w-full aspect-[3/4] bg-slate-50 overflow-hidden">
+              <div className="relative w-full aspect-[3/4] bg-[#F8FAFC] overflow-hidden">
                 {resume.mimeType.startsWith("image/") ? (
                   <img
                     src={resume.url}
@@ -339,22 +339,22 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 p-6 text-center border-b border-slate-200">
-                    <div className="h-16 w-16 bg-slate-100 rounded-2xl shadow-sm flex items-center justify-center mb-4 border border-slate-200">
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-[#F8FAFC] p-6 text-center border-b border-[#E2E8F0]">
+                    <div className="h-16 w-16 bg-slate-100 rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4 border border-[#E2E8F0]">
                       {getFileIcon(resume.mimeType)}
                     </div>
-                    <p className="text-xs font-medium text-slate-700 line-clamp-2 px-4">
+                    <p className="text-xs font-medium text-[#475569] line-clamp-2 px-4">
                       {resume.title}
                     </p>
                   </div>
                 )}
 
                 {/* Overlay Actions */}
-                <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
+                <div className="absolute inset-0 bg-[#FFFFFF]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="font-bold shadow-lg bg-white text-slate-900 hover:bg-slate-100"
+                    className="font-bold shadow-lg bg-[#FFFFFF] text-[#0F172A] hover:bg-slate-100"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedResume(resume);
@@ -374,21 +374,21 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               <div className="p-4 flex flex-col gap-3 flex-1">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-slate-900 truncate" title={resume.title}>
+                    <h4 className="font-bold text-[#0F172A] truncate" title={resume.title}>
                       {resume.title}
                     </h4>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-[#64748B] mt-1">
                       {formatDate(resume._creationTime)}
                     </p>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 text-slate-500 hover:text-slate-900" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 text-[#64748B] hover:text-[#0F172A]" onClick={(e) => e.stopPropagation()}>
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={(e) => {
+                      <DropdownMenuItem className="text-[#EF4444] focus:text-[#EF4444]" onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(resume._id);
                       }}>
@@ -398,10 +398,10 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                   </DropdownMenu>
                 </div>
 
-                <div className="mt-auto pt-3 border-t border-slate-200 flex items-center justify-between">
+                <div className="mt-auto pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
                   <span className={`
                     inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider
-                    ${resume.category ? 'bg-primary/10 text-primary border border-primary/30' : 'bg-slate-100 text-slate-500 border border-slate-200'}
+                    ${resume.category ? 'bg-primary/10 text-primary border border-primary/30' : 'bg-slate-100 text-[#64748B] border border-[#E2E8F0]'}
                   `}>
                     {resume.category || 'Uncategorized'}
                   </span>
@@ -413,7 +413,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
       )}
 
       {filteredResumes.length === 0 && searchQuery !== "" && (
-        <div className="text-center py-12 text-slate-500">
+        <div className="text-center py-12 text-[#64748B]">
           <p>No resumes match your search query.</p>
         </div>
       )}

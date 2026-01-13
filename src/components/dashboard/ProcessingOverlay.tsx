@@ -39,14 +39,14 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
   useEffect(() => {
     // Add logs progressively
     const logMessages = [
-      { type: "INIT", message: "Loading core modules...", color: "text-purple-600" },
-      { type: "SCAN", message: "Detecting document layout structure...", color: "text-blue-600" },
-      { type: "INFO", message: "OCR confidence level: 98.2%", color: "text-emerald-600" },
-      { type: "PROC", message: "Extracting experience keywords...", color: "text-blue-600" },
-      { type: "ANAL", message: "Analyzing ATS compatibility...", color: "text-blue-600" },
-      { type: "KEYW", message: "Identifying missing keywords...", color: "text-amber-600" },
-      { type: "FORM", message: "Checking formatting issues...", color: "text-blue-600" },
-      { type: "SCORE", message: "Calculating ATS score...", color: "text-emerald-600" },
+      { type: "INIT", message: "Loading core modules...", color: "text-[#8B5CF6]" },
+      { type: "SCAN", message: "Detecting document layout structure...", color: "text-[#3B82F6]" },
+      { type: "INFO", message: "OCR confidence level: 98.2%", color: "text-[#22C55E]" },
+      { type: "PROC", message: "Extracting experience keywords...", color: "text-[#3B82F6]" },
+      { type: "ANAL", message: "Analyzing ATS compatibility...", color: "text-[#3B82F6]" },
+      { type: "KEYW", message: "Identifying missing keywords...", color: "text-[#F59E0B]" },
+      { type: "FORM", message: "Checking formatting issues...", color: "text-[#3B82F6]" },
+      { type: "SCORE", message: "Calculating ATS score...", color: "text-[#22C55E]" },
     ];
 
     let currentIndex = 0;
@@ -79,22 +79,22 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
       <div className="fixed inset-0 pointer-events-none opacity-10 bg-[size:40px_40px] bg-[linear-gradient(to_right,#cbd5e1_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e1_1px,transparent_1px)] z-0"></div>
 
       {/* Top Nav Bar */}
-      <header className="relative z-20 flex items-center justify-between border-b border-slate-200 px-8 py-4 bg-white/80 backdrop-blur-md shadow-sm">
+      <header className="relative z-20 flex items-center justify-between border-b border-[#E2E8F0] px-8 py-4 bg-[#FFFFFF]/80 backdrop-blur-md shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-3">
-          <div className="size-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-slate-900 shadow-lg">
+          <div className="size-8 rounded bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-[#0F172A] shadow-lg">
             <span className="material-symbols-outlined text-xl">view_in_ar</span>
           </div>
-          <h2 className="text-slate-900 text-lg font-bold tracking-tight">
-            CVDebug <span className="text-blue-600 font-mono text-xs ml-2">v2.0 BETA</span>
+          <h2 className="text-[#0F172A] text-lg font-bold tracking-tight">
+            CVDebug <span className="text-[#3B82F6] font-mono text-xs ml-2">v2.0 BETA</span>
           </h2>
         </div>
         <div className="flex items-center gap-6">
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3B82F6]"></span>
             </span>
-            <span className="text-blue-600 text-xs font-mono font-medium">ENGINE ONLINE</span>
+            <span className="text-[#3B82F6] text-xs font-mono font-medium">ENGINE ONLINE</span>
           </div>
         </div>
       </header>
@@ -104,10 +104,10 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
         <div className="w-full max-w-4xl flex flex-col items-center gap-12">
           {/* Headline */}
           <div className="text-center space-y-2">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#0F172A] tracking-tight">
               ANALYZING DOCUMENT
             </h1>
-            <p className="text-slate-600 font-mono text-sm tracking-wide uppercase">
+            <p className="text-[#475569] font-mono text-sm tracking-wide uppercase">
               Core Engine / Layer Extraction / Sequence 4A
             </p>
           </div>
@@ -118,7 +118,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             <div className="absolute inset-0 bg-blue-200/30 blur-[60px] rounded-full animate-pulse"></div>
 
             {/* The 3D Card */}
-            <div className="relative w-full h-full bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden border border-slate-200"
+            <div className="relative w-full h-full bg-[#FFFFFF]/90 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden border border-[#E2E8F0]"
                  style={{ transform: "rotateY(-15deg) rotateX(5deg)", transformStyle: "preserve-3d" }}>
               {/* Fake Resume Content (Skeleton) */}
               <div className="p-8 flex flex-col gap-6 h-full opacity-60">
@@ -149,7 +149,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                 </div>
                 {/* Highlight boxes for detected zones */}
                 <div className="absolute top-[120px] left-[30px] w-[200px] h-[80px] border border-blue-300 bg-blue-50 rounded">
-                  <div className="absolute -top-3 -right-3 bg-blue-600 text-slate-900 text-[9px] font-mono px-1 rounded-sm">
+                  <div className="absolute -top-3 -right-3 bg-[#3B82F6] text-[#0F172A] text-[9px] font-mono px-1 rounded-sm">
                     EDUCATION
                   </div>
                 </div>
@@ -167,11 +167,11 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             {/* Floating tech decorations */}
             <div className="absolute -left-12 top-1/4 hidden md:flex flex-col gap-2 opacity-60">
               <div className="h-[1px] w-8 bg-slate-400"></div>
-              <span className="text-[10px] text-blue-600 font-mono rotate-90 origin-left translate-x-3">Y-AXIS</span>
+              <span className="text-[10px] text-[#3B82F6] font-mono rotate-90 origin-left translate-x-3">Y-AXIS</span>
             </div>
             <div className="absolute -right-12 bottom-1/3 hidden md:flex flex-col gap-2 opacity-60 items-end">
               <div className="h-[1px] w-8 bg-slate-400"></div>
-              <span className="text-[10px] text-purple-600 font-mono -rotate-90 origin-right -translate-x-3">Z-INDEX</span>
+              <span className="text-[10px] text-[#8B5CF6] font-mono -rotate-90 origin-right -translate-x-3">Z-INDEX</span>
             </div>
           </div>
 
@@ -180,38 +180,38 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             {/* Progress Bar */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-end px-1">
-                <span className="text-blue-600 font-mono text-xs tracking-wider">PROCESS_ID: #8X92-CV</span>
-                <span className="text-slate-900 font-display text-2xl font-bold">{Math.round(currentProgress)}%</span>
+                <span className="text-[#3B82F6] font-mono text-xs tracking-wider">PROCESS_ID: #8X92-CV</span>
+                <span className="text-[#0F172A] font-display text-2xl font-bold">{Math.round(currentProgress)}%</span>
               </div>
-              <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-slate-300">
+              <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-[#E2E8F0]">
                 <motion.div
                   className="h-full bg-gradient-to-r from-primary to-secondary shadow-lg relative"
                   initial={{ width: "0%" }}
                   animate={{ width: `${currentProgress}%` }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="absolute inset-0 bg-white/20 w-full -skew-x-12">
+                  <div className="absolute inset-0 bg-[#FFFFFF]/20 w-full -skew-x-12">
                     <motion.div
-                      className="h-full w-full bg-white/20"
+                      className="h-full w-full bg-[#FFFFFF]/20"
                       animate={{ x: ["-100%", "100%"] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                     />
                   </div>
                 </motion.div>
               </div>
-              <div className="flex justify-between text-slate-600 text-xs font-mono mt-1">
+              <div className="flex justify-between text-[#475569] text-xs font-mono mt-1">
                 <span>ETA: {eta}s</span>
                 <span>Memory: {Math.round(24 + currentProgress / 10)}MB</span>
               </div>
             </div>
 
             {/* Terminal Output */}
-            <div className="bg-white/90 backdrop-blur-xl rounded-lg p-4 font-mono text-sm h-40 overflow-hidden flex flex-col relative group hover:border-blue-300 transition-colors border border-slate-200 shadow-sm">
+            <div className="bg-[#FFFFFF]/90 backdrop-blur-xl rounded-lg p-4 font-mono text-sm h-40 overflow-hidden flex flex-col relative group hover:border-blue-300 transition-colors border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
               <div className="absolute top-2 right-2 flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
               </div>
-              <div className="text-xs text-slate-600 border-b border-slate-200 pb-2 mb-2 uppercase tracking-widest flex items-center gap-2">
+              <div className="text-xs text-[#475569] border-b border-[#E2E8F0] pb-2 mb-2 uppercase tracking-widest flex items-center gap-2">
                 <span className="material-symbols-outlined text-[14px]">terminal</span>
                 Live System Logs
               </div>
@@ -221,13 +221,13 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                     key={index}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className={index === logs.length - 1 ? "text-slate-900" : "text-slate-600"}
+                    className={index === logs.length - 1 ? "text-[#0F172A]" : "text-[#475569]"}
                   >
-                    <span className="text-slate-500 mr-2">{log.time}</span>
+                    <span className="text-[#64748B] mr-2">{log.time}</span>
                     <span className={log.color}>[{log.type}]</span> {log.message}
                     {index === logs.length - 1 && (
                       <motion.span
-                        className="inline-block w-2 h-4 bg-blue-600 align-middle ml-1"
+                        className="inline-block w-2 h-4 bg-[#3B82F6] align-middle ml-1"
                         animate={{ opacity: [1, 0] }}
                         transition={{ duration: 0.8, repeat: Infinity }}
                       />
@@ -243,18 +243,18 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
       </main>
 
       {/* Footer Status */}
-      <footer className="relative z-10 border-t border-slate-200 bg-white/80 backdrop-blur text-slate-600 text-xs py-3 px-6 flex justify-between items-center font-mono shadow-sm">
+      <footer className="relative z-10 border-t border-[#E2E8F0] bg-[#FFFFFF]/80 backdrop-blur text-[#475569] text-xs py-3 px-6 flex justify-between items-center font-mono shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
             System Healthy
           </span>
-          <span className="hidden md:inline text-slate-600">|</span>
+          <span className="hidden md:inline text-[#475569]">|</span>
           <span className="hidden md:inline">Server: us-east-1a</span>
         </div>
         <div className="flex gap-4">
-          <a className="hover:text-blue-600 transition-colors" href="#">Documentation</a>
-          <a className="hover:text-blue-600 transition-colors" href="#">Support</a>
+          <a className="hover:text-[#3B82F6] transition-colors" href="#">Documentation</a>
+          <a className="hover:text-[#3B82F6] transition-colors" href="#">Support</a>
         </div>
       </footer>
     </div>

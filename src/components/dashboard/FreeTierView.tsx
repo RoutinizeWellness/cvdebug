@@ -50,7 +50,7 @@ export function FreeTierView({
             <span className="text-2xl">👨‍💻</span>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-[#0F172A] mb-2 flex items-center gap-2">
               Founder's Audit
               <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">
                 by Albert
@@ -70,12 +70,12 @@ export function FreeTierView({
 
       {/* Pain Point Visual - Hormozi Style */}
       <div className="glass-card rounded-lg p-8 bg-gradient-to-br from-red-950/40 via-red-900/30 to-red-950/40 border-2 border-red-500/30 relative overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-64 h-64 bg-red-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#EF4444]/20 rounded-full blur-[100px] pointer-events-none"></div>
 
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-6">
             <AlertTriangle className="h-6 w-6 text-red-400" />
-            <h3 className="text-2xl font-bold text-slate-900">You're in the Bottom {percentileRank}% of Candidates</h3>
+            <h3 className="text-2xl font-bold text-[#0F172A]">You're in the Bottom {percentileRank}% of Candidates</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -88,7 +88,7 @@ export function FreeTierView({
 
             {/* Competitors - Show what they're missing */}
             <div className="bg-green-950/60 border-2 border-green-500/40 rounded-xl p-6 text-center relative">
-              <div className="absolute -top-2 -right-2 bg-green-500 text-black text-xs font-bold px-3 py-1 rounded-full">
+              <div className="absolute -top-2 -right-2 bg-[#22C55E] text-black text-xs font-bold px-3 py-1 rounded-full">
                 {missingPoints} points higher
               </div>
               <div className="text-green-400 text-sm font-bold uppercase tracking-wider mb-2">Those Who Get Interviews</div>
@@ -116,7 +116,7 @@ export function FreeTierView({
           <GaugeScore score={score} />
           {/* Tooltip Badge */}
           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
-            <div className="bg-green-500 text-black px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg animate-bounce">
+            <div className="bg-[#22C55E] text-black px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg animate-bounce">
               <span>👁️ See what the bot sees</span>
               <span className="text-lg">→</span>
             </div>
@@ -127,17 +127,17 @@ export function FreeTierView({
           <div>
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
               score >= 80 
-                ? 'bg-green-500/20 text-green-200 border-green-500/30'
+                ? 'bg-[#22C55E]/20 text-green-200 border-green-500/30'
                 : score >= 50
                 ? 'bg-orange-500/20 text-orange-200 border-orange-500/30'
-                : 'bg-red-500/20 text-red-200 border-red-500/30'
+                : 'bg-[#EF4444]/20 text-red-200 border-red-500/30'
             } text-xs font-bold uppercase tracking-wider mb-4 border`}>
               <span className={`size-2 rounded-full animate-pulse ${
-                score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-orange-500' : 'bg-red-500'
+                score >= 80 ? 'bg-[#22C55E]' : score >= 50 ? 'bg-orange-500' : 'bg-[#EF4444]'
               }`}></span>
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-slate-900 mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-[#0F172A] mb-4">
               You're <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
                 technically invisible
               </span> to {score >= 80 ? '10%' : score >= 50 ? '60%' : '85%'} of recruiters.
@@ -154,13 +154,13 @@ export function FreeTierView({
       {/* Robot View - ALWAYS VISIBLE (Best Sales Weapon) */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/20">
+          <div className="h-10 w-10 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center border border-[#3B82F6]/20">
             <Cpu className="h-5 w-5 text-blue-400" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
               🤖 Robot View
-              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
+              <span className="text-xs bg-[#22C55E]/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
                 FREE PREVIEW
               </span>
             </h3>
@@ -170,8 +170,8 @@ export function FreeTierView({
         
         <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3 mb-3">
           <div className="flex gap-2">
-            <Eye className="h-4 w-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-yellow-500 font-medium leading-relaxed">
+            <Eye className="h-4 w-4 text-[#F59E0B] flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-[#F59E0B] font-medium leading-relaxed">
               If your text is missing, garbled, or out of order here, the ATS cannot read your resume and you'll be auto-rejected.
             </p>
           </div>
@@ -231,11 +231,11 @@ export function FreeTierView({
       {/* TOP 2 Critical Errors */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-red-500" />
+          <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-[#EF4444]" />
             Top Critical Errors
           </h3>
-          <span className="bg-red-500/20 text-red-400 text-xs font-bold px-3 py-1 rounded-full border border-red-500/30">
+          <span className="bg-[#EF4444]/20 text-red-400 text-xs font-bold px-3 py-1 rounded-full border border-red-500/30">
             Showing 2 of {formatCount}
           </span>
         </div>
@@ -246,7 +246,7 @@ export function FreeTierView({
               const issueText = typeof issue === 'string' ? issue : issue.issue;
               return (
                 <div key={i} className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
-                  <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                  <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
                   <div className="flex-1">
                     <span className="text-sm font-medium text-red-200">Error {i + 1}: {issueText}</span>
                   </div>
@@ -256,11 +256,11 @@ export function FreeTierView({
           ) : (
             <>
               <div className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
-                <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
                 <span className="text-sm font-medium text-red-200">Error 1: Contact information not detected in standard format</span>
               </div>
               <div className="flex items-start gap-3 p-3 bg-red-950/20 rounded-lg border border-red-900/30">
-                <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
+                <XCircle className="h-4 w-4 text-[#EF4444] mt-0.5 shrink-0" />
                 <span className="text-sm font-medium text-red-200">Error 2: Section headers not recognized by ATS</span>
               </div>
             </>
@@ -282,7 +282,7 @@ export function FreeTierView({
       {/* TOP 2 Missing Keywords + Blurred Rest */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
             🔑 Missing Critical Keywords
           </h3>
           <span className="bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full border border-yellow-500/30">
@@ -297,7 +297,7 @@ export function FreeTierView({
               return (
                 <div key={i} className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
                   <span className="text-sm font-medium text-yellow-200">• {keyword}</span>
-                  <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">
+                  <span className="text-xs text-[#F59E0B] bg-yellow-500/10 px-2 py-0.5 rounded-full">
                     High Impact
                   </span>
                 </div>
@@ -307,11 +307,11 @@ export function FreeTierView({
             <>
               <div className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
                 <span className="text-sm font-medium text-yellow-200">• Python</span>
-                <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
+                <span className="text-xs text-[#F59E0B] bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
                 <span className="text-sm font-medium text-yellow-200">• AWS</span>
-                <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
+                <span className="text-xs text-[#F59E0B] bg-yellow-500/10 px-2 py-0.5 rounded-full">High Impact</span>
               </div>
             </>
           )}
@@ -323,7 +323,7 @@ export function FreeTierView({
             <div className="absolute inset-0 backdrop-blur-md bg-zinc-900/60 rounded-lg z-10 flex items-center justify-center">
               <div className="text-center p-6">
                 <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
-                <p className="text-slate-900 font-bold text-lg mb-1">
+                <p className="text-[#0F172A] font-bold text-lg mb-1">
                   {remainingKeywords} Critical Keywords Hidden
                 </p>
                 <p className="text-zinc-300 text-sm">
@@ -335,7 +335,7 @@ export function FreeTierView({
               {Array.from({ length: Math.min(remainingKeywords, 8) }).map((_, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-yellow-950/20 rounded-lg border border-yellow-900/30">
                   <span className="text-sm font-medium text-yellow-200">• ████████</span>
-                  <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">████</span>
+                  <span className="text-xs text-[#F59E0B] bg-yellow-500/10 px-2 py-0.5 rounded-full">████</span>
                 </div>
               ))}
             </div>
@@ -351,7 +351,7 @@ export function FreeTierView({
           </div>
           
           <div>
-            <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-3">
+            <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-3">
               Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Certified</span> by CVDebug
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
@@ -365,31 +365,31 @@ export function FreeTierView({
             </p>
             <div className="space-y-3 text-left">
               <div className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-5 w-5 rounded-full bg-[#22C55E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
                 <span className="text-sm text-zinc-200">All {remainingKeywords + 2} missing keywords with exact placement</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-5 w-5 rounded-full bg-[#22C55E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
                 <span className="text-sm text-zinc-200">All {remainingErrors + 2} format errors with 1-click fixes</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-5 w-5 rounded-full bg-[#22C55E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
                 <span className="text-sm text-zinc-200">AI-powered rewrite suggestions</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-5 w-5 rounded-full bg-[#22C55E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
                 <span className="text-sm text-zinc-200">✅ ATS-Certified PDF download with badge</span>
               </div>
               <div className="flex items-start gap-3">
-                <div className="h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="h-5 w-5 rounded-full bg-[#22C55E]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-green-400 text-xs">✓</span>
                 </div>
                 <span className="text-sm text-zinc-200">⚡ 3-second One-Click PDF Sanitizer</span>
@@ -414,7 +414,7 @@ export function FreeTierView({
                   <span className="text-xl">👨‍💻</span>
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-slate-900 font-bold mb-1">Albert reviews your CV personally</h4>
+                  <h4 className="text-[#0F172A] font-bold mb-1">Albert reviews your CV personally</h4>
                   <p className="text-zinc-300 text-xs">3-min video with brutal feedback + all fixes</p>
                 </div>
                 <span className="text-teal-400 font-black text-xl">€49</span>
@@ -422,7 +422,7 @@ export function FreeTierView({
               <Button
                 onClick={() => setShowPricing(true)}
                 size="sm"
-                className="w-full bg-teal-600 hover:bg-teal-700 text-slate-900 font-semibold"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-[#0F172A] font-semibold"
               >
                 I want the manual review →
               </Button>
@@ -440,7 +440,7 @@ export function FreeTierView({
           </div>
 
           <p className="text-sm text-zinc-300">
-            ⚡ <strong className="text-slate-900">2,847 users</strong> unlocked their reports this week and increased their interview rate by 2x
+            ⚡ <strong className="text-[#0F172A]">2,847 users</strong> unlocked their reports this week and increased their interview rate by 2x
           </p>
         </div>
       </div>

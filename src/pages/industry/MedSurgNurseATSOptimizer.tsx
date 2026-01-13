@@ -133,7 +133,7 @@ export default function MedSurgNurseATSOptimizer() {
         {/* Hero Section */}
         <section className="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#22C55E]/10 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
           </div>
 
@@ -144,7 +144,7 @@ export default function MedSurgNurseATSOptimizer() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#22C55E]/10 border border-emerald-500/20 mb-6">
                   <Heart className="h-4 w-4 text-emerald-400" />
                   <span className="text-sm text-emerald-300 font-medium">For Medical-Surgical RNs</span>
                 </div>
@@ -276,7 +276,7 @@ export default function MedSurgNurseATSOptimizer() {
                   transition={{ delay: idx * 0.1 }}
                   className="glass-panel rounded-xl p-6 border border-red-500/20"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-red-500/20 flex items-center justify-center mb-4">
                     <mistake.icon className="h-6 w-6 text-red-400" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">{mistake.title}</h3>
@@ -312,7 +312,7 @@ export default function MedSurgNurseATSOptimizer() {
                 className="glass-panel rounded-xl p-8 border border-red-500/30"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-red-500/20 flex items-center justify-center">
                     <AlertCircle className="h-6 w-6 text-red-400" />
                   </div>
                   <div>
@@ -337,7 +337,7 @@ export default function MedSurgNurseATSOptimizer() {
                 className="glass-panel rounded-xl p-8 border border-emerald-500/30"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg bg-[#22C55E]/10 border border-emerald-500/20 flex items-center justify-center">
                     <CheckCircle2 className="h-6 w-6 text-emerald-400" />
                   </div>
                   <div>
@@ -453,8 +453,8 @@ export default function MedSurgNurseATSOptimizer() {
                   <div>
                     <div className="font-bold text-white">{testimonial.name}</div>
                     <div className="text-sm text-emerald-400">{testimonial.role}</div>
-                    <div className="text-sm text-slate-500">{testimonial.location}</div>
-                    <div className="text-xs text-slate-600 mt-1">{testimonial.years}</div>
+                    <div className="text-sm text-[#64748B]">{testimonial.location}</div>
+                    <div className="text-xs text-[#475569] mt-1">{testimonial.years}</div>
                   </div>
                 </motion.div>
               ))}

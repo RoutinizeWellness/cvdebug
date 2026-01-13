@@ -104,7 +104,7 @@ export default function ProjectSettings() {
                         fileName: "alex_resume_v4.pdf",
                       })
                     }
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
+                    className="px-4 py-2 bg-[#22C55E] hover:bg-[#22C55E] text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
                   >
                     <Bell className="h-4 w-4" />
                     Show Notification
@@ -153,12 +153,12 @@ export default function ProjectSettings() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="glass-panel rounded-xl p-6 shadow-glass border border-red-900/30 relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+                <div className="absolute top-0 left-0 w-1 h-full bg-[#EF4444]"></div>
                 <h3 className="text-lg font-semibold text-white mb-2">Danger Zone</h3>
                 <p className="text-slate-400 text-sm mb-6">
                   Irreversible actions for this project.
                 </p>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-lg bg-red-500/5 border border-red-500/20 gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-lg bg-[#EF4444]/5 border border-red-500/20 gap-4">
                   <div>
                     <h4 className="text-white font-medium">Delete Project</h4>
                     <p className="text-slate-400 text-sm mt-1">
@@ -167,7 +167,7 @@ export default function ProjectSettings() {
                   </div>
                   <button
                     onClick={() => setIsDeleteDialogOpen(true)}
-                    className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-sm font-bold rounded-lg border border-red-500/50 transition-colors whitespace-nowrap"
+                    className="px-4 py-2 bg-[#EF4444]/10 hover:bg-[#EF4444]/20 text-[#EF4444] text-sm font-bold rounded-lg border border-red-500/50 transition-colors whitespace-nowrap"
                   >
                     Delete Project
                   </button>

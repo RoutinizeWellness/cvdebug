@@ -119,7 +119,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-lg font-medium text-green-600">Thank you! 🎉</p>
+              <p className="text-lg font-medium text-[#22C55E]">Thank you! 🎉</p>
             </div>
           )}
         </DialogContent>
@@ -173,7 +173,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
       )}
       
       {submitted && (
-        <p className="text-sm text-green-600 mt-2">✓ Thank you for your feedback!</p>
+        <p className="text-sm text-[#22C55E] mt-2">✓ Thank you for your feedback!</p>
       )}
     </div>
   );

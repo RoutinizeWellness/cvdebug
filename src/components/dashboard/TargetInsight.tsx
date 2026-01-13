@@ -20,32 +20,32 @@ export function TargetInsight({ company, atsSystem, tips }: TargetInsightProps) 
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <Badge className="bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20 cursor-help transition-all duration-300 px-3 py-1.5 rounded-full">
+        <Badge className="bg-[#3B82F6]/10 border-[#3B82F6]/30 text-blue-400 hover:bg-[#3B82F6]/20 cursor-help transition-all duration-300 px-3 py-1.5 rounded-full">
           <Info className="h-3 w-3 mr-1.5" />
           Targeting {company} via {atsSystem} ATS
         </Badge>
       </HoverCardTrigger>
-      <HoverCardContent className="w-80 bg-[#0A0A0A] border-blue-500/30 text-slate-700 p-4">
+      <HoverCardContent className="w-80 bg-[#0A0A0A] border-[#3B82F6]/30 text-[#475569] p-4">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center">
               <Info className="h-4 w-4 text-blue-400" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-slate-900">ATS Optimization Tips</h4>
-              <p className="text-xs text-slate-500">{atsSystem} System</p>
+              <h4 className="text-sm font-bold text-[#0F172A]">ATS Optimization Tips</h4>
+              <p className="text-xs text-[#64748B]">{atsSystem} System</p>
             </div>
           </div>
           <ul className="space-y-2">
             {displayTips.map((tip, index) => (
-              <li key={index} className="flex items-start gap-2 text-xs text-slate-600">
+              <li key={index} className="flex items-start gap-2 text-xs text-[#475569]">
                 <span className="text-blue-400 mt-0.5">•</span>
                 <span>{tip}</span>
               </li>
             ))}
           </ul>
-          <div className="pt-2 border-t border-slate-200">
-            <p className="text-[10px] text-slate-500 italic">
+          <div className="pt-2 border-t border-[#E2E8F0]">
+            <p className="text-[10px] text-[#64748B] italic">
               These tips are specific to {atsSystem} and will maximize your parsing success rate.
             </p>
           </div>

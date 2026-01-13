@@ -62,8 +62,8 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
           <ArrowRight className="h-4 w-4 text-zinc-500" />
         </div>
         <CardContent className="p-4 space-y-3">
-          <div className="h-8 w-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-            <MessageSquare className="h-4 w-4 text-blue-500" />
+          <div className="h-8 w-8 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
+            <MessageSquare className="h-4 w-4 text-[#3B82F6]" />
           </div>
           <div>
             <h4 className="font-bold text-sm text-zinc-200">Recruiter DM</h4>
@@ -100,14 +100,14 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
         }`}>
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className={`h-4 w-4 ${isSprintActive ? "text-zinc-400" : "text-yellow-400 animate-pulse"}`} />
-            <span className={`text-xs font-bold ${isSprintActive ? "text-zinc-300" : "text-slate-900"}`}>
+            <span className={`text-xs font-bold ${isSprintActive ? "text-zinc-300" : "text-[#0F172A]"}`}>
               {isSprintActive ? "Sprint Active" : "Unlock Interview Sprint"}
             </span>
           </div>
           
           {isSprintActive ? (
             <div className="space-y-1">
-              <div className="text-2xl font-mono font-bold text-slate-900 tracking-tight">
+              <div className="text-2xl font-mono font-bold text-[#0F172A] tracking-tight">
                 48h 12m
               </div>
               <p className="text-[10px] text-zinc-500">of Unlimited Access remaining</p>
@@ -117,7 +117,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
               <p className="text-xs text-zinc-300 leading-relaxed">
                 Get unlimited AI scans, cover letters, and recruiter DMs for 7 days.
               </p>
-              <Button size="sm" className="w-full font-bold text-xs bg-white text-black hover:bg-zinc-200">
+              <Button size="sm" className="w-full font-bold text-xs bg-[#FFFFFF] text-black hover:bg-zinc-200">
                 Start Sprint (€19.99)
               </Button>
             </div>
