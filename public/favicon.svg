@@ -1,38 +1,32 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background with gradient -->
-  <rect width="512" height="512" rx="96" fill="url(#bgGradient)"/>
+  <!-- Simple transparent background -->
+  <rect width="512" height="512" rx="96" fill="transparent"/>
 
-  <!-- Subtle glow effect -->
-  <rect width="512" height="512" rx="96" fill="url(#glowGradient)" opacity="0.6"/>
-
-  <!-- Grid pattern overlay (very subtle) -->
-  <rect width="512" height="512" rx="96" fill="url(#gridPattern)" opacity="0.03"/>
-
-  <!-- Main bug icon with glow -->
-  <g filter="url(#glow)">
+  <!-- Main bug icon with modern gradient -->
+  <g>
     <!-- Bug body -->
-    <ellipse cx="256" cy="256" rx="80" ry="100" fill="url(#bugGradient)"/>
+    <ellipse cx="256" cy="256" rx="80" ry="100" fill="url(#modernBugGradient)"/>
 
     <!-- Bug head -->
-    <circle cx="256" cy="190" r="45" fill="url(#bugGradient)"/>
+    <circle cx="256" cy="190" r="45" fill="url(#modernBugGradient)"/>
 
     <!-- Antennas -->
     <path d="M 230 170 Q 220 150 210 140" stroke="#3B82F6" stroke-width="8" stroke-linecap="round" fill="none"/>
     <path d="M 282 170 Q 292 150 302 140" stroke="#3B82F6" stroke-width="8" stroke-linecap="round" fill="none"/>
 
     <!-- Antenna tips -->
-    <circle cx="210" cy="140" r="8" fill="#60A5FA"/>
-    <circle cx="302" cy="140" r="8" fill="#60A5FA"/>
+    <circle cx="210" cy="140" r="8" fill="#3B82F6"/>
+    <circle cx="302" cy="140" r="8" fill="#3B82F6"/>
 
-    <!-- Eyes -->
-    <circle cx="240" cy="185" r="8" fill="#0F172A" opacity="0.8"/>
-    <circle cx="272" cy="185" r="8" fill="#0F172A" opacity="0.8"/>
+    <!-- Eyes (simplified, more friendly) -->
+    <circle cx="240" cy="185" r="8" fill="white" opacity="0.9"/>
+    <circle cx="272" cy="185" r="8" fill="white" opacity="0.9"/>
 
-    <!-- Eye highlights -->
-    <circle cx="243" cy="182" r="3" fill="white" opacity="0.9"/>
-    <circle cx="275" cy="182" r="3" fill="white" opacity="0.9"/>
+    <!-- Eye pupils -->
+    <circle cx="242" cy="187" r="4" fill="#1E293B"/>
+    <circle cx="274" cy="187" r="4" fill="#1E293B"/>
 
-    <!-- Legs -->
+    <!-- Legs (cleaner, more geometric) -->
     <path d="M 190 230 Q 150 240 130 260" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" fill="none"/>
     <path d="M 185 260 Q 140 270 115 285" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" fill="none"/>
     <path d="M 190 290 Q 150 310 130 340" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" fill="none"/>
@@ -41,52 +35,18 @@
     <path d="M 327 260 Q 372 270 397 285" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" fill="none"/>
     <path d="M 322 290 Q 362 310 382 340" stroke="#3B82F6" stroke-width="10" stroke-linecap="round" fill="none"/>
 
-    <!-- Body segments -->
-    <line x1="220" y1="230" x2="292" y2="230" stroke="#0F172A" stroke-width="3" opacity="0.2"/>
-    <line x1="216" y1="260" x2="296" y2="260" stroke="#0F172A" stroke-width="3" opacity="0.2"/>
-    <line x1="220" y1="290" x2="292" y2="290" stroke="#0F172A" stroke-width="3" opacity="0.2"/>
-  </g>
-
-  <!-- "Debug" brackets accent -->
-  <g opacity="0.6">
-    <text x="256" y="400" font-family="monospace" font-size="48" font-weight="700" fill="#3B82F6" text-anchor="middle">&lt;/&gt;</text>
+    <!-- Body segments (subtle) -->
+    <line x1="220" y1="230" x2="292" y2="230" stroke="white" stroke-width="2" opacity="0.15"/>
+    <line x1="216" y1="260" x2="296" y2="260" stroke="white" stroke-width="2" opacity="0.15"/>
+    <line x1="220" y1="290" x2="292" y2="290" stroke="white" stroke-width="2" opacity="0.15"/>
   </g>
 
   <!-- Definitions -->
   <defs>
-    <!-- Background gradient -->
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0F172A;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#1e293b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
-    </linearGradient>
-
-    <!-- Glow gradient -->
-    <radialGradient id="glowGradient" cx="50%" cy="40%">
-      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.15" />
-      <stop offset="50%" style="stop-color:#8B5CF6;stop-opacity:0.08" />
-      <stop offset="100%" style="stop-color:transparent;stop-opacity:0" />
-    </radialGradient>
-
-    <!-- Bug gradient -->
-    <linearGradient id="bugGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Modern bug gradient (blue to purple) -->
+    <linearGradient id="modernBugGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#60A5FA;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
     </linearGradient>
-
-    <!-- Grid pattern -->
-    <pattern id="gridPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#3B82F6" stroke-width="1"/>
-    </pattern>
-
-    <!-- Glow filter -->
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 </svg>

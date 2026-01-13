@@ -1,4 +1,49 @@
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M43.3425 71.9746C40.83 69.3049 22.3495 41.8363 14 28C42.2387 28 74.0844 31.2927 90.072 54.5697C94.2246 60.6157 97.0525 66.9165 99.8804 73.6386C102.708 66.9165 105.536 60.6157 109.689 54.5697C125.676 31.2927 157.522 28 185.761 28L99.8804 171.134L74.1163 129.228C94.1551 110.335 108.468 114.596 115.625 118.89C118.488 111.733 120.125 87.5292 90.5767 86.685C65.5283 85.9693 47.3406 76.2228 43.3425 71.9746Z" fill="#A37FBC"/>
-<ellipse cx="99.255" cy="103.68" rx="3.57633" ry="2.9995" fill="#A37FBC"/>
+  <!-- Bug icon only, centered, clean style -->
+  <g transform="translate(100, 100)">
+    <!-- Bug body -->
+    <ellipse cx="0" cy="10" rx="31" ry="39" fill="url(#bugGrad)"/>
+
+    <!-- Bug head -->
+    <circle cx="0" cy="-16" r="18" fill="url(#bugGrad)"/>
+
+    <!-- Antennas -->
+    <path d="M -10 -24 Q -14 -30 -18 -35" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M 10 -24 Q 14 -30 18 -35" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+    <!-- Antenna tips -->
+    <circle cx="-18" cy="-35" r="3" fill="#3B82F6"/>
+    <circle cx="18" cy="-35" r="3" fill="#3B82F6"/>
+
+    <!-- Eyes -->
+    <circle cx="-6" cy="-18" r="3" fill="white" opacity="0.9"/>
+    <circle cx="6" cy="-18" r="3" fill="white" opacity="0.9"/>
+
+    <!-- Eye pupils -->
+    <circle cx="-5" cy="-17" r="1.5" fill="#1E293B"/>
+    <circle cx="7" cy="-17" r="1.5" fill="#1E293B"/>
+
+    <!-- Legs left -->
+    <path d="M -26 -5 Q -38 -2 -45 3" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M -28 10 Q -42 12 -50 16" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M -26 25 Q -38 32 -45 40" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+    <!-- Legs right -->
+    <path d="M 26 -5 Q 38 -2 45 3" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 28 10 Q 42 12 50 16" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M 26 25 Q 38 32 45 40" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" fill="none"/>
+
+    <!-- Body segments -->
+    <line x1="-15" y1="-5" x2="15" y2="-5" stroke="white" stroke-width="1" opacity="0.15"/>
+    <line x1="-17" y1="10" x2="17" y2="10" stroke="white" stroke-width="1" opacity="0.15"/>
+    <line x1="-15" y1="25" x2="15" y2="25" stroke="white" stroke-width="1" opacity="0.15"/>
+  </g>
+
+  <!-- Definitions -->
+  <defs>
+    <linearGradient id="bugGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
 </svg>
