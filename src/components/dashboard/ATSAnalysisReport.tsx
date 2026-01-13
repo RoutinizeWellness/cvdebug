@@ -36,13 +36,39 @@ export function ATSAnalysisReport({
       ).filter((k: string) => k.length > 0)
     : [];
 
-  // Handle missing keywords - can be array of strings or objects
+  // Handle missing keywords - can be array of strings or objects with detailed info
   const rawMissingKeywords = resume?.missingKeywords || resume?.criticalKeywords || [];
-  const missingKeywords = Array.isArray(rawMissingKeywords)
-    ? rawMissingKeywords.map((kw: any) =>
-        typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
-      ).filter((k: string) => k.length > 0)
+
+  // Parse missing keywords - preserve full object structure if available
+  interface MissingKeywordDetail {
+    keyword: string;
+    priority?: string;
+    section?: string;
+    context?: string;
+    frequency?: number;
+    impact?: number;
+    synonyms?: string[];
+  }
+
+  const missingKeywordsDetailed: MissingKeywordDetail[] = Array.isArray(rawMissingKeywords)
+    ? rawMissingKeywords.map((kw: any) => {
+        if (typeof kw === 'string') {
+          return { keyword: kw };
+        }
+        return {
+          keyword: kw.keyword || kw.term || '',
+          priority: kw.priority,
+          section: kw.section,
+          context: kw.context,
+          frequency: kw.frequency,
+          impact: kw.impact,
+          synonyms: kw.synonyms
+        };
+      }).filter((k: MissingKeywordDetail) => k.keyword.length > 0)
     : [];
+
+  // Simple array of keyword strings for basic display
+  const missingKeywords = missingKeywordsDetailed.map(kw => kw.keyword);
 
   // Debug logging
   console.log('[ATSAnalysisReport] Resume data:', {
@@ -609,13 +635,13 @@ export function ATSAnalysisReport({
                   </motion.div>
                 )}
 
-                {/* Missing Keywords */}
+                {/* Missing Keywords - Enhanced with detailed info for paid users */}
                 {missingKeywords.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.75 }}
-                    className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-orange-200 hover:border-orange-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[350px] max-h-[500px]"
+                    className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-orange-200 hover:border-orange-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[350px] max-h-[600px]"
                   >
                     <div className="flex items-start justify-between mb-4 flex-shrink-0">
                       <div className="flex items-center gap-3">
@@ -628,19 +654,88 @@ export function ATSAnalysisReport({
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2 overflow-y-auto pr-2 flex-1 content-start">
-                      {missingKeywords.map((keyword: string, index: number) => (
-                        <motion.span
-                          key={index}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.85 + index * 0.02 }}
-                          className="px-3 py-2 bg-orange-50 text-orange-700 rounded-lg border border-orange-200 text-sm font-medium hover:bg-orange-100 transition-colors cursor-default h-fit"
-                        >
-                          {keyword}
-                        </motion.span>
-                      ))}
-                    </div>
+
+                    {/* Show detailed cards for paid users, simple tags for free users */}
+                    {isPaidUser && missingKeywordsDetailed.some(kw => kw.priority || kw.context) ? (
+                      <div className="space-y-3 overflow-y-auto pr-2 flex-1">
+                        {missingKeywordsDetailed.slice(0, 10).map((kwDetail, index) => {
+                          const priorityConfig = {
+                            critical: { bg: 'bg-[#EF4444]/10', text: 'text-[#EF4444]', border: 'border-[#EF4444]/30', label: 'Critical' },
+                            important: { bg: 'bg-[#F59E0B]/10', text: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', label: 'Important' },
+                            'nice-to-have': { bg: 'bg-slate-100', text: 'text-[#64748B]', border: 'border-slate-200', label: 'Nice to Have' }
+                          };
+                          const priority = kwDetail.priority || 'nice-to-have';
+                          const config = priorityConfig[priority as keyof typeof priorityConfig] || priorityConfig['nice-to-have'];
+
+                          return (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.85 + index * 0.05 }}
+                              className={`rounded-lg p-4 border-2 ${config.border} ${config.bg} hover:shadow-md transition-all`}
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                  <span className={`material-symbols-outlined text-sm ${config.text}`}>
+                                    {priority === 'critical' ? 'error' : priority === 'important' ? 'warning' : 'info'}
+                                  </span>
+                                  <h4 className="text-base font-bold text-[#0F172A] font-mono">{kwDetail.keyword}</h4>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  {kwDetail.impact && (
+                                    <span className={`text-xs font-bold px-2 py-1 rounded ${config.bg} ${config.text} border ${config.border}`}>
+                                      +{kwDetail.impact}% Impact
+                                    </span>
+                                  )}
+                                  <span className={`text-xs font-semibold px-2 py-1 rounded ${config.bg} ${config.text}`}>
+                                    {config.label}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {kwDetail.section && (
+                                <div className="text-xs text-[#64748B] mb-2 flex items-center gap-1">
+                                  <span className="material-symbols-outlined text-sm">location_on</span>
+                                  <span>Add to: <span className="font-medium text-[#475569]">{kwDetail.section}</span></span>
+                                </div>
+                              )}
+
+                              {kwDetail.context && (
+                                <p className="text-sm text-[#475569] leading-relaxed mb-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded p-2">
+                                  {kwDetail.context}
+                                </p>
+                              )}
+
+                              {kwDetail.synonyms && kwDetail.synonyms.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  <span className="text-xs text-[#64748B]">Synonyms:</span>
+                                  {kwDetail.synonyms.slice(0, 3).map((syn, i) => (
+                                    <span key={i} className="text-xs px-2 py-0.5 bg-[#F8FAFC] text-[#475569] rounded border border-[#E2E8F0]">
+                                      {syn}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-2 overflow-y-auto pr-2 flex-1 content-start">
+                        {missingKeywords.map((keyword: string, index: number) => (
+                          <motion.span
+                            key={index}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.85 + index * 0.02 }}
+                            className="px-3 py-2 bg-orange-50 text-orange-700 rounded-lg border border-orange-200 text-sm font-medium hover:bg-orange-100 transition-colors cursor-default h-fit"
+                          >
+                            {keyword}
+                          </motion.span>
+                        ))}
+                      </div>
+                    )}
                   </motion.div>
                 )}
               </div>
