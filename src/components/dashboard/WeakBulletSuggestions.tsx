@@ -143,6 +143,111 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     }));
   };
 
+  // STEP 0: Extract real data from user's bullet for personalized suggestions
+  const extractRealDataFromBullet = (bullet: string): {
+    technologies: string[];
+    actions: string[];
+    numbers: Array<{ value: number; context: string }>;
+    teamSize: number | null;
+    timeframe: string | null;
+    hasExistingMetrics: boolean;
+    coreActivity: string;
+  } => {
+    // Extract technologies mentioned
+    const techPatterns = [
+      /\b(?:react|angular|vue|svelte|next\.?js|node\.?js|express|django|flask|spring|rails)\b/gi,
+      /\b(?:python|javascript|typescript|java|c\+\+|go|rust|php|ruby|swift|kotlin)\b/gi,
+      /\b(?:aws|azure|gcp|docker|kubernetes|jenkins|github|gitlab|terraform)\b/gi,
+      /\b(?:sql|mysql|postgres|mongodb|redis|elasticsearch|cassandra|dynamodb)\b/gi,
+      /\b(?:rest|graphql|api|microservices|serverless|lambda)\b/gi,
+    ];
+
+    const technologies: string[] = [];
+    techPatterns.forEach(pattern => {
+      const matches = bullet.match(pattern);
+      if (matches) {
+        technologies.push(...matches.map(m => m.toLowerCase()));
+      }
+    });
+
+    // Extract action verbs used
+    const actionPatterns = [
+      /\b(built|developed|created|designed|implemented|engineered|architected)\b/gi,
+      /\b(led|managed|coordinated|mentored|guided|supervised)\b/gi,
+      /\b(improved|optimized|enhanced|upgraded|refactored|modernized)\b/gi,
+      /\b(deployed|launched|released|delivered|shipped)\b/gi,
+      /\b(automated|streamlined|simplified|consolidated)\b/gi,
+    ];
+
+    const actions: string[] = [];
+    actionPatterns.forEach(pattern => {
+      const matches = bullet.match(pattern);
+      if (matches) {
+        actions.push(...matches.map(m => m.toLowerCase()));
+      }
+    });
+
+    // Extract numbers and their context
+    const numbers: Array<{ value: number; context: string }> = [];
+
+    // Percentages
+    const percentMatches = bullet.matchAll(/(\d+)%/g);
+    for (const match of percentMatches) {
+      numbers.push({ value: parseInt(match[1]), context: 'percentage' });
+    }
+
+    // Money
+    const moneyMatches = bullet.matchAll(/\$(\d+(?:,\d{3})*(?:\.\d+)?)\s*([kmb])?/gi);
+    for (const match of moneyMatches) {
+      let value = parseFloat(match[1].replace(/,/g, ''));
+      const multiplier = match[2]?.toLowerCase();
+      if (multiplier === 'k') value *= 1000;
+      if (multiplier === 'm') value *= 1000000;
+      if (multiplier === 'b') value *= 1000000000;
+      numbers.push({ value, context: 'money' });
+    }
+
+    // Scale numbers (users, systems, etc.)
+    const scaleMatches = bullet.matchAll(/(\d+(?:,\d{3})*)[+]?\s*(?:users|customers|clients|systems|servers|requests|records|people|members)/gi);
+    for (const match of scaleMatches) {
+      numbers.push({ value: parseInt(match[1].replace(/,/g, '')), context: 'scale' });
+    }
+
+    // Team size
+    let teamSize: number | null = null;
+    const teamMatch = bullet.match(/team\s+of\s+(\d+)/i);
+    if (teamMatch) {
+      teamSize = parseInt(teamMatch[1]);
+    }
+
+    // Timeframe
+    let timeframe: string | null = null;
+    const timeMatches = bullet.match(/(?:in|within|over)\s+(\d+)\s+(days?|weeks?|months?|years?)/i);
+    if (timeMatches) {
+      timeframe = `${timeMatches[1]} ${timeMatches[2]}`;
+    }
+
+    // Check if bullet already has metrics
+    const hasExistingMetrics = numbers.length > 0 || /%|\$/.test(bullet);
+
+    // Extract core activity (the main thing being done)
+    const coreActivity = bullet
+      .replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '') // Remove verb
+      .split(/[,;]/)[0] // Get first clause
+      .trim()
+      .toLowerCase();
+
+    return {
+      technologies: [...new Set(technologies)], // Remove duplicates
+      actions: [...new Set(actions)],
+      numbers,
+      teamSize,
+      timeframe,
+      hasExistingMetrics,
+      coreActivity,
+    };
+  };
+
   // STEP 1: Sanitize and validate the bullet before generating suggestions
   const sanitizeBullet = (bullet: string): { cleaned: string; verb: string; isValid: boolean } => {
     // Remove noise patterns that shouldn't be in bullet points
@@ -311,6 +416,9 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     // Detect action type for optimization suggestions
     const isOptimize = /\b(?:optimi[zs]e|improve|enhance|increase|reduce|decrease|boost|accelerate)\b/i.test(bullet);
 
+    // CRITICAL: Extract real data from the user's bullet to personalize suggestions
+    const extractedData = extractRealDataFromBullet(sanitized.cleaned);
+
     const suggestions: WeakBullet['suggestions'] = [];
 
     // Context-aware volume suggestions based on detected contexts
@@ -349,7 +457,95 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
       }
     };
 
-    const volumeMetric = volumeMetrics[primaryContext] || volumeMetrics['general'];
+    // PERSONALIZED METRIC GENERATION: Use extracted data to create real suggestions
+    const generatePersonalizedMetric = (type: 'volume' | 'efficiency' | 'money'): { metric: string; explanation: string } => {
+      const baseMetric = volumeMetrics[primaryContext] || volumeMetrics['general'];
+
+      // If user already has some metrics, amplify them intelligently
+      if (extractedData.hasExistingMetrics && extractedData.numbers.length > 0) {
+        const existingNum = extractedData.numbers[0];
+
+        if (type === 'volume') {
+          if (extractedData.teamSize) {
+            return {
+              metric: `leading ${extractedData.teamSize} ${extractedData.teamSize > 5 ? 'engineers' : 'team members'} to deliver for ${Math.floor(existingNum.value * 1.5)}+ ${existingNum.context === 'scale' ? 'users' : 'stakeholders'}`,
+              explanation: `Team leadership: ${extractedData.teamSize} person team impacting ${Math.floor(existingNum.value * 1.5)}+ ${existingNum.context}`
+            };
+          } else if (existingNum.context === 'scale') {
+            return {
+              metric: `scaling to ${Math.floor(existingNum.value * 2)}+ ${extractedData.coreActivity.includes('user') ? 'active users' : 'systems'} across ${Math.ceil(existingNum.value / 100000) || 3} regions`,
+              explanation: `Scale achieved: Growing from ${existingNum.value} to ${Math.floor(existingNum.value * 2)}+ shows expansion`
+            };
+          }
+        }
+
+        if (type === 'efficiency' && existingNum.context === 'percentage') {
+          const amplified = Math.min(95, Math.floor(existingNum.value * 1.3));
+          return {
+            metric: `improving ${extractedData.coreActivity || 'performance'} by ${amplified}% while reducing ${primaryContext === 'infrastructure' ? 'costs' : 'time'} by ${Math.floor(existingNum.value * 0.6)}%`,
+            explanation: `Efficiency gain: ${amplified}% improvement with ${Math.floor(existingNum.value * 0.6)}% ${primaryContext === 'infrastructure' ? 'cost' : 'time'} reduction`
+          };
+        }
+
+        if (type === 'money') {
+          if (existingNum.context === 'money') {
+            const amplified = Math.floor(existingNum.value * 1.4);
+            const formatted = amplified >= 1000000 ? `$${(amplified / 1000000).toFixed(1)}M` : `$${(amplified / 1000).toFixed(0)}K`;
+            return {
+              metric: `generating ${formatted}+ in ${primaryContext === 'web' ? 'revenue' : 'cost savings'} and improving ${extractedData.coreActivity.includes('conversion') ? 'conversion' : 'efficiency'} by 25%`,
+              explanation: `Financial impact: ${formatted} ${primaryContext === 'web' ? 'revenue' : 'savings'} demonstrates business value`
+            };
+          } else if (existingNum.context === 'percentage') {
+            return {
+              metric: `contributing to $${Math.floor(existingNum.value * 50)}K+ in annual revenue through ${existingNum.value}% improvement in ${extractedData.coreActivity || 'performance'}`,
+              explanation: `ROI calculation: ${existingNum.value}% improvement translates to $${Math.floor(existingNum.value * 50)}K revenue impact`
+            };
+          }
+        }
+      }
+
+      // If user has technologies, incorporate them
+      if (extractedData.technologies.length > 0) {
+        const tech1 = extractedData.technologies[0];
+        const tech2 = extractedData.technologies[1] || '';
+
+        if (type === 'volume') {
+          return {
+            metric: `using ${tech1}${tech2 ? ` and ${tech2}` : ''} to serve ${primaryContext === 'web' ? '50K+ users' : 'production workloads'} with 99.9% uptime`,
+            explanation: `Technical implementation: ${tech1}${tech2 ? ` + ${tech2}` : ''} stack supports production scale`
+          };
+        } else if (type === 'efficiency') {
+          return {
+            metric: `leveraging ${tech1}${tech2 ? ` and ${tech2}` : ''} to reduce latency by 50% and improve throughput by 3x`,
+            explanation: `Technology optimization: ${tech1}${tech2 ? ` + ${tech2}` : ''} enables performance gains`
+          };
+        } else if (type === 'money') {
+          return {
+            metric: `implementing ${tech1}${tech2 ? ` and ${tech2}` : ''} solution that saved $${primaryContext === 'infrastructure' ? '80' : '120'}K annually`,
+            explanation: `Cost efficiency: ${tech1}${tech2 ? ` + ${tech2}` : ''} reduces operational expenses`
+          };
+        }
+      }
+
+      // If user mentioned team leadership, emphasize that
+      if (extractedData.teamSize && type === 'money') {
+        return {
+          metric: `managing ${extractedData.teamSize}-person team delivering $${extractedData.teamSize * 150}K+ project under budget`,
+          explanation: `Leadership ROI: ${extractedData.teamSize} team members × $${150}K average contribution`
+        };
+      }
+
+      // Fallback to context-based defaults with some personalization
+      if (type === 'efficiency') {
+        return efficiencyMetrics[isOptimize ? 'optimization' : primaryContext] || efficiencyMetrics['general'];
+      } else if (type === 'money') {
+        return moneyMetrics[primaryContext] || moneyMetrics['general'];
+      }
+
+      return baseMetric;
+    };
+
+    const volumeMetric = generatePersonalizedMetric('volume');
 
     // CRITICAL FIX: Use sanitized bullet + reconstruct intelligently
     const cleanedBase = sanitized.cleaned.replace(/\.$/, '').trim();
@@ -402,7 +598,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
       }
     };
 
-    const efficiencyMetric = efficiencyMetrics[isOptimize ? 'optimization' : primaryContext] || efficiencyMetrics['general'];
+    const efficiencyMetric = generatePersonalizedMetric('efficiency');
     suggestions.push({
       type: 'efficiency',
       improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${efficiencyMetric.metric}`,
@@ -457,10 +653,11 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
       moneyMetric = moneyMetrics[primaryContext] || moneyMetrics['general'];
     }
 
+    const moneyMetricPersonalized = generatePersonalizedMetric('money');
     suggestions.push({
       type: 'money',
-      improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${moneyMetric.metric}`,
-      explanation: moneyMetric.explanation
+      improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${moneyMetricPersonalized.metric}`,
+      explanation: moneyMetricPersonalized.explanation
     });
 
     return suggestions;
