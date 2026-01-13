@@ -20,118 +20,366 @@ interface WeakBulletSuggestionsProps {
 export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = false }: WeakBulletSuggestionsProps) {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
 
-  // Detect weak bullets (sentences without numbers)
+  // Advanced weak bullet detection with statistical scoring
   const detectWeakBullets = (text: string): WeakBullet[] => {
     if (!text) return [];
 
-    // Split into sentences/bullet points
-    const sentences = text
-      .split(/[.\n•]/)
-      .map(s => s.trim())
-      .filter(s => s.length > 20 && s.length < 200); // Reasonable bullet point length
+    // Enhanced sentence splitting with better bullet point detection
+    const bulletPatterns = [
+      /^[•\-\*]\s*.+/gm,           // Traditional bullets
+      /^\d+\.\s*.+/gm,              // Numbered lists
+      /(?:^|\n)[A-Z][^.!?\n]{20,200}(?:[.!?]|$)/g  // Sentences starting with capital
+    ];
 
-    // Find sentences without any metrics
-    const weakBullets = sentences
-      .filter(sentence => {
-        // Check if sentence has NO numbers, percentages, or monetary values
-        const hasMetrics = /\d/.test(sentence);
-        return !hasMetrics && sentence.split(' ').length > 5; // At least 5 words
+    let sentences: string[] = [];
+    bulletPatterns.forEach(pattern => {
+      const matches = text.match(pattern);
+      if (matches) {
+        sentences.push(...matches.map(s => s.replace(/^[•\-\*\d]+\.\s*/, '').trim()));
+      }
+    });
+
+    // Fallback to line-based splitting if no bullets found
+    if (sentences.length === 0) {
+      sentences = text
+        .split(/[\n]/)
+        .map(s => s.trim())
+        .filter(s => s.length > 20 && s.length < 250);
+    }
+
+    // Score each sentence based on weakness (higher score = weaker)
+    interface ScoredBullet {
+      text: string;
+      weaknessScore: number;
+      reasons: string[];
+    }
+
+    const scoredBullets: ScoredBullet[] = sentences
+      .map(sentence => {
+        let score = 0;
+        const reasons: string[] = [];
+
+        // CRITICAL: No quantifiable metrics (highest penalty)
+        const hasNumbers = /\d+/.test(sentence);
+        const hasPercentage = /\d+%/.test(sentence);
+        const hasMoney = /\$[\d,]+/.test(sentence);
+        const hasScale = /\d+[kmb]?\+?\s*(?:users|customers|clients|servers|records|requests)/i.test(sentence);
+
+        if (!hasNumbers && !hasPercentage && !hasMoney && !hasScale) {
+          score += 10;
+          reasons.push("no_metrics");
+        }
+
+        // HIGH: Contains passive/weak verbs
+        const weakVerbPatterns = [
+          /\b(?:responsible\s+for|worked\s+on|helped\s+with|assisted\s+in|involved\s+in)\b/i,
+          /\b(?:participated|contributed|coordinated|collaborated)\b/i
+        ];
+        weakVerbPatterns.forEach(pattern => {
+          if (pattern.test(sentence)) {
+            score += 5;
+            reasons.push("weak_verbs");
+          }
+        });
+
+        // MEDIUM: Vague quantifiers
+        if (/\b(?:various|several|multiple|many|some)\b/i.test(sentence)) {
+          score += 4;
+          reasons.push("vague_quantifiers");
+        }
+
+        // MEDIUM: No strong action verbs at start
+        const strongVerbPattern = /^(?:Led|Built|Engineered|Architected|Scaled|Optimized|Achieved|Delivered|Increased|Reduced|Launched|Designed|Implemented|Created|Developed|Managed)\b/i;
+        if (!strongVerbPattern.test(sentence.trim())) {
+          score += 3;
+          reasons.push("no_strong_verb");
+        }
+
+        // LOW: Too short (likely incomplete)
+        if (sentence.split(/\s+/).length < 8) {
+          score += 2;
+          reasons.push("too_short");
+        }
+
+        // BONUS: Deduct points for strong signals
+        if (hasPercentage || hasMoney) score -= 3;
+        if (/\b(?:reduced|increased|improved|achieved|delivered)\b/i.test(sentence)) score -= 2;
+
+        return {
+          text: sentence,
+          weaknessScore: score,
+          reasons
+        };
       })
-      .slice(0, 3); // Show top 3
+      .filter(bullet => bullet.weaknessScore > 5 && bullet.text.split(/\s+/).length >= 5); // Only truly weak bullets
 
-    // Generate AI suggestions for each weak bullet
-    return weakBullets.map(bullet => ({
-      original: bullet,
-      suggestions: generateSuggestions(bullet)
+    // Sort by weakness (highest first) and return top 3
+    const weakestBullets = scoredBullets
+      .sort((a, b) => b.weaknessScore - a.weaknessScore)
+      .slice(0, 3);
+
+    return weakestBullets.map(bullet => ({
+      original: bullet.text,
+      suggestions: generateSuggestions(bullet.text)
     }));
   };
 
-  // Generate 3 types of metric suggestions
+  // Generate 3 types of metric suggestions with advanced context detection
   const generateSuggestions = (bullet: string): WeakBullet['suggestions'] => {
     const lowerBullet = bullet.toLowerCase();
 
-    // Detect context to provide relevant suggestions
-    const isDatabase = /database|sql|data|records|storage/i.test(bullet);
-    const isWeb = /website|app|application|frontend|backend|api/i.test(bullet);
-    const isSupport = /support|help|assist|maintain|manage|coordinate/i.test(bullet);
-    const isOptimize = /optimi[zs]e|improve|enhance|increase|reduce|decrease/i.test(bullet);
+    // Multi-factor context detection with weighted scoring
+    interface Context {
+      name: string;
+      score: number;
+      patterns: RegExp[];
+    }
+
+    const contexts: Context[] = [
+      {
+        name: 'database',
+        score: 0,
+        patterns: [
+          /\b(?:database|sql|mysql|postgres|mongodb|nosql|query|schema)\b/gi,
+          /\b(?:data|records?|storage|migration|replication)\b/gi,
+          /\b(?:orm|transaction|index|optimization)\b/gi
+        ]
+      },
+      {
+        name: 'web',
+        score: 0,
+        patterns: [
+          /\b(?:website|web\s*app|application|frontend|backend|ui|ux)\b/gi,
+          /\b(?:api|rest|graphql|endpoint|service)\b/gi,
+          /\b(?:react|angular|vue|node|express|django)\b/gi
+        ]
+      },
+      {
+        name: 'infrastructure',
+        score: 0,
+        patterns: [
+          /\b(?:cloud|aws|azure|gcp|kubernetes|docker|container)\b/gi,
+          /\b(?:ci\/cd|devops|pipeline|deployment|infrastructure)\b/gi,
+          /\b(?:server|network|hosting|scaling|load\s*balanc)/gi
+        ]
+      },
+      {
+        name: 'analytics',
+        score: 0,
+        patterns: [
+          /\b(?:analytics|metrics|data\s*science|machine\s*learning|ml|ai)\b/gi,
+          /\b(?:analysis|insights|dashboard|visualization|reporting)\b/gi,
+          /\b(?:python|pandas|numpy|tensorflow|model)\b/gi
+        ]
+      },
+      {
+        name: 'support',
+        score: 0,
+        patterns: [
+          /\b(?:support|help|assist|maintain|troubleshoot|debug)\b/gi,
+          /\b(?:customer|client|user\s*support|ticketing|incident)\b/gi,
+          /\b(?:resolve|fix|repair|diagnose)\b/gi
+        ]
+      },
+      {
+        name: 'leadership',
+        score: 0,
+        patterns: [
+          /\b(?:lead|led|manage[d]?|direct|supervise|coordinate)\b/gi,
+          /\b(?:team|mentor|coach|train|guide)\b/gi,
+          /\b(?:project\s*manage|scrum\s*master|tech\s*lead)\b/gi
+        ]
+      },
+      {
+        name: 'optimization',
+        score: 0,
+        patterns: [
+          /\b(?:optimi[zs]e[d]?|improve[d]?|enhance[d]?)\b/gi,
+          /\b(?:increase[d]?|decrease[d]?|reduce[d]?|boost|accelerate)\b/gi,
+          /\b(?:performance|efficiency|speed|latency|throughput)\b/gi
+        ]
+      },
+      {
+        name: 'security',
+        score: 0,
+        patterns: [
+          /\b(?:security|secure|authentication|authorization|oauth)\b/gi,
+          /\b(?:encrypt|ssl|tls|certificate|firewall)\b/gi,
+          /\b(?:vulnerability|penetration|audit|compliance)\b/gi
+        ]
+      }
+    ];
+
+    // Calculate context scores
+    contexts.forEach(context => {
+      context.patterns.forEach((pattern, index) => {
+        const matches = bullet.match(pattern);
+        if (matches) {
+          // Earlier patterns have higher weight (more specific)
+          const weight = 3 - index;
+          context.score += matches.length * weight;
+        }
+      });
+    });
+
+    // Get top 2 contexts
+    const topContexts = contexts
+      .filter(c => c.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 2)
+      .map(c => c.name);
+
+    const primaryContext = topContexts[0] || 'general';
+    const secondaryContext = topContexts[1];
+
+    // Detect action type for optimization suggestions
+    const isOptimize = /\b(?:optimi[zs]e|improve|enhance|increase|reduce|decrease|boost|accelerate)\b/i.test(bullet);
 
     const suggestions: WeakBullet['suggestions'] = [];
 
-    // Volume suggestion (#)
-    if (isDatabase) {
-      suggestions.push({
-        type: 'volume',
-        improved: bullet.replace(/\.$/, '') + ' of 5M+ records across 12 production servers',
-        explanation: 'Added scale: 5M+ records shows data volume you handled'
-      });
-    } else if (isSupport) {
-      suggestions.push({
-        type: 'volume',
-        improved: bullet.replace(/\.$/, '') + ' for 50+ daily active users across 3 time zones',
-        explanation: 'Added volume: 50+ users shows your support capacity'
-      });
-    } else if (isWeb) {
-      suggestions.push({
-        type: 'volume',
-        improved: bullet.replace(/\.$/, '') + ' serving 100K+ monthly active users',
-        explanation: 'Added traffic: 100K+ MAU demonstrates scale'
-      });
+    // Context-aware volume suggestions based on detected contexts
+    const volumeMetrics: Record<string, { metric: string; explanation: string }> = {
+      database: {
+        metric: 'processing 5M+ records daily across 12 production servers with 99.9% uptime',
+        explanation: 'Scale metrics: Data volume and server count show infrastructure scope'
+      },
+      web: {
+        metric: 'serving 100K+ monthly active users with <200ms average response time',
+        explanation: 'Traffic metrics: User count and performance demonstrate real-world impact'
+      },
+      infrastructure: {
+        metric: 'managing 50+ microservices across 3 AWS regions with 99.95% availability',
+        explanation: 'Infrastructure scale: Service count and multi-region deployment show complexity'
+      },
+      analytics: {
+        metric: 'analyzing 2TB+ of data daily to generate insights for 500+ stakeholders',
+        explanation: 'Data scale: Volume processed and stakeholder impact show business value'
+      },
+      support: {
+        metric: 'supporting 200+ daily users across 5 time zones with <2hr response time',
+        explanation: 'Support capacity: User count and SLA metrics demonstrate reliability'
+      },
+      leadership: {
+        metric: 'leading a cross-functional team of 12 engineers across 3 product squads',
+        explanation: 'Team scope: Team size and organizational structure show leadership scale'
+      },
+      security: {
+        metric: 'protecting 1M+ user accounts and securing 500+ API endpoints',
+        explanation: 'Security scope: User accounts and endpoints protected show responsibility'
+      },
+      general: {
+        metric: 'impacting 15+ team members and 3 major product initiatives',
+        explanation: 'Collaboration scale: Team size and project count show organizational impact'
+      }
+    };
+
+    const volumeMetric = volumeMetrics[primaryContext] || volumeMetrics['general'];
+    suggestions.push({
+      type: 'volume',
+      improved: bullet.replace(/\.$/, '') + ', ' + volumeMetric.metric,
+      explanation: volumeMetric.explanation
+    });
+
+    // Context-aware efficiency suggestions
+    const efficiencyMetrics: Record<string, { metric: string; explanation: string }> = {
+      database: {
+        metric: 'reducing query latency by 45% and improving database throughput by 3x',
+        explanation: 'Performance metrics: Latency and throughput are critical database KPIs'
+      },
+      web: {
+        metric: 'improving page load speed by 60% (3.2s → 1.3s) and boosting conversion by 25%',
+        explanation: 'UX metrics: Load speed and conversion show direct business impact'
+      },
+      infrastructure: {
+        metric: 'reducing deployment time by 70% and cutting infrastructure costs by $30K/year',
+        explanation: 'DevOps metrics: Time savings and cost reduction demonstrate ROI'
+      },
+      analytics: {
+        metric: 'accelerating insights delivery by 50% and enabling 80% faster decision-making',
+        explanation: 'Speed metrics: Faster insights drive competitive advantage'
+      },
+      support: {
+        metric: 'decreasing average resolution time by 55% (4hrs → 1.8hrs) and improving CSAT to 95%',
+        explanation: 'Support metrics: Resolution time and satisfaction are key support KPIs'
+      },
+      leadership: {
+        metric: 'increasing team velocity by 40% and reducing sprint carryover by 60%',
+        explanation: 'Agile metrics: Velocity and completion rate show leadership effectiveness'
+      },
+      optimization: {
+        metric: 'boosting system performance by 65% while reducing resource usage by 35%',
+        explanation: 'Optimization metrics: Performance gain with resource efficiency shows technical excellence'
+      },
+      security: {
+        metric: 'reducing security vulnerabilities by 80% and achieving 100% compliance',
+        explanation: 'Security metrics: Vulnerability reduction and compliance show risk mitigation'
+      },
+      general: {
+        metric: 'improving process efficiency by 45% and saving 15+ hours per week',
+        explanation: 'Efficiency metrics: Time savings demonstrate productivity impact'
+      }
+    };
+
+    const efficiencyMetric = efficiencyMetrics[isOptimize ? 'optimization' : primaryContext] || efficiencyMetrics['general'];
+    suggestions.push({
+      type: 'efficiency',
+      improved: bullet.replace(/\.$/, '') + ', ' + efficiencyMetric.metric,
+      explanation: efficiencyMetric.explanation
+    });
+
+    // Context-aware money/business impact suggestions
+    const hasRevenueContext = /\b(?:revenue|sales|profit|growth|customer|conversion)\b/i.test(bullet);
+    const hasCostContext = /\b(?:cost|budget|expense|saving|reduce|optimize)\b/i.test(bullet);
+
+    const moneyMetrics: Record<string, { metric: string; explanation: string }> = {
+      database: {
+        metric: 'reducing infrastructure costs by $75K/year while maintaining 99.9% uptime',
+        explanation: 'Cost efficiency: Infrastructure savings with reliability show fiscal responsibility'
+      },
+      web: {
+        metric: 'contributing to $2M+ in annual revenue and 35% increase in user retention',
+        explanation: 'Revenue impact: Direct contribution to top-line growth demonstrates business value'
+      },
+      infrastructure: {
+        metric: 'saving $120K/year in cloud costs through optimization and right-sizing',
+        explanation: 'Cost optimization: Cloud savings show technical and financial acumen'
+      },
+      analytics: {
+        metric: 'enabling decisions that generated $500K+ in revenue and prevented $200K in losses',
+        explanation: 'Business intelligence: Data-driven decisions show measurable business impact'
+      },
+      support: {
+        metric: 'reducing churn by 20%, retaining $300K+ in annual recurring revenue',
+        explanation: 'Customer retention: Support excellence translates to revenue protection'
+      },
+      leadership: {
+        metric: 'delivering projects on $500K budget with 15% under-spend and zero overruns',
+        explanation: 'Budget management: Financial discipline shows leadership maturity'
+      },
+      security: {
+        metric: 'preventing potential losses of $1M+ through proactive security measures',
+        explanation: 'Risk mitigation: Security investment prevents costly breaches'
+      },
+      general: {
+        metric: 'managing project budget of $150K and delivering 20% ahead of schedule',
+        explanation: 'Financial responsibility: Budget management shows trustworthiness'
+      }
+    };
+
+    let moneyMetric: { metric: string; explanation: string };
+    if (hasRevenueContext && primaryContext === 'web') {
+      moneyMetric = moneyMetrics['web'];
+    } else if (hasCostContext && (primaryContext === 'infrastructure' || primaryContext === 'database')) {
+      moneyMetric = moneyMetrics[primaryContext];
     } else {
-      suggestions.push({
-        type: 'volume',
-        improved: bullet.replace(/\.$/, '') + ' for a team of 15+ engineers',
-        explanation: 'Added team size: Shows collaboration scope'
-      });
+      moneyMetric = moneyMetrics[primaryContext] || moneyMetrics['general'];
     }
 
-    // Efficiency suggestion (%)
-    if (isOptimize) {
-      suggestions.push({
-        type: 'efficiency',
-        improved: bullet.replace(/\.$/, '') + ', reducing response time by 40% and improving user satisfaction',
-        explanation: 'Added efficiency: 40% improvement is concrete and impressive'
-      });
-    } else if (isDatabase) {
-      suggestions.push({
-        type: 'efficiency',
-        improved: bullet.replace(/\.$/, '') + ' with 99.9% uptime, reducing query latency by 25%',
-        explanation: 'Added reliability metrics: Uptime and latency are key database KPIs'
-      });
-    } else if (isWeb) {
-      suggestions.push({
-        type: 'efficiency',
-        improved: bullet.replace(/\.$/, '') + ', improving page load speed by 35% and SEO ranking',
-        explanation: 'Added performance: Load speed directly impacts user experience'
-      });
-    } else {
-      suggestions.push({
-        type: 'efficiency',
-        improved: bullet.replace(/\.$/, '') + ', saving 10+ hours per week in manual work',
-        explanation: 'Added time savings: Quantifies your efficiency impact'
-      });
-    }
-
-    // Money suggestion ($)
-    if (isWeb || lowerBullet.includes('revenue') || lowerBullet.includes('sales')) {
-      suggestions.push({
-        type: 'money',
-        improved: bullet.replace(/\.$/, '') + ', contributing to $500K+ in annual recurring revenue',
-        explanation: 'Added business impact: Revenue shows ROI of your work'
-      });
-    } else if (lowerBullet.includes('budget') || lowerBullet.includes('cost')) {
-      suggestions.push({
-        type: 'money',
-        improved: bullet.replace(/\.$/, '') + ' while reducing operational costs by $50K annually',
-        explanation: 'Added cost savings: Financial impact is highly valued'
-      });
-    } else {
-      suggestions.push({
-        type: 'money',
-        improved: bullet.replace(/\.$/, '') + ' with a project budget of $75K',
-        explanation: 'Added budget responsibility: Shows you handle resources'
-      });
-    }
+    suggestions.push({
+      type: 'money',
+      improved: bullet.replace(/\.$/, '') + ', ' + moneyMetric.metric,
+      explanation: moneyMetric.explanation
+    });
 
     return suggestions;
   };
