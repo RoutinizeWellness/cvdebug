@@ -14,7 +14,7 @@ export function ImportantIssues({ formatIssues = [], importantKeywords }: Import
         <h3 className="text-sm font-bold text-yellow-700 flex items-center gap-2">
           <AlertTriangle className="h-4 w-4" /> IMPORTANT (Optimize)
         </h3>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${totalIssues === 0 ? "bg-green-500 text-white" : "bg-yellow-500 text-white"}`}>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${totalIssues === 0 ? "bg-green-500 text-slate-900" : "bg-yellow-500 text-slate-900"}`}>
           {totalIssues} Issues
         </span>
       </div>
@@ -64,7 +64,7 @@ export function ImportantIssues({ formatIssues = [], importantKeywords }: Import
                           )}
                         </div>
                         {fix && (
-                          <div className="pl-3.5 flex items-start gap-2 text-xs text-yellow-700/80 font-medium bg-yellow-50 dark:bg-yellow-950/20 p-2.5 rounded leading-relaxed">
+                          <div className="pl-3.5 flex items-start gap-2 text-xs text-yellow-700/80 font-medium bg-yellow-50 p-2.5 rounded leading-relaxed">
                             <ArrowRight className="h-3 w-3 flex-shrink-0 mt-0.5" /> 
                             <div>
                               <strong className="block mb-1">How to Fix:</strong>

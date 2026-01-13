@@ -98,17 +98,17 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
   const completedCount = checklist.filter(item => item.status === "completed").length;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0F172A] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-[#F8FAFC] overflow-y-auto">
       {/* Main Content */}
       <main className="flex flex-col justify-center py-10 px-4 md:px-8 max-w-7xl mx-auto w-full gap-8 min-h-screen">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-4">
           <div className="flex flex-col gap-2">
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-slate-900 tracking-tight">
               Analyzing Resume Integrity
               <span className="animate-pulse text-primary">...</span>
             </h1>
-            <p className="text-slate-400 text-lg font-light flex items-center gap-2">
+            <p className="text-slate-500 text-lg font-light flex items-center gap-2">
               <span className="material-symbols-outlined text-sm">settings_suggest</span>
               Simulating ATS parsing engines
             </p>
@@ -137,7 +137,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
               ></div>
 
               {/* Resume Ghost Outline */}
-              <div className="relative z-10 w-[240px] h-[340px] border-2 border-slate-600/50 bg-slate-800/30 rounded-lg p-6 flex flex-col gap-4 shadow-2xl backdrop-blur-sm">
+              <div className="relative z-10 w-[240px] h-[340px] border-2 border-slate-600/50 bg-slate-50/30 rounded-lg p-6 flex flex-col gap-4 shadow-2xl backdrop-blur-sm">
                 {/* Header skeleton */}
                 <div className="flex gap-4 mb-4">
                   <div className="w-16 h-16 rounded-full bg-slate-600/30"></div>
@@ -172,11 +172,11 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
               </div>
 
               {/* Floating Status Indicators */}
-              <div className="absolute top-6 left-6 flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-md border border-slate-700 text-xs font-mono text-slate-300">
+              <div className="absolute top-6 left-6 flex items-center gap-2 bg-white/80 px-3 py-1 rounded-md border border-slate-200 text-xs font-mono text-slate-600">
                 <span className="material-symbols-outlined text-sm text-secondary">visibility</span>
                 <span>OCR Layer: Detected</span>
               </div>
-              <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-slate-900/80 px-3 py-1 rounded-md border border-slate-700 text-xs font-mono text-slate-300">
+              <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-white/80 px-3 py-1 rounded-md border border-slate-200 text-xs font-mono text-slate-600">
                 <span className="material-symbols-outlined text-sm text-primary">memory</span>
                 <span>Memory: 45MB</span>
               </div>
@@ -185,10 +185,10 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
             {/* Main Progress Bar */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-end px-1">
-                <span className="text-white text-sm font-medium tracking-wide">System Scan In Progress</span>
+                <span className="text-slate-900 text-sm font-medium tracking-wide">System Scan In Progress</span>
                 <span className="text-primary text-lg font-mono font-bold">{progress}%</span>
               </div>
-              <div className="h-3 bg-slate-800 rounded-full overflow-hidden relative border border-slate-700">
+              <div className="h-3 bg-slate-50 rounded-full overflow-hidden relative border border-slate-200">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
@@ -209,7 +209,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
 
             {/* Terminal Widget */}
             <div className="glass-panel rounded-xl overflow-hidden flex flex-col h-64 shadow-lg">
-              <div className="bg-slate-900/80 px-4 py-2 border-b border-white/5 flex items-center justify-between">
+              <div className="bg-white/80 px-4 py-2 border-b border-white/5 flex items-center justify-between">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
@@ -226,17 +226,17 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.2 }}
-                        className={`flex gap-3 text-slate-400 ${log.status === 'WARN' ? 'bg-yellow-500/10 p-1 rounded -mx-1' : ''}`}
+                        className={`flex gap-3 text-slate-500 ${log.status === 'WARN' ? 'bg-yellow-500/10 p-1 rounded -mx-1' : ''}`}
                       >
                         <span className="text-slate-600">[{log.timestamp}]</span>
                         <span className={`${statusColors[log.status]} font-bold`}>{log.status}</span>
-                        <span className={log.status === 'WARN' ? 'text-slate-300' : ''}>{log.message}</span>
+                        <span className={log.status === 'WARN' ? 'text-slate-600' : ''}>{log.message}</span>
                       </motion.div>
                     ))}
                   </AnimatePresence>
                   {logs.length > 0 && (
                     <motion.div
-                      className="flex gap-3 text-slate-400 animate-pulse"
+                      className="flex gap-3 text-slate-500 animate-pulse"
                       animate={{ opacity: [1, 0.5, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
@@ -254,7 +254,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
           {/* Right Column: Checklist Sidebar */}
           <div className="lg:col-span-4 flex flex-col">
             <div className="glass-panel rounded-xl p-6 flex flex-col gap-6 border border-white/5">
-              <h3 className="text-white font-display text-lg font-bold border-b border-white/10 pb-4 flex justify-between items-center">
+              <h3 className="text-slate-900 font-display text-lg font-bold border-b border-white/10 pb-4 flex justify-between items-center">
                 Analysis Queue
                 <span className="bg-primary/20 text-primary text-xs px-2 py-1 rounded font-mono">
                   {completedCount}/{checklist.length}
@@ -268,10 +268,10 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                   <div key={idx} className={`flex gap-4 items-start ${item.status === 'pending' ? 'opacity-60' : ''}`}>
                     <div className={`relative z-10 flex-shrink-0 size-10 rounded-full flex items-center justify-center ${
                       item.status === 'completed'
-                        ? 'bg-slate-900 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                        ? 'bg-white border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
                         : item.status === 'active'
-                        ? 'bg-slate-900 border border-primary shadow-[0_0_15px_rgba(59,130,246,0.5)]'
-                        : 'bg-slate-800 border border-slate-600'
+                        ? 'bg-white border border-primary shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                        : 'bg-slate-50 border border-slate-600'
                     }`}>
                       {item.status === 'completed' && (
                         <span className="material-symbols-outlined text-emerald-500 text-xl">check</span>
@@ -284,7 +284,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                       )}
                     </div>
                     <div className="flex flex-col pt-1">
-                      <h4 className={`font-medium text-base ${item.status === 'pending' ? 'text-slate-300' : 'text-white'}`}>
+                      <h4 className={`font-medium text-base ${item.status === 'pending' ? 'text-slate-600' : 'text-slate-900'}`}>
                         {item.title}
                       </h4>
                       {item.status === 'completed' && (
@@ -302,7 +302,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                       {item.status === 'pending' && (
                         <p className="text-slate-500 text-xs font-mono mt-1">PENDING</p>
                       )}
-                      <p className="text-slate-400 text-xs mt-1">{item.subtitle}</p>
+                      <p className="text-slate-500 text-xs mt-1">{item.subtitle}</p>
                     </div>
                   </div>
                 ))}

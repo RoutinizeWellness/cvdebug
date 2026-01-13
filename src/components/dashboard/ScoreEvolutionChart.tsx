@@ -15,8 +15,8 @@ export function ScoreEvolutionChart() {
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
             <Target className="h-8 w-8 text-primary" />
           </div>
-          <h3 className="text-lg font-bold text-white mb-2">No Score History Yet</h3>
-          <p className="text-sm text-slate-400 max-w-md">
+          <h3 className="text-lg font-bold text-slate-900 mb-2">No Score History Yet</h3>
+          <p className="text-sm text-slate-500 max-w-md">
             Upload and scan your resume to start tracking your progress. Watch your score improve over time!
           </p>
         </div>
@@ -51,11 +51,11 @@ export function ScoreEvolutionChart() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
             Score Evolution
           </h2>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Track your progress over {scoredResumes.length} versions
           </p>
         </div>
@@ -73,7 +73,7 @@ export function ScoreEvolutionChart() {
               : "bg-gradient-to-br from-orange-500/20 to-red-500/20 border-2 border-orange-500/30"
           }`}
         >
-          <p className="text-xs font-semibold text-slate-300 text-center">Current Score</p>
+          <p className="text-xs font-semibold text-slate-600 text-center">Current Score</p>
           <p className={`text-3xl font-black text-center ${
             latestScore >= 90 ? "text-green-400"
             : latestScore >= 70 ? "text-blue-400"
@@ -86,14 +86,14 @@ export function ScoreEvolutionChart() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-200">
           <div className="flex items-center gap-2 mb-2">
             {improvement >= 0 ? (
               <TrendingUp className="h-4 w-4 text-green-400" />
             ) : (
               <TrendingDown className="h-4 w-4 text-red-400" />
             )}
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Improvement
             </p>
           </div>
@@ -103,10 +103,10 @@ export function ScoreEvolutionChart() {
           <p className="text-xs text-slate-500 mt-1">points</p>
         </div>
 
-        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-200">
           <div className="flex items-center gap-2 mb-2">
             <Trophy className="h-4 w-4 text-yellow-400" />
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Peak Score
             </p>
           </div>
@@ -114,10 +114,10 @@ export function ScoreEvolutionChart() {
           <p className="text-xs text-slate-500 mt-1">highest</p>
         </div>
 
-        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+        <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-200">
           <div className="flex items-center gap-2 mb-2">
             <Zap className="h-4 w-4 text-blue-400" />
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Average
             </p>
           </div>
@@ -133,7 +133,7 @@ export function ScoreEvolutionChart() {
           {[100, 75, 50, 25, 0].map((value) => (
             <div key={value} className="flex items-center">
               <span className="text-xs text-slate-600 w-8">{value}</span>
-              <div className="flex-1 h-px bg-slate-800/50" />
+              <div className="flex-1 h-px bg-slate-50/50" />
             </div>
           ))}
         </div>
@@ -183,10 +183,10 @@ export function ScoreEvolutionChart() {
                 </div>
 
                 {/* Tooltip */}
-                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#0F172A] border border-primary/30 rounded-lg px-3 py-2 whitespace-nowrap z-10 pointer-events-none">
-                  <p className="text-xs font-semibold text-white">Version {i + 1}</p>
+                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#F8FAFC] border border-primary/30 rounded-lg px-3 py-2 whitespace-nowrap z-10 pointer-events-none">
+                  <p className="text-xs font-semibold text-slate-900">Version {i + 1}</p>
                   <p className="text-lg font-bold text-primary">{score}</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500">
                     {new Date(resume._creationTime).toLocaleDateString('es-ES')}
                   </p>
                   {/* Arrow */}
@@ -197,7 +197,7 @@ export function ScoreEvolutionChart() {
 
                 {/* Label */}
                 <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-center">
-                  <p className="text-xs font-semibold text-slate-400">
+                  <p className="text-xs font-semibold text-slate-500">
                     {isLatest ? "Latest" : `v${i + 1}`}
                   </p>
                 </div>
@@ -228,7 +228,7 @@ export function ScoreEvolutionChart() {
                 ? "🎉 You're on a roll! Keep optimizing!"
                 : "Keep pushing! Your next scan could be your best yet."}
             </p>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               {scoredResumes.length} scans completed • {improvement >= 0 ? `+${improvement}` : improvement} points total improvement
             </p>
           </div>

@@ -100,14 +100,14 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
         }`}>
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className={`h-4 w-4 ${isSprintActive ? "text-zinc-400" : "text-yellow-400 animate-pulse"}`} />
-            <span className={`text-xs font-bold ${isSprintActive ? "text-zinc-300" : "text-white"}`}>
+            <span className={`text-xs font-bold ${isSprintActive ? "text-zinc-300" : "text-slate-900"}`}>
               {isSprintActive ? "Sprint Active" : "Unlock Interview Sprint"}
             </span>
           </div>
           
           {isSprintActive ? (
             <div className="space-y-1">
-              <div className="text-2xl font-mono font-bold text-white tracking-tight">
+              <div className="text-2xl font-mono font-bold text-slate-900 tracking-tight">
                 48h 12m
               </div>
               <p className="text-[10px] text-zinc-500">of Unlimited Access remaining</p>

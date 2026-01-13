@@ -95,21 +95,21 @@ export function RobotTerminalView({
       case "command":
         return "text-primary";
       default:
-        return "text-slate-400";
+        return "text-slate-500";
     }
   };
 
   return (
-    <div className="bg-[#0c1220] border border-slate-700 rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[500px]">
+    <div className="bg-[#0c1220] border border-slate-200 rounded-xl overflow-hidden shadow-2xl flex flex-col h-full min-h-[500px]">
       {/* Terminal Header */}
-      <div className="bg-[#1E293B] px-4 py-3 flex items-center justify-between border-b border-slate-700">
+      <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-slate-200">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
             <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
           </div>
-          <div className="ml-4 flex items-center gap-2 px-3 py-1 bg-black/30 rounded text-xs font-mono text-slate-400 border border-slate-700/50">
+          <div className="ml-4 flex items-center gap-2 px-3 py-1 bg-black/30 rounded text-xs font-mono text-slate-500 border border-slate-200/50">
             <Terminal className="h-3.5 w-3.5" />
             system_scan_logs.log
           </div>
@@ -122,7 +122,7 @@ export function RobotTerminalView({
         {/* Matrix-like background effect */}
         <div className="absolute inset-0 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5"></div>
 
-        <div className="text-slate-300 space-y-1 relative z-10">
+        <div className="text-slate-600 space-y-1 relative z-10">
           {displayedLogs.map((log, index) => (
             <motion.p
               key={index}

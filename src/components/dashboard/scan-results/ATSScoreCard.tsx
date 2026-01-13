@@ -31,7 +31,7 @@ export function ATSScoreCard({ score, showDetails = true }: ATSScoreCardProps) {
       <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-primary/20 blur-[80px] pointer-events-none"></div>
 
       <div className="flex flex-col items-center justify-center relative z-10">
-        <h3 className="text-sm uppercase tracking-widest text-slate-400 font-semibold mb-6">
+        <h3 className="text-sm uppercase tracking-widest text-slate-500 font-semibold mb-6">
           ATS Compatibility Score
         </h3>
 
@@ -79,7 +79,7 @@ export function ATSScoreCard({ score, showDetails = true }: ATSScoreCardProps) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-5xl font-black text-white tracking-tighter drop-shadow-lg"
+              className="text-5xl font-black text-slate-900 tracking-tighter drop-shadow-lg"
             >
               {score}%
             </motion.span>
@@ -101,7 +101,7 @@ export function ATSScoreCard({ score, showDetails = true }: ATSScoreCardProps) {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="w-full text-center"
           >
-            <p className="text-slate-300 text-sm mb-2">
+            <p className="text-slate-600 text-sm mb-2">
               {score >= 80
                 ? "Great! Your resume passes most ATS systems."
                 : score >= 50

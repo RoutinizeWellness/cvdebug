@@ -51,17 +51,17 @@ export function SubscriptionView() {
         {/* Top Breadcrumbs & Actions */}
         <header className="flex items-center justify-between px-8 py-6">
           <div className="flex items-center gap-2 text-sm">
-            <a className="text-slate-400 hover:text-white transition-colors" href="#">
+            <a className="text-slate-500 hover:text-slate-900 transition-colors" href="#">
               Settings
             </a>
             <span className="material-symbols-outlined text-slate-600 text-[16px]">chevron_right</span>
-            <span className="text-white font-medium">Subscription</span>
+            <span className="text-slate-900 font-medium">Subscription</span>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 text-slate-400 hover:text-white transition-colors">
+            <button className="p-2 text-slate-500 hover:text-slate-900 transition-colors">
               <span className="material-symbols-outlined">notifications</span>
             </button>
-            <button className="p-2 text-slate-400 hover:text-white transition-colors">
+            <button className="p-2 text-slate-500 hover:text-slate-900 transition-colors">
               <span className="material-symbols-outlined">help</span>
             </button>
           </div>
@@ -74,8 +74,8 @@ export function SubscriptionView() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-2"
           >
-            <h2 className="text-3xl font-bold text-white tracking-tight">Subscription Management</h2>
-            <p className="text-slate-400 max-w-2xl text-lg">
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Subscription Management</h2>
+            <p className="text-slate-500 max-w-2xl text-lg">
               Manage your current plan, billing details, and unlock premium interview preparation sprints.
             </p>
           </motion.div>
@@ -85,7 +85,7 @@ export function SubscriptionView() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border-2 border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300"
+            className="glass-panel rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border-2 border-slate-200/50 hover:border-cyan-500/30 transition-all duration-300"
           >
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
@@ -93,7 +93,7 @@ export function SubscriptionView() {
 
             <div className="flex flex-col gap-5 relative z-10 max-w-xl flex-1">
               <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-2 bg-slate-800/80 border border-slate-600 text-slate-300 px-3 py-1.5 rounded-lg shadow-sm">
+                <div className="flex items-center gap-2 bg-slate-50/80 border border-slate-600 text-slate-600 px-3 py-1.5 rounded-lg shadow-sm">
                   <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
                   <span className="text-xs font-bold uppercase tracking-wide">Current Plan</span>
                 </div>
@@ -107,7 +107,7 @@ export function SubscriptionView() {
               </div>
 
               <div>
-                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 flex items-center gap-2 flex-wrap">
+                <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 flex items-center gap-2 flex-wrap">
                   {isFreeTier && (
                     <>
                       <span>Free Preview</span>
@@ -127,7 +127,7 @@ export function SubscriptionView() {
                     </>
                   )}
                 </h3>
-                <p className="text-slate-300 text-base leading-relaxed">
+                <p className="text-slate-600 text-base leading-relaxed">
                   {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
                   {isSingleScan && (
                     <>
@@ -137,8 +137,8 @@ export function SubscriptionView() {
                   {isInterviewSprint && (
                     <>
                       You have <span className="text-cyan-400 font-bold">unlimited scans</span> for{" "}
-                      <span className="text-white font-bold bg-cyan-500/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
-                      <span className="text-white font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
+                      <span className="text-slate-900 font-bold bg-cyan-500/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      <span className="text-slate-900 font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
                 </p>
@@ -146,14 +146,14 @@ export function SubscriptionView() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 shrink-0 w-full sm:w-auto">
-              <a className="text-slate-300 hover:text-white text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-slate-800/50 rounded-lg border border-transparent hover:border-slate-700 text-center" href="#">
+              <a className="text-slate-600 hover:text-slate-900 text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-slate-50/50 rounded-lg border border-transparent hover:border-slate-200 text-center" href="#">
                 <span className="flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">receipt_long</span>
                   Billing History
                 </span>
               </a>
               {!isFreeTier && (
-                <button className="bg-slate-800/80 hover:bg-slate-700 border border-slate-600 hover:border-red-500/50 text-white hover:text-red-400 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg hover:shadow-red-900/20">
+                <button className="bg-slate-50/80 hover:bg-slate-700 border border-slate-600 hover:border-red-500/50 text-slate-900 hover:text-red-400 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg hover:shadow-red-900/20">
                   <span className="flex items-center justify-center gap-2">
                     <span className="material-symbols-outlined text-[18px]">cancel</span>
                     Cancel Plan
@@ -166,7 +166,7 @@ export function SubscriptionView() {
           {/* Pricing Section */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold text-white">Upgrade Options</h3>
+              <h3 className="text-2xl font-bold text-slate-900">Upgrade Options</h3>
               <span className="text-xs text-slate-500 font-medium">Pay once, use forever</span>
             </div>
 
@@ -176,24 +176,24 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="glass-panel rounded-2xl p-6 md:p-7 flex flex-col h-full border-slate-700/50 hover:border-teal-500/50 hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)] transition-all duration-300 group relative overflow-hidden"
+                className="glass-panel rounded-2xl p-6 md:p-7 flex flex-col h-full border-slate-200/50 hover:border-teal-500/50 hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)] transition-all duration-300 group relative overflow-hidden"
               >
                 {/* Subtle background glow */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 group-hover:border-teal-500/30 transition-colors">
-                      <span className="material-symbols-outlined text-slate-400 group-hover:text-teal-400 text-[24px] transition-colors">bolt</span>
+                    <div className="p-2.5 rounded-xl bg-slate-50/80 border border-slate-200 group-hover:border-teal-500/30 transition-colors">
+                      <span className="material-symbols-outlined text-slate-500 group-hover:text-teal-400 text-[24px] transition-colors">bolt</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-white">Single Scan</h4>
+                      <h4 className="text-xl font-bold text-slate-900">Single Scan</h4>
                       <p className="text-slate-500 text-xs mt-0.5 font-medium uppercase tracking-wide">One-time payment</p>
                     </div>
                   </div>
 
                   <div className="flex items-baseline gap-2 mb-6">
-                    <span className="text-4xl font-black text-white">€4.99</span>
+                    <span className="text-4xl font-black text-slate-900">€4.99</span>
                     <span className="text-slate-500 text-base">/once</span>
                   </div>
 
@@ -209,14 +209,14 @@ export function SubscriptionView() {
                         <div className="p-1 rounded-lg bg-teal-500/10 border border-teal-500/20">
                           <span className="material-symbols-outlined text-teal-400 text-[16px]">{feature.icon}</span>
                         </div>
-                        <p className="text-sm text-slate-300 font-medium leading-relaxed">{feature.text}</p>
+                        <p className="text-sm text-slate-600 font-medium leading-relaxed">{feature.text}</p>
                       </div>
                     ))}
                   </div>
 
                   <button
                     disabled={isSingleScan}
-                    className="w-full py-3.5 rounded-xl border-2 border-slate-600 bg-slate-800/50 text-white font-bold hover:bg-slate-700/80 hover:border-teal-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                    className="w-full py-3.5 rounded-xl border-2 border-slate-600 bg-slate-50/50 text-slate-900 font-bold hover:bg-slate-700/80 hover:border-teal-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
                   >
                     {isSingleScan ? (
                       <span className="flex items-center justify-center gap-2">
@@ -242,7 +242,7 @@ export function SubscriptionView() {
 
                 {/* Best Value Badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                  <div className="bg-gradient-to-r from-cyan-600 via-teal-500 to-cyan-600 text-white text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-cyan-500/40 border-2 border-cyan-400/30 animate-pulse">
+                  <div className="bg-gradient-to-r from-cyan-600 via-teal-500 to-cyan-600 text-slate-900 text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-cyan-500/40 border-2 border-cyan-400/30 animate-pulse">
                     <span className="flex items-center gap-1.5">
                       🚀 BEST VALUE - SAVE 60%
                     </span>
@@ -255,7 +255,7 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-cyan-400 text-[24px]">rocket_launch</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-black text-white flex items-center gap-2">
+                      <h4 className="text-xl font-black text-slate-900 flex items-center gap-2">
                         Interview Sprint
                       </h4>
                       <p className="text-cyan-300 text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
@@ -271,7 +271,7 @@ export function SubscriptionView() {
                     <div className="px-2.5 py-1 rounded-md bg-green-500/10 border border-green-500/30">
                       <p className="text-green-400 text-xs font-bold">60% OFF</p>
                     </div>
-                    <p className="text-slate-400 text-xs italic">Joined by 1,200+ candidates</p>
+                    <p className="text-slate-500 text-xs italic">Joined by 1,200+ candidates</p>
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
@@ -286,13 +286,13 @@ export function SubscriptionView() {
                         <div className="p-1 rounded-lg bg-cyan-500/20 border border-cyan-500/40 shadow-sm shadow-cyan-500/20">
                           <span className="material-symbols-outlined text-cyan-400 text-[16px]">{feature.icon}</span>
                         </div>
-                        <p className="text-sm text-white font-semibold leading-relaxed">{feature.text}</p>
+                        <p className="text-sm text-slate-900 font-semibold leading-relaxed">{feature.text}</p>
                       </div>
                     ))}
                   </div>
 
                   {/* Social Proof */}
-                  <div className="mb-6 p-4 rounded-xl bg-slate-900/60 border border-slate-700/50">
+                  <div className="mb-6 p-4 rounded-xl bg-white/60 border border-slate-200/50">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="flex -space-x-2">
                         {[1, 2, 3].map((i) => (
@@ -301,14 +301,14 @@ export function SubscriptionView() {
                       </div>
                       <span className="text-xs font-bold text-cyan-400">1,200+ Success Stories</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 leading-tight">
-                      "Got interviews at <span className="text-white font-bold">Google</span> & <span className="text-white font-bold">Netflix</span> in one week"
+                    <p className="text-[10px] text-slate-500 leading-tight">
+                      "Got interviews at <span className="text-slate-900 font-bold">Google</span> & <span className="text-slate-900 font-bold">Netflix</span> in one week"
                     </p>
                   </div>
 
                   <button
                     disabled={isInterviewSprint}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-black shadow-[0_0_30px_-5px_rgba(6,182,212,0.5)] hover:shadow-[0_0_40px_-5px_rgba(6,182,212,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-slate-900 font-black shadow-[0_0_30px_-5px_rgba(6,182,212,0.5)] hover:shadow-[0_0_40px_-5px_rgba(6,182,212,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
                   >
                     {isInterviewSprint ? (
                       <span className="flex items-center justify-center gap-2">
@@ -328,13 +328,13 @@ export function SubscriptionView() {
           </div>
 
           {/* FAQ or Trust Section Footer */}
-          <div className="mt-8 border-t border-slate-800/60 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
+          <div className="mt-8 border-t border-slate-200/60 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
             <p>© 2026 CVDebug Inc. All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
-              <a className="hover:text-slate-300 transition-colors" href="#">
+              <a className="hover:text-slate-600 transition-colors" href="#">
                 Privacy Policy
               </a>
-              <a className="hover:text-slate-300 transition-colors" href="#">
+              <a className="hover:text-slate-600 transition-colors" href="#">
                 Terms of Service
               </a>
             </div>

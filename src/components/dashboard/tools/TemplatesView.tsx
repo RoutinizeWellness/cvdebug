@@ -68,7 +68,7 @@ export function TemplatesView() {
               </div>
 
               <div className="absolute top-3 right-3 z-20">
-                <Badge variant="secondary" className="bg-black/50 backdrop-blur border-white/10 text-white">
+                <Badge variant="secondary" className="bg-black/50 backdrop-blur border-white/10 text-slate-900">
                   <Lock className="h-3 w-3 mr-1" /> Premium
                 </Badge>
               </div>

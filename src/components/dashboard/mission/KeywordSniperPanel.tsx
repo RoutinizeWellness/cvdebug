@@ -95,7 +95,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                 </div>
               </div>
               <div>
-                <SheetTitle className="text-xl font-bold text-white">{job.jobTitle}</SheetTitle>
+                <SheetTitle className="text-xl font-bold text-slate-900">{job.jobTitle}</SheetTitle>
                 <SheetDescription className="flex items-center gap-2 text-zinc-400 mt-1">
                   <Briefcase className="h-3 w-3" /> {job.company}
                 </SheetDescription>
@@ -137,10 +137,10 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
                     <Lock className="h-4 w-4 text-teal-400" />
-                    <h3 className="font-bold text-white text-sm">Unlock Full Analysis</h3>
+                    <h3 className="font-bold text-slate-900 text-sm">Unlock Full Analysis</h3>
                   </div>
                   <p className="text-xs text-zinc-300 mb-3">
-                    Detected <span className="font-bold text-white">{totalMissing} missing keywords</span>. 
+                    Detected <span className="font-bold text-slate-900">{totalMissing} missing keywords</span>. 
                     Here are 2: <span className="font-mono text-teal-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
                   </p>
                   <Button size="sm" className="w-full bg-white text-black hover:bg-zinc-200 font-bold h-8 text-xs">
@@ -214,7 +214,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                             />
                           )}
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-white">{keyword}</span>
+                            <span className="font-bold text-slate-900">{keyword}</span>
                             <ArrowRight className="h-4 w-4 text-zinc-500" />
                           </div>
                         </motion.div>
@@ -258,7 +258,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
             ) : activeTab === 'diff' ? (
               <div className="space-y-6">
                 <div className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
-                  <h3 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
                     <ArrowRightLeft className="h-4 w-4 text-blue-400" />
                     Augmentation Visualizer
                   </h3>
@@ -325,7 +325,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                     <div key={i} className="group rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors">
                       <div className="p-3">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-bold text-white">{keyword}</span>
+                          <span className="font-bold text-slate-900">{keyword}</span>
                           <Badge variant="destructive" className="text-[10px] uppercase">Missing</Badge>
                         </div>
                         <p className="text-xs text-zinc-500 mb-3">

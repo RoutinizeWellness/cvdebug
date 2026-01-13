@@ -13,8 +13,8 @@ interface QuickFixListProps {
 
 export function QuickFixList({ fixes }: QuickFixListProps) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-      <h3 className="text-white font-bold text-lg mb-6 flex items-center gap-2">
+    <div className="bg-white border border-slate-200 rounded-xl p-6">
+      <h3 className="text-slate-900 font-bold text-lg mb-6 flex items-center gap-2">
         <CheckCircle2 className="h-5 w-5 text-primary" />
         Quick Fixes
       </h3>
@@ -32,8 +32,8 @@ export function QuickFixList({ fixes }: QuickFixListProps) {
             <div
               className={`rounded-full p-0.5 mt-0.5 ${
                 fix.completed
-                  ? "bg-green-500 text-white"
-                  : "bg-slate-900 border border-red-500 text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors"
+                  ? "bg-green-500 text-slate-900"
+                  : "bg-white border border-red-500 text-red-500 group-hover:bg-red-500 group-hover:text-slate-900 transition-colors"
               }`}
             >
               {fix.completed ? (
@@ -46,14 +46,14 @@ export function QuickFixList({ fixes }: QuickFixListProps) {
               <p
                 className={`text-sm font-medium ${
                   fix.completed
-                    ? "text-white line-through decoration-white/30 text-opacity-70"
-                    : "text-white font-bold"
+                    ? "text-slate-900 line-through decoration-white/30 text-opacity-70"
+                    : "text-slate-900 font-bold"
                 }`}
               >
                 {fix.title}
               </p>
               {fix.description && !fix.completed && (
-                <p className="text-xs text-slate-400 mt-1">{fix.description}</p>
+                <p className="text-xs text-slate-500 mt-1">{fix.description}</p>
               )}
             </div>
           </div>

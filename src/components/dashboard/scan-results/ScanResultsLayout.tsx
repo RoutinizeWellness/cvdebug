@@ -76,11 +76,11 @@ export function ScanResultsLayout({
 
           {isPremium && (
             <div className="glass-card rounded-xl p-6">
-              <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <h3 className="text-slate-900 font-bold mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-accent">check_circle</span>
                 Premium Features Unlocked
               </h3>
-              <p className="text-slate-400 text-sm">
+              <p className="text-slate-500 text-sm">
                 You have access to all missing keywords, detailed format fixes, and AI-powered
                 optimization suggestions.
               </p>

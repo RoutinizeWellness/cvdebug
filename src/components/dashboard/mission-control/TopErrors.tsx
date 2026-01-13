@@ -41,16 +41,16 @@ export function TopErrors() {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-white text-lg font-bold flex items-center gap-2">
+        <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
           <Bug className="h-5 w-5 text-rose-500" />
           Top Errors
         </h3>
         <span className="text-xs text-slate-500 font-mono">Master_CV_v4.pdf</span>
       </div>
 
-      <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-slate-800 overflow-hidden shadow-inner shadow-black/50">
+      <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-slate-200 overflow-hidden shadow-sm shadow-black/50">
         {/* Terminal Header */}
-        <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+        <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-slate-200">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
             <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
@@ -73,7 +73,7 @@ export function TopErrors() {
                 [{error.type}]
               </span>
               <div className="flex flex-col gap-1">
-                <span className="text-slate-300 group-hover:text-white transition-colors">
+                <span className="text-slate-600 group-hover:text-slate-900 transition-colors">
                   {error.message}
                 </span>
                 <span className="text-slate-600">{error.details}</span>
@@ -93,7 +93,7 @@ export function TopErrors() {
         </div>
 
         {/* Action Button */}
-        <div className="p-3 border-t border-slate-800 bg-[#161b22]">
+        <div className="p-3 border-t border-slate-200 bg-[#161b22]">
           <Button className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 text-xs font-bold border border-rose-500/20 hover:border-rose-500/40 transition-all">
             <Wrench className="h-4 w-4" />
             DEBUG MASTER CV

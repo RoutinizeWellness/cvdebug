@@ -43,14 +43,14 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
 
         <div className="flex flex-col gap-6 flex-1 w-full text-center lg:text-left">
           <div>
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-${statusInfo.color}-100 dark:bg-${statusInfo.color}-500/20 text-${statusInfo.color}-700 dark:text-${statusInfo.color}-200 text-xs font-bold uppercase tracking-wider mb-4 border border-${statusInfo.color}-200 dark:border-${statusInfo.color}-500/30`}>
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-${statusInfo.color}-100 text-${statusInfo.color}-700 text-xs font-bold uppercase tracking-wider mb-4 border border-${statusInfo.color}-200`}>
               <span className={`size-2 rounded-full bg-${statusInfo.color}-500 animate-pulse`}></span>
               {statusInfo.status}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-stone-900 mb-4">
               Your resume is {statusInfo.message} <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">{statusInfo.percentage} of bots</span>.
             </h1>
-            <p className="text-stone-600 dark:text-stone-300 text-lg max-w-2xl mx-auto lg:mx-0">
+            <p className="text-stone-600 text-lg max-w-2xl mx-auto lg:mx-0">
               {score >= 80 
                 ? 'Great job! Your resume is well-optimized for ATS systems.' 
                 : score >= 50 
@@ -63,7 +63,7 @@ export function ScoreCard({ score, wordCount = 0, pageCount = 1, parsingTime = 0
               <Download className="h-5 w-5" />
               Download Report
             </Button>
-            <Button variant="outline" className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-white font-medium hover:bg-stone-300 dark:hover:bg-stone-700 transition-colors">
+            <Button variant="outline" className="flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-stone-200 text-stone-900 font-medium hover:bg-stone-300 transition-colors">
               <Share2 className="h-5 w-5" />
               Share Results
             </Button>

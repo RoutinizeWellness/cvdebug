@@ -111,15 +111,15 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
             className={`glass-panel rounded-xl p-5 relative overflow-hidden group ${colors.border}`}
           >
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <metric.icon className="h-16 w-16 text-white" />
+              <metric.icon className="h-16 w-16 text-slate-900" />
             </div>
 
             <div className="flex flex-col gap-1 relative z-10">
-              <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+              <p className="text-slate-500 text-sm font-medium uppercase tracking-wider">
                 {metric.title}
               </p>
               <div className="flex items-baseline gap-2 mt-1">
-                <p className="text-white text-4xl font-mono font-bold">
+                <p className="text-slate-900 text-4xl font-mono font-bold">
                   {metric.value}
                   {metric.subtitle && metric.variant !== "danger" && (
                     <span className="text-xl text-slate-500">{metric.subtitle}</span>

@@ -66,9 +66,9 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
           <AlertTriangle className={`h-5 w-5 ${iconColor}`} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
+          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
             {title}
-            <span className={`px-2 py-0.5 rounded-full ${badgeColor} text-white text-[10px] uppercase tracking-wider`}>
+            <span className={`px-2 py-0.5 rounded-full ${badgeColor} text-slate-900 text-[10px] uppercase tracking-wider`}>
               {badgeText}
             </span>
           </h3>

@@ -54,26 +54,26 @@ export function LiveResumeOptimizer({ initialText = "", targetKeywords, onScoreC
   };
 
   return (
-    <div className="flex h-[calc(100vh-200px)] gap-1 bg-[#050505] rounded-lg border border-slate-800 overflow-hidden">
+    <div className="flex h-[calc(100vh-200px)] gap-1 bg-[#050505] rounded-lg border border-slate-200 overflow-hidden">
       {/* Left Side - Editor */}
-      <div className="flex-1 flex flex-col border-r border-slate-800">
-        <div className="px-4 py-2 bg-[#0A0A0A] border-b border-slate-800 flex items-center justify-between">
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Resume Editor</span>
+      <div className="flex-1 flex flex-col border-r border-slate-200">
+        <div className="px-4 py-2 bg-[#0A0A0A] border-b border-slate-200 flex items-center justify-between">
+          <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Resume Editor</span>
           <span className="text-xs text-slate-500 font-mono">{resumeText.length} characters</span>
         </div>
         <Textarea
           value={resumeText}
           onChange={(e) => setResumeText(e.target.value)}
           placeholder="Paste your resume content here and watch the score update in real-time..."
-          className="flex-1 bg-[#050505] border-0 text-slate-200 font-mono text-sm leading-relaxed resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-6"
+          className="flex-1 bg-[#050505] border-0 text-slate-700 font-mono text-sm leading-relaxed resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-6"
           style={{ fontFamily: "'JetBrains Mono', 'Roboto Mono', monospace" }}
         />
       </div>
 
       {/* Right Side - Live Score */}
       <div className="w-80 flex flex-col bg-[#0A0A0A]">
-        <div className="px-4 py-2 bg-[#0F0F0F] border-b border-slate-800">
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Live Analysis</span>
+        <div className="px-4 py-2 bg-[#0F0F0F] border-b border-slate-200">
+          <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Live Analysis</span>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
@@ -125,7 +125,7 @@ export function LiveResumeOptimizer({ initialText = "", targetKeywords, onScoreC
 
           {/* Keyword Checklist */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Keyword Checklist</h3>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Keyword Checklist</h3>
             <div className="space-y-2">
               <AnimatePresence>
                 {targetKeywords.map((keyword, index) => {
@@ -139,7 +139,7 @@ export function LiveResumeOptimizer({ initialText = "", targetKeywords, onScoreC
                       className={`flex items-center gap-3 p-2 rounded border transition-all duration-300 ${
                         isMatched
                           ? "bg-emerald-500/10 border-emerald-500/30"
-                          : "bg-slate-900/30 border-slate-800"
+                          : "bg-white/30 border-slate-200"
                       }`}
                     >
                       <motion.div
@@ -152,7 +152,7 @@ export function LiveResumeOptimizer({ initialText = "", targetKeywords, onScoreC
                           <Circle className="h-4 w-4 text-slate-600" />
                         )}
                       </motion.div>
-                      <span className={`text-sm font-mono ${isMatched ? "text-emerald-400 font-bold" : "text-slate-400"}`}>
+                      <span className={`text-sm font-mono ${isMatched ? "text-emerald-400 font-bold" : "text-slate-500"}`}>
                         {keyword}
                       </span>
                     </motion.div>
@@ -163,8 +163,8 @@ export function LiveResumeOptimizer({ initialText = "", targetKeywords, onScoreC
           </div>
 
           {/* Progress Bar */}
-          <div className="space-y-2 pt-4 border-t border-slate-800">
-            <div className="flex justify-between text-xs text-slate-400">
+          <div className="space-y-2 pt-4 border-t border-slate-200">
+            <div className="flex justify-between text-xs text-slate-500">
               <span>Keyword Coverage</span>
               <span className="font-mono">{matchedKeywords.size}/{targetKeywords.length}</span>
             </div>

@@ -78,10 +78,10 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4 w-full sm:w-auto">
-          <div className="hidden md:flex items-center bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 w-full sm:w-64 focus-within:ring-1 focus-within:ring-primary transition-all">
-            <Search className="h-4 w-4 text-slate-400" />
-            <input 
-              className="bg-transparent border-none text-sm text-white placeholder-slate-500 focus:ring-0 w-full ml-2 p-0 h-auto outline-none" 
+          <div className="hidden md:flex items-center bg-white border border-slate-200 rounded-lg px-3 py-2 w-full sm:w-64 focus-within:ring-1 focus-within:ring-primary transition-all shadow-sm">
+            <Search className="h-4 w-4 text-slate-500" />
+            <input
+              className="bg-transparent border-none text-sm text-slate-900 placeholder-slate-500 focus:ring-0 w-full ml-2 p-0 h-auto outline-none"
               placeholder="Search projects, tags..."
               type="text"
               value={searchQuery}
@@ -91,7 +91,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
         </div>
         <Button 
           onClick={() => navigate("/onboarding")}
-          className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-0.5 flex items-center gap-2"
+          className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-slate-900 font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-0.5 flex items-center gap-2"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -107,8 +107,8 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             onClick={() => setFilterStatus("all")}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               filterStatus === "all"
-                ? "bg-slate-800 text-white border-slate-700"
-                : "bg-transparent text-slate-400 border-slate-800 hover:text-white hover:border-slate-600"
+                ? "bg-white text-slate-900 border-slate-900"
+                : "bg-white text-slate-500 border-slate-200 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             All Projects
@@ -117,8 +117,8 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             onClick={() => setFilterStatus("high")}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               filterStatus === "high"
-                ? "bg-slate-800 text-white border-slate-700"
-                : "bg-transparent text-slate-400 border-slate-800 hover:text-white hover:border-slate-600"
+                ? "bg-white text-slate-900 border-slate-900"
+                : "bg-white text-slate-500 border-slate-200 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             High Match
@@ -127,8 +127,8 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             onClick={() => setFilterStatus("review")}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               filterStatus === "review"
-                ? "bg-slate-800 text-white border-slate-700"
-                : "bg-transparent text-slate-400 border-slate-800 hover:text-white hover:border-slate-600"
+                ? "bg-white text-slate-900 border-slate-900"
+                : "bg-white text-slate-500 border-slate-200 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             Needs Review
@@ -137,17 +137,17 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             onClick={() => setFilterStatus("archived")}
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               filterStatus === "archived"
-                ? "bg-slate-800 text-white border-slate-700"
-                : "bg-transparent text-slate-400 border-slate-800 hover:text-white hover:border-slate-600"
+                ? "bg-white text-slate-900 border-slate-900"
+                : "bg-white text-slate-500 border-slate-200 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             Archived
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-slate-400">
+        <div className="flex items-center gap-2 text-sm text-slate-500">
           <span>Sort by:</span>
-          <button className="flex items-center gap-1 font-medium text-white hover:text-primary transition-colors">
+          <button className="flex items-center gap-1 font-medium text-slate-900 hover:text-primary transition-colors">
             Last Updated
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -160,17 +160,17 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
       {projects === undefined ? (
         <div className="text-center py-12 text-slate-500">Loading projects...</div>
       ) : projects.length === 0 ? (
-        <div className="text-center py-20 bg-slate-900/50 border-2 border-dashed border-slate-700 rounded-2xl">
-          <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="text-center py-20 bg-white border-2 border-dashed border-slate-200 rounded-2xl">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-200">
             <Plus className="h-8 w-8 text-slate-500" />
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">No projects yet</h3>
-          <p className="text-slate-400 max-w-sm mx-auto mb-6">
+          <h3 className="text-xl font-bold text-slate-900 mb-2">No projects yet</h3>
+          <p className="text-slate-500 max-w-sm mx-auto mb-6">
             Create your first project to start tracking applications and optimizing your resume.
           </p>
-          <Button 
+          <Button
             onClick={() => setShowCreateDialog(true)}
-            className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-semibold"
+            className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-slate-900 font-semibold"
           >
             Create Your First Project
           </Button>
@@ -183,28 +183,28 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             const HealthIcon = health.icon;
 
             return (
-              <div 
+              <div
                 key={project._id}
                 onClick={() => onSelectProject(project._id)}
-                className="group relative bg-[#1E293B] rounded-xl border border-slate-800 p-5 shadow-lg hover:border-primary/50 hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-primary/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               >
                 {/* Header */}
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary p-0.5 flex items-center justify-center">
-                      <div className="w-full h-full bg-[#1E293B] rounded-lg flex items-center justify-center">
+                      <div className="w-full h-full bg-white rounded-lg flex items-center justify-center">
                         <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-base leading-tight">{project.name}</h3>
-                      <p className="text-slate-400 text-sm">@ {project.targetRole}</p>
+                      <h3 className="text-slate-900 font-bold text-base leading-tight">{project.name}</h3>
+                      <p className="text-slate-500 text-sm">@ {project.targetRole}</p>
                     </div>
                   </div>
-                  <button 
-                    className="text-slate-500 hover:text-white transition-colors"
+                  <button
+                    className="text-slate-500 hover:text-slate-900 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <MoreHorizontal className="h-5 w-5" />
@@ -212,22 +212,22 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 </div>
 
                 {/* Score Section */}
-                <div className="flex items-center justify-between bg-slate-900/50 rounded-lg p-3 mb-4 border border-slate-800/50">
+                <div className="flex items-center justify-between bg-slate-50 rounded-lg p-3 mb-4 border border-slate-200">
                   <div className="flex items-center gap-3">
                     {/* Circular Progress */}
                     <div className="relative w-12 h-12 flex items-center justify-center">
-                      <div 
+                      <div
                         className="w-full h-full rounded-full p-[3px]"
                         style={{ background: getScoreGradient(score) }}
                       >
-                        <div className="w-full h-full bg-[#1E293B] rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold font-mono">{score}%</span>
+                        <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                          <span className="text-slate-900 text-xs font-bold font-mono">{score}%</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-slate-400 text-xs">Match Score</span>
-                      <span className="text-white text-sm font-semibold">{getScoreLabel(score)}</span>
+                      <span className="text-slate-500 text-xs">Match Score</span>
+                      <span className="text-slate-900 text-sm font-semibold">{getScoreLabel(score)}</span>
                     </div>
                   </div>
                   <div className={`px-2.5 py-1 rounded-md ${health.bgColor} border ${health.borderColor} ${health.color} text-xs font-medium flex items-center gap-1`}>
@@ -240,22 +240,22 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 <div className="space-y-3">
                   <div className="flex flex-wrap gap-2">
                     {project.description && project.description.split(',').slice(0, 3).map((tag, i) => (
-                      <span key={i} className="px-2 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-mono border border-slate-700">
+                      <span key={i} className="px-2 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-mono border border-slate-200">
                         {tag.trim()}
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                     <span className="text-slate-500 text-xs flex items-center gap-1">
                       <Clock className="h-3.5 w-3.5" />
                       {formatTimeAgo(project._creationTime)}
                     </span>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onSelectProject(project._id);
                       }}
-                      className="text-sm font-medium text-primary hover:text-white transition-colors"
+                      className="text-sm font-medium text-primary hover:text-slate-900 transition-colors"
                     >
                       Open Project Board
                     </button>
@@ -266,15 +266,15 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
           })}
 
           {/* New Project Card */}
-          <div 
+          <div
             onClick={() => setShowCreateDialog(true)}
-            className="bg-[#1E293B]/50 rounded-xl border-2 border-dashed border-slate-700 p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-slate-800 transition-all group min-h-[250px]"
+            className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-slate-50 transition-all group min-h-[250px]"
           >
-            <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center group-hover:bg-primary transition-colors">
-              <Plus className="h-8 w-8 text-slate-400 group-hover:text-white" />
+            <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-primary transition-colors border border-slate-200">
+              <Plus className="h-8 w-8 text-slate-500 group-hover:text-slate-900" />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">Create New Project</h3>
+              <h3 className="text-slate-900 font-bold text-lg">Create New Project</h3>
               <p className="text-slate-500 text-sm mt-1 max-w-[200px] mx-auto">
                 Start a new mission or upload a CV to analyze.
               </p>

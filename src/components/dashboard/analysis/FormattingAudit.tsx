@@ -15,10 +15,10 @@ export function FormattingAudit({ items }: FormattingAuditProps) {
   return (
     <div className="lg:col-span-4 glass-card rounded-lg p-6 flex flex-col gap-4">
       <div className="flex items-center gap-3 mb-2">
-        <div className="p-2 rounded-full bg-stone-100 dark:bg-stone-800 text-white">
+        <div className="p-2 rounded-full bg-stone-100 text-slate-900">
           <CheckCircle2 className="h-5 w-5" />
         </div>
-        <h3 className="text-lg font-bold text-white">Formatting Audit</h3>
+        <h3 className="text-lg font-bold text-slate-900">Formatting Audit</h3>
       </div>
       <div className="flex flex-col gap-3">
         {items.map((item, idx) => (

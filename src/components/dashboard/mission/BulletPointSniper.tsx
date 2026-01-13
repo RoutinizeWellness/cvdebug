@@ -100,24 +100,24 @@ export function BulletPointSniper({
 
   return (
     <motion.div 
-      className="glass-panel rounded-xl flex flex-col h-[600px] overflow-hidden neon-glow bg-slate-900/70 backdrop-blur-xl border border-slate-800/50"
+      className="glass-panel rounded-xl flex flex-col h-[600px] overflow-hidden neon-glow bg-white/70 backdrop-blur-xl border border-slate-200/50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
       {/* Header */}
-      <div className="p-5 border-b border-slate-700/50 bg-slate-800/30">
+      <div className="p-5 border-b border-slate-200/50 bg-slate-50/30">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h3 className="text-white font-bold text-lg flex items-center gap-2">
+            <h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
               <Crosshair className="h-5 w-5 text-primary" />
               Bullet Point Sniper
             </h3>
-            <p className="text-xs text-slate-400 mt-1">Generate AI Power Statements that augment YOUR experience</p>
+            <p className="text-xs text-slate-500 mt-1">Generate AI Power Statements that augment YOUR experience</p>
           </div>
           {/* Match Score Counter (Mini) */}
           <div className="flex flex-col items-end">
-             <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Match Potential</span>
+             <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Match Potential</span>
              <span className="text-xl font-bold text-emerald-400">
                {Math.min(100, Math.round((matchedKeywords.length + fixedKeywords.size) / (matchedKeywords.length + missingKeywords.length || 1) * 100))}%
              </span>
@@ -125,7 +125,7 @@ export function BulletPointSniper({
         </div>
 
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-slate-900/50">
+          <TabsList className="grid w-full grid-cols-2 bg-white/50">
             <TabsTrigger value="missing" className="data-[state=active]:bg-rose-500/20 data-[state=active]:text-rose-400 text-xs">
               Missing ({missingKeywords.length})
             </TabsTrigger>
@@ -139,18 +139,18 @@ export function BulletPointSniper({
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-2 bg-slate-950/30">
         {isProcessing ? (
-          <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-3">
+          <div className="flex flex-col items-center justify-center h-full text-slate-500 gap-3">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Analyzing resume keywords...</p>
           </div>
         ) : isEmpty ? (
           <div className="flex flex-col items-center justify-center h-full text-center p-6 gap-4">
-            <div className="p-4 rounded-full bg-slate-800/50 border border-slate-700">
+            <div className="p-4 rounded-full bg-slate-50/50 border border-slate-200">
               <FileText className="h-8 w-8 text-slate-500" />
             </div>
             <div>
-              <h4 className="text-white font-medium mb-1">Ready to Snipe</h4>
-              <p className="text-sm text-slate-400 max-w-[250px] mx-auto">
+              <h4 className="text-slate-900 font-medium mb-1">Ready to Snipe</h4>
+              <p className="text-sm text-slate-500 max-w-[250px] mx-auto">
                 Upload a resume and paste a Job Description to start sniping gaps.
               </p>
             </div>
@@ -185,12 +185,12 @@ export function BulletPointSniper({
                             {isFixed ? <Check className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
                           </div>
                           <div className="flex flex-col">
-                            <span className={`text-sm font-medium ${isFixed ? "text-yellow-200" : "text-white"}`}>
+                            <span className={`text-sm font-medium ${isFixed ? "text-yellow-200" : "text-slate-900"}`}>
                               {keyword.name}
                             </span>
-                            <span className="text-[10px] text-slate-400 font-mono flex items-center gap-2">
+                            <span className="text-[10px] text-slate-500 font-mono flex items-center gap-2">
                               {keyword.category} 
-                              <Badge variant="outline" className="text-[9px] h-4 px-1 border-slate-700 text-slate-400">
+                              <Badge variant="outline" className="text-[9px] h-4 px-1 border-slate-200 text-slate-500">
                                 {keyword.impact} Impact
                               </Badge>
                             </span>
@@ -204,7 +204,7 @@ export function BulletPointSniper({
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => setShowContextInput(keyword.name)}
-                                className="h-8 text-xs text-slate-400 hover:text-white"
+                                className="h-8 text-xs text-slate-500 hover:text-slate-900"
                               >
                                 Add Context
                               </Button>
@@ -215,8 +215,8 @@ export function BulletPointSniper({
                               disabled={isSniping}
                               className={`h-8 text-xs font-semibold gap-2 ${
                                 !isPremium 
-                                  ? "bg-slate-800 text-slate-400 hover:bg-slate-700" 
-                                  : "bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-white shadow-[0_0_10px_rgba(244,63,94,0.1)]"
+                                  ? "bg-slate-50 text-slate-500 hover:bg-slate-700" 
+                                  : "bg-rose-500/10 text-rose-400 border border-rose-500/30 hover:bg-rose-500 hover:text-slate-900 shadow-[0_0_10px_rgba(244,63,94,0.1)]"
                               }`}
                             >
                               {isSniping ? (
@@ -242,15 +242,15 @@ export function BulletPointSniper({
 
                       {/* Context Input Panel */}
                       {showingContext && !bullets && (
-                        <div className="border-t border-slate-800 p-3 bg-slate-900/50 space-y-2">
-                          <label className="text-xs text-slate-400 font-medium">
+                        <div className="border-t border-slate-200 p-3 bg-white/50 space-y-2">
+                          <label className="text-xs text-slate-500 font-medium">
                             How did you use {keyword.name}? (Optional - helps AI augment YOUR experience)
                           </label>
                           <Textarea
                             placeholder={`e.g., "Used ${keyword.name} to build a dashboard" or "Implemented ${keyword.name} for data processing"`}
                             value={userContexts[keyword.name] || ""}
                             onChange={(e) => setUserContexts(prev => ({ ...prev, [keyword.name]: e.target.value }))}
-                            className="min-h-[60px] bg-slate-950 border-slate-800 text-slate-200 text-xs"
+                            className="min-h-[60px] bg-slate-950 border-slate-200 text-slate-700 text-xs"
                           />
                           <div className="flex gap-2">
                             <Button
@@ -280,23 +280,23 @@ export function BulletPointSniper({
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="border-t border-slate-800 bg-slate-900/50"
+                            className="border-t border-slate-200 bg-white/50"
                           >
                             <div className="p-3 space-y-3">
-                              <p className="text-xs text-slate-400 font-medium px-1">Select a Power Statement to copy:</p>
+                              <p className="text-xs text-slate-500 font-medium px-1">Select a Power Statement to copy:</p>
                               
                               {/* Performance Version */}
                               {bullets.performance && (
-                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                <div className="group relative p-3 rounded bg-slate-50/50 border border-slate-200 hover:border-primary/50 transition-colors">
                                   <div className="flex justify-between gap-3">
                                     <div>
                                       <span className="text-[10px] font-bold text-blue-400 uppercase tracking-wider mb-1 block">Performance</span>
-                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.performance}</p>
+                                      <p className="text-xs text-slate-700 leading-relaxed">{bullets.performance}</p>
                                     </div>
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      className="h-6 w-6 shrink-0 text-slate-500 hover:text-slate-900 hover:bg-slate-700"
                                       onClick={() => handleCopy(bullets.performance, `${keyword.name}-perf`, keyword.name)}
                                     >
                                       {copiedState === `${keyword.name}-perf` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
@@ -307,16 +307,16 @@ export function BulletPointSniper({
 
                               {/* Business Version */}
                               {bullets.business && (
-                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                <div className="group relative p-3 rounded bg-slate-50/50 border border-slate-200 hover:border-primary/50 transition-colors">
                                   <div className="flex justify-between gap-3">
                                     <div>
                                       <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 block">Business Value</span>
-                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.business}</p>
+                                      <p className="text-xs text-slate-700 leading-relaxed">{bullets.business}</p>
                                     </div>
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      className="h-6 w-6 shrink-0 text-slate-500 hover:text-slate-900 hover:bg-slate-700"
                                       onClick={() => handleCopy(bullets.business, `${keyword.name}-biz`, keyword.name)}
                                     >
                                       {copiedState === `${keyword.name}-biz` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
@@ -327,16 +327,16 @@ export function BulletPointSniper({
 
                               {/* Leadership Version */}
                               {bullets.leadership && (
-                                <div className="group relative p-3 rounded bg-slate-800/50 border border-slate-700 hover:border-primary/50 transition-colors">
+                                <div className="group relative p-3 rounded bg-slate-50/50 border border-slate-200 hover:border-primary/50 transition-colors">
                                   <div className="flex justify-between gap-3">
                                     <div>
                                       <span className="text-[10px] font-bold text-teal-400 uppercase tracking-wider mb-1 block">Leadership</span>
-                                      <p className="text-xs text-slate-200 leading-relaxed">{bullets.leadership}</p>
+                                      <p className="text-xs text-slate-700 leading-relaxed">{bullets.leadership}</p>
                                     </div>
                                     <Button
                                       size="icon"
                                       variant="ghost"
-                                      className="h-6 w-6 shrink-0 text-slate-400 hover:text-white hover:bg-slate-700"
+                                      className="h-6 w-6 shrink-0 text-slate-500 hover:text-slate-900 hover:bg-slate-700"
                                       onClick={() => handleCopy(bullets.leadership, `${keyword.name}-lead`, keyword.name)}
                                     >
                                       {copiedState === `${keyword.name}-lead` ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
@@ -363,14 +363,14 @@ export function BulletPointSniper({
             {activeTab === "found" && (
               <>
                 {matchedKeywords.map((keyword, idx) => (
-                  <div key={`matched-${idx}`} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                  <div key={`matched-${idx}`} className="flex items-center justify-between p-3 rounded-lg bg-slate-50/30 border border-slate-200/50">
                     <div className="flex items-center gap-3">
                       <div className="p-1.5 rounded bg-emerald-500/10 text-emerald-400">
                         <Check className="h-4 w-4" />
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-white">{keyword.name}</span>
-                        <span className="text-[10px] text-slate-400 font-mono">{keyword.category}</span>
+                        <span className="text-sm font-medium text-slate-900">{keyword.name}</span>
+                        <span className="text-[10px] text-slate-500 font-mono">{keyword.category}</span>
                       </div>
                     </div>
                     <span className="text-xs text-slate-500">{keyword.impact}</span>
@@ -388,10 +388,10 @@ export function BulletPointSniper({
       </div>
 
       {/* Footer Action */}
-      <div className="p-4 border-t border-slate-700/50 bg-slate-800/30 backdrop-blur">
+      <div className="p-4 border-t border-slate-200/50 bg-slate-50/30 backdrop-blur">
         <Button 
           onClick={onUpdateResume}
-          className="w-full bg-primary hover:bg-primary/90 text-white font-medium shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary/90 text-slate-900 font-medium shadow-lg shadow-primary/25 flex items-center justify-center gap-2"
         >
           <ArrowUpCircle className="h-4 w-4" />
           Update Resume with Fixes

@@ -7,7 +7,7 @@ interface SpeedometerCardProps {
 export function SpeedometerCard({ score }: SpeedometerCardProps) {
   return (
     <motion.div 
-      className="glass-panel rounded-xl p-6 flex flex-col items-center justify-center relative overflow-hidden group hover:border-primary/30 transition-all duration-300 neon-glow bg-slate-900/70 backdrop-blur-xl border border-slate-800/50"
+      className="glass-panel rounded-xl p-6 flex flex-col items-center justify-center relative overflow-hidden group hover:border-primary/30 transition-all duration-300 neon-glow bg-white/70 backdrop-blur-xl border border-slate-200/50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
@@ -45,11 +45,11 @@ export function SpeedometerCard({ score }: SpeedometerCardProps) {
           </defs>
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-4xl font-bold text-white tracking-tighter">{score}%</span>
-          <span className="text-xs text-slate-400 mt-1">Optimization</span>
+          <span className="text-4xl font-bold text-slate-900 tracking-tighter">{score}%</span>
+          <span className="text-xs text-slate-500 mt-1">Optimization</span>
         </div>
       </div>
-      <p className="text-center text-sm text-slate-400 mt-4 px-2">
+      <p className="text-center text-sm text-slate-500 mt-4 px-2">
         {score >= 80 ? "Your CV is in the top tier for this role." : 
          score >= 50 ? "Good foundation, but needs keyword optimization." : 
          "Significant improvements needed for ATS visibility."}

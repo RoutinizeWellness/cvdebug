@@ -131,7 +131,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
     <div className="h-full flex flex-col">
       <div className="px-6 py-4">
         {!hasInterviewSprint && (
-          <Alert className="mb-4 bg-gradient-to-br from-slate-900/90 to-slate-800/90 border-2 border-primary/40 shadow-lg relative overflow-hidden">
+          <Alert className="mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-sm relative overflow-hidden">
             {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-cyan-500/5 pointer-events-none" />
 
@@ -141,8 +141,8 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                   <Diamond className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-base mb-1">Interview Sprint Required</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">
+                  <h3 className="text-slate-900 font-bold text-base mb-1">Interview Sprint Required</h3>
+                  <p className="text-slate-700 text-sm leading-relaxed">
                     Optimize your LinkedIn profile with AI and get 3x more recruiter views.
                   </p>
                 </div>
@@ -150,20 +150,20 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
               {/* Benefits Grid */}
               <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>AI headline optimization</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>Keyword analysis</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>About section rewrite</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>Visibility score boost</span>
                 </div>
               </div>
@@ -189,36 +189,36 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
       {/* Profile Input Dialog */}
       <Dialog open={showInputDialog} onOpenChange={setShowInputDialog}>
-        <DialogContent className="max-w-2xl bg-slate-900 border-slate-800">
+        <DialogContent className="max-w-2xl bg-white border border-slate-200">
           <DialogHeader>
-            <DialogTitle className="text-white text-xl">Scan LinkedIn Profile</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-slate-900 text-xl">Scan LinkedIn Profile</DialogTitle>
+            <DialogDescription className="text-slate-500">
               Paste your LinkedIn profile text to get AI-powered optimization suggestions.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 mt-4">
             <div>
-              <label className="text-sm font-medium text-slate-300 mb-2 block">
+              <label className="text-sm font-medium text-slate-700 mb-2 block">
                 LinkedIn Profile URL (Optional)
               </label>
               <Input
                 placeholder="https://linkedin.com/in/yourprofile"
                 value={linkedinUrl}
                 onChange={(e) => setLinkedinUrl(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-white border border-slate-200 text-slate-900"
               />
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-300 mb-2 block">
-                Profile Text <span className="text-red-400">*</span>
+              <label className="text-sm font-medium text-slate-700 mb-2 block">
+                Profile Text <span className="text-red-500">*</span>
               </label>
               <Textarea
                 placeholder="Paste your LinkedIn profile text here (headline, about section, experience, etc.)"
                 value={profileText}
                 onChange={(e) => setProfileText(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white min-h-[200px]"
+                className="bg-white border border-slate-200 text-slate-900 min-h-[200px]"
               />
               <p className="text-xs text-slate-500 mt-1">
                 Copy and paste your entire LinkedIn profile or specific sections you want to optimize.
@@ -226,14 +226,14 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-300 mb-2 block">
+              <label className="text-sm font-medium text-slate-700 mb-2 block">
                 Target Job Description (Optional)
               </label>
               <Textarea
                 placeholder="Paste a job description to get tailored optimization suggestions"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white min-h-[120px]"
+                className="bg-white border border-slate-200 text-slate-900 min-h-[120px]"
               />
             </div>
 
@@ -241,7 +241,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
               <Button
                 variant="outline"
                 onClick={() => setShowInputDialog(false)}
-                className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                className="border-slate-200 text-slate-700 hover:bg-slate-50"
               >
                 Cancel
               </Button>
@@ -270,11 +270,11 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
       <main className="flex-1 px-6 pb-6 overflow-y-auto">
         {!latestOptimization ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 max-w-md">
-              <TrendingUp className="h-16 w-16 text-slate-700 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">No LinkedIn Analysis Yet</h3>
-              <p className="text-slate-400 text-sm mb-6">
-                {hasInterviewSprint 
+            <div className="bg-white border border-slate-200 rounded-xl p-12 max-w-md shadow-sm">
+              <TrendingUp className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-slate-900 mb-2">No LinkedIn Analysis Yet</h3>
+              <p className="text-slate-500 text-sm mb-6">
+                {hasInterviewSprint
                   ? "Click \"Re-scan Profile\" to analyze your LinkedIn profile and get AI-powered optimization suggestions."
                   : "Upgrade to Interview Sprint to analyze your LinkedIn profile and get AI-powered optimization suggestions."}
               </p>
@@ -301,23 +301,23 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
         {/* Top Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
           {/* Score Card */}
-          <div className="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-6 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+          <div className="lg:col-span-4 bg-white border border-slate-200 rounded-xl p-6 relative overflow-hidden group shadow-sm">
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <Loader2 className="h-24 w-24" />
             </div>
-            <h3 className="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-6">
+            <h3 className="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-6">
               Recruiter Visibility Score
             </h3>
             <div className="flex items-center gap-6">
               <ScoreGauge score={score} label={score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Needs Work"} />
               <div className="flex-1 flex flex-col gap-2">
-                <p className="text-white font-medium leading-snug">
-                  {score >= 80 
+                <p className="text-slate-900 font-medium leading-snug">
+                  {score >= 80
                     ? "Your profile is highly visible to recruiters!"
                     : "Your profile is visible but misses key technical keywords."}
                 </p>
                 {score < 80 && (
-                  <div className="flex items-center gap-1 text-red-400 text-xs font-medium">
+                  <div className="flex items-center gap-1 text-red-600 text-xs font-medium">
                     <span>⚠️</span>
                     <span>Invisible to {100 - score}% of recruiters</span>
                   </div>
@@ -329,24 +329,24 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
           {/* Secondary Stats */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Stat 1 */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+            <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between shadow-sm">
               <div className="flex justify-between items-start mb-4">
-                <div className="p-2 bg-green-500/10 rounded-lg text-green-400">
+                <div className="p-2 bg-green-50 rounded-lg text-green-600">
                   <TrendingUp className="h-5 w-5" />
                 </div>
-                <span className="text-xs font-medium px-2 py-1 bg-green-500/20 text-green-400 rounded-full">
+                <span className="text-xs font-medium px-2 py-1 bg-green-50 text-green-600 rounded-full">
                   +12% vs last week
                 </span>
               </div>
               <div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Market Positioning</p>
-                <p className="text-2xl font-bold text-white">Top 15%</p>
-                <p className="text-slate-400 text-xs mt-1">Compared to 1,400+ similar candidates</p>
+                <p className="text-slate-500 text-sm font-medium mb-1">Market Positioning</p>
+                <p className="text-2xl font-bold text-slate-900">Top 15%</p>
+                <p className="text-slate-500 text-xs mt-1">Compared to 1,400+ similar candidates</p>
               </div>
             </div>
 
             {/* Stat 2 */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-between">
+            <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between shadow-sm">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-2 bg-primary/10 rounded-lg text-primary">
                   <Search className="h-5 w-5" />
@@ -356,9 +356,9 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                 </span>
               </div>
               <div>
-                <p className="text-slate-400 text-sm font-medium mb-1">Searchability Gap</p>
-                <p className="text-2xl font-bold text-white">{missingKeywords.length} Keywords</p>
-                <p className="text-slate-400 text-xs mt-1">Missing critical terms for your target role</p>
+                <p className="text-slate-500 text-sm font-medium mb-1">Searchability Gap</p>
+                <p className="text-2xl font-bold text-slate-900">{missingKeywords.length} Keywords</p>
+                <p className="text-slate-500 text-xs mt-1">Missing critical terms for your target role</p>
               </div>
             </div>
           </div>
@@ -383,9 +383,9 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
           )}
 
           {/* Bio Audit */}
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-white font-bold text-lg flex items-center gap-2">
+              <h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
                 <Wand2 className="h-5 w-5 text-primary" />
                 Bio Audit
               </h3>
@@ -410,13 +410,13 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                 </Button>
               )}
             </div>
-            
+
             {currentBio && optimizedBio ? (
               <div className="space-y-4">
                 {/* Current Bio */}
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-red-400 mb-2">Current About Section</p>
-                  <div className="p-4 rounded-lg border border-red-900/30 bg-red-900/10 text-slate-300 text-sm leading-relaxed">
+                  <p className="text-xs font-bold uppercase tracking-wider text-red-600 mb-2">Current About Section</p>
+                  <div className="p-4 rounded-lg border border-red-200 bg-red-50 text-slate-700 text-sm leading-relaxed">
                     {currentBio}
                   </div>
                 </div>
@@ -424,7 +424,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                 {/* Optimized Bio */}
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">AI-Optimized Version</p>
-                  <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-white text-sm leading-relaxed">
+                  <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-slate-900 text-sm leading-relaxed">
                     {optimizedBio}
                   </div>
                 </div>
@@ -432,17 +432,17 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                 {/* Interactive Suggestions */}
                 {bioSuggestions && bioSuggestions.length > 0 && (
                   <div className="mt-6">
-                    <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Key Improvements</p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Key Improvements</p>
                     <div className="space-y-2">
                       {bioSuggestions.map((suggestion: string, index: number) => (
                         <div
                           key={index}
-                          className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:border-primary/30 transition-colors group cursor-pointer"
+                          className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 border border-slate-200 hover:border-primary/30 transition-colors group cursor-pointer"
                         >
                           <div className="mt-0.5 size-5 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold group-hover:bg-primary group-hover:text-white transition-colors">
                             {index + 1}
                           </div>
-                          <p className="text-sm text-slate-300 leading-relaxed flex-1">{suggestion}</p>
+                          <p className="text-sm text-slate-700 leading-relaxed flex-1">{suggestion}</p>
                         </div>
                       ))}
                     </div>
@@ -450,7 +450,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
                 )}
               </div>
             ) : (
-              <p className="text-slate-400 text-sm">
+              <p className="text-slate-500 text-sm">
                 No bio analysis available yet. Make sure to include your About section when scanning your profile.
               </p>
             )}

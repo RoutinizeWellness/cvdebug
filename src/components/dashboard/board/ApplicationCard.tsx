@@ -57,7 +57,7 @@ export function ApplicationCard({
           <CardContent className="p-4 space-y-3">
             <div className="flex justify-between items-start">
               <div className="space-y-1">
-                <h4 className="font-bold text-sm text-white leading-tight">{app.jobTitle}</h4>
+                <h4 className="font-bold text-sm text-slate-900 leading-tight">{app.jobTitle}</h4>
                 <div className="flex items-center gap-1.5 text-xs text-zinc-400">
                   <Building2 className="h-3 w-3" />
                   {app.companyName}
@@ -164,7 +164,7 @@ export function ApplicationCard({
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-6 w-6 text-zinc-500 hover:text-white hover:bg-zinc-800"
+                        className="h-6 w-6 text-zinc-500 hover:text-slate-900 hover:bg-zinc-800"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewDetails(app);

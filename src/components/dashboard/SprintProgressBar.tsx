@@ -66,10 +66,10 @@ export function SprintProgressBar() {
     >
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             Interview Sprint Progress
           </h3>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Complete all stages to maximize your success rate
           </p>
         </div>
@@ -77,8 +77,8 @@ export function SprintProgressBar() {
           <div className="flex items-center gap-2 px-3 py-2 bg-primary/20 border border-primary/30 rounded-lg">
             <Clock className="h-4 w-4 text-primary" />
             <div className="text-right">
-              <div className="text-xs text-slate-400">Expires in</div>
-              <div className="text-sm font-bold text-white font-mono">{timeRemaining}</div>
+              <div className="text-xs text-slate-500">Expires in</div>
+              <div className="text-sm font-bold text-slate-900 font-mono">{timeRemaining}</div>
             </div>
           </div>
         )}
@@ -86,7 +86,7 @@ export function SprintProgressBar() {
 
       {/* Progress Bar */}
       <div className="space-y-2">
-        <div className="flex justify-between text-xs text-slate-400">
+        <div className="flex justify-between text-xs text-slate-500">
           <span>Overall Progress</span>
           <span className="font-mono">{completedCount}/{stages.length} Complete</span>
         </div>
@@ -100,10 +100,10 @@ export function SprintProgressBar() {
             <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
               stage.completed
                 ? 'bg-emerald-500 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]'
-                : 'bg-slate-900 border-slate-700'
+                : 'bg-white border-slate-200'
             }`}>
               {stage.completed ? (
-                <CheckCircle2 className="h-5 w-5 text-white" />
+                <CheckCircle2 className="h-5 w-5 text-slate-900" />
               ) : (
                 <Circle className="h-5 w-5 text-slate-500" />
               )}

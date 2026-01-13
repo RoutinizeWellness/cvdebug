@@ -86,14 +86,14 @@ export function KeywordAnalysis({
       {/* Header */}
       <div className="flex justify-between items-end mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Keyword Analysis</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h2 className="text-2xl font-bold text-slate-900 mb-1">Keyword Analysis</h2>
+          <p className="text-sm text-slate-500">
             Semantic matching against standard Data Science JDs.
           </p>
         </div>
         <div className="text-right">
           <div className="text-3xl font-mono font-bold text-blue-500">{matchRate}%</div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Match Rate</div>
+          <div className="text-xs text-slate-500 uppercase tracking-wider">Match Rate</div>
         </div>
       </div>
 
@@ -102,15 +102,15 @@ export function KeywordAnalysis({
         {/* Left Column - Found Signals */}
         <div className="col-span-12 lg:col-span-6 flex flex-col gap-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               Found Signals
-              <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] px-2 py-0.5 rounded-full font-mono">
+              <span className="bg-slate-200 text-slate-600 text-[10px] px-2 py-0.5 rounded-full font-mono">
                 {foundSignals.length} Total
               </span>
             </h3>
             <div className="flex gap-2 text-xs">
-              <button className="text-slate-400 hover:text-blue-500 transition-colors">Group by Type</button>
+              <button className="text-slate-500 hover:text-blue-500 transition-colors">Group by Type</button>
               <span className="text-slate-600">|</span>
               <button className="text-blue-500 font-medium">List View</button>
             </div>
@@ -120,7 +120,7 @@ export function KeywordAnalysis({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 h-full shadow-sm relative overflow-hidden"
+            className="bg-white border border-slate-200 rounded-xl p-4 h-full shadow-sm relative overflow-hidden"
           >
             {/* Decorative blob */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -132,17 +132,17 @@ export function KeywordAnalysis({
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + index * 0.05 }}
-                  className="group flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-all cursor-default"
+                  className="group flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-200 hover:border-blue-500/50 transition-all cursor-default"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400">
+                    <div className="p-1.5 rounded bg-slate-200 text-slate-500">
                       <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-slate-800 dark:text-slate-200 font-mono">
+                      <h4 className="text-sm font-medium text-slate-800 font-mono">
                         {signal.keyword}
                       </h4>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Found in: {signal.location}</p>
+                      <p className="text-[10px] text-slate-500">in: {signal.location}</p>
                     </div>
                   </div>
                   <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
@@ -155,14 +155,14 @@ export function KeywordAnalysis({
         {/* Right Column - Missing Critical Signals */}
         <div className="col-span-12 lg:col-span-6 flex flex-col gap-4">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
               Missing Critical Signals
               <span className="bg-purple-900/30 text-purple-400 text-[10px] px-2 py-0.5 rounded-full font-mono border border-purple-500/20">
                 High Impact
               </span>
             </h3>
-            <div className="text-xs text-slate-500 dark:text-slate-400">
+            <div className="text-xs text-slate-500">
               Fixing these increases score by ~15%
             </div>
           </div>
@@ -171,7 +171,7 @@ export function KeywordAnalysis({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-4 h-full shadow-sm relative overflow-hidden"
+            className="bg-white border border-slate-200 rounded-xl p-4 h-full shadow-sm relative overflow-hidden"
           >
             {/* Decorative blob */}
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
@@ -185,39 +185,39 @@ export function KeywordAnalysis({
                   transition={{ delay: 0.2 + index * 0.1 }}
                   className={`relative group rounded-lg p-4 border transition-all ${
                     signal.isPriority
-                      ? 'bg-white dark:bg-slate-900/40 border-purple-200 dark:border-purple-500/30 hover:border-purple-500 shadow-[0_0_15px_rgba(0,0,0,0.05)]'
-                      : 'bg-white dark:bg-slate-900/40 border-slate-200 dark:border-slate-700/50 hover:border-purple-500/50'
+                      ? 'bg-white border-purple-200 hover:border-purple-500 shadow-[0_0_15px_rgba(0,0,0,0.05)]'
+                      : 'bg-white border-slate-200 hover:border-purple-500/50'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
-                      <span className={`material-symbols-outlined text-sm ${signal.isPriority ? 'text-purple-400' : 'text-slate-400'}`}>
+                      <span className={`material-symbols-outlined text-sm ${signal.isPriority ? 'text-purple-400' : 'text-slate-500'}`}>
                         {signal.isPriority ? 'warning_amber' : 'do_not_disturb_on'}
                       </span>
-                      <h4 className={`text-base font-mono ${signal.isPriority ? 'font-bold text-slate-900 dark:text-white' : 'font-medium text-slate-700 dark:text-slate-200'}`}>
+                      <h4 className={`text-base font-mono ${signal.isPriority ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
                         {signal.keyword}
                       </h4>
                     </div>
                     <div className="flex flex-col items-end">
                       <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded ${
                         signal.isPriority
-                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
-                          : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-slate-900 shadow-lg shadow-purple-500/20'
+                          : 'bg-slate-200 text-slate-600 border border-slate-300'
                       }`}>
                         {signal.isPriority && <span className="material-symbols-outlined text-[10px]">trending_up</span>}
                         {signal.impact}
                       </span>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
+                  <p className="text-xs text-slate-600 mb-3 leading-relaxed">
                     {signal.description}
                   </p>
                   {signal.isPriority && (
                     <div className="flex gap-2">
-                      <button className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs text-slate-700 dark:text-slate-300 py-1.5 rounded border border-slate-200 dark:border-slate-700 transition-colors">
+                      <button className="flex-1 bg-slate-100 hover:bg-slate-200 text-xs text-slate-700 py-1.5 rounded border border-slate-200 transition-colors">
                         View Examples
                       </button>
-                      <button className="px-3 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs transition-colors">
+                      <button className="px-3 bg-purple-600 hover:bg-purple-500 text-slate-900 rounded text-xs transition-colors">
                         Auto-Add
                       </button>
                     </div>
@@ -230,7 +230,7 @@ export function KeywordAnalysis({
 
         {/* Full Width - Industry Keyword Frequency Cloud */}
         <div className="col-span-12 mt-4">
-          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
             <span className="material-symbols-outlined text-sm text-blue-500">cloud</span>
             Industry Keyword Frequency
           </h3>
@@ -239,7 +239,7 @@ export function KeywordAnalysis({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 relative overflow-hidden"
+            className="bg-white border border-slate-200 rounded-xl p-6 relative overflow-hidden"
           >
             <div className="flex flex-wrap gap-2 items-center justify-center">
               {industryKeywords.map((kw, index) => (
@@ -252,11 +252,11 @@ export function KeywordAnalysis({
                     text-${kw.size} font-${kw.weight}
                     ${kw.highlight
                       ? kw.color === 'primary'
-                        ? 'text-white bg-blue-500/20 border border-blue-500/40 px-3 py-1 rounded-lg backdrop-blur-sm'
+                        ? 'text-slate-900 bg-blue-500/20 border border-blue-500/40 px-3 py-1 rounded-lg backdrop-blur-sm'
                         : kw.color === 'accent'
                         ? 'text-purple-500 bg-purple-500/10 border border-purple-500/30 px-3 py-1 rounded-lg backdrop-blur-sm'
-                        : 'text-white bg-blue-500/10 border border-blue-500/30 px-2 py-1 rounded backdrop-blur-sm'
-                      : `text-${kw.color} ${kw.size !== 'sm' ? 'border border-slate-700/50 px-2 py-1 rounded' : 'px-2'}`
+                        : 'text-slate-900 bg-blue-500/10 border border-blue-500/30 px-2 py-1 rounded backdrop-blur-sm'
+                      : `text-${kw.color} ${kw.size !== 'sm' ? 'border border-slate-200/50 px-2 py-1 rounded' : 'px-2'}`
                     }
                     cursor-help transition-all hover:scale-110
                   `}
@@ -267,7 +267,7 @@ export function KeywordAnalysis({
               ))}
             </div>
 
-            <div className="mt-6 flex justify-center gap-6 text-[10px] text-slate-500 font-mono uppercase tracking-widest border-t border-slate-200 dark:border-slate-800 pt-4 w-full">
+            <div className="mt-6 flex justify-center gap-6 text-[10px] text-slate-500 font-mono uppercase tracking-widest border-t border-slate-200 pt-4 w-full">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded bg-blue-500/40"></div>
                 High Demand

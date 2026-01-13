@@ -107,23 +107,23 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   return (
     <div className="space-y-8 pb-24 md:pb-6">
       {/* Page Heading - ResumeWorded Style */}
-      <header className="bg-white dark:bg-slate-800/50 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700/50 p-8">
+      <header className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <h2 className="text-slate-900 dark:text-white text-4xl font-bold tracking-tight">Mission Control</h2>
+              <h2 className="text-slate-900 text-4xl font-bold tracking-tight">Mission Control</h2>
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
               </span>
             </div>
-            <p className="text-slate-600 dark:text-slate-400 text-base">
-              Welcome back, <span className="font-semibold text-slate-900 dark:text-white">{userName}</span>. Your resume optimization dashboard.
+            <p className="text-slate-500 text-base">
+              Welcome back, <span className="font-semibold text-slate-900">{userName}</span>. Your resume optimization dashboard.
             </p>
           </div>
           <Button
             onClick={() => onNavigate("projects")}
-            className="btn-power px-6 py-3 text-white font-semibold rounded-lg flex items-center gap-2 group border-0"
+            className="btn-power px-6 py-3 text-slate-900 font-semibold rounded-lg flex items-center gap-2 group border-0"
           >
             <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
             <span>New Application</span>
@@ -137,32 +137,32 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow transition-all duration-200 relative overflow-hidden group cursor-pointer"
+          className="bg-white rounded-xl p-6 border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow transition-all duration-200 relative overflow-hidden group cursor-pointer"
           onClick={() => onNavigate("master-cvs")}
         >
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp className="h-20 w-20 text-slate-400 dark:text-slate-600" />
+            <TrendingUp className="h-20 w-20 text-slate-500" />
           </div>
           <div className="flex flex-col gap-3 relative z-10">
             <div className="flex items-center justify-between">
-              <p className="text-slate-600 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">
+              <p className="text-slate-500 text-sm font-semibold uppercase tracking-wider">
                 Visibility Score
               </p>
-              <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
-                <TrendingUp className="h-5 w-5 text-slate-700 dark:text-slate-300" />
+              <div className="p-2 rounded-lg bg-slate-100">
+                <TrendingUp className="h-5 w-5 text-slate-700" />
               </div>
             </div>
             <div className="flex items-baseline gap-2">
-              <p className="text-slate-900 dark:text-white text-5xl font-bold">
+              <p className="text-slate-900 text-5xl font-bold">
                 {visibilityScore}
               </p>
-              <span className="text-2xl text-slate-500 dark:text-slate-400 font-semibold">/100</span>
+              <span className="text-2xl text-slate-500 font-semibold">/100</span>
             </div>
-            <p className="text-slate-600 dark:text-slate-400 text-sm mt-2">
+            <p className="text-slate-500 text-sm mt-2">
               How recruiters find your resume
             </p>
             {/* Progress Bar with Cyber Gradient */}
-            <div className="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-2 mt-4 overflow-hidden">
+            <div className="w-full bg-slate-200 rounded-full h-2 mt-4 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${visibilityScore}%` }}
@@ -182,25 +182,25 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-panel rounded-xl p-5 relative overflow-hidden group"
+          className="bg-white rounded-xl p-5 relative overflow-hidden group border border-slate-200 shadow-sm"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Send className="h-16 w-16 text-white" />
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <Send className="h-16 w-16 text-slate-500" />
           </div>
           <div className="flex flex-col gap-1 relative z-10">
-            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+            <p className="text-slate-500 text-sm font-medium uppercase tracking-wider">
               Active Applications
             </p>
             <div className="flex items-baseline gap-2 mt-1">
-              <p className="text-white text-4xl font-mono font-bold">{activeApplications}</p>
+              <p className="text-slate-900 text-4xl font-mono font-bold">{activeApplications}</p>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-blue-400 text-xs font-mono bg-blue-400/10 w-fit px-2 py-1 rounded">
+            <div className="flex items-center gap-1 mt-2 text-blue-600 text-xs font-mono bg-blue-50 w-fit px-2 py-1 rounded border border-blue-200">
               <span className="material-symbols-outlined text-sm">bolt</span>
               2 interviews scheduled
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
-            <div className="h-full bg-blue-500 w-[40%] shadow-[0_0_10px_#3b82f6]"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
+            <div className="h-full bg-blue-500 w-[40%]"></div>
           </div>
         </motion.div>
 
@@ -209,28 +209,28 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-panel rounded-xl p-5 relative overflow-hidden group border-rose-500/20"
+          className="bg-white rounded-xl p-5 relative overflow-hidden group border border-rose-200 shadow-sm"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <AlertCircle className="h-16 w-16 text-rose-500" />
+          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <AlertCircle className="h-16 w-16 text-rose-400" />
           </div>
           <div className="flex flex-col gap-1 relative z-10">
-            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">
+            <p className="text-slate-500 text-sm font-medium uppercase tracking-wider">
               Missing Signals
             </p>
             <div className="flex items-baseline gap-2 mt-1">
-              <p className="text-white text-4xl font-mono font-bold">{criticalErrorsCount}</p>
-              <span className="text-rose-400 font-bold text-sm bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
+              <p className="text-slate-900 text-4xl font-mono font-bold">{criticalErrorsCount}</p>
+              <span className="text-rose-600 font-bold text-sm bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
                 CRITICAL
               </span>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-rose-400 text-xs font-mono">
+            <div className="flex items-center gap-1 mt-2 text-rose-600 text-xs font-mono">
               <span className="material-symbols-outlined text-sm">arrow_downward</span>
               Impacting match score by -15%
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-700">
-            <div className="h-full bg-rose-500 w-[25%] shadow-[0_0_10px_#f43f5e]"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
+            <div className="h-full bg-rose-500 w-[25%]"></div>
           </div>
         </motion.div>
       </section>
@@ -239,18 +239,17 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       <motion.section
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-950/50 via-slate-900 to-slate-950 border-2 border-green-500/30 p-6 shadow-[0_0_60px_rgba(34,197,94,0.15)]"
+        className="relative overflow-hidden rounded-2xl bg-white border border-slate-200 p-6 shadow-sm"
       >
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top,rgba(34,197,94,0.4),transparent_50%)]" />
         <div className="relative">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-green-50 flex items-center justify-center border border-green-200">
                 <span className="text-2xl">👁️</span>
               </div>
               <div>
-                <h3 className="text-white text-lg font-bold">Robot View: What ATS Actually Reads</h3>
-                <p className="text-green-400 text-xs font-mono">Is critical information missing from your resume?</p>
+                <h3 className="text-slate-900 text-lg font-bold">Robot View: What ATS Actually Reads</h3>
+                <p className="text-green-600 text-xs font-mono">Is critical information missing from your resume?</p>
               </div>
             </div>
             <span className="relative flex h-3 w-3">
@@ -259,19 +258,19 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </span>
           </div>
 
-          <div className="bg-[#0a0e1a] rounded-xl border border-green-500/30 p-4 font-mono text-sm max-h-[200px] overflow-y-auto custom-scrollbar">
+          <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 font-mono text-sm max-h-[200px] overflow-y-auto custom-scrollbar">
             <div className="space-y-2">
               <div className="flex gap-2">
-                <span className="text-green-500 shrink-0">[ATS]</span>
-                <span className="text-slate-300">
+                <span className="text-green-600 shrink-0">[ATS]</span>
+                <span className="text-slate-700">
                   {masterResume?.ocrText ? masterResume.ocrText.slice(0, 300) + "..." : "Upload a resume to see raw text extraction"}
                 </span>
               </div>
               {masterResume && (
                 <>
                   <div className="flex gap-2">
-                    <span className="text-amber-500 shrink-0">[WARN]</span>
-                    <span className="text-slate-400">
+                    <span className="text-amber-600 shrink-0">[WARN]</span>
+                    <span className="text-slate-500">
                       {missingKeywords.length > 0
                         ? `Missing ${missingKeywords.length} high-impact keywords: ${missingKeywords.slice(0, 2).join(", ")}...`
                         : "All critical keywords detected"}
@@ -279,8 +278,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   </div>
                   {visibilityScore < 85 && (
                     <div className="flex gap-2">
-                      <span className="text-rose-500 shrink-0">[CRIT]</span>
-                      <span className="text-slate-400">
+                      <span className="text-rose-600 shrink-0">[CRIT]</span>
+                      <span className="text-slate-500">
                         Score {visibilityScore}/100 - Need {85 - visibilityScore} points to reach ELITE tier
                       </span>
                     </div>
@@ -293,7 +292,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <div className="mt-4 flex gap-3">
             <Button
               onClick={() => onNavigate("master-cvs")}
-              className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 hover:border-green-500/50"
+              className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 hover:border-green-300"
             >
               <span className="material-symbols-outlined mr-2">visibility</span>
               View Full Report
@@ -315,15 +314,15 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel rounded-xl p-6 border-l-4 border-l-primary"
+        className="bg-white rounded-xl p-6 border-l-4 border-l-primary border border-slate-200 shadow-sm"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white text-lg font-bold">Career Health</h3>
+          <h3 className="text-slate-900 text-lg font-bold">Career Health</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-            visibilityScore >= 85 ? "bg-teal-500/20 text-teal-400 border border-teal-500/30" :
-            visibilityScore >= 70 ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" :
-            visibilityScore >= 50 ? "bg-amber-500/20 text-amber-400 border border-amber-500/30" :
-            "bg-slate-700/50 text-slate-400 border border-slate-600"
+            visibilityScore >= 85 ? "bg-teal-50 text-teal-600 border border-teal-200" :
+            visibilityScore >= 70 ? "bg-blue-50 text-blue-600 border border-blue-200" :
+            visibilityScore >= 50 ? "bg-amber-50 text-amber-600 border border-amber-200" :
+            "bg-slate-100 text-slate-500 border border-slate-200"
           }`}>
             {visibilityScore >= 85 ? "🏆 ELITE" :
              visibilityScore >= 70 ? "⭐ PRO" :
@@ -334,10 +333,10 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
         <div className="space-y-2 mb-4">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-400">Progress to ELITE (85%+)</span>
-            <span className="text-white font-bold font-mono">{visibilityScore}/85</span>
+            <span className="text-slate-500">Progress to ELITE (85%+)</span>
+            <span className="text-slate-900 font-bold font-mono">{visibilityScore}/85</span>
           </div>
-          <div className="h-3 bg-slate-800 rounded-full overflow-hidden relative">
+          <div className="h-3 bg-slate-200 rounded-full overflow-hidden relative">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${Math.min((visibilityScore / 85) * 100, 100)}%` }}
@@ -346,23 +345,23 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 visibilityScore >= 85 ? "bg-gradient-to-r from-teal-500 to-pink-500" :
                 visibilityScore >= 70 ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
                 "bg-gradient-to-r from-amber-500 to-orange-500"
-              } shadow-[0_0_15px_rgba(59,130,246,0.5)]`}
+              }`}
             ></motion.div>
           </div>
         </div>
 
         <div className="grid grid-cols-3 gap-3 text-center">
-          <div className="bg-slate-800/50 rounded-lg p-3">
-            <p className="text-xs text-slate-400 mb-1">CV Score</p>
-            <p className="text-2xl font-bold text-white">{visibilityScore}</p>
+          <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+            <p className="text-xs text-slate-500 mb-1">CV Score</p>
+            <p className="text-2xl font-bold text-slate-900">{visibilityScore}</p>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-3">
-            <p className="text-xs text-slate-400 mb-1">Applications</p>
-            <p className="text-2xl font-bold text-white">{activeApplications}</p>
+          <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+            <p className="text-xs text-slate-500 mb-1">Applications</p>
+            <p className="text-2xl font-bold text-slate-900">{activeApplications}</p>
           </div>
-          <div className="bg-slate-800/50 rounded-lg p-3">
-            <p className="text-xs text-slate-400 mb-1">Interviews</p>
-            <p className="text-2xl font-bold text-white">{applicationsByStatus.interviewing.length}</p>
+          <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+            <p className="text-xs text-slate-500 mb-1">Interviews</p>
+            <p className="text-2xl font-bold text-slate-900">{applicationsByStatus.interviewing.length}</p>
           </div>
         </div>
       </motion.section>
@@ -374,7 +373,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         {/* Kanban Board */}
         <section className="lg:col-span-2 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-white text-lg font-bold flex items-center gap-2">
+            <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">view_kanban</span>
               Application Kanban
             </h3>
@@ -386,31 +385,31 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </button>
           </div>
 
-          <div className="glass-panel p-1 rounded-xl flex-1 overflow-x-auto">
+          <div className="bg-white border border-slate-200 shadow-sm p-1 rounded-xl flex-1 overflow-x-auto">
             <div className="flex gap-3 h-full min-w-[600px] p-3">
               {/* Column 1: Applied */}
               <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                     Applied ({applicationsByStatus.applied.length})
                   </span>
-                  <div className="h-1.5 w-1.5 rounded-full bg-slate-500"></div>
+                  <div className="h-1.5 w-1.5 rounded-full bg-slate-400"></div>
                 </div>
 
                 {applicationsByStatus.applied.length === 0 ? (
-                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                  <div className="bg-slate-50 border border-slate-200 p-6 rounded text-center text-slate-500 text-sm">
                     No applications yet
                   </div>
                 ) : (
                   applicationsByStatus.applied.map((app: any) => (
                     <div
                       key={app._id}
-                      className="bg-[#2a374a] p-3 rounded border border-slate-700 hover:border-primary transition-colors cursor-pointer group"
+                      className="bg-white p-3 rounded border border-slate-200 hover:border-primary transition-colors cursor-pointer group shadow-sm"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-slate-900 font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
-                      <p className="text-slate-400 text-xs mb-3">{app.company || "Company"}</p>
+                      <p className="text-slate-500 text-xs mb-3">{app.company || "Company"}</p>
                       <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
                         <span className="material-symbols-outlined text-xs">schedule</span>
                         {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : "Recent"}
@@ -426,26 +425,25 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   <span className="text-xs font-bold text-primary uppercase tracking-wider">
                     Interviewing ({applicationsByStatus.interviewing.length})
                   </span>
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_#3B82F6]"></div>
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
                 </div>
 
                 {applicationsByStatus.interviewing.length === 0 ? (
-                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                  <div className="bg-slate-50 border border-slate-200 p-6 rounded text-center text-slate-500 text-sm">
                     No interviews yet
                   </div>
                 ) : (
                   applicationsByStatus.interviewing.map((app: any) => (
                     <div
                       key={app._id}
-                      className="bg-[#2a374a] p-3 rounded border-l-2 border-l-primary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
+                      className="bg-white p-3 rounded border-l-2 border-l-primary border-y border-r border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer relative overflow-hidden shadow-sm"
                     >
-                      <div className="absolute inset-0 bg-blue-500/5 pointer-events-none"></div>
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-slate-900 font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
-                      <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <p className="text-slate-500 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-primary/10 px-2 py-0.5 rounded">
+                        <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                           Tech Screen
                         </div>
                         <span className="text-[10px] text-slate-500">Tomorrow</span>
@@ -461,26 +459,25 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   <span className="text-xs font-bold text-secondary uppercase tracking-wider">
                     Accepted ({applicationsByStatus.accepted.length})
                   </span>
-                  <div className="h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_8px_#8B5CF6]"></div>
+                  <div className="h-1.5 w-1.5 rounded-full bg-secondary"></div>
                 </div>
 
                 {applicationsByStatus.accepted.length === 0 ? (
-                  <div className="glass-panel p-6 rounded text-center text-slate-500 text-sm">
+                  <div className="bg-slate-50 border border-slate-200 p-6 rounded text-center text-slate-500 text-sm">
                     No offers yet
                   </div>
                 ) : (
                   applicationsByStatus.accepted.map((app: any) => (
                     <div
                       key={app._id}
-                      className="bg-[#2a374a] p-3 rounded border-l-2 border-l-secondary border-y border-r border-y-slate-700 border-r-slate-700 hover:bg-[#2f3e54] transition-colors cursor-pointer relative overflow-hidden"
+                      className="bg-white p-3 rounded border-l-2 border-l-secondary border-y border-r border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer relative overflow-hidden shadow-sm"
                     >
-                      <div className="absolute inset-0 bg-teal-500/5 pointer-events-none"></div>
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-white font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-slate-900 font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
                       </div>
-                      <p className="text-slate-400 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <p className="text-slate-500 text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-secondary/10 px-2 py-0.5 rounded">
+                        <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
                           Accepted
                         </div>
                       </div>
@@ -495,7 +492,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         {/* Top Errors Terminal */}
         <section className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-white text-lg font-bold flex items-center gap-2">
+            <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-rose-500">bug_report</span>
               Top Errors
             </h3>
@@ -504,9 +501,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </span>
           </div>
 
-          <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-slate-800 overflow-hidden shadow-inner shadow-black/50">
+          <div className="bg-white border border-slate-200 shadow-sm rounded-xl flex flex-col h-full overflow-hidden">
             {/* Terminal Header */}
-            <div className="bg-[#161b22] px-4 py-2 flex items-center gap-2 border-b border-slate-800">
+            <div className="bg-slate-50 px-4 py-2 flex items-center gap-2 border-b border-slate-200">
               <div className="flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
@@ -516,13 +513,13 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </div>
 
             {/* Terminal Body */}
-            <div className="p-4 font-mono text-xs flex flex-col gap-3 overflow-y-auto flex-1">
+            <div className="p-4 font-mono text-xs flex flex-col gap-3 overflow-y-auto flex-1 bg-slate-50">
               {topErrors.length === 0 ? (
                 <div className="flex gap-3">
-                  <span className="text-emerald-500 font-bold shrink-0">[OK]</span>
+                  <span className="text-emerald-600 font-bold shrink-0">[OK]</span>
                   <div className="flex flex-col gap-1">
-                    <span className="text-slate-300">No critical errors detected</span>
-                    <span className="text-slate-600">All systems operational</span>
+                    <span className="text-slate-700">No critical errors detected</span>
+                    <span className="text-slate-500">All systems operational</span>
                   </div>
                 </div>
               ) : (
@@ -530,26 +527,26 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                   <div key={index} className="flex gap-3 group cursor-pointer">
                     <span className={`${error.color} font-bold shrink-0`}>[{error.severity}]</span>
                     <div className="flex flex-col gap-1">
-                      <span className="text-slate-300 group-hover:text-white transition-colors">
+                      <span className="text-slate-700 group-hover:text-slate-900 transition-colors">
                         {error.message}
                       </span>
-                      <span className="text-slate-600">{error.detail}</span>
+                      <span className="text-slate-500">{error.detail}</span>
                     </div>
                   </div>
                 ))
               )}
 
               <div className="flex gap-2 items-center mt-2 animate-pulse">
-                <span className="text-emerald-500">➜</span>
-                <span className="w-2 h-4 bg-slate-500 block"></span>
+                <span className="text-emerald-600">➜</span>
+                <span className="w-2 h-4 bg-slate-400 block"></span>
               </div>
             </div>
 
             {/* Action Button */}
-            <div className="p-3 border-t border-slate-800 bg-[#161b22]">
+            <div className="p-3 border-t border-slate-200 bg-slate-50">
               <button
                 onClick={() => onNavigate("master-cvs")}
-                className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 text-xs font-bold border border-rose-500/20 hover:border-rose-500/40 transition-all"
+                className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 text-xs font-bold border border-rose-200 hover:border-rose-300 transition-all"
               >
                 <Wrench className="h-4 w-4" />
                 DEBUG MASTER CV

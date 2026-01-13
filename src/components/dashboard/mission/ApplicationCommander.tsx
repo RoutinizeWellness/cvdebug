@@ -57,7 +57,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
             <Briefcase className="h-4 w-4 text-zinc-400" />
             <h3 className="font-bold text-sm text-zinc-200 uppercase tracking-wider">Application Commander</h3>
           </div>
-          <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-white">
+          <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-slate-900">
             View All
           </Button>
         </div>
@@ -89,7 +89,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-bold text-zinc-200 group-hover:text-white transition-colors">
+                        <span className="font-bold text-zinc-200 group-hover:text-slate-900 transition-colors">
                           {job.jobTitle || "Untitled Role"}
                         </span>
                         <span className="text-xs text-zinc-500 flex items-center gap-1">
@@ -129,16 +129,16 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="h-7 text-xs border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                            className="h-7 text-xs border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-slate-900"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {job.status || "Applied"} <ChevronDown className="ml-1 h-3 w-3 opacity-50" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="center" className="bg-[#0A0A0A] border-zinc-800">
-                          <DropdownMenuItem className="text-zinc-400 focus:text-white focus:bg-zinc-800">Interested</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-white focus:bg-zinc-800">Applied</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-white focus:bg-zinc-800">Interviewing</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Interested</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Applied</DropdownMenuItem>
+                          <DropdownMenuItem className="text-zinc-400 focus:text-slate-900 focus:bg-zinc-800">Interviewing</DropdownMenuItem>
                           <DropdownMenuItem className="text-green-500 focus:text-green-400 focus:bg-green-900/20">Offer</DropdownMenuItem>
                           <DropdownMenuItem className="text-red-500 focus:text-red-400 focus:bg-red-900/20">Rejected</DropdownMenuItem>
                         </DropdownMenuContent>
@@ -161,7 +161,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-8 w-8 text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
+                        className="h-8 w-8 text-zinc-500 hover:text-slate-900 hover:bg-zinc-800 transition-colors"
                         onClick={(e) => handleViewDetails(job, e)}
                         title="View Details"
                       >

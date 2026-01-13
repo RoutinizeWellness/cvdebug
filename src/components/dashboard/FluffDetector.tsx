@@ -150,7 +150,7 @@ export function FluffDetector({
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-3xl font-bold text-slate-900 font-mono">{clarityScore}</span>
-                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Clarity</span>
+                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Clarity</span>
               </div>
             </div>
           </div>
@@ -166,7 +166,7 @@ export function FluffDetector({
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Active Voice</p>
+                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-1">Active Voice</p>
                 <p className="text-2xl font-bold text-slate-900 font-mono">{activeVoicePercent}%</p>
               </div>
               <span className="material-symbols-outlined text-[#22C55E] text-[20px]">check_circle</span>
@@ -181,7 +181,7 @@ export function FluffDetector({
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Buzzword Density</p>
+                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-1">Buzzword Density</p>
                 <p className="text-2xl font-bold text-slate-900 font-mono">{buzzwordDensity}%</p>
               </div>
               <span className="material-symbols-outlined text-[#3B82F6] text-[20px]">trending_down</span>
@@ -196,7 +196,7 @@ export function FluffDetector({
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Quantification</p>
+                <p className="text-[11px] text-slate-500 uppercase tracking-widest font-bold mb-1">Quantification</p>
                 <p className="text-2xl font-bold text-slate-900 font-mono">{quantificationPercent}%</p>
               </div>
               <span className="material-symbols-outlined text-amber-500 text-[20px]">warning</span>
@@ -221,7 +221,7 @@ export function FluffDetector({
                 Let AI rewrite your entire resume with power verbs, metrics, and impact statements.
               </p>
             </div>
-            <button className="px-6 py-3 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg shadow-blue-500/20 whitespace-nowrap text-sm">
+            <button className="px-6 py-3 bg-[#3B82F6] hover:bg-blue-600 text-slate-900 rounded-lg font-semibold transition-all shadow-lg shadow-blue-500/20 whitespace-nowrap text-sm">
               Rewrite All
             </button>
           </div>
@@ -267,7 +267,7 @@ export function FluffDetector({
                         <span className="font-mono text-sm font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100">
                           "{item.phrase}"
                         </span>
-                        <span className="text-[10px] text-slate-400 font-mono">
+                        <span className="text-[10px] text-slate-500 font-mono">
                           {item.location}
                         </span>
                       </div>
@@ -385,7 +385,7 @@ export function FluffDetector({
                         <h4 className="text-sm font-bold text-slate-900">
                           {achievement.title}
                         </h4>
-                        <p className="text-[10px] text-slate-400 font-mono">
+                        <p className="text-[10px] text-slate-500 font-mono">
                           {achievement.description}
                         </p>
                       </div>
@@ -418,7 +418,7 @@ export function FluffDetector({
                     </div>
                   </div>
 
-                  <button className="w-full mt-3 px-3 py-2 bg-[#A78BFA] hover:bg-[#7C3AED] text-white text-xs font-semibold rounded transition-colors">
+                  <button className="w-full mt-3 px-3 py-2 bg-[#A78BFA] hover:bg-[#7C3AED] text-slate-900 text-xs font-semibold rounded transition-colors">
                     Apply Selected Metric
                   </button>
                 </motion.div>
@@ -429,7 +429,7 @@ export function FluffDetector({
       </div>
 
       {/* Floating Chat Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-blue-600 hover:to-purple-600 text-white rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-blue-600 hover:to-purple-600 text-slate-900 rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
         <span className="material-symbols-outlined text-2xl">chat</span>
       </button>
     </div>

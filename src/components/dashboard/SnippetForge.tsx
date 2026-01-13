@@ -35,7 +35,7 @@ export function SnippetForge({ open, onOpenChange, keyword, suggestions }: Snipp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-black/95 border border-slate-800 text-white max-w-2xl backdrop-blur-xl">
+      <DialogContent className="bg-black/95 border border-slate-200 text-slate-900 max-w-2xl backdrop-blur-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl font-bold">
             <Sparkles className="h-5 w-5 text-emerald-400" />
@@ -55,8 +55,8 @@ export function SnippetForge({ open, onOpenChange, keyword, suggestions }: Snipp
               {/* Processing glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-transparent rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <div className="relative bg-black/50 border border-slate-800 rounded-lg p-4 hover:border-emerald-500/30 transition-all duration-300">
-                <p className="text-sm text-slate-200 leading-relaxed mb-3 font-mono">
+              <div className="relative bg-black/50 border border-slate-200 rounded-lg p-4 hover:border-emerald-500/30 transition-all duration-300">
+                <p className="text-sm text-slate-700 leading-relaxed mb-3 font-mono">
                   {suggestion.text}
                 </p>
 
@@ -74,7 +74,7 @@ export function SnippetForge({ open, onOpenChange, keyword, suggestions }: Snipp
                 )}
 
                 {suggestion.context && (
-                  <p className="text-xs text-slate-400 italic mb-3 border-l-2 border-slate-700 pl-2">
+                  <p className="text-xs text-slate-500 italic mb-3 border-l-2 border-slate-200 pl-2">
                     {suggestion.context}
                   </p>
                 )}
@@ -84,7 +84,7 @@ export function SnippetForge({ open, onOpenChange, keyword, suggestions }: Snipp
                     variant="ghost"
                     size="sm"
                     onClick={() => handleCopy(suggestion.text, index)}
-                    className="flex-1 bg-slate-900/50 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white"
+                    className="flex-1 bg-white/50 hover:bg-slate-50 border border-slate-200 text-slate-600 hover:text-slate-900"
                   >
                     {copiedIndex === index ? (
                       <>
@@ -113,8 +113,8 @@ export function SnippetForge({ open, onOpenChange, keyword, suggestions }: Snipp
           ))}
         </div>
 
-        <div className="mt-4 p-3 bg-slate-900/50 border border-slate-800 rounded-lg">
-          <p className="text-xs text-slate-400 flex items-center gap-2">
+        <div className="mt-4 p-3 bg-white/50 border border-slate-200 rounded-lg">
+          <p className="text-xs text-slate-500 flex items-center gap-2">
             <Sparkles className="h-3 w-3 text-emerald-400" />
             <span className="font-bold text-emerald-400">Pro Tip:</span>
             These AI-generated phrases are optimized for ATS parsing and recruiter readability

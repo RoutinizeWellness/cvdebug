@@ -8,16 +8,16 @@ interface KeywordCloudProps {
 
 export function KeywordCloud({ foundKeywords, missingKeywords }: KeywordCloudProps) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col h-full">
+    <div className="bg-white border border-slate-200 rounded-xl p-6 flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-white font-bold text-lg flex items-center gap-2">
+        <h3 className="text-slate-900 font-bold text-lg flex items-center gap-2">
           <Cloud className="h-5 w-5 text-primary" />
           ATS Keywords
         </h3>
       </div>
       
       <div className="flex-1">
-        <p className="text-xs text-slate-400 mb-4 uppercase tracking-wider font-semibold">
+        <p className="text-xs text-slate-500 mb-4 uppercase tracking-wider font-semibold">
           Found in your profile
         </p>
         <div className="flex flex-wrap gap-2 mb-6">
@@ -34,7 +34,7 @@ export function KeywordCloud({ foundKeywords, missingKeywords }: KeywordCloudPro
           ))}
         </div>
 
-        <p className="text-xs text-slate-400 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
+        <p className="text-xs text-slate-500 mb-4 uppercase tracking-wider font-semibold flex items-center gap-2">
           Missing (Critical)
           <span className="size-1.5 rounded-full bg-red-500 animate-pulse"></span>
         </p>

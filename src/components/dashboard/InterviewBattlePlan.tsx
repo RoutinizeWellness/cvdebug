@@ -104,23 +104,23 @@ export function InterviewBattlePlan({
     const colorMap: Record<string, { border: string; text: string; bg: string }> = {
       violet: {
         border: "border-l-violet-500",
-        text: "text-violet-600 dark:text-violet-400",
-        bg: "bg-violet-50 dark:bg-violet-900/20 border-violet-100 dark:border-violet-800/50"
+        text: "text-violet-600",
+        bg: "bg-violet-50 border-violet-100"
       },
       primary: {
         border: "border-l-blue-500",
-        text: "text-blue-600 dark:text-blue-400",
-        bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/50"
+        text: "text-blue-600",
+        bg: "bg-blue-50 border-blue-100"
       },
       amber: {
         border: "border-l-amber-500",
-        text: "text-amber-600 dark:text-amber-400",
-        bg: "bg-amber-50 dark:bg-amber-900/20 border-amber-100 dark:border-amber-800/50"
+        text: "text-amber-600",
+        bg: "bg-amber-50 border-amber-100"
       },
       blue: {
         border: "border-l-blue-500",
-        text: "text-blue-700 dark:text-blue-300",
-        bg: "bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/50"
+        text: "text-blue-700",
+        bg: "bg-blue-50 border-blue-100"
       }
     };
     return colorMap[color] || colorMap.primary;
@@ -138,16 +138,16 @@ export function InterviewBattlePlan({
           <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
             Interview Battle Plan
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2 flex-wrap">
+          <p className="text-slate-500 mt-1 flex items-center gap-2 flex-wrap">
             <span className="material-symbols-outlined text-sm">psychology</span>
             AI-generated strategy based on your Resume vs.{" "}
-            <span className="text-blue-500 font-mono text-sm bg-blue-50 dark:bg-blue-900/20 px-1 rounded">
+            <span className="text-blue-500 font-mono text-sm bg-blue-50 px-1 rounded">
               {targetRole} @ {companyName}
             </span>
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded border border-green-200 dark:border-green-800/50">
+          <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded border border-green-200">
             <span className="material-symbols-outlined text-sm">check_circle</span>
             <span className="text-sm font-medium">Ready for Interview</span>
           </div>
@@ -162,15 +162,15 @@ export function InterviewBattlePlan({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm overflow-hidden flex flex-col h-full"
+            className="bg-white backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full"
           >
             {/* Header */}
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30 flex justify-between items-center">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+            <div className="p-4 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
+              <h3 className="font-semibold text-slate-800 flex items-center gap-2">
                 <span className="material-symbols-outlined text-blue-500">quiz</span>
                 Expected Questions
               </h3>
-              <span className="text-xs bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">
                 {questions.length} Generated
               </span>
             </div>
@@ -183,7 +183,7 @@ export function InterviewBattlePlan({
                   <div
                     key={q.id}
                     onClick={() => setSelectedQuestion(index)}
-                    className={`group p-3 rounded-lg border border-l-4 hover:border-blue-500 dark:hover:border-blue-500 ${colors.border} bg-white dark:bg-slate-800/50 transition-all cursor-pointer ${
+                    className={`group p-3 rounded-lg border border-l-4 hover:border-blue-500 ${colors.border} bg-white transition-all cursor-pointer ${
                       selectedQuestion === index ? 'ring-2 ring-blue-500/20' : ''
                     }`}
                   >
@@ -191,16 +191,16 @@ export function InterviewBattlePlan({
                       <span className={`text-xs font-mono ${colors.text} uppercase tracking-wider`}>
                         {q.type}
                       </span>
-                      <span className="material-symbols-outlined text-slate-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="material-symbols-outlined text-slate-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
                         chevron_right
                       </span>
                     </div>
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-200 leading-snug">
+                    <p className="text-sm font-medium text-slate-800 leading-snug">
                       {q.question}
                     </p>
                     {q.relevance && (
-                      <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                        Match: <span className="text-green-600 dark:text-green-400">{q.relevance}</span>
+                      <div className="mt-2 text-xs text-slate-500">
+                        Match: <span className="text-green-600">{q.relevance}</span>
                       </div>
                     )}
                   </div>
@@ -209,8 +209,8 @@ export function InterviewBattlePlan({
             </div>
 
             {/* Footer */}
-            <div className="p-3 border-t border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-900/50">
-              <button className="w-full py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded border border-transparent hover:border-blue-200 dark:hover:border-blue-800 transition-colors flex justify-center items-center gap-2">
+            <div className="p-3 border-t border-slate-200 bg-slate-50">
+              <button className="w-full py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2">
                 <span className="material-symbols-outlined text-lg">autorenew</span>
                 Regenerate Questions
               </button>
@@ -224,23 +224,23 @@ export function InterviewBattlePlan({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex flex-col h-full relative overflow-hidden"
+            className="bg-white backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm flex flex-col h-full relative overflow-hidden"
           >
             {/* Top gradient accent */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500"></div>
 
             {/* Header */}
-            <div className="p-5 border-b border-slate-200 dark:border-slate-700/50 flex justify-between items-center">
+            <div className="p-5 border-b border-slate-200 flex justify-between items-center">
               <div>
-                <h3 className="font-semibold text-slate-800 dark:text-slate-100 text-lg flex items-center gap-2">
+                <h3 className="font-semibold text-slate-800 text-lg flex items-center gap-2">
                   <span className="material-symbols-outlined text-violet-500">auto_awesome</span>
                   STAR Story Forge
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   Refining answer for: "{questions[selectedQuestion]?.question.substring(0, 30)}..."
                 </p>
               </div>
-              <button className="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded border border-slate-200 dark:border-slate-700 transition-colors">
+              <button className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-1.5 rounded border border-slate-200 transition-colors">
                 Change Question
               </button>
             </div>
@@ -249,20 +249,20 @@ export function InterviewBattlePlan({
             <div className="p-5 flex-1 flex flex-col gap-4 overflow-y-auto">
               {/* Situation */}
               <div className="space-y-1">
-                <label className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                <label className="text-xs font-mono font-semibold text-slate-500 uppercase">
                   S - Situation
                 </label>
-                <div className="p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-700 dark:text-slate-300">
+                <div className="p-3 rounded bg-slate-50 border border-slate-200 text-sm text-slate-700">
                   {starStory.situation}
                 </div>
               </div>
 
               {/* Task */}
               <div className="space-y-1">
-                <label className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                <label className="text-xs font-mono font-semibold text-slate-500 uppercase">
                   T - Task
                 </label>
-                <div className="p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-700 dark:text-slate-300">
+                <div className="p-3 rounded bg-slate-50 border border-slate-200 text-sm text-slate-700">
                   {starStory.task}
                 </div>
               </div>
@@ -270,22 +270,22 @@ export function InterviewBattlePlan({
               {/* Action (Editable) */}
               <div className="space-y-1 relative">
                 <div className="flex justify-between items-end mb-1">
-                  <label className="text-xs font-mono font-semibold text-blue-600 dark:text-blue-400 uppercase">
+                  <label className="text-xs font-mono font-semibold text-blue-600 uppercase">
                     A - Action (Drafting...)
                   </label>
-                  <span className="text-[10px] text-blue-600 dark:text-blue-400 animate-pulse">
+                  <span className="text-[10px] text-blue-600 animate-pulse">
                     AI Suggestion Available
                   </span>
                 </div>
                 <textarea
                   value={starStory.action}
                   onChange={(e) => setStarStory({ ...starStory, action: e.target.value })}
-                  className="w-full h-32 p-3 rounded bg-white dark:bg-slate-900 border border-blue-500 ring-1 ring-blue-500/20 dark:ring-blue-500/40 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
+                  className="w-full h-32 p-3 rounded bg-white border border-blue-500 ring-1 ring-blue-500/20 text-sm text-slate-800 focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
                   placeholder="Describe the actions you took..."
                 />
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <button
-                    className="p-1 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                    className="p-1 rounded bg-blue-100 text-blue-600 hover:text-blue-700"
                     title="Enhance with AI"
                   >
                     <span className="material-symbols-outlined text-sm">magic_button</span>
@@ -295,10 +295,10 @@ export function InterviewBattlePlan({
 
               {/* Result */}
               <div className="space-y-1">
-                <label className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                <label className="text-xs font-mono font-semibold text-slate-500 uppercase">
                   R - Result
                 </label>
-                <div className="p-3 rounded bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-sm text-slate-700 dark:text-slate-300">
+                <div className="p-3 rounded bg-slate-50 border border-slate-200 text-sm text-slate-700">
                   {starStory.result}
                 </div>
               </div>
@@ -313,10 +313,10 @@ export function InterviewBattlePlan({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm"
+            className="bg-white backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm"
           >
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+            <div className="p-4 border-b border-slate-200 bg-slate-50/50">
+              <h3 className="font-semibold text-slate-800 flex items-center gap-2 text-sm">
                 <span className="material-symbols-outlined text-amber-500 text-lg">target</span>
                 Hit These Signals
               </h3>
@@ -326,13 +326,13 @@ export function InterviewBattlePlan({
                 <div key={index} className="flex items-start gap-3">
                   <div
                     onClick={() => toggleSignal(index)}
-                    className="mt-0.5 w-4 h-4 rounded border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 flex items-center justify-center shrink-0 cursor-pointer hover:border-blue-500 transition-colors"
+                    className="mt-0.5 w-4 h-4 rounded border border-slate-300 bg-white flex items-center justify-center shrink-0 cursor-pointer hover:border-blue-500 transition-colors"
                   >
                     {signal.checked && <div className="w-2 h-2 rounded-full bg-green-500"></div>}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300">{signal.title}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">{signal.description}</p>
+                    <p className="text-sm font-medium text-slate-700">{signal.title}</p>
+                    <p className="text-xs text-slate-500">{signal.description}</p>
                   </div>
                 </div>
               ))}
@@ -344,10 +344,10 @@ export function InterviewBattlePlan({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-200 dark:border-slate-700/50 shadow-sm flex-1 flex flex-col"
+            className="bg-white backdrop-blur-sm rounded-xl border border-slate-200 shadow-sm flex-1 flex flex-col"
           >
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30">
-              <h3 className="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-sm">
+            <div className="p-4 border-b border-slate-200 bg-slate-50/50">
+              <h3 className="font-semibold text-slate-800 flex items-center gap-2 text-sm">
                 <span className="material-symbols-outlined text-blue-500 text-lg">strategy</span>
                 Strategic Talking Points
               </h3>
@@ -365,14 +365,14 @@ export function InterviewBattlePlan({
                         {strength.label}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{strength.title}</p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{strength.description}</p>
+                    <p className="text-sm font-semibold text-slate-800">{strength.title}</p>
+                    <p className="text-xs text-slate-600 mt-1">{strength.description}</p>
                   </div>
                 );
               })}
             </div>
-            <div className="p-3 border-t border-slate-200 dark:border-slate-700/50">
-              <button className="w-full py-1.5 text-xs font-medium text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 flex justify-center items-center gap-1">
+            <div className="p-3 border-t border-slate-200">
+              <button className="w-full py-1.5 text-xs font-medium text-slate-500 hover:text-slate-700 flex justify-center items-center gap-1">
                 View Full Strategy Document{" "}
                 <span className="material-symbols-outlined text-sm">open_in_new</span>
               </button>
@@ -382,12 +382,12 @@ export function InterviewBattlePlan({
       </div>
 
       {/* Floating AI Assistant Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-blue-500 hover:bg-blue-600 text-slate-900 rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group">
         <span className="material-symbols-outlined text-2xl group-hover:hidden">smart_toy</span>
         <span className="material-symbols-outlined text-2xl hidden group-hover:block">chat</span>
         <span className="absolute -top-1 -right-1 flex h-4 w-4">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-[10px] font-bold text-white items-center justify-center">
+          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-[10px] font-bold text-slate-900 items-center justify-center">
             1
           </span>
         </span>

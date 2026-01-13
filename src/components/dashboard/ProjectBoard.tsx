@@ -135,7 +135,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
           <Button 
             variant="ghost" 
             onClick={onBack}
-            className="text-zinc-400 hover:text-white pl-0 gap-2"
+            className="text-zinc-400 hover:text-slate-900 pl-0 gap-2"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Projects
           </Button>

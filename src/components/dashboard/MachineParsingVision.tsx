@@ -54,7 +54,7 @@ export function MachineParsingVision({
       {/* Header Controls */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50">
         <div className="flex items-center gap-3">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <span className="material-symbols-outlined text-primary">smart_toy</span>
             ATS Robot Vision
           </h3>
@@ -198,7 +198,7 @@ export function MachineParsingVision({
                   {/* Image Trap Error */}
                   {imageTrapDetected && (
                     <div className="absolute top-[500px] left-[40px] w-[300px] h-[150px] border-2 border-red-500 bg-red-500/10 rounded flex items-center justify-center animate-pulse">
-                      <div className="absolute -top-3 left-2 bg-red-600 text-white px-2 py-0.5 rounded text-[9px] font-bold tracking-widest flex items-center gap-1">
+                      <div className="absolute -top-3 left-2 bg-red-600 text-slate-900 px-2 py-0.5 rounded text-[9px] font-bold tracking-widest flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
                         DECODING_ERROR
                       </div>
@@ -237,28 +237,28 @@ export function MachineParsingVision({
               {/* Floating Toolbar */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 glass-panel rounded-full px-2 py-2 flex items-center gap-2 shadow-2xl z-30 backdrop-blur-xl bg-zinc-900/40 border border-primary/20">
                 <button 
-                  className="p-3 text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
                   title="Refresh Scan"
                   onClick={() => setShowMachineView(false)}
                 >
                   <RefreshCw className="h-4 w-4" />
                 </button>
                 <button 
-                  className="p-3 text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
                   title="Zoom In"
                   onClick={() => setZoom(Math.min(150, zoom + 10))}
                 >
                   <ZoomIn className="h-4 w-4" />
                 </button>
                 <button 
-                  className="p-3 text-zinc-300 hover:text-white hover:bg-white/10 rounded-full transition-all" 
+                  className="p-3 text-zinc-300 hover:text-slate-900 hover:bg-white/10 rounded-full transition-all" 
                   title="Zoom Out"
                   onClick={() => setZoom(Math.max(50, zoom - 10))}
                 >
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <div className="w-px h-6 bg-zinc-600 mx-1"></div>
-                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:from-primary/90 hover:to-teal-600/90 text-white rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-teal-600 hover:from-primary/90 hover:to-teal-600/90 text-slate-900 rounded-full font-medium text-sm shadow-lg shadow-primary/25 transition-all">
                   <Wand2 className="h-4 w-4" />
                   <span>Fix Formatting</span>
                 </button>

@@ -20,14 +20,14 @@ export function ScoreGauge({ score, label = "Good" }: ScoreGaugeProps) {
          style={{ background: `conic-gradient(${color} ${score}%, #243647 0)` }}>
       <div className="absolute inset-[10px] bg-surface-dark rounded-full flex flex-col items-center justify-center">
         <motion.span 
-          className="text-3xl font-black text-white"
+          className="text-3xl font-black text-slate-900"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
           {score}
         </motion.span>
-        <span className="text-[10px] text-slate-400 uppercase font-bold">{label}</span>
+        <span className="text-[10px] text-slate-500 uppercase font-bold">{label}</span>
       </div>
     </div>
   );

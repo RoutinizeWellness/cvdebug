@@ -77,12 +77,12 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-lg glass-panel bg-slate-900/60 rounded-2xl border border-slate-700/50 shadow-2xl flex flex-col max-h-[90vh]"
+            className="w-full max-w-lg glass-panel bg-white rounded-2xl border border-slate-200 shadow-2xl flex flex-col max-h-[90vh]"
           >
             {/* Header */}
-            <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+            <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-semibold text-white tracking-tight">
+                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
                   Add New Application
                 </h3>
                 {!hasInterviewSprint && (
@@ -91,7 +91,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
               </div>
               <button
                 onClick={() => onOpenChange(false)}
-                className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
+                className="text-slate-500 hover:text-slate-900 transition-colors p-2 hover:bg-slate-50 rounded-lg"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -103,8 +103,8 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                 <div className="flex gap-3">
                   <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-bold text-white">Interview Sprint Required</p>
-                    <p className="text-xs text-slate-300 mt-1">
+                    <p className="text-sm font-bold text-slate-900">Interview Sprint Required</p>
+                    <p className="text-xs text-slate-600 mt-1">
                       Upgrade to track applications, get keyword analysis, and receive ghosting alerts.
                     </p>
                     <button
@@ -125,7 +125,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                 <div className="flex flex-col gap-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-300 block">
+                      <label className="text-sm font-medium text-slate-700 block">
                         Company Name
                       </label>
                       <input
@@ -134,11 +134,11 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                         required
                         disabled={!hasInterviewSprint}
-                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm disabled:opacity-50"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-300 block">
+                      <label className="text-sm font-medium text-slate-700 block">
                         Job Title
                       </label>
                       <input
@@ -147,13 +147,13 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
                         required
                         disabled={!hasInterviewSprint}
-                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm disabled:opacity-50"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300 block">
+                    <label className="text-sm font-medium text-slate-700 block">
                       Job Posting URL <span className="text-slate-500 font-normal">(Optional)</span>
                     </label>
                     <input
@@ -162,12 +162,12 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                       value={formData.jobUrl}
                       onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
                       disabled={!hasInterviewSprint}
-                      className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner disabled:opacity-50"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm disabled:opacity-50"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300 block">
+                    <label className="text-sm font-medium text-slate-700 block">
                       Job Description
                       <span className="text-primary text-xs ml-2 font-normal">(Recommended for AI Analysis)</span>
                     </label>
@@ -177,7 +177,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                       onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
                       rows={6}
                       disabled={!hasInterviewSprint}
-                      className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner resize-none disabled:opacity-50"
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder:text-slate-500 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-sm resize-none disabled:opacity-50"
                     />
                     <p className="text-xs text-slate-500">
                       Add the job description to get instant keyword gap analysis
@@ -187,18 +187,18 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
               </div>
 
               {/* Footer */}
-              <div className="px-6 py-4 border-t border-slate-800 flex gap-3 justify-end">
+              <div className="px-6 py-4 border-t border-slate-200 flex gap-3 justify-end">
                 <button
                   type="button"
                   onClick={() => onOpenChange(false)}
-                  className="px-6 py-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors font-medium"
+                  className="px-6 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading || !hasInterviewSprint}
-                  className="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-700 disabled:text-slate-500 text-white font-bold rounded-lg transition-colors flex items-center gap-2"
+                  className="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-200 disabled:text-slate-500 text-slate-900 font-bold rounded-lg transition-colors flex items-center gap-2"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isLoading ? "Adding..." : "Add Application"}

@@ -20,15 +20,15 @@ export function HeadlineOptimizer({ currentHeadline, optimizedHeadline }: Headli
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white text-lg font-bold flex items-center gap-2">
+        <h3 className="text-slate-900 text-lg font-bold flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
           Headline Optimizer
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 bg-white border border-slate-200 rounded-xl overflow-hidden">
         {/* Current */}
-        <div className="p-6 border-b lg:border-b-0 lg:border-r border-slate-800 bg-slate-900/80">
+        <div className="p-6 border-b lg:border-b-0 lg:border-r border-slate-200 bg-white/80">
           <div className="flex justify-between items-center mb-4">
             <span className="text-xs font-bold uppercase tracking-wider text-red-400 flex items-center gap-1">
               <X className="h-4 w-4" />
@@ -53,13 +53,13 @@ export function HeadlineOptimizer({ currentHeadline, optimizedHeadline }: Headli
             </span>
             <button 
               onClick={handleCopy}
-              className="text-xs flex items-center gap-1 text-white hover:text-primary transition-colors"
+              className="text-xs flex items-center gap-1 text-slate-900 hover:text-primary transition-colors"
             >
               <Copy className="h-4 w-4" />
               {copied ? "Copied!" : "Copy"}
             </button>
           </div>
-          <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-white font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(139,92,246,0.1)]">
+          <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-slate-900 font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(139,92,246,0.1)]">
             {optimizedHeadline}
           </div>
           <p className="mt-3 text-xs text-primary/80">

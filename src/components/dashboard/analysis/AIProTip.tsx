@@ -16,11 +16,11 @@ export function AIProTip({ tip }: AIProTipProps) {
           </div>
         </div>
         <div>
-          <h3 className="font-bold text-white flex items-center gap-2">
+          <h3 className="font-bold text-slate-900 flex items-center gap-2">
             AI Pro Tip
-            <span className="text-[10px] bg-teal-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider">New</span>
+            <span className="text-[10px] bg-teal-500 text-slate-900 px-1.5 py-0.5 rounded uppercase tracking-wider">New</span>
           </h3>
-          <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed">
             {tip}
           </p>
         </div>

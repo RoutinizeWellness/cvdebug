@@ -302,7 +302,7 @@ export function ATSAnalysisReport({
                 >
                   <button
                     onClick={onOpenWritingForge}
-                    className="btn-power px-6 py-3 rounded-lg text-white font-semibold border-0 flex items-center justify-center gap-2 group"
+                    className="btn-power px-6 py-3 rounded-lg text-slate-900 font-semibold border-0 flex items-center justify-center gap-2 group"
                   >
                     <span>Optimize Now</span>
                     <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
@@ -340,7 +340,7 @@ export function ATSAnalysisReport({
                   </p>
                   <button
                     onClick={onOpenWritingForge}
-                    className="px-5 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+                    className="px-5 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-slate-900 font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2"
                   >
                     <span>Optimize with Numbers</span>
                     <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -431,40 +431,40 @@ export function ATSAnalysisReport({
                       <div className="p-3 rounded-xl bg-blue-500/20 text-blue-400">
                         <span className="material-symbols-outlined text-2xl">speed</span>
                       </div>
-                      <span className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full flex items-center gap-1">
+                      <span className="px-3 py-1.5 text-xs font-bold text-slate-900 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full flex items-center gap-1">
                         <span className="material-symbols-outlined text-xs">lock</span>
                         LOCKED
                       </span>
                     </div>
 
                     <div className="mb-4">
-                      <p className="text-slate-300 text-sm font-semibold mb-2">Impact Density</p>
+                      <p className="text-slate-600 text-sm font-semibold mb-2">Impact Density</p>
                       <div className="flex items-baseline gap-2 mb-3">
-                        <h3 className="text-4xl font-bold text-white blur-sm select-none">8</h3>
-                        <span className="text-lg text-slate-400">/10+</span>
+                        <h3 className="text-4xl font-bold text-slate-900 blur-sm select-none">8</h3>
+                        <span className="text-lg text-slate-500">/10+</span>
                       </div>
-                      <p className="text-slate-300 text-xs leading-relaxed mb-4">
+                      <p className="text-slate-600 text-xs leading-relaxed mb-4">
                         See exactly how many quantifiable metrics are in your resume and get AI suggestions to add more.
                       </p>
 
                       {/* Benefits */}
                       <div className="space-y-1.5 mb-4">
-                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                        <div className="flex items-center gap-2 text-xs text-slate-700">
                           <span className="text-purple-400">✓</span>
                           <span>Track impact metrics</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                        <div className="flex items-center gap-2 text-xs text-slate-700">
                           <span className="text-purple-400">✓</span>
                           <span>AI-powered suggestions</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                        <div className="flex items-center gap-2 text-xs text-slate-700">
                           <span className="text-purple-400">✓</span>
                           <span>Reach elite level (10+)</span>
                         </div>
                       </div>
                     </div>
 
-                    <button className="btn-power w-full py-2 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                    <button className="btn-power w-full py-2 rounded-lg text-slate-900 text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
                       <span className="material-symbols-outlined text-base">diamond</span>
                       <span>Unlock with Interview Sprint</span>
                     </button>
@@ -679,32 +679,32 @@ export function ATSAnalysisReport({
               transition={{ duration: 0.3 }}
               className="mt-6 w-full max-w-3xl"
             >
-              <div className="bg-slate-900 border-2 border-slate-700 rounded-xl p-4 font-mono text-sm shadow-lg relative overflow-hidden">
+              <div className="bg-white border-2 border-slate-200 rounded-xl p-4 font-mono text-sm shadow-lg relative overflow-hidden">
                 {/* Terminal Header */}
-                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-700">
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <span className="text-slate-400 text-xs font-semibold ml-2">Terminal - CVDebug Analysis</span>
+                  <span className="text-slate-500 text-xs font-semibold ml-2">Terminal - CVDebug Analysis</span>
                 </div>
                 {/* Terminal Body */}
                 <div className="space-y-2">
-                  <div className="flex gap-2 text-slate-400">
+                  <div className="flex gap-2 text-slate-500">
                     <span className="text-emerald-400">$</span>
-                    <span className="text-slate-300">cv-debug --analyze --target=resume.pdf</span>
+                    <span className="text-slate-600">cv-debug --analyze --target=resume.pdf</span>
                   </div>
-                  <div className="text-slate-400 pl-4">
+                  <div className="text-slate-500 pl-4">
                     <span className="text-cyan-400">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
                   </div>
-                  <div className="text-slate-400 pl-4">
+                  <div className="text-slate-500 pl-4">
                     <span className="text-cyan-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 42}</span>
                   </div>
-                  <div className="text-slate-400 pl-4">
+                  <div className="text-slate-500 pl-4">
                     <span className="text-cyan-400">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
                   </div>
-                  <div className="text-slate-400 pl-4">
+                  <div className="text-slate-500 pl-4">
                     <span className="text-cyan-400">→</span> Role classification: Technical | Format: Machine-readable
                   </div>
                   <div className="text-emerald-400 font-bold pl-4 pt-2">

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  History, 
-  Sparkles, 
-  Lock, 
+import {
+  History,
+  Sparkles,
+  Lock,
   Download,
   Bold,
   Italic,
@@ -20,10 +20,20 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
-export function WritingForge() {
+interface WritingForgeProps {
+  resumeId?: Id<"resumes"> | null;
+}
+
+export function WritingForge({ resumeId }: WritingForgeProps) {
   const [tone, setTone] = useState("technical");
   const [showUpgradeTooltip, setShowUpgradeTooltip] = useState(false);
+
+  // Load resume data
+  const resume = useQuery(api.resumes.getResumeById, resumeId ? { id: resumeId } : "skip");
 
   const handleRegenerate = () => {
     toast.success("Regenerating content with AI...");
@@ -33,26 +43,44 @@ export function WritingForge() {
     toast.error("Upgrade to Interview Sprint to unlock PDF downloads");
   };
 
-  const keywordGaps = [
-    { name: "Edge Functions", completed: false },
-    { name: "Turbopack", completed: false },
-    { name: "Incremental Builds", completed: false },
-    { name: "React 18", completed: true }
-  ];
+  // Extract missing keywords from resume data
+  const keywordGaps = resume?.missingKeywords
+    ? (Array.isArray(resume.missingKeywords)
+        ? resume.missingKeywords.slice(0, 4).map((k: any) => ({
+            name: typeof k === 'string' ? k : k.keyword,
+            completed: false
+          }))
+        : []
+      )
+    : [
+        { name: "Edge Functions", completed: false },
+        { name: "Turbopack", completed: false },
+        { name: "Incremental Builds", completed: false },
+        { name: "React 18", completed: true }
+      ];
+
+  // Calculate match score and gap
+  const matchScore = resume?.score || 0;
+  const gapScore = 100 - matchScore;
+
+  // Extract job details
+  const jobTitle = resume?.jobTitle || "No job selected";
+  const company = resume?.company || "No company";
+  const resumeTitle = resume?.title || "Draft Resume";
 
   return (
-    <div className="h-full flex flex-col bg-[#0F172A]">
+    <div className="h-full flex flex-col bg-[#F8FAFC]">
       {/* Top Navigation */}
-      <header className="flex items-center justify-between border-b border-slate-800 bg-[#0F172A] px-6 py-3 shrink-0">
+      <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-3 shrink-0 shadow-sm">
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-6">
-            <a className="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">
+            <a className="text-slate-500 hover:text-slate-900 text-sm font-medium transition-colors" href="#">
               Dashboard
             </a>
-            <span className="text-white text-sm font-medium border-b-2 border-primary pb-0.5">
+            <span className="text-slate-900 text-sm font-medium border-b-2 border-primary pb-0.5">
               Writing Forge
             </span>
-            <a className="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">
+            <a className="text-slate-500 hover:text-slate-900 text-sm font-medium transition-colors" href="#">
               Interview Sprint
             </a>
           </nav>
@@ -62,24 +90,24 @@ export function WritingForge() {
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden relative">
         {/* Left Sidebar: Configuration */}
-        <aside className="w-80 flex flex-col border-r border-slate-800 bg-slate-900/40 overflow-y-auto backdrop-blur-xl">
+        <aside className="w-80 flex flex-col border-r border-slate-200 bg-white overflow-y-auto shadow-sm">
           <div className="p-6 flex flex-col gap-8">
             {/* Tone Configuration */}
             <div className="flex flex-col gap-3">
-              <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+              <label className="text-slate-500 text-xs font-bold uppercase tracking-wider">
                 Tone Strategy
               </label>
               <div className="relative">
-                <select 
+                <select
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
-                  className="w-full appearance-none rounded-lg bg-slate-800 border border-slate-700 text-white p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm"
+                  className="w-full appearance-none rounded-lg bg-white border border-slate-200 text-slate-900 p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm"
                 >
                   <option value="technical">Technical Specialist</option>
                   <option value="executive">Executive Leader</option>
                   <option value="creative">Creative Storyteller</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
                   <ChevronDown className="h-4 w-4" />
                 </div>
               </div>
@@ -88,7 +116,7 @@ export function WritingForge() {
             {/* Active Mission Card */}
             <div className="flex flex-col gap-3">
               <div className="flex justify-between items-center">
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+                <label className="text-slate-500 text-xs font-bold uppercase tracking-wider">
                   Active Mission
                 </label>
                 <button className="text-primary text-xs font-medium hover:text-primary/80 transition-colors flex items-center gap-1">
@@ -96,30 +124,30 @@ export function WritingForge() {
                   Edit
                 </button>
               </div>
-              <div className="flex flex-col gap-4 rounded-xl bg-[#1E293B] p-4 border border-slate-700 shadow-lg relative overflow-hidden group">
+              <div className="flex flex-col gap-4 rounded-xl bg-white p-4 border border-[#E2E8F0] shadow-sm relative overflow-hidden group">
                 {/* Decorative gradient blob */}
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-500/30 transition-all duration-500" />
-                
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/15 transition-all duration-500" />
+
                 <div className="flex items-center gap-3 relative z-10">
-                  <div className="size-10 rounded-lg bg-white p-2 flex items-center justify-center shadow-inner">
-                    <svg className="w-6 h-6 text-black fill-current" fill="none" viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg">
+                  <div className="size-10 rounded-lg bg-slate-50 p-2 flex items-center justify-center border border-slate-200">
+                    <svg className="w-6 h-6 text-slate-900 fill-current" fill="none" viewBox="0 0 76 65" xmlns="http://www.w3.org/2000/svg">
                       <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" />
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white text-sm font-bold leading-tight">Senior Frontend Dev</h3>
-                    <p className="text-slate-400 text-xs">Vercel Inc.</p>
+                    <h3 className="text-slate-900 text-sm font-bold leading-tight">{jobTitle}</h3>
+                    <p className="text-slate-500 text-xs">{company}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-2 relative z-10">
-                  <div className="flex-1 bg-slate-900/50 rounded p-2 border border-slate-800">
+                  <div className="flex-1 bg-slate-50 rounded p-2 border border-slate-200">
                     <span className="block text-[10px] text-slate-500 uppercase">Match</span>
-                    <span className="block text-blue-400 font-mono text-sm font-bold">87%</span>
+                    <span className="block text-blue-600 font-mono text-sm font-bold">{matchScore}%</span>
                   </div>
-                  <div className="flex-1 bg-slate-900/50 rounded p-2 border border-slate-800">
+                  <div className="flex-1 bg-slate-50 rounded p-2 border border-slate-200">
                     <span className="block text-[10px] text-slate-500 uppercase">Gap</span>
-                    <span className="block text-red-400 font-mono text-sm font-bold">13%</span>
+                    <span className="block text-red-600 font-mono text-sm font-bold">{gapScore}%</span>
                   </div>
                 </div>
               </div>
@@ -128,10 +156,10 @@ export function WritingForge() {
             {/* Keyword Gaps Widget */}
             <div className="flex flex-col gap-3 flex-1">
               <div className="flex justify-between items-center">
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+                <label className="text-slate-500 text-xs font-bold uppercase tracking-wider">
                   Keyword Gaps
                 </label>
-                <span className="text-[10px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded border border-red-500/30">
+                <span className="text-[10px] bg-red-50 text-red-600 px-1.5 py-0.5 rounded border border-red-200">
                   3 Critical
                 </span>
               </div>
@@ -141,11 +169,11 @@ export function WritingForge() {
                     key={idx}
                     className={`flex items-center justify-between p-2 rounded border transition-colors ${
                       gap.completed
-                        ? "bg-slate-900/20 border-slate-800/30 opacity-50"
-                        : "bg-slate-900/40 border-slate-800/50 hover:border-primary/50 group cursor-pointer"
+                        ? "bg-slate-50 border-slate-200 opacity-50"
+                        : "bg-white border-slate-200 hover:border-primary/50 group cursor-pointer"
                     }`}
                   >
-                    <span className={gap.completed ? "text-slate-500 line-through" : "text-slate-300 group-hover:text-primary transition-colors"}>
+                    <span className={gap.completed ? "text-slate-500 line-through" : "text-slate-700 group-hover:text-primary transition-colors"}>
                       {gap.name}
                     </span>
                     {gap.completed ? (
@@ -160,43 +188,43 @@ export function WritingForge() {
           </div>
 
           {/* Sidebar Footer */}
-          <div className="p-6 mt-auto border-t border-slate-800">
-            <Button className="w-full bg-slate-800 hover:bg-slate-700 text-white border border-slate-700">
+          <div className="p-6 mt-auto border-t border-slate-200">
+            <Button className="w-full bg-white hover:bg-slate-50 text-slate-900 border border-slate-200">
               Advanced Config
             </Button>
           </div>
         </aside>
 
         {/* Center: Editor Canvas */}
-        <main className="flex-1 flex flex-col relative bg-slate-900/50">
+        <main className="flex-1 flex flex-col relative bg-slate-50">
           {/* Breadcrumbs & Heading */}
-          <div className="flex flex-col border-b border-slate-800/50 bg-[#0F172A]/80 backdrop-blur-sm">
+          <div className="flex flex-col border-b border-slate-200 bg-white shadow-sm">
             <div className="px-8 py-4 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2 text-xs mb-2">
-                  <a className="text-slate-500 hover:text-slate-300" href="#">Home</a>
-                  <span className="text-slate-600">/</span>
+                  <a className="text-slate-500 hover:text-slate-700" href="#">Home</a>
+                  <span className="text-slate-500">/</span>
                   <span className="text-primary font-medium">Writing Forge</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <h1 className="text-white text-2xl font-black leading-tight tracking-tight">
-                    Draft #24 - Resume V3
+                  <h1 className="text-slate-900 text-2xl font-black leading-tight tracking-tight">
+                    {resumeTitle}
                   </h1>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 uppercase tracking-wide">
-                    Autosaved
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-50 text-green-600 border border-green-200 uppercase tracking-wide">
+                    {resume ? 'Loaded' : 'No Resume'}
                   </span>
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
-                <Button variant="ghost" className="text-slate-300 hover:text-white">
+                <Button variant="ghost" className="text-slate-600 hover:text-slate-900">
                   <History className="h-4 w-4 mr-2" />
                   History
                 </Button>
-                <Button 
+                <Button
                   onClick={handleRegenerate}
-                  className="bg-primary/10 hover:bg-primary/20 text-primary hover:text-white border border-primary/30 hover:border-primary shadow-[0_0_15px_-3px_rgba(139,92,246,0.3)]"
+                  className="bg-primary/10 hover:bg-primary/20 text-primary hover:text-slate-900 border border-primary/30 hover:border-primary shadow-sm"
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
                   Regenerate
@@ -211,7 +239,7 @@ export function WritingForge() {
                   <Button
                     onClick={handleDownloadPDF}
                     disabled
-                    className="bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700 opacity-60 relative"
+                    className="bg-slate-100 text-slate-500 cursor-not-allowed border border-slate-200 opacity-60 relative"
                   >
                     <Lock className="h-4 w-4 mr-2" />
                     Download PDF
@@ -226,15 +254,15 @@ export function WritingForge() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full right-0 mt-3 w-72 p-4 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50"
+                      className="absolute top-full right-0 mt-3 w-72 p-4 bg-white border border-slate-200 rounded-xl shadow-lg z-50"
                     >
                       <div className="flex items-start gap-3 mb-3">
                         <div className="text-primary shrink-0 pt-0.5">
                           <Diamond className="h-6 w-6" />
                         </div>
                         <div>
-                          <p className="text-white text-sm font-bold mb-1">Interview Sprint Required</p>
-                          <p className="text-slate-400 text-xs leading-relaxed">
+                          <p className="text-slate-900 text-sm font-bold mb-1">Interview Sprint Required</p>
+                          <p className="text-slate-500 text-xs leading-relaxed">
                             Unlock professional PDF exports, ATS optimization, and unlimited regenerations.
                           </p>
                         </div>
@@ -242,23 +270,23 @@ export function WritingForge() {
 
                       {/* Benefits List */}
                       <div className="space-y-2 mb-3 pl-9">
-                        <div className="flex items-center gap-2 text-xs text-slate-300">
-                          <span className="text-green-400">✓</span>
+                        <div className="flex items-center gap-2 text-xs text-slate-600">
+                          <span className="text-green-600">✓</span>
                           <span>Unlimited PDF downloads</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-300">
-                          <span className="text-green-400">✓</span>
+                        <div className="flex items-center gap-2 text-xs text-slate-600">
+                          <span className="text-green-600">✓</span>
                           <span>ATS-optimized formatting</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-slate-300">
-                          <span className="text-green-400">✓</span>
+                        <div className="flex items-center gap-2 text-xs text-slate-600">
+                          <span className="text-green-600">✓</span>
                           <span>AI-powered improvements</span>
                         </div>
                       </div>
 
                       <button
                         onClick={() => {/* Navigate to pricing */}}
-                        className="btn-power w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
+                        className="btn-power w-full px-4 py-2.5 rounded-lg text-slate-900 text-sm font-bold border-0 flex items-center justify-center gap-2 group"
                       >
                         <Sparkles className="h-4 w-4" />
                         <span>Upgrade to Interview Sprint</span>
@@ -270,25 +298,25 @@ export function WritingForge() {
             </div>
 
             {/* Editor Toolbar */}
-            <div className="px-8 py-2 flex items-center gap-1 border-t border-slate-800/50">
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+            <div className="px-8 py-2 flex items-center gap-1 border-t border-slate-200">
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <Bold className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <Italic className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <Underline className="h-5 w-5" />
               </Button>
-              <div className="w-px h-5 bg-slate-700 mx-2" />
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+              <div className="w-px h-5 bg-slate-200 mx-2" />
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <List className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <ListOrdered className="h-5 w-5" />
               </Button>
-              <div className="w-px h-5 bg-slate-700 mx-2" />
-              <Button variant="ghost" size="sm" className="p-1.5 text-slate-400 hover:text-white">
+              <div className="w-px h-5 bg-slate-200 mx-2" />
+              <Button variant="ghost" size="sm" className="p-1.5 text-slate-500 hover:text-slate-900">
                 <Link2 className="h-5 w-5" />
               </Button>
               <div className="flex-1" />
@@ -297,22 +325,22 @@ export function WritingForge() {
           </div>
 
           {/* Editor Surface */}
-          <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-[#0F172A] relative">
+          <div className="flex-1 overflow-y-auto p-8 flex justify-center bg-slate-50 relative">
             {/* Abstract Background Pattern */}
-            <div 
-              className="absolute inset-0 z-0 opacity-30 pointer-events-none"
+            <div
+              className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none"
               style={{
-                backgroundImage: "radial-gradient(#1E293B 1px, transparent 1px)",
+                backgroundImage: "radial-gradient(#64748B 1px, transparent 1px)",
                 backgroundSize: "24px 24px"
               }}
             />
 
-            <div className="w-full max-w-[800px] bg-[#1E293B] min-h-[1100px] shadow-2xl rounded-sm p-16 text-slate-100 border border-slate-700/50 z-10 relative">
+            <div className="w-full max-w-[800px] bg-white min-h-[1100px] shadow-sm rounded-sm p-16 text-slate-900 border border-[#E2E8F0] z-10 relative">
               {/* Document Header */}
-              <div className="border-b border-slate-700 pb-8 mb-8">
-                <h1 className="text-4xl font-bold text-white mb-2">Alex Chen</h1>
-                <p className="text-slate-400 text-lg">Senior Frontend Engineer</p>
-                <div className="flex gap-4 mt-4 text-sm text-slate-400">
+              <div className="border-b border-slate-200 pb-8 mb-8">
+                <h1 className="text-4xl font-bold text-slate-900 mb-2">Alex Chen</h1>
+                <p className="text-slate-500 text-lg">Senior Frontend Engineer</p>
+                <div className="flex gap-4 mt-4 text-sm text-slate-500">
                   <span>San Francisco, CA</span>
                   <span>•</span>
                   <span>alex.chen@example.com</span>
@@ -331,19 +359,19 @@ export function WritingForge() {
                 <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-3">
                   Professional Summary
                 </h3>
-                <p className="text-base leading-relaxed text-slate-200">
+                <p className="text-base leading-relaxed text-slate-700">
                   Results-oriented Senior Frontend Engineer with 7+ years of experience building scalable web applications.
                   Specialized in the modern React ecosystem, including{" "}
-                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/10 rounded px-1 cursor-pointer transition-all relative group/highlight">
+                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
                     Next.js architecture
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-slate-900 text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                       Keywords matched +5%
                     </span>
                   </span>{" "}
                   and server-side rendering performance optimization. Proven track record of leading teams at high-growth startups to deliver{" "}
-                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/10 rounded px-1 cursor-pointer transition-all relative group/highlight">
+                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
                     robust UI systems
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-slate-900 text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                       Tone: Executive
                     </span>
                   </span>{" "}
@@ -361,17 +389,17 @@ export function WritingForge() {
                 <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-4">
                   Experience
                 </h3>
-                
+
                 <div className="mb-6">
                   <div className="flex justify-between items-baseline mb-1">
-                    <h4 className="text-lg font-bold text-white">Lead UI Engineer</h4>
-                    <span className="text-sm text-slate-400">2021 - Present</span>
+                    <h4 className="text-lg font-bold text-slate-900">Lead UI Engineer</h4>
+                    <span className="text-sm text-slate-500">2021 - Present</span>
                   </div>
-                  <p className="text-blue-400 font-medium text-sm mb-3">TechFlow Systems</p>
-                  <ul className="list-disc pl-4 space-y-2 text-sm text-slate-300 marker:text-slate-500">
+                  <p className="text-blue-600 font-medium text-sm mb-3">TechFlow Systems</p>
+                  <ul className="list-disc pl-4 space-y-2 text-sm text-slate-600 marker:text-slate-500">
                     <li>
                       Architected a migration from legacy monolith to micro-frontends using{" "}
-                      <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/10 rounded px-1 cursor-pointer transition-all">
+                      <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all">
                         Module Federation
                       </span>
                       , reducing build times by 40%.
@@ -383,11 +411,11 @@ export function WritingForge() {
 
                 <div className="mb-6">
                   <div className="flex justify-between items-baseline mb-1">
-                    <h4 className="text-lg font-bold text-white">Frontend Developer</h4>
-                    <span className="text-sm text-slate-400">2018 - 2021</span>
+                    <h4 className="text-lg font-bold text-slate-900">Frontend Developer</h4>
+                    <span className="text-sm text-slate-500">2018 - 2021</span>
                   </div>
-                  <p className="text-blue-400 font-medium text-sm mb-3">Creativ Agency</p>
-                  <ul className="list-disc pl-4 space-y-2 text-sm text-slate-300 marker:text-slate-500">
+                  <p className="text-blue-600 font-medium text-sm mb-3">Creativ Agency</p>
+                  <ul className="list-disc pl-4 space-y-2 text-sm text-slate-600 marker:text-slate-500">
                     <li>Developed interactive marketing sites for Fortune 500 clients using WebGL and GSAP.</li>
                     <li>Collaborated with design teams to create pixel-perfect implementations from Figma prototypes.</li>
                   </ul>

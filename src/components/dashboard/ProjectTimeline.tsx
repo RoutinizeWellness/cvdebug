@@ -56,7 +56,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
   return (
     <Card className="bg-[#0A0A0A] border-zinc-800">
       <CardHeader>
-        <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+        <CardTitle className="text-lg font-bold text-slate-900 flex items-center gap-2">
           <Clock className="h-5 w-5 text-primary" />
           Application Timeline
         </CardTitle>
@@ -92,7 +92,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
                   {/* Event content */}
                   <div className="bg-zinc-900/50 rounded-lg p-3 border border-zinc-800/50">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h4 className="font-semibold text-sm text-white">{event.title}</h4>
+                      <h4 className="font-semibold text-sm text-slate-900">{event.title}</h4>
                       <Badge variant="outline" className="text-[10px] text-zinc-500 border-zinc-800">
                         {new Date(event.timestamp).toLocaleDateString('es-ES')}
                       </Badge>

@@ -92,7 +92,7 @@ export function InterviewPrepMode({
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500/20 to-blue-500/20 flex items-center justify-center mb-4 border border-teal-500/30">
             <BrainCircuit className="h-8 w-8 text-teal-400" />
           </div>
-          <h3 className="text-xl font-bold text-white mb-2">Interview Battle Plan</h3>
+          <h3 className="text-xl font-bold text-slate-900 mb-2">Interview Battle Plan</h3>
           <p className="text-sm text-zinc-400 text-center max-w-md mb-6">
             Generate personalized interview prep with expected questions, STAR stories, and strategic talking points.
           </p>
@@ -113,7 +113,7 @@ export function InterviewPrepMode({
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !canGenerate}
-            className="bg-teal-600 hover:bg-teal-700 text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-teal-600 hover:bg-teal-700 text-slate-900 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Battle Plan...</>
@@ -129,7 +129,7 @@ export function InterviewPrepMode({
   return (
     <Card className="bg-[#0A0A0A] border-zinc-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
+        <CardTitle className="flex items-center gap-2 text-slate-900">
           <BrainCircuit className="h-5 w-5 text-teal-400" />
           Interview Battle Plan
           <Badge className="ml-auto bg-teal-500/10 text-teal-400 border-teal-500/30">
@@ -168,7 +168,7 @@ export function InterviewPrepMode({
                             <HelpCircle className="h-4 w-4 text-blue-400" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-semibold text-white text-sm leading-relaxed">
+                            <p className="font-semibold text-slate-900 text-sm leading-relaxed">
                               {q.question}
                             </p>
                           </div>
@@ -313,7 +313,7 @@ export function InterviewPrepMode({
                             <AlertTriangle className="h-4 w-4 text-red-400" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-white text-sm leading-relaxed">
+                            <p className="font-bold text-slate-900 text-sm leading-relaxed">
                               "{item.question}"
                             </p>
                           </div>
@@ -346,7 +346,7 @@ export function InterviewPrepMode({
             onClick={handleGenerate} 
             disabled={isGenerating}
             variant="outline"
-            className="w-full border-zinc-800 text-zinc-400 hover:text-white"
+            className="w-full border-zinc-800 text-zinc-400 hover:text-slate-900"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Regenerating...</>

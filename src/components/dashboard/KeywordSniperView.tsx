@@ -73,16 +73,16 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
   if (!hasJobDescription || !hasKeywords) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-6">
-        <Target className="h-16 w-16 text-slate-700 mb-4" />
-        <h3 className="text-xl font-bold text-white mb-2">No Job Description Analyzed Yet</h3>
-        <p className="text-slate-400 max-w-md mb-4">
+        <Target className="h-16 w-16 text-slate-300 mb-4" />
+        <h3 className="text-xl font-bold text-slate-900 mb-2">No Job Description Analyzed Yet</h3>
+        <p className="text-slate-500 max-w-md mb-4">
           The Keyword Sniper needs a job description to analyze and extract missing keywords.
         </p>
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 max-w-md mb-6">
-          <p className="text-sm text-blue-300 mb-2">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mb-6">
+          <p className="text-sm text-blue-700 mb-2">
             <span className="font-semibold">How to use Keyword Sniper:</span>
           </p>
-          <ol className="text-xs text-slate-300 space-y-1 text-left list-decimal list-inside">
+          <ol className="text-xs text-slate-700 space-y-1 text-left list-decimal list-inside">
             <li>Create a project with your target role</li>
             <li>Add a job application with the job description</li>
             <li>Analyze the job description to extract keywords</li>
@@ -100,33 +100,33 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
   return (
     <div className="w-full flex flex-col pb-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+      <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={onBack}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-500 hover:text-slate-900"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">radar</span>
               Keyword Sniper Tool
             </h1>
-            <p className="text-slate-400 text-sm">
+            <p className="text-slate-500 text-sm">
               Optimize your bullet points with AI-powered keyword injection
             </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               {applicationWithJob ? "Targeting" : "Current Resume"}
             </p>
-            <p className="text-sm font-medium text-white">
+            <p className="text-sm font-medium text-slate-900">
               {applicationWithJob ? `${jobTitle} at ${company}` : masterResume?.title || "Resume"}
             </p>
           </div>

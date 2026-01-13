@@ -688,20 +688,20 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
               <Lightbulb className="h-5 w-5 text-amber-400" />
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-bold text-base md:text-lg flex items-center gap-2">
+              <h3 className="text-slate-900 font-bold text-base md:text-lg flex items-center gap-2">
                 ⚠️ Weak Bullet Detected
-                <span className="text-xs font-normal text-slate-400">({weakBullets.length} found)</span>
+                <span className="text-xs font-normal text-slate-500">({weakBullets.length} found)</span>
               </h3>
-              <p className="text-slate-400 text-xs md:text-sm mt-1">
+              <p className="text-slate-500 text-xs md:text-sm mt-1">
                 This bullet point lacks quantifiable impact. Add numbers to make it stronger.
               </p>
             </div>
           </div>
 
           {/* Original Bullet */}
-          <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-3 md:p-4 mb-4">
+          <div className="bg-white/50 border border-slate-200 rounded-lg p-3 md:p-4 mb-4">
             <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Original</p>
-            <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+            <p className="text-slate-600 text-sm md:text-base leading-relaxed">
               {currentBullet.original}
             </p>
           </div>
@@ -725,7 +725,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
                 className={`w-full text-left p-3 md:p-4 rounded-lg border-2 transition-all duration-300 group ${
                   selectedSuggestionIndex === idx
                     ? 'bg-cyan-500/10 border-cyan-500/50'
-                    : 'bg-slate-800/30 border-slate-700 hover:border-cyan-500/30 hover:bg-slate-800/50'
+                    : 'bg-slate-50/30 border-slate-200 hover:border-cyan-500/30 hover:bg-slate-50/50'
                 }`}
               >
                 {/* Type Badge */}
@@ -745,7 +745,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
                 </div>
 
                 {/* Improved Text */}
-                <p className="text-slate-200 text-sm md:text-base leading-relaxed mb-2 group-hover:text-white transition-colors">
+                <p className="text-slate-700 text-sm md:text-base leading-relaxed mb-2 group-hover:text-slate-900 transition-colors">
                   {suggestion.improved}
                 </p>
 
@@ -760,12 +760,12 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* Action Button */}
           <div className="mt-5 flex items-center gap-3">
             <button
-              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-cyan-600 to-teal-600 text-slate-900 font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             >
               Apply Selected & Continue
             </button>
             <button
-              className="h-10 md:h-11 px-4 rounded-lg border border-slate-600 hover:border-slate-500 text-slate-400 hover:text-slate-300 text-sm font-medium transition-colors"
+              className="h-10 md:h-11 px-4 rounded-lg border border-slate-600 hover:border-slate-500 text-slate-500 hover:text-slate-600 text-sm font-medium transition-colors"
             >
               Skip
             </button>

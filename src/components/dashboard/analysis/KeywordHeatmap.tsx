@@ -20,11 +20,11 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
   const matchRate = totalKeywords > 0 ? Math.round((matchedKeywords.length / totalKeywords) * 100) : 0;
 
   return (
-    <div className="glass-panel p-6 rounded-xl border border-slate-800 bg-slate-900/50 h-full flex flex-col">
+    <div className="glass-panel p-6 rounded-xl border border-slate-200 bg-white/50 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-bold text-white">Keyword DNA</h3>
-          <p className="text-sm text-slate-400">ATS Match Rate: <span className={matchRate > 70 ? "text-green-400" : matchRate > 40 ? "text-orange-400" : "text-red-400"}>{matchRate}%</span></p>
+          <h3 className="text-lg font-bold text-slate-900">Keyword DNA</h3>
+          <p className="text-sm text-slate-500">ATS Match Rate: <span className={matchRate > 70 ? "text-green-400" : matchRate > 40 ? "text-orange-400" : "text-red-400"}>{matchRate}%</span></p>
         </div>
         {matchRate < 50 && totalKeywords > 0 && (
           <Badge variant="outline" className="border-orange-500/50 text-orange-400 bg-orange-500/10">
@@ -84,7 +84,7 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
               <div className="absolute inset-0 flex items-center justify-center">
                 <Button 
                   onClick={onUnlock}
-                  className="bg-slate-900/80 backdrop-blur-md border border-teal-500/50 text-white hover:bg-slate-800"
+                  className="bg-white/80 backdrop-blur-md border border-teal-500/50 text-slate-900 hover:bg-slate-50"
                 >
                   <Lock className="h-4 w-4 mr-2 text-teal-400" />
                   Unlock Missing Keywords

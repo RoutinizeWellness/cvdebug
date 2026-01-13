@@ -26,7 +26,7 @@ export function Sidebar({
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r border-slate-800 bg-[#0F172A] hidden md:flex flex-col">
+    <aside className="w-64 flex-shrink-0 border-r border-slate-200 bg-[#F8FAFC] hidden md:flex flex-col">
       <div className="h-full flex flex-col justify-between p-4">
         <div className="flex flex-col gap-6">
           {/* Logo Area */}
@@ -37,13 +37,13 @@ export function Sidebar({
             className="flex items-center gap-3 px-2"
           >
             <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-              <Terminal className="h-5 w-5 text-white" />
+              <Terminal className="h-5 w-5 text-slate-900" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-white text-lg font-bold leading-none tracking-tight">
+              <h1 className="text-slate-900 text-lg font-bold leading-none tracking-tight">
                 CVDebug
               </h1>
-              <p className="text-slate-400 text-xs font-mono pt-1">v2.4.0 stable</p>
+              <p className="text-slate-500 text-xs font-mono pt-1">v2.4.0 stable</p>
             </div>
           </motion.div>
 
@@ -58,20 +58,20 @@ export function Sidebar({
                 onClick={() => navigate(item.href)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${
                   item.active
-                    ? "bg-[#1E293B] border border-slate-700/50"
-                    : "hover:bg-slate-800/50"
+                    ? "bg-white border border-slate-200/50"
+                    : "hover:bg-slate-50/50"
                 }`}
               >
                 <item.icon
                   className={`h-5 w-5 transition-colors ${
                     item.active
                       ? "text-primary"
-                      : "text-slate-400 group-hover:text-white"
+                      : "text-slate-500 group-hover:text-slate-900"
                   }`}
                 />
                 <p
                   className={`text-sm font-medium ${
-                    item.active ? "text-white" : "text-slate-300"
+                    item.active ? "text-slate-900" : "text-slate-600"
                   }`}
                 >
                   {item.label}
@@ -98,14 +98,14 @@ export function Sidebar({
               }}
             ></div>
             <div className="flex flex-col overflow-hidden">
-              <span className="text-xs font-semibold text-white truncate">{userName}</span>
-              <span className="text-[10px] text-slate-400 font-mono truncate">{userPlan}</span>
+              <span className="text-xs font-semibold text-slate-900 truncate">{userName}</span>
+              <span className="text-[10px] text-slate-500 font-mono truncate">{userPlan}</span>
             </div>
           </div>
           <Button
             onClick={onLogout}
             variant="outline"
-            className="flex w-full items-center justify-center gap-2 rounded-lg h-9 px-4 border border-slate-700 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-lg h-9 px-4 border border-slate-200 hover:bg-slate-50 text-slate-600 hover:text-slate-900 text-xs font-bold uppercase tracking-wider transition-colors"
           >
             <LogOut className="h-4 w-4" />
             <span>Log Out</span>

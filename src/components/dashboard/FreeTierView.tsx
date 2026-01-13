@@ -50,7 +50,7 @@ export function FreeTierView({
             <span className="text-2xl">👨‍💻</span>
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
               Founder's Audit
               <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">
                 by Albert
@@ -75,7 +75,7 @@ export function FreeTierView({
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-6">
             <AlertTriangle className="h-6 w-6 text-red-400" />
-            <h3 className="text-2xl font-bold text-white">You're in the Bottom {percentileRank}% of Candidates</h3>
+            <h3 className="text-2xl font-bold text-slate-900">You're in the Bottom {percentileRank}% of Candidates</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -137,7 +137,7 @@ export function FreeTierView({
               }`}></span>
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight text-slate-900 mb-4">
               You're <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
                 technically invisible
               </span> to {score >= 80 ? '10%' : score >= 50 ? '60%' : '85%'} of recruiters.
@@ -158,7 +158,7 @@ export function FreeTierView({
             <Cpu className="h-5 w-5 text-blue-400" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               🤖 Robot View
               <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full border border-green-500/30">
                 FREE PREVIEW
@@ -231,7 +231,7 @@ export function FreeTierView({
       {/* TOP 2 Critical Errors */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-red-500" />
             Top Critical Errors
           </h3>
@@ -282,7 +282,7 @@ export function FreeTierView({
       {/* TOP 2 Missing Keywords + Blurred Rest */}
       <div className="glass-card rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             🔑 Missing Critical Keywords
           </h3>
           <span className="bg-yellow-500/20 text-yellow-400 text-xs font-bold px-3 py-1 rounded-full border border-yellow-500/30">
@@ -323,7 +323,7 @@ export function FreeTierView({
             <div className="absolute inset-0 backdrop-blur-md bg-zinc-900/60 rounded-lg z-10 flex items-center justify-center">
               <div className="text-center p-6">
                 <Lock className="h-8 w-8 text-primary mx-auto mb-3" />
-                <p className="text-white font-bold text-lg mb-1">
+                <p className="text-slate-900 font-bold text-lg mb-1">
                   {remainingKeywords} Critical Keywords Hidden
                 </p>
                 <p className="text-zinc-300 text-sm">
@@ -351,7 +351,7 @@ export function FreeTierView({
           </div>
           
           <div>
-            <h3 className="text-2xl md:text-3xl font-black text-white mb-3">
+            <h3 className="text-2xl md:text-3xl font-black text-slate-900 mb-3">
               Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Certified</span> by CVDebug
             </h3>
             <p className="text-zinc-200 text-lg font-medium max-w-2xl mx-auto">
@@ -414,7 +414,7 @@ export function FreeTierView({
                   <span className="text-xl">👨‍💻</span>
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-white font-bold mb-1">Albert reviews your CV personally</h4>
+                  <h4 className="text-slate-900 font-bold mb-1">Albert reviews your CV personally</h4>
                   <p className="text-zinc-300 text-xs">3-min video with brutal feedback + all fixes</p>
                 </div>
                 <span className="text-teal-400 font-black text-xl">€49</span>
@@ -422,7 +422,7 @@ export function FreeTierView({
               <Button
                 onClick={() => setShowPricing(true)}
                 size="sm"
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-slate-900 font-semibold"
               >
                 I want the manual review →
               </Button>
@@ -440,7 +440,7 @@ export function FreeTierView({
           </div>
 
           <p className="text-sm text-zinc-300">
-            ⚡ <strong className="text-white">2,847 users</strong> unlocked their reports this week and increased their interview rate by 2x
+            ⚡ <strong className="text-slate-900">2,847 users</strong> unlocked their reports this week and increased their interview rate by 2x
           </p>
         </div>
       </div>

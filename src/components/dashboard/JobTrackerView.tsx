@@ -20,7 +20,7 @@ export function JobTrackerView() {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <Briefcase className="h-16 w-16 text-zinc-700 mb-4" />
-        <h3 className="text-xl font-bold text-white mb-2">No Job Applications Tracked Yet</h3>
+        <h3 className="text-xl font-bold text-slate-900 mb-2">No Job Applications Tracked Yet</h3>
         <p className="text-zinc-400 max-w-md">
           Start uploading resumes with job descriptions to track your application scores and see your progress over time.
         </p>
@@ -32,7 +32,7 @@ export function JobTrackerView() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">Targeted Match History</h2>
+          <h2 className="text-2xl font-bold text-slate-900">Targeted Match History</h2>
           <p className="text-zinc-500">Track application progress and keyword gaps</p>
         </div>
         <div className="text-sm text-zinc-400">
@@ -56,7 +56,7 @@ export function JobTrackerView() {
                     <Briefcase className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors">
                       {job.jobTitle || "Untitled Position"}
                     </h3>
                     {job.company && (

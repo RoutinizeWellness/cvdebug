@@ -60,7 +60,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
           <Zap className="h-5 w-5 text-primary" />
         </div>
         <h3 className="text-lg font-bold" style={{ color: '#ffffff' }}>Actionable Intelligence</h3>
-        <span className="ml-auto text-xs font-bold bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 px-2 py-1 rounded-md">
+        <span className="ml-auto text-xs font-bold bg-red-100 text-red-700 px-2 py-1 rounded-md">
           {fixes.length} Issues
         </span>
       </div>
@@ -116,10 +116,10 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                         <div className="flex items-start gap-2 mb-2">
                           <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-bold text-white mb-1">
+                            <p className="text-xs font-bold text-slate-900 mb-1">
                               Impact
                             </p>
-                            <p className="text-xs text-white">
+                            <p className="text-xs text-slate-900">
                               {fix.impact}
                             </p>
                           </div>
@@ -156,7 +156,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full bg-primary hover:bg-primary/90 text-white text-xs h-8"
+                              className="w-full bg-primary hover:bg-primary/90 text-slate-900 text-xs h-8"
                               onClick={() => handleGenerateBulletPoint(fix.missingKeyword!, index)}
                               disabled={generatingFor === key}
                             >

@@ -98,7 +98,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       <div className="space-y-6">
         {!hasInterviewSprint && (
-          <Alert className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 border-2 border-primary/40 shadow-lg relative overflow-hidden">
+          <Alert className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-sm relative overflow-hidden">
             {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
 
@@ -108,8 +108,8 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
                   <Diamond className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-base mb-1">Interview Sprint Required</h3>
-                  <p className="text-slate-300 text-sm leading-relaxed">
+                  <h3 className="text-slate-900 font-bold text-base mb-1">Interview Sprint Required</h3>
+                  <p className="text-slate-700 text-sm leading-relaxed">
                     Generate unlimited AI-powered cover letters that perfectly match each job description.
                   </p>
                 </div>
@@ -117,20 +117,20 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
 
               {/* Benefits Grid */}
               <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>Unlimited generations</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>Job-specific tailoring</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>ATS-optimized format</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <span className="text-green-400 font-bold">✓</span>
+                <div className="flex items-center gap-2 text-xs text-slate-700">
+                  <span className="text-green-600 font-bold">✓</span>
                   <span>Resume integration</span>
                 </div>
               </div>
@@ -146,28 +146,28 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
           </Alert>
         )}
 
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-slate-900 flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />
               Generator Settings
               {!hasInterviewSprint && (
-                <Lock className="h-4 w-4 text-slate-500 ml-auto" />
+                <Lock className="h-4 w-4 text-slate-400 ml-auto" />
               )}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-500">
               Configure the AI to write a tailored cover letter.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="resume-select">Select Resume (Context)</Label>
-              <Select 
-                value={selectedResumeId} 
+              <Label htmlFor="resume-select" className="text-slate-700">Select Resume (Context)</Label>
+              <Select
+                value={selectedResumeId}
                 onValueChange={setSelectedResumeId}
                 disabled={!hasInterviewSprint}
               >
-                <SelectTrigger id="resume-select" className="bg-slate-950 border-slate-800">
+                <SelectTrigger id="resume-select" className="bg-white border border-slate-200">
                   <SelectValue placeholder="Select a resume..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -183,35 +183,35 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="company">Company Name</Label>
-                <Input 
-                  id="company" 
-                  placeholder="e.g. Acme Corp" 
+                <Label htmlFor="company" className="text-slate-700">Company Name</Label>
+                <Input
+                  id="company"
+                  placeholder="e.g. Acme Corp"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="bg-slate-950 border-slate-800"
+                  className="bg-white border border-slate-200"
                   disabled={!hasInterviewSprint}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="role">Job Title</Label>
-                <Input 
-                  id="role" 
-                  placeholder="e.g. Senior Developer" 
+                <Label htmlFor="role" className="text-slate-700">Job Title</Label>
+                <Input
+                  id="role"
+                  placeholder="e.g. Senior Developer"
                   value={jobTitle}
                   onChange={(e) => setJobTitle(e.target.value)}
-                  className="bg-slate-950 border-slate-800"
+                  className="bg-white border border-slate-200"
                   disabled={!hasInterviewSprint}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="jd">Job Description</Label>
-              <Textarea 
-                id="jd" 
-                placeholder="Paste the job description here..." 
-                className="min-h-[200px] bg-slate-950 border-slate-800 font-mono text-sm"
+              <Label htmlFor="jd" className="text-slate-700">Job Description</Label>
+              <Textarea
+                id="jd"
+                placeholder="Paste the job description here..."
+                className="min-h-[200px] bg-white border border-slate-200 font-mono text-sm text-slate-900"
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 disabled={!hasInterviewSprint}
@@ -245,20 +245,20 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
       </div>
 
       <div className="h-full">
-        <Card className="h-full flex flex-col bg-slate-900 border-slate-800">
+        <Card className="h-full flex flex-col bg-white border border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="space-y-1">
-              <CardTitle className="text-white">Generated Letter</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-slate-900">Generated Letter</CardTitle>
+              <CardDescription className="text-slate-500">
                 Review and edit your cover letter below.
               </CardDescription>
             </div>
             {generatedLetter && (
               <div className="flex gap-2">
-                <Button variant="outline" size="icon" onClick={copyToClipboard}>
+                <Button variant="outline" size="icon" onClick={copyToClipboard} className="border-slate-200">
                   {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 </Button>
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" className="border-slate-200">
                   <Download className="h-4 w-4" />
                 </Button>
               </div>
@@ -266,17 +266,17 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
           </CardHeader>
           <CardContent className="flex-1 p-4 pt-0">
             {generatedLetter ? (
-              <Textarea 
+              <Textarea
                 value={generatedLetter}
                 onChange={(e) => setGeneratedLetter(e.target.value)}
-                className="h-full min-h-[500px] resize-none bg-slate-950 border-slate-800 font-serif text-base leading-relaxed p-6"
+                className="h-full min-h-[500px] resize-none bg-white border border-slate-200 font-serif text-base leading-relaxed p-6 text-slate-900"
               />
             ) : (
-              <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-800 rounded-lg bg-slate-950/50">
+              <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-lg bg-slate-50">
                 <FileText className="h-12 w-12 mb-4 opacity-20" />
                 <p>Your cover letter will appear here</p>
                 {!hasInterviewSprint && (
-                  <p className="text-xs text-slate-600 mt-2">Upgrade to Interview Sprint to unlock</p>
+                  <p className="text-xs text-slate-400 mt-2">Upgrade to Interview Sprint to unlock</p>
                 )}
               </div>
             )}

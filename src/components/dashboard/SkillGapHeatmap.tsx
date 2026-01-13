@@ -66,10 +66,10 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
     <div className="glass-card rounded-lg p-6 flex flex-col gap-6 relative overflow-hidden group">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-full bg-stone-800 text-white">
+          <div className="p-2 rounded-full bg-stone-800 text-slate-900">
             <Check className="h-5 w-5" />
           </div>
-          <h3 className="text-lg font-bold text-white">Skill Heatmap Analysis</h3>
+          <h3 className="text-lg font-bold text-slate-900">Skill Heatmap Analysis</h3>
         </div>
         <span className="text-xs font-bold bg-green-900 text-green-300 px-2 py-1 rounded-md">High Impact</span>
       </div>

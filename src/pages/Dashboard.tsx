@@ -71,6 +71,7 @@ export default function Dashboard() {
   const [currentView, setCurrentView] = useState("mission");
   const [selectedProject, setSelectedProject] = useState<Id<"projects"> | null>(null);
   const [selectedResumeId, setSelectedResumeId] = useState<Id<"resumes"> | null>(null);
+  const [writingForgeResumeId, setWritingForgeResumeId] = useState<Id<"resumes"> | null>(null);
   const [preSelectedApplicationId, setPreSelectedApplicationId] = useState<string | undefined>(undefined);
   const [initialApplicationId, setInitialApplicationId] = useState<string | null>(null);
 
@@ -563,11 +564,11 @@ export default function Dashboard() {
       case 'bullet-rewriter':
         return <BulletRewriter />;
       case 'writing-forge':
-        return <WritingForge />;
+        return <WritingForge resumeId={writingForgeResumeId} />;
       case 'keyword-sniper':
         return <KeywordSniperView onBack={() => setCurrentView('tools')} />;
       case 'settings':
-        return <SettingsView />;
+        return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       case 'profile':
         return <SubscriptionView />;
       default:
@@ -678,6 +679,7 @@ export default function Dashboard() {
         onClose={() => setSelectedResumeId(null)}
         onDelete={handleDelete}
         onOpenWritingForge={() => {
+          setWritingForgeResumeId(selectedResumeId);
           setSelectedResumeId(null);
           setCurrentView('writing-forge');
         }}

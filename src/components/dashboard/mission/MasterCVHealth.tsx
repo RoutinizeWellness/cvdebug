@@ -29,13 +29,13 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
             <FileText className="h-6 w-6 text-zinc-500" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">No Master CV Found</h3>
+            <h3 className="text-lg font-bold text-slate-900">No Master CV Found</h3>
             <p className="text-sm text-zinc-400">Upload your resume to start monitoring its health.</p>
           </div>
         </div>
         <Button 
           variant="outline" 
-          className="border-zinc-700 hover:bg-zinc-800 text-white"
+          className="border-zinc-700 hover:bg-zinc-800 text-slate-900"
           onClick={onUpload}
         >
           <Upload className="mr-2 h-4 w-4" /> Upload CV
@@ -82,7 +82,7 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
           
           <div className="space-y-1">
             <div className="flex items-center gap-3">
-              <h3 className="text-lg font-bold text-white tracking-tight">Master CV Health</h3>
+              <h3 className="text-lg font-bold text-slate-900 tracking-tight">Master CV Health</h3>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                 hasImageTrap 
                   ? 'bg-red-500/10 border-red-500/30 text-red-500' 
@@ -124,7 +124,7 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
             ) : (
               <Button 
                 variant="outline" 
-                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-white font-medium"
+                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-slate-900 font-medium"
                 onClick={onUpload}
               >
                 <Upload className="mr-2 h-4 w-4" /> Hot-Swap CV

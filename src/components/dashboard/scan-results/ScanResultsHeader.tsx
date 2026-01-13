@@ -30,7 +30,7 @@ export function ScanResultsHeader({
     >
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-50 text-slate-500 border border-slate-200">
             SCAN #{scanId}
           </span>
           {hasIssues && (
@@ -39,10 +39,10 @@ export function ScanResultsHeader({
             </span>
           )}
         </div>
-        <h2 className="text-3xl font-black text-white tracking-tight">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
           Scan Results: {jobTitle}
         </h2>
-        <p className="text-slate-400 text-sm mt-1">
+        <p className="text-slate-500 text-sm mt-1">
           Analyzed on {scanDate} • {processingTime} processing time
         </p>
       </div>
@@ -52,7 +52,7 @@ export function ScanResultsHeader({
             variant="ghost"
             size="sm"
             onClick={onShare}
-            className="text-slate-300 hover:text-white transition-colors"
+            className="text-slate-600 hover:text-slate-900 transition-colors"
           >
             <Share2 className="h-4 w-4 mr-2" />
             Share
@@ -63,7 +63,7 @@ export function ScanResultsHeader({
             variant="ghost"
             size="sm"
             onClick={onExportPDF}
-            className="text-slate-300 hover:text-white transition-colors"
+            className="text-slate-600 hover:text-slate-900 transition-colors"
           >
             <Download className="h-4 w-4 mr-2" />
             Export PDF
