@@ -34,8 +34,8 @@ export function NewHeroSection() {
   }, []);
 
   return (
-    <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
-      {/* Background effects - CVDebug Unique */}
+    <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8 bg-deep-mesh-subtle">
+      {/* Background effects with Power Gradient */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -43,7 +43,7 @@ export function NewHeroSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{
-            opacity: 0.15,
+            opacity: 0.2,
             scale: 1,
             rotate: [20, 23, 20]
           }}
@@ -52,7 +52,7 @@ export function NewHeroSection() {
             scale: { duration: 1.2 },
             rotate: { duration: 12, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#14b8a6] via-[#0d9488] to-[#5eead4] sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 gradient-power sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] opacity-30"
           style={{
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
@@ -171,7 +171,7 @@ export function NewHeroSection() {
           </motion.span>
           <br className="hidden sm:block" />
           <motion.span
-            className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block"
+            className="text-gradient-power inline-block"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -203,7 +203,7 @@ export function NewHeroSection() {
           >
             <Button
               onClick={() => navigate("/preview")}
-              className="glow-button relative flex h-12 sm:h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-6 sm:px-8 text-base sm:text-lg font-bold text-white transition-all group"
+              className="btn-power relative flex h-12 sm:h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg px-6 sm:px-8 text-base sm:text-lg font-bold text-white border-0 group"
             >
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"

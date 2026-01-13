@@ -123,7 +123,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
           <Button
             onClick={() => onNavigate("projects")}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2 group"
+            className="btn-power px-6 py-3 text-white font-semibold rounded-lg flex items-center gap-2 group border-0"
           >
             <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
             <span>New Application</span>
@@ -161,14 +161,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             <p className="text-slate-600 dark:text-slate-400 text-sm mt-2">
               How recruiters find your resume
             </p>
-            {/* Progress Bar */}
+            {/* Progress Bar with Cyber Gradient */}
             <div className="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-2 mt-4 overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${visibilityScore}%` }}
                 transition={{ duration: 1, delay: 0.3 }}
                 className={`h-2 rounded-full ${
-                  visibilityScore >= 80 ? 'bg-emerald-600' :
+                  visibilityScore >= 80 ? 'progress-cyber' :
                   visibilityScore >= 60 ? 'bg-amber-600' :
                   'bg-red-600'
                 }`}

@@ -240,3 +240,99 @@
     radial-gradient(circle at 80% 80%, rgba(94, 234, 212, 0.18) 0%, transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.12) 0%, transparent 60%);
 }
+
+/* Premium Gradients - Vercel/Stripe Style */
+
+/* 1. Power Gradient - For CTAs and Primary Buttons (AI & Premium Value) */
+.gradient-power {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
+}
+
+.gradient-power-hover {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #E879F9 100%);
+}
+
+/* 2. Cyber Diagnostic - For Progress Bars and Scans (Data & Technical Analysis) */
+.gradient-cyber {
+  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+}
+
+.gradient-cyber-glow {
+  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), 0 0 40px rgba(6, 182, 212, 0.3);
+}
+
+/* 3. Deep Mesh - For Backgrounds and Hero Sections (Glassmorphism) */
+.bg-deep-mesh {
+  background: radial-gradient(circle at center, #1E1B4B 0%, #020617 100%);
+}
+
+.bg-deep-mesh-subtle {
+  background: radial-gradient(ellipse at top, #1E1B4B 0%, #020617 50%, #020617 100%);
+}
+
+/* Gradient Text Effects */
+.text-gradient-power {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-cyber {
+  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button Hover Effects with Gradients */
+.btn-power {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-power:hover {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #E879F9 100%);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.6), 0 0 50px rgba(217, 70, 239, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Progress Bar Gradient */
+.progress-cyber {
+  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-cyber::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Score Ring Gradient */
+.ring-cyber {
+  stroke: url(#cyber-gradient);
+  filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.6));
+}
+
+/* Card Glow Effects */
+.card-power-glow {
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15), 0 0 60px rgba(217, 70, 239, 0.1);
+}
+
+.card-cyber-glow {
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.15), 0 0 60px rgba(6, 182, 212, 0.1);
+}

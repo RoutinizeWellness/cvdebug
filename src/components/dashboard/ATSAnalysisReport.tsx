@@ -147,11 +147,11 @@ export function ATSAnalysisReport({
   const showQuantificationBanner = isPaidUser && missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
 
   return (
-    <div className="relative w-full bg-slate-50 dark:from-[#0F172A] dark:to-[#1E293B] min-h-screen overflow-y-auto">
-      {/* Background Decoration - More Subtle */}
+    <div className="relative w-full bg-slate-50 dark:bg-deep-mesh-subtle min-h-screen overflow-y-auto">
+      {/* Background Decoration with Deep Mesh */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-slate-200/30 dark:bg-slate-800/20 rounded-full blur-[80px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-slate-200/30 dark:bg-slate-800/20 rounded-full blur-[80px]"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-slate-200/30 dark:bg-indigo-950/30 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-slate-200/30 dark:bg-indigo-950/20 rounded-full blur-[80px]"></div>
       </div>
 
       <div className="relative w-full z-10">
@@ -172,6 +172,20 @@ export function ATSAnalysisReport({
 
                 {/* SVG Circle Progress */}
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
+                  {/* Gradient Definition for Cyber Effect */}
+                  <defs>
+                    <linearGradient id="cyber-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" style={{ stopColor: "#2563EB", stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
+                    </linearGradient>
+                    <filter id="glow">
+                      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                      <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                  </defs>
                   {/* Track */}
                   <circle
                     cx="100"
@@ -181,19 +195,20 @@ export function ATSAnalysisReport({
                     stroke="rgba(148, 163, 184, 0.15)"
                     strokeWidth="14"
                   />
-                  {/* Indicator - More muted colors */}
+                  {/* Indicator with Cyber Gradient */}
                   <motion.circle
                     cx="100"
                     cy="100"
                     r="85"
                     fill="none"
-                    stroke={scorePercentage >= 80 ? "#059669" : scorePercentage >= 60 ? "#d97706" : "#dc2626"}
+                    stroke={scorePercentage >= 80 ? "url(#cyber-gradient)" : scorePercentage >= 60 ? "#d97706" : "#dc2626"}
                     strokeWidth="14"
                     strokeLinecap="round"
                     strokeDasharray={534}
                     initial={{ strokeDashoffset: 534 }}
                     animate={{ strokeDashoffset: 534 - (534 * scorePercentage) / 100 }}
                     transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                    filter={scorePercentage >= 80 ? "url(#glow)" : undefined}
                   />
                 </svg>
 
@@ -203,7 +218,11 @@ export function ATSAnalysisReport({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.5, type: "spring" }}
-                    className="text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-br from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent"
+                    className={`text-6xl lg:text-7xl font-black tracking-tight ${
+                      scorePercentage >= 80
+                        ? 'text-gradient-cyber'
+                        : 'bg-gradient-to-br from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent'
+                    }`}
                   >
                     {scorePercentage}
                   </motion.span>
@@ -283,7 +302,7 @@ export function ATSAnalysisReport({
                 >
                   <button
                     onClick={onOpenWritingForge}
-                    className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 group"
+                    className="btn-power px-6 py-3 rounded-lg text-white font-semibold border-0 flex items-center justify-center gap-2 group"
                   >
                     <span>Optimize Now</span>
                     <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
