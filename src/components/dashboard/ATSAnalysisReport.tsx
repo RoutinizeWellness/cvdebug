@@ -163,13 +163,13 @@ export function ATSAnalysisReport({
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 md:gap-3 px-4 md:px-5 py-1.5 md:py-2 rounded-full glass-card border-green-500/30"
+              className="flex items-center gap-2 md:gap-3 px-4 md:px-5 py-2 rounded-full glass-card border-green-500/30"
             >
-              <span className="relative flex h-2.5 w-2.5 md:h-3 md:w-3">
+              <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-full w-full bg-green-500 shadow-[0_0_10px_#4ade80]"></span>
               </span>
-              <span className="text-green-400 text-xs md:text-sm font-mono tracking-wider font-bold uppercase">Analysis Complete</span>
+              <span className="text-green-400 text-sm font-mono tracking-wider font-bold uppercase">Analysis Complete</span>
             </motion.div>
 
             {/* Headline */}
@@ -196,7 +196,7 @@ export function ATSAnalysisReport({
                 </div>
               )}
 
-              <p className="text-slate-400 text-xs md:text-sm font-light px-4">How well recruiters can find and read your resume</p>
+              <p className="text-slate-400 text-sm font-light px-4">How well recruiters can find and read your resume</p>
             </motion.div>
 
             {/* Circular Score Hero */}
@@ -282,7 +282,7 @@ export function ATSAnalysisReport({
           )}
 
           {/* Bento Grid Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 w-full">
             {/* Card 1: Impact Density (Gauge) - PAID USERS ONLY */}
             {isPaidUser ? (
               <motion.div
@@ -312,11 +312,11 @@ export function ATSAnalysisReport({
                   </span>
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Impact Density</p>
+                  <p className="text-slate-400 text-sm font-medium mb-1">Impact Density</p>
                   <div className="flex items-baseline gap-2">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">{metricsCount}<span className="text-sm md:text-lg text-slate-500">/10+</span></h3>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white">{metricsCount}<span className="text-base md:text-lg text-slate-500">/10+</span></h3>
                   </div>
-                  <p className="text-slate-500 text-[11px] md:text-xs mt-2 leading-relaxed">
+                  <p className="text-slate-500 text-xs mt-2 leading-relaxed">
                     {impactLevel.advice}
                   </p>
                   {/* Gauge Progress Bar */}
@@ -335,7 +335,7 @@ export function ATSAnalysisReport({
                     <div className="absolute top-0 left-[50%] w-0.5 h-2 bg-slate-500/50"></div>
                     <div className="absolute top-0 left-[100%] w-0.5 h-2 bg-slate-500/50"></div>
                   </div>
-                  <div className="flex justify-between text-[9px] md:text-[10px] text-slate-600 mt-1 font-mono">
+                  <div className="flex justify-between text-[10px] text-slate-600 mt-1 font-mono">
                     <span>0</span>
                     <span>5</span>
                     <span>10+</span>
@@ -389,14 +389,14 @@ export function ATSAnalysisReport({
                 </div>
               </div>
               <div className="relative z-10">
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">Search Ranking</p>
+                <p className="text-slate-400 text-sm font-medium mb-1">Search Ranking</p>
                 <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                   <h3 className="text-3xl md:text-4xl font-mono font-bold text-white">{getVisibilityGrade(scorePercentage)}</h3>
-                  <span className="px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold text-cyan-400 bg-cyan-500/10 rounded border border-cyan-500/20 whitespace-nowrap">
+                  <span className="px-2 py-1 text-xs font-bold text-cyan-400 bg-cyan-500/10 rounded border border-cyan-500/20 whitespace-nowrap">
                     Excellent
                   </span>
                 </div>
-                <p className="text-slate-500 text-[11px] md:text-xs mt-2 md:mt-3 leading-relaxed">
+                <p className="text-slate-500 text-xs mt-2 md:mt-3 leading-relaxed">
                   Recruiters will see your profile in search results
                 </p>
               </div>
@@ -407,16 +407,16 @@ export function ATSAnalysisReport({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between h-full hover:border-teal-500/30 transition-all duration-300 sm:col-span-2 lg:col-span-1"
+              className="glass-card rounded-xl p-4 md:p-6 flex flex-col justify-between h-full hover:border-teal-500/30 transition-all duration-300 md:col-span-2 lg:col-span-1"
             >
               <div className="flex justify-between items-start mb-3 md:mb-4">
                 <div className="p-2 md:p-3 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20">
                   <span className="material-symbols-outlined text-xl md:text-2xl">bar_chart_4_bars</span>
                 </div>
-                <span className="text-teal-400 font-bold text-xs md:text-sm whitespace-nowrap">High Saturation</span>
+                <span className="text-teal-400 font-bold text-sm whitespace-nowrap">High Saturation</span>
               </div>
               <div>
-                <p className="text-slate-400 text-xs md:text-sm font-medium mb-2 md:mb-3">Signal Strength</p>
+                <p className="text-slate-400 text-sm font-medium mb-2 md:mb-3">Signal Strength</p>
                 {/* Mini Bar Chart */}
                 <div className="flex items-end gap-3 h-20 w-full px-2">
                   {/* Bar 1 - Tech */}
@@ -470,14 +470,14 @@ export function ATSAnalysisReport({
             >
               {/* Matched Keywords */}
               {matchedKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-emerald-500/30 transition-all duration-300 flex flex-col h-[400px]">
+                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-emerald-500/30 transition-all duration-300 flex flex-col min-h-[300px] max-h-[500px]">
                   <div className="flex items-center gap-3 mb-4 flex-shrink-0">
                     <div className="p-2 md:p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                       <span className="material-symbols-outlined text-xl">check_circle</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-white font-bold text-base md:text-lg">Keywords Found</h3>
-                      <p className="text-slate-400 text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
+                      <p className="text-slate-400 text-sm">{matchedKeywords.length} matches detected</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 overflow-y-auto custom-scrollbar pr-2 flex-1 content-start">
@@ -487,7 +487,7 @@ export function ATSAnalysisReport({
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.8 + index * 0.02 }}
-                        className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20 text-xs md:text-sm font-medium hover:bg-emerald-500/20 transition-colors cursor-default"
+                        className="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20 text-sm font-medium hover:bg-emerald-500/20 transition-colors cursor-default h-fit"
                       >
                         {keyword}
                       </motion.span>
@@ -498,14 +498,14 @@ export function ATSAnalysisReport({
 
               {/* Missing Keywords */}
               {missingKeywords.length > 0 && (
-                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col h-[400px]">
+                <div className="glass-card rounded-xl p-5 md:p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col min-h-[300px] max-h-[500px]">
                   <div className="flex items-center gap-3 mb-4 flex-shrink-0">
                     <div className="p-2 md:p-2.5 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
                       <span className="material-symbols-outlined text-xl">priority_high</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-white font-bold text-base md:text-lg">Missing Keywords</h3>
-                      <p className="text-slate-400 text-xs md:text-sm">{missingKeywords.length} opportunities to improve</p>
+                      <p className="text-slate-400 text-sm">{missingKeywords.length} opportunities to improve</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 overflow-y-auto custom-scrollbar pr-2 flex-1 content-start">
@@ -515,7 +515,7 @@ export function ATSAnalysisReport({
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.8 + index * 0.02 }}
-                        className="px-3 py-1.5 bg-orange-500/10 text-orange-400 rounded-lg border border-orange-500/20 text-xs md:text-sm font-medium hover:bg-orange-500/20 transition-colors cursor-default"
+                        className="px-3 py-1.5 bg-orange-500/10 text-orange-400 rounded-lg border border-orange-500/20 text-sm font-medium hover:bg-orange-500/20 transition-colors cursor-default h-fit"
                       >
                         {keyword}
                       </motion.span>
