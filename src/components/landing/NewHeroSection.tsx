@@ -35,7 +35,7 @@ export function NewHeroSection() {
 
   return (
     <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
-      {/* Background effects */}
+      {/* Background effects - CVDebug Unique */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -43,22 +43,35 @@ export function NewHeroSection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{
-            opacity: 0.2,
+            opacity: 0.15,
             scale: 1,
-            rotate: [30, 32, 30]
+            rotate: [20, 23, 20]
           }}
           transition={{
-            opacity: { duration: 1 },
-            scale: { duration: 1 },
-            rotate: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+            opacity: { duration: 1.2 },
+            scale: { duration: 1.2 },
+            rotate: { duration: 12, repeat: Infinity, ease: "easeInOut" }
           }}
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#14b8a6] via-[#0d9488] to-[#5eead4] sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           style={{
             clipPath:
               "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
           }}
         ></motion.div>
       </div>
+
+      {/* Additional brand element - subtle circuit pattern */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(90deg, hsl(174, 72%, 48%) 1px, transparent 1px),
+            linear-gradient(0deg, hsl(174, 72%, 48%) 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }}
+      />
 
       {/* Floating particles */}
       <div className="absolute inset-0 -z-10 overflow-hidden">

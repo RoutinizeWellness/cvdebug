@@ -49,7 +49,7 @@ export default function Landing() {
     <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
       <style>{`
         body {
-          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+          background: linear-gradient(180deg, hsl(200, 20%, 6%) 0%, hsl(200, 25%, 10%) 50%, hsl(174, 30%, 12%) 100%);
         }
       `}</style>
 

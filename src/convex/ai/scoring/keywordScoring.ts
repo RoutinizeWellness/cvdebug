@@ -15,18 +15,22 @@ export interface KeywordResult {
   keywordScore: number;
 }
 
-// Enhanced fuzzy matching with Levenshtein distance
+// Enhanced fuzzy matching with Levenshtein distance (optimized)
 function levenshteinDistance(a: string, b: string): number {
+  if (a === b) return 0;
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
   const matrix: number[][] = [];
-  
+
   for (let i = 0; i <= b.length; i++) {
     matrix[i] = [i];
   }
-  
+
   for (let j = 0; j <= a.length; j++) {
     matrix[0][j] = j;
   }
-  
+
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
@@ -40,33 +44,129 @@ function levenshteinDistance(a: string, b: string): number {
       }
     }
   }
-  
+
   return matrix[b.length][a.length];
 }
 
-// Enhanced keyword matching with fuzzy logic
+// Advanced: Jaro-Winkler distance for better string similarity
+function jaroWinkler(s1: string, s2: string): number {
+  const m = s1.length;
+  const n = s2.length;
+
+  if (m === 0 && n === 0) return 1.0;
+  if (m === 0 || n === 0) return 0.0;
+
+  const matchWindow = Math.floor(Math.max(m, n) / 2) - 1;
+  const s1Matches = new Array(m).fill(false);
+  const s2Matches = new Array(n).fill(false);
+
+  let matches = 0;
+  for (let i = 0; i < m; i++) {
+    const start = Math.max(0, i - matchWindow);
+    const end = Math.min(i + matchWindow + 1, n);
+
+    for (let j = start; j < end; j++) {
+      if (s2Matches[j] || s1[i] !== s2[j]) continue;
+      s1Matches[i] = true;
+      s2Matches[j] = true;
+      matches++;
+      break;
+    }
+  }
+
+  if (matches === 0) return 0.0;
+
+  let transpositions = 0;
+  let k = 0;
+  for (let i = 0; i < m; i++) {
+    if (!s1Matches[i]) continue;
+    while (!s2Matches[k]) k++;
+    if (s1[i] !== s2[k]) transpositions++;
+    k++;
+  }
+
+  const jaro = (matches / m + matches / n + (matches - transpositions / 2) / matches) / 3;
+
+  // Winkler modification
+  let prefixLength = 0;
+  for (let i = 0; i < Math.min(4, Math.min(m, n)); i++) {
+    if (s1[i] === s2[i]) prefixLength++;
+    else break;
+  }
+
+  return jaro + prefixLength * 0.1 * (1 - jaro);
+}
+
+// Semantic similarity detector for related terms
+function semanticSimilarity(keyword: string, text: string): number {
+  const keywordLower = keyword.toLowerCase();
+  const words = text.toLowerCase().split(/\s+/);
+
+  // Common root words and their variations
+  const semanticGroups: Record<string, string[]> = {
+    'manage': ['managed', 'managing', 'manager', 'management', 'managerial'],
+    'develop': ['developed', 'developing', 'developer', 'development', 'developmental'],
+    'lead': ['led', 'leading', 'leader', 'leadership'],
+    'design': ['designed', 'designing', 'designer', 'designs'],
+    'implement': ['implemented', 'implementing', 'implementation'],
+    'optimize': ['optimized', 'optimizing', 'optimization', 'optimal'],
+    'analyze': ['analyzed', 'analyzing', 'analyst', 'analysis', 'analytical'],
+    'architect': ['architecture', 'architected', 'architectural'],
+  };
+
+  for (const [root, variations] of Object.entries(semanticGroups)) {
+    if (keywordLower.includes(root) || variations.some(v => keywordLower.includes(v))) {
+      const found = words.some(word =>
+        variations.some(v => word.includes(v) || v.includes(word))
+      );
+      if (found) return 0.85; // High semantic match
+    }
+  }
+
+  return 0;
+}
+
+// Enhanced keyword matching with multi-algorithm fuzzy logic
 function fuzzyMatch(keyword: string, text: string, threshold: number = 0.85): boolean {
   const keywordLower = keyword.toLowerCase();
   const textLower = text.toLowerCase();
-  
-  // Exact match
+
+  // Exact match (fastest)
   if (textLower.includes(keywordLower)) return true;
-  
+
+  // Check for semantic similarity first (common variations)
+  const semanticScore = semanticSimilarity(keywordLower, textLower);
+  if (semanticScore >= 0.85) return true;
+
   // Split into words for partial matching
   const words = textLower.split(/\s+/);
-  
+
   for (const word of words) {
     if (word.length < 3) continue;
-    
+
+    // Use Jaro-Winkler for better name/technical term matching
+    const jaroScore = jaroWinkler(keywordLower, word);
+    if (jaroScore >= 0.9) return true;
+
+    // Fallback to Levenshtein for typos
     const distance = levenshteinDistance(keywordLower, word);
     const similarity = 1 - (distance / Math.max(keywordLower.length, word.length));
-    
+
     // Dynamic threshold: stricter for shorter words to avoid false positives
     const dynamicThreshold = keywordLower.length < 5 ? 0.92 : threshold;
-    
+
     if (similarity >= dynamicThreshold) return true;
   }
-  
+
+  // Check for partial matches in multi-word keywords
+  if (keyword.includes(' ')) {
+    const keywordParts = keyword.toLowerCase().split(' ');
+    const allPartsFound = keywordParts.every(part =>
+      part.length >= 3 && textLower.includes(part)
+    );
+    if (allPartsFound && keywordParts.length >= 2) return true;
+  }
+
   return false;
 }
 
