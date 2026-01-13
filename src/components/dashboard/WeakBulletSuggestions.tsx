@@ -47,6 +47,25 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
         .filter(s => s.length > 20 && s.length < 250);
     }
 
+    // CRITICAL: Filter out personal information that isn't bullet points
+    const personalInfoPatterns = [
+      /\b(?:us\s+citizen|citizenship|authorized\s+to\s+work|work\s+authorization)\b/gi,
+      /\b(?:visa\s+status|green\s+card|h1b|permanent\s+resident)\b/gi,
+      /\b(?:email|phone|address|location|city|state|zip)[:]/gi,
+      /\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b/gi, // Emails
+      /\b(?:\d{3}[-.]?\d{3}[-.]?\d{4})\b/g, // Phone numbers
+      /\b(?:bachelor|master|phd|degree|university|college|gpa)\b.*(?:in|of)/gi,
+      /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}\s*[-–]\s*(?:present|current|now|\w+\s+\d{4})/gi,
+    ];
+
+    sentences = sentences.filter(sentence => {
+      // Filter out lines that are primarily personal information
+      return !personalInfoPatterns.some(pattern => {
+        const matches = sentence.match(pattern);
+        return matches && matches.join('').length > sentence.length * 0.3; // >30% is personal info
+      });
+    });
+
     // Score each sentence based on weakness (higher score = weaker)
     interface ScoredBullet {
       text: string;
@@ -124,9 +143,66 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     }));
   };
 
+  // STEP 1: Sanitize and validate the bullet before generating suggestions
+  const sanitizeBullet = (bullet: string): { cleaned: string; verb: string; isValid: boolean } => {
+    // Remove noise patterns that shouldn't be in bullet points
+    const noisePatterns = [
+      /\b(?:us\s+citizen|citizenship|authorized\s+to\s+work|work\s+authorization)\b/gi,
+      /\b(?:visa\s+status|green\s+card|h1b|permanent\s+resident)\b/gi,
+      /\b(?:email|phone|address|location|city|state|zip)\b/gi,
+      /\b(?:linkedin|github|portfolio|website)\b/gi,
+      /\b(?:bachelor|master|degree|university|gpa)\b/gi,
+      /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\b/gi,
+      /\b(?:\d{3}[-.]?\d{3}[-.]?\d{4})\b/g, // Phone numbers
+      /\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b/gi, // Emails
+    ];
+
+    let cleaned = bullet;
+    noisePatterns.forEach(pattern => {
+      cleaned = cleaned.replace(pattern, '');
+    });
+
+    // Clean up extra whitespace
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+    // Extract the action verb (first word, typically)
+    const verbMatch = cleaned.match(/^([A-Z][a-z]+(?:ed)?)/);
+    const verb = verbMatch ? verbMatch[1] : 'Worked on';
+
+    // Check if bullet is valid (has meaningful content, not just noise)
+    const wordCount = cleaned.split(/\s+/).filter(w => w.length > 2).length;
+    const isValid = wordCount >= 3 && cleaned.length >= 15;
+
+    return { cleaned, verb, isValid };
+  };
+
   // Generate 3 types of metric suggestions with advanced context detection
   const generateSuggestions = (bullet: string): WeakBullet['suggestions'] => {
-    const lowerBullet = bullet.toLowerCase();
+    // CRITICAL: Sanitize the bullet first to avoid hallucinations
+    const sanitized = sanitizeBullet(bullet);
+
+    // If bullet is invalid (mostly noise), return generic suggestions
+    if (!sanitized.isValid) {
+      return [
+        {
+          type: 'volume',
+          improved: 'Led cross-functional initiatives impacting 15+ team members across 3 major product lines',
+          explanation: 'Scale metrics: Team size and project count show organizational impact'
+        },
+        {
+          type: 'efficiency',
+          improved: 'Improved team productivity by 40% through process optimization and automation',
+          explanation: 'Efficiency metrics: Productivity gains demonstrate process improvement'
+        },
+        {
+          type: 'money',
+          improved: 'Delivered projects on $200K budget with 15% cost savings and zero overruns',
+          explanation: 'Financial responsibility: Budget management shows fiscal discipline'
+        }
+      ];
+    }
+
+    const lowerBullet = sanitized.cleaned.toLowerCase();
 
     // Multi-factor context detection with weighted scoring
     interface Context {
@@ -274,9 +350,15 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     };
 
     const volumeMetric = volumeMetrics[primaryContext] || volumeMetrics['general'];
+
+    // CRITICAL FIX: Use sanitized bullet + reconstruct intelligently
+    const cleanedBase = sanitized.cleaned.replace(/\.$/, '').trim();
+    const hasTrailingComma = /[,;]$/.test(cleanedBase);
+    const separator = hasTrailingComma ? ' ' : ', ';
+
     suggestions.push({
       type: 'volume',
-      improved: bullet.replace(/\.$/, '') + ', ' + volumeMetric.metric,
+      improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${volumeMetric.metric}`,
       explanation: volumeMetric.explanation
     });
 
@@ -323,7 +405,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     const efficiencyMetric = efficiencyMetrics[isOptimize ? 'optimization' : primaryContext] || efficiencyMetrics['general'];
     suggestions.push({
       type: 'efficiency',
-      improved: bullet.replace(/\.$/, '') + ', ' + efficiencyMetric.metric,
+      improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${efficiencyMetric.metric}`,
       explanation: efficiencyMetric.explanation
     });
 
@@ -377,7 +459,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
 
     suggestions.push({
       type: 'money',
-      improved: bullet.replace(/\.$/, '') + ', ' + moneyMetric.metric,
+      improved: `${sanitized.verb} ${cleanedBase.replace(/^[A-Z][a-z]+(?:ed)?\s*/i, '')}${separator}${moneyMetric.metric}`,
       explanation: moneyMetric.explanation
     });
 
