@@ -72,7 +72,17 @@ export function KeywordSniperTool({
       topKeywords.push("modern practices");
     }
 
-    // Detect context from current bullet to provide relevant suggestions
+    // FIRST: Detect role type from jobTitle to provide role-appropriate suggestions
+    const roleContext = jobTitle?.toLowerCase() || "";
+    const isBusinessAnalyst = /business\s*analyst|ba\b|product\s*analyst|data\s*analyst/i.test(roleContext);
+    const isProductManager = /product\s*manager|pm\b|product\s*owner/i.test(roleContext);
+    const isDataScience = /data\s*scientist|ml\s*engineer|machine\s*learning/i.test(roleContext);
+    const isFinance = /finance|financial\s*analyst|accountant|cpa/i.test(roleContext);
+    const isMarketing = /marketing|growth|seo|content/i.test(roleContext);
+    const isDesigner = /designer|ux|ui|product\s*design/i.test(roleContext);
+    const isEngineer = /engineer|developer|swe|software|devops|backend|frontend/i.test(roleContext);
+
+    // SECOND: Detect context from current bullet to provide relevant suggestions
     const bullet = currentBullet.toLowerCase();
     const isDatabase = /database|sql|data|query|storage|mongodb|postgres|redis/i.test(bullet);
     const isAPI = /api|endpoint|rest|graphql|microservice/i.test(bullet);
@@ -85,9 +95,27 @@ export function KeywordSniperTool({
     const isTeam = /team|lead|mentor|manage|coordinate/i.test(bullet);
     const isTesting = /test|quality|qa|automation|coverage/i.test(bullet);
 
-    // Context-aware action verbs
+    // Business/Analyst contexts
+    const isAnalysis = /analy[zs]|report|dashboard|insight|metric|kpi/i.test(bullet);
+    const isStakeholder = /stakeholder|client|customer|business|requirement/i.test(bullet);
+    const isProcess = /process|workflow|efficiency|optimization|streamlin/i.test(bullet);
+    const isStrategy = /strategy|strategic|roadmap|initiative|planning/i.test(bullet);
+
+    // PRIORITY 1: Role-based action verbs (overrides tech context)
     let actionVerbs: string[];
-    if (isDevOps) {
+    if (isBusinessAnalyst) {
+      actionVerbs = ["Analyzed", "Assessed", "Facilitated", "Identified", "Streamlined"];
+    } else if (isProductManager) {
+      actionVerbs = ["Launched", "Defined", "Prioritized", "Drove", "Delivered"];
+    } else if (isDataScience) {
+      actionVerbs = ["Modeled", "Predicted", "Analyzed", "Engineered", "Deployed"];
+    } else if (isFinance) {
+      actionVerbs = ["Audited", "Forecasted", "Reconciled", "Optimized", "Budgeted"];
+    } else if (isMarketing) {
+      actionVerbs = ["Launched", "Grew", "Optimized", "Generated", "Drove"];
+    } else if (isDesigner) {
+      actionVerbs = ["Designed", "Prototyped", "Redesigned", "Created", "Iterated"];
+    } else if (isDevOps) {
       actionVerbs = ["Automated", "Streamlined", "Orchestrated"];
     } else if (isDatabase) {
       actionVerbs = ["Optimized", "Architected", "Scaled"];
@@ -99,9 +127,47 @@ export function KeywordSniperTool({
       actionVerbs = ["Built", "Implemented", "Developed"];
     }
 
-    // Context-aware metrics
+    // PRIORITY 1: Role-based metrics (overrides tech context)
     let metrics1, metrics2, metrics3;
-    if (isPerformance) {
+    if (isBusinessAnalyst) {
+      if (isAnalysis) {
+        metrics1 = "identifying $2.5M in cost savings through data-driven insights and trend analysis";
+        metrics2 = "delivering 20+ strategic recommendations adopted by C-suite leadership";
+        metrics3 = "improving forecasting accuracy by 40% across 5 business units";
+      } else if (isStakeholder) {
+        metrics1 = "aligning requirements for 200+ stakeholders across 8 departments";
+        metrics2 = "facilitating workshops for 50+ business leaders, driving 95% consensus";
+        metrics3 = "reducing requirement gathering cycle time by 45% through structured interviews";
+      } else if (isProcess) {
+        metrics1 = "streamlining workflows and improving process efficiency by 35% across operations";
+        metrics2 = "eliminating bottlenecks that saved 500 hours/quarter in manual effort";
+        metrics3 = "optimizing approval workflows from 7 days to 24 hours, boosting satisfaction by 60%";
+      } else {
+        metrics1 = "generating insights that drove $3M in revenue growth and reduced churn by 25%";
+        metrics2 = "creating dashboards used by 100+ executives for data-driven decision making";
+        metrics3 = "identifying operational inefficiencies that saved $1.8M annually";
+      }
+    } else if (isProductManager) {
+      metrics1 = "launching features that increased user engagement by 45% and retention by 30%";
+      metrics2 = "driving $5M ARR growth through strategic roadmap prioritization";
+      metrics3 = "shipping 15+ features on time with 95% stakeholder satisfaction";
+    } else if (isDataScience) {
+      metrics1 = "building predictive models with 92% accuracy that generated $4M in revenue";
+      metrics2 = "deploying ML pipelines processing 10M+ records/day with 99.9% reliability";
+      metrics3 = "improving churn prediction by 35%, enabling proactive retention of 2K+ customers";
+    } else if (isFinance) {
+      metrics1 = "managing $50M budget with 99.5% accuracy and zero audit findings";
+      metrics2 = "identifying cost-saving opportunities worth $3.2M through financial analysis";
+      metrics3 = "reducing month-end close time by 40% and improving forecast accuracy to 96%";
+    } else if (isMarketing) {
+      metrics1 = "growing organic traffic by 250% and generating 5K+ qualified leads/quarter";
+      metrics2 = "launching campaigns that achieved 8.5% conversion rate and $2M pipeline";
+      metrics3 = "optimizing ad spend to reduce CAC by 35% while scaling to 10K customers";
+    } else if (isDesigner) {
+      metrics1 = "redesigning interfaces that increased user satisfaction by 50% and NPS by 25 points";
+      metrics2 = "creating design systems adopted across 30+ products and 80+ designers";
+      metrics3 = "improving conversion rates by 40% through user research and A/B testing";
+    } else if (isPerformance) {
       metrics1 = "reducing latency by 45% and improving response time to <100ms";
       metrics2 = "increasing throughput by 3x and reducing costs by $50K annually";
       metrics3 = "cutting load time by 60% and boosting user engagement by 35%";
@@ -140,9 +206,21 @@ export function KeywordSniperTool({
       metrics3 = "reducing processing time by 50% and increasing team productivity by 30%";
     }
 
-    // Context-aware outcomes without metrics
+    // PRIORITY 1: Role-based outcomes (overrides tech context)
     let outcome;
-    if (isDatabase) {
+    if (isBusinessAnalyst) {
+      outcome = "enabling data-driven decision making and strategic alignment across business units";
+    } else if (isProductManager) {
+      outcome = "delivering customer-centric solutions that drive growth and competitive advantage";
+    } else if (isDataScience) {
+      outcome = "transforming data into actionable insights that power business intelligence";
+    } else if (isFinance) {
+      outcome = "ensuring financial accuracy, compliance, and strategic resource allocation";
+    } else if (isMarketing) {
+      outcome = "accelerating customer acquisition and brand awareness through data-driven campaigns";
+    } else if (isDesigner) {
+      outcome = "delivering intuitive, accessible experiences that delight users and drive adoption";
+    } else if (isDatabase) {
       outcome = "ensuring data integrity and high availability across distributed systems";
     } else if (isFrontend) {
       outcome = "delivering seamless user experiences across all devices and browsers";
