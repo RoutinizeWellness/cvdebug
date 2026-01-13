@@ -6,6 +6,7 @@ import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
 import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
+import { RegionalPricingBanner } from "@/components/landing/RegionalPricingBanner";
 import { useEffect } from "react";
 import { updatePageSEO } from "@/lib/seo";
 
@@ -53,6 +54,7 @@ export default function Landing() {
         }
       `}</style>
 
+      <RegionalPricingBanner />
       <NewNavbar />
 
       <main className="flex-grow pt-16">

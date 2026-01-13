@@ -1,9 +1,30 @@
 import { useNavigate } from "react-router";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { getRegionalPrice, getCurrentRegion } from "@/lib/locale";
 
 export function PricingSection() {
   const navigate = useNavigate();
+  const [prices, setPrices] = useState({
+    single: "€4.99",
+    premium: "€19.99",
+    discount: undefined as number | undefined,
+    region: "Europe",
+  });
+
+  useEffect(() => {
+    const region = getCurrentRegion();
+    const singlePrice = getRegionalPrice(4.99);
+    const premiumPrice = getRegionalPrice(19.99);
+
+    setPrices({
+      single: singlePrice.formatted,
+      premium: premiumPrice.formatted,
+      discount: premiumPrice.discount,
+      region: region.countryName,
+    });
+  }, []);
 
   const handlePlanSelect = (plan: string) => {
     navigate(`/auth?plan=${plan}`);
@@ -12,23 +33,35 @@ export function PricingSection() {
   return (
     <section className="w-full relative overflow-hidden" id="pricing">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
-      
+
       <div className="relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">Simple Pricing</h2>
           <p className="text-xl text-slate-400">Pay once. Fix forever. No subscriptions.</p>
+          {prices.discount && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-primary/10 border border-primary/30 rounded-full"
+            >
+              <MapPin className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">
+                {prices.discount}% off for {prices.region}
+              </span>
+            </motion.div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Free Tier */}
-          <motion.div 
+          <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-slate-700 hover:shadow-lg hover:shadow-black/20 transition-all"
             whileHover={{ y: -5 }}
           >
             <div>
               <h3 className="text-2xl font-bold mb-2 text-white">Free Preview</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-5xl font-black text-white">€0</span>
+                <span className="text-5xl font-black text-white">Free</span>
               </div>
               <p className="text-sm text-slate-400 mt-2">See your ATS score</p>
             </div>
@@ -67,14 +100,14 @@ export function PricingSection() {
           </motion.div>
 
           {/* Single Scan */}
-          <motion.div 
+          <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-slate-700 hover:shadow-lg hover:shadow-black/20 transition-all"
             whileHover={{ y: -5 }}
           >
             <div>
               <h3 className="text-2xl font-bold mb-2 text-white">Single Scan</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-5xl font-black text-white">€4.99</span>
+                <span className="text-5xl font-black text-white">{prices.single}</span>
               </div>
               <p className="text-sm text-slate-400 mt-2">One complete fix</p>
             </div>
@@ -124,10 +157,16 @@ export function PricingSection() {
             <div>
               <h3 className="text-2xl font-bold mb-2 text-white">Interview Sprint</h3>
               <div className="flex items-baseline gap-2">
-                <span className="text-5xl font-black text-white">€19.99</span>
-                <span className="text-lg text-slate-500 line-through">€49.99</span>
+                <span className="text-5xl font-black text-white">{prices.premium}</span>
+                {prices.discount && (
+                  <span className="text-lg text-slate-500 line-through">
+                    {getRegionalPrice(19.99 / (1 - prices.discount / 100)).formatted}
+                  </span>
+                )}
               </div>
-              <p className="text-xs text-primary font-bold mt-1">60% OFF - 7 days unlimited</p>
+              <p className="text-xs text-primary font-bold mt-1">
+                {prices.discount ? `${prices.discount}% OFF - ` : ''}7 days unlimited
+              </p>
             </div>
             <motion.button 
               onClick={() => handlePlanSelect('interview_sprint')}
