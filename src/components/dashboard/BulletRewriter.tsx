@@ -17,6 +17,20 @@ interface RewriteResult {
   metric: string;
   impact: string;
   alternatives: Alternative[];
+  analysis?: {
+    weaknessScore: number;
+    hasMetrics: boolean;
+    hasStrongVerb: boolean;
+    hasPassiveLanguage: boolean;
+    hasVagueTerms: boolean;
+    suggestedFocus: string;
+    weaknessReasons: string[];
+  };
+  contextAnalysis?: {
+    detectedRole: string;
+    detectedIndustry: string;
+    recommendedMetricTypes: string[];
+  };
 }
 
 export function BulletRewriter() {
@@ -210,6 +224,76 @@ export function BulletRewriter() {
             transition={{ duration: 0.3 }}
             className="space-y-4"
           >
+            {/* Analysis Insights Panel */}
+            {result.analysis && (
+              <div className="glass-panel p-6 border-l-4 border-blue-500">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                  <Target className="h-5 w-5 text-blue-400" />
+                  AI Analysis of Original Bullet
+                </h3>
+
+                {/* Weakness Score */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-slate-300">Weakness Score</span>
+                    <span className={`text-sm font-bold ${
+                      result.analysis.weaknessScore > 50 ? "text-red-400" :
+                      result.analysis.weaknessScore > 30 ? "text-yellow-400" :
+                      "text-green-400"
+                    }`}>
+                      {result.analysis.weaknessScore}/100
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all ${
+                        result.analysis.weaknessScore > 50 ? "bg-red-500" :
+                        result.analysis.weaknessScore > 30 ? "bg-yellow-500" :
+                        "bg-green-500"
+                      }`}
+                      style={{ width: `${result.analysis.weaknessScore}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Detected Issues */}
+                {result.analysis.weaknessReasons.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-xs text-slate-400 mb-2 font-semibold">Detected Issues:</p>
+                    <div className="space-y-1">
+                      {result.analysis.weaknessReasons.map((reason, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs text-red-300">
+                          <span className="text-red-400 mt-0.5">✗</span>
+                          <span>{reason}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Context Detection */}
+                {result.contextAnalysis && (
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="bg-slate-800/50 p-2 rounded">
+                      <span className="text-slate-400">Detected Role:</span>
+                      <span className="text-white ml-2 font-semibold">{result.contextAnalysis.detectedRole}</span>
+                    </div>
+                    <div className="bg-slate-800/50 p-2 rounded">
+                      <span className="text-slate-400">Industry:</span>
+                      <span className="text-white ml-2 font-semibold">{result.contextAnalysis.detectedIndustry}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Recommended Focus */}
+                <div className="mt-3 bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                  <p className="text-xs text-blue-300">
+                    <span className="font-semibold">AI Recommendation:</span> Focus on {result.analysis.suggestedFocus.replace("-", " ")} to maximize impact
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Main Result */}
             <div className="glass-panel p-6">
               <div className="flex items-start justify-between mb-3">
