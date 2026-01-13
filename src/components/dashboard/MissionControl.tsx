@@ -123,7 +123,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
           <Button
             onClick={() => onNavigate("projects")}
-            className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 group"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2 group"
           >
             <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
             <span>New Application</span>
@@ -137,19 +137,19 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800/50 rounded-xl p-6 border-2 border-cyan-200 dark:border-cyan-900/30 hover:border-cyan-400 dark:hover:border-cyan-700 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group cursor-pointer"
+          className="bg-white dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm hover:shadow transition-all duration-200 relative overflow-hidden group cursor-pointer"
           onClick={() => onNavigate("master-cvs")}
         >
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp className="h-20 w-20 text-cyan-600 dark:text-cyan-400" />
+            <TrendingUp className="h-20 w-20 text-slate-400 dark:text-slate-600" />
           </div>
           <div className="flex flex-col gap-3 relative z-10">
             <div className="flex items-center justify-between">
               <p className="text-slate-600 dark:text-slate-400 text-sm font-semibold uppercase tracking-wider">
                 Visibility Score
               </p>
-              <div className="p-2 rounded-lg bg-cyan-100 dark:bg-cyan-900/20">
-                <TrendingUp className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+              <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                <TrendingUp className="h-5 w-5 text-slate-700 dark:text-slate-300" />
               </div>
             </div>
             <div className="flex items-baseline gap-2">
@@ -168,9 +168,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 animate={{ width: `${visibilityScore}%` }}
                 transition={{ duration: 1, delay: 0.3 }}
                 className={`h-2 rounded-full ${
-                  visibilityScore >= 80 ? 'bg-emerald-500' :
-                  visibilityScore >= 60 ? 'bg-yellow-500' :
-                  'bg-red-500'
+                  visibilityScore >= 80 ? 'bg-emerald-600' :
+                  visibilityScore >= 60 ? 'bg-amber-600' :
+                  'bg-red-600'
                 }`}
               />
             </div>

@@ -147,11 +147,11 @@ export function ATSAnalysisReport({
   const showQuantificationBanner = isPaidUser && missingKeywords.length === 0 && scorePercentage < 90 && metricsCount < 10;
 
   return (
-    <div className="relative w-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[#0F172A] dark:to-[#1E293B] min-h-screen overflow-y-auto">
-      {/* Background Decoration */}
+    <div className="relative w-full bg-slate-50 dark:from-[#0F172A] dark:to-[#1E293B] min-h-screen overflow-y-auto">
+      {/* Background Decoration - More Subtle */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-cyan-600/5 dark:bg-cyan-600/10 rounded-full blur-[80px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-teal-600/5 dark:bg-teal-600/10 rounded-full blur-[80px]"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-slate-200/30 dark:bg-slate-800/20 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-slate-200/30 dark:bg-slate-800/20 rounded-full blur-[80px]"></div>
       </div>
 
       <div className="relative w-full z-10">
@@ -167,8 +167,8 @@ export function ATSAnalysisReport({
                 transition={{ delay: 0.1, duration: 0.5 }}
                 className="relative flex items-center justify-center w-48 h-48 lg:w-56 lg:h-56 shrink-0"
               >
-                {/* Glow Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-teal-500/20 blur-[40px] rounded-full"></div>
+                {/* Subtle Glow Background */}
+                <div className="absolute inset-0 bg-slate-200/40 dark:bg-slate-700/20 blur-[30px] rounded-full"></div>
 
                 {/* SVG Circle Progress */}
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
@@ -178,23 +178,22 @@ export function ATSAnalysisReport({
                     cy="100"
                     r="85"
                     fill="none"
-                    stroke="rgba(148, 163, 184, 0.2)"
-                    strokeWidth="16"
+                    stroke="rgba(148, 163, 184, 0.15)"
+                    strokeWidth="14"
                   />
-                  {/* Indicator */}
+                  {/* Indicator - More muted colors */}
                   <motion.circle
                     cx="100"
                     cy="100"
                     r="85"
                     fill="none"
-                    stroke={scorePercentage >= 80 ? "#10b981" : scorePercentage >= 60 ? "#f59e0b" : "#ef4444"}
-                    strokeWidth="16"
+                    stroke={scorePercentage >= 80 ? "#059669" : scorePercentage >= 60 ? "#d97706" : "#dc2626"}
+                    strokeWidth="14"
                     strokeLinecap="round"
                     strokeDasharray={534}
                     initial={{ strokeDashoffset: 534 }}
                     animate={{ strokeDashoffset: 534 - (534 * scorePercentage) / 100 }}
                     transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-                    style={{ filter: 'drop-shadow(0 0 12px rgba(6, 182, 212, 0.4))' }}
                   />
                 </svg>
 
@@ -284,14 +283,14 @@ export function ATSAnalysisReport({
                 >
                   <button
                     onClick={onOpenWritingForge}
-                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                    className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 group"
                   >
                     <span>Optimize Now</span>
                     <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                   </button>
                   <button
                     onClick={onDownloadPDF}
-                    className="px-6 py-3 rounded-xl bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 hover:border-cyan-500 dark:hover:border-cyan-500 text-slate-700 dark:text-slate-200 font-semibold transition-all duration-300 flex items-center justify-center gap-2"
+                    className="px-6 py-3 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-200 font-semibold transition-all duration-200 flex items-center justify-center gap-2"
                   >
                     <span className="material-symbols-outlined text-lg">download</span>
                     <span>Download Report</span>
@@ -343,24 +342,24 @@ export function ATSAnalysisReport({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-6 border-2 transition-all duration-300 ${
-                    impactLevel.level === 'weak' ? 'border-red-200 dark:border-red-900/30 hover:border-red-400 dark:hover:border-red-700' :
-                    impactLevel.level === 'good' ? 'border-yellow-200 dark:border-yellow-900/30 hover:border-yellow-400 dark:hover:border-yellow-700' :
-                    'border-emerald-200 dark:border-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-700'
-                  } shadow-sm hover:shadow-md`}
+                  className={`bg-white dark:bg-slate-800/50 rounded-xl p-6 border transition-all duration-300 ${
+                    impactLevel.level === 'weak' ? 'border-red-200 dark:border-red-900/30 hover:border-red-300 dark:hover:border-red-800' :
+                    impactLevel.level === 'good' ? 'border-amber-200 dark:border-amber-900/30 hover:border-amber-300 dark:hover:border-amber-800' :
+                    'border-emerald-200 dark:border-emerald-900/30 hover:border-emerald-300 dark:hover:border-emerald-800'
+                  } shadow-sm hover:shadow`}
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div className={`p-3 rounded-xl ${
-                      impactLevel.level === 'weak' ? 'bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400' :
-                      impactLevel.level === 'good' ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400' :
-                      'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400'
+                    <div className={`p-3 rounded-lg ${
+                      impactLevel.level === 'weak' ? 'bg-red-50 dark:bg-red-900/10 text-red-700 dark:text-red-400' :
+                      impactLevel.level === 'good' ? 'bg-amber-50 dark:bg-amber-900/10 text-amber-700 dark:text-amber-400' :
+                      'bg-emerald-50 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400'
                     }`}>
-                      <span className="material-symbols-outlined text-2xl">speed</span>
+                      <span className="material-symbols-outlined text-xl">speed</span>
                     </div>
-                    <span className={`px-3 py-1.5 text-xs font-bold rounded-full ${
-                      impactLevel.level === 'weak' ? 'text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/30' :
-                      impactLevel.level === 'good' ? 'text-yellow-700 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30' :
-                      'text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30'
+                    <span className={`px-3 py-1.5 text-xs font-semibold rounded-full ${
+                      impactLevel.level === 'weak' ? 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-900/20' :
+                      impactLevel.level === 'good' ? 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20' :
+                      'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
                     }`}>
                       {impactLevel.label}
                     </span>

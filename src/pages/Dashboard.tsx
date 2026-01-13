@@ -352,7 +352,7 @@ export default function Dashboard() {
                 </div>
                 <Button
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2"
                 >
                   <Upload className="h-5 w-5" />
                   Upload New CV
@@ -602,7 +602,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white font-sans selection:bg-primary/30">
+    <div className="flex h-screen bg-slate-50 dark:from-slate-900 dark:to-slate-950 text-slate-900 dark:text-white font-sans selection:bg-blue-100 dark:selection:bg-blue-900/30">
       <Sidebar
         categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}
@@ -612,7 +612,7 @@ export default function Dashboard() {
       />
 
       <main
-        className="flex-1 flex flex-col overflow-y-auto relative bg-slate-50/50 dark:bg-transparent pb-20 md:pb-0"
+        className="flex-1 flex flex-col overflow-y-auto relative bg-white dark:bg-transparent pb-20 md:pb-0"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
