@@ -4,11 +4,13 @@
   <!-- Homepage - Enhanced with dynamic SEO -->
   <url>
     <loc>https://cvdebug.com/</loc>
-    <lastmod>2026-01-12</lastmod>
+    <lastmod>2026-01-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://cvdebug.com/" />
     <xhtml:link rel="alternate" hreflang="es" href="https://cvdebug.com/" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cvdebug.com/hi" />
+    <xhtml:link rel="alternate" hreflang="tl" href="https://cvdebug.com/tl" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cvdebug.com/" />
   </url>
   <url>
