@@ -663,10 +663,18 @@ export default function Dashboard() {
         />
       )}
       
-      <ResumeDetailDialog 
-        resumeId={selectedResumeId} 
+      <ResumeDetailDialog
+        resumeId={selectedResumeId}
         onClose={() => setSelectedResumeId(null)}
         onDelete={handleDelete}
+        onOpenWritingForge={() => {
+          setSelectedResumeId(null);
+          setCurrentView('writing-forge');
+        }}
+        onOpenKeywordSniper={() => {
+          setSelectedResumeId(null);
+          setCurrentView('keyword-sniper');
+        }}
       />
 
       <CreditsExhaustedModal 

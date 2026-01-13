@@ -62,9 +62,17 @@ interface ResumeDetailDialogProps {
   resumeId: Id<"resumes"> | null;
   onClose: () => void;
   onDelete: (id: Id<"resumes">) => void;
+  onOpenWritingForge?: () => void;
+  onOpenKeywordSniper?: () => void;
 }
 
-export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetailDialogProps) {
+export function ResumeDetailDialog({
+  resumeId,
+  onClose,
+  onDelete,
+  onOpenWritingForge,
+  onOpenKeywordSniper
+}: ResumeDetailDialogProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [showBlurredPreview, setShowBlurredPreview] = useState(true);
@@ -779,14 +787,22 @@ export function ResumeDetailDialog({ resumeId, onClose, onDelete }: ResumeDetail
                     resume={displayResume}
                     user={user}
                     onEditWithSniper={() => {
-                      onClose();
-                      // Navigate to keyword sniper - you can implement this with a callback prop
-                      toast.info("Opening Keyword Sniper Tool...");
+                      if (onOpenKeywordSniper) {
+                        onOpenKeywordSniper();
+                        toast.success("Opening Keyword Sniper Tool...");
+                      } else {
+                        onClose();
+                        toast.info("Opening Keyword Sniper Tool...");
+                      }
                     }}
                     onOpenWritingForge={() => {
-                      onClose();
-                      // Navigate to writing forge - you can implement this with a callback prop
-                      toast.info("Opening Writing Forge...");
+                      if (onOpenWritingForge) {
+                        onOpenWritingForge();
+                        toast.success("Opening Writing Forge...");
+                      } else {
+                        onClose();
+                        toast.info("Opening Writing Forge...");
+                      }
                     }}
                     onDownloadPDF={() => {
                       toast.success("Generating PDF report...");
