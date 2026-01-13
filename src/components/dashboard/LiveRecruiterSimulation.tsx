@@ -105,24 +105,151 @@ export function LiveRecruiterSimulation({
   const DecisionIcon = decision.icon;
 
   return (
-    <Card className="p-0 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-teal-500/20 overflow-hidden">
-      {/* SIMULATION MODE BANNER - Top of component */}
-      <div className="bg-gradient-to-r from-cyan-600 to-teal-600 px-6 py-3 border-b-2 border-cyan-400/50">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center size-8 rounded-full bg-white/20 backdrop-blur-sm">
-            <Eye className="h-4 w-4 text-white animate-pulse" />
+    <div className="relative">
+      {/* Professional Office Monitor Mockup */}
+      <div className="relative mx-auto max-w-6xl">
+        {/* Monitor Frame - Corporate Design */}
+        <div className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-t-2xl p-3 shadow-2xl">
+          {/* Monitor Bezel */}
+          <div className="absolute inset-0 rounded-t-2xl border-4 border-slate-950/50"></div>
+
+          {/* Brand Logo on Bezel (top-center) */}
+          <div className="absolute top-1 left-1/2 -translate-x-1/2 flex items-center gap-2 px-3 py-1 bg-slate-950/30 rounded-full">
+            <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Dell UltraSharp</span>
           </div>
-          <div className="flex-1">
-            <h4 className="text-white font-bold text-sm flex items-center gap-2">
-              👁️ SIMULATION MODE
-              <span className="px-2 py-0.5 text-[10px] font-bold bg-white/20 rounded-full">PREVIEW</span>
-            </h4>
-            <p className="text-white/90 text-xs font-medium">
-              This is exactly how a recruiter sees you in Workday/Greenhouse/Lever. Your CV has <strong className="underline">NOT</strong> been sent.
-            </p>
-          </div>
-        </div>
-      </div>
+
+          {/* Screen Content Area */}
+          <div className="relative bg-slate-950 rounded-lg overflow-hidden shadow-inner">
+            {/* Screen Glare Effect - Office Window Reflection */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none"></div>
+
+            {/* Subtle Window Reflection on Screen */}
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-blue-300/3 via-transparent to-transparent pointer-events-none rounded-lg"></div>
+
+            {/* Screen Anti-Glare Coating Effect */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.02),transparent_70%)] pointer-events-none"></div>
+
+            {/* ATS Software Interface Header (Ultra-Realistic Corporate Look) */}
+            <div className="bg-gradient-to-r from-slate-800 to-slate-900 px-4 py-2 border-b border-slate-700 shadow-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {/* ATS System Logo & Branding */}
+                  <div className="flex items-center gap-2">
+                    <div className="size-7 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md">
+                      <span className="text-white text-xs font-bold">W</span>
+                    </div>
+                    <div className="border-l border-slate-700 h-5"></div>
+                    <div>
+                      <span className="text-slate-200 text-xs font-semibold block leading-tight">Workday Recruiting</span>
+                      <span className="text-slate-500 text-[9px] font-medium">Talent Acquisition Suite</span>
+                    </div>
+                  </div>
+
+                  {/* Navigation Tabs */}
+                  <div className="flex items-center gap-1 ml-4">
+                    <div className="px-3 py-1 bg-blue-600/20 border-b-2 border-blue-500 text-[10px] text-blue-300 font-medium">
+                      Candidates
+                    </div>
+                    <div className="px-3 py-1 text-[10px] text-slate-400 hover:text-slate-300 font-medium">
+                      Jobs
+                    </div>
+                    <div className="px-3 py-1 text-[10px] text-slate-400 hover:text-slate-300 font-medium">
+                      Reports
+                    </div>
+                  </div>
+                </div>
+
+                {/* ATS Toolbar - Right Side */}
+                <div className="flex items-center gap-2">
+                  {/* Quick Actions */}
+                  <div className="flex items-center gap-1 px-2.5 py-1.5 bg-slate-800/50 hover:bg-slate-800 rounded text-[10px] text-slate-400 transition-colors cursor-pointer">
+                    <span className="material-symbols-outlined text-[14px]">search</span>
+                    <span className="font-medium">Search</span>
+                  </div>
+                  <div className="flex items-center gap-1 px-2.5 py-1.5 bg-slate-800/50 hover:bg-slate-800 rounded text-[10px] text-slate-400 transition-colors cursor-pointer">
+                    <span className="material-symbols-outlined text-[14px]">filter_alt</span>
+                    <span className="font-medium">Filter</span>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-px h-5 bg-slate-700"></div>
+
+                  {/* Notifications */}
+                  <div className="relative px-2 py-1.5 hover:bg-slate-800 rounded transition-colors cursor-pointer">
+                    <span className="material-symbols-outlined text-[16px] text-slate-400">notifications</span>
+                    <div className="absolute top-1 right-1 size-1.5 rounded-full bg-red-500"></div>
+                  </div>
+
+                  {/* User Profile */}
+                  <div className="flex items-center gap-2 px-2 py-1 hover:bg-slate-800 rounded transition-colors cursor-pointer">
+                    <div className="size-6 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-sm">
+                      <span className="text-white text-[10px] font-bold">HR</span>
+                    </div>
+                    <div className="text-left">
+                      <div className="text-[9px] text-slate-300 font-medium leading-tight">Sarah Chen</div>
+                      <div className="text-[8px] text-slate-500">Sr. Recruiter</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Secondary Toolbar - Candidate View Controls */}
+              <div className="flex items-center gap-3 mt-2 pt-2 border-t border-slate-700/50">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">View:</span>
+                  <div className="flex items-center gap-1">
+                    <button className="px-2 py-0.5 bg-blue-600/20 text-blue-300 text-[9px] font-medium rounded">
+                      Resume
+                    </button>
+                    <button className="px-2 py-0.5 text-slate-400 hover:text-slate-300 text-[9px] font-medium rounded">
+                      Profile
+                    </button>
+                    <button className="px-2 py-0.5 text-slate-400 hover:text-slate-300 text-[9px] font-medium rounded">
+                      Notes
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border-l border-slate-700 h-4"></div>
+
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] text-slate-500 font-medium">Status:</span>
+                  <div className="px-2 py-0.5 bg-yellow-500/20 text-yellow-300 text-[9px] font-medium rounded flex items-center gap-1">
+                    <div className="size-1 rounded-full bg-yellow-400"></div>
+                    Under Review
+                  </div>
+                </div>
+
+                <div className="ml-auto flex items-center gap-2">
+                  <button className="px-3 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-300 text-[9px] font-medium rounded transition-colors">
+                    Reject
+                  </button>
+                  <button className="px-3 py-1 bg-green-600/20 hover:bg-green-600/30 text-green-300 text-[9px] font-medium rounded transition-colors">
+                    Shortlist
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <Card className="p-0 bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/20 border-0 rounded-none overflow-hidden">
+              {/* SIMULATION MODE BANNER */}
+              <div className="bg-gradient-to-r from-cyan-600 to-teal-600 px-6 py-3 border-b-2 border-cyan-400/50">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center size-8 rounded-full bg-white/20 backdrop-blur-sm">
+                    <Eye className="h-4 w-4 text-white animate-pulse" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-bold text-sm flex items-center gap-2">
+                      👁️ SIMULATION MODE
+                      <span className="px-2 py-0.5 text-[10px] font-bold bg-white/20 rounded-full">PREVIEW</span>
+                    </h4>
+                    <p className="text-white/90 text-xs font-medium">
+                      This is exactly how a recruiter sees you in Workday/Greenhouse/Lever. Your CV has <strong className="underline">NOT</strong> been sent.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
       <div className="p-6 space-y-6">
         {/* Header */}
@@ -265,6 +392,34 @@ export function LiveRecruiterSimulation({
           )}
         </AnimatePresence>
       </div>
-    </Card>
+            </Card>
+          </div>
+        </div>
+
+        {/* Monitor Stand - Realistic Design */}
+        <div className="relative flex justify-center">
+          {/* Stand Neck */}
+          <div className="w-16 h-8 bg-gradient-to-b from-slate-800 to-slate-900 rounded-b-lg shadow-lg border-x-2 border-slate-950"></div>
+        </div>
+
+        {/* Stand Base */}
+        <div className="flex justify-center">
+          <div className="w-48 h-3 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-full shadow-2xl relative">
+            {/* Base Glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-700/50 via-slate-600/50 to-slate-700/50 rounded-full blur-sm"></div>
+          </div>
+        </div>
+
+        {/* Desk Surface Shadow */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent opacity-50"></div>
+      </div>
+
+      {/* Office Environment Ambiance */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
+        {/* Subtle office lighting effects */}
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
+      </div>
+    </div>
   );
 }
