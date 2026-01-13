@@ -189,6 +189,40 @@ export const analyzeApplicationKeywords = mutation({
   },
 });
 
+// Get all applications for the current user (across all projects)
+export const getApplications = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return [];
+
+    const applications = await ctx.db
+      .query("applications")
+      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .collect();
+
+    return applications.map(app => {
+      let matchScore = (app as any).matchScore || 0;
+
+      // Calculate match score dynamically if not present
+      if (!matchScore) {
+        const matched = app.matchedKeywords?.length || 0;
+        const missing = app.missingKeywords?.length || 0;
+        const total = matched + missing;
+
+        if (total > 0) {
+          matchScore = Math.round((matched / total) * 100);
+        }
+      }
+
+      return {
+        ...app,
+        matchScore,
+      };
+    });
+  },
+});
+
 export const getApplicationsByProject = query({
   args: { projectId: v.id("projects") },
   handler: async (ctx, args) => {
