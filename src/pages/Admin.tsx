@@ -52,6 +52,7 @@ import { AdminPaymentTesting } from "@/components/admin/AdminPaymentTesting";
 import { AdminUserTable } from "@/components/admin/AdminUserTable";
 import { AdminDataImport } from "@/components/admin/AdminDataImport";
 import { AdminPaymentsView } from "@/components/admin/AdminPaymentsView";
+import { PremiumUsersTable } from "@/components/admin/PremiumUsersTable";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
 import { motion } from "framer-motion";
 
@@ -62,6 +63,7 @@ export default function AdminPage() {
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
   const users = useQuery(apiAny.admin.getUsers, shouldFetch ? {} : "skip");
   const stats = useQuery(apiAny.admin.getAdminStats, shouldFetch ? {} : "skip");
+  const premiumUsers = useQuery(apiAny.admin.getPremiumUsers, shouldFetch ? {} : "skip");
   const updateUserPlan = useMutation(apiAny.admin.updateUserPlan);
   const deleteUser = useMutation(apiAny.admin.deleteUser);
   const createUserMutation = useMutation(apiAny.admin.createUser);
@@ -386,14 +388,26 @@ export default function AdminPage() {
             <LayoutDashboard className={`h-5 w-5 ${currentView === "dashboard" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Dashboard</span>
           </button>
-          <button 
+          <button
             onClick={() => setCurrentView("users")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "users" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
             <Users className={`h-5 w-5 ${currentView === "users" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Users</span>
           </button>
-          <button 
+          <button
+            onClick={() => setCurrentView("premium")}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "premium" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
+          >
+            <TrendingUp className={`h-5 w-5 ${currentView === "premium" ? "text-primary" : "text-slate-500"}`} />
+            <span className="text-sm font-medium">Premium Users</span>
+            {stats && (stats.singleScan + stats.interviewSprint) > 0 && (
+              <Badge variant="default" className="ml-auto bg-green-600 text-xs">
+                {stats.singleScan + stats.interviewSprint}
+              </Badge>
+            )}
+          </button>
+          <button
             onClick={() => setCurrentView("analytics")}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${currentView === "analytics" ? "bg-primary/10 border border-primary/20 text-white" : "text-slate-400 hover:bg-slate-800/50 hover:text-white"}`}
           >
@@ -811,13 +825,20 @@ export default function AdminPage() {
             )}
 
             {currentView === "users" && (
-              <AdminUserTable 
+              <AdminUserTable
                 users={users}
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 handleEditClick={handleEditClick}
                 handleDelete={handleDelete}
                 setHistoryUser={setHistoryUser}
+              />
+            )}
+
+            {currentView === "premium" && (
+              <PremiumUsersTable
+                users={premiumUsers || []}
+                stats={stats}
               />
             )}
 

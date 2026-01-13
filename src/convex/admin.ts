@@ -110,12 +110,75 @@ export const getAdminStats = query({
     const singleScanUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan")).collect();
     const sprintUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint")).collect();
 
+    // Calculate total revenue (approximate)
+    const singleScanRevenue = singleScanUsers.length * 4.99;
+    const sprintRevenue = sprintUsers.length * 19.99;
+    const totalRevenue = singleScanRevenue + sprintRevenue;
+
     return {
       free: freeUsers.length,
       singleScan: singleScanUsers.length,
       interviewSprint: sprintUsers.length,
-      total: freeUsers.length + singleScanUsers.length + sprintUsers.length
+      total: freeUsers.length + singleScanUsers.length + sprintUsers.length,
+      revenue: {
+        singleScan: singleScanRevenue,
+        sprint: sprintRevenue,
+        total: totalRevenue,
+      }
     };
+  }
+});
+
+// Get only paying users (premium)
+export const getPremiumUsers = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity || identity.email !== "tiniboti@gmail.com") {
+      return [];
+    }
+
+    // Get single_scan users
+    const singleScanUsers = await ctx.db
+      .query("users")
+      .withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan"))
+      .order("desc")
+      .take(200);
+
+    // Get interview_sprint users
+    const sprintUsers = await ctx.db
+      .query("users")
+      .withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint"))
+      .order("desc")
+      .take(200);
+
+    // Combine and sort by creation time
+    const premiumUsers = [...singleScanUsers, ...sprintUsers]
+      .sort((a, b) => b._creationTime - a._creationTime);
+
+    // Enhance with payment info
+    const usersWithPaymentInfo = premiumUsers.map(user => {
+      const plan = user.subscriptionTier === "single_scan" ? "Single Scan (€4.99)" : "Interview Sprint (€19.99)";
+      const revenue = user.subscriptionTier === "single_scan" ? 4.99 : 19.99;
+      const isActive = user.subscriptionTier === "interview_sprint"
+        ? (user.sprintExpiresAt && user.sprintExpiresAt > Date.now())
+        : true;
+
+      return {
+        _id: user._id,
+        _creationTime: user._creationTime,
+        email: user.email,
+        name: user.name,
+        plan,
+        revenue,
+        credits: user.credits || 0,
+        isActive,
+        sprintExpiresAt: user.sprintExpiresAt,
+        lastSeen: user.lastSeen,
+      };
+    });
+
+    return usersWithPaymentInfo;
   }
 });
 

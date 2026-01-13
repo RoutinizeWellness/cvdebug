@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, TrendingUp, Zap, Shield } from "lucide-react";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 /**
  * Premium Product Showcase Gallery
@@ -91,10 +92,13 @@ export function ProductShowcaseGallery() {
                 <div className="relative h-full bg-card/40 backdrop-blur-xl border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500">
                   {/* Image with overlay */}
                   <div className="relative h-64 overflow-hidden">
-                    <img
+                    <OptimizedImage
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="transition-transform duration-700 group-hover:scale-110"
+                      width={800}
+                      height={600}
+                      priority={index < 2} // Load first 2 images immediately
                     />
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
