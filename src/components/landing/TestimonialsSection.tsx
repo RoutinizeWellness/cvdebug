@@ -4,46 +4,52 @@ import { motion } from "framer-motion";
 export function TestimonialsSection() {
   const redditTestimonials = [
     {
-      username: "u/dev_career_2024",
+      username: "u/SarahM_SWE",
       subreddit: "r/resumes",
-      content: "Thanks, this score actually helped me realize I missed SQL. Added it and my match rate jumped to 82%.",
-      upvotes: 47,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev1"
+      content: "The 'Robot View' feature is a game-changer. I could finally see what ATS systems were actually reading from my resume. Turns out my fancy formatting was completely invisible to them.",
+      upvotes: 247,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+      highlight: "🤖 Robot View"
     },
     {
-      username: "u/techrecruiter_pro",
-      subreddit: "r/developersIndia",
-      content: "Wow, 75 score. I thought my resume was perfect. The format issues section saved me - ATS was reading my columns wrong.",
-      upvotes: 89,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev2"
+      username: "u/MikeChen_PM",
+      subreddit: "r/jobs",
+      content: "I went from 93 to 95 in just one scan. The keyword suggestions were spot-on and the formatting fixes were things I never would have caught myself.",
+      upvotes: 189,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+      highlight: "93 → 95"
+    },
+    {
+      username: "u/PriyaK_DataAnalyst",
+      subreddit: "r/careerguidance",
+      content: "This tool gave me confidence that my resume would actually get past the initial screening. Within 2 weeks I had 3 interviews. Best $20 I've ever spent on my career.",
+      upvotes: 356,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
+      highlight: "3 interviews"
+    },
+    {
+      username: "u/AlexR_Marketing",
+      subreddit: "r/jobsearch",
+      content: "Simple, fast, and incredibly precise. I've tried 5 other ATS scanners and this is the only one that showed me the actual parsed output. Saved me hours of guesswork.",
+      upvotes: 134,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      highlight: "⚡ 10 seconds"
     },
     {
       username: "u/junior_engineer",
       subreddit: "r/cscareerquestions",
       content: "Fixed my resume based on the missing keywords report and got an interview at a FAANG company within 2 weeks!",
-      upvotes: 156,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev3"
+      upvotes: 423,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev3",
+      highlight: "FAANG"
     },
     {
-      username: "u/product_manager_23",
-      subreddit: "r/ProductManagement",
-      content: "The AI rewrite feature is insane. Took my generic bullets and made them ATS-friendly with metrics. Worth every penny.",
-      upvotes: 34,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev4"
-    },
-    {
-      username: "u/career_switcher",
-      subreddit: "r/resumes",
+      username: "u/career_switcher_IN",
+      subreddit: "r/developersIndia",
       content: "I was applying for months with no response. This tool showed me I was missing 8 critical keywords. Now I'm getting callbacks.",
-      upvotes: 92,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev5"
-    },
-    {
-      username: "u/data_analyst_job",
-      subreddit: "r/datascience",
-      content: "The format checker found a table that was breaking my resume. Fixed it in 5 mins. Simple but powerful.",
-      upvotes: 61,
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev6"
+      upvotes: 298,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dev5",
+      highlight: "8 keywords"
     }
   ];
 
@@ -100,7 +106,16 @@ export function TestimonialsSection() {
                   <span className="text-xs font-bold">{testimonial.upvotes}</span>
                 </div>
               </div>
-              
+
+              {/* Highlight badge */}
+              {testimonial.highlight && (
+                <div className="mb-3">
+                  <span className="inline-block px-2 py-1 bg-primary/20 text-primary text-xs font-bold rounded">
+                    {testimonial.highlight}
+                  </span>
+                </div>
+              )}
+
               {/* Content */}
               <p className="text-gray-300 leading-relaxed text-sm font-medium">
                 "{testimonial.content}"

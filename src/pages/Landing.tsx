@@ -2,11 +2,13 @@ import { NewNavbar } from "@/components/landing/NewNavbar";
 import { NewHeroSection } from "@/components/landing/NewHeroSection";
 import { NewSocialProofSection } from "@/components/landing/NewSocialProofSection";
 import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSection";
+import { ProductShowcaseGallery } from "@/components/landing/ProductShowcaseGallery";
+import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
 import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
-import { RegionalPricingBanner } from "@/components/landing/RegionalPricingBanner";
+import { ProductHuntBanner } from "@/components/landing/ProductHuntBanner";
 import { useEffect } from "react";
 import { updatePageSEO } from "@/lib/seo";
 
@@ -54,13 +56,15 @@ export default function Landing() {
         }
       `}</style>
 
-      <RegionalPricingBanner />
+      <ProductHuntBanner />
       <NewNavbar />
 
       <main className="flex-grow pt-16">
         <NewHeroSection />
         <NewSocialProofSection />
+        <ProductShowcaseGallery />
         <ComparisonVisualSection />
+        <TestimonialsSection />
         <NewFeaturesGrid />
         <EnterpriseSection />
         <FinalCTASection />
