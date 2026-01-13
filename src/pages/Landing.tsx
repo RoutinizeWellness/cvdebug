@@ -4,6 +4,7 @@ import { NewSocialProofSection } from "@/components/landing/NewSocialProofSectio
 import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSection";
 import { ProductShowcaseGallery } from "@/components/landing/ProductShowcaseGallery";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
+import { SEOFAQSection } from "@/components/landing/SEOFAQSection";
 import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
 import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
@@ -65,6 +66,7 @@ export default function Landing() {
         <ProductShowcaseGallery />
         <ComparisonVisualSection />
         <TestimonialsSection />
+        <SEOFAQSection />
         <NewFeaturesGrid />
         <EnterpriseSection />
         <FinalCTASection />
