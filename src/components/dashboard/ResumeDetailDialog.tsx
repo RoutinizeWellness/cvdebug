@@ -48,6 +48,7 @@ import { AIProTip } from "./analysis/AIProTip";
 import { ImageTrapAlert } from "./ImageTrapAlert";
 import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
+import { InterviewBattlePlan } from "./InterviewBattlePlan";
 import { ATSSimulation } from "./ATSSimulation";
 import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
@@ -1017,12 +1018,10 @@ export function ResumeDetailDialog({
                 </TabsContent>
 
                 <TabsContent value="interview" className="flex-1 overflow-auto p-6">
-                  <InterviewPrepMode
-                    applicationId={displayResume._id}
+                  <InterviewBattlePlan
+                    targetRole={displayResume.jobTitle || "Data Science Role"}
+                    companyName={displayResume.company || "TechCorp"}
                     resumeText={displayResume.ocrText || ""}
-                    jobDescription={displayResume.jobDescription}
-                    jobTitle={displayResume.jobTitle}
-                    company={displayResume.company}
                   />
                 </TabsContent>
 
