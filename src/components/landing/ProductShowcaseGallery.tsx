@@ -62,14 +62,14 @@ export function ProductShowcaseGallery() {
             <span className="text-sm font-semibold text-primary">Product Hunt Special</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 px-4">
             Beat ATS Systems
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-teal-400 to-cyan-400 mt-2">
               In 10 Seconds
             </span>
           </h2>
 
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
             See your resume the way robots see it. Get instant feedback and land more interviews.
           </p>
         </motion.div>

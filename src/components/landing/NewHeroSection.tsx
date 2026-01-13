@@ -103,13 +103,13 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 flex flex-col sm:flex-row gap-3 justify-center items-center"
+          className="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center px-4"
         >
           <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-emerald-500/30 cursor-default"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass-panel border border-emerald-500/30 cursor-default text-xs sm:text-sm w-full sm:w-auto justify-center"
           >
-            <div className="relative flex h-2 w-2">
+            <div className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </div>
@@ -117,9 +117,9 @@ export function NewHeroSection() {
               animate={{ rotate: [0, 5, -5, 0] }}
               transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
             >
-              <TrendingUp className="h-4 w-4 text-emerald-400" />
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 shrink-0" />
             </motion.div>
-            <span className="text-sm font-mono text-slate-300">
+            <span className="font-mono text-slate-300 truncate">
               <motion.span
                 key={savedCount}
                 initial={{ scale: 1.3, color: "#4ade80" }}
@@ -127,19 +127,21 @@ export function NewHeroSection() {
                 className="text-emerald-400 font-bold"
               >
                 {savedCount}
-              </motion.span> people saved from ghosting this week
+              </motion.span>{" "}
+              <span className="hidden xs:inline">people saved from ghosting this week</span>
+              <span className="xs:hidden">saved this week</span>
             </span>
           </motion.div>
 
           <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-primary/30 cursor-default"
+            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass-panel border border-primary/30 cursor-default text-xs sm:text-sm w-full sm:w-auto justify-center"
           >
-            <div className="relative flex h-2 w-2">
+            <div className="relative flex h-2 w-2 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </div>
-            <span className="text-sm font-mono text-slate-300">
+            <span className="font-mono text-slate-300 truncate">
               <motion.span
                 key={unlockedToday}
                 initial={{ scale: 1.3, color: "#590df2" }}
@@ -147,7 +149,9 @@ export function NewHeroSection() {
                 className="text-primary font-bold"
               >
                 {unlockedToday}
-              </motion.span> interviews unlocked today
+              </motion.span>{" "}
+              <span className="hidden xs:inline">interviews unlocked today</span>
+              <span className="xs:hidden">interviews today</span>
             </span>
           </motion.div>
         </motion.div>
@@ -156,7 +160,7 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight text-white px-4"
         >
           <motion.span
             initial={{ opacity: 0, x: -20 }}
@@ -180,7 +184,7 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 text-lg leading-8 text-slate-400 max-w-2xl mx-auto"
+          className="mt-4 sm:mt-6 text-base sm:text-lg leading-7 sm:leading-8 text-slate-400 max-w-2xl mx-auto px-4"
         >
           The standard PDF you're sending is unreadable to 70% of ATS systems.
           See what the bot sees in 10 seconds and fix your parse rate.
@@ -190,15 +194,16 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-4 max-w-xl mx-auto"
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
           >
             <Button
               onClick={() => navigate("/preview")}
-              className="glow-button relative flex h-14 min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-8 text-lg font-bold text-white transition-all group"
+              className="glow-button relative flex h-12 sm:h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-6 sm:px-8 text-base sm:text-lg font-bold text-white transition-all group"
             >
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
@@ -218,14 +223,14 @@ export function NewHeroSection() {
                 animate={{ x: [0, 3, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
               </motion.div>
             </Button>
           </motion.div>
 
           <motion.button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="group flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-primary/10 px-8 text-base font-semibold text-white hover:bg-primary/20 hover:border-primary/50 transition-all relative overflow-hidden"
+            className="group flex h-12 sm:h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-primary/10 px-6 sm:px-8 text-sm sm:text-base font-semibold text-white hover:bg-primary/20 hover:border-primary/50 transition-all relative overflow-hidden"
             whileHover={{ scale: 1.05, borderColor: "rgba(89, 13, 242, 0.5)" }}
             whileTap={{ scale: 0.95 }}
           >
@@ -243,7 +248,7 @@ export function NewHeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-4 text-sm text-slate-500"
+          className="mt-4 text-xs sm:text-sm text-slate-500 px-4"
         >
           No credit card • No sign up required • Instant results in 10 seconds
         </motion.p>
