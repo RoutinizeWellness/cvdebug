@@ -108,10 +108,10 @@ export function FluffDetector({
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
           {/* Left: Title & Description */}
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
               Clarity & Impact Audit
             </h2>
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
+            <p className="text-slate-500 text-sm">
               Detecting weak language, buzzwords, and unquantified claims.
             </p>
           </div>
@@ -123,7 +123,7 @@ export function FluffDetector({
                 <defs>
                   <linearGradient id="clarityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#3b82f6" />
-                    <stop offset="100%" stopColor="#8b5cf6" />
+                    <stop offset="100%" stopColor="#a78bfa" />
                   </linearGradient>
                 </defs>
                 <circle
@@ -131,16 +131,16 @@ export function FluffDetector({
                   cy="64"
                   r="45"
                   stroke="currentColor"
-                  strokeWidth="8"
+                  strokeWidth="3"
                   fill="none"
-                  className="text-slate-200 dark:text-slate-700"
+                  className="text-[#E2E8F0]"
                 />
                 <circle
                   cx="64"
                   cy="64"
                   r="45"
                   stroke="url(#clarityGradient)"
-                  strokeWidth="8"
+                  strokeWidth="3"
                   fill="none"
                   strokeLinecap="round"
                   strokeDasharray={circumferenceScore}
@@ -149,8 +149,8 @@ export function FluffDetector({
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-bold text-slate-900 dark:text-white">{clarityScore}</span>
-                <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wide">Clarity</span>
+                <span className="text-3xl font-bold text-slate-900 font-mono">{clarityScore}</span>
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Clarity</span>
               </div>
             </div>
           </div>
@@ -162,14 +162,14 @@ export function FluffDetector({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4"
+            className="bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-card"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Active Voice</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{activeVoicePercent}%</p>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Active Voice</p>
+                <p className="text-2xl font-bold text-slate-900 font-mono">{activeVoicePercent}%</p>
               </div>
-              <span className="material-symbols-outlined text-green-500 text-2xl">check_circle</span>
+              <span className="material-symbols-outlined text-[#22C55E] text-[20px]">check_circle</span>
             </div>
           </motion.div>
 
@@ -177,14 +177,14 @@ export function FluffDetector({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4"
+            className="bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-card"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Buzzword Density</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{buzzwordDensity}%</p>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Buzzword Density</p>
+                <p className="text-2xl font-bold text-slate-900 font-mono">{buzzwordDensity}%</p>
               </div>
-              <span className="material-symbols-outlined text-blue-500 text-2xl">trending_down</span>
+              <span className="material-symbols-outlined text-[#3B82F6] text-[20px]">trending_down</span>
             </div>
           </motion.div>
 
@@ -192,14 +192,14 @@ export function FluffDetector({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4"
+            className="bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-card"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Quantification</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{quantificationPercent}%</p>
+                <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold mb-1">Quantification</p>
+                <p className="text-2xl font-bold text-slate-900 font-mono">{quantificationPercent}%</p>
               </div>
-              <span className="material-symbols-outlined text-amber-500 text-2xl">warning</span>
+              <span className="material-symbols-outlined text-amber-500 text-[20px]">warning</span>
             </div>
           </motion.div>
         </div>
@@ -209,24 +209,19 @@ export function FluffDetector({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="relative bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 rounded-xl border-2 border-transparent bg-clip-padding p-6"
-          style={{
-            backgroundImage: 'linear-gradient(white, white), linear-gradient(to right, #3b82f6, #8b5cf6, #3b82f6)',
-            backgroundOrigin: 'border-box',
-            backgroundClip: 'padding-box, border-box'
-          }}
+          className="bg-white rounded-xl border border-[#E2E8F0] p-6 shadow-card hover:border-indigo-200 transition-all"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">
-                <span className="material-symbols-outlined text-purple-500">auto_awesome</span>
+              <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#A78BFA]">auto_awesome</span>
                 AI-Powered Rewrite
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-slate-500">
                 Let AI rewrite your entire resume with power verbs, metrics, and impact statements.
               </p>
             </div>
-            <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-lg font-semibold transition-all shadow-lg shadow-purple-500/20 whitespace-nowrap">
+            <button className="px-6 py-3 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-lg font-semibold transition-all shadow-lg shadow-blue-500/20 whitespace-nowrap text-sm">
               Rewrite All
             </button>
           </div>
@@ -242,59 +237,59 @@ export function FluffDetector({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"
+            className="bg-white rounded-xl border border-[#E2E8F0] shadow-card"
           >
-            <div className="p-5 border-b border-slate-200 dark:border-slate-700">
-              <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <span className="material-symbols-outlined text-red-500">error</span>
+            <div className="p-5 border-b border-[#E2E8F0]">
+              <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-red-500 text-[20px]">error</span>
                 Weak Phrase Detector
-                <span className="bg-red-500/20 text-red-600 dark:text-red-400 text-xs px-2 py-0.5 rounded-full font-mono ml-2">
+                <span className="bg-red-50 text-red-600 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-red-100">
                   {weakPhrases.length} Found
                 </span>
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 These phrases weaken your impact. Replace them with power verbs.
               </p>
             </div>
 
-            <div className="p-5 space-y-4 max-h-[600px] overflow-y-auto">
+            <div className="p-5 space-y-4 max-h-[600px] overflow-y-auto terminal-scroll">
               {weakPhrases.map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className="bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 p-4"
+                  className="bg-slate-50 rounded-lg border border-[#E2E8F0] p-4 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-mono text-sm font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="font-mono text-sm font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100">
                           "{item.phrase}"
                         </span>
-                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                        <span className="text-[10px] text-slate-400 font-mono">
                           {item.location}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 italic mb-2">
+                      <p className="text-xs text-slate-500 italic mb-2">
                         {item.context}
                       </p>
-                      <p className="text-xs text-slate-700 dark:text-slate-300">
+                      <p className="text-xs text-slate-900">
                         <span className="font-semibold">Why it's weak:</span> {item.reason}
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-green-500 text-sm">lightbulb</span>
+                    <p className="text-xs font-semibold text-slate-900 mb-2 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[#22C55E] text-sm">lightbulb</span>
                       Suggested Fixes:
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {item.fixes.map((fix, fixIndex) => (
                         <button
                           key={fixIndex}
-                          className="px-3 py-1 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded border border-green-200 dark:border-green-800 transition-colors"
+                          className="px-3 py-1 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium rounded border border-green-200 transition-colors"
                         >
                           {fix}
                         </button>
@@ -311,14 +306,14 @@ export function FluffDetector({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"
+            className="bg-white rounded-xl border border-[#E2E8F0] shadow-card"
           >
-            <div className="p-5 border-b border-slate-200 dark:border-slate-700">
-              <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <span className="material-symbols-outlined text-blue-500">bolt</span>
+            <div className="p-5 border-b border-[#E2E8F0]">
+              <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#3B82F6] text-[20px]">bolt</span>
                 Power Verb Injection Library
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Start your bullets with these instead of weak phrases.
               </p>
             </div>
@@ -331,16 +326,16 @@ export function FluffDetector({
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 + index * 0.05 }}
-                    className="bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 p-4"
+                    className="bg-slate-50 rounded-lg border border-[#E2E8F0] p-4"
                   >
-                    <h4 className="text-sm font-bold text-blue-600 dark:text-blue-400 mb-3">
+                    <h4 className="text-sm font-bold text-[#3B82F6] mb-3">
                       {category.category}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {category.verbs.map((verb, vIndex) => (
                         <span
                           key={vIndex}
-                          className="px-2 py-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded border border-slate-200 dark:border-slate-700"
+                          className="px-2 py-1 bg-white text-slate-700 text-xs rounded border border-[#E2E8F0]"
                         >
                           {verb}
                         </span>
@@ -359,38 +354,38 @@ export function FluffDetector({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm sticky top-6"
+            className="bg-white rounded-xl border border-[#E2E8F0] shadow-card sticky top-6"
           >
-            <div className="p-5 border-b border-slate-200 dark:border-slate-700">
-              <h3 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                <span className="material-symbols-outlined text-purple-500">query_stats</span>
+            <div className="p-5 border-b border-[#E2E8F0]">
+              <h3 className="font-semibold text-slate-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#A78BFA] text-[20px]">query_stats</span>
                 Impact Quantification Audit
-                <span className="bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs px-2 py-0.5 rounded-full font-mono ml-2">
-                  {unquantifiedAchievements.length} Missing Metrics
+                <span className="bg-purple-50 text-purple-600 text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-purple-100">
+                  {unquantifiedAchievements.length} Missing
                 </span>
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Achievements without numbers are 70% less impactful. Add metrics.
               </p>
             </div>
 
-            <div className="p-5 space-y-5 max-h-[800px] overflow-y-auto">
+            <div className="p-5 space-y-5 max-h-[800px] overflow-y-auto terminal-scroll">
               {unquantifiedAchievements.map((achievement, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-purple-50 dark:bg-purple-900/10 rounded-lg border border-purple-200 dark:border-purple-800/50 p-4"
+                  className="bg-purple-50 rounded-lg border border-purple-200 p-4"
                 >
                   <div className="mb-3">
                     <div className="flex items-start gap-2 mb-1">
-                      <span className="material-symbols-outlined text-purple-500 text-sm mt-0.5">flag</span>
+                      <span className="material-symbols-outlined text-[#A78BFA] text-[16px] mt-0.5">flag</span>
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                        <h4 className="text-sm font-bold text-slate-900">
                           {achievement.title}
                         </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-[10px] text-slate-400 font-mono">
                           {achievement.description}
                         </p>
                       </div>
@@ -398,15 +393,15 @@ export function FluffDetector({
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-purple-500 text-sm">auto_awesome</span>
+                    <p className="text-xs font-semibold text-slate-900 mb-2 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[#A78BFA] text-sm">auto_awesome</span>
                       AI-Suggested Quantifications:
                     </p>
                     <div className="space-y-2">
                       {achievement.suggestions.map((suggestion, sIndex) => (
                         <label
                           key={sIndex}
-                          className="flex items-start gap-3 p-2 rounded hover:bg-white dark:hover:bg-slate-800/50 cursor-pointer transition-colors group"
+                          className="flex items-start gap-3 p-2 rounded hover:bg-white cursor-pointer transition-colors group border border-transparent hover:border-purple-200"
                         >
                           <input
                             type="radio"
@@ -415,7 +410,7 @@ export function FluffDetector({
                             onChange={() => setSelectedMetrics({ ...selectedMetrics, [index]: sIndex })}
                             className="mt-0.5 w-4 h-4 text-purple-600 focus:ring-purple-500 focus:ring-2"
                           />
-                          <span className="text-xs text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white flex-1">
+                          <span className="text-xs text-slate-700 group-hover:text-slate-900 flex-1">
                             {suggestion}
                           </span>
                         </label>
@@ -423,7 +418,7 @@ export function FluffDetector({
                     </div>
                   </div>
 
-                  <button className="w-full mt-3 px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded transition-colors">
+                  <button className="w-full mt-3 px-3 py-2 bg-[#A78BFA] hover:bg-[#7C3AED] text-white text-xs font-semibold rounded transition-colors">
                     Apply Selected Metric
                   </button>
                 </motion.div>
@@ -434,7 +429,7 @@ export function FluffDetector({
       </div>
 
       {/* Floating Chat Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-full shadow-lg shadow-purple-500/30 flex items-center justify-center transition-all hover:scale-105 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-blue-600 hover:to-purple-600 text-white rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
         <span className="material-symbols-outlined text-2xl">chat</span>
       </button>
     </div>
