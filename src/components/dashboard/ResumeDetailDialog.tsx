@@ -49,6 +49,7 @@ import { ImageTrapAlert } from "./ImageTrapAlert";
 import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
 import { InterviewBattlePlan } from "./InterviewBattlePlan";
+import { KeywordAnalysis } from "./KeywordAnalysis";
 import { ATSSimulation } from "./ATSSimulation";
 import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
@@ -845,141 +846,11 @@ export function ResumeDetailDialog({
                 </TabsContent>
 
                 <TabsContent value="keywords" className="flex-1 overflow-auto p-6">
-                  <div className="space-y-8">
-                    {/* Sniper Mode Teaser - Only show for FREE users if there are missing keywords */}
-                    {isFree && criticalKeywords.length > 2 && (
-                      <SniperModeTeaser
-                        totalMissingKeywords={criticalKeywords.length}
-                        visibleKeywords={criticalKeywords.slice(0, 2).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw)}
-                        lockedKeywordsCount={Math.max(0, criticalKeywords.length - 2)}
-                        onUnlock={() => {
-                          setShowPricing(true);
-                        }}
-                        currentScore={displayResume?.score || 0}
-                        potentialScore={Math.min(100, (displayResume?.score || 0) + (criticalKeywords.length * 3))}
-                      />
-                    )}
-
-                    <div className="glass-card rounded-lg p-6">
-                      <h2 className="text-2xl font-bold text-white mb-6">Keyword Analysis</h2>
-
-                      {/* PAID USERS: Show success message if they have full access */}
-                      {!isFree && criticalKeywords.length > 0 && (
-                        <div className="mb-6 p-4 bg-green-500/10 border border-green-500/30 rounded-lg flex items-start gap-3">
-                          <span className="material-symbols-outlined text-green-400 text-2xl flex-shrink-0">check_circle</span>
-                          <div>
-                            <p className="text-green-400 font-semibold mb-1">Full Access Unlocked</p>
-                            <p className="text-sm text-slate-300">
-                              Showing all {criticalKeywords.length} missing keywords with actionable recommendations.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">
-                            Found Keywords
-                            <span className="text-xs text-green-400 ml-2">({foundKeywords.length} total)</span>
-                          </h3>
-                          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-                            {foundKeywords.map((kw: string, index: number) => (
-                              <div key={index} className="flex items-center justify-between p-3 bg-zinc-900/50 rounded-lg border border-zinc-800/50">
-                                <span className="text-zinc-300 font-medium">{kw}</span>
-                                <span className="text-xs text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full">
-                                  ✓
-                                </span>
-                              </div>
-                            ))}
-                            {foundKeywords.length === 0 && (
-                              <p className="text-slate-400 text-sm">No keywords found yet. Add keywords from the missing list.</p>
-                            )}
-                          </div>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-zinc-300 mb-4">
-                            Missing Keywords
-                            {isFree && criticalKeywords.length > 2 ? (
-                              <span className="text-xs text-amber-400 ml-2">(Showing 2 of {criticalKeywords.length})</span>
-                            ) : (
-                              <span className="text-xs text-red-400 ml-2">({criticalKeywords.length} total)</span>
-                            )}
-                          </h3>
-                          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-                            {/* FREE USERS: Show only 2 keywords */}
-                            {isFree && criticalKeywords.slice(0, 2).map((kw: any, index: number) => (
-                              <div key={index} className="flex items-center justify-between p-3 bg-red-950/30 rounded-lg border border-red-900/50">
-                                <div className="flex-1">
-                                  <span className="text-red-400 font-medium block">{typeof kw === 'string' ? kw : kw.keyword || kw}</span>
-                                  {kw.priority && (
-                                    <span className="text-xs text-red-300/60 capitalize">{kw.priority}</span>
-                                  )}
-                                </div>
-                                <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full">
-                                  Impact: {kw.impact || 5}
-                                </span>
-                              </div>
-                            ))}
-
-                            {/* PAID USERS: Show ALL keywords with full details */}
-                            {!isFree && criticalKeywords.map((kw: any, index: number) => (
-                              <div key={index} className="p-4 bg-red-950/30 rounded-lg border border-red-900/50">
-                                <div className="flex items-start justify-between mb-2">
-                                  <div className="flex-1">
-                                    <span className="text-red-400 font-semibold block text-base">{typeof kw === 'string' ? kw : kw.keyword || kw}</span>
-                                    {kw.priority && (
-                                      <span className={`text-xs px-2 py-0.5 rounded-full inline-block mt-1 ${
-                                        kw.priority === 'critical' ? 'bg-red-600/20 text-red-300' :
-                                        kw.priority === 'important' ? 'bg-orange-600/20 text-orange-300' :
-                                        'bg-yellow-600/20 text-yellow-300'
-                                      }`}>
-                                        {kw.priority.toUpperCase()}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <span className="text-xs text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
-                                    Impact: {kw.impact || 5}
-                                  </span>
-                                </div>
-                                {kw.context && (
-                                  <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                                    💡 {kw.context}
-                                  </p>
-                                )}
-                                {kw.synonyms && kw.synonyms.length > 0 && (
-                                  <div className="mt-2 flex flex-wrap gap-1">
-                                    <span className="text-xs text-slate-500">Alternatives:</span>
-                                    {kw.synonyms.slice(0, 3).map((syn: string, i: number) => (
-                                      <span key={i} className="text-xs bg-slate-800/50 text-slate-400 px-2 py-0.5 rounded">
-                                        {syn}
-                                      </span>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-
-                            {/* FREE USERS: Show lock message */}
-                            {isFree && criticalKeywords.length > 2 && (
-                              <div className="p-4 bg-slate-800/50 rounded-lg border-2 border-amber-500/30 flex items-center justify-center gap-2 cursor-pointer hover:bg-slate-800/70 transition-colors" onClick={() => setShowPricing(true)}>
-                                <span className="material-symbols-outlined text-amber-400">lock</span>
-                                <span className="text-amber-400 font-medium">
-                                  + {criticalKeywords.length - 2} more keywords locked
-                                </span>
-                              </div>
-                            )}
-
-                            {criticalKeywords.length === 0 && (
-                              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
-                                <p className="text-green-400 font-medium">✓ Great job!</p>
-                                <p className="text-sm text-slate-300 mt-1">Your resume includes all critical keywords for this role.</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <KeywordAnalysis
+                    matchedKeywords={foundKeywords}
+                    missingKeywords={criticalKeywords.map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw.term || '')}
+                    matchRate={displayResume?.score || 82}
+                  />
                 </TabsContent>
 
                 <TabsContent value="format" className="flex-1 overflow-auto p-6">
