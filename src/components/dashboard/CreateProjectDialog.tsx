@@ -97,32 +97,39 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                       Target Role
                     </label>
                     <div className="relative">
-                      <select
+                      <input
+                        list="role-suggestions"
                         value={formData.targetRole}
                         onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
-                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner appearance-none cursor-pointer"
+                        className="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder:text-slate-600 focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-inner"
+                        placeholder="e.g. Senior Software Engineer, Product Manager..."
+                        type="text"
                         required
-                      >
-                        <option className="text-slate-500" disabled value="">
-                          Select a role...
-                        </option>
-                        <option>Frontend Engineer</option>
-                        <option>Backend Engineer</option>
-                        <option>Full Stack Developer</option>
-                        <option>DevOps Engineer</option>
-                        <option>Engineering Manager</option>
-                        <option>Data Scientist</option>
-                        <option>Product Manager</option>
-                        <option>Data Analyst</option>
-                        <option>Finance Analyst</option>
-                        <option>Registered Nurse</option>
-                        <option>Marketing Manager</option>
-                        <option>UI/UX Designer</option>
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none h-5 w-5" />
+                      />
+                      <datalist id="role-suggestions">
+                        <option value="Software Engineer" />
+                        <option value="Senior Software Engineer" />
+                        <option value="Frontend Engineer" />
+                        <option value="Backend Engineer" />
+                        <option value="Full Stack Developer" />
+                        <option value="DevOps Engineer" />
+                        <option value="Engineering Manager" />
+                        <option value="Data Scientist" />
+                        <option value="Product Manager" />
+                        <option value="Data Analyst" />
+                        <option value="Finance Analyst" />
+                        <option value="Registered Nurse" />
+                        <option value="Marketing Manager" />
+                        <option value="UI/UX Designer" />
+                        <option value="QA Engineer" />
+                        <option value="Solutions Architect" />
+                        <option value="Business Analyst" />
+                        <option value="Project Manager" />
+                      </datalist>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none h-4 w-4 opacity-50" />
                     </div>
                     <p className="text-xs text-slate-500 mt-1">
-                      This helps the AI tune resume suggestions.
+                      Type any role or select from suggestions. This helps the AI tune resume suggestions.
                     </p>
                   </div>
 
