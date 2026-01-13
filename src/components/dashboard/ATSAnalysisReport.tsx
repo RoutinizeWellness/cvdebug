@@ -415,35 +415,59 @@ export function ATSAnalysisReport({
                   </div>
                 </motion.div>
               ) : (
-                /* Card 1 Alternative: Format Health - FREE USERS */
+                /* Card 1 Alternative: Unlock Impact Density - FREE USERS */
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-white dark:bg-slate-800/50 rounded-xl p-6 border-2 border-emerald-200 dark:border-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-700 shadow-sm hover:shadow-md transition-all duration-300"
+                  className="bg-gradient-to-br from-slate-900/90 to-indigo-900/40 dark:from-slate-800/90 dark:to-indigo-900/60 rounded-xl p-6 border-2 border-primary/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
+                  onClick={onOpenWritingForge}
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="p-3 rounded-xl bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400">
-                      <span className="material-symbols-outlined text-2xl">verified_user</span>
+                  {/* Decorative gradient background */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-fuchsia-500/10 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity" />
+
+                  <div className="relative">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="p-3 rounded-xl bg-primary/20 text-primary">
+                        <span className="material-symbols-outlined text-2xl">speed</span>
+                      </div>
+                      <span className="px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full flex items-center gap-1">
+                        <span className="material-symbols-outlined text-xs">lock</span>
+                        LOCKED
+                      </span>
                     </div>
-                    <span className="px-3 py-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                      Perfect
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm font-semibold mb-2">Format Health</p>
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <h3 className="text-3xl font-bold text-slate-900 dark:text-white">100</h3>
-                      <span className="text-lg text-slate-500 dark:text-slate-400">/100</span>
+
+                    <div className="mb-4">
+                      <p className="text-slate-300 text-sm font-semibold mb-2">Impact Density</p>
+                      <div className="flex items-baseline gap-2 mb-3">
+                        <h3 className="text-4xl font-bold text-white blur-sm select-none">8</h3>
+                        <span className="text-lg text-slate-400">/10+</span>
+                      </div>
+                      <p className="text-slate-300 text-xs leading-relaxed mb-4">
+                        See exactly how many quantifiable metrics are in your resume and get AI suggestions to add more.
+                      </p>
+
+                      {/* Benefits */}
+                      <div className="space-y-1.5 mb-4">
+                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                          <span className="text-purple-400">✓</span>
+                          <span>Track impact metrics</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                          <span className="text-purple-400">✓</span>
+                          <span>AI-powered suggestions</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-200">
+                          <span className="text-purple-400">✓</span>
+                          <span>Reach elite level (10+)</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-700/50 rounded-full h-3 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: "100%" }}
-                        transition={{ duration: 1, delay: 0.6 }}
-                        className="bg-emerald-500 h-3 rounded-full"
-                      />
-                    </div>
+
+                    <button className="btn-power w-full py-2 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                      <span className="material-symbols-outlined text-base">diamond</span>
+                      <span>Unlock with Interview Sprint</span>
+                    </button>
                   </div>
                 </motion.div>
               )}

@@ -203,41 +203,66 @@ export function WritingForge() {
                 </Button>
 
                 {/* Locked Download Button */}
-                <div 
+                <div
                   className="relative"
                   onMouseEnter={() => setShowUpgradeTooltip(true)}
                   onMouseLeave={() => setShowUpgradeTooltip(false)}
                 >
-                  <Button 
+                  <Button
                     onClick={handleDownloadPDF}
                     disabled
-                    className="bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700 opacity-60"
+                    className="bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700 opacity-60 relative"
                   >
                     <Lock className="h-4 w-4 mr-2" />
                     Download PDF
+                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                    </span>
                   </Button>
 
-                  {/* Tooltip */}
+                  {/* Enhanced Tooltip with Power Gradient CTA */}
                   {showUpgradeTooltip && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-full right-0 mt-3 w-64 p-3 bg-slate-900 border border-slate-700 rounded-lg shadow-2xl z-50"
+                      className="absolute top-full right-0 mt-3 w-72 p-4 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50"
                     >
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-3 mb-3">
                         <div className="text-primary shrink-0 pt-0.5">
-                          <Diamond className="h-5 w-5" />
+                          <Diamond className="h-6 w-6" />
                         </div>
                         <div>
-                          <p className="text-white text-xs font-bold mb-1">Unlock High-Res PDF</p>
-                          <p className="text-slate-400 text-[10px] leading-relaxed mb-2">
-                            Upgrade to Interview Sprint plan to download unlimited PDFs and access ATS checking.
+                          <p className="text-white text-sm font-bold mb-1">Interview Sprint Required</p>
+                          <p className="text-slate-400 text-xs leading-relaxed">
+                            Unlock professional PDF exports, ATS optimization, and unlimited regenerations.
                           </p>
-                          <a className="text-primary text-[10px] font-bold hover:underline" href="#">
-                            View Plans →
-                          </a>
                         </div>
                       </div>
+
+                      {/* Benefits List */}
+                      <div className="space-y-2 mb-3 pl-9">
+                        <div className="flex items-center gap-2 text-xs text-slate-300">
+                          <span className="text-green-400">✓</span>
+                          <span>Unlimited PDF downloads</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-300">
+                          <span className="text-green-400">✓</span>
+                          <span>ATS-optimized formatting</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-300">
+                          <span className="text-green-400">✓</span>
+                          <span>AI-powered improvements</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {/* Navigate to pricing */}}
+                        className="btn-power w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
+                      >
+                        <Sparkles className="h-4 w-4" />
+                        <span>Upgrade to Interview Sprint</span>
+                      </button>
                     </motion.div>
                   )}
                 </div>

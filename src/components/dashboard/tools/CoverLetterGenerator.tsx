@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Sparkles, Copy, Check, FileText, Download, Lock, AlertCircle } from "lucide-react";
+import { Loader2, Sparkles, Copy, Check, FileText, Download, Lock, AlertCircle, Diamond } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -98,22 +98,51 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       <div className="space-y-6">
         {!hasInterviewSprint && (
-          <Alert className="bg-gradient-to-r from-primary/10 to-teal-500/10 border-primary/30">
-            <Lock className="h-4 w-4 text-primary" />
-            <AlertDescription className="text-sm">
-              <strong className="text-white">Interview Sprint Required</strong>
-              <p className="text-slate-300 mt-1">
-                Upgrade to Interview Sprint to generate unlimited AI-powered cover letters tailored to each job.
-              </p>
-              <Button 
+          <Alert className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 border-2 border-primary/40 shadow-lg relative overflow-hidden">
+            {/* Decorative gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
+
+            <div className="relative">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
+                  <Diamond className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-base mb-1">Interview Sprint Required</h3>
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    Generate unlimited AI-powered cover letters that perfectly match each job description.
+                  </p>
+                </div>
+              </div>
+
+              {/* Benefits Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
+                <div className="flex items-center gap-2 text-xs text-slate-300">
+                  <span className="text-green-400 font-bold">✓</span>
+                  <span>Unlimited generations</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-300">
+                  <span className="text-green-400 font-bold">✓</span>
+                  <span>Job-specific tailoring</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-300">
+                  <span className="text-green-400 font-bold">✓</span>
+                  <span>ATS-optimized format</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-300">
+                  <span className="text-green-400 font-bold">✓</span>
+                  <span>Resume integration</span>
+                </div>
+              </div>
+
+              <Button
                 onClick={onUpgrade}
-                size="sm" 
-                className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold"
+                className="btn-power w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
               >
-                <Sparkles className="h-4 w-4 mr-2" />
-                Upgrade Now
+                <Sparkles className="h-4 w-4" />
+                <span>Upgrade to Interview Sprint</span>
               </Button>
-            </AlertDescription>
+            </div>
           </Alert>
         )}
 
