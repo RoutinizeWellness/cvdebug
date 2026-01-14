@@ -95,22 +95,34 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       }
     }
 
-    // Repetitive patterns specific messages
+    // Repetitive patterns specific messages - ALWAYS extract from actual CV text
     if (issueLower.includes("repetitive") || issueLower.includes("sentence starters")) {
-      const lines = ocrText.split('\n').filter((l: string) => l.trim().length > 20);
-      const starters = lines.map((l: string) => l.trim().split(/\s+/)[0]?.toLowerCase()).filter(Boolean);
+      // Remove bullet points and get clean lines
+      const lines = ocrText.split('\n')
+        .map((l: string) => l.trim().replace(/^[-•*◦‣⦿⦾]\s*/, ''))
+        .filter((l: string) => l.length > 20);
+
+      const starters = lines
+        .map((l: string) => l.split(/\s+/)[0]?.toLowerCase())
+        .filter(Boolean);
+
       const starterCounts: Record<string, number> = {};
       starters.forEach((s: string) => starterCounts[s] = (starterCounts[s] || 0) + 1);
 
+      // Find words that start 3+ lines
       const repetitive = Object.entries(starterCounts)
-        .filter(([_, count]) => count >= 3)
+        .filter(([word, count]) => count >= 3 && word.length > 3) // Ignore short words like "the", "and"
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3);
 
       if (repetitive.length > 0) {
         const examples = repetitive.map(([word, count]) => `"${word}" (${count}x)`).join(', ');
-        enhancedDescription = `Detected repetitive action verbs: ${examples}. Vary your verbs to show diverse skills.`;
-        enhancedFix = `Replace repetitions with alternatives. E.g., "developed" → "engineered", "built", "architected"; "led" → "directed", "managed", "spearheaded".`;
+        enhancedDescription = `Found ${repetitive.length} repetitive action verbs in YOUR CV: ${examples}. Vary sentence starters to show diverse skills and avoid monotony.`;
+        enhancedFix = `Replace repetitions with alternatives:\n• "developed" → "engineered", "built", "architected"\n• "led" → "directed", "managed", "spearheaded"\n• "created" → "designed", "established", "launched"`;
+      } else {
+        // Fallback if no specific examples found
+        enhancedDescription = issue.atsImpact || "Repetitive sentence starters reduce readability and make your experience appear monotonous.";
+        enhancedFix = "Vary your action verbs. Use different strong verbs to start each bullet point.";
       }
     }
 
@@ -322,13 +334,12 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm font-bold text-[#0F172A] mb-1">{failure.title}</h4>
-                    <p className="text-xs text-[#475569] mb-2">{failure.description}</p>
-                    <button
-                      onClick={() => onFixIssue?.(failure.title)}
-                      className="text-xs font-semibold text-[#3B82F6] hover:underline"
-                    >
-                      How to fix this →
-                    </button>
+                    <p className="text-xs text-[#475569] mb-2 whitespace-pre-line leading-relaxed">{failure.description}</p>
+                    {failure.howToFix && (
+                      <div className="mt-2 p-2 bg-blue-50/50 border border-blue-200/30 rounded text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
+                        <span className="font-semibold text-[#3B82F6]">How to fix:</span> {failure.howToFix}
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>
