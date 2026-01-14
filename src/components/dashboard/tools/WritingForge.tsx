@@ -98,21 +98,13 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
     });
   };
 
-  // Extract missing keywords from resume data
-  const keywordGaps = resume?.missingKeywords
-    ? (Array.isArray(resume.missingKeywords)
-        ? resume.missingKeywords.slice(0, 4).map((k: any) => ({
-            name: typeof k === 'string' ? k : k.keyword,
-            completed: false
-          }))
-        : []
-      )
-    : [
-        { name: "Edge Functions", completed: false },
-        { name: "Turbopack", completed: false },
-        { name: "Incremental Builds", completed: false },
-        { name: "React 18", completed: true }
-      ];
+  // Extract missing keywords from resume data - NO FALLBACK, only real data
+  const keywordGaps = resume?.missingKeywords && Array.isArray(resume.missingKeywords)
+    ? resume.missingKeywords.slice(0, 4).map((k: any) => ({
+        name: typeof k === 'string' ? k : k.keyword,
+        completed: false
+      }))
+    : [];
 
   // Calculate match score and gap
   const matchScore = resume?.score || 0;

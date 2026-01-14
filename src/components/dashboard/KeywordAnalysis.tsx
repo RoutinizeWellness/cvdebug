@@ -70,14 +70,52 @@ export function KeywordAnalysis({
     return "terminal"; // Default for unclassified
   };
 
-  // Infer location based on keyword type
+  // Infer SPECIFIC location based on keyword type
   const getKeywordLocation = (keyword: string): string => {
     const lower = keyword.toLowerCase();
-    if (/lead|manage|director|senior|architect/.test(lower)) return "Experience, Leadership";
-    if (/aws|azure|gcp|cloud|docker|kubernetes/.test(lower)) return "Technical Skills, Projects";
-    if (/python|java|sql|javascript/.test(lower)) return "Technical Skills, Experience";
-    if (/agile|scrum|kanban/.test(lower)) return "Experience, Methodologies";
-    return "Skills, Experience";
+
+    // Leadership keywords
+    if (/lead|manage|director|senior|architect|executive|chief/.test(lower))
+      return "Professional Summary, Experience (leadership bullets)";
+
+    // Cloud & Infrastructure
+    if (/aws|azure|gcp|cloud|kubernetes|docker|terraform|ansible/.test(lower))
+      return "Technical Skills → Infrastructure, Projects";
+
+    // Programming Languages
+    if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower))
+      return "Technical Skills → Languages, Projects (with use cases)";
+
+    // Databases
+    if (/\bsql\b|mysql|postgresql|mongodb|redis|cassandra|dynamodb/.test(lower))
+      return "Technical Skills → Databases, Experience (with metrics)";
+
+    // Data Tools
+    if (/excel|tableau|power bi|looker|data studio/.test(lower))
+      return "Technical Skills → Tools, Experience (with analysis examples)";
+
+    // Big Data
+    if (/hadoop|spark|hive|pig|kafka|flink|storm/.test(lower))
+      return "Technical Skills → Big Data, Projects (with scale)";
+
+    // ETL & Data Engineering
+    if (/etl|airflow|nifi|data warehouse|redshift|snowflake|bigquery/.test(lower))
+      return "Technical Skills → Data Engineering, Experience (with pipeline details)";
+
+    // AI/ML
+    if (/machine learning|deep learning|tensorflow|pytorch|scikit|keras|ml/.test(lower))
+      return "Technical Skills → AI/ML, Projects (with model performance)";
+
+    // Methodologies
+    if (/agile|scrum|kanban|devops|ci\/cd/.test(lower))
+      return "Experience (methodology context), Professional Summary";
+
+    // Version Control
+    if (/git|github|gitlab|bitbucket/.test(lower))
+      return "Technical Skills → Version Control, Experience";
+
+    // Generic fallback - but more specific
+    return "Technical Skills section, Experience bullets (with context)";
   };
 
   // Map matched keywords to found signals with REAL context
