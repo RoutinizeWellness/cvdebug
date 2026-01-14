@@ -336,3 +336,85 @@
 .card-cyber-glow {
   box-shadow: 0 0 30px rgba(37, 99, 235, 0.15), 0 0 60px rgba(6, 182, 212, 0.1);
 }
+
+/* Light Theme Styles for Landing Page */
+.mesh-gradient {
+  background: #FFFFFF;
+  position: relative;
+}
+
+.mesh-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 30%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #E2E8F0;
+}
+
+.shadow-soft {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
+.gradient-logo {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+}
+
+.gradient-button {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.pulsing-dot {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Landing Page Light Theme Colors */
+.text-charcoal {
+  color: #1E293B;
+}
+
+.text-body {
+  color: #475569;
+}
+
+.bg-alt {
+  background-color: #F8FAFC;
+}
+
+.border-slate {
+  border-color: #E2E8F0;
+}

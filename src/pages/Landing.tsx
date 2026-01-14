@@ -50,17 +50,17 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-100 antialiased mesh-gradient">
       <style>{`
         body {
-          background: linear-gradient(180deg, hsl(200, 20%, 6%) 0%, hsl(200, 25%, 10%) 50%, hsl(174, 30%, 12%) 100%);
+          background: #FFFFFF;
         }
       `}</style>
 
       <ProductHuntBanner />
       <NewNavbar />
 
-      <main className="flex-grow pt-16">
+      <main className="flex-grow pt-16 relative z-10">
         <NewHeroSection />
         <NewSocialProofSection />
         <ProductShowcaseGallery />

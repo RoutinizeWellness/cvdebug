@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
-import { Logo } from "@/components/Logo";
 
 export function NewNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,9 +11,9 @@ export function NewNavbar() {
   const { isAuthenticated } = useAuth();
 
   const navLinks = [
-    { name: "Features", href: "#features" },
+    { name: "Analyzer", href: "#analyzer" },
+    { name: "Tools", href: "#features" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Enterprise", href: "#enterprise" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -29,16 +28,19 @@ export function NewNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 z-50 w-full glass-header">
+      <nav className="fixed top-0 z-50 w-full glass-panel-light shadow-soft">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="cursor-pointer"
+            className="cursor-pointer flex items-center gap-2"
             onClick={() => navigate("/")}
           >
-            <Logo showText={true} />
+            <div className="gradient-logo w-10 h-10 rounded-lg flex items-center justify-center">
+              <Terminal className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-lg font-bold text-charcoal">CVDebug</span>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -52,7 +54,7 @@ export function NewNavbar() {
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-slate-300 transition-colors hover:text-white"
+                className="text-sm font-medium text-body transition-colors hover:text-charcoal"
               >
                 {link.name}
               </button>
@@ -67,13 +69,13 @@ export function NewNavbar() {
           >
             <button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:block"
+              className="hidden text-sm font-medium text-body transition-colors hover:text-charcoal sm:block"
             >
               {isAuthenticated ? "Dashboard" : "Log in"}
             </button>
             <Button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="group relative inline-flex h-9 items-center justify-center overflow-hidden rounded-md bg-white/5 px-4 text-sm font-semibold text-white ring-1 ring-inset ring-white/10 transition-all hover:bg-white/10 hover:ring-white/20"
+              className="gradient-button group relative inline-flex h-9 items-center justify-center overflow-hidden rounded-md px-4 text-sm font-semibold text-white border-0"
             >
               <span className="mr-2">Scan Resume</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -82,7 +84,7 @@ export function NewNavbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white"
+              className="md:hidden text-charcoal"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -102,14 +104,14 @@ export function NewNavbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 glass-header border-t border-white/10 md:hidden"
+            className="fixed top-16 left-0 right-0 z-40 glass-panel-light border-t border-slate md:hidden"
           >
             <div className="mx-auto max-w-7xl px-4 py-4 space-y-4">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="block w-full text-left text-sm font-medium text-slate-300 transition-colors hover:text-white py-2"
+                  className="block w-full text-left text-sm font-medium text-body transition-colors hover:text-charcoal py-2"
                 >
                   {link.name}
                 </button>
@@ -119,7 +121,7 @@ export function NewNavbar() {
                   navigate(isAuthenticated ? "/dashboard" : "/auth");
                   setMobileMenuOpen(false);
                 }}
-                className="block w-full text-left text-sm font-medium text-slate-300 transition-colors hover:text-white py-2 sm:hidden"
+                className="block w-full text-left text-sm font-medium text-body transition-colors hover:text-charcoal py-2 sm:hidden"
               >
                 {isAuthenticated ? "Dashboard" : "Log in"}
               </button>
