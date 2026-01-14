@@ -663,28 +663,45 @@ export function ATSAnalysisReport({
             </div>
           </div>
 
-          {/* Keywords Section - ResumeWorded Style */}
-          {(matchedKeywords.length > 0 || missingKeywords.length > 0) && (
-            <div className="w-full space-y-6">
-              <h2 className="text-2xl font-bold text-[#0F172A]">Keyword Analysis</h2>
+          {/* Keywords Section - ResumeWorded Style - ALWAYS show even if empty */}
+          {(matchedKeywords.length > 0 || missingKeywords.length > 0 || true) && (
+            <div className="w-full space-y-4 md:space-y-6">
+              <h2 className="text-xl md:text-2xl font-bold text-[#0F172A]">Keyword Analysis</h2>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 w-full">
+                {/* Debug info when no keywords */}
+                {matchedKeywords.length === 0 && missingKeywords.length === 0 && (
+                  <div className="col-span-full p-4 md:p-6 bg-amber-50 border border-amber-200 rounded-xl">
+                    <p className="text-sm md:text-base text-[#0F172A] mb-2">
+                      <strong>No keywords detected.</strong> This usually means:
+                    </p>
+                    <ul className="text-xs md:text-sm text-[#475569] list-disc list-inside space-y-1">
+                      <li>Resume is still being processed</li>
+                      <li>No job description was provided for comparison</li>
+                      <li>Resume text couldn't be extracted (try uploading again)</li>
+                    </ul>
+                    <p className="text-xs text-[#64748B] mt-3">
+                      Debug: matchedKeywords={matchedKeywords.length}, missingKeywords={missingKeywords.length}
+                    </p>
+                  </div>
+                )}
+
                 {/* Matched Keywords */}
                 {matchedKeywords.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
-                    className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-emerald-200 hover:border-emerald-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[350px] max-h-[500px]"
+                    className="bg-[#FFFFFF] rounded-xl p-4 md:p-6 border-2 border-emerald-200 hover:border-emerald-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[300px] md:min-h-[350px] max-h-[500px]"
                   >
-                    <div className="flex items-start justify-between mb-4 flex-shrink-0">
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 rounded-xl bg-emerald-100 text-[#22C55E]">
-                          <span className="material-symbols-outlined text-2xl">check_circle</span>
+                    <div className="flex items-start justify-between mb-3 md:mb-4 flex-shrink-0">
+                      <div className="flex items-center gap-2 md:gap-3">
+                        <div className="p-2 md:p-3 rounded-xl bg-emerald-100 text-[#22C55E]">
+                          <span className="material-symbols-outlined text-xl md:text-2xl">check_circle</span>
                         </div>
                         <div>
-                          <h3 className="text-[#0F172A] font-bold text-lg">Keywords Found</h3>
-                          <p className="text-[#475569] text-sm">{matchedKeywords.length} matches detected</p>
+                          <h3 className="text-[#0F172A] font-bold text-base md:text-lg">Keywords Found</h3>
+                          <p className="text-[#475569] text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
                         </div>
                       </div>
                     </div>
@@ -695,7 +712,7 @@ export function ATSAnalysisReport({
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.8 + index * 0.02 }}
-                          className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200 text-sm font-medium hover:bg-emerald-100 transition-colors cursor-default h-fit"
+                          className="px-2 py-1.5 md:px-3 md:py-2 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200 text-xs md:text-sm font-medium hover:bg-emerald-100 transition-colors cursor-default h-fit"
                         >
                           {keyword}
                         </motion.span>

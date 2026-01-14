@@ -153,55 +153,60 @@ export function LiveRecruiterSimulation({
 
   return (
     <div className="min-h-screen transition-colors duration-300 bg-[#F8FAFC]">
-      {/* Header */}
-      <header className="h-16 border-b border-[#E2E8F0] flex items-center justify-between px-6 bg-[#FFFFFF] backdrop-blur-sm sticky top-0 z-50 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-[#3B82F6] font-bold text-lg tracking-tight">
-            <span className="material-symbols-outlined">analytics</span>
-            <span>CVDebug ATS</span>
+      {/* Header - Mobile Responsive */}
+      <header className="h-14 md:h-16 border-b border-[#E2E8F0] flex items-center justify-between px-3 md:px-6 bg-[#FFFFFF] backdrop-blur-sm sticky top-0 z-50 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 md:gap-2 text-[#3B82F6] font-bold text-base md:text-lg tracking-tight">
+            <span className="material-symbols-outlined text-lg md:text-xl">analytics</span>
+            <span className="hidden sm:inline">CVDebug ATS</span>
+            <span className="sm:hidden">ATS</span>
           </div>
-          <span className="text-[#475569] text-sm">/</span>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 text-[#3B82F6] border border-blue-200">
+          <span className="text-[#475569] text-sm hidden md:inline">/</span>
+          <div className="flex items-center gap-1 md:gap-2 min-w-0">
+            <span className="text-[10px] md:text-xs font-mono px-1.5 md:px-2 py-0.5 rounded bg-blue-50 text-[#3B82F6] border border-blue-200 truncate max-w-[100px] md:max-w-none">
               {targetRole.toUpperCase()}
             </span>
-            <span className="text-xs text-[#64748B] font-mono">ID: {sessionId}</span>
+            <span className="text-[10px] md:text-xs text-[#64748B] font-mono hidden lg:inline">ID: {sessionId}</span>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
+        <div className="flex items-center gap-1.5 md:gap-3">
+          <button className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
             <span className="material-symbols-outlined text-sm">link</span> Share Link
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
-            <span className="material-symbols-outlined text-sm">download</span> Download
+          <button className="hidden sm:flex items-center gap-1.5 px-2 md:px-3 py-1.5 text-xs font-medium text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
+            <span className="material-symbols-outlined text-sm">download</span>
+            <span className="hidden md:inline">Download</span>
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
-            <span className="material-symbols-outlined text-sm">print</span> Print Report
+          <button className="flex sm:hidden items-center justify-center w-8 h-8 text-[#475569] border border-[#E2E8F0] rounded hover:bg-[#F8FAFC] transition-colors">
+            <span className="material-symbols-outlined text-lg">more_vert</span>
           </button>
         </div>
       </header>
 
-      {/* Navigation Tabs */}
-      <nav className="flex items-center justify-center gap-2 py-4 bg-[#FFFFFF] border-b border-[#E2E8F0] overflow-x-auto px-4">
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg">
-          <span className="material-symbols-outlined text-base">smart_toy</span> Robot View
+      {/* Navigation Tabs - Mobile Optimized */}
+      <nav className="flex items-center justify-start md:justify-center gap-1 md:gap-2 py-3 md:py-4 bg-[#FFFFFF] border-b border-[#E2E8F0] overflow-x-auto px-3 md:px-4 scrollbar-hide">
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
+          <span className="material-symbols-outlined text-base">smart_toy</span>
+          <span className="hidden sm:inline">Robot View</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg">
-          <span className="material-symbols-outlined text-base">vpn_key</span> Keywords
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
+          <span className="material-symbols-outlined text-base">vpn_key</span>
+          <span className="hidden sm:inline">Keywords</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg">
-          <span className="material-symbols-outlined text-base">auto_fix_high</span> Fluff
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
+          <span className="material-symbols-outlined text-base">auto_fix_high</span>
+          <span className="hidden sm:inline">Fluff</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg">
-          <span className="material-symbols-outlined text-base">dashboard</span> Format & Overview
+        <button className="hidden lg:flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
+          <span className="material-symbols-outlined text-base">dashboard</span> Format
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3B82F6] bg-blue-50 rounded-lg border border-blue-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#3B82F6] bg-blue-50 rounded-lg border border-blue-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] whitespace-nowrap">
           <span className="material-symbols-outlined text-base">support_agent</span> Recruiter
         </button>
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 grid grid-cols-12 gap-6 max-w-[1920px] mx-auto w-full">
+      {/* Main Content - Mobile Responsive */}
+      <main className="flex-1 p-3 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 max-w-[1920px] mx-auto w-full">
         {/* Left Column - Main Content */}
         <div className="col-span-12 lg:col-span-9 flex flex-col gap-6">
           {/* Candidate Header */}
