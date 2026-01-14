@@ -12,7 +12,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({
-  userName = "Alex Chen",
+  userName = "User",
   userPlan = "PRO PLAN",
   userAvatar,
   onLogout,
