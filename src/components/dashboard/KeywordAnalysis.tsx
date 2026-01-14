@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
+import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
+import { PremiumFeatureModal } from "@/components/PremiumFeatureModal";
 
 interface KeywordAnalysisProps {
   matchedKeywords: string[];
   missingKeywords: string[];
   matchRate?: number;
+  onUpgrade?: () => void;
 }
 
 interface FoundKeyword {
@@ -25,15 +28,17 @@ interface MissingKeyword {
 export function KeywordAnalysis({
   matchedKeywords,
   missingKeywords,
-  matchRate = 0 // Real data only, no fake score
+  matchRate = 0, // Real data only, no fake score
+  onUpgrade
 }: KeywordAnalysisProps) {
   const [showExamples, setShowExamples] = useState<string | null>(null);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<string>("");
 
-  // Handle Auto-Add keyword
+  // Handle Auto-Add keyword (Premium Feature)
   const handleAutoAdd = (keyword: string) => {
-    toast.success(`Adding "${keyword}" to your resume...`, {
-      description: "This feature requires Interview Sprint plan. Upgrade to use AI-powered keyword injection."
-    });
+    setSelectedFeature(`AI Auto-Add: ${keyword}`);
+    setShowPremiumModal(true);
   };
 
   // Handle View Examples
@@ -42,6 +47,11 @@ export function KeywordAnalysis({
     toast.info(`Showing examples for "${keyword}"`, {
       description: "View how top candidates incorporate this keyword effectively."
     });
+  };
+
+  const handleUpgrade = () => {
+    setShowPremiumModal(false);
+    onUpgrade?.();
   };
 
   // Infer icon based on keyword type (not random)
@@ -271,19 +281,27 @@ export function KeywordAnalysis({
                     {signal.description}
                   </p>
                   {signal.isPriority && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleViewExamples(signal.keyword)}
-                        className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors font-medium"
-                      >
-                        View Examples
-                      </button>
-                      <button
-                        onClick={() => handleAutoAdd(signal.keyword)}
-                        className="px-3 bg-[#EF4444] hover:bg-[#DC2626] text-white rounded text-xs transition-colors font-medium"
-                      >
-                        Auto-Add
-                      </button>
+                    <div className="space-y-2">
+                      {/* Premium Badge */}
+                      <div className="flex items-center justify-between">
+                        <PremiumFeatureBadge plan="interview_sprint" size="sm" />
+                        <span className="text-[10px] text-[#64748B]">AI-Powered</span>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleViewExamples(signal.keyword)}
+                          className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors font-medium"
+                        >
+                          View Examples
+                        </button>
+                        <button
+                          onClick={() => handleAutoAdd(signal.keyword)}
+                          className="px-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded text-xs transition-all font-medium shadow-lg"
+                        >
+                          Auto-Add
+                        </button>
+                      </div>
                     </div>
                   )}
                 </motion.div>
@@ -348,6 +366,15 @@ export function KeywordAnalysis({
           </motion.div>
         </div>
       </div>
+
+      {/* Premium Feature Modal */}
+      <PremiumFeatureModal
+        isOpen={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+        onUpgrade={handleUpgrade}
+        feature={selectedFeature}
+        plan="interview_sprint"
+      />
     </div>
   );
 }

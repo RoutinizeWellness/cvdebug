@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
 
 interface WeakPhrase {
   phrase: string;
@@ -537,19 +538,23 @@ export function FluffDetector({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:border-[#8B5CF6] transition-all"
+          className="bg-gradient-to-br from-[#8B5CF6]/5 to-[#EC4899]/5 rounded-xl border-2 border-[#8B5CF6]/30 p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:border-[#8B5CF6] transition-all"
         >
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <PremiumFeatureBadge plan="interview_sprint" size="sm" />
+                <span className="text-[10px] text-[#8B5CF6] font-bold uppercase tracking-wider">AI-Powered</span>
+              </div>
               <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#8B5CF6]">auto_awesome</span>
-                AI-Powered Rewrite
+                Complete Resume Rewrite
               </h3>
               <p className="text-sm text-[#64748B]">
-                Let AI rewrite your entire resume with power verbs, metrics, and impact statements.
+                Let AI rewrite your entire resume with power verbs, metrics, and impact statements. Transform weak bullets into strong achievements.
               </p>
             </div>
-            <button className="px-6 py-3 bg-[#3B82F6] hover:bg-[#3B82F6] text-[#0F172A] rounded-lg font-semibold transition-all shadow-lg shadow-blue-500/20 whitespace-nowrap text-sm">
+            <button className="px-6 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#8B5CF6]/30 whitespace-nowrap text-sm">
               Rewrite All
             </button>
           </div>
