@@ -18,18 +18,18 @@ export function ProductHuntBanner() {
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#F59E0B] via-[#F59E0B] to-[#F59E0B] text-white shadow-lg"
     >
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 flex-1 justify-center">
-            <Rocket className="h-5 w-5 animate-bounce" />
-            <div className="flex flex-col sm:flex-row items-center gap-2 text-sm font-semibold">
+      <div className="container mx-auto px-4 py-2 sm:py-3">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 justify-center">
+            <Rocket className="h-4 w-4 sm:h-5 sm:w-5 animate-bounce flex-shrink-0" />
+            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm font-semibold">
               <span>🎉 We're LIVE on Product Hunt!</span>
               <span className="hidden sm:inline">|</span>
-              <span>
-                Use code <span className="px-2 py-0.5 bg-[#FFFFFF]/20 rounded font-mono font-bold">PH50</span> for 50% OFF
+              <span className="text-center">
+                Use code <span className="px-1.5 py-0.5 bg-[#FFFFFF]/20 rounded font-mono font-bold text-xs sm:text-sm">PH50</span> for 50% OFF
               </span>
               <span className="hidden sm:inline">|</span>
-              <span className="text-xs opacity-90">⏰ 48 hours only</span>
+              <span className="text-[10px] sm:text-xs opacity-90">⏰ 48h only</span>
             </div>
             <a
               href="https://www.producthunt.com/posts/cvdebug"
@@ -43,10 +43,10 @@ export function ProductHuntBanner() {
 
           <button
             onClick={() => setIsVisible(false)}
-            className="p-1 hover:bg-[#FFFFFF]/20 rounded transition-colors"
+            className="p-1 hover:bg-[#FFFFFF]/20 rounded transition-colors flex-shrink-0"
             aria-label="Close banner"
           >
-            <X className="h-4 w-4" />
+            <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </div>
       </div>

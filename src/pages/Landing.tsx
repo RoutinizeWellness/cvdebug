@@ -60,7 +60,7 @@ export default function Landing() {
       <ProductHuntBanner />
       <NewNavbar />
 
-      <main className="flex-grow pt-16 relative z-10">
+      <main className="flex-grow pt-32 relative z-10">
         <NewHeroSection />
         <NewSocialProofSection />
         <ProductShowcaseGallery />
