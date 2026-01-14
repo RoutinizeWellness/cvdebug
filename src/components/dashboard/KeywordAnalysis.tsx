@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface KeywordAnalysisProps {
   matchedKeywords: string[];
@@ -25,6 +27,22 @@ export function KeywordAnalysis({
   missingKeywords,
   matchRate = 0 // Real data only, no fake score
 }: KeywordAnalysisProps) {
+  const [showExamples, setShowExamples] = useState<string | null>(null);
+
+  // Handle Auto-Add keyword
+  const handleAutoAdd = (keyword: string) => {
+    toast.success(`Adding "${keyword}" to your resume...`, {
+      description: "This feature requires Interview Sprint plan. Upgrade to use AI-powered keyword injection."
+    });
+  };
+
+  // Handle View Examples
+  const handleViewExamples = (keyword: string) => {
+    setShowExamples(keyword);
+    toast.info(`Showing examples for "${keyword}"`, {
+      description: "View how top candidates incorporate this keyword effectively."
+    });
+  };
 
   // Infer icon based on keyword type (not random)
   const getKeywordIcon = (keyword: string): string => {
@@ -254,10 +272,16 @@ export function KeywordAnalysis({
                   </p>
                   {signal.isPriority && (
                     <div className="flex gap-2">
-                      <button className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors">
+                      <button
+                        onClick={() => handleViewExamples(signal.keyword)}
+                        className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors font-medium"
+                      >
                         View Examples
                       </button>
-                      <button className="px-3 bg-[#EF4444] hover:bg-[#DC2626] text-white rounded text-xs transition-colors">
+                      <button
+                        onClick={() => handleAutoAdd(signal.keyword)}
+                        className="px-3 bg-[#EF4444] hover:bg-[#DC2626] text-white rounded text-xs transition-colors font-medium"
+                      >
                         Auto-Add
                       </button>
                     </div>
