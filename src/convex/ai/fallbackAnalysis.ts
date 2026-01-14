@@ -286,36 +286,195 @@ export function generateFallbackAnalysis(
     ocrTextLength: ocrText.length
   });
 
-  // Generate contextual keyword descriptions based on the keyword AND region
+  // ===== DEEP USER PROFILE ANALYSIS FOR HYPER-PERSONALIZATION =====
+
+  const analyzeUserProfile = (text: string): {
+    seniorityLevel: 'entry' | 'junior' | 'mid' | 'senior' | 'staff';
+    yearsOfExperience: number;
+    currentTechnologies: string[];
+    industryFocus: string[];
+    hasLeadershipExperience: boolean;
+    hasRemoteExperience: boolean;
+    targetCompanies: string[];
+    educationLevel: 'bachelors' | 'masters' | 'phd' | 'bootcamp' | 'none';
+    hasInternships: boolean;
+    hasCertifications: boolean;
+  } => {
+    const lower = text.toLowerCase();
+
+    // Detect years of experience from date ranges
+    const dateRanges = text.match(/\b(20\d{2})\s*[-–]\s*(20\d{2}|present|current)\b/gi) || [];
+    let totalYears = 0;
+    dateRanges.forEach(range => {
+      const match = range.match(/(\d{4})\s*[-–]\s*(\d{4}|present|current)/i);
+      if (match) {
+        const start = parseInt(match[1]);
+        const end = match[2].toLowerCase().includes('present') || match[2].toLowerCase().includes('current')
+          ? new Date().getFullYear()
+          : parseInt(match[2]);
+        totalYears += Math.max(0, end - start);
+      }
+    });
+    const yearsOfExperience = Math.min(20, totalYears); // Cap at 20 years
+
+    // Determine seniority
+    let seniorityLevel: 'entry' | 'junior' | 'mid' | 'senior' | 'staff' = 'entry';
+    if (yearsOfExperience === 0 || /\b(intern|internship|student|graduate)\b/i.test(text)) {
+      seniorityLevel = 'entry';
+    } else if (yearsOfExperience <= 2) {
+      seniorityLevel = 'junior';
+    } else if (yearsOfExperience <= 5) {
+      seniorityLevel = 'mid';
+    } else if (yearsOfExperience <= 10 || /\b(senior|lead|principal)\b/i.test(text)) {
+      seniorityLevel = 'senior';
+    } else {
+      seniorityLevel = 'staff';
+    }
+
+    // Extract current technologies from recent experience
+    const techKeywords = [
+      'python', 'javascript', 'typescript', 'java', 'go', 'rust', 'c++',
+      'react', 'angular', 'vue', 'node', 'django', 'flask', 'spring',
+      'aws', 'azure', 'gcp', 'kubernetes', 'docker',
+      'postgresql', 'mongodb', 'redis', 'elasticsearch',
+      'spark', 'airflow', 'kafka', 'snowflake'
+    ];
+    const currentTechnologies = techKeywords.filter(tech =>
+      new RegExp(`\\b${tech}\\b`, 'i').test(text)
+    );
+
+    // Detect industry focus
+    const industryFocus: string[] = [];
+    if (/\b(fintech|finance|banking|trading|payments)\b/i.test(lower)) industryFocus.push('fintech');
+    if (/\b(healthcare|medical|hospital|clinical|patient)\b/i.test(lower)) industryFocus.push('healthcare');
+    if (/\b(ecommerce|retail|shopping|marketplace)\b/i.test(lower)) industryFocus.push('ecommerce');
+    if (/\b(saas|b2b|enterprise software)\b/i.test(lower)) industryFocus.push('saas');
+    if (/\b(gaming|game|entertainment)\b/i.test(lower)) industryFocus.push('gaming');
+    if (/\b(edtech|education|learning|university)\b/i.test(lower)) industryFocus.push('edtech');
+
+    // Detect leadership experience
+    const hasLeadershipExperience = /\b(led|managed|mentored|supervised|team of \d+|direct reports)\b/i.test(text);
+
+    // Detect remote work experience
+    const hasRemoteExperience = /\b(remote|distributed|work from home|wfh|global team)\b/i.test(text);
+
+    // Extract target companies mentioned
+    const targetCompanies: string[] = [];
+    const companyPatterns = [
+      'google', 'facebook', 'meta', 'amazon', 'apple', 'microsoft', 'netflix',
+      'uber', 'airbnb', 'stripe', 'salesforce', 'oracle',
+      'deloitte', 'pwc', 'kpmg', 'ey', 'accenture', 'mckinsey', 'bcg'
+    ];
+    companyPatterns.forEach(company => {
+      if (new RegExp(`\\b${company}\\b`, 'i').test(text)) {
+        targetCompanies.push(company);
+      }
+    });
+
+    // Detect education level
+    let educationLevel: 'bachelors' | 'masters' | 'phd' | 'bootcamp' | 'none' = 'none';
+    if (/\b(phd|ph\.d|doctorate)\b/i.test(text)) educationLevel = 'phd';
+    else if (/\b(master|msc|ms|mba|m\.s\.)\b/i.test(text)) educationLevel = 'masters';
+    else if (/\b(bachelor|bsc|bs|b\.s\.|undergraduate)\b/i.test(text)) educationLevel = 'bachelors';
+    else if (/\b(bootcamp|coding school|certificate program)\b/i.test(text)) educationLevel = 'bootcamp';
+
+    // Detect internships
+    const hasInternships = /\b(intern|internship|co-op|coop)\b/i.test(text);
+
+    // Detect certifications
+    const hasCertifications = /\b(certified|certification|aws certified|azure certified|certificate)\b/i.test(text);
+
+    return {
+      seniorityLevel,
+      yearsOfExperience,
+      currentTechnologies,
+      industryFocus,
+      hasLeadershipExperience,
+      hasRemoteExperience,
+      targetCompanies,
+      educationLevel,
+      hasInternships,
+      hasCertifications
+    };
+  };
+
+  const userProfile = analyzeUserProfile(ocrText);
+  console.log(`[User Profile] Seniority: ${userProfile.seniorityLevel}, Years: ${userProfile.yearsOfExperience}, Tech: ${userProfile.currentTechnologies.join(', ')}`);
+
+  // Generate contextual keyword descriptions based on keyword, region, AND user profile
   const generateContextualKeywordDescription = (keyword: string, targetRegion: Region): string => {
     const lower = keyword.toLowerCase();
 
-    // ========== REGION-SPECIFIC ADAPTATIONS ==========
+    // ========== HYPER-PERSONALIZED REGIONAL CONTEXT ==========
     const getRegionalContext = (baseExample: string): string => {
+      let regionalTip = '';
+      let personalizedAdvice = '';
+
+      // Regional base tips
       switch (targetRegion) {
         case 'philippines':
-          // Philippines: Emphasize international applications, OFW readiness, Middle East/USA markets
-          return `${baseExample}. 🇵🇭 For international applications (USA/Middle East): Highlight English proficiency, remote work experience, and cross-cultural collaboration.`;
+          regionalTip = '🇵🇭 For international applications (USA/Middle East): ';
+          if (userProfile.hasRemoteExperience) {
+            personalizedAdvice = `You have remote experience - emphasize this heavily! Mention "managed distributed teams" and "collaborated across time zones". Target USA remote-first companies (GitLab, Automattic, Zapier).`;
+          } else if (userProfile.seniorityLevel === 'entry' || userProfile.seniorityLevel === 'junior') {
+            personalizedAdvice = `Entry-level tip: Build portfolio showcasing ${userProfile.currentTechnologies.slice(0, 2).join(' + ')}. Apply to BPO tech roles (Accenture Manila, Cognizant) as stepping stone to international opportunities.`;
+          } else {
+            personalizedAdvice = `Mid+ level: Highlight English proficiency, cross-cultural collaboration, and stability. Target Middle East (Dubai banks, Aramco) or USA remote roles.`;
+          }
+          break;
 
         case 'india':
-          // India: Emphasize Deloitte NLA, FAANG, Big 4, technical depth
-          return `${baseExample}. 🇮🇳 For Indian market: Perfect for Deloitte NLA, FAANG applications. Include certifications (AWS, Azure) and emphasize technical depth with specific frameworks.`;
+          regionalTip = '🇮🇳 For Indian market: ';
+          if (userProfile.targetCompanies.includes('deloitte') || /\bdeloitte|consulting|nla\b/i.test(ocrText)) {
+            personalizedAdvice = `Deloitte NLA applicant detected! Emphasize: problem-solving, client communication, ${userProfile.hasCertifications ? 'your certifications (huge plus!)' : 'get AWS/Azure certification ASAP'}. Quantify consulting impact with revenue/cost savings.`;
+          } else if (userProfile.targetCompanies.some(c => ['google', 'facebook', 'amazon', 'microsoft'].includes(c))) {
+            personalizedAdvice = `FAANG aspirant! You need: LeetCode consistency, system design depth (mention "distributed systems", "microservices at scale"), and open source contributions. Highlight technical depth with specific frameworks.`;
+          } else if (userProfile.industryFocus.includes('fintech')) {
+            personalizedAdvice = `Fintech focus: Target Bangalore unicorns (Razorpay, CRED, PhonePe). Emphasize payment systems, regulatory compliance, and high-transaction scalability.`;
+          } else {
+            personalizedAdvice = `Include certifications (AWS/Azure - employers love these!), emphasize technical depth with specific frameworks, and quantify impact with metrics.`;
+          }
+          break;
 
         case 'usa':
-          // USA: Emphasize leadership, innovation, quantifiable business impact
-          return `${baseExample}. 🇺🇸 For US market: Emphasize leadership, innovation, and business impact. Use action verbs like "spearheaded", "drove", "transformed". Quantify ROI and revenue impact.`;
+          regionalTip = '🇺🇸 For US market: ';
+          if (userProfile.seniorityLevel === 'staff' || userProfile.seniorityLevel === 'senior') {
+            personalizedAdvice = `Senior-level: Use STAR method for every bullet. Lead with business impact: "Spearheaded initiative generating $2M ARR" before technical details. Mention scope (team size: ${userProfile.hasLeadershipExperience ? 'led X engineers' : '5-8 engineers'}, budget, timeline).`;
+          } else if (userProfile.hasInternships && userProfile.seniorityLevel === 'entry') {
+            personalizedAdvice = `Entry-level with internships: Perfect! Highlight your ${userProfile.currentTechnologies.slice(0, 3).join(', ')} experience. Apply to: new grad programs (Google APM, Microsoft Explore), YC startups, mid-size tech (Stripe, Databricks). Emphasize learning velocity.`;
+          } else if (userProfile.educationLevel === 'phd') {
+            personalizedAdvice = `PhD advantage: Target research-heavy roles (Google Research, OpenAI, Anthropic). Lead with publications, then technical implementation. Emphasize novel algorithms and scalability.`;
+          } else {
+            personalizedAdvice = `Emphasize innovation, leadership, and business impact. Use strong verbs: "spearheaded", "drove", "transformed". Quantify ROI and revenue impact. Mention cross-functional collaboration.`;
+          }
+          break;
 
         case 'middle_east':
-          // Middle East: Emphasize multinational experience, certifications, large-scale projects
-          return `${baseExample}. 🇦🇪 For Middle East market: Highlight multinational experience, professional certifications, and large-scale infrastructure projects. Emphasize stability and long-term commitment.`;
+          regionalTip = '🇦🇪 For Middle East market: ';
+          if (userProfile.yearsOfExperience >= 5) {
+            personalizedAdvice = `${userProfile.yearsOfExperience}+ years experience is strong for ME! Emphasize: stability (multi-year tenures), professional certifications, large-scale infrastructure. Target: Dubai banks (Emirates NBD, ADCB), oil & gas tech (Aramco, ADNOC), government projects.`;
+          } else if (userProfile.industryFocus.includes('fintech')) {
+            personalizedAdvice = `Fintech background matches ME growth! Target: payment gateways (Network International), neobanks (Liv, Mashreq Neo). Emphasize regulatory compliance, Arabic localization, and Islamic finance knowledge.`;
+          } else {
+            personalizedAdvice = `Highlight multinational experience, professional certifications, and large-scale infrastructure projects. Emphasize long-term commitment and stability.`;
+          }
+          break;
 
         case 'europe':
-          // Europe: Emphasize GDPR, compliance, multilingual skills, EU standards
-          return `${baseExample}. 🇪🇺 For European market: Highlight GDPR compliance, EU standards knowledge, multilingual abilities, and experience with European clients/markets.`;
+          regionalTip = '🇪🇺 For European market: ';
+          if (userProfile.currentTechnologies.length > 0) {
+            personalizedAdvice = `Tech stack (${userProfile.currentTechnologies.slice(0, 3).join(', ')}): Great! EU employers value: GDPR compliance experience, multilingual abilities (mention language skills!), EU data residency knowledge. Target: Berlin startups (N26, Sennder), Amsterdam scale-ups (Adyen, Mollie).`;
+          } else {
+            personalizedAdvice = `Highlight GDPR compliance, EU standards knowledge, multilingual abilities, and experience with European clients/markets.`;
+          }
+          break;
 
         default: // global
-          return `${baseExample}. 🌍 Global tip: Tailor your resume to each target market. Research company culture and local hiring standards.`;
+          regionalTip = '🌍 Global tip: ';
+          personalizedAdvice = `Your profile (${userProfile.seniorityLevel} level, ${userProfile.yearsOfExperience}yrs): Tailor resume to each market. Research company culture and local hiring standards. Leverage your ${userProfile.currentTechnologies.slice(0, 2).join(' + ')} skills.`;
       }
+
+      return `${baseExample}. ${regionalTip}${personalizedAdvice}`;
     };
 
     // ========== BACKEND ENGINEERING ==========
@@ -556,9 +715,22 @@ export function generateFallbackAnalysis(
     formatIssues,
     metricSuggestions,
     analysis,
-    // ML data for training
+    // ML data for training - Region Detection
     detectedRegion: region,
     regionConfidence: regionConfidence,
-    regionIndicators: regionIndicators
+    regionIndicators: regionIndicators,
+    // ML data for training - User Profile (Hyper-Personalization)
+    userProfile: {
+      seniorityLevel: userProfile.seniorityLevel,
+      yearsOfExperience: userProfile.yearsOfExperience,
+      currentTechnologies: userProfile.currentTechnologies,
+      industryFocus: userProfile.industryFocus,
+      hasLeadershipExperience: userProfile.hasLeadershipExperience,
+      hasRemoteExperience: userProfile.hasRemoteExperience,
+      targetCompanies: userProfile.targetCompanies,
+      educationLevel: userProfile.educationLevel,
+      hasInternships: userProfile.hasInternships,
+      hasCertifications: userProfile.hasCertifications
+    }
   };
 }
