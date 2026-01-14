@@ -34,44 +34,130 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   const scoreColor = getScoreColor(score);
 
-  // Critical failures - USE REAL DATA from resume analysis
+  // Critical failures - USE REAL DATA and enhance with contextual messages
   const formatIssues = resume?.formatIssues || [];
+  const ocrText = resume?.ocrText || "";
+
+  // Helper to create context-aware messages
+  const enhanceIssueMessage = (issue: any) => {
+    const issueLower = issue.issue.toLowerCase();
+    let enhancedDescription = issue.atsImpact || "This may affect ATS parsing";
+    let enhancedFix = issue.fix || "Review and update this section";
+
+    // Contact info specific messages
+    if (issueLower.includes("email") && issueLower.includes("missing")) {
+      const hasAt = /@/.test(ocrText);
+      enhancedDescription = hasAt
+        ? "Email found but may be incorrectly formatted or in an image. Place it in plain text at the top."
+        : "No email address detected. ATS systems require contact information to be in plain text.";
+      enhancedFix = "Add your professional email (firstname.lastname@domain.com) in the header section as plain text, not in an image.";
+    }
+
+    if (issueLower.includes("phone") && issueLower.includes("missing")) {
+      const hasPhone = /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/.test(ocrText);
+      enhancedDescription = hasPhone
+        ? "Phone number detected but may not be in standard format for ATS parsing."
+        : "No phone number detected. Include it for easier recruiter contact.";
+      enhancedFix = "Add phone number in standard format: +1-555-123-4567 or (555) 123-4567 in the header.";
+    }
+
+    // Capitalization specific messages
+    if (issueLower.includes("capitalization")) {
+      const matches = ocrText.match(/\b(github|linkedin|javascript|typescript|nodejs|mongodb|postgresql|mysql|aws|gcp|api)\b/gi) || [];
+      const incorrect = matches.filter((m: string) => {
+        const lower = m.toLowerCase();
+        return (lower === 'github' && m !== 'GitHub') ||
+               (lower === 'linkedin' && m !== 'LinkedIn') ||
+               (lower === 'javascript' && m !== 'JavaScript') ||
+               (lower === 'typescript' && m !== 'TypeScript') ||
+               (lower === 'nodejs' && m !== 'Node.js') ||
+               (lower === 'postgresql' && m !== 'PostgreSQL') ||
+               (lower === 'mysql' && m !== 'MySQL') ||
+               (lower === 'mongodb' && m !== 'MongoDB');
+      });
+
+      if (incorrect.length > 0) {
+        const examples = incorrect.slice(0, 3).map((term: string) => {
+          const lower = term.toLowerCase();
+          const correct = lower === 'github' ? 'GitHub' :
+                         lower === 'linkedin' ? 'LinkedIn' :
+                         lower === 'javascript' ? 'JavaScript' :
+                         lower === 'typescript' ? 'TypeScript' :
+                         lower === 'nodejs' ? 'Node.js' :
+                         lower === 'postgresql' ? 'PostgreSQL' :
+                         lower === 'mysql' ? 'MySQL' :
+                         lower === 'mongodb' ? 'MongoDB' : term;
+          return `${term} → ${correct}`;
+        }).join(', ');
+
+        enhancedDescription = `Found ${incorrect.length} technical terms with incorrect capitalization. ATS keyword matching is case-sensitive.`;
+        enhancedFix = `Correct: ${examples}. Use proper capitalization for all technical terms.`;
+      }
+    }
+
+    // Repetitive patterns specific messages
+    if (issueLower.includes("repetitive") || issueLower.includes("sentence starters")) {
+      const lines = ocrText.split('\n').filter((l: string) => l.trim().length > 20);
+      const starters = lines.map((l: string) => l.trim().split(/\s+/)[0]?.toLowerCase()).filter(Boolean);
+      const starterCounts: Record<string, number> = {};
+      starters.forEach((s: string) => starterCounts[s] = (starterCounts[s] || 0) + 1);
+
+      const repetitive = Object.entries(starterCounts)
+        .filter(([_, count]) => count >= 3)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3);
+
+      if (repetitive.length > 0) {
+        const examples = repetitive.map(([word, count]) => `"${word}" (${count}x)`).join(', ');
+        enhancedDescription = `Detected repetitive action verbs: ${examples}. Vary your verbs to show diverse skills.`;
+        enhancedFix = `Replace repetitions with alternatives. E.g., "developed" → "engineered", "built", "architected"; "led" → "directed", "managed", "spearheaded".`;
+      }
+    }
+
+    return { enhancedDescription, enhancedFix };
+  };
+
   const criticalFailures = formatIssues
     .filter((issue: any) => issue.severity === "high" || issue.severity === "critical")
     .slice(0, 3)
-    .map((issue: any) => ({
-      icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-            issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-            issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
-            issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
-            "error",
-      title: issue.issue,
-      description: issue.atsImpact || "This may affect ATS parsing",
-      severity: issue.severity,
-      howToFix: issue.fix || "Review and update this section"
-    }));
+    .map((issue: any) => {
+      const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
+      return {
+        icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+              issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+              "error",
+        title: issue.issue,
+        description: enhancedDescription,
+        severity: issue.severity,
+        howToFix: enhancedFix
+      };
+    });
 
   // If no high-severity issues found, check for medium severity
   if (criticalFailures.length === 0) {
     const mediumIssues = formatIssues
       .filter((issue: any) => issue.severity === "medium")
       .slice(0, 3)
-      .map((issue: any) => ({
-        icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
-              issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
-              "info",
-        title: issue.issue,
-        description: issue.atsImpact || "This may affect ATS parsing",
-        severity: issue.severity,
-        howToFix: issue.fix || "Review and update this section"
-      }));
+      .map((issue: any) => {
+        const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
+        return {
+          icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+                issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+                issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+                issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+                "info",
+          title: issue.issue,
+          description: enhancedDescription,
+          severity: issue.severity,
+          howToFix: enhancedFix
+        };
+      });
     criticalFailures.push(...mediumIssues);
   }
 
-  // Contact & Socials check - DETECT from OCR text
-  const ocrText = resume?.ocrText || "";
+  // Contact & Socials check - DETECT from OCR text (already declared above)
   const emailDetected = /@/.test(ocrText) || !!resume?.email;
   const phoneDetected = /\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(ocrText) || !!resume?.phone;
   const linkedinDetected = /linkedin\.com/i.test(ocrText) || !!resume?.linkedin;
