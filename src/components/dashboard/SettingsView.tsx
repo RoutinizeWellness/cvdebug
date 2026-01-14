@@ -57,6 +57,28 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
     showNotification("API key generation requested");
   };
 
+  // Handle documentation
+  const handleDocumentation = () => {
+    window.open("/blog", "_blank");
+  };
+
+  // Handle support
+  const handleSupport = () => {
+    window.open("/contact", "_blank");
+  };
+
+  // Handle password update
+  const handleUpdatePassword = () => {
+    showNotification("Password update functionality coming soon");
+  };
+
+  // Handle account deletion
+  const handleDeleteAccount = () => {
+    if (window.confirm("Are you sure you want to delete all your account data? This action cannot be undone.")) {
+      showNotification("Account deletion requested - please contact support to complete");
+    }
+  };
+
   // Calculate progress percentage (assuming 30 day sprint)
   const totalSprintDays = 30;
   const daysElapsed = totalSprintDays - sprintDaysLeft;
@@ -80,10 +102,16 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors">
+            <button
+              onClick={handleDocumentation}
+              className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+            >
               Documentation
             </button>
-            <button className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors">
+            <button
+              onClick={handleSupport}
+              className="px-4 py-2 rounded-lg border border-[#E2E8F0] text-sm font-medium text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+            >
               Support
             </button>
           </div>
@@ -256,7 +284,10 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   </div>
                 </div>
                 <div className="mt-2">
-                  <button className="px-4 py-2 rounded-lg bg-[#FFFFFF] text-[#0F172A] text-sm font-medium hover:bg-[#F8FAFC] border border-slate-900 transition-colors">
+                  <button
+                    onClick={handleUpdatePassword}
+                    className="px-4 py-2 rounded-lg bg-[#FFFFFF] text-[#0F172A] text-sm font-medium hover:bg-[#F8FAFC] border border-slate-900 transition-colors"
+                  >
                     Update Password
                   </button>
                 </div>
@@ -299,7 +330,10 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                     Deleting your account will remove all your analyzed CVs and reset your sprint progress. This action cannot be undone.
                   </p>
                   <div>
-                    <button className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-[#EF4444] text-sm font-medium hover:bg-red-100 hover:border-red-300 transition-colors">
+                    <button
+                      onClick={handleDeleteAccount}
+                      className="px-4 py-2 rounded-lg border border-red-200 bg-red-50 text-[#EF4444] text-sm font-medium hover:bg-red-100 hover:border-red-300 transition-colors"
+                    >
                       Delete Account Data
                     </button>
                   </div>

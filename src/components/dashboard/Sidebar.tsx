@@ -152,6 +152,17 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           </div>
         )}
 
+        {/* Upgrade Button */}
+        <div className="mx-4 mb-4">
+          <button
+            onClick={() => setShowPricing(true)}
+            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[18px]">workspace_premium</span>
+            {hasActiveSprint ? 'Manage Plan' : 'Upgrade Now'}
+          </button>
+        </div>
+
         {/* User Profile */}
         <div className="p-4 border-t border-slate-100 bg-[#FFFFFF]">
           <div className="flex items-center gap-3 px-2 py-2 hover:bg-[#F8FAFC] rounded-lg transition-colors cursor-pointer">
