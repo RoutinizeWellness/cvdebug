@@ -47,6 +47,86 @@ export function LiveRecruiterSimulation({
 
   const professionalSummary = extractSummary(resumeText);
 
+  // Extract work experience from resume text with enhanced parsing
+  const extractWorkExperience = (text: string): { company: string; duration: string; bullets: string[] } | null => {
+    if (!text) return null;
+
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+    // Enhanced date patterns - matches: 2020-2023, 2020-Present, Jan 2020 - Dec 2023, 2020 - Current, etc.
+    const datePattern = /(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(20\d{2}|19\d{2})\s*[-–—]\s*(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*)?(20\d{2}|present|current|now)/i;
+
+    let company = "";
+    let duration = "";
+    const bullets: string[] = [];
+    let foundExperience = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const lowerLine = line.toLowerCase();
+
+      // Skip header sections
+      if (lowerLine.includes('experience') || lowerLine.includes('education') || lowerLine.includes('skills')) {
+        continue;
+      }
+
+      // Check if this line contains a date range (likely a job entry)
+      if (datePattern.test(line) && !foundExperience) {
+        const dateMatch = line.match(datePattern);
+        if (dateMatch) {
+          duration = dateMatch[0];
+          foundExperience = true;
+
+          // Company name is likely in this line (before the date) or the previous line
+          const companyMatch = line.replace(datePattern, '').replace(/\|/g, '').trim();
+
+          if (companyMatch.length > 2 && companyMatch.length < 100) {
+            // Clean up company name: remove job title separators
+            company = companyMatch.split(/[•\-–—]/)[0].trim();
+            // If company is too short, check previous line
+            if (company.length < 3 && i > 0) {
+              const prevLine = lines[i - 1];
+              if (prevLine.length > 2 && prevLine.length < 100 && !/^[•\-\*]/.test(prevLine)) {
+                company = prevLine.split(/[•\-–—]/)[0].trim();
+              }
+            }
+          } else if (i > 0) {
+            // Company might be in the previous line
+            const prevLine = lines[i - 1];
+            if (prevLine.length > 2 && prevLine.length < 100 && !/^[•\-\*]/.test(prevLine)) {
+              company = prevLine.split(/[•\-–—]/)[0].trim();
+            }
+          }
+        }
+      }
+
+      // Check for bullet points (experience descriptions) - only after we found a job entry
+      if (foundExperience && bullets.length < 3) {
+        if (/^[•\-\*◦‣⦿⦾]/.test(line) || /^\d+[\.)]\s/.test(line)) {
+          const bulletText = line.replace(/^[•\-\*◦‣⦿⦾\d]+[\.)]*\s*/, '').trim();
+          if (bulletText.length > 30 && bulletText.length < 250) {
+            bullets.push(bulletText);
+          }
+        }
+      }
+    }
+
+    // If we found data, return it
+    if (company || bullets.length > 0) {
+      return {
+        company: company || "Professional Experience",
+        duration: duration || "Multiple Years",
+        bullets: bullets.length > 0 ? bullets : [
+          "Specific work experience details not extracted from resume"
+        ]
+      };
+    }
+
+    return null;
+  };
+
+  const workExperience = extractWorkExperience(resumeText);
+
   // Calculate fit score percentage
   const fitScore = Math.min(100, Math.max(0, score));
   const fitLevel = fitScore >= 80 ? "Excellent" : fitScore >= 60 ? "Good" : "Fair";
@@ -307,13 +387,25 @@ export function LiveRecruiterSimulation({
                       <span className="text-[10px] text-[#475569] bg-[#FFFFFF] px-2 py-0.5 rounded border border-[#E2E8F0]">Most Recent</span>
                     </div>
                     <div className="pl-4 border-l-2 border-amber-300">
-                      <h4 className="font-bold text-[#0F172A]">Professional Experience</h4>
-                      <p className="text-xs text-[#475569] mb-2">Various Companies • Multiple Years</p>
-                      <ul className="list-disc list-inside space-y-1 text-[#475569]">
-                        <li>Extensive experience in the field with proven track record</li>
-                        <li>Strong technical skills and ability to deliver results</li>
-                        <li>Collaborated with cross-functional teams on various projects</li>
-                      </ul>
+                      {workExperience ? (
+                        <>
+                          <h4 className="font-bold text-[#0F172A]">{workExperience.company}</h4>
+                          <p className="text-xs text-[#475569] mb-2">{workExperience.duration}</p>
+                          <ul className="list-disc list-inside space-y-1 text-[#475569]">
+                            {workExperience.bullets.map((bullet, idx) => (
+                              <li key={idx}>{bullet}</li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <>
+                          <h4 className="font-bold text-[#0F172A]">Professional Experience</h4>
+                          <p className="text-xs text-[#475569] mb-2">No work experience data extracted</p>
+                          <ul className="list-disc list-inside space-y-1 text-[#475569]">
+                            <li className="text-amber-600">Unable to parse work history from resume text</li>
+                          </ul>
+                        </>
+                      )}
                     </div>
                   </div>
                 </>
