@@ -12,7 +12,24 @@ interface SettingsViewProps {
 
 export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
   const user = useQuery(apiAny.users.currentUser);
+  const resumes = useQuery(apiAny.resumes.getResumes);
   const [shareAnalytics, setShareAnalytics] = useState(true);
+
+  // Get latest resume for score calculation
+  const latestResume = resumes && resumes.length > 0
+    ? resumes.find((r: any) => r.status === "completed" && r.score) || resumes[0]
+    : null;
+
+  const currentScore = latestResume?.score || 0;
+
+  // Calculate score improvement from previous resume (if exists)
+  const previousScore = resumes && resumes.length > 1
+    ? resumes[1]?.score || 0
+    : 0;
+
+  const scoreImprovement = previousScore > 0
+    ? Math.round(currentScore - previousScore)
+    : 0;
 
   // Convex mutations
   const toggleAnalyticsMutation = useMutation(apiAny.userSettings.toggleAnalyticsSharing);
@@ -219,11 +236,19 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                 <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
               </div>
               <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-[#0F172A] font-display">84%</span>
-                <span className="text-[#22C55E] text-sm font-mono flex items-center bg-emerald-50 px-1.5 py-0.5 rounded">
-                  <span className="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
-                  +15%
-                </span>
+                <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
+                {scoreImprovement !== 0 && (
+                  <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
+                    scoreImprovement > 0
+                      ? 'text-[#22C55E] bg-emerald-50'
+                      : 'text-rose-600 bg-rose-50'
+                  }`}>
+                    <span className="material-symbols-outlined text-[14px] mr-0.5">
+                      {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
+                    </span>
+                    {scoreImprovement > 0 ? '+' : ''}{scoreImprovement}%
+                  </span>
+                )}
               </div>
             </div>
 

@@ -226,7 +226,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </div>
             <div className="flex items-center gap-1 mt-2 text-rose-600 text-xs font-mono">
               <span className="material-symbols-outlined text-sm">arrow_downward</span>
-              Impacting match score by -15%
+              Impacting match score by -{criticalErrorsCount * 5}%
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
@@ -444,9 +444,11 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || "Company"}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                          Tech Screen
+                          {app.stage || "In Progress"}
                         </div>
-                        <span className="text-[10px] text-[#64748B]">Tomorrow</span>
+                        <span className="text-[10px] text-[#64748B]">
+                          {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : "Recent"}
+                        </span>
                       </div>
                     </div>
                   ))

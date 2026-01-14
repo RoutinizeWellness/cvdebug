@@ -104,12 +104,41 @@ export function ATSAnalysisReport({
     return "C";
   };
 
-  // Keyword saturation data (simulated)
-  const keywordData = {
-    tech: 85,
-    soft: 60,
-    tools: 75
+  // Keyword saturation data - calculated from REAL matched keywords
+  const calculateKeywordSaturation = (keywords: string[]) => {
+    if (keywords.length === 0) return { tech: 0, soft: 0, tools: 0 };
+
+    const techKeywords = /python|java|javascript|typescript|c\+\+|ruby|go|rust|sql|nosql|mongodb|postgresql|react|angular|vue|node|express|django|flask|spring|aws|azure|gcp|kubernetes|docker|ci\/cd|devops|machine learning|ai|ml|deep learning|neural|data science|analytics|algorithm|api|rest|graphql|microservices|cloud|backend|frontend|fullstack/i;
+    const softKeywords = /leadership|communication|teamwork|collaboration|management|mentoring|problem solving|critical thinking|analytical|creative|adaptable|organized|detail oriented|time management|presentation|stakeholder|cross-functional|agile|scrum|conflict resolution/i;
+    const toolKeywords = /git|github|gitlab|bitbucket|jira|confluence|slack|trello|asana|figma|sketch|photoshop|illustrator|excel|powerpoint|tableau|power bi|salesforce|hubspot|zendesk|postman|jenkins|travis|circleci|terraform|ansible|prometheus|grafana|splunk/i;
+
+    let techCount = 0;
+    let softCount = 0;
+    let toolCount = 0;
+
+    keywords.forEach(kw => {
+      const lower = kw.toLowerCase();
+      if (techKeywords.test(lower)) techCount++;
+      else if (softKeywords.test(lower)) softCount++;
+      else if (toolKeywords.test(lower)) toolCount++;
+      else techCount++; // Default to tech if unclassified
+    });
+
+    const total = keywords.length;
+
+    // Calculate percentages - realistic, not inflated
+    const techPercent = total > 0 ? Math.round((techCount / total) * 100) : 0;
+    const softPercent = total > 0 ? Math.round((softCount / total) * 100) : 0;
+    const toolPercent = total > 0 ? Math.round((toolCount / total) * 100) : 0;
+
+    return {
+      tech: Math.min(100, techPercent),
+      soft: Math.min(100, softPercent),
+      tools: Math.min(100, toolPercent)
+    };
   };
+
+  const keywordData = calculateKeywordSaturation(matchedKeywords);
 
   // Impact Density: Detect quantifiable metrics in resume text
   const detectMetrics = (text: string) => {
