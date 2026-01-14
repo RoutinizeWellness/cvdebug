@@ -13,7 +13,7 @@ interface MissionControlLayoutProps {
 }
 
 export function MissionControlLayout({
-  userName = "Alex",
+  userName = "User",
   onNewApplication,
   onLogout,
 }: MissionControlLayoutProps) {

@@ -1,6 +1,11 @@
 import { Bug, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useMemo } from "react";
+
+const apiAny = api as any;
 
 interface Error {
   type: "CRIT" | "WARN" | "INFO";
@@ -9,23 +14,75 @@ interface Error {
 }
 
 export function TopErrors() {
-  const errors: Error[] = [
-    {
-      type: "CRIT",
-      message: "Date format inconsistency found",
-      details: "at Experience.block (Line 42)",
-    },
-    {
-      type: "WARN",
-      message: "Missing keyword 'TypeScript'",
-      details: "match_score impact: -5%",
-    },
-    {
-      type: "WARN",
-      message: "Broken hyperlink detected",
-      details: "at Projects.Link (Line 89)",
-    },
-  ];
+  // Fetch REAL data from backend
+  const resumes = useQuery(apiAny.resumes.getResumes);
+
+  const { errors, resumeTitle } = useMemo(() => {
+    const latestResume = resumes && resumes.length > 0
+      ? resumes.find((r: any) => r.status === "completed" && r.score) || resumes[0]
+      : null;
+
+    if (!latestResume) {
+      return {
+        errors: [],
+        resumeTitle: "No CV loaded"
+      };
+    }
+
+    const calculatedErrors: Error[] = [];
+
+    // Get missing keywords
+    const missingKeywords = latestResume.missingKeywords || [];
+    const topMissingKeywords = Array.isArray(missingKeywords)
+      ? missingKeywords.slice(0, 3)
+      : [];
+
+    // Add missing keywords as errors
+    topMissingKeywords.forEach((kw: any, index: number) => {
+      const keyword = typeof kw === 'string' ? kw : kw.keyword || kw.term;
+      if (keyword && index === 0) {
+        calculatedErrors.push({
+          type: "CRIT",
+          message: `Missing critical keyword "${keyword}"`,
+          details: "match_score impact: -10%",
+        });
+      } else if (keyword) {
+        calculatedErrors.push({
+          type: "WARN",
+          message: `Missing keyword "${keyword}"`,
+          details: "match_score impact: -5%",
+        });
+      }
+    });
+
+    // Add formatting issues from resume analysis
+    const formatIssues = latestResume.formatIssues || [];
+    if (formatIssues.length > 0) {
+      const topIssue = formatIssues[0];
+      const issueMessage = typeof topIssue === 'string' ? topIssue : topIssue.message || topIssue.issue;
+      if (issueMessage) {
+        calculatedErrors.push({
+          type: calculatedErrors.length === 0 ? "CRIT" : "WARN",
+          message: issueMessage,
+          details: "formatting - affects ATS parsing",
+        });
+      }
+    }
+
+    // If no errors, add success message
+    if (calculatedErrors.length === 0) {
+      calculatedErrors.push({
+        type: "INFO",
+        message: "No critical issues found",
+        details: "Resume is well-optimized",
+      });
+    }
+
+    return {
+      errors: calculatedErrors.slice(0, 3), // Show max 3 errors
+      resumeTitle: latestResume.title || latestResume.fileName || "Master_CV.pdf"
+    };
+  }, [resumes]);
 
   const getErrorColor = (type: string) => {
     switch (type) {
@@ -45,7 +102,7 @@ export function TopErrors() {
           <Bug className="h-5 w-5 text-rose-500" />
           Top Errors
         </h3>
-        <span className="text-xs text-[#64748B] font-mono">Master_CV_v4.pdf</span>
+        <span className="text-xs text-[#64748B] font-mono">{resumeTitle}</span>
       </div>
 
       <div className="glass-panel rounded-xl flex flex-col h-full bg-[#0d1117] border-[#E2E8F0] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] shadow-black/50">

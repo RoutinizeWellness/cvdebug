@@ -1,5 +1,10 @@
 import { Eye, Send, AlertTriangle, TrendingUp, Zap, ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useMemo } from "react";
+
+const apiAny = api as any;
 
 interface Metric {
   title: string;
@@ -20,48 +25,87 @@ interface MetricsGridProps {
 }
 
 export function MetricsGrid({ metrics }: MetricsGridProps) {
-  const defaultMetrics: Metric[] = [
-    {
-      title: "Visibility Score",
-      value: "88",
-      subtitle: "/100",
-      trend: {
-        direction: "up",
-        value: "+5%",
-        label: "this week",
-      },
-      icon: Eye,
-      progress: 88,
-      variant: "success",
-    },
-    {
-      title: "Active Applications",
-      value: "12",
-      trend: {
-        direction: "up",
-        value: "2",
-        label: "interviews scheduled",
-      },
-      icon: Send,
-      progress: 40,
-      variant: "default",
-    },
-    {
-      title: "Missing Signals",
-      value: "3",
-      subtitle: "CRITICAL",
-      trend: {
-        direction: "down",
-        value: "-15%",
-        label: "Impacting match score by",
-      },
-      icon: AlertTriangle,
-      progress: 25,
-      variant: "danger",
-    },
-  ];
+  // Fetch REAL data from backend
+  const resumes = useQuery(apiAny.resumes.getResumes);
+  const applications = useQuery(apiAny.jobTracker.getJobHistory);
 
-  const data = metrics || defaultMetrics;
+  const calculatedMetrics: Metric[] = useMemo(() => {
+    // Get latest resume with completed analysis
+    const latestResume = resumes && resumes.length > 0
+      ? resumes.find((r: any) => r.status === "completed" && r.score) || resumes[0]
+      : null;
+
+    const currentScore = latestResume?.score || 0;
+
+    // Calculate score improvement from previous resume
+    const previousScore = resumes && resumes.length > 1
+      ? resumes[1]?.score || 0
+      : 0;
+
+    const scoreImprovement = previousScore > 0
+      ? Math.round(currentScore - previousScore)
+      : 0;
+
+    // Count active applications
+    const activeApplications = applications?.filter((app: any) =>
+      app.status === "applied" || app.status === "interviewing"
+    ).length || 0;
+
+    // Count interviewing applications
+    const interviewingCount = applications?.filter((app: any) =>
+      app.status === "interviewing"
+    ).length || 0;
+
+    // Get missing keywords from latest resume
+    const missingKeywords = latestResume?.missingKeywords || [];
+    const criticalKeywords = Array.isArray(missingKeywords)
+      ? missingKeywords.slice(0, 3)
+      : [];
+    const missingCount = criticalKeywords.length;
+
+    return [
+      {
+        title: "Visibility Score",
+        value: Math.round(currentScore),
+        subtitle: "/100",
+        trend: scoreImprovement !== 0 ? {
+          direction: scoreImprovement > 0 ? "up" : "down",
+          value: `${scoreImprovement > 0 ? '+' : ''}${scoreImprovement}%`,
+          label: "from last scan",
+        } : undefined,
+        icon: Eye,
+        progress: Math.round(currentScore),
+        variant: currentScore >= 75 ? "success" : currentScore >= 50 ? "warning" : "danger",
+      },
+      {
+        title: "Active Applications",
+        value: activeApplications,
+        trend: interviewingCount > 0 ? {
+          direction: "up",
+          value: interviewingCount.toString(),
+          label: interviewingCount === 1 ? "interview scheduled" : "interviews scheduled",
+        } : undefined,
+        icon: Send,
+        progress: Math.min(100, activeApplications * 10),
+        variant: "default",
+      },
+      {
+        title: "Missing Signals",
+        value: missingCount,
+        subtitle: missingCount > 0 ? "CRITICAL" : "",
+        trend: missingCount > 0 ? {
+          direction: "down",
+          value: `-${missingCount * 5}%`,
+          label: "Impacting match score by",
+        } : undefined,
+        icon: AlertTriangle,
+        progress: missingCount > 0 ? Math.min(100, missingCount * 10) : 0,
+        variant: missingCount > 0 ? "danger" : "success",
+      },
+    ];
+  }, [resumes, applications]);
+
+  const data = metrics || calculatedMetrics;
 
   const getVariantColors = (variant: string) => {
     switch (variant) {
