@@ -165,10 +165,15 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
 
         {/* User Profile */}
         <div className="p-4 border-t border-slate-100 bg-[#FFFFFF]">
-          <div className="flex items-center gap-3 px-2 py-2 hover:bg-[#F8FAFC] rounded-lg transition-colors cursor-pointer">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 border border-indigo-200 flex items-center justify-center text-xs font-bold text-indigo-700">
-              {(currentUser?.name || user?.fullName || "U").charAt(0).toUpperCase()}
-            </div>
+          <div className="flex items-center gap-3 px-2 py-2">
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-8 w-8",
+                  userButtonTrigger: "hover:opacity-80 transition-opacity"
+                }
+              }}
+            />
             <div className="flex flex-col">
               <span className="text-sm font-medium text-[#0F172A]">
                 {currentUser?.name || user?.fullName || "User"}

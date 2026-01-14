@@ -99,10 +99,10 @@ export default function SoftwareEngineerKeywordSniper() {
   ];
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
-          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+          background: #F8FAFC;
         }
       `}</style>
 
@@ -134,7 +134,7 @@ export default function SoftwareEngineerKeywordSniper() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-[#22C55E]/10 px-3 py-1 text-sm font-medium leading-6 text-green-400 ring-1 ring-inset ring-green-500/20 backdrop-blur-sm">
+              <div className="rounded-full bg-[#22C55E]/10 px-3 py-1 text-sm font-medium leading-6 text-[#22C55E] ring-1 ring-inset ring-green-500/20">
                 <Code2 className="inline h-4 w-4 mr-1" /> Trusted by 2,500+ Software Engineers
               </div>
             </motion.div>
@@ -143,10 +143,10 @@ export default function SoftwareEngineerKeywordSniper() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl"
+              className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               Keyword Sniper for{" "}
-              <span className="bg-gradient-to-r from-green-400 to-primary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] bg-clip-text text-transparent">
                 Software Engineers
               </span>
             </motion.h1>
@@ -155,7 +155,7 @@ export default function SoftwareEngineerKeywordSniper() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-6 text-lg leading-8 text-slate-400 max-w-2xl mx-auto"
+              className="mt-6 text-lg leading-8 text-[#475569] max-w-2xl mx-auto"
             >
               Your React and AWS experience is invisible to 70% of tech company ATS systems.
               Snipe missing keywords and see exactly what breaks in the parsing pipeline.
@@ -169,7 +169,7 @@ export default function SoftwareEngineerKeywordSniper() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-green-500 to-primary px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
               >
                 Scan My Resume (Free)
               </Button>
@@ -182,7 +182,7 @@ export default function SoftwareEngineerKeywordSniper() {
         </section>
 
         {/* Tech Keywords Cloud */}
-        <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
+        <section className="border-y border-[#E2E8F0] bg-[#FFFFFF] py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <p className="text-center text-sm font-medium text-[#64748B] mb-6">
               Optimized keyword detection for:
@@ -195,7 +195,7 @@ export default function SoftwareEngineerKeywordSniper() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.04 }}
-                  className="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-sm font-mono text-slate-300 hover:border-green-500 hover:text-green-400 transition-colors"
+                  className="px-4 py-2 rounded-full bg-[#FFFFFF] border border-[#E2E8F0] text-sm font-mono text-[#475569] hover:border-[#22C55E] hover:text-[#22C55E] transition-colors"
                 >
                   {tech}
                 </motion.span>
@@ -209,18 +209,18 @@ export default function SoftwareEngineerKeywordSniper() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 text-center">
               <div>
-                <div className="text-4xl font-bold text-white font-mono">94%</div>
-                <div className="mt-2 text-sm text-slate-400">
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">94%</div>
+                <div className="mt-2 text-sm text-[#475569]">
                   Average ATS score after keyword optimization
                 </div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white font-mono">5.3x</div>
-                <div className="mt-2 text-sm text-slate-400">More recruiter responses</div>
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">5.3x</div>
+                <div className="mt-2 text-sm text-[#475569]">More recruiter responses</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white font-mono">&lt;10s</div>
-                <div className="mt-2 text-sm text-slate-400">To identify missing keywords</div>
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">&lt;10s</div>
+                <div className="mt-2 text-sm text-[#475569]">To identify missing keywords</div>
               </div>
             </div>
           </div>
@@ -236,10 +236,10 @@ export default function SoftwareEngineerKeywordSniper() {
               transition={{ duration: 0.6 }}
               className="mx-auto max-w-2xl text-center mb-16"
             >
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
                 Built for Software Engineering Resumes
               </h2>
-              <p className="mt-4 text-lg text-slate-400">
+              <p className="mt-4 text-lg text-[#475569]">
                 Our keyword sniper understands tech stacks, frameworks, and engineering ATS
                 requirements used by FAANG and top tech companies.
               </p>
@@ -253,14 +253,14 @@ export default function SoftwareEngineerKeywordSniper() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:hover:border-[#3B82F6]/50 transition-colors duration-300"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#22C55E]/10 blur-2xl transition-all group-hover:scale-110"></div>
-                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#22C55E]/10 text-green-400 ring-1 ring-inset ring-green-500/20">
+                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#22C55E]/10 text-[#22C55E] ring-1 ring-inset ring-green-500/20">
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-semibold leading-8 text-white">{feature.title}</h3>
-                  <p className="mt-2 text-base leading-7 text-slate-400">{feature.description}</p>
+                  <h3 className="text-lg font-semibold leading-8 text-[#0F172A]">{feature.title}</h3>
+                  <p className="mt-2 text-base leading-7 text-[#475569]">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -268,9 +268,9 @@ export default function SoftwareEngineerKeywordSniper() {
         </section>
 
         {/* Testimonials */}
-        <section className="py-16 bg-slate-900/50">
+        <section className="py-16 bg-[#F8FAFC]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-white text-center mb-12">
+            <h2 className="text-2xl font-bold text-[#0F172A] text-center mb-12">
               Success Stories from Software Engineers
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -281,16 +281,16 @@ export default function SoftwareEngineerKeywordSniper() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card rounded-xl p-6"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-xl p-6"
                 >
-                  <p className="text-slate-300 mb-4 font-mono text-sm">"{testimonial.text}"</p>
+                  <p className="text-[#475569] mb-4 font-mono text-sm">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-[#22C55E]/20 flex items-center justify-center">
-                      <Code2 className="h-5 w-5 text-green-400" />
+                      <Code2 className="h-5 w-5 text-[#22C55E]" />
                     </div>
                     <div>
-                      <div className="font-semibold text-white">{testimonial.name}</div>
-                      <div className="text-sm text-slate-400">{testimonial.role}</div>
+                      <div className="font-semibold text-[#0F172A]">{testimonial.name}</div>
+                      <div className="text-sm text-[#475569]">{testimonial.role}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -301,27 +301,27 @@ export default function SoftwareEngineerKeywordSniper() {
 
         {/* CTA Section */}
         <section className="relative isolate mt-16 px-6 py-24 sm:mt-24 sm:px-16 lg:px-24">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.slate.900),#020617)] opacity-80"></div>
+          
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-card mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
+            className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
           >
             <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#22C55E]/20 blur-[100px]"></div>
 
-            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
               Ready to Pass FAANG ATS Filters?
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-slate-300">
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-[#475569]">
               Join 2,500+ software engineers who optimized their keywords and landed interviews at
               Google, Meta, Amazon, and top tech companies.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-green-500 to-primary px-8 py-4 text-lg font-bold text-white shadow-2xl transition-all hover:scale-105 hover:from-green-600 hover:to-indigo-500 sm:w-auto"
+                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#22C55E] hover:to-[#8B5CF6] sm:w-auto"
               >
                 Run Keyword Sniper (Free)
               </Button>

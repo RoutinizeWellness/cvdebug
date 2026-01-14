@@ -84,10 +84,10 @@ export default function ATSScannerNurses() {
   ];
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
-          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+          background: #F8FAFC;
         }
       `}</style>
 
@@ -119,7 +119,7 @@ export default function ATSScannerNurses() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium leading-6 text-primary ring-1 ring-inset ring-primary/20 backdrop-blur-sm">
+              <div className="rounded-full bg-[#3B82F6]/10 px-3 py-1 text-sm font-medium leading-6 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
                 <Heart className="inline h-4 w-4 mr-1" /> Trusted by 500+ Nurses
               </div>
             </motion.div>
@@ -128,10 +128,10 @@ export default function ATSScannerNurses() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl"
+              className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               ATS Resume Scanner Built for{" "}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
                 Nurses
               </span>
             </motion.h1>
@@ -140,7 +140,7 @@ export default function ATSScannerNurses() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-6 text-lg leading-8 text-slate-400 max-w-2xl mx-auto"
+              className="mt-6 text-lg leading-8 text-[#475569] max-w-2xl mx-auto"
             >
               70% of nursing applications are rejected before a human sees them. See what the
               hospital's ATS bot sees and fix critical errors in your RN/LPN resume in seconds.
@@ -154,7 +154,7 @@ export default function ATSScannerNurses() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
               >
                 Scan My Nursing Resume Free
               </Button>
@@ -167,22 +167,22 @@ export default function ATSScannerNurses() {
         </section>
 
         {/* Stats Section */}
-        <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
+        <section className="border-y border-[#E2E8F0] bg-[#FFFFFF] py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 text-center">
               <div>
-                <div className="text-4xl font-bold text-white">89%</div>
-                <div className="mt-2 text-sm text-slate-400">
+                <div className="text-4xl font-bold text-[#0F172A]">89%</div>
+                <div className="mt-2 text-sm text-[#64748B]">
                   Average ATS score for nurses after fixes
                 </div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white">3.2x</div>
-                <div className="mt-2 text-sm text-slate-400">More interviews on average</div>
+                <div className="text-4xl font-bold text-[#0F172A]">3.2x</div>
+                <div className="mt-2 text-sm text-[#64748B]">More interviews on average</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white">10 sec</div>
-                <div className="mt-2 text-sm text-slate-400">To see what ATS bots see</div>
+                <div className="text-4xl font-bold text-[#0F172A]">10 sec</div>
+                <div className="mt-2 text-sm text-[#64748B]">To see what ATS bots see</div>
               </div>
             </div>
           </div>
@@ -198,10 +198,10 @@ export default function ATSScannerNurses() {
               transition={{ duration: 0.6 }}
               className="mx-auto max-w-2xl text-center mb-16"
             >
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
                 Built Specifically for Healthcare Resumes
               </h2>
-              <p className="mt-4 text-lg text-slate-400">
+              <p className="mt-4 text-lg text-[#475569]">
                 Our scanner understands nursing terminology, certifications, and healthcare ATS
                 requirements.
               </p>
@@ -215,14 +215,14 @@ export default function ATSScannerNurses() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300"
+                  className="group relative overflow-hidden rounded-2xl p-8 bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-colors duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-primary/10 blur-2xl transition-all group-hover:scale-110"></div>
-                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-inset ring-primary/20">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#3B82F6]/10 blur-2xl transition-all group-hover:scale-110"></div>
+                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-semibold leading-8 text-white">{feature.title}</h3>
-                  <p className="mt-2 text-base leading-7 text-slate-400">{feature.description}</p>
+                  <h3 className="text-lg font-semibold leading-8 text-[#0F172A]">{feature.title}</h3>
+                  <p className="mt-2 text-base leading-7 text-[#475569]">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -230,9 +230,9 @@ export default function ATSScannerNurses() {
         </section>
 
         {/* Testimonials */}
-        <section className="py-16 bg-slate-900/50">
+        <section className="py-16 bg-[#FFFFFF]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-white text-center mb-12">
+            <h2 className="text-2xl font-bold text-[#0F172A] text-center mb-12">
               Success Stories from Nurses Like You
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -243,16 +243,16 @@ export default function ATSScannerNurses() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card rounded-xl p-6"
+                  className="rounded-xl p-6 bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <p className="text-slate-300 mb-4">"{testimonial.text}"</p>
+                  <p className="text-[#475569] mb-4">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Heart className="h-5 w-5 text-primary" />
+                    <div className="h-10 w-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center">
+                      <Heart className="h-5 w-5 text-[#3B82F6]" />
                     </div>
                     <div>
-                      <div className="font-semibold text-white">{testimonial.name}</div>
-                      <div className="text-sm text-slate-400">{testimonial.role}</div>
+                      <div className="font-semibold text-[#0F172A]">{testimonial.name}</div>
+                      <div className="text-sm text-[#64748B]">{testimonial.role}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -263,26 +263,25 @@ export default function ATSScannerNurses() {
 
         {/* CTA Section */}
         <section className="relative isolate mt-16 px-6 py-24 sm:mt-24 sm:px-16 lg:px-24">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.slate.900),#020617)] opacity-80"></div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-card mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
+            className="mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
           >
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-primary/30 blur-[100px]"></div>
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#3B82F6]/30 blur-[100px]"></div>
 
-            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
               Ready to Get More Interview Callbacks?
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-slate-300">
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-[#475569]">
               Join 500+ nurses who fixed their ATS parsing errors and landed their dream positions.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-primary to-indigo-600 px-8 py-4 text-lg font-bold text-white shadow-2xl transition-all hover:scale-105 hover:from-primary hover:to-indigo-500 sm:w-auto"
+                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#3B82F6] hover:to-[#3B82F6] sm:w-auto"
               >
                 Scan My Resume Now (Free)
               </Button>

@@ -38,7 +38,7 @@ export function NewNavbar() {
             onClick={() => navigate("/")}
           >
             <img
-              src="https://harmless-tapir-303.convex.cloud/api/storage/58f3c7a0-ef2d-45f1-9316-8400fefdb787"
+              src="https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f"
               alt="CVDebug Logo"
               className="h-8"
             />

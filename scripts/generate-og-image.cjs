@@ -2,6 +2,8 @@ const sharp = require('sharp');
 const path = require('path');
 
 const publicDir = path.join(__dirname, '../public');
+// Note: This uses the local logo.png file in public directory
+// If updating to remote logo, download from: https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f
 const logoPath = path.join(publicDir, 'logo.png');
 const outputPath = path.join(publicDir, 'og-image.png');
 

@@ -22,14 +22,11 @@ export function Logo({
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <div className="relative">
-        {/* Glow effect behind logo */}
-        <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
         <img
-          src="/logo.png"
+          src="https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f"
           alt="CVDebug Logo"
           className={cn(
-            "h-8 w-auto relative z-10 drop-shadow-lg transition-transform duration-300 hover:scale-110",
+            "h-8 w-auto relative z-10 transition-transform duration-300 hover:scale-110",
             iconClassName
           )}
         />

@@ -61,7 +61,7 @@ export function ConfirmationDialog({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="glass-panel w-full max-w-lg rounded-xl shadow-2xl flex flex-col overflow-hidden relative border-t border-slate-600/50"
+              className="bg-[#FFFFFF] w-full max-w-lg rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] flex flex-col overflow-hidden relative border border-[#E2E8F0]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Decorative top line */}
@@ -70,34 +70,34 @@ export function ConfirmationDialog({
               {/* Close Button */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-1 rounded-md hover:bg-white/5"
+                className="absolute top-4 right-4 text-[#64748B] hover:text-[#0F172A] transition-colors p-1 rounded-md hover:bg-[#F8FAFC]"
               >
                 <X className="h-5 w-5" />
               </button>
 
               {/* Modal Header */}
               <div className="p-6 pb-0 flex flex-col items-center sm:items-start text-center sm:text-left">
-                <div className="w-12 h-12 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4 text-red-500">
+                <div className="w-12 h-12 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mb-4 text-red-500">
                   <AlertTriangle className="h-6 w-6" />
                 </div>
-                <h2 className="text-xl font-bold text-white tracking-tight">{title}</h2>
+                <h2 className="text-xl font-bold text-[#0F172A] tracking-tight">{title}</h2>
               </div>
 
               {/* Modal Body */}
               <div className="p-6">
-                <p className="text-slate-300 text-base leading-relaxed">
+                <p className="text-[#475569] text-base leading-relaxed">
                   {description}
                   {itemName && (
                     <>
                       {" "}
-                      <span className="bg-slate-800 border border-slate-700 text-white px-1.5 py-0.5 rounded text-sm font-mono mx-0.5">
+                      <span className="bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] px-1.5 py-0.5 rounded text-sm font-mono mx-0.5">
                         {itemName}
                       </span>
                       ?
                     </>
                   )}
                 </p>
-                <p className="text-slate-400 text-sm mt-3 leading-relaxed">
+                <p className="text-[#64748B] text-sm mt-3 leading-relaxed">
                   This action cannot be undone. All logs, analytics data, and associated
                   debugging sessions will be permanently removed from our servers.
                 </p>
@@ -105,13 +105,13 @@ export function ConfirmationDialog({
                 {/* Confirmation Input */}
                 {requiresTyping && (
                   <div className="mt-6">
-                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2">
                       Type{" "}
-                      <span className="text-white select-all">{confirmationWord}</span> to
+                      <span className="text-[#0F172A] select-all">{confirmationWord}</span> to
                       confirm
                     </label>
                     <input
-                      className="w-full bg-slate-900/80 border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-600 focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all outline-none font-mono text-sm shadow-inner"
+                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-[#64748B] focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all outline-none font-mono text-sm"
                       placeholder={confirmationWord}
                       type="text"
                       value={typedText}
@@ -123,10 +123,10 @@ export function ConfirmationDialog({
               </div>
 
               {/* Modal Footer */}
-              <div className="p-6 pt-2 flex flex-col sm:flex-row gap-3 sm:justify-end bg-slate-900/30 border-t border-slate-700/50">
+              <div className="p-6 pt-2 flex flex-col sm:flex-row gap-3 sm:justify-end bg-[#F8FAFC] border-t border-[#E2E8F0]">
                 <button
                   onClick={handleClose}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white bg-transparent border border-slate-600 hover:bg-slate-800 transition-all focus:ring-2 focus:ring-slate-500/50 outline-none"
+                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] hover:text-[#0F172A] bg-transparent border border-[#E2E8F0] hover:bg-[#FFFFFF] transition-all focus:ring-2 focus:ring-[#3B82F6]/50 outline-none"
                 >
                   Cancel
                 </button>
@@ -135,8 +135,8 @@ export function ConfirmationDialog({
                   disabled={!isConfirmEnabled}
                   className={`px-5 py-2.5 rounded-lg text-sm font-bold text-white transition-all flex items-center justify-center gap-2 focus:ring-2 focus:ring-red-500/50 outline-none shadow-md ${
                     isConfirmEnabled
-                      ? "bg-gradient-to-r from-red-600 to-red-700 hover:shadow-lg hover:shadow-red-900/40"
-                      : "bg-slate-700 cursor-not-allowed opacity-50"
+                      ? "bg-gradient-to-r from-red-600 to-red-700 hover:shadow-lg hover:shadow-red-900/20"
+                      : "bg-[#E2E8F0] cursor-not-allowed opacity-50"
                   }`}
                 >
                   <Trash2 className="h-4 w-4" />

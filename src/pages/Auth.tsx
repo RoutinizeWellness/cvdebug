@@ -154,7 +154,7 @@ export default function AuthPage() {
         </div>
 
         <div className="relative z-20 flex flex-col justify-between h-full p-12">
-          {/* Logo with premium glow effect */}
+          {/* Logo */}
           <div>
             <motion.div
               className="mb-8 relative inline-block"
@@ -162,9 +162,7 @@ export default function AuthPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {/* Glow effect behind logo */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-xl blur-xl opacity-70"></div>
-              <div className="relative bg-[#FFFFFF] backdrop-blur-sm border border-[#E2E8F0] rounded-xl px-6 py-4 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+              <div className="relative bg-[#FFFFFF] backdrop-blur-sm border border-[#E2E8F0] rounded-xl px-6 py-4">
                 <Logo showText={true} iconClassName="h-10 w-auto" textClassName="text-2xl" />
               </div>
             </motion.div>

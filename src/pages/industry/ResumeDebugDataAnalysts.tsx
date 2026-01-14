@@ -70,10 +70,10 @@ export default function ResumeDebugDataAnalysts() {
   ];
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
-          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+          background: #F8FAFC;
         }
       `}</style>
 
@@ -105,7 +105,7 @@ export default function ResumeDebugDataAnalysts() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium leading-6 text-primary ring-1 ring-inset ring-primary/20 backdrop-blur-sm">
+              <div className="rounded-full bg-[#3B82F6]/10 px-3 py-1 text-sm font-medium leading-6 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
                 <Database className="inline h-4 w-4 mr-1" /> Trusted by 1,200+ Data Analysts
               </div>
             </motion.div>
@@ -114,10 +114,10 @@ export default function ResumeDebugDataAnalysts() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl"
+              className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               Resume Debug Tool for{" "}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
                 Data Analysts
               </span>
             </motion.h1>
@@ -126,7 +126,7 @@ export default function ResumeDebugDataAnalysts() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="mt-6 text-lg leading-8 text-slate-400 max-w-2xl mx-auto"
+              className="mt-6 text-lg leading-8 text-[#475569] max-w-2xl mx-auto"
             >
               Your SQL and Python skills are invisible to 70% of ATS systems. Debug your resume
               like you debug code - see exactly what breaks in the parsing pipeline.
@@ -140,7 +140,7 @@ export default function ResumeDebugDataAnalysts() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-primary to-blue-600 px-8 text-base font-bold text-white transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
               >
                 Debug My Resume (Free)
               </Button>
@@ -153,7 +153,7 @@ export default function ResumeDebugDataAnalysts() {
         </section>
 
         {/* Tech Stack Cloud */}
-        <section className="border-y border-white/5 bg-slate-900/30 backdrop-blur-sm py-12">
+        <section className="border-y border-[#E2E8F0] bg-[#FFFFFF] py-12">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <p className="text-center text-sm font-medium text-[#64748B] mb-6">
               Optimized for ATS systems scanning these skills:
@@ -166,7 +166,7 @@ export default function ResumeDebugDataAnalysts() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-sm font-mono text-slate-300 hover:border-primary hover:text-primary transition-colors"
+                  className="px-4 py-2 rounded-full bg-[#FFFFFF] border border-[#E2E8F0] text-sm font-mono text-[#475569] hover:border-[#3B82F6] hover:text-[#3B82F6] transition-colors"
                 >
                   {tech}
                 </motion.span>
@@ -180,18 +180,18 @@ export default function ResumeDebugDataAnalysts() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 text-center">
               <div>
-                <div className="text-4xl font-bold text-white font-mono">92%</div>
-                <div className="mt-2 text-sm text-slate-400">
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">92%</div>
+                <div className="mt-2 text-sm text-[#475569]">
                   Average ATS score after optimization
                 </div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white font-mono">4.1x</div>
-                <div className="mt-2 text-sm text-slate-400">More callbacks from recruiters</div>
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">4.1x</div>
+                <div className="mt-2 text-sm text-[#475569]">More callbacks from recruiters</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-white font-mono">&lt;10s</div>
-                <div className="mt-2 text-sm text-slate-400">To identify critical errors</div>
+                <div className="text-4xl font-bold text-[#0F172A] font-mono">&lt;10s</div>
+                <div className="mt-2 text-sm text-[#475569]">To identify critical errors</div>
               </div>
             </div>
           </div>
@@ -207,10 +207,10 @@ export default function ResumeDebugDataAnalysts() {
               transition={{ duration: 0.6 }}
               className="mx-auto max-w-2xl text-center mb-16"
             >
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
                 Built for Technical Resumes
               </h2>
-              <p className="mt-4 text-lg text-slate-400">
+              <p className="mt-4 text-lg text-[#475569]">
                 Our engine understands data science terminology, metrics formatting, and analytics
                 ATS requirements.
               </p>
@@ -224,14 +224,14 @@ export default function ResumeDebugDataAnalysts() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card group relative overflow-hidden rounded-2xl p-8 hover:bg-slate-800/50 transition-colors duration-300"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:bg-[#FFFFFF]/50 transition-colors duration-300"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-primary/10 blur-2xl transition-all group-hover:scale-110"></div>
-                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-inset ring-primary/20">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#3B82F6]/10 blur-2xl transition-all group-hover:scale-110"></div>
+                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-lg font-semibold leading-8 text-white">{feature.title}</h3>
-                  <p className="mt-2 text-base leading-7 text-slate-400">{feature.description}</p>
+                  <h3 className="text-lg font-semibold leading-8 text-[#0F172A]">{feature.title}</h3>
+                  <p className="mt-2 text-base leading-7 text-[#475569]">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -239,9 +239,9 @@ export default function ResumeDebugDataAnalysts() {
         </section>
 
         {/* Testimonials */}
-        <section className="py-16 bg-slate-900/50">
+        <section className="py-16 bg-[#F8FAFC]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-white text-center mb-12">
+            <h2 className="text-2xl font-bold text-[#0F172A] text-center mb-12">
               Success Stories from Data Analysts
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -252,16 +252,16 @@ export default function ResumeDebugDataAnalysts() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="glass-card rounded-xl p-6"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-xl p-6"
                 >
-                  <p className="text-slate-300 mb-4 font-mono text-sm">"{testimonial.text}"</p>
+                  <p className="text-[#475569] mb-4 font-mono text-sm">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Database className="h-5 w-5 text-primary" />
+                    <div className="h-10 w-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center">
+                      <Database className="h-5 w-5 text-[#3B82F6]" />
                     </div>
                     <div>
-                      <div className="font-semibold text-white">{testimonial.name}</div>
-                      <div className="text-sm text-slate-400">{testimonial.role}</div>
+                      <div className="font-semibold text-[#0F172A]">{testimonial.name}</div>
+                      <div className="text-sm text-[#475569]">{testimonial.role}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -272,27 +272,26 @@ export default function ResumeDebugDataAnalysts() {
 
         {/* CTA Section */}
         <section className="relative isolate mt-16 px-6 py-24 sm:mt-24 sm:px-16 lg:px-24">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.slate.900),#020617)] opacity-80"></div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="glass-card mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
+            className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
           >
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-primary/30 blur-[100px]"></div>
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#3B82F6]/30 blur-[100px]"></div>
 
-            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
               Ready to Pass the ATS Filter?
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-slate-300">
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-[#475569]">
               Join 1,200+ data analysts who debugged their resumes and landed interviews at top
               tech companies.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-primary to-indigo-600 px-8 py-4 text-lg font-bold text-white shadow-2xl transition-all hover:scale-105 hover:from-primary hover:to-indigo-500 sm:w-auto"
+                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#3B82F6] hover:to-[#3B82F6] sm:w-auto"
               >
                 Run ATS Debug (Free)
               </Button>

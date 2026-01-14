@@ -188,10 +188,10 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
   }, [template, category]);
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/30 selection:text-white antialiased">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
-          background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+          background: #F8FAFC;
         }
       `}</style>
 
@@ -201,8 +201,8 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         {/* Hero Section */}
         <section className="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className={`absolute top-1/4 -left-48 w-96 h-96 ${colors.bg} rounded-full blur-3xl`} />
-            <div className={`absolute bottom-1/4 -right-48 w-96 h-96 ${colors.bgSecondary} rounded-full blur-3xl`} />
+            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#3B82F6]/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -212,26 +212,26 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${colors.badge} border mb-6`}>
-                  <Heart className={`h-4 w-4 ${colors.badgeIcon}`} />
-                  <span className="text-sm font-medium">{template.badge}</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6">
+                  <Heart className="h-4 w-4 text-[#3B82F6]" />
+                  <span className="text-sm font-medium text-[#3B82F6]">{template.badge}</span>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] mb-6 leading-tight">
                   {template.heroTitle}
-                  <span className={`block bg-gradient-to-r ${colors.gradient} bg-clip-text text-transparent`}>
+                  <span className="block bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] bg-clip-text text-transparent">
                     {template.heroHighlight}
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                <p className="text-lg md:text-xl text-[#475569] mb-8 leading-relaxed">
                   {template.heroDescription}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button
                     size="lg"
-                    className={`bg-gradient-to-r ${colors.button} text-white shadow-lg group`}
+                    className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-lg group"
                     onClick={() => navigate("/auth")}
                   >
                     {template.primaryCTA}
@@ -240,18 +240,18 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-slate-700 hover:border-slate-600 text-white"
+                    className="border-[#E2E8F0] hover:border-[#8B5CF6] text-[#0F172A] hover:text-[#8B5CF6]"
                     onClick={() => navigate("/auth")}
                   >
                     See Robot View Demo
                   </Button>
                 </div>
 
-                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-800">
+                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#E2E8F0]">
                   {template.stats.map((stat, idx) => (
                     <div key={idx}>
-                      <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
-                      <div className="text-xs md:text-sm text-slate-400">{stat.label}</div>
+                      <div className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1">{stat.value}</div>
+                      <div className="text-xs md:text-sm text-[#64748B]">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -263,13 +263,13 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative"
               >
-                <div className="glass-panel rounded-2xl p-8 border border-slate-800 shadow-2xl">
+                <div className="rounded-2xl p-8 border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <div className="flex items-center gap-2 mb-6">
-                    <div className={`w-2 h-2 rounded-full ${colors.text} animate-pulse`} />
-                    <span className="text-sm text-slate-400 font-mono">ATS Scanning...</span>
+                    <div className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                    <span className="text-sm text-[#64748B] font-mono">ATS Scanning...</span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white mb-4">Critical Keywords Detected:</h3>
+                  <h3 className="text-lg font-bold text-[#0F172A] mb-4">Critical Keywords Detected:</h3>
 
                   <div className="flex flex-wrap gap-2 mb-6">
                     {template.keywords.slice(0, 12).map((keyword, idx) => (
@@ -278,16 +278,16 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 + idx * 0.05 }}
-                        className={`px-3 py-1.5 rounded-lg bg-gradient-to-r ${colors.keyword} border text-sm font-medium`}
+                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#8B5CF6]/10 to-[#6366F1]/10 border border-[#E2E8F0] text-sm font-medium text-[#475569]"
                       >
                         {keyword}
                       </motion.span>
                     ))}
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-800">
-                    <span className="text-slate-400 text-sm">ATS Match Score:</span>
-                    <span className={`text-2xl font-bold ${colors.text}`}>89%</span>
+                  <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0]">
+                    <span className="text-[#64748B] text-sm">ATS Match Score:</span>
+                    <span className="text-2xl font-bold text-[#3B82F6]">89%</span>
                   </div>
                 </div>
 
@@ -295,7 +295,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
-                  className={`absolute -bottom-4 -right-4 bg-gradient-to-r ${colors.floatingBadge} rounded-xl p-4 shadow-xl`}
+                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-xl p-4 shadow-xl"
                 >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-white" />
@@ -308,7 +308,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         </section>
 
         {/* Problem Section */}
-        <section className="py-16 md:py-24 bg-slate-900/50">
+        <section className="py-16 md:py-24 bg-[#FFFFFF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -316,10 +316,10 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Why Resumes Get <span className="text-red-400">Auto-Rejected</span> by ATS
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                Why Resumes Get <span className="text-[#EF4444]">Auto-Rejected</span> by ATS
               </h2>
-              <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+              <p className="text-lg text-[#475569] max-w-3xl mx-auto">
                 Here's what kills your application before it reaches a human recruiter:
               </p>
             </motion.div>
@@ -332,13 +332,13 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="glass-panel rounded-xl p-6 border border-red-500/20"
+                  className="rounded-xl p-6 border border-[#EF4444]/20 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
-                    <AlertCircle className="h-6 w-6 text-red-400" />
+                  <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/20 flex items-center justify-center mb-4">
+                    <AlertCircle className="h-6 w-6 text-[#EF4444]" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">{issue.title}</h3>
-                  <p className="text-slate-300">{issue.description}</p>
+                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">{issue.title}</h3>
+                  <p className="text-[#475569]">{issue.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -347,7 +347,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
 
         {/* Before/After Section (if available) */}
         {template.beforeAfter && (
-          <section className="py-16 md:py-24">
+          <section className="py-16 md:py-24 bg-[#F8FAFC]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -355,10 +355,10 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                 viewport={{ once: true }}
                 className="text-center mb-12"
               >
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
                   Real Resume Transformation
                 </h2>
-                <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+                <p className="text-lg text-[#475569] max-w-3xl mx-auto">
                   See how CVDebug optimizes resumes for ATS systems
                 </p>
               </motion.div>
@@ -368,22 +368,22 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className="glass-panel rounded-xl p-8 border border-red-500/30"
+                  className="rounded-xl p-8 border border-[#EF4444]/30 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                      <AlertCircle className="h-6 w-6 text-red-400" />
+                    <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/20 flex items-center justify-center">
+                      <AlertCircle className="h-6 w-6 text-[#EF4444]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">BEFORE Optimization</h3>
-                      <p className="text-3xl font-black text-red-400">{template.beforeAfter.beforeScore} ATS Score</p>
+                      <h3 className="text-xl font-bold text-[#0F172A]">BEFORE Optimization</h3>
+                      <p className="text-3xl font-black text-[#EF4444]">{template.beforeAfter.beforeScore} ATS Score</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     {template.beforeAfter.beforeIssues.map((issue, idx) => (
-                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-slate-800/50">
-                        <div className="text-red-400 mt-0.5">✗</div>
-                        <p className="text-slate-300 text-sm">{issue}</p>
+                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC]">
+                        <div className="text-[#EF4444] mt-0.5">✗</div>
+                        <p className="text-[#475569] text-sm">{issue}</p>
                       </div>
                     ))}
                   </div>
@@ -393,22 +393,22 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className={`glass-panel rounded-xl p-8 border ${colors.border}`}
+                  className="rounded-xl p-8 border border-[#22C55E]/30 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <div className={`w-12 h-12 rounded-lg ${colors.bg} border ${colors.border} flex items-center justify-center`}>
-                      <CheckCircle2 className={`h-6 w-6 ${colors.checkmark}`} />
+                    <div className="w-12 h-12 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center">
+                      <CheckCircle2 className="h-6 w-6 text-[#22C55E]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">AFTER Optimization</h3>
-                      <p className={`text-3xl font-black ${colors.text}`}>{template.beforeAfter.afterScore} ATS Score</p>
+                      <h3 className="text-xl font-bold text-[#0F172A]">AFTER Optimization</h3>
+                      <p className="text-3xl font-black text-[#22C55E]">{template.beforeAfter.afterScore} ATS Score</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     {template.beforeAfter.afterFixes.map((fix, idx) => (
-                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-slate-800/50">
-                        <div className={colors.checkmark + " mt-0.5"}>✓</div>
-                        <p className="text-slate-300 text-sm">{fix}</p>
+                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC]">
+                        <div className="text-[#22C55E] mt-0.5">✓</div>
+                        <p className="text-[#475569] text-sm">{fix}</p>
                       </div>
                     ))}
                   </div>
@@ -419,7 +419,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         )}
 
         {/* Features Section */}
-        <section className="py-16 md:py-24 bg-slate-900/50">
+        <section className="py-16 md:py-24 bg-[#FFFFFF]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -427,10 +427,10 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Built Specifically for <span className={`bg-gradient-to-r ${colors.gradient} bg-clip-text text-transparent`}>Your Industry</span>
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                Built Specifically for <span className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] bg-clip-text text-transparent">Your Industry</span>
               </h2>
-              <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+              <p className="text-lg text-[#475569] max-w-3xl mx-auto">
                 Our scanner understands your field's terminology, requirements, and ATS configurations
               </p>
             </motion.div>
@@ -445,13 +445,13 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
-                    className={`glass-panel rounded-xl p-8 border border-slate-800 hover:${colors.border} transition-all group`}
+                    className="rounded-xl p-8 border border-[#E2E8F0] hover:border-[#8B5CF6] transition-all group bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                   >
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${colors.keyword} border ${colors.border} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className={`h-7 w-7 ${colors.text}`} />
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-[#6366F1]/10 border border-[#E2E8F0] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="h-7 w-7 text-[#8B5CF6]" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
-                    <p className="text-slate-300 text-lg leading-relaxed">{feature.description}</p>
+                    <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{feature.title}</h3>
+                    <p className="text-[#475569] text-lg leading-relaxed">{feature.description}</p>
                   </motion.div>
                 );
               })}
@@ -460,7 +460,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         </section>
 
         {/* Social Proof Section */}
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24 bg-[#F8FAFC]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -468,7 +468,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
                 Success Stories from Professionals Like You
               </h2>
             </motion.div>
@@ -481,20 +481,20 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="glass-panel rounded-xl p-6 border border-slate-800"
+                  className="rounded-xl p-6 border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
                   <div className="flex gap-1 mb-4">
                     {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <svg key={i} className="w-5 h-5 text-[#F59E0B] fill-current" viewBox="0 0 20 20">
                         <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                       </svg>
                     ))}
                   </div>
-                  <p className="text-slate-300 mb-4 italic">"{testimonial.quote}"</p>
+                  <p className="text-[#475569] mb-4 italic">"{testimonial.quote}"</p>
                   <div>
-                    <div className="font-bold text-white">{testimonial.name}</div>
-                    <div className={`text-sm ${colors.text}`}>{testimonial.role}</div>
-                    <div className="text-sm text-slate-500">{testimonial.location}</div>
+                    <div className="font-bold text-[#0F172A]">{testimonial.name}</div>
+                    <div className="text-sm text-[#8B5CF6]">{testimonial.role}</div>
+                    <div className="text-sm text-[#64748B]">{testimonial.location}</div>
                   </div>
                 </motion.div>
               ))}
@@ -503,8 +503,8 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 md:py-24 relative overflow-hidden bg-slate-900/50">
-          <div className={`absolute inset-0 bg-gradient-to-r ${colors.button.split(' ')[0]} ${colors.button.split(' ')[1]} blur-3xl opacity-20`} />
+        <section className="py-16 md:py-24 relative overflow-hidden bg-[#FFFFFF]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/10 to-[#6366F1]/10 blur-3xl opacity-50" />
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
@@ -512,21 +512,21 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
+              <h2 className="text-3xl md:text-5xl font-black text-[#0F172A] mb-6">
                 Stop Getting Auto-Rejected by ATS Systems
               </h2>
-              <p className="text-xl text-slate-300 mb-8">
+              <p className="text-xl text-[#475569] mb-8">
                 Get your free resume scan in 10 seconds. See your ATS score, missing keywords, and exact formatting issues.
               </p>
               <Button
                 size="lg"
-                className={`bg-gradient-to-r ${colors.button} text-white text-lg px-8 py-6 shadow-2xl`}
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white text-lg px-8 py-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 onClick={() => navigate("/auth")}
               >
                 {template.primaryCTA}
                 <TrendingUp className="ml-2 h-5 w-5" />
               </Button>
-              <p className="text-sm text-slate-400 mt-4">
+              <p className="text-sm text-[#64748B] mt-4">
                 ✓ No credit card required  ✓ Results in 10 seconds  ✓ 100% confidential
               </p>
             </motion.div>

@@ -482,7 +482,7 @@ export function generateArticleSchema(
       name: 'CVDebug',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://cvdebug.com/logo.png',
+        url: 'https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f',
       },
     },
   };

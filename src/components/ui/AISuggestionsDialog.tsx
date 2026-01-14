@@ -102,7 +102,7 @@ export function AISuggestionsDialog({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F172A]/60 backdrop-blur-sm"
             onClick={onClose}
           >
             {/* Modal Container */}
@@ -111,24 +111,24 @@ export function AISuggestionsDialog({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="relative w-full max-w-[720px] flex flex-col glass-panel rounded-2xl shadow-2xl shadow-black/50 overflow-hidden"
+              className="relative w-full max-w-[720px] flex flex-col bg-[#FFFFFF] rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden border border-[#E2E8F0]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="flex items-start justify-between p-6 pb-4 border-b border-white/5 bg-gradient-to-r from-slate-800/50 to-transparent">
+              <div className="flex items-start justify-between p-6 pb-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#F8FAFC] to-transparent">
                 <div className="flex gap-4">
                   <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-cyan-500/20 shrink-0 text-white">
                     <Sparkles className="h-7 w-7" />
                   </div>
                   <div className="flex flex-col justify-center">
-                    <h2 className="text-xl font-bold text-white tracking-tight leading-tight">
+                    <h2 className="text-xl font-bold text-[#0F172A] tracking-tight leading-tight">
                       AI Keyword Suggestions
                     </h2>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-slate-400 text-sm">
+                      <span className="text-[#64748B] text-sm">
                         Optimizing for missing keyword:
                       </span>
-                      <span className="font-mono text-sm font-medium text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+                      <span className="font-mono text-sm font-medium text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded border border-cyan-200">
                         {keyword}
                       </span>
                     </div>
@@ -136,7 +136,7 @@ export function AISuggestionsDialog({
                 </div>
                 <button
                   onClick={onClose}
-                  className="group p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors"
+                  className="group p-2 rounded-lg hover:bg-[#F8FAFC] text-[#64748B] hover:text-[#0F172A] transition-colors"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -155,7 +155,7 @@ export function AISuggestionsDialog({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className={`group flex items-center gap-4 p-4 mx-2 my-1 rounded-xl hover:bg-slate-700/30 transition-all border border-transparent hover:border-white/5 ${
+                      className={`group flex items-center gap-4 p-4 mx-2 my-1 rounded-xl hover:bg-[#F8FAFC] transition-all border border-transparent hover:border-[#E2E8F0] ${
                         isLowMatch ? "opacity-75 hover:opacity-100" : ""
                       }`}
                     >
@@ -164,10 +164,10 @@ export function AISuggestionsDialog({
                         <div
                           className={`h-10 w-10 flex items-center justify-center rounded-lg ring-1 ${
                             matchColor === "emerald"
-                              ? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/20"
+                              ? "bg-emerald-50 text-emerald-600 ring-emerald-200"
                               : matchColor === "blue"
-                              ? "bg-blue-500/10 text-blue-400 ring-blue-500/20"
-                              : "bg-slate-700/50 text-slate-400 ring-slate-600/30"
+                              ? "bg-blue-50 text-blue-600 ring-blue-200"
+                              : "bg-[#F8FAFC] text-[#64748B] ring-[#E2E8F0]"
                           }`}
                         >
                           <Icon className="h-5 w-5" />
@@ -177,8 +177,8 @@ export function AISuggestionsDialog({
                       {/* Content */}
                       <div className="flex flex-col flex-1 min-w-0">
                         <p
-                          className={`text-[15px] font-medium leading-normal truncate group-hover:text-primary transition-colors ${
-                            isLowMatch ? "text-slate-300" : "text-white"
+                          className={`text-[15px] font-medium leading-normal truncate group-hover:text-[#3B82F6] transition-colors ${
+                            isLowMatch ? "text-[#475569]" : "text-[#0F172A]"
                           }`}
                         >
                           {suggestion.text}
@@ -187,16 +187,16 @@ export function AISuggestionsDialog({
                           <span
                             className={`text-xs font-semibold px-1.5 py-0.5 rounded border ${
                               matchColor === "emerald"
-                                ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                                ? "text-emerald-600 bg-emerald-50 border-emerald-200"
                                 : matchColor === "blue"
-                                ? "text-blue-400 bg-blue-500/10 border-blue-500/20"
-                                : "text-slate-400 bg-slate-700/50 border-slate-600/30"
+                                ? "text-blue-600 bg-blue-50 border-blue-200"
+                                : "text-[#64748B] bg-[#F8FAFC] border-[#E2E8F0]"
                             }`}
                           >
                             {suggestion.matchScore}% Match
                           </span>
                           {suggestion.context && (
-                            <span className="text-slate-500 text-xs">
+                            <span className="text-[#64748B] text-xs">
                               • Context: {suggestion.context}
                             </span>
                           )}
@@ -207,7 +207,7 @@ export function AISuggestionsDialog({
                       <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleCopy(suggestion.text)}
-                          className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                          className="p-2 rounded-lg text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] transition-colors"
                           title="Copy to clipboard"
                         >
                           <Copy className="h-5 w-5" />
@@ -216,7 +216,7 @@ export function AISuggestionsDialog({
                           onClick={() => handleInsert(suggestion)}
                           className={`flex items-center gap-2 h-9 px-4 rounded-lg text-white text-sm font-medium shadow-lg transition-all active:scale-95 ${
                             isLowMatch
-                              ? "bg-slate-700 hover:bg-slate-600 border border-slate-600"
+                              ? "bg-[#64748B] hover:bg-[#475569] border border-[#E2E8F0]"
                               : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 shadow-blue-500/20"
                           }`}
                         >
@@ -230,22 +230,22 @@ export function AISuggestionsDialog({
               </div>
 
               {/* Footer / Action Area */}
-              <div className="p-6 pt-4 border-t border-white/5 bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="p-6 pt-4 border-t border-[#E2E8F0] bg-[#F8FAFC] flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-cyan-500 animate-pulse"></div>
-                  <span className="text-xs text-slate-400">AI Model v4.2 • Turbo Mode</span>
+                  <span className="text-xs text-[#64748B]">AI Model v4.2 • Turbo Mode</span>
                 </div>
                 <div className="flex w-full sm:w-auto items-center gap-3">
                   <button
                     onClick={onRegenerate}
-                    className="flex-1 sm:flex-none h-10 px-4 rounded-lg border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 text-slate-300 hover:text-white text-sm font-medium transition-all flex items-center justify-center gap-2"
+                    className="flex-1 sm:flex-none h-10 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#3B82F6] hover:bg-[#F8FAFC] text-[#475569] hover:text-[#0F172A] text-sm font-medium transition-all flex items-center justify-center gap-2"
                   >
                     <RefreshCw className="h-4 w-4" />
                     Regenerate
                   </button>
                   <button
                     onClick={onClose}
-                    className="flex-1 sm:flex-none h-10 px-6 rounded-lg bg-slate-700/50 hover:bg-slate-700 text-slate-300 hover:text-white text-sm font-medium transition-all"
+                    className="flex-1 sm:flex-none h-10 px-6 rounded-lg bg-[#F8FAFC] hover:bg-[#E2E8F0] text-[#475569] hover:text-[#0F172A] text-sm font-medium transition-all"
                   >
                     Dismiss
                   </button>
@@ -253,8 +253,8 @@ export function AISuggestionsDialog({
               </div>
 
               {/* Decorative Glow */}
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-cyan-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none"></div>
             </motion.div>
           </motion.div>
         </>

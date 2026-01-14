@@ -27,10 +27,10 @@ export function StepTargetJob({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="glass-panel rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#3B82F6]/50 shadow-2xl shadow-[#3B82F6]/10"
+      className="bg-white rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#3B82F6]/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
     >
-      <div className="h-1 w-full bg-slate-800">
-        <div className="h-full bg-gradient-to-r from-indigo-500 to-[#3B82F6] w-2/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+      <div className="h-1 w-full bg-[#E2E8F0]">
+        <div className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] w-2/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
       </div>
       <div className="p-8 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
@@ -42,60 +42,60 @@ export function StepTargetJob({
               Current Step
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-white">Tell us your dream job</h3>
-          <p className="text-slate-400 text-sm">
+          <h3 className="text-2xl font-bold text-[#0F172A]">Tell us your dream job</h3>
+          <p className="text-[#64748B] text-sm">
             Paste the job description you want to target. Our engine will bridge the gap.
           </p>
         </div>
 
         <div className="flex flex-col gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300 ml-1">Target Company</label>
+            <label className="text-sm font-medium text-[#475569] ml-1">Target Company</label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-[#3B82F6] transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#64748B] group-focus-within:text-[#3B82F6] transition-colors">
                 <Building2 className="h-5 w-5" />
               </div>
               <Input
                 value={targetCompany}
                 onChange={(e) => setTargetCompany(e.target.value)}
-                className="w-full bg-slate-900/50 border-slate-700 text-white pl-10 focus:ring-[#3B82F6] focus:border-[#3B82F6]"
+                className="w-full bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] pl-10 focus:ring-[#3B82F6] focus:border-[#3B82F6]"
                 placeholder="e.g. Acme Corp, Google, Stripe"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-300 ml-1">Job Description</label>
+            <label className="text-sm font-medium text-[#475569] ml-1">Job Description</label>
             <div className="relative">
-              <div className="absolute top-3 left-3 pointer-events-none text-slate-500">
+              <div className="absolute top-3 left-3 pointer-events-none text-[#64748B]">
                 <FileText className="h-5 w-5" />
               </div>
               <Textarea
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                className="w-full bg-slate-900/50 border-slate-700 text-white pl-10 focus:ring-[#3B82F6] focus:border-[#3B82F6] resize-none font-mono leading-relaxed min-h-[150px]"
+                className="w-full bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A] pl-10 focus:ring-[#3B82F6] focus:border-[#3B82F6] resize-none font-mono leading-relaxed min-h-[150px]"
                 placeholder="Paste the full job description here..."
                 rows={6}
               />
-              <div className="absolute bottom-3 right-3 text-[10px] text-slate-500 bg-slate-800/80 px-2 py-1 rounded">
+              <div className="absolute bottom-3 right-3 text-[10px] text-[#64748B] bg-white/80 px-2 py-1 rounded border border-[#E2E8F0]">
                 {jobDescription.length}/5000
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+        <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0]">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="text-slate-400 hover:text-white"
+            className="text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
           <Button
             onClick={onNext}
-            className="group relative px-8 py-2.5 bg-gradient-to-r from-indigo-500 to-[#3B82F6] hover:from-indigo-600 hover:to-[#3B82F6]/90 text-white font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all"
+            className="group relative px-8 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:from-[#8B5CF6]/90 hover:to-[#3B82F6]/90 text-white font-bold shadow-lg shadow-[#8B5CF6]/25 hover:shadow-[#8B5CF6]/40 transition-all"
           >
             Initialize Scan
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />

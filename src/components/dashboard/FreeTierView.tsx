@@ -346,13 +346,13 @@ export function FreeTierView({
       {/* The Paywall - Clear Value Proposition */}
       <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 bg-gradient-to-br from-[#3B82F6]/10 via-[#8B5CF6]/10 to-[#F59E0B]/10 border-2 border-[#3B82F6]/30">
         <div className="text-center space-y-6">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-orange-500 rounded-full flex items-center justify-center">
-            <Lock className="h-8 w-8 text-black" />
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#3B82F6] to-[#F59E0B] rounded-full flex items-center justify-center">
+            <Lock className="h-8 w-8 text-white" />
           </div>
           
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-3">
-              Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Certified</span> by CVDebug
+              Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#22C55E]">Certified</span> by CVDebug
             </h3>
             <p className="text-[#475569] text-lg font-medium max-w-2xl mx-auto">
               Unlock {missingCount} exact keywords + {formatCount} critical fixes + ATS-Certified Download
@@ -401,9 +401,9 @@ export function FreeTierView({
             <Button
               onClick={() => setShowPricing(true)}
               size="lg"
-              className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-primary/40 bg-gradient-to-r from-primary via-yellow-400 to-orange-500 hover:from-primary/90 hover:via-yellow-400/90 hover:to-orange-500/90 text-black transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-[#3B82F6]/40 bg-gradient-to-r from-[#3B82F6] via-[#F59E0B] to-[#F59E0B] hover:from-[#3B82F6]/90 hover:via-[#F59E0B]/90 hover:to-[#F59E0B]/90 text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Lock className="mr-3 h-6 w-6 text-black" />
+              <Lock className="mr-3 h-6 w-6 text-white" />
               Get Certified - Only €4.99
             </Button>
 
