@@ -198,7 +198,7 @@ export function FluffDetector({
     return detected.slice(0, 10); // Max 10 weak phrases (increased from 6)
   };
 
-  // Detect unquantified achievements from actual resume text - STRICT ALGORITHM
+  // Detect unquantified achievements from actual resume text - VERY STRICT ALGORITHM
   const detectUnquantifiedAchievements = (text: string): UnquantifiedAchievement[] => {
     const achievementPatterns = [
       /\b(improved|enhanced|boosted|upgraded)\b/gi,
@@ -221,19 +221,26 @@ export function FluffDetector({
 
       if (!hasAchievementWord) return;
 
-      // Strict check: line must have NO specific metrics
-      const hasNumber = /\d+/.test(line);
-      const hasPercent = /%/.test(line);
-      const hasCurrency = /\$|€|£|¥/.test(line);
-      const hasMultiplier = /\d+x/gi.test(line);
-      const hasTimeMetric = /\d+\s*(second|minute|hour|day|week|month|year)/gi.test(line);
+      // VERY STRICT: Must have IMPACT metrics, not just any number
+      // Years (2020-2025), months (June, July), dates are NOT impact metrics
+      const lineWithoutDates = line
+        .replace(/\b(20\d{2}|19\d{2})\b/g, '') // Remove years
+        .replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/gi, '') // Remove months
+        .replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, ''); // Remove dates
 
-      // Also check for vague quantifiers that should be numbers
-      const hasVagueQuantifier = /\b(some|many|several|multiple|various|numerous)\b/gi.test(line);
+      // Check for REAL impact metrics (after removing dates)
+      const hasPercent = /%/.test(lineWithoutDates);
+      const hasCurrency = /\$|€|£|¥/.test(lineWithoutDates);
+      const hasMultiplier = /\d+x/gi.test(lineWithoutDates);
+      const hasQuantity = /\d+[kKmMbB]\+?/.test(lineWithoutDates); // 100k, 5M, 2B
+      const hasMetricWithUnit = /\d+\s*(users?|customers?|requests?|GB|MB|TB|hours?|minutes?|seconds?|ms)/gi.test(lineWithoutDates);
+      const hasRange = /\d+\s*(-|to)\s*\d+/.test(lineWithoutDates); // "from 2s to 1s"
+      const hasTeamSize = /team\s+of\s+\d+|led\s+\d+/gi.test(lineWithoutDates);
+      const hasImpactNumber = /by\s+\d+|saved\s+\d+|reached\s+\d+/gi.test(lineWithoutDates);
 
-      // If has any metrics, it's quantified (good)
-      if (hasNumber || hasPercent || hasCurrency || hasMultiplier || hasTimeMetric) {
-        return; // Skip - this is already quantified
+      // If has REAL impact metrics, it's properly quantified (good)
+      if (hasPercent || hasCurrency || hasMultiplier || hasQuantity || hasMetricWithUnit || hasRange || hasTeamSize || hasImpactNumber) {
+        return; // Skip - this is properly quantified
       }
 
       // Extract the achievement phrase (up to 80 chars)
@@ -287,7 +294,7 @@ export function FluffDetector({
       });
     });
 
-    return detected.slice(0, 6); // Max 6 achievements (increased from 4)
+    return detected.slice(0, 15); // Max 15 achievements - VERY STRICT detection
   };
 
   const weakPhrases = detectWeakPhrases(resumeText);
