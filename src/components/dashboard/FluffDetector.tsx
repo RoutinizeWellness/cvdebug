@@ -27,44 +27,140 @@ export function FluffDetector({
 
   const [selectedMetrics, setSelectedMetrics] = useState<Record<number, number>>({});
 
-  // Detect weak phrases from actual resume text
+  // Detect weak phrases from actual resume text - STRICT ALGORITHM
   const detectWeakPhrases = (text: string): WeakPhrase[] => {
     const weakPhrasePatterns = [
       {
-        pattern: /responsible for/gi,
+        pattern: /\bresponsible for\b/gi,
         phrase: "responsible for",
         reason: "Passive. Doesn't convey ownership or impact.",
         fixes: ["Led", "Directed", "Managed", "Oversaw"]
       },
       {
-        pattern: /helped with/gi,
-        phrase: "helped with",
+        pattern: /\bhelped (with|to|in)\b/gi,
+        phrase: "helped with/to/in",
         reason: "Vague contribution level. Show direct impact.",
         fixes: ["Architected", "Spearheaded", "Executed", "Drove"]
       },
       {
-        pattern: /various/gi,
+        pattern: /\bvarious\b/gi,
         phrase: "various",
         reason: "Too generic. Be specific about technologies.",
-        fixes: ["Specific names", "List exact tools", "Name technologies"]
+        fixes: ["Name specific tools", "List exact technologies"]
       },
       {
-        pattern: /worked on/gi,
-        phrase: "worked on",
+        pattern: /\bworked (on|with|in)\b/gi,
+        phrase: "worked on/with/in",
         reason: "Vague and passive. Show your specific role.",
         fixes: ["Developed", "Built", "Designed", "Created"]
       },
       {
-        pattern: /involved in/gi,
-        phrase: "involved in",
+        pattern: /\binvolved (in|with)\b/gi,
+        phrase: "involved in/with",
         reason: "Unclear contribution level.",
         fixes: ["Led", "Executed", "Delivered", "Drove"]
       },
       {
-        pattern: /participated in/gi,
+        pattern: /\bparticipated in\b/gi,
         phrase: "participated in",
         reason: "Sounds passive and minimal.",
-        fixes: ["Contributed to", "Delivered", "Executed", "Drove"]
+        fixes: ["Contributed to", "Delivered", "Executed"]
+      },
+      {
+        pattern: /\bassisted (with|in)\b/gi,
+        phrase: "assisted with/in",
+        reason: "Suggests secondary role. Show direct impact.",
+        fixes: ["Executed", "Delivered", "Implemented"]
+      },
+      {
+        pattern: /\bsupported\b/gi,
+        phrase: "supported",
+        reason: "Vague. What did you actually do?",
+        fixes: ["Developed", "Maintained", "Improved", "Built"]
+      },
+      {
+        pattern: /\bfamiliar with\b/gi,
+        phrase: "familiar with",
+        reason: "Weak. Show proficiency level.",
+        fixes: ["Proficient in", "Expert in", "Developed using"]
+      },
+      {
+        pattern: /\bexposure to\b/gi,
+        phrase: "exposure to",
+        reason: "Suggests minimal experience.",
+        fixes: ["Experienced with", "Worked extensively with"]
+      },
+      {
+        pattern: /\bknowledge of\b/gi,
+        phrase: "knowledge of",
+        reason: "Passive. Show how you applied it.",
+        fixes: ["Applied", "Utilized", "Leveraged"]
+      },
+      {
+        pattern: /\bdeveloped (skills|understanding|experience) (in|with)\b/gi,
+        phrase: "developed skills/understanding in",
+        reason: "Focus on what you built, not what you learned.",
+        fixes: ["Built", "Created", "Delivered", "Implemented"]
+      },
+      {
+        pattern: /\bexperience (with|in)\b/gi,
+        phrase: "experience with/in",
+        reason: "Vague. Show specific accomplishments.",
+        fixes: ["Built", "Developed", "Designed", "Led"]
+      },
+      {
+        pattern: /\bsome\b/gi,
+        phrase: "some",
+        reason: "Quantify it. How many exactly?",
+        fixes: ["5+", "Multiple", "Several", "Specify number"]
+      },
+      {
+        pattern: /\bmany\b/gi,
+        phrase: "many",
+        reason: "Too vague. Give exact numbers.",
+        fixes: ["10+", "20+", "50+", "Specify count"]
+      },
+      {
+        pattern: /\bseveral\b/gi,
+        phrase: "several",
+        reason: "Quantify it precisely.",
+        fixes: ["5+", "3-5", "Specify exact number"]
+      },
+      {
+        pattern: /\ba lot of\b/gi,
+        phrase: "a lot of",
+        reason: "Unprofessional and vague.",
+        fixes: ["Significant", "Substantial", "Specify amount"]
+      },
+      {
+        pattern: /\betc\b/gi,
+        phrase: "etc",
+        reason: "Looks lazy. List everything or be specific.",
+        fixes: ["List all items", "Remove and specify"]
+      },
+      {
+        pattern: /\band more\b/gi,
+        phrase: "and more",
+        reason: "Be specific about what else.",
+        fixes: ["List specific items", "Remove"]
+      },
+      {
+        pattern: /\bhard(?: )?working\b/gi,
+        phrase: "hardworking",
+        reason: "Subjective claim. Show it through results.",
+        fixes: ["Remove", "Show through achievements"]
+      },
+      {
+        pattern: /\bteam player\b/gi,
+        phrase: "team player",
+        reason: "Cliché. Show collaboration through results.",
+        fixes: ["Collaborated on", "Led team of", "Coordinated with"]
+      },
+      {
+        pattern: /\bdetail(?:-| )oriented\b/gi,
+        phrase: "detail-oriented",
+        reason: "Overused. Show it through achievements.",
+        fixes: ["Eliminated bugs", "Improved accuracy by X%"]
       }
     ];
 
@@ -74,72 +170,124 @@ export function FluffDetector({
     weakPhrasePatterns.forEach(({ pattern, phrase, reason, fixes }) => {
       let match;
       const globalPattern = new RegExp(pattern.source, 'gi');
-      while ((match = globalPattern.exec(text)) !== null) {
+      let matchCount = 0;
+
+      while ((match = globalPattern.exec(text)) !== null && matchCount < 2) {
         // Find the line number
         const beforeMatch = text.substring(0, match.index);
         const lineNum = beforeMatch.split('\n').length;
 
-        // Get context (30 chars before and after)
-        const start = Math.max(0, match.index - 30);
-        const end = Math.min(text.length, match.index + phrase.length + 30);
-        const context = '...' + text.substring(start, end).trim() + '...';
+        // Get context (50 chars before and after for better context)
+        const start = Math.max(0, match.index - 50);
+        const end = Math.min(text.length, match.index + match[0].length + 50);
+        const contextStr = text.substring(start, end).trim();
+        const context = start > 0 ? '...' + contextStr : contextStr;
 
         detected.push({
           phrase,
           location: `Line ${lineNum}`,
-          context,
+          context: context.substring(0, 120) + (context.length > 120 ? '...' : ''),
           reason,
           fixes
         });
 
-        // Limit to 5 instances per phrase type
-        if (detected.filter(d => d.phrase === phrase).length >= 2) break;
+        matchCount++;
       }
     });
 
-    return detected.slice(0, 6); // Max 6 weak phrases
+    return detected.slice(0, 10); // Max 10 weak phrases (increased from 6)
   };
 
-  // Detect unquantified achievements from actual resume text
+  // Detect unquantified achievements from actual resume text - STRICT ALGORITHM
   const detectUnquantifiedAchievements = (text: string): UnquantifiedAchievement[] => {
     const achievementPatterns = [
-      /improved/gi,
-      /enhanced/gi,
-      /optimized/gi,
-      /increased/gi,
-      /reduced/gi,
-      /led/gi,
-      /managed/gi,
-      /developed/gi
+      /\b(improved|enhanced|boosted|upgraded)\b/gi,
+      /\b(optimized|streamlined|accelerated|expedited)\b/gi,
+      /\b(increased|grew|expanded|scaled)\b/gi,
+      /\b(reduced|decreased|minimized|cut|lowered)\b/gi,
+      /\b(led|managed|directed|oversaw|headed)\b/gi,
+      /\b(developed|built|created|designed|implemented)\b/gi,
+      /\b(delivered|shipped|launched|released)\b/gi,
+      /\b(achieved|accomplished|attained|reached)\b/gi,
+      /\b(transformed|modernized|revamped|revolutionized)\b/gi
     ];
 
     const detected: UnquantifiedAchievement[] = [];
-    const lines = text.split('\n').filter(line => line.trim().length > 20);
+    const lines = text.split('\n').filter(line => line.trim().length > 15);
 
     lines.forEach((line, idx) => {
-      // Check if line has achievement word but no numbers
+      // Check if line has achievement word
       const hasAchievementWord = achievementPatterns.some(p => p.test(line));
+
+      if (!hasAchievementWord) return;
+
+      // Strict check: line must have NO specific metrics
       const hasNumber = /\d+/.test(line);
       const hasPercent = /%/.test(line);
-      const hasCurrency = /\$/.test(line);
+      const hasCurrency = /\$|€|£|¥/.test(line);
+      const hasMultiplier = /\d+x/gi.test(line);
+      const hasTimeMetric = /\d+\s*(second|minute|hour|day|week|month|year)/gi.test(line);
 
-      if (hasAchievementWord && !hasNumber && !hasPercent && !hasCurrency) {
-        // Extract the achievement phrase
-        const achievement = line.trim().substring(0, 60);
+      // Also check for vague quantifiers that should be numbers
+      const hasVagueQuantifier = /\b(some|many|several|multiple|various|numerous)\b/gi.test(line);
 
-        detected.push({
-          title: achievement,
-          description: `Line ${idx + 1}`,
-          suggestions: [
-            "Add percentage improvement (e.g., by 40%)",
-            "Include time saved or cost reduction",
-            "Specify scale or volume (e.g., 1000+ users)"
-          ]
-        });
+      // If has any metrics, it's quantified (good)
+      if (hasNumber || hasPercent || hasCurrency || hasMultiplier || hasTimeMetric) {
+        return; // Skip - this is already quantified
       }
+
+      // Extract the achievement phrase (up to 80 chars)
+      const achievement = line.trim().substring(0, 80);
+
+      // Generate context-aware suggestions based on the achievement word
+      const suggestions: string[] = [];
+
+      if (/improved|enhanced|optimized|boosted/gi.test(line)) {
+        suggestions.push(
+          "Add percentage: improved performance by 40%",
+          "Include metric: reduced latency from 2s to 1.2s",
+          "Show scale: optimized queries handling 150k req/min"
+        );
+      } else if (/increased|grew|expanded|scaled/gi.test(line)) {
+        suggestions.push(
+          "Quantify growth: increased revenue by $500k",
+          "Show percentage: grew user base by 250%",
+          "Specify volume: expanded from 10k to 50k users"
+        );
+      } else if (/reduced|decreased|minimized|cut/gi.test(line)) {
+        suggestions.push(
+          "Add reduction %: reduced costs by 35%",
+          "Show savings: cut processing time from 2h to 20min",
+          "Include impact: decreased error rate from 8% to 0.5%"
+        );
+      } else if (/led|managed|directed|oversaw/gi.test(line)) {
+        suggestions.push(
+          "Specify team size: led team of 8 engineers",
+          "Add timeline: managed 3-month project",
+          "Show scope: directed $2M budget initiative"
+        );
+      } else if (/developed|built|created|designed/gi.test(line)) {
+        suggestions.push(
+          "Add scale: built system serving 100k users",
+          "Include timeline: developed in 6 weeks",
+          "Show impact: created tool saving 10 hours/week"
+        );
+      } else {
+        suggestions.push(
+          "Add percentage improvement (e.g., by 40%)",
+          "Include time or cost savings",
+          "Specify scale or volume (e.g., 1000+ users)"
+        );
+      }
+
+      detected.push({
+        title: achievement,
+        description: `Line ${idx + 1}`,
+        suggestions
+      });
     });
 
-    return detected.slice(0, 4); // Max 4 achievements
+    return detected.slice(0, 6); // Max 6 achievements (increased from 4)
   };
 
   const weakPhrases = detectWeakPhrases(resumeText);
@@ -165,7 +313,7 @@ export function FluffDetector({
     }
   ];
 
-  // Calculate real metrics from resume text
+  // Calculate real metrics from resume text - STRICT ALGORITHM
   const calculateMetrics = (text: string) => {
     if (!text || text.trim().length === 0) {
       return {
@@ -176,27 +324,91 @@ export function FluffDetector({
     }
 
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
+    const totalWords = text.split(/\s+/).length;
 
-    // Active voice detection (simple heuristic: sentences starting with power verbs)
-    const powerVerbs = ['led', 'developed', 'managed', 'created', 'built', 'designed', 'implemented', 'achieved', 'delivered', 'improved'];
-    const activeVoiceSentences = sentences.filter(s => {
-      const firstWord = s.trim().split(/\s+/)[0]?.toLowerCase();
-      return powerVerbs.includes(firstWord);
+    // Active voice detection - STRICTER (must start with strong action verb)
+    const strongActionVerbs = [
+      'led', 'developed', 'managed', 'created', 'built', 'designed', 'implemented',
+      'achieved', 'delivered', 'improved', 'increased', 'reduced', 'optimized',
+      'launched', 'architected', 'executed', 'drove', 'directed', 'established',
+      'spearheaded', 'orchestrated', 'transformed', 'streamlined', 'accelerated',
+      'pioneered', 'engineered', 'delivered', 'shipped', 'scaled', 'automated'
+    ];
+
+    const passiveIndicators = [
+      'was', 'were', 'been', 'being', 'responsible for', 'helped with',
+      'worked on', 'involved in', 'participated in', 'assisted with'
+    ];
+
+    let activeCount = 0;
+    let passiveCount = 0;
+
+    sentences.forEach(s => {
+      const trimmed = s.trim().toLowerCase();
+      const firstWord = trimmed.split(/\s+/)[0];
+
+      // Check if starts with strong verb
+      if (strongActionVerbs.includes(firstWord)) {
+        activeCount++;
+      }
+      // Check for passive indicators
+      else if (passiveIndicators.some(p => trimmed.includes(p))) {
+        passiveCount++;
+      }
     });
-    const activeVoicePercent = sentences.length > 0 ? Math.round((activeVoiceSentences.length / sentences.length) * 100) : 0;
 
-    // Buzzword density (common buzzwords)
-    const buzzwords = ['synergy', 'leverage', 'paradigm', 'revolutionary', 'innovative', 'cutting-edge', 'world-class', 'best-in-class', 'guru', 'ninja', 'rockstar'];
+    const activeVoicePercent = sentences.length > 0
+      ? Math.round((activeCount / sentences.length) * 100)
+      : 0;
+
+    // Buzzword density - EXPANDED LIST (more comprehensive)
+    const buzzwords = [
+      // Corporate jargon
+      'synergy', 'leverage', 'paradigm', 'disruptive', 'innovative', 'cutting-edge',
+      'world-class', 'best-in-class', 'industry-leading', 'market-leading',
+      // Overused adjectives
+      'passionate', 'dedicated', 'motivated', 'dynamic', 'proactive',
+      // Inflated titles/descriptions
+      'guru', 'ninja', 'rockstar', 'wizard', 'expert', 'specialist',
+      // Vague terms
+      'strategic', 'tactical', 'holistic', 'comprehensive', 'robust',
+      'scalable', 'enterprise-grade', 'mission-critical', 'next-generation',
+      // Business speak
+      'value-add', 'circle back', 'touch base', 'bandwidth', 'low-hanging fruit',
+      'think outside the box', 'move the needle', 'game-changer'
+    ];
+
     const buzzwordCount = buzzwords.reduce((count, word) => {
       const regex = new RegExp(`\\b${word}\\b`, 'gi');
       const matches = text.match(regex);
       return count + (matches ? matches.length : 0);
     }, 0);
-    const buzzwordDensity = text.length > 0 ? Math.round((buzzwordCount / (text.split(/\s+/).length / 100))) : 0;
 
-    // Quantification percentage (sentences with numbers, %, or $)
-    const quantifiedSentences = sentences.filter(s => /\d+|%|\$/.test(s));
-    const quantificationPercent = sentences.length > 0 ? Math.round((quantifiedSentences.length / sentences.length) * 100) : 0;
+    // Calculate density per 100 words
+    const buzzwordDensity = totalWords > 0
+      ? Math.min(100, Math.round((buzzwordCount / totalWords) * 100 * 10)) // Multiply by 10 to make it more visible
+      : 0;
+
+    // Quantification percentage - STRICTER (must have meaningful metrics)
+    let quantifiedCount = 0;
+    sentences.forEach(s => {
+      // Must have numbers AND context (%, $, time units, comparisons)
+      const hasPercentage = /%/.test(s);
+      const hasCurrency = /\$|€|£|¥/.test(s);
+      const hasMultiplier = /\d+x\b/gi.test(s);
+      const hasComparison = /(from|to|by)\s+\d+/gi.test(s);
+      const hasTimeMetric = /\d+\s*(second|minute|hour|day|week|month|year|min|hr)/gi.test(s);
+      const hasScale = /\d+\s*(k|m|million|billion|thousand)/gi.test(s);
+
+      // Count as quantified only if has numbers AND meaningful context
+      if (hasPercentage || hasCurrency || hasMultiplier || hasComparison || hasTimeMetric || hasScale) {
+        quantifiedCount++;
+      }
+    });
+
+    const quantificationPercent = sentences.length > 0
+      ? Math.round((quantifiedCount / sentences.length) * 100)
+      : 0;
 
     return {
       activeVoicePercent: Math.min(100, Math.max(0, activeVoicePercent)),
