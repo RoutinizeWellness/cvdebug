@@ -34,13 +34,14 @@ export function NewNavbar() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="cursor-pointer flex items-center gap-2"
+            className="cursor-pointer flex items-center"
             onClick={() => navigate("/")}
           >
-            <div className="gradient-logo w-10 h-10 rounded-lg flex items-center justify-center">
-              <Terminal className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-lg font-bold text-charcoal">CVDebug</span>
+            <img
+              src="https://harmless-tapir-303.convex.cloud/api/storage/58f3c7a0-ef2d-45f1-9316-8400fefdb787"
+              alt="CVDebug Logo"
+              className="h-8"
+            />
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -54,7 +55,7 @@ export function NewNavbar() {
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-body transition-colors hover:text-charcoal"
+                className="text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B]"
               >
                 {link.name}
               </button>
@@ -69,7 +70,7 @@ export function NewNavbar() {
           >
             <button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="hidden text-sm font-medium text-body transition-colors hover:text-charcoal sm:block"
+              className="hidden text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] sm:block"
             >
               {isAuthenticated ? "Dashboard" : "Log in"}
             </button>
@@ -84,7 +85,7 @@ export function NewNavbar() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-charcoal"
+              className="md:hidden text-[#1E293B]"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -104,14 +105,14 @@ export function NewNavbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 glass-panel-light border-t border-slate md:hidden"
+            className="fixed top-16 left-0 right-0 z-40 glass-panel-light border-t border-[#E2E8F0] md:hidden"
           >
             <div className="mx-auto max-w-7xl px-4 py-4 space-y-4">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleNavClick(link.href)}
-                  className="block w-full text-left text-sm font-medium text-body transition-colors hover:text-charcoal py-2"
+                  className="block w-full text-left text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] py-2"
                 >
                   {link.name}
                 </button>
@@ -121,7 +122,7 @@ export function NewNavbar() {
                   navigate(isAuthenticated ? "/dashboard" : "/auth");
                   setMobileMenuOpen(false);
                 }}
-                className="block w-full text-left text-sm font-medium text-body transition-colors hover:text-charcoal py-2 sm:hidden"
+                className="block w-full text-left text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] py-2 sm:hidden"
               >
                 {isAuthenticated ? "Dashboard" : "Log in"}
               </button>

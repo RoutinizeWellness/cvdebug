@@ -53,7 +53,7 @@ export default function Landing() {
     <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-100 antialiased mesh-gradient">
       <style>{`
         body {
-          background: #FFFFFF;
+          background: #FFFFFF; /* Main white background */
         }
       `}</style>
 

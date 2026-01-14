@@ -402,19 +402,27 @@
   }
 }
 
-/* Landing Page Light Theme Colors */
+/* Landing Page Light Theme Colors - Unified Palette */
 .text-charcoal {
-  color: #1E293B;
+  color: #1E293B; /* Headers - slate-800 */
 }
 
 .text-body {
-  color: #475569;
+  color: #475569; /* Body text - slate-600 */
+}
+
+.text-muted {
+  color: #64748B; /* Muted text - slate-500 */
+}
+
+.text-light {
+  color: #94A3B8; /* Light text - slate-400 */
 }
 
 .bg-alt {
-  background-color: #F8FAFC;
+  background-color: #F8FAFC; /* Alt background - slate-50 */
 }
 
 .border-slate {
-  border-color: #E2E8F0;
+  border-color: #E2E8F0; /* Primary border - slate-200 */
 }

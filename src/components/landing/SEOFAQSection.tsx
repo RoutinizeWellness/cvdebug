@@ -38,7 +38,7 @@ export function SEOFAQSection() {
   ];
 
   return (
-    <section className="py-20 px-4 bg-background/50 relative overflow-hidden">
+    <section className="py-20 px-4 bg-[#FFFFFF] relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0" style={{
@@ -56,10 +56,10 @@ export function SEOFAQSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-[#475569] max-w-2xl mx-auto">
             Everything you need to know about ATS resume scanners and how CVDebug helps you beat them
           </p>
         </motion.div>
@@ -73,14 +73,14 @@ export function SEOFAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-card/40 backdrop-blur-sm border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300"
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden hover:border-[#3B82F6]/50 transition-all duration-300"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
+                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#F8FAFC] transition-colors"
                 aria-expanded={openIndex === index}
               >
-                <h3 className="text-lg font-bold text-white pr-8">
+                <h3 className="text-lg font-bold text-[#1E293B] pr-8">
                   {faq.question}
                 </h3>
                 <motion.div
@@ -88,7 +88,7 @@ export function SEOFAQSection() {
                   transition={{ duration: 0.3 }}
                   className="shrink-0"
                 >
-                  <ChevronDown className="h-5 w-5 text-primary" />
+                  <ChevronDown className="h-5 w-5 text-[#3B82F6]" />
                 </motion.div>
               </button>
 
@@ -101,7 +101,7 @@ export function SEOFAQSection() {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <div className="px-6 pb-5 text-muted-foreground leading-relaxed">
+                <div className="px-6 pb-5 text-[#475569] leading-relaxed">
                   {faq.answer}
                 </div>
               </motion.div>
@@ -117,10 +117,10 @@ export function SEOFAQSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <p className="text-muted-foreground mb-4">
+          <p className="text-[#475569] mb-4">
             Still have questions? Try our free ATS scanner now
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-primary via-teal-500 to-cyan-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105">
+          <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#3B82F6]/50 transition-all duration-300 hover:scale-105">
             Scan Your Resume Free →
           </button>
         </motion.div>

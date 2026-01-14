@@ -34,7 +34,7 @@ export function NewHeroSection() {
   }, []);
 
   return (
-    <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
+    <section className="relative isolate overflow-hidden px-6 pt-14 lg:px-8 bg-[#FFFFFF]">
       <div className="mx-auto max-w-7xl py-12 sm:py-20 lg:py-24">
         {/* Status Badge */}
         <motion.div
@@ -43,12 +43,12 @@ export function NewHeroSection() {
           transition={{ duration: 0.5 }}
           className="mb-6 sm:mb-8 flex justify-center px-4"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate bg-white shadow-soft">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
             <div className="relative flex h-2 w-2">
-              <span className="pulsing-dot absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="pulsing-dot absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
             </div>
-            <span className="text-xs font-semibold text-charcoal uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#1E293B] uppercase tracking-wider">
               SYSTEM ONLINE v2.4.0
             </span>
           </div>
@@ -60,7 +60,7 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-center px-4 max-w-5xl mx-auto"
         >
-          <span className="text-charcoal">
+          <span className="text-[#1E293B]">
             Stop being invisible to{" "}
           </span>
           <br className="hidden sm:block" />
@@ -81,7 +81,7 @@ export function NewHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 text-lg sm:text-xl leading-8 text-body max-w-3xl mx-auto px-4 text-center"
+          className="mt-6 text-lg sm:text-xl leading-8 text-[#475569] max-w-3xl mx-auto px-4 text-center"
         >
           The standard PDF you're sending is unreadable to 70% of ATS systems.
           See what the bot sees in 10 seconds and fix your parse rate.
@@ -115,7 +115,7 @@ export function NewHeroSection() {
 
           <motion.button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="group flex h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-slate bg-white px-8 text-base font-semibold text-charcoal hover:bg-gray-50 transition-all shadow-soft"
+            className="group flex h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-[#E2E8F0] bg-[#FFFFFF] px-8 text-base font-semibold text-[#1E293B] hover:bg-[#F8FAFC] transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -127,7 +127,7 @@ export function NewHeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-6 text-sm text-body px-4 text-center"
+          className="mt-6 text-sm text-[#475569] px-4 text-center"
         >
           No credit card • No sign up required • Instant results in 10 seconds
         </motion.p>

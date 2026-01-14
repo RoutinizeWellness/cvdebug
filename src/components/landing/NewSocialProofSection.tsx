@@ -53,7 +53,7 @@ export function NewSocialProofSection() {
   ];
 
   return (
-    <section className="relative bg-alt py-16 overflow-hidden">
+    <section className="relative bg-[#F8FAFC] py-16 overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         {/* Headline */}
         <motion.div
@@ -63,7 +63,7 @@ export function NewSocialProofSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-sm font-medium text-body uppercase tracking-wider">
+          <p className="text-sm font-medium text-[#475569] uppercase tracking-wider">
             Engineers from these companies use CVDebug
           </p>
         </motion.div>

@@ -16,7 +16,7 @@ export function ProductHuntBanner() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 text-white shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#F59E0B] via-[#F59E0B] to-[#F59E0B] text-white shadow-lg"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4">
@@ -26,7 +26,7 @@ export function ProductHuntBanner() {
               <span>🎉 We're LIVE on Product Hunt!</span>
               <span className="hidden sm:inline">|</span>
               <span>
-                Use code <span className="px-2 py-0.5 bg-white/20 rounded font-mono font-bold">PH50</span> for 50% OFF
+                Use code <span className="px-2 py-0.5 bg-[#FFFFFF]/20 rounded font-mono font-bold">PH50</span> for 50% OFF
               </span>
               <span className="hidden sm:inline">|</span>
               <span className="text-xs opacity-90">⏰ 48 hours only</span>
@@ -35,7 +35,7 @@ export function ProductHuntBanner() {
               href="https://www.producthunt.com/posts/cvdebug"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 bg-white text-orange-600 font-bold rounded-lg hover:bg-white/90 transition-all duration-300 hover:scale-105 text-sm"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 bg-[#FFFFFF] text-[#F59E0B] font-bold rounded-lg hover:bg-[#FFFFFF]/90 transition-all duration-300 hover:scale-105 text-sm"
             >
               Upvote us →
             </a>
@@ -43,7 +43,7 @@ export function ProductHuntBanner() {
 
           <button
             onClick={() => setIsVisible(false)}
-            className="p-1 hover:bg-white/20 rounded transition-colors"
+            className="p-1 hover:bg-[#FFFFFF]/20 rounded transition-colors"
             aria-label="Close banner"
           >
             <X className="h-4 w-4" />

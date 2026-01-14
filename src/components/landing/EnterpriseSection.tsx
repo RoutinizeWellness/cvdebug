@@ -25,16 +25,16 @@ export function EnterpriseSection() {
   ];
 
   return (
-    <section className="py-24 relative" id="enterprise">
+    <section className="py-24 relative bg-[#FFFFFF]" id="enterprise">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Background decoration */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-600/10 rounded-full blur-[120px]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3B82F6]/10 rounded-full blur-[120px]"></div>
         </div>
 
-        <div className="glass-card rounded-2xl p-8 md:p-12 lg:p-16 relative overflow-hidden border-teal-500/20">
+        <div className="rounded-2xl p-8 md:p-12 lg:p-16 relative overflow-hidden border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
           {/* Gradient border effect */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#8B5CF6] to-transparent"></div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -43,10 +43,10 @@ export function EnterpriseSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-6"
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6"
               >
-                <Building2 className="h-4 w-4 text-teal-400" />
-                <span className="text-xs font-semibold text-teal-400 uppercase tracking-wider">
+                <Building2 className="h-4 w-4 text-[#3B82F6]" />
+                <span className="text-xs font-semibold text-[#3B82F6] uppercase tracking-wider">
                   Enterprise
                 </span>
               </motion.div>
@@ -56,10 +56,10 @@ export function EnterpriseSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4"
+                className="text-3xl md:text-4xl font-bold tracking-tight text-[#1E293B] mb-4"
               >
                 Scale Your Hiring<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">
                   Without Compromise
                 </span>
               </motion.h2>
@@ -69,7 +69,7 @@ export function EnterpriseSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-slate-400 text-lg mb-8 leading-relaxed"
+                className="text-[#475569] text-lg mb-8 leading-relaxed"
               >
                 Built for recruiting teams that process thousands of applications.
                 Get volume discounts, dedicated support, and custom integrations.
@@ -84,7 +84,7 @@ export function EnterpriseSection() {
               >
                 <Button
                   onClick={() => window.open("mailto:enterprise@cvdebug.com", "_blank")}
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-white font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(59,130,246,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all border-0"
                 >
                   <span className="mr-2">Contact Sales</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -92,7 +92,7 @@ export function EnterpriseSection() {
                 <Button
                   onClick={() => navigate("/pricing")}
                   variant="outline"
-                  className="px-6 py-3 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600 transition-all"
+                  className="px-6 py-3 rounded-lg border border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#1E293B] hover:border-[#3B82F6] transition-all"
                 >
                   View Pricing
                 </Button>
@@ -109,12 +109,12 @@ export function EnterpriseSection() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex gap-4 items-start"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-                    <feature.icon className="h-6 w-6 text-teal-400" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[#3B82F6]/10 border border-[#3B82F6]/20 flex items-center justify-center">
+                    <feature.icon className="h-6 w-6 text-[#3B82F6]" />
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold mb-1">{feature.title}</h3>
-                    <p className="text-slate-400 text-sm">{feature.description}</p>
+                    <h3 className="text-[#1E293B] font-semibold mb-1">{feature.title}</h3>
+                    <p className="text-[#475569] text-sm">{feature.description}</p>
                   </div>
                 </motion.div>
               ))}

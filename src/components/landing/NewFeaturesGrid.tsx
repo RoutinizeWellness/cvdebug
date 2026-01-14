@@ -27,12 +27,12 @@ export function NewFeaturesGrid() {
   ];
 
   const iconColors = {
-    blue: "bg-blue-50 text-blue-600",
-    purple: "bg-purple-50 text-purple-600",
+    blue: "bg-[#DBEAFE] text-[#3B82F6]",
+    purple: "bg-[#F3E8FF] text-[#8B5CF6]",
   };
 
   return (
-    <section className="py-24 relative" id="features">
+    <section className="py-24 relative bg-[#FFFFFF]" id="features">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,10 +41,10 @@ export function NewFeaturesGrid() {
           transition={{ duration: 0.6 }}
           className="mx-auto max-w-2xl text-center mb-16"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-charcoal sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-[#1E293B] sm:text-4xl">
             Total Visibility Control
           </h2>
-          <p className="mt-4 text-lg text-body">
+          <p className="mt-4 text-lg text-[#475569]">
             Our engine reverse-engineers the top ATS algorithms (Greenhouse,
             Lever, Workday) to ensure your data survives the parse.
           </p>
@@ -59,7 +59,7 @@ export function NewFeaturesGrid() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative overflow-hidden rounded-2xl p-8 bg-white border border-slate shadow-soft hover:shadow-lg transition-all duration-300 cursor-pointer"
+              className="group relative overflow-hidden rounded-2xl p-8 bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 cursor-pointer"
             >
               <motion.div
                 className={`mb-6 inline-flex size-12 items-center justify-center rounded-lg ${
@@ -72,7 +72,7 @@ export function NewFeaturesGrid() {
               </motion.div>
 
               <motion.h3
-                className="text-lg font-semibold leading-8 text-charcoal"
+                className="text-lg font-semibold leading-8 text-[#1E293B]"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.3 }}
@@ -81,7 +81,7 @@ export function NewFeaturesGrid() {
               </motion.h3>
 
               <motion.p
-                className="mt-2 text-base leading-7 text-body"
+                className="mt-2 text-base leading-7 text-[#475569]"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.4 }}

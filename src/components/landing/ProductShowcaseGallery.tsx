@@ -43,11 +43,11 @@ export function ProductShowcaseGallery() {
   ];
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section className="py-24 px-4 relative overflow-hidden bg-[#FFFFFF]">
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-40"></div>
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-[#3B82F6]/5 via-transparent to-transparent opacity-40"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#3B82F6]/10 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
@@ -58,19 +58,19 @@ export function ProductShowcaseGallery() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">Product Hunt Special</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6">
+            <Sparkles className="h-4 w-4 text-[#3B82F6]" />
+            <span className="text-sm font-semibold text-[#3B82F6]">Product Hunt Special</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] mb-4 sm:mb-6 px-4">
             Beat ATS Systems
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-teal-400 to-cyan-400 mt-2">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mt-2">
               In 10 Seconds
             </span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-[#475569] max-w-2xl mx-auto px-4">
             See your resume the way robots see it. Get instant feedback and land more interviews.
           </p>
         </motion.div>
@@ -89,7 +89,7 @@ export function ProductShowcaseGallery() {
                 className="group relative"
               >
                 {/* Card */}
-                <div className="relative h-full bg-card/40 backdrop-blur-xl border border-border rounded-2xl overflow-hidden hover:border-primary/50 transition-all duration-500">
+                <div className="relative h-full bg-[#FFFFFF] backdrop-blur-xl border border-[#E2E8F0] rounded-2xl overflow-hidden hover:border-[#3B82F6]/50 transition-all duration-500">
                   {/* Image with overlay */}
                   <div className="relative h-64 overflow-hidden">
                     <OptimizedImage
@@ -101,11 +101,11 @@ export function ProductShowcaseGallery() {
                       priority={index < 2} // Load first 2 images immediately
                     />
                     {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#FFFFFF] via-[#FFFFFF]/60 to-transparent"></div>
 
                     {/* Stats badge */}
-                    <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm border border-border rounded-full px-4 py-2">
-                      <span className="text-xs font-bold text-primary">{item.stats}</span>
+                    <div className="absolute top-4 right-4 bg-[#FFFFFF]/80 backdrop-blur-sm border border-[#E2E8F0] rounded-full px-4 py-2">
+                      <span className="text-xs font-bold text-[#3B82F6]">{item.stats}</span>
                     </div>
                   </div>
 
@@ -121,10 +121,10 @@ export function ProductShowcaseGallery() {
                       >
                         <Icon className="h-6 w-6" style={{ color: item.color }} />
                       </div>
-                      <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                      <h3 className="text-xl font-bold text-[#1E293B]">{item.title}</h3>
                     </div>
 
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-[#475569] leading-relaxed">
                       {item.description}
                     </p>
 
@@ -150,12 +150,12 @@ export function ProductShowcaseGallery() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-primary/20 via-teal-500/20 to-cyan-500/20 border border-primary/30 rounded-2xl p-6 sm:p-8">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-[#8B5CF6]/20 to-[#3B82F6]/20 border border-[#3B82F6]/30 rounded-2xl p-6 sm:p-8">
             <div className="text-left">
-              <p className="text-white font-bold text-lg mb-1">Product Hunt Launch Special</p>
-              <p className="text-muted-foreground text-sm">Use code <span className="text-primary font-mono font-bold">PH50</span> for 50% off (48 hours only)</p>
+              <p className="text-[#1E293B] font-bold text-lg mb-1">Product Hunt Launch Special</p>
+              <p className="text-[#475569] text-sm">Use code <span className="text-[#3B82F6] font-mono font-bold">PH50</span> for 50% off (48 hours only)</p>
             </div>
-            <button className="px-8 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap">
+            <button className="px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap">
               Try Free Scan →
             </button>
           </div>
