@@ -24,6 +24,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { MLInsights } from "@/components/dashboard/MLInsights";
 
 interface WritingForgeProps {
   resumeId?: Id<"resumes"> | null;
@@ -569,6 +570,25 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                   AI Suggestion: Add "Technical Skills" section based on Vercel requirements?
                 </span>
               </div>
+
+              {/* ML-Powered Analysis - Premium Feature */}
+              {hasInterviewSprint && resume?.ocrText && resume.ocrText.length >= 100 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-8 p-6 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0]"
+                >
+                  <h3 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+                    ML-Powered Resume Analysis
+                  </h3>
+                  <MLInsights
+                    resumeText={resume.ocrText}
+                    jobDescription={resume.jobDescription || ""}
+                  />
+                </motion.div>
+              )}
             </div>
           </div>
         </main>

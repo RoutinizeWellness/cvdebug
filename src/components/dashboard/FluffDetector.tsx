@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
+import { MLInsights } from "@/components/dashboard/MLInsights";
 
 interface WeakPhrase {
   phrase: string;
@@ -559,6 +560,17 @@ export function FluffDetector({
             </button>
           </div>
         </motion.div>
+
+        {/* ML-Powered Analysis */}
+        {resumeText && resumeText.length >= 100 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <MLInsights resumeText={resumeText} jobDescription="" />
+          </motion.div>
+        )}
       </div>
 
       {/* Main Content Grid */}

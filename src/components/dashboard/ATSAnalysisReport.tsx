@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
+import { MLInsights } from "./MLInsights";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -805,6 +806,19 @@ export function ATSAnalysisReport({
                 )}
               </div>
             </div>
+          )}
+
+          {/* ML-Powered Analysis - PAID USERS ONLY */}
+          {isPaidUser && ocrText && ocrText.length >= 100 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              className="w-full mt-8"
+            >
+              <h2 className="text-2xl font-bold text-[#0F172A] mb-6">ML-Powered Insights</h2>
+              <MLInsights resumeText={ocrText} jobDescription={resume?.jobDescription || ""} />
+            </motion.div>
           )}
 
           {/* Weak Bullet Suggestions - PAID USERS ONLY */}

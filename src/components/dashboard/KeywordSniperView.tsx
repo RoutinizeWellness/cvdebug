@@ -10,6 +10,8 @@ import { KeywordExamplesModal } from "./KeywordExamplesModal";
 import { ApplyMetricModal } from "./ApplyMetricModal";
 import { RewriteAllModal } from "./RewriteAllModal";
 import { InterviewBattlePlanModal } from "./InterviewBattlePlanModal";
+import { MLInsights } from "./MLInsights";
+import { motion } from "framer-motion";
 
 const apiAny = api;
 
@@ -287,6 +289,22 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
             </button>
           </div>
         </div>
+      )}
+
+      {/* ML-Powered Analysis - Premium Users Only */}
+      {hasInterviewSprint && masterResume?.ocrText && masterResume.ocrText.length >= 100 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="w-full mb-6"
+        >
+          <h2 className="text-lg font-bold text-[#0F172A] mb-4">ML Analysis</h2>
+          <MLInsights
+            resumeText={masterResume.ocrText}
+            jobDescription={applicationWithJob?.jobDescriptionText || ""}
+          />
+        </motion.div>
       )}
 
       {/* Keyword Sniper Tool */}
