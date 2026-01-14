@@ -215,6 +215,20 @@ export function ATSAnalysisReport({
       <div className="relative w-full z-10">
         {/* Main Content */}
         <main className="flex flex-col items-center justify-start py-8 md:py-12 px-4 md:px-6 w-full max-w-7xl mx-auto">
+          {/* Header with Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full flex justify-center mb-6"
+          >
+            <img
+              src="/assets/cvdebug-logo.png"
+              alt="CVDebug Logo"
+              className="h-12 md:h-16 w-auto object-contain"
+            />
+          </motion.div>
+
           {/* Hero Section - ResumeWorded Style */}
           <div className="w-full bg-[#FFFFFF] rounded-2xl shadow-xl border border-[#E2E8F0] p-8 md:p-12 mb-8">
             <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">

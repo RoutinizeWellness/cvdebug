@@ -2,6 +2,7 @@ import { Terminal, LayoutDashboard, Briefcase, FileText, Bot, LogOut } from "luc
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import { Logo } from "@/components/Logo";
 
 interface SidebarProps {
   userName?: string;
@@ -34,15 +35,11 @@ export function Sidebar({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 px-2"
+            className="flex items-center gap-3 px-2 cursor-pointer"
+            onClick={() => navigate("/dashboard")}
           >
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-              <Terminal className="h-5 w-5 text-[#0F172A]" />
-            </div>
+            <Logo iconClassName="h-10 w-auto" />
             <div className="flex flex-col">
-              <h1 className="text-[#0F172A] text-lg font-bold leading-none tracking-tight">
-                CVDebug
-              </h1>
               <p className="text-[#64748B] text-xs font-mono pt-1">v2.4.0 stable</p>
             </div>
           </motion.div>

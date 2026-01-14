@@ -81,9 +81,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       {/* Logo & Nav */}
       <div className="flex flex-col p-6 mb-4">
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-6">
-          <span className="material-symbols-outlined text-3xl text-[#3B82F6]">terminal</span>
-          <h2 className="text-xl font-bold tracking-tight text-[#0F172A]">CVDebug</h2>
+        <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentView('mission')}>
+          <Logo iconClassName="h-8 w-auto" />
         </div>
 
         {/* Navigation */}
