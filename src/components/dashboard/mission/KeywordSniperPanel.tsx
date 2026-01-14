@@ -80,15 +80,15 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
   return (
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent className="w-full sm:max-w-md bg-[#0A0A0A] border-l border-zinc-800 text-zinc-200 p-0 flex flex-col">
-          <div className="p-6 border-b border-zinc-800 bg-zinc-900/20">
+        <SheetContent className="w-full sm:max-w-md bg-[#FFFFFF] border-l border-[#E2E8F0] text-[#0F172A] p-0 flex flex-col">
+          <div className="p-6 border-b border-[#E2E8F0] bg-[#F8FAFC]">
             <SheetHeader className="space-y-4">
               <div className="flex items-center justify-between">
-                <Badge variant="outline" className="bg-zinc-900 text-zinc-400 border-zinc-700">
+                <Badge variant="outline" className="bg-[#FFFFFF] text-[#64748B] border-[#E2E8F0]">
                   Keyword Sniper
                 </Badge>
                 <div className={`flex items-center gap-2 font-mono font-bold ${
-                  score >= 80 ? "text-[#00FF41]" : score >= 50 ? "text-[#F59E0B]" : "text-[#EF4444]"
+                  score >= 80 ? "text-[#22C55E]" : score >= 50 ? "text-[#F59E0B]" : "text-[#EF4444]"
                 }`}>
                   <Target className="h-4 w-4" />
                   {score}% MATCH
@@ -96,7 +96,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
               </div>
               <div>
                 <SheetTitle className="text-xl font-bold text-[#0F172A]">{job.jobTitle}</SheetTitle>
-                <SheetDescription className="flex items-center gap-2 text-zinc-400 mt-1">
+                <SheetDescription className="flex items-center gap-2 text-[#64748B] mt-1">
                   <Briefcase className="h-3 w-3" /> {job.company}
                 </SheetDescription>
               </div>
@@ -133,22 +133,22 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
 
           <ScrollArea className="flex-1 p-6">
             {isRedacted && (
-              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-purple-900/40 to-blue-900/40 border border-teal-500/30 relative overflow-hidden">
+              <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-[#F3E8FF] to-[#DBEAFE] border border-[#8B5CF6]/30 relative overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <Lock className="h-4 w-4 text-teal-400" />
+                    <Lock className="h-4 w-4 text-[#8B5CF6]" />
                     <h3 className="font-bold text-[#0F172A] text-sm">Unlock Full Analysis</h3>
                   </div>
-                  <p className="text-xs text-zinc-300 mb-3">
-                    Detected <span className="font-bold text-[#0F172A]">{totalMissing} missing keywords</span>. 
-                    Here are 2: <span className="font-mono text-teal-300">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
+                  <p className="text-xs text-[#475569] mb-3">
+                    Detected <span className="font-bold text-[#0F172A]">{totalMissing} missing keywords</span>.
+                    Here are 2: <span className="font-mono text-[#8B5CF6]">[{missingKeywords.slice(0, 2).map((k: any) => typeof k === 'string' ? k : k.keyword).join(', ')}]</span>.
                   </p>
-                  <Button size="sm" className="w-full bg-[#FFFFFF] text-black hover:bg-zinc-200 font-bold h-8 text-xs">
+                  <Button size="sm" className="w-full bg-[#0F172A] text-white hover:bg-[#1E293B] font-bold h-8 text-xs">
                     Pay €4.99 to Unlock All {totalMissing - 2} & Fix Score
                   </Button>
                 </div>
                 {/* Background effect */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/20 blur-3xl rounded-full -mr-10 -mt-10" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B5CF6]/10 blur-3xl rounded-full -mr-10 -mt-10" />
               </div>
             )}
 
@@ -156,31 +156,31 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
               <div className="space-y-8">
                 {/* Matched Keywords */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-green-400">
+                  <div className="flex items-center gap-2 text-[#22C55E]">
                     <CheckCircle2 className="h-4 w-4" />
                     <h3 className="text-sm font-bold uppercase tracking-wider">Matched Keywords</h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {matchedKeywords.slice(0, 10).map((keyword: string, i: number) => (
-                      <Badge key={i} className="bg-[#22C55E]/20 text-green-400 border-green-500/30">
+                      <Badge key={i} className="bg-[#22C55E]/20 text-[#22C55E] border-[#22C55E]/30">
                         {keyword}
                       </Badge>
                     ))}
                   </div>
                 </div>
 
-                <Separator className="bg-zinc-800" />
+                <Separator className="bg-[#E2E8F0]" />
 
                 {/* Critical Gaps Section */}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-red-400">
+                  <div className="flex items-center gap-2 text-[#EF4444]">
                     <AlertTriangle className="h-4 w-4" />
                     <h3 className="text-sm font-bold uppercase tracking-wider">Critical Keyword Gaps</h3>
                   </div>
                   
                   {missingKeywords.length === 0 ? (
-                    <motion.div 
-                      className="p-4 rounded-lg bg-[#22C55E]/10 border border-green-500/20 flex items-center gap-3 text-green-400"
+                    <motion.div
+                      className="p-4 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center gap-3 text-[#22C55E]"
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
@@ -191,18 +191,18 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   ) : (
                     <div className="space-y-2">
                       {missingKeywords.slice(0, 5).map((keyword: string, i: number) => (
-                        <motion.div 
-                          key={i} 
-                          className="p-3 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors cursor-pointer relative"
+                        <motion.div
+                          key={i}
+                          className="p-3 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/30 transition-colors cursor-pointer relative shadow-sm"
                           onClick={() => {
                             setActiveTab('missing');
                             setExpandedKeyword(keyword);
                           }}
                           whileHover={{ x: 4 }}
-                          animate={{ 
+                          animate={{
                             borderColor: i === 0 ? ["rgba(239, 68, 68, 0.2)", "rgba(239, 68, 68, 0.4)", "rgba(239, 68, 68, 0.2)"] : undefined
                           }}
-                          transition={{ 
+                          transition={{
                             borderColor: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                           }}
                         >
@@ -215,7 +215,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                           )}
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-[#0F172A]">{keyword}</span>
-                            <ArrowRight className="h-4 w-4 text-zinc-500" />
+                            <ArrowRight className="h-4 w-4 text-[#64748B]" />
                           </div>
                         </motion.div>
                       ))}
@@ -223,21 +223,21 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   )}
                 </div>
 
-                <Separator className="bg-zinc-800" />
+                <Separator className="bg-[#E2E8F0]" />
 
                 {/* Action Plan */}
                 <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Fix Strategy</h3>
+                  <h3 className="text-sm font-bold text-[#64748B] uppercase tracking-wider">Fix Strategy</h3>
                   <div className="space-y-2">
-                    <div className="flex gap-3 p-3 rounded-lg bg-zinc-900/30 border border-zinc-800/50">
+                    <div className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                       <div className="h-6 w-6 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
                       <div className="space-y-1">
-                        <p className="text-sm font-medium text-zinc-200">Update your Resume</p>
-                        <p className="text-xs text-zinc-500">Use the AI-generated phrases to add missing keywords naturally.</p>
+                        <p className="text-sm font-medium text-[#0F172A]">Update your Resume</p>
+                        <p className="text-xs text-[#64748B]">Use the AI-generated phrases to add missing keywords naturally.</p>
                       </div>
                     </div>
-                    <div 
-                      className="flex gap-3 p-3 rounded-lg bg-zinc-900/30 border border-zinc-800/50 cursor-pointer hover:bg-zinc-900/50 transition-colors group"
+                    <div
+                      className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] cursor-pointer hover:bg-[#FFFFFF] hover:border-[#8B5CF6] transition-colors group"
                       onClick={() => {
                         onGenerateCoverLetter(job._id);
                         onOpenChange(false);
@@ -246,10 +246,10 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                       <div className="h-6 w-6 rounded-full bg-teal-500/10 text-teal-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <p className="text-sm font-medium text-zinc-200 group-hover:text-teal-400 transition-colors">Generate Cover Letter</p>
-                          <ArrowRight className="h-3 w-3 text-zinc-500 group-hover:text-teal-400 transition-colors" />
+                          <p className="text-sm font-medium text-[#0F172A] group-hover:text-[#8B5CF6] transition-colors">Generate Cover Letter</p>
+                          <ArrowRight className="h-3 w-3 text-[#64748B] group-hover:text-[#8B5CF6] transition-colors" />
                         </div>
-                        <p className="text-xs text-zinc-500">Use the AI Cover Letter tool to naturally weave these keywords in.</p>
+                        <p className="text-xs text-[#64748B]">Use the AI Cover Letter tool to naturally weave these keywords in.</p>
                       </div>
                     </div>
                   </div>
@@ -257,57 +257,57 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
               </div>
             ) : activeTab === 'diff' ? (
               <div className="space-y-6">
-                <div className="p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
+                <div className="p-4 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                   <h3 className="text-sm font-bold text-[#0F172A] mb-2 flex items-center gap-2">
-                    <ArrowRightLeft className="h-4 w-4 text-blue-400" />
+                    <ArrowRightLeft className="h-4 w-4 text-[#3B82F6]" />
                     Augmentation Visualizer
                   </h3>
-                  <p className="text-xs text-zinc-400 mb-4">
+                  <p className="text-xs text-[#64748B] mb-4">
                     See how your Master CV compares to the target job description.
                   </p>
-                  
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <div className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Master CV Base</div>
-                      <div className="h-32 rounded bg-zinc-950 border border-zinc-800 p-2 overflow-hidden relative">
-                        <div className="text-[8px] text-zinc-600 leading-relaxed font-mono opacity-50">
+                      <div className="text-xs font-bold text-[#64748B] uppercase tracking-wider">Master CV Base</div>
+                      <div className="h-32 rounded bg-[#FFFFFF] border border-[#E2E8F0] p-2 overflow-hidden relative">
+                        <div className="text-[8px] text-[#64748B] leading-relaxed font-mono opacity-50">
                           {job.resumeText ? job.resumeText.substring(0, 300) + "..." : "Resume content..."}
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#FFFFFF]" />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <div className="text-xs font-bold text-[#3B82F6] uppercase tracking-wider">Target Instance</div>
-                      <div className="h-32 rounded bg-blue-950/10 border border-[#3B82F6]/20 p-2 overflow-hidden relative">
+                      <div className="h-32 rounded bg-[#3B82F6]/5 border border-[#3B82F6]/20 p-2 overflow-hidden relative">
                         <div className="space-y-1">
                           {missingKeywords.slice(0, 3).map((kw: any, i: number) => (
                             <div key={i} className="flex items-center gap-1">
                               <div className="w-1 h-1 rounded-full bg-[#3B82F6]" />
                               <div className="h-1.5 bg-[#3B82F6]/20 rounded w-16" />
-                              <span className="text-[8px] text-blue-300 font-bold">+{typeof kw === 'string' ? kw : kw.keyword}</span>
+                              <span className="text-[8px] text-[#3B82F6] font-bold">+{typeof kw === 'string' ? kw : kw.keyword}</span>
                             </div>
                           ))}
-                          <div className="h-1.5 bg-zinc-800/50 rounded w-full" />
-                          <div className="h-1.5 bg-zinc-800/50 rounded w-2/3" />
+                          <div className="h-1.5 bg-[#E2E8F0] rounded w-full" />
+                          <div className="h-1.5 bg-[#E2E8F0] rounded w-2/3" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-950/10" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#3B82F6]/5" />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-zinc-400 uppercase">Suggested Augmentations</h4>
+                  <h4 className="text-xs font-bold text-[#64748B] uppercase">Suggested Augmentations</h4>
                   {missingKeywords.map((keyword: any, i: number) => {
                     const kw = typeof keyword === 'string' ? keyword : keyword.keyword;
                     return (
-                      <div key={i} className="flex items-center gap-3 p-3 rounded bg-zinc-900/30 border border-zinc-800/50">
+                      <div key={i} className="flex items-center gap-3 p-3 rounded bg-[#F8FAFC] border border-[#E2E8F0]">
                         <div className="w-6 h-6 rounded-full bg-[#3B82F6]/10 flex items-center justify-center text-[#3B82F6] text-xs font-bold">
                           +
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-zinc-200">Inject "{kw}"</p>
-                          <p className="text-xs text-zinc-500">Recommended for Skills or Experience section</p>
+                          <p className="text-sm font-medium text-[#0F172A]">Inject "{kw}"</p>
+                          <p className="text-xs text-[#64748B]">Recommended for Skills or Experience section</p>
                         </div>
                       </div>
                     );
@@ -322,19 +322,19 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   const isLoading = loadingKeyword === keyword;
 
                   return (
-                    <div key={i} className="group rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-red-500/30 transition-colors">
+                    <div key={i} className="group rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/30 transition-colors shadow-sm">
                       <div className="p-3">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-bold text-[#0F172A]">{keyword}</span>
                           <Badge variant="destructive" className="text-[10px] uppercase">Missing</Badge>
                         </div>
-                        <p className="text-xs text-zinc-500 mb-3">
+                        <p className="text-xs text-[#64748B] mb-3">
                           Frequently appears in job descriptions for this role.
                         </p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="h-8 text-xs bg-primary/10 border-primary/50 text-primary hover:bg-primary hover:text-black w-full justify-center font-bold"
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 text-xs bg-primary/10 border-primary/50 text-primary hover:bg-primary hover:text-white w-full justify-center font-bold"
                           onClick={() => handleGeneratePhrases(keyword)}
                           disabled={isLoading}
                         >
@@ -354,15 +354,15 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
 
                       {/* AI-Generated Phrases */}
                       {isExpanded && phrases && (
-                        <div className="border-t border-zinc-800 p-3 space-y-3 bg-zinc-950/50">
+                        <div className="border-t border-[#E2E8F0] p-3 space-y-3 bg-[#F8FAFC]">
                           <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase">
                             <Sparkles className="h-3 w-3" />
                             AI-Generated Phrases
                           </div>
                           {phrases.phrases.map((phrase: any, idx: number) => (
-                            <div key={idx} className="p-3 rounded bg-zinc-900 border border-zinc-800 space-y-2">
+                            <div key={idx} className="p-3 rounded bg-[#FFFFFF] border border-[#E2E8F0] space-y-2">
                               <div className="flex items-start justify-between gap-2">
-                                <p className="text-xs text-zinc-200 leading-relaxed flex-1">{phrase.text}</p>
+                                <p className="text-xs text-[#0F172A] leading-relaxed flex-1">{phrase.text}</p>
                                 <Button
                                   variant="ghost"
                                   size="sm"
@@ -379,10 +379,10 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                                   </Badge>
                                 ))}
                               </div>
-                              <p className="text-[10px] text-zinc-500 italic">{phrase.context}</p>
+                              <p className="text-[10px] text-[#64748B] italic">{phrase.context}</p>
                             </div>
                           ))}
-                          <div className="text-[10px] text-zinc-500 flex items-center gap-1">
+                          <div className="text-[10px] text-[#64748B] flex items-center gap-1">
                             <span className="font-bold text-primary">Tip:</span> Add to {phrases.placementSuggestion} section
                           </div>
                         </div>
@@ -394,8 +394,8 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
             )}
           </ScrollArea>
 
-          <div className="p-6 border-t border-zinc-800 bg-zinc-900/20">
-            <Button className="w-full font-bold bg-[#FFFFFF] text-black hover:bg-zinc-200">
+          <div className="p-6 border-t border-[#E2E8F0] bg-[#F8FAFC]">
+            <Button className="w-full font-bold bg-[#0F172A] text-white hover:bg-[#1E293B]">
               Update Application Status
             </Button>
           </div>

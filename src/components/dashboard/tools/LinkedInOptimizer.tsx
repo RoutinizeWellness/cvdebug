@@ -27,13 +27,13 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [isFixingBio, setIsFixingBio] = useState(false);
-  
+
   const latestOptimization = useQuery(apiAny.linkedinProfile.getLatestOptimization);
   const currentUser = useQuery(apiAny.users.currentUser);
   const optimizeLinkedIn = useAction(apiAny.ai.linkedinOptimizer.optimizeLinkedIn);
 
   // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" && 
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleRescan = async () => {
@@ -55,14 +55,14 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
     setIsScanning(true);
     setShowInputDialog(false);
-    
+
     try {
       await optimizeLinkedIn({
         profileText: profileText.trim(),
         jobDescription: jobDescription.trim() || undefined,
         linkedinUrl: linkedinUrl.trim() || undefined,
       });
-      
+
       toast.success("✅ LinkedIn profile analyzed successfully!");
       setProfileText("");
       setJobDescription("");
@@ -106,7 +106,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
     const minutes = Math.floor(diff / (1000 * 60));
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
+
     if (minutes < 60) return `${minutes} mins ago`;
     if (hours < 24) return `${hours} hours ago`;
     return `${days} days ago`;
@@ -128,10 +128,10 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
   const bioSuggestions = latestOptimization?.about?.suggestions || [];
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-[#F8FAFC]">
       <div className="px-6 py-4">
         {!hasInterviewSprint && (
-          <Alert className="mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+          <Alert className="mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden">
             {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-cyan-500/5 pointer-events-none" />
 
@@ -170,7 +170,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
               <Button
                 onClick={onUpgrade}
-                className="btn-power w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Upgrade to Interview Sprint</span>
@@ -270,8 +270,8 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
       <main className="flex-1 px-6 pb-6 overflow-y-auto">
         {!latestOptimization ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-12 max-w-md shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-              <TrendingUp className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-12 max-w-md shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+              <TrendingUp className="h-16 w-16 text-[#E2E8F0] mx-auto mb-4" />
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">No LinkedIn Analysis Yet</h3>
               <p className="text-[#64748B] text-sm mb-6">
                 {hasInterviewSprint
@@ -301,7 +301,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
         {/* Top Stats Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
           {/* Score Card */}
-          <div className="lg:col-span-4 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 relative overflow-hidden group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+          <div className="lg:col-span-4 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 relative overflow-hidden group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <Loader2 className="h-24 w-24" />
             </div>
@@ -329,7 +329,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
           {/* Secondary Stats */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Stat 1 */}
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 flex flex-col justify-between shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 flex flex-col justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-2 bg-green-50 rounded-lg text-[#22C55E]">
                   <TrendingUp className="h-5 w-5" />
@@ -346,7 +346,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
             </div>
 
             {/* Stat 2 */}
-            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 flex flex-col justify-between shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 flex flex-col justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-2 bg-primary/10 rounded-lg text-primary">
                   <Search className="h-5 w-5" />
@@ -366,7 +366,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
         {/* Headline Optimizer */}
         {currentHeadline && optimizedHeadline && (
-          <HeadlineOptimizer 
+          <HeadlineOptimizer
             currentHeadline={currentHeadline}
             optimizedHeadline={optimizedHeadline}
           />
@@ -376,14 +376,14 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Keyword Cloud */}
           {(foundKeywords.length > 0 || missingKeywords.length > 0) && (
-            <KeywordCloud 
+            <KeywordCloud
               foundKeywords={foundKeywords}
               missingKeywords={missingKeywords}
             />
           )}
 
           {/* Bio Audit */}
-          <div className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+          <div className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-[#0F172A] font-bold text-lg flex items-center gap-2">
                 <Wand2 className="h-5 w-5 text-primary" />

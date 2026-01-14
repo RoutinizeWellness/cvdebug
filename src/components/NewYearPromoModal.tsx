@@ -55,11 +55,11 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
       <DialogContent className="max-w-2xl p-0 border-0 bg-transparent overflow-hidden">
         {/* Background Decoration */}
         <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-fireworks"></div>
+          <div className="absolute inset-0 bg-[#F8FAFC]"></div>
           {/* Abstract Fireworks SVG Decoration */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30">
-            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-teal-500 blur-[100px] opacity-20"></div>
-            <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-blue-500 blur-[100px] opacity-20"></div>
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20">
+            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-[#3B82F6] blur-[100px] opacity-30"></div>
+            <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-[#8B5CF6] blur-[100px] opacity-30"></div>
           </div>
         </div>
 
@@ -68,12 +68,12 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="glass-panel rounded-2xl shadow-2xl overflow-hidden relative"
+          className="rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] overflow-hidden relative bg-[#FFFFFF] border border-[#E2E8F0]"
         >
           {/* Close Button */}
           <button
             onClick={() => onOpenChange(false)}
-            className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/10 text-white/60 hover:text-white transition-colors z-10"
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-[#F8FAFC] text-[#64748B] hover:text-[#0F172A] transition-colors z-10"
           >
             <X className="h-6 w-6" />
           </button>
@@ -85,7 +85,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-white tracking-tight text-4xl md:text-[40px] font-extrabold leading-[1.1] mb-2 drop-shadow-lg"
+                className="text-[#0F172A] tracking-tight text-4xl md:text-[40px] font-extrabold leading-[1.1] mb-2"
               >
                 2026 is the year you get the job.
               </motion.h1>
@@ -93,7 +93,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-blue-500 text-lg md:text-xl font-medium tracking-wide glow-text uppercase"
+                className="text-[#3B82F6] text-lg md:text-xl font-medium tracking-wide uppercase"
               >
                 Stop being invisible.
               </motion.p>
@@ -121,31 +121,31 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               transition={{ delay: 0.4 }}
               className="w-full mb-8"
             >
-              <div className="relative overflow-hidden rounded-xl border border-white/20 bg-gradient-to-br from-slate-800/80 to-slate-900/80 p-1 shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 opacity-50"></div>
+              <div className="relative overflow-hidden rounded-xl border border-[#E2E8F0] bg-gradient-to-br from-[#F8FAFC] to-[#FFFFFF] p-1 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8B5CF6]/5 to-transparent skew-x-12 opacity-50"></div>
                 <div
                   className="relative bg-cover bg-center flex flex-col items-center md:flex-row md:items-stretch rounded-lg overflow-hidden h-auto min-h-[160px]"
                   style={{
                     backgroundImage:
-                      'linear-gradient(0deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJyDg2fMlQkk7rMIap5JFRvVr2JY6arzmW76xe0DPrpordl7Vooi9AvDLYso2GjtEm3GY7ws8Mr5g9dt8DU9LaagHyFxqOHE7Pe3jQiPiF8U6BLgQncRwDOppO5QD_rHfH3S56kJ4yZizKAjhfURtRvjbepVn226UF7MZdzv4WXNSSUG96-AjENl9yjhQEEY4LwWVayipoxKq5gRD0G92abKox1G0aukDlBjxrxk1QKxx-GeBrj1zLrkn2HahhXt6ZZWHw5KXnpA")',
+                      'linear-gradient(0deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJyDg2fMlQkk7rMIap5JFRvVr2JY6arzmW76xe0DPrpordl7Vooi9AvDLYso2GjtEm3GY7ws8Mr5g9dt8DU9LaagHyFxqOHE7Pe3jQiPiF8U6BLgQncRwDOppO5QD_rHfH3S56kJ4yZizKAjhfURtRvjbepVn226UF7MZdzv4WXNSSUG96-AjENl9yjhQEEY4LwWVayipoxKq5gRD0G92abKox1G0aukDlBjxrxk1QKxx-GeBrj1zLrkn2HahhXt6ZZWHw5KXnpA")',
                   }}
                 >
                   <div className="flex flex-col justify-center p-6 w-full text-center md:text-left">
                     <div className="inline-flex items-center justify-center md:justify-start gap-2 mb-2">
-                      <Rocket className="h-5 w-5 text-teal-500" />
-                      <span className="text-teal-500 font-bold tracking-wider text-sm uppercase">
+                      <Rocket className="h-5 w-5 text-[#8B5CF6]" />
+                      <span className="text-[#8B5CF6] font-bold tracking-wider text-sm uppercase">
                         New Year Pass
                       </span>
                     </div>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="text-white text-3xl font-bold mb-1">$4.99</h3>
-                        <p className="text-gray-300 text-sm font-medium leading-relaxed">
+                        <h3 className="text-[#0F172A] text-3xl font-bold mb-1">$4.99</h3>
+                        <p className="text-[#475569] text-sm font-medium leading-relaxed">
                           Includes 1 Full Resume Audit + Keyword Sniper tool access (Single Use).
                         </p>
                       </div>
                       <div className="hidden md:block">
-                        <Verified className="h-16 w-16 text-white/10" />
+                        <Verified className="h-16 w-16 text-[#E2E8F0]" />
                       </div>
                     </div>
                   </div>
@@ -161,13 +161,13 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onUnlock}
-              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-primary to-purple-600 p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
             >
               <div className="relative flex h-14 w-full items-center justify-center rounded-[10px] bg-transparent px-8 transition-all group-hover:bg-white/10">
-                <span className="text-white text-lg font-bold tracking-wide mr-2">
+                <span className="text-[#FFFFFF] text-lg font-bold tracking-wide mr-2">
                   Unlock New Year Pass
                 </span>
-                <ArrowRight className="h-5 w-5 text-white transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-5 w-5 text-[#FFFFFF] transition-transform group-hover:translate-x-1" />
               </div>
             </motion.button>
 
@@ -178,7 +178,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               transition={{ delay: 0.6 }}
               className="mt-6 text-center px-4"
             >
-              <p className="text-slate-400 text-sm font-light leading-relaxed">
+              <p className="text-[#64748B] text-sm font-light leading-relaxed">
                 $4.99 is an impulse fix—your robots see it instantly and so will recruiters.
               </p>
             </motion.div>
@@ -197,13 +197,13 @@ function TimerUnit({ value, label }: { value: number; label: string }) {
         key={value}
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
-        className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-xl bg-slate-900/50 border border-white/10 shadow-inner backdrop-blur-sm"
+        className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
       >
-        <p className="text-white text-2xl md:text-3xl font-bold font-mono">
+        <p className="text-[#0F172A] text-2xl md:text-3xl font-bold font-mono">
           {String(value).padStart(2, "0")}
         </p>
       </motion.div>
-      <p className="text-white/60 text-xs uppercase tracking-wider">{label}</p>
+      <p className="text-[#64748B] text-xs uppercase tracking-wider">{label}</p>
     </div>
   );
 }

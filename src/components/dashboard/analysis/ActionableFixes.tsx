@@ -29,7 +29,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
   const handleGenerateBulletPoint = async (keyword: string, fixIndex: number) => {
     const key = `${fixIndex}-${keyword}`;
     setGeneratingFor(key);
-    
+
     // Simulate AI generation with realistic delay
     setTimeout(() => {
       const bulletPoints = [
@@ -38,7 +38,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
         `• Implemented ${keyword} framework resulting in 40% faster deployment cycles and enhanced code maintainability`,
         `• Optimized ${keyword} infrastructure reducing operational costs by $50K annually while improving system reliability`,
       ];
-      
+
       const randomBullet = bulletPoints[Math.floor(Math.random() * bulletPoints.length)];
       setGeneratedBullets(prev => ({ ...prev, [key]: randomBullet }));
       setGeneratingFor(null);
@@ -54,13 +54,13 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
   };
 
   return (
-    <div className="glass-card rounded-lg p-6">
+    <div className="rounded-lg p-6 bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 rounded-full bg-stone-800">
-          <Zap className="h-5 w-5 text-primary" />
+        <div className="p-2 rounded-full bg-[#F8FAFC]">
+          <Zap className="h-5 w-5 text-[#8B5CF6]" />
         </div>
-        <h3 className="text-lg font-bold" style={{ color: '#ffffff' }}>Actionable Intelligence</h3>
-        <span className="ml-auto text-xs font-bold bg-red-100 text-red-700 px-2 py-1 rounded-md">
+        <h3 className="text-lg font-bold text-[#0F172A]">Actionable Intelligence</h3>
+        <span className="ml-auto text-xs font-bold bg-[#EF4444]/10 text-[#EF4444] px-2 py-1 rounded-md border border-[#EF4444]/20">
           {fixes.length} Issues
         </span>
       </div>
@@ -69,21 +69,21 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
         {fixes.map((fix, index) => {
           const key = `${index}-${fix.missingKeyword || 'general'}`;
           const hasBullet = generatedBullets[key];
-          
+
           return (
             <div
               key={index}
-              className="border border-stone-700 rounded-lg overflow-hidden bg-zinc-950"
+              className="border border-[#E2E8F0] rounded-lg overflow-hidden bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
             >
               <button
                 onClick={() => toggleAccordion(index)}
-                className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-900 transition-colors"
+                className="w-full flex items-center justify-between p-4 text-left hover:bg-[#F8FAFC] transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <AlertCircle className="h-5 w-5 text-[#EF4444] shrink-0" />
-                  <span className="font-bold text-zinc-100">{fix.title}</span>
+                  <span className="font-bold text-[#0F172A]">{fix.title}</span>
                   {fix.missingKeyword && (
-                    <span className="text-xs bg-[#EF4444]/20 text-red-400 px-2 py-0.5 rounded-full border border-red-500/30">
+                    <span className="text-xs bg-[#EF4444]/10 text-[#EF4444] px-2 py-0.5 rounded-full border border-[#EF4444]/30">
                       Missing: {fix.missingKeyword}
                     </span>
                   )}
@@ -92,7 +92,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                   animate={{ rotate: expandedIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ChevronDown className="h-5 w-5 text-zinc-400" />
+                  <ChevronDown className="h-5 w-5 text-[#64748B]" />
                 </motion.div>
               </button>
 
@@ -105,21 +105,21 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="p-4 pt-0 space-y-3 border-t border-stone-700">
+                    <div className="p-4 pt-0 space-y-3 border-t border-[#E2E8F0]">
                       <div>
-                        <p className="text-sm text-zinc-300 mb-2">
+                        <p className="text-sm text-[#475569] mb-2">
                           {fix.description}
                         </p>
                       </div>
 
-                      <div className="bg-zinc-900 rounded-lg p-3 border border-zinc-800">
+                      <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
                         <div className="flex items-start gap-2 mb-2">
-                          <TrendingUp className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                          <TrendingUp className="h-4 w-4 text-[#3B82F6] shrink-0 mt-0.5" />
                           <div>
                             <p className="text-xs font-bold text-[#0F172A] mb-1">
                               Impact
                             </p>
-                            <p className="text-xs text-[#0F172A]">
+                            <p className="text-xs text-[#475569]">
                               {fix.impact}
                             </p>
                           </div>
@@ -127,9 +127,9 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       </div>
 
                       {fix.missingKeyword && (
-                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
+                        <div className="bg-[#F3E8FF] border border-[#8B5CF6]/20 rounded-lg p-3">
                           <div className="flex items-center justify-between mb-2">
-                            <p className="text-xs font-bold text-primary flex items-center gap-1">
+                            <p className="text-xs font-bold text-[#8B5CF6] flex items-center gap-1">
                               <Lightbulb className="h-3.5 w-3.5" />
                               AI-Generated Bullet Point
                             </p>
@@ -148,15 +148,15 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                               </Button>
                             )}
                           </div>
-                          
+
                           {hasBullet ? (
-                            <p className="text-xs text-zinc-300 font-mono leading-relaxed">
+                            <p className="text-xs text-[#475569] font-mono leading-relaxed">
                               {hasBullet}
                             </p>
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full bg-primary hover:bg-primary/90 text-[#0F172A] text-xs h-8"
+                              className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs h-8"
                               onClick={() => handleGenerateBulletPoint(fix.missingKeyword!, index)}
                               disabled={generatingFor === key}
                             >
@@ -174,11 +174,11 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       )}
 
                       {!fix.missingKeyword && (
-                        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
-                          <p className="text-xs font-bold text-primary mb-1">
+                        <div className="bg-[#F3E8FF] border border-[#8B5CF6]/20 rounded-lg p-3">
+                          <p className="text-xs font-bold text-[#8B5CF6] mb-1">
                             Example Fix
                           </p>
-                          <p className="text-xs text-zinc-300 font-mono">
+                          <p className="text-xs text-[#475569] font-mono">
                             {fix.example}
                           </p>
                         </div>

@@ -15,7 +15,7 @@ interface DMGeneratorProps {
 export function DMGenerator({ profileText, jobDescription, missingKeywords }: DMGeneratorProps) {
   const generateDMs = useAction((api as any).ai.linkedinOptimizer.generateRecruiterDMs);
   const previousDMs = useQuery((api as any).linkedinProfile.getRecruiterDMs);
-  
+
   const [recruiterType, setRecruiterType] = useState("Internal HR");
   const [recruiterName, setRecruiterName] = useState("");
   const [tone, setTone] = useState("Professional");
@@ -65,7 +65,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
   };
 
   return (
-    <div className="bg-[#FFFFFF]/60 backdrop-blur-xl border border-[#E2E8F0]/50 rounded-xl p-6 flex flex-col shadow-lg shadow-black/20">
+    <div className="bg-[#FFFFFF] backdrop-blur-xl border border-[#E2E8F0] rounded-xl p-6 flex flex-col shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
       <div className="mb-4 flex justify-between items-start">
         <div>
           <h3 className="text-[#0F172A] font-semibold text-lg flex items-center gap-2 mb-1">
@@ -75,10 +75,10 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           <p className="text-[#64748B] text-sm">Draft ice-breakers for recruiters</p>
         </div>
         {generatedDMs.length > 0 && (
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleGenerate} 
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleGenerate}
             disabled={isGenerating}
             className="h-8 w-8 text-[#64748B] hover:text-[#0F172A]"
           >
@@ -91,20 +91,20 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2">
              <label className="block text-xs text-[#64748B] mb-1">Recruiter Name (Optional)</label>
-             <Input 
+             <Input
                value={recruiterName}
                onChange={(e) => setRecruiterName(e.target.value)}
                placeholder="e.g. Sarah Smith"
-               className="h-9 bg-slate-950 border-[#E2E8F0] text-[#0F172A] text-sm"
+               className="h-9 bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] text-sm"
              />
           </div>
           <div>
             <label className="block text-xs text-[#64748B] mb-1">Recruiter Type</label>
             <div className="relative">
-              <select 
+              <select
                 value={recruiterType}
                 onChange={(e) => setRecruiterType(e.target.value)}
-                className="w-full appearance-none bg-slate-950 border border-[#E2E8F0] text-[#0F172A] text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full appearance-none bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 <option>Internal HR</option>
                 <option>Agency Recruiter</option>
@@ -118,10 +118,10 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           <div>
             <label className="block text-xs text-[#64748B] mb-1">Tone</label>
             <div className="relative">
-              <select 
+              <select
                 value={tone}
                 onChange={(e) => setTone(e.target.value)}
-                className="w-full appearance-none bg-slate-950 border border-[#E2E8F0] text-[#0F172A] text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full appearance-none bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] text-sm rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 <option>Professional</option>
                 <option>Casual</option>
@@ -141,8 +141,8 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
                 key={idx}
                 onClick={() => setSelectedVariation(idx)}
                 className={`text-xs px-2 py-1 rounded border transition-colors ${
-                  selectedVariation === idx 
-                    ? "bg-primary/20 border-primary text-primary" 
+                  selectedVariation === idx
+                    ? "bg-primary/20 border-primary text-primary"
                     : "bg-[#FFFFFF] border-[#E2E8F0] text-[#64748B] hover:text-[#475569]"
                 }`}
               >
@@ -152,18 +152,18 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           </div>
         )}
 
-        <div className="flex-1 bg-slate-950/50 border border-[#E2E8F0] rounded-lg p-4 relative flex flex-col min-h-[120px]">
+        <div className="flex-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4 relative flex flex-col min-h-[120px]">
           {isGenerating ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm rounded-lg z-10">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#F8FAFC]/80 backdrop-blur-sm rounded-lg z-10">
               <Loader2 className="h-6 w-6 text-primary animate-spin" />
             </div>
           ) : null}
-          
+
           <div className="flex gap-3 mb-2">
-            <div className="size-8 rounded-full bg-slate-700 flex-shrink-0 border border-slate-600 flex items-center justify-center text-xs font-bold text-[#475569]">
+            <div className="size-8 rounded-full bg-slate-200 flex-shrink-0 border border-[#E2E8F0] flex items-center justify-center text-xs font-bold text-[#475569]">
               You
             </div>
-            <div className="bg-primary/10 text-blue-100 p-3 rounded-2xl rounded-tl-none text-sm font-mono leading-relaxed border border-primary/20 w-full">
+            <div className="bg-primary/10 text-[#0F172A] p-3 rounded-2xl rounded-tl-none text-sm font-mono leading-relaxed border border-primary/20 w-full">
               {currentDM}
             </div>
           </div>
@@ -173,7 +173,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           <Button
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 border border-cyan-500/20 text-[#0F172A] font-medium shadow-lg shadow-cyan-900/20"
+            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 border border-cyan-500/20 text-white font-medium shadow-lg shadow-cyan-900/20"
           >
             {isGenerating ? (
               <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>
@@ -184,7 +184,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
         ) : (
           <Button
             onClick={handleCopy}
-            className="w-full bg-[#F8FAFC] hover:bg-slate-700 border border-slate-600 text-[#0F172A] font-medium"
+            className="w-full bg-[#FFFFFF] hover:bg-[#F8FAFC] border border-[#E2E8F0] text-[#0F172A] font-medium"
           >
             <Copy className="h-4 w-4 mr-2" />
             Copy to Clipboard

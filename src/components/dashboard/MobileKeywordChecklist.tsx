@@ -12,10 +12,10 @@ interface MobileKeywordChecklistProps {
   onGeneratePhrases?: (keyword: string) => Promise<any>;
 }
 
-export function MobileKeywordChecklist({ 
-  matchedKeywords, 
+export function MobileKeywordChecklist({
+  matchedKeywords,
   missingKeywords,
-  onGeneratePhrases 
+  onGeneratePhrases
 }: MobileKeywordChecklistProps) {
   const [selectedKeyword, setSelectedKeyword] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -45,13 +45,13 @@ export function MobileKeywordChecklist({
     <div className="space-y-4">
       {/* Matched Keywords */}
       <div className="space-y-2">
-        <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+        <h4 className="text-xs font-bold text-[#22C55E] uppercase tracking-wider flex items-center gap-2">
           <CheckCircle2 className="h-3 w-3" />
           Matched ({matchedKeywords.length})
         </h4>
         <div className="flex flex-wrap gap-2">
           {matchedKeywords.slice(0, 8).map((keyword, i) => (
-            <Badge key={i} className="bg-[#22C55E]/20 text-emerald-400 border-emerald-500/30 text-xs">
+            <Badge key={i} className="bg-[#22C55E]/20 text-[#22C55E] border-[#22C55E] text-xs">
               {keyword}
             </Badge>
           ))}
@@ -60,7 +60,7 @@ export function MobileKeywordChecklist({
 
       {/* Missing Keywords - Vertical Checklist */}
       <div className="space-y-2">
-        <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider flex items-center gap-2">
+        <h4 className="text-xs font-bold text-[#EF4444] uppercase tracking-wider flex items-center gap-2">
           <AlertTriangle className="h-3 w-3" />
           Missing ({missingKeywords.length})
         </h4>
@@ -69,10 +69,10 @@ export function MobileKeywordChecklist({
             <motion.button
               key={i}
               onClick={() => handleKeywordClick(keyword)}
-              className="w-full p-3 rounded-lg bg-[#FFFFFF]/50 border-2 border-primary/30 hover:border-primary/60 transition-all text-left"
+              className="w-full p-3 rounded-lg bg-[#FFFFFF] border-2 border-[#F3E8FF] hover:border-[#8B5CF6]/60 transition-all text-left shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               whileTap={{ scale: 0.98 }}
               animate={{
-                borderColor: i === 0 ? ["rgba(163, 127, 188, 0.3)", "rgba(163, 127, 188, 0.6)", "rgba(163, 127, 188, 0.3)"] : undefined
+                borderColor: i === 0 ? ["rgba(139,92,246,0.3)", "rgba(139,92,246,0.6)", "rgba(139,92,246,0.3)"] : undefined
               }}
               transition={{
                 borderColor: { duration: 2, repeat: Infinity }
@@ -80,7 +80,7 @@ export function MobileKeywordChecklist({
             >
               <div className="flex items-center justify-between">
                 <span className="font-bold text-[#0F172A] text-sm">{keyword}</span>
-                <Sparkles className="h-4 w-4 text-primary" />
+                <Sparkles className="h-4 w-4 text-[#8B5CF6]" />
               </div>
             </motion.button>
           ))}
@@ -89,27 +89,27 @@ export function MobileKeywordChecklist({
 
       {/* Bottom Sheet for Suggestions */}
       <Sheet open={!!selectedKeyword} onOpenChange={() => setSelectedKeyword(null)}>
-        <SheetContent side="bottom" className="bg-slate-950 border-t border-[#E2E8F0] rounded-t-3xl max-h-[80vh]">
+        <SheetContent side="bottom" className="bg-[#FFFFFF] border-t border-[#E2E8F0] rounded-t-3xl max-h-[80vh]">
           <SheetHeader className="mb-4">
             <SheetTitle className="text-[#0F172A] flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
               AI Suggestions for "{selectedKeyword}"
             </SheetTitle>
           </SheetHeader>
-          
+
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               >
-                <Sparkles className="h-8 w-8 text-primary" />
+                <Sparkles className="h-8 w-8 text-[#8B5CF6]" />
               </motion.div>
             </div>
           ) : (
             <div className="space-y-3 overflow-y-auto max-h-[60vh] pb-6">
               {suggestions.map((suggestion, idx) => (
-                <div key={idx} className="p-4 rounded-xl bg-[#FFFFFF] border border-[#E2E8F0] space-y-3">
+                <div key={idx} className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-3">
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-sm text-[#475569] leading-relaxed flex-1">
                       {suggestion.text}
@@ -118,7 +118,7 @@ export function MobileKeywordChecklist({
                       variant="ghost"
                       size="sm"
                       onClick={() => copyToClipboard(suggestion.text)}
-                      className="h-8 w-8 p-0 hover:bg-primary/20"
+                      className="h-8 w-8 p-0 hover:bg-[#8B5CF6]/20"
                     >
                       <Copy className="h-4 w-4" />
                     </Button>

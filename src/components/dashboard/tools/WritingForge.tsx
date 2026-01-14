@@ -93,7 +93,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
     <div className="h-full flex flex-col bg-[#F8FAFC]">
       {/* Interview Sprint Required Alert */}
       {!hasInterviewSprint && (
-        <Alert className="m-6 mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+        <Alert className="m-6 mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden">
           {/* Decorative gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
 
@@ -142,7 +142,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
       )}
 
       {/* Top Navigation */}
-      <header className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#FFFFFF] px-6 py-3 shrink-0 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <header className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#FFFFFF] px-6 py-3 shrink-0 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-8">
           <nav className="hidden md:flex items-center gap-6">
             <a className="text-[#64748B] hover:text-[#0F172A] text-sm font-medium transition-colors" href="#">
@@ -151,7 +151,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
             <span className="text-[#0F172A] text-sm font-medium border-b-2 border-primary pb-0.5 flex items-center gap-2">
               Writing Forge
               {!hasInterviewSprint && (
-                <Lock className="h-3 w-3 text-slate-400" />
+                <Lock className="h-3 w-3 text-[#64748B]" />
               )}
             </span>
             <a className="text-[#64748B] hover:text-[#0F172A] text-sm font-medium transition-colors" href="#">
@@ -164,7 +164,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
       {/* Main Layout */}
       <div className="flex flex-1 overflow-hidden relative">
         {/* Left Sidebar: Configuration */}
-        <aside className="w-80 flex flex-col border-r border-[#E2E8F0] bg-[#FFFFFF] overflow-y-auto shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <aside className="w-80 flex flex-col border-r border-[#E2E8F0] bg-[#FFFFFF] overflow-y-auto shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
           <div className="p-6 flex flex-col gap-8">
             {/* Tone Configuration */}
             <div className="flex flex-col gap-3">
@@ -175,7 +175,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 <select
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
-                  className="w-full appearance-none rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  className="w-full appearance-none rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                   disabled={!hasInterviewSprint}
                 >
                   <option value="technical">Technical Specialist</option>
@@ -199,7 +199,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                   Edit
                 </button>
               </div>
-              <div className="flex flex-col gap-4 rounded-xl bg-[#FFFFFF] p-4 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+              <div className="flex flex-col gap-4 rounded-xl bg-[#FFFFFF] p-4 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden group">
                 {/* Decorative gradient blob */}
                 <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#3B82F6]/10 rounded-full blur-2xl group-hover:bg-[#3B82F6]/15 transition-all duration-500" />
 
@@ -273,7 +273,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
         {/* Center: Editor Canvas */}
         <main className="flex-1 flex flex-col relative bg-[#F8FAFC]">
           {/* Breadcrumbs & Heading */}
-          <div className="flex flex-col border-b border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+          <div className="flex flex-col border-b border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
             <div className="px-8 py-4 flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2 text-xs mb-2">
@@ -299,7 +299,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 </Button>
                 <Button
                   onClick={handleRegenerate}
-                  className="bg-primary/10 hover:bg-primary/20 text-primary hover:text-[#0F172A] border border-primary/30 hover:border-primary shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  className="bg-primary/10 hover:bg-primary/20 text-primary hover:text-[#0F172A] border border-primary/30 hover:border-primary shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
                   Regenerate
@@ -361,7 +361,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
                       <button
                         onClick={() => {/* Navigate to pricing */}}
-                        className="btn-power w-full px-4 py-2.5 rounded-lg text-[#0F172A] text-sm font-bold border-0 flex items-center justify-center gap-2 group"
+                        className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
                       >
                         <Sparkles className="h-4 w-4" />
                         <span>Upgrade to Interview Sprint</span>
@@ -383,14 +383,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               <Button variant="ghost" size="sm" className="p-1.5 text-[#64748B] hover:text-[#0F172A]">
                 <Underline className="h-5 w-5" />
               </Button>
-              <div className="w-px h-5 bg-slate-200 mx-2" />
+              <div className="w-px h-5 bg-[#E2E8F0] mx-2" />
               <Button variant="ghost" size="sm" className="p-1.5 text-[#64748B] hover:text-[#0F172A]">
                 <List className="h-5 w-5" />
               </Button>
               <Button variant="ghost" size="sm" className="p-1.5 text-[#64748B] hover:text-[#0F172A]">
                 <ListOrdered className="h-5 w-5" />
               </Button>
-              <div className="w-px h-5 bg-slate-200 mx-2" />
+              <div className="w-px h-5 bg-[#E2E8F0] mx-2" />
               <Button variant="ghost" size="sm" className="p-1.5 text-[#64748B] hover:text-[#0F172A]">
                 <Link2 className="h-5 w-5" />
               </Button>
@@ -412,11 +412,11 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
             {/* Paywall Overlay */}
             {!hasInterviewSprint && (
-              <div className="absolute inset-0 z-20 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center">
+              <div className="absolute inset-0 z-20 bg-white/95 backdrop-blur-sm flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
                   <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">Interview Sprint Required</h3>
-                  <p className="text-slate-300 text-sm mb-6">
+                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">Interview Sprint Required</h3>
+                  <p className="text-[#475569] text-sm mb-6">
                     Unlock the Writing Forge to create and edit professional resumes with AI assistance.
                   </p>
                   <Button
@@ -430,7 +430,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               </div>
             )}
 
-            <div className="w-full max-w-[800px] bg-[#FFFFFF] min-h-[1100px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0] z-10 relative">
+            <div className="w-full max-w-[800px] bg-[#FFFFFF] min-h-[1100px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0] z-10 relative">
               {/* Document Header */}
               <div className="border-b border-[#E2E8F0] pb-8 mb-8">
                 <h1 className="text-4xl font-bold text-[#0F172A] mb-2">Alex Chen</h1>
@@ -459,14 +459,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                   Specialized in the modern React ecosystem, including{" "}
                   <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
                     Next.js architecture
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-[#0F172A] text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                       Keywords matched +5%
                     </span>
                   </span>{" "}
                   and server-side rendering performance optimization. Proven track record of leading teams at high-growth startups to deliver{" "}
                   <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
                     robust UI systems
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-[#0F172A] text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                       Tone: Executive
                     </span>
                   </span>{" "}

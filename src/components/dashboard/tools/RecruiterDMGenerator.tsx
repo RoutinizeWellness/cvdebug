@@ -35,12 +35,12 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const jobHistory = useQuery(apiAny.jobTracker.getJobHistory);
-  const applications = useQuery(apiAny.applications.getApplicationsByProject, 
+  const applications = useQuery(apiAny.applications.getApplicationsByProject,
     selectedJobId ? { projectId: selectedJobId as any } : "skip"
   );
   const generateDMs = useAction(apiAny.ai.linkedinOptimizer.generateRecruiterDMs);
   const addTimelineEvent = useMutation(apiAny.applications.addTimelineEvent);
-  
+
   const resumes = useQuery(apiAny.resumes.getResumes);
   const latestResume = resumes && resumes.length > 0 ? resumes[0] : null;
 
@@ -70,7 +70,7 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
       });
 
       setGeneratedDMs(result);
-      
+
       const firstVariation = result.variations?.[0];
       const previewText = firstVariation ? `Subject: "${firstVariation.subject}"\n\n${firstVariation.content}` : "No content generated";
 
@@ -81,7 +81,7 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
         title: "Recruiter DM Generated",
         description: previewText,
       });
-      
+
       toast.success("DMs Generated!");
     } catch (error: any) {
       console.error(error);
@@ -100,25 +100,25 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-[#0A0A0A] border-zinc-800 text-zinc-200 max-h-[85vh] flex flex-col">
+      <DialogContent className="sm:max-w-[600px] bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] max-h-[85vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl font-bold text-[#0F172A]">
             <MessageSquare className="h-5 w-5 text-[#3B82F6]" />
             Recruiter DM Generator
           </DialogTitle>
-          <DialogDescription className="text-zinc-400">
+          <DialogDescription className="text-[#64748B]">
             Generate high-conversion LinkedIn messages to get your application noticed.
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="job">Target Application</Label>
+            <Label htmlFor="job" className="text-[#475569]">Target Application</Label>
             <Select value={selectedJobId} onValueChange={setSelectedJobId}>
-              <SelectTrigger className="bg-zinc-900 border-zinc-800 text-zinc-200">
+              <SelectTrigger className="bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A]">
                 <SelectValue placeholder="Select a job..." />
               </SelectTrigger>
-              <SelectContent className="bg-zinc-900 border-zinc-800 text-zinc-200">
+              <SelectContent className="bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A]">
                 {jobHistory?.map((job: any) => (
                   <SelectItem key={job._id} value={job._id}>
                     {job.jobTitle} @ {job.company}
@@ -128,13 +128,13 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="recruiter">Recruiter Name (Optional)</Label>
+            <Label htmlFor="recruiter" className="text-[#475569]">Recruiter Name (Optional)</Label>
             <Input
               id="recruiter"
               placeholder="e.g. Sarah Smith"
               value={recruiterName}
               onChange={(e) => setRecruiterName(e.target.value)}
-              className="bg-zinc-900 border-zinc-800 text-zinc-200"
+              className="bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A]"
             />
           </div>
         </div>
@@ -143,17 +143,17 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
           <ScrollArea className="flex-1 -mx-6 px-6">
             <div className="space-y-4 pb-4">
               {generatedDMs.variations?.map((dm: any, i: number) => (
-                <Card key={i} className="bg-zinc-900/50 border-zinc-800 p-4 space-y-3">
+                <Card key={i} className="bg-[#F8FAFC] border border-[#E2E8F0] p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 bg-zinc-950 px-2 py-1 rounded">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] bg-[#FFFFFF] px-2 py-1 rounded border border-[#E2E8F0]">
                         {dm.tone}
                       </span>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-6 text-xs text-zinc-400 hover:text-[#0F172A]"
+                      className="h-6 text-xs text-[#64748B] hover:text-[#0F172A]"
                       onClick={() => copyToClipboard(dm.subject + "\n\n" + dm.content, i)}
                     >
                       {copiedIndex === i ? <CheckCircle2 className="h-3 w-3 mr-1 text-[#22C55E]" /> : <Copy className="h-3 w-3 mr-1" />}
@@ -161,10 +161,10 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
                     </Button>
                   </div>
                   <div className="space-y-2">
-                    <div className="text-sm font-bold text-zinc-300 border-b border-zinc-800/50 pb-2">
+                    <div className="text-sm font-bold text-[#0F172A] border-b border-[#E2E8F0] pb-2">
                       Subject: {dm.subject}
                     </div>
-                    <p className="text-sm text-zinc-400 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-sm text-[#475569] leading-relaxed whitespace-pre-wrap">
                       {dm.content}
                     </p>
                   </div>
@@ -173,19 +173,19 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
             </div>
           </ScrollArea>
         ) : (
-          <div className="flex-1 flex items-center justify-center min-h-[200px] border-2 border-dashed border-zinc-800 rounded-xl bg-zinc-900/20">
-            <div className="text-center text-zinc-500">
+          <div className="flex-1 flex items-center justify-center min-h-[200px] border-2 border-dashed border-[#E2E8F0] rounded-xl bg-[#F8FAFC]">
+            <div className="text-center text-[#64748B]">
               <Sparkles className="h-8 w-8 mx-auto mb-3 opacity-20" />
               <p className="text-sm">Select a job to generate personalized DMs</p>
             </div>
           </div>
         )}
 
-        <DialogFooter className="pt-4 border-t border-zinc-800">
-          <Button 
-            onClick={handleGenerate} 
+        <DialogFooter className="pt-4 border-t border-[#E2E8F0]">
+          <Button
+            onClick={handleGenerate}
             disabled={isGenerating || !selectedJobId}
-            className="w-full bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A] font-bold"
+            className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white font-bold"
           >
             {isGenerating ? (
               <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>

@@ -23,19 +23,19 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
 
   if (!masterResume) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-[#0A0A0A] p-6 flex items-center justify-between">
+      <div className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 flex items-center justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-4">
-          <div className="h-12 w-12 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800">
-            <FileText className="h-6 w-6 text-zinc-500" />
+          <div className="h-12 w-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
+            <FileText className="h-6 w-6 text-[#64748B]" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#0F172A]">No Master CV Found</h3>
-            <p className="text-sm text-zinc-400">Upload your resume to start monitoring its health.</p>
+            <p className="text-sm text-[#64748B]">Upload your resume to start monitoring its health.</p>
           </div>
         </div>
-        <Button 
-          variant="outline" 
-          className="border-zinc-700 hover:bg-zinc-800 text-[#0F172A]"
+        <Button
+          variant="outline"
+          className="border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#0F172A]"
           onClick={onUpload}
         >
           <Upload className="mr-2 h-4 w-4" /> Upload CV
@@ -61,17 +61,17 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
   };
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-[#0A0A0A] p-6 relative overflow-hidden group">
+    <div className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 relative overflow-hidden group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
       {/* Background Glow */}
-      <div className={`absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 rounded-full blur-3xl opacity-20 ${hasImageTrap ? 'bg-[#EF4444]' : 'bg-[#22C55E]'}`} />
+      <div className={`absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 rounded-full blur-3xl opacity-10 ${hasImageTrap ? 'bg-[#EF4444]' : 'bg-[#22C55E]'}`} />
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         {/* Left: Status */}
         <div className="flex items-start gap-5">
           <div className={`h-14 w-14 rounded-2xl flex items-center justify-center border shadow-lg ${
-            hasImageTrap 
-              ? 'bg-[#EF4444]/10 border-red-500/30 text-[#EF4444] shadow-red-900/20' 
-              : 'bg-[#22C55E]/10 border-green-500/30 text-[#22C55E] shadow-green-900/20'
+            hasImageTrap
+              ? 'bg-[#EF4444]/10 border-[#EF4444]/30 text-[#EF4444] shadow-[#EF4444]/20'
+              : 'bg-[#22C55E]/10 border-[#22C55E]/30 text-[#22C55E] shadow-[#22C55E]/20'
           }`}>
             {hasImageTrap ? (
               <AlertTriangle className="h-7 w-7 animate-pulse" />
@@ -79,21 +79,21 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
               <ShieldCheck className="h-7 w-7" />
             )}
           </div>
-          
+
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <h3 className="text-lg font-bold text-[#0F172A] tracking-tight">Master CV Health</h3>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                hasImageTrap 
-                  ? 'bg-[#EF4444]/10 border-red-500/30 text-[#EF4444]' 
-                  : 'bg-[#22C55E]/10 border-green-500/30 text-[#22C55E]'
+                hasImageTrap
+                  ? 'bg-[#EF4444]/10 border-[#EF4444]/30 text-[#EF4444]'
+                  : 'bg-[#22C55E]/10 border-[#22C55E]/30 text-[#22C55E]'
               }`}>
                 {hasImageTrap ? 'Critical Issues' : 'System Optimal'}
               </span>
             </div>
-            <p className="text-sm text-zinc-400 max-w-md">
-              {hasImageTrap 
-                ? "IMAGE TRAP DETECTED. ATS parsers cannot read your resume. Immediate fix required." 
+            <p className="text-sm text-[#64748B] max-w-md">
+              {hasImageTrap
+                ? "IMAGE TRAP DETECTED. ATS parsers cannot read your resume. Immediate fix required."
                 : "Your CV is readable by all major ATS systems (Workday, Greenhouse, Lever)."}
             </p>
           </div>
@@ -102,19 +102,19 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
         {/* Right: Actions & Metrics */}
         <div className="flex items-center gap-6">
           <div className="hidden md:block text-right space-y-1">
-            <div className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Readability Score</div>
+            <div className="text-xs font-medium text-[#64748B] uppercase tracking-wider">Readability Score</div>
             <div className={`text-2xl font-black ${hasImageTrap ? 'text-[#EF4444]' : 'text-[#22C55E]'}`}>
               {integrityScore}%
             </div>
           </div>
 
-          <div className="h-10 w-px bg-zinc-800 hidden md:block" />
+          <div className="h-10 w-px bg-[#E2E8F0] hidden md:block" />
 
           <div className="flex flex-col gap-2">
             {hasImageTrap ? (
-              <Button 
-                variant="destructive" 
-                className="font-bold shadow-lg shadow-red-900/20"
+              <Button
+                variant="destructive"
+                className="font-bold shadow-lg shadow-[#EF4444]/20"
                 onClick={handleSanitize}
                 disabled={isSanitizing}
               >
@@ -122,15 +122,15 @@ export function MasterCVHealth({ onUpload }: MasterCVHealthProps) {
                 Fix Integrity Now
               </Button>
             ) : (
-              <Button 
-                variant="outline" 
-                className="border-zinc-700 hover:bg-zinc-800 text-zinc-300 hover:text-[#0F172A] font-medium"
+              <Button
+                variant="outline"
+                className="border-[#E2E8F0] hover:bg-[#F8FAFC] text-[#475569] hover:text-[#0F172A] font-medium"
                 onClick={onUpload}
               >
                 <Upload className="mr-2 h-4 w-4" /> Hot-Swap CV
               </Button>
             )}
-            <div className="text-[10px] text-zinc-500 text-center">
+            <div className="text-[10px] text-[#64748B] text-center">
               Last scanned: {new Date(masterResume._creationTime).toLocaleDateString('es-ES')}
             </div>
           </div>

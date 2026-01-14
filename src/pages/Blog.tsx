@@ -36,8 +36,8 @@ export default function Blog() {
 
   if (!allPosts) {
     return (
-      <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="text-white text-xl">Loading blog posts...</div>
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
+        <div className="text-[#0F172A] text-xl">Loading blog posts...</div>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function Blog() {
   const recentPosts = allPosts.slice(1);
 
   return (
-    <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#F8FAFC]">
       <NewNavbar />
 
       <main className="container max-w-6xl mx-auto px-4 py-12">
@@ -63,16 +63,16 @@ export default function Blog() {
 
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
-              <span className="material-symbols-outlined text-cyan-400 text-[20px]">auto_stories</span>
-              <span className="text-cyan-400 font-bold text-sm uppercase tracking-wider">Career Resources</span>
+              <span className="material-symbols-outlined text-cyan-600 text-[20px]">auto_stories</span>
+              <span className="text-cyan-600 font-bold text-sm uppercase tracking-wider">Career Resources</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black text-white mb-6">
-              CVDebug <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">Blog</span>
+            <h1 className="text-5xl md:text-7xl font-black text-[#0F172A] mb-6">
+              CVDebug <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-600">Blog</span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="text-xl md:text-2xl text-[#475569] max-w-3xl mx-auto leading-relaxed font-medium">
               Expert guides, proven strategies, and insider insights to help you{" "}
-              <span className="text-cyan-400 font-bold">beat ATS systems</span> and land more interviews.
+              <span className="text-cyan-600 font-bold">beat ATS systems</span> and land more interviews.
             </p>
           </div>
         </motion.section>
@@ -87,7 +87,7 @@ export default function Blog() {
           >
             <div
               onClick={() => navigate(`/blog/${featuredPost.slug}`)}
-              className="glass-panel rounded-2xl p-8 md:p-12 cursor-pointer hover:border-cyan-500/60 transition-all duration-300 relative overflow-hidden border-2 border-slate-700/50 hover:shadow-[0_0_60px_-12px_rgba(6,182,212,0.4)]"
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] rounded-2xl p-8 md:p-12 cursor-pointer hover:border-cyan-500/60 transition-all duration-300 relative overflow-hidden hover:shadow-[0_0_60px_-12px_rgba(6,182,212,0.4)]"
             >
               {/* Background gradient effect */}
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -98,21 +98,21 @@ export default function Blog() {
                     <span className="material-symbols-outlined text-white text-[18px]">star</span>
                     <span className="text-white text-sm font-black uppercase tracking-wider">Featured</span>
                   </div>
-                  <span className="px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-full text-slate-300 text-sm font-semibold">
+                  <span className="px-3 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-[#475569] text-sm font-semibold">
                     {featuredPost.category}
                   </span>
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-black text-white mt-6 mb-5 leading-tight group-hover:text-cyan-400 transition-colors">
+                <h2 className="text-4xl md:text-5xl font-black text-[#0F172A] mt-6 mb-5 leading-tight group-hover:text-cyan-600 transition-colors">
                   {featuredPost.title}
                 </h2>
-                <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+                <p className="text-lg md:text-xl text-[#475569] mb-8 leading-relaxed">
                   {featuredPost.excerpt}
                 </p>
 
                 <div className="flex items-center gap-6 mb-8 flex-wrap">
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                  <div className="flex items-center gap-2 text-[#64748B]">
+                    <div className="p-1 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                       <Calendar className="w-4 h-4" />
                     </div>
                     <time className="text-sm font-medium">
@@ -124,16 +124,16 @@ export default function Blog() {
                     </time>
                   </div>
                   {featuredPost.readingTime && (
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 text-[#64748B]">
+                      <div className="p-1 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                         <Clock className="w-4 h-4" />
                       </div>
                       <span className="text-sm font-medium">{featuredPost.readingTime} min read</span>
                     </div>
                   )}
                   {featuredPost.views && (
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <div className="p-1 rounded-lg bg-slate-800/50 border border-slate-700">
+                    <div className="flex items-center gap-2 text-[#64748B]">
+                      <div className="p-1 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                         <Eye className="w-4 h-4" />
                       </div>
                       <span className="text-sm font-medium">{featuredPost.views.toLocaleString()} views</span>
@@ -153,7 +153,7 @@ export default function Blog() {
         {/* Recent Posts Grid */}
         <section>
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white">Recent Articles</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-[#0F172A]">Recent Articles</h2>
             <span className="text-[#64748B] text-sm font-medium">{recentPosts.length} posts</span>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -164,33 +164,33 @@ export default function Blog() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
                 onClick={() => navigate(`/blog/${post.slug}`)}
-                className="glass-panel rounded-xl p-6 cursor-pointer hover:border-teal-500/50 transition-all duration-300 group relative overflow-hidden flex flex-col h-full hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)]"
+                className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 cursor-pointer hover:border-teal-500/50 transition-all duration-300 group relative overflow-hidden flex flex-col h-full hover:shadow-[0_0_40px_-12px_rgba(20,184,166,0.3)]"
               >
                 {/* Hover glow effect */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-300 text-xs font-bold uppercase tracking-wider">
+                    <span className="px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg text-[#475569] text-xs font-bold uppercase tracking-wider">
                       {post.category}
                     </span>
                     {post.views && post.views > 100 && (
                       <div className="flex items-center gap-1 px-2 py-1 bg-teal-500/10 border border-teal-500/20 rounded-lg">
-                        <span className="material-symbols-outlined text-teal-400 text-[14px]">trending_up</span>
-                        <span className="text-teal-400 text-[10px] font-bold">POPULAR</span>
+                        <span className="material-symbols-outlined text-teal-600 text-[14px]">trending_up</span>
+                        <span className="text-teal-600 text-[10px] font-bold">POPULAR</span>
                       </div>
                     )}
                   </div>
 
-                  <h3 className="text-xl md:text-2xl font-black text-white mt-2 mb-3 leading-tight group-hover:text-teal-400 transition-colors line-clamp-2">
+                  <h3 className="text-xl md:text-2xl font-black text-[#0F172A] mt-2 mb-3 leading-tight group-hover:text-teal-600 transition-colors line-clamp-2">
                     {post.title}
                   </h3>
 
-                  <p className="text-slate-300 mb-4 leading-relaxed text-sm line-clamp-3 flex-1">
+                  <p className="text-[#475569] mb-4 leading-relaxed text-sm line-clamp-3 flex-1">
                     {post.excerpt}
                   </p>
 
-                  <div className="flex items-center gap-4 text-slate-400 text-xs mb-4 pt-4 border-t border-slate-800">
+                  <div className="flex items-center gap-4 text-[#64748B] text-xs mb-4 pt-4 border-t border-[#E2E8F0]">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-3.5 h-3.5" />
                       <time className="font-medium">
@@ -213,7 +213,7 @@ export default function Blog() {
                     {post.tags.slice(0, 3).map((tag: any, tagIndex: number) => (
                       <span
                         key={tagIndex}
-                        className="px-2 py-1 bg-slate-800/50 border border-slate-700/50 rounded text-slate-400 text-[10px] font-semibold uppercase tracking-wide"
+                        className="px-2 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-[#64748B] text-[10px] font-semibold uppercase tracking-wide"
                       >
                         {tag}
                       </span>
@@ -233,7 +233,7 @@ export default function Blog() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 p-8 md:p-12 bg-gradient-to-br from-cyan-600/10 via-teal-600/10 to-cyan-600/10 border-2 border-cyan-500/30 rounded-2xl text-center relative overflow-hidden shadow-[0_0_80px_-12px_rgba(6,182,212,0.3)]"
+          className="mt-16 p-8 md:p-12 bg-gradient-to-br from-cyan-50 via-teal-50 to-cyan-50 border-2 border-cyan-500/30 rounded-2xl text-center relative overflow-hidden shadow-[0_0_80px_-12px_rgba(6,182,212,0.3)]"
         >
           {/* Background decorative elements */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -ml-16 -mt-16"></div>
@@ -241,16 +241,16 @@ export default function Blog() {
 
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-500/30 mb-4">
-              <span className="material-symbols-outlined text-cyan-400 text-[20px]">rocket_launch</span>
-              <span className="text-cyan-400 font-bold text-sm uppercase tracking-wider">Start Your Journey</span>
+              <span className="material-symbols-outlined text-cyan-600 text-[20px]">rocket_launch</span>
+              <span className="text-cyan-600 font-bold text-sm uppercase tracking-wider">Start Your Journey</span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-              Ready to See Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">ATS Score</span>?
+            <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+              Ready to See Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-600">ATS Score</span>?
             </h2>
-            <p className="text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-[#475569] text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
               Stop guessing and start optimizing. Scan your resume and get{" "}
-              <span className="text-cyan-400 font-bold">instant AI-powered insights</span> in seconds.
+              <span className="text-cyan-600 font-bold">instant AI-powered insights</span> in seconds.
             </p>
             <Button
               onClick={() => navigate('/')}

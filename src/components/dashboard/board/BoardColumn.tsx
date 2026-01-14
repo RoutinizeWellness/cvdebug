@@ -37,15 +37,15 @@ export function BoardColumn({
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${column.color}`} />
-          <h3 className="font-bold text-sm text-zinc-300">{column.title}</h3>
-          <Badge variant="secondary" className="text-xs bg-zinc-800 text-zinc-400">
+          <h3 className="font-bold text-sm text-[#0F172A]">{column.title}</h3>
+          <Badge variant="secondary" className="text-xs bg-[#F8FAFC] text-[#475569] border border-[#E2E8F0]">
             {applications.length}
           </Badge>
         </div>
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-6 w-6 text-zinc-500"
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
           onClick={onAddClick}
         >
           <Plus className="h-4 w-4" />
@@ -57,7 +57,7 @@ export function BoardColumn({
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex-1 bg-zinc-900/30 rounded-xl p-2 flex flex-col gap-3 min-h-[150px]"
+            className="flex-1 bg-[#F8FAFC] rounded-xl p-2 flex flex-col gap-3 min-h-[150px] border border-[#E2E8F0]"
           >
             {applications.map((app: any, index: number) => (
               <ApplicationCard

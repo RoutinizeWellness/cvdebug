@@ -33,15 +33,15 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
   const [selectedJob, setSelectedJob] = useState<any>(null);
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-[#00FF41]";
+    if (score >= 80) return "text-[#22C55E]";
     if (score >= 50) return "text-[#F59E0B]";
     return "text-[#EF4444]";
   };
 
   const getScoreBadge = (score: number) => {
-    if (score >= 80) return "bg-[#00FF41]/10 text-[#00FF41] border-[#00FF41]/20";
-    if (score >= 50) return "bg-yellow-500/10 text-[#F59E0B] border-yellow-500/20";
-    return "bg-[#EF4444]/10 text-[#EF4444] border-red-500/20";
+    if (score >= 80) return "bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20";
+    if (score >= 50) return "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20";
+    return "bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20";
   };
 
   const handleViewDetails = (job: any, e: React.MouseEvent) => {
@@ -51,48 +51,48 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
 
   return (
     <>
-      <div className="rounded-xl border border-zinc-800 bg-[#0A0A0A] overflow-hidden flex flex-col h-full">
-        <div className="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/30">
+      <div className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden flex flex-col h-full shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+        <div className="p-4 border-b border-[#E2E8F0] flex items-center justify-between bg-[#F8FAFC]">
           <div className="flex items-center gap-2">
-            <Briefcase className="h-4 w-4 text-zinc-400" />
-            <h3 className="font-bold text-sm text-zinc-200 uppercase tracking-wider">Application Commander</h3>
+            <Briefcase className="h-4 w-4 text-[#64748B]" />
+            <h3 className="font-bold text-sm text-[#0F172A] uppercase tracking-wider">Application Commander</h3>
           </div>
-          <Button variant="ghost" size="sm" className="text-xs text-zinc-500 hover:text-[#0F172A]">
+          <Button variant="ghost" size="sm" className="text-xs text-[#64748B] hover:text-[#0F172A]">
             View All
           </Button>
         </div>
 
         <div className="overflow-auto">
           <Table>
-            <TableHeader className="bg-zinc-900/50">
-              <TableRow className="hover:bg-transparent border-zinc-800">
-                <TableHead className="text-xs font-bold text-zinc-500 uppercase w-[300px]">Company & Role</TableHead>
-                <TableHead className="text-xs font-bold text-zinc-500 uppercase text-center">Match Score</TableHead>
-                <TableHead className="text-xs font-bold text-zinc-500 uppercase text-center">Status</TableHead>
-                <TableHead className="text-xs font-bold text-zinc-500 uppercase">Gaps Analysis</TableHead>
+            <TableHeader className="bg-[#F8FAFC]">
+              <TableRow className="hover:bg-transparent border-[#E2E8F0]">
+                <TableHead className="text-xs font-bold text-[#64748B] uppercase w-[300px]">Company & Role</TableHead>
+                <TableHead className="text-xs font-bold text-[#64748B] uppercase text-center">Match Score</TableHead>
+                <TableHead className="text-xs font-bold text-[#64748B] uppercase text-center">Status</TableHead>
+                <TableHead className="text-xs font-bold text-[#64748B] uppercase">Gaps Analysis</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {!jobHistory || jobHistory.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="h-32 text-center text-zinc-500">
+                  <TableCell colSpan={5} className="h-32 text-center text-[#64748B]">
                     No active missions. Start a new scan to track applications.
                   </TableCell>
                 </TableRow>
               ) : (
                 jobHistory.map((job: any, i: number) => (
-                  <TableRow 
-                    key={job._id} 
-                    className="border-zinc-800 hover:bg-zinc-900/30 transition-colors group cursor-pointer"
+                  <TableRow
+                    key={job._id}
+                    className="border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors group cursor-pointer"
                     onClick={() => setSelectedJob(job)}
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-bold text-zinc-200 group-hover:text-[#0F172A] transition-colors">
+                        <span className="font-bold text-[#0F172A] group-hover:text-[#3B82F6] transition-colors">
                           {job.jobTitle || "Untitled Role"}
                         </span>
-                        <span className="text-xs text-zinc-500 flex items-center gap-1">
+                        <span className="text-xs text-[#64748B] flex items-center gap-1">
                           {job.company || "Unknown Company"}
                         </span>
                       </div>
@@ -126,27 +126,27 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                     <TableCell className="text-center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="h-7 text-xs border-zinc-700 bg-zinc-800/50 text-zinc-300 hover:bg-zinc-800 hover:text-[#0F172A]"
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-7 text-xs border-[#E2E8F0] bg-[#FFFFFF] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A]"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {job.status || "Applied"} <ChevronDown className="ml-1 h-3 w-3 opacity-50" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="center" className="bg-[#0A0A0A] border-zinc-800">
-                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Interested</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Applied</DropdownMenuItem>
-                          <DropdownMenuItem className="text-zinc-400 focus:text-[#0F172A] focus:bg-zinc-800">Interviewing</DropdownMenuItem>
-                          <DropdownMenuItem className="text-[#22C55E] focus:text-green-400 focus:bg-green-900/20">Offer</DropdownMenuItem>
-                          <DropdownMenuItem className="text-[#EF4444] focus:text-red-400 focus:bg-red-900/20">Rejected</DropdownMenuItem>
+                        <DropdownMenuContent align="center" className="bg-[#FFFFFF] border-[#E2E8F0]">
+                          <DropdownMenuItem className="text-[#64748B] focus:text-[#0F172A] focus:bg-[#F8FAFC]">Interested</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#64748B] focus:text-[#0F172A] focus:bg-[#F8FAFC]">Applied</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#64748B] focus:text-[#0F172A] focus:bg-[#F8FAFC]">Interviewing</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#22C55E] focus:text-[#22C55E] focus:bg-[#22C55E]/10">Offer</DropdownMenuItem>
+                          <DropdownMenuItem className="text-[#EF4444] focus:text-[#EF4444] focus:bg-[#EF4444]/10">Rejected</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
                     <TableCell>
                       {job.missingKeywords && job.missingKeywords.length > 0 ? (
-                        <div className="flex items-center gap-2 text-xs text-red-400">
+                        <div className="flex items-center gap-2 text-xs text-[#EF4444]">
                           <AlertCircle className="h-3 w-3" />
                           <span>Missing {job.missingKeywords.length} keywords</span>
                         </div>
@@ -158,10 +158,10 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                       )}
                     </TableCell>
                     <TableCell>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-8 w-8 text-zinc-500 hover:text-[#0F172A] hover:bg-zinc-800 transition-colors"
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] transition-colors"
                         onClick={(e) => handleViewDetails(job, e)}
                         title="View Details"
                       >

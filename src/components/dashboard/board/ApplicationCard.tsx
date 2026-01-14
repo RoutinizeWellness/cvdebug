@@ -42,7 +42,7 @@ export function ApplicationCard({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className={`bg-[#0A0A0A] border-zinc-800 hover:border-zinc-700 transition-all cursor-grab active:cursor-grabbing group relative ${
+          className={`bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#F3E8FF] transition-all cursor-grab active:cursor-grabbing group relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] ${
             isGhosted ? "border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : ""
           }`}
         >
@@ -58,7 +58,7 @@ export function ApplicationCard({
             <div className="flex justify-between items-start">
               <div className="space-y-1">
                 <h4 className="font-bold text-sm text-[#0F172A] leading-tight">{app.jobTitle}</h4>
-                <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
                   <Building2 className="h-3 w-3" />
                   {app.companyName}
                 </div>
@@ -76,7 +76,7 @@ export function ApplicationCard({
             
             {/* Timeline Preview */}
             {app.events && app.events.length > 0 && (
-              <div className="text-[10px] text-zinc-500 flex items-center gap-1.5 bg-zinc-900/50 p-1.5 rounded border border-zinc-800/50">
+              <div className="text-[10px] text-[#64748B] flex items-center gap-1.5 bg-[#F8FAFC] p-1.5 rounded border border-[#E2E8F0]">
                 <History className="h-3 w-3" />
                 <span className="truncate max-w-[200px]">
                   {app.events[app.events.length - 1].title}
@@ -84,8 +84,8 @@ export function ApplicationCard({
               </div>
             )}
 
-            <div className="flex items-center justify-between pt-2 border-t border-zinc-800/50">
-              <div className="flex items-center gap-1.5 text-[10px] text-zinc-500">
+            <div className="flex items-center justify-between pt-2 border-t border-[#E2E8F0]">
+              <div className="flex items-center gap-1.5 text-[10px] text-[#64748B]">
                 <Clock className="h-3 w-3" />
                 {new Date(app.lastStatusUpdate || app._creationTime).toLocaleDateString('es-ES')}
               </div>
@@ -94,10 +94,10 @@ export function ApplicationCard({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-6 w-6 text-zinc-500 hover:text-blue-400 hover:bg-[#3B82F6]/10"
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewTimeline(app);
@@ -116,10 +116,10 @@ export function ApplicationCard({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-[#EF4444]/10" : "text-zinc-500 hover:text-blue-400 hover:bg-[#3B82F6]/10"}`}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-[#EF4444]/10" : "text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           onRecruiterDM(app._id);
@@ -139,10 +139,10 @@ export function ApplicationCard({
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-6 w-6 text-zinc-500 hover:text-teal-400 hover:bg-teal-500/10"
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-[#64748B] hover:text-teal-400 hover:bg-teal-500/10"
                           onClick={(e) => {
                             e.stopPropagation();
                             onInterviewPrep(app);
@@ -161,10 +161,10 @@ export function ApplicationCard({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-6 w-6 text-zinc-500 hover:text-[#0F172A] hover:bg-zinc-800"
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewDetails(app);
@@ -182,10 +182,10 @@ export function ApplicationCard({
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-6 w-6 text-zinc-500 hover:text-primary hover:bg-primary/10"
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"
                           onClick={(e) => {
                             e.stopPropagation();
                             onGenerateCoverLetter(app._id);

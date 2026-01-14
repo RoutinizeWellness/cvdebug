@@ -21,7 +21,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
   const jobHistory = useQuery((api as any).jobTracker.getJobHistory);
   const currentUser = useQuery((api as any).users.currentUser);
   const generateCoverLetter = useAction(api.coverLetters.generate);
-  
+
   const [selectedResumeId, setSelectedResumeId] = useState<string>("");
   const [jobDescription, setJobDescription] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -31,7 +31,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
   const [copied, setCopied] = useState(false);
 
   // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" && 
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   useEffect(() => {
@@ -62,14 +62,14 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
     setIsGenerating(true);
     try {
       const resumeId = (selectedResumeId === "none" || selectedResumeId === "") ? undefined : selectedResumeId;
-      
+
       const result = await generateCoverLetter({
         resumeId: resumeId as any,
         jobDescription,
         companyName,
         jobTitle
       });
-      
+
       setGeneratedLetter(result);
       toast.success("Cover letter generated successfully!");
     } catch (error: any) {
@@ -98,7 +98,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       <div className="space-y-6">
         {!hasInterviewSprint && (
-          <Alert className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+          <Alert className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden">
             {/* Decorative gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
 
@@ -137,7 +137,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
 
               <Button
                 onClick={onUpgrade}
-                className="btn-power w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Upgrade to Interview Sprint</span>
@@ -146,13 +146,13 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
           </Alert>
         )}
 
-        <Card className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <Card className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
           <CardHeader>
             <CardTitle className="text-[#0F172A] flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />
               Generator Settings
               {!hasInterviewSprint && (
-                <Lock className="h-4 w-4 text-slate-400 ml-auto" />
+                <Lock className="h-4 w-4 text-[#64748B] ml-auto" />
               )}
             </CardTitle>
             <CardDescription className="text-[#64748B]">
@@ -218,8 +218,8 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
               />
             </div>
 
-            <Button 
-              onClick={handleGenerate} 
+            <Button
+              onClick={handleGenerate}
               disabled={isGenerating || !jobDescription || !hasInterviewSprint}
               className="w-full font-bold"
             >
@@ -245,7 +245,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
       </div>
 
       <div className="h-full">
-        <Card className="h-full flex flex-col bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <Card className="h-full flex flex-col bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="space-y-1">
               <CardTitle className="text-[#0F172A]">Generated Letter</CardTitle>
@@ -264,7 +264,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
               </div>
             )}
           </CardHeader>
-          <CardContent className="flex-1 p-4 pt-0">
+          <CardContent className="flex-1 p-4 pt-0 relative">
             {generatedLetter ? (
               <Textarea
                 value={generatedLetter}
@@ -272,12 +272,17 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
                 className="h-full min-h-[500px] resize-none bg-[#FFFFFF] border border-[#E2E8F0] font-serif text-base leading-relaxed p-6 text-[#0F172A]"
               />
             ) : (
-              <div className="h-full min-h-[500px] flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-[#E2E8F0] rounded-lg bg-[#F8FAFC]">
-                <FileText className="h-12 w-12 mb-4 opacity-20" />
-                <p>Your cover letter will appear here</p>
+              <div className="h-full min-h-[500px] flex flex-col items-center justify-center border-2 border-dashed border-[#E2E8F0] rounded-lg bg-[#F8FAFC] relative">
                 {!hasInterviewSprint && (
-                  <p className="text-xs text-slate-400 mt-2">Upgrade to Interview Sprint to unlock</p>
+                  <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center rounded-lg">
+                    <div className="text-center p-8">
+                      <Lock className="h-12 w-12 text-[#8B5CF6] mx-auto mb-3" />
+                      <p className="text-sm text-[#475569] font-medium">Upgrade to Interview Sprint to unlock</p>
+                    </div>
+                  </div>
                 )}
+                <FileText className="h-12 w-12 mb-4 text-[#E2E8F0]" />
+                <p className="text-[#64748B]">Your cover letter will appear here</p>
               </div>
             )}
           </CardContent>

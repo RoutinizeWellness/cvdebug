@@ -21,14 +21,14 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Probability Score */}
-      <Card className="bg-gradient-to-br from-zinc-900 to-zinc-950 border-primary/20 p-6">
+      <Card className="bg-gradient-to-br from-[#FFFFFF] to-[#F8FAFC] border-[#E2E8F0] p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-primary/10 rounded-lg">
             <Target className="h-5 w-5 text-primary" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Interview Probability</h3>
-            <p className="text-xs text-zinc-400">Your chances of getting called</p>
+            <p className="text-xs text-[#64748B]">Your chances of getting called</p>
           </div>
         </div>
 
@@ -48,7 +48,7 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
         <div className="space-y-2">
           {probabilityData?.factors?.map((factor: any, idx: number) => (
             <div key={idx} className="flex justify-between text-xs">
-              <span className="text-zinc-400">{factor.name}</span>
+              <span className="text-[#64748B]">{factor.name}</span>
               <span className="text-[#0F172A] font-mono">
                 {factor.points}/{factor.max}
               </span>
@@ -66,14 +66,14 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
       </Card>
 
       {/* Badges */}
-      <Card className="bg-gradient-to-br from-zinc-900 to-zinc-950 border-primary/20 p-6">
+      <Card className="bg-gradient-to-br from-[#FFFFFF] to-[#F8FAFC] border-[#E2E8F0] p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-yellow-500/10 rounded-lg">
             <Trophy className="h-5 w-5 text-[#F59E0B]" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">Achievements</h3>
-            <p className="text-xs text-zinc-400">Your progress badges</p>
+            <p className="text-xs text-[#64748B]">Your progress badges</p>
           </div>
         </div>
 
@@ -82,13 +82,13 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
             {badges.map((badge: any) => (
               <div
                 key={badge.id}
-                className="p-3 bg-zinc-950 border border-zinc-800 rounded-lg hover:border-primary/50 transition-colors group"
+                className="p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg hover:border-primary/50 transition-colors group"
               >
                 <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
                   {badge.icon}
                 </div>
                 <p className="text-xs font-bold text-[#0F172A] mb-1">{badge.name}</p>
-                <p className="text-[10px] text-zinc-500">
+                <p className="text-[10px] text-[#64748B]">
                   {new Date(badge.earnedAt).toLocaleDateString('es-ES')}
                 </p>
               </div>
@@ -96,14 +96,14 @@ export function GamificationPanel({ resumeId }: GamificationPanelProps) {
           </div>
         ) : (
           <div className="text-center py-8">
-            <Award className="h-12 w-12 text-zinc-700 mx-auto mb-3" />
-            <p className="text-sm text-zinc-400">No badges yet</p>
-            <p className="text-xs text-zinc-500 mt-1">Complete actions to earn achievements</p>
+            <Award className="h-12 w-12 text-[#E2E8F0] mx-auto mb-3" />
+            <p className="text-sm text-[#64748B]">No badges yet</p>
+            <p className="text-xs text-[#64748B] mt-1">Complete actions to earn achievements</p>
           </div>
         )}
 
-        <div className="mt-4 p-3 bg-zinc-950 border border-zinc-800 rounded-lg">
-          <p className="text-xs text-zinc-400 mb-2">Available Badges:</p>
+        <div className="mt-4 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg">
+          <p className="text-xs text-[#64748B] mb-2">Available Badges:</p>
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline" className="text-[10px]">🎯 First Steps</Badge>
             <Badge variant="outline" className="text-[10px]">🚀 Ready for Google</Badge>

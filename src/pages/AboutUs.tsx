@@ -39,7 +39,7 @@ export default function AboutUs() {
   ];
 
   return (
-    <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#F8FAFC]">
       <NewNavbar />
 
       <main className="container max-w-6xl mx-auto px-4 py-12">
@@ -50,10 +50,10 @@ export default function AboutUs() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold text-[#0F172A] mb-6">
             About <span className="text-[#3B82F6]">CVDebug</span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#475569] max-w-3xl mx-auto leading-relaxed">
             We're building the future of job searching with AI-powered tools that help you beat ATS systems and get hired faster.
           </p>
         </motion.section>
@@ -63,10 +63,10 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="glass-panel rounded-2xl p-8 md:p-12 mb-16"
+          className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 md:p-12 mb-16 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-6">Our Story</h2>
-          <div className="space-y-4 text-slate-300 text-lg leading-relaxed">
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Our Story</h2>
+          <div className="space-y-4 text-[#475569] text-lg leading-relaxed">
             <p>
               CVDebug was born from a simple observation: talented professionals were getting rejected not because they lacked skills, but because their resumes couldn't pass Applicant Tracking Systems (ATS).
             </p>
@@ -89,7 +89,7 @@ export default function AboutUs() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">Our Values</h2>
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-8 text-center">Our Values</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {values.map((value, index) => (
               <motion.div
@@ -97,13 +97,13 @@ export default function AboutUs() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * (index + 3) }}
-                className="glass-panel rounded-xl p-6"
+                className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               >
                 <div className="w-12 h-12 bg-[#3B82F6]/20 rounded-lg flex items-center justify-center mb-4">
                   <value.icon className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
-                <p className="text-slate-300 leading-relaxed">{value.description}</p>
+                <h3 className="text-xl font-bold text-[#0F172A] mb-3">{value.title}</h3>
+                <p className="text-[#475569] leading-relaxed">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -114,21 +114,21 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="glass-panel rounded-2xl p-8 md:p-12 mb-16"
+          className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 md:p-12 mb-16 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-8 text-center">Our Impact</h2>
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-8 text-center">Our Impact</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-4xl font-bold text-blue-400 mb-2">10,000+</div>
-              <div className="text-slate-300">Resumes Scanned</div>
+              <div className="text-[#475569]">Resumes Scanned</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-blue-400 mb-2">3,500+</div>
-              <div className="text-slate-300">Happy Users</div>
+              <div className="text-[#475569]">Happy Users</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-blue-400 mb-2">92%</div>
-              <div className="text-slate-300">Success Rate</div>
+              <div className="text-[#475569]">Success Rate</div>
             </div>
           </div>
         </motion.section>
@@ -138,10 +138,10 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="glass-panel rounded-2xl p-8 md:p-12 mb-16 text-center"
+          className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 md:p-12 mb-16 text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">Built by Job Seekers, for Job Seekers</h2>
-          <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Built by Job Seekers, for Job Seekers</h2>
+          <p className="text-[#475569] text-lg max-w-2xl mx-auto leading-relaxed">
             Our team has been in your shoes. We've faced ATS rejections, keyword gaps, and formatting nightmares. That's why we're obsessed with building tools that actually work.
           </p>
         </motion.section>
@@ -151,12 +151,12 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-r from-blue-50 to-teal-50 border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-4">
             Ready to Beat ATS?
           </h2>
-          <p className="text-slate-300 text-lg mb-6 max-w-2xl mx-auto">
+          <p className="text-[#475569] text-lg mb-6 max-w-2xl mx-auto">
             Join thousands of professionals who've optimized their resumes with CVDebug.
           </p>
           <a

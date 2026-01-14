@@ -76,7 +76,7 @@ export default function ContactUs() {
   ];
 
   return (
-    <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#F8FAFC]">
       <NewNavbar />
 
       <main className="container max-w-6xl mx-auto px-4 py-12">
@@ -87,10 +87,10 @@ export default function ContactUs() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold text-[#0F172A] mb-6">
             Get in <span className="text-[#3B82F6]">Touch</span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#475569] max-w-3xl mx-auto leading-relaxed">
             Have a question or need help? Our team is here to assist you with anything related to CVDebug.
           </p>
         </motion.section>
@@ -108,14 +108,14 @@ export default function ContactUs() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
-              className="glass-panel rounded-xl p-6 text-center"
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
             >
               <div className={`w-12 h-12 bg-${method.color}-600/20 rounded-lg flex items-center justify-center mx-auto mb-4`}>
                 <method.icon className={`w-6 h-6 text-${method.color}-400`} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">{method.title}</h3>
-              <p className="text-slate-400 text-sm mb-2">{method.description}</p>
-              <p className="text-white font-semibold">{method.detail}</p>
+              <h3 className="text-lg font-bold text-[#0F172A] mb-2">{method.title}</h3>
+              <p className="text-[#64748B] text-sm mb-2">{method.description}</p>
+              <p className="text-[#0F172A] font-semibold">{method.detail}</p>
             </motion.div>
           ))}
         </motion.section>
@@ -128,11 +128,11 @@ export default function ContactUs() {
           className="grid md:grid-cols-2 gap-12 mb-16"
         >
           {/* Form */}
-          <div className="glass-panel rounded-2xl p-8">
-            <h2 className="text-3xl font-bold text-white mb-6">Send us a Message</h2>
+          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+            <h2 className="text-3xl font-bold text-[#0F172A] mb-6">Send us a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-[#475569] mb-2">
                   Your Name
                 </label>
                 <input
@@ -142,13 +142,13 @@ export default function ContactUs() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors"
                   placeholder="John Doe"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-[#475569] mb-2">
                   Email Address
                 </label>
                 <input
@@ -158,13 +158,13 @@ export default function ContactUs() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors"
                   placeholder="john@example.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="subject" className="block text-sm font-medium text-[#475569] mb-2">
                   Subject
                 </label>
                 <select
@@ -173,7 +173,7 @@ export default function ContactUs() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] focus:outline-none focus:border-[#3B82F6] transition-colors"
                 >
                   <option value="">Select a subject</option>
                   <option value="technical">Technical Support</option>
@@ -185,7 +185,7 @@ export default function ContactUs() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-[#475569] mb-2">
                   Message
                 </label>
                 <textarea
@@ -195,7 +195,7 @@ export default function ContactUs() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-[#3B82F6] transition-colors resize-none"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors resize-none"
                   placeholder="How can we help you?"
                 />
               </div>
@@ -212,38 +212,38 @@ export default function ContactUs() {
 
           {/* Info */}
           <div className="space-y-8">
-            <div className="glass-panel rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Frequently Asked Questions</h3>
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Frequently Asked Questions</h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-white font-semibold mb-2">How long does resume scanning take?</h4>
-                  <p className="text-slate-300 text-sm">Most resumes are analyzed in 10-30 seconds. Complex documents may take up to 2 minutes.</p>
+                  <h4 className="text-[#0F172A] font-semibold mb-2">How long does resume scanning take?</h4>
+                  <p className="text-[#475569] text-sm">Most resumes are analyzed in 10-30 seconds. Complex documents may take up to 2 minutes.</p>
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-2">Can I get a refund?</h4>
-                  <p className="text-slate-300 text-sm">Yes! We offer refunds within 7 days of purchase if you haven't used any scans.</p>
+                  <h4 className="text-[#0F172A] font-semibold mb-2">Can I get a refund?</h4>
+                  <p className="text-[#475569] text-sm">Yes! We offer refunds within 7 days of purchase if you haven't used any scans.</p>
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-2">Is my resume data secure?</h4>
-                  <p className="text-slate-300 text-sm">Absolutely. We use end-to-end encryption and never share your data with third parties.</p>
+                  <h4 className="text-[#0F172A] font-semibold mb-2">Is my resume data secure?</h4>
+                  <p className="text-[#475569] text-sm">Absolutely. We use end-to-end encryption and never share your data with third parties.</p>
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-2">Do you offer enterprise plans?</h4>
-                  <p className="text-slate-300 text-sm">Yes! Contact us at enterprise@cvdebug.com for custom solutions.</p>
+                  <h4 className="text-[#0F172A] font-semibold mb-2">Do you offer enterprise plans?</h4>
+                  <p className="text-[#475569] text-sm">Yes! Contact us at enterprise@cvdebug.com for custom solutions.</p>
                 </div>
               </div>
             </div>
 
-            <div className="glass-panel rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Office Hours</h3>
-              <div className="space-y-3 text-slate-300">
+            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Office Hours</h3>
+              <div className="space-y-3 text-[#475569]">
                 <div className="flex justify-between">
                   <span>Monday - Friday</span>
-                  <span className="text-white font-semibold">9:00 AM - 6:00 PM PST</span>
+                  <span className="text-[#0F172A] font-semibold">9:00 AM - 6:00 PM PST</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Saturday</span>
-                  <span className="text-white font-semibold">10:00 AM - 4:00 PM PST</span>
+                  <span className="text-[#0F172A] font-semibold">10:00 AM - 4:00 PM PST</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday</span>
@@ -259,12 +259,12 @@ export default function ContactUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-r from-blue-50 to-teal-50 border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-[#0F172A] mb-4">
             Ready to Optimize Your Resume?
           </h2>
-          <p className="text-slate-300 text-lg mb-6 max-w-2xl mx-auto">
+          <p className="text-[#475569] text-lg mb-6 max-w-2xl mx-auto">
             Don't wait! Start scanning your resume today and get instant feedback.
           </p>
           <a
