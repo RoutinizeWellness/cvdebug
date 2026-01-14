@@ -503,7 +503,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                 <span className="text-lg font-black text-[#22C55E]">{impactMetrics.actionVerbs}</span>
               </div>
               <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                <div className="h-full bg-[#22C55E] rounded-full" style={{ width: "75%" }} />
+                <div
+                  className="h-full bg-[#22C55E] rounded-full"
+                  style={{ width: `${Math.min(100, (impactMetrics.actionVerbs / 15) * 100)}%` }}
+                />
               </div>
             </div>
 
@@ -531,7 +534,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                 <span className="text-lg font-black text-[#3B82F6]">{impactMetrics.softSkills}</span>
               </div>
               <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
-                <div className="h-full bg-[#3B82F6] rounded-full" style={{ width: "50%" }} />
+                <div
+                  className="h-full bg-[#3B82F6] rounded-full"
+                  style={{ width: `${Math.min(100, (impactMetrics.softSkills / 8) * 100)}%` }}
+                />
               </div>
             </div>
           </div>
