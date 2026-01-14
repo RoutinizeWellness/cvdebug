@@ -27,52 +27,123 @@ export function FluffDetector({
 
   const [selectedMetrics, setSelectedMetrics] = useState<Record<number, number>>({});
 
-  // Mock data for weak phrases
-  const weakPhrases: WeakPhrase[] = [
-    {
-      phrase: "responsible for",
-      location: "Experience · Line 12",
-      context: "...responsible for managing a team of engineers...",
-      reason: "Passive. Doesn't convey ownership or impact.",
-      fixes: ["Led", "Directed", "Managed", "Oversaw"]
-    },
-    {
-      phrase: "helped with",
-      location: "Experience · Line 18",
-      context: "...helped with the migration to microservices...",
-      reason: "Vague contribution level. Show direct impact.",
-      fixes: ["Architected", "Spearheaded", "Executed", "Drove"]
-    },
-    {
-      phrase: "various",
-      location: "Skills · Line 3",
-      context: "...worked with various cloud technologies...",
-      reason: "Too generic. Be specific about technologies.",
-      fixes: ["AWS, Azure, GCP", "Multi-cloud environments", "Specific tech names"]
-    }
-  ];
+  // Detect weak phrases from actual resume text
+  const detectWeakPhrases = (text: string): WeakPhrase[] => {
+    const weakPhrasePatterns = [
+      {
+        pattern: /responsible for/gi,
+        phrase: "responsible for",
+        reason: "Passive. Doesn't convey ownership or impact.",
+        fixes: ["Led", "Directed", "Managed", "Oversaw"]
+      },
+      {
+        pattern: /helped with/gi,
+        phrase: "helped with",
+        reason: "Vague contribution level. Show direct impact.",
+        fixes: ["Architected", "Spearheaded", "Executed", "Drove"]
+      },
+      {
+        pattern: /various/gi,
+        phrase: "various",
+        reason: "Too generic. Be specific about technologies.",
+        fixes: ["Specific names", "List exact tools", "Name technologies"]
+      },
+      {
+        pattern: /worked on/gi,
+        phrase: "worked on",
+        reason: "Vague and passive. Show your specific role.",
+        fixes: ["Developed", "Built", "Designed", "Created"]
+      },
+      {
+        pattern: /involved in/gi,
+        phrase: "involved in",
+        reason: "Unclear contribution level.",
+        fixes: ["Led", "Executed", "Delivered", "Drove"]
+      },
+      {
+        pattern: /participated in/gi,
+        phrase: "participated in",
+        reason: "Sounds passive and minimal.",
+        fixes: ["Contributed to", "Delivered", "Executed", "Drove"]
+      }
+    ];
 
-  // Mock data for unquantified achievements
-  const unquantifiedAchievements: UnquantifiedAchievement[] = [
-    {
-      title: "Improved system performance",
-      description: "Experience · Data Pipeline Project",
-      suggestions: [
-        "Reduced query latency by 40% (from 2s to 1.2s)",
-        "Increased throughput by 3x (handling 150k requests/min)",
-        "Optimized database calls, saving $12k/month in infrastructure costs"
-      ]
-    },
-    {
-      title: "Led a successful migration",
-      description: "Experience · Cloud Migration Initiative",
-      suggestions: [
-        "Migrated 50+ microservices to Kubernetes with zero downtime",
-        "Completed migration 2 weeks ahead of schedule, saving $25k",
-        "Reduced deployment time from 45min to 8min (82% improvement)"
-      ]
-    }
-  ];
+    const detected: WeakPhrase[] = [];
+    const lines = text.split('\n');
+
+    weakPhrasePatterns.forEach(({ pattern, phrase, reason, fixes }) => {
+      let match;
+      const globalPattern = new RegExp(pattern.source, 'gi');
+      while ((match = globalPattern.exec(text)) !== null) {
+        // Find the line number
+        const beforeMatch = text.substring(0, match.index);
+        const lineNum = beforeMatch.split('\n').length;
+
+        // Get context (30 chars before and after)
+        const start = Math.max(0, match.index - 30);
+        const end = Math.min(text.length, match.index + phrase.length + 30);
+        const context = '...' + text.substring(start, end).trim() + '...';
+
+        detected.push({
+          phrase,
+          location: `Line ${lineNum}`,
+          context,
+          reason,
+          fixes
+        });
+
+        // Limit to 5 instances per phrase type
+        if (detected.filter(d => d.phrase === phrase).length >= 2) break;
+      }
+    });
+
+    return detected.slice(0, 6); // Max 6 weak phrases
+  };
+
+  // Detect unquantified achievements from actual resume text
+  const detectUnquantifiedAchievements = (text: string): UnquantifiedAchievement[] => {
+    const achievementPatterns = [
+      /improved/gi,
+      /enhanced/gi,
+      /optimized/gi,
+      /increased/gi,
+      /reduced/gi,
+      /led/gi,
+      /managed/gi,
+      /developed/gi
+    ];
+
+    const detected: UnquantifiedAchievement[] = [];
+    const lines = text.split('\n').filter(line => line.trim().length > 20);
+
+    lines.forEach((line, idx) => {
+      // Check if line has achievement word but no numbers
+      const hasAchievementWord = achievementPatterns.some(p => p.test(line));
+      const hasNumber = /\d+/.test(line);
+      const hasPercent = /%/.test(line);
+      const hasCurrency = /\$/.test(line);
+
+      if (hasAchievementWord && !hasNumber && !hasPercent && !hasCurrency) {
+        // Extract the achievement phrase
+        const achievement = line.trim().substring(0, 60);
+
+        detected.push({
+          title: achievement,
+          description: `Line ${idx + 1}`,
+          suggestions: [
+            "Add percentage improvement (e.g., by 40%)",
+            "Include time saved or cost reduction",
+            "Specify scale or volume (e.g., 1000+ users)"
+          ]
+        });
+      }
+    });
+
+    return detected.slice(0, 4); // Max 4 achievements
+  };
+
+  const weakPhrases = detectWeakPhrases(resumeText);
+  const unquantifiedAchievements = detectUnquantifiedAchievements(resumeText);
 
   // Power verbs library
   const powerVerbCategories = [
@@ -94,9 +165,47 @@ export function FluffDetector({
     }
   ];
 
-  const activeVoicePercent = 78;
-  const buzzwordDensity = 12;
-  const quantificationPercent = 45;
+  // Calculate real metrics from resume text
+  const calculateMetrics = (text: string) => {
+    if (!text || text.trim().length === 0) {
+      return {
+        activeVoicePercent: 0,
+        buzzwordDensity: 0,
+        quantificationPercent: 0
+      };
+    }
+
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
+
+    // Active voice detection (simple heuristic: sentences starting with power verbs)
+    const powerVerbs = ['led', 'developed', 'managed', 'created', 'built', 'designed', 'implemented', 'achieved', 'delivered', 'improved'];
+    const activeVoiceSentences = sentences.filter(s => {
+      const firstWord = s.trim().split(/\s+/)[0]?.toLowerCase();
+      return powerVerbs.includes(firstWord);
+    });
+    const activeVoicePercent = sentences.length > 0 ? Math.round((activeVoiceSentences.length / sentences.length) * 100) : 0;
+
+    // Buzzword density (common buzzwords)
+    const buzzwords = ['synergy', 'leverage', 'paradigm', 'revolutionary', 'innovative', 'cutting-edge', 'world-class', 'best-in-class', 'guru', 'ninja', 'rockstar'];
+    const buzzwordCount = buzzwords.reduce((count, word) => {
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      const matches = text.match(regex);
+      return count + (matches ? matches.length : 0);
+    }, 0);
+    const buzzwordDensity = text.length > 0 ? Math.round((buzzwordCount / (text.split(/\s+/).length / 100))) : 0;
+
+    // Quantification percentage (sentences with numbers, %, or $)
+    const quantifiedSentences = sentences.filter(s => /\d+|%|\$/.test(s));
+    const quantificationPercent = sentences.length > 0 ? Math.round((quantifiedSentences.length / sentences.length) * 100) : 0;
+
+    return {
+      activeVoicePercent: Math.min(100, Math.max(0, activeVoicePercent)),
+      buzzwordDensity: Math.min(100, Math.max(0, buzzwordDensity)),
+      quantificationPercent: Math.min(100, Math.max(0, quantificationPercent))
+    };
+  };
+
+  const { activeVoicePercent, buzzwordDensity, quantificationPercent } = calculateMetrics(resumeText);
 
   const circumferenceScore = 2 * Math.PI * 45;
   const offsetScore = circumferenceScore - (clarityScore / 100) * circumferenceScore;
@@ -253,51 +362,59 @@ export function FluffDetector({
             </div>
 
             <div className="p-5 space-y-4 max-h-[600px] overflow-y-auto terminal-scroll">
-              {weakPhrases.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4 hover:bg-[#F8FAFC] transition-colors"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="font-mono text-sm font-bold text-[#EF4444] bg-red-50 px-2 py-1 rounded border border-red-100">
-                          "{item.phrase}"
-                        </span>
-                        <span className="text-[10px] text-[#64748B] font-mono">
-                          {item.location}
-                        </span>
+              {weakPhrases.length > 0 ? (
+                weakPhrases.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4 hover:bg-[#F8FAFC] transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="font-mono text-sm font-bold text-[#EF4444] bg-red-50 px-2 py-1 rounded border border-red-100">
+                            "{item.phrase}"
+                          </span>
+                          <span className="text-[10px] text-[#64748B] font-mono">
+                            {item.location}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#64748B] italic mb-2">
+                          {item.context}
+                        </p>
+                        <p className="text-xs text-[#0F172A]">
+                          <span className="font-semibold">Why it's weak:</span> {item.reason}
+                        </p>
                       </div>
-                      <p className="text-xs text-[#64748B] italic mb-2">
-                        {item.context}
-                      </p>
-                      <p className="text-xs text-[#0F172A]">
-                        <span className="font-semibold">Why it's weak:</span> {item.reason}
-                      </p>
                     </div>
-                  </div>
 
-                  <div>
-                    <p className="text-xs font-semibold text-[#0F172A] mb-2 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[#22C55E] text-sm">lightbulb</span>
-                      Suggested Fixes:
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.fixes.map((fix, fixIndex) => (
-                        <button
-                          key={fixIndex}
-                          className="px-3 py-1 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium rounded border border-green-200 transition-colors"
-                        >
-                          {fix}
-                        </button>
-                      ))}
+                    <div>
+                      <p className="text-xs font-semibold text-[#0F172A] mb-2 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[#22C55E] text-sm">lightbulb</span>
+                        Suggested Fixes:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {item.fixes.map((fix, fixIndex) => (
+                          <button
+                            key={fixIndex}
+                            className="px-3 py-1 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium rounded border border-green-200 transition-colors"
+                          >
+                            {fix}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))
+              ) : (
+                <div className="p-6 text-center">
+                  <span className="material-symbols-outlined text-green-600 text-4xl mb-2 block">check_circle</span>
+                  <p className="text-sm font-semibold text-[#0F172A] mb-1">No Weak Phrases Detected</p>
+                  <p className="text-xs text-[#64748B]">Your resume uses strong, active language.</p>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -370,59 +487,67 @@ export function FluffDetector({
             </div>
 
             <div className="p-5 space-y-5 max-h-[800px] overflow-y-auto terminal-scroll">
-              {unquantifiedAchievements.map((achievement, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-purple-50 rounded-lg border border-purple-200 p-4"
-                >
-                  <div className="mb-3">
-                    <div className="flex items-start gap-2 mb-1">
-                      <span className="material-symbols-outlined text-[#8B5CF6] text-[16px] mt-0.5">flag</span>
-                      <div>
-                        <h4 className="text-sm font-bold text-[#0F172A]">
-                          {achievement.title}
-                        </h4>
-                        <p className="text-[10px] text-[#64748B] font-mono">
-                          {achievement.description}
-                        </p>
+              {unquantifiedAchievements.length > 0 ? (
+                unquantifiedAchievements.map((achievement, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                    className="bg-purple-50 rounded-lg border border-purple-200 p-4"
+                  >
+                    <div className="mb-3">
+                      <div className="flex items-start gap-2 mb-1">
+                        <span className="material-symbols-outlined text-[#8B5CF6] text-[16px] mt-0.5">flag</span>
+                        <div>
+                          <h4 className="text-sm font-bold text-[#0F172A]">
+                            {achievement.title}
+                          </h4>
+                          <p className="text-[10px] text-[#64748B] font-mono">
+                            {achievement.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div>
-                    <p className="text-xs font-semibold text-[#0F172A] mb-2 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[#8B5CF6] text-sm">auto_awesome</span>
-                      AI-Suggested Quantifications:
-                    </p>
-                    <div className="space-y-2">
-                      {achievement.suggestions.map((suggestion, sIndex) => (
-                        <label
-                          key={sIndex}
-                          className="flex items-start gap-3 p-2 rounded hover:bg-[#FFFFFF] cursor-pointer transition-colors group border border-transparent hover:border-purple-200"
-                        >
-                          <input
-                            type="radio"
-                            name={`metric-${index}`}
-                            checked={selectedMetrics[index] === sIndex}
-                            onChange={() => setSelectedMetrics({ ...selectedMetrics, [index]: sIndex })}
-                            className="mt-0.5 w-4 h-4 text-[#8B5CF6] focus:ring-purple-500 focus:ring-2"
-                          />
-                          <span className="text-xs text-[#475569] group-hover:text-[#0F172A] flex-1">
-                            {suggestion}
-                          </span>
-                        </label>
-                      ))}
+                    <div>
+                      <p className="text-xs font-semibold text-[#0F172A] mb-2 flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[#8B5CF6] text-sm">auto_awesome</span>
+                        AI-Suggested Quantifications:
+                      </p>
+                      <div className="space-y-2">
+                        {achievement.suggestions.map((suggestion, sIndex) => (
+                          <label
+                            key={sIndex}
+                            className="flex items-start gap-3 p-2 rounded hover:bg-[#FFFFFF] cursor-pointer transition-colors group border border-transparent hover:border-purple-200"
+                          >
+                            <input
+                              type="radio"
+                              name={`metric-${index}`}
+                              checked={selectedMetrics[index] === sIndex}
+                              onChange={() => setSelectedMetrics({ ...selectedMetrics, [index]: sIndex })}
+                              className="mt-0.5 w-4 h-4 text-[#8B5CF6] focus:ring-purple-500 focus:ring-2"
+                            />
+                            <span className="text-xs text-[#475569] group-hover:text-[#0F172A] flex-1">
+                              {suggestion}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  <button className="w-full mt-3 px-3 py-2 bg-[#8B5CF6] hover:bg-[#8B5CF6] text-[#0F172A] text-xs font-semibold rounded transition-colors">
-                    Apply Selected Metric
-                  </button>
-                </motion.div>
-              ))}
+                    <button className="w-full mt-3 px-3 py-2 bg-[#8B5CF6] hover:bg-[#8B5CF6] text-[#0F172A] text-xs font-semibold rounded transition-colors">
+                      Apply Selected Metric
+                    </button>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="p-6 text-center">
+                  <span className="material-symbols-outlined text-purple-600 text-4xl mb-2 block">query_stats</span>
+                  <p className="text-sm font-semibold text-[#0F172A] mb-1">All Achievements Quantified</p>
+                  <p className="text-xs text-[#64748B]">Your resume includes metrics and specific results.</p>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
