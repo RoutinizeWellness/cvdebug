@@ -111,16 +111,37 @@ export function KeywordAnalysis({
   const getKeywordDescription = (keyword: string): string => {
     const lower = keyword.toLowerCase();
 
+    // Programming Languages
     if (/python/.test(lower)) return `Essential for technical roles. Add to "Technical Skills" with specific frameworks (Django, Flask, FastAPI) and use cases.`;
-    if (/sql/.test(lower)) return `Critical database skill. Include specific databases (PostgreSQL, MySQL) and mention query optimization or data analysis.`;
+    if (/javascript|typescript/.test(lower)) return `Core web development skill. Mention frameworks (React, Node.js, Vue) and projects where you used it.`;
+    if (/java/.test(lower)) return `Enterprise development staple. Include Spring, Maven, or microservices architecture experience.`;
+
+    // Databases & Data
+    if (/\bsql\b/.test(lower)) return `Critical database skill. Include specific databases (PostgreSQL, MySQL) and mention query optimization or data analysis with measurable results.`;
+    if (/excel/.test(lower)) return `Data analysis tool. Highlight advanced functions (VLOOKUP, Pivot Tables, Macros) and how you automated reports or analysis.`;
+    if (/etl/.test(lower)) return `Data pipeline expertise. Describe data volumes processed, transformation logic, and pipeline reliability improvements.`;
+    if (/data warehouse/.test(lower)) return `Big data infrastructure. Mention tools (Redshift, Snowflake, BigQuery), data volume, and query performance gains.`;
+
+    // Big Data & Analytics
+    if (/big data/.test(lower)) return `Large-scale data processing. Quantify data volumes (TB/PB), processing speed improvements, and business insights generated.`;
+    if (/hadoop/.test(lower)) return `Distributed computing platform. Specify cluster size, data processed, and performance optimizations achieved.`;
+    if (/spark/.test(lower)) return `Fast data processing engine. Mention job optimization, processing time reductions, and data volume handled.`;
+    if (/hive/.test(lower)) return `SQL-on-Hadoop tool. Describe query optimization, data warehouse design, and analytics capabilities built.`;
+    if (/pig/.test(lower)) return `Data transformation language. Detail ETL pipelines created, data processing efficiency, and workflow automation.`;
+
+    // Cloud & Infrastructure
     if (/aws|azure|gcp/.test(lower)) return `Cloud platforms are highly valued. Specify services used (S3, EC2, Lambda) and scale of infrastructure managed.`;
-    if (/machine learning|ml/.test(lower)) return `High-demand AI skill. Detail algorithms used, model performance metrics, and business impact.`;
     if (/kubernetes|docker/.test(lower)) return `Container orchestration expertise. Mention cluster size, deployment automation, and uptime improvements.`;
+
+    // AI/ML
+    if (/machine learning|ml/.test(lower)) return `High-demand AI skill. Detail algorithms used, model performance metrics, and business impact.`;
+
+    // Methodologies
     if (/agile|scrum/.test(lower)) return `Project management methodology. Describe sprint cadence, velocity improvements, and team collaboration.`;
     if (/git|github/.test(lower)) return `Version control is expected. Mention CI/CD pipelines, code review practices, or open source contributions.`;
 
     // Generic but context-aware
-    return `Add "${keyword}" naturally with specific examples of how you used it to solve problems or deliver results.`;
+    return `Add "${keyword}" with specific examples: where you used it, what problems you solved, and measurable results achieved (time saved, efficiency gained, or revenue impact).`;
   };
 
   // Map missing keywords to critical signals with REAL impact
