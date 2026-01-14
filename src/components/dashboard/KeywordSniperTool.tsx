@@ -28,8 +28,8 @@ interface Suggestion {
 export function KeywordSniperTool({
   missingKeywords,
   currentBullet,
-  jobTitle = "Senior DevOps Engineer",
-  company = "TechCorp",
+  jobTitle = "Professional",
+  company = "Company",
   currentScore,
   onApplySuggestion
 }: KeywordSniperToolProps) {

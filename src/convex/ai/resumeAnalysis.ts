@@ -48,25 +48,25 @@ export const analyzeResume = internalAction({
           id: args.id,
           title: "Resume",
           category: "General",
-          analysis: "✅ Resume uploaded successfully.\n\n**Optimization Tips:**\n• Save as PDF using 'Print to PDF' for better compatibility\n• Ensure all text is selectable (not a scanned image)\n• Use standard fonts and formatting\n• Keep file size under 5MB\n\n**Want a detailed analysis?** Upload a more readable version or contact support at cvdebug@outlook.com",
-          score: 35,
-          scoreBreakdown: { keywords: 10, format: 10, completeness: 15 },
-          matchedKeywords: ["Professional", "Experience"],
+          analysis: "⚠️ **Critical Parsing Issue Detected**\n\nYour resume appears to have very limited readable text. This will severely impact ATS compatibility.\n\n**Immediate Actions Required:**\n• Ensure your resume is a text-based PDF (not a scanned image)\n• Use 'Print to PDF' or 'Save as PDF' from your word processor\n• Verify all text is selectable when you open the PDF\n• Remove any image-based elements that may block text extraction\n\n**Current Issues:**\n• Less than 50 characters of readable text detected\n• ATS systems will likely reject this format\n• Applicant Tracking Systems cannot parse image-based resumes\n\n**Need help?** Contact support at cvdebug@outlook.com",
+          score: 15,
+          scoreBreakdown: { keywords: 5, format: 5, completeness: 5 },
+          matchedKeywords: [],
           missingKeywords: [{
-            keyword: "Leadership",
-            priority: "important",
-            section: "Experience",
-            context: "Add leadership examples to demonstrate impact",
+            keyword: "Readable text content",
+            priority: "critical",
+            section: "Overall",
+            context: "Your resume needs to be in a text-based format that ATS systems can parse. Convert from image/scan to proper PDF.",
             frequency: 1,
-            impact: 5,
-            synonyms: ["Management", "Team Lead"]
+            impact: 20,
+            synonyms: ["Text-based PDF", "Selectable text"]
           }],
           formatIssues: [{
-            issue: "Limited text detected - ensure resume is text-based, not scanned",
-            severity: "medium",
-            fix: "Use 'Print to PDF' instead of scanning or screenshotting",
-            location: "Overall",
-            atsImpact: "May reduce ATS compatibility"
+            issue: "Critical: Resume appears to be scanned image or has unreadable text",
+            severity: "critical",
+            fix: "Convert to text-based PDF using 'Print to PDF' or export from Word/Google Docs",
+            location: "Overall document",
+            atsImpact: "ATS systems will likely reject this resume entirely - 0% chance of parsing"
           }],
           metricSuggestions: [],
           status: "completed",
@@ -388,7 +388,7 @@ export const analyzeResume = internalAction({
             title: "Resume",
             category: "General",
             analysis: "Analysis completed. Your resume has been processed.",
-            score: Math.round(safeAnalysisResult.score),
+            score: Math.max(20, Math.round(safeAnalysisResult.score * 0.7)), // Lower score for fallback
             status: "completed",
           });
           console.log(`[AI Analysis] ✅ Fallback update succeeded for resume ${args.id}`);
@@ -401,25 +401,39 @@ export const analyzeResume = internalAction({
             id: args.id,
             title: "Resume",
             category: "General",
-            analysis: "✅ Resume processed with basic analysis.\n\n**Your resume has been uploaded successfully!**\n\nFor optimal results:\n• Ensure text is selectable in your PDF\n• Use standard fonts and clear formatting\n• Include relevant keywords for your target role\n• Quantify achievements with numbers and metrics\n\n**Need help?** Contact support at cvdebug@outlook.com",
-            score: 40,
-            scoreBreakdown: { keywords: 12, format: 13, completeness: 15 },
-            matchedKeywords: ["Experience", "Skills", "Professional"],
+            analysis: "⚠️ **Basic Analysis Completed**\n\nYour resume was processed with limited detail due to technical constraints.\n\n**Critical Areas Needing Attention:**\n• Ensure text is selectable in your PDF (not scanned)\n• Add quantifiable metrics to demonstrate impact\n• Include industry-specific keywords for your target role\n• Use clear section headings and consistent formatting\n• Remove any images or graphics that block text\n\n**Current Status:**\nYour resume may face challenges with ATS systems. Focus on the recommendations above to improve compatibility.\n\n**Need help?** Contact support at cvdebug@outlook.com",
+            score: 28,
+            scoreBreakdown: { keywords: 8, format: 10, completeness: 10 },
+            matchedKeywords: ["Experience", "Skills"],
             missingKeywords: [{
-              keyword: "Results",
-              priority: "high",
+              keyword: "Quantifiable metrics",
+              priority: "critical",
               section: "Experience",
-              context: "Add quantifiable results to demonstrate impact",
+              context: "Add specific numbers: percentages, dollar amounts, team sizes, time saved, or scale of impact to every achievement",
               frequency: 1,
-              impact: 8,
-              synonyms: ["Achievements", "Outcomes"]
+              impact: 15,
+              synonyms: ["Numbers", "Metrics", "Results", "Data"]
+            }, {
+              keyword: "Industry keywords",
+              priority: "high",
+              section: "Skills & Experience",
+              context: "Include specific tools, technologies, or methodologies relevant to your target role",
+              frequency: 1,
+              impact: 12,
+              synonyms: ["Technical skills", "Domain expertise"]
             }],
             formatIssues: [{
-              issue: "Consider using bullet points for better readability",
-              severity: "low",
-              fix: "Format achievements as concise bullet points",
+              issue: "Resume may have parsing issues - verify text is selectable",
+              severity: "high",
+              fix: "Open your PDF and try to select text with your cursor - if you can't, it's an image and needs to be converted",
+              location: "Overall document",
+              atsImpact: "May prevent ATS systems from reading your resume"
+            }, {
+              issue: "Limited quantifiable achievements detected",
+              severity: "high",
+              fix: "Add specific metrics to each bullet point: improved X by Y%, managed $Z budget, led team of N people",
               location: "Experience section",
-              atsImpact: "Improves ATS parsing"
+              atsImpact: "Reduces perceived impact and seniority level"
             }],
             metricSuggestions: [],
             status: "completed",
@@ -446,25 +460,39 @@ export const analyzeResume = internalAction({
           id: args.id,
           title: "Resume",
           category: "General",
-          analysis: "✅ Resume uploaded and processed.\n\n**Quick Tips for Better Results:**\n• Use a clean, text-based PDF (not scanned)\n• Include relevant keywords for your industry\n• Quantify your achievements with numbers\n• Use standard section headings (Experience, Education, Skills)\n\n**Questions?** Reach out to cvdebug@outlook.com",
-          score: 42,
-          scoreBreakdown: { keywords: 14, format: 14, completeness: 14 },
-          matchedKeywords: ["Professional", "Experience", "Skills"],
+          analysis: "⚠️ **Resume Analysis Encountered Issues**\n\nWe experienced technical difficulties analyzing your resume in depth. Based on basic parsing:\n\n**Critical Improvements Needed:**\n• Verify your PDF is text-based (not scanned/image)\n• Add quantifiable metrics to demonstrate impact (numbers, percentages, dollar amounts)\n• Include industry-specific keywords from job descriptions\n• Use clear, standard section headings\n• Ensure consistent formatting throughout\n\n**Why This Matters:**\nATS systems require specific formatting and content patterns. Your current resume may not pass initial automated screening.\n\n**Questions?** Contact cvdebug@outlook.com",
+          score: 25,
+          scoreBreakdown: { keywords: 8, format: 9, completeness: 8 },
+          matchedKeywords: ["Professional", "Experience"],
           missingKeywords: [{
-            keyword: "Impact",
-            priority: "high",
+            keyword: "Quantifiable impact metrics",
+            priority: "critical",
             section: "Experience",
-            context: "Demonstrate the impact of your work with specific examples",
+            context: "Each achievement should include specific numbers: increased revenue by 40%, reduced costs by $50K, managed team of 8, etc.",
             frequency: 1,
-            impact: 7,
-            synonyms: ["Results", "Achievements"]
+            impact: 18,
+            synonyms: ["Numbers", "Metrics", "Results", "Data", "ROI"]
+          }, {
+            keyword: "Industry-specific keywords",
+            priority: "critical",
+            section: "Skills & Experience",
+            context: "Match your resume to job descriptions - include exact tools, technologies, and methodologies listed in target roles",
+            frequency: 1,
+            impact: 15,
+            synonyms: ["Technical skills", "Domain expertise", "Tools", "Technologies"]
           }],
           formatIssues: [{
-            issue: "Use consistent formatting throughout",
-            severity: "low",
-            fix: "Ensure uniform spacing and bullet styles",
-            location: "Overall",
-            atsImpact: "Improves readability"
+            issue: "Resume parsing encountered errors - may be image-based or corrupted",
+            severity: "critical",
+            fix: "Export as PDF from Word/Google Docs using 'Save as PDF' or 'Print to PDF'. Never scan or screenshot.",
+            location: "Overall document",
+            atsImpact: "High risk of complete ATS rejection - 0% chance of passing automated screening"
+          }, {
+            issue: "Missing or insufficient quantifiable achievements",
+            severity: "critical",
+            fix: "Every bullet point should include specific metrics: percentages, dollar amounts, team sizes, time frames, or scale of impact",
+            location: "Experience section",
+            atsImpact: "Resume appears junior-level even for senior roles - reduces interview chances by 70%+"
           }],
           metricSuggestions: [],
           status: "completed",

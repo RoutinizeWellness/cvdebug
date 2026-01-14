@@ -34,30 +34,41 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   const scoreColor = getScoreColor(score);
 
-  // Critical failures
-  const criticalFailures = [
-    {
-      icon: "image",
-      title: "PDF Image Trap Detected",
-      description: "Icons/images blocking the bot from reading your content",
-      severity: "high",
-      howToFix: "Remove all embedded images and icons, use plain text only"
-    },
-    {
-      icon: "numbers",
-      title: "Low Metric Density",
-      description: "Only 2 quantifiable numbers found (Target: 10+)",
-      severity: "high",
-      howToFix: "Add specific metrics: percentages, dollar amounts, time saved, team sizes"
-    },
-    {
-      icon: "link",
-      title: "Missing Contact Info",
-      description: "LinkedIn profile URL not detected",
-      severity: "medium",
-      howToFix: "Add your LinkedIn URL at the top of your resume"
-    }
-  ];
+  // Critical failures - USE REAL DATA from resume analysis
+  const formatIssues = resume?.formatIssues || [];
+  const criticalFailures = formatIssues
+    .filter((issue: any) => issue.severity === "high" || issue.severity === "critical")
+    .slice(0, 3)
+    .map((issue: any) => ({
+      icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+            issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+            issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+            issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+            "error",
+      title: issue.issue,
+      description: issue.atsImpact || "This may affect ATS parsing",
+      severity: issue.severity,
+      howToFix: issue.fix || "Review and update this section"
+    }));
+
+  // If no high-severity issues found, check for medium severity
+  if (criticalFailures.length === 0) {
+    const mediumIssues = formatIssues
+      .filter((issue: any) => issue.severity === "medium")
+      .slice(0, 3)
+      .map((issue: any) => ({
+        icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+              issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+              "info",
+        title: issue.issue,
+        description: issue.atsImpact || "This may affect ATS parsing",
+        severity: issue.severity,
+        howToFix: issue.fix || "Review and update this section"
+      }));
+    criticalFailures.push(...mediumIssues);
+  }
 
   // Contact & Socials check
   const contactInfo = {
@@ -175,7 +186,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           </div>
 
           <div className="space-y-3">
-            {criticalFailures.map((failure, index) => (
+            {criticalFailures.map((failure: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 10 }}
