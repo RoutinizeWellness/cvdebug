@@ -69,7 +69,7 @@ export const storeOptimization = mutation({
       profileText: args.profileText,
       linkedinUrl: args.linkedinUrl,
       jobDescription: args.jobDescription,
-      score: args.result.score || 72,
+      score: args.result.score || 0, // No fake score, use real data only
       headline: args.result.headline,
       about: args.result.about,
       experience: args.result.experience,
