@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
+import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -10,6 +11,7 @@ interface ATSAnalysisReportProps {
   onEditWithSniper?: () => void;
   onOpenWritingForge?: () => void;
   onDownloadPDF?: () => void;
+  onUpgrade?: () => void;
 }
 
 export function ATSAnalysisReport({
@@ -17,7 +19,8 @@ export function ATSAnalysisReport({
   user,
   onEditWithSniper,
   onOpenWritingForge,
-  onDownloadPDF
+  onDownloadPDF,
+  onUpgrade
 }: ATSAnalysisReportProps) {
   const score = resume?.score || 82;
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
@@ -375,6 +378,25 @@ export function ATSAnalysisReport({
               </div>
             </motion.div>
           )}
+
+          {/* ATS Overview Dashboard - Z-Pattern Layout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="w-full mb-8"
+          >
+            <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Overview Analysis</h2>
+            <ATSOverviewDashboard
+              resume={resume}
+              user={user}
+              onFixIssue={(issueType: string) => {
+                console.log("Fix issue:", issueType);
+                // You can show a modal or navigate to the fix
+              }}
+              onUpgrade={onUpgrade}
+            />
+          </motion.div>
 
           {/* Stats Cards - ResumeWorded Style */}
           <div className="w-full space-y-6 mb-8">

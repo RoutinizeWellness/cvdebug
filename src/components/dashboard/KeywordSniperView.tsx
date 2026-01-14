@@ -3,9 +3,13 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { KeywordSniperTool } from "./KeywordSniperTool";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Target, Lock, Diamond, Sparkles } from "lucide-react";
+import { ArrowLeft, Target, Lock, Diamond, Sparkles, Eye, TrendingUp, RefreshCw, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { KeywordExamplesModal } from "./KeywordExamplesModal";
+import { ApplyMetricModal } from "./ApplyMetricModal";
+import { RewriteAllModal } from "./RewriteAllModal";
+import { InterviewBattlePlanModal } from "./InterviewBattlePlanModal";
 
 const apiAny = api;
 
@@ -19,6 +23,14 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   const applications = useQuery(apiAny.applications.getApplications);
   const currentUser = useQuery(apiAny.users.currentUser);
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+
+  // Modal states
+  const [showExamplesModal, setShowExamplesModal] = useState(false);
+  const [showMetricModal, setShowMetricModal] = useState(false);
+  const [showRewriteModal, setShowRewriteModal] = useState(false);
+  const [showBattlePlanModal, setShowBattlePlanModal] = useState(false);
+  const [selectedKeyword, setSelectedKeyword] = useState<string>("");
+  const [selectedBullet, setSelectedBullet] = useState<string>("");
 
   // Check if user has Interview Sprint plan
   const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
@@ -195,6 +207,88 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         </div>
       </div>
 
+      {/* Premium AI Tools */}
+      {hasInterviewSprint && (
+        <div className="w-full mb-6">
+          <h2 className="text-lg font-bold text-[#0F172A] mb-4">AI Premium Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* View Examples */}
+            <button
+              onClick={() => {
+                if (missingKeywords.length > 0) {
+                  setSelectedKeyword(missingKeywords[0].keyword || missingKeywords[0]);
+                  setShowExamplesModal(true);
+                } else {
+                  toast.info("No missing keywords to show examples for");
+                }
+              }}
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#3B82F6] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(59,130,246,0.15)]"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
+                  <Eye className="h-5 w-5 text-[#3B82F6]" />
+                </div>
+                <h3 className="text-sm font-bold text-[#0F172A]">View Examples</h3>
+              </div>
+              <p className="text-xs text-[#64748B] leading-relaxed">
+                See senior-level examples of how to integrate keywords naturally
+              </p>
+            </button>
+
+            {/* Apply Metric */}
+            <button
+              onClick={() => {
+                setSelectedBullet(currentBullet);
+                setShowMetricModal(true);
+              }}
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#22C55E] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(34,197,94,0.15)]"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-[#22C55E]/10 flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-[#22C55E]" />
+                </div>
+                <h3 className="text-sm font-bold text-[#0F172A]">Apply Metric</h3>
+              </div>
+              <p className="text-xs text-[#64748B] leading-relaxed">
+                Transform weak bullets into quantified impact statements
+              </p>
+            </button>
+
+            {/* Rewrite All */}
+            <button
+              onClick={() => setShowRewriteModal(true)}
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#8B5CF6] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(139,92,246,0.15)]"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
+                  <RefreshCw className="h-5 w-5 text-[#8B5CF6]" />
+                </div>
+                <h3 className="text-sm font-bold text-[#0F172A]">Rewrite All</h3>
+              </div>
+              <p className="text-xs text-[#64748B] leading-relaxed">
+                AI engine to rewrite your entire CV at senior+ level
+              </p>
+            </button>
+
+            {/* Battle Plan */}
+            <button
+              onClick={() => setShowBattlePlanModal(true)}
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#EF4444] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(239,68,68,0.15)]"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-[#EF4444]/10 flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-[#EF4444]" />
+                </div>
+                <h3 className="text-sm font-bold text-[#0F172A]">Battle Plan</h3>
+              </div>
+              <p className="text-xs text-[#64748B] leading-relaxed">
+                Generate hardest questions + strategic answers for interviews
+              </p>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Keyword Sniper Tool */}
       <div className="w-full relative">
         {!hasInterviewSprint && (
@@ -228,6 +322,46 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
           onApplySuggestion={handleApplySuggestion}
         />
       </div>
+
+      {/* Premium Modals */}
+      <KeywordExamplesModal
+        open={showExamplesModal}
+        onOpenChange={setShowExamplesModal}
+        keyword={selectedKeyword}
+        role={jobTitle}
+      />
+
+      <ApplyMetricModal
+        open={showMetricModal}
+        onOpenChange={setShowMetricModal}
+        originalBullet={selectedBullet}
+        onApply={(newBullet: string) => {
+          handleApplySuggestion(newBullet);
+          setShowMetricModal(false);
+        }}
+      />
+
+      <RewriteAllModal
+        open={showRewriteModal}
+        onOpenChange={setShowRewriteModal}
+        resumeData={{
+          bullets: bullets,
+          targetRole: jobTitle
+        }}
+        keywords={missingKeywords.map((kw: any) => typeof kw === "string" ? kw : kw.keyword)}
+        onComplete={(rewrittenData: any) => {
+          toast.success("Resume rewritten successfully!");
+          setShowRewriteModal(false);
+        }}
+      />
+
+      <InterviewBattlePlanModal
+        open={showBattlePlanModal}
+        onOpenChange={setShowBattlePlanModal}
+        resumeText={masterResume?.ocrText || ""}
+        jobDescription={applicationWithJob?.jobDescriptionText || ""}
+        targetRole={jobTitle}
+      />
     </div>
   );
 }

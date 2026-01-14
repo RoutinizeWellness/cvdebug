@@ -1,7 +1,8 @@
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 const apiAny = api as any;
 
@@ -12,8 +13,18 @@ interface SettingsViewProps {
 export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
   const user = useQuery(apiAny.users.currentUser);
   const [shareAnalytics, setShareAnalytics] = useState(true);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+
+  // Convex mutations
+  const toggleAnalyticsMutation = useMutation(apiAny.userSettings.toggleAnalyticsSharing);
+  const generateApiKeyMutation = useMutation(apiAny.userSettings.generateApiKey);
+  const requestAccountDeletionMutation = useMutation(apiAny.userSettings.requestAccountDeletion);
+
+  // Sync shareAnalytics with user data
+  useEffect(() => {
+    if (user?.shareAnalytics !== undefined) {
+      setShareAnalytics(user.shareAnalytics);
+    }
+  }, [user?.shareAnalytics]);
 
   // Calculate sprint progress
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
@@ -29,32 +40,26 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
   const userName = user?.name || "Not available";
   const userEmail = user?.email || "Not available";
 
-  // Toast notification handler
-  const showNotification = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  };
-
   // Copy API key to clipboard
   const handleCopyApiKey = () => {
     const apiKey = user?.apiKey || "";
     if (apiKey) {
       navigator.clipboard.writeText(apiKey);
-      showNotification("API key copied to clipboard");
+      toast.success("API key copied to clipboard");
     }
   };
 
-  // Regenerate API key
-  const handleRegenerateApiKey = () => {
-    // TODO: Implement API key regeneration
-    showNotification("API key regeneration requested");
-  };
-
-  // Generate API key
-  const handleGenerateApiKey = () => {
-    // TODO: Implement API key generation
-    showNotification("API key generation requested");
+  // Generate/Regenerate API key
+  const handleGenerateApiKey = async () => {
+    try {
+      const result = await generateApiKeyMutation({});
+      if (result.success) {
+        toast.success("API key generated successfully");
+      }
+    } catch (error) {
+      console.error("Failed to generate API key:", error);
+      toast.error("Failed to generate API key");
+    }
   };
 
   // Handle documentation
@@ -69,13 +74,39 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
 
   // Handle password update
   const handleUpdatePassword = () => {
-    showNotification("Password update functionality coming soon");
+    toast.info("Password update functionality coming soon");
   };
 
   // Handle account deletion
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     if (window.confirm("Are you sure you want to delete all your account data? This action cannot be undone.")) {
-      showNotification("Account deletion requested - please contact support to complete");
+      try {
+        const result = await requestAccountDeletionMutation({});
+        if (result.success) {
+          toast.success("Account deletion requested - our team will process this within 48 hours");
+        }
+      } catch (error) {
+        console.error("Failed to request account deletion:", error);
+        toast.error("Failed to request account deletion");
+      }
+    }
+  };
+
+  // Handle analytics toggle
+  const handleAnalyticsToggle = async () => {
+    const newValue = !shareAnalytics;
+    setShareAnalytics(newValue);
+
+    try {
+      const result = await toggleAnalyticsMutation({ enabled: newValue });
+      if (result.success) {
+        toast.success(newValue ? "Analytics sharing enabled" : "Analytics sharing disabled");
+      }
+    } catch (error) {
+      console.error("Failed to toggle analytics:", error);
+      toast.error("Failed to update analytics preference");
+      // Revert on error
+      setShareAnalytics(!newValue);
     }
   };
 
@@ -305,7 +336,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   </div>
                   {/* Toggle Switch */}
                   <button
-                    onClick={() => setShareAnalytics(!shareAnalytics)}
+                    onClick={handleAnalyticsToggle}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white ${
                       shareAnalytics ? 'bg-[#3B82F6]' : 'bg-slate-300'
                     }`}
@@ -345,35 +376,6 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
           {/* API Access section removed - not needed for end users */}
         </div>
       </div>
-
-      {/* Toast Notification */}
-      {showToast && (
-        <div className="fixed bottom-6 right-6 z-50 animate-slide-up">
-          <div className="bg-[#FFFFFF] text-[#0F172A] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
-            <span className="material-symbols-outlined text-green-400 text-[20px]">check_circle</span>
-            <span className="text-sm font-medium">{toastMessage}</span>
-          </div>
-        </div>
-      )}
-
-      <style>{`
-        .gradient-btn {
-          background: linear-gradient(135deg, #3B82F6 0%, #6366f1 100%);
-        }
-        @keyframes slide-up {
-          from {
-            transform: translateY(100px);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }
