@@ -34,6 +34,8 @@ export function KeywordAnalysis({
   const [showExamples, setShowExamples] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<string>("");
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+  const [groupByType, setGroupByType] = useState(false);
 
   // Handle Auto-Add keyword (Premium Feature)
   const handleAutoAdd = (keyword: string) => {
@@ -178,9 +180,28 @@ export function KeywordAnalysis({
               </span>
             </h3>
             <div className="flex gap-2 text-xs">
-              <button className="text-[#64748B] hover:text-[#3B82F6] transition-colors">Group by Type</button>
+              <button
+                onClick={() => {
+                  setGroupByType(!groupByType);
+                  toast.info(groupByType ? "Showing all keywords" : "Grouped by type", {
+                    description: groupByType ? "Displaying in flat list" : "Keywords organized by category"
+                  });
+                }}
+                className={`${groupByType ? 'text-[#3B82F6] font-medium' : 'text-[#64748B]'} hover:text-[#3B82F6] transition-colors`}
+              >
+                Group by Type
+              </button>
               <span className="text-[#475569]">|</span>
-              <button className="text-[#3B82F6] font-medium">List View</button>
+              <button
+                onClick={() => {
+                  const newMode = viewMode === 'list' ? 'grid' : 'list';
+                  setViewMode(newMode);
+                  toast.info(`Switched to ${newMode} view`);
+                }}
+                className="text-[#3B82F6] font-medium hover:text-[#2563EB] transition-colors"
+              >
+                {viewMode === 'list' ? 'List View' : 'Grid View'}
+              </button>
             </div>
           </div>
 

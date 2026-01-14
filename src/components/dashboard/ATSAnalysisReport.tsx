@@ -556,7 +556,10 @@ export function ATSAnalysisReport({
                       </div>
                     </div>
 
-                    <button className="btn-power w-full py-2 rounded-lg text-[#0F172A] text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform">
+                    <button
+                      onClick={onUpgrade}
+                      className="btn-power w-full py-2 rounded-lg text-[#0F172A] text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform"
+                    >
                       <span className="material-symbols-outlined text-base">diamond</span>
                       <span>Unlock with Interview Sprint</span>
                     </button>

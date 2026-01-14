@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, Lightbulb, TrendingUp } from "lucide-react";
+import { toast } from "sonner";
 
 interface WeakBullet {
   original: string;
@@ -760,11 +761,22 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* Action Button */}
           <div className="mt-5 flex items-center gap-3">
             <button
+              onClick={() => {
+                const suggestion = currentBullet.suggestions[selectedSuggestionIndex];
+                toast.success("Bullet point updated!", {
+                  description: `Applied ${suggestion.type} metric improvement`
+                });
+              }}
               className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             >
               Apply Selected & Continue
             </button>
             <button
+              onClick={() => {
+                toast.info("Skipped bullet point", {
+                  description: "Moving to next suggestion"
+                });
+              }}
               className="h-10 md:h-11 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#CBD5E1] text-[#64748B] hover:text-[#475569] text-sm font-medium transition-colors bg-[#FFFFFF]"
             >
               Skip
