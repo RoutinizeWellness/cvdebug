@@ -35,7 +35,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   const [showUpgradeTooltip, setShowUpgradeTooltip] = useState(false);
 
   // Load resume data
-  const resume = useQuery(api.resumes.getResumeById, resumeId ? { id: resumeId } : "skip");
+  const resume = useQuery(api.resumes.getResume, resumeId ? { id: resumeId } : "skip");
   const currentUser = useQuery((api as any).users.currentUser);
 
   // Check if user has Interview Sprint plan
