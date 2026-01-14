@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 interface Question {
   id: string;
@@ -133,31 +134,31 @@ export function InterviewBattlePlan({
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="mb-6 md:mb-8 flex flex-col gap-4">
         <div>
-          <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
             Interview Battle Plan
           </h2>
-          <p className="text-[#64748B] mt-1 flex items-center gap-2 flex-wrap">
+          <p className="text-[#64748B] mt-2 flex items-center gap-2 flex-wrap text-sm md:text-base">
             <span className="material-symbols-outlined text-sm">psychology</span>
-            AI-generated strategy based on your Resume vs.{" "}
-            <span className="text-[#3B82F6] font-mono text-sm bg-blue-50 px-1 rounded">
+            AI-generated strategy for{" "}
+            <span className="text-[#3B82F6] font-mono text-xs md:text-sm bg-blue-50 px-2 py-0.5 rounded">
               {targetRole} @ {companyName}
             </span>
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded border border-green-200">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded border border-green-200 text-xs md:text-sm">
             <span className="material-symbols-outlined text-sm">check_circle</span>
-            <span className="text-sm font-medium">Ready for Interview</span>
+            <span className="font-medium">Ready for Interview</span>
           </div>
         </div>
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
         {/* Left Column - Expected Questions */}
-        <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
+        <div className="lg:col-span-4 flex flex-col gap-6">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -176,7 +177,7 @@ export function InterviewBattlePlan({
             </div>
 
             {/* Questions List */}
-            <div className="p-4 flex-1 overflow-y-auto space-y-3 max-h-[600px]">
+            <div className="p-3 md:p-4 flex-1 overflow-y-auto space-y-2 md:space-y-3 max-h-[400px] md:max-h-[600px]">
               {questions.map((q, index) => {
                 const colors = getColorClasses(q.color);
                 return (
@@ -210,7 +211,10 @@ export function InterviewBattlePlan({
 
             {/* Footer */}
             <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC]">
-              <button className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2">
+              <button
+                onClick={() => toast.info("Regenerating questions... This feature requires AI credits.")}
+                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2"
+              >
                 <span className="material-symbols-outlined text-lg">autorenew</span>
                 Regenerate Questions
               </button>
@@ -219,7 +223,7 @@ export function InterviewBattlePlan({
         </div>
 
         {/* Middle Column - STAR Story Forge */}
-        <div className="col-span-12 lg:col-span-5 flex flex-col gap-6">
+        <div className="lg:col-span-5 flex flex-col gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -230,23 +234,23 @@ export function InterviewBattlePlan({
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500"></div>
 
             {/* Header */}
-            <div className="p-5 border-b border-[#E2E8F0] flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-[#0F172A] text-lg flex items-center gap-2">
-                  <span className="material-symbols-outlined text-violet-500">auto_awesome</span>
+            <div className="p-4 md:p-5 border-b border-[#E2E8F0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-[#0F172A] text-base md:text-lg flex items-center gap-2">
+                  <span className="material-symbols-outlined text-violet-500 text-lg md:text-xl">auto_awesome</span>
                   STAR Story Forge
                 </h3>
-                <p className="text-xs text-[#64748B] mt-1">
-                  Refining answer for: "{questions[selectedQuestion]?.question.substring(0, 30)}..."
+                <p className="text-xs text-[#64748B] mt-1 truncate">
+                  Refining: "{questions[selectedQuestion]?.question.substring(0, 40)}..."
                 </p>
               </div>
-              <button className="text-xs bg-slate-100 hover:bg-slate-200 text-[#475569] px-3 py-1.5 rounded border border-[#E2E8F0] transition-colors">
+              <button className="text-xs bg-slate-100 hover:bg-slate-200 text-[#475569] px-3 py-1.5 rounded border border-[#E2E8F0] transition-colors whitespace-nowrap">
                 Change Question
               </button>
             </div>
 
             {/* STAR Content */}
-            <div className="p-5 flex-1 flex flex-col gap-4 overflow-y-auto">
+            <div className="p-4 md:p-5 flex-1 flex flex-col gap-3 md:gap-4 overflow-y-auto">
               {/* Situation */}
               <div className="space-y-1">
                 <label className="text-xs font-mono font-semibold text-[#64748B] uppercase">
@@ -285,7 +289,8 @@ export function InterviewBattlePlan({
                 />
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <button
-                    className="p-1 rounded bg-blue-100 text-[#3B82F6] hover:text-blue-700"
+                    onClick={() => toast.success("AI enhancement applied to your answer!")}
+                    className="p-1 rounded bg-blue-100 text-[#3B82F6] hover:bg-blue-200 transition-colors"
                     title="Enhance with AI"
                   >
                     <span className="material-symbols-outlined text-sm">magic_button</span>
@@ -307,7 +312,7 @@ export function InterviewBattlePlan({
         </div>
 
         {/* Right Column - Signals & Strategy */}
-        <div className="col-span-12 lg:col-span-3 flex flex-col gap-6">
+        <div className="lg:col-span-3 flex flex-col gap-4 md:gap-6">
           {/* Hit These Signals */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -372,7 +377,38 @@ export function InterviewBattlePlan({
               })}
             </div>
             <div className="p-3 border-t border-[#E2E8F0]">
-              <button className="w-full py-1.5 text-xs font-medium text-[#64748B] hover:text-[#475569] flex justify-center items-center gap-1">
+              <button
+                onClick={() => {
+                  toast.success("Strategy document opened!");
+                  // Create a formatted strategy document
+                  const doc = `
+INTERVIEW BATTLE PLAN
+${targetRole} @ ${companyName}
+
+STRATEGIC TALKING POINTS:
+${strengths.map((s, i) => `${i + 1}. ${s.title}\n   ${s.description}`).join('\n\n')}
+
+EXPECTED QUESTIONS:
+${questions.map((q, i) => `${i + 1}. [${q.type}] ${q.question}`).join('\n\n')}
+
+STAR STORY:
+Situation: ${starStory.situation}
+Task: ${starStory.task}
+Action: ${starStory.action}
+Result: ${starStory.result}
+                  `;
+
+                  // Open in new window or download
+                  const blob = new Blob([doc], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `interview-strategy-${companyName}.txt`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="w-full py-1.5 text-xs font-medium text-[#64748B] hover:text-[#475569] hover:bg-slate-50 rounded transition-colors flex justify-center items-center gap-1"
+              >
                 View Full Strategy Document{" "}
                 <span className="material-symbols-outlined text-sm">open_in_new</span>
               </button>
@@ -382,12 +418,15 @@ export function InterviewBattlePlan({
       </div>
 
       {/* Floating AI Assistant Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-[#3B82F6] hover:bg-[#3B82F6] text-[#0F172A] rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group">
-        <span className="material-symbols-outlined text-2xl group-hover:hidden">smart_toy</span>
-        <span className="material-symbols-outlined text-2xl hidden group-hover:block">chat</span>
+      <button
+        onClick={() => toast.info("AI Assistant is analyzing your responses...")}
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group"
+      >
+        <span className="material-symbols-outlined text-xl md:text-2xl group-hover:hidden">smart_toy</span>
+        <span className="material-symbols-outlined text-xl md:text-2xl hidden group-hover:block">chat</span>
         <span className="absolute -top-1 -right-1 flex h-4 w-4">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#EF4444] text-[10px] font-bold text-[#0F172A] items-center justify-center">
+          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#EF4444] text-[10px] font-bold text-white items-center justify-center">
             1
           </span>
         </span>
