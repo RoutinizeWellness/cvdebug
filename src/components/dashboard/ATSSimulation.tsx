@@ -181,10 +181,12 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                     {currentCandidate.email}
                   </span>
                 )}
-                <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">link</span>
-                  github.com/candidate
-                </span>
+                {resume.ocrText && /github\.com\/([a-zA-Z0-9-]+)/i.test(resume.ocrText) && (
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">link</span>
+                    {resume.ocrText.match(/github\.com\/([a-zA-Z0-9-]+)/i)?.[0] || ''}
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex bg-[#F8FAFC] rounded-lg p-1 border border-[#E2E8F0]">

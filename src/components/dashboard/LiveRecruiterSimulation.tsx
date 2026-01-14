@@ -143,9 +143,12 @@ export function LiveRecruiterSimulation({
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-sm">email</span> {candidateEmail}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">link</span> github.com/candidate
-                  </span>
+                  {resumeText && /github\.com\/([a-zA-Z0-9-]+)/i.test(resumeText) && (
+                    <span className="flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm">link</span>
+                      {resumeText.match(/github\.com\/([a-zA-Z0-9-]+)/i)?.[0] || ''}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
