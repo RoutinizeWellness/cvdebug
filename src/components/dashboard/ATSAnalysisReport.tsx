@@ -825,7 +825,14 @@ export function ATSAnalysisReport({
           )}
 
           {/* Weak Bullet Suggestions - PAID USERS ONLY */}
-          <WeakBulletSuggestions ocrText={ocrText} metricsCount={metricsCount} isPaidUser={isPaidUser} />
+          {resume?._id && (
+            <WeakBulletSuggestions
+              resumeId={resume._id}
+              ocrText={ocrText}
+              metricsCount={metricsCount}
+              isPaidUser={isPaidUser}
+            />
+          )}
 
           {/* Technical Logs Toggle */}
           <motion.div

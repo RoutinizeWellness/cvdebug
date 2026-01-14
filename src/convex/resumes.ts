@@ -740,6 +740,37 @@ export const createResumeManually = mutation({
   },
 });
 
+export const updateResumeText = mutation({
+  args: {
+    id: v.id("resumes"),
+    oldText: v.string(),
+    newText: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new ConvexError("UNAUTHORIZED");
+    }
+
+    const currentText = resume.ocrText || "";
+
+    // Replace the old bullet with the new improved bullet
+    const updatedText = currentText.replace(args.oldText, args.newText);
+
+    await ctx.db.patch(args.id, {
+      ocrText: updatedText,
+    });
+
+    console.log("[updateResumeText] Resume text updated:", args.id);
+    return args.id;
+  },
+});
+
 export const updateResumeManually = mutation({
   args: {
     id: v.id("resumes"),

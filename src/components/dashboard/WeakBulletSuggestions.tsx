@@ -2,6 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { X, Lightbulb, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface WeakBullet {
   original: string;
@@ -13,13 +16,17 @@ interface WeakBullet {
 }
 
 interface WeakBulletSuggestionsProps {
+  resumeId: Id<"resumes">;
   ocrText: string;
   metricsCount: number;
   isPaidUser?: boolean;
 }
 
-export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = false }: WeakBulletSuggestionsProps) {
+export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidUser = false }: WeakBulletSuggestionsProps) {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
+  const [currentBulletIndex, setCurrentBulletIndex] = useState(0);
+  const [isApplying, setIsApplying] = useState(false);
+  const updateResumeText = useMutation(api.resumes.updateResumeText);
 
   // Advanced weak bullet detection with statistical scoring
   const detectWeakBullets = (text: string): WeakBullet[] => {
@@ -671,7 +678,56 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
     return null;
   }
 
-  const currentBullet = weakBullets[0]; // Show first weak bullet
+  // Use currentBulletIndex to show the current bullet
+  const currentBullet = weakBullets[currentBulletIndex];
+
+  // If no current bullet (all processed), hide the component
+  if (!currentBullet) {
+    return null;
+  }
+
+  const handleApplyMetric = async () => {
+    if (isApplying) return;
+
+    const suggestion = currentBullet.suggestions[selectedSuggestionIndex];
+
+    setIsApplying(true);
+    try {
+      await updateResumeText({
+        id: resumeId,
+        oldText: currentBullet.original,
+        newText: suggestion.improved,
+      });
+
+      toast.success("Bullet point updated!", {
+        description: `Applied ${suggestion.type} metric improvement`
+      });
+
+      // Move to next bullet if available
+      if (currentBulletIndex < weakBullets.length - 1) {
+        setCurrentBulletIndex(currentBulletIndex + 1);
+        setSelectedSuggestionIndex(0); // Reset selection for next bullet
+      }
+    } catch (error) {
+      toast.error("Failed to update bullet point", {
+        description: error instanceof Error ? error.message : "Unknown error"
+      });
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  const handleSkip = () => {
+    toast.info("Skipped bullet point", {
+      description: "Moving to next suggestion"
+    });
+
+    // Move to next bullet if available
+    if (currentBulletIndex < weakBullets.length - 1) {
+      setCurrentBulletIndex(currentBulletIndex + 1);
+      setSelectedSuggestionIndex(0); // Reset selection for next bullet
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -761,23 +817,16 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* Action Button */}
           <div className="mt-5 flex items-center gap-3">
             <button
-              onClick={() => {
-                const suggestion = currentBullet.suggestions[selectedSuggestionIndex];
-                toast.success("Bullet point updated!", {
-                  description: `Applied ${suggestion.type} metric improvement`
-                });
-              }}
-              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              onClick={handleApplyMetric}
+              disabled={isApplying}
+              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
             >
-              Apply Selected & Continue
+              {isApplying ? "Applying..." : "Apply Selected & Continue"}
             </button>
             <button
-              onClick={() => {
-                toast.info("Skipped bullet point", {
-                  description: "Moving to next suggestion"
-                });
-              }}
-              className="h-10 md:h-11 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#CBD5E1] text-[#64748B] hover:text-[#475569] text-sm font-medium transition-colors bg-[#FFFFFF]"
+              onClick={handleSkip}
+              disabled={isApplying}
+              className="h-10 md:h-11 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#CBD5E1] text-[#64748B] hover:text-[#475569] text-sm font-medium transition-colors bg-[#FFFFFF] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Skip
             </button>
