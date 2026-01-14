@@ -253,8 +253,8 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
           <span className="hidden md:inline">Server: us-east-1a</span>
         </div>
         <div className="flex gap-4">
-          <a className="hover:text-[#3B82F6] transition-colors" href="#">Documentation</a>
-          <a className="hover:text-[#3B82F6] transition-colors" href="#">Support</a>
+          <a className="hover:text-[#3B82F6] transition-colors" href="/blog">Documentation</a>
+          <a className="hover:text-[#3B82F6] transition-colors" href="/contact">Support</a>
         </div>
       </footer>
     </div>

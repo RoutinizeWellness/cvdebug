@@ -70,28 +70,50 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     criticalFailures.push(...mediumIssues);
   }
 
-  // Contact & Socials check
+  // Contact & Socials check - DETECT from OCR text
+  const ocrText = resume?.ocrText || "";
+  const emailDetected = /@/.test(ocrText) || !!resume?.email;
+  const phoneDetected = /\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}/.test(ocrText) || !!resume?.phone;
+  const linkedinDetected = /linkedin\.com/i.test(ocrText) || !!resume?.linkedin;
+  const githubDetected = /github\.com/i.test(ocrText) || !!resume?.github;
+
   const contactInfo = {
-    email: { detected: true, value: resume?.email || "john@example.com" },
-    phone: { detected: true, value: resume?.phone || "+1 (555) 123-4567" },
-    linkedin: { detected: !!resume?.linkedin, value: resume?.linkedin },
-    github: { detected: !!resume?.github, value: resume?.github }
+    email: { detected: emailDetected, value: resume?.email || "Not detected" },
+    phone: { detected: phoneDetected, value: resume?.phone || "Not detected" },
+    linkedin: { detected: linkedinDetected, value: resume?.linkedin },
+    github: { detected: githubDetected, value: resume?.github }
   };
 
-  // Seniority inference
-  const seniorityLevel = resume?.inferredSeniority || "Mid-Level Engineer";
+  // Seniority inference based on REAL score and content
+  const inferSeniority = (score: number, text: string): string => {
+    if (score < 30) return "Entry-Level / Needs Significant Improvement";
+    if (score < 50) return "Junior Level";
+    if (score < 70) return "Mid-Level";
+    if (score < 85) return "Senior Level";
+    return "Staff / Principal Level";
+  };
+  const seniorityLevel = inferSeniority(score, ocrText);
 
-  // Impact breakdown
+  // Impact breakdown - CALCULATE from real data
+  const actionVerbPatterns = /\b(led|managed|created|developed|built|designed|implemented|achieved|improved|increased|reduced|launched|delivered|coordinated|executed|optimized|analyzed|established|drove|scaled|transformed)\b/gi;
+  const metricPatterns = /\d+[\d,]*\+?\s*(?:%|percent|users?|customers?|clients?|million|thousand|billion|M|K|B|\$|revenue|cost|time|hours?|days?|weeks?|months?|years?|people|team)/gi;
+  const softSkillPatterns = /\b(leadership|communication|collaboration|teamwork|problem.solving|analytical|strategic|creative|innovative|adaptable)\b/gi;
+
+  const actionVerbs = (ocrText.match(actionVerbPatterns) || []).length;
+  const quantifiableMetrics = (ocrText.match(metricPatterns) || []).length;
+  const softSkills = (ocrText.match(softSkillPatterns) || []).length;
+
   const impactMetrics = {
-    actionVerbs: resume?.actionVerbCount || 12,
-    quantifiableMetrics: resume?.metricCount || 4,
+    actionVerbs: actionVerbs,
+    quantifiableMetrics: quantifiableMetrics,
     targetMetrics: 10,
-    softSkills: resume?.softSkillCount || 5
+    softSkills: softSkills
   };
 
-  // Technical vs Human Signal
-  const technicalSignal = resume?.technicalSignal || 78; // Format, fonts, structure
-  const humanSignal = resume?.humanSignal || 65; // Seniority, power verbs, impact
+  // Technical vs Human Signal - CALCULATE from real score and issues
+  const formatIssueCount = formatIssues.length;
+  const technicalSignal = Math.max(20, Math.min(100, score - formatIssueCount * 5)); // Reduce for each format issue
+  const humanSignal = Math.max(20, Math.min(100, score - (10 - Math.min(quantifiableMetrics, 10)) * 3)); // Reduce if low metrics
 
   // SVG gauge settings
   const radius = 90;

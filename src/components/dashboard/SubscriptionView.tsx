@@ -2,6 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 const apiAny = api as any;
 
@@ -51,9 +52,12 @@ export function SubscriptionView() {
         {/* Top Breadcrumbs & Actions */}
         <header className="flex items-center justify-between px-8 py-6">
           <div className="flex items-center gap-2 text-sm">
-            <a className="text-[#64748B] hover:text-[#0F172A] transition-colors" href="#">
+            <button
+              onClick={() => window.history.back()}
+              className="text-[#64748B] hover:text-[#0F172A] transition-colors"
+            >
               Settings
-            </a>
+            </button>
             <span className="material-symbols-outlined text-[#475569] text-[16px]">chevron_right</span>
             <span className="text-[#0F172A] font-medium">Subscription</span>
           </div>
@@ -146,12 +150,15 @@ export function SubscriptionView() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 shrink-0 w-full sm:w-auto">
-              <a className="text-[#475569] hover:text-[#0F172A] text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-[#F8FAFC] rounded-lg border border-transparent hover:border-[#E2E8F0] text-center" href="#">
+              <button
+                onClick={() => toast.info("Billing history feature coming soon")}
+                className="text-[#475569] hover:text-[#0F172A] text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-[#F8FAFC] rounded-lg border border-transparent hover:border-[#E2E8F0] text-center"
+              >
                 <span className="flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">receipt_long</span>
                   Billing History
                 </span>
-              </a>
+              </button>
               {!isFreeTier && (
                 <button className="bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/50 text-[#475569] hover:text-[#EF4444] px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="flex items-center justify-center gap-2">
@@ -331,10 +338,10 @@ export function SubscriptionView() {
           <div className="mt-8 border-t border-[#E2E8F0] pt-8 flex flex-col md:flex-row justify-between items-center text-[#64748B] text-sm">
             <p>© 2026 CVDebug Inc. All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
-              <a className="hover:text-[#475569] transition-colors" href="#">
+              <a className="hover:text-[#475569] transition-colors" href="/privacy">
                 Privacy Policy
               </a>
-              <a className="hover:text-[#475569] transition-colors" href="#">
+              <a className="hover:text-[#475569] transition-colors" href="/terms">
                 Terms of Service
               </a>
             </div>
