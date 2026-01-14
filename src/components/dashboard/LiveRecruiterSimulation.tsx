@@ -54,11 +54,11 @@ export function LiveRecruiterSimulation({
   // Skills display
   const displaySkills = matchedKeywords.length > 0
     ? matchedKeywords.slice(0, 8)
-    : ["sql", "python", "r", "excel", "big data", "hadoop", "spark", "forecasting"];
+    : []; // Show empty if no real keywords, don't fake it
 
-  // Technical gap
-  const foundCount = matchedKeywords.length || 39;
-  const requiredCount = foundCount + missingKeywords.length;
+  // Technical gap - use REAL data only
+  const foundCount = matchedKeywords.length || 0;
+  const requiredCount = Math.max(foundCount + missingKeywords.length, 1); // Avoid division by zero
 
   // Format issues for display
   const hasFormatIssues = formatIssues.length > 0;

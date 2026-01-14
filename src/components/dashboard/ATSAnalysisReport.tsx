@@ -816,7 +816,7 @@ export function ATSAnalysisReport({
                     <span className="text-cyan-400">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-cyan-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 42}</span>
+                    <span className="text-cyan-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
                     <span className="text-cyan-400">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
