@@ -204,8 +204,8 @@ export function KeywordAnalysis({
                           ? 'bg-[#EF4444] text-white shadow-lg shadow-[#EF4444]/20'
                           : 'bg-[#F59E0B] text-white shadow-lg shadow-[#F59E0B]/20'
                       }`}>
-                        {signal.isPriority && <span className="material-symbols-outlined text-[10px]">trending_up</span>}
-                        {signal.impact}
+                        {signal.isPriority && <span className="material-symbols-outlined text-[10px] text-white">trending_up</span>}
+                        <span className="text-white">{signal.impact}</span>
                       </span>
                     </div>
                   </div>
