@@ -9,7 +9,11 @@ export function NewFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-[#1E293B] font-semibold mb-4">CVDebug</h3>
+            <img
+              src="/assets/cvdebug-logo.png"
+              alt="CVDebug"
+              className="h-8 w-auto mb-4"
+            />
             <p className="text-[#475569] text-sm">
               Beat ATS systems with AI-powered resume optimization. Get hired faster.
             </p>
