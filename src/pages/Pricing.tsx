@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Check, Terminal, RocketIcon, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { useCurrency } from "@/hooks/use-currency";
 import { motion } from "framer-motion";
 
 export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { formatPrice, currencyInfo } = useCurrency();
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -22,7 +24,7 @@ export default function PricingPage() {
     {
       name: "The Reality Check",
       description: "Basic syntax check for your document.",
-      price: "$0",
+      price: `${currencyInfo.symbol}0`,
       period: "forever",
       features: [
         "Robot View Preview",
@@ -38,7 +40,7 @@ export default function PricingPage() {
     {
       name: "The Instant Fix",
       description: "One-time optimization for a specific job.",
-      price: "$4.99",
+      price: formatPrice("single_scan"),
       period: "scan",
       features: [
         "Everything in Free",
@@ -56,7 +58,7 @@ export default function PricingPage() {
     {
       name: "The Command Center",
       description: "Full suite access for serious job hunters.",
-      price: "$19.99",
+      price: formatPrice("interview_sprint"),
       period: "month",
       features: [
         "Unlimited ATS Scans",
