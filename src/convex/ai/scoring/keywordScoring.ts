@@ -422,7 +422,7 @@ export function calculateKeywordScore(
     console.log(`[Keywords] JD-based analysis: ${foundKeywords.length} found, ${missingKeywords.length} missing from ${sortedJDKeywords.length} JD terms`);
     
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
-    keywordScore = Math.min(40, keywordScore * scoringMultiplier);
+    keywordScore = Math.min(30, keywordScore * scoringMultiplier); // REDUCED from 40 - be stricter
     
   } else {
     // No JD - use category-based keywords with enhanced matching
@@ -557,7 +557,7 @@ export function calculateKeywordScore(
     console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Total}`);
 
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
-    keywordScore = Math.min(40, keywordScore * scoringMultiplier);
+    keywordScore = Math.min(30, keywordScore * scoringMultiplier); // REDUCED from 40 - be stricter
   }
   
   return { 

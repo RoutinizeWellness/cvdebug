@@ -22,7 +22,7 @@ export function ATSAnalysisReport({
   onDownloadPDF,
   onUpgrade
 }: ATSAnalysisReportProps) {
-  const score = resume?.score || 82;
+  const score = resume?.score || 0; // No fake score - show real data only
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
   // Check if user has paid plan (single_scan or interview_sprint)

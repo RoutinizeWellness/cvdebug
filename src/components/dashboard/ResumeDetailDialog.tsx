@@ -845,7 +845,7 @@ export function ResumeDetailDialog({
                 <TabsContent value="fluff" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                   <FluffDetector
                     resumeText={displayResume.ocrText || ""}
-                    clarityScore={displayResume?.score || 73}
+                    clarityScore={displayResume?.score || 0}
                   />
                 </TabsContent>
 
@@ -853,7 +853,7 @@ export function ResumeDetailDialog({
                   <KeywordAnalysis
                     matchedKeywords={foundKeywords}
                     missingKeywords={criticalKeywords.map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw.term || '')}
-                    matchRate={displayResume?.score || 82}
+                    matchRate={displayResume?.score || 0}
                   />
                 </TabsContent>
 

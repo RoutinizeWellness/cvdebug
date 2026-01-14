@@ -10,7 +10,7 @@ interface ATSOverviewDashboardProps {
 }
 
 export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: ATSOverviewDashboardProps) {
-  const score = resume?.score || 82;
+  const score = resume?.score || 0; // No fake score - show real data only
   const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
 
   // Calculate percentile

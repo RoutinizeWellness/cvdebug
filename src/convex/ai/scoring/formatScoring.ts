@@ -382,7 +382,7 @@ export function calculateFormatScore(
   }
   
   const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.format || 0);
-  formatScore = Math.min(30, formatScore * scoringMultiplier);
+  formatScore = Math.min(25, formatScore * scoringMultiplier); // REDUCED from 30 - be stricter
   
   return { formatScore, formatIssues };
 }
