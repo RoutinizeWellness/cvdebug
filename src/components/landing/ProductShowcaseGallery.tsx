@@ -60,7 +60,7 @@ export function ProductShowcaseGallery() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6">
             <Sparkles className="h-4 w-4 text-[#3B82F6]" />
-            <span className="text-sm font-semibold text-[#3B82F6]">Product Hunt Special</span>
+            <span className="text-sm font-semibold text-[#3B82F6]">Free ATS Scanner</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] mb-4 sm:mb-6 px-4">
@@ -152,10 +152,13 @@ export function ProductShowcaseGallery() {
         >
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-[#8B5CF6]/20 to-[#3B82F6]/20 border border-[#3B82F6]/30 rounded-2xl p-6 sm:p-8">
             <div className="text-left">
-              <p className="text-[#1E293B] font-bold text-lg mb-1">Product Hunt Launch Special</p>
-              <p className="text-[#475569] text-sm">Use code <span className="text-[#3B82F6] font-mono font-bold">PH50</span> for 50% off (48 hours only)</p>
+              <p className="text-[#1E293B] font-bold text-lg mb-1">Get Your Free ATS Score</p>
+              <p className="text-[#475569] text-sm">Scan your resume in 10 seconds - no signup required</p>
             </div>
-            <button className="px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap"
+            >
               Try Free Scan →
             </button>
           </div>

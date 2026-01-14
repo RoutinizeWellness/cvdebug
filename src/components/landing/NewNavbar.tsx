@@ -28,7 +28,7 @@ export function NewNavbar() {
 
   return (
     <>
-      <nav className="fixed top-[44px] sm:top-[52px] z-40 w-full glass-panel-light shadow-soft">
+      <nav className="fixed top-0 z-40 w-full glass-panel-light shadow-soft">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -105,7 +105,7 @@ export function NewNavbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 glass-panel-light border-t border-[#E2E8F0] md:hidden"
+            className="fixed top-[64px] left-0 right-0 z-40 glass-panel-light border-t border-[#E2E8F0] md:hidden"
           >
             <div className="mx-auto max-w-7xl px-4 py-4 space-y-4">
               {navLinks.map((link) => (
