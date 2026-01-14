@@ -336,44 +336,88 @@ export function ResumeDetailDialog({
   
   const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
 
-  // Prepare audit items
+  // Prepare audit items - dynamically generated from real format issues
   const auditItems: Array<{
     title: string;
     status: "passed" | "failed" | "warning";
     reason: string;
     fix: string;
-  }> = [
-    {
-      title: "Contact Information Parsing",
-      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('contact')) ? "failed" : "passed") as "passed" | "failed" | "warning",
-      reason: "Email or phone number not detected in standard format",
-      fix: "Place contact info at the top in a clear format: name@email.com, (123) 456-7890"
-    },
-    {
-      title: "Section Headers Recognition",
-      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('section')) ? "warning" : "passed") as "passed" | "failed" | "warning",
-      reason: "Some section headers may not be recognized by ATS",
-      fix: "Use standard headers: Experience, Education, Skills, Projects"
-    },
-    {
-      title: "Bullet Point Formatting",
-      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('bullet')) ? "failed" : "passed") as "passed" | "failed" | "warning",
-      reason: "Inconsistent bullet point formatting detected",
-      fix: "Use simple bullets (•) and maintain consistent indentation"
-    },
-    {
-      title: "Date Format Consistency",
-      status: "passed" as "passed" | "failed" | "warning",
-      reason: "",
-      fix: ""
-    },
-    {
-      title: "Font & Styling Compatibility",
-      status: (displayResume?.formatIssues?.some((i: any) => i.issue?.toLowerCase().includes('font') || i.issue?.toLowerCase().includes('table')) ? "warning" : "passed") as "passed" | "failed" | "warning",
-      reason: "Complex formatting may not parse correctly",
-      fix: "Avoid tables, text boxes, and unusual fonts. Stick to standard fonts like Arial or Calibri"
+  }> = (() => {
+    const items: Array<{
+      title: string;
+      status: "passed" | "failed" | "warning";
+      reason: string;
+      fix: string;
+    }> = [];
+
+    const formatIssues = displayResume?.formatIssues || [];
+
+    // Only add items if there are actual issues detected
+    if (formatIssues.length > 0) {
+      formatIssues.forEach((issue: any) => {
+        const issueText = issue.issue || issue.message || "";
+        const issueLower = issueText.toLowerCase();
+
+        // Contact information
+        if (issueLower.includes('contact') || issueLower.includes('email') || issueLower.includes('phone')) {
+          items.push({
+            title: "Contact Information Parsing",
+            status: "failed",
+            reason: issueText,
+            fix: issue.fix || "Place contact info at the top in a clear format: name@email.com, (123) 456-7890"
+          });
+        }
+        // Section headers
+        else if (issueLower.includes('section') || issueLower.includes('header')) {
+          items.push({
+            title: "Section Headers Recognition",
+            status: "warning",
+            reason: issueText,
+            fix: issue.fix || "Use standard headers: Experience, Education, Skills, Projects"
+          });
+        }
+        // Bullet points
+        else if (issueLower.includes('bullet') || issueLower.includes('list')) {
+          items.push({
+            title: "Bullet Point Formatting",
+            status: "failed",
+            reason: issueText,
+            fix: issue.fix || "Use simple bullets (•) and maintain consistent indentation"
+          });
+        }
+        // Date format
+        else if (issueLower.includes('date')) {
+          items.push({
+            title: "Date Format Consistency",
+            status: "warning",
+            reason: issueText,
+            fix: issue.fix || "Use consistent date format: MM/YYYY or Month YYYY"
+          });
+        }
+        // Font and styling
+        else if (issueLower.includes('font') || issueLower.includes('table') || issueLower.includes('format') || issueLower.includes('style')) {
+          items.push({
+            title: "Font & Styling Compatibility",
+            status: "warning",
+            reason: issueText,
+            fix: issue.fix || "Avoid tables, text boxes, and unusual fonts. Stick to standard fonts like Arial or Calibri"
+          });
+        }
+        // Generic issue
+        else {
+          items.push({
+            title: "Formatting Issue",
+            status: "warning",
+            reason: issueText,
+            fix: issue.fix || "Review and fix this formatting issue"
+          });
+        }
+      });
     }
-  ];
+
+    // If no issues, return empty array (will show "No format issues detected")
+    return items;
+  })();
 
   // Extract found keywords from the analysis text and OCR
   const extractFoundKeywords = (analysisText: string, ocrText: string): string[] => {
@@ -818,26 +862,34 @@ export function ResumeDetailDialog({
                   <div className="space-y-8">
                     <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                       <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
-                      <div className="space-y-4">
-                        {auditItems.map((item: any, index: number) => (
-                          <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
-                                {item.title}
-                              </h3>
-                              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                                item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
-                                item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
-                                "bg-green-100 text-green-700 border border-green-200"
-                              }`}>
-                                {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                              </span>
+                      {auditItems.length > 0 ? (
+                        <div className="space-y-4">
+                          {auditItems.map((item: any, index: number) => (
+                            <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
+                                  {item.title}
+                                </h3>
+                                <span className={`px-2 py-0.5 rounded-full text-xs ${
+                                  item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
+                                  item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
+                                  "bg-green-100 text-green-700 border border-green-200"
+                                }`}>
+                                  {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
+                                </span>
+                              </div>
+                              <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
+                              <p className="text-xs text-[#475569]">{item.fix}</p>
                             </div>
-                            <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
-                            <p className="text-xs text-[#475569]">{item.fix}</p>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-6 rounded-lg bg-green-50 border border-green-200 text-center">
+                          <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-3" />
+                          <h3 className="font-bold text-green-700 mb-2">No Format Issues Detected</h3>
+                          <p className="text-sm text-[#475569]">Your resume has good formatting that should be ATS-compatible.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TabsContent>
@@ -861,26 +913,34 @@ export function ResumeDetailDialog({
                   <div className="space-y-8">
                     <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                       <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
-                      <div className="space-y-4">
-                        {auditItems.map((item: any, index: number) => (
-                          <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
-                            <div className="flex items-start justify-between mb-2">
-                              <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
-                                {item.title}
-                              </h3>
-                              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                                item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
-                                item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
-                                "bg-green-100 text-green-700 border border-green-200"
-                              }`}>
-                                {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                              </span>
+                      {auditItems.length > 0 ? (
+                        <div className="space-y-4">
+                          {auditItems.map((item: any, index: number) => (
+                            <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
+                                  {item.title}
+                                </h3>
+                                <span className={`px-2 py-0.5 rounded-full text-xs ${
+                                  item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
+                                  item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
+                                  "bg-green-100 text-green-700 border border-green-200"
+                                }`}>
+                                  {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
+                                </span>
+                              </div>
+                              <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
+                              <p className="text-xs text-[#475569]">{item.fix}</p>
                             </div>
-                            <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
-                            <p className="text-xs text-[#475569]">{item.fix}</p>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-6 rounded-lg bg-green-50 border border-green-200 text-center">
+                          <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-3" />
+                          <h3 className="font-bold text-green-700 mb-2">No Format Issues Detected</h3>
+                          <p className="text-sm text-[#475569]">Your resume has good formatting that should be ATS-compatible.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TabsContent>
