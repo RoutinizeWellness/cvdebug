@@ -346,15 +346,15 @@ export default function Dashboard() {
         return (
           <div className="space-y-8 pb-24 md:pb-6">
             {/* Header Section */}
-            <div className="bg-[#FFFFFF] dark:bg-slate-800/50 rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] dark:border-slate-700/50 p-8">
+            <div className="bg-[#FFFFFF] rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="space-y-2">
-                  <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A] dark:text-white">Master CVs</h1>
-                  <p className="text-[#475569] dark:text-slate-400 text-base">Your base resume templates - manage and optimize</p>
+                  <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">Master CVs</h1>
+                  <p className="text-[#475569] text-base">Your base resume templates - manage and optimize</p>
                 </div>
                 <Button
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-6 py-3 bg-[#3B82F6] hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-200 flex items-center gap-2"
+                  className="px-6 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.3)] transition-all duration-200 flex items-center gap-2"
                 >
                   <Upload className="h-5 w-5" />
                   Upload New CV
@@ -550,18 +550,18 @@ export default function Dashboard() {
       case 'profile':
         return (
           <div className="space-y-6 pb-24 md:pb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-white">Profile</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">Profile</h1>
             <div className="space-y-4">
-              <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+              <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-white">Credits</h3>
-                  <span className="text-2xl font-black text-primary">
+                  <h3 className="font-bold text-[#0F172A]">Credits</h3>
+                  <span className="text-2xl font-black text-[#3B82F6]">
                     {currentUser?.credits || 0}
                   </span>
                 </div>
-                <Button 
+                <Button
                   onClick={() => setShowPricing(true)}
-                  className="w-full bg-primary hover:bg-primary/90 text-black font-bold"
+                  className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]"
                 >
                   Buy More Credits
                 </Button>
@@ -601,8 +601,8 @@ export default function Dashboard() {
 
   if (isLoading || currentUser === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+        <Loader2 className="h-8 w-8 text-[#3B82F6] animate-spin" />
       </div>
     );
   }

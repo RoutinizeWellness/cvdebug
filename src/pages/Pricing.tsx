@@ -99,10 +99,10 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="dark min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-blue-200">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#8B5CF6]/20 selection:text-[#6366F1]">
       <style>{`
         body {
-          background-color: #0F172A;
+          background-color: #F8FAFC;
         }
       `}</style>
 
@@ -112,27 +112,27 @@ export default function PricingPage() {
         {/* Hero Section */}
         <section className="relative w-full max-w-7xl mx-auto px-4 pt-20 pb-12 flex flex-col items-center text-center">
           {/* Background Glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#3B82F6]/10 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-cyan-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#8B5CF6]/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-[#6366F1]/5 rounded-full blur-[80px] pointer-events-none"></div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFFFFF] border border-[#E2E8F0] backdrop-blur-sm mb-6 shadow-sm"
           >
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-            <span className="text-xs font-mono text-slate-300">SYSTEM_STATUS: ONLINE</span>
+            <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
+            <span className="text-xs font-mono text-[#475569]">SYSTEM_STATUS: ONLINE</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative text-4xl md:text-6xl font-black tracking-tight text-white mb-6 leading-tight max-w-4xl"
+            className="relative text-4xl md:text-6xl font-black tracking-tight text-[#0F172A] mb-6 leading-tight max-w-4xl"
           >
             Debug Your Resume. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#6366F1]">
               Compile Your Career.
             </span>
           </motion.h1>
@@ -141,7 +141,7 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative text-slate-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed"
+            className="relative text-[#475569] text-lg md:text-xl max-w-2xl mb-10 leading-relaxed"
           >
             Stop getting rejected by silent algorithms. Optimize your CV syntax, keywords, and
             formatting to pass every ATS check.
@@ -158,21 +158,21 @@ export default function PricingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`group relative flex flex-col rounded-xl border ${tier.borderColor} bg-slate-800 p-6 md:p-8 ${tier.hoverBorder} transition-all duration-300 ${
+                className={`group relative flex flex-col rounded-xl bg-[#FFFFFF] p-6 md:p-8 transition-all duration-300 ${
                   tier.highlighted
-                    ? "-mt-4 lg:-mt-8 shadow-2xl shadow-indigo-500/10 ring-1 ring-white/10"
-                    : ""
+                    ? "-mt-4 lg:-mt-8 border-2 border-[#8B5CF6] shadow-[0_20px_60px_-10px_rgba(139,92,246,0.15)]"
+                    : "border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)]"
                 }`}
               >
                 {tier.highlighted && (
                   <>
                     {/* Glow Effect Background */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/20 to-blue-500/5 rounded-2xl blur-xl -z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#8B5CF6]/5 to-[#6366F1]/5 rounded-2xl blur-xl -z-10"></div>
                     {/* Top Gradient Line */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-violet-500 rounded-t-xl"></div>
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] via-[#6366F1] to-[#8B5CF6] rounded-t-xl"></div>
                     {/* Badge */}
                     <div className="absolute top-5 right-5">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold font-mono bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white border-0 shadow-[0_4px_14px_rgba(139,92,246,0.4)]">
                         {tier.badge}
                       </span>
                     </div>
@@ -182,15 +182,15 @@ export default function PricingPage() {
                 <div className={`mb-6 ${tier.highlighted ? "mt-2" : ""}`}>
                   <h3
                     className={`${
-                      tier.highlighted ? "text-white text-xl" : "text-white text-lg"
+                      tier.highlighted ? "text-[#0F172A] text-xl" : "text-[#0F172A] text-lg"
                     } font-bold mb-2 flex items-center gap-2`}
                   >
                     {tier.name}
-                    {tier.highlighted && <RocketIcon className="h-5 w-5 text-indigo-400" />}
+                    {tier.highlighted && <RocketIcon className="h-5 w-5 text-[#8B5CF6]" />}
                   </h3>
                   <p
                     className={`text-sm ${
-                      tier.highlighted ? "text-indigo-200/70" : "text-slate-400"
+                      tier.highlighted ? "text-[#475569]" : "text-[#64748B]"
                     }`}
                   >
                     {tier.description}
@@ -201,8 +201,8 @@ export default function PricingPage() {
                   <span
                     className={`${
                       tier.highlighted
-                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300"
-                        : "text-4xl font-bold text-white"
+                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#6366F1]"
+                        : "text-4xl font-bold text-[#0F172A]"
                     }`}
                   >
                     {tier.price}
@@ -215,16 +215,16 @@ export default function PricingPage() {
                     <li
                       key={feature}
                       className={`flex items-start gap-3 text-sm ${
-                        tier.highlighted ? "text-white font-medium" : "text-slate-300"
+                        tier.highlighted ? "text-[#475569] font-medium" : "text-[#475569]"
                       }`}
                     >
                       <CheckCircle2
                         className={`h-5 w-5 flex-shrink-0 ${
                           tier.highlighted
-                            ? "text-indigo-400"
+                            ? "text-[#8B5CF6]"
                             : tier.plan === "single_scan"
-                            ? "text-[#3B82F6]"
-                            : "text-[#64748B]"
+                            ? "text-[#6366F1]"
+                            : "text-[#22C55E]"
                         }`}
                       />
                       <span>{feature}</span>
@@ -235,14 +235,14 @@ export default function PricingPage() {
                 {tier.buttonVariant === "premium" ? (
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
-                    className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02] transition-all duration-200"
+                    className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold border-0 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] hover:shadow-[0_15px_50px_-10px_rgba(139,92,246,0.4)] hover:scale-[1.02] transition-all duration-200"
                   >
                     {tier.buttonText}
                   </Button>
                 ) : tier.buttonVariant === "default" ? (
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
-                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-[#3B82F6]/50 text-blue-100 font-medium hover:bg-[#3B82F6]/10 hover:border-[#3B82F6] transition-all"
+                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#8B5CF6] transition-all"
                   >
                     {tier.buttonText}
                   </Button>
@@ -250,7 +250,7 @@ export default function PricingPage() {
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
                     variant="outline"
-                    className="w-full py-3 px-4 rounded-lg bg-transparent border border-slate-600 text-white font-medium hover:bg-slate-700 hover:border-slate-500 transition-all"
+                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#8B5CF6] transition-all"
                   >
                     {tier.buttonText}
                   </Button>
@@ -273,7 +273,7 @@ export default function PricingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-white mb-8 text-center"
+            className="text-2xl font-bold text-[#0F172A] mb-8 text-center"
           >
             Frequently Asked Questions
           </motion.h2>
@@ -285,9 +285,9 @@ export default function PricingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group rounded-lg border border-slate-800 bg-slate-800/50 open:bg-slate-800 open:border-slate-700 transition-all duration-200"
+                className="group rounded-lg border border-[#E2E8F0] bg-[#FFFFFF] open:bg-[#F8FAFC] open:border-[#8B5CF6]/30 shadow-sm hover:shadow-md transition-all duration-200"
               >
-                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-slate-200 hover:text-white font-medium select-none">
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-[#0F172A] hover:text-[#8B5CF6] font-medium select-none">
                   <span>{faq.question}</span>
                   <svg
                     className="h-5 w-5 text-[#64748B] transition-transform group-open:rotate-180"
@@ -303,7 +303,7 @@ export default function PricingPage() {
                     />
                   </svg>
                 </summary>
-                <div className="px-6 pb-4 pt-0 text-slate-400 text-sm leading-relaxed border-t border-transparent group-open:border-slate-700/50 group-open:pt-4">
+                <div className="px-6 pb-4 pt-0 text-[#475569] text-sm leading-relaxed border-t border-transparent group-open:border-[#E2E8F0] group-open:pt-4">
                   {faq.answer}
                 </div>
               </motion.details>
