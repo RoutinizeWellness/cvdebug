@@ -321,24 +321,41 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
   };
 
   const processFile = async (file: File, resumeId: any, storageId: string) => {
+    let worker: any = null;
+    let pdf: any = null;
+
     try {
       let text = "";
       setProcessingStatus("Extracting text from document...");
 
       if (file.type === "application/pdf") {
-        const pdfVersion = pdfjsLib.version || "4.0.379"; 
+        const pdfVersion = pdfjsLib.version || "4.0.379";
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
-        
-        const arrayBuffer = await file.arrayBuffer();
-        
+
+        // CRITICAL: Wrap in try-catch to prevent memory crashes
+        let arrayBuffer: ArrayBuffer;
         try {
-          const loadingTask = pdfjsLib.getDocument({ 
+          arrayBuffer = await file.arrayBuffer();
+        } catch (memError) {
+          console.error("[Upload] ArrayBuffer failed - possible memory issue:", memError);
+          throw new Error("PDF too complex for browser. Please try: 1) Compress your PDF, 2) Print to PDF to flatten it, or 3) Convert to DOCX");
+        }
+
+        try {
+          const loadingTask = pdfjsLib.getDocument({
             data: arrayBuffer,
             useSystemFonts: true,
             standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfVersion}/standard_fonts/`,
+            disableFontFace: true, // Reduce memory usage
+            isEvalSupported: false, // Security + performance
           });
-          
-          const pdf = await loadingTask.promise;
+
+          // Add timeout to PDF loading
+          const loadTimeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("PDF_LOAD_TIMEOUT")), 15000)
+          );
+
+          pdf = await Promise.race([loadingTask.promise, loadTimeout]);
           
           const maxPages = Math.min(pdf.numPages, 15);
           
@@ -366,10 +383,20 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
+
+            if (!context) {
+              throw new Error("Canvas context creation failed. Your browser may be out of memory.");
+            }
+
             let ocrText = "";
 
             // Multi-language support for better accuracy
-            const worker = await createWorker(['eng', 'spa', 'fra']);
+            try {
+              worker = await createWorker(['eng', 'spa', 'fra']);
+            } catch (workerError) {
+              console.error("[Upload] Tesseract worker creation failed:", workerError);
+              throw new Error("OCR initialization failed. Please try: 1) Refreshing the page, 2) Compressing your PDF, or 3) Converting to DOCX");
+            }
 
             try {
               // Set OCR parameters for better accuracy
@@ -377,7 +404,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                 preserve_interword_spaces: '1', // Better spacing preservation
               } as any);
 
-              for (let i = 1; i <= Math.min(pdf.numPages, 5); i++) {
+              for (let i = 1; i <= Math.min(pdf.numPages, 3); i++) { // Reduced from 5 to 3 pages
                 if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
 
                 setProcessingStatus(`Scanning page ${i} of ${Math.min(pdf.numPages, 5)} with enhanced OCR...`);
@@ -437,7 +464,9 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
           try {
             // Multi-language support for better accuracy
-            const worker = await createWorker(['eng', 'spa', 'fra']);
+            if (!worker) {
+              worker = await createWorker(['eng', 'spa', 'fra']);
+            }
             const imageUrl = URL.createObjectURL(file);
             try {
               // Set OCR parameters for better accuracy
@@ -477,7 +506,9 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         try {
           setProcessingStatus("Scanning image with enhanced OCR...");
           // Multi-language support for better accuracy
-          const worker = await createWorker(['eng', 'spa', 'fra']);
+          if (!worker) {
+            worker = await createWorker(['eng', 'spa', 'fra']);
+          }
           const imageUrl = URL.createObjectURL(file);
           try {
             // Set OCR parameters for better accuracy
@@ -506,7 +537,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             throw new Error(`OCR: Could not read text from this image. ${errorStr}`);
           } finally {
             URL.revokeObjectURL(imageUrl);
-            await worker.terminate();
+            // Worker will be cleaned up in the outer finally block
           }
         } catch (ocrError: any) {
           console.error("Enhanced image OCR processing failed:", ocrError);
@@ -552,12 +583,43 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
       setProcessingStatus("Finalizing analysis...");
       await updateResumeOcr({ id: resumeId, ocrText: cleanText });
-      
+
       toast.success("✅ Text extracted successfully! AI analysis in progress...");
-      
+
     } catch (error: any) {
-      if (error.message === "Aborted") throw error;
+      console.error("[processFile] Error:", error);
+
+      // Enhanced error messages
+      if (error.message === "Aborted") {
+        throw error;
+      } else if (error.message === "PDF_LOAD_TIMEOUT") {
+        throw new Error("PDF loading timed out. Please try: 1) Print to PDF to flatten it, 2) Compress the PDF, or 3) Convert to DOCX");
+      } else if (error.message?.includes("Canvas context")) {
+        throw new Error("Browser out of memory. Please try: 1) Close other tabs, 2) Compress your PDF, or 3) Use a smaller file");
+      } else if (error.message?.includes("OCR initialization")) {
+        throw error; // Already has good message
+      }
+
       throw error;
+    } finally {
+      // CRITICAL: Always cleanup workers and resources
+      if (worker) {
+        try {
+          await worker.terminate();
+          console.log("[Cleanup] Tesseract worker terminated");
+        } catch (e) {
+          console.error("[Cleanup] Failed to terminate worker:", e);
+        }
+      }
+
+      if (pdf) {
+        try {
+          await pdf.destroy();
+          console.log("[Cleanup] PDF document destroyed");
+        } catch (e) {
+          console.error("[Cleanup] Failed to destroy PDF:", e);
+        }
+      }
     }
   };
 
