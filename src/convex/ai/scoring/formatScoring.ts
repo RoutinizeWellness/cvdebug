@@ -113,13 +113,13 @@ export function calculateFormatScore(
     }
   }
   
-  // Score contact info with quality bonuses
+  // Score contact info with STRICT quality bonuses - much lower points
   if (emailMatch) {
-    formatScore += 5 + emailQuality; // 5-10 points based on quality
+    formatScore += 3 + Math.floor(emailQuality / 2); // 3-4 points (was 5-10)
   } else {
     formatIssues.push({
       issue: "Missing email address",
-      severity: "high",
+      severity: "critical",
       fix: "Add a professional email address at the top of your resume (e.g., firstname.lastname@email.com)",
       location: "Header",
       atsImpact: "ATS cannot contact you without email - automatic rejection"
@@ -127,35 +127,35 @@ export function calculateFormatScore(
   }
 
   if (phoneMatch) {
-    formatScore += 5 + phoneQuality; // 5-8 points based on quality
+    formatScore += 2 + Math.floor(phoneQuality / 2); // 2-3 points (was 5-8)
   } else {
     formatIssues.push({
       issue: "Missing phone number",
-      severity: "medium",
+      severity: "high",
       fix: "Add your phone number in the header with proper formatting (e.g., +1-555-123-4567)",
       location: "Header",
-      atsImpact: "Reduces contact options for recruiters"
+      atsImpact: "Reduces contact options for recruiters - may be skipped"
     });
   }
 
   if (hasLinkedIn) {
-    formatScore += 2 + linkedInQuality; // 3-5 points based on quality
+    formatScore += 1 + Math.floor(linkedInQuality / 2); // 1-2 points (was 3-5)
   } else {
     formatIssues.push({
       issue: "Missing LinkedIn profile",
-      severity: "medium",
-      fix: "Add your LinkedIn profile URL to increase credibility",
+      severity: "high",
+      fix: "Add your LinkedIn profile URL to increase credibility and allow verification",
       location: "Header",
-      atsImpact: "Recruiters expect to see LinkedIn profiles for verification"
+      atsImpact: "85% of recruiters check LinkedIn - absence raises red flags"
     });
   }
 
   if (hasGithub) {
-    formatScore += 1 + githubQuality; // 2-3 points for tech roles
+    formatScore += 1; // 1 point only (was 2-3)
   }
 
   if (hasPortfolio) {
-    formatScore += 1 + portfolioQuality; // 2-3 points for design/dev roles
+    formatScore += 1; // 1 point only (was 2-3)
   }
 
   // Advanced section detection with weighted scoring
@@ -175,7 +175,7 @@ export function calculateFormatScore(
         /^employment\s+(?:history|background)\s*$/im,
         /\b(?:professional|work)\s+(?:experience|history|background)\b/gi  // Fallback
       ],
-      weight: 6,
+      weight: 3, // REDUCED from 6 - be stricter
       required: true
     },
     {
@@ -185,7 +185,7 @@ export function calculateFormatScore(
         /^academic\s+(?:background|qualifications)\s*$/im,
         /\b(?:education|academic|degree|university|college|bachelor|master|phd)\b/gi  // Fallback
       ],
-      weight: 4,
+      weight: 2, // REDUCED from 4
       required: true
     },
     {
@@ -196,7 +196,7 @@ export function calculateFormatScore(
         /^technologies\s*(?:&|and)?\s*tools\s*$/im,
         /\b(?:skills|competencies|technologies|tools|expertise)\b/gi  // Fallback
       ],
-      weight: 4,
+      weight: 2, // REDUCED from 4
       required: true
     },
     {
@@ -207,7 +207,7 @@ export function calculateFormatScore(
         /^(?:key|notable)\s+projects\s*$/im,
         /\b(?:projects|portfolio|work\s+samples)\b/gi
       ],
-      weight: 2,
+      weight: 1, // REDUCED from 2
       required: false
     }
   ];

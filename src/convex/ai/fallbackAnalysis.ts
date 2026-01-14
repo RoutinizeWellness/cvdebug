@@ -18,33 +18,41 @@ export function generateFallbackAnalysis(
 ): any {
   console.log("[Fallback Analysis] Generating ML-based analysis with adaptive learning");
   
-  // Validate input - ensure we always return a valid score (minimum 35)
+  // Validate input - realistic low score for poor quality resumes
   if (!ocrText || ocrText.trim().length < 10) {
-    console.warn("[Fallback Analysis] Text too short, returning baseline valid score");
+    console.warn("[Fallback Analysis] Text too short, returning realistic low score");
     return {
       title: "Resume",
       category: "General",
-      score: 38,
-      scoreBreakdown: { keywords: 12, format: 12, completeness: 14 },
-      matchedKeywords: ["Professional", "Experience"],
+      score: 18,
+      scoreBreakdown: { keywords: 5, format: 6, completeness: 7 },
+      matchedKeywords: [],
       missingKeywords: [{
-        keyword: "Achievements",
-        priority: "high",
-        section: "Experience",
-        context: "Add measurable achievements to stand out",
+        keyword: "Readable content",
+        priority: "critical",
+        section: "Overall",
+        context: "Your resume appears to be a scanned image or has very limited text. ATS systems cannot read this format.",
         frequency: 1,
-        impact: 6,
-        synonyms: ["Results", "Impact"]
+        impact: 25,
+        synonyms: ["Text-based PDF", "Selectable text"]
+      }, {
+        keyword: "Quantifiable achievements",
+        priority: "critical",
+        section: "Experience",
+        context: "Add specific numbers and metrics to every achievement",
+        frequency: 1,
+        impact: 20,
+        synonyms: ["Results", "Impact", "Metrics"]
       }],
       formatIssues: [{
-        issue: "Limited content detected",
-        severity: "medium",
-        fix: "Ensure PDF is text-based (not scanned) and upload complete resume",
+        issue: "Severe parsing issues - resume appears to be scanned image",
+        severity: "critical",
+        fix: "Convert to text-based PDF using 'Print to PDF' or export from Word/Google Docs",
         location: "Overall",
-        atsImpact: "May affect ATS parsing"
+        atsImpact: "Will be automatically rejected by ATS - 0% chance of being read"
       }],
       metricSuggestions: [],
-      analysis: "✅ Resume uploaded successfully!\n\n**Optimization Tips:**\n• Ensure your PDF contains selectable text\n• Add quantifiable achievements\n• Include relevant keywords for your target role\n• Use standard section headings"
+      analysis: "⚠️ **Critical Issues Detected**\n\n**Your resume has severe problems that will prevent it from passing ATS screening:**\n\n• **Content is unreadable**: Less than 50 characters detected\n• **Format is incompatible**: Appears to be scanned image or corrupted\n• **ATS rejection rate**: 95%+ - your resume will not be read\n\n**Immediate Actions Required:**\n1. Export as PDF from Word/Google Docs (never scan)\n2. Verify all text is selectable with your cursor\n3. Remove any images or graphics that block text\n4. Add quantifiable metrics to every achievement"
     };
   }
   
@@ -85,20 +93,26 @@ export function generateFallbackAnalysis(
   
   const { completenessScore, bulletAnalysis, softSkillsAnalysis } = calculateCompletenessScore(ocrText, mlConfig);
   
-  // ===== FINAL SCORE CALCULATION WITH REALISM CURVE =====
-  
+  // ===== FINAL SCORE CALCULATION WITH STRICT REALISM CURVE =====
+
   let rawScore = keywordScore + formatScore + completenessScore;
 
-  // Apply "Realism Curve" - harder to get high scores
-  if (rawScore > 55) {
-    rawScore = 55 + (rawScore - 55) * 0.6;
+  // Apply STRICT "Realism Curve" - much harder to get high scores
+  // Average resume should get 55-65%, not 80-90%
+  if (rawScore > 50) {
+    // Dramatically reduce scores above 50
+    rawScore = 50 + (rawScore - 50) * 0.4;
   }
-  
+  if (rawScore > 70) {
+    // Even more dramatic reduction for scores above 70
+    rawScore = 70 + (rawScore - 70) * 0.3;
+  }
+
   const totalScore = Math.round(Math.min(100, Math.max(0, rawScore)));
 
-  // CRITICAL: Ensure score is ALWAYS at least 35 for any valid resume text
-  // This prevents user frustration and provides actionable feedback
-  const finalScore = Math.max(35, totalScore);
+  // CRITICAL: Realistic minimum score of 20 for any valid resume text
+  // This is honest and creates urgency for users to improve
+  const finalScore = Math.max(20, totalScore);
   
   // ===== ENHANCED METRIC SUGGESTIONS =====
   

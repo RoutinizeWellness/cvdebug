@@ -44,17 +44,19 @@ export function calculateCompletenessScore(
     if (matches) metricCount += matches.length;
   });
 
-  // Enhanced metric scoring with diminishing returns
-  if (metricCount >= 20) completenessScore += 18;
-  else if (metricCount >= 15) completenessScore += 15;
-  else if (metricCount >= 10) completenessScore += 12;
-  else if (metricCount >= 6) completenessScore += 8;
-  else if (metricCount >= 3) completenessScore += 4;
-  
-  const bulletQualityContribution = (bulletAnalysis.score / 100) * 12;
+  // STRICT metric scoring - much harder to get points
+  // Having metrics is EXPECTED, not exceptional
+  if (metricCount >= 20) completenessScore += 8; // REDUCED from 18
+  else if (metricCount >= 15) completenessScore += 6; // REDUCED from 15
+  else if (metricCount >= 10) completenessScore += 5; // REDUCED from 12
+  else if (metricCount >= 6) completenessScore += 3; // REDUCED from 8
+  else if (metricCount >= 3) completenessScore += 1; // REDUCED from 4
+  // else: 0 points if less than 3 metrics - this is failing
+
+  const bulletQualityContribution = (bulletAnalysis.score / 100) * 6; // REDUCED from 12
   completenessScore += bulletQualityContribution;
 
-  const softSkillsContribution = (softSkillsAnalysis.score / 100) * 6;
+  const softSkillsContribution = (softSkillsAnalysis.score / 100) * 3; // REDUCED from 6
   completenessScore += softSkillsContribution;
 
   // Enhanced power phrase detection
