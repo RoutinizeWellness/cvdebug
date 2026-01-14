@@ -45,12 +45,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   const handleRegenerate = () => {
     if (!hasInterviewSprint) {
       toast.error("Interview Sprint plan required", {
-        description: "Upgrade to access this AI tool"
+        description: "Upgrade to access AI regeneration"
       });
       onUpgrade?.();
       return;
     }
-    toast.success("Regenerating content with AI...");
+    toast.success("Regenerating with AI...", {
+      description: "Analyzing your resume and applying improvements..."
+    });
   };
 
   const handleDownloadPDF = () => {
@@ -61,7 +63,38 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
       onUpgrade?.();
       return;
     }
-    toast.error("Upgrade to Interview Sprint to unlock PDF downloads");
+    toast.success("Preparing PDF download...");
+  };
+
+  const handleHistory = () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to access version history"
+      });
+      onUpgrade?.();
+      return;
+    }
+    toast.info("Opening version history...");
+  };
+
+  const handleEditMission = () => {
+    toast.info("Mission editor coming soon", {
+      description: "You'll be able to change your target job and company here"
+    });
+  };
+
+  const handleToneChange = (newTone: string) => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to change tone strategy"
+      });
+      onUpgrade?.();
+      return;
+    }
+    setTone(newTone);
+    toast.success(`Tone changed to ${newTone}`, {
+      description: "Your resume will be optimized for this tone"
+    });
   };
 
   // Extract missing keywords from resume data
@@ -174,9 +207,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               <div className="relative">
                 <select
                   value={tone}
-                  onChange={(e) => setTone(e.target.value)}
-                  className="w-full appearance-none rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
-                  disabled={!hasInterviewSprint}
+                  onChange={(e) => handleToneChange(e.target.value)}
+                  className="w-full appearance-none rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] cursor-pointer"
                 >
                   <option value="technical">Technical Specialist</option>
                   <option value="executive">Executive Leader</option>
@@ -194,7 +226,10 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 <label className="text-[#64748B] text-xs font-bold uppercase tracking-wider">
                   Active Mission
                 </label>
-                <button className="text-primary text-xs font-medium hover:text-primary/80 transition-colors flex items-center gap-1">
+                <button
+                  onClick={handleEditMission}
+                  className="text-primary text-xs font-medium hover:text-primary/80 transition-colors flex items-center gap-1"
+                >
                   <Edit className="h-3 w-3" />
                   Edit
                 </button>
@@ -293,7 +328,11 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
-                <Button variant="ghost" className="text-[#475569] hover:text-[#0F172A]">
+                <Button
+                  onClick={handleHistory}
+                  variant="ghost"
+                  className="text-[#475569] hover:text-[#0F172A]"
+                >
                   <History className="h-4 w-4 mr-2" />
                   History
                 </Button>
