@@ -182,6 +182,49 @@ export function generateFallbackAnalysis(
     ocrTextLength: ocrText.length
   });
 
+  // Generate contextual keyword descriptions based on the keyword
+  const generateContextualKeywordDescription = (keyword: string): string => {
+    const lower = keyword.toLowerCase();
+
+    // Databases
+    if (/\bsql\b|mysql|postgresql|mongodb|redis/.test(lower)) {
+      return `Include specific database experience with metrics: "Optimized ${keyword} queries reducing latency by 40%" or "Managed ${keyword} database processing 2M+ daily records"`;
+    }
+
+    // ETL & Data Engineering
+    if (/etl|airflow|data warehouse|snowflake|redshift/.test(lower)) {
+      return `Describe data pipeline work with scale: "Built ${keyword} pipeline processing 500GB daily" or "Designed ${keyword} architecture handling 10M+ records/hour"`;
+    }
+
+    // Big Data
+    if (/hadoop|spark|hive|pig|kafka|flink/.test(lower)) {
+      return `Show big data impact with numbers: "Developed ${keyword} jobs processing 2TB+ data" or "Optimized ${keyword} cluster reducing processing time by 60%"`;
+    }
+
+    // Cloud & DevOps
+    if (/aws|azure|gcp|kubernetes|docker|terraform/.test(lower)) {
+      return `Highlight cloud infrastructure scale: "Deployed ${keyword} infrastructure serving 100K+ users" or "Managed ${keyword} environment with 99.9% uptime"`;
+    }
+
+    // Programming Languages
+    if (/python|javascript|typescript|java|go|rust/.test(lower)) {
+      return `Show development impact: "Built ${keyword} service handling 50K+ requests/day" or "Developed ${keyword} tool reducing processing time by 70%"`;
+    }
+
+    // AI/ML
+    if (/machine learning|ml|ai|deep learning|neural|tensorflow/.test(lower)) {
+      return `Quantify ML impact: "Developed ${keyword} model achieving 95% accuracy" or "Deployed ${keyword} system improving predictions by 35%"`;
+    }
+
+    // Data Analysis
+    if (/excel|tableau|power bi|visualization/.test(lower)) {
+      return `Show analysis impact: "Created ${keyword} dashboards tracking $2M+ revenue" or "Automated ${keyword} reports saving 15 hours/week"`;
+    }
+
+    // Generic but contextual
+    return `Integrate "${keyword}" into experience with measurable outcomes: specific scale (users/data volume), performance improvements (%), or business impact ($revenue/time saved)`;
+  };
+
   return {
     title: `${adjustedCategory} Resume`,
     category: adjustedCategory,
@@ -196,7 +239,7 @@ export function generateFallbackAnalysis(
       keyword: kw.keyword,
       priority: kw.priority,
       section: "Experience",
-      context: `Add "${kw.keyword}" to relevant experience bullets with specific context and metrics. Example: "Implemented ${kw.keyword} to achieve [specific result with numbers]"`,
+      context: generateContextualKeywordDescription(kw.keyword),
       frequency: kw.frequency,
       impact: kw.impact,
       synonyms: kw.synonyms || []

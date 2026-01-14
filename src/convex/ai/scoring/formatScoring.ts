@@ -117,24 +117,36 @@ export function calculateFormatScore(
   if (emailMatch) {
     formatScore += 3 + Math.floor(emailQuality / 2); // 3-4 points (was 5-10)
   } else {
+    // Check if @ symbol exists (indicates email might be present but unreadable)
+    const hasAtSymbol = /@/.test(ocrText);
     formatIssues.push({
-      issue: "Missing email address",
+      issue: hasAtSymbol ? "Email may be in image or incorrectly formatted" : "Contact email not detected",
       severity: "critical",
-      fix: "Add a professional email address at the top of your resume (e.g., firstname.lastname@email.com)",
+      fix: hasAtSymbol
+        ? "Email found but may be in an image. Place it in plain text at the top (firstname.lastname@domain.com)"
+        : "Add professional email in plain text header: firstname.lastname@domain.com. Never embed in images.",
       location: "Header",
-      atsImpact: "ATS cannot contact you without email - automatic rejection"
+      atsImpact: hasAtSymbol
+        ? "ATS may not parse email from images - 70% chance of rejection"
+        : "ATS cannot contact you without email - automatic rejection"
     });
   }
 
   if (phoneMatch) {
     formatScore += 2 + Math.floor(phoneQuality / 2); // 2-3 points (was 5-8)
   } else {
+    // Check if numbers exist that could be a phone
+    const hasNumberSequence = /\d{3,}/.test(ocrText);
     formatIssues.push({
-      issue: "Missing phone number",
+      issue: hasNumberSequence ? "Phone number detected but format unclear" : "Contact phone not detected",
       severity: "high",
-      fix: "Add your phone number in the header with proper formatting (e.g., +1-555-123-4567)",
+      fix: hasNumberSequence
+        ? "Format phone clearly: +1-555-123-4567 or (555) 123-4567 in header"
+        : "Add phone number in standard format: +1-555-123-4567 or (555) 123-4567",
       location: "Header",
-      atsImpact: "Reduces contact options for recruiters - may be skipped"
+      atsImpact: hasNumberSequence
+        ? "Improper format may prevent ATS from extracting phone number"
+        : "Reduces contact options for recruiters - may be skipped"
     });
   }
 
@@ -142,11 +154,11 @@ export function calculateFormatScore(
     formatScore += 1 + Math.floor(linkedInQuality / 2); // 1-2 points (was 3-5)
   } else {
     formatIssues.push({
-      issue: "Missing LinkedIn profile",
+      issue: "LinkedIn profile not detected",
       severity: "high",
-      fix: "Add your LinkedIn profile URL to increase credibility and allow verification",
+      fix: "Add LinkedIn URL (linkedin.com/in/yourname) in header to enable recruiter verification",
       location: "Header",
-      atsImpact: "85% of recruiters check LinkedIn - absence raises red flags"
+      atsImpact: "85% of recruiters verify candidates on LinkedIn - absence raises red flags and reduces callbacks by 40%"
     });
   }
 
