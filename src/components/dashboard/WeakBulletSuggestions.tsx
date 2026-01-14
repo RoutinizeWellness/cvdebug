@@ -686,7 +686,7 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* Header */}
           <div className="flex items-start gap-3 mb-4">
             <div className="flex-shrink-0 p-2 bg-[#F59E0B]/20 rounded-lg">
-              <Lightbulb className="h-5 w-5 text-amber-400" />
+              <Lightbulb className="h-5 w-5 text-[#F59E0B]" />
             </div>
             <div className="flex-1">
               <h3 className="text-[#0F172A] font-bold text-base md:text-lg flex items-center gap-2">
@@ -710,8 +710,8 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
           {/* AI Suggestions */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="h-4 w-4 text-cyan-400" />
-              <p className="text-xs text-cyan-400 uppercase tracking-wider font-semibold">
+              <TrendingUp className="h-4 w-4 text-[#06B6D4]" />
+              <p className="text-xs text-[#0F172A] uppercase tracking-wider font-semibold">
                 💡 AI Suggestions (Click to Apply)
               </p>
             </div>
@@ -732,16 +732,16 @@ export function WeakBulletSuggestions({ ocrText, metricsCount, isPaidUser = fals
                 {/* Type Badge */}
                 <div className="flex items-center gap-2 mb-2">
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                    suggestion.type === 'volume' ? 'bg-[#3B82F6]/20 text-blue-400' :
+                    suggestion.type === 'volume' ? 'bg-[#3B82F6]/20 text-[#3B82F6]' :
                     suggestion.type === 'efficiency' ? 'bg-[#8B5CF6]/20 text-[#8B5CF6]' :
-                    'bg-[#22C55E]/20 text-green-400'
+                    'bg-[#22C55E]/20 text-[#22C55E]'
                   }`}>
                     {suggestion.type === 'volume' ? '# Volume' :
                      suggestion.type === 'efficiency' ? '% Efficiency' :
                      '$ Money'}
                   </span>
                   {selectedSuggestionIndex === idx && (
-                    <span className="text-[10px] text-cyan-400 font-semibold">✓ Selected</span>
+                    <span className="text-[10px] text-[#06B6D4] font-semibold">✓ Selected</span>
                   )}
                 </div>
 
