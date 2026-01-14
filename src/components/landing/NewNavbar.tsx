@@ -40,7 +40,7 @@ export function NewNavbar() {
             <img
               src="/assets/cvdebug-logo.png"
               alt="CVDebug"
-              className="h-8 w-auto"
+              className="h-10 w-auto"
             />
           </motion.div>
 
