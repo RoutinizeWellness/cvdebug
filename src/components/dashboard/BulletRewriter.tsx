@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Copy, Check, RefreshCw, Zap, TrendingUp, Target } from "lucide-react";
+import { Sparkles, Copy, Check, RefreshCw, Zap, TrendingUp, Target, Lock, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Alternative {
   text: string;
@@ -33,7 +34,11 @@ interface RewriteResult {
   };
 }
 
-export function BulletRewriter() {
+interface BulletRewriterProps {
+  onUpgrade?: () => void;
+}
+
+export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
   const [bulletText, setBulletText] = useState("");
   const [role, setRole] = useState("");
   const [company, setCompany] = useState("");
@@ -43,8 +48,21 @@ export function BulletRewriter() {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const rewriteBullet = useAction(api.ai.bulletRewriter.rewriteBullet);
+  const currentUser = useQuery((api as any).users.currentUser);
+
+  // Check if user has Interview Sprint plan
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+    (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleRewrite = async () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to rewrite bullet points with AI"
+      });
+      onUpgrade?.();
+      return;
+    }
+
     if (!bulletText.trim()) {
       toast.error("Please enter a bullet point to rewrite");
       return;
@@ -69,7 +87,14 @@ export function BulletRewriter() {
       toast.success("Bullet point rewritten successfully!");
     } catch (error: any) {
       console.error("Rewrite error:", error);
-      toast.error(error.message || "Failed to rewrite bullet point");
+      if (error.message?.includes("PLAN_RESTRICTION")) {
+        toast.error("Interview Sprint plan required", {
+          description: "This feature is only available with an active Interview Sprint subscription"
+        });
+        onUpgrade?.();
+      } else {
+        toast.error(error.message || "Failed to rewrite bullet point");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -101,16 +126,69 @@ export function BulletRewriter() {
 
   return (
     <div className="flex flex-col h-full">
+      {/* Interview Sprint Required Alert */}
+      {!hasInterviewSprint && (
+        <Alert className="mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+          {/* Decorative gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
+
+          <div className="relative">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
+                <Diamond className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
+                <p className="text-[#475569] text-sm leading-relaxed">
+                  Transform weak bullets into impact-driven achievements with AI-powered rewriting.
+                </p>
+              </div>
+            </div>
+
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Unlimited rewrites</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Google XYZ formula</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Multiple alternatives</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Context analysis</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={onUpgrade}
+              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Upgrade to Interview Sprint</span>
+            </Button>
+          </div>
+        </Alert>
+      )}
+
       {/* Header */}
       <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <div>
+          <div className="flex-1">
             <h2 className="text-2xl font-bold text-[#0F172A]">AI Bullet Rewriter</h2>
             <p className="text-sm text-[#64748B]">Transform weak bullets into impact-driven achievements</p>
           </div>
+          {!hasInterviewSprint && (
+            <Lock className="h-5 w-5 text-slate-400" />
+          )}
         </div>
 
         {/* Google XYZ Formula Explanation */}
@@ -141,6 +219,7 @@ export function BulletRewriter() {
               placeholder="e.g., Managed a team and worked on improving processes"
               className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary resize-none"
               rows={3}
+              disabled={!hasInterviewSprint}
             />
           </div>
 
@@ -153,6 +232,7 @@ export function BulletRewriter() {
               value={experienceLevel}
               onChange={(e) => setExperienceLevel(e.target.value as "student" | "mid" | "senior")}
               className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] focus:outline-none focus:border-primary"
+              disabled={!hasInterviewSprint}
             >
               <option value="student">Student - Emphasis on curiosity & projects</option>
               <option value="mid">Mid-Level - Balance of skills & results</option>
@@ -177,6 +257,7 @@ export function BulletRewriter() {
                 onChange={(e) => setRole(e.target.value)}
                 placeholder="e.g., Senior Software Engineer"
                 className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary"
+                disabled={!hasInterviewSprint}
               />
             </div>
             <div>
@@ -189,6 +270,7 @@ export function BulletRewriter() {
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="e.g., Google"
                 className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-3 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-primary"
+                disabled={!hasInterviewSprint}
               />
             </div>
           </div>
@@ -196,13 +278,18 @@ export function BulletRewriter() {
           {/* Rewrite Button */}
           <Button
             onClick={handleRewrite}
-            disabled={isLoading || !bulletText.trim()}
+            disabled={isLoading || !bulletText.trim() || !hasInterviewSprint}
             className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold"
           >
             {isLoading ? (
               <>
                 <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                 Rewriting with AI...
+              </>
+            ) : !hasInterviewSprint ? (
+              <>
+                <Lock className="h-4 w-4 mr-2" />
+                Upgrade to Rewrite
               </>
             ) : (
               <>

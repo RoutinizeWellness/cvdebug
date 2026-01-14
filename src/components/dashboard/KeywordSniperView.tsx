@@ -3,19 +3,26 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { KeywordSniperTool } from "./KeywordSniperTool";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Target } from "lucide-react";
+import { ArrowLeft, Target, Lock, Diamond, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const apiAny = api;
 
 interface KeywordSniperViewProps {
   onBack: () => void;
+  onUpgrade?: () => void;
 }
 
-export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
+export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps) {
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.applications.getApplications);
+  const currentUser = useQuery(apiAny.users.currentUser);
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
+
+  // Check if user has Interview Sprint plan
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+    (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   // PRIORITY: Get application with job description (has missing keywords)
   const applicationWithJob = applications?.find((app: any) =>
@@ -99,6 +106,56 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
 
   return (
     <div className="w-full flex flex-col pb-8">
+      {/* Interview Sprint Required Alert */}
+      {!hasInterviewSprint && (
+        <Alert className="mb-6 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+          {/* Decorative gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-orange-500/5 pointer-events-none" />
+
+          <div className="relative">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
+                <Diamond className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
+                <p className="text-[#475569] text-sm leading-relaxed">
+                  Inject missing keywords into your resume bullets with AI-powered suggestions.
+                </p>
+              </div>
+            </div>
+
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Keyword injection</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Live score tracking</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Priority targeting</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Context-aware AI</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={onUpgrade}
+              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Upgrade to Interview Sprint</span>
+            </Button>
+          </div>
+        </Alert>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E2E8F0]">
         <div className="flex items-center gap-4">
@@ -111,14 +168,19 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary">radar</span>
-              Keyword Sniper Tool
-            </h1>
-            <p className="text-[#64748B] text-sm">
-              Optimize your bullet points with AI-powered keyword injection
-            </p>
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">radar</span>
+                Keyword Sniper Tool
+              </h1>
+              <p className="text-[#64748B] text-sm">
+                Optimize your bullet points with AI-powered keyword injection
+              </p>
+            </div>
+            {!hasInterviewSprint && (
+              <Lock className="h-5 w-5 text-slate-400" />
+            )}
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -134,7 +196,25 @@ export function KeywordSniperView({ onBack }: KeywordSniperViewProps) {
       </div>
 
       {/* Keyword Sniper Tool */}
-      <div className="w-full">
+      <div className="w-full relative">
+        {!hasInterviewSprint && (
+          <div className="absolute inset-0 z-10 bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
+            <div className="text-center p-8 max-w-md">
+              <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">Interview Sprint Required</h3>
+              <p className="text-slate-300 text-sm mb-6">
+                Unlock the Keyword Sniper Tool to inject missing keywords and boost your ATS score.
+              </p>
+              <Button
+                onClick={onUpgrade}
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-bold"
+              >
+                <Sparkles className="h-5 w-5 mr-2" />
+                Upgrade Now
+              </Button>
+            </div>
+          </div>
+        )}
         <KeywordSniperTool
           missingKeywords={missingKeywords.map((kw: any) =>
             typeof kw === "string"

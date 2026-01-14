@@ -23,23 +23,44 @@ import { toast } from "sonner";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface WritingForgeProps {
   resumeId?: Id<"resumes"> | null;
+  onUpgrade?: () => void;
 }
 
-export function WritingForge({ resumeId }: WritingForgeProps) {
+export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   const [tone, setTone] = useState("technical");
   const [showUpgradeTooltip, setShowUpgradeTooltip] = useState(false);
 
   // Load resume data
   const resume = useQuery(api.resumes.getResumeById, resumeId ? { id: resumeId } : "skip");
+  const currentUser = useQuery((api as any).users.currentUser);
+
+  // Check if user has Interview Sprint plan
+  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+    (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleRegenerate = () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to access this AI tool"
+      });
+      onUpgrade?.();
+      return;
+    }
     toast.success("Regenerating content with AI...");
   };
 
   const handleDownloadPDF = () => {
+    if (!hasInterviewSprint) {
+      toast.error("Interview Sprint plan required", {
+        description: "Upgrade to unlock PDF downloads"
+      });
+      onUpgrade?.();
+      return;
+    }
     toast.error("Upgrade to Interview Sprint to unlock PDF downloads");
   };
 
@@ -70,6 +91,56 @@ export function WritingForge({ resumeId }: WritingForgeProps) {
 
   return (
     <div className="h-full flex flex-col bg-[#F8FAFC]">
+      {/* Interview Sprint Required Alert */}
+      {!hasInterviewSprint && (
+        <Alert className="m-6 mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+          {/* Decorative gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
+
+          <div className="relative">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
+                <Diamond className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
+                <p className="text-[#475569] text-sm leading-relaxed">
+                  Build and edit professional resumes with AI-powered writing assistance.
+                </p>
+              </div>
+            </div>
+
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>AI content generation</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Professional templates</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>PDF export</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#475569]">
+                <span className="text-[#22C55E] font-bold">✓</span>
+                <span>Unlimited edits</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={onUpgrade}
+              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>Upgrade to Interview Sprint</span>
+            </Button>
+          </div>
+        </Alert>
+      )}
+
       {/* Top Navigation */}
       <header className="flex items-center justify-between border-b border-[#E2E8F0] bg-[#FFFFFF] px-6 py-3 shrink-0 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-8">
@@ -77,8 +148,11 @@ export function WritingForge({ resumeId }: WritingForgeProps) {
             <a className="text-[#64748B] hover:text-[#0F172A] text-sm font-medium transition-colors" href="#">
               Dashboard
             </a>
-            <span className="text-[#0F172A] text-sm font-medium border-b-2 border-primary pb-0.5">
+            <span className="text-[#0F172A] text-sm font-medium border-b-2 border-primary pb-0.5 flex items-center gap-2">
               Writing Forge
+              {!hasInterviewSprint && (
+                <Lock className="h-3 w-3 text-slate-400" />
+              )}
             </span>
             <a className="text-[#64748B] hover:text-[#0F172A] text-sm font-medium transition-colors" href="#">
               Interview Sprint
@@ -102,6 +176,7 @@ export function WritingForge({ resumeId }: WritingForgeProps) {
                   value={tone}
                   onChange={(e) => setTone(e.target.value)}
                   className="w-full appearance-none rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] p-3 pr-10 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  disabled={!hasInterviewSprint}
                 >
                   <option value="technical">Technical Specialist</option>
                   <option value="executive">Executive Leader</option>
@@ -334,6 +409,26 @@ export function WritingForge({ resumeId }: WritingForgeProps) {
                 backgroundSize: "24px 24px"
               }}
             />
+
+            {/* Paywall Overlay */}
+            {!hasInterviewSprint && (
+              <div className="absolute inset-0 z-20 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center">
+                <div className="text-center p-8 max-w-md">
+                  <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">Interview Sprint Required</h3>
+                  <p className="text-slate-300 text-sm mb-6">
+                    Unlock the Writing Forge to create and edit professional resumes with AI assistance.
+                  </p>
+                  <Button
+                    onClick={onUpgrade}
+                    className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-bold"
+                  >
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Upgrade Now
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <div className="w-full max-w-[800px] bg-[#FFFFFF] min-h-[1100px] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0] z-10 relative">
               {/* Document Header */}

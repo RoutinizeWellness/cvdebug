@@ -4,9 +4,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Logo } from "@/components/Logo";
-import { 
-  Loader2, 
-  Upload, 
+import {
+  Loader2,
+  Upload,
   FileUp,
   Plus,
   Sparkles,
@@ -21,7 +21,8 @@ import {
   CreditCard,
   FolderOpen,
   LayoutTemplate,
-  Briefcase
+  Briefcase,
+  Lock
 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -372,6 +373,10 @@ export default function Dashboard() {
           </div>
         );
       case 'tools':
+        // Check if user has Interview Sprint for lock icons
+        const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+          (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
+
         return (
           <div className="space-y-8 pb-24 md:pb-6">
             {/* 2026 New Year Banner */}
@@ -437,8 +442,11 @@ export default function Dashboard() {
                       <span className="material-symbols-outlined">auto_fix_high</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#3B82F6] transition-colors">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#3B82F6] transition-colors flex items-center gap-2">
                         AI Bullet Rewriter
+                        {!hasInterviewSprint && (
+                          <Lock className="h-4 w-4 text-slate-400" />
+                        )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
                         Transform weak bullets into impact-driven achievements using Google XYZ formula
@@ -461,8 +469,11 @@ export default function Dashboard() {
                       <span className="material-symbols-outlined">description</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#8B5CF6] transition-colors">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#8B5CF6] transition-colors flex items-center gap-2">
                         Cover Letter Generator
+                        {!hasInterviewSprint && (
+                          <Lock className="h-4 w-4 text-slate-400" />
+                        )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
                         AI-powered cover letters with keyword optimization
@@ -485,8 +496,11 @@ export default function Dashboard() {
                       <span className="material-symbols-outlined">visibility</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-indigo-600 transition-colors">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-indigo-600 transition-colors flex items-center gap-2">
                         LinkedIn Optimizer
+                        {!hasInterviewSprint && (
+                          <Lock className="h-4 w-4 text-slate-400" />
+                        )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
                         Optimize your profile for recruiters
@@ -514,6 +528,9 @@ export default function Dashboard() {
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
                           Featured
                         </span>
+                        {!hasInterviewSprint && (
+                          <Lock className="h-4 w-4 text-slate-400" />
+                        )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
                         AI-powered bullet rewriting with keyword injection and live score tracking
@@ -562,11 +579,11 @@ export default function Dashboard() {
       case 'cover-letter':
         return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />;
       case 'bullet-rewriter':
-        return <BulletRewriter />;
+        return <BulletRewriter onUpgrade={handleUpgrade} />;
       case 'writing-forge':
-        return <WritingForge resumeId={writingForgeResumeId} />;
+        return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
       case 'keyword-sniper':
-        return <KeywordSniperView onBack={() => setCurrentView('tools')} />;
+        return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
       case 'settings':
         return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       case 'profile':
