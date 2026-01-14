@@ -470,114 +470,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               </div>
             )}
 
-            <div className="w-full max-w-[800px] bg-[#FFFFFF] min-h-[1100px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0] z-10 relative">
-              {/* Document Header */}
-              <div className="border-b border-[#E2E8F0] pb-8 mb-8">
-                <h1 className="text-4xl font-bold text-[#0F172A] mb-2">{currentUser?.name || "Your Name"}</h1>
-                <p className="text-[#64748B] text-lg">Senior Frontend Engineer</p>
-                <div className="flex gap-4 mt-4 text-sm text-[#64748B]">
-                  <span>San Francisco, CA</span>
-                  {currentUser?.email && (
-                    <>
-                      <span>•</span>
-                      <span>{currentUser.email}</span>
-                    </>
-                  )}
-                  <span>•</span>
-                  <span>github.com/alexc</span>
-                </div>
-              </div>
-
-              {/* Professional Summary */}
-              <div className="mb-8 group/section relative">
-                <div className="absolute -left-12 top-0 opacity-0 group-hover/section:opacity-100 transition-opacity">
-                  <button className="p-1.5 text-[#64748B] hover:text-primary">
-                    <GripVertical className="h-5 w-5" />
-                  </button>
-                </div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-3">
-                  Professional Summary
-                </h3>
-                <p className="text-base leading-relaxed text-[#475569]">
-                  Results-oriented Senior Frontend Engineer with 7+ years of experience building scalable web applications.
-                  Specialized in the modern React ecosystem, including{" "}
-                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
-                    Next.js architecture
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                      Keywords matched +5%
-                    </span>
-                  </span>{" "}
-                  and server-side rendering performance optimization. Proven track record of leading teams at high-growth startups to deliver{" "}
-                  <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all relative group/highlight">
-                    robust UI systems
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-primary text-white text-xs rounded opacity-0 group-hover/highlight:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-                      Tone: Executive
-                    </span>
-                  </span>{" "}
-                  that drive user engagement. Passionate about improving developer experience and implementing CI/CD pipelines.
-                </p>
-              </div>
-
-              {/* Experience */}
-              <div className="mb-8 group/section relative">
-                <div className="absolute -left-12 top-0 opacity-0 group-hover/section:opacity-100 transition-opacity">
-                  <button className="p-1.5 text-[#64748B] hover:text-primary">
-                    <GripVertical className="h-5 w-5" />
-                  </button>
-                </div>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-4">
-                  Experience
-                </h3>
-
-                <div className="mb-6">
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h4 className="text-lg font-bold text-[#0F172A]">Lead UI Engineer</h4>
-                    <span className="text-sm text-[#64748B]">2021 - Present</span>
-                  </div>
-                  <p className="text-[#3B82F6] font-medium text-sm mb-3">TechFlow Systems</p>
-                  <ul className="list-disc pl-4 space-y-2 text-sm text-[#475569] marker:text-[#64748B]">
-                    <li>
-                      Architected a migration from legacy monolith to micro-frontends using{" "}
-                      <span className="underline decoration-primary decoration-2 underline-offset-4 hover:bg-primary/5 rounded px-1 cursor-pointer transition-all">
-                        Module Federation
-                      </span>
-                      , reducing build times by 40%.
-                    </li>
-                    <li>Mentored 5 junior developers and established code review standards that decreased bug rate by 25%.</li>
-                    <li>Implemented automated accessibility testing (WCAG 2.1) across the component library.</li>
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h4 className="text-lg font-bold text-[#0F172A]">Frontend Developer</h4>
-                    <span className="text-sm text-[#64748B]">2018 - 2021</span>
-                  </div>
-                  <p className="text-[#3B82F6] font-medium text-sm mb-3">Creativ Agency</p>
-                  <ul className="list-disc pl-4 space-y-2 text-sm text-[#475569] marker:text-[#64748B]">
-                    <li>Developed interactive marketing sites for Fortune 500 clients using WebGL and GSAP.</li>
-                    <li>Collaborated with design teams to create pixel-perfect implementations from Figma prototypes.</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* AI Suggestion Placeholder */}
-              <div className="p-4 rounded-lg border border-dashed border-primary/30 bg-primary/5 flex items-center justify-center gap-3 cursor-pointer hover:bg-primary/10 transition-colors group/ai">
-                <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary group-hover/ai:scale-110 transition-transform">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <span className="text-primary font-medium text-sm">
-                  AI Suggestion: Add "Technical Skills" section based on Vercel requirements?
-                </span>
-              </div>
-
-              {/* ML-Powered Analysis - Premium Feature */}
+            <div className="w-full max-w-[800px] z-10 relative space-y-6">
+              {/* ML-Powered Analysis - Premium Feature - MOVED TO TOP */}
               {hasInterviewSprint && resume?.ocrText && resume.ocrText.length >= 100 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-8 p-6 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0]"
+                  transition={{ delay: 0.2 }}
+                  className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                 >
                   <h3 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
@@ -589,6 +489,34 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                   />
                 </motion.div>
               )}
+
+              {/* Resume Document - Real Content */}
+              <div className="bg-[#FFFFFF] min-h-[1100px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0]">
+                {/* Show real resume content if available */}
+                {resume?.ocrText ? (
+                  <div className="prose prose-slate max-w-none">
+                    <pre className="whitespace-pre-wrap text-sm leading-relaxed text-[#475569] font-sans">
+                      {resume.ocrText}
+                    </pre>
+                  </div>
+                ) : (
+                  <>
+                    {/* Fallback to template if no resume loaded */}
+                    <div className="border-b border-[#E2E8F0] pb-8 mb-8">
+                      <h1 className="text-4xl font-bold text-[#0F172A] mb-2">{currentUser?.name || "Your Name"}</h1>
+                      <p className="text-[#64748B] text-lg">Upload a resume to get started</p>
+                      <div className="flex gap-4 mt-4 text-sm text-[#64748B]">
+                        {currentUser?.email && <span>{currentUser.email}</span>}
+                      </div>
+                    </div>
+                    <div className="text-center py-12">
+                      <p className="text-[#64748B] text-base">
+                        No resume loaded. Upload a resume from the dashboard to start editing.
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </main>
