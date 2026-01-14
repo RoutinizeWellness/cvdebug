@@ -214,30 +214,108 @@ export function KeywordAnalysis({
             {/* Decorative blob */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#3B82F6]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-              {foundSignals.map((signal, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + index * 0.05 }}
-                  className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
-                      <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
+            {/* Keywords Display - Responsive to viewMode and groupByType */}
+            {viewMode === 'list' ? (
+              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                {groupByType ? (
+                  // Group by type
+                  (() => {
+                    const grouped: Record<string, typeof foundSignals> = {};
+                    foundSignals.forEach(signal => {
+                      const type = signal.location.split(',')[0].trim();
+                      if (!grouped[type]) grouped[type] = [];
+                      grouped[type].push(signal);
+                    });
+
+                    return Object.entries(grouped).map(([type, signals], groupIndex) => (
+                      <div key={type} className="mb-4">
+                        <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-wider mb-2 flex items-center gap-2">
+                          <span className="w-1 h-4 bg-[#3B82F6] rounded"></span>
+                          {type}
+                          <span className="text-[10px] font-normal">({signals.length})</span>
+                        </h4>
+                        <div className="space-y-2">
+                          {signals.map((signal, index) => (
+                            <motion.div
+                              key={`${groupIndex}-${index}`}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.1 + index * 0.05 }}
+                              className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
+                                  <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
+                                </div>
+                                <div>
+                                  <h4 className="text-sm font-medium text-[#0F172A] font-mono">
+                                    {signal.keyword}
+                                  </h4>
+                                  <p className="text-[10px] text-[#64748B]">in: {signal.location}</p>
+                                </div>
+                              </div>
+                              <span className="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    ));
+                  })()
+                ) : (
+                  // Flat list
+                  foundSignals.map((signal, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + index * 0.05 }}
+                      className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
+                          <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-[#0F172A] font-mono">
+                            {signal.keyword}
+                          </h4>
+                          <p className="text-[10px] text-[#64748B]">in: {signal.location}</p>
+                        </div>
+                      </div>
+                      <span className="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            ) : (
+              // Grid view
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[600px] overflow-y-auto pr-2">
+                {foundSignals.map((signal, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                    className="group p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                  >
+                    <div className="flex items-start gap-2 mb-2">
+                      <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
+                        <span className="material-symbols-outlined text-[14px]">{signal.icon}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-medium text-[#0F172A] font-mono truncate">
+                          {signal.keyword}
+                        </h4>
+                        <p className="text-[10px] text-[#64748B] truncate">in: {signal.location}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-sm font-medium text-[#0F172A] font-mono">
-                        {signal.keyword}
-                      </h4>
-                      <p className="text-[10px] text-[#64748B]">in: {signal.location}</p>
+                    <div className="flex justify-end">
+                      <span className="material-symbols-outlined text-[#22C55E] text-base">check_circle</span>
                     </div>
-                  </div>
-                  <span className="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
-                </motion.div>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
 
