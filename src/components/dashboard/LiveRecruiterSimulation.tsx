@@ -19,17 +19,21 @@ export function LiveRecruiterSimulation({
   missingKeywords = [],
   matchedKeywords = [],
   formatIssues = [],
-  targetRole = "Data Science",
-  candidateName = "Professional Candidate",
-  candidateEmail = "candidate@example.com",
-  candidateLocation = "San Francisco, CA"
+  targetRole = "Role",
+  candidateName = "Candidate",
+  candidateEmail = "",
+  candidateLocation = "Location"
 }: LiveRecruiterSimulationProps) {
   const [viewMode, setViewMode] = useState<"parsed" | "raw" | "pdf">("parsed");
   const [isDarkMode] = useState(true);
 
+  // Generate dynamic scan ID based on timestamp
+  const scanId = `#${Date.now().toString(36).toUpperCase().slice(-4)}-AX`;
+  const sessionId = `th${Date.now().toString(36).slice(-6)}`;
+
   // Extract professional summary from resume text (first 200 chars or first paragraph)
   const extractSummary = (text: string) => {
-    if (!text) return "Data Scientist with 5+ years of experience leveraging machine learning and statistical modeling to solve complex business problems.";
+    if (!text) return "";
 
     const lines = text.split('\n').filter(l => l.trim());
     const summaryLine = lines.find(line =>
@@ -38,7 +42,7 @@ export function LiveRecruiterSimulation({
       !line.toLowerCase().includes('experience')
     );
 
-    return summaryLine?.substring(0, 300) || lines[0]?.substring(0, 300) || "Experienced professional with proven track record.";
+    return summaryLine?.substring(0, 300) || lines[0]?.substring(0, 300) || "";
   };
 
   const professionalSummary = extractSummary(resumeText);
@@ -81,7 +85,7 @@ export function LiveRecruiterSimulation({
             <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 text-[#3B82F6] border border-blue-200">
               {targetRole.toUpperCase()}
             </span>
-            <span className="text-xs text-[#64748B] font-mono">ID: th7ywqqk</span>
+            <span className="text-xs text-[#64748B] font-mono">ID: {sessionId}</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -251,7 +255,7 @@ export function LiveRecruiterSimulation({
                   </button>
                 </div>
               </div>
-              <div className="text-xs font-mono text-[#64748B]">Scan ID: #9923-AX</div>
+              <div className="text-xs font-mono text-[#64748B]">Scan ID: {scanId}</div>
             </div>
 
             {/* Content */}

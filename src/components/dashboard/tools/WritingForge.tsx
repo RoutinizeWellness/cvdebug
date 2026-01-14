@@ -433,12 +433,16 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
             <div className="w-full max-w-[800px] bg-[#FFFFFF] min-h-[1100px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-sm p-16 text-[#0F172A] border border-[#E2E8F0] z-10 relative">
               {/* Document Header */}
               <div className="border-b border-[#E2E8F0] pb-8 mb-8">
-                <h1 className="text-4xl font-bold text-[#0F172A] mb-2">Alex Chen</h1>
+                <h1 className="text-4xl font-bold text-[#0F172A] mb-2">{currentUser?.name || "Your Name"}</h1>
                 <p className="text-[#64748B] text-lg">Senior Frontend Engineer</p>
                 <div className="flex gap-4 mt-4 text-sm text-[#64748B]">
                   <span>San Francisco, CA</span>
-                  <span>•</span>
-                  <span>alex.chen@example.com</span>
+                  {currentUser?.email && (
+                    <>
+                      <span>•</span>
+                      <span>{currentUser.email}</span>
+                    </>
+                  )}
                   <span>•</span>
                   <span>github.com/alexc</span>
                 </div>

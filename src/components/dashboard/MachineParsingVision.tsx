@@ -29,6 +29,9 @@ export function MachineParsingVision({
   const [showMachineView, setShowMachineView] = useState(false);
   const [zoom, setZoom] = useState(100);
 
+  // Generate dynamic session ID
+  const sessionId = `0x${Date.now().toString(16).toUpperCase().slice(-6)}`;
+
   const formatMachineText = () => {
     const lines = resumeText.split('\n');
     return lines.map((line, index) => {
@@ -299,7 +302,7 @@ export function MachineParsingVision({
             {/* Console Log Header */}
             <div className="p-4 bg-[#F8FAFC] font-mono text-[10px] text-[#64748B] border-b border-[#E2E8F0]">
               <div className="flex justify-between mb-1">
-                <span>SESSION_ID: 0x8F2A9C</span>
+                <span>SESSION_ID: {sessionId}</span>
                 <span>TS: {new Date().toLocaleTimeString()}</span>
               </div>
               <div className="text-[#22C55E]">&gt; Initializing OCR engine... OK</div>

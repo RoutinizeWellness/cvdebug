@@ -107,7 +107,7 @@ export function ATSRobotVision() {
                     HEADER ✓
                   </div>
                   <h1 className="text-3xl font-bold mb-2 text-[#0F172A]">{user?.name || "Candidate Name"}</h1>
-                  <p className="text-sm text-[#64748B]">{user?.email || "email@example.com"}</p>
+                  {user?.email && <p className="text-sm text-[#64748B]">{user.email}</p>}
                 </div>
 
                 {/* OCR Text Content */}

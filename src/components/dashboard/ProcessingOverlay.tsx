@@ -13,6 +13,9 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
   const [logs, setLogs] = useState<Array<{ time: string; type: string; message: string; color: string }>>([]);
   const [elapsedTime, setElapsedTime] = useState(0);
 
+  // Generate dynamic process ID
+  const processId = `#${Date.now().toString(36).toUpperCase().slice(-4)}-CV`;
+
   useEffect(() => {
     // Simulate progress if not provided
     if (progress === 0 && isProcessing) {
@@ -180,7 +183,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             {/* Progress Bar */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-end px-1">
-                <span className="text-[#3B82F6] font-mono text-xs tracking-wider">PROCESS_ID: #8X92-CV</span>
+                <span className="text-[#3B82F6] font-mono text-xs tracking-wider">PROCESS_ID: {processId}</span>
                 <span className="text-[#0F172A] font-display text-2xl font-bold">{Math.round(currentProgress)}%</span>
               </div>
               <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-[#E2E8F0]">

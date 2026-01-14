@@ -29,6 +29,10 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const missingKeywords = resume.missingKeywords || [];
   const formatIssues = resume.formatIssues || [];
 
+  // Generate dynamic IDs
+  const scanId = `#${Date.now().toString(36).toUpperCase().slice(-4)}-AX`;
+  const jobId = `#${Date.now().toString(36).toUpperCase().slice(-4)}`;
+
   // Use real resume data
   const currentCandidate = {
     id: 0,
@@ -36,7 +40,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
     role: resume.category || resume.jobTitle || "Candidate",
     score: score,
     appliedTime: "Now",
-    email: "your.email@example.com",
+    email: "",
     location: resume.location || "Location",
     avatar: "https://ui-avatars.com/api/?name=" + encodeURIComponent(resume.title || "User") + "&background=6366f1&color=fff&size=128"
   };
@@ -59,9 +63,9 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
           <nav className="flex items-center gap-2 text-sm text-[#64748B]">
             <button onClick={onBack} className="hover:text-[#0F172A] transition-colors">Jobs</button>
             <span className="material-symbols-outlined text-xs">chevron_right</span>
-            <a className="hover:text-[#0F172A] transition-colors" href="#">Engineering</a>
+            <a className="hover:text-[#0F172A] transition-colors" href="#">{resume.category || "Category"}</a>
             <span className="material-symbols-outlined text-xs">chevron_right</span>
-            <span className="text-[#0F172A] font-medium">Senior Frontend Dev #4092</span>
+            <span className="text-[#0F172A] font-medium">{resume.jobTitle || "Position"} {jobId}</span>
           </nav>
         </div>
         <div className="flex items-center gap-6">
@@ -165,14 +169,18 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
             <div>
               <h1 className="text-2xl font-bold text-[#0F172A] mb-1">{currentCandidate.name}</h1>
               <div className="flex items-center gap-4 text-xs text-[#64748B] font-mono">
-                <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>
-                  San Francisco, CA
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">mail</span>
-                  candidate@example.com
-                </span>
+                {currentCandidate.location && (
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">location_on</span>
+                    {currentCandidate.location}
+                  </span>
+                )}
+                {currentCandidate.email && (
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">mail</span>
+                    {currentCandidate.email}
+                  </span>
+                )}
                 <span className="flex items-center gap-1">
                   <span className="material-symbols-outlined text-[14px]">link</span>
                   github.com/candidate
@@ -216,7 +224,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                     <span className="material-symbols-outlined text-primary">gavel</span>
                     Integrity Audit Report
                   </h3>
-                  <span className="text-xs font-mono text-[#64748B]">Scan ID: #9923-AX</span>
+                  <span className="text-xs font-mono text-[#64748B]">Scan ID: {scanId}</span>
                 </div>
                 <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   {formatIssues.length > 0 && (
