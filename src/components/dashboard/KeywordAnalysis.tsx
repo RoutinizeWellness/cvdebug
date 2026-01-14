@@ -156,9 +156,9 @@ export function KeywordAnalysis({
         <div className="col-span-12 lg:col-span-6 flex flex-col gap-4">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-[#0F172A] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#8B5CF6] animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-pulse"></span>
               Missing Critical Signals
-              <span className="bg-[#F3E8FF] text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono border border-[#F3E8FF]">
+              <span className="bg-[#FEF2F2] text-[#EF4444] text-[10px] px-2 py-0.5 rounded-full font-mono border border-[#EF4444]/20">
                 High Impact
               </span>
             </h3>
@@ -174,7 +174,7 @@ export function KeywordAnalysis({
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-4 h-full shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden"
           >
             {/* Decorative blob */}
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#8B5CF6]/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#EF4444]/5 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="space-y-3">
               {missingSignals.map((signal, index) => (
@@ -185,13 +185,13 @@ export function KeywordAnalysis({
                   transition={{ delay: 0.2 + index * 0.1 }}
                   className={`relative group rounded-lg p-4 border transition-all ${
                     signal.isPriority
-                      ? 'bg-[#FFFFFF] border-[#F3E8FF] hover:border-[#8B5CF6] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]'
-                      : 'bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#8B5CF6]/50'
+                      ? 'bg-[#FFFFFF] border-[#EF4444]/20 hover:border-[#EF4444] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]'
+                      : 'bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#F59E0B]/50'
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
-                      <span className={`material-symbols-outlined text-sm ${signal.isPriority ? 'text-[#8B5CF6]' : 'text-[#64748B]'}`}>
+                      <span className={`material-symbols-outlined text-sm ${signal.isPriority ? 'text-[#EF4444]' : 'text-[#64748B]'}`}>
                         {signal.isPriority ? 'warning_amber' : 'do_not_disturb_on'}
                       </span>
                       <h4 className={`text-base font-mono ${signal.isPriority ? 'font-bold text-[#0F172A]' : 'font-medium text-[#475569]'}`}>
@@ -201,8 +201,8 @@ export function KeywordAnalysis({
                     <div className="flex flex-col items-end">
                       <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded ${
                         signal.isPriority
-                          ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white shadow-lg shadow-[#8B5CF6]/20'
-                          : 'bg-[#E2E8F0] text-[#475569] border border-[#E2E8F0]'
+                          ? 'bg-[#EF4444] text-white shadow-lg shadow-[#EF4444]/20'
+                          : 'bg-[#F59E0B] text-white shadow-lg shadow-[#F59E0B]/20'
                       }`}>
                         {signal.isPriority && <span className="material-symbols-outlined text-[10px]">trending_up</span>}
                         {signal.impact}
@@ -217,7 +217,7 @@ export function KeywordAnalysis({
                       <button className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors">
                         View Examples
                       </button>
-                      <button className="px-3 bg-[#8B5CF6] hover:bg-[#7C3AED] text-white rounded text-xs transition-colors">
+                      <button className="px-3 bg-[#EF4444] hover:bg-[#DC2626] text-white rounded text-xs transition-colors">
                         Auto-Add
                       </button>
                     </div>
