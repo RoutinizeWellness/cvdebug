@@ -24,6 +24,8 @@ import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
 import type * as ai_intelligentFallback from "../ai/intelligentFallback.js";
 import type * as ai_interviewPrep from "../ai/interviewPrep.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
+import type * as ai_mlEngine from "../ai/mlEngine.js";
+import type * as ai_mlLearning from "../ai/mlLearning.js";
 import type * as ai_performOcr from "../ai/performOcr.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_qualityChecks from "../ai/qualityChecks.js";
@@ -92,6 +94,8 @@ declare const fullApi: ApiFromModules<{
   "ai/intelligentFallback": typeof ai_intelligentFallback;
   "ai/interviewPrep": typeof ai_interviewPrep;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
+  "ai/mlEngine": typeof ai_mlEngine;
+  "ai/mlLearning": typeof ai_mlLearning;
   "ai/performOcr": typeof ai_performOcr;
   "ai/prompts": typeof ai_prompts;
   "ai/qualityChecks": typeof ai_qualityChecks;

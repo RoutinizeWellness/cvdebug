@@ -394,25 +394,92 @@ const schema = defineSchema(
       structureScore: v.number()
     }),
     topKeywords: v.array(v.string()),
-    matchedKeywords: v.array(v.string()),
-    missingKeywords: v.array(v.string()),
-    actionVerbs: v.array(v.string()),
-    weakPhrases: v.array(v.string()),
-    entities: v.object({
+    matchedKeywords: v.optional(v.array(v.string())),
+    missingKeywords: v.optional(v.array(v.string())),
+    actionVerbs: v.optional(v.array(v.string())),
+    weakPhrases: v.optional(v.array(v.string())),
+    entities: v.optional(v.object({
       skills: v.array(v.string()),
       technologies: v.array(v.string()),
       companies: v.array(v.string())
-    }),
-    recommendations: v.array(v.object({
-      type: v.string(),
-      title: v.string(),
-      impact: v.number()
     })),
-    sentiment: v.string(),
+    skillsFound: v.optional(v.array(v.string())),
+    bulletAnalysis: v.optional(v.object({
+      strongCount: v.number(),
+      weakCount: v.number(),
+      avgQuality: v.number()
+    })),
+    formatMetrics: v.optional(v.object({
+      sectionCount: v.number(),
+      hasContactInfo: v.boolean(),
+      hasProperHeadings: v.boolean(),
+      readabilityScore: v.number()
+    })),
+    recommendations: v.array(v.union(
+      v.string(),
+      v.object({
+        type: v.string(),
+        title: v.string(),
+        impact: v.number()
+      })
+    )),
+    sentiment: v.optional(v.string()),
     timestamp: v.number(),
   })
     .index("by_resume", ["resumeId"])
     .index("by_user", ["userId"])
+    .index("by_timestamp", ["timestamp"]),
+
+  // NEW: ML Training Data - Advanced ML system for continuous learning
+  mlTrainingData: defineTable({
+    userId: v.string(),
+    resumeId: v.id("resumes"),
+    resumeHash: v.string(),
+    features: v.object({
+      wordCount: v.number(),
+      averageSentenceLength: v.number(),
+      uniqueWordRatio: v.number(),
+      technicalDensity: v.number(),
+      sectionCount: v.number(),
+      bulletPointCount: v.number(),
+      experienceYears: v.number(),
+      educationLevel: v.number(),
+      actionVerbDensity: v.number(),
+      metricDensity: v.number(),
+      quantifiableResultsCount: v.number(),
+      readabilityScore: v.number(),
+      professionalTone: v.number(),
+      industryAlignment: v.number(),
+      impactScore: v.number(),
+      sentimentScore: v.number(),
+      coherenceScore: v.number(),
+      relevanceScore: v.number()
+    }),
+    predictedScore: v.number(),
+    actualScore: v.number(),
+    category: v.string(),
+    isPremium: v.boolean(),
+    userFeedback: v.optional(v.object({
+      rescanned: v.boolean(),
+      clickedUpgrade: v.boolean(),
+      viewedDetails: v.boolean(),
+      timeSpent: v.number(),
+      editedResume: v.boolean()
+    })),
+    timestamp: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_resume", ["resumeId"])
+    .index("by_resume_hash", ["resumeHash"])
+    .index("by_category", ["category"])
+    .index("by_timestamp", ["timestamp"]),
+
+  // NEW: ML Evaluations - Track model performance over time
+  mlEvaluations: defineTable({
+    accuracy: v.number(),
+    results: v.any(),
+    timestamp: v.number(),
+  })
     .index("by_timestamp", ["timestamp"]),
 
   waitlist: defineTable({
