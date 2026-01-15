@@ -48,6 +48,7 @@ import { AIProTip } from "./analysis/AIProTip";
 import { ImageTrapAlert } from "./ImageTrapAlert";
 import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
+import { SanitizedVersionDialog } from "./SanitizedVersionDialog";
 import { InterviewBattlePlan } from "./InterviewBattlePlan";
 import { KeywordAnalysis } from "./KeywordAnalysis";
 import { ATSSimulation } from "./ATSSimulation";
@@ -84,7 +85,8 @@ export function ResumeDetailDialog({
   const [activeTab, setActiveTab] = useState("overview");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
   const [isPdfCollapsed, setIsPdfCollapsed] = useState(false);
-  
+  const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
+
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
   
@@ -550,9 +552,9 @@ export function ResumeDetailDialog({
               <Link2 className="h-4 w-4" />
               Share Link
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleOptimize}
               disabled={isGenerating || !displayResume}
@@ -560,9 +562,19 @@ export function ResumeDetailDialog({
               <Wand2 className="h-4 w-4" />
               {isGenerating ? "Optimizing..." : "AI Rewrite"}
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden sm:flex gap-2 font-bold"
+              onClick={() => setShowSanitizerDialog(true)}
+              disabled={!displayResume}
+            >
+              <FileSearch className="h-4 w-4" />
+              Sanitizer
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
               className="hidden sm:flex gap-2 font-bold"
               onClick={handleDownloadFile}
               disabled={!displayResume}
@@ -1021,6 +1033,13 @@ export function ResumeDetailDialog({
           )}
         </div>
       </DialogContent>
+
+      {/* Sanitizer Dialog */}
+      <SanitizedVersionDialog
+        resumeId={resumeId}
+        open={showSanitizerDialog}
+        onOpenChange={setShowSanitizerDialog}
+      />
     </Dialog>
   );
 }
