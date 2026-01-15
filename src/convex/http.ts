@@ -2,6 +2,7 @@ import { httpRouter } from "convex/server";
 import { handleWebhook } from "./billing";
 import { httpAction } from "./_generated/server";
 import { Webhook } from "svix";
+import { generateSitemap } from "./seo/sitemap";
 
 const http = httpRouter();
 
@@ -108,6 +109,13 @@ http.route({
       });
     }
   }),
+});
+
+// Dynamic sitemap.xml for SEO
+http.route({
+  path: "/sitemap.xml",
+  method: "GET",
+  handler: generateSitemap,
 });
 
 export default http;

@@ -69,6 +69,7 @@ import type * as resumes from "../resumes.js";
 import type * as retargetingEmail from "../retargetingEmail.js";
 import type * as retargetingHelpers from "../retargetingHelpers.js";
 import type * as seedBlog from "../seedBlog.js";
+import type * as seo_sitemap from "../seo/sitemap.js";
 import type * as sprintExpiration from "../sprintExpiration.js";
 import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
@@ -145,6 +146,7 @@ declare const fullApi: ApiFromModules<{
   retargetingEmail: typeof retargetingEmail;
   retargetingHelpers: typeof retargetingHelpers;
   seedBlog: typeof seedBlog;
+  "seo/sitemap": typeof seo_sitemap;
   sprintExpiration: typeof sprintExpiration;
   testEmail: typeof testEmail;
   testing: typeof testing;
