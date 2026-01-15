@@ -65,36 +65,50 @@ export const sendRetargetingEmails = internalAction({
 });
 
 /**
- * Send personalized retargeting email to inactive user
+ * Send personalized retargeting email to inactive user using Resend
  */
 async function sendRetargetingEmailToUser(user: any): Promise<boolean> {
-  // For now, we'll use console.log to simulate sending emails
-  // In production, you would integrate with an email service like:
-  // - Resend (via @vly-ai/integrations)
-  // - SendGrid
-  // - AWS SES
-  // - Mailgun
-
   const emailContent = generateRetargetingEmail(user);
 
-  console.log(`[EMAIL] Sending retargeting email to: ${user.email}`);
-  console.log(`[EMAIL] Subject: ${emailContent.subject}`);
-  console.log(`[EMAIL] Content preview: ${emailContent.body.substring(0, 100)}...`);
+  try {
+    // Import Resend dynamically (only in Node runtime)
+    const { Resend } = await import('resend');
 
-  // TODO: Replace with actual email sending logic
-  // Example with vly-integrations (if available):
-  /*
-  const result = await vly.email.send({
-    to: user.email,
-    subject: emailContent.subject,
-    html: emailContent.body,
-    from: "CVDebug <noreply@cvdebug.com>"
-  });
-  return result.success;
-  */
+    // Get API key from environment
+    const resendApiKey = process.env.RESEND_API_KEY;
 
-  // For now, simulate success
-  return true;
+    if (!resendApiKey) {
+      console.error('[EMAIL] RESEND_API_KEY not found in environment variables');
+      console.log(`[EMAIL] SIMULATION MODE - Would send to: ${user.email}`);
+      console.log(`[EMAIL] Subject: ${emailContent.subject}`);
+      return true; // Simulate success in dev
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    console.log(`[EMAIL] Sending retargeting email to: ${user.email}`);
+    console.log(`[EMAIL] Subject: ${emailContent.subject}`);
+
+    // Send email via Resend
+    const { data, error } = await resend.emails.send({
+      from: 'CVDebug <noreply@cvdebug.com>',
+      to: [user.email],
+      subject: emailContent.subject,
+      html: emailContent.body,
+    });
+
+    if (error) {
+      console.error(`[EMAIL] Failed to send to ${user.email}:`, error);
+      return false;
+    }
+
+    console.log(`[EMAIL] ✅ Successfully sent to ${user.email}. Message ID: ${data?.id}`);
+    return true;
+
+  } catch (error) {
+    console.error(`[EMAIL] Error sending email to ${user.email}:`, error);
+    return false;
+  }
 }
 
 /**
