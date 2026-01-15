@@ -185,8 +185,12 @@ export function ResumeDetailDialog({
 
     try {
       await applyRewriteToResume({ id: displayResume._id });
+
+      // Switch to Robot View to show updated text
+      setActiveTab("robot");
+
       toast.success("✅ Rewrite applied to your CV!", {
-        description: "Your original CV text has been updated with the AI-optimized version."
+        description: "Check the 'Robot View' tab to see your optimized CV text."
       });
     } catch (error: any) {
       console.error(error);
@@ -759,6 +763,14 @@ export function ResumeDetailDialog({
                           <span>Fluff</span>
                         </span>
                       </TabsTrigger>
+                      {displayResume?.rewrittenText && (
+                        <TabsTrigger value="rewritten" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#22C55E] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                          <span className="flex items-center gap-1.5">
+                            <Wand2 className="h-4 w-4" />
+                            <span>AI Rewrite</span>
+                          </span>
+                        </TabsTrigger>
+                      )}
                       <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Eye className="h-4 w-4" />
@@ -1010,6 +1022,49 @@ export function ResumeDetailDialog({
                       <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Raw Text View</h2>
                       <div className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4 text-xs text-[#475569] font-mono leading-relaxed whitespace-pre-wrap">
                         {displayResume?.ocrText || "No text extracted."}
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="rewritten" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
+                  <div className="space-y-8">
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-6 border-2 border-green-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                      <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                          <Wand2 className="h-6 w-6 text-green-600" />
+                          AI-Optimized Resume
+                        </h2>
+                        <Button
+                          onClick={handleApplyRewrite}
+                          className="bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold"
+                        >
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Apply to CV
+                        </Button>
+                      </div>
+
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <div>
+                            <h4 className="font-semibold text-amber-800 mb-1">Preview Mode</h4>
+                            <p className="text-sm text-amber-700">
+                              This is your AI-optimized resume. Review it carefully and click "Apply to CV" to replace your original text with this version.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white rounded-lg border border-green-200 p-4 max-h-[600px] overflow-y-auto custom-scrollbar shadow-inner">
+                        <pre className="text-[#0F172A] font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                          {displayResume?.rewrittenText || "No rewrite available."}
+                        </pre>
+                      </div>
+
+                      <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
+                        <span>{displayResume?.rewrittenText?.length || 0} characters</span>
+                        <span className="text-green-600 font-semibold">✨ Optimized with ML + AI</span>
                       </div>
                     </div>
                   </div>
