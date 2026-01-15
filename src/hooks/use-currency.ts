@@ -3,27 +3,27 @@ import { useState, useEffect } from "react";
 export interface CurrencyInfo {
   code: string; // EUR, USD, GBP, etc.
   symbol: string; // €, $, £, etc.
-  rate: number; // Conversion rate from USD
+  rate: number; // Conversion rate from EUR
   country: string; // Country code
 }
 
-// Base prices in USD
+// Base prices in EUR (€)
 const BASE_PRICES = {
   single_scan: 9.99,
   interview_sprint: 19.99,
 };
 
-// Currency conversion rates (from USD)
+// Currency conversion rates (from EUR)
 const CURRENCY_RATES: Record<string, { symbol: string; rate: number }> = {
-  EUR: { symbol: "€", rate: 0.92 }, // 1 USD = 0.92 EUR
-  USD: { symbol: "$", rate: 1.0 },
-  GBP: { symbol: "£", rate: 0.79 }, // 1 USD = 0.79 GBP
-  CAD: { symbol: "C$", rate: 1.35 }, // 1 USD = 1.35 CAD
-  AUD: { symbol: "A$", rate: 1.52 }, // 1 USD = 1.52 AUD
-  JPY: { symbol: "¥", rate: 149.5 }, // 1 USD = 149.5 JPY
-  INR: { symbol: "₹", rate: 83.2 }, // 1 USD = 83.2 INR
-  BRL: { symbol: "R$", rate: 4.92 }, // 1 USD = 4.92 BRL
-  MXN: { symbol: "MX$", rate: 17.1 }, // 1 USD = 17.1 MXN
+  EUR: { symbol: "€", rate: 1.0 }, // Base currency
+  USD: { symbol: "$", rate: 1.09 }, // 1 EUR = 1.09 USD
+  GBP: { symbol: "£", rate: 0.86 }, // 1 EUR = 0.86 GBP
+  CAD: { symbol: "C$", rate: 1.47 }, // 1 EUR = 1.47 CAD
+  AUD: { symbol: "A$", rate: 1.65 }, // 1 EUR = 1.65 AUD
+  JPY: { symbol: "¥", rate: 163.0 }, // 1 EUR = 163 JPY
+  INR: { symbol: "₹", rate: 90.5 }, // 1 EUR = 90.5 INR
+  BRL: { symbol: "R$", rate: 5.35 }, // 1 EUR = 5.35 BRL
+  MXN: { symbol: "MX$", rate: 18.6 }, // 1 EUR = 18.6 MXN
 };
 
 // EU countries
@@ -47,10 +47,10 @@ const COUNTRY_CURRENCY_MAP: Record<string, string> = {
 
 export function useCurrency() {
   const [currencyInfo, setCurrencyInfo] = useState<CurrencyInfo>({
-    code: "USD",
-    symbol: "$",
+    code: "EUR",
+    symbol: "€",
     rate: 1.0,
-    country: "US",
+    country: "ES",
   });
 
   useEffect(() => {
@@ -59,9 +59,9 @@ export function useCurrency() {
         // Try to get user's country from IP geolocation
         const response = await fetch("https://ipapi.co/json/");
         const data = await response.json();
-        const countryCode = data.country_code || "US";
+        const countryCode = data.country_code || "ES"; // Default to Spain (EUR)
 
-        let currencyCode = "USD";
+        let currencyCode = "EUR"; // Default to EUR
 
         // Check if EU country
         if (EU_COUNTRIES.includes(countryCode)) {
@@ -70,7 +70,7 @@ export function useCurrency() {
           currencyCode = COUNTRY_CURRENCY_MAP[countryCode];
         }
 
-        const currencyData = CURRENCY_RATES[currencyCode] || CURRENCY_RATES.USD;
+        const currencyData = CURRENCY_RATES[currencyCode] || CURRENCY_RATES.EUR;
 
         setCurrencyInfo({
           code: currencyCode,
@@ -79,16 +79,16 @@ export function useCurrency() {
           country: countryCode,
         });
       } catch (error) {
-        console.log("Could not detect currency, defaulting to USD");
-        // Keep default USD
+        console.log("Could not detect currency, defaulting to EUR");
+        // Keep default EUR
       }
     }
 
     detectCurrency();
   }, []);
 
-  const convertPrice = (usdPrice: number): string => {
-    const converted = usdPrice * currencyInfo.rate;
+  const convertPrice = (eurPrice: number): string => {
+    const converted = eurPrice * currencyInfo.rate;
 
     // Format based on currency
     if (currencyInfo.code === "JPY") {
@@ -99,8 +99,8 @@ export function useCurrency() {
   };
 
   const formatPrice = (priceKey: keyof typeof BASE_PRICES): string => {
-    const usdPrice = BASE_PRICES[priceKey];
-    const converted = convertPrice(usdPrice);
+    const eurPrice = BASE_PRICES[priceKey];
+    const converted = convertPrice(eurPrice);
     return `${currencyInfo.symbol}${converted}`;
   };
 
