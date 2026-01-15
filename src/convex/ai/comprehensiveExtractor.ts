@@ -541,56 +541,123 @@ function extractAchievements(text: string) {
 function extractSkills(text: string) {
   const lowerText = text.toLowerCase();
 
-  // Technical skills
+  // Technical skills - Context-aware detection with false positive prevention
   const technicalKeywords = [
-    'javascript', 'python', 'java', 'typescript', 'react', 'angular', 'vue', 'node.js',
-    'sql', 'nosql', 'mongodb', 'postgresql', 'redis', 'aws', 'azure', 'gcp',
-    'docker', 'kubernetes', 'terraform', 'jenkins', 'git', 'ci/cd',
-    'machine learning', 'deep learning', 'ai', 'data science', 'nlp'
+    // Programming Languages
+    { skill: 'javascript', aliases: ['js', 'javascript', 'ecmascript'], context: ['developer', 'engineer', 'programming'] },
+    { skill: 'typescript', aliases: ['ts', 'typescript'], context: ['developer', 'engineer'] },
+    { skill: 'python', aliases: ['python', 'python3'], context: ['developer', 'data', 'ml', 'engineer'], exclude: ['snake', 'monty'] },
+    { skill: 'java', aliases: ['java'], context: ['developer', 'engineer', 'backend'], exclude: ['javascript', 'coffee'] },
+    { skill: 'c++', aliases: ['c++', 'cpp'], context: ['developer', 'engineer'] },
+    { skill: 'c#', aliases: ['c#', 'csharp'], context: ['developer', 'engineer', '.net'] },
+    { skill: 'go', aliases: ['golang', 'go'], context: ['developer', 'engineer', 'backend'] },
+    { skill: 'rust', aliases: ['rust'], context: ['developer', 'engineer', 'systems'] },
+    { skill: 'php', aliases: ['php'], context: ['developer', 'web', 'backend'] },
+    { skill: 'ruby', aliases: ['ruby'], context: ['developer', 'rails'] },
+    { skill: 'swift', aliases: ['swift'], context: ['ios', 'developer', 'mobile'] },
+    { skill: 'kotlin', aliases: ['kotlin'], context: ['android', 'developer', 'mobile'] },
+    // Frontend Frameworks
+    { skill: 'react', aliases: ['react', 'react.js', 'reactjs'], context: ['frontend', 'web', 'developer'] },
+    { skill: 'angular', aliases: ['angular', 'angularjs'], context: ['frontend', 'web', 'developer'] },
+    { skill: 'vue', aliases: ['vue', 'vue.js', 'vuejs'], context: ['frontend', 'web', 'developer'] },
+    { skill: 'svelte', aliases: ['svelte'], context: ['frontend', 'web', 'developer'] },
+    { skill: 'next.js', aliases: ['next.js', 'nextjs', 'next'], context: ['react', 'frontend', 'web'] },
+    // Backend Frameworks
+    { skill: 'node.js', aliases: ['node.js', 'nodejs', 'node'], context: ['backend', 'javascript', 'developer'] },
+    { skill: 'express', aliases: ['express', 'express.js'], context: ['node', 'backend', 'api'] },
+    { skill: 'django', aliases: ['django'], context: ['python', 'backend', 'web'] },
+    { skill: 'flask', aliases: ['flask'], context: ['python', 'backend', 'api'] },
+    { skill: 'spring', aliases: ['spring', 'spring boot'], context: ['java', 'backend'] },
+    { skill: 'laravel', aliases: ['laravel'], context: ['php', 'backend'] },
+    // Databases
+    { skill: 'sql', aliases: ['sql'], context: ['database', 'data', 'query'] },
+    { skill: 'nosql', aliases: ['nosql'], context: ['database', 'mongodb', 'data'] },
+    { skill: 'mongodb', aliases: ['mongodb', 'mongo'], context: ['database', 'nosql', 'backend'] },
+    { skill: 'postgresql', aliases: ['postgresql', 'postgres'], context: ['database', 'sql', 'backend'] },
+    { skill: 'mysql', aliases: ['mysql'], context: ['database', 'sql'] },
+    { skill: 'redis', aliases: ['redis'], context: ['cache', 'database', 'backend'] },
+    { skill: 'elasticsearch', aliases: ['elasticsearch', 'elastic'], context: ['search', 'database'] },
+    { skill: 'dynamodb', aliases: ['dynamodb'], context: ['aws', 'database', 'nosql'] },
+    // Cloud Platforms
+    { skill: 'aws', aliases: ['aws', 'amazon web services'], context: ['cloud', 'devops', 'infrastructure'] },
+    { skill: 'azure', aliases: ['azure', 'microsoft azure'], context: ['cloud', 'devops', 'microsoft'] },
+    { skill: 'gcp', aliases: ['gcp', 'google cloud'], context: ['cloud', 'devops', 'google'] },
+    // DevOps Tools
+    { skill: 'docker', aliases: ['docker'], context: ['devops', 'container', 'deployment'] },
+    { skill: 'kubernetes', aliases: ['kubernetes', 'k8s'], context: ['devops', 'container', 'orchestration'] },
+    { skill: 'terraform', aliases: ['terraform'], context: ['devops', 'infrastructure', 'iac'] },
+    { skill: 'jenkins', aliases: ['jenkins'], context: ['ci/cd', 'devops', 'automation'] },
+    { skill: 'git', aliases: ['git'], context: ['version control', 'github', 'gitlab'] },
+    // AI/ML
+    { skill: 'machine learning', aliases: ['machine learning', 'ml'], context: ['ai', 'data', 'model'] },
+    { skill: 'deep learning', aliases: ['deep learning', 'dl'], context: ['ai', 'neural', 'model'] },
+    { skill: 'tensorflow', aliases: ['tensorflow'], context: ['ml', 'ai', 'deep learning'] },
+    { skill: 'pytorch', aliases: ['pytorch'], context: ['ml', 'ai', 'deep learning'] },
+    { skill: 'nlp', aliases: ['nlp', 'natural language processing'], context: ['ai', 'ml', 'text'] }
   ];
 
-  const technical = technicalKeywords.filter(skill => lowerText.includes(skill));
+  const technical: string[] = [];
+  for (const { skill, aliases, context, exclude } of technicalKeywords) {
+    // Check if any alias is present
+    const hasSkill = aliases.some(alias => {
+      const regex = new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      return regex.test(lowerText);
+    });
 
-  // Tools
+    if (hasSkill) {
+      // Validate with context (at least one context keyword should be present)
+      const hasContext = context.length === 0 || context.some(ctx => lowerText.includes(ctx.toLowerCase()));
+
+      // Check for exclusions (false positive prevention)
+      const hasExclusion = exclude && exclude.some(exc => lowerText.includes(exc.toLowerCase()));
+
+      if (hasContext && !hasExclusion && !technical.includes(skill)) {
+        technical.push(skill);
+      }
+    }
+  }
+
+  // Tools - Enhanced detection
   const toolsKeywords = [
     'jira', 'confluence', 'figma', 'sketch', 'photoshop', 'illustrator',
-    'tableau', 'power bi', 'excel', 'slack', 'notion', 'linear'
+    'tableau', 'power bi', 'excel', 'slack', 'notion', 'linear',
+    'trello', 'asana', 'monday.com', 'miro', 'invision', 'adobe xd'
   ];
 
-  const tools = toolsKeywords.filter(tool => lowerText.includes(tool));
+  const tools = toolsKeywords.filter(tool => {
+    const regex = new RegExp(`\\b${tool.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    return regex.test(lowerText);
+  });
 
-  // Programming languages
-  const languagesKeywords = [
-    'javascript', 'python', 'java', 'c++', 'c#', 'go', 'rust', 'php', 'ruby', 'swift', 'kotlin'
-  ];
+  // Programming languages (deduplicated from technical)
+  const languages = technical.filter(skill =>
+    ['javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'go', 'rust', 'php', 'ruby', 'swift', 'kotlin'].includes(skill)
+  );
 
-  const languages = languagesKeywords.filter(lang => lowerText.includes(lang));
-
-  // Soft skills
+  // Soft skills - Enhanced list
   const softSkillsKeywords = [
     'leadership', 'communication', 'teamwork', 'problem solving', 'analytical',
-    'project management', 'stakeholder management', 'mentoring', 'collaboration'
+    'project management', 'stakeholder management', 'mentoring', 'collaboration',
+    'critical thinking', 'time management', 'adaptability', 'creativity',
+    'public speaking', 'negotiation', 'conflict resolution', 'emotional intelligence'
   ];
 
   const softSkills = softSkillsKeywords.filter(skill => lowerText.includes(skill));
 
-  // Frameworks
-  const frameworksKeywords = [
-    'react', 'angular', 'vue', 'express', 'django', 'flask', 'spring', 'laravel'
-  ];
+  // Frameworks (deduplicated from technical)
+  const frameworks = technical.filter(skill =>
+    ['react', 'angular', 'vue', 'svelte', 'next.js', 'express', 'django', 'flask', 'spring', 'laravel'].includes(skill)
+  );
 
-  const frameworks = frameworksKeywords.filter(fw => lowerText.includes(fw));
+  // Databases (deduplicated from technical)
+  const databases = technical.filter(skill =>
+    ['postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch', 'dynamodb', 'sql', 'nosql'].includes(skill)
+  );
 
-  // Databases
-  const databasesKeywords = [
-    'postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch', 'dynamodb', 'cassandra'
-  ];
-
-  const databases = databasesKeywords.filter(db => lowerText.includes(db));
-
-  // Cloud
-  const cloudKeywords = ['aws', 'azure', 'gcp', 'heroku', 'digitalocean', 'vercel', 'netlify'];
-  const cloud = cloudKeywords.filter(c => lowerText.includes(c));
+  // Cloud (deduplicated from technical)
+  const cloud = technical.filter(skill =>
+    ['aws', 'azure', 'gcp', 'heroku', 'digitalocean', 'vercel', 'netlify'].includes(skill)
+  );
 
   return {
     technical,
@@ -605,42 +672,172 @@ function extractSkills(text: string) {
 
 function extractCertifications(text: string) {
   const certifications: string[] = [];
-  const certPatterns = [
-    /(?:certified|certification)[:\s]+([a-zA-Z0-9\s\-]+)/gi,
-    /\b(aws certified|azure certified|google cloud certified|pmp|cissp|ceh|comptia)/gi
+
+  // Known certification patterns - Industry standard certifications
+  const knownCertifications = [
+    // AWS Certifications
+    { pattern: /aws\s+certified\s+solutions\s+architect/gi, name: 'AWS Certified Solutions Architect' },
+    { pattern: /aws\s+certified\s+developer/gi, name: 'AWS Certified Developer' },
+    { pattern: /aws\s+certified\s+sysops/gi, name: 'AWS Certified SysOps Administrator' },
+    { pattern: /aws\s+certified\s+devops/gi, name: 'AWS Certified DevOps Engineer' },
+    { pattern: /aws\s+certified\s+cloud\s+practitioner/gi, name: 'AWS Certified Cloud Practitioner' },
+    { pattern: /aws\s+certified\s+security/gi, name: 'AWS Certified Security Specialty' },
+    { pattern: /aws\s+certified\s+machine\s+learning/gi, name: 'AWS Certified Machine Learning Specialty' },
+
+    // Azure Certifications
+    { pattern: /azure\s+(?:solutions\s+)?architect/gi, name: 'Microsoft Azure Solutions Architect' },
+    { pattern: /azure\s+developer/gi, name: 'Microsoft Azure Developer' },
+    { pattern: /azure\s+administrator/gi, name: 'Microsoft Azure Administrator' },
+    { pattern: /azure\s+devops/gi, name: 'Microsoft Azure DevOps Engineer' },
+    { pattern: /azure\s+fundamentals/gi, name: 'Microsoft Azure Fundamentals' },
+    { pattern: /az-\d{3}/gi, name: 'Microsoft Azure Certification' },
+
+    // Google Cloud Certifications
+    { pattern: /google\s+cloud\s+(?:certified\s+)?(?:professional\s+)?architect/gi, name: 'Google Cloud Professional Architect' },
+    { pattern: /google\s+cloud\s+(?:certified\s+)?(?:professional\s+)?developer/gi, name: 'Google Cloud Professional Developer' },
+    { pattern: /google\s+cloud\s+(?:certified\s+)?(?:professional\s+)?engineer/gi, name: 'Google Cloud Professional Engineer' },
+    { pattern: /gcp\s+(?:certified|professional)/gi, name: 'Google Cloud Platform Certification' },
+
+    // Project Management
+    { pattern: /\bpmp\b/gi, name: 'Project Management Professional (PMP)' },
+    { pattern: /capm\b/gi, name: 'Certified Associate in Project Management (CAPM)' },
+    { pattern: /prince2/gi, name: 'PRINCE2' },
+    { pattern: /scrum\s+master/gi, name: 'Certified Scrum Master (CSM)' },
+    { pattern: /product\s+owner/gi, name: 'Certified Scrum Product Owner (CSPO)' },
+    { pattern: /safe\s+(?:agilist|certified)/gi, name: 'SAFe Certified' },
+
+    // Security Certifications
+    { pattern: /\bcissp\b/gi, name: 'Certified Information Systems Security Professional (CISSP)' },
+    { pattern: /\bceh\b/gi, name: 'Certified Ethical Hacker (CEH)' },
+    { pattern: /\bcism\b/gi, name: 'Certified Information Security Manager (CISM)' },
+    { pattern: /\bcisa\b/gi, name: 'Certified Information Systems Auditor (CISA)' },
+    { pattern: /comptia\s+security\+/gi, name: 'CompTIA Security+' },
+    { pattern: /comptia\s+network\+/gi, name: 'CompTIA Network+' },
+    { pattern: /comptia\s+a\+/gi, name: 'CompTIA A+' },
+
+    // Developer Certifications
+    { pattern: /oracle\s+certified\s+(?:professional|associate)/gi, name: 'Oracle Certified Professional' },
+    { pattern: /java\s+certified/gi, name: 'Java Certification' },
+    { pattern: /microsoft\s+certified\s+(?:solutions\s+)?(?:developer|associate)/gi, name: 'Microsoft Certified Developer' },
+    { pattern: /red\s+hat\s+certified/gi, name: 'Red Hat Certified' },
+
+    // Data & Analytics
+    { pattern: /tableau\s+(?:desktop\s+)?(?:certified|specialist)/gi, name: 'Tableau Certification' },
+    { pattern: /power\s+bi\s+certified/gi, name: 'Microsoft Power BI Certification' },
+    { pattern: /google\s+analytics\s+(?:certified|qualification)/gi, name: 'Google Analytics Certification' },
+    { pattern: /cloudera\s+certified/gi, name: 'Cloudera Certification' },
+
+    // Specialized
+    { pattern: /kubernetes\s+(?:certified|certification)/gi, name: 'Kubernetes Certification' },
+    { pattern: /\bcka\b/gi, name: 'Certified Kubernetes Administrator (CKA)' },
+    { pattern: /\bckad\b/gi, name: 'Certified Kubernetes Application Developer (CKAD)' },
+    { pattern: /docker\s+certified/gi, name: 'Docker Certified Associate' },
+    { pattern: /salesforce\s+certified/gi, name: 'Salesforce Certification' },
+    { pattern: /adobe\s+certified/gi, name: 'Adobe Certification' },
+    { pattern: /hubspot\s+certified/gi, name: 'HubSpot Certification' },
+
+    // Professional
+    { pattern: /\bcpa\b/gi, name: 'Certified Public Accountant (CPA)' },
+    { pattern: /six\s+sigma/gi, name: 'Six Sigma Certification' },
+    { pattern: /itil\s+(?:v\d+|foundation|expert)/gi, name: 'ITIL Certification' },
+    { pattern: /togaf/gi, name: 'TOGAF Certification' }
   ];
 
-  for (const pattern of certPatterns) {
+  // Check for known certifications
+  for (const { pattern, name } of knownCertifications) {
+    const matches = [...text.matchAll(pattern)];
+    if (matches.length > 0 && !certifications.includes(name)) {
+      certifications.push(name);
+    }
+  }
+
+  // Generic certification patterns (fallback for unknown certifications)
+  const genericPatterns = [
+    /(?:certified|certification)[:\s]+([A-Z][a-zA-Z0-9\s\-]+(?:Professional|Associate|Expert|Specialist|Administrator|Developer|Engineer))/gi,
+    /([A-Z][a-zA-Z0-9\s]+)\s+(?:certified|certification)/gi
+  ];
+
+  for (const pattern of genericPatterns) {
     const matches = [...text.matchAll(pattern)];
     for (const match of matches) {
-      const cert = match[1] || match[0];
-      if (cert.length > 3 && cert.length < 100) {
-        certifications.push(cert.trim());
+      const cert = (match[1] || match[0]).trim();
+
+      // Validate certification name
+      if (isValidCertification(cert) && !certifications.includes(cert)) {
+        certifications.push(cert);
       }
     }
   }
 
-  return [...new Set(certifications)].slice(0, 10);
+  return [...new Set(certifications)].slice(0, 15);
 }
 
 function extractAwards(text: string) {
   const awards: string[] = [];
-  const awardPatterns = [
-    /(?:awarded|award|recognition)[:\s]+([a-zA-Z0-9\s\-]+)/gi,
-    /\b(employee of the (?:month|year)|best performer|top performer|excellence award)/gi
+
+  // Known award patterns
+  const knownAwardPatterns = [
+    // Employee awards
+    { pattern: /employee\s+of\s+the\s+(?:month|quarter|year)/gi, extract: true },
+    { pattern: /(?:best|top)\s+performer/gi, extract: true },
+    { pattern: /excellence\s+award/gi, extract: true },
+    { pattern: /outstanding\s+(?:performance|achievement|contribution)/gi, extract: true },
+    { pattern: /leadership\s+award/gi, extract: true },
+    { pattern: /innovation\s+award/gi, extract: true },
+    { pattern: /team\s+player\s+award/gi, extract: true },
+    { pattern: /rookie\s+of\s+the\s+year/gi, extract: true },
+    { pattern: /rising\s+star\s+award/gi, extract: true },
+    { pattern: /president'?s\s+(?:club|award)/gi, extract: true },
+
+    // Academic honors
+    { pattern: /dean'?s\s+list/gi, extract: true },
+    { pattern: /honor\s+roll/gi, extract: true },
+    { pattern: /summa\s+cum\s+laude/gi, extract: true },
+    { pattern: /magna\s+cum\s+laude/gi, extract: true },
+    { pattern: /cum\s+laude/gi, extract: true },
+    { pattern: /academic\s+(?:excellence|achievement)/gi, extract: true },
+    { pattern: /valedictorian/gi, extract: true },
+    { pattern: /salutatorian/gi, extract: true },
+
+    // Professional recognition
+    { pattern: /\d{4}\s+(?:40\s+under\s+40|30\s+under\s+30)/gi, extract: true },
+    { pattern: /recognized\s+as\s+(?:top|leading)/gi, extract: true },
+    { pattern: /industry\s+award/gi, extract: true },
+    { pattern: /patent\s+(?:award|granted)/gi, extract: true }
   ];
 
-  for (const pattern of awardPatterns) {
+  // Check for known awards
+  for (const { pattern } of knownAwardPatterns) {
     const matches = [...text.matchAll(pattern)];
     for (const match of matches) {
-      const award = match[1] || match[0];
-      if (award.length > 5 && award.length < 100) {
-        awards.push(award.trim());
+      const award = match[0].trim();
+      // Capitalize properly
+      const formattedAward = award.charAt(0).toUpperCase() + award.slice(1).toLowerCase();
+      if (!awards.includes(formattedAward) && awards.length < 15) {
+        awards.push(formattedAward);
       }
     }
   }
 
-  return [...new Set(awards)].slice(0, 10);
+  // Generic award patterns (fallback)
+  const genericPatterns = [
+    /(?:awarded|award|received|won)[:\s]+([A-Z][a-zA-Z0-9\s\-']+(?:Award|Recognition|Honor|Prize|Medal))/gi,
+    /([A-Z][a-zA-Z0-9\s\-']+(?:Award|Recognition|Honor|Prize|Medal))/gi
+  ];
+
+  for (const pattern of genericPatterns) {
+    const matches = [...text.matchAll(pattern)];
+    for (const match of matches) {
+      const award = (match[1] || match[0]).trim();
+
+      // Validate award name
+      if (isValidAward(award) && !awards.includes(award) && awards.length < 15) {
+        awards.push(award);
+      }
+    }
+  }
+
+  return [...new Set(awards)].slice(0, 15);
 }
 
 function extractSpokenLanguages(text: string) {
@@ -1067,4 +1264,69 @@ function isValidUserScale(scale: string): boolean {
 
   // Validate value is reasonable (1 - 10 billion users)
   return value >= 1 && value <= 10000000000;
+}
+
+/**
+ * Validate certification name
+ */
+function isValidCertification(cert: string): boolean {
+  if (!cert || cert.length < 5 || cert.length > 150) return false;
+
+  // Must contain letters
+  if (!/[a-zA-Z]/.test(cert)) return false;
+
+  // Filter out invalid certification keywords
+  const invalidKeywords = [
+    'certification', 'certified', 'certificate', 'course', 'training',
+    'education', 'degree', 'skills', 'experience', 'summary'
+  ];
+
+  const lowerCert = cert.toLowerCase().trim();
+
+  // Reject if it's just a keyword without actual cert name
+  if (invalidKeywords.includes(lowerCert)) return false;
+
+  // Reject if too short after removing common words
+  const cleanedCert = lowerCert
+    .replace(/\b(certified|certification|certificate)\b/gi, '')
+    .trim();
+
+  if (cleanedCert.length < 3) return false;
+
+  // Should have reasonable word count (1-10 words)
+  const wordCount = cert.split(/\s+/).length;
+  if (wordCount < 1 || wordCount > 10) return false;
+
+  return true;
+}
+
+/**
+ * Validate award name
+ */
+function isValidAward(award: string): boolean {
+  if (!award || award.length < 5 || award.length > 150) return false;
+
+  // Must contain letters
+  if (!/[a-zA-Z]/.test(award)) return false;
+
+  // Filter out invalid award keywords
+  const invalidKeywords = [
+    'award', 'awards', 'recognition', 'honor', 'honors',
+    'achievement', 'achievements', 'summary', 'skills'
+  ];
+
+  const lowerAward = award.toLowerCase().trim();
+
+  // Reject if it's just a keyword without actual award name
+  if (invalidKeywords.includes(lowerAward)) return false;
+
+  // Reject if too many numbers (likely not an award)
+  const digitCount = (award.match(/\d/g) || []).length;
+  if (digitCount > award.length * 0.3) return false;
+
+  // Should have reasonable word count (2-15 words)
+  const wordCount = award.split(/\s+/).length;
+  if (wordCount < 2 || wordCount > 15) return false;
+
+  return true;
 }
