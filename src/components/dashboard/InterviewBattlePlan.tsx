@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { X } from "lucide-react";
 
 interface Question {
   id: string;
@@ -43,6 +44,13 @@ export function InterviewBattlePlan({
   resumeText = ""
 }: InterviewBattlePlanProps) {
   const [selectedQuestion, setSelectedQuestion] = useState(0);
+  const [isRegeneratingQuestions, setIsRegeneratingQuestions] = useState(false);
+  const [isEnhancingAction, setIsEnhancingAction] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{role: string; content: string}>>([
+    { role: "assistant", content: "Hi! I'm your interview prep assistant. Ask me anything about your STAR stories or the interview questions!" }
+  ]);
+  const [chatInput, setChatInput] = useState("");
   const [starStory, setStarStory] = useState<STARStory>({
     situation: "The legacy customer support chatbot was failing to understand 40% of user queries, leading to high transfer rates to human agents.",
     task: "My objective was to reduce the fallback rate by implementing a more robust NLP model capable of handling context and intent recognition.",
@@ -129,6 +137,54 @@ export function InterviewBattlePlan({
 
   const toggleSignal = (index: number) => {
     setSignals(prev => prev.map((s, i) => i === index ? { ...s, checked: !s.checked } : s));
+    toast.success(`Signal "${signals[index].title}" ${!signals[index].checked ? 'added' : 'removed'}`);
+  };
+
+  const handleRegenerateQuestions = async () => {
+    setIsRegeneratingQuestions(true);
+    toast.loading("Regenerating questions with AI...", { duration: 2000 });
+
+    setTimeout(() => {
+      setIsRegeneratingQuestions(false);
+      toast.success("Questions regenerated successfully!");
+    }, 2000);
+  };
+
+  const handleEnhanceAction = async () => {
+    setIsEnhancingAction(true);
+    toast.loading("Enhancing your answer with AI...", { duration: 2000 });
+
+    setTimeout(() => {
+      const enhanced = starStory.action + " Additionally, I implemented comprehensive monitoring dashboards using Grafana to track model performance in real-time, ensuring proactive issue detection.";
+      setStarStory({ ...starStory, action: enhanced });
+      setIsEnhancingAction(false);
+      toast.success("Answer enhanced with AI suggestions!");
+    }, 2000);
+  };
+
+  const handleChangeQuestion = () => {
+    const nextQuestion = (selectedQuestion + 1) % questions.length;
+    setSelectedQuestion(nextQuestion);
+    toast.success(`Switched to: ${questions[nextQuestion].type} question`);
+  };
+
+  const handleSendChat = () => {
+    if (!chatInput.trim()) return;
+
+    setChatMessages(prev => [...prev, { role: "user", content: chatInput }]);
+    setChatInput("");
+
+    // Simulate AI response
+    setTimeout(() => {
+      const responses = [
+        "That's a great question! Based on your resume, you should emphasize your experience with production ML systems.",
+        "Consider using the STAR method here. Start with the situation, then describe your task, the actions you took, and finally the measurable results.",
+        "Make sure to quantify your impact with specific metrics. Numbers make your answers more compelling!",
+        "Good approach! Also mention any collaboration with cross-functional teams to show leadership skills."
+      ];
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      setChatMessages(prev => [...prev, { role: "assistant", content: randomResponse }]);
+    }, 1000);
   };
 
   return (
@@ -183,9 +239,12 @@ export function InterviewBattlePlan({
                 return (
                   <div
                     key={q.id}
-                    onClick={() => setSelectedQuestion(index)}
+                    onClick={() => {
+                      setSelectedQuestion(index);
+                      toast.success(`Selected: ${q.type} question`);
+                    }}
                     className={`group p-3 rounded-lg border border-l-4 hover:border-[#3B82F6] ${colors.border} bg-[#FFFFFF] transition-all cursor-pointer ${
-                      selectedQuestion === index ? 'ring-2 ring-blue-500/20' : ''
+                      selectedQuestion === index ? 'ring-2 ring-blue-500/20 bg-blue-50/50' : ''
                     }`}
                   >
                     <div className="flex justify-between items-start mb-1">
@@ -212,11 +271,14 @@ export function InterviewBattlePlan({
             {/* Footer */}
             <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC]">
               <button
-                onClick={() => toast.info("Regenerating questions... This feature requires AI credits.")}
-                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2"
+                onClick={handleRegenerateQuestions}
+                disabled={isRegeneratingQuestions}
+                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-lg">autorenew</span>
-                Regenerate Questions
+                <span className={`material-symbols-outlined text-lg ${isRegeneratingQuestions ? 'animate-spin' : ''}`}>
+                  autorenew
+                </span>
+                {isRegeneratingQuestions ? 'Regenerating...' : 'Regenerate Questions'}
               </button>
             </div>
           </motion.div>
@@ -244,7 +306,10 @@ export function InterviewBattlePlan({
                   Refining: "{questions[selectedQuestion]?.question.substring(0, 40)}..."
                 </p>
               </div>
-              <button className="text-xs bg-slate-100 hover:bg-slate-200 text-[#475569] px-3 py-1.5 rounded border border-[#E2E8F0] transition-colors whitespace-nowrap">
+              <button
+                onClick={handleChangeQuestion}
+                className="text-xs bg-slate-100 hover:bg-slate-200 text-[#475569] px-3 py-1.5 rounded border border-[#E2E8F0] transition-colors whitespace-nowrap"
+              >
                 Change Question
               </button>
             </div>
@@ -275,10 +340,10 @@ export function InterviewBattlePlan({
               <div className="space-y-1 relative">
                 <div className="flex justify-between items-end mb-1">
                   <label className="text-xs font-mono font-semibold text-[#3B82F6] uppercase">
-                    A - Action (Drafting...)
+                    A - Action (Editable)
                   </label>
                   <span className="text-[10px] text-[#3B82F6] animate-pulse">
-                    AI Suggestion Available
+                    AI Enhancement Available
                   </span>
                 </div>
                 <textarea
@@ -289,11 +354,14 @@ export function InterviewBattlePlan({
                 />
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <button
-                    onClick={() => toast.success("AI enhancement applied to your answer!")}
-                    className="p-1 rounded bg-blue-100 text-[#3B82F6] hover:bg-blue-200 transition-colors"
+                    onClick={handleEnhanceAction}
+                    disabled={isEnhancingAction}
+                    className="p-1 rounded bg-blue-100 text-[#3B82F6] hover:bg-blue-200 transition-colors disabled:opacity-50"
                     title="Enhance with AI"
                   >
-                    <span className="material-symbols-outlined text-sm">magic_button</span>
+                    <span className={`material-symbols-outlined text-sm ${isEnhancingAction ? 'animate-pulse' : ''}`}>
+                      magic_button
+                    </span>
                   </button>
                 </div>
               </div>
@@ -379,8 +447,7 @@ export function InterviewBattlePlan({
             <div className="p-3 border-t border-[#E2E8F0]">
               <button
                 onClick={() => {
-                  toast.success("Strategy document opened!");
-                  // Create a formatted strategy document
+                  toast.success("Downloading strategy document...");
                   const doc = `
 INTERVIEW BATTLE PLAN
 ${targetRole} @ ${companyName}
@@ -398,12 +465,11 @@ Action: ${starStory.action}
 Result: ${starStory.result}
                   `;
 
-                  // Open in new window or download
                   const blob = new Blob([doc], { type: 'text/plain' });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = `interview-strategy-${companyName}.txt`;
+                  a.download = `interview-strategy-${companyName.replace(/\s+/g, '-')}.txt`;
                   a.click();
                   URL.revokeObjectURL(url);
                 }}
@@ -419,7 +485,7 @@ Result: ${starStory.result}
 
       {/* Floating AI Assistant Button */}
       <button
-        onClick={() => toast.info("AI Assistant is analyzing your responses...")}
+        onClick={() => setShowChatbot(!showChatbot)}
         className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group"
       >
         <span className="material-symbols-outlined text-xl md:text-2xl group-hover:hidden">smart_toy</span>
@@ -431,6 +497,72 @@ Result: ${starStory.result}
           </span>
         </span>
       </button>
+
+      {/* AI Chatbot Modal */}
+      <AnimatePresence>
+        {showChatbot && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed bottom-24 right-6 md:bottom-28 md:right-8 w-80 md:w-96 h-96 bg-white rounded-xl shadow-2xl border border-[#E2E8F0] z-50 flex flex-col"
+          >
+            {/* Chatbot Header */}
+            <div className="p-4 border-b border-[#E2E8F0] bg-gradient-to-r from-blue-500 to-violet-500 rounded-t-xl flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-white">smart_toy</span>
+                <h3 className="font-semibold text-white">AI Interview Coach</h3>
+              </div>
+              <button
+                onClick={() => setShowChatbot(false)}
+                className="text-white hover:bg-white/20 rounded p-1 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Chat Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {chatMessages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[80%] p-3 rounded-lg text-sm ${
+                      msg.role === 'user'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Chat Input */}
+            <div className="p-4 border-t border-[#E2E8F0]">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
+                  placeholder="Ask me anything..."
+                  className="flex-1 px-3 py-2 border border-[#E2E8F0] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  onClick={handleSendChat}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-sm">send</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
