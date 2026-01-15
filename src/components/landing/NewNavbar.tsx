@@ -40,7 +40,7 @@ export function NewNavbar() {
             <img
               src="/assets/cvdebug-logo.png"
               alt="CVDebug"
-              className="h-10 w-auto"
+              className="h-14 w-auto transition-transform duration-300 hover:scale-105"
             />
           </motion.div>
 

@@ -82,7 +82,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       <div className="flex flex-col p-6 mb-4">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentView('mission')}>
-          <Logo iconClassName="h-8 w-auto" />
+          <Logo iconClassName="h-12 w-auto" />
         </div>
 
         {/* Navigation */}
