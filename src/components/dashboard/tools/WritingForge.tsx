@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -41,6 +41,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   // Load resume data
   const resume = useQuery(api.resumes.getResume, resumeId ? { id: resumeId } : "skip");
   const currentUser = useQuery((api as any).users.currentUser);
+  const updateResumeText = useMutation(api.resumes.updateResumeText);
 
   // Silent ML data collection (internal use only)
   useMLDataCollection(
@@ -66,16 +67,34 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
     });
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!editedText.trim()) {
       toast.error("Resume cannot be empty");
       return;
     }
-    setIsEditing(false);
-    toast.success("Changes saved!", {
-      description: "Your resume has been updated"
-    });
-    // TODO: Call mutation to save changes to database
+
+    if (!resumeId || !resume?.ocrText) {
+      toast.error("Unable to save changes");
+      return;
+    }
+
+    try {
+      await updateResumeText({
+        id: resumeId,
+        oldText: resume.ocrText,
+        newText: editedText
+      });
+
+      setIsEditing(false);
+      toast.success("Changes saved!", {
+        description: "Your resume has been updated"
+      });
+    } catch (error: any) {
+      console.error("Error saving resume text:", error);
+      toast.error("Failed to save changes", {
+        description: error.message || "Please try again"
+      });
+    }
   };
 
   const handleCancelEdit = () => {
