@@ -151,13 +151,57 @@ function extractContactInfo(text: string) {
   const phoneMatch = text.match(/\+?\d{1,3}[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
   if (phoneMatch) contact.phone = phoneMatch[0];
 
-  // LinkedIn
-  const linkedinMatch = text.match(/linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i);
-  if (linkedinMatch) contact.linkedin = `https://linkedin.com/in/${linkedinMatch[1]}`;
+  // LinkedIn - Multiple patterns for maximum detection
+  const linkedinPatterns = [
+    // Full URL with protocol
+    /https?:\/\/(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i,
+    // Without protocol
+    /(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i,
+    // Just "LinkedIn:" or "LinkedIn Profile:" followed by URL or username
+    /linkedin(?:\s+profile)?[:\s]+(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i,
+    // LinkedIn with username only (common in CVs)
+    /linkedin[:\s]+\/?([a-zA-Z0-9_-]+)(?:\s|$|,|\.|\n)/i,
+    // LinkedIn URL without /in/
+    /linkedin\.com\/([a-zA-Z0-9_-]+)/i
+  ];
 
-  // GitHub
-  const githubMatch = text.match(/github\.com\/([a-zA-Z0-9_-]+)/i);
-  if (githubMatch) contact.github = `https://github.com/${githubMatch[1]}`;
+  for (const pattern of linkedinPatterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      const username = match[1].trim();
+      // Validate it's a reasonable username (not a common word)
+      if (username.length >= 3 && username.length <= 100 && !username.includes(' ')) {
+        contact.linkedin = `https://linkedin.com/in/${username}`;
+        break;
+      }
+    }
+  }
+
+  // GitHub - Multiple patterns for maximum detection
+  const githubPatterns = [
+    // Full URL with protocol
+    /https?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/i,
+    // Without protocol
+    /(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/i,
+    // Just "GitHub:" or "Github Profile:" followed by URL or username
+    /github(?:\s+profile)?[:\s]+(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/i,
+    // GitHub with username only
+    /github[:\s]+\/?([a-zA-Z0-9_-]+)(?:\s|$|,|\.|\n)/i,
+    // GitHub URL without specific format
+    /github\.com\/([a-zA-Z0-9_-]+)/i
+  ];
+
+  for (const pattern of githubPatterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      const username = match[1].trim();
+      // Validate it's a reasonable username
+      if (username.length >= 2 && username.length <= 39 && !username.includes(' ')) {
+        contact.github = `https://github.com/${username}`;
+        break;
+      }
+    }
+  }
 
   // Website/Portfolio
   const websiteMatch = text.match(/(?:website|portfolio|personal site)[:\s]+([a-zA-Z0-9.-]+\.[a-z]{2,})/i);

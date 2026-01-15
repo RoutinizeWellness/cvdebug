@@ -61,14 +61,18 @@ export function extractContactInfo(text: string): ContactInfo {
     }
   }
 
-  // Extract LinkedIn - multiple patterns
+  // Extract LinkedIn - multiple patterns (case insensitive, global)
   const linkedinPatterns = [
     // Full URL: https://www.linkedin.com/in/username
-    /https?:\/\/(www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/gi,
-    // Without protocol: linkedin.com/in/username
-    /linkedin\.com\/in\/([a-zA-Z0-9_-]+)/gi,
-    // Just username after "LinkedIn:" or "LinkedIn profile:"
-    /linkedin[:\s]+\/?([a-zA-Z0-9_-]+)/gi
+    /https?:\/\/(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/gi,
+    // Without protocol: linkedin.com/in/username or www.linkedin.com/in/username
+    /(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/gi,
+    // Just username after "LinkedIn:" or "LinkedIn profile:" or "LinkedIn Profile:"
+    /linkedin(?:\s+profile)?[:\s]+\/?([a-zA-Z0-9_-]+)/gi,
+    // LinkedIn URL in plain text (common copy-paste)
+    /linkedin\.com\/([a-zA-Z0-9_-]+)/gi,
+    // Edge case: "linkedin.com in/username" (with space)
+    /linkedin\.com\s+in\/([a-zA-Z0-9_-]+)/gi
   ];
 
   for (const pattern of linkedinPatterns) {
@@ -76,34 +80,46 @@ export function extractContactInfo(text: string): ContactInfo {
     if (linkedinMatch && linkedinMatch[0]) {
       let linkedinUrl = linkedinMatch[0].trim();
 
-      // Normalize to full URL
-      if (!linkedinUrl.startsWith('http')) {
-        if (linkedinUrl.startsWith('linkedin.com')) {
-          linkedinUrl = 'https://' + linkedinUrl;
-        } else if (linkedinUrl.includes('linkedin.com/in/')) {
-          linkedinUrl = 'https://' + linkedinUrl;
-        } else {
-          // Extract username and build URL
-          const usernameMatch = linkedinUrl.match(/([a-zA-Z0-9_-]+)$/);
-          if (usernameMatch) {
-            linkedinUrl = `https://linkedin.com/in/${usernameMatch[1]}`;
-          }
-        }
+      // Extract username from different formats
+      let username: string | undefined;
+
+      if (linkedinUrl.includes('linkedin.com/in/')) {
+        // Extract from URL format
+        const urlMatch = linkedinUrl.match(/linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i);
+        if (urlMatch) username = urlMatch[1];
+      } else if (linkedinUrl.includes('linkedin.com')) {
+        // Extract from linkedin.com/username format
+        const urlMatch = linkedinUrl.match(/linkedin\.com\/([a-zA-Z0-9_-]+)/i);
+        if (urlMatch) username = urlMatch[1];
+      } else {
+        // Extract username after "LinkedIn:" pattern
+        const usernameMatch = linkedinUrl.match(/linkedin(?:\s+profile)?[:\s]+\/?([a-zA-Z0-9_-]+)/i);
+        if (usernameMatch) username = usernameMatch[1];
       }
 
-      contactInfo.linkedin = linkedinUrl;
-      break;
+      // Validate username (3-100 chars, alphanumeric with dash/underscore, not common words)
+      if (username && username.length >= 3 && username.length <= 100) {
+        const commonWords = ['profile', 'linkedin', 'in', 'com', 'http', 'https', 'www'];
+        if (!commonWords.includes(username.toLowerCase())) {
+          contactInfo.linkedin = `https://linkedin.com/in/${username}`;
+          break;
+        }
+      }
     }
   }
 
-  // Extract GitHub - multiple patterns
+  // Extract GitHub - multiple patterns (case insensitive, global)
   const githubPatterns = [
     // Full URL: https://github.com/username
-    /https?:\/\/(www\.)?github\.com\/([a-zA-Z0-9_-]+)/gi,
-    // Without protocol: github.com/username
+    /https?:\/\/(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/gi,
+    // Without protocol: github.com/username or www.github.com/username
+    /(?:www\.)?github\.com\/([a-zA-Z0-9_-]+)/gi,
+    // Just username after "GitHub:" or "Github profile:" or "GitHub Profile:"
+    /github(?:\s+profile)?[:\s]+\/?([a-zA-Z0-9_-]+)/gi,
+    // GitHub URL in plain text (common copy-paste)
     /github\.com\/([a-zA-Z0-9_-]+)/gi,
-    // Just username after "GitHub:" or "Github profile:"
-    /github[:\s]+\/?([a-zA-Z0-9_-]+)/gi
+    // Edge case: "github.com username" (with space, sometimes OCR does this)
+    /github\.com\s+([a-zA-Z0-9_-]+)/gi
   ];
 
   for (const pattern of githubPatterns) {
@@ -111,21 +127,27 @@ export function extractContactInfo(text: string): ContactInfo {
     if (githubMatch && githubMatch[0]) {
       let githubUrl = githubMatch[0].trim();
 
-      // Normalize to full URL
-      if (!githubUrl.startsWith('http')) {
-        if (githubUrl.startsWith('github.com')) {
-          githubUrl = 'https://' + githubUrl;
-        } else {
-          // Extract username and build URL
-          const usernameMatch = githubUrl.match(/([a-zA-Z0-9_-]+)$/);
-          if (usernameMatch) {
-            githubUrl = `https://github.com/${usernameMatch[1]}`;
-          }
-        }
+      // Extract username from different formats
+      let username: string | undefined;
+
+      if (githubUrl.includes('github.com/')) {
+        // Extract from URL format
+        const urlMatch = githubUrl.match(/github\.com\/([a-zA-Z0-9_-]+)/i);
+        if (urlMatch) username = urlMatch[1];
+      } else {
+        // Extract username after "GitHub:" pattern
+        const usernameMatch = githubUrl.match(/github(?:\s+profile)?[:\s]+\/?([a-zA-Z0-9_-]+)/i);
+        if (usernameMatch) username = usernameMatch[1];
       }
 
-      contactInfo.github = githubUrl;
-      break;
+      // Validate username (2-39 chars per GitHub rules, not common words)
+      if (username && username.length >= 2 && username.length <= 39) {
+        const commonWords = ['profile', 'github', 'com', 'http', 'https', 'www'];
+        if (!commonWords.includes(username.toLowerCase())) {
+          contactInfo.github = `https://github.com/${username}`;
+          break;
+        }
+      }
     }
   }
 
