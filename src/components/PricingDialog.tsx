@@ -272,99 +272,94 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[95vw] sm:max-w-[900px] max-h-[90vh] p-0 overflow-y-auto gap-0 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
-        <div className="p-6 sm:p-8 pb-4 sm:pb-6 text-center relative overflow-hidden bg-[#F8FAFC]">
-           {/* Trial Banner */}
-           <div className="absolute top-0 left-0 right-0 bg-[#8B5CF6] text-white text-xs font-bold py-1.5 text-center uppercase">
-             Beta Launch Offer: 15-Day Free Trial Included
-           </div>
-
-          <DialogHeader className="mt-6 relative z-10">
-            <DialogTitle className="text-2xl sm:text-3xl font-black tracking-tight mb-2 text-[#0F172A]">Pay Per Use Pricing</DialogTitle>
-            <DialogDescription className="text-base sm:text-lg text-[#475569] max-w-lg mx-auto">
+      <DialogContent className="w-screen h-screen max-w-none max-h-none p-0 overflow-y-auto gap-0 border-none shadow-none bg-white m-0 rounded-none">
+        <div className="p-8 sm:p-12 pb-6 sm:pb-8 text-center relative overflow-hidden bg-[#F8FAFC] border-b border-[#E2E8F0]">
+          <DialogHeader className="relative z-10">
+            <DialogTitle className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4 text-[#0F172A]">Pricing Plans</DialogTitle>
+            <DialogDescription className="text-lg sm:text-xl text-[#475569] max-w-2xl mx-auto">
               No subscriptions. No hidden fees. <br/>Just pay for what you need.
             </DialogDescription>
           </DialogHeader>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 sm:p-6 pt-0 bg-[#F8FAFC]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 sm:p-12 bg-[#F8FAFC] max-w-7xl mx-auto w-full">
           {/* Free Tier */}
-          <div className="rounded-xl bg-white border border-[#E2E8F0] p-5 sm:p-6 flex flex-col gap-4 hover:border-[#8B5CF6]/50 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg sm:text-xl text-[#475569]">FREE Preview</h3>
+          <div className="rounded-2xl bg-white border-2 border-[#E2E8F0] p-8 flex flex-col gap-5 hover:border-[#8B5CF6]/50 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+            <div className="space-y-3">
+              <h3 className="font-bold text-2xl text-[#475569]">FREE Preview</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-[#0F172A]">€0</span>
+                <span className="text-5xl font-black tracking-tight text-[#0F172A]">€0</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#64748B]">Basic scan to see where you stand.</p>
+              <p className="text-sm text-[#64748B]">Basic scan to see where you stand.</p>
             </div>
 
             <Separator className="bg-[#E2E8F0]" />
 
-            <div className="space-y-3 flex-1">
+            <div className="space-y-4 flex-1">
               <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-[#8B5CF6]" />
+                <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-[#8B5CF6]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-[#475569]">ATS Score (0-100)</span>
+                <span className="text-base font-medium text-[#475569]">ATS Score (0-100)</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-[#8B5CF6]" />
+                <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-[#8B5CF6]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-[#475569]">Robot View (ATS Vision)</span>
+                <span className="text-base font-medium text-[#475569]">Robot View (ATS Vision)</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-[#8B5CF6]" />
+                <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-[#8B5CF6]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-[#475569]">Top 2 Errors Preview</span>
+                <span className="text-base font-medium text-[#475569]">Top 2 Errors Preview</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="h-5 w-5 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="h-3 w-3 text-[#8B5CF6]" />
+                <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0">
+                  <Check className="h-4 w-4 text-[#8B5CF6]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium text-[#475569]">Top 2 Keywords Preview</span>
+                <span className="text-base font-medium text-[#475569]">Top 2 Keywords Preview</span>
               </div>
               <div className="flex items-center gap-3 opacity-40">
-                <div className="h-5 w-5 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <X className="h-3 w-3 text-[#64748B]" />
+                <div className="h-6 w-6 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0">
+                  <X className="h-4 w-4 text-[#64748B]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium line-through text-[#64748B]">Full Keyword Report</span>
+                <span className="text-base font-medium line-through text-[#64748B]">Full Keyword Report</span>
               </div>
               <div className="flex items-center gap-3 opacity-40">
-                <div className="h-5 w-5 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <X className="h-3 w-3 text-[#64748B]" />
+                <div className="h-6 w-6 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0">
+                  <X className="h-4 w-4 text-[#64748B]" />
                 </div>
-                <span className="text-xs sm:text-sm font-medium line-through text-[#64748B]">Complete Format Fixes</span>
+                <span className="text-base font-medium line-through text-[#64748B]">Complete Format Fixes</span>
               </div>
             </div>
 
-            <Button variant="outline" className="w-full h-12 font-bold text-base rounded-xl border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]" onClick={() => onOpenChange(false)}>
+            <Button variant="outline" className="w-full h-14 font-bold text-lg rounded-xl border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]" onClick={() => onOpenChange(false)}>
               Try Free
             </Button>
           </div>
 
           {/* Single Scan - The Anchor */}
-          <div className="group relative rounded-xl bg-white border border-[#E2E8F0] p-5 sm:p-6 flex flex-col gap-4 hover:border-[#E2E8F0] transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-            <div className="space-y-2">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center mb-2">
-                <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-[#64748B]" />
+          <div className="group relative rounded-2xl bg-white border-2 border-[#E2E8F0] p-8 flex flex-col gap-5 hover:border-[#E2E8F0] transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+            <div className="space-y-3">
+              <div className="h-14 w-14 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center mb-2">
+                <Zap className="h-7 w-7 text-[#64748B]" />
               </div>
-              <h3 className="font-bold text-lg sm:text-xl text-[#0F172A]">
+              <h3 className="font-bold text-2xl text-[#0F172A]">
                 Single Scan
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-black tracking-tight text-[#0F172A]">€9.99</span>
+                  <span className="text-5xl font-black tracking-tight text-[#0F172A]">€9.99</span>
                 </div>
-                <span className="text-xs text-[#64748B] mt-1">One-time payment</span>
+                <span className="text-sm text-[#64748B] mt-1">One-time payment</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#64748B]">One-time fix for this file. No history. No AI advice.</p>
+              <p className="text-sm text-[#64748B]">One-time fix for this file. No history. No AI advice.</p>
             </div>
 
             <Separator className="bg-[#E2E8F0]" />
 
-            <div className="space-y-3 flex-1">
+            <div className="space-y-4 flex-1">
               {[
                 "Full ATS Analysis",
                 "Complete Keyword Report",
@@ -373,64 +368,64 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 "PDF Sanitization"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-[#64748B]" />
+                  <div className="h-6 w-6 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0">
+                    <Check className="h-4 w-4 text-[#64748B]" />
                   </div>
-                  <span className="text-xs sm:text-sm font-medium text-[#475569]">{feature}</span>
+                  <span className="text-base font-medium text-[#475569]">{feature}</span>
                 </div>
               ))}
             </div>
 
             <Button
               variant="outline"
-              className="w-full h-12 font-bold text-base rounded-xl border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]"
+              className="w-full h-14 font-bold text-lg rounded-xl border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC]"
               onClick={() => handleUpgrade("single_scan")}
               disabled={!!isLoading}
             >
-              {isLoading === "single_scan" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Get Single Scan"}
+              {isLoading === "single_scan" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Get Single Scan"}
             </Button>
           </div>
 
           {/* Interview Sprint - The Grand Slam Offer */}
-          <div className="group relative rounded-xl bg-white border-2 border-[#8B5CF6] p-5 sm:p-6 flex flex-col gap-4 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 lg:scale-105 z-10">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B5CF6] text-white text-xs font-black px-6 py-2 rounded-full uppercase">
+          <div className="group relative rounded-2xl bg-white border-2 border-[#8B5CF6] p-8 flex flex-col gap-5 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 lg:scale-105 z-10">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#8B5CF6] text-white text-sm font-black px-8 py-2 rounded-full uppercase">
               🚀 Best Value
             </div>
 
-            <div className="space-y-2 pt-2">
+            <div className="space-y-3 pt-4">
               <div className="flex items-center justify-between">
-                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-[#8B5CF6]/10 border border-[#F3E8FF] flex items-center justify-center mb-2">
-                  <Rocket className="h-5 w-5 sm:h-6 sm:w-6 text-[#8B5CF6]" />
+                <div className="h-14 w-14 rounded-xl bg-[#8B5CF6]/10 border border-[#F3E8FF] flex items-center justify-center mb-2">
+                  <Rocket className="h-7 w-7 text-[#8B5CF6]" />
                 </div>
-                <div className="text-xs font-bold bg-[#EF4444]/10 text-[#EF4444] px-2 py-1 rounded border border-[#EF4444]/20">
+                <div className="text-sm font-bold bg-[#EF4444]/10 text-[#EF4444] px-3 py-1.5 rounded border border-[#EF4444]/20">
                   Limited Time
                 </div>
               </div>
-              <h3 className="font-black text-xl sm:text-2xl text-[#0F172A] flex items-center gap-2">
+              <h3 className="font-black text-2xl text-[#0F172A] flex items-center gap-2">
                 Interview Sprint
               </h3>
               <div className="flex flex-col">
-                <div className="flex items-baseline gap-2 flex-wrap">
-                  <span className="text-4xl sm:text-5xl font-black tracking-tighter text-[#8B5CF6]">€19.99</span>
-                  <span className="text-lg sm:text-xl text-[#64748B] line-through decoration-[#EF4444]/50 decoration-2">€49.99</span>
+                <div className="flex items-baseline gap-3 flex-wrap">
+                  <span className="text-5xl font-black tracking-tighter text-[#8B5CF6]">€19.99</span>
+                  <span className="text-2xl text-[#64748B] line-through decoration-[#EF4444]/50 decoration-2">€49.99</span>
                 </div>
-                <div className="flex items-center gap-2 mt-2 flex-wrap">
-                  <Badge className="bg-[#22C55E]/10 text-[#22C55E] hover:bg-[#22C55E]/20 border-[#22C55E]/20 font-bold text-[10px]">
+                <div className="flex items-center gap-2 mt-3 flex-wrap">
+                  <Badge className="bg-[#22C55E]/10 text-[#22C55E] hover:bg-[#22C55E]/20 border-[#22C55E]/20 font-bold text-xs">
                     SAVE 60%
                   </Badge>
-                  <span className="text-[9px] sm:text-[10px] font-bold text-[#64748B] uppercase tracking-wide">
+                  <span className="text-xs font-bold text-[#64748B] uppercase tracking-wide">
                     7 Days Unlimited Access
                   </span>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-[#475569] font-medium leading-relaxed">
+              <p className="text-sm text-[#475569] font-medium leading-relaxed">
                 Everything you need to land the job. Unlimited AI scans, cover letters, and tracking for one week. <span className="text-[#8B5CF6] font-bold">The ultimate career accelerator.</span>
               </p>
             </div>
 
             <Separator className="bg-[#F3E8FF]" />
 
-            <div className="space-y-3 flex-1">
+            <div className="space-y-4 flex-1">
               {[
                 "Unlimited Scans (7 Days)",
                 "AI Keyword Suggestions",
@@ -439,41 +434,41 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 "Priority Support"
               ].map((feature, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="h-5 w-5 rounded-full bg-[#8B5CF6] text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                    <Check className="h-3 w-3 font-bold" />
+                  <div className="h-6 w-6 rounded-full bg-[#8B5CF6] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <Check className="h-4 w-4 font-bold" />
                   </div>
-                  <span className="text-xs sm:text-sm font-bold text-[#0F172A]">{feature}</span>
+                  <span className="text-base font-bold text-[#0F172A]">{feature}</span>
                 </div>
               ))}
             </div>
 
-            <div className="bg-[#F8FAFC] rounded-xl p-3 sm:p-4 border border-[#E2E8F0] shadow-inner">
+            <div className="bg-[#F8FAFC] rounded-xl p-4 border border-[#E2E8F0] shadow-inner">
               <div className="flex items-center gap-3 mb-2">
                 <div className="flex -space-x-2">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-[#E2E8F0] border-2 border-white"></div>
+                    <div key={i} className="h-7 w-7 rounded-full bg-[#E2E8F0] border-2 border-white"></div>
                   ))}
                 </div>
-                <span className="text-[10px] sm:text-xs font-bold text-[#0F172A]">Joined by 1,200+ candidates</span>
+                <span className="text-sm font-bold text-[#0F172A]">Joined by 1,200+ candidates</span>
               </div>
-              <p className="text-[9px] sm:text-[10px] text-[#64748B] leading-tight">
+              <p className="text-xs text-[#64748B] leading-tight">
                 "This tool helped me land interviews at <span className="text-[#0F172A] font-bold">Google</span> and <span className="text-[#0F172A] font-bold">Netflix</span> in just one week."
               </p>
             </div>
 
             <Button
-              className="w-full h-12 sm:h-14 font-bold text-base sm:text-lg shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-xl transition-colors"
+              className="w-full h-14 font-bold text-lg shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white rounded-xl transition-colors"
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
             >
-              {isLoading === "interview_sprint" ? <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin" /> : "Start Interview Sprint 🚀"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Start Interview Sprint 🚀"}
             </Button>
           </div>
         </div>
 
-        <div className="p-3 sm:p-4 bg-[#F8FAFC] border-t border-[#E2E8F0] text-center">
-          <p className="text-[10px] sm:text-xs text-[#64748B] flex items-center justify-center gap-2 flex-wrap">
-            <ShieldCheck className="h-3 w-3" /> Secure payment processing via Stripe. 100% Money-back guarantee if not satisfied.
+        <div className="p-6 bg-[#F8FAFC] border-t border-[#E2E8F0] text-center">
+          <p className="text-sm text-[#64748B] flex items-center justify-center gap-2 flex-wrap">
+            <ShieldCheck className="h-4 w-4" /> Secure payment processing via Stripe. 100% Money-back guarantee if not satisfied.
           </p>
         </div>
       </DialogContent>
