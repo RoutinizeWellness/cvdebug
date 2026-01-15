@@ -35,9 +35,9 @@ export function FreeTierView({
 
   const totalHiddenIssues = remainingErrors + remainingKeywords;
 
-  // Calculate percentile rank (Hormozi: mostrar pérdida/dolor)
-  const percentileRank = Math.max(5, 100 - score); // Si score es 71%, estás en el 29% inferior
-  const competitorScore = 92; // Los que consiguen entrevistas
+  // Calculate percentile rank (Hormozi: show loss/pain)
+  const percentileRank = Math.max(5, 100 - score); // If score is 71%, you're in the bottom 29%
+  const competitorScore = 92; // Those who get interviews
   const missingPoints = competitorScore - score;
 
   return (

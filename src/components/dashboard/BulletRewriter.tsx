@@ -226,7 +226,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
           {/* Experience Level Dropdown */}
           <div>
             <label className="text-sm font-medium text-[#475569] mb-2 block">
-              Nivel de Experiencia
+              Experience Level
             </label>
             <select
               value={experienceLevel}

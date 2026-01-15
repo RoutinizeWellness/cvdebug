@@ -13,7 +13,7 @@ export function AdminPaymentsView() {
   const payments = useQuery(apiAny.billing.getAllPayments, {});
   const [previousPaymentCount, setPreviousPaymentCount] = useState(0);
 
-  // Detectar nuevo pago y mostrar notificación
+  // Detect new payment and show notification
   useEffect(() => {
     if (payments && payments.length > 0) {
       if (previousPaymentCount > 0 && payments.length > previousPaymentCount) {

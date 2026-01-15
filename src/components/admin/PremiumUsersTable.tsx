@@ -55,7 +55,7 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <DollarSign className="h-4 w-4 text-green-600" />
-                Ingresos Totales
+                Total Revenue
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -63,7 +63,7 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
                 {formatCurrency(stats.revenue.total)}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {users.length} clientes pagando
+                {users.length} paying customers
               </p>
             </CardContent>
           </Card>
@@ -109,7 +109,7 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            Usuarios Premium ({users.length})
+            Premium Users ({users.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -117,20 +117,20 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left p-3 text-sm font-semibold">Usuario</th>
+                  <th className="text-left p-3 text-sm font-semibold">User</th>
                   <th className="text-left p-3 text-sm font-semibold">Plan</th>
-                  <th className="text-left p-3 text-sm font-semibold">Ingresos</th>
-                  <th className="text-left p-3 text-sm font-semibold">Créditos</th>
-                  <th className="text-left p-3 text-sm font-semibold">Estado</th>
-                  <th className="text-left p-3 text-sm font-semibold">Fecha Compra</th>
-                  <th className="text-left p-3 text-sm font-semibold">Última Actividad</th>
+                  <th className="text-left p-3 text-sm font-semibold">Revenue</th>
+                  <th className="text-left p-3 text-sm font-semibold">Credits</th>
+                  <th className="text-left p-3 text-sm font-semibold">Status</th>
+                  <th className="text-left p-3 text-sm font-semibold">Purchase Date</th>
+                  <th className="text-left p-3 text-sm font-semibold">Last Activity</th>
                 </tr>
               </thead>
               <tbody>
                 {users.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="text-center p-8 text-muted-foreground">
-                      No hay usuarios premium todavía
+                      No premium users yet
                     </td>
                   </tr>
                 ) : (
@@ -138,7 +138,7 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
                     <tr key={user._id} className="border-b hover:bg-muted/50 transition-colors">
                       <td className="p-3">
                         <div className="flex flex-col">
-                          <span className="font-medium text-sm">{user.name || 'Sin nombre'}</span>
+                          <span className="font-medium text-sm">{user.name || 'No name'}</span>
                           <span className="text-xs text-muted-foreground">{user.email}</span>
                         </div>
                       </td>
@@ -195,7 +195,7 @@ export function PremiumUsersTable({ users, stats }: PremiumUsersTableProps) {
             <div className="mt-4 p-4 bg-muted/50 rounded-lg">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">
-                  Mostrando {users.length} usuarios premium
+                  Showing {users.length} premium users
                 </span>
                 <span className="font-semibold">
                   Total generado: {formatCurrency(users.reduce((sum, u) => sum + u.revenue, 0))}

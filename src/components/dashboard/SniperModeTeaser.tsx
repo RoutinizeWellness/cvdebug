@@ -49,10 +49,10 @@ export function SniperModeTeaser({
               <h3 className="text-[#0F172A] text-xl font-bold flex items-center gap-2">
                 Sniper Mode
                 <span className="px-2 py-0.5 bg-[#F59E0B]/20 text-amber-400 text-xs font-bold rounded-full border border-amber-500/30">
-                  BLOQUEADO
+                  LOCKED
                 </span>
               </h3>
-              <p className="text-[#64748B] text-sm">Keywords de alto impacto detectadas</p>
+              <p className="text-[#64748B] text-sm">High-impact keywords detected</p>
             </div>
           </div>
         </div>
@@ -65,10 +65,10 @@ export function SniperModeTeaser({
             </div>
             <div>
               <p className="text-[#0F172A] font-bold text-lg">
-                Te faltan {totalMissingKeywords} keywords para esta posición
+                You're missing {totalMissingKeywords} keywords for this position
               </p>
               <p className="text-[#64748B] text-sm">
-                Aquí tienes las {visibleKeywords.length} más críticas:
+                Here are the {visibleKeywords.length} most critical ones:
               </p>
             </div>
           </div>
@@ -90,7 +90,7 @@ export function SniperModeTeaser({
             <div className="flex items-center gap-2 p-3 bg-[#F8FAFC]/60 rounded-lg border border-[#E2E8F0]">
               <Lock className="h-5 w-5 text-[#64748B]" />
               <span className="text-[#475569] text-sm font-medium">
-                + {lockedKeywordsCount} keywords más esperando ser desbloqueadas
+                + {lockedKeywordsCount} more keywords waiting to be unlocked
               </span>
             </div>
           )}
@@ -99,14 +99,14 @@ export function SniperModeTeaser({
         {/* Impact Visualization */}
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div className="bg-[#F8FAFC]/60 rounded-xl p-4 border border-[#E2E8F0]">
-            <p className="text-[#64748B] text-xs mb-1">Score Actual</p>
+            <p className="text-[#64748B] text-xs mb-1">Current Score</p>
             <p className="text-[#0F172A] text-3xl font-bold font-mono">{currentScore}</p>
           </div>
           <div className="bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-xl p-4 border border-emerald-500/30 relative overflow-hidden">
             <div className="absolute top-2 right-2">
               <TrendingUp className="h-5 w-5 text-emerald-400" />
             </div>
-            <p className="text-emerald-400 text-xs mb-1">Score Potencial</p>
+            <p className="text-emerald-400 text-xs mb-1">Potential Score</p>
             <p className="text-[#0F172A] text-3xl font-bold font-mono flex items-baseline gap-2">
               {potentialScore}
               <span className="text-emerald-400 text-sm font-medium">
@@ -119,7 +119,7 @@ export function SniperModeTeaser({
         {/* Value Proposition */}
         <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-lg p-4 mb-5 border border-amber-500/20">
           <p className="text-amber-200 text-sm font-medium text-center">
-            🎯 Desbloquea las otras {lockedKeywordsCount} keywords con <span className="text-[#0F172A] font-bold">Sniper Mode</span> por solo <span className="text-amber-400 font-black text-lg">$4.99</span>
+            🎯 Unlock the other {lockedKeywordsCount} keywords with <span className="text-[#0F172A] font-bold">Sniper Mode</span> for only <span className="text-amber-400 font-black text-lg">$4.99</span>
           </p>
         </div>
 
@@ -129,14 +129,14 @@ export function SniperModeTeaser({
           className="w-full h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-[#0F172A] shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 transition-all rounded-xl"
         >
           <Target className="h-5 w-5 mr-2" />
-          Desbloquear Sniper Mode
+          Unlock Sniper Mode
           <Zap className="h-5 w-5 ml-2" />
         </Button>
 
         {/* Social Proof */}
         <div className="mt-4 text-center">
           <p className="text-[#64748B] text-xs">
-            ⚡ <span className="text-[#0F172A] font-medium">1,847 usuarios</span> desbloquearon Sniper Mode este mes
+            ⚡ <span className="text-[#0F172A] font-medium">1,847 users</span> unlocked Sniper Mode this month
           </p>
         </div>
       </div>
