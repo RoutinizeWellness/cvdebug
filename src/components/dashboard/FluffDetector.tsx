@@ -554,7 +554,14 @@ export function FluffDetector({
                 Let AI rewrite your entire resume with power verbs, metrics, and impact statements. Transform weak bullets into strong achievements.
               </p>
             </div>
-            <button className="px-6 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#8B5CF6]/30 whitespace-nowrap text-sm">
+            <button
+              onClick={() => {
+                // Show toast notification that feature is coming soon
+                const message = "AI Resume Rewrite is coming soon! This will automatically rewrite your entire resume with:\n• Power verbs and action words\n• Quantified metrics and achievements\n• Impact-focused statements\n• ATS-optimized formatting";
+                alert(message);
+              }}
+              className="px-6 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#8B5CF6]/30 whitespace-nowrap text-sm"
+            >
               Rewrite All
             </button>
           </div>

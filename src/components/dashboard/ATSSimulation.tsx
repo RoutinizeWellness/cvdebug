@@ -15,6 +15,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const resume = useQuery(apiAny.resumes.getResume, { id: resumeId });
   const [activeView, setActiveView] = useState<"parsed" | "raw" | "pdf">("parsed");
   const [selectedCandidate, setSelectedCandidate] = useState<number>(0);
+  const [activeFilter, setActiveFilter] = useState<"unreviewed" | "high_match" | "local">("high_match");
 
   if (!resume) {
     return (
@@ -56,8 +57,8 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
       <header className="h-12 md:h-16 flex items-center justify-between px-3 md:px-6 border-b border-[#E2E8F0] bg-[#F8FAFC] shrink-0 z-20">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2 text-[#0F172A]">
-            <span className="material-symbols-outlined text-primary text-3xl">hub</span>
-            <span className="text-lg font-bold tracking-tight">CVDebug ATS</span>
+            <span className="material-symbols-outlined text-primary text-4xl">hub</span>
+            <span className="text-2xl font-bold tracking-tight">CVDebug ATS</span>
           </div>
           <div className="h-6 w-px bg-slate-700"></div>
           <nav className="flex items-center gap-2 text-sm text-[#64748B]">
@@ -110,15 +111,36 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
               />
             </div>
             <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-              <span className="px-2 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-[#475569] whitespace-nowrap cursor-pointer hover:border-slate-500">
+              <button
+                onClick={() => setActiveFilter("unreviewed")}
+                className={`px-2 py-1 rounded text-xs whitespace-nowrap cursor-pointer transition-all ${
+                  activeFilter === "unreviewed"
+                    ? 'bg-orange-100 border border-orange-300 text-orange-700 font-medium'
+                    : 'bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] hover:border-slate-500'
+                }`}
+              >
                 Unreviewed
-              </span>
-              <span className="px-2 py-1 bg-primary/20 border border-primary/30 rounded text-xs text-primary whitespace-nowrap cursor-pointer">
+              </button>
+              <button
+                onClick={() => setActiveFilter("high_match")}
+                className={`px-2 py-1 rounded text-xs whitespace-nowrap cursor-pointer transition-all ${
+                  activeFilter === "high_match"
+                    ? 'bg-primary/20 border border-primary/30 text-primary font-medium'
+                    : 'bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] hover:border-slate-500'
+                }`}
+              >
                 High Match
-              </span>
-              <span className="px-2 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded text-xs text-[#475569] whitespace-nowrap cursor-pointer hover:border-slate-500">
+              </button>
+              <button
+                onClick={() => setActiveFilter("local")}
+                className={`px-2 py-1 rounded text-xs whitespace-nowrap cursor-pointer transition-all ${
+                  activeFilter === "local"
+                    ? 'bg-green-100 border border-green-300 text-green-700 font-medium'
+                    : 'bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] hover:border-slate-500'
+                }`}
+              >
                 Local
-              </span>
+              </button>
             </div>
           </div>
 

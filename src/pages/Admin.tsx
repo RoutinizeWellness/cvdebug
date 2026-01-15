@@ -375,7 +375,7 @@ export default function AdminPage() {
             <ShieldAlert className="text-white h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-white font-display font-bold text-lg leading-tight tracking-tight">CVDebug</h1>
+            <h1 className="text-white font-display font-bold text-2xl leading-tight tracking-tight">CVDebug</h1>
             <p className="text-[#64748B] text-xs font-mono">v2.4.0-prod</p>
           </div>
         </div>
