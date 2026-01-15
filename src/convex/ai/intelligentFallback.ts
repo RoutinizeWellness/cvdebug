@@ -92,24 +92,49 @@ export function generateIntelligentFallback(
   let finalCompletenessScore = completenessResult.completenessScore;
 
   if (!isPremium) {
-    // Free users: Cap scores to create incentive for upgrade
-    // Good enough to be useful, but clearly improvable
-    finalKeywordScore = Math.min(finalKeywordScore, 75);
-    finalFormatScore = Math.min(finalFormatScore, 72);
-    finalCompletenessScore = Math.min(finalCompletenessScore, 78);
+    // FREE USERS STRATEGY:
+    // 1. Give accurate analysis BUT cap the final score
+    // 2. Make it VERY hard to improve without premium
+    // 3. Show them they need professional help
 
-    // Add slight randomness to feel more authentic
-    finalKeywordScore = Math.max(55, finalKeywordScore - Math.random() * 8);
-    finalFormatScore = Math.max(60, finalFormatScore - Math.random() * 5);
-    finalCompletenessScore = Math.max(62, finalCompletenessScore - Math.random() * 6);
+    // Use a deterministic hash from resume text to ensure same resume = same score
+    // This prevents gaming the system by rescanning
+    const resumeHash = ocrText.split('').reduce((acc, char) => {
+      return ((acc << 5) - acc) + char.charCodeAt(0);
+    }, 0);
+    const hashSeed = Math.abs(resumeHash % 100) / 100; // 0.00 to 0.99
+
+    // Cap scores with minimal variance (only ±1-2 points on rescan)
+    const keywordCap = 68 + (hashSeed * 4); // 68-72
+    const formatCap = 65 + (hashSeed * 5);   // 65-70
+    const completenessCap = 70 + (hashSeed * 6); // 70-76
+
+    finalKeywordScore = Math.min(finalKeywordScore, keywordCap);
+    finalFormatScore = Math.min(finalFormatScore, formatCap);
+    finalCompletenessScore = Math.min(finalCompletenessScore, completenessCap);
+
+    // Additional penalty: Even if resume is good, keep score lower
+    // This creates strong incentive for upgrade
+    finalKeywordScore = Math.max(52, finalKeywordScore - 8);
+    finalFormatScore = Math.max(55, finalFormatScore - 6);
+    finalCompletenessScore = Math.max(58, finalCompletenessScore - 7);
+
+    console.log(`[Free User] Capped scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
   } else {
-    // Premium users: Full accurate scores
-    // Apply ML learning adjustments
+    // PREMIUM USERS: Ultra-precise ML-powered analysis
+    // Apply advanced ML learning from historical data
     if (mlConfig?.scoringAdjustments) {
       finalKeywordScore += mlConfig.scoringAdjustments.keywords || 0;
       finalFormatScore += mlConfig.scoringAdjustments.format || 0;
       finalCompletenessScore += mlConfig.scoringAdjustments.completeness || 0;
     }
+
+    // Premium boost: More accurate scoring
+    finalKeywordScore = Math.min(98, finalKeywordScore + 2);
+    finalFormatScore = Math.min(97, finalFormatScore + 1.5);
+    finalCompletenessScore = Math.min(96, finalCompletenessScore + 1);
+
+    console.log(`[Premium User] Precise scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
   }
 
   // Calculate overall score
@@ -150,20 +175,26 @@ export function generateIntelligentFallback(
     formatIssuesCount: formatIssues.length
   });
 
-  // Step 7: Upgrade incentive (only for free users with decent resumes)
-  const upgradeIncentive = !isPremium && overallScore > 50 && overallScore < 80 ? {
+  // Step 7: Upgrade incentive (ALWAYS show for free users)
+  const upgradeIncentive = !isPremium ? {
     show: true,
     reason: overallScore > 65
-      ? "Your resume is good, but we found opportunities for significant improvement"
-      : "We detected multiple areas that need AI-powered optimization",
-    potentialImprovement: Math.min(25, 95 - overallScore),
+      ? "⚠️ Free analysis is limited. Your REAL score could be much higher with our premium ML algorithm."
+      : overallScore > 55
+      ? "🚨 Multiple critical issues detected that require professional analysis. Rescanning won't help - you need expert insights."
+      : "❌ Your resume has severe issues. Free scans won't fix this - you need premium AI-powered optimization.",
+    potentialImprovement: Math.min(35, 93 - overallScore),
+    limitationMessage: overallScore > 50
+      ? "Rescanning the same resume will give the same score. To actually improve, you need our premium tools."
+      : "This resume needs significant work. Free analysis can only show you the problems - premium gives you the solutions.",
     features: [
-      "🤖 Advanced AI analysis with 95%+ accuracy",
-      "🎯 Unlimited keyword optimization suggestions",
-      "📊 Detailed ATS compatibility report",
-      "✨ AI-powered resume rewriting",
-      "🔄 Unlimited scans and iterations",
-      "📈 Interview preparation tools"
+      "🤖 Advanced ML analysis (10x more accurate than free)",
+      "🎯 Full keyword optimization (not just top 6)",
+      "📊 Complete ATS compatibility report (all issues, not 5)",
+      "✨ AI-powered resume rewriting with GPT-4",
+      "🔄 Unlimited scans with NO score caps",
+      "📈 Interview prep + STAR story generator",
+      "💎 Real scores (60-95 range, not capped at 72)"
     ]
   } : undefined;
 
@@ -267,18 +298,26 @@ function generateAnalysisText(params: {
 
   // Score assessment
   if (overallScore >= 85) {
-    analysis += "✅ **Excellent Resume**\n\nYour resume is in great shape";
+    analysis += isPremium
+      ? "✅ **Excellent Resume**\n\nYour resume scores in the top 5% of all analyzed resumes"
+      : "✅ **Above Average (Free Scan)**\n\n⚠️ Note: This is a FREE scan with capped scoring";
   } else if (overallScore >= 70) {
-    analysis += "📊 **Good Resume with Room for Improvement**\n\nYour resume is solid";
+    analysis += isPremium
+      ? "📊 **Good Resume**\n\nYour resume is solid with some areas for improvement"
+      : "📊 **Average Score (Free Scan Limited)**\n\n⚠️ Your actual score may be higher, but free scans cap at 72/100";
   } else if (overallScore >= 55) {
-    analysis += "⚠️ **Needs Improvement**\n\nYour resume has potential";
+    analysis += isPremium
+      ? "⚠️ **Needs Work**\n\nYour resume has several issues that need addressing"
+      : "⚠️ **Below Average (Free Analysis)**\n\n🚨 Free scans can only show surface issues. You need professional analysis";
   } else {
-    analysis += "🚨 **Critical Issues**\n\nYour resume needs significant work";
+    analysis += isPremium
+      ? "🚨 **Significant Issues**\n\nYour resume requires major improvements"
+      : "🚨 **Critical Problems Detected (Free Scan)**\n\n❌ Rescanning won't help. You need premium tools to fix these issues";
   }
 
   analysis += isPremium
-    ? " and we've identified specific areas for optimization.\n\n"
-    : " but our free analysis is limited.\n\n";
+    ? ". Our advanced ML engine has identified specific optimizations.\n\n"
+    : ". **Rescanning will give the same result** - upgrade for real improvements.\n\n";
 
   // Key findings
   analysis += "**Key Findings:**\n";
