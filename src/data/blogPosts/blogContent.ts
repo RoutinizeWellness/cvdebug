@@ -3306,6 +3306,339 @@ export const blogPosts: Record<string, BlogPost> = {
         content: "Changing careers? Upload your resume to CVDebug to see how ATS systems in your target industry will rate your profile, and get specific recommendations for keyword optimization."
       }
     ]
+  },
+  'sdr-bdr-resume-guide-2026': {
+    slug: 'sdr-bdr-resume-guide-2026',
+    title: 'SDR/BDR Resume Guide 2026: How to Show You Can Hit Quota',
+    metaTitle: 'SDR/BDR Resume Guide 2026: Metrics That Get Interviews',
+    metaDescription: 'Complete SDR/BDR resume guide with metrics that hiring managers want to see: calls/day, meetings booked, pipeline generated, and quota attainment.',
+    author: 'CVDebug Team',
+    publishDate: '2026-01-15',
+    lastUpdated: '2026-01-15',
+    readingTime: '8 min read',
+    category: 'Sales',
+    tags: ['Sales', 'SDR', 'BDR', 'Resume Tips', 'Career Advice'],
+    excerpt: 'Your SDR/BDR resume should scream "I can prospect, book meetings, and hit quota." Learn how to showcase concrete sales metrics, not just responsibilities, to land your next sales role.',
+    coverImage: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&auto=format&fit=crop',
+    content: [
+      {
+        type: 'text',
+        content: "If you're applying for SDR (Sales Development Representative) or BDR (Business Development Representative) roles, your resume needs to prove one thing: **you can prospect, book meetings, and hit quota**."
+      },
+      {
+        type: 'text',
+        content: "Hiring managers for sales roles don't care about your GPA or that you 'assisted with lead generation.' They want to see numbers: How many calls do you make per day? What's your meeting booking rate? How much pipeline have you generated?"
+      },
+      {
+        type: 'text',
+        content: "This guide will show you exactly how to structure your SDR/BDR resume to showcase the metrics that matter."
+      },
+      {
+        type: 'heading',
+        content: 'The SDR/BDR Resume Formula'
+      },
+      {
+        type: 'text',
+        content: "**Keep it to 1 page.** If you have 2+ pages for an SDR role with minimal sales metrics, that's a red flag. Sales leaders want to see your ability to communicate concisely."
+      },
+      {
+        type: 'list',
+        content: [
+          "**1 page maximum** - Recruiters spend 6 seconds scanning your resume",
+          "**Push sales experience to the top** - Don't bury your quota attainment below education",
+          "**Minimize education** - Unless you graduated in the last 2 years, just list degree/school/year",
+          "**Lead with metrics** - Every bullet should have numbers (calls, meetings, $, %)",
+          "**Show progression** - Demonstrate that you've consistently hit or exceeded targets"
+        ]
+      },
+      {
+        type: 'heading',
+        content: 'The 5 Critical Metrics Every SDR Resume Needs'
+      },
+      {
+        type: 'subheading',
+        content: '1. Daily Activity Metrics'
+      },
+      {
+        type: 'text',
+        content: "Show your work ethic through volume. Hiring managers want to know you can handle the grind."
+      },
+      {
+        type: 'list',
+        content: [
+          "Calls per day (e.g., '80-100 cold calls daily')",
+          "Emails per day (e.g., '100+ personalized emails daily')",
+          "LinkedIn touches per week (e.g., '50+ LinkedIn connection requests weekly')",
+          "Connect rate % (e.g., '22% connect rate, 2x team average')"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Weak Example:** 'Responsible for outbound prospecting and lead generation.'"
+      },
+      {
+        type: 'text',
+        content: "**Strong Example:** 'Averaged 90 cold calls and 120 emails daily with 25% connect rate, booking 12-15 qualified meetings per week.'"
+      },
+      {
+        type: 'subheading',
+        content: '2. Meeting Booking Metrics'
+      },
+      {
+        type: 'text',
+        content: "This is your core job. Prove you can get prospects on the phone with AEs."
+      },
+      {
+        type: 'list',
+        content: [
+          "Meetings booked per week/month (e.g., '12-15 qualified meetings weekly')",
+          "Show rate % (e.g., '32% show rate, top quartile on team')",
+          "Qualification framework (e.g., 'BANT-qualified opportunities')",
+          "Meeting-to-opportunity conversion (e.g., '68% of meetings converted to qualified opps')"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Weak Example:** 'Scheduled demos for the sales team.'"
+      },
+      {
+        type: 'text',
+        content: "**Strong Example:** 'Booked 47 BANT-qualified demos in Q3 with 35% show rate (vs. 22% team avg), converting 68% to qualified opportunities.'"
+      },
+      {
+        type: 'image',
+        content: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop',
+        alt: 'Sales dashboard showing pipeline and metrics'
+      },
+      {
+        type: 'subheading',
+        content: '3. Pipeline Generation'
+      },
+      {
+        type: 'text',
+        content: "Show the dollar value of opportunities you've created. This is what connects your work to revenue."
+      },
+      {
+        type: 'list',
+        content: [
+          "Pipeline $ generated (e.g., '$2.3M in qualified pipeline')",
+          "Average deal size (e.g., 'Avg deal size $45K')",
+          "Pipeline by quarter (e.g., 'Generated $450K pipeline in Q3')",
+          "Contribution to closed-won (e.g., 'Contributed to $180K in closed-won revenue')"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Weak Example:** 'Generated leads for enterprise accounts.'"
+      },
+      {
+        type: 'text',
+        content: "**Strong Example:** 'Generated $2.3M in qualified pipeline over 6 months (avg deal size $55K), contributing to $890K in closed-won revenue.'"
+      },
+      {
+        type: 'subheading',
+        content: '4. Quota Attainment'
+      },
+      {
+        type: 'text',
+        content: "The most important metric. Did you hit your number? By how much?"
+      },
+      {
+        type: 'list',
+        content: [
+          "Quota attainment % (e.g., '115% of quota for 3 consecutive quarters')",
+          "Ranking on team (e.g., 'Top 3 SDR out of 18 on team')",
+          "Awards/recognition (e.g., 'SDR of the Quarter, Q2 2025')",
+          "Ramp time (e.g., 'Hit 92% of quota in first 90 days')"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Weak Example:** 'Consistently met targets.'"
+      },
+      {
+        type: 'text',
+        content: "**Strong Example:** 'Achieved 115% of $2M pipeline quota for 3 consecutive quarters, ranking #2 out of 18 SDRs (promoted to Senior SDR in 8 months).'"
+      },
+      {
+        type: 'subheading',
+        content: '5. Conversion Rates & Efficiency'
+      },
+      {
+        type: 'text',
+        content: "Show that you're not just doing volume - you're doing it effectively."
+      },
+      {
+        type: 'list',
+        content: [
+          "Email response rate (e.g., '18% email response rate, 3x team average')",
+          "Call-to-meeting conversion (e.g., '8% call-to-meeting conversion')",
+          "Demo-to-opportunity rate (e.g., '65% demo-to-opp conversion')",
+          "Multi-touch sequence performance (e.g., '6-touch cadence achieving 22% response')"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Weak Example:** 'Used email sequences to reach prospects.'"
+      },
+      {
+        type: 'text',
+        content: "**Strong Example:** 'Maintained 19% email response rate using personalized 7-touch sequences, 3.2x higher than team average of 6%.'"
+      },
+      {
+        type: 'heading',
+        content: 'The Right Keywords for SDR/BDR Resumes'
+      },
+      {
+        type: 'text',
+        content: "ATS systems scan for these terms. Make sure they appear in your resume with context:"
+      },
+      {
+        type: 'list',
+        content: [
+          "**CRM/Sales Tools:** Salesforce, HubSpot, Outreach, SalesLoft, Apollo.io, ZoomInfo, LinkedIn Sales Navigator",
+          "**Prospecting Terms:** Cold calling, outbound prospecting, lead qualification, pipeline generation, account-based selling",
+          "**Methodologies:** BANT, MEDDIC, Challenger Sale, solution selling, consultative selling",
+          "**Metrics Terms:** Quota attainment, pipeline coverage, conversion rate, activity metrics, ramp time",
+          "**Process Terms:** Multi-touch cadences, email sequences, discovery calls, needs analysis, objection handling"
+        ]
+      },
+      {
+        type: 'heading',
+        content: 'SDR/BDR Resume Structure'
+      },
+      {
+        type: 'text',
+        content: "Here's the optimal layout for maximum impact:"
+      },
+      {
+        type: 'list',
+        content: [
+          "**Header:** Name, phone, email, LinkedIn (no photo, no address)",
+          "**Summary (Optional, 2-3 lines):** 'Top-performing SDR with 115% quota attainment. Generated $2.3M pipeline through high-volume prospecting and personalized outreach.'",
+          "**Experience (70% of resume):** 3-5 bullet points per role, ALL with metrics",
+          "**Skills:** List CRM tools, sales methodologies, and relevant tech",
+          "**Education:** Degree, school, year (no GPA unless 3.8+, no coursework)"
+        ]
+      },
+      {
+        type: 'heading',
+        content: 'Before & After: Real SDR Resume Transformation'
+      },
+      {
+        type: 'subheading',
+        content: 'Before (Weak)'
+      },
+      {
+        type: 'text',
+        content: "**Sales Development Representative | TechCorp | 2024-Present**"
+      },
+      {
+        type: 'list',
+        content: [
+          "Responsible for generating leads for enterprise sales team",
+          "Contacted prospects via phone and email",
+          "Scheduled demos and maintained Salesforce database",
+          "Worked closely with Account Executives to pass qualified leads",
+          "Helped achieve team goals"
+        ]
+      },
+      {
+        type: 'subheading',
+        content: 'After (Strong)'
+      },
+      {
+        type: 'text',
+        content: "**Sales Development Representative | TechCorp | Jan 2024-Present**"
+      },
+      {
+        type: 'list',
+        content: [
+          "Achieved 118% of $2M pipeline quota in 2024, ranking #2 out of 16 SDRs (promoted to Senior SDR Dec 2024)",
+          "Generated $2.4M in qualified pipeline through 80+ daily cold calls and 100+ personalized emails, maintaining 23% connect rate",
+          "Booked 52 BANT-qualified demos in Q4 with 34% show rate, converting 70% to qualified opportunities worth avg $48K",
+          "Maintained 18% email response rate (3x team avg) using personalized 6-touch sequences and account research",
+          "Implemented new prospecting framework using Apollo.io and LinkedIn Sales Navigator, increasing team meeting bookings 28%"
+        ]
+      },
+      {
+        type: 'text',
+        content: "Notice the difference? Every bullet has specific numbers, shows impact, and uses strong action verbs."
+      },
+      {
+        type: 'heading',
+        content: 'Common SDR/BDR Resume Mistakes'
+      },
+      {
+        type: 'list',
+        content: [
+          "**Too long** - SDR resumes should be 1 page. If you need 2 pages, you're including too much irrelevant info.",
+          "**Education at the top** - Unless you graduated in the last year, education should be at the bottom.",
+          "**No metrics** - 'Generated leads' means nothing. 'Generated $2.3M pipeline' is what matters.",
+          "**Passive language** - 'Responsible for' and 'Helped with' are weak. Use 'Generated', 'Achieved', 'Booked'.",
+          "**Listing tools without context** - Don't just say 'Salesforce'. Say 'Maintained 98% data accuracy in Salesforce'.",
+          "**Generic responsibilities** - Everyone makes calls. Show HOW MANY and with WHAT RESULTS."
+        ]
+      },
+      {
+        type: 'heading',
+        content: 'What If You Don\'t Have SDR Experience?'
+      },
+      {
+        type: 'text',
+        content: "Breaking into SDR roles without direct experience? Focus on transferable skills:"
+      },
+      {
+        type: 'list',
+        content: [
+          "**Customer-facing roles:** Retail, hospitality, customer service - quantify interactions ('Handled 50+ customer interactions daily')",
+          "**Phone/outreach experience:** Call center, fundraising, campus recruiting - show volume and results",
+          "**Target-driven work:** Any role with quotas, KPIs, or goals - prove you can hit numbers",
+          "**Sales coursework/certifications:** List relevant training (e.g., 'Completed Salesforce SDR Certification')",
+          "**Cold outreach projects:** Ran a campus club? Did fundraising? Show your prospecting ability"
+        ]
+      },
+      {
+        type: 'text',
+        content: "**Example for Career Changer:**"
+      },
+      {
+        type: 'text',
+        content: "'Customer Success Associate | RetailCo | 2023-2024'"
+      },
+      {
+        type: 'list',
+        content: [
+          "Engaged 60-80 customers daily in high-volume retail environment, achieving 142% of $85K quarterly sales target",
+          "Upsold premium services to 35% of customer base through needs analysis and consultative selling approach",
+          "Trained 8 new hires on customer engagement strategies, resulting in 25% faster ramp to first sale",
+          "Maintained 4.9/5.0 customer satisfaction rating while handling 200+ customer interactions weekly"
+        ]
+      },
+      {
+        type: 'heading',
+        content: 'Final Checklist: Is Your SDR Resume Ready?'
+      },
+      {
+        type: 'list',
+        content: [
+          "✓ 1 page maximum",
+          "✓ Every bullet has a number (%, $, #, time)",
+          "✓ Quota attainment % is prominent",
+          "✓ Daily/weekly activity metrics are included",
+          "✓ Pipeline $ generated is quantified",
+          "✓ CRM and sales tools are mentioned with context",
+          "✓ Education is minimal (bottom of page)",
+          "✓ No generic phrases like 'responsible for' or 'helped with'",
+          "✓ Strong action verbs (Generated, Achieved, Booked, Exceeded)",
+          "✓ Shows progression or promotion"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Applying for SDR/BDR roles? Upload your resume to CVDebug to see how it scores against these criteria. Our AI analyzes your metrics, identifies missing keywords, and shows you exactly how to showcase your prospecting ability and quota attainment."
+      }
+    ]
   }
 };
 

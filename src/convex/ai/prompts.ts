@@ -59,6 +59,18 @@ export function buildResumeAnalysisPrompt(
         - NEVER use generic templates like "Implemented X to achieve Y" - be specific!
         - Example: For "SQL" → "Add SQL to Experience section: 'Optimized PostgreSQL queries reducing dashboard load time from 8s to 1.2s' OR 'Designed SQL schema handling 2M daily transactions with automated backup system'"
 
+    *   **SDR/BDR ROLE-SPECIFIC SCORING:**
+        - **CRITICAL for SDR/BDR:** Resume MUST show concrete activity metrics: calls/emails per day, meetings booked, pipeline $ generated, quota attainment %, conversion rates
+        - **Format for SDR/BDR:** 1 page maximum. Push sales/customer-facing/outreach experience to the top. Education should be minimal (just degree/school/year).
+        - **Required Keywords for SDR/BDR:** Salesforce/CRM, prospecting, cold calling, email outreach, pipeline generation, quota attainment, lead qualification, discovery calls
+        - **Weak Bullets for SDR/BDR:** Generic responsibilities like "Managed leads" or "Contacted prospects" without numbers. Flag these immediately.
+        - **Strong Bullets for SDR/BDR:**
+          - "Averaged 80+ cold calls and 100+ emails daily, booking 12-15 qualified meetings per week"
+          - "Generated $2.3M in qualified pipeline over 6 months, achieving 115% of quota"
+          - "Maintained 18% email response rate (3x team average) using personalized multi-touch sequences"
+          - "Booked 47 demos in Q3 with 32% show rate, contributing to $450K closed-won revenue"
+        - **Education for SDR/BDR:** Only include if recent graduate (<2 years). Otherwise, focus 90% of resume on sales activity and results.
+
 3.  **Impact Assessment (ENHANCED):**
     *   Count the number of bullet points with specific metrics (%, $, #, time saved, users impacted).
     *   **Target:** 8+ quantified bullets for scores >80
@@ -105,6 +117,12 @@ Return a raw JSON object with this exact structure. Do not include markdown form
       For 'Leadership' in Management role: 'Add leadership example to Experience: \"Led cross-functional team of 12 engineers and 3 PMs to deliver $2M product on time, implementing weekly sprints and reducing bug count by 60%\"'
 
       For 'React' in Frontend role: 'Strengthen React experience: \"Built responsive React dashboard with Redux serving 100K+ daily users, improving page load time by 40% through code splitting and lazy loading\"'
+
+      For 'Cold Calling' in SDR/BDR role: 'Add prospecting metrics to Experience: \"Averaged 80-100 cold calls daily with 22% connect rate, booking 12-15 qualified meetings weekly\" or \"Implemented BANT qualification framework across 500+ cold calls/month, achieving 28% conversion to demo\"'
+
+      For 'Pipeline Generation' in SDR/BDR role: 'Quantify pipeline impact: \"Generated $2.3M in qualified pipeline over 6 months (115% of $2M quota) through multi-channel outreach\" or \"Built $450K pipeline in Q3 using targeted account-based sequences, contributing to $180K closed-won revenue\"'
+
+      For 'Salesforce' in SDR/BDR role: 'Show CRM proficiency with results: \"Maintained 98% data accuracy in Salesforce across 300+ accounts, enabling sales team to close 35% faster\" or \"Built custom Salesforce reports tracking email engagement and call outcomes, improving team booking rate by 40%\"'
 
       Be SPECIFIC to the candidate's role, use REAL metrics, and provide CONCRETE examples they can adapt.",
       "synonyms": ["synonym1", "synonym2"],
@@ -169,6 +187,15 @@ Return a raw JSON object with this exact structure. Do not include markdown form
 
 ## 🎯 Pro Tips for [Role]
 [Specific, actionable advice tailored to the role category]
+
+**For SDR/BDR roles specifically:**
+- Lead with prospecting activity: calls/day, emails/day, meetings booked/week
+- Show quota attainment with percentages (e.g., "Achieved 115% of quota" or "Hit 92% quota in first 90 days")
+- Quantify pipeline generation in dollars (e.g., "$2.3M qualified pipeline")
+- Include conversion metrics (connect rate %, meeting show rate %, email response rate %)
+- Mention CRM/tools (Salesforce, Outreach, SalesLoft, HubSpot, Apollo, ZoomInfo)
+- Keep education minimal unless recent grad - hiring managers care about activity and results, not coursework
+- 1 page maximum - if it's 2 pages with minimal sales metrics, that's an immediate red flag
 
 ## 📈 Competitive Benchmark
 - **Your Score:** [Score]%
@@ -307,9 +334,9 @@ TONE GUIDELINES:
 
 TASK:
 Generate 3 distinct versions of a bullet point demonstrating this skill:
-1. THE PERFORMANCE VERSION: Focus on speed, efficiency, and technical optimization.
-2. THE BUSINESS VERSION: Focus on revenue, user growth, or cost reduction.
-3. THE LEADERSHIP VERSION: Focus on ownership, cross-functional collaboration, or mentoring.
+1. THE PERFORMANCE VERSION: Focus on speed, efficiency, and technical optimization. (For SDR/BDR: volume metrics like calls/day, emails/day, meetings booked)
+2. THE BUSINESS VERSION: Focus on revenue, user growth, or cost reduction. (For SDR/BDR: pipeline $, quota %, closed-won contribution)
+3. THE LEADERSHIP VERSION: Focus on ownership, cross-functional collaboration, or mentoring. (For SDR/BDR: process improvements, training peers, tools implementation)
 
 OUTPUT FORMAT:
 Return only a JSON object:

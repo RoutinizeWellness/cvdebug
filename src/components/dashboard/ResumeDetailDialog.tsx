@@ -88,7 +88,7 @@ export function ResumeDetailDialog({
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
 
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
-  const analyzeResume = useAction(apiAny.ai.analyzeResume);
+  const analyzeResume = useMutation(apiAny.resumes.analyzeResume);
   const applyRewriteToResume = useMutation(apiAny.resumes.applyRewriteToResume);
 
   const user = useQuery(apiAny.users.currentUser);
