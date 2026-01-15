@@ -21,6 +21,7 @@ import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js
 import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
+import type * as ai_intelligentCache from "../ai/intelligentCache.js";
 import type * as ai_intelligentFallback from "../ai/intelligentFallback.js";
 import type * as ai_interviewPrep from "../ai/interviewPrep.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
@@ -91,6 +92,7 @@ declare const fullApi: ApiFromModules<{
   "ai/contentAnalysis": typeof ai_contentAnalysis;
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;
+  "ai/intelligentCache": typeof ai_intelligentCache;
   "ai/intelligentFallback": typeof ai_intelligentFallback;
   "ai/interviewPrep": typeof ai_interviewPrep;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;

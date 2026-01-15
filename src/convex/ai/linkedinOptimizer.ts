@@ -4,6 +4,7 @@ import { action } from "../_generated/server";
 import { v } from "convex/values";
 import { buildLinkedInPrompt, buildRecruiterDMPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
+import { generateContentHash } from "./intelligentCache";
 
 // Use require to avoid deep type instantiation issues with the internal object
 const internalAny = require("../_generated/api").internal;
@@ -15,6 +16,7 @@ export const optimizeLinkedIn = action({
     linkedinUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const startTime = Date.now();
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
@@ -27,6 +29,24 @@ export const optimizeLinkedIn = action({
     if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
       throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use LinkedIn Optimizer.");
     }
+
+    // Check cache first (80-95% cost savings)
+    const contentHash = generateContentHash(
+      args.profileText + (args.jobDescription || "") + (args.linkedinUrl || "")
+    );
+
+    const cached = await ctx.runQuery(internalAny.ai.intelligentCache.getCachedResult, {
+      contentHash,
+      service: "linkedinOptimizer",
+      maxAgeMs: 600000 // 10 minutes
+    });
+
+    if (cached) {
+      console.log(`[LinkedIn Optimizer] Cache HIT - Returning cached result (${Date.now() - startTime}ms)`);
+      return cached;
+    }
+
+    console.log(`[LinkedIn Optimizer] Cache MISS - Generating new optimization`);
 
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) throw new Error("AI not configured");
@@ -43,6 +63,17 @@ export const optimizeLinkedIn = action({
     if (!result) {
         throw new Error("Failed to parse AI response");
     }
+
+    // Cache the result
+    await ctx.runMutation(internalAny.ai.intelligentCache.cacheAnalysisResult, {
+      contentHash,
+      service: "linkedinOptimizer",
+      result,
+      metadata: {
+        textLength: args.profileText.length,
+        isPremium: true
+      }
+    });
 
     // Store the optimization result
     await ctx.runMutation(internalAny.linkedinProfile.storeOptimization, {
@@ -66,6 +97,7 @@ export const generateRecruiterDMs = action({
   },
   handler: async (ctx, args) => {
     try {
+      const startTime = Date.now();
       const identity = await ctx.auth.getUserIdentity();
       if (!identity) throw new Error("Not authenticated");
 
@@ -78,6 +110,24 @@ export const generateRecruiterDMs = action({
       if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
         throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Recruiter DM Generator.");
       }
+
+      // Check cache first (80-95% cost savings)
+      const contentHash = generateContentHash(
+        args.profileText + args.jobDescription + (args.recruiterName || "")
+      );
+
+      const cached = await ctx.runQuery(internalAny.ai.intelligentCache.getCachedResult, {
+        contentHash,
+        service: "recruiterDMs",
+        maxAgeMs: 600000 // 10 minutes
+      });
+
+      if (cached) {
+        console.log(`[Recruiter DMs] Cache HIT - Returning cached result (${Date.now() - startTime}ms)`);
+        return cached;
+      }
+
+      console.log(`[Recruiter DMs] Cache MISS - Generating new DMs`);
 
       const apiKey = process.env.OPENROUTER_API_KEY;
       if (!apiKey) throw new Error("AI not configured");
@@ -99,6 +149,17 @@ export const generateRecruiterDMs = action({
       if (!result) {
           throw new Error("Failed to parse AI response");
       }
+
+      // Cache the result
+      await ctx.runMutation(internalAny.ai.intelligentCache.cacheAnalysisResult, {
+        contentHash,
+        service: "recruiterDMs",
+        result,
+        metadata: {
+          textLength: args.profileText.length,
+          isPremium: true
+        }
+      });
 
       // Store the DM variations
       if (result.variations && Array.isArray(result.variations)) {

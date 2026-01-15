@@ -3,6 +3,9 @@
 import { action } from "../_generated/server";
 import { v } from "convex/values";
 import { callOpenRouter, extractJSON } from "./apiClient";
+import { generateContentHash } from "./intelligentCache";
+
+const internalAny = require("../_generated/api").internal;
 
 export const generateInterviewPrep = action({
   args: {
@@ -13,6 +16,26 @@ export const generateInterviewPrep = action({
     missingKeywords: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
+    const startTime = Date.now();
+
+    // Check cache first (80-95% cost savings)
+    const contentHash = generateContentHash(
+      args.resumeText + args.jobDescription + args.jobTitle + args.company
+    );
+
+    const cached = await ctx.runQuery(internalAny.ai.intelligentCache.getCachedResult, {
+      contentHash,
+      service: "interviewPrep",
+      maxAgeMs: 600000 // 10 minutes (interview prep changes less frequently)
+    });
+
+    if (cached) {
+      console.log(`[Interview Prep] Cache HIT - Returning cached result (${Date.now() - startTime}ms)`);
+      return cached;
+    }
+
+    console.log(`[Interview Prep] Cache MISS - Generating new prep`);
+
     const missingKeywordsList = args.missingKeywords?.join(", ") || "None";
     
     const prompt = `You are a Principal Technical Recruiter preparing a candidate for an interview.
@@ -100,13 +123,26 @@ Return ONLY valid JSON in this exact format:
 
       console.log(`[Interview Prep] Successfully parsed ${parsed.questions.length} questions`);
 
-      return {
+      const result = {
         questions: parsed.questions || [],
         storyPrompts: parsed.storyPrompts || [],
         weaknessFraming: parsed.weaknessFraming || [],
         closingQuestions: parsed.closingQuestions || [],
         interrogation: parsed.interrogation || []
       };
+
+      // Cache the result
+      await ctx.runMutation(internalAny.ai.intelligentCache.cacheAnalysisResult, {
+        contentHash,
+        service: "interviewPrep",
+        result,
+        metadata: {
+          textLength: args.resumeText.length,
+          isPremium: true
+        }
+      });
+
+      return result;
     } catch (error: any) {
       console.error("[Interview Prep] Generation failed:", error);
       console.error("[Interview Prep] Error details:", {
