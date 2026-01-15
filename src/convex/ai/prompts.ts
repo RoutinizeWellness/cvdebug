@@ -50,6 +50,13 @@ export function buildResumeAnalysisPrompt(
         - **IMPORTANT (7 pts impact):** Appears 2 times in JD, or is a strong differentiator
         - **NICE-TO-HAVE (3 pts impact):** Appears 1 time or is a general skill
     *   **Context Scoring:** Keyword with metrics/results = 1.5x weight, keyword in recent experience = 1.2x weight
+    *   **CONTEXT GENERATION (CRITICAL):** For EACH missing keyword, write a SPECIFIC, ROLE-TAILORED recommendation:
+        - Analyze the candidate's current experience level and role
+        - Provide CONCRETE examples with real numbers they can adapt
+        - Include 2-3 different example formats for the same keyword
+        - Use industry-specific terminology and realistic metrics
+        - NEVER use generic templates like "Implemented X to achieve Y" - be specific!
+        - Example: For "SQL" → "Add SQL to Experience section: 'Optimized PostgreSQL queries reducing dashboard load time from 8s to 1.2s' OR 'Designed SQL schema handling 2M daily transactions with automated backup system'"
 
 3.  **Impact Assessment (ENHANCED):**
     *   Count the number of bullet points with specific metrics (%, $, #, time saved, users impacted).
@@ -84,13 +91,22 @@ Return a raw JSON object with this exact structure. Do not include markdown form
   },
   "matchedKeywords": ["keyword1", "keyword2", "keyword3"],
   "missingKeywords": [
-    { 
-      "keyword": "Specific Term", 
-      "priority": "critical" | "important" | "nice-to-have", 
-      "frequency": <estimated count in JD>, 
-      "impact": <points lost>, 
-      "section": "Experience" | "Skills" | "Summary", 
-      "context": "Add this to [section] by describing how you used it in [specific scenario]. Example: 'Implemented [keyword] to achieve [result]'",
+    {
+      "keyword": "Specific Term",
+      "priority": "critical" | "important" | "nice-to-have",
+      "frequency": <estimated count in JD>,
+      "impact": <points lost>,
+      "section": "Experience" | "Skills" | "Summary",
+      "context": "Write a SPECIFIC, ACTIONABLE recommendation tailored to this keyword and role. DO NOT use generic templates. Examples:
+
+      For 'SQL' in Data role: 'Add SQL experience to your most recent role: \"Optimized SQL queries reducing report generation time from 3 min to 12 sec, processing 50M+ records daily\" or \"Designed PostgreSQL database schema supporting 10K transactions/sec with 99.9% uptime\"'
+
+      For 'Leadership' in Management role: 'Add leadership example to Experience: \"Led cross-functional team of 12 engineers and 3 PMs to deliver $2M product on time, implementing weekly sprints and reducing bug count by 60%\"'
+
+      For 'React' in Frontend role: 'Strengthen React experience: \"Built responsive React dashboard with Redux serving 100K+ daily users, improving page load time by 40% through code splitting and lazy loading\"'
+
+      Be SPECIFIC to the candidate's role, use REAL metrics, and provide CONCRETE examples they can adapt.",
+      "synonyms": ["synonym1", "synonym2"],
       "relatedSkills": ["skill1", "skill2"]
     }
   ],
