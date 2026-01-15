@@ -89,31 +89,87 @@ export function extractFeatures(text: string, category: string): ResumeFeatures 
   const averageSentenceLength = wordCount / (sentences.length || 1);
   const uniqueWordRatio = uniqueWords.size / wordCount;
 
-  // Technical density - count unique technical terms
+  // Technical density - count unique technical terms with context-aware detection
   const lowerText = text.toLowerCase();
-  const technicalTerms = [
-    // Programming Languages
-    'python', 'javascript', 'typescript', 'java', 'go', 'golang', 'rust', 'c++', 'c#', 'ruby', 'php', 'swift', 'kotlin',
-    // Frameworks & Libraries
-    'react', 'vue', 'angular', 'node.js', 'express', 'django', 'flask', 'spring', 'laravel', 'rails',
-    // Databases
-    'sql', 'postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch', 'cassandra', 'dynamodb',
-    // Cloud & DevOps
-    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'k8s', 'terraform', 'jenkins', 'gitlab', 'github actions',
-    'ci/cd', 'devops', 'prometheus', 'grafana', 'nginx', 'apache',
-    // Methodologies & Concepts
-    'api', 'rest', 'graphql', 'microservices', 'agile', 'scrum', 'kanban', 'tdd', 'cloud', 'serverless',
-    'machine learning', 'ml', 'ai', 'deep learning', 'data science', 'nlp', 'computer vision',
-    // Data & Analytics
-    'pandas', 'numpy', 'spark', 'hadoop', 'tableau', 'power bi', 'etl', 'data pipeline',
-    // Security & Architecture
-    'oauth', 'jwt', 'encryption', 'architecture', 'scalability', 'optimization', 'performance',
-    'load balancing', 'caching', 'cdn', 'event-driven', 'message queue', 'kafka'
+
+  // Comprehensive technical keywords with context validation (from comprehensiveExtractor)
+  const technicalKeywords = [
+    // Programming Languages (12)
+    { term: 'javascript', aliases: ['js', 'javascript', 'ecmascript'], context: ['developer', 'engineer'] },
+    { term: 'typescript', aliases: ['ts', 'typescript'], context: ['developer', 'engineer'] },
+    { term: 'python', aliases: ['python', 'python3'], context: ['developer', 'data', 'ml'], exclude: ['snake', 'monty'] },
+    { term: 'java', aliases: ['java'], context: ['developer', 'engineer'], exclude: ['javascript', 'coffee'] },
+    { term: 'c++', aliases: ['c++', 'cpp'], context: ['developer', 'engineer'] },
+    { term: 'c#', aliases: ['c#', 'csharp'], context: ['developer', 'engineer'] },
+    { term: 'go', aliases: ['golang', 'go'], context: ['developer', 'engineer'] },
+    { term: 'rust', aliases: ['rust'], context: ['developer', 'engineer'] },
+    { term: 'php', aliases: ['php'], context: ['developer', 'web'] },
+    { term: 'ruby', aliases: ['ruby'], context: ['developer', 'rails'] },
+    { term: 'swift', aliases: ['swift'], context: ['ios', 'developer'] },
+    { term: 'kotlin', aliases: ['kotlin'], context: ['android', 'developer'] },
+    // Frontend Frameworks (5)
+    { term: 'react', aliases: ['react', 'react.js', 'reactjs'], context: ['frontend', 'web'] },
+    { term: 'angular', aliases: ['angular', 'angularjs'], context: ['frontend', 'web'] },
+    { term: 'vue', aliases: ['vue', 'vue.js', 'vuejs'], context: ['frontend', 'web'] },
+    { term: 'svelte', aliases: ['svelte'], context: ['frontend', 'web'] },
+    { term: 'next.js', aliases: ['next.js', 'nextjs', 'next'], context: ['react', 'frontend'] },
+    // Backend Frameworks (6)
+    { term: 'node.js', aliases: ['node.js', 'nodejs', 'node'], context: ['backend', 'javascript'] },
+    { term: 'express', aliases: ['express', 'express.js'], context: ['node', 'backend'] },
+    { term: 'django', aliases: ['django'], context: ['python', 'backend'] },
+    { term: 'flask', aliases: ['flask'], context: ['python', 'backend'] },
+    { term: 'spring', aliases: ['spring', 'spring boot'], context: ['java', 'backend'] },
+    { term: 'laravel', aliases: ['laravel'], context: ['php', 'backend'] },
+    // Databases (8)
+    { term: 'sql', aliases: ['sql'], context: ['database', 'data'] },
+    { term: 'nosql', aliases: ['nosql'], context: ['database', 'mongodb'] },
+    { term: 'mongodb', aliases: ['mongodb', 'mongo'], context: ['database', 'nosql'] },
+    { term: 'postgresql', aliases: ['postgresql', 'postgres'], context: ['database', 'sql'] },
+    { term: 'mysql', aliases: ['mysql'], context: ['database', 'sql'] },
+    { term: 'redis', aliases: ['redis'], context: ['cache', 'database'] },
+    { term: 'elasticsearch', aliases: ['elasticsearch', 'elastic'], context: ['search', 'database'] },
+    { term: 'dynamodb', aliases: ['dynamodb'], context: ['aws', 'database'] },
+    // Cloud Platforms (3)
+    { term: 'aws', aliases: ['aws', 'amazon web services'], context: ['cloud', 'devops'] },
+    { term: 'azure', aliases: ['azure', 'microsoft azure'], context: ['cloud', 'devops'] },
+    { term: 'gcp', aliases: ['gcp', 'google cloud'], context: ['cloud', 'devops'] },
+    // DevOps Tools (5)
+    { term: 'docker', aliases: ['docker'], context: ['devops', 'container'] },
+    { term: 'kubernetes', aliases: ['kubernetes', 'k8s'], context: ['devops', 'container'] },
+    { term: 'terraform', aliases: ['terraform'], context: ['devops', 'infrastructure'] },
+    { term: 'jenkins', aliases: ['jenkins'], context: ['ci/cd', 'devops'] },
+    { term: 'git', aliases: ['git'], context: ['version control', 'github'] },
+    // AI/ML (5)
+    { term: 'machine learning', aliases: ['machine learning', 'ml'], context: ['ai', 'data'] },
+    { term: 'deep learning', aliases: ['deep learning', 'dl'], context: ['ai', 'neural'] },
+    { term: 'tensorflow', aliases: ['tensorflow'], context: ['ml', 'ai'] },
+    { term: 'pytorch', aliases: ['pytorch'], context: ['ml', 'ai'] },
+    { term: 'nlp', aliases: ['nlp', 'natural language processing'], context: ['ai', 'ml'] }
   ];
-  const technicalMatches = new Set(
-    technicalTerms.filter(term => lowerText.includes(term))
-  ).size;
-  const technicalDensity = (technicalMatches / Math.min(technicalTerms.length, 30)) * 100;
+
+  const detectedTechnicalTerms = new Set<string>();
+
+  for (const { term, aliases, context, exclude } of technicalKeywords) {
+    // Check if any alias is present
+    const hasSkill = aliases.some(alias => {
+      const regex = new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      return regex.test(lowerText);
+    });
+
+    if (hasSkill) {
+      // Validate with context
+      const hasContext = context.some(ctx => lowerText.includes(ctx.toLowerCase()));
+
+      // Check for exclusions
+      const hasExclusion = exclude && exclude.some(exc => lowerText.includes(exc.toLowerCase()));
+
+      if (hasContext && !hasExclusion) {
+        detectedTechnicalTerms.add(term);
+      }
+    }
+  }
+
+  const technicalDensity = (detectedTechnicalTerms.size / Math.min(50, technicalKeywords.length)) * 100;
 
   // Structural analysis
   const sections = text.match(/\n\s*[A-Z][A-Z\s]{3,}\s*\n/g) || [];
