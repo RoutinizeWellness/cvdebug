@@ -143,13 +143,49 @@ export function extractComprehensiveData(text: string): ComprehensiveResumeData 
 function extractContactInfo(text: string) {
   const contact: any = {};
 
-  // Email
-  const emailMatch = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i);
-  if (emailMatch) contact.email = emailMatch[1];
+  // Email - Enhanced validation with multiple patterns and domain checks
+  const emailPatterns = [
+    /([a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi,
+    /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi
+  ];
 
-  // Phone
-  const phoneMatch = text.match(/\+?\d{1,3}[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
-  if (phoneMatch) contact.phone = phoneMatch[0];
+  for (const pattern of emailPatterns) {
+    const emailMatches = [...text.matchAll(pattern)];
+    for (const match of emailMatches) {
+      const email = match[0].toLowerCase().trim();
+
+      // Validate email structure and domain
+      if (isValidEmail(email)) {
+        contact.email = email;
+        break;
+      }
+    }
+    if (contact.email) break;
+  }
+
+  // Phone - Enhanced validation with international support and normalization
+  const phonePatterns = [
+    // International: +1 (555) 123-4567, +44 20 7123 4567
+    /\+?\d{1,3}[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}/g,
+    // US: (555) 123-4567, 555-123-4567
+    /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,
+    // Simple: 555.123.4567
+    /\d{3}[.-]\d{3}[.-]\d{4}/g
+  ];
+
+  for (const pattern of phonePatterns) {
+    const phoneMatches = [...text.matchAll(pattern)];
+    for (const match of phoneMatches) {
+      const phone = match[0].trim();
+
+      // Validate phone has correct digit count and reasonable format
+      if (isValidPhone(phone)) {
+        contact.phone = normalizePhone(phone);
+        break;
+      }
+    }
+    if (contact.phone) break;
+  }
 
   // LinkedIn - Multiple patterns for maximum detection
   const linkedinPatterns = [
@@ -169,8 +205,8 @@ function extractContactInfo(text: string) {
     const match = text.match(pattern);
     if (match && match[1]) {
       const username = match[1].trim();
-      // Validate it's a reasonable username (not a common word)
-      if (username.length >= 3 && username.length <= 100 && !username.includes(' ')) {
+      // Robust validation for LinkedIn username
+      if (isValidLinkedInUsername(username)) {
         contact.linkedin = `https://linkedin.com/in/${username}`;
         break;
       }
@@ -195,21 +231,57 @@ function extractContactInfo(text: string) {
     const match = text.match(pattern);
     if (match && match[1]) {
       const username = match[1].trim();
-      // Validate it's a reasonable username
-      if (username.length >= 2 && username.length <= 39 && !username.includes(' ')) {
+      // Robust validation for GitHub username
+      if (isValidGitHubUsername(username)) {
         contact.github = `https://github.com/${username}`;
         break;
       }
     }
   }
 
-  // Website/Portfolio
-  const websiteMatch = text.match(/(?:website|portfolio|personal site)[:\s]+([a-zA-Z0-9.-]+\.[a-z]{2,})/i);
-  if (websiteMatch) contact.website = websiteMatch[1];
+  // Website/Portfolio - Enhanced validation
+  const websitePatterns = [
+    /(?:website|portfolio|personal\s+site)[:\s]+([a-zA-Z0-9.-]+\.[a-z]{2,})/gi,
+    /\b(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+\.(?:com|net|org|io|dev|me|co))\b/gi
+  ];
 
-  // Location
-  const locationMatch = text.match(/(?:location|based in|city)[:\s]+([a-zA-Z\s,]+)/i);
-  if (locationMatch) contact.location = locationMatch[1].trim();
+  for (const pattern of websitePatterns) {
+    const websiteMatches = [...text.matchAll(pattern)];
+    for (const match of websiteMatches) {
+      let website = match[1].trim();
+
+      // Validate it's a reasonable website domain
+      if (isValidWebsite(website)) {
+        // Add protocol if missing
+        if (!website.startsWith('http')) {
+          website = `https://${website}`;
+        }
+        contact.website = website;
+        break;
+      }
+    }
+    if (contact.website) break;
+  }
+
+  // Location - Enhanced extraction with city, state, country patterns
+  const locationPatterns = [
+    /(?:location|based\s+in|city|address)[:\s]+([a-zA-Z\s,.-]+(?:USA|US|UK|CA)?)/gi,
+    /\b([A-Z][a-z]+,\s+[A-Z]{2}(?:\s+\d{5})?)\b/g, // City, ST format
+  ];
+
+  for (const pattern of locationPatterns) {
+    const locationMatches = [...text.matchAll(pattern)];
+    for (const match of locationMatches) {
+      const location = match[1].trim();
+
+      // Validate location is reasonable (2-100 chars, not too many numbers)
+      if (isValidLocation(location)) {
+        contact.location = location;
+        break;
+      }
+    }
+    if (contact.location) break;
+  }
 
   return contact;
 }
@@ -218,105 +290,181 @@ function extractEducation(text: string) {
   const degrees: Array<any> = [];
   let highestDegree: string | undefined;
   let totalYears = 0;
+  const degreeLevels = { PhD: 5, Masters: 3, Bachelors: 2, Associates: 1 };
 
   const degreePatterns = [
-    { pattern: /\b(phd|ph\.d\.|doctorate)\s+(?:in\s+)?([a-zA-Z\s]+)/gi, level: 'PhD', years: 4 },
-    { pattern: /\b(master'?s?|m\.s\.|m\.a\.|mba)\s+(?:in\s+)?([a-zA-Z\s]+)/gi, level: 'Masters', years: 2 },
-    { pattern: /\b(bachelor'?s?|b\.s\.|b\.a\.|b\.sc\.)\s+(?:in\s+)?([a-zA-Z\s]+)/gi, level: 'Bachelors', years: 4 },
-    { pattern: /\b(associate'?s?|a\.s\.|a\.a\.)\s+(?:in\s+)?([a-zA-Z\s]+)/gi, level: 'Associates', years: 2 }
+    { pattern: /\b(phd|ph\.d\.|doctorate|doctoral)\s+(?:in\s+)?([a-zA-Z\s]+?)(?:\s+(?:from|at|,)|\d{4}|$)/gi, level: 'PhD', years: 4 },
+    { pattern: /\b(master'?s?|m\.s\.|m\.a\.|mba|m\.sc\.|m\.eng\.)\s+(?:in\s+)?([a-zA-Z\s]+?)(?:\s+(?:from|at|,)|\d{4}|$)/gi, level: 'Masters', years: 2 },
+    { pattern: /\b(bachelor'?s?|b\.s\.|b\.a\.|b\.sc\.|b\.eng\.)\s+(?:in\s+)?([a-zA-Z\s]+?)(?:\s+(?:from|at|,)|\d{4}|$)/gi, level: 'Bachelors', years: 4 },
+    { pattern: /\b(associate'?s?|a\.s\.|a\.a\.)\s+(?:in\s+)?([a-zA-Z\s]+?)(?:\s+(?:from|at|,)|\d{4}|$)/gi, level: 'Associates', years: 2 }
   ];
 
   for (const { pattern, level, years } of degreePatterns) {
     const matches = [...text.matchAll(pattern)];
     for (const match of matches) {
-      const field = match[2]?.trim();
-      degrees.push({ degree: level, field });
-      totalYears = Math.max(totalYears, years);
-      if (!highestDegree) highestDegree = level;
+      let field = match[2]?.trim();
+
+      // Validate field of study
+      if (field && isValidFieldOfStudy(field)) {
+        // Clean up field (remove extra words)
+        field = cleanFieldOfStudy(field);
+
+        // Extract institution if present
+        let institution: string | undefined;
+        const institutionMatch = text.match(new RegExp(`${match[0]}.*?(?:from|at)\\s+([A-Z][a-zA-Z\\s&]+(?:University|College|Institute|School))`, 'i'));
+        if (institutionMatch) {
+          institution = institutionMatch[1].trim();
+        }
+
+        // Extract year if present
+        let year: string | undefined;
+        const yearMatch = text.match(new RegExp(`${match[0]}.*?(\\d{4})`, 'i'));
+        if (yearMatch && isValidYear(parseInt(yearMatch[1]))) {
+          year = yearMatch[1];
+        }
+
+        degrees.push({ degree: level, field, institution, year });
+        totalYears = Math.max(totalYears, years);
+
+        // Track highest degree
+        if (!highestDegree || degreeLevels[level as keyof typeof degreeLevels] > degreeLevels[highestDegree as keyof typeof degreeLevels]) {
+          highestDegree = level;
+        }
+      }
     }
   }
 
-  // Extract GPA
-  const gpaMatch = text.match(/gpa[:\s]+(\d\.\d{1,2})/i);
-  if (gpaMatch && degrees.length > 0) {
-    degrees[0].gpa = gpaMatch[1];
+  // Extract GPA with validation
+  const gpaPatterns = [
+    /gpa[:\s]+(\d\.\d{1,2})\s*(?:\/\s*4\.0)?/gi,
+    /(\d\.\d{1,2})\s*gpa/gi
+  ];
+
+  for (const pattern of gpaPatterns) {
+    const gpaMatch = text.match(pattern);
+    if (gpaMatch && degrees.length > 0) {
+      const gpa = parseFloat(gpaMatch[1]);
+      // Validate GPA is in reasonable range (0.0 - 4.0)
+      if (gpa >= 0.0 && gpa <= 4.0) {
+        degrees[0].gpa = gpaMatch[1];
+        break;
+      }
+    }
   }
 
   return { highestDegree, degrees, totalYearsEducation: totalYears };
 }
 
 function extractExperience(text: string) {
-  // Extract years of experience
+  // Extract years of experience with robust validation
   const yearPatterns = [
-    /(\d+)\+?\s*years?\s+(?:of\s+)?experience/i,
-    /(\d{4})\s*[-–]\s*(?:present|current|now)/gi,
+    /(\d+)\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience/gi,
+    /(\d{4})\s*[-–]\s*(?:present|current|now|today)/gi,
+    /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{4})\s*[-–]\s*(?:present|current|now)/gi,
     /(\d{4})\s*[-–]\s*(\d{4})/gi
   ];
 
   let totalYears = 0;
   const experienceYears: number[] = [];
+  const currentYear = new Date().getFullYear();
+  const minValidYear = 1970;
+  const maxValidYear = currentYear + 1;
 
   // Direct experience mention
-  const directMatch = text.match(yearPatterns[0]);
-  if (directMatch) {
-    totalYears = parseInt(directMatch[1]);
+  const directMatches = [...text.matchAll(yearPatterns[0])];
+  for (const match of directMatches) {
+    const years = parseInt(match[1]);
+    // Validate years is reasonable (0-60 years)
+    if (years > 0 && years <= 60) {
+      totalYears = Math.max(totalYears, years);
+    }
   }
 
   // Calculate from date ranges
-  const dateRanges = text.matchAll(yearPatterns[2]);
+  const dateRanges = [...text.matchAll(yearPatterns[3])];
   for (const match of dateRanges) {
     const start = parseInt(match[1]);
     const end = parseInt(match[2]);
-    if (end > start && end - start < 50) {
+
+    // Validate years are reasonable and in correct order
+    if (isValidYear(start) && isValidYear(end) && end >= start && end - start <= 50) {
       experienceYears.push(end - start);
     }
   }
 
-  // Current job (ongoing)
+  // Current job (ongoing) - standard format
   const currentMatches = [...text.matchAll(yearPatterns[1])];
-  const currentYear = new Date().getFullYear();
   for (const match of currentMatches) {
     const start = parseInt(match[1]);
-    if (currentYear - start < 50) {
+    if (isValidYear(start) && start <= currentYear && currentYear - start <= 50) {
       experienceYears.push(currentYear - start);
     }
   }
 
-  if (experienceYears.length > 0 && totalYears === 0) {
-    totalYears = experienceYears.reduce((a, b) => a + b, 0);
+  // Current job with month format
+  const currentMonthMatches = [...text.matchAll(yearPatterns[2])];
+  for (const match of currentMonthMatches) {
+    const start = parseInt(match[1]);
+    if (isValidYear(start) && start <= currentYear && currentYear - start <= 50) {
+      experienceYears.push(currentYear - start);
+    }
   }
 
-  // Extract companies
+  // Use calculated years if no direct mention
+  if (experienceYears.length > 0 && totalYears === 0) {
+    // Sum all unique experiences (cap at 50 years max)
+    totalYears = Math.min(50, experienceYears.reduce((a, b) => a + b, 0));
+  }
+
+  // Extract companies with robust validation
   const companies: string[] = [];
   const companyPatterns = [
-    /(?:at|@)\s+([A-Z][a-zA-Z0-9\s&.]+(?:Inc|LLC|Ltd|Corporation|Corp)?)/g,
-    /(?:worked\s+at|employed\s+by)\s+([A-Z][a-zA-Z0-9\s&.]+)/gi
+    /(?:at|@|for)\s+([A-Z][a-zA-Z0-9\s&.,']+(?:Inc|LLC|Ltd|Corporation|Corp|Co|Group|Solutions|Technologies)?)/g,
+    /(?:worked\s+(?:at|for)|employed\s+(?:by|at))\s+([A-Z][a-zA-Z0-9\s&.,']+)/gi,
+    /(?:company|employer)[:\s]+([A-Z][a-zA-Z0-9\s&.,']+)/gi
   ];
 
   for (const pattern of companyPatterns) {
     const matches = [...text.matchAll(pattern)];
     for (const match of matches) {
-      const company = match[1].trim();
-      if (company.length > 2 && company.length < 50 && !companies.includes(company)) {
-        companies.push(company);
+      let company = match[1].trim();
+
+      // Clean up and validate company name
+      if (isValidCompanyName(company)) {
+        company = cleanCompanyName(company);
+        if (!companies.includes(company) && companies.length < 20) {
+          companies.push(company);
+        }
       }
     }
   }
 
-  // Extract job titles
+  // Extract job titles with robust validation
   const titles: string[] = [];
   const titlePatterns = [
-    /\b(senior|lead|principal|staff|chief)\s+(engineer|developer|architect|designer|manager|analyst|scientist)/gi,
-    /\b(software|frontend|backend|full[\s-]?stack|data|product|project)\s+(engineer|developer|manager|analyst)/gi,
-    /\b(engineer|developer|designer|analyst|manager|director|vp|ceo|cto|cfo|architect)/gi
+    // Senior titles
+    /\b(senior|lead|principal|staff|chief|head\s+of)\s+(engineer|developer|architect|designer|manager|analyst|scientist|consultant)/gi,
+    // Specialized roles
+    /\b(software|frontend|backend|full[\s-]?stack|data|product|project|devops|machine\s+learning|ai)\s+(engineer|developer|manager|analyst|architect)/gi,
+    // Executive roles
+    /\b(chief\s+(?:executive|technology|operating|financial|marketing|data)\s+officer|ceo|cto|coo|cfo|cmo|cdo)/gi,
+    // Common roles
+    /\b(engineer|developer|designer|analyst|manager|director|consultant|architect|specialist|coordinator)\b/gi
   ];
+
+  const invalidTitles = ['experience', 'education', 'skills', 'summary', 'profile', 'objective', 'references'];
 
   for (const pattern of titlePatterns) {
     const matches = [...text.matchAll(pattern)];
     for (const match of matches) {
-      const title = match[0].trim();
-      if (!titles.includes(title)) {
-        titles.push(title);
+      let title = match[0].trim();
+
+      // Validate and clean title
+      if (isValidJobTitle(title) && !invalidTitles.includes(title.toLowerCase())) {
+        title = cleanJobTitle(title);
+        if (!titles.includes(title) && titles.length < 15) {
+          titles.push(title);
+        }
       }
     }
   }
@@ -527,25 +675,55 @@ function extractMetrics(text: string) {
   const teamSizes: string[] = [];
   const userScales: string[] = [];
 
-  // Percentages
+  // Percentages with validation (0-1000%)
   const percentMatches = [...text.matchAll(/\d+(?:\.\d+)?%/g)];
-  percentages.push(...percentMatches.map(m => m[0]));
+  for (const match of percentMatches) {
+    const value = parseFloat(match[0].replace('%', ''));
+    // Validate percentage is reasonable (0-1000%)
+    if (value >= 0 && value <= 1000) {
+      percentages.push(match[0]);
+    }
+  }
 
-  // Money
+  // Money with validation
   const moneyMatches = [...text.matchAll(/\$[\d,]+(?:\.\d+)?[kmb]?/gi)];
-  moneyValues.push(...moneyMatches.map(m => m[0]));
+  for (const match of moneyMatches) {
+    const moneyStr = match[0];
+    // Validate it's a reasonable money value (not just $0 or invalid)
+    if (isValidMoneyValue(moneyStr)) {
+      moneyValues.push(moneyStr);
+    }
+  }
 
-  // Multipliers
-  const multMatches = [...text.matchAll(/\d+x\s+/gi)];
-  multipliers.push(...multMatches.map(m => m[0].trim()));
+  // Multipliers with validation (1x-1000x)
+  const multMatches = [...text.matchAll(/(\d+)x\s+/gi)];
+  for (const match of multMatches) {
+    const multiplier = parseInt(match[1]);
+    // Validate multiplier is reasonable (1-1000x)
+    if (multiplier >= 1 && multiplier <= 1000) {
+      multipliers.push(`${multiplier}x`);
+    }
+  }
 
-  // Team sizes
-  const teamMatches = [...text.matchAll(/(?:team\s+of|managed|led)\s+(\d+)/gi)];
-  teamSizes.push(...teamMatches.map(m => m[1]));
+  // Team sizes with validation (2-10000 people)
+  const teamMatches = [...text.matchAll(/(?:team\s+of|managed|led|supervised)\s+(\d+)/gi)];
+  for (const match of teamMatches) {
+    const teamSize = parseInt(match[1]);
+    // Validate team size is reasonable (2-10000)
+    if (teamSize >= 2 && teamSize <= 10000) {
+      teamSizes.push(match[1]);
+    }
+  }
 
-  // User scales
-  const userMatches = [...text.matchAll(/(\d+[km]?)\s+(?:users|customers|clients)/gi)];
-  userScales.push(...userMatches.map(m => m[1]));
+  // User scales with validation
+  const userMatches = [...text.matchAll(/(\d+[km]?)\s+(?:users|customers|clients|downloads|visitors)/gi)];
+  for (const match of userMatches) {
+    const userScale = match[1];
+    // Validate user scale is reasonable
+    if (isValidUserScale(userScale)) {
+      userScales.push(userScale);
+    }
+  }
 
   return {
     totalMetrics: percentages.length + moneyValues.length + multipliers.length + teamSizes.length + userScales.length,
@@ -601,4 +779,292 @@ function assessQuality(text: string) {
     readabilityScore: Math.round(readabilityScore),
     keywordDensity: Math.round(keywordDensity)
   };
+}
+
+// ========== VALIDATION HELPER FUNCTIONS ==========
+
+/**
+ * Validate email address structure and domain
+ */
+function isValidEmail(email: string): boolean {
+  if (!email || email.length < 5 || email.length > 254) return false;
+
+  // Basic email structure validation
+  const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) return false;
+
+  // Split into local and domain parts
+  const [local, domain] = email.split('@');
+  if (!local || !domain) return false;
+
+  // Validate local part (before @)
+  if (local.length > 64) return false;
+  if (local.startsWith('.') || local.endsWith('.')) return false;
+  if (local.includes('..')) return false;
+
+  // Validate domain part (after @)
+  if (domain.length > 253) return false;
+  const domainParts = domain.split('.');
+  if (domainParts.length < 2) return false;
+
+  // Check for invalid domains
+  const invalidDomains = ['test.com', 'example.com', 'sample.com', 'domain.com', 'email.com'];
+  if (invalidDomains.includes(domain.toLowerCase())) return false;
+
+  // Ensure TLD is at least 2 chars
+  const tld = domainParts[domainParts.length - 1];
+  if (tld.length < 2) return false;
+
+  return true;
+}
+
+/**
+ * Validate phone number format and digit count
+ */
+function isValidPhone(phone: string): boolean {
+  if (!phone) return false;
+
+  // Extract digits only
+  const digits = phone.replace(/\D/g, '');
+
+  // Validate digit count (10-15 digits)
+  if (digits.length < 10 || digits.length > 15) return false;
+
+  // Reject obviously invalid patterns (all same digit)
+  if (/^(\d)\1+$/.test(digits)) return false;
+
+  // Reject if starts with invalid area codes
+  if (digits.startsWith('000') || digits.startsWith('111')) return false;
+
+  return true;
+}
+
+/**
+ * Normalize phone number to consistent format
+ */
+function normalizePhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+
+  // US format: (XXX) XXX-XXXX
+  if (digits.length === 10) {
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  }
+
+  // International format: +X XXX XXX XXXX
+  if (digits.length === 11 && digits.startsWith('1')) {
+    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+  }
+
+  // Return original if can't normalize
+  return phone;
+}
+
+/**
+ * Validate LinkedIn username
+ */
+function isValidLinkedInUsername(username: string): boolean {
+  if (!username || username.length < 3 || username.length > 100) return false;
+  if (username.includes(' ')) return false;
+
+  // Filter out common words and invalid patterns
+  const commonWords = ['profile', 'linkedin', 'in', 'com', 'http', 'https', 'www', 'pub', 'public'];
+  if (commonWords.includes(username.toLowerCase())) return false;
+
+  // Must contain alphanumeric characters
+  if (!/[a-zA-Z0-9]/.test(username)) return false;
+
+  return true;
+}
+
+/**
+ * Validate GitHub username
+ */
+function isValidGitHubUsername(username: string): boolean {
+  if (!username || username.length < 2 || username.length > 39) return false;
+  if (username.includes(' ')) return false;
+
+  // Filter out common words and invalid patterns
+  const commonWords = ['profile', 'github', 'com', 'http', 'https', 'www', 'user', 'account'];
+  if (commonWords.includes(username.toLowerCase())) return false;
+
+  // GitHub usernames can only contain alphanumeric characters and hyphens
+  if (!/^[a-zA-Z0-9-]+$/.test(username)) return false;
+
+  // Can't start or end with hyphen
+  if (username.startsWith('-') || username.endsWith('-')) return false;
+
+  return true;
+}
+
+/**
+ * Validate website domain
+ */
+function isValidWebsite(website: string): boolean {
+  if (!website || website.length < 4 || website.length > 253) return false;
+
+  // Remove protocol if present
+  let domain = website.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+
+  // Must have at least one dot
+  if (!domain.includes('.')) return false;
+
+  // Filter out invalid domains
+  const invalidDomains = ['example.com', 'test.com', 'sample.com', 'domain.com', 'localhost', 'github.com', 'linkedin.com'];
+  if (invalidDomains.some(invalid => domain.toLowerCase().includes(invalid))) return false;
+
+  // Basic domain validation
+  const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
+  return domainRegex.test(domain);
+}
+
+/**
+ * Validate location string
+ */
+function isValidLocation(location: string): boolean {
+  if (!location || location.length < 2 || location.length > 100) return false;
+
+  // Must contain at least some letters
+  if (!/[a-zA-Z]/.test(location)) return false;
+
+  // Filter out obviously invalid locations
+  const invalidLocations = ['none', 'n/a', 'na', 'unknown', 'location', 'city', 'state', 'country'];
+  if (invalidLocations.includes(location.toLowerCase().trim())) return false;
+
+  // Reject if too many numbers (likely not a location)
+  const digitCount = (location.match(/\d/g) || []).length;
+  if (digitCount > location.length * 0.3) return false;
+
+  return true;
+}
+
+/**
+ * Validate field of study
+ */
+function isValidFieldOfStudy(field: string): boolean {
+  if (!field || field.length < 2 || field.length > 100) return false;
+
+  // Must contain at least some letters
+  if (!/[a-zA-Z]/.test(field)) return false;
+
+  // Filter out common invalid fields
+  const invalidFields = ['degree', 'education', 'university', 'college', 'school', 'from', 'at', 'in'];
+  if (invalidFields.includes(field.toLowerCase().trim())) return false;
+
+  return true;
+}
+
+/**
+ * Clean up field of study string
+ */
+function cleanFieldOfStudy(field: string): string {
+  // Remove trailing punctuation and extra words
+  return field
+    .replace(/\s+(?:from|at|,|\.).*$/i, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+/**
+ * Validate year is reasonable
+ */
+function isValidYear(year: number): boolean {
+  const currentYear = new Date().getFullYear();
+  return year >= 1970 && year <= currentYear + 1;
+}
+
+/**
+ * Validate company name
+ */
+function isValidCompanyName(company: string): boolean {
+  if (!company || company.length < 2 || company.length > 100) return false;
+
+  // Must contain at least some letters
+  if (!/[a-zA-Z]/.test(company)) return false;
+
+  // Filter out invalid company indicators
+  const invalidCompanies = ['experience', 'work', 'employment', 'company', 'employer', 'job', 'position', 'role'];
+  if (invalidCompanies.includes(company.toLowerCase().trim())) return false;
+
+  return true;
+}
+
+/**
+ * Clean up company name
+ */
+function cleanCompanyName(company: string): string {
+  return company
+    .replace(/\s*[-–]\s*.*$/, '') // Remove everything after dash
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+/**
+ * Validate job title
+ */
+function isValidJobTitle(title: string): boolean {
+  if (!title || title.length < 2 || title.length > 100) return false;
+
+  // Must contain at least some letters
+  if (!/[a-zA-Z]/.test(title)) return false;
+
+  return true;
+}
+
+/**
+ * Clean up job title
+ */
+function cleanJobTitle(title: string): string {
+  // Capitalize first letter of each word
+  return title
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+    .trim();
+}
+
+/**
+ * Validate money value
+ */
+function isValidMoneyValue(money: string): boolean {
+  if (!money) return false;
+
+  // Extract numeric value
+  const numStr = money.replace(/[$,]/g, '').toLowerCase();
+  let multiplier = 1;
+
+  if (numStr.endsWith('k')) {
+    multiplier = 1000;
+  } else if (numStr.endsWith('m')) {
+    multiplier = 1000000;
+  } else if (numStr.endsWith('b')) {
+    multiplier = 1000000000;
+  }
+
+  const value = parseFloat(numStr.replace(/[kmb]/gi, '')) * multiplier;
+
+  // Validate value is reasonable ($1 - $1 trillion)
+  return value >= 1 && value <= 1000000000000;
+}
+
+/**
+ * Validate user scale
+ */
+function isValidUserScale(scale: string): boolean {
+  if (!scale) return false;
+
+  // Extract numeric value
+  const numStr = scale.toLowerCase();
+  let multiplier = 1;
+
+  if (numStr.endsWith('k')) {
+    multiplier = 1000;
+  } else if (numStr.endsWith('m')) {
+    multiplier = 1000000;
+  }
+
+  const value = parseFloat(numStr.replace(/[km]/gi, '')) * multiplier;
+
+  // Validate value is reasonable (1 - 10 billion users)
+  return value >= 1 && value <= 10000000000;
 }
