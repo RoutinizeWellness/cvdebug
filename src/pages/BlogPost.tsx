@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { NewNavbar } from "@/components/landing/NewNavbar";
 import { NewFooter } from "@/components/landing/NewFooter";
-import { Calendar, Clock, ArrowLeft, Eye, Share2 } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, Eye, Share2, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -42,20 +42,20 @@ export default function BlogPost() {
       }).catch(console.error);
     } else {
       navigator.clipboard.writeText(url);
-      toast("Link copied to clipboard!");
+      toast.success("Link copied to clipboard!");
     }
   };
 
   if (!post) {
     return (
-      <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="text-white text-xl">Loading post...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-900 text-xl">Loading post...</div>
       </div>
     );
   }
 
   return (
-    <div className="dark min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-white">
       {/* Structured Data for SEO */}
       <script type="application/ld+json">
         {JSON.stringify({
@@ -86,7 +86,7 @@ export default function BlogPost() {
 
       <NewNavbar />
 
-      <main className="container max-w-4xl mx-auto px-4 py-12">
+      <main className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -96,7 +96,7 @@ export default function BlogPost() {
           <Button
             variant="ghost"
             onClick={() => navigate('/blog')}
-            className="mb-8 text-slate-400 hover:text-white"
+            className="mb-8 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -109,21 +109,21 @@ export default function BlogPost() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <header className="mb-8">
-            <span className="px-3 py-1 bg-[#3B82F6]/20 border border-[#3B82F6]/30 rounded-full text-blue-400 text-sm font-semibold">
+          <header className="mb-12">
+            <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-semibold mb-6">
               {post.category}
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-6 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               {post.title}
             </h1>
-            <p className="text-xl text-slate-300 mb-6 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
               {post.excerpt}
             </p>
 
             {/* Meta Information */}
-            <div className="flex items-center justify-between flex-wrap gap-4 pb-6 border-b border-slate-800">
-              <div className="flex items-center gap-6 flex-wrap">
-                <div className="flex items-center gap-2 text-slate-400">
+            <div className="flex items-center justify-between flex-wrap gap-4 py-6 border-y border-gray-200">
+              <div className="flex items-center gap-6 flex-wrap text-sm text-gray-600">
+                <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <time>
                     {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -134,12 +134,12 @@ export default function BlogPost() {
                   </time>
                 </div>
                 {post.readingTime && (
-                  <div className="flex items-center gap-2 text-slate-400">
+                  <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
                     <span>{post.readingTime} min read</span>
                   </div>
                 )}
-                <div className="flex items-center gap-2 text-slate-400">
+                <div className="flex items-center gap-2">
                   <Eye className="w-4 h-4" />
                   <span>{post.views || 0} views</span>
                 </div>
@@ -148,7 +148,7 @@ export default function BlogPost() {
                 variant="outline"
                 size="sm"
                 onClick={handleShare}
-                className="text-slate-400 hover:text-white"
+                className="text-gray-600 hover:text-gray-900 border-gray-300"
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share
@@ -158,7 +158,7 @@ export default function BlogPost() {
 
           {/* Featured Image */}
           {post.featuredImage && (
-            <div className="mb-8 rounded-xl overflow-hidden">
+            <div className="mb-12 rounded-xl overflow-hidden border border-gray-200">
               <img
                 src={post.featuredImage}
                 alt={post.title}
@@ -169,21 +169,22 @@ export default function BlogPost() {
 
           {/* Article Content */}
           <div
-            className="prose prose-invert prose-lg max-w-none mb-12"
+            className="prose prose-lg max-w-none mb-12 text-gray-800"
             style={{
-              color: '#e2e8f0',
+              color: '#1f2937',
             }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
           {/* Tags */}
           {post.tags.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap mb-12 pb-12 border-b border-slate-800">
-              <span className="text-slate-400 font-semibold">Tags:</span>
+            <div className="flex items-center gap-3 flex-wrap mb-12 pb-8 border-b border-gray-200">
+              <Tag className="w-4 h-4 text-gray-500" />
+              <span className="text-gray-600 font-semibold text-sm">Tags:</span>
               {post.tags.map((tag: any, index: number) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-slate-800/50 rounded-full text-slate-300 text-sm"
+                  className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium"
                 >
                   {tag}
                 </span>
@@ -192,10 +193,10 @@ export default function BlogPost() {
           )}
 
           {/* Author Info */}
-          <div className="glass-panel rounded-xl p-6 mb-12">
-            <h3 className="text-xl font-bold text-white mb-2">About the Author</h3>
-            <p className="text-slate-300">
-              Written by <span className="text-blue-400 font-semibold">{post.author}</span>
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 mb-12">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">About the Author</h3>
+            <p className="text-gray-700">
+              Written by <span className="text-blue-600 font-semibold">{post.author}</span>
             </p>
           </div>
         </motion.article>
@@ -203,7 +204,7 @@ export default function BlogPost() {
         {/* Related Posts */}
         {recentPosts && recentPosts.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-8">More Articles</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">More Articles</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {recentPosts.filter((p: any) => p.slug !== post.slug).slice(0, 3).map((relatedPost: any) => (
                 <motion.div
@@ -212,15 +213,15 @@ export default function BlogPost() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                  className="glass-panel rounded-xl p-4 cursor-pointer hover:border-[#3B82F6]/50 transition-all"
+                  className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer hover:border-blue-300 hover:shadow-lg transition-all"
                 >
-                  <span className="px-2 py-1 bg-slate-800 rounded text-slate-300 text-xs">
+                  <span className="inline-block px-3 py-1 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-semibold mb-3">
                     {relatedPost.category}
                   </span>
-                  <h3 className="text-lg font-bold text-white mt-3 mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
                     {relatedPost.title}
                   </h3>
-                  <p className="text-slate-400 text-sm line-clamp-2">
+                  <p className="text-gray-600 text-sm line-clamp-2">
                     {relatedPost.excerpt}
                   </p>
                 </motion.div>
@@ -234,18 +235,18 @@ export default function BlogPost() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-12 bg-gradient-to-r from-blue-600/10 to-teal-600/10 border border-[#3B82F6]/20 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl text-center"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Ready to Optimize Your Resume?
           </h2>
-          <p className="text-slate-300 text-lg mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
             Get instant ATS analysis and actionable feedback in seconds.
           </p>
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-6 text-lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg"
           >
             Scan Your Resume for Free
           </Button>

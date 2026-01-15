@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { X } from "lucide-react";
 
 interface Question {
   id: string;
@@ -46,11 +45,6 @@ export function InterviewBattlePlan({
   const [selectedQuestion, setSelectedQuestion] = useState(0);
   const [isRegeneratingQuestions, setIsRegeneratingQuestions] = useState(false);
   const [isEnhancingAction, setIsEnhancingAction] = useState(false);
-  const [showChatbot, setShowChatbot] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{role: string; content: string}>>([
-    { role: "assistant", content: "Hi! I'm your interview prep assistant. Ask me anything about your STAR stories or the interview questions!" }
-  ]);
-  const [chatInput, setChatInput] = useState("");
   const [starStory, setStarStory] = useState<STARStory>({
     situation: "The legacy customer support chatbot was failing to understand 40% of user queries, leading to high transfer rates to human agents.",
     task: "My objective was to reduce the fallback rate by implementing a more robust NLP model capable of handling context and intent recognition.",
@@ -166,25 +160,6 @@ export function InterviewBattlePlan({
     const nextQuestion = (selectedQuestion + 1) % questions.length;
     setSelectedQuestion(nextQuestion);
     toast.success(`Switched to: ${questions[nextQuestion].type} question`);
-  };
-
-  const handleSendChat = () => {
-    if (!chatInput.trim()) return;
-
-    setChatMessages(prev => [...prev, { role: "user", content: chatInput }]);
-    setChatInput("");
-
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        "That's a great question! Based on your resume, you should emphasize your experience with production ML systems.",
-        "Consider using the STAR method here. Start with the situation, then describe your task, the actions you took, and finally the measurable results.",
-        "Make sure to quantify your impact with specific metrics. Numbers make your answers more compelling!",
-        "Good approach! Also mention any collaboration with cross-functional teams to show leadership skills."
-      ];
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      setChatMessages(prev => [...prev, { role: "assistant", content: randomResponse }]);
-    }, 1000);
   };
 
   return (
@@ -482,87 +457,6 @@ Result: ${starStory.result}
           </motion.div>
         </div>
       </div>
-
-      {/* Floating AI Assistant Button */}
-      <button
-        onClick={() => setShowChatbot(!showChatbot)}
-        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 bg-[#3B82F6] hover:bg-blue-600 text-white rounded-full shadow-lg shadow-blue-500/30 flex items-center justify-center transition-all hover:scale-105 z-50 group"
-      >
-        <span className="material-symbols-outlined text-xl md:text-2xl group-hover:hidden">smart_toy</span>
-        <span className="material-symbols-outlined text-xl md:text-2xl hidden group-hover:block">chat</span>
-        <span className="absolute -top-1 -right-1 flex h-4 w-4">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#EF4444] text-[10px] font-bold text-white items-center justify-center">
-            1
-          </span>
-        </span>
-      </button>
-
-      {/* AI Chatbot Modal */}
-      <AnimatePresence>
-        {showChatbot && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed bottom-24 right-6 md:bottom-28 md:right-8 w-80 md:w-96 h-96 bg-white rounded-xl shadow-2xl border border-[#E2E8F0] z-50 flex flex-col"
-          >
-            {/* Chatbot Header */}
-            <div className="p-4 border-b border-[#E2E8F0] bg-gradient-to-r from-blue-500 to-violet-500 rounded-t-xl flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-white">smart_toy</span>
-                <h3 className="font-semibold text-white">AI Interview Coach</h3>
-              </div>
-              <button
-                onClick={() => setShowChatbot(false)}
-                className="text-white hover:bg-white/20 rounded p-1 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {chatMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg text-sm ${
-                      msg.role === 'user'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Chat Input */}
-            <div className="p-4 border-t border-[#E2E8F0]">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
-                  placeholder="Ask me anything..."
-                  className="flex-1 px-3 py-2 border border-[#E2E8F0] rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  onClick={handleSendChat}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-sm">send</span>
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
