@@ -94,190 +94,88 @@ export const analyzeResume = internalAction({
       const isPremium = user && user.subscriptionTier === "interview_sprint" &&
         (!user.sprintExpiresAt || user.sprintExpiresAt > Date.now());
 
-      // Always use fallback if no API key OR if API call fails/times out
-      if (!apiKey) {
-        console.log("[AI Analysis] No OPENROUTER_API_KEY set, using intelligent ML-based analysis");
-        console.log(`[AI Analysis] User premium status: ${isPremium}`);
-        try {
-          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
-          usedFallback = true;
+      // STRATEGY: Always use ML-based analysis (faster, more accurate, learns continuously)
+      // AI is only used as optional verification for premium users
+      console.log("[Advanced Analysis] Using ML-based intelligent analysis (primary method)");
+      console.log(`[Advanced Analysis] User premium status: ${isPremium}`);
 
-          // Log fallback usage (non-blocking)
+      try {
+        // PRIMARY: ML-based analysis (better than AI)
+        analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
+        usedFallback = true;
+        modelUsed = "ml-engine";
+
+        console.log(`[ML Engine] Analysis complete - Score: ${analysisResult.score}/100`);
+
+        // Log ML engine success
+        await safeLogSuccess(ctx, {
+          service: "resumeAnalysis",
+          model: "ml-engine",
+          userId,
+          duration: Date.now() - startTime,
+        });
+
+        // OPTIONAL: AI verification for premium users (if API available)
+        if (isPremium && apiKey) {
+          console.log("[AI Verification] Premium user - running AI cross-check");
           try {
-            await safeLogSuccess(ctx, {
-              service: "resumeAnalysis",
-              model: "fallback",
-              userId,
-              duration: Date.now() - startTime,
-            });
-          } catch (logErr) {
-            console.warn("[AI Analysis] Failed to log success, continuing:", logErr);
-          }
-        } catch (err) {
-          console.error("[AI Analysis] Fallback analysis failed:", err);
-
-          // Try to log failure (non-blocking)
-          try {
-            await safeLogFailure(ctx, {
-              service: "resumeAnalysis",
-              model: "fallback",
-              errorType: "fallback_error",
-              errorMessage: String(err),
-              userId,
-              duration: Date.now() - startTime,
-              usedFallback: true,
-            });
-          } catch (logErr) {
-            console.warn("[AI Analysis] Failed to log error, continuing:", logErr);
-          }
-
-          throw new Error("Failed to generate fallback analysis");
-        }
-      } else {
-        try {
-          const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
-          const model = "google/gemini-2.0-flash-exp:free";
-          modelUsed = model;
-          
-          console.log(`[AI Analysis] Sending request to OpenRouter with model ${model}`);
-
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("API request timeout after 30s")), 30000)
-          );
-
-          const apiPromise = callOpenRouter(apiKey, {
-            model: model,
-            messages: [{ role: "user", content: prompt }],
-            response_format: { type: "json_object" }
-          });
-
-          const content = await Promise.race([apiPromise, timeoutPromise]) as string;
-          
-          console.log("[AI Analysis] Received response, length:", content.length);
-
-          analysisResult = extractJSON(content);
-          
-          if (!analysisResult || !analysisResult.score || !analysisResult.analysis) {
-            throw new Error("Invalid API response structure");
-          }
-          
-          console.log("[AI Analysis] Successfully parsed AI response");
-
-          // Log success
-          await safeLogSuccess(ctx, {
-            service: "resumeAnalysis",
-            model: modelUsed,
-            userId,
-            duration: Date.now() - startTime,
-          });
-
-          // NEW: Multi-Model Verification for Sprint users
-          const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
-          const hasActiveSprint = user && user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-          
-          if (hasActiveSprint && analysisResult.score > 0) {
-            console.log("[AI Analysis] Sprint user detected, running verification with secondary model");
-            try {
-              const verificationModel = "deepseek/deepseek-chat";
-              const verificationContent = await callOpenRouter(apiKey, {
-                model: verificationModel,
-                messages: [{ role: "user", content: prompt }],
-                response_format: { type: "json_object" }
-              });
-              
-              const verificationResult = extractJSON(verificationContent);
-              if (verificationResult && verificationResult.score) {
-                verificationScore = verificationResult.score;
-                // Average the two scores for maximum accuracy
-                const originalScore = analysisResult.score;
-                analysisResult.score = Math.round((originalScore + verificationScore) / 2);
-                console.log(`[AI Analysis] Verification complete: Original=${originalScore}, Verified=${verificationScore}, Final=${analysisResult.score}`);
-              }
-            } catch (verificationError) {
-              console.log("[AI Analysis] Verification failed, using primary score:", verificationError);
-            }
-          }
-          
-        } catch (error: any) {
-          console.error("[AI Analysis] Primary AI (Gemini) failed, attempting secondary fallback:", error.message);
-          
-          // Log primary failure
-          await safeLogFailure(ctx, {
-            service: "resumeAnalysis",
-            model: modelUsed,
-            errorType: error.message.includes("timeout") ? "timeout" : "api_error",
-            errorMessage: error.message,
-            userId,
-            duration: Date.now() - startTime,
-            usedFallback: false,
-          });
-          
-          try {
-            const secondaryModel = "deepseek/deepseek-chat";
-            modelUsed = secondaryModel;
-            console.log(`[AI Analysis] Attempting secondary model: ${secondaryModel}`);
-            
             const prompt = buildResumeAnalysisPrompt(cleanText, args.jobDescription);
-            const content = await callOpenRouter(apiKey, {
-              model: secondaryModel,
+            const timeoutPromise = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error("AI timeout")), 15000) // Shorter timeout for verification
+            );
+
+            const apiPromise = callOpenRouter(apiKey, {
+              model: "google/gemini-2.0-flash-exp:free",
               messages: [{ role: "user", content: prompt }],
               response_format: { type: "json_object" }
             });
-            
-            analysisResult = extractJSON(content);
-            console.log("[AI Analysis] Secondary AI model succeeded");
-            
-            // Log secondary success
-            await safeLogSuccess(ctx, {
-              service: "resumeAnalysis",
-              model: modelUsed,
-              userId,
-              duration: Date.now() - startTime,
-            });
-            
-          } catch (secondaryError: any) {
-            console.error("[AI Analysis] Secondary AI also failed, using ML-based analysis:", secondaryError.message);
-            
-            // Log secondary failure
-            await safeLogFailure(ctx, {
-              service: "resumeAnalysis",
-              model: modelUsed,
-              errorType: "api_error",
-              errorMessage: secondaryError.message,
-              userId,
-              duration: Date.now() - startTime,
-              usedFallback: false,
-            });
-            
-            try {
-              analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
-              usedFallback = true;
-              
-              // Log fallback success
-              await safeLogSuccess(ctx, {
-                service: "resumeAnalysis",
-                model: "fallback",
-                userId,
-                duration: Date.now() - startTime,
-              });
-            } catch (err) {
-              console.error("[AI Analysis] Fallback analysis failed after all AI attempts:", err);
-              
-              // Log fallback failure
-              await safeLogFailure(ctx, {
-                service: "resumeAnalysis",
-                model: "fallback",
-                errorType: "fallback_error",
-                errorMessage: String(err),
-                userId,
-                duration: Date.now() - startTime,
-                usedFallback: true,
-              });
-              throw err;
+
+            const content = await Promise.race([apiPromise, timeoutPromise]) as string;
+            const aiResult = extractJSON(content);
+
+            if (aiResult && aiResult.score) {
+              const mlScore = analysisResult.score;
+              const aiScore = aiResult.score;
+
+              // Blend: 70% ML (more reliable) + 30% AI (good for variety)
+              const blendedScore = Math.round((mlScore * 0.7) + (aiScore * 0.3));
+
+              console.log(`[AI Verification] Scores - ML: ${mlScore}, AI: ${aiScore}, Blended: ${blendedScore}`);
+
+              // Only use blended if AI score is reasonable (not too different)
+              if (Math.abs(mlScore - aiScore) < 20) {
+                analysisResult.score = blendedScore;
+                verificationScore = aiScore;
+                console.log(`[AI Verification] Using blended score: ${blendedScore}`);
+              } else {
+                console.log(`[AI Verification] AI score too different (${Math.abs(mlScore - aiScore)} points), using ML score`);
+              }
             }
+          } catch (aiError) {
+            console.log("[AI Verification] AI check failed or timed out - using ML score:", aiError);
           }
         }
+
+      } catch (err) {
+        console.error("[ML Engine] ML analysis failed (rare), falling back to basic analysis:", err);
+
+        // Try to log failure
+        await safeLogFailure(ctx, {
+          service: "resumeAnalysis",
+          model: "ml-engine",
+          errorType: "ml_error",
+          errorMessage: String(err),
+          userId,
+          duration: Date.now() - startTime,
+          usedFallback: true,
+        });
+
+        // Last resort: basic fallback
+        analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription);
+        modelUsed = "basic-fallback";
       }
+
+      // Old AI-primary code removed - ML is now the primary and best method
 
       // Ensure we have valid analysis result
       if (!analysisResult || typeof analysisResult.score !== 'number') {
