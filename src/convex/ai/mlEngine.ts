@@ -89,16 +89,31 @@ export function extractFeatures(text: string, category: string): ResumeFeatures 
   const averageSentenceLength = wordCount / (sentences.length || 1);
   const uniqueWordRatio = uniqueWords.size / wordCount;
 
-  // Technical density (how many technical terms)
+  // Technical density - count unique technical terms
+  const lowerText = text.toLowerCase();
   const technicalTerms = [
-    'python', 'java', 'react', 'aws', 'api', 'sql', 'docker', 'kubernetes',
-    'machine learning', 'data science', 'algorithm', 'optimization', 'automation',
-    'architecture', 'framework', 'database', 'cloud', 'devops', 'agile', 'scrum'
+    // Programming Languages
+    'python', 'javascript', 'typescript', 'java', 'go', 'golang', 'rust', 'c++', 'c#', 'ruby', 'php', 'swift', 'kotlin',
+    // Frameworks & Libraries
+    'react', 'vue', 'angular', 'node.js', 'express', 'django', 'flask', 'spring', 'laravel', 'rails',
+    // Databases
+    'sql', 'postgresql', 'mysql', 'mongodb', 'redis', 'elasticsearch', 'cassandra', 'dynamodb',
+    // Cloud & DevOps
+    'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'k8s', 'terraform', 'jenkins', 'gitlab', 'github actions',
+    'ci/cd', 'devops', 'prometheus', 'grafana', 'nginx', 'apache',
+    // Methodologies & Concepts
+    'api', 'rest', 'graphql', 'microservices', 'agile', 'scrum', 'kanban', 'tdd', 'cloud', 'serverless',
+    'machine learning', 'ml', 'ai', 'deep learning', 'data science', 'nlp', 'computer vision',
+    // Data & Analytics
+    'pandas', 'numpy', 'spark', 'hadoop', 'tableau', 'power bi', 'etl', 'data pipeline',
+    // Security & Architecture
+    'oauth', 'jwt', 'encryption', 'architecture', 'scalability', 'optimization', 'performance',
+    'load balancing', 'caching', 'cdn', 'event-driven', 'message queue', 'kafka'
   ];
-  const technicalMatches = technicalTerms.filter(term =>
-    text.toLowerCase().includes(term)
-  ).length;
-  const technicalDensity = (technicalMatches / technicalTerms.length) * 100;
+  const technicalMatches = new Set(
+    technicalTerms.filter(term => lowerText.includes(term))
+  ).size;
+  const technicalDensity = (technicalMatches / Math.min(technicalTerms.length, 30)) * 100;
 
   // Structural analysis
   const sections = text.match(/\n\s*[A-Z][A-Z\s]{3,}\s*\n/g) || [];
@@ -150,19 +165,46 @@ export function extractFeatures(text: string, category: string): ResumeFeatures 
   const actionVerbMatches = text.match(actionVerbPattern) || [];
   const actionVerbDensity = (actionVerbMatches.length / wordCount) * 100;
 
-  // Metric density (numbers, percentages, money)
+  // Metric density (numbers, percentages, money) - Enhanced
   const metricPatterns = [
-    /\d+(?:\.\d+)?%/g,
-    /\$[\d,]+(?:\.\d+)?[kmb]?/gi,
-    /\d+x\s+/gi,
-    /\d+(?:,\d{3})*[+]?/g
+    /\d+(?:\.\d+)?%/g,                                    // Percentages: 50%, 23.5%
+    /\$[\d,]+(?:\.\d+)?[kmb]?/gi,                        // Money: $50K, $1.5M, $2B
+    /\d+x\s+/gi,                                          // Multipliers: 3x faster
+    /(?:increased|decreased|reduced|improved|grew|boosted|saved|generated).*?\d+/gi,  // Impact with numbers
+    /\d+(?:,\d{3})+/g,                                    // Large numbers: 1,000,000
+    /(?:\d+\+?\s*(?:years?|months?|weeks?|days?))/gi,    // Time: 5+ years, 3 months
+    /(?:team\s+of\s+\d+|managed\s+\d+|led\s+\d+)/gi,    // Team size: team of 8, managed 15
+    /(?:\d+(?:\.\d+)?[km]?)\s+(?:users|customers|clients|projects|features)/gi  // Scale: 100K users, 50 projects
   ];
+
   let metricCount = 0;
+  let uniqueMetrics = new Set<string>();
+
   metricPatterns.forEach(pattern => {
     const matches = text.match(pattern);
-    if (matches) metricCount += matches.length;
+    if (matches) {
+      matches.forEach(m => uniqueMetrics.add(m.toLowerCase()));
+      metricCount += matches.length;
+    }
   });
-  const metricDensity = (metricCount / bulletPointCount) || 0;
+
+  const metricDensity = bulletPointCount > 0 ? (metricCount / bulletPointCount) * 100 : 0;
+
+  // Enhanced: Check for metrics in context (bonus for achievement-oriented metrics)
+  const achievementPatterns = [
+    /(?:achieved|delivered|exceeded|surpassed).*?\d+/gi,
+    /(?:revenue|sales|profit|roi).*?(?:\$[\d,kmb]+|\d+%)/gi,
+    /(?:reduced|decreased|minimized).*?(?:by|from).*?(?:\d+%|\$[\d,kmb]+)/gi,
+    /(?:increased|improved|optimized|boosted).*?(?:by|from).*?(?:\d+%|\d+x)/gi
+  ];
+
+  let achievementMetrics = 0;
+  achievementPatterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) achievementMetrics += matches.length;
+  });
+
+  const achievementScore = Math.min(100, (achievementMetrics / Math.max(bulletPointCount, 1)) * 50);
 
   // Quantifiable results
   const resultKeywords = /\b(?:increased|decreased|reduced|improved|grew|boosted|achieved|delivered|generated|saved)\b/gi;

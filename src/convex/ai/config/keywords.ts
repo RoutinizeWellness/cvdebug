@@ -1,15 +1,75 @@
 // Industry-specific keyword databases for ML-based resume analysis
 export const techKeywords = [
-  "javascript", "python", "java", "react", "node", "sql", "aws", "docker",
-  "kubernetes", "typescript", "angular", "vue", "mongodb", "postgresql",
-  "git", "ci/cd", "agile", "scrum", "api", "rest", "graphql", "microservices",
-  "machine learning", "ml", "ai", "tensorflow", "pytorch", "data science",
-  "redux", "webpack", "babel", "jest", "cypress", "jenkins", "terraform",
-  "ansible", "prometheus", "grafana", "elasticsearch", "redis", "kafka",
-  "spark", "hadoop", "pandas", "numpy", "scikit-learn", "keras", "nlp",
-  "next.js", "express", "fastapi", "django", "flask", "spring boot",
-  "azure", "gcp", "lambda", "ec2", "s3", "cloudformation", "helm",
-  "nginx", "apache", "linux", "bash", "shell scripting", "powershell"
+  // Frontend
+  "javascript", "typescript", "react", "vue", "angular", "svelte", "next.js", "nuxt", "gatsby",
+  "html", "css", "sass", "scss", "less", "tailwind", "bootstrap", "material-ui", "chakra",
+  "redux", "mobx", "zustand", "recoil", "jotai", "context api", "react query", "swr",
+  "webpack", "vite", "rollup", "parcel", "esbuild", "babel", "swc", "turborepack",
+  "jest", "vitest", "testing library", "cypress", "playwright", "selenium", "puppeteer",
+  "storybook", "chromatic", "figma", "sketch", "adobe xd", "responsive design", "pwa",
+
+  // Backend
+  "node.js", "express", "fastify", "koa", "nest.js", "hapi", "restify",
+  "python", "django", "flask", "fastapi", "tornado", "aiohttp", "sanic",
+  "java", "spring", "spring boot", "hibernate", "jpa", "maven", "gradle",
+  "go", "golang", "gin", "echo", "fiber", "gorilla", "grpc",
+  "rust", "actix", "rocket", "warp", "axum", "tokio",
+  "php", "laravel", "symfony", "codeigniter", "yii", "cakephp",
+  "ruby", "rails", "sinatra", "hanami",
+  "c#", ".net", "asp.net", "entity framework", "linq",
+
+  // Databases
+  "sql", "postgresql", "mysql", "mariadb", "sqlite", "oracle", "mssql",
+  "nosql", "mongodb", "dynamodb", "couchdb", "cassandra", "scylladb",
+  "redis", "memcached", "elasticache", "valkey",
+  "elasticsearch", "opensearch", "solr", "algolia", "meilisearch",
+  "neo4j", "arangodb", "orientdb", "graph database",
+  "firebase", "supabase", "pocketbase", "appwrite",
+  "prisma", "typeorm", "sequelize", "knex", "drizzle", "kysely",
+
+  // Cloud & DevOps
+  "aws", "azure", "gcp", "digitalocean", "linode", "vultr", "hetzner",
+  "ec2", "s3", "lambda", "cloudfront", "route 53", "rds", "dynamodb", "sqs", "sns",
+  "azure functions", "azure devops", "azure storage", "cosmos db",
+  "google cloud run", "cloud functions", "bigquery", "cloud storage",
+  "docker", "podman", "containerd", "docker compose", "docker swarm",
+  "kubernetes", "k8s", "helm", "kustomize", "istio", "linkerd", "envoy",
+  "terraform", "pulumi", "cloudformation", "cdk", "bicep",
+  "ansible", "puppet", "chef", "saltstack",
+  "jenkins", "gitlab ci", "github actions", "circleci", "travis ci", "drone",
+  "prometheus", "grafana", "datadog", "new relic", "sentry", "loki", "tempo",
+  "nginx", "apache", "caddy", "traefik", "haproxy", "envoy proxy",
+
+  // Architecture & Patterns
+  "microservices", "monolith", "serverless", "event-driven", "cqrs", "event sourcing",
+  "rest", "graphql", "grpc", "websocket", "sse", "webhooks",
+  "api gateway", "service mesh", "load balancing", "caching", "cdn",
+  "message queue", "kafka", "rabbitmq", "nats", "zeromq", "activemq",
+  "saga pattern", "circuit breaker", "retry pattern", "bulkhead",
+
+  // AI/ML
+  "machine learning", "ml", "ai", "deep learning", "neural networks",
+  "tensorflow", "pytorch", "keras", "jax", "mxnet",
+  "scikit-learn", "xgboost", "lightgbm", "catboost",
+  "nlp", "computer vision", "cv", "llm", "transformers", "bert", "gpt",
+  "langchain", "llama index", "haystack", "semantic search",
+  "hugging face", "openai", "anthropic", "cohere", "replicate",
+  "mlops", "mlflow", "kubeflow", "sagemaker", "vertex ai",
+  "pandas", "numpy", "scipy", "matplotlib", "seaborn", "plotly",
+  "jupyter", "colab", "databricks", "spark", "hadoop", "dask",
+
+  // Security
+  "oauth", "jwt", "saml", "openid", "auth0", "okta", "cognito",
+  "encryption", "tls", "ssl", "hashing", "bcrypt", "argon2",
+  "penetration testing", "owasp", "xss", "csrf", "sql injection",
+  "security audit", "compliance", "gdpr", "hipaa", "soc 2", "iso 27001",
+
+  // Methodologies
+  "agile", "scrum", "kanban", "lean", "devops", "gitops", "devsecops",
+  "ci/cd", "continuous integration", "continuous deployment",
+  "tdd", "test-driven development", "bdd", "behavior-driven",
+  "pair programming", "code review", "git", "github", "gitlab", "bitbucket",
+  "jira", "confluence", "linear", "notion", "slack", "discord"
 ];
 
 export const engineeringKeywords = [
@@ -28,19 +88,60 @@ export const engineeringKeywords = [
 ];
 
 export const marketingKeywords = [
-  "seo", "sem", "google analytics", "facebook ads", "content marketing",
-  "email marketing", "social media", "conversion", "roi", "ctr", "cpc",
-  "google ads", "linkedin ads", "marketing automation", "hubspot", "salesforce",
-  "a/b testing", "funnel optimization", "lead generation", "crm", "kpi",
-  "brand strategy", "copywriting", "ppc", "display ads", "retargeting",
-  "instagram ads", "tiktok ads", "influencer marketing", "affiliate marketing",
-  "marketing analytics", "customer acquisition", "customer retention", "churn rate",
-  "lifetime value", "ltv", "cac", "marketing mix", "attribution modeling",
-  "brand management", "growth hacking", "marketo", "mailchimp", "klaviyo",
-  "buffer", "hootsuite", "sprout social", "canva", "adobe xd", "sketch",
-  "invision", "zeplin", "hotjar", "crazy egg", "optimizely", "vwo",
-  "google tag manager", "gtm", "search console", "ahrefs", "semrush", "moz",
-  "screaming frog", "buzzsumo", "mailgun", "sendgrid", "twilio"
+  // Digital Marketing
+  "seo", "sem", "search engine optimization", "search engine marketing",
+  "google analytics", "ga4", "google tag manager", "gtm", "search console",
+  "keyword research", "on-page seo", "off-page seo", "technical seo",
+  "link building", "backlinks", "domain authority", "page authority",
+
+  // Paid Advertising
+  "ppc", "pay per click", "google ads", "google adwords", "facebook ads", "meta ads",
+  "instagram ads", "tiktok ads", "linkedin ads", "twitter ads", "pinterest ads",
+  "display ads", "video ads", "shopping ads", "remarketing", "retargeting",
+  "programmatic advertising", "dsp", "demand side platform",
+  "cpc", "cpm", "ctr", "roas", "impression share", "quality score",
+
+  // Content & Social
+  "content marketing", "content strategy", "blogging", "copywriting", "storytelling",
+  "social media marketing", "community management", "influencer marketing",
+  "user generated content", "ugc", "brand voice", "brand storytelling",
+  "video marketing", "youtube seo", "podcast marketing",
+
+  // Email & Automation
+  "email marketing", "email campaigns", "newsletter", "drip campaigns",
+  "marketing automation", "lead nurturing", "lifecycle marketing",
+  "hubspot", "marketo", "pardot", "active campaign", "mailchimp", "klaviyo",
+  "sendgrid", "mailgun", "customer.io", "iterable", "braze",
+
+  // Analytics & Optimization
+  "marketing analytics", "data analysis", "reporting", "dashboards",
+  "conversion rate optimization", "cro", "a/b testing", "multivariate testing",
+  "funnel optimization", "landing page optimization", "user testing",
+  "google optimize", "optimizely", "vwo", "hotjar", "crazy egg", "fullstory",
+  "heatmaps", "session recordings", "user behavior",
+
+  // Strategy & Planning
+  "marketing strategy", "go-to-market", "gtm", "brand strategy", "positioning",
+  "customer acquisition", "customer retention", "churn reduction",
+  "lifetime value", "ltv", "cac", "customer acquisition cost",
+  "marketing mix", "attribution modeling", "multi-touch attribution",
+  "marketing roi", "budget allocation", "forecasting",
+  "growth marketing", "growth hacking", "viral marketing", "referral marketing",
+
+  // Tools & Platforms
+  "salesforce", "hubspot crm", "marketo", "eloqua", "pardot",
+  "hootsuite", "buffer", "sprout social", "later", "planoly",
+  "canva", "adobe creative suite", "photoshop", "illustrator", "premiere",
+  "ahrefs", "semrush", "moz", "spyfu", "ubersuggest",
+  "screaming frog", "sitebulb", "deepcrawl",
+  "buzzsumo", "mention", "brandwatch", "sprinklr",
+  "segment", "mixpanel", "amplitude", "heap",
+
+  // Metrics & KPIs
+  "kpi", "okr", "conversion rate", "bounce rate", "engagement rate",
+  "click-through rate", "open rate", "unsubscribe rate", "spam rate",
+  "cost per acquisition", "return on ad spend", "customer lifetime value",
+  "net promoter score", "nps", "customer satisfaction", "csat"
 ];
 
 export const productKeywords = [
@@ -56,16 +157,64 @@ export const productKeywords = [
 ];
 
 export const dataKeywords = [
-  "sql", "python", "r", "tableau", "power bi", "excel", "data visualization",
-  "statistical analysis", "predictive modeling", "etl", "data warehouse",
-  "big data", "hadoop", "spark", "hive", "pig", "data mining", "regression",
-  "classification", "clustering", "time series", "forecasting", "bi",
-  "data pipeline", "airflow", "dbt", "snowflake", "redshift", "bigquery",
-  "looker", "metabase", "data modeling", "dimensional modeling", "star schema",
-  "matplotlib", "seaborn", "plotly", "bokeh", "altair", "ggplot2",
-  "shiny", "dash", "streamlit", "jupyter", "colab", "databricks",
-  "sagemaker", "mlflow", "kubeflow", "dvc", "weights & biases",
-  "hugging face", "transformers", "bert", "gpt", "llm", "langchain"
+  // Programming & Analysis
+  "sql", "python", "r", "scala", "julia", "matlab",
+  "pandas", "numpy", "scipy", "polars", "dask", "vaex",
+  "pyspark", "koalas", "modin",
+
+  // Statistical Analysis
+  "statistical analysis", "hypothesis testing", "regression analysis",
+  "linear regression", "logistic regression", "polynomial regression",
+  "classification", "clustering", "dimensionality reduction",
+  "time series analysis", "forecasting", "arima", "sarima", "prophet",
+  "predictive modeling", "machine learning", "supervised learning", "unsupervised learning",
+  "feature engineering", "feature selection", "cross-validation",
+  "a/b testing", "experimental design", "causal inference",
+
+  // Data Engineering
+  "etl", "elt", "data pipeline", "data orchestration",
+  "airflow", "dagster", "prefect", "luigi", "argo workflows",
+  "dbt", "dataform", "matillion", "fivetran", "airbyte", "stitch",
+  "kafka", "kinesis", "pub/sub", "event streaming",
+  "spark", "hadoop", "mapreduce", "hive", "pig", "presto", "trino",
+
+  // Data Warehousing
+  "data warehouse", "data lake", "data lakehouse",
+  "snowflake", "redshift", "bigquery", "databricks", "synapse",
+  "dimensional modeling", "star schema", "snowflake schema",
+  "fact table", "dimension table", "slowly changing dimensions",
+  "data vault", "kimball", "inmon",
+
+  // BI & Visualization
+  "business intelligence", "bi", "data visualization", "dashboards",
+  "tableau", "power bi", "looker", "qlik", "sisense", "thoughtspot",
+  "metabase", "redash", "superset", "grafana", "kibana",
+  "d3.js", "chart.js", "plotly", "matplotlib", "seaborn", "bokeh",
+  "altair", "vega", "ggplot2", "shiny", "dash", "streamlit",
+
+  // Cloud & Modern Stack
+  "snowflake", "databricks", "bigquery", "redshift", "synapse",
+  "s3", "gcs", "azure storage", "data lake storage",
+  "glue", "data fusion", "data factory",
+  "athena", "spectrum", "bigquery", "presto", "trino",
+
+  // Data Quality & Governance
+  "data quality", "data validation", "data profiling",
+  "great expectations", "deequ", "soda", "monte carlo",
+  "data catalog", "metadata management", "data lineage",
+  "alation", "collibra", "atlan", "datahub", "amundsen",
+  "data governance", "data privacy", "gdpr", "ccpa",
+
+  // Tools & Technologies
+  "excel", "google sheets", "vba", "power query",
+  "jupyter", "colab", "kaggle", "databricks notebooks",
+  "git", "github", "gitlab", "version control",
+  "docker", "kubernetes", "terraform",
+
+  // Metrics & KPIs
+  "kpi", "okr", "metrics", "analytics", "reporting",
+  "cohort analysis", "retention analysis", "churn analysis",
+  "revenue analytics", "product analytics", "user analytics"
 ];
 
 export const softSkills = [
