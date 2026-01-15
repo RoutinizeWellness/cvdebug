@@ -37,6 +37,8 @@ const schema = defineSchema(
     // New anti-cheat email flags
     invisibilityAlertSent: v.optional(v.boolean()),
     fomoGapEmailSent: v.optional(v.boolean()),
+    // User preferences
+    analyticsSharing: v.optional(v.boolean()),
   })
   .index("by_token", ["tokenIdentifier"])
   .index("by_email", ["email"])

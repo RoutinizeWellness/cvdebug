@@ -69,6 +69,7 @@ import type * as sprintExpiration from "../sprintExpiration.js";
 import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
 import type * as unlockResume from "../unlockResume.js";
+import type * as userSettings from "../userSettings.js";
 import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 
@@ -140,6 +141,7 @@ declare const fullApi: ApiFromModules<{
   testEmail: typeof testEmail;
   testing: typeof testing;
   unlockResume: typeof unlockResume;
+  userSettings: typeof userSettings;
   users: typeof users;
   waitlist: typeof waitlist;
 }>;

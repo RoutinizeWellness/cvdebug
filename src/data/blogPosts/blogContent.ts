@@ -2480,6 +2480,832 @@ export const blogPosts: Record<string, BlogPost> = {
         content: "Analiza tu CV tech con CVDebug. Compáralo con ofertas reales de InfoJobs, LinkedIn y portales tech españoles. Descubre qué keywords te faltan para aumentar tu match ATS."
       }
     ]
+  },
+
+  "resume-action-verbs-2026": {
+    slug: "resume-action-verbs-2026",
+    title: "300+ Powerful Resume Action Verbs to Make You Stand Out in 2026",
+    metaTitle: "300+ Resume Action Verbs & Power Words | 2026 Guide",
+    metaDescription: "Transform your resume with 300+ powerful action verbs categorized by skill type. Learn which words ATS systems love and which weak verbs to avoid.",
+    author: "CVDebug Team",
+    publishDate: "2026-01-15",
+    lastUpdated: "2026-01-15",
+    readingTime: "10 min read",
+    category: "Resume Writing",
+    tags: ["Resume Tips", "Writing", "Action Verbs", "ATS"],
+    excerpt: "Weak verbs like 'responsible for' kill your resume. Learn 300+ powerful action verbs that make recruiters notice you and pass ATS filters.",
+    coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80",
+    content: [
+      {
+        type: 'paragraph',
+        content: "The difference between a resume that gets interviews and one that gets ignored often comes down to one thing: action verbs. Using weak, passive language like 'responsible for' or 'worked on' makes you sound generic. But strong action verbs make your achievements pop off the page."
+      },
+      {
+        type: 'heading',
+        content: "Why Action Verbs Matter for ATS and Recruiters",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Action verbs serve two critical purposes:"
+      },
+      {
+        type: 'list',
+        items: [
+          "They help ATS systems identify your accomplishments and parse them correctly",
+          "They signal to human recruiters that you take ownership and drive results",
+          "They make your resume more scannable and impactful in the 6-second review",
+          "They differentiate you from candidates who use generic, passive language"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Leadership & Management Action Verbs",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Use these when you led teams, projects, or initiatives:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Led, Directed, Managed, Supervised, Coordinated",
+          "Spearheaded, Pioneered, Championed, Drove, Orchestrated",
+          "Mentored, Coached, Trained, Developed, Cultivated",
+          "Delegated, Empowered, Mobilized, Rallied, Aligned"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
+        alt: "Team leadership meeting - action verbs for management roles"
+      },
+      {
+        type: 'heading',
+        content: "Technical & Engineering Action Verbs",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Perfect for software engineers, data scientists, and technical roles:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Architected, Engineered, Designed, Built, Developed",
+          "Optimized, Refactored, Debugged, Troubleshot, Resolved",
+          "Automated, Integrated, Deployed, Migrated, Scaled",
+          "Tested, Validated, Benchmarked, Profiled, Monitored"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Achievement & Impact Action Verbs",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Use these to highlight measurable results:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Increased, Boosted, Grew, Expanded, Accelerated",
+          "Reduced, Decreased, Cut, Minimized, Eliminated",
+          "Generated, Delivered, Achieved, Surpassed, Exceeded",
+          "Saved, Streamlined, Improved, Enhanced, Transformed"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Weak Verbs to Avoid",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "These passive verbs make you sound like a participant, not a driver:"
+      },
+      {
+        type: 'list',
+        items: [
+          "❌ Responsible for → ✅ Led, Managed, Drove",
+          "❌ Worked on → ✅ Developed, Built, Implemented",
+          "❌ Helped with → ✅ Contributed, Facilitated, Supported",
+          "❌ Assisted → ✅ Enabled, Accelerated, Empowered"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&q=80",
+        alt: "Professional writing powerful resume with action verbs"
+      },
+      {
+        type: 'heading',
+        content: "How to Use Action Verbs Correctly",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "Start every bullet point with a strong action verb",
+          "Vary your verbs - don't use 'managed' 5 times",
+          "Match the verb intensity to your actual role (junior devs shouldn't say 'architected')",
+          "Follow the verb with specific metrics: 'Reduced load time by 60%'",
+          "Use past tense for previous roles, present tense for current role"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Scan your resume with CVDebug to identify weak verbs and get AI-powered suggestions for stronger alternatives."
+      }
+    ]
+  },
+
+  "how-many-pages-should-resume-be": {
+    slug: "how-many-pages-should-resume-be",
+    title: "How Many Pages Should Your Resume Be? The Definitive Answer for 2026",
+    metaTitle: "How Long Should a Resume Be? | 2026 Complete Guide",
+    metaDescription: "Learn the ideal resume length for your experience level. Find out when to use 1 page vs 2 pages, and what ATS systems prefer.",
+    author: "CVDebug Team",
+    publishDate: "2026-01-15",
+    lastUpdated: "2026-01-15",
+    readingTime: "7 min read",
+    category: "Resume Writing",
+    tags: ["Resume Tips", "Resume Length", "Career Advice", "ATS"],
+    excerpt: "Confused about resume length? Get the definitive answer based on your experience level, plus what ATS systems and recruiters actually prefer.",
+    coverImage: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&q=80",
+    content: [
+      {
+        type: 'paragraph',
+        content: "The most common question we hear: 'How long should my resume be?' The internet is full of conflicting advice. Some say one page only. Others say two pages are fine. The truth? It depends on your experience level—but not in the way you think."
+      },
+      {
+        type: 'heading',
+        content: "The Quick Answer",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "0-5 years experience: 1 page (strict)",
+          "5-10 years experience: 1-2 pages (1 page preferred)",
+          "10-15 years experience: 2 pages maximum",
+          "15+ years or C-level: 2-3 pages acceptable",
+          "Academic/Research: 2-3 pages (or CV format)"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "What ATS Systems Prefer",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Here's what most people don't know: ATS systems don't care about page count. They parse your content regardless of length. But here's the catch:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Longer resumes dilute your keyword density (your match score goes down)",
+          "More content = more places for parsing errors to occur",
+          "Recruiters spend 6 seconds reviewing—if it's long, they'll miss key info",
+          "Two-page resumes often have weaker bullet points (fluff to fill space)"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80",
+        alt: "Resume length comparison - one page vs two pages"
+      },
+      {
+        type: 'heading',
+        content: "The One-Page Rule for Junior Candidates",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "If you have less than 5 years of experience, your resume should be one page. No exceptions. Here's why:"
+      },
+      {
+        type: 'list',
+        items: [
+          "You don't have enough significant accomplishments to fill two pages",
+          "Recruiters expect junior resumes to be concise",
+          "A one-pager shows you can prioritize and communicate efficiently",
+          "Two pages signals poor judgment or inflated experience"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Can't fit everything on one page? That's good—it means you're being selective. Your resume should only include your most impressive, relevant accomplishments."
+      },
+      {
+        type: 'heading',
+        content: "When to Use Two Pages",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Two pages are acceptable (and sometimes preferred) when:"
+      },
+      {
+        type: 'list',
+        items: [
+          "You have 10+ years of directly relevant experience",
+          "You have multiple advanced degrees or certifications",
+          "You're in a technical role with extensive projects (but still be selective)",
+          "You're applying to senior/executive positions",
+          "You have significant publications, patents, or awards"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "How to Cut Your Resume Down",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Struggling to fit everything on one page? Follow this priority order:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Remove jobs older than 10-15 years (unless highly relevant)",
+          "Cut bullet points from old roles (keep 2-3 max for early jobs)",
+          "Remove hobbies and 'references available upon request'",
+          "Eliminate generic skills everyone has",
+          "Reduce margins to 0.5 inches (but no smaller)",
+          "Use 10pt font minimum (11pt preferred)"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?w=1200&q=80",
+        alt: "Professional reviewing concise one-page resume"
+      },
+      {
+        type: 'heading',
+        content: "The Bottom Line",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Quality over quantity. A tight one-page resume with strong accomplishments beats a two-page resume filled with generic statements every time. When in doubt, go shorter."
+      },
+      {
+        type: 'cta',
+        content: "Upload your resume to CVDebug and get personalized recommendations on what to keep, cut, or strengthen."
+      }
+    ]
+  },
+
+  "resume-keywords-by-industry": {
+    slug: "resume-keywords-by-industry",
+    title: "2026 ATS Resume Keywords by Industry: Complete List with Examples",
+    metaTitle: "Resume Keywords by Industry (2026) | ATS Optimization",
+    metaDescription: "Get the complete list of ATS-optimized keywords for your industry. Includes tech, finance, marketing, healthcare, and more with real examples.",
+    author: "CVDebug Team",
+    publishDate: "2026-01-15",
+    lastUpdated: "2026-01-15",
+    readingTime: "12 min read",
+    category: "Keywords",
+    tags: ["Keywords", "ATS", "Industry", "Job Search"],
+    excerpt: "The most comprehensive list of resume keywords by industry. Learn exactly which keywords ATS systems scan for in your field.",
+    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80",
+    content: [
+      {
+        type: 'paragraph',
+        content: "ATS systems are trained to recognize industry-specific keywords. Using generic terms won't cut it. You need to speak the exact language of your industry to rank high and get past the robots."
+      },
+      {
+        type: 'paragraph',
+        content: "This guide breaks down the most important ATS keywords by industry, with real examples of how to use them effectively in context."
+      },
+      {
+        type: 'heading',
+        content: "Software Engineering Keywords",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Core technical skills ATS scans for:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Languages: Python, JavaScript, Java, C++, TypeScript, Go, Rust",
+          "Frameworks: React, Node.js, Django, Spring Boot, .NET, FastAPI",
+          "Cloud: AWS, Azure, GCP, Kubernetes, Docker, Terraform",
+          "Databases: PostgreSQL, MongoDB, Redis, MySQL, Cassandra",
+          "DevOps: CI/CD, Jenkins, GitHub Actions, Infrastructure as Code",
+          "Methods: Agile, Scrum, TDD, Microservices, REST APIs, GraphQL"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Example bullet: 'Architected microservices using Node.js and Docker, deployed on AWS EKS with Terraform, serving 500K requests/day with 99.9% uptime.'"
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80",
+        alt: "Software engineer coding - tech keywords for resume"
+      },
+      {
+        type: 'heading',
+        content: "Data Science & Analytics Keywords",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "Core: Python, R, SQL, Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch",
+          "ML/AI: Machine Learning, Deep Learning, NLP, Computer Vision, LLMs",
+          "Tools: Jupyter, Tableau, Power BI, Looker, dbt, Airflow",
+          "Methods: A/B Testing, Statistical Analysis, Predictive Modeling, ETL",
+          "Big Data: Spark, Hadoop, Snowflake, Databricks, BigQuery"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Example: 'Built predictive model using XGBoost and Python achieving 92% accuracy, processing 10M+ records daily via Spark on Databricks.'"
+      },
+      {
+        type: 'heading',
+        content: "Digital Marketing Keywords",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "SEO: Keyword Research, On-Page SEO, Technical SEO, Link Building, Google Analytics",
+          "Paid: Google Ads, Facebook Ads, PPC, CPC, ROAS, Conversion Rate Optimization",
+          "Content: Content Strategy, Copywriting, Email Marketing, Marketing Automation",
+          "Social: Social Media Marketing, Community Management, Influencer Marketing",
+          "Tools: HubSpot, Salesforce, Mailchimp, SEMrush, Ahrefs, Google Tag Manager"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Finance & Accounting Keywords",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "Technical: Financial Modeling, Valuation, DCF, LBO, M&A, Due Diligence",
+          "Reporting: GAAP, IFRS, Financial Statements, P&L, Balance Sheet, Cash Flow",
+          "Analysis: Variance Analysis, Budget Forecasting, Risk Management, Compliance",
+          "Tools: Excel, QuickBooks, SAP, Oracle Financials, Bloomberg, Capital IQ",
+          "Certifications: CPA, CFA, FRM (if applicable)"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
+        alt: "Financial analysis dashboard with data visualization"
+      },
+      {
+        type: 'heading',
+        content: "Healthcare & Nursing Keywords",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "Clinical: Patient Care, Vital Signs, Medication Administration, Wound Care",
+          "Technical: EMR/EHR, HIPAA Compliance, Electronic Health Records, Epic, Cerner",
+          "Specialized: ICU, ER, Pediatrics, Oncology, Surgery, Telemetry",
+          "Certifications: RN, BSN, ACLS, BLS, PALS, CCRN (list all you have)",
+          "Soft Skills: Patient Advocacy, Compassionate Care, Clinical Judgment"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Project Management Keywords",
+        level: 2
+      },
+      {
+        type: 'list',
+        items: [
+          "Methods: Agile, Scrum, Waterfall, Kanban, Lean, Six Sigma",
+          "Tools: Jira, Asana, Monday.com, MS Project, Trello, Confluence",
+          "Skills: Stakeholder Management, Risk Management, Budget Management",
+          "Deliverables: Project Charter, Gantt Charts, Resource Allocation, WBS",
+          "Certifications: PMP, CSM, CAPM, SAFe (if you have them)"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "How to Use Keywords Correctly",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Don't just list keywords—that's keyword stuffing and ATS can detect it. Instead:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Use keywords in context with metrics: 'Led Agile sprints for 8-person team'",
+          "Include both acronyms and full terms: 'SEO (Search Engine Optimization)'",
+          "Mirror the job description language exactly",
+          "Place top keywords in your professional summary",
+          "Use variations: 'project management' and 'managed projects'"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Upload your resume to CVDebug and instantly see which industry keywords you're missing and how to add them effectively."
+      }
+    ]
+  },
+
+  "linkedin-profile-optimization-2026": {
+    slug: "linkedin-profile-optimization-2026",
+    title: "LinkedIn Profile Optimization: Get 3X More Recruiter Views in 2026",
+    metaTitle: "LinkedIn Optimization Guide (2026) | 3X More Recruiter Views",
+    metaDescription: "Learn how to optimize your LinkedIn profile for maximum recruiter visibility. Get proven strategies for headlines, summaries, and keyword placement.",
+    author: "CVDebug Team",
+    publishDate: "2026-01-15",
+    lastUpdated: "2026-01-15",
+    readingTime: "11 min read",
+    category: "LinkedIn",
+    tags: ["LinkedIn", "Job Search", "Personal Branding", "Networking"],
+    excerpt: "Your LinkedIn profile is your online resume. Learn how to optimize it so recruiters find you first, not your competition.",
+    coverImage: "https://images.unsplash.com/photo-1611944212129-29977ae1398c?w=1200&q=80",
+    content: [
+      {
+        type: 'paragraph',
+        content: "LinkedIn isn't just a networking site anymore—it's the #1 place recruiters search for candidates. Over 70% of recruiters use LinkedIn as their primary sourcing tool. If your profile isn't optimized, you're invisible."
+      },
+      {
+        type: 'paragraph',
+        content: "The good news? Most profiles are terrible. Optimize yours and you'll instantly stand out. Here's exactly how to do it."
+      },
+      {
+        type: 'heading',
+        content: "Your Headline: The Most Important 120 Characters",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Your headline appears in every search result. Most people waste it with just their job title. Here's what to do instead:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Include your role + key skills + value proposition",
+          "Use keywords recruiters search for (check job postings)",
+          "Add quantifiable achievements if possible",
+          "Make it benefit-focused, not just a title"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "❌ Bad: 'Software Engineer at Google'"
+      },
+      {
+        type: 'paragraph',
+        content: "✅ Good: 'Senior Software Engineer | Python, AWS, Microservices | Building scalable systems for 10M+ users | Ex-Google'"
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&q=80",
+        alt: "Professional LinkedIn profile on laptop screen"
+      },
+      {
+        type: 'heading',
+        content: "Profile Photo: Make or Break",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Profiles with photos get 21X more views and 36X more messages. But not just any photo:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Use a high-quality, professional headshot (not a selfie)",
+          "Dress one level above your target role",
+          "Smile and make eye contact with the camera",
+          "Use a plain or blurred background",
+          "Ensure good lighting and sharp focus"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "About Section: Your Elevator Pitch",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "This is where you sell yourself. Most people write boring paragraphs. Instead, use this formula:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Hook (who you are + your unique value in 1 sentence)",
+          "Your expertise (3-5 key skills with proof)",
+          "Notable achievements (with numbers)",
+          "What you're passionate about or looking for",
+          "Call to action (how to contact you)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "Pro tip: Use bullet points and emojis for scannability. LinkedIn About sections that are formatted well get 40% more engagement."
+      },
+      {
+        type: 'heading',
+        content: "Experience Section: ATS-Friendly Bullet Points",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Your LinkedIn experience should mirror your resume but with slightly more detail:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Use strong action verbs (Led, Architected, Scaled)",
+          "Include specific metrics and results",
+          "Add relevant keywords naturally",
+          "Highlight technologies and tools used",
+          "Focus on impact, not just responsibilities"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80",
+        alt: "Professional networking on LinkedIn"
+      },
+      {
+        type: 'heading',
+        content: "Skills Section: Game the Algorithm",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "LinkedIn's search algorithm heavily weights the Skills section. Here's how to optimize it:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Add 50 skills maximum (LinkedIn's limit)",
+          "Put your most important skills first (top 3 are featured)",
+          "Include both specific and broad skills ('React' and 'Web Development')",
+          "Get endorsements from colleagues (ask them directly)",
+          "Take LinkedIn Skills Assessments to get badges"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "The Open to Work Feature: Use It Strategically",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Setting 'Open to Work' makes you 2X more likely to get recruiter messages. But:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Use 'Recruiters only' mode if you're currently employed",
+          "Be specific about roles, locations, and work types you want",
+          "Update it weekly to stay at the top of recruiter searches",
+          "Don't leave it on indefinitely—remove it once you're hired"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Activity: Show You're Active",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Profiles with recent activity rank higher in searches. Do this weekly:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Post 1-2 industry insights or career updates",
+          "Comment on posts from leaders in your field",
+          "Share relevant articles with your take",
+          "Engage with your network's content"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "LinkedIn URL: Clean It Up",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Change your URL from 'linkedin.com/in/john-smith-8475839' to 'linkedin.com/in/johnsmith' or 'linkedin.com/in/johnsmith-softwareengineer'. It looks more professional and is easier to share."
+      },
+      {
+        type: 'cta',
+        content: "Want to know which keywords to add to your LinkedIn? Upload your resume to CVDebug and get a personalized keyword report for your industry."
+      }
+    ]
+  },
+
+  "career-change-resume-guide": {
+    slug: "career-change-resume-guide",
+    title: "Career Change Resume: How to Pivot Without Starting Over in 2026",
+    metaTitle: "Career Change Resume Guide (2026) | Successful Career Pivot",
+    metaDescription: "Changing careers? Learn how to write a resume that highlights transferable skills, gets past ATS, and lands interviews in your new field.",
+    author: "CVDebug Team",
+    publishDate: "2026-01-15",
+    lastUpdated: "2026-01-15",
+    readingTime: "9 min read",
+    category: "Career Advice",
+    tags: ["Career Change", "Resume Tips", "Career Advice", "Transferable Skills"],
+    excerpt: "Switching careers doesn't mean starting from scratch. Learn how to position your experience for a new industry and get past ATS filters.",
+    coverImage: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80",
+    content: [
+      {
+        type: 'paragraph',
+        content: "Changing careers is one of the most challenging resume situations. You have experience, but it's in a different field. You have skills, but they don't match the job posting exactly. How do you prove you're qualified without direct experience?"
+      },
+      {
+        type: 'paragraph',
+        content: "The secret: reframe your experience to highlight transferable skills and demonstrate your ability to learn and adapt. Here's exactly how to do it."
+      },
+      {
+        type: 'heading',
+        content: "The Career Change Resume Format",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "For career changers, a hybrid or functional-hybrid format works best:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Professional Summary (focused on target role + transferable skills)",
+          "Core Competencies (skills matrix with relevant keywords)",
+          "Relevant Projects or Certifications (bridge the gap)",
+          "Professional Experience (reframed with transferable accomplishments)",
+          "Education & Certifications"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Writing Your Professional Summary",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Your summary is critical. It needs to immediately address the elephant in the room and position you as a strong candidate despite the career change."
+      },
+      {
+        type: 'paragraph',
+        content: "Formula: [Target Role] with [X years] of experience in [relevant transferable skills]. Proven ability to [key achievement that transfers]. Currently [what you're doing to transition - courses, projects, etc.]"
+      },
+      {
+        type: 'paragraph',
+        content: "Example: 'Project Manager transitioning to Software Engineering with 7 years leading technical teams and product development. Completed Full-Stack Development Bootcamp and built 5 production-ready applications using React, Node.js, and PostgreSQL. Proven ability to manage complex projects from conception to deployment.'"
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80",
+        alt: "Professional making career change with confidence"
+      },
+      {
+        type: 'heading',
+        content: "Highlighting Transferable Skills",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Transferable skills are abilities that apply across industries. Focus on these:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Leadership & Management (leading teams, stakeholder communication)",
+          "Problem-Solving (analytical thinking, troubleshooting)",
+          "Technical Skills (software, tools, methodologies)",
+          "Project Management (planning, execution, delivery)",
+          "Communication (presentations, documentation, client-facing work)",
+          "Data Analysis (Excel, reporting, insights)"
+        ]
+      },
+      {
+        type: 'paragraph',
+        content: "For each previous role, identify 2-3 bullet points that demonstrate skills valuable in your target role."
+      },
+      {
+        type: 'heading',
+        content: "Reframing Your Experience",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Don't just list what you did—reframe it in terms of your target role's language."
+      },
+      {
+        type: 'paragraph',
+        content: "❌ Teacher to Tech: 'Taught high school math to 150 students'"
+      },
+      {
+        type: 'paragraph',
+        content: "✅ Reframed: 'Managed learning outcomes for 150+ stakeholders, created data-driven curriculum (Python, analytics), and delivered presentations to diverse audiences'"
+      },
+      {
+        type: 'paragraph',
+        content: "❌ Sales to Marketing: 'Sold software to enterprise clients'"
+      },
+      {
+        type: 'paragraph',
+        content: "✅ Reframed: 'Conducted market research and competitive analysis to identify customer pain points, resulting in 40% increase in qualified leads'"
+      },
+      {
+        type: 'heading',
+        content: "Adding a Projects Section",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "If you lack direct experience, a projects section bridges the gap:"
+      },
+      {
+        type: 'list',
+        items: [
+          "List relevant side projects, freelance work, or bootcamp projects",
+          "Include technologies used and measurable outcomes",
+          "Link to GitHub, portfolio, or live demos",
+          "Focus on real-world applications, not tutorials"
+        ]
+      },
+      {
+        type: 'image',
+        content: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80",
+        alt: "Team collaboration representing transferable skills"
+      },
+      {
+        type: 'heading',
+        content: "Education & Certifications",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "For career changers, certifications prove commitment and close skill gaps:"
+      },
+      {
+        type: 'list',
+        items: [
+          "List relevant certifications first (Google Data Analytics, AWS, PMP, etc.)",
+          "Include bootcamps or intensive programs",
+          "Add MOOCs or online courses if highly relevant (Coursera, Udemy)",
+          "Show you're actively learning and building skills"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "Addressing the Gap in Your Cover Letter",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Your cover letter is where you directly address the career change:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Paragraph 1: Why you're making the change (passion, alignment with values)",
+          "Paragraph 2: How your past experience prepares you (transferable skills)",
+          "Paragraph 3: What you've done to prepare (courses, projects, certifications)",
+          "Closing: Enthusiasm and call to action"
+        ]
+      },
+      {
+        type: 'heading',
+        content: "ATS Optimization for Career Changers",
+        level: 2
+      },
+      {
+        type: 'paragraph',
+        content: "Career changers face extra ATS challenges. To improve your score:"
+      },
+      {
+        type: 'list',
+        items: [
+          "Use exact keywords from the job posting (even if you learned them recently)",
+          "Include industry-specific terminology throughout",
+          "Don't hide your career change—acknowledge it in your summary",
+          "Emphasize skills over job titles",
+          "Add a 'Core Competencies' section with target role keywords"
+        ]
+      },
+      {
+        type: 'cta',
+        content: "Changing careers? Upload your resume to CVDebug to see how ATS systems in your target industry will rate your profile, and get specific recommendations for keyword optimization."
+      }
+    ]
   }
 };
 
