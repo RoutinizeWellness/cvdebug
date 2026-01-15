@@ -366,7 +366,144 @@ export const storeEvaluationResults = internalMutation({
       results: args.results,
       timestamp: Date.now(),
     });
-    
+
     console.log(`[ML Learning] Stored evaluation results: ${args.accuracy.toFixed(1)}% accuracy`);
+  },
+});
+
+// Record comprehensive ML analysis data for internal algorithm improvement
+export const recordMLAnalysis = mutation({
+  args: {
+    resumeId: v.id("resumes"),
+    mlScores: v.object({
+      overallScore: v.number(),
+      keywordMatchScore: v.number(),
+      actionVerbScore: v.number(),
+      sentimentScore: v.number(),
+      structureScore: v.number()
+    }),
+    topKeywords: v.array(v.string()),
+    matchedKeywords: v.array(v.string()),
+    missingKeywords: v.array(v.string()),
+    actionVerbs: v.array(v.string()),
+    weakPhrases: v.array(v.string()),
+    entities: v.object({
+      skills: v.array(v.string()),
+      technologies: v.array(v.string()),
+      companies: v.array(v.string())
+    }),
+    recommendations: v.array(v.object({
+      type: v.string(),
+      title: v.string(),
+      impact: v.number()
+    })),
+    sentiment: v.string(),
+    timestamp: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const resume = await ctx.db.get(args.resumeId);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.insert("mlAnalysisData", {
+      resumeId: args.resumeId,
+      userId: identity.subject,
+      mlScores: args.mlScores,
+      topKeywords: args.topKeywords,
+      matchedKeywords: args.matchedKeywords,
+      missingKeywords: args.missingKeywords,
+      actionVerbs: args.actionVerbs,
+      weakPhrases: args.weakPhrases,
+      entities: args.entities,
+      recommendations: args.recommendations,
+      sentiment: args.sentiment,
+      timestamp: args.timestamp
+    });
+
+    console.log(`[ML Data Collection] Analysis data recorded for resume ${args.resumeId} - Overall Score: ${args.mlScores.overallScore}`);
+  },
+});
+
+// Export ML analysis data for algorithm improvement and research
+export const exportMLAnalysisData = query({
+  args: {
+    limit: v.optional(v.number()),
+    minScore: v.optional(v.number()),
+    maxScore: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Not authenticated");
+
+    const limit = args.limit || 100;
+    let analysisQuery = ctx.db.query("mlAnalysisData")
+      .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+      .order("desc");
+
+    const allData = await analysisQuery.take(limit);
+
+    // Filter by score if specified
+    let filteredData = allData;
+    if (args.minScore !== undefined || args.maxScore !== undefined) {
+      filteredData = allData.filter(data => {
+        const score = data.mlScores.overallScore;
+        const meetsMin = args.minScore === undefined || score >= args.minScore;
+        const meetsMax = args.maxScore === undefined || score <= args.maxScore;
+        return meetsMin && meetsMax;
+      });
+    }
+
+    // Calculate aggregate statistics
+    const totalRecords = filteredData.length;
+    const avgOverallScore = totalRecords > 0
+      ? filteredData.reduce((sum, d) => sum + d.mlScores.overallScore, 0) / totalRecords
+      : 0;
+
+    const avgKeywordScore = totalRecords > 0
+      ? filteredData.reduce((sum, d) => sum + d.mlScores.keywordMatchScore, 0) / totalRecords
+      : 0;
+
+    const avgActionVerbScore = totalRecords > 0
+      ? filteredData.reduce((sum, d) => sum + d.mlScores.actionVerbScore, 0) / totalRecords
+      : 0;
+
+    const avgSentimentScore = totalRecords > 0
+      ? filteredData.reduce((sum, d) => sum + d.mlScores.sentimentScore, 0) / totalRecords
+      : 0;
+
+    const avgStructureScore = totalRecords > 0
+      ? filteredData.reduce((sum, d) => sum + d.mlScores.structureScore, 0) / totalRecords
+      : 0;
+
+    // Top keywords across all analyses
+    const keywordFrequency: Record<string, number> = {};
+    filteredData.forEach(data => {
+      data.topKeywords.forEach(keyword => {
+        keywordFrequency[keyword] = (keywordFrequency[keyword] || 0) + 1;
+      });
+    });
+
+    const topKeywordsAcrossAll = Object.entries(keywordFrequency)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([keyword, count]) => ({ keyword, count }));
+
+    return {
+      totalRecords,
+      statistics: {
+        avgOverallScore,
+        avgKeywordScore,
+        avgActionVerbScore,
+        avgSentimentScore,
+        avgStructureScore
+      },
+      topKeywords: topKeywordsAcrossAll,
+      data: filteredData,
+      exportedAt: Date.now()
+    };
   },
 });

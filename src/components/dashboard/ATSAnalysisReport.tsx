@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
-import { MLInsights } from "./MLInsights";
 
 interface ATSAnalysisReportProps {
   resume: any;

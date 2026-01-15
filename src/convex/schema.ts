@@ -382,6 +382,39 @@ const schema = defineSchema(
     timestamp: v.number(),
   }),
 
+  // ML Analysis Data Collection: Silent background collection for algorithm improvement
+  mlAnalysisData: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+    mlScores: v.object({
+      overallScore: v.number(),
+      keywordMatchScore: v.number(),
+      actionVerbScore: v.number(),
+      sentimentScore: v.number(),
+      structureScore: v.number()
+    }),
+    topKeywords: v.array(v.string()),
+    matchedKeywords: v.array(v.string()),
+    missingKeywords: v.array(v.string()),
+    actionVerbs: v.array(v.string()),
+    weakPhrases: v.array(v.string()),
+    entities: v.object({
+      skills: v.array(v.string()),
+      technologies: v.array(v.string()),
+      companies: v.array(v.string())
+    }),
+    recommendations: v.array(v.object({
+      type: v.string(),
+      title: v.string(),
+      impact: v.number()
+    })),
+    sentiment: v.string(),
+    timestamp: v.number(),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"])
+    .index("by_timestamp", ["timestamp"]),
+
   waitlist: defineTable({
     email: v.string(),
   }).index("by_email", ["email"]),

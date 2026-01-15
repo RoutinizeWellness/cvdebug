@@ -24,6 +24,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useMLDataCollection } from "@/hooks/use-ml-data-collection";
 // ML Insights removed - used internally only for algorithm improvement
 
 interface WritingForgeProps {
@@ -40,6 +41,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   // Load resume data
   const resume = useQuery(api.resumes.getResume, resumeId ? { id: resumeId } : "skip");
   const currentUser = useQuery((api as any).users.currentUser);
+
+  // Silent ML data collection (internal use only)
+  useMLDataCollection(
+    resumeId || null,
+    resume?.ocrText || "",
+    resume?.jobDescription || "",
+    !!resumeId && !!resume?.ocrText
+  );
 
   // Check if user has Interview Sprint plan
   const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
