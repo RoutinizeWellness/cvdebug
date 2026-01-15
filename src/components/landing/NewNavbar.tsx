@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Terminal, Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -7,8 +7,18 @@ import { useAuth } from "@/hooks/use-auth";
 
 export function NewNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+
+  // Handle scroll effect
+  useState(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
 
   const navLinks = [
     { name: "Analyzer", href: "#analyzer" },
@@ -28,64 +38,88 @@ export function NewNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 z-40 w-full glass-panel-light shadow-soft">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+        className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl border-b border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="cursor-pointer flex items-center"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="cursor-pointer flex items-center gap-3 group"
             onClick={() => navigate("/")}
           >
-            <img
-              src="/assets/cvdebug-logo.png"
-              alt="CVDebug"
-              className="h-14 w-auto transition-transform duration-300 hover:scale-105"
-            />
+            <div className="relative">
+              <img
+                src="/assets/cvdebug-logo.png"
+                alt="CVDebug"
+                className="h-12 w-auto transition-all duration-300 group-hover:scale-105"
+              />
+              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
+            </div>
           </motion.div>
 
           {/* Desktop Navigation */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="hidden md:flex md:gap-8"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="hidden md:flex md:gap-1"
           >
-            {navLinks.map((link) => (
-              <button
+            {navLinks.map((link, index) => (
+              <motion.button
                 key={link.name}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                 onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B]"
+                className="px-4 py-2 text-sm font-semibold text-[#475569] transition-all duration-200 hover:text-[#1E293B] hover:bg-slate-50 rounded-lg relative group"
               >
                 {link.name}
-              </button>
+                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transition-all duration-300 group-hover:w-3/4 group-hover:left-[12.5%]" />
+              </motion.button>
             ))}
           </motion.div>
 
+          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex items-center gap-4"
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex items-center gap-3"
           >
             <button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="hidden text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] sm:block"
+              className="hidden sm:block text-sm font-semibold text-[#475569] transition-colors hover:text-[#1E293B] px-4 py-2 rounded-lg hover:bg-slate-50"
             >
               {isAuthenticated ? "Dashboard" : "Log in"}
             </button>
+
             <Button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="gradient-button group relative inline-flex h-9 items-center justify-center overflow-hidden rounded-md px-4 text-sm font-semibold text-white border-0"
+              className="relative group h-10 px-6 overflow-hidden rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_20px_60px_-10px_rgba(139,92,246,0.6)] transition-all duration-300 border-0"
             >
-              <span className="mr-2">Scan Resume</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                <span className="hidden sm:inline">Scan Resume</span>
+                <span className="sm:hidden">Scan</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
             </Button>
 
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-[#1E293B]"
+              className="md:hidden text-[#1E293B] hover:bg-slate-50 p-2 rounded-lg transition-colors"
             >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -95,7 +129,7 @@ export function NewNavbar() {
             </button>
           </motion.div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -104,28 +138,34 @@ export function NewNavbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-[64px] left-0 right-0 z-40 glass-panel-light border-t border-[#E2E8F0] md:hidden"
+            transition={{ duration: 0.3, type: "spring", stiffness: 120 }}
+            className="fixed top-20 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-b border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] md:hidden"
           >
-            <div className="mx-auto max-w-7xl px-4 py-4 space-y-4">
-              {navLinks.map((link) => (
-                <button
+            <div className="mx-auto max-w-7xl px-4 py-6 space-y-2">
+              {navLinks.map((link, index) => (
+                <motion.button
                   key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
                   onClick={() => handleNavClick(link.href)}
-                  className="block w-full text-left text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] py-2"
+                  className="block w-full text-left text-base font-semibold text-[#475569] transition-all hover:text-[#1E293B] hover:bg-slate-50 py-3 px-4 rounded-lg"
                 >
                   {link.name}
-                </button>
+                </motion.button>
               ))}
-              <button
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
                 onClick={() => {
                   navigate(isAuthenticated ? "/dashboard" : "/auth");
                   setMobileMenuOpen(false);
                 }}
-                className="block w-full text-left text-sm font-medium text-[#475569] transition-colors hover:text-[#1E293B] py-2 sm:hidden"
+                className="block w-full text-left text-base font-semibold text-[#475569] transition-all hover:text-[#1E293B] hover:bg-slate-50 py-3 px-4 rounded-lg"
               >
                 {isAuthenticated ? "Dashboard" : "Log in"}
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         )}
