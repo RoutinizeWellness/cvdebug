@@ -169,12 +169,100 @@ export default function BlogPost() {
 
           {/* Article Content */}
           <div
-            className="prose prose-lg max-w-none mb-12 text-gray-800"
+            className="prose prose-lg prose-gray max-w-none mb-12"
             style={{
               color: '#1f2937',
             }}
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          >
+            <style>{`
+              .prose h1 {
+                font-size: 2.25rem;
+                font-weight: 800;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: #111827;
+                line-height: 1.2;
+              }
+              .prose h2 {
+                font-size: 1.875rem;
+                font-weight: 700;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: #111827;
+                line-height: 1.3;
+              }
+              .prose h3 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                color: #1f2937;
+                line-height: 1.4;
+              }
+              .prose p {
+                margin-top: 1.25rem;
+                margin-bottom: 1.25rem;
+                line-height: 1.75;
+                color: #374151;
+              }
+              .prose ul, .prose ol {
+                margin-top: 1.25rem;
+                margin-bottom: 1.25rem;
+                padding-left: 1.5rem;
+              }
+              .prose li {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.75;
+                color: #374151;
+              }
+              .prose li::marker {
+                color: #3b82f6;
+                font-weight: 600;
+              }
+              .prose strong {
+                color: #111827;
+                font-weight: 600;
+              }
+              .prose a {
+                color: #3b82f6;
+                text-decoration: underline;
+              }
+              .prose a:hover {
+                color: #2563eb;
+              }
+              .prose code {
+                background-color: #f3f4f6;
+                padding: 0.125rem 0.375rem;
+                border-radius: 0.25rem;
+                font-size: 0.875em;
+                color: #1f2937;
+              }
+              .prose pre {
+                background-color: #1f2937;
+                color: #e5e7eb;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+              }
+              .prose blockquote {
+                border-left: 4px solid #3b82f6;
+                padding-left: 1rem;
+                font-style: italic;
+                color: #4b5563;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+              }
+              .prose hr {
+                border-color: #e5e7eb;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+              }
+            `}</style>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </div>
 
           {/* Tags */}
           {post.tags.length > 0 && (
