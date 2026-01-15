@@ -37,8 +37,9 @@ export function buildResumeAnalysisPrompt(
 
 ### EVALUATION INSTRUCTIONS:
 
-1.  **Role Classification:** Determine the most specific role category (Engineering, Software Engineering, Marketing, Product Management, Data Science, or General).
+1.  **Role Classification:** Determine the most specific role category (Engineering, Software Engineering, Marketing, Product Management, Data Science, Sales (SDR/BDR), or General).
     - Look for technical tools, methodologies, and domain-specific terminology
+    - For Sales roles (SDR/BDR/AE): Look for quota attainment, pipeline generation, outreach metrics, meeting booking rates
     - Consider job titles, certifications, and project descriptions
     - Confidence threshold: >70% for specific category, otherwise "General"
 
@@ -82,7 +83,7 @@ Return a raw JSON object with this exact structure. Do not include markdown form
 
 {
   "title": "Candidate Name - Detected Role",
-  "category": "Engineering" | "Software Engineering" | "Marketing" | "Product Management" | "Data Science" | "General",
+  "category": "Engineering" | "Software Engineering" | "Marketing" | "Product Management" | "Data Science" | "Sales (SDR/BDR)" | "General",
   "score": <number 0-100>,
   "scoreBreakdown": { 
     "keywords": <number 0-40>, 
