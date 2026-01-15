@@ -267,6 +267,11 @@ const schema = defineSchema(
     lastIntegrityCheck: v.optional(v.number()),
     parsingErrorEmailSent: v.optional(v.boolean()),
     lowScoreEmailSent: v.optional(v.boolean()),
+    // Extracted contact information
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    linkedin: v.optional(v.string()),
+    github: v.optional(v.string()),
     // NEW: Manual resume builder fields
     personalInfo: v.optional(v.object({
       fullName: v.string(),

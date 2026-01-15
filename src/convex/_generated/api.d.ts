@@ -18,6 +18,7 @@ import type * as ai_bulletRewriter from "../ai/bulletRewriter.js";
 import type * as ai_chatbot from "../ai/chatbot.js";
 import type * as ai_config_keywords from "../ai/config/keywords.js";
 import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
+import type * as ai_contactExtractor from "../ai/contactExtractor.js";
 import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
@@ -96,6 +97,7 @@ declare const fullApi: ApiFromModules<{
   "ai/chatbot": typeof ai_chatbot;
   "ai/config/keywords": typeof ai_config_keywords;
   "ai/config/metricTemplates": typeof ai_config_metricTemplates;
+  "ai/contactExtractor": typeof ai_contactExtractor;
   "ai/contentAnalysis": typeof ai_contentAnalysis;
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;

@@ -6,6 +6,7 @@ import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateFallbackAnalysis } from "./fallbackAnalysis";
 import { generateIntelligentFallback } from "./intelligentFallback";
+import { extractContactInfo } from "./contactExtractor";
 
 // Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -76,6 +77,11 @@ export const analyzeResume = internalAction({
       }
 
       console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${cleanText.length} chars`);
+
+      // Extract contact information
+      console.log(`[Contact Extraction] Extracting contact info from resume ${args.id}`);
+      const contactInfo = extractContactInfo(cleanText);
+      console.log(`[Contact Extraction] Found - Email: ${!!contactInfo.email}, Phone: ${!!contactInfo.phone}, LinkedIn: ${!!contactInfo.linkedin}, GitHub: ${!!contactInfo.github}`);
 
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
@@ -291,6 +297,10 @@ export const analyzeResume = internalAction({
           scoreBreakdown: safeAnalysisResult.scoreBreakdown,
           matchedKeywords: safeAnalysisResult.matchedKeywords,
           missingKeywords: safeAnalysisResult.missingKeywords,
+          email: contactInfo.email,
+          phone: contactInfo.phone,
+          linkedin: contactInfo.linkedin,
+          github: contactInfo.github,
           formatIssues: safeAnalysisResult.formatIssues,
           metricSuggestions: safeAnalysisResult.metricSuggestions,
           status: "completed",
