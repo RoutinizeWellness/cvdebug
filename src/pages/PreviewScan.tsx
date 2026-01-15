@@ -10,7 +10,8 @@ import mammoth from "mammoth";
 import { createWorker } from "tesseract.js";
 
 // Set up PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+const pdfVersion = pdfjsLib.version || "4.0.379";
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfVersion}/build/pdf.worker.min.mjs`;
 
 interface LogEntry {
   type: "info" | "success" | "warning" | "error";
@@ -142,7 +143,8 @@ export default function PreviewScan() {
               await worker.terminate();
             }
           } catch (ocrError: any) {
-            addLog("warning", `[OCR] OCR had issues: ${ocrError.message}`);
+            console.error("OCR Error:", ocrError);
+            addLog("warning", `[OCR] OCR had issues: ${ocrError.message || "Failed to read image"}`);
             // Don't throw - we'll use fallback content
           }
 
