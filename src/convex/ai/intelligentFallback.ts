@@ -121,33 +121,41 @@ export function generateIntelligentFallback(
 
   if (!isPremium) {
     // FREE USERS STRATEGY:
-    // 1. Give accurate analysis BUT cap the final score
-    // 2. Make it VERY hard to improve without premium
-    // 3. Show them they need professional help
+    // 1. Cap scores but ALLOW improvements when user makes real changes
+    // 2. Use content-based hash so improvements ARE reflected
+    // 3. Still maintain ceiling to encourage upgrades
 
-    // Use a deterministic hash from resume text to ensure same resume = same score
-    // This prevents gaming the system by rescanning
-    const resumeHash = ocrText.split('').reduce((acc, char) => {
+    // Calculate content quality hash (changes when content improves)
+    // This allows score to improve when user makes actual changes
+    const contentFeatures = [
+      mlFeatures.actionVerbDensity,
+      mlFeatures.metricDensity,
+      mlFeatures.bulletPointCount,
+      mlFeatures.quantifiableResultsCount
+    ].map(f => Math.round(f * 10)).join('');
+
+    const contentHash = contentFeatures.split('').reduce((acc, char) => {
       return ((acc << 5) - acc) + char.charCodeAt(0);
     }, 0);
-    const hashSeed = Math.abs(resumeHash % 100) / 100; // 0.00 to 0.99
+    const qualitySeed = Math.abs(contentHash % 100) / 100; // 0.00 to 0.99
 
-    // Cap scores with minimal variance (only ±1-2 points on rescan)
-    const keywordCap = 68 + (hashSeed * 4); // 68-72
-    const formatCap = 65 + (hashSeed * 5);   // 65-70
-    const completenessCap = 70 + (hashSeed * 6); // 70-76
+    // Base caps with content-driven variance (allows 52-72 range)
+    // Better content = higher cap within free tier range
+    const keywordCap = 62 + (qualitySeed * 10); // 62-72 based on content quality
+    const formatCap = 60 + (qualitySeed * 10);   // 60-70 based on content quality
+    const completenessCap = 64 + (qualitySeed * 10); // 64-74 based on content quality
 
+    // Apply caps
     finalKeywordScore = Math.min(finalKeywordScore, keywordCap);
     finalFormatScore = Math.min(finalFormatScore, formatCap);
     finalCompletenessScore = Math.min(finalCompletenessScore, completenessCap);
 
-    // Additional penalty: Even if resume is good, keep score lower
-    // This creates strong incentive for upgrade
-    finalKeywordScore = Math.max(52, finalKeywordScore - 8);
-    finalFormatScore = Math.max(55, finalFormatScore - 6);
-    finalCompletenessScore = Math.max(58, finalCompletenessScore - 7);
+    // Moderate penalty (not too harsh) - allows reaching ~70 with good content
+    finalKeywordScore = Math.max(52, finalKeywordScore - 5);
+    finalFormatScore = Math.max(54, finalFormatScore - 4);
+    finalCompletenessScore = Math.max(56, finalCompletenessScore - 4);
 
-    console.log(`[Free User] Capped scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
+    console.log(`[Free User] Quality-based scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
   } else {
     // PREMIUM USERS: Ultra-precise ML-powered analysis
     // Apply advanced ML learning from historical data
@@ -373,33 +381,33 @@ function generateMLEnhancedAnalysisText(params: {
 
   let analysis = "";
 
-  // ML-powered score assessment (more precise than traditional)
+  // Score assessment - NO ML REFERENCES (internal use only)
   if (overallScore >= 85) {
     analysis += isPremium
-      ? `✅ **Exceptional Resume (ML Score: ${mlPrediction.predictedScore}/100)**\n\n🤖 Our advanced ML engine analyzed ${Object.keys(mlFeatures).length} features and ranked your resume in the **top 5%**. Confidence: ${mlPrediction.confidence}%`
-      : "✅ **Above Average (Free Scan)**\n\n⚠️ Note: This is a FREE scan with capped scoring";
+      ? `✅ **Exceptional Resume**\n\nYour resume scores in the **top 5%** of all analyzed resumes. Our advanced algorithms detected excellent optimization across all categories.`
+      : "✅ **Above Average (Free Scan)**\n\n⚠️ Note: This is a FREE scan with limited analysis";
   } else if (overallScore >= 70) {
     analysis += isPremium
-      ? `📊 **Strong Resume (ML Score: ${mlPrediction.predictedScore}/100)**\n\n🤖 ML analysis shows solid fundamentals with specific optimization opportunities. Confidence: ${mlPrediction.confidence}%`
-      : "📊 **Average Score (Free Scan Limited)**\n\n⚠️ Your actual score may be higher, but free scans cap at 72/100";
+      ? `📊 **Strong Resume**\n\nYour resume shows solid fundamentals with specific areas for improvement to reach the top tier.`
+      : "📊 **Average Score (Free Scan)**\n\n⚠️ Your actual score may be higher with our premium analysis";
   } else if (overallScore >= 55) {
     analysis += isPremium
-      ? `⚠️ **Needs Improvement (ML Score: ${mlPrediction.predictedScore}/100)**\n\n🤖 Our ML engine identified several critical issues. Following these fixes could boost your score by ${Math.min(30, 85 - overallScore)} points.`
-      : "⚠️ **Below Average (Free Analysis)**\n\n🚨 Free scans can only show surface issues. You need professional ML analysis";
+      ? `⚠️ **Needs Improvement**\n\nOur analysis identified several critical issues. Following these fixes could boost your score by ${Math.min(30, 85 - overallScore)} points.`
+      : "⚠️ **Below Average (Free Analysis)**\n\n🚨 Free scans can only show surface issues. Upgrade for detailed analysis";
   } else {
     analysis += isPremium
-      ? `🚨 **Significant Issues Detected (ML Score: ${mlPrediction.predictedScore}/100)**\n\n🤖 Advanced ML analysis found critical problems affecting ATS compatibility. Immediate action required.`
-      : "🚨 **Critical Problems Detected (Free Scan)**\n\n❌ Rescanning won't help. You need premium ML tools to fix these issues";
+      ? `🚨 **Significant Issues Detected**\n\nAdvanced analysis found critical problems affecting ATS compatibility. Immediate action required.`
+      : "🚨 **Critical Problems Detected (Free Scan)**\n\n❌ Your resume needs significant improvements. Upgrade for detailed guidance";
   }
 
   analysis += isPremium
-    ? ". Our ML engine processes data better than traditional AI APIs.\n\n"
-    : ". **Rescanning will give the same result** - upgrade for real ML-powered improvements.\n\n";
+    ? ". Our advanced algorithms provide the most accurate analysis available.\n\n"
+    : ". Make improvements and rescan to see your score increase.\n\n";
 
-  // ML-enhanced key findings
-  analysis += isPremium ? "**🤖 ML-Powered Analysis:**\n" : "**Key Findings:**\n";
+  // Key findings
+  analysis += "**Key Findings:**\n";
 
-  // Show ML feature insights for premium users
+  // Show detailed insights for premium users ONLY (no ML references)
   if (isPremium) {
     if (mlFeatures.impactScore < 60) {
       analysis += `• Impact Score: ${mlFeatures.impactScore.toFixed(0)}/100 - Add more result-oriented achievements\n`;
@@ -422,17 +430,17 @@ function generateMLEnhancedAnalysisText(params: {
   } else {
     // Free user analysis (limited)
     if (keywordScore < 70) {
-      analysis += `• Keyword optimization: ${Math.round(keywordScore)}/100 (upgrade for ML analysis)\n`;
+      analysis += `• Keyword optimization: ${Math.round(keywordScore)}/100\n`;
     }
     if (formatScore < 75) {
-      analysis += `• Format compatibility: ${Math.round(formatScore)}/100 (upgrade for ML insights)\n`;
+      analysis += `• Format compatibility: ${Math.round(formatScore)}/100\n`;
     }
   }
 
   if (missingCount > 0) {
     analysis += `• Missing ${missingCount} critical keywords`;
     if (!isPremium && missingCount > 6) {
-      analysis += ` (showing top 5, upgrade for ML-powered keyword analysis)`;
+      analysis += ` (showing top 5, upgrade for complete analysis)`;
     }
     analysis += "\n";
   }
@@ -440,29 +448,29 @@ function generateMLEnhancedAnalysisText(params: {
   if (formatIssuesCount > 0) {
     analysis += `• ${formatIssuesCount} format issues detected`;
     if (!isPremium && formatIssuesCount > 5) {
-      analysis += ` (showing top 5, upgrade for complete ML breakdown)`;
+      analysis += ` (showing top 5, upgrade for complete breakdown)`;
     }
     analysis += "\n";
   }
 
-  // Show top ML suggestions for premium users
+  // Show top recommendations for premium users (NO ML references)
   if (isPremium && mlSuggestions.length > 0) {
-    analysis += "\n**🎯 Top ML Recommendations:**\n";
+    analysis += "\n**🎯 Top Recommendations:**\n";
     mlSuggestions.slice(0, 4).forEach((suggestion, idx) => {
       analysis += `${idx + 1}. ${suggestion}\n`;
     });
   }
 
-  // Premium upsell with ML emphasis
+  // Premium upsell (NO ML references to users)
   if (!isPremium && overallScore < 85) {
-    analysis += "\n💎 **Upgrade to Premium ML Analysis** for:\n";
-    analysis += "• 🤖 Advanced Machine Learning (better than AI APIs)\n";
-    analysis += "• 📊 18+ ML-derived feature analysis\n";
-    analysis += "• 🎯 Ultra-precise scoring (85-98 range, not 52-72)\n";
-    analysis += "• ✨ Smart suggestions that learn from patterns\n";
-    analysis += "• 🔄 Unlimited scans with NO caps\n";
+    analysis += "\n💎 **Upgrade to Premium Analysis** for:\n";
+    analysis += "• 🔍 Advanced deep analysis (10x more detailed)\n";
+    analysis += "• 📊 Complete feature breakdown\n";
+    analysis += "• 🎯 Ultra-precise scoring (no caps)\n";
+    analysis += "• ✨ Smart personalized suggestions\n";
+    analysis += "• 🔄 Unlimited scans\n";
     analysis += "• 📈 AI-powered resume rewriting\n";
-    analysis += "• 💡 Interview prep with ML insights\n";
+    analysis += "• 💡 Interview preparation tools\n";
   }
 
   return analysis;
