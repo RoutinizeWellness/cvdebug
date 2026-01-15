@@ -7,6 +7,7 @@ import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateFallbackAnalysis } from "./fallbackAnalysis";
 import { generateIntelligentFallback } from "./intelligentFallback";
 import { extractContactInfo } from "./contactExtractor";
+import { extractComprehensiveData } from "./comprehensiveExtractor";
 
 // Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -78,10 +79,16 @@ export const analyzeResume = internalAction({
 
       console.log(`[AI Analysis] Starting analysis for resume ${args.id}, text length: ${cleanText.length} chars`);
 
-      // Extract contact information
-      console.log(`[Contact Extraction] Extracting contact info from resume ${args.id}`);
-      const contactInfo = extractContactInfo(cleanText);
-      console.log(`[Contact Extraction] Found - Email: ${!!contactInfo.email}, Phone: ${!!contactInfo.phone}, LinkedIn: ${!!contactInfo.linkedin}, GitHub: ${!!contactInfo.github}`);
+      // Extract ALL data comprehensively
+      console.log(`[Comprehensive Extraction] Starting full data extraction from resume ${args.id}`);
+      const comprehensiveData = extractComprehensiveData(cleanText);
+
+      console.log(`[Extraction Results] Contact: Email=${!!comprehensiveData.contact.email}, Phone=${!!comprehensiveData.contact.phone}, LinkedIn=${!!comprehensiveData.contact.linkedin}, GitHub=${!!comprehensiveData.contact.github}`);
+      console.log(`[Extraction Results] Education: Degree=${comprehensiveData.education.highestDegree}, Years=${comprehensiveData.education.totalYearsEducation}`);
+      console.log(`[Extraction Results] Experience: Years=${comprehensiveData.experience.totalYears}, Companies=${comprehensiveData.experience.companies.length}, Seniority=${comprehensiveData.experience.seniorityLevel}`);
+      console.log(`[Extraction Results] Skills: Technical=${comprehensiveData.skills.technical.length}, Tools=${comprehensiveData.skills.tools.length}, Frameworks=${comprehensiveData.skills.frameworks.length}`);
+      console.log(`[Extraction Results] Metrics: Total=${comprehensiveData.metrics.totalMetrics}, Achievements=${comprehensiveData.experience.achievements.length}`);
+      console.log(`[Extraction Results] Quality: ActionVerbs=${comprehensiveData.quality.hasActionVerbs}, Quantifiable=${comprehensiveData.quality.hasQuantifiableResults}, AvgBulletQuality=${comprehensiveData.quality.averageBulletPointQuality}`);
 
       const hasJobDescription = args.jobDescription && args.jobDescription.trim().length > 0;
       console.log(`[AI Analysis] Resume ID: ${args.id}, Job Description Provided: ${hasJobDescription}, JD Length: ${args.jobDescription?.length || 0}`);
@@ -297,10 +304,46 @@ export const analyzeResume = internalAction({
           scoreBreakdown: safeAnalysisResult.scoreBreakdown,
           matchedKeywords: safeAnalysisResult.matchedKeywords,
           missingKeywords: safeAnalysisResult.missingKeywords,
-          email: contactInfo.email,
-          phone: contactInfo.phone,
-          linkedin: contactInfo.linkedin,
-          github: contactInfo.github,
+          // Contact info
+          email: comprehensiveData.contact.email,
+          phone: comprehensiveData.contact.phone,
+          linkedin: comprehensiveData.contact.linkedin,
+          github: comprehensiveData.contact.github,
+          website: comprehensiveData.contact.website,
+          location: comprehensiveData.contact.location,
+          // Comprehensive extracted data
+          extractedData: {
+            // Education
+            highestDegree: comprehensiveData.education.highestDegree,
+            totalYearsEducation: comprehensiveData.education.totalYearsEducation,
+            // Experience
+            totalYearsExperience: comprehensiveData.experience.totalYears,
+            companies: comprehensiveData.experience.companies,
+            jobTitles: comprehensiveData.experience.titles,
+            currentRole: comprehensiveData.experience.currentRole,
+            seniorityLevel: comprehensiveData.experience.seniorityLevel,
+            // Skills
+            technicalSkills: comprehensiveData.skills.technical,
+            tools: comprehensiveData.skills.tools,
+            frameworks: comprehensiveData.skills.frameworks,
+            databases: comprehensiveData.skills.databases,
+            cloudPlatforms: comprehensiveData.skills.cloud,
+            softSkills: comprehensiveData.skills.softSkills,
+            // Certifications & Awards
+            certifications: comprehensiveData.certifications,
+            awards: comprehensiveData.awards,
+            spokenLanguages: comprehensiveData.spokenLanguages.map(l => l.language),
+            // Metrics & Quality
+            totalMetrics: comprehensiveData.metrics.totalMetrics,
+            hasActionVerbs: comprehensiveData.quality.hasActionVerbs,
+            hasQuantifiableResults: comprehensiveData.quality.hasQuantifiableResults,
+            averageBulletQuality: comprehensiveData.quality.averageBulletPointQuality,
+            readabilityScore: comprehensiveData.quality.readabilityScore,
+            keywordDensity: comprehensiveData.quality.keywordDensity,
+            // Achievement analysis
+            achievementCount: comprehensiveData.experience.achievements.length,
+            metricsWithImpact: comprehensiveData.experience.achievements.filter(a => a.hasMetric && a.impact).length,
+          },
           formatIssues: safeAnalysisResult.formatIssues,
           metricSuggestions: safeAnalysisResult.metricSuggestions,
           status: "completed",

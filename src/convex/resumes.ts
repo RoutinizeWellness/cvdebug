@@ -329,6 +329,9 @@ export const updateResumeMetadata = internalMutation({
     phone: v.optional(v.string()),
     linkedin: v.optional(v.string()),
     github: v.optional(v.string()),
+    website: v.optional(v.string()),
+    location: v.optional(v.string()),
+    extractedData: v.optional(v.any()),
   },
   handler: async (ctx, args) => {
     const updates: any = {};
@@ -347,6 +350,9 @@ export const updateResumeMetadata = internalMutation({
     if (args.phone) updates.phone = args.phone;
     if (args.linkedin) updates.linkedin = args.linkedin;
     if (args.github) updates.github = args.github;
+    if (args.website) updates.website = args.website;
+    if (args.location) updates.location = args.location;
+    if (args.extractedData) updates.extractedData = args.extractedData;
 
     // NEW: Track score history for integrity versioning
     if (args.score !== undefined) {

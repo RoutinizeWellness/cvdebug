@@ -272,6 +272,41 @@ const schema = defineSchema(
     phone: v.optional(v.string()),
     linkedin: v.optional(v.string()),
     github: v.optional(v.string()),
+    website: v.optional(v.string()),
+    location: v.optional(v.string()),
+    // ML-extracted comprehensive data
+    extractedData: v.optional(v.object({
+      // Education
+      highestDegree: v.optional(v.string()),
+      totalYearsEducation: v.optional(v.number()),
+      // Experience
+      totalYearsExperience: v.optional(v.number()),
+      companies: v.optional(v.array(v.string())),
+      jobTitles: v.optional(v.array(v.string())),
+      currentRole: v.optional(v.string()),
+      seniorityLevel: v.optional(v.string()),
+      // Skills
+      technicalSkills: v.optional(v.array(v.string())),
+      tools: v.optional(v.array(v.string())),
+      frameworks: v.optional(v.array(v.string())),
+      databases: v.optional(v.array(v.string())),
+      cloudPlatforms: v.optional(v.array(v.string())),
+      softSkills: v.optional(v.array(v.string())),
+      // Certifications & Awards
+      certifications: v.optional(v.array(v.string())),
+      awards: v.optional(v.array(v.string())),
+      spokenLanguages: v.optional(v.array(v.string())),
+      // Metrics & Quality
+      totalMetrics: v.optional(v.number()),
+      hasActionVerbs: v.optional(v.boolean()),
+      hasQuantifiableResults: v.optional(v.boolean()),
+      averageBulletQuality: v.optional(v.number()),
+      readabilityScore: v.optional(v.number()),
+      keywordDensity: v.optional(v.number()),
+      // Achievement analysis
+      achievementCount: v.optional(v.number()),
+      metricsWithImpact: v.optional(v.number()),
+    })),
     // NEW: Manual resume builder fields
     personalInfo: v.optional(v.object({
       fullName: v.string(),
