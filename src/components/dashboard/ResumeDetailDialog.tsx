@@ -818,18 +818,12 @@ export function ResumeDetailDialog({
                     {/* Robot View Content */}
                     <div className="p-6 space-y-6">
                       {/* Info Banner */}
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                        <div className="flex items-start gap-3">
-                          <div className="text-2xl">👁️</div>
-                          <div>
-                            <h3 className="text-green-700 font-bold text-lg mb-1">This is What ATS Robots Actually See</h3>
-                            <p className="text-green-700 text-sm">
-                              If your text is missing, scrambled, or out of order below, the ATS cannot read your resume and you'll be auto-rejected.
-                            </p>
-                            <p className="text-green-700 text-sm mt-2 font-semibold">
-                              ✨ When you apply bullet improvements or AI rewrites, your changes appear here in real-time.
-                            </p>
-                          </div>
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                        <div className="flex items-center gap-3">
+                          <div className="text-xl">👁️</div>
+                          <p className="text-green-700 text-sm font-medium">
+                            This is what ATS robots see. Changes appear here in real-time.
+                          </p>
                         </div>
                       </div>
 

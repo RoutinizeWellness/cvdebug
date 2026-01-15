@@ -699,9 +699,9 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
         newText: suggestion.improved,
       });
 
-      toast.success("Bullet point updated!", {
-        description: `Applied ${suggestion.type} metric improvement. View changes in the "Robot View" tab above. ✨`,
-        duration: 5000
+      toast.success("Bullet updated!", {
+        description: `View in Robot View tab`,
+        duration: 3000
       });
 
       // Move to next bullet if available
