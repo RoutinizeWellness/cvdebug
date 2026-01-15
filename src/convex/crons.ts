@@ -31,4 +31,12 @@ crons.interval(
   {}
 );
 
+// Retargeting Email Campaign: Send re-engagement emails to inactive users (7+ days) every day
+crons.interval(
+  "send_retargeting_emails",
+  { hours: 24 },
+  internalAny.retargetingEmail.sendRetargetingEmails,
+  {}
+);
+
 export default crons;

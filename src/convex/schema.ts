@@ -34,6 +34,8 @@ const schema = defineSchema(
     conversionFollowUpSent: v.optional(v.boolean()),
     // Email tracking flags - Re-engagement
     winBackEmail30dSent: v.optional(v.boolean()),
+    retargetingEmail7dSent: v.optional(v.boolean()),
+    lastRetargetingEmailSent: v.optional(v.number()),
     // New anti-cheat email flags
     invisibilityAlertSent: v.optional(v.boolean()),
     fomoGapEmailSent: v.optional(v.boolean()),

@@ -64,6 +64,8 @@ import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
 import type * as receipts from "../receipts.js";
 import type * as resumes from "../resumes.js";
+import type * as retargetingEmail from "../retargetingEmail.js";
+import type * as retargetingHelpers from "../retargetingHelpers.js";
 import type * as seedBlog from "../seedBlog.js";
 import type * as sprintExpiration from "../sprintExpiration.js";
 import type * as testEmail from "../testEmail.js";
@@ -136,6 +138,8 @@ declare const fullApi: ApiFromModules<{
   projects: typeof projects;
   receipts: typeof receipts;
   resumes: typeof resumes;
+  retargetingEmail: typeof retargetingEmail;
+  retargetingHelpers: typeof retargetingHelpers;
   seedBlog: typeof seedBlog;
   sprintExpiration: typeof sprintExpiration;
   testEmail: typeof testEmail;
