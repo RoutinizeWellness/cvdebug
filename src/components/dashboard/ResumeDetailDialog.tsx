@@ -28,7 +28,7 @@ import {
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAction, useQuery } from "convex/react";
+import { useAction, useQuery, useMutation } from "convex/react";
 import { PricingDialog } from "@/components/PricingDialog";
 import { ScoreHistory } from "./ScoreHistory";
 import { ResumeStats } from "./ResumeStats";
@@ -89,7 +89,8 @@ export function ResumeDetailDialog({
 
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useAction(apiAny.ai.analyzeResume);
-  
+  const applyRewriteToResume = useMutation(apiAny.resumes.applyRewriteToResume);
+
   const user = useQuery(apiAny.users.currentUser);
   const isFree = user?.subscriptionTier === "free";
 
@@ -160,19 +161,38 @@ export function ResumeDetailDialog({
 
     setIsGenerating(true);
     toast.info("AI is rewriting your resume... This may take a few seconds.");
-    
+
     try {
       await rewriteResume({
         id: displayResume._id,
         ocrText: displayResume.ocrText,
         jobDescription: displayResume.jobDescription,
       });
-      toast.success("Optimization complete! Check the 'Rewritten' tab.");
+      toast.success("Optimization complete! Click 'Apply Rewrite' to update your CV.");
     } catch (error) {
       console.error(error);
       toast.error("Failed to optimize resume. Please try again.");
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleApplyRewrite = async () => {
+    if (!displayResume?.rewrittenText) {
+      toast.error("No rewrite available. Click 'AI Rewrite' first.");
+      return;
+    }
+
+    try {
+      await applyRewriteToResume({ id: displayResume._id });
+      toast.success("✅ Rewrite applied to your CV!", {
+        description: "Your original CV text has been updated with the AI-optimized version."
+      });
+    } catch (error: any) {
+      console.error(error);
+      toast.error("Failed to apply rewrite", {
+        description: error.message || "Please try again."
+      });
     }
   };
 
@@ -562,6 +582,18 @@ export function ResumeDetailDialog({
               <Wand2 className="h-4 w-4" />
               {isGenerating ? "Optimizing..." : "AI Rewrite"}
             </Button>
+            {displayResume?.rewrittenText && (
+              <Button
+                variant="default"
+                size="sm"
+                className="hidden sm:flex gap-2 font-bold bg-[#22C55E] hover:bg-[#16A34A] text-white"
+                onClick={handleApplyRewrite}
+                disabled={!displayResume}
+              >
+                <CheckCircle2 className="h-4 w-4" />
+                Apply Rewrite
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"

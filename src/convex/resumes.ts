@@ -771,6 +771,36 @@ export const updateResumeText = mutation({
   },
 });
 
+export const applyRewriteToResume = mutation({
+  args: {
+    id: v.id("resumes"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new ConvexError("UNAUTHORIZED");
+    }
+
+    if (!resume.rewrittenText) {
+      throw new ConvexError("NO_REWRITE_AVAILABLE");
+    }
+
+    // Apply the rewritten text to the original CV
+    await ctx.db.patch(args.id, {
+      ocrText: resume.rewrittenText,
+      // Keep rewrittenText so user can see history
+    });
+
+    console.log("[applyRewriteToResume] Rewrite applied to resume:", args.id);
+    return { success: true };
+  },
+});
+
 export const updateResumeManually = mutation({
   args: {
     id: v.id("resumes"),
