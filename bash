@@ -1,1 +1,1 @@
-npx convex run migrations:syncClerkUsers
+grep -r "ClerkProvider" src
