@@ -826,6 +826,9 @@ export function ResumeDetailDialog({
                             <p className="text-green-700 text-sm">
                               If your text is missing, scrambled, or out of order below, the ATS cannot read your resume and you'll be auto-rejected.
                             </p>
+                            <p className="text-green-700 text-sm mt-2 font-semibold">
+                              ✨ When you apply bullet improvements or AI rewrites, your changes appear here in real-time.
+                            </p>
                           </div>
                         </div>
                       </div>

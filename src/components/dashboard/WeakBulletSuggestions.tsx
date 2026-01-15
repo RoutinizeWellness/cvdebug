@@ -700,7 +700,8 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
       });
 
       toast.success("Bullet point updated!", {
-        description: `Applied ${suggestion.type} metric improvement`
+        description: `Applied ${suggestion.type} metric improvement. View changes in the "Robot View" tab above. ✨`,
+        duration: 5000
       });
 
       // Move to next bullet if available
