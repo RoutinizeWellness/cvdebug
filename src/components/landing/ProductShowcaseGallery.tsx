@@ -13,7 +13,7 @@ export function ProductShowcaseGallery() {
       description: "See exactly what ATS robots see - no guessing",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
       icon: Sparkles,
-      color: "#14B8A6",
+      color: "#8B5CF6",
       stats: "95% accuracy rate"
     },
     {

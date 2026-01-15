@@ -38,7 +38,7 @@ export function NewSocialProofSection() {
     {
       name: "Meta",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
-      color: "from-blue-600 to-cyan-500",
+      color: "from-purple-600 to-blue-500",
     },
     {
       name: "Slack",
@@ -48,7 +48,7 @@ export function NewSocialProofSection() {
     {
       name: "Microsoft",
       logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-      color: "from-cyan-500 to-blue-600",
+      color: "from-blue-500 to-purple-600",
     },
   ];
 

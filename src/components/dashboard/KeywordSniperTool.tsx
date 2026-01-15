@@ -353,7 +353,7 @@ export function KeywordSniperTool({
             {/* Medium Impact */}
             {mediumImpactKeywords.length > 0 && (
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-teal-400 mb-3 flex items-center gap-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-sm">trending_up</span>
                   Medium Impact
                 </h4>
@@ -364,10 +364,10 @@ export function KeywordSniperTool({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: (highImpactKeywords.length + i) * 0.1 }}
-                      className="bg-[#F8FAFC]/40 border border-white/5 rounded-lg p-3 hover:border-teal-400/50 transition-colors group"
+                      className="bg-[#F8FAFC]/40 border border-white/5 rounded-lg p-3 hover:border-purple-400/50 transition-colors group"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="font-mono text-sm font-medium text-[#0F172A] group-hover:text-teal-400 transition-colors">
+                        <span className="font-mono text-sm font-medium text-[#0F172A] group-hover:text-purple-400 transition-colors">
                           {kw.keyword}
                         </span>
                       </div>

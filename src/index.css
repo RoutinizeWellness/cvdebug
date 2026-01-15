@@ -34,60 +34,60 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* CHANGE VALUES FOR THEME - CVDebug Unique Identity */
+/* CHANGE VALUES FOR THEME - CVDebug Unified Purple-Blue System */
 :root {
-  --background: 200 20% 6%; /* Deep Navy Blue */
-  --foreground: 180 15% 96%;
-  --card: 200 18% 11%; /* Dark Blue Card */
-  --card-foreground: 180 15% 96%;
-  --popover: 200 18% 11%;
-  --popover-foreground: 180 15% 96%;
-  --primary: 174 72% 48%; /* Teal Primary - CVDebug Brand */
-  --primary-foreground: 180 100% 98%;
-  --secondary: 187 85% 53%; /* Bright Cyan Accent */
-  --secondary-foreground: 200 20% 6%;
-  --muted: 200 15% 18%;
-  --muted-foreground: 180 10% 65%;
-  --accent: 174 72% 48%;
-  --accent-foreground: 180 100% 98%;
+  --background: 0 0% 100%; /* White background for light theme */
+  --foreground: 222 47% 11%; /* Dark slate for text */
+  --card: 0 0% 100%; /* White cards */
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 262 83% 58%; /* Purple 600 (#8B5CF6) - CVDebug Brand */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 91% 60%; /* Blue 600 (#3B82F6) */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 40% 96%; /* slate-50 */
+  --muted-foreground: 215 16% 47%; /* slate-600 */
+  --accent: 262 83% 58%; /* Purple accent */
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
-  --destructive-foreground: 180 100% 98%;
-  --border: 200 15% 22%;
-  --input: 200 15% 22%;
-  --ring: 174 72% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%; /* slate-200 */
+  --input: 214 32% 91%;
+  --ring: 262 83% 58%; /* Purple ring */
   --radius: 0.75rem;
-  --chart-1: 174 72% 48%;
-  --chart-2: 187 85% 53%;
-  --chart-3: 166 76% 37%;
-  --chart-4: 45 93% 58%;
-  --chart-5: 24 95% 53%;
+  --chart-1: 262 83% 58%; /* Purple */
+  --chart-2: 217 91% 60%; /* Blue */
+  --chart-3: 271 91% 65%; /* Fuchsia */
+  --chart-4: 280 79% 70%; /* Light purple */
+  --chart-5: 199 89% 48%; /* Cyan accent */
 }
 
 .dark {
-  --background: 200 20% 6%; /* Deep Navy Blue */
-  --foreground: 180 15% 96%;
-  --card: 200 18% 11%; /* Dark Blue Card */
-  --card-foreground: 180 15% 96%;
-  --popover: 200 18% 11%;
-  --popover-foreground: 180 15% 96%;
-  --primary: 174 72% 48%; /* Teal Primary - CVDebug Brand */
-  --primary-foreground: 180 100% 98%;
-  --secondary: 187 85% 53%; /* Bright Cyan Accent */
-  --secondary-foreground: 200 20% 6%;
-  --muted: 200 15% 18%;
-  --muted-foreground: 180 10% 65%;
-  --accent: 174 72% 48%;
-  --accent-foreground: 180 100% 98%;
+  --background: 222 47% 11%; /* Deep slate background */
+  --foreground: 210 40% 98%; /* Nearly white text */
+  --card: 217 33% 17%; /* Dark slate card */
+  --card-foreground: 210 40% 98%;
+  --popover: 217 33% 17%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 262 83% 58%; /* Purple 600 (#8B5CF6) - CVDebug Brand */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 91% 60%; /* Blue 600 (#3B82F6) */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%; /* slate-400 */
+  --accent: 262 83% 58%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
-  --destructive-foreground: 180 100% 98%;
-  --border: 200 15% 22%;
-  --input: 200 15% 22%;
-  --ring: 174 72% 48%;
-  --chart-1: 174 72% 48%;
-  --chart-2: 187 85% 53%;
-  --chart-3: 166 76% 37%;
-  --chart-4: 45 93% 58%;
-  --chart-5: 24 95% 53%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 217 33% 24%;
+  --input: 217 33% 24%;
+  --ring: 262 83% 58%;
+  --chart-1: 262 83% 58%; /* Purple */
+  --chart-2: 217 91% 60%; /* Blue */
+  --chart-3: 271 91% 65%; /* Fuchsia */
+  --chart-4: 280 79% 70%; /* Light purple */
+  --chart-5: 199 89% 48%; /* Cyan accent */
 }
 
 @layer base {
@@ -103,79 +103,79 @@
   }
 }
 
-/* Custom Scrollbar for Console and Lists - CVDebug Theme */
+/* Custom Scrollbar for Console and Lists - Unified Purple Theme */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(200, 20%, 8%);
+  background: hsl(222, 47%, 11%);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(174, 72%, 48%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(174, 72%, 58%);
+  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%);
 }
 
 .glass-panel {
-  background: rgba(14, 26, 36, 0.75);
+  background: rgba(139, 92, 246, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(20, 184, 166, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.15);
 }
 
 .glass-card {
-  background: rgba(14, 26, 36, 0.5);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(20, 184, 166, 0.15);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(20, 184, 166, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(139, 92, 246, 0.1);
 }
 
 .glass-paywall {
-  background: rgba(10, 18, 26, 0.9);
+  background: rgba(17, 24, 39, 0.95);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(20, 184, 166, 0.35);
+  border: 1px solid rgba(139, 92, 246, 0.35);
 }
 
 .glass-notification {
-  background: rgba(14, 26, 36, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(20, 184, 166, 0.25);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(20, 184, 166, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(139, 92, 246, 0.1);
 }
 
 .glass-header {
-  background: rgba(10, 18, 26, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(20, 184, 166, 0.2);
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 .glow-button {
-  box-shadow: 0 0 20px rgba(20, 184, 166, 0.35);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
   transition: all 0.3s ease;
 }
 
 .glow-button:hover {
-  box-shadow: 0 0 30px rgba(20, 184, 166, 0.55), 0 0 40px rgba(94, 234, 212, 0.25);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.55), 0 0 40px rgba(59, 130, 246, 0.25);
   transform: translateY(-1px);
 }
 
 .neon-glow {
-  box-shadow: 0 0 15px rgba(20, 184, 166, 0.2);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
 }
 
-/* Updated hero glow with CVDebug theme */
+/* Updated hero glow with unified purple-blue theme */
 .bg-hero-glow {
-  background: conic-gradient(from 180deg at 50% 50%, hsl(200, 20%, 8%) 0deg, hsl(200, 20%, 6%) 120deg, hsl(174, 30%, 10%) 240deg, hsl(200, 20%, 8%) 360deg);
+  background: conic-gradient(from 180deg at 50% 50%, hsl(262, 83%, 58%) 0deg, hsl(217, 91%, 60%) 120deg, hsl(271, 91%, 65%) 240deg, hsl(262, 83%, 58%) 360deg);
 }
 
 /* Material Symbols font styling */
@@ -195,50 +195,50 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* AI Highlight styles for Writing Forge - CVDebug Theme */
+/* AI Highlight styles for Writing Forge - Unified Purple Theme */
 .ai-highlight {
   text-decoration: underline;
-  text-decoration-color: hsl(174, 72%, 48%);
+  text-decoration-color: hsl(262, 83%, 58%);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
-  text-shadow: 0 0 8px rgba(20, 184, 166, 0.45);
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
   transition: all 0.2s ease;
 }
 
 .ai-highlight:hover {
-  background-color: rgba(20, 184, 166, 0.12);
+  background-color: rgba(139, 92, 246, 0.12);
   border-radius: 4px;
   cursor: pointer;
 }
 
-/* Terminal scrollbar for ATS Report - CVDebug Theme */
+/* Terminal scrollbar for ATS Report - Unified Purple Theme */
 .terminal-scroll::-webkit-scrollbar {
   width: 8px;
 }
 
 .terminal-scroll::-webkit-scrollbar-track {
-  background: hsl(200, 20%, 8%);
+  background: hsl(222, 47%, 11%);
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb {
-  background: hsl(174, 72%, 48%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
   border-radius: 4px;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
-  background: hsl(174, 72%, 58%);
+  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%);
 }
 
-/* Promo Modal Styles - CVDebug Theme */
+/* Promo Modal Styles - Unified Purple Theme */
 .glow-text {
-  text-shadow: 0 0 12px rgba(20, 184, 166, 0.6), 0 0 24px rgba(94, 234, 212, 0.35);
+  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6), 0 0 24px rgba(59, 130, 246, 0.35);
 }
 
 .bg-fireworks {
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(94, 234, 212, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.12) 0%, transparent 60%);
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12) 0%, transparent 60%);
 }
 
 /* Premium Gradients - Vercel/Stripe Style */

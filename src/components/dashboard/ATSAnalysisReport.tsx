@@ -571,13 +571,13 @@ export function ATSAnalysisReport({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-cyan-200 hover:border-cyan-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300"
+                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="p-3 rounded-xl bg-cyan-100 text-cyan-600">
+                  <div className="p-3 rounded-xl bg-blue-100 text-blue-600">
                     <span className="material-symbols-outlined text-2xl">visibility</span>
                   </div>
-                  <span className="px-3 py-1.5 text-xs font-bold text-cyan-700 bg-cyan-100 rounded-full">
+                  <span className="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-100 rounded-full">
                     Excellent
                   </span>
                 </div>
@@ -597,13 +597,13 @@ export function ATSAnalysisReport({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-teal-200 hover:border-teal-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
+                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-purple-200 hover:border-purple-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="p-3 rounded-xl bg-teal-100 text-teal-600">
+                  <div className="p-3 rounded-xl bg-purple-100 text-purple-600">
                     <span className="material-symbols-outlined text-2xl">bar_chart_4_bars</span>
                   </div>
-                  <span className="px-3 py-1.5 text-xs font-bold text-teal-700 bg-teal-100 rounded-full">
+                  <span className="px-3 py-1.5 text-xs font-bold text-purple-700 bg-purple-100 rounded-full">
                     High Saturation
                   </span>
                 </div>
@@ -618,7 +618,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.tech}%` }}
                           transition={{ duration: 0.8, delay: 0.8 }}
-                          className="w-full bg-gradient-to-t from-teal-600 to-teal-400 group-hover:from-cyan-600 group-hover:to-cyan-400 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-purple-600 to-purple-400 group-hover:from-blue-600 group-hover:to-blue-400 transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
@@ -633,7 +633,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.soft}%` }}
                           transition={{ duration: 0.8, delay: 0.9 }}
-                          className="w-full bg-gradient-to-t from-teal-600/70 to-teal-400/70 group-hover:from-cyan-600/80 group-hover:to-cyan-400/80 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-purple-600/70 to-purple-400/70 group-hover:from-blue-600/80 group-hover:to-blue-400/80 transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
@@ -648,7 +648,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.tools}%` }}
                           transition={{ duration: 0.8, delay: 1.0 }}
-                          className="w-full bg-gradient-to-t from-teal-600/85 to-teal-400/85 group-hover:from-cyan-600/90 group-hover:to-cyan-400/90 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-purple-600/85 to-purple-400/85 group-hover:from-blue-600/90 group-hover:to-blue-400/90 transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
@@ -886,16 +886,16 @@ export function ATSAnalysisReport({
                     <span className="text-[#475569]">cv-debug --analyze --target=resume.pdf</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-cyan-400">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
+                    <span className="text-blue-400">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-cyan-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
+                    <span className="text-blue-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-cyan-400">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
+                    <span className="text-blue-400">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-cyan-400">→</span> Role classification: Technical | Format: Machine-readable
+                    <span className="text-blue-400">→</span> Role classification: Technical | Format: Machine-readable
                   </div>
                   <div className="text-emerald-400 font-bold pl-4 pt-2">
                     <span className="text-[#22C55E]">✓</span> [SUCCESS] Visibility Score: {scorePercentage}% | Grade: {getVisibilityGrade(scorePercentage)}
