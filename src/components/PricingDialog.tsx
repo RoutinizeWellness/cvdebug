@@ -145,7 +145,16 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-screen h-screen max-w-none max-h-none p-0 overflow-y-auto gap-0 border-none shadow-none bg-[#F8FAFC] m-0 rounded-none">
+      <DialogContent className="!fixed !inset-0 !top-0 !left-0 !translate-x-0 !translate-y-0 w-screen h-screen !max-w-none !max-h-none p-0 overflow-y-auto gap-0 !border-none !shadow-none bg-[#F8FAFC] m-0 !rounded-none" showCloseButton={false}>
+        {/* Custom Close Button */}
+        <button
+          onClick={() => onOpenChange(false)}
+          className="fixed top-6 right-6 z-50 p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-sm"
+          aria-label="Close"
+        >
+          <span className="material-symbols-outlined text-[20px]">close</span>
+        </button>
+
         <div className="p-12 lg:p-16 pb-12 text-center">
           <DialogHeader>
             <DialogTitle className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-slate-900">Simple, Transparent Pricing</DialogTitle>
