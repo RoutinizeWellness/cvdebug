@@ -7,7 +7,7 @@ import { getRegionalPrice, getCurrentRegion } from "@/lib/locale";
 export function PricingSection() {
   const navigate = useNavigate();
   const [prices, setPrices] = useState({
-    single: "€4.99",
+    single: "€9.99",
     premium: "€19.99",
     discount: undefined as number | undefined,
     region: "Europe",
@@ -15,7 +15,7 @@ export function PricingSection() {
 
   useEffect(() => {
     const region = getCurrentRegion();
-    const singlePrice = getRegionalPrice(4.99);
+    const singlePrice = getRegionalPrice(9.99);
     const premiumPrice = getRegionalPrice(19.99);
 
     setPrices({

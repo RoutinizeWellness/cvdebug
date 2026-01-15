@@ -9,7 +9,7 @@ export interface CurrencyInfo {
 
 // Base prices in USD
 const BASE_PRICES = {
-  single_scan: 4.99,
+  single_scan: 9.99,
   interview_sprint: 19.99,
 };
 

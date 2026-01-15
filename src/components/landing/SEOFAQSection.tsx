@@ -21,7 +21,7 @@ export function SEOFAQSection() {
     },
     {
       question: "Is CVDebug free to use?",
-      answer: "Yes! CVDebug offers a free ATS scan that shows your ATS score and basic optimization tips. No credit card or signup required. Simply upload your resume and get instant results in 10 seconds. Premium plans start at €4.99 for detailed analysis with keyword gap identification, formatting fixes, and unlimited scans. Over 10,000 job seekers have used CVDebug to optimize their resumes and land more interviews."
+      answer: "Yes! CVDebug offers a free ATS scan that shows your ATS score and basic optimization tips. No credit card or signup required. Simply upload your resume and get instant results in 10 seconds. Premium plans start at €9.99 for detailed analysis with keyword gap identification, formatting fixes, and unlimited scans. Over 10,000 job seekers have used CVDebug to optimize their resumes and land more interviews."
     },
     {
       question: "What is a good ATS score?",

@@ -86,7 +86,7 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
             </div>
 
             <div className="bg-gradient-to-r from-teal-50 to-pink-50 border border-teal-200 rounded-xl p-4">
-              <p className="text-2xl font-black text-[#0F172A] mb-1">€4.99</p>
+              <p className="text-2xl font-black text-[#0F172A] mb-1">€9.99</p>
               <p className="text-xs text-[#475569]">One-time payment • No subscription • Instant access</p>
             </div>
             </div>
@@ -98,7 +98,7 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
                 className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-teal-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-cyan-500/25 rounded-lg text-[#0F172A] flex items-center justify-center gap-2 transition-all"
               >
                 <Sparkles className="h-5 w-5" />
-                Unlock Full Report - €4.99
+                Unlock Full Report - €9.99
               </button>
               <button
                 onClick={() => onOpenChange(false)}

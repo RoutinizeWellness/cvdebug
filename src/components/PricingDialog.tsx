@@ -141,7 +141,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 }}
                 disabled={!!isLoading}
               >
-                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : "No thanks, just Single Scan (€4.99)"}
+                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : "No thanks, just Single Scan (€9.99)"}
               </Button>
             </div>
           </div>
@@ -154,7 +154,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     const planDetails = {
       single_scan: {
         name: "Single Scan",
-        price: "€4.99",
+        price: "€9.99",
         originalPrice: "€9.99",
         period: "one-time",
         features: ["Full ATS Analysis Score", "Missing Keywords Report", "Formatting & Structure Check", "Detailed Analysis Report"],
@@ -355,7 +355,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </h3>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-black tracking-tight text-[#0F172A]">€4.99</span>
+                  <span className="text-3xl sm:text-4xl font-black tracking-tight text-[#0F172A]">€9.99</span>
                 </div>
                 <span className="text-xs text-[#64748B] mt-1">One-time payment</span>
               </div>

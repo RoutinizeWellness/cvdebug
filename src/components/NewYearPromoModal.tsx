@@ -139,7 +139,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                     </div>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="text-[#0F172A] text-3xl font-bold mb-1">$4.99</h3>
+                        <h3 className="text-[#0F172A] text-3xl font-bold mb-1">$9.99</h3>
                         <p className="text-[#475569] text-sm font-medium leading-relaxed">
                           Includes 1 Full Resume Audit + Keyword Sniper tool access (Single Use).
                         </p>
@@ -179,7 +179,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               className="mt-6 text-center px-4"
             >
               <p className="text-[#64748B] text-sm font-light leading-relaxed">
-                $4.99 is an impulse fix—your robots see it instantly and so will recruiters.
+                $9.99 is an impulse fix—your robots see it instantly and so will recruiters.
               </p>
             </motion.div>
           </div>

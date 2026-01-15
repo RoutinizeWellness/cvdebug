@@ -62,7 +62,7 @@ export function FreeTierView({
               You're missing <strong className="text-[#F59E0B] font-semibold">{missingCount} critical keywords</strong> they have.
             </p>
             <p className="text-[#64748B] text-xs italic">
-              💡 I can show you the exact {missingCount} keywords you need. But I need $4.99 to unlock the list.
+              💡 I can show you the exact {missingCount} keywords you need. But I need $9.99 to unlock the list.
             </p>
           </div>
         </div>
@@ -102,7 +102,7 @@ export function FreeTierView({
               You're missing <span className="text-[#F59E0B]">{missingCount} critical keywords</span> they have
             </p>
             <p className="text-[#64748B] text-xs">
-              [Unlock full list for $4.99]
+              [Unlock full list for $9.99]
             </p>
           </div>
         </div>
@@ -404,7 +404,7 @@ export function FreeTierView({
               className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-[#3B82F6]/40 bg-gradient-to-r from-[#3B82F6] via-[#F59E0B] to-[#F59E0B] hover:from-[#3B82F6]/90 hover:via-[#F59E0B]/90 hover:to-[#F59E0B]/90 text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Lock className="mr-3 h-6 w-6 text-white" />
-              Get Certified - Only €4.99
+              Get Certified - Only €9.99
             </Button>
 
             {/* Manual Review Option - $49 */}

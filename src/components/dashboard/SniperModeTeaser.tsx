@@ -119,7 +119,7 @@ export function SniperModeTeaser({
         {/* Value Proposition */}
         <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-lg p-4 mb-5 border border-amber-500/20">
           <p className="text-amber-200 text-sm font-medium text-center">
-            🎯 Unlock the other {lockedKeywordsCount} keywords with <span className="text-[#0F172A] font-bold">Sniper Mode</span> for only <span className="text-amber-400 font-black text-lg">$4.99</span>
+            🎯 Unlock the other {lockedKeywordsCount} keywords with <span className="text-[#0F172A] font-bold">Sniper Mode</span> for only <span className="text-amber-400 font-black text-lg">$9.99</span>
           </p>
         </div>
 

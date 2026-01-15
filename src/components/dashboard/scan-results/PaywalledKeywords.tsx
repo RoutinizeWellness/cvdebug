@@ -26,7 +26,7 @@ export function PaywalledKeywords({
     "System Design",
     "Microfrontends",
   ],
-  price = "$4.99",
+  price = "$9.99",
   onUnlock,
   onBack,
 }: PaywalledKeywordsProps) {

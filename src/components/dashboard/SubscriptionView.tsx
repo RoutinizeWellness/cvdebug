@@ -200,7 +200,7 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="flex items-baseline gap-2 mb-6">
-                    <span className="text-4xl font-black text-[#0F172A]">€4.99</span>
+                    <span className="text-4xl font-black text-[#0F172A]">€9.99</span>
                     <span className="text-[#64748B] text-base">/once</span>
                   </div>
 

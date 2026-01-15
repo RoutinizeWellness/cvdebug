@@ -63,7 +63,7 @@ export default function TermsConditions() {
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">4. Subscription Plans and Payments</h2>
               <div className="space-y-4 text-[#475569] leading-relaxed">
                 <p><strong className="text-[#0F172A]">Free Preview:</strong> Limited access to basic scanning features at no cost.</p>
-                <p><strong className="text-[#0F172A]">Single Scan (€4.99):</strong> One-time payment for a single comprehensive resume analysis.</p>
+                <p><strong className="text-[#0F172A]">Single Scan (€9.99):</strong> One-time payment for a single comprehensive resume analysis.</p>
                 <p><strong className="text-[#0F172A]">Interview Sprint (€19.99):</strong> 30-day access to unlimited scans and premium features.</p>
                 <p className="mt-4"><strong className="text-[#0F172A]">Billing:</strong></p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
