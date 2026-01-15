@@ -5,6 +5,7 @@ import { v } from "convex/values";
 import { buildResumeAnalysisPrompt } from "./prompts";
 import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateFallbackAnalysis } from "./fallbackAnalysis";
+import { generateIntelligentFallback } from "./intelligentFallback";
 
 // Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -88,11 +89,17 @@ export const analyzeResume = internalAction({
       let verificationScore = null;
       let modelUsed = "fallback";
 
+      // Check if user is premium
+      const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
+      const isPremium = user && user.subscriptionTier === "interview_sprint" &&
+        (!user.sprintExpiresAt || user.sprintExpiresAt > Date.now());
+
       // Always use fallback if no API key OR if API call fails/times out
       if (!apiKey) {
-        console.log("[AI Analysis] No OPENROUTER_API_KEY set, using ML-based analysis");
+        console.log("[AI Analysis] No OPENROUTER_API_KEY set, using intelligent ML-based analysis");
+        console.log(`[AI Analysis] User premium status: ${isPremium}`);
         try {
-          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
           usedFallback = true;
 
           // Log fallback usage (non-blocking)
@@ -243,7 +250,7 @@ export const analyzeResume = internalAction({
             });
             
             try {
-              analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+              analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
               usedFallback = true;
               
               // Log fallback success
@@ -274,9 +281,9 @@ export const analyzeResume = internalAction({
 
       // Ensure we have valid analysis result
       if (!analysisResult || typeof analysisResult.score !== 'number') {
-        console.error("[AI Analysis] Invalid analysis result, generating fallback");
+        console.error("[AI Analysis] Invalid analysis result, generating intelligent fallback");
         try {
-          analysisResult = generateFallbackAnalysis(cleanText, args.jobDescription, undefined);
+          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
         } catch (err) {
           console.error("[AI Analysis] Final fallback attempt failed:", err);
           throw err;
