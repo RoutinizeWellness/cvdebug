@@ -84,13 +84,18 @@ export const analyzeResume = internalAction({
       const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, { id: args.id });
       userId = resume?.userId;
 
+      if (!resume || !resume.userId) {
+        console.error(`[AI Analysis] Resume ${args.id} not found or missing userId`);
+        throw new Error("Resume not found or invalid");
+      }
+
       let analysisResult;
       let usedFallback = false;
       let verificationScore = null;
       let modelUsed = "fallback";
 
       // Check if user is premium
-      const user = await ctx.runQuery(internalAny.users.getUserByToken, { tokenIdentifier: resume.userId });
+      const user = await ctx.runQuery(internalAny.users.getUserByTokenIdentifier, { tokenIdentifier: resume.userId });
       const isPremium = user && user.subscriptionTier === "interview_sprint" &&
         (!user.sprintExpiresAt || user.sprintExpiresAt > Date.now());
 
@@ -101,11 +106,21 @@ export const analyzeResume = internalAction({
 
       try {
         // PRIMARY: ML-based analysis (better than AI)
-        analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
+        console.log(`[ML Engine] Starting analysis - isPremium: ${isPremium}, textLength: ${cleanText.length}`);
+
+        try {
+          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
+        } catch (mlError: any) {
+          console.error("[ML Engine] CRITICAL: generateIntelligentFallback threw error:", mlError?.message || "Unknown");
+          console.error("[ML Engine] Stack:", mlError?.stack || "No stack");
+          throw mlError; // Re-throw to be caught by outer catch
+        }
+
         usedFallback = true;
         modelUsed = "ml-engine";
 
         console.log(`[ML Engine] Analysis complete - Score: ${analysisResult.score}/100`);
+        console.log(`[ML Engine] Score breakdown - Keywords: ${analysisResult.scoreBreakdown.keywords}, Format: ${analysisResult.scoreBreakdown.format}, Completeness: ${analysisResult.scoreBreakdown.completeness}`);
 
         // Log ML engine success
         await safeLogSuccess(ctx, {
@@ -284,7 +299,10 @@ export const analyzeResume = internalAction({
         console.log(`[AI Analysis] ✅ Successfully completed for resume ${args.id} with score ${safeAnalysisResult.score} (ML-based: ${usedFallback}${verificationScore ? `, Verified: ${verificationScore}` : ''})`);
       } catch (updateError: any) {
         console.error("[AI Analysis] ❌ Failed to update resume metadata:", updateError);
-        console.error("[AI Analysis] Error details:", JSON.stringify(updateError, null, 2));
+        console.error("[AI Analysis] Error message:", updateError?.message || "Unknown error");
+        console.error("[AI Analysis] Error stack:", updateError?.stack || "No stack trace");
+        console.error("[AI Analysis] Score that failed:", safeAnalysisResult.score);
+        console.error("[AI Analysis] Analysis data size:", JSON.stringify(safeAnalysisResult).length, "bytes");
         
         try {
           console.log(`[AI Analysis] Attempting minimal fallback update for resume ${args.id}`);
