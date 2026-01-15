@@ -5,7 +5,6 @@ import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSe
 import { ProductShowcaseGallery } from "@/components/landing/ProductShowcaseGallery";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { SEOFAQSection } from "@/components/landing/SEOFAQSection";
-import { NewFeaturesGrid } from "@/components/landing/NewFeaturesGrid";
 import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
@@ -65,7 +64,6 @@ export default function Landing() {
         <ComparisonVisualSection />
         <TestimonialsSection />
         <SEOFAQSection />
-        <NewFeaturesGrid />
         <EnterpriseSection />
         <FinalCTASection />
       </main>

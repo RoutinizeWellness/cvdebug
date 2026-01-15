@@ -257,6 +257,15 @@ export const analyzeResume = mutation({
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Not authenticated");
 
+    // Update resume with job description immediately
+    if (args.jobDescription) {
+      await ctx.db.patch(args.id, {
+        jobDescription: args.jobDescription,
+        status: "processing" as const,
+      });
+      console.log(`[Analyze Resume] Updated resume ${args.id} with job description (${args.jobDescription.length} chars)`);
+    }
+
     // Check if user has active Interview Sprint for priority parsing
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     const hasPriorityParsing = hasActiveSprint || user.hasPriorityParsing;

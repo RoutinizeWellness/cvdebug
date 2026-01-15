@@ -1,6 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid type instantiation issues
+const apiAny = api as any;
 
 interface Question {
   id: string;
@@ -58,7 +63,8 @@ export function InterviewBattlePlan({
     { checked: false, title: "Ownership", description: 'Use "I drove" or "I initiated".' }
   ]);
 
-  const questions: Question[] = [
+  // ML-generated questions state
+  const [questions, setQuestions] = useState<Question[]>([
     {
       id: "q1",
       type: "Technical",
@@ -84,7 +90,17 @@ export function InterviewBattlePlan({
       question: "How would you architect a real-time recommendation system for high-volume traffic?",
       color: "amber"
     }
-  ];
+  ]);
+  const [previousQuestions, setPreviousQuestions] = useState<string[]>([]);
+
+  const generateInterviewQuestions = useAction(apiAny.ml.interviewQuestions.generateInterviewQuestions);
+
+  // Generate initial questions on mount if we have resume text
+  useEffect(() => {
+    if (resumeText && resumeText.length > 50) {
+      handleRegenerateQuestions(true); // true = initial load
+    }
+  }, []); // Only run once on mount
 
   const strengths: StrengthItem[] = [
     {
@@ -134,14 +150,58 @@ export function InterviewBattlePlan({
     toast.success(`Signal "${signals[index].title}" ${!signals[index].checked ? 'added' : 'removed'}`);
   };
 
-  const handleRegenerateQuestions = async () => {
-    setIsRegeneratingQuestions(true);
-    toast.loading("Regenerating questions with AI...", { duration: 2000 });
+  const handleRegenerateQuestions = async (isInitial = false) => {
+    if (!resumeText || resumeText.length < 50) {
+      if (!isInitial) {
+        toast.error("Not enough resume text to generate questions");
+      }
+      return;
+    }
 
-    setTimeout(() => {
+    setIsRegeneratingQuestions(true);
+    if (!isInitial) {
+      toast.loading("Regenerating questions with ML algorithms...", { id: "regen-questions" });
+    }
+
+    try {
+      const newQuestions = await generateInterviewQuestions({
+        resumeText,
+        targetRole,
+        companyName,
+        previousQuestions,
+        count: 6,
+      });
+
+      if (newQuestions && newQuestions.length > 0) {
+        // Map ML questions to component format
+        const formattedQuestions: Question[] = newQuestions.map((q: any) => ({
+          id: q.id,
+          type: q.type,
+          question: q.question,
+          relevance: q.relevance,
+          color: q.color,
+        }));
+
+        setQuestions(formattedQuestions);
+
+        // Track these questions as "previous" to avoid repeats next time
+        const newQuestionTexts = formattedQuestions.map((q) => q.question);
+        setPreviousQuestions((prev) => [...prev, ...newQuestionTexts]);
+
+        if (!isInitial) {
+          toast.success("Questions regenerated with ML! Fresh questions based on your resume.", { id: "regen-questions" });
+        }
+      } else {
+        throw new Error("No questions generated");
+      }
+    } catch (error) {
+      console.error("Failed to generate interview questions:", error);
+      if (!isInitial) {
+        toast.error("Failed to generate questions. Using fallback questions.", { id: "regen-questions" });
+      }
+    } finally {
       setIsRegeneratingQuestions(false);
-      toast.success("Questions regenerated successfully!");
-    }, 2000);
+    }
   };
 
   const handleEnhanceAction = async () => {
@@ -246,7 +306,7 @@ export function InterviewBattlePlan({
             {/* Footer */}
             <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC]">
               <button
-                onClick={handleRegenerateQuestions}
+                onClick={() => handleRegenerateQuestions(false)}
                 disabled={isRegeneratingQuestions}
                 className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
               >

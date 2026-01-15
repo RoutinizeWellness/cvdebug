@@ -21,7 +21,7 @@ export function NewNavbar() {
   });
 
   const navLinks = [
-    { name: "Analyzer", href: "#analyzer" },
+    { name: "Analyzer", href: "/preview" },
     { name: "Tools", href: "#features" },
     { name: "Pricing", href: "/pricing" },
   ];

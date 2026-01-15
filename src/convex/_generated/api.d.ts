@@ -59,6 +59,7 @@ import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as migrations_syncClerkUsers from "../migrations/syncClerkUsers.js";
 import type * as ml_analyzeResumeML from "../ml/analyzeResumeML.js";
+import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as productHunt from "../productHunt.js";
@@ -136,6 +137,7 @@ declare const fullApi: ApiFromModules<{
   marketing: typeof marketing;
   "migrations/syncClerkUsers": typeof migrations_syncClerkUsers;
   "ml/analyzeResumeML": typeof ml_analyzeResumeML;
+  "ml/interviewQuestions": typeof ml_interviewQuestions;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;
   productHunt: typeof productHunt;
