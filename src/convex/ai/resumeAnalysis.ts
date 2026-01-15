@@ -387,17 +387,17 @@ export const analyzeResume = internalAction({
             synonyms: ["Technical skills", "Domain expertise", "Tools", "Technologies"]
           }],
           formatIssues: [{
-            issue: "Resume parsing encountered errors - may be image-based or corrupted",
-            severity: "critical",
-            fix: "Export as PDF from Word/Google Docs using 'Save as PDF' or 'Print to PDF'. Never scan or screenshot.",
-            location: "Overall document",
-            atsImpact: "High risk of complete ATS rejection - 0% chance of passing automated screening"
-          }, {
             issue: "Missing or insufficient quantifiable achievements",
             severity: "critical",
             fix: "Every bullet point should include specific metrics: percentages, dollar amounts, team sizes, time frames, or scale of impact",
             location: "Experience section",
             atsImpact: "Resume appears junior-level even for senior roles - reduces interview chances by 70%+"
+          }, {
+            issue: "Insufficient industry-specific keywords",
+            severity: "high",
+            fix: "Add technical skills, tools, and methodologies from your target job descriptions",
+            location: "Skills & Experience sections",
+            atsImpact: "May not rank high enough in ATS keyword matching - reduces visibility by 50%+"
           }],
           metricSuggestions: [],
           status: "completed",
