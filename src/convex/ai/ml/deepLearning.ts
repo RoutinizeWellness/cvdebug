@@ -988,3 +988,70 @@ export function analyzeTone(transcription: string): ToneAnalysisResult {
     emotionalRange: Math.round(emotionalRange),
   };
 }
+
+// ==========================================
+// REFERENCE REQUEST EMAIL GENERATION (Template-based)
+// ==========================================
+
+export interface ReferenceEmailResult {
+  subject: string;
+  body: string;
+}
+
+/**
+ * Generate personalized reference request email using templates
+ * No API needed - professional email templates with personalization!
+ */
+export function generateReferenceRequestEmail(
+  referenceName: string,
+  relationship: 'manager' | 'colleague' | 'mentor' | 'client' | 'professor',
+  previousCompany: string,
+  targetJobTitle: string,
+  targetCompany: string,
+  userName: string,
+  userAchievement?: string
+): ReferenceEmailResult {
+  // Subject line templates based on relationship
+  const subjectTemplates: Record<typeof relationship, string> = {
+    manager: `Quick Reference Request - ${targetCompany} Role`,
+    colleague: `Reference Request for ${targetCompany} Opportunity`,
+    mentor: `Seeking Your Support - ${targetCompany} Application`,
+    client: `Reference Request - ${targetCompany} Position`,
+    professor: `Professional Reference Request - ${targetCompany}`,
+  };
+
+  const subject = subjectTemplates[relationship];
+
+  // Body templates based on relationship
+  const openings: Record<typeof relationship, string> = {
+    manager: `Hi ${referenceName},\n\nI hope this message finds you well! I'm reaching out because I'm applying for a ${targetJobTitle} position at ${targetCompany}, and I would be honored if you'd be willing to serve as a reference.`,
+    colleague: `Hi ${referenceName},\n\nI hope you're doing great! I'm currently applying for a ${targetJobTitle} role at ${targetCompany}. Given our collaboration at ${previousCompany}, I was hoping you might be willing to serve as a reference for me.`,
+    mentor: `Dear ${referenceName},\n\nI hope all is well with you! I'm excited to share that I'm pursuing a ${targetJobTitle} position at ${targetCompany}. Your mentorship has been invaluable to my career, and I would be deeply grateful if you'd consider being a reference for me.`,
+    client: `Hi ${referenceName},\n\nI hope you're doing well! I'm applying for a ${targetJobTitle} position at ${targetCompany} and was hoping you might be willing to serve as a professional reference based on our work together.`,
+    professor: `Dear Professor ${referenceName},\n\nI hope this email finds you well! I'm applying for a ${targetJobTitle} position at ${targetCompany}, and I would be honored if you'd be willing to provide a professional reference for me.`,
+  };
+
+  // Middle section with context
+  let middleSection = '';
+  if (userAchievement) {
+    middleSection = `\n\nI particularly value your perspective on our work together at ${previousCompany}, especially ${userAchievement}. I believe your insights would provide valuable context about my abilities and work style.`;
+  } else {
+    middleSection = `\n\nI believe your perspective on our time working together at ${previousCompany} would provide valuable context about my skills and professional approach.`;
+  }
+
+  // Closing section
+  const closings: Record<typeof relationship, string> = {
+    manager: `\n\nThe hiring team may reach out in the next few weeks. I'm happy to provide any additional context or discuss the role if helpful. Of course, if you're unable to provide a reference at this time, I completely understand.\n\nThank you so much for considering this, and please let me know if I can ever return the favor!\n\nBest regards,\n${userName}`,
+    colleague: `\n\nThe recruitment team may contact you in the coming weeks. I'm happy to share more details about the role if you'd like. If now isn't a good time, I completely understand.\n\nThank you for considering, and I'd be glad to return the favor whenever you need!\n\nWarm regards,\n${userName}`,
+    mentor: `\n\nThey may reach out within the next few weeks. I'm happy to provide any additional information you might need. I understand if you're unable to at this time.\n\nThank you for all your guidance over the years, and please don't hesitate to reach out if there's ever anything I can do for you!\n\nSincerely,\n${userName}`,
+    client: `\n\nThe hiring manager may contact you in the next 2-3 weeks. I'm happy to provide more context if needed. If this doesn't work for you, I completely understand.\n\nThank you for considering this request, and I hope we can work together again in the future!\n\nBest,\n${userName}`,
+    professor: `\n\nThey may reach out in the coming weeks. I'm happy to provide additional information about the role if helpful. I understand if you're unable to provide a reference at this time.\n\nThank you for your mentorship and support throughout my academic journey!\n\nRespectfully,\n${userName}`,
+  };
+
+  const body = openings[relationship] + middleSection + closings[relationship];
+
+  return {
+    subject,
+    body,
+  };
+}

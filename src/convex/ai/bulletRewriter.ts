@@ -2,7 +2,6 @@
 
 import { action } from "../_generated/server";
 import { v } from "convex/values";
-import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateContentHash } from "./intelligentCache";
 
 // Cast to any to avoid deep type instantiation issues
@@ -359,115 +358,36 @@ export const rewriteBullet = action({
       // STEP 2: Detect role and industry context for tailored suggestions
       const contextAnalysis = analyzeRoleAndIndustry(args.bulletPoint, args.context);
 
-      // STEP 3: Try ML-based rewrite first (faster, smarter)
-      try {
-        const mlResult = generateMLBulletRewrite(
-          args.bulletPoint,
-          args.context,
-          analysis,
-          contextAnalysis
-        );
-
-        console.log(`[Bullet Rewriter] ML Engine generated result in ${Date.now() - startTime}ms`);
-
-        // Cache the ML result
-        await ctx.runMutation(internalAny.ai.intelligentCache.cacheAnalysisResult, {
-          contentHash,
-          service: "bulletRewriter",
-          result: mlResult,
-          metadata: {
-            textLength: args.bulletPoint.length,
-            isPremium: false
-          }
-        });
-
-        return mlResult;
-      } catch (mlError) {
-        console.log(`[Bullet Rewriter] ML fallback failed, trying AI: ${mlError}`);
-      }
-
-      // STEP 4: Fall back to AI if ML fails (rare case)
-      const apiKey = process.env.OPENROUTER_API_KEY;
-
-      if (!apiKey) {
-        throw new Error("OPENROUTER_API_KEY not configured");
-      }
-
-      const prompt = buildBulletRewritePrompt(
+      // STEP 3: Use LOCAL ML-based rewrite - NO PAID API!
+      const mlResult = generateMLBulletRewrite(
         args.bulletPoint,
         args.context,
         analysis,
         contextAnalysis
       );
-      const model = "google/gemini-2.0-flash-exp:free";
 
-      console.log(`[Bullet Rewriter] Rewriting bullet: "${args.bulletPoint}"`);
-      console.log(`[Bullet Rewriter] Analysis - Weakness Score: ${analysis.weaknessScore}/100, Focus: ${analysis.suggestedFocus}`);
-      console.log(`[Bullet Rewriter] Context - Role: ${contextAnalysis.detectedRole}, Industry: ${contextAnalysis.detectedIndustry}`);
-      console.log(`[Bullet Rewriter] Issues: ${analysis.weaknessReasons.join(", ")}`);
-
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("API request timeout after 20s")), 20000)
-      );
-
-      const apiPromise = callOpenRouter(apiKey, {
-        model: model,
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-      });
-
-      const content = (await Promise.race([apiPromise, timeoutPromise])) as string;
-
-      const result = extractJSON(content);
-
-      if (!result || !result.rewritten) {
-        throw new Error("Invalid API response structure");
-      }
-
-      console.log(`[Bullet Rewriter] Successfully rewrote bullet in ${Date.now() - startTime}ms`);
+      console.log(`[Bullet Rewriter] ML Engine generated result in ${Date.now() - startTime}ms`);
 
       // Log success
       await ctx.runMutation(internalAny.aiMonitoring.logAISuccess, {
         service: "bulletRewriter",
-        model: model,
+        model: "local-ml",
         userId: undefined,
         duration: Date.now() - startTime,
       });
 
-      const aiResult = {
-        success: true,
-        rewritten: result.rewritten,
-        metric: result.metric,
-        impact: result.impact,
-        alternatives: result.alternatives || [],
-        analysis: {
-          weaknessScore: analysis.weaknessScore,
-          hasMetrics: analysis.hasMetrics,
-          hasStrongVerb: analysis.hasStrongVerb,
-          hasPassiveLanguage: analysis.hasPassiveLanguage,
-          hasVagueTerms: analysis.hasVagueTerms,
-          suggestedFocus: analysis.suggestedFocus,
-          weaknessReasons: analysis.weaknessReasons,
-        },
-        contextAnalysis: {
-          detectedRole: contextAnalysis.detectedRole,
-          detectedIndustry: contextAnalysis.detectedIndustry,
-          recommendedMetricTypes: contextAnalysis.recommendedMetricTypes,
-        },
-      };
-
-      // Cache the AI result
+      // Cache the ML result
       await ctx.runMutation(internalAny.ai.intelligentCache.cacheAnalysisResult, {
         contentHash,
         service: "bulletRewriter",
-        result: aiResult,
+        result: mlResult,
         metadata: {
           textLength: args.bulletPoint.length,
-          isPremium: true
+          isPremium: false
         }
       });
 
-      return aiResult;
+      return mlResult;
     } catch (error: any) {
       console.error("[Bullet Rewriter] Error:", error);
 

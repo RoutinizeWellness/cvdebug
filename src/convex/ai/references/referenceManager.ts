@@ -3,7 +3,7 @@
 import { v } from "convex/values";
 import { action, internalAction } from "../../_generated/server";
 import { internal } from "../../_generated/api";
-import { callOpenRouter } from "../apiClient";
+import { generateReferenceRequestEmail } from "../ml/deepLearning";
 
 /**
  * PHASE 4 FEATURE 5: REFERENCE MANAGER WITH AUTOMATED OUTREACH
@@ -196,69 +196,16 @@ export const generateReferenceEmail = internalAction({
     userName: v.string(),
   },
   handler: async (ctx, args) => {
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) {
-      throw new Error("OPENROUTER_API_KEY not configured");
-    }
-
-    const currentYear = new Date().getFullYear();
-
-    const prompt = `Generate a professional, warm reference request email.
-
-Context:
-- Reference: ${args.referenceName} (${args.referenceRelationship})
-- Previous company: ${args.previousCompany}
-- Target role: ${args.targetJobTitle} at ${args.targetCompany}
-- User: ${args.userName}
-${args.userAchievement ? `- Key achievement together: ${args.userAchievement}` : ""}
-
-Requirements:
-1. Subject line: Professional, concise, clear action
-2. Tone: Warm, grateful, respectful (not desperate)
-3. Length: 150-200 words (brief = respectful of their time)
-4. Include: Specific context from working together
-5. Make it easy: Clear ask, timeline, offer to provide context
-6. Reciprocity: Offer to return the favor
-
-Return JSON:
-{
-  "subject": "subject line (max 60 chars)",
-  "body": "email body with proper paragraphs"
-}`;
-
-    const response = await callOpenRouter(API_KEY, {
-      model: "openai/gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: `You are an expert at writing professional reference request emails. Your emails are warm, concise, and get high response rates. Current year: ${currentYear}`,
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
-
-    try {
-      // Try to parse JSON from response
-      const jsonMatch = response.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const result = JSON.parse(jsonMatch[0]);
-        return {
-          subject: result.subject || `Quick Reference Request - ${args.targetCompany} Opportunity`,
-          body: result.body || response,
-        };
-      }
-    } catch (e) {
-      // Fallback if JSON parsing fails
-    }
-
-    // Fallback template
-    return {
-      subject: `Quick Reference Request - ${args.targetCompany} Opportunity`,
-      body: response,
-    };
+    // USE LOCAL EMAIL GENERATION - NO PAID API!
+    return generateReferenceRequestEmail(
+      args.referenceName,
+      args.referenceRelationship as 'manager' | 'colleague' | 'mentor' | 'client' | 'professor',
+      args.previousCompany,
+      args.targetJobTitle,
+      args.targetCompany,
+      args.userName,
+      args.userAchievement
+    );
   },
 });
 
