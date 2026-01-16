@@ -38,6 +38,8 @@ import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
 import type * as ai_mlEngine from "../ai/mlEngine.js";
 import type * as ai_mlFeedbackLoop from "../ai/mlFeedbackLoop.js";
 import type * as ai_mlLearning from "../ai/mlLearning.js";
+import type * as ai_multiLanguage_culturalAdaptation from "../ai/multiLanguage/culturalAdaptation.js";
+import type * as ai_multiLanguage_languageIntelligence from "../ai/multiLanguage/languageIntelligence.js";
 import type * as ai_performOcr from "../ai/performOcr.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_qualityChecks from "../ai/qualityChecks.js";
@@ -136,6 +138,8 @@ declare const fullApi: ApiFromModules<{
   "ai/mlEngine": typeof ai_mlEngine;
   "ai/mlFeedbackLoop": typeof ai_mlFeedbackLoop;
   "ai/mlLearning": typeof ai_mlLearning;
+  "ai/multiLanguage/culturalAdaptation": typeof ai_multiLanguage_culturalAdaptation;
+  "ai/multiLanguage/languageIntelligence": typeof ai_multiLanguage_languageIntelligence;
   "ai/performOcr": typeof ai_performOcr;
   "ai/prompts": typeof ai_prompts;
   "ai/qualityChecks": typeof ai_qualityChecks;

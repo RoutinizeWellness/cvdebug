@@ -765,6 +765,220 @@ const schema = defineSchema(
   })
     .index("by_request_id", ["requestId"])
     .index("by_timestamp", ["timestamp"]),
+
+  // ==========================================
+  // PHASE 4 TABLES - REVOLUTIONARY FEATURES
+  // ==========================================
+
+  // Multi-language analyses
+  languageAnalyses: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+    detectedLanguage: v.string(),
+    languageConfidence: v.number(),
+    culturalContext: v.string(),
+    culturalComplianceScore: v.number(),
+    atsScores: v.object({
+      originalLanguage: v.number(),
+      english: v.number(),
+    }),
+    recommendations: v.array(v.any()),
+    translationAvailable: v.boolean(),
+    timestamp: v.number(),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"])
+    .index("by_language", ["detectedLanguage"])
+    .index("by_timestamp", ["timestamp"]),
+
+  // Video resume analyses
+  videoResumes: defineTable({
+    userId: v.string(),
+    storageId: v.id("_storage"),
+    fileName: v.string(),
+    duration: v.number(), // seconds
+    fileSize: v.number(), // bytes
+    mimeType: v.string(),
+    status: v.union(v.literal("uploading"), v.literal("processing"), v.literal("completed"), v.literal("failed")),
+    analysis: v.optional(v.object({
+      overallScore: v.number(),
+      visualPresentation: v.any(),
+      audioQuality: v.any(),
+      speechAnalysis: v.any(),
+      contentQuality: v.any(),
+      recommendations: v.array(v.any()),
+    })),
+    processingStartedAt: v.optional(v.number()),
+    processingCompletedAt: v.optional(v.number()),
+    errorMessage: v.optional(v.string()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_status", ["status"])
+    .index("by_user_and_status", ["userId", "status"]),
+
+  // Social media profiles
+  socialProfiles: defineTable({
+    userId: v.string(),
+    platform: v.union(v.literal("linkedin"), v.literal("github"), v.literal("portfolio")),
+    profileUrl: v.string(),
+    username: v.optional(v.string()),
+    scrapedData: v.any(), // Flexible structure per platform
+    brandScore: v.optional(v.number()),
+    lastSyncedAt: v.number(),
+    syncStatus: v.union(v.literal("synced"), v.literal("error"), v.literal("pending")),
+    errorMessage: v.optional(v.string()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_platform", ["platform"])
+    .index("by_user_and_platform", ["userId", "platform"])
+    .index("by_last_synced", ["lastSyncedAt"]),
+
+  // Unified brand analysis
+  brandAnalyses: defineTable({
+    userId: v.string(),
+    overallBrandScore: v.number(),
+    platforms: v.any(), // LinkedIn, GitHub, Portfolio scores
+    consistencyAnalysis: v.any(),
+    brandStrength: v.any(),
+    recommendations: v.array(v.any()),
+    competitivePosition: v.any(),
+    generatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_score", ["overallBrandScore"])
+    .index("by_timestamp", ["generatedAt"]),
+
+  // References
+  references: defineTable({
+    userId: v.string(),
+    name: v.string(),
+    title: v.string(),
+    company: v.string(),
+    email: v.string(),
+    phone: v.optional(v.string()),
+    linkedin: v.optional(v.string()),
+    relationship: v.union(v.literal("manager"), v.literal("colleague"), v.literal("mentor"), v.literal("client"), v.literal("professor")),
+    duration: v.string(), // e.g., "2020-2023"
+    strengthScore: v.number(), // 0-100
+    seniority: v.union(v.literal("entry"), v.literal("mid"), v.literal("senior"), v.literal("executive")),
+    relevance: v.number(), // 0-100
+    credibility: v.number(), // 0-100
+    responseRate: v.optional(v.number()), // 0-1
+    avgResponseTime: v.optional(v.number()), // hours
+    lastContactedAt: v.optional(v.number()),
+    preferredContact: v.union(v.literal("email"), v.literal("phone"), v.literal("linkedin")),
+  })
+    .index("by_user", ["userId"])
+    .index("by_strength", ["strengthScore"])
+    .index("by_user_and_strength", ["userId", "strengthScore"]),
+
+  // Reference requests
+  referenceRequests: defineTable({
+    userId: v.string(),
+    referenceId: v.id("references"),
+    jobTitle: v.string(),
+    company: v.string(),
+    status: v.union(v.literal("pending"), v.literal("completed"), v.literal("declined"), v.literal("expired")),
+    emailSubject: v.string(),
+    emailBody: v.string(),
+    requestSentAt: v.number(),
+    remindersSent: v.number(),
+    lastReminderAt: v.optional(v.number()),
+    responseReceivedAt: v.optional(v.number()),
+    recommendation: v.optional(v.string()),
+    sentiment: v.optional(v.number()), // -1 to 1
+    strengthScore: v.optional(v.number()), // 0-100
+  })
+    .index("by_user", ["userId"])
+    .index("by_reference", ["referenceId"])
+    .index("by_status", ["status"])
+    .index("by_sent_at", ["requestSentAt"]),
+
+  // Automated job applications
+  automatedApplications: defineTable({
+    userId: v.string(),
+    jobId: v.string(), // From job postings or external
+    jobTitle: v.string(),
+    company: v.string(),
+    jobUrl: v.string(),
+    platform: v.union(v.literal("linkedin"), v.literal("greenhouse"), v.literal("lever"), v.literal("workday"), v.literal("custom")),
+    status: v.union(v.literal("queued"), v.literal("applying"), v.literal("submitted"), v.literal("failed")),
+    customizedResumeId: v.optional(v.id("resumes")),
+    coverLetter: v.optional(v.string()),
+    customQuestionAnswers: v.optional(v.any()),
+    confidence: v.optional(v.number()), // 0-100 - how confident the bot is
+    queuedAt: v.number(),
+    startedAt: v.optional(v.number()),
+    submittedAt: v.optional(v.number()),
+    errorMessage: v.optional(v.string()),
+    screenshot: v.optional(v.string()), // Base64 or storage ID
+  })
+    .index("by_user", ["userId"])
+    .index("by_status", ["status"])
+    .index("by_user_and_status", ["userId", "status"])
+    .index("by_queued_at", ["queuedAt"]),
+
+  // Market intelligence reports
+  marketIntelligence: defineTable({
+    userId: v.string(),
+    reportType: v.union(v.literal("salary"), v.literal("skills_demand"), v.literal("role_transition"), v.literal("location"), v.literal("competitive")),
+    currentRole: v.string(),
+    currentSalary: v.optional(v.number()),
+    experience: v.number(), // years
+    location: v.string(),
+    skills: v.array(v.string()),
+    data: v.any(), // Flexible structure per report type
+    generatedAt: v.number(),
+    expiresAt: v.number(), // Reports expire after 7 days
+  })
+    .index("by_user", ["userId"])
+    .index("by_type", ["reportType"])
+    .index("by_user_and_type", ["userId", "reportType"])
+    .index("by_generated_at", ["generatedAt"])
+    .index("by_expires_at", ["expiresAt"]),
+
+  // Job market data (scraped from job boards)
+  jobMarketData: defineTable({
+    role: v.string(),
+    location: v.string(),
+    industry: v.string(),
+    salaryRange: v.object({
+      min: v.number(),
+      max: v.number(),
+      median: v.number(),
+    }),
+    demandScore: v.number(), // 0-100
+    growthRate: v.number(), // % YoY
+    competitionLevel: v.union(v.literal("low"), v.literal("medium"), v.literal("high")),
+    topSkills: v.array(v.string()),
+    topCompanies: v.array(v.string()),
+    scrapedAt: v.number(),
+    source: v.string(), // "linkedin", "indeed", etc.
+  })
+    .index("by_role", ["role"])
+    .index("by_location", ["location"])
+    .index("by_role_and_location", ["role", "location"])
+    .index("by_scraped_at", ["scrapedAt"]),
+
+  // Skills demand forecast
+  skillsDemandForecast: defineTable({
+    skill: v.string(),
+    category: v.union(v.literal("technical"), v.literal("soft"), v.literal("tool"), v.literal("certification")),
+    currentDemand: v.number(), // Job postings mentioning skill
+    trend: v.union(v.literal("rising"), v.literal("stable"), v.literal("declining")),
+    growthRate: v.number(), // % YoY
+    forecast6Months: v.number(),
+    forecast12Months: v.number(),
+    salaryPremium: v.number(), // $ increase for having this skill
+    learningTime: v.number(), // hours
+    roi: v.number(), // salary premium / learning time
+    updatedAt: v.number(),
+  })
+    .index("by_skill", ["skill"])
+    .index("by_trend", ["trend"])
+    .index("by_growth_rate", ["growthRate"])
+    .index("by_roi", ["roi"])
+    .index("by_updated_at", ["updatedAt"]),
   },
   {
     schemaValidation: false,
