@@ -2,6 +2,58 @@
 
 import { internalAction } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
+
+/**
+ * Helper to check if user can receive email
+ * Returns true if email should be sent, false otherwise
+ */
+async function canSendToUser(
+  ctx: any,
+  userId: string,
+  category: string
+): Promise<boolean> {
+  try {
+    const result = await ctx.runQuery(internal.emailPreferences.canSendEmail, {
+      userId,
+      category,
+    });
+
+    if (!result.canSend) {
+      console.log(`[Email] Skipped (${category}): ${result.reason}`);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error(`[Email] Error checking permissions:`, error);
+    // Default to allowing email if check fails (graceful degradation)
+    return true;
+  }
+}
+
+/**
+ * Helper to log email sent for tracking
+ */
+async function logEmail(
+  ctx: any,
+  userId: string,
+  category: string,
+  emailType: string,
+  subject: string
+) {
+  try {
+    await ctx.runMutation(internal.emailPreferences.logEmailSent, {
+      userId,
+      category,
+      emailType,
+      subject,
+    });
+  } catch (error) {
+    console.error(`[Email] Error logging email:`, error);
+    // Don't throw - logging failure shouldn't block email
+  }
+}
 
 // Professional email template wrapper
 const emailTemplate = (content: string) => `
@@ -45,6 +97,7 @@ const emailTemplate = (content: string) => `
 
 export const sendStatusEngagementEmail = internalAction({
   args: {
+    userId: v.string(),
     email: v.string(),
     name: v.string(),
     companyName: v.string(),
@@ -52,10 +105,16 @@ export const sendStatusEngagementEmail = internalAction({
     applicationId: v.id("applications"),
   },
   handler: async (ctx, args) => {
+    // Check if user can receive this email
+    const canSend = await canSendToUser(ctx, args.userId, 'APPLICATION_TRACKING');
+    if (!canSend) {
+      return { sent: false, reason: 'User preferences' };
+    }
+
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {
       console.error("[Email] Resend API key not configured");
-      return;
+      return { sent: false, reason: 'No API key' };
     }
 
     const firstName = args.name.split(" ")[0] || "there";
@@ -142,11 +201,22 @@ export const sendStatusEngagementEmail = internalAction({
 
       if (!response.ok) {
         console.error("[Email] Failed to send status engagement email:", await response.text());
+        return { sent: false, reason: 'Send failed' };
       } else {
         console.log(`[Email] Status engagement email sent to ${args.email}`);
+        // Log email for frequency tracking
+        await logEmail(
+          ctx,
+          args.userId,
+          'APPLICATION_TRACKING',
+          'status_engagement',
+          `Track Your ${args.companyName} Application`
+        );
+        return { sent: true };
       }
     } catch (error: any) {
       console.error("[Email] Error sending status engagement email:", error.message);
+      return { sent: false, reason: 'Error: ' + error.message };
     }
   },
 });
@@ -378,15 +448,22 @@ export const sendAbandonmentEmail = internalAction({
 
 export const sendOnboardingEmail = internalAction({
   args: {
+    userId: v.string(),
     email: v.string(),
     name: v.optional(v.string()),
     variant: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    // Check if user can receive onboarding email
+    const canSend = await canSendToUser(ctx, args.userId, 'ONBOARDING');
+    if (!canSend) {
+      return { sent: false, reason: 'User preferences' };
+    }
+
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {
       console.error("[Email] Resend API key not configured");
-      return;
+      return { sent: false, reason: 'No API key' };
     }
 
     const firstName = args.name?.split(" ")[0] || "there";
@@ -452,11 +529,22 @@ export const sendOnboardingEmail = internalAction({
 
       if (!response.ok) {
         console.error("[Email] Onboarding email failed:", await response.text());
+        return { sent: false, reason: 'Send failed' };
       } else {
         console.log(`[Email] Onboarding email sent to ${args.email}`);
+        // Log email for frequency tracking
+        await logEmail(
+          ctx,
+          args.userId,
+          'ONBOARDING',
+          'welcome',
+          `Welcome ${args.name?.split(" ")[0] || "there"}! Your ${new Date().getFullYear()} AI Career Advantage Starts Now`
+        );
+        return { sent: true };
       }
     } catch (error: any) {
       console.error("[Email] Error sending onboarding email:", error.message);
+      return { sent: false, reason: 'Error: ' + error.message };
     }
   },
 });

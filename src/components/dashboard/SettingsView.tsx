@@ -3,6 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { EmailPreferences } from "./EmailPreferences";
 
 const apiAny = api as any;
 
@@ -398,7 +399,15 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             </div>
           </motion.div>
 
-          {/* API Access section removed - not needed for end users */}
+          {/* Email Preferences Section (Full Width) */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="lg:col-span-3 mt-2"
+          >
+            <EmailPreferences />
+          </motion.div>
         </div>
       </div>
     </div>
