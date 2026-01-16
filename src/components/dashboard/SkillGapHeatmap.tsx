@@ -63,13 +63,13 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
   };
 
   return (
-    <div className="rounded-lg p-6 flex flex-col gap-6 relative overflow-hidden group bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-full bg-[#22C55E]/10 text-[#22C55E]">
-            <Check className="h-5 w-5" />
+    <div className="rounded-lg p-4 md:p-6 flex flex-col gap-4 md:gap-6 relative overflow-hidden group bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="p-1.5 md:p-2 rounded-full bg-[#22C55E]/10 text-[#22C55E]">
+            <Check className="h-4 w-4 md:h-5 md:w-5" />
           </div>
-          <h3 className="text-lg font-bold text-[#0F172A]">Skill Heatmap Analysis</h3>
+          <h3 className="text-base md:text-lg font-bold text-[#0F172A]">Skill Heatmap Analysis</h3>
         </div>
         <span className="text-xs font-bold bg-[#22C55E]/20 text-[#22C55E] px-2 py-1 rounded-md border border-[#22C55E]/30">High Impact</span>
       </div>
@@ -105,26 +105,30 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
                 variants={item}
                 className="group/skill relative"
               >
-                <span className="px-3 py-1.5 rounded-full border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 transition-colors">
-                  <X className="h-3.5 w-3.5" />
-                  {keyword}
-                </span>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/skill:opacity-100 transition-opacity bg-[#FFFFFF] border border-[#8B5CF6] text-[#8B5CF6] text-xs h-7 px-2 whitespace-nowrap"
+                <button
                   onClick={() => handleGenerateBulletPoint(keyword)}
                   disabled={generatingFor === keyword}
+                  className="px-3 py-1.5 rounded-full border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 active:bg-[#EF4444]/30 transition-colors"
                 >
                   {generatingFor === keyword ? (
-                    "Generating..."
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Lightbulb className="h-3.5 w-3.5" />
+                      </motion.div>
+                      <span className="md:hidden">...</span>
+                      <span className="hidden md:inline">Generating...</span>
+                    </>
                   ) : (
                     <>
-                      <Lightbulb className="h-3 w-3 mr-1" />
-                      Suggest Rewrite
+                      <X className="h-3.5 w-3.5" />
+                      {keyword}
+                      <Lightbulb className="h-3.5 w-3.5 ml-1 opacity-60" />
                     </>
                   )}
-                </Button>
+                </button>
               </motion.div>
             );
           })}
@@ -162,26 +166,30 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
                 variants={item}
                 className="group/skill relative"
               >
-                <span className="px-3 py-1.5 rounded-full border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 transition-colors">
-                  <X className="h-3.5 w-3.5" />
-                  {keyword}
-                </span>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover/skill:opacity-100 transition-opacity bg-[#FFFFFF] border border-[#8B5CF6] text-[#8B5CF6] text-xs h-7 px-2 whitespace-nowrap"
+                <button
                   onClick={() => handleGenerateBulletPoint(keyword)}
                   disabled={generatingFor === keyword}
+                  className="px-3 py-1.5 rounded-full border-2 border-[#EF4444] bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold flex items-center gap-1 cursor-pointer hover:bg-[#EF4444]/20 active:bg-[#EF4444]/30 transition-colors"
                 >
                   {generatingFor === keyword ? (
-                    "Generating..."
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Lightbulb className="h-3.5 w-3.5" />
+                      </motion.div>
+                      <span className="md:hidden">...</span>
+                      <span className="hidden md:inline">Generating...</span>
+                    </>
                   ) : (
                     <>
-                      <Lightbulb className="h-3 w-3 mr-1" />
-                      Suggest Rewrite
+                      <X className="h-3.5 w-3.5" />
+                      {keyword}
+                      <Lightbulb className="h-3.5 w-3.5 ml-1 opacity-60" />
                     </>
                   )}
-                </Button>
+                </button>
               </motion.div>
             );
           })}
