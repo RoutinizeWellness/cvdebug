@@ -71,6 +71,11 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
     setIsLoading(true);
     setResult(null);
 
+    // Show loading toast for user feedback
+    const loadingToast = toast.loading("Rewriting with AI...", {
+      description: "Analyzing your bullet point and applying ML optimizations",
+    });
+
     try {
       const context = {
         role: role.trim() || undefined,
@@ -84,8 +89,12 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
       });
 
       setResult(response as RewriteResult);
-      toast.success("Bullet point rewritten successfully!");
+      toast.dismiss(loadingToast);
+      toast.success("Bullet point rewritten successfully!", {
+        description: "Your optimized version is ready!"
+      });
     } catch (error: any) {
+      toast.dismiss(loadingToast);
       console.error("Rewrite error:", error);
       if (error.message?.includes("PLAN_RESTRICTION")) {
         toast.error("Interview Sprint plan required", {
