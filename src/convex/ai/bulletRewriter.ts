@@ -1,6 +1,6 @@
 "use node";
 
-import { internalAction } from "../_generated/server";
+import { action } from "../_generated/server";
 import { v } from "convex/values";
 import { callOpenRouter, extractJSON } from "./apiClient";
 import { generateContentHash } from "./intelligentCache";
@@ -205,7 +205,7 @@ function analyzeRoleAndIndustry(
  * Formula: "Accomplished [X] as measured by [Y], by doing [Z]"
  * Example: "Led a team of 10, increasing productivity by 25% through implementing agile workflows"
  */
-export const rewriteBullet = internalAction({
+export const rewriteBullet = action({
   args: {
     bulletPoint: v.string(),
     context: v.optional(v.object({

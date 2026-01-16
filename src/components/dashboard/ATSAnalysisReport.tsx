@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
+import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -666,6 +667,20 @@ export function ATSAnalysisReport({
           {(matchedKeywords.length > 0 || missingKeywords.length > 0 || true) && (
             <div className="w-full space-y-4 md:space-y-6">
               <h2 className="text-xl md:text-2xl font-bold text-[#0F172A]">Keyword Analysis</h2>
+
+              {/* Keyword Heatmap Visualization */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <KeywordHeatmap
+                  matchedKeywords={matchedKeywords}
+                  missingKeywords={missingKeywords}
+                  onUnlock={onUpgrade}
+                  isPremium={isPaidUser}
+                />
+              </motion.div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 w-full">
                 {/* Debug info when no keywords */}

@@ -47,7 +47,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
   const [result, setResult] = useState<RewriteResult | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const rewriteBullet = useAction(api.ai.bulletRewriter.rewriteBullet);
+  const rewriteBullet = useAction(api.ai.rewriteBullet);
   const currentUser = useQuery((api as any).users.currentUser);
 
   // Check if user has Interview Sprint plan
