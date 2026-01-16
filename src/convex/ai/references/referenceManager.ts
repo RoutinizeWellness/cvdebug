@@ -1,7 +1,7 @@
 "use node";
 
 import { v } from "convex/values";
-import { action, internalAction, internalMutation, internalQuery } from "../../_generated/server";
+import { action, internalAction } from "../../_generated/server";
 import { internal } from "../../_generated/api";
 import { callOpenRouter } from "../apiClient";
 
@@ -160,7 +160,7 @@ export const addReference = action({
     const credibility = await calculateCredibility(args.title, args.company);
 
     // Insert reference
-    await ctx.runMutation(internal.ai.references.referenceManager.insertReference, {
+    await ctx.runMutation(internal.ai.references.referenceManagerData.insertReference, {
       userId: identity.tokenIdentifier,
       name: args.name,
       title: args.title,
@@ -181,42 +181,6 @@ export const addReference = action({
   },
 });
 
-export const insertReference = internalMutation({
-  args: {
-    userId: v.string(),
-    name: v.string(),
-    title: v.string(),
-    company: v.string(),
-    email: v.string(),
-    phone: v.optional(v.string()),
-    linkedin: v.optional(v.string()),
-    relationship: v.union(v.literal("manager"), v.literal("colleague"), v.literal("mentor"), v.literal("client"), v.literal("professor")),
-    duration: v.string(),
-    strengthScore: v.number(),
-    seniority: v.union(v.literal("entry"), v.literal("mid"), v.literal("senior"), v.literal("executive")),
-    relevance: v.number(),
-    credibility: v.number(),
-    preferredContact: v.union(v.literal("email"), v.literal("phone"), v.literal("linkedin")),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db.insert("references", args);
-  },
-});
-
-/**
- * Get all references for user, sorted by strength
- */
-export const getUserReferences = internalQuery({
-  args: {
-    userId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("references")
-      .withIndex("by_user", (q) => q.eq("userId", args.userId))
-      .collect();
-  },
-});
 
 /**
  * Generate personalized reference request email using AI
@@ -313,7 +277,7 @@ export const sendReferenceRequest = action({
     if (!identity) throw new Error("Not authenticated");
 
     // Get reference details
-    const reference = await ctx.runQuery(internal.ai.references.referenceManager.getReference, {
+    const reference = await ctx.runQuery(internal.ai.references.referenceManagerData.getReference, {
       referenceId: args.referenceId,
     });
 
@@ -326,7 +290,7 @@ export const sendReferenceRequest = action({
     }
 
     // Get user details
-    const user = await ctx.runQuery(internal.ai.references.referenceManager.getUserByToken, {
+    const user = await ctx.runQuery(internal.ai.references.referenceManagerData.getUserByToken, {
       tokenIdentifier: identity.tokenIdentifier,
     });
 
@@ -341,7 +305,7 @@ export const sendReferenceRequest = action({
     });
 
     // Create reference request record
-    await ctx.runMutation(internal.ai.references.referenceManager.createReferenceRequest, {
+    await ctx.runMutation(internal.ai.references.referenceManagerData.createReferenceRequest, {
       userId: identity.tokenIdentifier,
       referenceId: args.referenceId,
       jobTitle: args.jobTitle,
@@ -371,7 +335,7 @@ export const sendReferenceRequest = action({
 <!DOCTYPE html>
 <html>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-  ${(args.customMessage || emailContent.body).split("\n").map(p => `<p>${p}</p>`).join("")}
+  ${(args.customMessage || emailContent.body).split("\n").map((p: string) => `<p>${p}</p>`).join("")}
 
   <hr style="margin: 24px 0; border: none; border-top: 1px solid #e2e8f0;">
 
@@ -389,7 +353,7 @@ export const sendReferenceRequest = action({
     }
 
     // Update last contacted
-    await ctx.runMutation(internal.ai.references.referenceManager.updateReferenceLastContacted, {
+    await ctx.runMutation(internal.ai.references.referenceManagerData.updateReferenceLastContacted, {
       referenceId: args.referenceId,
       timestamp: Date.now(),
     });
@@ -398,53 +362,6 @@ export const sendReferenceRequest = action({
   },
 });
 
-export const getReference = internalQuery({
-  args: { referenceId: v.id("references") },
-  handler: async (ctx, args) => {
-    return await ctx.db.get(args.referenceId);
-  },
-});
-
-export const getUserByToken = internalQuery({
-  args: { tokenIdentifier: v.string() },
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("users")
-      .withIndex("by_token", (q) => q.eq("tokenIdentifier", args.tokenIdentifier))
-      .first();
-  },
-});
-
-export const createReferenceRequest = internalMutation({
-  args: {
-    userId: v.string(),
-    referenceId: v.id("references"),
-    jobTitle: v.string(),
-    company: v.string(),
-    emailSubject: v.string(),
-    emailBody: v.string(),
-    requestSentAt: v.number(),
-  },
-  handler: async (ctx, args) => {
-    return await ctx.db.insert("referenceRequests", {
-      ...args,
-      status: "pending",
-      remindersSent: 0,
-    });
-  },
-});
-
-export const updateReferenceLastContacted = internalMutation({
-  args: {
-    referenceId: v.id("references"),
-    timestamp: v.number(),
-  },
-  handler: async (ctx, args) => {
-    await ctx.db.patch(args.referenceId, {
-      lastContactedAt: args.timestamp,
-    });
-  },
-});
 
 /**
  * Send automated reminders for pending reference requests
@@ -463,7 +380,7 @@ export const sendReferenceReminders = internalAction({
     const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
 
     // Get all pending requests
-    const pendingRequests = await ctx.runQuery(internal.ai.references.referenceManager.getPendingRequests, {});
+    const pendingRequests = await ctx.runQuery(internal.ai.references.referenceManagerData.getPendingRequests, {});
 
     for (const request of pendingRequests) {
       // Skip if already sent 2 reminders
@@ -480,7 +397,7 @@ export const sendReferenceReminders = internalAction({
       if (!shouldSendReminder) continue;
 
       // Get reference details
-      const reference = await ctx.runQuery(internal.ai.references.referenceManager.getReference, {
+      const reference = await ctx.runQuery(internal.ai.references.referenceManagerData.getReference, {
         referenceId: request.referenceId,
       });
 
@@ -506,7 +423,7 @@ export const sendReferenceReminders = internalAction({
       });
 
       // Update reminder count
-      await ctx.runMutation(internal.ai.references.referenceManager.updateReminderSent, {
+      await ctx.runMutation(internal.ai.references.referenceManagerData.updateReminderSent, {
         requestId: request._id,
         timestamp: now,
       });
@@ -514,28 +431,3 @@ export const sendReferenceReminders = internalAction({
   },
 });
 
-export const getPendingRequests = internalQuery({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.db
-      .query("referenceRequests")
-      .withIndex("by_status", (q) => q.eq("status", "pending"))
-      .collect();
-  },
-});
-
-export const updateReminderSent = internalMutation({
-  args: {
-    requestId: v.id("referenceRequests"),
-    timestamp: v.number(),
-  },
-  handler: async (ctx, args) => {
-    const request = await ctx.db.get(args.requestId);
-    if (request) {
-      await ctx.db.patch(args.requestId, {
-        remindersSent: request.remindersSent + 1,
-        lastReminderAt: args.timestamp,
-      });
-    }
-  },
-});

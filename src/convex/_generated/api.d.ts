@@ -30,6 +30,8 @@ import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
 import type * as ai_feedbackLoop from "../ai/feedbackLoop.js";
+import type * as ai_intelligence_marketIntelligence from "../ai/intelligence/marketIntelligence.js";
+import type * as ai_intelligence_marketIntelligenceData from "../ai/intelligence/marketIntelligenceData.js";
 import type * as ai_intelligentCache from "../ai/intelligentCache.js";
 import type * as ai_intelligentFallback from "../ai/intelligentFallback.js";
 import type * as ai_interviewPrep from "../ai/interviewPrep.js";
@@ -43,6 +45,8 @@ import type * as ai_multiLanguage_languageIntelligence from "../ai/multiLanguage
 import type * as ai_performOcr from "../ai/performOcr.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_qualityChecks from "../ai/qualityChecks.js";
+import type * as ai_references_referenceManager from "../ai/references/referenceManager.js";
+import type * as ai_references_referenceManagerData from "../ai/references/referenceManagerData.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
 import type * as ai_resumeRewrite from "../ai/resumeRewrite.js";
 import type * as ai_scoring_analysisFormatter from "../ai/scoring/analysisFormatter.js";
@@ -58,6 +62,10 @@ import type * as ai_scoring_keywordScoring from "../ai/scoring/keywordScoring.js
 import type * as ai_scoring_semanticSimilarity from "../ai/scoring/semanticSimilarity.js";
 import type * as ai_serverOcr from "../ai/serverOcr.js";
 import type * as ai_skillsGapAnalyzer from "../ai/skillsGapAnalyzer.js";
+import type * as ai_socialIntegration_brandAnalyzer from "../ai/socialIntegration/brandAnalyzer.js";
+import type * as ai_socialIntegration_brandAnalyzerData from "../ai/socialIntegration/brandAnalyzerData.js";
+import type * as ai_video_videoResumeAnalyzer from "../ai/video/videoResumeAnalyzer.js";
+import type * as ai_video_videoResumeAnalyzerData from "../ai/video/videoResumeAnalyzerData.js";
 import type * as aiMonitoring from "../aiMonitoring.js";
 import type * as api_resumeScoringAPI from "../api/resumeScoringAPI.js";
 import type * as applications from "../applications.js";
@@ -130,6 +138,8 @@ declare const fullApi: ApiFromModules<{
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;
   "ai/feedbackLoop": typeof ai_feedbackLoop;
+  "ai/intelligence/marketIntelligence": typeof ai_intelligence_marketIntelligence;
+  "ai/intelligence/marketIntelligenceData": typeof ai_intelligence_marketIntelligenceData;
   "ai/intelligentCache": typeof ai_intelligentCache;
   "ai/intelligentFallback": typeof ai_intelligentFallback;
   "ai/interviewPrep": typeof ai_interviewPrep;
@@ -143,6 +153,8 @@ declare const fullApi: ApiFromModules<{
   "ai/performOcr": typeof ai_performOcr;
   "ai/prompts": typeof ai_prompts;
   "ai/qualityChecks": typeof ai_qualityChecks;
+  "ai/references/referenceManager": typeof ai_references_referenceManager;
+  "ai/references/referenceManagerData": typeof ai_references_referenceManagerData;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;
   "ai/resumeRewrite": typeof ai_resumeRewrite;
   "ai/scoring/analysisFormatter": typeof ai_scoring_analysisFormatter;
@@ -158,6 +170,10 @@ declare const fullApi: ApiFromModules<{
   "ai/scoring/semanticSimilarity": typeof ai_scoring_semanticSimilarity;
   "ai/serverOcr": typeof ai_serverOcr;
   "ai/skillsGapAnalyzer": typeof ai_skillsGapAnalyzer;
+  "ai/socialIntegration/brandAnalyzer": typeof ai_socialIntegration_brandAnalyzer;
+  "ai/socialIntegration/brandAnalyzerData": typeof ai_socialIntegration_brandAnalyzerData;
+  "ai/video/videoResumeAnalyzer": typeof ai_video_videoResumeAnalyzer;
+  "ai/video/videoResumeAnalyzerData": typeof ai_video_videoResumeAnalyzerData;
   aiMonitoring: typeof aiMonitoring;
   "api/resumeScoringAPI": typeof api_resumeScoringAPI;
   applications: typeof applications;
