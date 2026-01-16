@@ -159,8 +159,9 @@ export const storeUser = mutation({
     // Send onboarding email (Email #1)
     if (identity.email) {
       await ctx.scheduler.runAfter(0, internalAny.marketing.sendOnboardingEmail, {
-      email: identity.email || "",
-      name: identity.name,
+        userId: identity.tokenIdentifier,
+        email: identity.email || "",
+        name: identity.name,
         variant: emailVariant,
       });
     }
