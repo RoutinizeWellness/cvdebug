@@ -41,6 +41,7 @@ import type * as ai_jobMatcher from "../ai/jobMatcher.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
 import type * as ai_ml_deepLearning from "../ai/ml/deepLearning.js";
 import type * as ai_ml_localNLP from "../ai/ml/localNLP.js";
+import type * as ai_ml_localTranslation from "../ai/ml/localTranslation.js";
 import type * as ai_ml_successPredictor from "../ai/ml/successPredictor.js";
 import type * as ai_mlEngine from "../ai/mlEngine.js";
 import type * as ai_mlFeedbackLoop from "../ai/mlFeedbackLoop.js";
@@ -154,6 +155,7 @@ declare const fullApi: ApiFromModules<{
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
   "ai/ml/deepLearning": typeof ai_ml_deepLearning;
   "ai/ml/localNLP": typeof ai_ml_localNLP;
+  "ai/ml/localTranslation": typeof ai_ml_localTranslation;
   "ai/ml/successPredictor": typeof ai_ml_successPredictor;
   "ai/mlEngine": typeof ai_mlEngine;
   "ai/mlFeedbackLoop": typeof ai_mlFeedbackLoop;
