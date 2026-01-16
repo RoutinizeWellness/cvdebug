@@ -3,7 +3,7 @@
 import { v } from "convex/values";
 import { action } from "../../_generated/server";
 import { internal } from "../../_generated/api";
-import { callOpenRouter, extractJSON } from "../apiClient";
+import { analyzeTone } from "../ml/deepLearning";
 
 /**
  * PHASE 4 FEATURE 2: VIDEO RESUME ANALYZER & PRESENTATION COACH
@@ -374,59 +374,8 @@ export const analyzeVideoResume = action({
       const fillerWords = detectFillerWords(transcription, timestamps);
       const pacing = analyzePacing(transcription, video.duration);
 
-      // Step 3: Analyze tone using AI
-      const API_KEY = process.env.OPENROUTER_API_KEY;
-      if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
-
-      const tonePrompt = `Analyze the tone and delivery of this video resume transcription. Return JSON only.
-
-Transcription:
-"${transcription}"
-
-Analyze:
-1. Confidence level (0-100): How confident does the speaker sound?
-2. Enthusiasm (0-100): How enthusiastic and energetic?
-3. Professionalism (0-100): How professional is the tone?
-4. Clarity (0-100): How clear and articulate?
-5. Monotone (true/false): Is the delivery monotone?
-6. Energy level (low/moderate/high/very_high)
-7. Emotional range (0-100): Variety in tone and expression
-
-Return JSON:
-{
-  "confidence": 0-100,
-  "enthusiasm": 0-100,
-  "professionalism": 0-100,
-  "clarity": 0-100,
-  "monotone": true/false,
-  "energyLevel": "low|moderate|high|very_high",
-  "emotionalRange": 0-100,
-  "reasoning": "brief explanation"
-}`;
-
-      const toneResponse = await callOpenRouter(API_KEY, {
-        model: "openai/gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert speech coach analyzing video resume presentations. Provide objective, constructive feedback.",
-          },
-          {
-            role: "user",
-            content: tonePrompt,
-          },
-        ],
-      });
-
-      const toneAnalysis = extractJSON(toneResponse) || {
-        confidence: 70,
-        enthusiasm: 65,
-        professionalism: 80,
-        clarity: 75,
-        monotone: false,
-        energyLevel: "moderate",
-        emotionalRange: 60,
-      };
+      // Step 3: Analyze tone using LOCAL ML - NO PAID API!
+      const toneAnalysis = analyzeTone(transcription);
 
       // Step 4: Analyze content
       const contentAnalysis = await analyzeContent(transcription);

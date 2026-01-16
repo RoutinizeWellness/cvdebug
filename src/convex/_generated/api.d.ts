@@ -39,6 +39,7 @@ import type * as ai_intelligentFallback from "../ai/intelligentFallback.js";
 import type * as ai_interviewPrep from "../ai/interviewPrep.js";
 import type * as ai_jobMatcher from "../ai/jobMatcher.js";
 import type * as ai_linkedinOptimizer from "../ai/linkedinOptimizer.js";
+import type * as ai_ml_deepLearning from "../ai/ml/deepLearning.js";
 import type * as ai_ml_localNLP from "../ai/ml/localNLP.js";
 import type * as ai_ml_successPredictor from "../ai/ml/successPredictor.js";
 import type * as ai_mlEngine from "../ai/mlEngine.js";
@@ -151,6 +152,7 @@ declare const fullApi: ApiFromModules<{
   "ai/interviewPrep": typeof ai_interviewPrep;
   "ai/jobMatcher": typeof ai_jobMatcher;
   "ai/linkedinOptimizer": typeof ai_linkedinOptimizer;
+  "ai/ml/deepLearning": typeof ai_ml_deepLearning;
   "ai/ml/localNLP": typeof ai_ml_localNLP;
   "ai/ml/successPredictor": typeof ai_ml_successPredictor;
   "ai/mlEngine": typeof ai_mlEngine;

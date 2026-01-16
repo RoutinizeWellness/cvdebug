@@ -12,6 +12,14 @@ import {
   predictJobMatch,
   optimizeForATS,
 } from "../ml/localNLP";
+import {
+  generateText,
+  parseResume,
+  rewriteContent,
+  parseJobPostingHTML,
+  tailorResume,
+  answerApplicationQuestion,
+} from "../ml/deepLearning";
 
 /**
  * PHASE 4 FEATURE 4: ONE-CLICK JOB APPLICATION AUTOMATOR
@@ -131,55 +139,8 @@ export const parseJobPosting = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
-
-    // Use AI to extract job details from HTML
-    const prompt = `Extract structured job information from this job posting HTML. Return JSON only.
-
-Job URL: ${args.jobUrl}
-HTML:
-${args.jobHtml.slice(0, 8000)} // Limit to avoid token limits
-
-Extract:
-1. Job title
-2. Company name
-3. Location (city, state/country)
-4. Job description (summary)
-5. Required skills/qualifications (array)
-6. Preferred qualifications (array)
-7. Salary range if mentioned (min, max, currency)
-8. Job type (full-time/part-time/contract/internship)
-9. Is remote? (true/false)
-
-Return JSON:
-{
-  "title": "string",
-  "company": "string",
-  "location": "string",
-  "description": "string (1-2 paragraphs)",
-  "requirements": ["required skill 1", "required skill 2", ...],
-  "preferredQualifications": ["preferred 1", ...],
-  "salaryRange": {"min": 100000, "max": 150000, "currency": "USD"} or null,
-  "jobType": "full-time|part-time|contract|internship",
-  "remote": true/false
-}`;
-
-    const response = await callOpenRouter(API_KEY, {
-      model: "openai/gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert at parsing job postings. Extract structured information accurately.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
-
-    const parsed = extractJSON(response);
+    // USE LOCAL HTML PARSING - NO PAID API!
+    const parsed = parseJobPostingHTML(args.jobHtml);
 
     // Detect platform
     let platform: JobPosting["platform"] = "other";
@@ -308,90 +269,32 @@ export const tailorResumeToJob = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
-
     const job = args.jobPosting as JobPosting;
     const resume = args.userResume;
 
-    const prompt = `Tailor this resume for the specific job posting. Return JSON only.
-
-JOB:
-Title: ${job.title}
-Company: ${job.company}
-Requirements: ${job.requirements.join(", ")}
-Preferred: ${job.preferredQualifications.join(", ")}
-Description: ${job.description}
-
-RESUME:
-${JSON.stringify(resume, null, 2)}
-
-Instructions:
-1. Rewrite summary to highlight relevant experience for THIS job
-2. Reorder/rewrite bullet points to emphasize skills matching THIS job
-3. Prioritize skills matching job requirements
-4. Add relevant keywords from job description (without lying)
-5. Maintain truthfulness - only emphasize, don't fabricate
-
-Return JSON:
-{
-  "headline": "Professional headline matching job",
-  "summary": "Tailored 3-4 sentence summary",
-  "experience": [
-    {
-      "title": "Job Title",
-      "company": "Company",
-      "duration": "Jan 2020 - Present",
-      "bullets": ["Bullet 1", "Bullet 2", ...],
-      "highlightedSkills": ["skill1", "skill2"]
-    }
-  ],
-  "skills": ["all skills"],
-  "prioritySkills": ["skills most relevant to THIS job"],
-  "education": [{"degree": "BS Computer Science", "school": "University", "year": "2020"}]
-}`;
-
-    const response = await callOpenRouter(API_KEY, {
-      model: "openai/gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert resume writer specializing in ATS optimization and job tailoring. Be strategic but honest - never fabricate experience.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
-
-    const tailored = extractJSON(response);
+    // USE LOCAL RESUME TAILORING - NO PAID API!
+    const tailored = tailorResume(
+      resume,
+      job.requirements,
+      job.description,
+      job.title
+    );
 
     // Track changes
     const summaryRewritten = tailored.summary !== resume.summary;
-    const keywordsAdded: string[] = [];
-
-    // Detect which keywords from job were added
-    for (const req of job.requirements) {
-      const reqLower = req.toLowerCase();
-      if (tailored.summary.toLowerCase().includes(reqLower) &&
-          !resume.summary?.toLowerCase().includes(reqLower)) {
-        keywordsAdded.push(req);
-      }
-    }
 
     return {
-      headline: tailored.headline || resume.headline,
-      summary: tailored.summary || resume.summary,
-      experience: tailored.experience || resume.experience || [],
-      skills: tailored.skills || resume.skills || [],
-      prioritySkills: tailored.prioritySkills || [],
-      education: tailored.education || resume.education || [],
+      headline: tailored.headline,
+      summary: tailored.summary,
+      experience: tailored.experience,
+      skills: tailored.skills,
+      prioritySkills: tailored.prioritySkills,
+      education: tailored.education,
       tailoringChanges: {
         summaryRewritten,
-        bulletPointsOptimized: tailored.experience?.length || 0,
+        bulletPointsOptimized: tailored.experience.length,
         skillsReordered: true,
-        keywordsAdded,
+        keywordsAdded: tailored.keywordsAdded,
       },
     };
   },
@@ -407,47 +310,35 @@ export const generateCoverLetter = internalAction({
     tone: v.optional(v.union(v.literal("professional"), v.literal("enthusiastic"), v.literal("concise"))),
   },
   handler: async (ctx, args): Promise<string> => {
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
-
     const job = args.jobPosting as JobPosting;
     const tone = args.tone || "professional";
 
-    const prompt = `Write a compelling cover letter for this job application.
+    // USE LOCAL TEXT GENERATION - NO PAID API!
+    // Build context string for the generator
+    const context = `
+      Position: ${job.title}
+      Company: ${job.company}
+      Experience: ${args.userResume.experience?.length || 0} years
+      Skills: ${args.userResume.skills?.join(', ') || 'various technical skills'}
+      Education: ${args.userResume.education?.[0]?.degree || 'relevant education'}
+      Requirements: ${job.requirements.join(', ')}
+    `;
 
-JOB:
-- Title: ${job.title}
-- Company: ${job.company}
-- Requirements: ${job.requirements.slice(0, 5).join(", ")}
+    // Generate cover letter using local algorithm
+    const generatedText = generateText(context, 300, tone);
 
-CANDIDATE BACKGROUND:
-${JSON.stringify(args.userResume, null, 2)}
+    // Enhance with template structure
+    const coverLetter = `
+Dear Hiring Manager,
 
-Tone: ${tone}
-Length: 250-350 words
-Structure:
-1. Opening: Why you're excited about THIS company and role
-2. Body: 2-3 specific achievements that match their needs
-3. Closing: Call to action
+${generatedText}
 
-Return ONLY the cover letter text, no JSON.`;
+Thank you for considering my application. I am enthusiastic about the opportunity to contribute to ${job.company} and would welcome the chance to discuss how my experience aligns with your team's needs.
 
-    const response = await callOpenRouter(API_KEY, {
-      model: "openai/gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert cover letter writer. Write compelling, personalized letters that get interviews.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
+Best regards
+    `.trim();
 
-    // Clean up response (remove markdown, quotes, etc.)
-    return response.trim().replace(/^["']|["']$/g, "");
+    return coverLetter;
   },
 });
 
@@ -461,45 +352,24 @@ export const answerApplicationQuestions = internalAction({
     userResume: v.any(),
   },
   handler: async (ctx, args): Promise<Array<{ question: string; answer: string }>> => {
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
+    const job = args.jobPosting as JobPosting;
+    const resume = args.userResume;
 
+    // USE LOCAL QUESTION ANSWERING - NO PAID API!
     const answers: Array<{ question: string; answer: string }> = [];
 
     for (const question of args.questions) {
-      const prompt = `Answer this job application question professionally and concisely.
-
-Question: "${question}"
-
-Context:
-- Job: ${(args.jobPosting as JobPosting).title} at ${(args.jobPosting as JobPosting).company}
-- Your background: ${JSON.stringify(args.userResume)}
-
-Provide a 2-3 sentence answer that is:
-1. Honest and specific
-2. Relevant to the job
-3. Demonstrates value you bring
-4. Professional tone
-
-Return ONLY the answer text.`;
-
-      const response = await callOpenRouter(API_KEY, {
-        model: "openai/gpt-4o-mini",
-        messages: [
-          {
-            role: "system",
-            content: "You are helping a job seeker answer application questions. Be genuine and professional.",
-          },
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-      });
+      const answer = answerApplicationQuestion(
+        question,
+        job.title,
+        job.company,
+        resume.skills || [],
+        resume.experience?.length || 5
+      );
 
       answers.push({
         question,
-        answer: response.trim(),
+        answer,
       });
     }
 
