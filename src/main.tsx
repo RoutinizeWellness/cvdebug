@@ -261,6 +261,9 @@ function AnimatedRoutes() {
   );
 }
 
+// Hide SSR content when React loads
+document.body.classList.add('react-loaded');
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <VlyToolbar />
