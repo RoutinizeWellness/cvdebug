@@ -713,6 +713,58 @@ const schema = defineSchema(
     .index("by_user", ["userId"])
     .index("by_coupon", ["couponId"])
     .index("by_user_and_coupon", ["userId", "couponId"]),
+
+  // PHASE 3 - API Tables
+  // API Keys for external integrations
+  apiKeys: defineTable({
+    key: v.string(),
+    userId: v.string(),
+    name: v.string(), // User-friendly name
+    tier: v.union(v.literal("free"), v.literal("pro"), v.literal("enterprise")),
+    active: v.boolean(),
+    rateLimit: v.number(), // Requests per hour
+    createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
+    lastUsedAt: v.optional(v.number()),
+  })
+    .index("by_key", ["key"])
+    .index("by_user", ["userId"])
+    .index("by_user_and_active", ["userId", "active"]),
+
+  // API Usage tracking
+  apiUsage: defineTable({
+    apiKey: v.string(),
+    endpoint: v.string(),
+    requestId: v.string(),
+    timestamp: v.number(),
+    processingTime: v.number(),
+    cached: v.boolean(),
+  })
+    .index("by_api_key_and_timestamp", ["apiKey", "timestamp"])
+    .index("by_endpoint", ["endpoint"])
+    .index("by_timestamp", ["timestamp"]),
+
+  // Scoring cache for API
+  scoringCache: defineTable({
+    resumeHash: v.string(),
+    jobDescriptionHash: v.string(),
+    result: v.any(),
+    timestamp: v.number(),
+  })
+    .index("by_hashes", ["resumeHash", "jobDescriptionHash"])
+    .index("by_timestamp", ["timestamp"]),
+
+  // Webhook deliveries
+  webhookDeliveries: defineTable({
+    requestId: v.string(),
+    webhookUrl: v.string(),
+    payload: v.any(),
+    status: v.union(v.literal("delivered"), v.literal("failed")),
+    timestamp: v.number(),
+    retryCount: v.optional(v.number()),
+  })
+    .index("by_request_id", ["requestId"])
+    .index("by_timestamp", ["timestamp"]),
   },
   {
     schemaValidation: false,

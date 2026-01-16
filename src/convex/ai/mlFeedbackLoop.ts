@@ -483,17 +483,18 @@ export const generateMLImprovementRecommendations = internalQuery({
     }
 
     // Recommendation 4: Category model retraining
-    if (feedbackPatterns.insights.needsCategoryRetraining) {
-      recommendations.push({
-        priority: "medium",
-        category: "categorization",
-        action: "Retrain category classification model",
-        impact: "Reduce wrong category classifications by 30-50%",
-        data: {
-          confusionMatrix: feedbackPatterns.categoryConfusion
-        }
-      });
-    }
+    // Note: Category confusion tracking would be added in production
+    // if (feedbackPatterns.insights.needsCategoryRetraining) {
+    //   recommendations.push({
+    //     priority: "medium",
+    //     category: "categorization",
+    //     action: "Retrain category classification model",
+    //     impact: "Reduce wrong category classifications by 30-50%",
+    //     data: {
+    //       confusionMatrix: feedbackPatterns.categoryConfusion
+    //     }
+    //   });
+    // }
 
     // Recommendation 5: BM25 parameter tuning
     recommendations.push({
