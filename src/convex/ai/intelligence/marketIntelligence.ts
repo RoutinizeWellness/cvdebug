@@ -215,7 +215,6 @@ export const generateSkillsForecast = action({
     if (!identity) throw new Error("Not authenticated");
 
     // Get all skills forecasts
-    // @ts-expect-error - Type recursion issue with Convex internal types
     const allForecasts: any[] = await ctx.runQuery(internal.ai.intelligence.marketIntelligenceData.getAllSkillsForecasts, {});
 
     // Filter to most relevant skills (not already in user's skillset)

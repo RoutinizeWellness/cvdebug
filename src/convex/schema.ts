@@ -897,26 +897,29 @@ const schema = defineSchema(
   // Automated job applications
   automatedApplications: defineTable({
     userId: v.string(),
-    jobId: v.string(), // From job postings or external
     jobTitle: v.string(),
     company: v.string(),
     jobUrl: v.string(),
-    platform: v.union(v.literal("linkedin"), v.literal("greenhouse"), v.literal("lever"), v.literal("workday"), v.literal("custom")),
-    status: v.union(v.literal("queued"), v.literal("applying"), v.literal("submitted"), v.literal("failed")),
-    customizedResumeId: v.optional(v.id("resumes")),
+    platform: v.string(), // linkedin, greenhouse, lever, workday, indeed, other
+    status: v.union(
+      v.literal("applied"),
+      v.literal("reviewing"),
+      v.literal("interview"),
+      v.literal("offer"),
+      v.literal("rejected"),
+      v.literal("withdrawn")
+    ),
+    appliedAt: v.number(),
+    lastUpdated: v.optional(v.number()),
+    tailoredResumeSnapshot: v.any(), // Snapshot of tailored resume used
     coverLetter: v.optional(v.string()),
-    customQuestionAnswers: v.optional(v.any()),
-    confidence: v.optional(v.number()), // 0-100 - how confident the bot is
-    queuedAt: v.number(),
-    startedAt: v.optional(v.number()),
-    submittedAt: v.optional(v.number()),
-    errorMessage: v.optional(v.string()),
-    screenshot: v.optional(v.string()), // Base64 or storage ID
+    matchScore: v.optional(v.number()), // 0-100
+    notes: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
     .index("by_status", ["status"])
     .index("by_user_and_status", ["userId", "status"])
-    .index("by_queued_at", ["queuedAt"]),
+    .index("by_applied_at", ["appliedAt"]),
 
   // Market intelligence reports
   marketIntelligence: defineTable({

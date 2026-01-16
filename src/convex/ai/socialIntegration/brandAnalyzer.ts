@@ -340,9 +340,9 @@ export const generateUnifiedBrandAnalysis = action({
       userId: identity.tokenIdentifier,
     });
 
-    const linkedinProfile = profiles.find(p => p.platform === "linkedin");
-    const githubProfile = profiles.find(p => p.platform === "github");
-    const portfolioProfile = profiles.find(p => p.platform === "portfolio");
+    const linkedinProfile = profiles.find((p: any) => p.platform === "linkedin");
+    const githubProfile = profiles.find((p: any) => p.platform === "github");
+    const portfolioProfile = profiles.find((p: any) => p.platform === "portfolio");
 
     // Analyze LinkedIn
     const linkedinAnalysis = linkedinProfile ? {

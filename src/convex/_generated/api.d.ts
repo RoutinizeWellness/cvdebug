@@ -19,6 +19,8 @@ import type * as ai_advancedATSEngine from "../ai/advancedATSEngine.js";
 import type * as ai_advancedScoringActions from "../ai/advancedScoringActions.js";
 import type * as ai_advancedScoringEngine from "../ai/advancedScoringEngine.js";
 import type * as ai_apiClient from "../ai/apiClient.js";
+import type * as ai_automation_applicationAutomator from "../ai/automation/applicationAutomator.js";
+import type * as ai_automation_applicationAutomatorData from "../ai/automation/applicationAutomatorData.js";
 import type * as ai_bulletRewriter from "../ai/bulletRewriter.js";
 import type * as ai_careerTrajectory from "../ai/careerTrajectory.js";
 import type * as ai_chatbot from "../ai/chatbot.js";
@@ -127,6 +129,8 @@ declare const fullApi: ApiFromModules<{
   "ai/advancedScoringActions": typeof ai_advancedScoringActions;
   "ai/advancedScoringEngine": typeof ai_advancedScoringEngine;
   "ai/apiClient": typeof ai_apiClient;
+  "ai/automation/applicationAutomator": typeof ai_automation_applicationAutomator;
+  "ai/automation/applicationAutomatorData": typeof ai_automation_applicationAutomatorData;
   "ai/bulletRewriter": typeof ai_bulletRewriter;
   "ai/careerTrajectory": typeof ai_careerTrajectory;
   "ai/chatbot": typeof ai_chatbot;
