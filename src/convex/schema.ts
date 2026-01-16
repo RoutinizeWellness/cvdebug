@@ -921,6 +921,26 @@ const schema = defineSchema(
     .index("by_user_and_status", ["userId", "status"])
     .index("by_applied_at", ["appliedAt"]),
 
+  // Application outcomes for ML training
+  applicationOutcomes: defineTable({
+    userId: v.string(),
+    applicationId: v.id("automatedApplications"),
+    outcome: v.union(
+      v.literal("interview"),
+      v.literal("offer"),
+      v.literal("rejected"),
+      v.literal("no_response")
+    ),
+    matchScore: v.number(),
+    userExperience: v.number(),
+    skillsMatched: v.number(),
+    daysToResponse: v.optional(v.number()),
+    timestamp: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_outcome", ["outcome"])
+    .index("by_timestamp", ["timestamp"]),
+
   // Market intelligence reports
   marketIntelligence: defineTable({
     userId: v.string(),

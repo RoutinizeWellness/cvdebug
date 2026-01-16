@@ -4,6 +4,14 @@ import { v } from "convex/values";
 import { action, internalAction } from "../../_generated/server";
 import { internal } from "../../_generated/api";
 import { callOpenRouter, extractJSON } from "../apiClient";
+import {
+  extractKeywords,
+  calculateTextSimilarity,
+  extractNamedEntities,
+  scoreResume,
+  predictJobMatch,
+  optimizeForATS,
+} from "../ml/localNLP";
 
 /**
  * PHASE 4 FEATURE 4: ONE-CLICK JOB APPLICATION AUTOMATOR
@@ -213,12 +221,36 @@ export const analyzeJobMatch = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    if (!API_KEY) throw new Error("OPENROUTER_API_KEY not configured");
-
     const job = args.jobPosting as JobPosting;
 
-    // Calculate skill match
+    // USE LOCAL ML ALGORITHMS - NO PAID APIS!
+    // Build resume text from user skills
+    const resumeText = `
+      Skills: ${args.userSkills.join(", ")}
+      Experience: ${args.userExperience} years
+      Education: ${args.userEducation}
+    `;
+
+    // Build job description text
+    const jobDescription = `
+      ${job.description}
+      Requirements: ${job.requirements.join(", ")}
+      Preferred: ${job.preferredQualifications.join(", ")}
+    `;
+
+    // Extract target years from job description
+    const yearsMatch = job.description.match(/(\d+)\+?\s*years?/i);
+    const targetYears = yearsMatch ? parseInt(yearsMatch[1]) : 3;
+
+    // Use ML prediction model
+    const prediction = predictJobMatch(
+      resumeText,
+      jobDescription,
+      args.userExperience,
+      targetYears
+    );
+
+    // Calculate skill match locally
     const requiredSkillsLower = job.requirements.map(r => r.toLowerCase());
     const userSkillsLower = args.userSkills.map(s => s.toLowerCase());
 
@@ -230,63 +262,35 @@ export const analyzeJobMatch = action({
       !userSkillsLower.some(skill => skill.toLowerCase().includes(req.toLowerCase()) || req.toLowerCase().includes(skill))
     );
 
-    // Calculate base match score
-    const skillMatchScore = job.requirements.length > 0
-      ? Math.round((matchedSkills.length / job.requirements.length) * 100)
-      : 50;
+    // Determine experience match
+    let experienceMatch: "under_qualified" | "qualified" | "over_qualified" = "qualified";
+    if (args.userExperience < targetYears - 1) experienceMatch = "under_qualified";
+    else if (args.userExperience > targetYears * 2) experienceMatch = "over_qualified";
 
-    // Use AI for deeper analysis
-    const prompt = `Analyze this job match. Return JSON only.
+    // Estimate competition
+    let estimatedCompetition: "low" | "medium" | "high" | "very_high" = "medium";
+    if (job.title.toLowerCase().includes("senior") || job.title.toLowerCase().includes("lead")) {
+      estimatedCompetition = "high";
+    } else if (job.title.toLowerCase().includes("entry") || job.title.toLowerCase().includes("junior")) {
+      estimatedCompetition = "very_high";
+    }
 
-Job: ${job.title} at ${job.company}
-Requirements: ${job.requirements.join(", ")}
-Preferred: ${job.preferredQualifications.join(", ")}
-
-Candidate:
-- Skills: ${args.userSkills.join(", ")}
-- Experience: ${args.userExperience} years
-- Education: ${args.userEducation}
-
-Matched Skills: ${matchedSkills.join(", ")}
-Missing Skills: ${missingSkills.slice(0, 5).join(", ")}
-
-Return JSON:
-{
-  "matchScore": 0-100,
-  "experienceMatch": "under_qualified|qualified|over_qualified",
-  "requiredEducation": "string",
-  "estimatedCompetition": "low|medium|high|very_high",
-  "applicationDifficulty": "easy|medium|hard",
-  "recommendApply": true/false,
-  "reasoning": "2-3 sentences why you recommend or don't recommend applying"
-}`;
-
-    const response = await callOpenRouter(API_KEY, {
-      model: "openai/gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: "You are a career coach analyzing job matches. Be realistic but encouraging.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-    });
-
-    const analysis = extractJSON(response);
+    // Determine difficulty
+    const applicationDifficulty = missingSkills.length > 5 ? "hard" :
+                                  missingSkills.length > 2 ? "medium" : "easy";
 
     return {
-      matchScore: analysis.matchScore || skillMatchScore,
+      matchScore: prediction.matchScore,
       keySkillsMatched: matchedSkills.slice(0, 10),
       keySkillsMissing: missingSkills.slice(0, 5),
-      experienceMatch: analysis.experienceMatch || "qualified",
-      requiredEducation: analysis.requiredEducation || "Bachelor's degree",
-      estimatedCompetition: analysis.estimatedCompetition || "medium",
-      applicationDifficulty: analysis.applicationDifficulty || "medium",
-      recommendApply: analysis.recommendApply !== false, // Default true
-      reasoning: analysis.reasoning || "Good skills match for this position",
+      experienceMatch,
+      requiredEducation: args.userEducation.includes("Master") || args.userEducation.includes("PhD")
+        ? "Advanced degree preferred"
+        : "Bachelor's degree",
+      estimatedCompetition,
+      applicationDifficulty,
+      recommendApply: prediction.recommendApply,
+      reasoning: prediction.reasoning,
     };
   },
 });
