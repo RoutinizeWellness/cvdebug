@@ -410,6 +410,45 @@ const schema = defineSchema(
     .index("by_user", ["userId"])
     .index("by_outcome", ["outcomeType"]),
 
+  // NEW: Resume Outcomes Tracking - For feedback loop and ML improvement
+  resumeOutcomes: defineTable({
+    resumeId: v.id("resumes"),
+    userId: v.string(),
+    applicationId: v.optional(v.id("applications")),
+    outcome: v.union(
+      v.literal("interview_received"),
+      v.literal("offer_received"),
+      v.literal("rejected"),
+      v.literal("no_response"),
+      v.literal("ghosted")
+    ),
+    jobTitle: v.optional(v.string()),
+    company: v.optional(v.string()),
+    industry: v.optional(v.string()),
+    // Resume characteristics at time of application
+    resumeScore: v.number(),
+    keywordsUsed: v.array(v.string()),
+    bulletPointsCount: v.optional(v.number()),
+    metricsCount: v.optional(v.number()),
+    actionVerbsCount: v.optional(v.number()),
+    starMethodScore: v.optional(v.number()), // NEW: STAR completeness
+    bm25Score: v.optional(v.number()), // NEW: BM25 keyword score
+    // Context
+    appliedDate: v.number(),
+    responseDate: v.optional(v.number()),
+    daysToResponse: v.optional(v.number()),
+    // Learning signals
+    wasSuccessful: v.boolean(), // True for interview/offer, False for rejected/no response
+    confidenceScore: v.optional(v.number()), // User's confidence in the outcome data (1-5)
+    notes: v.optional(v.string()),
+  })
+    .index("by_resume", ["resumeId"])
+    .index("by_user", ["userId"])
+    .index("by_outcome", ["outcome"])
+    .index("by_success", ["wasSuccessful"])
+    .index("by_user_and_outcome", ["userId", "outcome"])
+    .index("by_applied_date", ["appliedDate"]),
+
   // ML Learning: Store learned weights and configurations
   mlConfig: defineTable({
     keywordWeights: v.any(),

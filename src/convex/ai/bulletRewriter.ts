@@ -20,6 +20,109 @@ interface BulletAnalysis {
   hasVagueTerms: boolean;
   suggestedFocus: "metrics" | "action" | "impact" | "balanced";
   weaknessReasons: string[];
+  starAnalysis?: STARComponents; // NEW: STAR method validation
+}
+
+// ============================================================================
+// STAR METHOD ANALYSIS - Industry Best Practice for Achievement Bullets
+// ============================================================================
+
+interface STARComponents {
+  situation: string | null;  // The context or challenge
+  task: string | null;       // The specific responsibility or goal
+  action: string | null;     // What you actually did
+  result: string | null;     // The measurable outcome
+  completeness: number;      // 0-100 score for STAR completeness
+  missingComponents: Array<"situation" | "task" | "action" | "result">;
+  strength: "excellent" | "good" | "fair" | "weak";
+}
+
+/**
+ * Analyze bullet point against STAR (Situation-Task-Action-Result) framework
+ * Used by Amazon, Google, and top tech companies for behavioral interview prep
+ */
+function analyzeSTARMethod(bullet: string): STARComponents {
+  const bulletLower = bullet.toLowerCase();
+  let completeness = 0;
+  const missingComponents: Array<"situation" | "task" | "action" | "result"> = [];
+
+  // 1. SITUATION: Context or challenge detection
+  const situationPatterns = [
+    /\b(?:when|during|while|after|before|as|given|faced with|in response to)\b/gi,
+    /\b(?:challenge|problem|issue|need|requirement|opportunity|crisis)\b/gi,
+    /\b(?:legacy system|outdated|manual process|inefficient|slow|unreliable)\b/gi,
+  ];
+  const hasSituation = situationPatterns.some(p => p.test(bulletLower));
+  const situation = hasSituation ? "Detected context/challenge" : null;
+
+  if (hasSituation) {
+    completeness += 25;
+  } else {
+    missingComponents.push("situation");
+  }
+
+  // 2. TASK: Specific responsibility or goal
+  const taskPatterns = [
+    /\b(?:to|in order to|aimed to|goal was to|responsible for|tasked with|assigned to)\b/gi,
+    /\b(?:objective|target|mission|mandate|directive)\b/gi,
+  ];
+  const hasTask = taskPatterns.some(p => p.test(bulletLower));
+  const task = hasTask ? "Detected goal/responsibility" : null;
+
+  if (hasTask) {
+    completeness += 20;
+  } else {
+    missingComponents.push("task");
+  }
+
+  // 3. ACTION: What was actually done (strongest component - most critical)
+  const actionPatterns = [
+    /\b(?:led|managed|developed|created|designed|implemented|optimized|built|architected|launched)\b/gi,
+    /\b(?:by|through|via|using|leveraging|utilizing|employing|adopting)\b/gi,
+    /\b(?:collaborated|partnered|coordinated|facilitated|drove|spearheaded)\b/gi,
+  ];
+  const hasAction = actionPatterns.some(p => p.test(bulletLower));
+  const action = hasAction ? "Detected action/method" : null;
+
+  if (hasAction) {
+    completeness += 30; // Action is most critical
+  } else {
+    missingComponents.push("action");
+  }
+
+  // 4. RESULT: Measurable outcome (second most critical)
+  const resultPatterns = [
+    /\d+%/g,                                    // Percentages
+    /\$[\d,]+(?:\.\d+)?[kmb]?/gi,              // Money
+    /\b(?:increased|decreased|reduced|improved|grew|saved|generated|achieved)\s+(?:by\s+)?\d+/gi,
+    /\d+[+]?\s*(?:users|customers|team|projects|hours)/gi, // Scale
+    /\b(?:resulting in|leading to|achieving|enabling|delivering)\b/gi,
+  ];
+  const hasResult = resultPatterns.some(p => p.test(bulletLower));
+  const result = hasResult ? "Detected measurable outcome" : null;
+
+  if (hasResult) {
+    completeness += 25;
+  } else {
+    missingComponents.push("result");
+  }
+
+  // Determine strength based on completeness
+  let strength: "excellent" | "good" | "fair" | "weak";
+  if (completeness >= 90) strength = "excellent"; // All 4 components
+  else if (completeness >= 70) strength = "good";   // 3 components (action + result + one)
+  else if (completeness >= 50) strength = "fair";   // 2 components (usually action + result)
+  else strength = "weak";                            // 1 or fewer components
+
+  return {
+    situation,
+    task,
+    action,
+    result,
+    completeness,
+    missingComponents,
+    strength
+  };
 }
 
 interface ContextAnalysis {
@@ -99,12 +202,26 @@ function analyzeBulletWeaknesses(bullet: string): BulletAnalysis {
     weaknessReasons.push("Too long - needs to be more concise");
   }
 
+  // NEW: Analyze STAR completeness
+  const starAnalysis = analyzeSTARMethod(bullet);
+
+  // Add STAR-based penalties to weakness score
+  if (starAnalysis.strength === "weak") {
+    weaknessScore += 20;
+    weaknessReasons.push(`STAR Method: Only ${starAnalysis.completeness}% complete - missing ${starAnalysis.missingComponents.join(", ")}`);
+  } else if (starAnalysis.strength === "fair") {
+    weaknessScore += 10;
+    weaknessReasons.push(`STAR Method: ${starAnalysis.completeness}% complete - could improve by adding ${starAnalysis.missingComponents.join(", ")}`);
+  }
+
   // Determine suggested focus based on analysis
   let suggestedFocus: "metrics" | "action" | "impact" | "balanced";
   if (!hasMetrics) {
     suggestedFocus = "metrics"; // Needs metrics desperately
   } else if (!hasStrongVerb || hasPassiveLanguage) {
     suggestedFocus = "action"; // Needs stronger verbs
+  } else if (starAnalysis.strength === "weak" || starAnalysis.strength === "fair") {
+    suggestedFocus = "impact"; // Needs better STAR structure
   } else if (weaknessScore > 20) {
     suggestedFocus = "impact"; // Needs to emphasize results
   } else {
@@ -119,6 +236,7 @@ function analyzeBulletWeaknesses(bullet: string): BulletAnalysis {
     hasVagueTerms,
     suggestedFocus,
     weaknessReasons,
+    starAnalysis, // Include STAR analysis in result
   };
 }
 
@@ -399,6 +517,14 @@ BULLET ANALYSIS (Current Weaknesses):
 - Suggested Focus: ${analysis.suggestedFocus.toUpperCase()}
 - Key Issues: ${analysis.weaknessReasons.join("; ")}
 
+STAR METHOD ANALYSIS (Situation-Task-Action-Result):
+- Completeness: ${analysis.starAnalysis?.completeness || 0}% (${analysis.starAnalysis?.strength.toUpperCase() || "UNKNOWN"})
+- Situation (Context): ${analysis.starAnalysis?.situation || "❌ MISSING - Add context/challenge"}
+- Task (Goal): ${analysis.starAnalysis?.task || "❌ MISSING - Add specific objective"}
+- Action (Method): ${analysis.starAnalysis?.action || "❌ MISSING - Add what you did"}
+- Result (Outcome): ${analysis.starAnalysis?.result || "❌ MISSING - Add measurable outcome"}
+${analysis.starAnalysis?.missingComponents.length ? `⚠️ MUST ADD: ${analysis.starAnalysis.missingComponents.join(", ").toUpperCase()}` : "✓ All STAR components present"}
+
 RECOMMENDED METRIC TYPES for this role/industry:
 ${contextAnalysis?.recommendedMetricTypes.map(m => `  • ${m}`).join("\n") || "  • General business impact metrics"}
 ` : "";
@@ -435,7 +561,7 @@ SENIOR LEVEL - AGGRESSIVE ROI and leadership focus:
 - CRITICAL: Every bullet MUST show either: (1) Money impact ($XXX), (2) People led (X team members), or (3) Scale (X users/systems affected)`
   };
 
-  return `You are an expert resume writer specializing in the Google XYZ formula for writing impactful bullet points with ADVANCED ANALYTICS.
+  return `You are an expert resume writer specializing in the Google XYZ formula AND STAR method for writing impactful bullet points with ADVANCED ANALYTICS.
 
 ${contextInfo}
 ${analysisInsights}
@@ -443,13 +569,20 @@ ${analysisInsights}
 Original bullet point:
 "${bulletPoint}"
 
-Rewrite this bullet point using the Google XYZ formula:
-"Accomplished [X] as measured by [Y], by doing [Z]"
+Rewrite this bullet point using BOTH frameworks:
 
-Where:
-- X = What you accomplished (the action/result)
-- Y = How you measured it (metrics, numbers, percentages)
-- Z = How you did it (the method/approach)
+1. GOOGLE XYZ FORMULA: "Accomplished [X] as measured by [Y], by doing [Z]"
+   - X = What you accomplished (the action/result)
+   - Y = How you measured it (metrics, numbers, percentages)
+   - Z = How you did it (the method/approach)
+
+2. STAR METHOD: Ensure ALL four components are present:
+   - S (Situation): Context or challenge faced
+   - T (Task): Specific goal or responsibility
+   - A (Action): What you did and how you did it
+   - R (Result): Measurable outcome with metrics
+
+CRITICAL: Your rewrite MUST include all STAR components that are currently missing (see analysis above)
 
 ${experienceGuidelines[experienceLevel]}
 

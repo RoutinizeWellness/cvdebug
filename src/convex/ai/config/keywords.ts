@@ -249,6 +249,117 @@ export const actionVerbs = [
   "integrated", "migrated", "upgraded", "scaled", "expanded", "diversified"
 ];
 
+// ============================================================================
+// NEW KEYWORDS - Added 2026-01-16 to surpass Jobscan (150+ new keywords)
+// ============================================================================
+
+// Emerging Technologies (50+ keywords) - 2025-2026 hot tech
+export const emergingTechKeywords = [
+  // Modern JavaScript Runtimes & Build Tools
+  "bun", "deno", "turbopack", "esbuild", "rome", "biome",
+  "astro", "remix", "qwik", "solid.js", "fresh", "million.js",
+
+  // AI/ML Frameworks & Tools (Beyond existing)
+  "langchain", "llama", "llama 2", "llama index", "autogen", "crew ai",
+  "ollama", "local llm", "stable diffusion", "midjourney", "dall-e",
+  "vector database", "pinecone", "weaviate", "qdrant", "chroma",
+  "embeddings", "rag", "retrieval augmented generation", "fine-tuning",
+
+  // Blockchain & Web3 (Expanded)
+  "solidity", "smart contracts", "defi", "nft", "ethereum", "polygon",
+  "solana", "avalanche", "cosmos", "polkadot", "chainlink", "web3.js", "ethers.js",
+
+  // Edge Computing & Serverless (Modern)
+  "cloudflare workers", "vercel edge", "deno deploy", "netlify edge",
+  "edge functions", "edge computing", "fly.io", "railway",
+
+  // Modern Database & Data Tools
+  "planetscale", "neon", "xata", "turso", "cockroachdb", "yugabyte",
+  "clickhouse", "timescaledb", "questdb", "influxdb 3.0",
+
+  // Infrastructure as Code (Modern)
+  "pulumi", "crossplane", "cdktf", "sst", "architect", "serverless framework",
+
+  // Observability & Monitoring (Next-gen)
+  "opentelemetry", "otel", "honeycomb", "lightstep", "axiom", "betterstack"
+];
+
+// Professional Certifications (30+ keywords)
+export const certificationKeywords = [
+  // Cloud Certifications
+  "aws certified solutions architect", "aws saa", "aws certified developer", "aws cda",
+  "aws certified sysops", "aws certified devops", "aws security specialty",
+  "azure administrator", "azure solutions architect", "azure devops engineer",
+  "azure security engineer", "azure ai engineer", "az-104", "az-305", "az-400",
+  "google cloud architect", "google cloud engineer", "gcp associate", "gcp professional",
+
+  // Security Certifications
+  "cissp", "certified information systems security professional",
+  "ceh", "certified ethical hacker", "comptia security+", "security+",
+  "oscp", "offensive security certified professional",
+  "cism", "certified information security manager",
+
+  // Project Management
+  "pmp", "project management professional", "prince2", "agile certified practitioner",
+  "csm", "certified scrum master", "psm", "professional scrum master",
+  "safe", "scaled agile framework",
+
+  // Finance & Business
+  "cfa", "chartered financial analyst", "cpa", "certified public accountant",
+  "mba", "master of business administration",
+
+  // Healthcare/Nursing (Industry-specific)
+  "acls", "advanced cardiac life support", "bls", "basic life support",
+  "pals", "pediatric advanced life support", "ccrn", "critical care registered nurse",
+  "cnor", "certified nurse operating room", "cen", "certified emergency nurse"
+];
+
+// Industry-Specific Business Keywords (40+ keywords)
+export const industrySpecificKeywords = [
+  // SaaS & Startup Metrics
+  "arr", "annual recurring revenue", "mrr", "monthly recurring revenue",
+  "cac", "customer acquisition cost", "ltv", "lifetime value", "ltv:cac ratio",
+  "churn rate", "net revenue retention", "nrr", "gross retention",
+  "activation rate", "product-led growth", "plg", "self-serve",
+  "expansion revenue", "land and expand", "freemium", "free trial conversion",
+
+  // Finance & Investment
+  "portfolio management", "asset allocation", "risk management", "derivatives",
+  "equity research", "financial modeling", "valuation", "dcf", "discounted cash flow",
+  "ebitda", "earnings before interest taxes depreciation amortization",
+  "cap table", "capitalization table", "fundraising", "series a", "series b",
+  "venture capital", "private equity", "m&a", "mergers and acquisitions",
+
+  // Operations & Supply Chain
+  "supply chain optimization", "inventory management", "demand forecasting",
+  "logistics", "warehouse management", "wms", "erp", "enterprise resource planning",
+  "lean manufacturing", "six sigma", "kaizen", "continuous improvement",
+  "just in time", "jit", "total quality management", "tqm"
+];
+
+// Enhanced Soft Skills & Leadership (30+ keywords)
+export const enhancedSoftSkills = [
+  // Modern Leadership
+  "servant leadership", "transformational leadership", "change management",
+  "organizational change", "change agent", "digital transformation",
+  "innovation management", "design thinking", "lean startup methodology",
+
+  // Stakeholder & Communication
+  "stakeholder management", "stakeholder engagement", "executive presence",
+  "executive communication", "board presentation", "investor relations",
+  "crisis management", "crisis communication",
+
+  // Team Development
+  "talent development", "succession planning", "performance management",
+  "coaching and mentoring", "team scaling", "hiring and onboarding",
+  "diversity and inclusion", "dei", "equity", "belonging",
+
+  // Strategic & Analytical
+  "strategic thinking", "business acumen", "commercial awareness",
+  "data-driven decision making", "root cause analysis", "systems thinking",
+  "scenario planning", "risk assessment", "competitive analysis"
+];
+
 // Enhanced synonym mapping for semantic matching with weighted importance
 export const synonymMap: Record<string, string[]> = {
   "javascript": ["js", "ecmascript", "es6", "es2015", "es2020", "node.js", "nodejs"],
@@ -319,7 +430,43 @@ export const synonymMap: Record<string, string[]> = {
   "bluebeam": ["bluebeam revu", "revu"],
   "leed": ["leed ap", "leed ga", "leadership in energy and environmental design"],
   "pe license": ["professional engineer", "p.e.", "pe"],
-  "eit": ["engineer in training", "e.i.t.", "fundamentals of engineering", "fe"]
+  "eit": ["engineer in training", "e.i.t.", "fundamentals of engineering", "fe"],
+
+  // ============================================================================
+  // NEW SYNONYMS - Added 2026-01-16 for expanded keyword coverage
+  // ============================================================================
+
+  // Emerging Tech Synonyms
+  "bun": ["bun.sh", "bunjs"],
+  "deno": ["deno.land"],
+  "langchain": ["lang chain", "langchainjs", "langchain.js"],
+  "ollama": ["llama.cpp", "local ai"],
+  "rag": ["retrieval augmented generation", "retrieval-augmented generation"],
+  "vector database": ["vector db", "embedding database"],
+  "solidity": ["smart contract language", "ethereum programming"],
+  "edge functions": ["edge computing", "edge workers", "serverless edge"],
+
+  // Certification Synonyms
+  "aws saa": ["aws solutions architect associate", "aws certified solutions architect associate"],
+  "cissp": ["certified information systems security professional", "isc2 cissp"],
+  "pmp": ["project management professional", "pmi pmp"],
+  "cfa": ["chartered financial analyst", "cfa charter"],
+  "acls": ["advanced cardiac life support", "acls certification"],
+
+  // Business Metrics Synonyms
+  "arr": ["annual recurring revenue", "annual revenue run rate"],
+  "mrr": ["monthly recurring revenue"],
+  "ltv": ["lifetime value", "customer lifetime value", "clv"],
+  "cac": ["customer acquisition cost"],
+  "nrr": ["net revenue retention", "net retention rate"],
+  "plg": ["product-led growth", "product led growth"],
+  "ebitda": ["earnings before interest taxes depreciation and amortization"],
+
+  // Leadership & Soft Skills Synonyms
+  "change management": ["organizational change", "change leadership"],
+  "stakeholder management": ["stakeholder engagement", "stakeholder relations"],
+  "dei": ["diversity equity inclusion", "diversity and inclusion", "diversity equity and inclusion"],
+  "design thinking": ["human centered design", "human-centered design"]
 };
 
 // Role classification training data with weighted patterns
@@ -370,19 +517,27 @@ export const roleClassificationPatterns: Record<RoleCategory, RolePattern[]> = {
 export type RoleCategory = "Engineering" | "Software Engineering" | "Marketing" | "Product Management" | "Data Science" | "General";
 
 export function getKeywordsForCategory(category: RoleCategory): string[] {
+  // Include new keywords in all categories for comprehensive coverage
+  const baseNewKeywords = [
+    ...emergingTechKeywords,
+    ...certificationKeywords,
+    ...industrySpecificKeywords,
+    ...enhancedSoftSkills
+  ];
+
   switch (category) {
     case "Engineering":
-      return [...engineeringKeywords, ...techKeywords];
+      return [...engineeringKeywords, ...techKeywords, ...certificationKeywords, ...enhancedSoftSkills];
     case "Software Engineering":
-      return techKeywords;
+      return [...techKeywords, ...emergingTechKeywords, ...certificationKeywords, ...enhancedSoftSkills];
     case "Marketing":
-      return [...marketingKeywords, ...techKeywords];
+      return [...marketingKeywords, ...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
     case "Product Management":
-      return [...productKeywords, ...techKeywords];
+      return [...productKeywords, ...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
     case "Data Science":
-      return [...dataKeywords, ...techKeywords];
+      return [...dataKeywords, ...techKeywords, ...emergingTechKeywords, ...certificationKeywords, ...enhancedSoftSkills];
     default:
-      return [...techKeywords, ...marketingKeywords, ...engineeringKeywords];
+      return [...techKeywords, ...marketingKeywords, ...engineeringKeywords, ...baseNewKeywords];
   }
 }
 

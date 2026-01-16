@@ -14,6 +14,7 @@ import {
   calculateComprehensiveScore,
   analyzeCompetitivePosition,
 } from "./advancedScoringEngine";
+import { calculateBM25KeywordScore } from "./scoring/bm25Scoring";
 
 /**
  * Run complete comprehensive scoring analysis
@@ -264,28 +265,23 @@ function extractSkillsFromText(text: string): string[] {
 }
 
 function estimateKeywordScore(resumeText: string, jobDescription: string): number {
-  if (!jobDescription) return 70; // Default if no job description
+  // Use BM25 algorithm for superior keyword matching (industry standard)
+  // BM25 is used by Elasticsearch, Lucene, and beats TF-IDF in most cases
 
-  const resumeLower = resumeText.toLowerCase();
-  const jobLower = jobDescription.toLowerCase();
-
-  // Extract words from job description
-  const jobWords = jobLower
-    .split(/\s+/)
-    .filter(w => w.length > 4) // Only words longer than 4 chars
-    .filter(w => !['about', 'would', 'should', 'could', 'their', 'where', 'which'].includes(w));
-
-  const uniqueJobWords = new Set(jobWords);
-  let matchCount = 0;
-
-  for (const word of uniqueJobWords) {
-    if (resumeLower.includes(word)) {
-      matchCount++;
-    }
+  if (!jobDescription || jobDescription.trim().length === 0) {
+    // Fallback to category-based scoring without JD
+    return calculateBM25KeywordScore(resumeText, undefined, 'Software Engineering', 100);
   }
 
-  const score = Math.round((matchCount / uniqueJobWords.size) * 100);
-  return Math.min(100, Math.max(0, score));
+  // Calculate BM25 score (0-100 scale)
+  const bm25Score = calculateBM25KeywordScore(
+    resumeText,
+    jobDescription,
+    'Software Engineering', // Default category, could be parameterized
+    100 // Max score of 100
+  );
+
+  return Math.min(100, Math.max(0, Math.round(bm25Score)));
 }
 
 function countImpactMetrics(text: string): number {
