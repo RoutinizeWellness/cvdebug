@@ -41,11 +41,40 @@ const schema = defineSchema(
     fomoGapEmailSent: v.optional(v.boolean()),
     // User preferences
     analyticsSharing: v.optional(v.boolean()),
+    emailPreferences: v.optional(v.any()), // Custom email preferences per category
+    unsubscribedFromMarketing: v.optional(v.boolean()),
   })
   .index("by_token", ["tokenIdentifier"])
   .index("by_email", ["email"])
   .index("by_subscription_tier", ["subscriptionTier"])
   .index("by_device_fingerprint", ["deviceFingerprint"]),
+
+  // Email log for frequency tracking and analytics
+  emailLog: defineTable({
+    userId: v.string(),
+    category: v.string(), // ONBOARDING, RESUME_TIPS, etc.
+    emailType: v.string(), // Specific email template
+    subject: v.string(),
+    timestamp: v.number(),
+    opened: v.boolean(),
+    clicked: v.boolean(),
+  })
+  .index("by_user_and_timestamp", ["userId", "timestamp"])
+  .index("by_category", ["category"]),
+
+  // Notifications table (for batching into digest emails)
+  notifications: defineTable({
+    userId: v.string(),
+    category: v.string(),
+    title: v.string(),
+    message: v.string(),
+    timestamp: v.number(),
+    read: v.boolean(),
+    emailSent: v.boolean(),
+    actionUrl: v.optional(v.string()),
+  })
+  .index("by_user", ["userId"])
+  .index("by_user_and_read", ["userId", "read"]),
 
   // NEW: Device usage tracking for anti-cheat
   deviceUsage: defineTable({
