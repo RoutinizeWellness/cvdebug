@@ -3,22 +3,28 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Upload, AlertTriangle, CheckCircle, Loader2, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
+import { useAction } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { createWorker, type Worker as TesseractWorker } from 'tesseract.js';
 
 export function QuickIntegrityCheck() {
   const [file, setFile] = useState<File | null>(null);
   const [checking, setChecking] = useState(false);
   const [result, setResult] = useState<{
+    score: number;
     hasIssue: boolean;
     message: string;
+    details?: string;
   } | null>(null);
   const navigate = useNavigate();
+  const getQuickScore = useAction(api.ai.advancedScoringActions.getQuickScore);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
-    if (!selectedFile.type.includes("pdf")) {
-      alert("Please upload a PDF file");
+    if (!selectedFile.type.includes("pdf") && !selectedFile.type.includes("image")) {
+      alert("Please upload a PDF or image file");
       return;
     }
 
@@ -26,22 +32,58 @@ export function QuickIntegrityCheck() {
     setChecking(true);
     setResult(null);
 
-    // Simulate quick integrity check (in production, this would call a lightweight API)
-    setTimeout(() => {
-      // Simple heuristic: check file size and name patterns
-      const hasComplexName = /[^\x20-\x7E]/.test(selectedFile.name);
-      const isSuspiciousSize = selectedFile.size < 50000 || selectedFile.size > 5000000;
-      
-      const hasIssue = hasComplexName || isSuspiciousSize || Math.random() > 0.6;
+    try {
+      // Extract text from PDF/image using Tesseract OCR
+      let extractedText = "";
 
-      setResult({
-        hasIssue,
-        message: hasIssue
-          ? "⚠️ Image Trap Detected - Your PDF may be unreadable by ATS systems"
-          : "✓ Basic integrity check passed - but deeper analysis recommended"
+      // Extract text using Tesseract OCR
+      const worker = await createWorker(['eng']);
+      try {
+        const { data: { text } } = await worker.recognize(selectedFile);
+        extractedText = text;
+      } finally {
+        await worker.terminate();
+      }
+
+      // Call the real ML scoring engine (same as dashboard)
+      const scoreResult = await getQuickScore({
+        resumeText: extractedText
       });
+
+      if (scoreResult.success && scoreResult.data) {
+        const score = scoreResult.data.score || 0;
+        const hasIssue = score < 70; // Below 70 is problematic
+
+        setResult({
+          score,
+          hasIssue,
+          message: hasIssue
+            ? `⚠️ ATS Score: ${score}/100 - Your resume needs optimization`
+            : `✓ ATS Score: ${score}/100 - Good baseline, but full analysis recommended`,
+          details: hasIssue
+            ? "Low ATS compatibility detected. This could reduce your interview chances by 60%+"
+            : "Basic formatting looks good. Get detailed keyword analysis to maximize interview rates."
+        });
+      } else {
+        // Fallback if ML analysis fails
+        setResult({
+          score: 0,
+          hasIssue: true,
+          message: "⚠️ Unable to analyze - PDF may have parsing issues",
+          details: "Your file structure prevented analysis. This is a red flag for ATS systems."
+        });
+      }
+    } catch (error) {
+      console.error("Analysis error:", error);
+      setResult({
+        score: 0,
+        hasIssue: true,
+        message: "⚠️ Analysis failed - File may be incompatible with ATS",
+        details: "Could not extract text from your resume. ATS systems will likely fail too."
+      });
+    } finally {
       setChecking(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -112,14 +154,36 @@ export function QuickIntegrityCheck() {
                     ) : (
                       <CheckCircle className="h-6 w-6 text-green-400 flex-shrink-0 mt-1" />
                     )}
-                    <div>
-                      <p className={`font-semibold ${result.hasIssue ? "text-red-300" : "text-green-300"}`}>
+                    <div className="flex-1">
+                      <p className={`font-semibold text-lg ${result.hasIssue ? "text-red-300" : "text-green-300"}`}>
                         {result.message}
                       </p>
-                      {result.hasIssue && (
+                      {result.details && (
                         <p className="text-slate-400 text-sm mt-2">
-                          Your file may be invisible to ATS systems. This could cost you interviews.
+                          {result.details}
                         </p>
+                      )}
+                      {result.score > 0 && (
+                        <div className="mt-3">
+                          <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                            <span>ATS Compatibility</span>
+                            <span>{result.score}/100</span>
+                          </div>
+                          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${result.score}%` }}
+                              transition={{ duration: 1, ease: "easeOut" }}
+                              className={`h-full ${
+                                result.score >= 80
+                                  ? "bg-green-500"
+                                  : result.score >= 60
+                                  ? "bg-yellow-500"
+                                  : "bg-red-500"
+                              }`}
+                            />
+                          </div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -129,8 +193,8 @@ export function QuickIntegrityCheck() {
                     className="w-full bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-bold shadow-lg flex items-center justify-center gap-2"
                   >
                     {result.hasIssue
-                      ? "See Full Damage Report (Free)"
-                      : "Get Complete ATS Analysis (Free)"}
+                      ? "See Full Analysis & Fix Issues (Free)"
+                      : "Get Detailed Keyword & Format Analysis (Free)"}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </motion.div>
@@ -139,7 +203,7 @@ export function QuickIntegrityCheck() {
           </div>
 
           <p className="text-center text-xs text-slate-500 mt-4">
-            This is a quick surface check. Full analysis includes keyword matching, format validation, and Robot View.
+            ✨ Powered by the same ML engine as our premium scanner. Full analysis includes Robot View, keyword gap analysis, and AI-powered recommendations.
           </p>
         </motion.div>
       </div>
