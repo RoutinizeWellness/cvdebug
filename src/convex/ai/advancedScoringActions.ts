@@ -111,24 +111,43 @@ export const getQuickScore = action({
     try {
       const { resumeText, jobDescription = '' } = args;
 
-      // Quick estimates
+      // IMPORTANT: Use EXACT same calculation as dashboard (generateIntelligentFallback)
+      // This ensures consistency between landing page preview and full dashboard analysis
+
+      // Calculate keyword score (same as dashboard's finalKeywordScore)
       const keywordScore = estimateKeywordScore(resumeText, jobDescription);
+
+      // Calculate format score (based on metrics and structure)
       const impactMetricsCount = countImpactMetrics(resumeText);
       const bulletPoints = extractBulletPoints(resumeText);
-      const achievementQuality = scoreAchievementQuality(bulletPoints);
-
-      // Quick overall score calculation
-      const quickScore = Math.round(
-        keywordScore * 0.4 +
-        achievementQuality.score * 0.3 +
-        Math.min(100, (impactMetricsCount / 15) * 100) * 0.3
+      const hasGoodStructure = bulletPoints.length >= 5;
+      const formatScore = Math.round(
+        (hasGoodStructure ? 65 : 50) +
+        Math.min(20, (impactMetricsCount / 15) * 20)
       );
+
+      // Calculate completeness score (based on achievement quality)
+      const achievementQuality = scoreAchievementQuality(bulletPoints);
+      const completenessScore = Math.round(achievementQuality.score);
+
+      // EXACT SAME FORMULA AS DASHBOARD (intelligentFallback.ts line 177-181)
+      // overallScore = (finalKeywordScore * 0.45) + (finalFormatScore * 0.30) + (finalCompletenessScore * 0.25)
+      const quickScore = Math.round(
+        (keywordScore * 0.45) +
+        (formatScore * 0.30) +
+        (completenessScore * 0.25)
+      );
+
+      console.log(`[QuickScore] Keyword: ${keywordScore}, Format: ${formatScore}, Completeness: ${completenessScore} → Final: ${quickScore}`);
 
       return {
         success: true,
         data: {
-          quickScore,
+          score: quickScore, // Changed from quickScore to score for consistency
+          quickScore, // Keep for backward compatibility
           keywordScore,
+          formatScore,
+          completenessScore,
           achievementScore: achievementQuality.score,
           impactMetricsCount,
           estimatedGrade: getGrade(quickScore),
