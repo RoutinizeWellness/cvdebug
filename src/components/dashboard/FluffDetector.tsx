@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
+import { toast } from "sonner";
 
 interface WeakPhrase {
   phrase: string;
@@ -768,8 +769,37 @@ export function FluffDetector({
                       </div>
                     </div>
 
-                    <button className="w-full mt-3 px-3 py-2 bg-[#8B5CF6] hover:bg-[#8B5CF6] text-[#0F172A] text-xs font-semibold rounded transition-colors">
-                      Apply Selected Metric
+                    <button
+                      onClick={() => {
+                        const selectedIndex = selectedMetrics[index];
+                        if (selectedIndex !== undefined) {
+                          const selectedSuggestion = achievement.suggestions[selectedIndex];
+                          // Copy to clipboard
+                          navigator.clipboard.writeText(selectedSuggestion).then(() => {
+                            toast.success("Metric copied to clipboard!", {
+                              description: `"${selectedSuggestion}" - You can now paste this into your resume.`,
+                              duration: 4000,
+                            });
+                          }).catch(() => {
+                            toast.error("Failed to copy to clipboard", {
+                              description: "Please try selecting the text manually.",
+                            });
+                          });
+                        } else {
+                          toast.warning("Please select a metric first", {
+                            description: "Choose one of the AI-suggested quantifications above.",
+                            duration: 3000,
+                          });
+                        }
+                      }}
+                      disabled={selectedMetrics[index] === undefined}
+                      className={`w-full mt-3 px-3 py-2 text-white text-xs font-semibold rounded transition-all ${
+                        selectedMetrics[index] !== undefined
+                          ? "bg-[#8B5CF6] hover:bg-[#7C3AED] shadow-lg shadow-purple-500/30 cursor-pointer"
+                          : "bg-gray-300 cursor-not-allowed opacity-60"
+                      }`}
+                    >
+                      {selectedMetrics[index] !== undefined ? "📋 Copy Selected Metric" : "Select a Metric First"}
                     </button>
                   </motion.div>
                 ))
