@@ -1,4 +1,12 @@
 import { synonymMap, getKeywordsForCategory, type RoleCategory } from "../config/keywords";
+import {
+  PROGRAMMING_LANG_EXAMPLES,
+  FRAMEWORK_EXAMPLES,
+  DATABASE_EXAMPLES,
+  CLOUD_DEVOPS_EXAMPLES,
+  TOOLS_EXAMPLES,
+  getKeywordExample
+} from "./keywordExamples";
 
 export interface KeywordResult {
   foundKeywords: Array<{keyword: string, frequency: number, weight: number}>;
@@ -363,56 +371,28 @@ export function calculateKeywordScore(
         const isMethodology = /agile|scrum|kanban|waterfall|devops|lean/i.test(term);
         const isSkill = /design|develop|manage|lead|analyz|optimi|implement|architect|deploy/i.test(term);
         const isMultiWord = term.includes(' ');
-        const isProgrammingLang = /^(python|java|javascript|typescript|c\+\+|go|rust|ruby|php|swift|kotlin|julia|matlab|r|scala|perl)$/i.test(term);
-        const isFramework = /react|angular|vue|django|flask|spring|express|rails|laravel|tensorflow|pytorch|scikit/i.test(term);
-        const isDatabase = /sql|postgres|mysql|mongodb|redis|dynamodb|cassandra|elasticsearch/i.test(term);
-        const isCloud = /aws|azure|gcp|docker|kubernetes|terraform|ansible|jenkins/i.test(term);
+        // MASSIVELY EXPANDED DETECTION PATTERNS
+        const isProgrammingLang = /^(python|java|javascript|typescript|c\+\+|c#|go|rust|ruby|php|swift|kotlin|julia|matlab|r|scala|perl|haskell|elixir|clojure|dart|objective-c|f#|bash|powershell|lua|cobol|fortran|vb\.net|sas|stata|c)$/i.test(term);
+        const isFramework = /react|angular|vue|django|flask|spring|express|rails|laravel|tensorflow|pytorch|scikit|keras|xgboost|huggingface|spacy|opencv|next\.js|svelte|ember|backbone|fastapi|gin|axum|ionic|xamarin|flutter|unity|unreal|godot|jest|pytest|selenium|cypress|junit|mocha/i.test(term);
+        const isDatabase = /sql|postgres|mysql|mongodb|redis|dynamodb|cassandra|elasticsearch|solr|neo4j|influxdb|timescaledb|memcached|couchdb|firebase|mariadb|oracle|hazelcast|dgraph|algolia|snowflake|bigquery|redshift|sqlite/i.test(term);
+        const isCloud = /aws|azure|gcp|docker|kubernetes|terraform|ansible|jenkins|gitlab|github|circleci|travis|helm|openshift|nomad|cloudformation|pulumi|chef|puppet|prometheus|grafana|datadog|splunk|elk|digitalocean|heroku/i.test(term);
 
-        // HIGHLY SPECIFIC CONTEXT GENERATION
+        // USE MASSIVE LIBRARY OF 200+ EXAMPLES
         if (isProgrammingLang) {
           section = "Technical Skills & Projects";
-          const langExamples: Record<string, string> = {
-            'python': 'Built data pipeline using Python (Pandas, NumPy) to process 2M+ records daily, reducing ETL time from 4 hours to 45 minutes',
-            'java': 'Developed microservices in Java (Spring Boot) handling 50k requests/sec with 99.9% uptime for e-commerce platform serving 100k+ users',
-            'javascript': 'Implemented real-time dashboard with JavaScript (React, Node.js) improving user engagement by 35% and reducing page load time to <1.5s',
-            'typescript': 'Refactored codebase to TypeScript catching 200+ type errors pre-deployment, reducing production bugs by 60%',
-            'julia': 'Developed high-performance numerical algorithms in Julia for scientific computing, achieving 10x speed improvement over Python for matrix operations on 1M+ data points',
-            'matlab': 'Built signal processing system in MATLAB analyzing 50GB sensor data, reducing analysis time from 12 hours to 2 hours and increasing detection accuracy by 25%',
-            'r': 'Created statistical models in R for customer segmentation analyzing 500k+ records, improving targeting precision by 40% and increasing conversion rate by 18%',
-            'go': 'Built concurrent API gateway in Go handling 100k+ requests/sec with <10ms latency, replacing legacy system and reducing infrastructure costs by 45%',
-          };
-          contextExample = langExamples[term.toLowerCase()] ||
+          contextExample = PROGRAMMING_LANG_EXAMPLES[term.toLowerCase()] ||
             `Showcase ${term} projects with scale and impact. Example: "Developed [specific feature] using ${term} processing X records/requests achieving Y% performance improvement and $Z cost savings"`;
         } else if (isFramework) {
           section = "Technical Stack & Architecture";
-          const frameworkExamples: Record<string, string> = {
-            'react': 'Built responsive web app with React (Hooks, Context API) serving 50k+ daily users, reducing bundle size by 40% and improving load time to <2s',
-            'django': 'Architected Django REST API with 30+ endpoints handling 20k requests/min, implementing caching that reduced database load by 70%',
-            'tensorflow': 'Trained TensorFlow deep learning model achieving 94% accuracy on 100k+ images, deployed to production serving 10k predictions/day',
-            'pytorch': 'Developed PyTorch neural network for NLP task processing 1M+ documents, improving classification accuracy from 78% to 92%',
-            'spring': 'Built Spring Boot microservices architecture with 15+ services, reducing deployment time from 2 hours to 15 minutes via CI/CD automation',
-          };
-          contextExample = frameworkExamples[term.toLowerCase()] ||
+          contextExample = FRAMEWORK_EXAMPLES[term.toLowerCase()] ||
             `Demonstrate ${term} expertise with metrics. Example: "Architected system using ${term} serving X users/requests, achieving Y% performance gain and reducing Z costs by $W"`;
         } else if (isDatabase) {
           section = "Data Management & Optimization";
-          const dbExamples: Record<string, string> = {
-            'postgresql': 'Optimized PostgreSQL queries and indexes processing 10M+ rows, reducing query time from 45s to 3s and improving API response time by 85%',
-            'mongodb': 'Designed MongoDB schema handling 50GB+ documents with sharding strategy, scaling to 100k writes/sec while maintaining <50ms read latency',
-            'redis': 'Implemented Redis caching layer reducing database load by 75% and improving page load time from 2.5s to 400ms for 1M+ daily users',
-            'mysql': 'Tuned MySQL database serving 5M+ queries/day, implementing partitioning and indexes that reduced slow queries from 2000/day to <50/day',
-          };
-          contextExample = dbExamples[term.toLowerCase()] ||
+          contextExample = DATABASE_EXAMPLES[term.toLowerCase()] ||
             `Show ${term} performance improvements. Example: "Optimized ${term} database handling X records/queries, reducing response time by Y% and improving throughput to Z operations/sec"`;
         } else if (isCloud) {
           section = "Cloud Infrastructure & DevOps";
-          const cloudExamples: Record<string, string> = {
-            'aws': 'Migrated infrastructure to AWS (EC2, S3, Lambda) reducing hosting costs by 40% ($200k/year savings) while improving uptime from 99.5% to 99.95%',
-            'docker': 'Containerized 20+ microservices with Docker reducing deployment time from 2 hours to 10 minutes and enabling consistent dev/prod environments',
-            'kubernetes': 'Orchestrated K8s cluster managing 50+ pods with auto-scaling, handling 5x traffic spikes while maintaining <100ms response time',
-            'terraform': 'Automated infrastructure provisioning with Terraform managing 100+ resources across 3 environments, reducing setup time from 2 days to 30 minutes',
-          };
-          contextExample = cloudExamples[term.toLowerCase()] ||
+          contextExample = CLOUD_DEVOPS_EXAMPLES[term.toLowerCase()] ||
             `Highlight ${term} infrastructure impact. Example: "Deployed ${term} solution managing X resources/services, achieving Y% cost reduction and Z% improvement in reliability/speed"`;
         } else if (isToolOrTech) {
           section = "Technical Skills & Tools";
