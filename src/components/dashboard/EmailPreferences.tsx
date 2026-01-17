@@ -95,36 +95,40 @@ export function EmailPreferences() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Email Preferences</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Manage what emails you receive from CVDebug
+    <div className="space-y-4 md:space-y-6">
+      {/* Header - Mobile Optimized */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Email Preferences</h2>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">
+            Manage what emails you receive
           </p>
         </div>
-        <Badge variant="outline" className="text-xs">
+        <Badge variant="outline" className="text-xs whitespace-nowrap self-start sm:self-auto">
           {preferences.tier === 'free' ? 'Free' : preferences.tier === 'single_scan' ? 'Single Scan' : 'Interview Sprint'} Plan
         </Badge>
       </div>
 
-      {/* Email Stats */}
+      {/* Email Stats - Mobile Optimized */}
       {emailStats && (
-        <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-primary/20 rounded-lg">
-              <Mail className="h-6 w-6 text-primary" />
+        <Card className="p-4 md:p-6 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2.5 md:p-3 bg-primary/20 rounded-lg flex-shrink-0">
+                <Mail className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs md:text-sm text-muted-foreground">Emails this week</p>
+                <p className="text-xl md:text-2xl font-bold text-foreground">{emailStats.totalLastWeek}</p>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-sm text-muted-foreground">Emails this week</p>
-              <p className="text-2xl font-bold text-foreground">{emailStats.totalLastWeek}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-muted-foreground">Open rate</p>
-              <p className="text-lg font-semibold text-primary">
-                {Math.round(emailStats.openRate * 100)}%
-              </p>
+            <div className="flex items-center justify-between sm:justify-end sm:text-right gap-6 sm:gap-0 pl-11 sm:pl-0">
+              <div>
+                <p className="text-xs md:text-sm text-muted-foreground">Open rate</p>
+                <p className="text-base md:text-lg font-semibold text-primary">
+                  {Math.round(emailStats.openRate * 100)}%
+                </p>
+              </div>
             </div>
           </div>
         </Card>
@@ -161,38 +165,44 @@ export function EmailPreferences() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 * Object.keys(preferences.preferences).indexOf(category) }}
             >
-              <Card className={`p-4 ${isCritical ? 'border-primary/30 bg-primary/5' : ''}`}>
-                <div className="flex items-start gap-4">
-                  <div className={`p-2 rounded-lg ${isEnabled ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+              <Card className={`p-3 md:p-4 ${isCritical ? 'border-primary/30 bg-primary/5' : ''}`}>
+                <div className="flex items-start gap-3 md:gap-4">
+                  {/* Icon - Responsive */}
+                  <div className={`p-1.5 md:p-2 rounded-lg flex-shrink-0 ${isEnabled ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
                     {getCategoryIcon(category)}
                   </div>
 
+                  {/* Content - Flexible */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-foreground">
+                    <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-1">
+                      <h3 className="text-sm md:text-base font-semibold text-foreground">
                         {formatCategoryName(category)}
                       </h3>
                       {isCritical && (
-                        <Badge variant="outline" className="text-xs border-primary text-primary">
+                        <Badge variant="outline" className="text-[10px] md:text-xs border-primary text-primary px-1.5 py-0">
                           Required
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs md:text-sm text-muted-foreground leading-snug">
                       {getCategoryDescription(category)}
                     </p>
                     {emailStats?.byCategory[category] && (
-                      <p className="text-xs text-muted-foreground mt-2">
+                      <p className="text-[10px] md:text-xs text-muted-foreground mt-1.5 md:mt-2">
                         {emailStats.byCategory[category]} sent this week
                       </p>
                     )}
                   </div>
 
-                  <Switch
-                    checked={isEnabled}
-                    disabled={isCritical || loading === category || preferences.unsubscribedFromMarketing}
-                    onCheckedChange={() => handleToggle(category, isEnabled)}
-                  />
+                  {/* Switch - Touch friendly size */}
+                  <div className="flex-shrink-0 ml-auto">
+                    <Switch
+                      checked={isEnabled}
+                      disabled={isCritical || loading === category || preferences.unsubscribedFromMarketing}
+                      onCheckedChange={() => handleToggle(category, isEnabled)}
+                      className="data-[state=checked]:bg-primary"
+                    />
+                  </div>
                 </div>
               </Card>
             </motion.div>
@@ -200,19 +210,19 @@ export function EmailPreferences() {
         })}
       </div>
 
-      {/* Unsubscribe All */}
+      {/* Unsubscribe All - Mobile Optimized */}
       {!preferences.unsubscribedFromMarketing && (
-        <div className="pt-6 border-t">
+        <div className="pt-4 md:pt-6 border-t">
           <Button
             variant="ghost"
             size="sm"
             onClick={handleUnsubscribeAll}
             disabled={loading === 'unsubscribe_all'}
-            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+            className="text-destructive hover:text-destructive hover:bg-destructive/10 w-full sm:w-auto text-xs md:text-sm h-9 md:h-10"
           >
             {loading === 'unsubscribe_all' ? 'Unsubscribing...' : 'Unsubscribe from all marketing emails'}
           </Button>
-          <p className="text-xs text-muted-foreground mt-2">
+          <p className="text-[10px] md:text-xs text-muted-foreground mt-2 leading-relaxed">
             You'll still receive critical account and billing notifications
           </p>
         </div>

@@ -219,27 +219,27 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
   const strokeDashoffset = circumference - (circumference * score) / 100;
 
   return (
-    <div className="space-y-6">
-      {/* Z-Pattern Layout: Top Row */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* 1. THE GLOBAL SCORE GAUGE */}
+    <div className="space-y-4 md:space-y-6">
+      {/* Z-Pattern Layout: Top Row - Mobile Optimized */}
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
+        {/* 1. THE GLOBAL SCORE GAUGE - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-2xl p-8 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden"
+          className="bg-white rounded-xl md:rounded-2xl p-4 md:p-8 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden"
         >
           {/* Background glow */}
           <div
-            className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
+            className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 rounded-full blur-3xl opacity-20"
             style={{ backgroundColor: scoreColor.bg }}
           />
 
           <div className="relative z-10">
-            <h3 className="text-lg font-bold text-[#0F172A] mb-6">ATS Compatibility Score</h3>
+            <h3 className="text-base md:text-lg font-bold text-[#0F172A] mb-4 md:mb-6">ATS Compatibility Score</h3>
 
-            {/* Half Gauge */}
+            {/* Half Gauge - Responsive */}
             <div className="flex flex-col items-center">
-              <div className="relative w-48 h-24">
+              <div className="relative w-32 h-16 sm:w-40 sm:h-20 md:w-48 md:h-24">
                 <svg className="w-full h-full" viewBox="0 0 200 100">
                   {/* Background arc */}
                   <path
@@ -263,30 +263,30 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                   />
                 </svg>
 
-                {/* Score number */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end pb-2">
+                {/* Score number - Responsive */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end pb-1 md:pb-2">
                   <motion.div
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
-                    className="text-5xl font-black"
+                    className="text-3xl sm:text-4xl md:text-5xl font-black"
                     style={{ color: scoreColor.text }}
                   >
                     {score}
                   </motion.div>
-                  <span className="text-sm text-[#64748B] font-medium">/ 100</span>
+                  <span className="text-xs md:text-sm text-[#64748B] font-medium">/ 100</span>
                 </div>
               </div>
 
-              {/* Status label */}
-              <div className="mt-4 text-center">
+              {/* Status label - Mobile Optimized */}
+              <div className="mt-3 md:mt-4 text-center">
                 <div
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-2"
+                  className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-bold mb-1.5 md:mb-2"
                   style={{ backgroundColor: `${scoreColor.bg}15`, color: scoreColor.text }}
                 >
                   {score >= 85 ? "✓" : score >= 60 ? "⚠" : "✕"} {scoreColor.label}
                 </div>
-                <p className="text-sm text-[#475569] font-medium">
+                <p className="text-xs md:text-sm text-[#475569] font-medium">
                   You are beating <span className="text-[#0F172A] font-bold">{percentile}%</span> of other applicants
                 </p>
               </div>
@@ -294,38 +294,38 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           </div>
         </motion.div>
 
-        {/* 2. TOP CRITICAL FAILURES */}
+        {/* 2. TOP CRITICAL FAILURES - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+          className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
-          <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="h-5 w-5 text-[#EF4444]" />
-            <h3 className="text-lg font-bold text-[#0F172A]">Top Critical Failures</h3>
+          <div className="flex items-center gap-1.5 md:gap-2 mb-3 md:mb-4">
+            <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-[#EF4444]" />
+            <h3 className="text-base md:text-lg font-bold text-[#0F172A]">Top Critical Failures</h3>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {criticalFailures.map((failure: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className={`p-4 rounded-xl border-2 ${
+                className={`p-3 md:p-4 rounded-lg md:rounded-xl border-2 ${
                   failure.severity === "high"
                     ? "bg-[#FEF2F2] border-[#EF4444]/30"
                     : "bg-[#FFF7ED] border-[#F59E0B]/30"
                 }`}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-2 md:gap-3">
                   <div
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    className={`w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                       failure.severity === "high" ? "bg-[#EF4444]/20" : "bg-[#F59E0B]/20"
                     }`}
                   >
                     <span
-                      className={`material-symbols-outlined text-[16px] ${
+                      className={`material-symbols-outlined text-sm md:text-[16px] ${
                         failure.severity === "high" ? "text-[#EF4444]" : "text-[#F59E0B]"
                       }`}
                     >
@@ -333,10 +333,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-bold text-[#0F172A] mb-1">{failure.title}</h4>
-                    <p className="text-xs text-[#475569] mb-2 whitespace-pre-line leading-relaxed">{failure.description}</p>
+                    <h4 className="text-xs md:text-sm font-bold text-[#0F172A] mb-1">{failure.title}</h4>
+                    <p className="text-[11px] md:text-xs text-[#475569] mb-2 whitespace-pre-line leading-relaxed">{failure.description}</p>
                     {failure.howToFix && (
-                      <div className="mt-2 p-2 bg-blue-50/50 border border-blue-200/30 rounded text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
+                      <div className="mt-1.5 md:mt-2 p-1.5 md:p-2 bg-blue-50/50 border border-blue-200/30 rounded text-[11px] md:text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
                         <span className="font-semibold text-[#3B82F6]">How to fix:</span> {failure.howToFix}
                       </div>
                     )}
