@@ -9,6 +9,7 @@ import * as pdfjsLib from "pdfjs-dist";
 import mammoth from "mammoth";
 import { createWorker } from "tesseract.js";
 import { RegistrationWall } from "@/components/paywalls/RegistrationWall";
+import { analyzeResumeClient } from "@/lib/clientAnalysis";
 
 // Set up PDF.js worker
 const pdfVersion = pdfjsLib.version || "4.0.379";
@@ -274,45 +275,42 @@ export default function PreviewScan() {
       const textRatio = Math.min((text.length / file.size) * 100, 100);
       setDiagnostics((prev) => ({ ...prev, textRatio }));
 
-      addLog("info", "[ANALYZE] Running keyword analysis...");
+      addLog("info", "[ANALYZE] Running full ML-powered analysis...");
 
-      // Quick analysis for preview
-      const wordCount = text.split(/\s+/).length;
-      const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
-      const hasPhone = /\+?[\d\s\-()]{10,}/.test(text);
+      // Use the SAME analysis engine as Dashboard for consistent results
+      const analysisResult = analyzeResumeClient(text);
 
-      addLog("info", `[ANALYZE] Word count: ${wordCount}`);
-      addLog("info", `[ANALYZE] Contact info: ${hasEmail ? "✓" : "✗"} email, ${hasPhone ? "✓" : "✗"} phone`);
+      addLog("info", `[ANALYZE] Word count: ${analysisResult.stats.wordCount}`);
+      addLog("info", `[ANALYZE] Contact info: ${analysisResult.stats.hasEmail ? "✓" : "✗"} email, ${analysisResult.stats.hasPhone ? "✓" : "✗"} phone`);
+      addLog("success", `[ANALYZE] Detected sections: ${analysisResult.sections.join(", ")}`);
 
-      // Detect sections
-      const sections = [];
-      if (/experience|employment|work history/i.test(text)) sections.push("Experience");
-      if (/education|degree|university|college/i.test(text)) sections.push("Education");
-      if (/skills|technologies|proficiency/i.test(text)) sections.push("Skills");
-      if (/projects|portfolio/i.test(text)) sections.push("Projects");
-      if (/certifications|certificates/i.test(text)) sections.push("Certifications");
+      // Log component scores
+      addLog("info", `[SCORE] Format: ${analysisResult.formatScore}/100`);
+      addLog("info", `[SCORE] Keywords: ${analysisResult.keywordScore}/100`);
+      addLog("info", `[SCORE] Completeness: ${analysisResult.completenessScore}/100`);
 
-      addLog("success", `[ANALYZE] Detected sections: ${sections.join(", ")}`);
+      // Log issues if found
+      if (analysisResult.issues.length > 0) {
+        analysisResult.issues.forEach(issue => {
+          addLog("warning", `[ISSUE] ${issue.severity.toUpperCase()}: ${issue.issue}`);
+        });
+      }
 
-      // Calculate preview score (simplified)
-      let score = 50; // Base score
-      if (wordCount > 200) score += 10;
-      if (wordCount > 400) score += 10;
-      if (hasEmail) score += 5;
-      if (hasPhone) score += 5;
-      score += sections.length * 5;
+      // Log missing elements
+      if (analysisResult.missingElements.length > 0) {
+        addLog("warning", `[MISSING] ${analysisResult.missingElements.length} elements: ${analysisResult.missingElements.slice(0, 3).join(", ")}`);
+      }
 
-      // Check for quantifiable achievements
-      const hasNumbers = /\d+%|\d+\+|\$\d+|increased|improved|reduced|saved/gi.test(text);
-      if (hasNumbers) {
-        score += 10;
+      if (analysisResult.stats.hasQuantifiableAchievements) {
         addLog("success", "[ANALYZE] Quantifiable achievements detected");
       }
 
-      setPreviewScore(Math.min(score, 95)); // Cap at 95 to encourage signup
+      // Use the REAL calculated score (same weights as server: Keywords 45%, Format 30%, Completeness 25%)
+      const finalScore = analysisResult.overallScore;
+      setPreviewScore(finalScore);
 
       setProgress(100);
-      addLog("success", `[COMPLETE] Analysis finished. Score: ${Math.min(score, 95)}/100`);
+      addLog("success", `[COMPLETE] Analysis finished. Score: ${finalScore}/100`);
 
       setTimeout(() => {
         setShowResults(true);
