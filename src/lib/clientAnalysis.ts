@@ -819,6 +819,305 @@ export function analyzeResumeClient(
   };
 }
 
+// Advanced analytics: Industry detection
+function detectIndustry(text: string, jobDescription?: string): {
+  industry: string;
+  confidence: number;
+  detectedSkills: string[];
+} {
+  const lowerText = text.toLowerCase();
+  const lowerJD = jobDescription?.toLowerCase() || '';
+  const combinedText = lowerText + ' ' + lowerJD;
+
+  // Industry-specific keywords with weights
+  const industryKeywords = {
+    tech: {
+      keywords: [
+        'software', 'engineer', 'developer', 'programming', 'coding', 'javascript', 'python',
+        'java', 'react', 'angular', 'vue', 'node', 'api', 'frontend', 'backend', 'fullstack',
+        'devops', 'cloud', 'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'microservices',
+        'database', 'sql', 'nosql', 'mongodb', 'postgresql', 'git', 'ci/cd', 'agile', 'scrum',
+        'machine learning', 'ai', 'data science', 'algorithm', 'data structure', 'system design'
+      ],
+      weight: 1.5
+    },
+    nursing: {
+      keywords: [
+        'nurse', 'rn', 'bsn', 'lpn', 'cna', 'nursing', 'patient care', 'clinical', 'healthcare',
+        'hospital', 'medical', 'acls', 'bls', 'pals', 'cpr', 'emr', 'ehr', 'epic', 'cerner',
+        'medication', 'vitals', 'iv', 'catheter', 'wound care', 'charting', 'triage',
+        'emergency', 'icu', 'er', 'critical care', 'telemetry', 'oncology', 'pediatric',
+        'geriatric', 'surgery', 'operating room', 'post-op', 'discharge planning'
+      ],
+      weight: 2.0
+    },
+    finance: {
+      keywords: [
+        'finance', 'financial', 'accounting', 'accountant', 'cpa', 'cfa', 'analyst',
+        'investment', 'banking', 'portfolio', 'equity', 'securities', 'trading', 'risk',
+        'audit', 'tax', 'gaap', 'ifrs', 'quickbooks', 'excel', 'financial modeling',
+        'valuation', 'dcf', 'merger', 'acquisition', 'compliance', 'sox', 'budget',
+        'forecast', 'variance', 'reconciliation', 'general ledger', 'accounts payable',
+        'accounts receivable', 'cash flow', 'balance sheet', 'income statement'
+      ],
+      weight: 1.8
+    },
+    marketing: {
+      keywords: [
+        'marketing', 'seo', 'sem', 'social media', 'content', 'copywriting', 'brand',
+        'campaign', 'analytics', 'google analytics', 'facebook ads', 'instagram', 'linkedin',
+        'email marketing', 'conversion', 'ctr', 'roi', 'kpi', 'lead generation', 'crm',
+        'hubspot', 'salesforce', 'mailchimp', 'hootsuite', 'canva', 'photoshop', 'video',
+        'influencer', 'engagement', 'growth hacking', 'a/b testing', 'funnel'
+      ],
+      weight: 1.6
+    },
+    sales: {
+      keywords: [
+        'sales', 'business development', 'account management', 'client relations', 'crm',
+        'salesforce', 'quota', 'pipeline', 'prospecting', 'cold calling', 'lead qualification',
+        'closing', 'negotiation', 'revenue', 'commission', 'b2b', 'b2c', 'saas', 'enterprise',
+        'account executive', 'sales engineer', 'solution selling', 'consultative selling',
+        'relationship building', 'customer success', 'upsell', 'cross-sell', 'retention'
+      ],
+      weight: 1.7
+    },
+    hr: {
+      keywords: [
+        'human resources', 'hr', 'recruitment', 'recruiting', 'talent acquisition', 'hiring',
+        'onboarding', 'employee relations', 'benefits', 'compensation', 'payroll', 'hris',
+        'workday', 'adp', 'performance management', 'training', 'development', 'diversity',
+        'inclusion', 'employee engagement', 'retention', 'succession planning', 'compliance',
+        'labor law', 'fmla', 'ada', 'eeoc', 'organizational development', 'culture'
+      ],
+      weight: 1.7
+    }
+  };
+
+  const scores: Record<string, number> = {};
+  const detectedSkillsByIndustry: Record<string, string[]> = {};
+
+  // Score each industry
+  for (const [industry, config] of Object.entries(industryKeywords)) {
+    let score = 0;
+    const foundSkills: string[] = [];
+
+    for (const keyword of config.keywords) {
+      if (combinedText.includes(keyword)) {
+        score += config.weight;
+        foundSkills.push(keyword);
+      }
+    }
+
+    scores[industry] = score;
+    detectedSkillsByIndustry[industry] = foundSkills;
+  }
+
+  // Find industry with highest score
+  let bestIndustry = 'general';
+  let bestScore = 0;
+
+  for (const [industry, score] of Object.entries(scores)) {
+    if (score > bestScore) {
+      bestScore = score;
+      bestIndustry = industry;
+    }
+  }
+
+  // Calculate confidence (0-100)
+  const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+  const confidence = totalScore > 0 ? Math.round((bestScore / totalScore) * 100) : 0;
+
+  // If confidence is too low, default to general
+  if (confidence < 30 || bestScore < 3) {
+    bestIndustry = 'general';
+  }
+
+  return {
+    industry: bestIndustry,
+    confidence,
+    detectedSkills: detectedSkillsByIndustry[bestIndustry] || []
+  };
+}
+
+// Advanced analytics: Section-level scoring
+function scoreResumeBySection(text: string, sections: string[]): {
+  experienceScore: number;
+  educationScore: number;
+  skillsScore: number;
+  summaryScore: number;
+  sectionAnalysis: Record<string, { score: number; feedback: string }>;
+} {
+  const lowerText = text.toLowerCase();
+  const sectionAnalysis: Record<string, { score: number; feedback: string }> = {};
+
+  // Experience section scoring
+  let experienceScore = 0;
+  if (sections.includes('experience')) {
+    const expSection = extractSectionContent(text, 'experience');
+
+    // Check for action verbs
+    let actionVerbCount = 0;
+    ACTION_VERBS.forEach(verb => {
+      if (expSection.toLowerCase().includes(verb)) actionVerbCount++;
+    });
+
+    // Check for quantifiable achievements
+    const hasNumbers = /\d+%|\d+\+|\$\d+|[0-9]/.test(expSection);
+    const bulletCount = (expSection.match(/^[•●○\-\*]/gm) || []).length;
+
+    experienceScore = Math.min(100,
+      (actionVerbCount * 5) +
+      (hasNumbers ? 20 : 0) +
+      (bulletCount * 3) +
+      (expSection.length > 200 ? 20 : 0)
+    );
+
+    sectionAnalysis.experience = {
+      score: experienceScore,
+      feedback: experienceScore >= 80
+        ? 'Strong experience section with action verbs and metrics'
+        : experienceScore >= 60
+        ? 'Good experience section, add more quantifiable achievements'
+        : 'Experience section needs more detail and measurable results'
+    };
+  }
+
+  // Education section scoring
+  let educationScore = 0;
+  if (sections.includes('education')) {
+    const eduSection = extractSectionContent(text, 'education');
+
+    const hasDegree = /bachelor|master|phd|doctorate|associate|mba/i.test(eduSection);
+    const hasGPA = /gpa|grade point average|[0-9]\.[0-9]/i.test(eduSection);
+    const hasHonors = /honors|cum laude|magna|summa|dean's list/i.test(eduSection);
+    const hasGradYear = /20\d{2}|19\d{2}/.test(eduSection);
+
+    educationScore = 40 +
+      (hasDegree ? 30 : 0) +
+      (hasGPA ? 10 : 0) +
+      (hasHonors ? 15 : 0) +
+      (hasGradYear ? 5 : 0);
+
+    sectionAnalysis.education = {
+      score: educationScore,
+      feedback: educationScore >= 80
+        ? 'Comprehensive education section'
+        : educationScore >= 60
+        ? 'Good education section, consider adding GPA or honors if applicable'
+        : 'Education section needs more detail'
+    };
+  }
+
+  // Skills section scoring
+  let skillsScore = 0;
+  if (sections.includes('skills')) {
+    const skillsSection = extractSectionContent(text, 'skills');
+
+    const skillCount = skillsSection.split(/[,;\n]/).filter(s => s.trim().length > 2).length;
+    const hasTechnicalSkills = /programming|software|technical|tools?|technologies/i.test(skillsSection);
+    const hasSoftSkills = /leadership|communication|team|problem|analytical/i.test(skillsSection);
+
+    skillsScore = Math.min(100,
+      (skillCount * 4) +
+      (hasTechnicalSkills ? 20 : 0) +
+      (hasSoftSkills ? 15 : 0)
+    );
+
+    sectionAnalysis.skills = {
+      score: skillsScore,
+      feedback: skillsScore >= 80
+        ? 'Excellent skills section with good variety'
+        : skillsScore >= 60
+        ? 'Good skills section, consider adding more relevant skills'
+        : 'Skills section needs expansion and categorization'
+    };
+  }
+
+  // Summary/Objective section scoring
+  let summaryScore = 0;
+  if (sections.includes('summary') || sections.includes('objective')) {
+    const summarySection = extractSectionContent(text, sections.includes('summary') ? 'summary' : 'objective');
+
+    const wordCount = summarySection.split(/\s+/).length;
+    const hasActionVerbs = /\b(achieved|led|managed|developed|created|increased)\b/i.test(summarySection);
+    const hasMetrics = /\d+/.test(summarySection);
+
+    summaryScore = Math.min(100,
+      (wordCount >= 30 && wordCount <= 80 ? 40 : 20) +
+      (hasActionVerbs ? 30 : 0) +
+      (hasMetrics ? 30 : 0)
+    );
+
+    sectionAnalysis[sections.includes('summary') ? 'summary' : 'objective'] = {
+      score: summaryScore,
+      feedback: summaryScore >= 80
+        ? 'Strong summary with clear value proposition'
+        : summaryScore >= 60
+        ? 'Good summary, add more specific achievements'
+        : 'Summary needs to be more impactful and specific'
+    };
+  }
+
+  return {
+    experienceScore,
+    educationScore,
+    skillsScore,
+    summaryScore,
+    sectionAnalysis
+  };
+}
+
+// Helper function to extract section content
+function extractSectionContent(text: string, sectionName: string): string {
+  const sectionHeaders = {
+    experience: /(?:work\s+)?experience|employment(?:\s+history)?|professional\s+background/i,
+    education: /education|academic\s+background|qualifications/i,
+    skills: /skills?|technical\s+skills?|core\s+competencies|expertise/i,
+    summary: /summary|profile|about\s+me|professional\s+summary/i,
+    objective: /objective|career\s+objective|goal/i
+  };
+
+  const pattern = sectionHeaders[sectionName as keyof typeof sectionHeaders];
+  if (!pattern) return '';
+
+  const match = text.match(new RegExp(`${pattern.source}[^\\n]*\\n([\\s\\S]*?)(?=\\n\\n[A-Z]|$)`, 'i'));
+  return match ? match[1] : '';
+}
+
+/**
+ * ADVANCED: Complete resume analysis with industry detection and section-level scoring
+ * This provides the most comprehensive analysis available
+ */
+export function analyzeResumeAdvanced(
+  text: string,
+  jobDescription?: string,
+  isPremium: boolean = false
+) {
+  // Get base analysis
+  const baseAnalysis = analyzeResumeClient(text, jobDescription, isPremium);
+
+  // Run advanced analytics
+  const industryAnalysis = detectIndustry(text, jobDescription);
+  const sectionScoring = scoreResumeBySection(text, baseAnalysis.sections);
+
+  return {
+    ...baseAnalysis,
+    // Industry detection
+    industry: industryAnalysis.industry,
+    industryConfidence: industryAnalysis.confidence,
+    industrySkills: industryAnalysis.detectedSkills,
+    // Section-level scoring
+    sectionScores: {
+      experience: sectionScoring.experienceScore,
+      education: sectionScoring.educationScore,
+      skills: sectionScoring.skillsScore,
+      summary: sectionScoring.summaryScore
+    },
+    sectionFeedback: sectionScoring.sectionAnalysis
+  };
+}
+
 /**
  * Generate detailed analysis report (same format as server)
  */
