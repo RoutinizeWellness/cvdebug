@@ -632,6 +632,7 @@ export default function Dashboard() {
 
       <main
         className="flex-1 flex flex-col relative overflow-hidden bg-[#F8FAFC]/50 pb-20 md:pb-0"
+        style={{ paddingBottom: 'max(5rem, env(safe-area-inset-bottom))' }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}

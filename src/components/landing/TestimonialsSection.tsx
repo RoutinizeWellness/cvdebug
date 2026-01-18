@@ -80,7 +80,7 @@ export function TestimonialsSection() {
           </motion.div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {redditTestimonials.map((testimonial, i) => (
             <motion.div 
               key={i} 

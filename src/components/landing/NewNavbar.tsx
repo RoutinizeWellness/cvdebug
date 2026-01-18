@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -11,14 +11,24 @@ export function NewNavbar() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
-  // Handle scroll effect
-  useState(() => {
+  // Handle scroll effect with debouncing
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+      // Debounce scroll events for better performance
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setScrolled(window.scrollY > 10);
+      }, 10);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const navLinks = [
     { name: "Analyzer", href: "/preview" },

@@ -72,7 +72,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         }
         onOpenChange(val);
       }}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] overflow-y-auto p-0 border-2 border-[#8B5CF6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
+        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] landscape:max-h-[85vh] overflow-y-auto p-0 border-2 border-[#8B5CF6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
           <div className="bg-[#F8FAFC] p-6 sm:p-8 text-center relative border-b border-[#E2E8F0]">
             <div className="absolute top-0 left-0 right-0 bg-[#F59E0B] text-white text-xs font-bold py-2 text-center uppercase">
               ⚠️ WAIT! Before You Checkout...
@@ -164,7 +164,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </DialogHeader>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 px-6 pb-16 max-w-6xl mx-auto w-full items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8 px-6 pb-16 max-w-6xl mx-auto w-full items-stretch">
           {/* Free Tier */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 flex flex-col h-full hover:border-slate-300 transition-colors">
             <div className="mb-8">

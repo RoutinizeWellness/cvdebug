@@ -8,7 +8,7 @@ import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { KeywordSniperPanel } from "./mission/KeywordSniperPanel";
 import { CreateApplicationDialog } from "./CreateApplicationDialog";
 import { RecruiterDMGenerator } from "./tools/RecruiterDMGenerator";
@@ -46,13 +46,13 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
   const [showInterviewPrep, setShowInterviewPrep] = useState(false);
 
   // Handle initial application selection (Deep Linking)
-  useState(() => {
+  useEffect(() => {
     if (initialApplicationId && applications && resumes && !selectedApplication) {
       const app = applications.find((a: any) => a._id === initialApplicationId);
       if (app) {
         const projectResumes = resumes?.filter((r: any) => r.projectId === projectId);
         const masterResume = projectResumes?.[0];
-        
+
         setSelectedApplication({
           _id: app._id,
           jobTitle: app.jobTitle,
@@ -66,7 +66,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
         });
       }
     }
-  });
+  }, [initialApplicationId, applications, resumes, selectedApplication, projectId]);
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;

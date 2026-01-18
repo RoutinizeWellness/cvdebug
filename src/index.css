@@ -461,10 +461,15 @@
     @apply block;
   }
 
-  /* Improve touch targets (minimum 44x44px) */
-  button, a, input, select, textarea {
-    min-height: 44px;
-    min-width: 44px;
+  /* Improve touch targets (minimum 48x48px for better accessibility) */
+  button, a[role="button"], input[type="button"], input[type="submit"], select {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Regular inputs and textareas only need minimum height */
+  input:not([type="button"]):not([type="submit"]), textarea {
+    min-height: 48px;
   }
 
   /* Better form spacing on mobile */
@@ -660,6 +665,49 @@ img {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Landscape orientation optimization for mobile devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce modal height in landscape */
+  [role="dialog"],
+  .modal {
+    max-height: 85vh;
+    padding: 0.75rem;
+  }
+
+  /* Reduce header padding in landscape */
+  dialog header,
+  .modal-header {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Make content more compact in landscape */
+  .modal-content {
+    padding: 0.75rem;
+  }
+
+  /* Reduce font sizes slightly in landscape */
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  /* Reduce vertical spacing in landscape */
+  .space-y-6 {
+    gap: 1rem;
+  }
+
+  .space-y-4 {
+    gap: 0.75rem;
   }
 }
 

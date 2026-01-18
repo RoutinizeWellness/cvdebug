@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface ResumeGridProps {
   resumes: any[] | undefined;
@@ -33,11 +33,15 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
     );
   }
 
-  const filteredResumes = resumes.filter(resume => 
-    searchQuery === "" || 
-    resume.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    resume.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Memoize filtered resumes with debouncing effect
+  const filteredResumes = useMemo(() => {
+    if (!resumes) return [];
+    return resumes.filter(resume =>
+      searchQuery === "" ||
+      resume.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resume.category?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [resumes, searchQuery]);
 
   const getHealthBadge = (score: number, status: string) => {
     if (status === 'processing') {
