@@ -247,6 +247,9 @@ export const updateResumeOcr = mutation({
   },
 });
 
+// Rate limiter: Track requests per user per second
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
 export const analyzeResume = mutation({
   args: {
     id: v.id("resumes"),
@@ -256,6 +259,34 @@ export const analyzeResume = mutation({
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Not authenticated");
+
+    // Rate limiting: Max 2 requests per second per user
+    const now = Date.now();
+    const userId = user._id;
+    const rateLimit = rateLimitMap.get(userId);
+
+    if (rateLimit) {
+      // Reset counter if we're in a new second
+      if (now >= rateLimit.resetTime) {
+        rateLimitMap.set(userId, { count: 1, resetTime: now + 1000 });
+      } else {
+        // Check if user exceeded 2 requests/sec
+        if (rateLimit.count >= 2) {
+          throw new Error("Too many requests: You have exceeded the rate limit, which is 2 requests per second. Please wait a moment and try again.");
+        }
+        rateLimit.count++;
+      }
+    } else {
+      // First request from this user
+      rateLimitMap.set(userId, { count: 1, resetTime: now + 1000 });
+    }
+
+    // Clean up old entries (> 5 seconds old)
+    for (const [key, value] of rateLimitMap.entries()) {
+      if (now > value.resetTime + 5000) {
+        rateLimitMap.delete(key);
+      }
+    }
 
     // Update resume with job description immediately
     if (args.jobDescription) {

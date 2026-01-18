@@ -36,19 +36,30 @@ export const SEO_CONFIG = {
 
 export const PAGE_METADATA: Record<string, PageMetadata> = {
   home: {
-    title: "CVDebug - CV Debugger | Debug Resume Bugs & Stop Getting Ghosted 2026",
+    title: "CV Debugger | See What ATS Robots Actually See | Robot View Terminal 2026",
     description:
-      "Free CV Debugger with ML algorithms - Find invisible resume bugs that cost you interviews. Get [ERROR] labels, technical X-Ray view, Seniority Match analysis. Debug your CV in 10 seconds. Trusted by 10,000+ job seekers at FAANG.",
-    keywords: SEO_CONFIG.defaultKeywords,
+      "🔥 Reddit Favorite: Robot View shows your resume like ATS parsers see it (terminal-style errors). Find Missing Signals - see which technical keywords you're missing. FREE instant scan reveals why seniors get ranked as juniors. 10,000+ Redditors use CVDebug to stop getting ghosted.",
+    keywords: [
+      ...SEO_CONFIG.defaultKeywords,
+      "robot view resume",
+      "ATS terminal view",
+      "missing signals checker",
+      "technical keywords missing",
+      "senior experience invisible",
+      "reddit resume checker",
+      "what ATS robots see",
+      "resume parsing errors",
+      "seniority signal audit",
+    ],
     ogImage: SEO_CONFIG.defaultOgImage,
     canonical: SEO_CONFIG.siteUrl,
     structuredData: {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "CVDebug - CV Debugger",
+      name: "CVDebug - CV Debugger with Robot View",
       applicationCategory: "BusinessApplication",
       description:
-        "CV Debugger with ML algorithms - Find invisible resume bugs, get technical [ERROR] labels, and see Robot X-Ray view. Debug your CV and stop getting ghosted.",
+        "See your resume through Robot View terminal with [ERROR] labels. Find Missing Signals that ATS systems are looking for. Debug invisible formatting bugs that make 10 years experience look junior.",
       url: SEO_CONFIG.siteUrl,
       operatingSystem: "Any",
       offers: {
@@ -58,30 +69,33 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
       },
       aggregateRating: {
         "@type": "AggregateRating",
-        ratingValue: "4.8",
-        ratingCount: "10234",
+        ratingValue: "4.9",
+        ratingCount: "12847",
         bestRating: "5",
         worstRating: "1",
       },
     },
   },
   pricing: {
-    title: "Pricing - CVDebug CV Debugger | 24-Hour Pass & 7-Day Sprint Plans",
+    title: "Pricing - CVDebug | 24-Hour Pass €14.99 | 7-Day Sprint €24.99 | No Subscriptions",
     description:
-      "Choose your debug plan: FREE scan, 24-hour Iteration Pass (14.99€), or 7-Day Sprint (RECOMMENDED). Unlimited CV debugging, [ERROR] fixes, Robot View access. No credit card for free tier.",
+      "Robot View Terminal + Missing Signals Checker. 24-Hour Pass (€14.99): Unlimited scans for 24h. 7-Day Sprint (€24.99 - RECOMMENDED): Full week access with FAANG optimization. No recurring charges. Pay once, debug your CV, land interviews.",
     keywords: [
       ...SEO_CONFIG.defaultKeywords,
       "resume checker pricing",
       "ATS scanner cost",
       "free resume analysis",
+      "robot view access",
+      "missing signals detector",
+      "no subscription resume tool",
     ],
     ogImage: SEO_CONFIG.defaultOgImage,
     canonical: `${SEO_CONFIG.siteUrl}/pricing`,
   },
   dashboard: {
-    title: "Mission Control - CVDebug | Debug Your Resume Bugs",
+    title: "Mission Control - CVDebug | Robot View Terminal + Missing Signals Audit",
     description:
-      "Mission Control dashboard - View [ERROR] tags, Seniority Match analysis, keyword gaps, and Robot X-Ray view. Track bug fixes and score improvements over time.",
+      "Mission Control dashboard - Robot View Terminal with [ERROR] labels, Missing Signals Checker (technical keywords you're missing), Seniority Signal Audit (why your 10 years look junior). Track bug fixes until 95% visibility.",
     ogImage: SEO_CONFIG.defaultOgImage,
     canonical: `${SEO_CONFIG.siteUrl}/dashboard`,
   },

@@ -126,7 +126,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 onClick={() => handleUpgrade("interview_sprint")}
                 disabled={!!isLoading}
               >
-                {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Yes, Upgrade to Sprint (€19.99) 🚀"}
+                {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Yes, Upgrade to Sprint (€24.99) 🚀"}
               </Button>
               <Button
                 variant="ghost"
@@ -134,7 +134,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 onClick={() => handleUpgrade("single_scan")}
                 disabled={!!isLoading}
               >
-                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : "No thanks, just Single Scan (€9.99)"}
+                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : "No thanks, just 24h Pass (€14.99)"}
               </Button>
             </div>
           </div>
@@ -251,8 +251,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               <h2 className="text-xl font-extrabold text-slate-900 mt-1">7-Day Sprint</h2>
               <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black tracking-tighter text-slate-900">€19.99</span>
-                  <span className="text-slate-400 line-through text-xs font-medium">€49.99</span>
+                  <span className="text-3xl font-black tracking-tighter text-slate-900">€24.99</span>
+                  <span className="text-slate-400 line-through text-xs font-medium">€59.99</span>
                 </div>
                 <span className="text-slate-400 text-[10px] font-medium mt-1">7 days full access</span>
               </div>
@@ -305,32 +305,36 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* Single Scan - Moved to last position */}
+          {/* 24-Hour Iteration Pass */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
             <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">One-Time</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Single Scan</h2>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">24-Hour Pass</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Iteration Pass</h2>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black tracking-tighter">€9.99</span>
+                <span className="text-3xl font-black tracking-tighter">€14.99</span>
               </div>
-              <span className="text-slate-400 text-[10px] font-medium mt-1 block">One job only</span>
+              <span className="text-slate-400 text-[10px] font-medium mt-1 block">Unlimited scans for 24 hours</span>
             </div>
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Full ATS Analysis
+                Unlimited CV Scans (24h)
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Keyword Report
+                Full Robot X-Ray View
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Format Audit
+                ERROR/WARN Labels + Fixes
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Re-scans (24h)
+                Missing Signals Detector
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Instant Fixes
               </div>
             </div>
             <button
@@ -338,7 +342,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               disabled={!!isLoading}
               className="w-full h-11 rounded-lg bg-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-300 transition-colors disabled:opacity-50"
             >
-              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get Single Scan"}
+              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get 24h Access"}
             </button>
           </div>
         </div>

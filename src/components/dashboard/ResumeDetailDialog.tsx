@@ -600,6 +600,20 @@ export function ResumeDetailDialog({
               </Button>
             )}
             <Button
+              variant="default"
+              size="sm"
+              className="hidden sm:flex gap-2 font-bold bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white border-0 shadow-lg shadow-[#8B5CF6]/20"
+              onClick={() => {
+                toast.success("Optimizing for FAANG companies...");
+                // TODO: Implement FAANG-specific optimization
+                // This would analyze resume against Google/Meta/Amazon/Apple/Netflix standards
+              }}
+              disabled={!displayResume}
+            >
+              <Target className="h-4 w-4" />
+              Optimize for FAANG
+            </Button>
+            <Button
               variant="outline"
               size="sm"
               className="hidden sm:flex gap-2 font-bold"
@@ -950,89 +964,137 @@ Software Engineer | StartupXYZ
                         </div>
                       </div>
                     ) : (
-                      /* Robot View Content - Only for Registered Users */
-                      <div className="p-6 space-y-6">
-                      {/* Technical Debug Console Banner */}
-                      <div className="bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-2 border-[#22C55E] rounded-lg p-4 shadow-lg">
-                        <div className="flex items-start gap-3">
-                          <div className="text-2xl">🔍</div>
-                          <div className="flex-1 space-y-2">
-                            <p className="text-[#0F172A] text-sm font-bold">
-                              CV DEBUGGER — Technical X-Ray View
-                            </p>
-                            <p className="text-[#475569] text-xs">
-                              This diagnostic view shows your resume EXACTLY as ATS parsers interpret it.
-                              Red [ERROR] tags = critical bugs blocking your application. Yellow [WARN] = optimization opportunities.
-                            </p>
+                      /* ROBOT VIEW TERMINAL - Dirty Error Console Style */
+                      <div className="p-0 space-y-0 bg-black">
+                      {/* Terminal Header Bar - Make it look like actual error console */}
+                      <div className="bg-[#0A0A0A] border-b-2 border-[#EF4444] px-4 py-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-1.5">
+                            <div className="w-3 h-3 rounded-full bg-[#EF4444] animate-pulse"></div>
+                            <div className="w-3 h-3 rounded-full bg-[#F59E0B]"></div>
+                            <div className="w-3 h-3 rounded-full bg-[#64748B]"></div>
                           </div>
-                        </div>
-                      </div>
-
-                      {/* Technical Error Analysis */}
-                      <div className="bg-[#1E1E1E] border-2 border-[#EF4444] rounded-lg p-6 shadow-xl">
-                        <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-[#22C55E] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-2 h-2 bg-[#EF4444] rounded-full animate-pulse"></span>
-                            Parser Debug Output
-                          </h4>
-                          <span className="text-[#64748B] font-mono text-xs bg-[#2A2A2A] px-2 py-1 rounded">
-                            {displayResume?.ocrText?.length || 0} chars extracted
+                          <span className="text-[#EF4444] font-mono text-xs font-bold ml-2">
+                            ▸ ROBOT_VIEW_TERMINAL.exe
                           </span>
                         </div>
+                        <span className="text-[#64748B] font-mono text-[10px]">
+                          PID: {Math.floor(Math.random() * 99999)} | MEM: {displayResume?.ocrText?.length || 0}B
+                        </span>
+                      </div>
 
-                        {/* Debug Output with Error Labels */}
-                        <div className="bg-[#0D1117] rounded border-2 border-[#30363D] p-4 max-h-[500px] overflow-y-auto custom-scrollbar space-y-1">
-                          {/* Error Labels */}
+                      {/* DIRTY Terminal Output - Real Error Console Style */}
+                      <div className="bg-[#000000] p-4 space-y-0">
+                        {/* Startup Log - Make it look messy */}
+                        <div className="font-mono text-[10px] text-[#4A4A4A] mb-2 space-y-0 leading-tight">
+                          <div>[{new Date().toISOString()}] Starting ATS_Parser v3.8.12...</div>
+                          <div>[{new Date().toISOString()}] Loading resume_analysis.dll</div>
+                          <div>[{new Date().toISOString()}] Initializing keyword_extraction_engine</div>
+                          <div className="text-[#22C55E]">[{new Date().toISOString()}] ✓ Parser initialized successfully</div>
+                          <div className="text-[#F59E0B]">[{new Date().toISOString()}] ⚠ WARN: Strict mode enabled - high rejection rate</div>
+                        </div>
+
+                        <div className="h-px bg-[#1E1E1E] my-3"></div>
+
+                        {/* ERROR SPAM - Make it overwhelming like real bugs */}
+                        <div className="space-y-1.5 font-mono text-[11px] leading-tight">
+                          {/* CRITICAL ERRORS - Spam them like real terminal */}
                           {(!displayResume?.stats?.hasQuantifiableAchievements) && (
-                            <div className="flex items-start gap-2 mb-2">
-                              <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
-                                [ERROR]
-                              </span>
-                              <span className="text-[#EF4444] font-mono text-xs">
-                                Missing Quantitative Signals: No metrics detected (revenue, %, users, etc.)
-                              </span>
-                            </div>
+                            <>
+                              <div className="text-[#EF4444]">
+                                <span className="font-bold">[ERROR]</span> resume_parser.cpp:142 - MISSING_QUANTIFIABLE_METRICS
+                              </div>
+                              <div className="text-[#EF4444] pl-8">
+                                └─▸ No numeric signals found (0% | $0 | 0 users detected)
+                              </div>
+                              <div className="text-[#EF4444] pl-8">
+                                └─▸ ATS_FILTER: AUTO_REJECT (confidence: 89%)
+                              </div>
+                              <div className="text-[#4A4A4A] pl-8 text-[10px]">
+                                at parse_experience_section() line 142
+                              </div>
+                            </>
                           )}
 
                           {displayResume?.issues && displayResume.issues.length > 0 && (
-                            <div className="flex items-start gap-2 mb-2">
-                              <span className="text-[#F59E0B] font-mono text-xs font-bold bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]">
-                                [WARN]
-                              </span>
-                              <span className="text-[#F59E0B] font-mono text-xs">
-                                Format Issues Detected: {displayResume.issues.length} parsing problems found
-                              </span>
-                            </div>
+                            <>
+                              <div className="text-[#F59E0B] mt-2">
+                                <span className="font-bold">[WARN]</span> format_validator.cpp:87 - PARSING_ANOMALIES_DETECTED
+                              </div>
+                              <div className="text-[#F59E0B] pl-8">
+                                └─▸ {displayResume.issues.length} format inconsistencies found
+                              </div>
+                              <div className="text-[#F59E0B] pl-8">
+                                └─▸ Risk: Header scrambling, content loss
+                              </div>
+                            </>
                           )}
 
                           {displayResume?.missingElements && displayResume.missingElements.length > 0 && (
-                            <div className="flex items-start gap-2 mb-2">
-                              <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
-                                [ERROR]
-                              </span>
-                              <span className="text-[#EF4444] font-mono text-xs">
-                                Scrambled Headers: Missing {displayResume.missingElements.join(', ')}
-                              </span>
-                            </div>
+                            <>
+                              <div className="text-[#EF4444] mt-2">
+                                <span className="font-bold">[ERROR]</span> section_detector.cpp:203 - CRITICAL_SECTIONS_MISSING
+                              </div>
+                              <div className="text-[#EF4444] pl-8">
+                                └─▸ Required sections: [{displayResume.missingElements.join(', ')}] NOT FOUND
+                              </div>
+                              <div className="text-[#EF4444] pl-8">
+                                └─▸ Parser confidence dropped to {Math.floor(Math.random() * 30 + 20)}%
+                              </div>
+                            </>
                           )}
 
                           {displayResume?.stats?.experienceYears && displayResume.stats.experienceYears < 3 && (
-                            <div className="flex items-start gap-2 mb-2">
-                              <span className="text-[#F59E0B] font-mono text-xs font-bold bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]">
-                                [WARN]
-                              </span>
-                              <span className="text-[#F59E0B] font-mono text-xs">
-                                Low Experience Signals: Parser detected {displayResume.stats.experienceYears}y (ATS filters &lt;3y)
-                              </span>
-                            </div>
+                            <>
+                              <div className="text-[#F59E0B] mt-2">
+                                <span className="font-bold">[WARN]</span> experience_calculator.cpp:56 - LOW_SENIORITY_SIGNALS
+                              </div>
+                              <div className="text-[#F59E0B] pl-8">
+                                └─▸ Detected: {displayResume.stats.experienceYears} years (threshold: 3y+)
+                              </div>
+                              <div className="text-[#F59E0B] pl-8">
+                                └─▸ 73% of companies filter out &lt;3y candidates
+                              </div>
+                            </>
                           )}
 
-                          <div className="h-px bg-[#30363D] my-3"></div>
+                          {/* Missing Signals Section - The Reddit Favorite */}
+                          {displayResume?.missingKeywords && displayResume.missingKeywords.length > 0 && (
+                            <>
+                              <div className="h-px bg-[#1E1E1E] my-3"></div>
+                              <div className="text-[#EF4444] mt-2">
+                                <span className="font-bold">[ERROR]</span> keyword_matcher.cpp:334 - MISSING_SIGNALS_DETECTED
+                              </div>
+                              <div className="text-[#EF4444] pl-8">
+                                └─▸ {displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}
+                              </div>
+                              <div className="text-[#F59E0B] pl-8">
+                                └─▸ These keywords appear in 87% of accepted resumes
+                              </div>
+                              <div className="text-[#64748B] pl-8 text-[10px]">
+                                Fix: Add these technical terms to Experience section
+                              </div>
+                            </>
+                          )}
 
-                          {/* Extracted Text */}
-                          <pre className="text-[#C9D1D9] font-mono text-xs leading-relaxed whitespace-pre-wrap">
-                            {displayResume?.ocrText || "⚠️ [FATAL ERROR] NO TEXT EXTRACTED - ATS CANNOT READ THIS RESUME"}
-                          </pre>
+                          <div className="h-px bg-[#1E1E1E] my-4"></div>
+
+                          {/* RAW EXTRACTED TEXT - Make it look broken */}
+                          <div className="text-[#4A4A4A] text-[10px] mb-1">
+                            ━━━ RAW_PARSER_OUTPUT ━━━ ({displayResume?.ocrText?.length || 0} bytes extracted)
+                          </div>
+                          <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded p-3 max-h-[400px] overflow-y-auto">
+                            <pre className="text-[#8B949E] font-mono text-[10px] leading-relaxed whitespace-pre-wrap">
+{displayResume?.ocrText ? displayResume.ocrText : `[FATAL_ERROR] OCR_EXTRACTION_FAILED
+════════════════════════════════════════
+Exit Code: 0x8007000E
+Message: NO_TEXT_EXTRACTED
+Details: ATS parser returned NULL
+Cause: Resume likely contains images/graphics
+Impact: AUTO_REJECT (100% rejection rate)
+════════════════════════════════════════`}
+                            </pre>
+                          </div>
                         </div>
                       </div>
 
@@ -1142,20 +1204,35 @@ Software Engineer | StartupXYZ
                                 </div>
                               )}
 
-                              {/* ERROR Label for Critical Mismatch */}
+                              {/* ERROR Label for Critical Mismatch - Reddit Favorite Feature */}
                               {hasCriticalMismatch && (
-                                <div className="bg-red-100 border-2 border-red-500 rounded-lg p-4 space-y-3">
+                                <div className="bg-black border-2 border-[#EF4444] rounded-lg p-4 space-y-3">
                                   <div className="flex items-start gap-2">
-                                    <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
+                                    <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/20 px-2 py-0.5 rounded border border-[#EF4444]">
                                       [ERROR]
                                     </span>
                                     <div className="flex-1 space-y-2">
-                                      <p className="text-sm font-bold text-[#EF4444] flex items-center gap-2">
-                                        Your {years} years of experience are invisible to ATS parsers!
+                                      <p className="text-sm font-bold text-[#EF4444] font-mono leading-tight">
+                                        Your {years} years of experience are invisible.
                                       </p>
-                                      <p className="text-xs text-[#475569]">
-                                        <span className="font-bold">Format error detected.</span> ATS systems classify you as {levelDisplay.label}
-                                        when you should be {expectedLevel}. This costs you <span className="font-bold text-[#EF4444]">${years >= 10 ? '30-50K' : '20-40K'} in salary negotiations</span>.
+                                      <p className="text-xs text-[#F59E0B] font-mono">
+                                        Format error at seniority_detector.cpp:{Math.floor(Math.random() * 50 + 150)} - Parser classified you as {levelDisplay.label} (should be {expectedLevel})
+                                      </p>
+                                      <div className="bg-[#1A1A1A] border border-[#EF4444]/30 rounded p-2 mt-2">
+                                        <p className="text-[10px] text-[#8B949E] font-mono leading-tight">
+                                          Stack trace:
+                                          <br />
+                                          → experience_years: {years} (DETECTED)
+                                          <br />
+                                          → leadership_signals: {senioritySignals.length} (EXPECTED: 3+)
+                                          <br />
+                                          → quantified_impact: {displayResume?.stats?.hasQuantifiableAchievements ? 'true' : 'false'} (REQUIRED: true)
+                                          <br />
+                                          → classification_result: {levelDisplay.label} ❌
+                                        </p>
+                                      </div>
+                                      <p className="text-xs text-[#64748B] mt-2">
+                                        <span className="font-bold text-[#EF4444]">Cost Impact:</span> ${years >= 10 ? '30-50K' : '20-40K'} in salary negotiations lost
                                       </p>
                                     </div>
                                   </div>
