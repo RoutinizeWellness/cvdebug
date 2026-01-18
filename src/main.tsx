@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { InstrumentationProvider } from "@/instrumentation.tsx";
+import { ErrorBoundary } from "@/components/ErrorBoundary.tsx";
 import AuthPage from "@/pages/Auth.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Onboarding from "@/pages/Onboarding.tsx";
@@ -266,18 +267,20 @@ document.body.classList.add('react-loaded');
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <VlyToolbar />
-    <InstrumentationProvider>
-      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
-        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-          <UserSyncer />
-          <BrowserRouter>
-            <RouteSyncer />
-            <AnimatedRoutes />
-          </BrowserRouter>
-          <Toaster />
-        </ConvexProviderWithClerk>
-      </ClerkProvider>
-    </InstrumentationProvider>
+    <ErrorBoundary>
+      <VlyToolbar />
+      <InstrumentationProvider>
+        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+            <UserSyncer />
+            <BrowserRouter>
+              <RouteSyncer />
+              <AnimatedRoutes />
+            </BrowserRouter>
+            <Toaster />
+          </ConvexProviderWithClerk>
+        </ClerkProvider>
+      </InstrumentationProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
