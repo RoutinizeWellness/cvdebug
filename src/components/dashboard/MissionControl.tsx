@@ -118,7 +118,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </span>
             </div>
             <p className="text-[#64748B] text-base">
-              Welcome back, <span className="font-semibold text-[#0F172A]">{userName}</span>. Your resume optimization dashboard.
+              Welcome back, <span className="font-semibold text-[#0F172A]">{userName}</span>. Eliminate bugs until you reach 95% visibility.
             </p>
           </div>
           <Button

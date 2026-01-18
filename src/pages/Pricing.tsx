@@ -22,81 +22,99 @@ export default function PricingPage() {
 
   const pricingTiers = [
     {
-      name: "The Reality Check",
-      description: "Basic syntax check for your document.",
+      name: "FREE Debug",
+      description: "See what's broken. Get the diagnosis.",
       price: `${currencyInfo.symbol}0`,
       period: "forever",
       features: [
-        "Robot View Preview",
+        "Robot View Preview (blurred)",
         "Global ATS Score",
-        "Basic Error Logs",
+        "Basic [ERROR] Labels",
+        "Seniority Match Preview",
       ],
-      buttonText: "Run Scan",
+      buttonText: "Run Free Scan",
       buttonVariant: "outline" as const,
       borderColor: "border-slate-800",
       hoverBorder: "hover:border-slate-600",
       plan: "free",
     },
     {
-      name: "The Instant Fix",
-      description: "One-time optimization for a specific job.",
-      price: formatPrice("single_scan"),
-      period: "scan",
+      name: "24-Hour Iteration Pass",
+      description: "Everything you need to land an interview this week. No subscriptions. No BS.",
+      price: "14.99€",
+      period: "24 hours",
       features: [
-        "Everything in Free",
-        "Full Keyword Report",
-        "1-Click Auto-Fixes",
-        "Optimized PDF Export",
+        "Unlimited CV Scans (24h)",
+        "Full Robot X-Ray View",
+        "ERROR/WARN Labels + Fixes",
+        "Seniority Match Analysis",
+        "Keyword Gap Detection",
+        "Battle Plan Generator",
+        "Bullet Point Rewriter",
       ],
-      buttonText: "Buy One Scan",
+      buttonText: "Get 24h Access",
       buttonVariant: "default" as const,
       borderColor: "border-blue-900/50",
       hoverBorder: "hover:border-[#3B82F6]/50",
-      plan: "single_scan",
+      plan: "iteration_pass",
       highlighted: false,
     },
     {
-      name: "The Command Center",
-      description: "Full suite access for serious job hunters.",
-      price: formatPrice("interview_sprint"),
-      period: "month",
+      name: "7-Day Sprint",
+      description: "Debug your CV, land interviews, win offers. One week to ship your career.",
+      price: "24.99€",
+      period: "7 days",
       features: [
-        "Unlimited ATS Scans",
-        "Job Tracker Pro Dashboard",
-        "AI Cover Letter Generator",
-        "Priority Cloud Processing",
-        "LinkedIn Profile Audit",
+        "Unlimited CV Scans (7 days)",
+        "Full Robot X-Ray View",
+        "Priority ERROR Analysis",
+        "Seniority Match + Fix Guide",
+        "Advanced Keyword Optimization",
+        "Interview Battle Plan",
+        "Bullet Point Rewriter Pro",
+        "Export Sanitized CV (ATS-safe)",
+        "24/7 Support",
       ],
-      buttonText: "Start Sprint",
+      buttonText: "Start 7-Day Sprint",
       buttonVariant: "premium" as const,
       borderColor: "border-indigo-500/30",
       hoverBorder: "hover:border-indigo-500/50",
-      plan: "interview_sprint",
+      plan: "sprint_7day",
       highlighted: true,
-      badge: "BEST VALUE",
+      badge: "RECOMMENDED",
     },
   ];
 
   const faqs = [
     {
-      question: "How does the ATS scoring algorithm work?",
+      question: "How does CVDebug's CV Debugger work?",
       answer:
-        "We reverse-engineered the top 5 ATS platforms used by Fortune 500 companies. Our parser checks for parseability, keyword density, and formatting errors that typically cause silent rejections.",
+        "CVDebug uses ML algorithms to debug your resume just like ATS robots parse it. We find invisible bugs, add technical [ERROR] and [WARN] labels, show Robot X-Ray view, detect Seniority Match issues, and provide a 0-100 compatibility score with specific bug fixes.",
     },
     {
-      question: "Can I cancel the Sprint plan anytime?",
+      question: "What's the difference between 24-Hour Pass and 7-Day Sprint?",
       answer:
-        'Yes. The Interview Sprint is billed monthly. You can cancel directly from your "Command Center" dashboard with one click. No questions asked.',
+        "Both give unlimited scans and full access. The 24-Hour Pass (14.99€) is perfect if you have one interview coming up this week and need quick fixes. The 7-Day Sprint (24.99€) is RECOMMENDED for job seekers applying to multiple roles - you get priority support, advanced optimization, and a full week to iterate on your CV.",
+    },
+    {
+      question: "Do I need a subscription?",
+      answer:
+        'No! Both paid plans are one-time purchases with no recurring charges. Pay once, debug your CV, land interviews. No credit card stored. You can manage everything from your Mission Control dashboard.',
     },
     {
       question: "What file formats do you support?",
       answer:
-        'We currently support PDF and DOCX files. For the best results with our "Instant Fix" tool, we recommend uploading a DOCX file so we can directly inject the optimized keywords.',
+        'We support PDF, DOCX (Word), and TXT formats. We recommend PDF for best ATS compatibility, as it preserves formatting across all systems.',
     },
     {
-      question: "Is my data secure?",
+      question: "How accurate is the ATS score?",
       answer:
-        "Absolutely. We use bank-level AES-256 encryption. Your resume data is never sold to third parties and is only used to generate your report. You can delete your data permanently at any time.",
+        "CVDebug's ML algorithms are trained on thousands of real resumes and ATS parsing patterns. Our scoring is EXTREMELY strict and realistic (inspired by Jobscan) - most resumes score 45-75 to show room for improvement. We use penalties for missing elements and low caps for free users (78 max) to give you honest feedback, not inflated scores.",
+    },
+    {
+      question: "Is my resume data kept private?",
+      answer:
+        "Absolutely. We take privacy seriously. Your resume is encrypted, never shared with third parties, and you can delete it anytime from your dashboard. We're GDPR and CCPA compliant.",
     },
   ];
 
@@ -133,9 +151,9 @@ export default function PricingPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="relative text-4xl md:text-6xl font-black tracking-tight text-[#0F172A] mb-6 leading-tight max-w-4xl"
           >
-            Debug Your Resume. <br className="hidden md:block" />
+            Debug Your CV. <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#6366F1]">
-              Compile Your Career.
+              Stop Getting Ghosted.
             </span>
           </motion.h1>
 
@@ -145,8 +163,8 @@ export default function PricingPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative text-[#475569] text-lg md:text-xl max-w-2xl mb-10 leading-relaxed"
           >
-            Stop getting rejected by silent algorithms. Optimize your CV syntax, keywords, and
-            formatting to pass every ATS check.
+            Find invisible resume bugs that cost you interviews. Get [ERROR] labels, Robot X-Ray view,
+            and Seniority Match analysis. Debug your CV in 10 seconds.
           </motion.p>
         </section>
 

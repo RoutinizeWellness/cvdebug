@@ -36,19 +36,19 @@ export const SEO_CONFIG = {
 
 export const PAGE_METADATA: Record<string, PageMetadata> = {
   home: {
-    title: "CVDebug - AI-Powered ATS Resume Checker & Optimizer | Beat ATS Systems 2026",
+    title: "CVDebug - CV Debugger | Debug Resume Bugs & Stop Getting Ghosted 2026",
     description:
-      "Free AI-powered ATS resume scanner that helps you beat applicant tracking systems. Get instant ATS compatibility score, keyword optimization, and expert recommendations. Trusted by 10,000+ job seekers.",
+      "Free CV Debugger with ML algorithms - Find invisible resume bugs that cost you interviews. Get [ERROR] labels, technical X-Ray view, Seniority Match analysis. Debug your CV in 10 seconds. Trusted by 10,000+ job seekers at FAANG.",
     keywords: SEO_CONFIG.defaultKeywords,
     ogImage: SEO_CONFIG.defaultOgImage,
     canonical: SEO_CONFIG.siteUrl,
     structuredData: {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      name: "CVDebug",
+      name: "CVDebug - CV Debugger",
       applicationCategory: "BusinessApplication",
       description:
-        "AI-powered ATS resume checker and optimizer that helps job seekers beat applicant tracking systems.",
+        "CV Debugger with ML algorithms - Find invisible resume bugs, get technical [ERROR] labels, and see Robot X-Ray view. Debug your CV and stop getting ghosted.",
       url: SEO_CONFIG.siteUrl,
       operatingSystem: "Any",
       offers: {
@@ -66,9 +66,9 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
     },
   },
   pricing: {
-    title: "Pricing - CVDebug ATS Resume Checker | Free & Premium Plans",
+    title: "Pricing - CVDebug CV Debugger | 24-Hour Pass & 7-Day Sprint Plans",
     description:
-      "Choose the perfect plan for your job search. Start with free ATS analysis or upgrade to premium for unlimited scans, keyword optimization, and priority support. No credit card required.",
+      "Choose your debug plan: FREE scan, 24-hour Iteration Pass (14.99€), or 7-Day Sprint (RECOMMENDED). Unlimited CV debugging, [ERROR] fixes, Robot View access. No credit card for free tier.",
     keywords: [
       ...SEO_CONFIG.defaultKeywords,
       "resume checker pricing",
@@ -79,16 +79,16 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
     canonical: `${SEO_CONFIG.siteUrl}/pricing`,
   },
   dashboard: {
-    title: "Dashboard - CVDebug | Your Resume Analysis Results",
+    title: "Mission Control - CVDebug | Debug Your Resume Bugs",
     description:
-      "View your ATS resume analysis, keyword gaps, and optimization recommendations. Track your resume score improvements over time.",
+      "Mission Control dashboard - View [ERROR] tags, Seniority Match analysis, keyword gaps, and Robot X-Ray view. Track bug fixes and score improvements over time.",
     ogImage: SEO_CONFIG.defaultOgImage,
     canonical: `${SEO_CONFIG.siteUrl}/dashboard`,
   },
   blog: {
-    title: "Resume Optimization Blog - CVDebug | ATS Tips & Career Advice",
+    title: "CV Debugging Blog - CVDebug | Fix Resume Bugs & Stop Getting Ghosted",
     description:
-      "Expert guides on beating ATS systems, optimizing resumes, and landing more interviews. Learn from industry professionals and get actionable career advice.",
+      "Expert guides on debugging CV bugs, fixing [ERROR] tags, passing ATS robots, and landing more interviews. Learn technical resume optimization from ML analysis experts.",
     keywords: [
       ...SEO_CONFIG.defaultKeywords,
       "resume tips",
@@ -112,8 +112,8 @@ export function getRoleMetadata(role: string): PageMetadata {
     .join(" ");
 
   return {
-    title: `${roleName} Resume Checker - ATS Optimization for ${roleName} | CVDebug`,
-    description: `Free ATS resume checker specifically designed for ${roleName} roles. Get instant feedback on keywords, formatting, and ATS compatibility. Optimize your ${roleName} resume to pass ATS filters.`,
+    title: `${roleName} CV Debugger - Debug Resume Bugs for ${roleName} | CVDebug`,
+    description: `Free CV Debugger for ${roleName} roles. Debug invisible bugs, get [ERROR] labels, and see Robot X-Ray view. Find why your ${roleName} resume gets ghosted and fix ATS compatibility issues in 10 seconds.`,
     keywords: [
       `${role} resume`,
       `${role} ATS checker`,
@@ -126,8 +126,8 @@ export function getRoleMetadata(role: string): PageMetadata {
     structuredData: {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      name: `${roleName} Resume Checker`,
-      description: `ATS resume checker for ${roleName} professionals`,
+      name: `${roleName} CV Debugger`,
+      description: `CV Debugger for ${roleName} professionals - Find resume bugs and ATS errors`,
       url: `${SEO_CONFIG.siteUrl}/resume-checker/${role}`,
     },
   };
@@ -143,8 +143,8 @@ export function getLocationMetadata(location: string): PageMetadata {
     .join(" ");
 
   return {
-    title: `ATS Resume Checker ${locationName} - Local Resume Optimization | CVDebug`,
-    description: `Free ATS resume checker for job seekers in ${locationName}. Optimize your resume for local employers and ATS systems. Get instant feedback on formatting, keywords, and compatibility.`,
+    title: `CV Debugger ${locationName} - Debug Resume Bugs for Local Jobs | CVDebug`,
+    description: `Free CV Debugger for ${locationName} job seekers. Debug invisible resume bugs, get [ERROR] labels, and optimize for local employers' ATS systems. Stop getting ghosted - fix your CV in 10 seconds.`,
     keywords: [
       `${location} resume`,
       `${location} ATS checker`,
@@ -224,14 +224,14 @@ export const HOMEPAGE_FAQS = [
       "An ATS (Applicant Tracking System) is software that 90% of companies use to automatically filter resumes. It scans for keywords, formatting, and relevance before a human ever sees your resume. Without ATS optimization, your resume may never reach a recruiter, even if you're qualified.",
   },
   {
-    question: "How does CVDebug's ATS checker work?",
+    question: "How does CVDebug's CV Debugger work?",
     answer:
-      "CVDebug uses AI to analyze your resume just like real ATS systems do. We scan for keyword matches, check formatting compatibility, identify missing skills, and provide a 0-100 ATS compatibility score with specific recommendations to improve.",
+      "CVDebug uses ML algorithms to debug your resume just like ATS robots parse it. We find invisible bugs, add technical [ERROR] and [WARN] labels, show Robot X-Ray view, detect Seniority Match issues, and provide a 0-100 compatibility score with specific bug fixes to implement.",
   },
   {
     question: "Is CVDebug really free?",
     answer:
-      "Yes! Our basic ATS scanner is completely free. Upload your resume and get instant ATS compatibility analysis, keyword gap detection, and formatting recommendations. Premium plans offer unlimited scans and advanced features.",
+      "Yes! Our CV Debugger is completely free for basic scans. Upload your resume and get instant [ERROR] labels, keyword gap detection, and ATS compatibility analysis. Register for FREE to unlock Robot X-Ray View and Seniority Match analysis. Premium plans (24-hour Pass or 7-Day Sprint) offer unlimited debugging and priority fixes.",
   },
   {
     question: "What resume formats does CVDebug support?",
@@ -241,7 +241,7 @@ export const HOMEPAGE_FAQS = [
   {
     question: "How accurate is the ATS score?",
     answer:
-      "CVDebug's AI is trained on thousands of real resumes and job descriptions. Our scoring algorithm matches actual ATS behavior with 94% accuracy. We use strict, realistic scoring - not inflated scores - so you know exactly where you stand.",
+      "CVDebug's ML algorithms are trained on thousands of real resumes and ATS parsing patterns. Our scoring is EXTREMELY strict and realistic (inspired by Jobscan) - most resumes score 45-75 to show room for improvement. We use penalties for missing elements and low caps for free users (78 max) to give you honest feedback, not inflated scores.",
   },
   {
     question: "Can CVDebug help with specific roles like SDR, Software Engineer, or Data Scientist?",

@@ -952,27 +952,86 @@ Software Engineer | StartupXYZ
                     ) : (
                       /* Robot View Content - Only for Registered Users */
                       <div className="p-6 space-y-6">
-                      {/* Info Banner */}
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                        <div className="flex items-center gap-3">
-                          <div className="text-xl">👁️</div>
-                          <p className="text-green-700 text-sm font-medium">
-                            This is what ATS robots see. Changes appear here in real-time.
-                          </p>
+                      {/* Technical Debug Console Banner */}
+                      <div className="bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-2 border-[#22C55E] rounded-lg p-4 shadow-lg">
+                        <div className="flex items-start gap-3">
+                          <div className="text-2xl">🔍</div>
+                          <div className="flex-1 space-y-2">
+                            <p className="text-[#0F172A] text-sm font-bold">
+                              CV DEBUGGER — Technical X-Ray View
+                            </p>
+                            <p className="text-[#475569] text-xs">
+                              This diagnostic view shows your resume EXACTLY as ATS parsers interpret it.
+                              Red [ERROR] tags = critical bugs blocking your application. Yellow [WARN] = optimization opportunities.
+                            </p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* OCR Text Display */}
-                      <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                      {/* Technical Error Analysis */}
+                      <div className="bg-[#1E1E1E] border-2 border-[#EF4444] rounded-lg p-6 shadow-xl">
                         <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-[#0F172A] font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
-                          <span className="text-[#475569] font-mono text-xs">
-                            {displayResume?.ocrText?.length || 0} characters
+                          <h4 className="text-[#22C55E] font-mono font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                            <span className="w-2 h-2 bg-[#EF4444] rounded-full animate-pulse"></span>
+                            Parser Debug Output
+                          </h4>
+                          <span className="text-[#64748B] font-mono text-xs bg-[#2A2A2A] px-2 py-1 rounded">
+                            {displayResume?.ocrText?.length || 0} chars extracted
                           </span>
                         </div>
-                        <div className="bg-[#F8FAFC] rounded border border-[#E2E8F0] p-4 max-h-[500px] overflow-y-auto custom-scrollbar">
-                          <pre className="text-[#475569] font-mono text-xs leading-relaxed whitespace-pre-wrap">
-                            {displayResume?.ocrText || "⚠️ NO TEXT EXTRACTED - ATS CANNOT READ THIS RESUME"}
+
+                        {/* Debug Output with Error Labels */}
+                        <div className="bg-[#0D1117] rounded border-2 border-[#30363D] p-4 max-h-[500px] overflow-y-auto custom-scrollbar space-y-1">
+                          {/* Error Labels */}
+                          {(!displayResume?.stats?.hasQuantifiableAchievements) && (
+                            <div className="flex items-start gap-2 mb-2">
+                              <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
+                                [ERROR]
+                              </span>
+                              <span className="text-[#EF4444] font-mono text-xs">
+                                Missing Quantitative Signals: No metrics detected (revenue, %, users, etc.)
+                              </span>
+                            </div>
+                          )}
+
+                          {displayResume?.issues && displayResume.issues.length > 0 && (
+                            <div className="flex items-start gap-2 mb-2">
+                              <span className="text-[#F59E0B] font-mono text-xs font-bold bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]">
+                                [WARN]
+                              </span>
+                              <span className="text-[#F59E0B] font-mono text-xs">
+                                Format Issues Detected: {displayResume.issues.length} parsing problems found
+                              </span>
+                            </div>
+                          )}
+
+                          {displayResume?.missingElements && displayResume.missingElements.length > 0 && (
+                            <div className="flex items-start gap-2 mb-2">
+                              <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
+                                [ERROR]
+                              </span>
+                              <span className="text-[#EF4444] font-mono text-xs">
+                                Scrambled Headers: Missing {displayResume.missingElements.join(', ')}
+                              </span>
+                            </div>
+                          )}
+
+                          {displayResume?.stats?.experienceYears && displayResume.stats.experienceYears < 3 && (
+                            <div className="flex items-start gap-2 mb-2">
+                              <span className="text-[#F59E0B] font-mono text-xs font-bold bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]">
+                                [WARN]
+                              </span>
+                              <span className="text-[#F59E0B] font-mono text-xs">
+                                Low Experience Signals: Parser detected {displayResume.stats.experienceYears}y (ATS filters &lt;3y)
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="h-px bg-[#30363D] my-3"></div>
+
+                          {/* Extracted Text */}
+                          <pre className="text-[#C9D1D9] font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                            {displayResume?.ocrText || "⚠️ [FATAL ERROR] NO TEXT EXTRACTED - ATS CANNOT READ THIS RESUME"}
                           </pre>
                         </div>
                       </div>
@@ -991,6 +1050,178 @@ Software Engineer | StartupXYZ
                           </div>
                         </div>
                       )}
+
+                      {/* SENIORITY MATCH - Critical Indicator (ML-Based) */}
+                      {(() => {
+                        // Use ML-calculated seniority from backend (clientAnalysis.ts)
+                        const seniorityLevel = displayResume?.stats?.seniorityLevel || 'junior';
+                        const seniorityScore = displayResume?.stats?.seniorityScore || 0;
+                        const senioritySignals = displayResume?.stats?.senioritySignals || [];
+                        const years = displayResume?.stats?.experienceYears || 0;
+
+                        // Map seniority levels to display
+                        const levelMap: Record<string, { label: string; color: string; bgColor: string; borderColor: string }> = {
+                          'lead': { label: 'LEAD/PRINCIPAL', color: '#8B5CF6', bgColor: 'bg-purple-50', borderColor: 'border-purple-200' },
+                          'senior': { label: 'SENIOR', color: '#22C55E', bgColor: 'bg-green-50', borderColor: 'border-green-200' },
+                          'mid': { label: 'MID-LEVEL', color: '#F59E0B', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-200' },
+                          'junior': { label: 'JUNIOR', color: '#EF4444', bgColor: 'bg-red-50', borderColor: 'border-red-200' }
+                        };
+
+                        const levelDisplay = levelMap[seniorityLevel] || levelMap['junior'];
+
+                        // Check for critical mismatch (10+ years but detected as junior/mid)
+                        const hasCriticalMismatch = years >= 10 && (seniorityLevel === 'junior' || seniorityLevel === 'mid');
+                        const hasMismatch = years >= 7 && seniorityLevel !== 'senior' && seniorityLevel !== 'lead';
+
+                        // Calculate expected level based on years
+                        let expectedLevel = 'JUNIOR';
+                        if (years >= 10) expectedLevel = 'SENIOR/LEAD';
+                        else if (years >= 7) expectedLevel = 'SENIOR';
+                        else if (years >= 3) expectedLevel = 'MID-LEVEL';
+
+                        return (
+                          <div className={`${levelDisplay.bgColor} border-2 ${levelDisplay.borderColor} rounded-lg p-6 shadow-lg ${hasCriticalMismatch ? 'ring-4 ring-red-500/50 animate-pulse' : hasMismatch ? 'ring-2 ring-orange-500/50' : ''}`}>
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between">
+                                <h4 className="text-[#0F172A] font-mono font-bold text-sm uppercase tracking-wider">
+                                  🎯 Seniority Match Analysis
+                                </h4>
+                                {hasCriticalMismatch && (
+                                  <span className="text-xs font-bold text-[#EF4444] bg-red-100 px-3 py-1 rounded-full border-2 border-red-500 animate-pulse">
+                                    🚨 CRITICAL MISMATCH
+                                  </span>
+                                )}
+                                {hasMismatch && !hasCriticalMismatch && (
+                                  <span className="text-xs font-bold text-[#F59E0B] bg-orange-100 px-3 py-1 rounded-full border-2 border-orange-500">
+                                    ⚠️ MISMATCH DETECTED
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                  <div className="text-xs text-[#64748B] font-mono mb-1">ATS Detected Level:</div>
+                                  <div className="text-xl font-black" style={{ color: levelDisplay.color }}>
+                                    {levelDisplay.label}
+                                  </div>
+                                  <div className="text-xs text-[#64748B] font-mono mt-1">
+                                    Score: {seniorityScore}/100
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="text-xs text-[#64748B] font-mono mb-1">Experience Found:</div>
+                                  <div className="text-xl font-black text-[#0F172A]">
+                                    {years} years
+                                  </div>
+                                  <div className="text-xs text-[#64748B] font-mono mt-1">
+                                    Expected: {expectedLevel}
+                                  </div>
+                                </div>
+                                <div>
+                                  <div className="text-xs text-[#64748B] font-mono mb-1">Signals Detected:</div>
+                                  <div className="text-xl font-black text-[#8B5CF6]">
+                                    {senioritySignals.length}
+                                  </div>
+                                  <div className="text-xs text-[#64748B] font-mono mt-1">
+                                    {senioritySignals.length >= 3 ? '✓ Strong' : '✗ Weak'}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Seniority Signals List */}
+                              {senioritySignals.length > 0 && (
+                                <div className="bg-white/60 rounded-lg p-3 space-y-2">
+                                  <div className="text-xs font-mono font-bold text-[#64748B] uppercase">Detected Signals:</div>
+                                  <div className="flex flex-wrap gap-2">
+                                    {senioritySignals.map((signal: string, idx: number) => (
+                                      <span key={idx} className="text-xs bg-[#8B5CF6]/10 text-[#8B5CF6] px-2 py-1 rounded font-mono border border-[#8B5CF6]/20">
+                                        ✓ {signal}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* ERROR Label for Critical Mismatch */}
+                              {hasCriticalMismatch && (
+                                <div className="bg-red-100 border-2 border-red-500 rounded-lg p-4 space-y-3">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-[#EF4444] font-mono text-xs font-bold bg-[#EF4444]/10 px-2 py-0.5 rounded border border-[#EF4444]">
+                                      [ERROR]
+                                    </span>
+                                    <div className="flex-1 space-y-2">
+                                      <p className="text-sm font-bold text-[#EF4444] flex items-center gap-2">
+                                        Your {years} years of experience are invisible to ATS parsers!
+                                      </p>
+                                      <p className="text-xs text-[#475569]">
+                                        <span className="font-bold">Format error detected.</span> ATS systems classify you as {levelDisplay.label}
+                                        when you should be {expectedLevel}. This costs you <span className="font-bold text-[#EF4444]">${years >= 10 ? '30-50K' : '20-40K'} in salary negotiations</span>.
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="bg-white/80 rounded-lg p-3 space-y-2">
+                                    <div className="text-xs font-bold text-[#0F172A]">Quick Fix Checklist:</div>
+                                    <div className="space-y-1">
+                                      {senioritySignals.length < 2 && (
+                                        <div className="flex items-center gap-2 text-xs text-[#64748B]">
+                                          <span className="text-[#EF4444]">✗</span>
+                                          <span>Add leadership verbs (Led, Managed, Architected)</span>
+                                        </div>
+                                      )}
+                                      {!displayResume?.stats?.hasQuantifiableAchievements && (
+                                        <div className="flex items-center gap-2 text-xs text-[#64748B]">
+                                          <span className="text-[#EF4444]">✗</span>
+                                          <span>Add metrics showing scale (X users, $Y revenue)</span>
+                                        </div>
+                                      )}
+                                      {years >= 7 && senioritySignals.length < 3 && (
+                                        <div className="flex items-center gap-2 text-xs text-[#64748B]">
+                                          <span className="text-[#EF4444]">✗</span>
+                                          <span>Highlight mentoring/coaching experience</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* WARN Label for Minor Mismatch */}
+                              {hasMismatch && !hasCriticalMismatch && (
+                                <div className="bg-orange-50 border-2 border-orange-400 rounded-lg p-4 space-y-2">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-[#F59E0B] font-mono text-xs font-bold bg-[#F59E0B]/10 px-2 py-0.5 rounded border border-[#F59E0B]">
+                                      [WARN]
+                                    </span>
+                                    <div className="flex-1">
+                                      <p className="text-sm font-bold text-[#F59E0B]">
+                                        Seniority signals could be stronger
+                                      </p>
+                                      <p className="text-xs text-[#475569] mt-1">
+                                        With {years} years experience, you should be classified as {expectedLevel}. Add more leadership indicators and quantified impact to boost your ATS seniority score.
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Success State */}
+                              {!hasMismatch && (seniorityLevel === 'senior' || seniorityLevel === 'lead') && (
+                                <div className="bg-green-100 border-2 border-green-500 rounded-lg p-3">
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-[#22C55E] font-mono text-xs font-bold bg-[#22C55E]/10 px-2 py-0.5 rounded border border-[#22C55E]">
+                                      [SUCCESS]
+                                    </span>
+                                    <p className="text-xs text-[#22C55E] font-bold flex-1">
+                                      ✓ Perfect match! ATS correctly identifies your {levelDisplay.label} seniority level.
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })()}
 
                       {/* Quick Stats */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

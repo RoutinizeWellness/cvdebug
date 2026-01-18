@@ -819,6 +819,10 @@ export function analyzeResumeClient(
     certificationsFound?: string[];
     educationLevel?: string;
     experienceYears?: number;
+    // Seniority Match (Critical differentiator)
+    seniorityLevel?: 'junior' | 'mid' | 'senior' | 'lead';
+    seniorityScore?: number;
+    senioritySignals?: string[];
   };
 } {
   // Extract contact information
@@ -969,6 +973,65 @@ export function analyzeResumeClient(
     }
   }
 
+  // SENIORITY MATCH CALCULATION (Critical differentiator)
+  // Determines if ATS will classify you as Junior/Mid/Senior
+  let seniorityLevel: 'junior' | 'mid' | 'senior' | 'lead' = 'junior';
+  let seniorityScore = 0;
+  const senioritySignals: string[] = [];
+
+  // Signal 1: Experience years (40% weight)
+  if (experienceAnalysis.estimatedYears >= 8) {
+    seniorityScore += 40;
+    senioritySignals.push(`${experienceAnalysis.estimatedYears}+ years experience`);
+  } else if (experienceAnalysis.estimatedYears >= 5) {
+    seniorityScore += 30;
+    senioritySignals.push(`${experienceAnalysis.estimatedYears} years experience`);
+  } else if (experienceAnalysis.estimatedYears >= 3) {
+    seniorityScore += 20;
+  } else {
+    seniorityScore += 10;
+  }
+
+  // Signal 2: Leadership indicators (30% weight)
+  const leadershipKeywords = ['led', 'managed', 'directed', 'architected', 'designed', 'mentored', 'coached', 'supervised', 'spearheaded'];
+  const leadershipCount = leadershipKeywords.filter(kw => text.toLowerCase().includes(kw)).length;
+  if (leadershipCount >= 4) {
+    seniorityScore += 30;
+    senioritySignals.push(`${leadershipCount} leadership indicators`);
+  } else if (leadershipCount >= 2) {
+    seniorityScore += 20;
+  } else if (leadershipCount >= 1) {
+    seniorityScore += 10;
+  }
+
+  // Signal 3: Impact scale (20% weight)
+  const hasLargeScale = /\d+M\+?\s*(users|requests|revenue)|\$\d+M|\d+K\+?\s*users/i.test(text);
+  const hasModerateScale = /\d+K\+?\s*(users|requests)|\$\d+K/i.test(text);
+  if (hasLargeScale) {
+    seniorityScore += 20;
+    senioritySignals.push('Large-scale impact (M+ level)');
+  } else if (hasModerateScale) {
+    seniorityScore += 15;
+    senioritySignals.push('Moderate-scale impact (K+ level)');
+  }
+
+  // Signal 4: Advanced degree (10% weight)
+  if (educationAnalysis.educationLevel === 'doctorate' || educationAnalysis.educationLevel === 'master') {
+    seniorityScore += 10;
+    senioritySignals.push(`${educationAnalysis.educationLevel}'s degree`);
+  }
+
+  // Determine seniority level
+  if (seniorityScore >= 75) {
+    seniorityLevel = 'lead';
+  } else if (seniorityScore >= 60) {
+    seniorityLevel = 'senior';
+  } else if (seniorityScore >= 40) {
+    seniorityLevel = 'mid';
+  } else {
+    seniorityLevel = 'junior';
+  }
+
   return {
     overallScore: Math.min(overallScore, 100),
     formatScore: formatResult.score,
@@ -990,7 +1053,11 @@ export function analyzeResumeClient(
       softSkillsFound: softSkillsAnalysis.softSkillsFound,
       certificationsFound: certificationsAnalysis.certificationsFound,
       educationLevel: educationAnalysis.educationLevel,
-      experienceYears: experienceAnalysis.estimatedYears
+      experienceYears: experienceAnalysis.estimatedYears,
+      // SENIORITY MATCH (Critical differentiator)
+      seniorityLevel,
+      seniorityScore,
+      senioritySignals
     }
   };
 }

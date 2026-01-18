@@ -61,19 +61,19 @@ export function NewHeroSection() {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-center px-4 max-w-5xl mx-auto"
         >
           <span className="text-[#1E293B]">
-            Stop being invisible to{" "}
+            Stop guessing why you're being{" "}
           </span>
           <br className="hidden sm:block" />
           <span
             className="inline-block"
             style={{
-              background: "linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)",
+              background: "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text"
             }}
           >
-            hiring bots.
+            ghosted.
           </span>
         </motion.h1>
 
@@ -83,8 +83,9 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-6 text-lg sm:text-xl leading-8 text-[#475569] max-w-3xl mx-auto px-4 text-center"
         >
-          The standard PDF you're sending is unreadable to 70% of ATS systems.
-          See what the bot sees in 10 seconds and fix your parse rate.
+          <span className="font-bold text-[#1E293B]">Debug your resume's invisible bugs</span> and land interviews in 7 days.
+          <br className="mt-2 block" />
+          We don't sell pretty CVs—we sell <span className="font-semibold text-[#8B5CF6]">total algorithmic legibility</span>.
         </motion.p>
 
         <motion.div

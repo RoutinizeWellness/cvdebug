@@ -11,14 +11,14 @@ import { useNavigate } from "react-router";
 
 const apiAny = api;
 
-export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "interview_sprint" | null; resumeId?: string }) {
+export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "interview_sprint" | "iteration_pass" | null; resumeId?: string }) {
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
   const user = useQuery(apiAny.users.currentUser);
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | null>(initialPlan || null);
+  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | "iteration_pass" | null>(initialPlan || null);
   const [showUpsell, setShowUpsell] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     }
   }, [initialPlan]);
 
-  const handleUpgrade = async (plan: "single_scan" | "interview_sprint") => {
+  const handleUpgrade = async (plan: "single_scan" | "interview_sprint" | "iteration_pass") => {
     if (!isAuthenticated) {
       toast.error("Please log in to purchase credits");
       onOpenChange(false);
@@ -164,136 +164,181 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </DialogHeader>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8 px-6 pb-16 max-w-6xl mx-auto w-full items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 px-6 pb-16 max-w-7xl mx-auto w-full items-stretch">
           {/* Free Tier */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 flex flex-col h-full hover:border-slate-300 transition-colors">
-            <div className="mb-8">
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
+            <div className="mb-6">
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">Starter</span>
-              <h2 className="text-2xl font-extrabold text-slate-900 mt-1">FREE Preview</h2>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-black tracking-tighter">€0</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">FREE Debug</h2>
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-3xl font-black tracking-tighter">€0</span>
               </div>
             </div>
-            <div className="space-y-4 mb-10 flex-grow">
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
-                ATS Score Preview
+            <div className="space-y-3 mb-8 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+                <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
+                Score Preview
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
-                Robot View Analysis
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+                <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
+                [ERROR] Labels
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
-                Top 2 Errors/Keywords
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+                <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
+                Top 2 Keywords
               </div>
             </div>
             <button
               onClick={() => onOpenChange(false)}
-              className="w-full h-12 rounded-lg border border-[#E2E8F0] bg-white text-slate-900 font-bold text-sm hover:bg-slate-50 transition-colors"
+              className="w-full h-11 rounded-lg border border-[#E2E8F0] bg-white text-slate-900 font-bold text-sm hover:bg-slate-50 transition-colors"
             >
               Try Free
             </button>
           </div>
 
-          {/* Single Scan */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 flex flex-col h-full hover:border-slate-300 transition-colors">
-            <div className="mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">Essential</span>
-              <h2 className="text-2xl font-extrabold text-slate-900 mt-1">Single Scan</h2>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-black tracking-tighter">€9.99</span>
-                <span className="text-slate-400 text-sm font-medium">/ scan</span>
+          {/* 24-Hour Iteration Pass - NEW */}
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
+            <div className="mb-6">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">Quick Fix</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">24h Pass</h2>
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-3xl font-black tracking-tighter">€14.99</span>
               </div>
+              <span className="text-slate-400 text-[10px] font-medium mt-1 block">24-hour access</span>
             </div>
-            <div className="space-y-4 mb-10 flex-grow">
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-lg">check_circle</span>
-                Full ATS Analysis
+            <div className="space-y-3 mb-8 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Unlimited Scans (24h)
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-lg">check_circle</span>
-                Complete Keyword Report
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Full [ERROR] Report
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-lg">check_circle</span>
-                Formatting Audit + Fixes
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Robot X-Ray View
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-lg">check_circle</span>
-                Unlimited Re-scans (24h)
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Keyword Optimizer
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-lg">check_circle</span>
-                PDF Sanitization
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Battle Plan Generator
               </div>
             </div>
             <button
-              onClick={() => handleUpgrade("single_scan")}
+              onClick={() => handleUpgrade("iteration_pass")}
               disabled={!!isLoading}
-              className="w-full h-12 rounded-lg bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50"
             >
-              {isLoading === "single_scan" ? <Loader2 className="h-5 w-5 animate-spin mx-auto" /> : "Get Single Scan"}
+              {isLoading === "iteration_pass" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get 24h Pass"}
             </button>
           </div>
 
-          {/* Interview Sprint */}
-          <div className="bg-white border-2 border-[#8B5CF6]/40 rounded-xl p-8 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(134,85,246,0.1)]">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#8B5CF6] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+          {/* 7-Day Sprint - RECOMMENDED */}
+          <div className="bg-white border-2 border-[#8B5CF6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(134,85,246,0.1)]">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">rocket_launch</span>
-              Best Value
+              RECOMMENDED
             </div>
-            <div className="mb-8">
+            <div className="mb-6">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B5CF6] font-mono">7-Day Intensive</span>
-                <span className="bg-[#8B5CF6]/10 text-[#8B5CF6] text-[10px] font-black px-2 py-1 rounded">SAVE 60%</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B5CF6] font-mono">7-Day Sprint</span>
+                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">BEST VALUE</span>
               </div>
-              <h2 className="text-2xl font-extrabold text-slate-900 mt-1">Interview Sprint</h2>
-              <div className="mt-4 flex flex-col">
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">7-Day Sprint</h2>
+              <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-black tracking-tighter text-slate-900">€19.99</span>
-                  <span className="text-slate-400 line-through text-sm font-medium">€49.99</span>
+                  <span className="text-3xl font-black tracking-tighter text-slate-900">€19.99</span>
+                  <span className="text-slate-400 line-through text-xs font-medium">€49.99</span>
                 </div>
-                <span className="text-slate-400 text-xs font-medium mt-1">Full 7-day intensive access</span>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">7 days full access</span>
               </div>
             </div>
-            <div className="space-y-4 mb-8 flex-grow">
-              <div className="flex items-center gap-3 text-sm font-bold text-[#8B5CF6]">
-                <span className="material-symbols-outlined text-lg">verified</span>
-                Unlimited Scans (7 Days)
+            <div className="space-y-3 mb-6 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#8B5CF6]">
+                <span className="material-symbols-outlined text-base">verified</span>
+                Unlimited Scans (7d)
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-lg">check_circle</span>
-                AI Keyword Suggestions
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Full Debug Suite
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-lg">check_circle</span>
-                Cover Letter Generator
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Battle Plan Generator
               </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-lg">check_circle</span>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Cover Letter Gen
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
                 LinkedIn Optimizer
               </div>
-            </div>
-            <div className="mb-8 pt-6 border-t border-slate-100">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex -space-x-2">
-                  <div className="size-7 rounded-full border-2 border-white bg-slate-100"></div>
-                  <div className="size-7 rounded-full border-2 border-white bg-slate-100"></div>
-                  <div className="size-7 rounded-full border-2 border-white bg-slate-100"></div>
-                </div>
-                <span className="text-[11px] font-bold text-slate-500">Joined by 1,200+ candidates</span>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Bullet Rewriter
               </div>
-              <p className="text-[11px] italic text-slate-400 leading-relaxed font-medium">
-                "The Sprint was a game changer. The AI suggestions are spot on!"
+            </div>
+            <div className="mb-6 pt-4 border-t border-slate-100">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex -space-x-1.5">
+                  <div className="size-5 rounded-full border-2 border-white bg-slate-100"></div>
+                  <div className="size-5 rounded-full border-2 border-white bg-slate-100"></div>
+                  <div className="size-5 rounded-full border-2 border-white bg-slate-100"></div>
+                </div>
+                <span className="text-[10px] font-bold text-slate-500">1,200+ devs joined</span>
+              </div>
+              <p className="text-[10px] italic text-slate-400 leading-relaxed font-medium">
+                "Sprint helped me fix bugs and land 5 interviews in 1 week"
               </p>
             </div>
             <button
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
-              className="w-full h-12 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isLoading === "interview_sprint" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Start Interview Sprint 🚀"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Start 7-Day Sprint 🚀"}
+            </button>
+          </div>
+
+          {/* Single Scan - Moved to last position */}
+          <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
+            <div className="mb-6">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">One-Time</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Single Scan</h2>
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-3xl font-black tracking-tighter">€9.99</span>
+              </div>
+              <span className="text-slate-400 text-[10px] font-medium mt-1 block">One job only</span>
+            </div>
+            <div className="space-y-3 mb-8 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Full ATS Analysis
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Keyword Report
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Format Audit
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
+                Re-scans (24h)
+              </div>
+            </div>
+            <button
+              onClick={() => handleUpgrade("single_scan")}
+              disabled={!!isLoading}
+              className="w-full h-11 rounded-lg bg-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-300 transition-colors disabled:opacity-50"
+            >
+              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get Single Scan"}
             </button>
           </div>
         </div>
