@@ -233,10 +233,15 @@ function calculateCompletenessScore(
 /**
  * MAIN CLIENT ANALYSIS FUNCTION
  * This must produce the same score as server-side analysis
+ *
+ * @param text - Resume text to analyze
+ * @param jobDescription - Optional job description for keyword matching
+ * @param isPremium - Whether user is premium (can see scores 90+)
  */
 export function analyzeResumeClient(
   text: string,
-  jobDescription?: string
+  jobDescription?: string,
+  isPremium: boolean = false
 ): {
   overallScore: number;
   formatScore: number;
@@ -276,11 +281,33 @@ export function analyzeResumeClient(
   // Calculate overall score (SAME WEIGHTS AS SERVER)
   // From intelligentFallback.ts line 269-271:
   // Keywords: 45%, Format: 30%, Completeness: 25%
-  const overallScore = Math.round(
+  let overallScore = Math.round(
     (keywordResult.score * 0.45) +
     (formatResult.score * 0.30) +
     (completenessResult.score * 0.25)
   );
+
+  // Cap score for non-premium users (free preview)
+  // Only truly EXCEPTIONAL CVs (top 1%) or premium users can see scores above 90
+  if (!isPremium) {
+    // Check if resume is truly exceptional (requires perfection)
+    const isExceptional =
+      formatResult.score >= 98 &&          // Near-perfect format
+      keywordResult.score >= 90 &&         // Excellent keyword match
+      completenessResult.score >= 98 &&    // Near-perfect completeness
+      formatResult.issues.length === 0 &&  // Zero format issues
+      completenessResult.missingElements.length === 0 && // Nothing missing
+      hasQuantifiableAchievements &&       // Has metrics
+      sections.length >= 6;                // Has all major sections
+
+    if (!isExceptional) {
+      // Cap at 90 for free users to incentivize upgrade
+      // This ensures scores of 91-100 are reserved for:
+      // 1. Premium users (who paid for accurate scoring)
+      // 2. Truly perfect CVs (top 1% - very rare)
+      overallScore = Math.min(overallScore, 90);
+    }
+  }
 
   return {
     overallScore: Math.min(overallScore, 100),
