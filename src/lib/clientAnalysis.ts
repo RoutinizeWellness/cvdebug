@@ -855,76 +855,117 @@ export function analyzeResumeClient(
     (completenessResult.score * 0.25)
   );
 
-  // ML-Enhanced Bonus System (MUCH MORE STRICT - only for exceptional resumes)
-  // Reduced bonuses to prevent score inflation
+  // EXTREMELY STRICT SCORING - Inspired by Jobscan's realistic standards
+  // Most resumes will score 50-75 to show room for improvement
   let bonusPoints = 0;
+  let penalties = 0;
 
-  // Bonus 1: Quantifiable impact (up to +2 points, was +3)
-  // Only significant impact with multiple examples gets bonuses
-  if (impactAnalysis.hasQuantifiableAchievements && impactAnalysis.examples.length >= 3) {
-    bonusPoints += Math.min(2, impactAnalysis.examples.length * 0.4);
+  // BONUSES (Very hard to get - only exceptional resumes)
+
+  // Bonus 1: Quantifiable impact (up to +1.5 points, was +2)
+  // Requires 4+ high-quality achievements with metrics AND context
+  if (impactAnalysis.hasQuantifiableAchievements && impactAnalysis.examples.length >= 4) {
+    const qualityBonus = impactAnalysis.examples.length >= 5 ? 1.5 : 1.0;
+    bonusPoints += qualityBonus;
   }
 
-  // Bonus 2: Certifications (up to +1.5 points, was +2)
-  // Only relevant, recognized certifications count
-  if (certificationsAnalysis.certificationsFound.length >= 2) {
-    bonusPoints += Math.min(1.5, certificationsAnalysis.certificationsFound.length * 0.4);
+  // Bonus 2: Certifications (up to +1 point, was +1.5)
+  // Only industry-recognized certifications count, need 3+
+  if (certificationsAnalysis.certificationsFound.length >= 3) {
+    bonusPoints += Math.min(1, certificationsAnalysis.certificationsFound.length * 0.3);
   }
 
-  // Bonus 3: Education level (up to +1 point, was +2)
-  // Reduced bonus - education alone doesn't guarantee ATS success
+  // Bonus 3: Education level (up to +0.5 point, was +1)
+  // DRASTICALLY reduced - education is just baseline, not differentiator
   if (educationAnalysis.educationLevel === 'doctorate') {
-    bonusPoints += 1;
+    bonusPoints += 0.5;
   } else if (educationAnalysis.educationLevel === 'master') {
-    bonusPoints += 0.7;
-  } else if (educationAnalysis.educationLevel === 'bachelor') {
-    bonusPoints += 0.4;
-  }
-
-  // Bonus 4: Soft skills (up to +1 point, was +2)
-  // Soft skills are good but not as critical as hard skills for ATS
-  if (softSkillsAnalysis.softSkillsFound.length >= 5) {
-    bonusPoints += 1;
-  } else if (softSkillsAnalysis.softSkillsFound.length >= 3) {
-    bonusPoints += 0.5;
-  }
-
-  // Bonus 5: Experience depth (up to +0.5 point, was +1)
-  // Experience helps but doesn't guarantee ATS compatibility
-  if (experienceAnalysis.estimatedYears >= 7) {
-    bonusPoints += 0.5;
-  } else if (experienceAnalysis.estimatedYears >= 5) {
     bonusPoints += 0.3;
   }
+  // Bachelor's gets NO bonus (it's expected)
 
-  // Apply bonuses (capped at +5 total, was +10 - prevents over-inflation)
-  bonusPoints = Math.min(5, bonusPoints);
-  let overallScore = Math.round(baseScore + bonusPoints);
+  // Bonus 4: Soft skills (up to +0.5 point, was +1)
+  // Only counts if you have 6+ different soft skills mentioned
+  if (softSkillsAnalysis.softSkillsFound.length >= 6) {
+    bonusPoints += 0.5;
+  }
 
-  // Cap score for non-premium users (free preview) - MUCH MORE STRICT
-  // Free users rarely see scores above 85 to incentivize premium
+  // Bonus 5: Experience depth (up to +0.3 point, was +0.5)
+  // Experience alone doesn't prove ATS compatibility
+  if (experienceAnalysis.estimatedYears >= 10) {
+    bonusPoints += 0.3;
+  } else if (experienceAnalysis.estimatedYears >= 7) {
+    bonusPoints += 0.2;
+  }
+
+  // PENALTIES (Easy to get - most resumes have these issues)
+
+  // Penalty 1: No quantifiable metrics (-5 points)
+  // ATS systems heavily weight measurable achievements
+  if (!impactAnalysis.hasQuantifiableAchievements) {
+    penalties += 5;
+  }
+
+  // Penalty 2: Few achievements (<2 examples) (-3 points)
+  if (impactAnalysis.examples.length < 2) {
+    penalties += 3;
+  }
+
+  // Penalty 3: Short resume (<200 words) (-4 points)
+  if (wordCount < 200) {
+    penalties += 4;
+  } else if (wordCount < 300) {
+    penalties += 2;
+  }
+
+  // Penalty 4: No certifications or professional development (-2 points)
+  if (certificationsAnalysis.certificationsFound.length === 0) {
+    penalties += 2;
+  }
+
+  // Penalty 5: Minimal experience (<3 years) (-3 points)
+  if (experienceAnalysis.estimatedYears < 3) {
+    penalties += 3;
+  } else if (experienceAnalysis.estimatedYears < 5) {
+    penalties += 1;
+  }
+
+  // Penalty 6: Missing key sections (-2 points per missing)
+  const requiredSections = ['experience', 'skills'];
+  const missingSections = requiredSections.filter(s => !sections.includes(s));
+  penalties += missingSections.length * 2;
+
+  // Apply bonuses and penalties (capped at +3 bonuses, was +5)
+  bonusPoints = Math.min(3, bonusPoints);
+
+  // APPLY PENALTIES - This is what makes scores realistic
+  let overallScore = Math.round(baseScore + bonusPoints - penalties);
+
+  // Ensure minimum score of 20 (even worst resumes get some credit)
+  overallScore = Math.max(20, overallScore);
+
+  // EXTREMELY STRICT CAP FOR FREE USERS - The "Aha!" Moment
+  // Free users see scores 45-78 range to show massive room for improvement
   if (!isPremium) {
-    // VERY strict exceptional check - only top 0.5% of resumes
+    // ULTRA-STRICT exceptional check - virtually impossible to achieve (top 0.1%)
     const isExceptional =
-      formatResult.score >= 98 &&          // Near-perfect format
-      keywordResult.score >= 95 &&         // Excellent keyword match (raised from 90)
-      completenessResult.score >= 98 &&    // Near-perfect completeness
+      formatResult.score >= 99 &&          // Perfect format
+      keywordResult.score >= 97 &&         // Near-perfect keyword match
+      completenessResult.score >= 99 &&    // Perfect completeness
       formatResult.issues.length === 0 &&  // Zero format issues
       completenessResult.missingElements.length === 0 && // Nothing missing
       impactAnalysis.hasQuantifiableAchievements &&  // Has quantifiable impact
-      impactAnalysis.examples.length >= 5 &&  // Multiple achievements (raised from 3)
-      sections.length >= 7 &&              // Has all major sections (raised from 6)
-      certificationsAnalysis.certificationsFound.length >= 2 && // Multiple certs (was 1+)
-      (educationAnalysis.educationLevel === 'master' ||         // Advanced degree OR
-       educationAnalysis.educationLevel === 'doctorate') &&     // PhD
-      experienceAnalysis.estimatedYears >= 7;                   // 7+ years exp (raised from 5)
+      impactAnalysis.examples.length >= 6 &&  // Many achievements (6+)
+      sections.length >= 8 &&              // Has ALL sections
+      certificationsAnalysis.certificationsFound.length >= 3 && // Multiple certs (3+)
+      educationAnalysis.educationLevel === 'doctorate' &&      // PhD required
+      experienceAnalysis.estimatedYears >= 10;                 // 10+ years
 
     if (!isExceptional) {
-      // Cap at 85 for free users (was 90) to show realistic scores
-      // This ensures scores of 86-100 are reserved for:
-      // 1. Premium users (who paid for full analysis)
-      // 2. Truly exceptional CVs (top 0.5% - ALL excellence criteria met)
-      overallScore = Math.min(overallScore, 85);
+      // Cap at 78 for free users (was 85) - MUCH lower
+      // This creates urgency: "Your resume scores 65/100 (ATS systems reject 70%+ of resumes below 75)"
+      // Robot View will show the real score (85-90) creating massive "Aha!" moment
+      overallScore = Math.min(overallScore, 78);
     }
   }
 

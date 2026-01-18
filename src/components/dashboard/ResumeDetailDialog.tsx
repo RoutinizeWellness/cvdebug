@@ -2,14 +2,14 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  FileText, 
-  Download, 
-  Trash2, 
-  X, 
-  Sparkles, 
-  Info, 
-  Maximize2, 
+import {
+  FileText,
+  Download,
+  Trash2,
+  X,
+  Sparkles,
+  Info,
+  Maximize2,
   Minimize2,
   Wand2,
   Printer,
@@ -23,7 +23,8 @@ import {
   XCircle,
   FileSearch,
   AlertTriangle,
-  Loader2
+  Loader2,
+  Check
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -815,8 +816,142 @@ export function ResumeDetailDialog({
                       </div>
                     </div>
 
-                    {/* Robot View Content */}
-                    <div className="p-6 space-y-6">
+                    {/* 🔒 ROBOT VIEW - LOCKED BEHIND REGISTRATION (Lead Magnet) */}
+                    {!user || user.isAnonymous ? (
+                      <div className="p-6 space-y-6">
+                        {/* THE AHA! MOMENT - Preview with blur */}
+                        <div className="relative">
+                          {/* Blurred Preview */}
+                          <div className="blur-sm pointer-events-none select-none">
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                              <div className="flex items-center gap-3">
+                                <div className="text-xl">👁️</div>
+                                <p className="text-green-700 text-sm font-medium">
+                                  This is what ATS robots see. Changes appear here in real-time.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] mt-4">
+                              <div className="flex items-center justify-between mb-4">
+                                <h4 className="text-[#0F172A] font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
+                                <span className="text-[#475569] font-mono text-xs">3,247 characters</span>
+                              </div>
+                              <div className="bg-[#F8FAFC] rounded border border-[#E2E8F0] p-4 h-64">
+                                <pre className="text-[#475569] font-mono text-xs leading-relaxed">
+JOHN DOE
+Software Engineer | San Francisco, CA
+john.doe@email.com | (555) 123-4567
+linkedin.com/in/johndoe
+
+EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc.
+2020 - Present
+• Led development team of 8 engineers
+• Architected microservices handling 50M+ requests/day
+• Reduced infrastructure costs by 35% ($500K annually)
+• Improved system reliability from 99.5% to 99.95%
+
+Software Engineer | StartupXYZ
+2018 - 2020
+• Built RESTful APIs serving 1M+ users
+• Implemented CI/CD pipeline reducing deploy time 80%
+...
+                                </pre>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Registration Wall Overlay - THE AHA! MOMENT */}
+                          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-transparent via-white/90 to-white">
+                            <div className="max-w-2xl mx-auto p-8 text-center space-y-6">
+                              <div className="space-y-3">
+                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-[#22C55E] to-[#10B981] shadow-lg">
+                                  <Cpu className="h-10 w-10 text-white" />
+                                </div>
+                                <h3 className="text-3xl font-bold text-[#0F172A]">
+                                  🤯 The "Aha!" Moment
+                                </h3>
+                                <p className="text-lg font-semibold text-[#22C55E]">
+                                  See what ATS robots ACTUALLY see in your resume
+                                </p>
+                              </div>
+
+                              <div className="bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-2 border-[#22C55E] rounded-xl p-6 space-y-4">
+                                <div className="flex items-start gap-4">
+                                  <div className="text-4xl">😱</div>
+                                  <div className="text-left space-y-2">
+                                    <p className="text-sm font-bold text-[#EF4444]">
+                                      Your score is <span className="text-xl">{displayResume?.score || 65}/100</span>
+                                    </p>
+                                    <p className="text-xs text-[#475569]">
+                                      But ATS robots see it as <span className="font-bold text-[#22C55E]">85/100</span> because of hidden formatting issues!
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="bg-white/80 rounded-lg p-4 space-y-2 text-left">
+                                  <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                                    <span className="text-[#22C55E]">✓</span>
+                                    Seniority Score: See if ATS ranks you as Junior/Mid/Senior
+                                  </p>
+                                  <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                                    <span className="text-[#22C55E]">✓</span>
+                                    Keyword Gap: Discover exactly which keywords robots miss
+                                  </p>
+                                  <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                                    <span className="text-[#22C55E]">✓</span>
+                                    Hidden Penalties: Find invisible formatting that kills your score
+                                  </p>
+                                  <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
+                                    <span className="text-[#22C55E]">✓</span>
+                                    Real ATS View: See your resume EXACTLY as robots parse it
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="space-y-3">
+                                <Button
+                                  onClick={() => {
+                                    onClose();
+                                    // Trigger auth
+                                    window.location.href = '/';
+                                  }}
+                                  className="w-full bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold text-lg py-6 rounded-xl shadow-2xl transform hover:scale-105 transition-all"
+                                >
+                                  <span className="flex items-center gap-3 justify-center">
+                                    <Sparkles className="h-6 w-6" />
+                                    Unlock Robot View (FREE)
+                                    <Sparkles className="h-6 w-6" />
+                                  </span>
+                                </Button>
+                                <p className="text-xs text-[#64748B]">
+                                  No credit card required • See your real ATS score in 10 seconds
+                                </p>
+                              </div>
+
+                              <div className="flex items-center justify-center gap-8 text-xs text-[#64748B] pt-4">
+                                <div className="flex items-center gap-1">
+                                  <Check className="h-4 w-4 text-[#22C55E]" />
+                                  <span>100% Free</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Check className="h-4 w-4 text-[#22C55E]" />
+                                  <span>No Credit Card</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Check className="h-4 w-4 text-[#22C55E]" />
+                                  <span>Instant Access</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Robot View Content - Only for Registered Users */
+                      <div className="p-6 space-y-6">
                       {/* Info Banner */}
                       <div className="bg-green-50 border border-green-200 rounded-lg p-3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                         <div className="flex items-center gap-3">
@@ -879,6 +1014,7 @@ export function ResumeDetailDialog({
                         </div>
                       </div>
                     </div>
+                    )}
                   </div>
                 </TabsContent>
 
