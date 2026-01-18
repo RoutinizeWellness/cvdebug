@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { RegistrationWall } from "@/components/paywalls/RegistrationWall";
 
 interface Alternative {
   text: string;
@@ -135,54 +136,14 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Interview Sprint Required Alert */}
+      {/* AI Sprint Registration Wall */}
       {!hasInterviewSprint && (
-        <Alert className="mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
-          {/* Decorative gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
-
-          <div className="relative">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
-                <Diamond className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
-                <p className="text-[#475569] text-sm leading-relaxed">
-                  Transform weak bullets into impact-driven achievements with AI-powered rewriting.
-                </p>
-              </div>
-            </div>
-
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
-              <div className="flex items-center gap-2 text-xs text-[#475569]">
-                <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Unlimited rewrites</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-[#475569]">
-                <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Google XYZ formula</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-[#475569]">
-                <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Multiple alternatives</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-[#475569]">
-                <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Context analysis</span>
-              </div>
-            </div>
-
-            <Button
-              onClick={onUpgrade}
-              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
-            >
-              <Sparkles className="h-4 w-4" />
-              <span>Upgrade to Interview Sprint</span>
-            </Button>
-          </div>
-        </Alert>
+        <div className="mb-4">
+          <RegistrationWall
+            type="ai-sprint"
+            onSignUp={onUpgrade}
+          />
+        </div>
       )}
 
       {/* Header */}

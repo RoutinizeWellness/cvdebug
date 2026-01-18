@@ -8,6 +8,7 @@ import { Logo } from "@/components/Logo";
 import * as pdfjsLib from "pdfjs-dist";
 import mammoth from "mammoth";
 import { createWorker } from "tesseract.js";
+import { RegistrationWall } from "@/components/paywalls/RegistrationWall";
 
 // Set up PDF.js worker
 const pdfVersion = pdfjsLib.version || "4.0.379";
@@ -647,52 +648,19 @@ export default function PreviewScan() {
                 </div>
               </div>
 
-              {/* What You're Missing */}
-              <div className="glass-panel p-6 rounded-2xl border-2 border-primary/30">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white mb-2">Create Free Account to Unlock:</h3>
-                    <p className="text-slate-400">Get the full power of CVDebug with instant signup</p>
-                  </div>
-                </div>
+              {/* Registration Wall - Strategic Paywall */}
+              <RegistrationWall
+                type="error-details"
+                errorCount={12}
+                onSignUp={handleSignUp}
+              />
 
-                <div className="grid gap-3 mb-6">
-                  {[
-                    { icon: Eye, text: "Complete Robot View with formatting analysis", locked: false },
-                    { icon: TrendingUp, text: "Detailed keyword match analysis with priority ranking", locked: true },
-                    { icon: AlertTriangle, text: "Critical ATS parsing errors and how to fix them", locked: true },
-                    { icon: Sparkles, text: "AI-powered rewrite suggestions using Google XYZ formula", locked: true },
-                    { icon: FileText, text: "Download optimized version + track improvements over time", locked: true },
-                  ].map((item, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className={`flex items-center gap-3 p-3 rounded-lg ${
-                        item.locked ? "bg-primary/5 border border-primary/20" : "bg-[#22C55E]/5 border border-green-500/20"
-                      }`}
-                    >
-                      <item.icon className={`h-5 w-5 ${item.locked ? "text-primary" : "text-green-400"}`} />
-                      <span className="text-white text-sm flex-1">{item.text}</span>
-                      {item.locked && <Lock className="h-4 w-4 text-primary" />}
-                    </motion.div>
-                  ))}
-                </div>
-
-                <Button
-                  onClick={handleSignUp}
-                  className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold text-lg py-6"
-                >
-                  Create Free Account <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-
-                <p className="text-center text-xs text-[#64748B] mt-4">
-                  No credit card required • Takes 30 seconds • Your data stays private
-                </p>
+              {/* Save History Wall - Don't lose this analysis */}
+              <div className="mt-6">
+                <RegistrationWall
+                  type="save-history"
+                  onSignUp={handleSignUp}
+                />
               </div>
             </motion.div>
           )}
