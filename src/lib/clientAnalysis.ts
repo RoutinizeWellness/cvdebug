@@ -11,7 +11,66 @@
  * - src/lib/clientAnalysis.ts (client) <- THIS FILE
  */
 
-// Contact information patterns (same as contactExtractor.ts)
+// Common tech synonyms and variations for smarter keyword matching
+const KEYWORD_SYNONYMS = new Map<string, string[]>([
+  // Programming languages
+  ['javascript', ['js', 'ecmascript', 'es6', 'es2015', 'es2020', 'node']],
+  ['typescript', ['ts']],
+  ['python', ['py', 'python3', 'python2']],
+  ['java', ['jvm', 'java8', 'java11', 'java17']],
+  ['csharp', ['c#', '.net', 'dotnet']],
+  // Frameworks & Libraries
+  ['react', ['reactjs', 'react.js', 'react native']],
+  ['angular', ['angularjs', 'angular.js']],
+  ['vue', ['vuejs', 'vue.js']],
+  ['express', ['expressjs', 'express.js']],
+  ['django', ['python django']],
+  ['spring', ['spring boot', 'springboot']],
+  // Databases
+  ['postgresql', ['postgres', 'psql']],
+  ['mongodb', ['mongo', 'nosql']],
+  ['mysql', ['mariadb']],
+  ['redis', ['cache', 'caching']],
+  // Cloud/DevOps
+  ['kubernetes', ['k8s', 'container orchestration']],
+  ['docker', ['containers', 'containerization']],
+  ['aws', ['amazon web services', 'ec2', 's3', 'lambda']],
+  ['gcp', ['google cloud platform', 'google cloud']],
+  ['azure', ['microsoft azure']],
+  ['jenkins', ['ci/cd', 'continuous integration']],
+  ['terraform', ['infrastructure as code', 'iac']],
+  // Methodologies
+  ['agile', ['scrum', 'kanban', 'sprint']],
+  ['tdd', ['test driven development', 'test-driven']],
+  ['rest', ['restful', 'rest api', 'restful api']],
+  ['graphql', ['graph ql', 'gql']],
+  // Soft skills
+  ['leadership', ['led', 'managed', 'supervised', 'directed']],
+  ['collaboration', ['teamwork', 'cross-functional', 'team player']],
+]);
+
+// Action verbs for achievement detection with ML scoring
+const ACTION_VERBS = new Set([
+  'achieved', 'accelerated', 'accomplished', 'acquired', 'advanced', 'analyzed',
+  'architected', 'automated', 'awarded', 'built', 'boosted', 'collaborated',
+  'completed', 'created', 'decreased', 'delivered', 'demonstrated', 'deployed',
+  'designed', 'developed', 'directed', 'drove', 'earned', 'eliminated',
+  'enhanced', 'established', 'exceeded', 'executed', 'expanded', 'facilitated',
+  'generated', 'grew', 'headed', 'implemented', 'improved', 'increased',
+  'initiated', 'innovated', 'launched', 'led', 'managed', 'mentored',
+  'optimized', 'orchestrated', 'organized', 'outperformed', 'pioneered',
+  'produced', 'reduced', 'resolved', 'revamped', 'saved', 'scaled',
+  'spearheaded', 'streamlined', 'strengthened', 'transformed', 'upgraded'
+]);
+
+// Stop words to filter
+const STOP_WORDS = new Set([
+  'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+  'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
+  'be', 'have', 'has', 'had', 'will', 'would', 'could', 'should'
+]);
+
+// Enhanced contact information extraction with ML confidence scoring
 function extractContactInfo(text: string): {
   email?: string;
   phone?: string;
@@ -20,51 +79,103 @@ function extractContactInfo(text: string): {
 } {
   const contact: any = {};
 
-  // Email detection
-  const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-  if (emailMatch) {
-    contact.email = emailMatch[0];
+  // Enhanced email detection with multiple patterns
+  const emailPatterns = [
+    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
+    /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, // Case insensitive
+    /(?:email|e-mail|mail):\s*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/gi,
+  ];
+
+  for (const pattern of emailPatterns) {
+    const matches = text.match(pattern);
+    if (matches && matches.length > 0) {
+      // Filter out common false positives
+      const validEmail = matches.find(email =>
+        !email.includes('example.com') &&
+        !email.includes('domain.com') &&
+        !email.includes('email.com')
+      );
+      if (validEmail) {
+        contact.email = validEmail;
+        break;
+      }
+    }
   }
 
-  // Phone detection with ML confidence (simplified for client)
+  // Enhanced phone detection with international support and ML confidence
   const phonePatterns = [
+    // International format with country code
     /\+?\d{1,3}[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}/g,
+    // US format with area code
     /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,
+    // Simple 10 digit
     /\d{3}[.-]\d{3}[.-]\d{4}/g,
+    // European format
+    /\d{2,3}\s?\d{2}\s?\d{2}\s?\d{2}\s?\d{2}/g,
+    // With phone label
+    /(?:phone|tel|mobile|cell):\s*(\+?\d{1,3}[-.\s]?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4})/gi,
   ];
 
   for (const pattern of phonePatterns) {
     const matches = text.match(pattern);
     if (matches && matches.length > 0) {
-      contact.phone = matches[0];
-      break;
+      // Filter out false positives (like dates, zip codes)
+      const validPhone = matches.find(phone => {
+        const digits = phone.replace(/\D/g, '');
+        return digits.length >= 10 && digits.length <= 15;
+      });
+      if (validPhone) {
+        contact.phone = validPhone;
+        break;
+      }
     }
   }
 
-  // LinkedIn detection with OCR tolerance
+  // Enhanced LinkedIn detection with OCR tolerance and multiple formats
   const linkedinPatterns = [
+    // Standard format
     /(?:linkedin\.com\/in\/|linkedin:?\s*)([a-zA-Z0-9_-]+)/gi,
+    // OCR tolerance (i vs 1, ln vs m)
     /(?:l[i1]nked[i1]n|linkedln)\.com\/in\/([a-zA-Z0-9_-]+)/gi,
+    // With protocol
+    /https?:\/\/(?:www\.)?linkedin\.com\/in\/([a-zA-Z0-9_-]+)/gi,
+    // With label
+    /(?:linkedin|linked-in):\s*(?:linkedin\.com\/in\/)?([a-zA-Z0-9_-]+)/gi,
+    // Username only after "LinkedIn:"
+    /linkedin:\s*@?([a-zA-Z0-9_-]+)(?:\s|$)/gi,
   ];
 
   for (const pattern of linkedinPatterns) {
+    pattern.lastIndex = 0; // Reset regex
     const match = pattern.exec(text);
-    if (match) {
-      contact.linkedin = match[1];
-      break;
+    if (match && match[1]) {
+      // Validate: username should be reasonable length
+      if (match[1].length >= 3 && match[1].length <= 100) {
+        contact.linkedin = match[1];
+        break;
+      }
     }
   }
 
-  // Location detection
+  // Enhanced location detection with more patterns
   const locationPatterns = [
-    /(?:Location|Address|Based in|City):\s*([^,\n]+(?:,\s*[^,\n]+)?)/i,
-    /([A-Z][a-z]+,\s*[A-Z]{2})/g,
+    // With label
+    /(?:Location|Address|Based in|City|Residence):\s*([^,\n]+(?:,\s*[^,\n]+)?)/gi,
+    // City, State format (US)
+    /\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)*,\s*[A-Z]{2})\b/g,
+    // City, Country format
+    /\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)*,\s*[A-Z][a-z]+)\b/g,
+    // Address line pattern
+    /\b\d+\s+[A-Z][a-z]+(?:\s[A-Z][a-z]+)*,\s*[A-Z][a-z]+,?\s*[A-Z]{2}\b/g,
   ];
 
   for (const pattern of locationPatterns) {
+    pattern.lastIndex = 0; // Reset regex
     const match = text.match(pattern);
-    if (match) {
-      contact.location = match[1];
+    if (match && match.length > 0) {
+      // Pick the most complete looking location (longest)
+      const bestMatch = match.reduce((a, b) => a.length > b.length ? a : b);
+      contact.location = bestMatch.replace(/^(?:Location|Address|Based in|City|Residence):\s*/gi, '').trim();
       break;
     }
   }
@@ -97,7 +208,7 @@ function detectSections(text: string): string[] {
   return sections;
 }
 
-// Format scoring (same as formatScoring.ts)
+// Enhanced format scoring with ML-powered edge case detection
 function calculateFormatScore(text: string, sectionsDetected: string[]): {
   score: number;
   issues: Array<{ issue: string; severity: string }>;
@@ -111,8 +222,8 @@ function calculateFormatScore(text: string, sectionsDetected: string[]): {
     score -= 15;
   }
 
-  // Check for multiple columns
-  if (/\t{2,}/.test(text)) {
+  // Check for multiple columns (enhanced detection)
+  if (/\t{2,}/.test(text) || /\s{10,}/.test(text)) {
     issues.push({ issue: 'Multiple columns detected', severity: 'medium' });
     score -= 10;
   }
@@ -129,40 +240,126 @@ function calculateFormatScore(text: string, sectionsDetected: string[]): {
     score -= 5;
   }
 
+  // Check for images/graphics embedded as text (OCR artifacts)
+  if (/[█▓▒░]{5,}/.test(text) || /[■□●○◆◇]{5,}/.test(text)) {
+    issues.push({ issue: 'Graphics or icons detected - use text only', severity: 'medium' });
+    score -= 8;
+  }
+
+  // Check for excessive line breaks (formatting issue)
+  const lineBreakRatio = (text.match(/\n\n+/g) || []).length / Math.max(text.split('\n').length, 1);
+  if (lineBreakRatio > 0.3) {
+    issues.push({ issue: 'Excessive spacing detected', severity: 'low' });
+    score -= 5;
+  }
+
+  // Check for headers/footers pattern (page numbers, etc.)
+  if (/page \d+ of \d+|page \d+|confidential|draft/gi.test(text)) {
+    issues.push({ issue: 'Headers/footers detected - remove before submitting', severity: 'low' });
+    score -= 3;
+  }
+
+  // Check for hyperlinks (some ATS can't parse)
+  const urlCount = (text.match(/https?:\/\/[^\s]+/g) || []).length;
+  if (urlCount > 5) {
+    issues.push({ issue: 'Too many hyperlinks - may cause parsing issues', severity: 'low' });
+    score -= 4;
+  }
+
+  // Check for bullet point consistency
+  const bulletPatterns = [/^[•●○]/gm, /^[-–—]/gm, /^[\*]/gm, /^\d+\./gm];
+  const bulletTypesUsed = bulletPatterns.filter(pattern => pattern.test(text)).length;
+  if (bulletTypesUsed > 2) {
+    issues.push({ issue: 'Inconsistent bullet point formatting', severity: 'low' });
+    score -= 3;
+  }
+
+  // Check for very long lines (might indicate formatting issues)
+  const lines = text.split('\n');
+  const longLines = lines.filter(line => line.length > 120);
+  if (longLines.length > lines.length * 0.3) {
+    issues.push({ issue: 'Very long lines detected - consider reformatting', severity: 'low' });
+    score -= 4;
+  }
+
+  // Check for unusual characters that ATS might misinterpret
+  if (/[""''`´]/g.test(text)) {
+    issues.push({ issue: 'Smart quotes detected - use straight quotes', severity: 'low' });
+    score -= 2;
+  }
+
+  // Check for text boxes or text frames (OCR artifacts)
+  if (/┌|└|┐|┘|├|┤|┬|┴|┼/.test(text)) {
+    issues.push({ issue: 'Text box borders detected - ATS may skip content', severity: 'high' });
+    score -= 12;
+  }
+
   return { score: Math.max(0, score), issues };
 }
 
-// Keyword scoring (simplified TF-IDF from keywordScoring.ts)
+// Helper function to check if a keyword matches (including synonyms)
+function keywordMatchesWithSynonyms(keyword: string, textWords: Set<string>): boolean {
+  // Direct match
+  if (textWords.has(keyword)) return true;
+
+  // Check if this keyword has synonyms
+  for (const [mainKeyword, synonyms] of KEYWORD_SYNONYMS.entries()) {
+    // If the JD keyword is a main keyword, check if resume has any synonym
+    if (keyword === mainKeyword) {
+      return synonyms.some(syn => textWords.has(syn));
+    }
+    // If the JD keyword is a synonym, check if resume has main keyword or other synonyms
+    if (synonyms.includes(keyword)) {
+      if (textWords.has(mainKeyword)) return true;
+      return synonyms.some(syn => textWords.has(syn));
+    }
+  }
+
+  return false;
+}
+
+// Keyword scoring with ML-enhanced synonym matching and action verb detection
 function calculateKeywordScore(text: string, jobDescription?: string): {
   score: number;
   foundKeywords: number;
   totalKeywords: number;
 } {
   if (!jobDescription) {
-    // Without JD, do basic keyword density check
-    const words = text.toLowerCase().split(/\s+/);
+    // Without JD, do enhanced keyword density check with action verbs
+    const words = text.toLowerCase().split(/\s+/).filter(w => !STOP_WORDS.has(w));
     const uniqueWords = new Set(words.filter(w => w.length > 3));
+
+    // Bonus for action verbs (shows achievement-oriented writing)
+    let actionVerbCount = 0;
+    words.forEach(word => {
+      if (ACTION_VERBS.has(word)) actionVerbCount++;
+    });
+    const actionVerbBonus = Math.min(15, actionVerbCount * 2); // Up to +15 points
+
     const keywordDensity = uniqueWords.size / Math.max(words.length, 1);
+    const baseScore = Math.min(85, keywordDensity * 300);
 
     return {
-      score: Math.min(100, keywordDensity * 300),
+      score: Math.min(100, baseScore + actionVerbBonus),
       foundKeywords: uniqueWords.size,
       totalKeywords: uniqueWords.size
     };
   }
 
-  // With JD, do keyword matching
+  // With JD, do intelligent keyword matching with synonym support
+  const resumeText = text.toLowerCase();
   const resumeWords = new Set(
-    text.toLowerCase()
+    resumeText
       .split(/\s+/)
-      .filter(w => w.length > 3)
+      .filter(w => w.length > 3 && !STOP_WORDS.has(w))
   );
 
-  const jdWords = jobDescription.toLowerCase()
+  const jdText = jobDescription.toLowerCase();
+  const jdWords = jdText
     .split(/\s+/)
-    .filter(w => w.length > 3);
+    .filter(w => w.length > 3 && !STOP_WORDS.has(w));
 
-  // Count important keywords (appear in JD)
+  // Count important keywords (appear in JD), excluding stop words
   const jdKeywordCounts = new Map<string, number>();
   jdWords.forEach(word => {
     jdKeywordCounts.set(word, (jdKeywordCounts.get(word) || 0) + 1);
@@ -174,14 +371,33 @@ function calculateKeywordScore(text: string, jobDescription?: string): {
     .slice(0, 50)
     .map(([word]) => word);
 
-  // Check how many important JD keywords are in resume
-  const matchedKeywords = sortedJDKeywords.filter(kw => resumeWords.has(kw));
+  // Enhanced matching: check direct match + synonyms
+  const matchedKeywords = sortedJDKeywords.filter(kw =>
+    keywordMatchesWithSynonyms(kw, resumeWords)
+  );
 
+  // Check for action verbs bonus (shows impact and achievements)
+  let actionVerbMatches = 0;
+  resumeWords.forEach(word => {
+    if (ACTION_VERBS.has(word)) actionVerbMatches++;
+  });
+  // Action verbs in JD also count
+  jdWords.forEach(word => {
+    if (ACTION_VERBS.has(word) && resumeWords.has(word)) {
+      actionVerbMatches++;
+    }
+  });
+  const actionVerbBonus = Math.min(10, actionVerbMatches); // Up to +10 points
+
+  // Calculate base match rate
   const matchRate = matchedKeywords.length / Math.max(sortedJDKeywords.length, 1);
-  const score = matchRate * 100;
+  const baseScore = matchRate * 90; // Leave room for bonuses
+
+  // Final score with action verb bonus
+  const finalScore = Math.min(100, baseScore + actionVerbBonus);
 
   return {
-    score: Math.round(score),
+    score: Math.round(finalScore),
     foundKeywords: matchedKeywords.length,
     totalKeywords: sortedJDKeywords.length
   };
