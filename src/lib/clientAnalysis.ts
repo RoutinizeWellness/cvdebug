@@ -1085,6 +1085,97 @@ function extractSectionContent(text: string, sectionName: string): string {
   return match ? match[1] : '';
 }
 
+// Advanced analytics: Contextual suggestions generator
+function generateContextualSuggestions(
+  text: string,
+  sections: string[],
+  contact: any,
+  industryAnalysis: { industry: string; confidence: number; detectedSkills: string[] },
+  impactAnalysis: { hasQuantifiableAchievements: boolean; impactScore: number; examples: string[] },
+  formatResult: { score: number; issues: Array<{ issue: string; severity: string }> },
+  keywordResult: { score: number; foundKeywords: number; totalKeywords: number },
+  completenessResult: { score: number; missingElements: string[] }
+): Array<{
+  category: string;
+  priority: 'critical' | 'high' | 'medium' | 'low';
+  suggestion: string;
+  impact: string;
+  example?: string;
+}> {
+  const suggestions: Array<{
+    category: string;
+    priority: 'critical' | 'high' | 'medium' | 'low';
+    suggestion: string;
+    impact: string;
+    example?: string;
+  }> = [];
+
+  // CRITICAL: Missing contact
+  if (!contact.email) {
+    suggestions.push({
+      category: 'Contact Info',
+      priority: 'critical',
+      suggestion: 'Add professional email',
+      impact: 'ATS cannot contact without email (100% rejection)',
+      example: 'john.doe@email.com'
+    });
+  }
+
+  if (!contact.phone) {
+    suggestions.push({
+      category: 'Contact Info',
+      priority: 'critical',
+      suggestion: 'Add phone number',
+      impact: 'Missing phone reduces callback by 80%',
+      example: '(555) 123-4567'
+    });
+  }
+
+  // HIGH: Missing sections
+  if (!sections.includes('experience')) {
+    suggestions.push({
+      category: 'Structure',
+      priority: 'critical',
+      suggestion: 'Add Experience section',
+      impact: 'ATS expects this (90% rejection without it)'
+    });
+  }
+
+  // HIGH: No achievements
+  if (!impactAnalysis.hasQuantifiableAchievements) {
+    suggestions.push({
+      category: 'Content',
+      priority: 'high',
+      suggestion: 'Add quantifiable achievements',
+      impact: 'Metrics increase interview rate by 40%',
+      example: 'Increased sales by 30%, Managed team of 15'
+    });
+  }
+
+  // MEDIUM: Low keywords
+  if (keywordResult.score < 70) {
+    suggestions.push({
+      category: 'Keywords',
+      priority: keywordResult.score < 50 ? 'high' : 'medium',
+      suggestion: 'Add more relevant keywords',
+      impact: `Current: ${keywordResult.score}%. Target: 70%+`
+    });
+  }
+
+  // Industry-specific
+  if (industryAnalysis.industry === 'tech' && !sections.includes('projects')) {
+    suggestions.push({
+      category: 'Tech Industry',
+      priority: 'medium',
+      suggestion: 'Add Projects section',
+      impact: 'Critical for tech roles'
+    });
+  }
+
+  const priorityMap: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+  return suggestions.sort((a, b) => priorityMap[a.priority] - priorityMap[b.priority]);
+}
+
 /**
  * ADVANCED: Complete resume analysis with industry detection and section-level scoring
  * This provides the most comprehensive analysis available
@@ -1101,6 +1192,32 @@ export function analyzeResumeAdvanced(
   const industryAnalysis = detectIndustry(text, jobDescription);
   const sectionScoring = scoreResumeBySection(text, baseAnalysis.sections);
 
+  // Generate contextual suggestions
+  const suggestions = generateContextualSuggestions(
+    text,
+    baseAnalysis.sections,
+    baseAnalysis.contact,
+    industryAnalysis,
+    {
+      hasQuantifiableAchievements: baseAnalysis.stats.hasQuantifiableAchievements || false,
+      impactScore: baseAnalysis.stats.impactScore || 0,
+      examples: baseAnalysis.stats.impactExamples || []
+    },
+    {
+      score: baseAnalysis.formatScore,
+      issues: baseAnalysis.issues
+    },
+    {
+      score: baseAnalysis.keywordScore,
+      foundKeywords: 0,
+      totalKeywords: 0
+    },
+    {
+      score: baseAnalysis.completenessScore,
+      missingElements: baseAnalysis.missingElements
+    }
+  );
+
   return {
     ...baseAnalysis,
     // Industry detection
@@ -1114,7 +1231,9 @@ export function analyzeResumeAdvanced(
       skills: sectionScoring.skillsScore,
       summary: sectionScoring.summaryScore
     },
-    sectionFeedback: sectionScoring.sectionAnalysis
+    sectionFeedback: sectionScoring.sectionAnalysis,
+    // Contextual suggestions
+    suggestions: suggestions.slice(0, isPremium ? 15 : 8)
   };
 }
 
