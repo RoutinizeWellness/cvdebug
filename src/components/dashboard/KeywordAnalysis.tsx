@@ -183,7 +183,9 @@ export function KeywordAnalysis({
   };
 
   // Map missing keywords to critical signals with REAL impact
-  const missingSignals: MissingKeyword[] = missingKeywords.slice(0, 3).map((keyword, index) => {
+  // Show more missing keywords (5-8) to give users realistic problems to fix
+  const missingCount = Math.min(missingKeywords.length, 8);
+  const missingSignals: MissingKeyword[] = missingKeywords.slice(0, missingCount).map((keyword, index) => {
     const impact = calculateImpact(keyword, index);
 
     return {

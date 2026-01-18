@@ -720,76 +720,76 @@ export function analyzeResumeClient(
     (completenessResult.score * 0.25)
   );
 
-  // ML-Enhanced Bonus System (only for truly exceptional resumes)
-  // These bonuses can push a score from 85-90 range to 91-95 if resume is excellent
+  // ML-Enhanced Bonus System (MUCH MORE STRICT - only for exceptional resumes)
+  // Reduced bonuses to prevent score inflation
   let bonusPoints = 0;
 
-  // Bonus 1: Quantifiable impact (up to +3 points)
-  // Resumes with metrics and achievements show real impact
-  if (impactAnalysis.hasQuantifiableAchievements) {
-    bonusPoints += Math.min(3, impactAnalysis.examples.length * 0.6);
+  // Bonus 1: Quantifiable impact (up to +2 points, was +3)
+  // Only significant impact with multiple examples gets bonuses
+  if (impactAnalysis.hasQuantifiableAchievements && impactAnalysis.examples.length >= 3) {
+    bonusPoints += Math.min(2, impactAnalysis.examples.length * 0.4);
   }
 
-  // Bonus 2: Certifications (up to +2 points)
-  // Industry certifications show commitment and expertise
-  if (certificationsAnalysis.certificationsFound.length > 0) {
-    bonusPoints += Math.min(2, certificationsAnalysis.certificationsFound.length * 0.5);
+  // Bonus 2: Certifications (up to +1.5 points, was +2)
+  // Only relevant, recognized certifications count
+  if (certificationsAnalysis.certificationsFound.length >= 2) {
+    bonusPoints += Math.min(1.5, certificationsAnalysis.certificationsFound.length * 0.4);
   }
 
-  // Bonus 3: Education level (up to +2 points)
-  // Advanced degrees boost credibility
+  // Bonus 3: Education level (up to +1 point, was +2)
+  // Reduced bonus - education alone doesn't guarantee ATS success
   if (educationAnalysis.educationLevel === 'doctorate') {
-    bonusPoints += 2;
+    bonusPoints += 1;
   } else if (educationAnalysis.educationLevel === 'master') {
-    bonusPoints += 1.5;
+    bonusPoints += 0.7;
   } else if (educationAnalysis.educationLevel === 'bachelor') {
-    bonusPoints += 1;
+    bonusPoints += 0.4;
   }
 
-  // Bonus 4: Soft skills (up to +2 points)
-  // Well-rounded candidates mention relevant soft skills
+  // Bonus 4: Soft skills (up to +1 point, was +2)
+  // Soft skills are good but not as critical as hard skills for ATS
   if (softSkillsAnalysis.softSkillsFound.length >= 5) {
-    bonusPoints += 2;
+    bonusPoints += 1;
   } else if (softSkillsAnalysis.softSkillsFound.length >= 3) {
-    bonusPoints += 1;
-  }
-
-  // Bonus 5: Experience depth (up to +1 point)
-  // More experience can add credibility
-  if (experienceAnalysis.estimatedYears >= 5) {
-    bonusPoints += 1;
-  } else if (experienceAnalysis.estimatedYears >= 3) {
     bonusPoints += 0.5;
   }
 
-  // Apply bonuses (capped at +10 total to prevent over-inflation)
-  bonusPoints = Math.min(10, bonusPoints);
+  // Bonus 5: Experience depth (up to +0.5 point, was +1)
+  // Experience helps but doesn't guarantee ATS compatibility
+  if (experienceAnalysis.estimatedYears >= 7) {
+    bonusPoints += 0.5;
+  } else if (experienceAnalysis.estimatedYears >= 5) {
+    bonusPoints += 0.3;
+  }
+
+  // Apply bonuses (capped at +5 total, was +10 - prevents over-inflation)
+  bonusPoints = Math.min(5, bonusPoints);
   let overallScore = Math.round(baseScore + bonusPoints);
 
-  // Cap score for non-premium users (free preview)
-  // Only truly EXCEPTIONAL CVs (top 1%) or premium users can see scores above 90
+  // Cap score for non-premium users (free preview) - MUCH MORE STRICT
+  // Free users rarely see scores above 85 to incentivize premium
   if (!isPremium) {
-    // Enhanced exceptional check with ML analytics
+    // VERY strict exceptional check - only top 0.5% of resumes
     const isExceptional =
       formatResult.score >= 98 &&          // Near-perfect format
-      keywordResult.score >= 90 &&         // Excellent keyword match
+      keywordResult.score >= 95 &&         // Excellent keyword match (raised from 90)
       completenessResult.score >= 98 &&    // Near-perfect completeness
       formatResult.issues.length === 0 &&  // Zero format issues
       completenessResult.missingElements.length === 0 && // Nothing missing
       impactAnalysis.hasQuantifiableAchievements &&  // Has quantifiable impact
-      impactAnalysis.examples.length >= 3 &&  // Multiple achievements
-      sections.length >= 6 &&              // Has all major sections
-      (certificationsAnalysis.certificationsFound.length > 0 || // Has certs OR
-       educationAnalysis.educationLevel === 'master' ||         // Advanced degree OR
-       educationAnalysis.educationLevel === 'doctorate' ||      // PhD OR
-       experienceAnalysis.estimatedYears >= 5);                 // 5+ years exp
+      impactAnalysis.examples.length >= 5 &&  // Multiple achievements (raised from 3)
+      sections.length >= 7 &&              // Has all major sections (raised from 6)
+      certificationsAnalysis.certificationsFound.length >= 2 && // Multiple certs (was 1+)
+      (educationAnalysis.educationLevel === 'master' ||         // Advanced degree OR
+       educationAnalysis.educationLevel === 'doctorate') &&     // PhD
+      experienceAnalysis.estimatedYears >= 7;                   // 7+ years exp (raised from 5)
 
     if (!isExceptional) {
-      // Cap at 90 for free users to incentivize upgrade
-      // This ensures scores of 91-100 are reserved for:
-      // 1. Premium users (who paid for accurate scoring)
-      // 2. Truly exceptional CVs (top 1% - multiple excellence criteria met)
-      overallScore = Math.min(overallScore, 90);
+      // Cap at 85 for free users (was 90) to show realistic scores
+      // This ensures scores of 86-100 are reserved for:
+      // 1. Premium users (who paid for full analysis)
+      // 2. Truly exceptional CVs (top 0.5% - ALL excellence criteria met)
+      overallScore = Math.min(overallScore, 85);
     }
   }
 
