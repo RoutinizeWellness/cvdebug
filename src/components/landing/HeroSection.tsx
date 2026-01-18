@@ -83,7 +83,7 @@ export function HeroSection() {
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-bold overflow-hidden">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} alt="User" className="h-full w-full" />
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`} alt="User avatar" className="h-full w-full" loading="lazy" />
                   </div>
                 ))}
               </div>

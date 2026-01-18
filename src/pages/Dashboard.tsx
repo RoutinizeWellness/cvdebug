@@ -24,7 +24,7 @@ import {
   Briefcase,
   Lock
 } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
@@ -51,15 +51,17 @@ import {
 import { api } from "@/convex/_generated/api";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { CreditsExhaustedModal } from "@/components/dashboard/CreditsExhaustedModal";
-import { CoverLetterGenerator } from "@/components/dashboard/tools/CoverLetterGenerator";
-import { LinkedInOptimizer } from "@/components/dashboard/tools/LinkedInOptimizer";
-import { BulletRewriter } from "@/components/dashboard/BulletRewriter";
 import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
 import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStatusModal";
-import { ResumeBuilder } from "@/components/resume/ResumeBuilder";
-import { ResumePreview } from "@/components/resume/ResumePreview";
+
+// Lazy load heavy components for better performance
+const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
+const ResumePreview = lazy(() => import("@/components/resume/ResumePreview").then(m => ({ default: m.ResumePreview })));
+const BulletRewriter = lazy(() => import("@/components/dashboard/BulletRewriter").then(m => ({ default: m.BulletRewriter })));
+const CoverLetterGenerator = lazy(() => import("@/components/dashboard/tools/CoverLetterGenerator").then(m => ({ default: m.CoverLetterGenerator })));
+const LinkedInOptimizer = lazy(() => import("@/components/dashboard/tools/LinkedInOptimizer").then(m => ({ default: m.LinkedInOptimizer })));
 
 const apiAny = api as any;
 
@@ -575,11 +577,23 @@ export default function Dashboard() {
       case 'templates':
         return <TemplatesView />;
       case 'linkedin':
-        return <LinkedInOptimizer onUpgrade={handleUpgrade} />;
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <LinkedInOptimizer onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
       case 'cover-letter':
-        return <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />;
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
       case 'bullet-rewriter':
-        return <BulletRewriter onUpgrade={handleUpgrade} />;
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <BulletRewriter onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
       case 'writing-forge':
         return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
       case 'keyword-sniper':
@@ -726,27 +740,39 @@ export default function Dashboard() {
       />
 
       {showResumeBuilder && (
-        <ResumeBuilder
-          resumeId={editingResumeId}
-          onClose={() => {
-            setShowResumeBuilder(false);
-            setEditingResumeId(null);
-          }}
-          onSave={() => {
-            // Refetch resumes is automatic with Convex
-          }}
-        />
+        <Suspense fallback={
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          </div>
+        }>
+          <ResumeBuilder
+            resumeId={editingResumeId}
+            onClose={() => {
+              setShowResumeBuilder(false);
+              setEditingResumeId(null);
+            }}
+            onSave={() => {
+              // Refetch resumes is automatic with Convex
+            }}
+          />
+        </Suspense>
       )}
 
       {previewResumeId && resumes && (
-        <ResumePreview
-          resume={resumes.find((r: any) => r._id === previewResumeId)}
-          onClose={() => setPreviewResumeId(null)}
-          onEdit={() => {
+        <Suspense fallback={
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+          </div>
+        }>
+          <ResumePreview
+            resume={resumes.find((r: any) => r._id === previewResumeId)}
+            onClose={() => setPreviewResumeId(null)}
+            onEdit={() => {
             setPreviewResumeId(null);
             handleEditResume(previewResumeId);
           }}
         />
+        </Suspense>
       )}
 
       <NewYearPromoModal

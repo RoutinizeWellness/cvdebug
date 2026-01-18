@@ -77,10 +77,17 @@ export function SEOFAQSection() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#F8FAFC] transition-colors"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setOpenIndex(openIndex === index ? null : index);
+                  }
+                }}
+                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#F8FAFC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:ring-offset-2"
                 aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
-                <h3 className="text-lg font-bold text-[#1E293B] pr-8">
+                <h3 className="text-lg font-bold text-[#1E293B] pr-8" id={`faq-question-${index}`}>
                   {faq.question}
                 </h3>
                 <motion.div
@@ -100,6 +107,9 @@ export function SEOFAQSection() {
                 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="overflow-hidden"
+                id={`faq-answer-${index}`}
+                role="region"
+                aria-labelledby={`faq-question-${index}`}
               >
                 <div className="px-6 pb-5 text-[#475569] leading-relaxed">
                   {faq.answer}

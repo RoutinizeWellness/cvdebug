@@ -93,7 +93,7 @@ export function TestimonialsSection() {
               {/* Reddit-style header */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-full bg-[#F59E0B]/10 overflow-hidden ring-2 ring-[#F59E0B]/20">
-                  <img src={testimonial.avatar} alt={testimonial.username} className="h-full w-full object-cover" />
+                  <img src={testimonial.avatar} alt={testimonial.username} className="h-full w-full object-cover" loading="lazy" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm text-[#1E293B] truncate">{testimonial.username}</p>
