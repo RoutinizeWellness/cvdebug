@@ -65,6 +65,7 @@ import type * as ai_scoring_deepLearning from "../ai/scoring/deepLearning.js";
 import type * as ai_scoring_formatScoring from "../ai/scoring/formatScoring.js";
 import type * as ai_scoring_industryModels from "../ai/scoring/industryModels.js";
 import type * as ai_scoring_interviewPredictor from "../ai/scoring/interviewPredictor.js";
+import type * as ai_scoring_keywordExamples from "../ai/scoring/keywordExamples.js";
 import type * as ai_scoring_keywordScoring from "../ai/scoring/keywordScoring.js";
 import type * as ai_scoring_semanticSimilarity from "../ai/scoring/semanticSimilarity.js";
 import type * as ai_serverOcr from "../ai/serverOcr.js";
@@ -182,6 +183,7 @@ declare const fullApi: ApiFromModules<{
   "ai/scoring/formatScoring": typeof ai_scoring_formatScoring;
   "ai/scoring/industryModels": typeof ai_scoring_industryModels;
   "ai/scoring/interviewPredictor": typeof ai_scoring_interviewPredictor;
+  "ai/scoring/keywordExamples": typeof ai_scoring_keywordExamples;
   "ai/scoring/keywordScoring": typeof ai_scoring_keywordScoring;
   "ai/scoring/semanticSimilarity": typeof ai_scoring_semanticSimilarity;
   "ai/serverOcr": typeof ai_serverOcr;
