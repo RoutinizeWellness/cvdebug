@@ -101,9 +101,11 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
     return <FileText className="h-5 w-5 text-[#3B82F6]" />;
   };
 
-  const getFileSize = (url: string) => {
-    // Mock file size - in production, this would come from storage metadata
-    return "2.4 MB";
+  // File size will be displayed if available from storage metadata
+  const formatFileSize = (bytes?: number) => {
+    if (!bytes) return null;
+    const mb = bytes / (1024 * 1024);
+    return `${mb.toFixed(1)} MB`;
   };
 
   if (filteredResumes.length === 0 && searchQuery === "") {
@@ -235,7 +237,8 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                           {resume.title}
                         </div>
                         <div className="text-xs text-[#64748B]">
-                          {getFileSize(resume.url)} • {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
+                          {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
+                          {resume.fileSize && ` • ${formatFileSize(resume.fileSize)}`}
                         </div>
                       </div>
                     </div>
