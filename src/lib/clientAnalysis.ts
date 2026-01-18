@@ -361,26 +361,34 @@ function keywordMatchesWithSynonyms(keyword: string, textWords: Set<string>): bo
   return false;
 }
 
-// Keyword scoring with ML-enhanced synonym matching and action verb detection
+// REALISTIC KEYWORD SCORING - Inspired by Jobscan
+// Much stricter algorithm that uses context-aware matching, phrase detection, and proximity scoring
 function calculateKeywordScore(text: string, jobDescription?: string): {
   score: number;
   foundKeywords: number;
   totalKeywords: number;
 } {
   if (!jobDescription) {
-    // Without JD, do enhanced keyword density check with action verbs
+    // Without JD, use STRICT keyword density check
     const words = text.toLowerCase().split(/\s+/).filter(w => !STOP_WORDS.has(w));
     const uniqueWords = new Set(words.filter(w => w.length > 3));
 
-    // Bonus for action verbs (shows achievement-oriented writing)
-    let actionVerbCount = 0;
-    words.forEach(word => {
-      if (ACTION_VERBS.has(word)) actionVerbCount++;
+    // STRICTER: Action verbs alone don't mean much without context
+    let contextualActionVerbs = 0;
+    const sentences = text.split(/[.!?]\s+/);
+    sentences.forEach(sentence => {
+      const sentenceWords = sentence.toLowerCase().split(/\s+/);
+      const hasActionVerb = sentenceWords.some(w => ACTION_VERBS.has(w));
+      const hasMetric = /\d+%|\$\d+|\d+x|\d+\+/.test(sentence);
+      // Only count if action verb is paired with metrics or specific outcomes
+      if (hasActionVerb && hasMetric) {
+        contextualActionVerbs++;
+      }
     });
-    const actionVerbBonus = Math.min(15, actionVerbCount * 2); // Up to +15 points
+    const actionVerbBonus = Math.min(8, contextualActionVerbs * 1.5); // REDUCED: Max +8 (was +15)
 
     const keywordDensity = uniqueWords.size / Math.max(words.length, 1);
-    const baseScore = Math.min(85, keywordDensity * 300);
+    const baseScore = Math.min(75, keywordDensity * 280); // REDUCED: Max 75 base (was 85)
 
     return {
       score: Math.min(100, baseScore + actionVerbBonus),
@@ -389,61 +397,151 @@ function calculateKeywordScore(text: string, jobDescription?: string): {
     };
   }
 
-  // With JD, do intelligent keyword matching with synonym support
+  // STRICT JD MATCHING - Multi-pass algorithm inspired by Jobscan
   const resumeText = text.toLowerCase();
+  const jdText = jobDescription.toLowerCase();
+
+  // Pass 1: Extract CRITICAL multi-word phrases (2-3 word skills/technologies)
+  // These are MORE important than single words
+  const criticalPhrases = extractCriticalPhrases(jdText);
+  const matchedPhrases = criticalPhrases.filter(phrase =>
+    resumeText.includes(phrase.toLowerCase())
+  );
+
+  // Pass 2: Extract single keywords with frequency weighting
   const resumeWords = new Set(
     resumeText
       .split(/\s+/)
       .filter(w => w.length > 3 && !STOP_WORDS.has(w))
   );
 
-  const jdText = jobDescription.toLowerCase();
   const jdWords = jdText
     .split(/\s+/)
     .filter(w => w.length > 3 && !STOP_WORDS.has(w));
 
-  // Count important keywords (appear in JD), excluding stop words
   const jdKeywordCounts = new Map<string, number>();
   jdWords.forEach(word => {
     jdKeywordCounts.set(word, (jdKeywordCounts.get(word) || 0) + 1);
   });
 
-  // Sort by frequency to get most important keywords
-  const sortedJDKeywords = Array.from(jdKeywordCounts.entries())
+  // STRICTER: Only consider keywords that appear 2+ times in JD (shows importance)
+  const importantKeywords = Array.from(jdKeywordCounts.entries())
+    .filter(([_, count]) => count >= 2) // STRICTER: Must appear 2+ times
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 50)
+    .slice(0, 40) // REDUCED: Top 40 keywords only (was 50)
     .map(([word]) => word);
 
-  // Enhanced matching: check direct match + synonyms
-  const matchedKeywords = sortedJDKeywords.filter(kw =>
-    keywordMatchesWithSynonyms(kw, resumeWords)
-  );
+  // Pass 3: Context-aware matching with proximity scoring
+  const matchedKeywordsWithContext = importantKeywords.filter(kw => {
+    // Check if keyword exists
+    const exists = keywordMatchesWithSynonyms(kw, resumeWords);
+    if (!exists) return false;
 
-  // Check for action verbs bonus (shows impact and achievements)
-  let actionVerbMatches = 0;
-  resumeWords.forEach(word => {
-    if (ACTION_VERBS.has(word)) actionVerbMatches++;
+    // STRICTER: Verify keyword appears in meaningful context (near action verbs or metrics)
+    const keywordIndex = resumeText.indexOf(kw);
+    if (keywordIndex === -1) return false;
+
+    // Get 50 chars before and after keyword
+    const contextStart = Math.max(0, keywordIndex - 50);
+    const contextEnd = Math.min(resumeText.length, keywordIndex + kw.length + 50);
+    const context = resumeText.substring(contextStart, contextEnd);
+
+    // Check if keyword appears in a meaningful context
+    const hasActionVerb = Array.from(ACTION_VERBS).some(verb => context.includes(verb));
+    const hasMetric = /\d+%|\$\d+|\d+x|\d+\+|\d+ (years|users|clients|projects)/.test(context);
+
+    // STRICT: Keywords should appear in context with action verbs OR metrics
+    // Not just randomly mentioned
+    return hasActionVerb || hasMetric;
   });
-  // Action verbs in JD also count
-  jdWords.forEach(word => {
-    if (ACTION_VERBS.has(word) && resumeWords.has(word)) {
-      actionVerbMatches++;
+
+  // Pass 4: Calculate weighted score
+  // Phrases are worth MORE than single keywords (like real ATS)
+  const phraseWeight = 0.6; // 60% weight
+  const keywordWeight = 0.4; // 40% weight
+
+  const phraseScore = (matchedPhrases.length / Math.max(criticalPhrases.length, 1)) * 100;
+  const keywordScore = (matchedKeywordsWithContext.length / Math.max(importantKeywords.length, 1)) * 100;
+
+  const weightedScore = (phraseScore * phraseWeight) + (keywordScore * keywordWeight);
+
+  // Pass 5: Apply penalties for common issues
+  let penalties = 0;
+
+  // Penalty 1: Keyword stuffing detection (unnatural repetition)
+  const resumeWordArray = resumeText.split(/\s+/);
+  const wordFrequency = new Map<string, number>();
+  resumeWordArray.forEach(w => {
+    if (w.length > 3) {
+      wordFrequency.set(w, (wordFrequency.get(w) || 0) + 1);
     }
   });
-  const actionVerbBonus = Math.min(10, actionVerbMatches); // Up to +10 points
+  const stuffedWords = Array.from(wordFrequency.entries()).filter(([_, count]) => count > 8);
+  if (stuffedWords.length > 0) {
+    penalties += 8; // Penalize keyword stuffing
+  }
 
-  // Calculate base match rate
-  const matchRate = matchedKeywords.length / Math.max(sortedJDKeywords.length, 1);
-  const baseScore = matchRate * 90; // Leave room for bonuses
+  // Penalty 2: Skills mentioned but not demonstrated (no context)
+  const skillsMentioned = matchedKeywordsWithContext.length + matchedPhrases.length;
+  const skillsWithMetrics = sentences(resumeText).filter(s => {
+    const hasSkill = importantKeywords.some(kw => s.includes(kw));
+    const hasMetric = /\d+%|\$\d+|\d+x|\d+\+/.test(s);
+    return hasSkill && hasMetric;
+  }).length;
 
-  // Final score with action verb bonus
-  const finalScore = Math.min(100, baseScore + actionVerbBonus);
+  if (skillsWithMetrics < skillsMentioned * 0.3) {
+    penalties += 10; // Not enough demonstrated impact
+  }
+
+  // Final score: weighted score minus penalties
+  const finalScore = Math.max(0, Math.min(100, weightedScore - penalties));
 
   return {
     score: Math.round(finalScore),
-    foundKeywords: matchedKeywords.length,
-    totalKeywords: sortedJDKeywords.length
+    foundKeywords: matchedKeywordsWithContext.length + matchedPhrases.length,
+    totalKeywords: importantKeywords.length + criticalPhrases.length
   };
+}
+
+// Helper: Extract critical multi-word phrases from job description
+// These are technical skills, tools, methodologies that appear as phrases
+function extractCriticalPhrases(jdText: string): string[] {
+  const phrases: string[] = [];
+  const lowerJD = jdText.toLowerCase();
+
+  // Common technical phrase patterns (2-3 words)
+  const phrasePatterns = [
+    // Technologies with versions
+    /\b(react native|angular \d+|vue\.js|node\.js|spring boot|asp\.net)\b/g,
+    // Methodologies
+    /\b(agile methodology|scrum methodology|test driven development|continuous integration|continuous deployment|pair programming)\b/g,
+    // Cloud services
+    /\b(amazon web services|google cloud platform|microsoft azure|cloud computing|serverless architecture)\b/g,
+    // Skills with qualifiers
+    /\b(machine learning|deep learning|natural language processing|computer vision|data science|data engineering)\b/g,
+    /\b(project management|product management|stakeholder management|change management|risk management)\b/g,
+    /\b(front end|back end|full stack|devops|site reliability)\b/g,
+    // Tools with context
+    /\b(version control|database design|api development|microservices architecture|event driven)\b/g,
+  ];
+
+  phrasePatterns.forEach(pattern => {
+    const matches = lowerJD.match(pattern);
+    if (matches) {
+      matches.forEach(match => {
+        if (!phrases.includes(match)) {
+          phrases.push(match);
+        }
+      });
+    }
+  });
+
+  return phrases;
+}
+
+// Helper: Split text into sentences
+function sentences(text: string): string[] {
+  return text.split(/[.!?]\s+/).filter(s => s.length > 10);
 }
 
 // Completeness scoring (same as completenessScoring.ts)
@@ -489,50 +587,87 @@ function calculateCompletenessScore(
   return { score, missingElements };
 }
 
-// Advanced analytics: Quantifiable impact detection
+// STRICT Quantifiable Impact Detection - Inspired by Jobscan
+// Only accepts metrics that are properly contextualized with action verbs and outcomes
 function detectQuantifiableImpact(text: string): {
   hasQuantifiableAchievements: boolean;
   impactScore: number;
   examples: string[];
 } {
   const examples: string[] = [];
+  const qualityExamples: string[] = []; // High-quality achievements
   let impactScore = 0;
 
-  // Patterns for quantifiable achievements
-  const quantPatterns = [
-    // Percentages: "increased revenue by 25%", "reduced costs by 30%"
-    /\b(increased|improved|enhanced|grew|boosted|raised)\s+\w+\s+by\s+(\d+)%/gi,
-    /\b(decreased|reduced|cut|lowered|minimized)\s+\w+\s+by\s+(\d+)%/gi,
-    // Dollar amounts: "saved $500K", "generated $2M in revenue"
-    /\b(saved|generated|earned|produced|delivered)\s+\$\d+\.?\d*[KMB]?\b/gi,
-    // Numbers with impact: "managed team of 15", "served 10K+ users"
-    /\b(managed|led|supervised|mentored)\s+(\w+\s+)?of\s+\d+/gi,
-    /\b\d+[\+]?\s+(users|customers|clients|employees|projects|products)\b/gi,
-    // Time improvements: "reduced processing time from 5 hours to 30 minutes"
-    /\breduced\s+\w+\s+time\s+(by|from)\s+\d+/gi,
-    // Scale metrics: "10x improvement", "3x faster"
-    /\b\d+x\s+(improvement|increase|faster|growth)\b/gi,
+  // STRICTER Patterns - Must include action verb + metric + outcome
+  const strictQuantPatterns = [
+    // Percentages with clear improvement context
+    /\b(increased|improved|enhanced|grew|boosted|raised|accelerated)\s+[\w\s]{1,30}by\s+(\d+)%/gi,
+    /\b(decreased|reduced|cut|lowered|minimized|eliminated)\s+[\w\s]{1,30}by\s+(\d+)%/gi,
+    // Dollar amounts with business context
+    /\b(saved|generated|earned|produced|delivered|drove)\s+\$\d+\.?\d*[KMB]?\b[\w\s]{0,20}(revenue|profit|savings|value|growth)/gi,
+    // Leadership with team size
+    /\b(managed|led|supervised|directed|mentored|coached)\s+(a\s+)?team\s+of\s+\d+/gi,
+    // Scale with impact
+    /\b(served|supported|handled|processed)\s+\d+[KM\+]?\s+(users|customers|clients|requests|transactions)/gi,
+    // Time improvements with specifics
+    /\breduced\s+[\w\s]{1,20}time\s+(by|from)\s+\d+/gi,
+    // Scale multipliers with context
+    /\b(achieved|delivered)\s+\d+x\s+(improvement|increase|growth)/gi,
   ];
 
-  const lowerText = text.toLowerCase();
+  const sentences = text.split(/[.!?]\s+/);
 
-  quantPatterns.forEach(pattern => {
-    const matches = lowerText.match(pattern);
-    if (matches) {
-      matches.forEach(match => {
-        examples.push(match);
-        impactScore += 5; // Each quantifiable achievement adds points
-      });
-    }
+  sentences.forEach(sentence => {
+    const lowerSentence = sentence.toLowerCase();
+    let sentenceHasMetric = false;
+
+    strictQuantPatterns.forEach(pattern => {
+      pattern.lastIndex = 0; // Reset regex
+      const matches = lowerSentence.match(pattern);
+      if (matches) {
+        matches.forEach(match => {
+          // STRICTER: Verify the metric is in a complete sentence with context
+          // Check if sentence has minimum length (quality check)
+          if (sentence.length < 30) return; // Too short, probably not meaningful
+
+          // Check for action verb at start of sentence (proper bullet format)
+          const hasActionStart = Array.from(ACTION_VERBS).some(verb =>
+            lowerSentence.trim().startsWith(verb)
+          );
+
+          // Check for business outcome keywords
+          const hasOutcome = /(revenue|profit|efficiency|productivity|performance|quality|satisfaction|engagement|growth|sales|cost)/i.test(sentence);
+
+          if (hasActionStart && hasOutcome) {
+            // High quality achievement
+            qualityExamples.push(match);
+            impactScore += 8; // Higher points for quality metrics
+          } else if (hasActionStart || hasOutcome) {
+            // Medium quality achievement
+            examples.push(match);
+            impactScore += 4; // Medium points
+          } else {
+            // Low quality - metric exists but no clear action/outcome
+            examples.push(match);
+            impactScore += 2; // Minimal points
+          }
+
+          sentenceHasMetric = true;
+        });
+      }
+    });
   });
 
-  // Cap impact score at 30
-  impactScore = Math.min(30, impactScore);
+  // STRICTER: Cap impact score at 25 (was 30)
+  impactScore = Math.min(25, impactScore);
+
+  // Combine quality and regular examples, prioritize quality
+  const allExamples = [...qualityExamples, ...examples];
 
   return {
-    hasQuantifiableAchievements: examples.length > 0,
+    hasQuantifiableAchievements: allExamples.length > 0,
     impactScore,
-    examples: examples.slice(0, 5) // Return top 5 examples
+    examples: allExamples.slice(0, 5) // Return top 5 examples
   };
 }
 

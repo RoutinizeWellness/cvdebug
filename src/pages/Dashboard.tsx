@@ -59,7 +59,7 @@ import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStat
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
 const ResumePreview = lazy(() => import("@/components/resume/ResumePreview").then(m => ({ default: m.ResumePreview })));
-const BulletRewriter = lazy(() => import("@/components/dashboard/BulletRewriter").then(m => ({ default: m.BulletRewriter })));
+// REMOVED: BulletRewriter - AI-dependent feature replaced with ML-based algorithms in resume analysis
 const CoverLetterGenerator = lazy(() => import("@/components/dashboard/tools/CoverLetterGenerator").then(m => ({ default: m.CoverLetterGenerator })));
 const LinkedInOptimizer = lazy(() => import("@/components/dashboard/tools/LinkedInOptimizer").then(m => ({ default: m.LinkedInOptimizer })));
 
@@ -588,12 +588,7 @@ export default function Dashboard() {
             <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />
           </Suspense>
         );
-      case 'bullet-rewriter':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-            <BulletRewriter onUpgrade={handleUpgrade} />
-          </Suspense>
-        );
+      // REMOVED: 'bullet-rewriter' case - AI feature replaced with ML algorithms
       case 'writing-forge':
         return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
       case 'keyword-sniper':
