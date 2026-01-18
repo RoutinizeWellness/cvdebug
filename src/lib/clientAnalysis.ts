@@ -44,9 +44,52 @@ const KEYWORD_SYNONYMS = new Map<string, string[]>([
   ['tdd', ['test driven development', 'test-driven']],
   ['rest', ['restful', 'rest api', 'restful api']],
   ['graphql', ['graph ql', 'gql']],
-  // Soft skills
-  ['leadership', ['led', 'managed', 'supervised', 'directed']],
-  ['collaboration', ['teamwork', 'cross-functional', 'team player']],
+  // Soft skills & competencies
+  ['leadership', ['led', 'managed', 'supervised', 'directed', 'mentored']],
+  ['collaboration', ['teamwork', 'cross-functional', 'team player', 'cooperative']],
+  ['communication', ['presented', 'communicated', 'articulated', 'conveyed']],
+  ['problem-solving', ['troubleshooting', 'debugging', 'resolved', 'solved']],
+  ['project management', ['pm', 'project lead', 'project manager', 'delivery']],
+  ['analytical', ['analysis', 'data-driven', 'metrics', 'insights']],
+  // Certifications
+  ['aws certified', ['aws cert', 'aws certification', 'amazon certified']],
+  ['pmp', ['project management professional', 'pmi certified']],
+  ['cissp', ['certified information systems security professional']],
+  ['cka', ['certified kubernetes administrator']],
+  ['ckad', ['certified kubernetes application developer']],
+  ['gcp certified', ['google cloud certified']],
+  ['azure certified', ['microsoft certified azure']],
+  ['scrum master', ['csm', 'certified scrum master', 'psm']],
+]);
+
+// Soft skills keywords for detection
+const SOFT_SKILLS = new Set([
+  'leadership', 'communication', 'teamwork', 'collaboration', 'problem-solving',
+  'critical thinking', 'adaptability', 'flexibility', 'creativity', 'innovation',
+  'time management', 'organization', 'attention to detail', 'multitasking',
+  'decision making', 'conflict resolution', 'negotiation', 'emotional intelligence',
+  'public speaking', 'presentation', 'interpersonal', 'analytical thinking',
+  'strategic thinking', 'mentoring', 'coaching', 'empathy', 'resilience'
+]);
+
+// Common certifications patterns
+const CERTIFICATIONS = new Set([
+  'aws certified', 'azure certified', 'gcp certified', 'google cloud certified',
+  'pmp', 'project management professional', 'cissp', 'cisa', 'cism',
+  'comptia', 'security+', 'network+', 'a+', 'ceh', 'certified ethical hacker',
+  'scrum master', 'csm', 'psm', 'safe', 'scaled agile',
+  'cka', 'ckad', 'certified kubernetes', 'cpa', 'cfa', 'six sigma',
+  'itil', 'prince2', 'togaf', 'ccna', 'ccnp', 'mcsa', 'mcse'
+]);
+
+// Education degrees and keywords
+const EDUCATION_KEYWORDS = new Set([
+  'bachelor', 'bs', 'ba', 'bsc', 'bachelor of science', 'bachelor of arts',
+  'master', 'ms', 'ma', 'msc', 'mba', 'master of science', 'master of business',
+  'phd', 'doctorate', 'doctoral', 'ph.d', 'doctor of philosophy',
+  'associate', 'aa', 'as', 'diploma', 'certificate',
+  'computer science', 'engineering', 'mathematics', 'physics', 'business administration',
+  'university', 'college', 'institute', 'school'
 ]);
 
 // Action verbs for achievement detection with ML scoring
@@ -446,6 +489,167 @@ function calculateCompletenessScore(
   return { score, missingElements };
 }
 
+// Advanced analytics: Quantifiable impact detection
+function detectQuantifiableImpact(text: string): {
+  hasQuantifiableAchievements: boolean;
+  impactScore: number;
+  examples: string[];
+} {
+  const examples: string[] = [];
+  let impactScore = 0;
+
+  // Patterns for quantifiable achievements
+  const quantPatterns = [
+    // Percentages: "increased revenue by 25%", "reduced costs by 30%"
+    /\b(increased|improved|enhanced|grew|boosted|raised)\s+\w+\s+by\s+(\d+)%/gi,
+    /\b(decreased|reduced|cut|lowered|minimized)\s+\w+\s+by\s+(\d+)%/gi,
+    // Dollar amounts: "saved $500K", "generated $2M in revenue"
+    /\b(saved|generated|earned|produced|delivered)\s+\$\d+\.?\d*[KMB]?\b/gi,
+    // Numbers with impact: "managed team of 15", "served 10K+ users"
+    /\b(managed|led|supervised|mentored)\s+(\w+\s+)?of\s+\d+/gi,
+    /\b\d+[\+]?\s+(users|customers|clients|employees|projects|products)\b/gi,
+    // Time improvements: "reduced processing time from 5 hours to 30 minutes"
+    /\breduced\s+\w+\s+time\s+(by|from)\s+\d+/gi,
+    // Scale metrics: "10x improvement", "3x faster"
+    /\b\d+x\s+(improvement|increase|faster|growth)\b/gi,
+  ];
+
+  const lowerText = text.toLowerCase();
+
+  quantPatterns.forEach(pattern => {
+    const matches = lowerText.match(pattern);
+    if (matches) {
+      matches.forEach(match => {
+        examples.push(match);
+        impactScore += 5; // Each quantifiable achievement adds points
+      });
+    }
+  });
+
+  // Cap impact score at 30
+  impactScore = Math.min(30, impactScore);
+
+  return {
+    hasQuantifiableAchievements: examples.length > 0,
+    impactScore,
+    examples: examples.slice(0, 5) // Return top 5 examples
+  };
+}
+
+// Advanced analytics: Soft skills detection
+function detectSoftSkills(text: string): {
+  softSkillsFound: string[];
+  softSkillScore: number;
+} {
+  const lowerText = text.toLowerCase();
+  const found: string[] = [];
+
+  SOFT_SKILLS.forEach(skill => {
+    if (lowerText.includes(skill)) {
+      found.push(skill);
+    }
+  });
+
+  // Score: 1 point per skill, up to 15
+  const softSkillScore = Math.min(15, found.length);
+
+  return { softSkillsFound: found, softSkillScore };
+}
+
+// Advanced analytics: Certifications detection
+function detectCertifications(text: string): {
+  certificationsFound: string[];
+  certificationScore: number;
+} {
+  const lowerText = text.toLowerCase();
+  const found: string[] = [];
+
+  CERTIFICATIONS.forEach(cert => {
+    if (lowerText.includes(cert)) {
+      found.push(cert);
+    }
+  });
+
+  // Score: 3 points per certification, up to 15
+  const certificationScore = Math.min(15, found.length * 3);
+
+  return { certificationsFound: found, certificationScore };
+}
+
+// Advanced analytics: Education level detection
+function detectEducationLevel(text: string): {
+  hasEducation: boolean;
+  educationLevel: string;
+  educationScore: number;
+} {
+  const lowerText = text.toLowerCase();
+
+  let educationLevel = 'none';
+  let educationScore = 0;
+
+  // Check for different education levels (highest first)
+  if (/\b(phd|ph\.d|doctorate|doctoral)\b/i.test(text)) {
+    educationLevel = 'doctorate';
+    educationScore = 15;
+  } else if (/\b(master|mba|ms|ma|msc)\b/i.test(text)) {
+    educationLevel = 'master';
+    educationScore = 12;
+  } else if (/\b(bachelor|bs|ba|bsc)\b/i.test(text)) {
+    educationLevel = 'bachelor';
+    educationScore = 10;
+  } else if (/\b(associate|aa|as|diploma)\b/i.test(text)) {
+    educationLevel = 'associate';
+    educationScore = 7;
+  }
+
+  return {
+    hasEducation: educationLevel !== 'none',
+    educationLevel,
+    educationScore
+  };
+}
+
+// Advanced analytics: Experience duration estimation
+function estimateExperienceDuration(text: string): {
+  estimatedYears: number;
+  dateRangesFound: number;
+} {
+  // Patterns for date ranges: "2020-2023", "Jan 2020 - Dec 2022", "2019-Present"
+  const dateRangePatterns = [
+    /\b(20\d{2})\s*[-–—]\s*(20\d{2}|present|current)/gi,
+    /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\s+20\d{2}\s*[-–—]\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)?\w*\s*(20\d{2}|present|current)/gi,
+  ];
+
+  const ranges: Array<{ start: number; end: number }> = [];
+  const currentYear = new Date().getFullYear();
+
+  dateRangePatterns.forEach(pattern => {
+    let match;
+    const regex = new RegExp(pattern);
+    let searchText = text;
+
+    while ((match = regex.exec(searchText)) !== null) {
+      const startYear = parseInt(match[1].match(/20\d{2}/)?.[0] || '0');
+      const endText = match[2] || match[4] || '';
+      const endYear = endText.toLowerCase().includes('present') || endText.toLowerCase().includes('current')
+        ? currentYear
+        : parseInt(endText.match(/20\d{2}/)?.[0] || '0');
+
+      if (startYear > 0 && endYear > 0 && startYear <= endYear) {
+        ranges.push({ start: startYear, end: endYear });
+      }
+    }
+  });
+
+  // Calculate total years (may overlap, but rough estimate)
+  const totalYears = ranges.reduce((sum, range) => sum + (range.end - range.start), 0);
+
+  return {
+    estimatedYears: Math.min(totalYears, 50), // Cap at 50 years
+    dateRangesFound: ranges.length
+  };
+}
+
 /**
  * MAIN CLIENT ANALYSIS FUNCTION
  * This must produce the same score as server-side analysis
@@ -473,6 +677,13 @@ export function analyzeResumeClient(
     hasPhone: boolean;
     hasLinkedIn: boolean;
     hasQuantifiableAchievements: boolean;
+    // Advanced analytics
+    impactScore?: number;
+    impactExamples?: string[];
+    softSkillsFound?: string[];
+    certificationsFound?: string[];
+    educationLevel?: string;
+    experienceYears?: number;
   };
 } {
   // Extract contact information
@@ -490,37 +701,94 @@ export function analyzeResumeClient(
   // Calculate completeness score
   const completenessResult = calculateCompletenessScore(text, sections, contact);
 
+  // Run advanced analytics
+  const impactAnalysis = detectQuantifiableImpact(text);
+  const softSkillsAnalysis = detectSoftSkills(text);
+  const certificationsAnalysis = detectCertifications(text);
+  const educationAnalysis = detectEducationLevel(text);
+  const experienceAnalysis = estimateExperienceDuration(text);
+
   // Statistics
   const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-  const hasQuantifiableAchievements = /\d+%|\d+\+|\$\d+|increased|improved|reduced|saved|led \d+|managed \d+/gi.test(text);
 
-  // Calculate overall score (SAME WEIGHTS AS SERVER)
-  // From intelligentFallback.ts line 269-271:
+  // Calculate overall score (SAME BASE WEIGHTS AS SERVER)
+  // Base formula from intelligentFallback.ts line 269-271:
   // Keywords: 45%, Format: 30%, Completeness: 25%
-  let overallScore = Math.round(
+  let baseScore = Math.round(
     (keywordResult.score * 0.45) +
     (formatResult.score * 0.30) +
     (completenessResult.score * 0.25)
   );
 
+  // ML-Enhanced Bonus System (only for truly exceptional resumes)
+  // These bonuses can push a score from 85-90 range to 91-95 if resume is excellent
+  let bonusPoints = 0;
+
+  // Bonus 1: Quantifiable impact (up to +3 points)
+  // Resumes with metrics and achievements show real impact
+  if (impactAnalysis.hasQuantifiableAchievements) {
+    bonusPoints += Math.min(3, impactAnalysis.examples.length * 0.6);
+  }
+
+  // Bonus 2: Certifications (up to +2 points)
+  // Industry certifications show commitment and expertise
+  if (certificationsAnalysis.certificationsFound.length > 0) {
+    bonusPoints += Math.min(2, certificationsAnalysis.certificationsFound.length * 0.5);
+  }
+
+  // Bonus 3: Education level (up to +2 points)
+  // Advanced degrees boost credibility
+  if (educationAnalysis.educationLevel === 'doctorate') {
+    bonusPoints += 2;
+  } else if (educationAnalysis.educationLevel === 'master') {
+    bonusPoints += 1.5;
+  } else if (educationAnalysis.educationLevel === 'bachelor') {
+    bonusPoints += 1;
+  }
+
+  // Bonus 4: Soft skills (up to +2 points)
+  // Well-rounded candidates mention relevant soft skills
+  if (softSkillsAnalysis.softSkillsFound.length >= 5) {
+    bonusPoints += 2;
+  } else if (softSkillsAnalysis.softSkillsFound.length >= 3) {
+    bonusPoints += 1;
+  }
+
+  // Bonus 5: Experience depth (up to +1 point)
+  // More experience can add credibility
+  if (experienceAnalysis.estimatedYears >= 5) {
+    bonusPoints += 1;
+  } else if (experienceAnalysis.estimatedYears >= 3) {
+    bonusPoints += 0.5;
+  }
+
+  // Apply bonuses (capped at +10 total to prevent over-inflation)
+  bonusPoints = Math.min(10, bonusPoints);
+  let overallScore = Math.round(baseScore + bonusPoints);
+
   // Cap score for non-premium users (free preview)
   // Only truly EXCEPTIONAL CVs (top 1%) or premium users can see scores above 90
   if (!isPremium) {
-    // Check if resume is truly exceptional (requires perfection)
+    // Enhanced exceptional check with ML analytics
     const isExceptional =
       formatResult.score >= 98 &&          // Near-perfect format
       keywordResult.score >= 90 &&         // Excellent keyword match
       completenessResult.score >= 98 &&    // Near-perfect completeness
       formatResult.issues.length === 0 &&  // Zero format issues
       completenessResult.missingElements.length === 0 && // Nothing missing
-      hasQuantifiableAchievements &&       // Has metrics
-      sections.length >= 6;                // Has all major sections
+      impactAnalysis.hasQuantifiableAchievements &&  // Has quantifiable impact
+      impactAnalysis.examples.length >= 3 &&  // Multiple achievements
+      sections.length >= 6 &&              // Has all major sections
+      (certificationsAnalysis.certificationsFound.length > 0 || // Has certs OR
+       educationAnalysis.educationLevel === 'master' ||         // Advanced degree OR
+       educationAnalysis.educationLevel === 'doctorate' ||      // PhD OR
+       experienceAnalysis.estimatedYears >= 5);                 // 5+ years exp
 
     if (!isExceptional) {
       // Cap at 90 for free users to incentivize upgrade
       // This ensures scores of 91-100 are reserved for:
       // 1. Premium users (who paid for accurate scoring)
-      // 2. Truly perfect CVs (top 1% - very rare)
+      // 2. Truly exceptional CVs (top 1% - multiple excellence criteria met)
       overallScore = Math.min(overallScore, 90);
     }
   }
@@ -539,7 +807,14 @@ export function analyzeResumeClient(
       hasEmail: !!contact.email,
       hasPhone: !!contact.phone,
       hasLinkedIn: !!contact.linkedin,
-      hasQuantifiableAchievements
+      hasQuantifiableAchievements: impactAnalysis.hasQuantifiableAchievements,
+      // Advanced analytics
+      impactScore: impactAnalysis.impactScore,
+      impactExamples: impactAnalysis.examples,
+      softSkillsFound: softSkillsAnalysis.softSkillsFound,
+      certificationsFound: certificationsAnalysis.certificationsFound,
+      educationLevel: educationAnalysis.educationLevel,
+      experienceYears: experienceAnalysis.estimatedYears
     }
   };
 }
