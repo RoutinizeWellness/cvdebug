@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, FileText, Eye, Sparkles, ArrowRight, Lock, Zap, TrendingUp, AlertTriangle } from "lucide-react";
+import { Upload, FileText, Eye, Sparkles, ArrowRight, Lock, Zap, TrendingUp, AlertTriangle, X, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
@@ -37,6 +37,8 @@ export default function PreviewScan() {
     fileSize: "",
     textRatio: 0,
   });
+  const [jobDescription, setJobDescription] = useState("");
+  const [showJobDescriptionField, setShowJobDescriptionField] = useState(false);
 
   const addLog = (type: LogEntry["type"], message: string) => {
     setLogs((prev) => [...prev, { type, message, timestamp: Date.now() }]);
@@ -424,6 +426,57 @@ export default function PreviewScan() {
                   <p className="text-[#475569] mb-6">or click to browse files</p>
                   <p className="text-sm text-[#64748B]">Supports PDF, Word, and Images • No account needed</p>
                 </div>
+              </motion.div>
+
+              {/* Optional Job Description Field */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mt-6"
+              >
+                {!showJobDescriptionField ? (
+                  <button
+                    onClick={() => setShowJobDescriptionField(true)}
+                    className="text-sm text-[#8B5CF6] hover:text-[#7C3AED] font-medium flex items-center gap-2 mx-auto transition-colors"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Add target job description for better matching (optional)
+                  </button>
+                ) : (
+                  <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3B82F6]/20 to-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-bold text-[#1E293B] mb-1">Target Job Position</h4>
+                        <p className="text-xs text-[#64748B]">Paste the job description to get keyword matching insights</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setShowJobDescriptionField(false);
+                          setJobDescription("");
+                        }}
+                        className="text-[#64748B] hover:text-[#1E293B] transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <textarea
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      placeholder="Paste the full job description here...&#10;&#10;Example:&#10;We are looking for a Senior Software Engineer with 5+ years of experience in Python, React, and AWS..."
+                      className="w-full min-h-[120px] p-3 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent resize-none font-mono text-[#475569] bg-[#F8FAFC]"
+                    />
+                    {jobDescription && (
+                      <p className="text-xs text-[#22C55E] mt-2 flex items-center gap-1">
+                        <CheckCircle2 className="h-3 w-3" />
+                        Job description added - will enhance keyword analysis
+                      </p>
+                    )}
+                  </div>
+                )}
               </motion.div>
 
               {/* Trust Indicators */}

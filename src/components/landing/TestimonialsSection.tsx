@@ -4,6 +4,14 @@ import { motion } from "framer-motion";
 export function TestimonialsSection() {
   const redditTestimonials = [
     {
+      username: "Jin",
+      subreddit: "Software Engineer",
+      content: "Talking to you was really helpful. I got shortlisted in 4 companies and got a call for interview in 2 of them. Thanks for the support!",
+      upvotes: 512,
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jin",
+      highlight: "2 Interviews in 7 Days"
+    },
+    {
       username: "u/SarahM_SWE",
       subreddit: "r/resumes",
       content: "The 'Robot View' feature is a game-changer. I could finally see what ATS systems were actually reading from my resume. Turns out my fancy formatting was completely invisible to them.",
