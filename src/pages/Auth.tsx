@@ -208,7 +208,7 @@ export default function AuthPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Debug your career history with precision.
+              {t.auth.headline}
             </motion.h1>
             <motion.p
               className="text-[#475569] font-body text-lg"
@@ -216,7 +216,7 @@ export default function AuthPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Use our advanced engineering tools to refactor your resume and deploy your best professional profile.
+              {t.auth.subtitle}
             </motion.p>
           </div>
         </div>
@@ -232,8 +232,8 @@ export default function AuthPage() {
         >
           {/* Header */}
           <div className="text-center mb-2">
-            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight mb-2">Initialize Session</h2>
-            <p className="text-[#475569] font-body text-sm">Enter your credentials to access the console</p>
+            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight mb-2">{t.auth.initSession}</h2>
+            <p className="text-[#475569] font-body text-sm">{t.auth.enterCredentials}</p>
           </div>
 
           {/* Enhanced glass card */}
@@ -253,7 +253,7 @@ export default function AuthPage() {
                       : 'text-[#475569] hover:text-[#0F172A]'
                   }`}
                 >
-                  Sign In
+                  {t.auth.signIn}
                 </button>
                 <button
                   onClick={() => setIsSignIn(false)}
@@ -263,7 +263,7 @@ export default function AuthPage() {
                       : 'text-[#475569] hover:text-[#0F172A]'
                   }`}
                 >
-                  Sign Up
+                  {t.auth.signUp}
                 </button>
               </div>
 
@@ -287,23 +287,23 @@ export default function AuthPage() {
           {/* Footer text */}
           <div className="text-center">
             <p className="text-sm text-[#475569]">
-              {isSignIn ? "No account found?" : "Already have an account?"}
+              {isSignIn ? t.auth.noAccount : t.auth.haveAccount}
               <a
                 onClick={() => setIsSignIn(!isSignIn)}
                 className="font-medium text-[#3B82F6] hover:text-[#8B5CF6] transition-colors font-mono ml-1 cursor-pointer"
               >
-                [{isSignIn ? "Deploy new profile" : "Sign in"}]
+                {isSignIn ? t.auth.deployNew : t.auth.signInLink}
               </a>
             </p>
           </div>
 
           {/* System status */}
           <div className="mt-8 flex justify-center gap-6 opacity-40 hover:opacity-100 transition-opacity duration-300">
-            <span className="text-xs font-mono text-[#64748B]">v2.4.0-stable</span>
+            <span className="text-xs font-mono text-[#64748B]">{t.auth.version}</span>
             <div className="h-4 w-[1px] bg-[#E2E8F0]"></div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
-              <span className="text-xs font-mono text-[#64748B]">System Operational</span>
+              <span className="text-xs font-mono text-[#64748B]">{t.auth.systemStatus}</span>
             </div>
           </div>
         </motion.div>

@@ -1,6 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface LogoutConfirmDialogProps {
   open: boolean;
@@ -9,6 +10,8 @@ interface LogoutConfirmDialogProps {
 }
 
 export function LogoutConfirmDialog({ open, onOpenChange, onConfirm }: LogoutConfirmDialogProps) {
+  const { t } = useI18n();
+
   // Close modal with ESC key
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -44,10 +47,10 @@ export function LogoutConfirmDialog({ open, onOpenChange, onConfirm }: LogoutCon
             {/* Typography */}
             <div className="space-y-2">
               <h1 className="text-white text-2xl font-bold tracking-tight">
-                Sign out of CVDebug?
+                {t.modals.logout.title}
               </h1>
               <p className="text-slate-400 text-sm font-normal leading-relaxed">
-                Are you sure you want to log out of your session?
+                {t.modals.logout.question}
               </p>
             </div>
 
@@ -63,7 +66,7 @@ export function LogoutConfirmDialog({ open, onOpenChange, onConfirm }: LogoutCon
               >
                 <div className="relative px-4 py-3">
                   <span className="text-slate-300 text-sm font-semibold tracking-wide group-hover:text-white transition-colors">
-                    Stay Logged In
+                    {t.modals.logout.stayButton}
                   </span>
                 </div>
               </button>
@@ -79,7 +82,7 @@ export function LogoutConfirmDialog({ open, onOpenChange, onConfirm }: LogoutCon
                 <div className="absolute inset-0 bg-gradient-to-br from-red-500 to-rose-600" />
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
                 <div className="relative px-4 py-3 flex items-center justify-center gap-2">
-                  <span className="text-white text-sm font-bold tracking-wide">Logout</span>
+                  <span className="text-white text-sm font-bold tracking-wide">{t.modals.logout.logoutButton}</span>
                   <span className="material-symbols-outlined text-white text-sm">logout</span>
                 </div>
               </button>

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { X, Menu } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function Navbar() {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -15,14 +17,14 @@ export function Navbar() {
             <Logo variant="default" />
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#features">Features</a>
-            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#pricing">Pricing</a>
-            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#" onClick={(e) => { e.preventDefault(); navigate("/auth"); }}>Login</a>
-            <button 
+            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#features">{t.nav.features}</a>
+            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#pricing">{t.nav.pricing}</a>
+            <a className="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#" onClick={(e) => { e.preventDefault(); navigate("/auth"); }}>{t.nav.login}</a>
+            <button
               className="h-9 px-4 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-medium transition-colors"
               onClick={() => navigate("/auth")}
             >
-              Sign Up
+              {t.nav.signUp}
             </button>
           </div>
           <button 
@@ -50,28 +52,28 @@ export function Navbar() {
               </button>
             </div>
             <div className="flex flex-col p-6 gap-6">
-              <a 
-                className="text-base font-medium text-slate-300 hover:text-white transition-colors py-2" 
+              <a
+                className="text-base font-medium text-slate-300 hover:text-white transition-colors py-2"
                 href="#features"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Features
+                {t.nav.features}
               </a>
-              <a 
-                className="text-base font-medium text-slate-300 hover:text-white transition-colors py-2" 
+              <a
+                className="text-base font-medium text-slate-300 hover:text-white transition-colors py-2"
                 href="#pricing"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Pricing
+                {t.nav.pricing}
               </a>
-              <button 
+              <button
                 className="mt-4 flex items-center justify-center h-12 px-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-base font-semibold rounded-lg transition-all"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   navigate("/auth");
                 }}
               >
-                Sign Up
+                {t.nav.signUp}
               </button>
             </div>
           </div>

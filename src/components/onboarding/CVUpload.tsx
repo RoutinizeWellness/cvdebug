@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CloudUpload, FileUp } from "lucide-react";
 import { useState, useRef } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface CVUploadProps {
   isActive: boolean;
@@ -17,12 +18,13 @@ export default function CVUpload({
   onBack,
   onNext,
 }: CVUploadProps) {
+  const { t } = useI18n();
   const [isDragging, setIsDragging] = useState(false);
   const [logs, setLogs] = useState([
-    { text: "Initializing upload sequence...", type: "info" },
-    { text: "Parsing binary data...", type: "default" },
-    { text: "Simulating Recruiter Bot [v2.4.1]...", type: "secondary" },
-    { text: "Waiting for file input_", type: "pulse" },
+    { text: t.onboarding.cvUpload.log1, type: "info" },
+    { text: t.onboarding.cvUpload.log2, type: "default" },
+    { text: t.onboarding.cvUpload.log3, type: "secondary" },
+    { text: t.onboarding.cvUpload.log4, type: "pulse" },
   ]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -57,11 +59,11 @@ export default function CVUpload({
 
   const updateLogs = (fileName: string) => {
     setLogs([
-      { text: "Initializing upload sequence...", type: "info" },
-      { text: "Parsing binary data...", type: "default" },
-      { text: "Simulating Recruiter Bot [v2.4.1]...", type: "secondary" },
-      { text: `File detected: ${fileName}`, type: "success" },
-      { text: "Ready to scan_", type: "pulse" },
+      { text: t.onboarding.cvUpload.log1, type: "info" },
+      { text: t.onboarding.cvUpload.log2, type: "default" },
+      { text: t.onboarding.cvUpload.log3, type: "secondary" },
+      { text: `${t.onboarding.cvUpload.log5}${fileName}`, type: "success" },
+      { text: t.onboarding.cvUpload.log6, type: "pulse" },
     ]);
   };
 
@@ -89,7 +91,7 @@ export default function CVUpload({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            Upload your CV
+            {t.onboarding.cvUpload.heading}
           </motion.h1>
           <motion.p
             className="text-[#64748B]"
@@ -97,7 +99,7 @@ export default function CVUpload({
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Drag &amp; drop your resume here (PDF or DOCX) to begin the analysis.
+            {t.onboarding.cvUpload.description}
           </motion.p>
         </div>
 
@@ -156,16 +158,16 @@ export default function CVUpload({
                     {uploadedFile.name}
                   </p>
                   <p className="text-xs text-[#64748B]">
-                    {(uploadedFile.size / 1024).toFixed(2)} KB • Click to change
+                    {(uploadedFile.size / 1024).toFixed(2)} KB • {t.onboarding.cvUpload.clickToUpload.toLowerCase()}
                   </p>
                 </div>
               ) : (
                 <>
                   <p className="mb-2 text-sm text-[#475569]">
-                    <span className="font-semibold text-[#8B5CF6]">Click to upload</span>{" "}
-                    or drag and drop
+                    <span className="font-semibold text-[#8B5CF6]">{t.onboarding.cvUpload.clickToUpload}</span>{" "}
+                    {t.onboarding.cvUpload.dragDrop}
                   </p>
-                  <p className="text-xs text-[#64748B]">PDF or DOCX (MAX. 10MB)</p>
+                  <p className="text-xs text-[#64748B]">{t.onboarding.cvUpload.maxSize}</p>
                 </>
               )}
             </div>
@@ -194,7 +196,7 @@ export default function CVUpload({
               <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
             </div>
             <span className="text-slate-500 text-[10px] uppercase tracking-widest ml-2">
-              System Logs
+              {t.onboarding.cvUpload.systemLogs}
             </span>
           </div>
 
@@ -231,7 +233,7 @@ export default function CVUpload({
             className="px-6 py-3 rounded-lg border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] transition-all font-medium flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t.onboarding.cvUpload.backButton}
           </button>
 
           <button
@@ -239,7 +241,7 @@ export default function CVUpload({
             disabled={!uploadedFile}
             className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] text-white font-bold shadow-lg shadow-[#3B82F6]/25 hover:shadow-[#3B82F6]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
-            Scan CV
+            {t.onboarding.cvUpload.scanButton}
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>

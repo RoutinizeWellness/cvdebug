@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface SubscriptionStatusModalProps {
   open: boolean;
@@ -15,6 +16,7 @@ interface SubscriptionStatusModalProps {
 
 export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: SubscriptionStatusModalProps) {
   const user = useQuery(api.users.currentUser);
+  const { t } = useI18n();
 
   // Close modal with ESC key
   useEffect(() => {
@@ -67,7 +69,7 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
               </motion.div>
               {isPremium && (
                 <div className="inline-flex items-center px-3 py-1 rounded-full border border-secondary/50 bg-secondary/10 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-                  <span className="text-xs font-bold tracking-wider text-secondary uppercase">Premium</span>
+                  <span className="text-xs font-bold tracking-wider text-secondary uppercase">{t.modals.subscription.premium}</span>
                 </div>
               )}
             </div>
@@ -75,15 +77,15 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
             {/* Typography */}
             <div className="space-y-2">
               <h1 className="text-[#0F172A] text-3xl font-bold tracking-tight leading-tight">
-                Welcome to CVDebug!
+                {t.modals.subscription.title}
               </h1>
               <p className="text-[#64748B] text-base font-normal leading-relaxed">
-                You are currently on the <span className="text-primary font-medium">{
+                {t.modals.subscription.tier} <span className="text-primary font-medium">{
                   user.subscriptionTier === "interview_sprint"
-                    ? "interview sprint plan"
+                    ? t.modals.subscription.interviewSprint
                     : user.subscriptionTier === "single_scan"
-                    ? "single scan plan"
-                    : "free plan"
+                    ? t.modals.subscription.singleScan
+                    : t.modals.subscription.freePlan
                 }</span>.
               </p>
             </div>
@@ -92,12 +94,12 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
             {isPremium ? (
               <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFFFFF]/50 border border-[#E2E8F0]/50">
                 <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
-                <p className="text-[#475569] text-sm font-medium">You have full access to premium features!</p>
+                <p className="text-[#475569] text-sm font-medium">{t.modals.subscription.accessMessage}</p>
               </div>
             ) : (
               <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F59E0B]/10 border border-amber-500/20">
                 <span className="material-symbols-outlined text-amber-400 text-xl">info</span>
-                <p className="text-[#475569] text-sm font-medium">Upgrade to unlock all features</p>
+                <p className="text-[#475569] text-sm font-medium">{t.modals.subscription.upgradeMessage}</p>
               </div>
             )}
 
@@ -115,7 +117,7 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
 
                 {/* Button Content */}
                 <div className="relative flex items-center justify-center gap-2 rounded-xl bg-[#FFFFFF]/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
-                  <span className="text-[#0F172A] text-base font-bold tracking-wide">View Upgrade Options</span>
+                  <span className="text-[#0F172A] text-base font-bold tracking-wide">{t.modals.subscription.viewOptions}</span>
                   <span className="material-symbols-outlined text-[#0F172A] text-lg transition-transform group-hover/btn:translate-x-1">upgrade</span>
                 </div>
               </button>
@@ -129,7 +131,7 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
 
                 {/* Button Content */}
                 <div className="relative flex items-center justify-center gap-2 rounded-xl bg-[#FFFFFF]/40 backdrop-blur-sm px-6 py-3.5 h-full w-full transition-all group-hover/btn:bg-opacity-0">
-                  <span className="text-[#0F172A] text-base font-bold tracking-wide">Continue to Dashboard</span>
+                  <span className="text-[#0F172A] text-base font-bold tracking-wide">{t.modals.subscription.continueDashboard}</span>
                   <span className="material-symbols-outlined text-[#0F172A] text-lg transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
                 </div>
               </button>
@@ -137,7 +139,7 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
 
             {/* Decorative footer text */}
             <p className="text-xs text-[#64748B] mt-2">
-              Press <span className="bg-[#F8FAFC] px-1.5 py-0.5 rounded text-[#64748B] border border-[#E2E8F0]">ESC</span> to close
+              {t.modals.subscription.pressEsc.replace('ESC', '')}<span className="bg-[#F8FAFC] px-1.5 py-0.5 rounded text-[#64748B] border border-[#E2E8F0]">ESC</span>{' to close'}
             </p>
           </div>
         </motion.div>

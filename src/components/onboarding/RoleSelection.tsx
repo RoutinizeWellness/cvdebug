@@ -14,6 +14,7 @@ import {
   Wrench,
   TrendingUp
 } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface RoleSelectionProps {
   isCompleted: boolean;
@@ -105,6 +106,8 @@ export default function RoleSelection({
   onEdit,
   onNext,
 }: RoleSelectionProps) {
+  const { t } = useI18n();
+
   return (
     <motion.div
       className={`glass-panel rounded-xl p-6 transition-opacity duration-300 ${
@@ -118,14 +121,14 @@ export default function RoleSelection({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-white flex items-center gap-2">
           {isCompleted && <CheckCircle className="h-5 w-5 text-primary" />}
-          Step 1: Role Selection
+          {t.onboarding.roleSelection.heading}
         </h2>
         {isCompleted && (
           <button
             onClick={onEdit}
             className="text-xs text-secondary hover:text-white underline transition-colors"
           >
-            Edit
+            {t.onboarding.roleSelection.editLink}
           </button>
         )}
       </div>
@@ -199,7 +202,7 @@ export default function RoleSelection({
             disabled={!selectedRole}
             className="px-8 py-3 rounded-lg bg-gradient-to-r from-secondary to-primary text-white font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
-            Continue
+            {t.onboarding.roleSelection.continueButton}
           </button>
         </div>
       )}

@@ -7,6 +7,7 @@ import { api } from "@/convex/_generated/api";
 import { Logo } from "@/components/Logo";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
 import { useState, useEffect } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api;
 
@@ -24,6 +25,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const currentUser = useQuery(apiAny.users.currentUser);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({ days: 0, hours: 0, minutes: 0 });
+  const { t } = useI18n();
 
   const handleSignOut = async () => {
     try {
@@ -90,28 +92,28 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           <NavItem
             active={currentView === 'mission'}
             icon="home"
-            label="Home"
+            label={t.sidebar.home}
             onClick={() => setCurrentView('mission')}
           />
 
           <NavItem
             active={currentView === 'master-cvs'}
             icon="description"
-            label="My Resumes"
+            label={t.sidebar.myResumes}
             onClick={() => setCurrentView('master-cvs')}
           />
 
           <NavItem
             active={currentView === 'tools'}
             icon="smart_toy"
-            label="AI Tools"
+            label={t.sidebar.aiTools}
             onClick={() => setCurrentView('tools')}
           />
 
           <NavItem
             active={currentView === 'settings'}
             icon="settings"
-            label="Settings"
+            label={t.sidebar.settings}
             onClick={() => setCurrentView('settings')}
           />
 
@@ -119,7 +121,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             <NavItem
               active={false}
               icon="shield"
-              label="Admin Panel"
+              label={t.sidebar.adminPanel}
               onClick={() => navigate("/admin")}
             />
           )}
@@ -136,17 +138,17 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             <div className="flex items-center justify-between mb-2 relative z-10">
               <span className="text-[10px] uppercase font-bold text-violet-600 tracking-wider flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></span>
-                Sprint Active
+                {t.sidebar.sprintActive}
               </span>
             </div>
 
             <div className="flex items-baseline gap-1 font-mono text-[#0F172A] relative z-10">
               <span className="text-xl font-bold">{String(timeRemaining.days).padStart(3, '0')}</span>
-              <span className="text-[10px] text-slate-400 mr-2">DAYS</span>
+              <span className="text-[10px] text-slate-400 mr-2">{t.sidebar.days}</span>
               <span className="text-xl font-bold">{String(timeRemaining.hours).padStart(2, '0')}</span>
-              <span className="text-[10px] text-slate-400 mr-2">HRS</span>
+              <span className="text-[10px] text-slate-400 mr-2">{t.sidebar.hours}</span>
               <span className="text-xl font-bold">{String(timeRemaining.minutes).padStart(2, '0')}</span>
-              <span className="text-[10px] text-slate-400">MIN</span>
+              <span className="text-[10px] text-slate-400">{t.sidebar.minutes}</span>
             </div>
           </div>
         )}
@@ -158,7 +160,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[18px]">workspace_premium</span>
-            {hasActiveSprint ? 'Manage Plan' : 'Upgrade Now'}
+            {hasActiveSprint ? t.sidebar.managePlan : t.sidebar.upgradeNow}
           </button>
         </div>
 
@@ -179,8 +181,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
               </span>
               <span className="text-xs text-[#64748B]">
                 {currentUser?.subscriptionTier === "interview_sprint"
-                  ? "Pro Plan"
-                  : "Free Plan"}
+                  ? t.sidebar.proPlan
+                  : t.sidebar.freePlan}
               </span>
             </div>
           </div>
