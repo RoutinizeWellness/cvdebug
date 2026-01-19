@@ -25,9 +25,9 @@ export function Logo({
         src="/assets/cvdebug-logo.png"
         alt="CVDebug"
         className={cn(
-          "h-6 w-auto object-contain relative z-10 transition-transform duration-300 hover:scale-110",
+          "h-5 w-auto max-w-[100px] object-contain relative z-10 transition-transform duration-300 hover:scale-110",
           iconClassName,
-          !showText && "h-7"
+          !showText && "h-6"
         )}
       />
     </div>
