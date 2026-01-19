@@ -9,45 +9,45 @@ async function generateFavicons() {
   try {
     console.log('Generating favicons...');
 
-    // Generate 16x16 favicon
+    // Generate 16x16 favicon - use 'cover' to fill space, minimize borders
     await sharp(inputImage)
-      .resize(16, 16, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(16, 16, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'favicon-16x16.png'));
 
-    // Generate 32x32 favicon
+    // Generate 32x32 favicon - use 'cover' to fill space
     await sharp(inputImage)
-      .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(32, 32, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'favicon-32x32.png'));
 
-    // Generate 192x192 for Android
+    // Generate 192x192 for Android - use 'cover' for better fill
     await sharp(inputImage)
-      .resize(192, 192, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(192, 192, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'android-chrome-192x192.png'));
 
-    // Generate 512x512 for Android
+    // Generate 512x512 for Android - use 'cover'
     await sharp(inputImage)
-      .resize(512, 512, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(512, 512, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'android-chrome-512x512.png'));
 
-    // Generate 180x180 for Apple Touch Icon
+    // Generate 180x180 for Apple Touch Icon - use 'cover'
     await sharp(inputImage)
-      .resize(180, 180, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(180, 180, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'apple-touch-icon.png'));
 
-    // Update main favicon.png (256x256)
+    // Update main favicon.png (256x256) - use 'cover'
     await sharp(inputImage)
-      .resize(256, 256, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(256, 256, { fit: 'cover', position: 'center' })
       .png()
       .toFile(path.join(publicDir, 'favicon.png'));
 
-    // Generate ICO file (32x32)
+    // Generate ICO file (32x32) - use 'cover'
     await sharp(inputImage)
-      .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize(32, 32, { fit: 'cover', position: 'center' })
       .toFile(path.join(publicDir, 'favicon.ico'));
 
     console.log('✓ Favicons generated successfully!');
