@@ -1,16 +1,16 @@
-<svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Icon: Document with bug -->
-  <rect x="2" y="4" width="20" height="24" rx="3" fill="#8B5CF6"/>
-  <line x1="6" y1="10" x2="12" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="6" y1="14" x2="16" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="6" y1="18" x2="14" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+<svg width="90" height="28" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Compact document icon with bug -->
+  <rect x="1" y="3" width="16" height="22" rx="2.5" fill="#8B5CF6"/>
+  <line x1="4" y1="8" x2="10" y2="8" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+  <line x1="4" y1="12" x2="13" y2="12" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+  <line x1="4" y1="16" x2="11" y2="16" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
 
-  <!-- Bug icon -->
-  <circle cx="18" cy="23" r="5" fill="#EF4444"/>
-  <line x1="18" y1="20.5" x2="18" y2="25.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="15.5" y1="23" x2="20.5" y2="23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Bug badge (smaller) -->
+  <circle cx="14" cy="20" r="4" fill="#EF4444"/>
+  <line x1="14" y1="17.5" x2="14" y2="22.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
+  <line x1="11.5" y1="20" x2="16.5" y2="20" stroke="white" stroke-width="1.3" stroke-linecap="round"/>
 
-  <!-- Text -->
-  <text x="28" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="16" fill="#1E293B">CV</text>
-  <text x="50" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="16" fill="#8B5CF6">Debug</text>
+  <!-- Compact text -->
+  <text x="21" y="18.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="14" fill="#1E293B" letter-spacing="-0.3">CV</text>
+  <text x="40" y="18.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="14" fill="#8B5CF6" letter-spacing="-0.3">Debug</text>
 </svg>
