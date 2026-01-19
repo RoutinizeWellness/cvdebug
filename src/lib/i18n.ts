@@ -346,6 +346,343 @@ export interface Translation {
       maybeLater: string;
     };
   };
+  // Toast Messages
+  toasts: {
+    errors: {
+      selectRating: string;
+      submissionFailed: string;
+      fileRequired: string;
+      invalidFormat: string;
+      uploadFailed: string;
+      aiProcessingError: string;
+      fetchError: string;
+      unauthorized: string;
+      noCredits: string;
+      apiKeyNotConfigured: string;
+      noTransactionId: string;
+      checkoutError: string;
+      loginRequired: string;
+      initiateError: string;
+    };
+    success: {
+      feedbackSubmitted: string;
+      cvUploaded: string;
+      saved: string;
+      deleted: string;
+      updated: string;
+      copied: string;
+      downloaded: string;
+      generated: string;
+      optimized: string;
+      applied: string;
+    };
+    warnings: {
+      fileTooLarge: string;
+      limitReached: string;
+      replaceBrackets: string;
+    };
+  };
+  // Images Alt Text
+  images: {
+    userAvatar: string;
+    logo: string;
+    feature: string;
+  };
+  // Admin Panel
+  admin: {
+    title: string;
+    users: string;
+    analytics: string;
+    settings: string;
+    import: {
+      syncComplete: string;
+      syncFailed: string;
+      importFailed: string;
+      importSuccess: string;
+    };
+    grant: {
+      emailPlaceholder: string;
+      namePlaceholder: string;
+      planPlaceholder: string;
+    };
+    payment: {
+      emailPlaceholder: string;
+    };
+    payments: {
+      received: string;
+    };
+    usersTable: {
+      searchPlaceholder: string;
+      updated: string;
+      updateError: string;
+    };
+    fix: {
+      error: string;
+      complete: string;
+      reportedError: string;
+      reportedComplete: string;
+      deleteSuccess: string;
+      deleteError: string;
+    };
+  };
+  // AI Tools
+  tools: {
+    writingForge: {
+      title: string;
+      description: string;
+      placeholder: string;
+      analyzing: string;
+      error: string;
+      noText: string;
+      tooShort: string;
+      generating: string;
+      improvementReady: string;
+      noResume: string;
+      emptyResume: string;
+      saveError: string;
+      saved: string;
+      saveFailed: string;
+      noTextToRegenerate: string;
+      regenerating: string;
+      regenerated: string;
+      preparingPdf: string;
+      editPlaceholder: string;
+    };
+    interviewBattle: {
+      title: string;
+      description: string;
+      noResumeText: string;
+      regenerating: string;
+      questionsRegenerated: string;
+      generateError: string;
+      enhancing: string;
+      answerEnhanced: string;
+      actionPlaceholder: string;
+      downloading: string;
+      noJobDesc: string;
+      battlePlanGenerated: string;
+      battlePlanError: string;
+      jobDescPlaceholder: string;
+      invalidJobDesc: string;
+      shortResume: string;
+      requiresSubscription: string;
+    };
+    linkedIn: {
+      title: string;
+      description: string;
+      upgradeDescription: string;
+      noProfileText: string;
+      analyzed: string;
+      scanError: string;
+      noBioOptimization: string;
+      bioOptimized: string;
+    };
+    answerFinder: {
+      title: string;
+      searchPlaceholder: string;
+    };
+    keywordSniper: {
+      title: string;
+      uploadResume: string;
+      pasteJob: string;
+      analyzing: string;
+      generateError: string;
+      applied: string;
+      rewritten: string;
+      exampleDescription: string;
+    };
+    bullet: {
+      noInput: string;
+      optimized: string;
+      rewriteError: string;
+      examplePlaceholder: string;
+      rolePlaceholder: string;
+      powerStatementCopied: string;
+    };
+    coverLetter: {
+      title: string;
+      upgradeDescription: string;
+      noJobDescription: string;
+      generated: string;
+      generateError: string;
+      selectResume: string;
+      companyPlaceholder: string;
+      rolePlaceholder: string;
+    };
+    dm: {
+      title: string;
+      noProfile: string;
+      generated: string;
+      generateError: string;
+      copied: string;
+      namePlaceholder: string;
+    };
+    headline: {
+      title: string;
+      copied: string;
+    };
+    liveOptimizer: {
+      title: string;
+      placeholder: string;
+    };
+  };
+  // Dashboard Extended
+  dashboardExtended: {
+    applications: {
+      upgradeDescription: string;
+      added: string;
+      addError: string;
+      companyPlaceholder: string;
+      rolePlaceholder: string;
+      urlPlaceholder: string;
+      jobDescPlaceholder: string;
+    };
+    projects: {
+      created: string;
+      createError: string;
+      projectPlaceholder: string;
+      titlePlaceholder: string;
+      urlPlaceholder: string;
+      jobDescPlaceholder: string;
+      uploadSuccess: string;
+    };
+    ats: {
+      textCopied: string;
+      textDownloaded: string;
+      searchPlaceholder: string;
+    };
+    fluff: {
+      metricCopied: string;
+      copyError: string;
+      copyErrorDescription: string;
+      noMetricSelected: string;
+      noMetricDescription: string;
+    };
+    sanitize: {
+      noResume: string;
+      success: string;
+      successDescription: string;
+      error: string;
+    };
+    scanning: {
+      fileValidation: string;
+      fileValidationSubtitle: string;
+      layoutIntegrity: string;
+      layoutIntegritySubtitle: string;
+      keywordMatch: string;
+      keywordMatchSubtitle: string;
+      timeline: string;
+      timelineSubtitle: string;
+      scoring: string;
+      scoringSubtitle: string;
+    };
+    metrics: {
+      noQuantified: string;
+      replaceBrackets: string;
+      updated: string;
+    };
+    insights: {
+      overall: string;
+      keywordMatch: string;
+      actionVerbs: string;
+      impact: string;
+      structure: string;
+    };
+    kanban: {
+      applied: string;
+      interviewing: string;
+      accepted: string;
+    };
+    analysis: {
+      error: string;
+    };
+    reportUnlocked: string;
+    resumeDeleted: string;
+    upgrade: {
+      interviewSprintRequired: string;
+    };
+    feedback: {
+      noRating: string;
+      success: string;
+      submitError: string;
+      commentPlaceholder: string;
+      tellMore: string;
+    };
+  };
+  // Payment
+  payment: {
+    success: string;
+    creditError: string;
+    noTransactionId: string;
+    receiptDownloaded: string;
+    downloadError: string;
+    checkoutError: string;
+    loginRequired: string;
+    initiateError: string;
+  };
+  // Pages
+  pages: {
+    nursing: {
+      title: string;
+      clinical: string;
+      healthcare: string;
+      credentials: string;
+    };
+    medSurg: {
+      title: string;
+      generic: string;
+      patientRatios: string;
+      surgicalExperience: string;
+    };
+    softwareEngineer: {
+      title: string;
+      techStack: string;
+      faang: string;
+      systemDesign: string;
+    };
+    dataAnalyst: {
+      title: string;
+      skills: string;
+      metrics: string;
+      techStack: string;
+    };
+    finance: {
+      title: string;
+      ibKeywords: string;
+      format: string;
+      metricsOptimizer: string;
+    };
+    about: {
+      title: string;
+      missionDriven: string;
+      jobSeeker: string;
+      innovation: string;
+      privacyTitle: string;
+    };
+    blog: {
+      title: string;
+    };
+    privacy: {
+      title: string;
+    };
+    terms: {
+      title: string;
+    };
+    contact: {
+      title: string;
+      email: string;
+      chat: string;
+      responseTime: string;
+      location: string;
+      namePlaceholder: string;
+      emailPlaceholder: string;
+      messagePlaceholder: string;
+    };
+  };
+  // Preview Scan
+  previewScanExtended: {
+    processError: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -674,6 +1011,335 @@ export const translations: Record<SupportedLocale, Translation> = {
         maybeLater: 'Maybe Later',
       },
     },
+    toasts: {
+      errors: {
+        selectRating: 'Please select a rating',
+        submissionFailed: 'Failed to submit feedback',
+        fileRequired: 'Please select a file',
+        invalidFormat: 'Invalid file format',
+        uploadFailed: 'Upload failed',
+        aiProcessingError: 'AI processing error',
+        fetchError: 'Failed to fetch data',
+        unauthorized: 'Unauthorized access',
+        noCredits: 'No credits remaining. Please upgrade to continue.',
+        apiKeyNotConfigured: 'API key not configured. Please contact support at cvdebug@outlook.com',
+        noTransactionId: 'No transaction ID available',
+        checkoutError: 'Failed to start checkout',
+        loginRequired: 'Please log in to purchase credits',
+        initiateError: 'Failed to initiate checkout',
+      },
+      success: {
+        feedbackSubmitted: 'Thank you for your feedback!',
+        cvUploaded: 'CV Uploaded Successfully!',
+        saved: 'Changes saved!',
+        deleted: 'Deleted successfully',
+        updated: 'Updated successfully',
+        copied: 'Copied to clipboard!',
+        downloaded: 'Downloaded successfully',
+        generated: 'Generated successfully!',
+        optimized: 'Optimized successfully!',
+        applied: 'Applied successfully!',
+      },
+      warnings: {
+        fileTooLarge: 'File is too large',
+        limitReached: 'Limit reached',
+        replaceBrackets: 'Don\'t forget to replace the [bracketed] values with your actual numbers!',
+      },
+    },
+    images: {
+      userAvatar: 'User avatar',
+      logo: 'CVDebug logo',
+      feature: 'Feature illustration',
+    },
+    admin: {
+      title: 'Admin Panel',
+      users: 'Users',
+      analytics: 'Analytics',
+      settings: 'Settings',
+      import: {
+        syncComplete: 'Sync Complete',
+        syncFailed: 'Sync Failed',
+        importFailed: 'Import Failed',
+        importSuccess: 'Import Successful',
+      },
+      grant: {
+        emailPlaceholder: 'user@example.com or user_2...',
+        namePlaceholder: 'John Doe',
+        planPlaceholder: 'Select plan',
+      },
+      payment: {
+        emailPlaceholder: 'User Email',
+      },
+      payments: {
+        received: '💰 New Payment Received!',
+      },
+      usersTable: {
+        searchPlaceholder: 'Search users...',
+        updated: 'User updated successfully',
+        updateError: 'Failed to update user',
+      },
+      fix: {
+        error: 'Failed to fix users',
+        complete: 'Fix Complete',
+        reportedError: 'Failed to fix reported users',
+        reportedComplete: 'Reported Users Fix Complete',
+        deleteSuccess: 'User deleted',
+        deleteError: 'Failed to delete user',
+      },
+    },
+    tools: {
+      writingForge: {
+        title: 'Writing Forge',
+        description: 'AI-powered resume editor',
+        placeholder: 'Paste your resume text here...',
+        analyzing: 'Analyzing with AI...',
+        error: 'Processing error',
+        noText: 'No text to process',
+        tooShort: 'Text is too short',
+        generating: 'Generating improvements...',
+        improvementReady: 'Improvements ready!',
+        noResume: 'No resume text to edit',
+        emptyResume: 'Resume cannot be empty',
+        saveError: 'Unable to save changes',
+        saved: 'Changes saved!',
+        saveFailed: 'Failed to save changes',
+        noTextToRegenerate: 'No resume text to regenerate',
+        regenerating: 'Regenerating with AI...',
+        regenerated: 'Resume regenerated!',
+        preparingPdf: 'Preparing PDF download...',
+        editPlaceholder: 'Edit your resume text here...',
+      },
+      interviewBattle: {
+        title: 'Interview Battle Plan',
+        description: 'Prepare for your interviews with AI-generated strategy',
+        noResumeText: 'Not enough resume text to generate questions',
+        regenerating: 'Regenerating questions with ML algorithms...',
+        questionsRegenerated: 'Questions regenerated with ML! Fresh questions based on your resume.',
+        generateError: 'Failed to generate questions. Using fallback questions.',
+        enhancing: 'Enhancing your answer with AI...',
+        answerEnhanced: 'Answer enhanced with AI suggestions!',
+        actionPlaceholder: 'Describe the actions you took...',
+        downloading: 'Downloading strategy document...',
+        noJobDesc: 'Please paste the job description first',
+        battlePlanGenerated: 'Battle plan generated!',
+        battlePlanError: 'Failed to generate battle plan',
+        jobDescPlaceholder: 'Paste the full job description here...',
+        invalidJobDesc: 'Please provide a valid job description to generate interview prep.',
+        shortResume: 'Resume text is too short. Please upload a valid resume first.',
+        requiresSubscription: 'Failed to generate prep. This feature requires an active subscription.',
+      },
+      linkedIn: {
+        title: 'LinkedIn Optimizer',
+        description: 'Optimize your LinkedIn profile for maximum visibility',
+        upgradeDescription: 'Upgrade to optimize your LinkedIn profile',
+        noProfileText: 'Please paste your LinkedIn profile text',
+        analyzed: '✅ LinkedIn profile analyzed successfully!',
+        scanError: 'Failed to scan profile. Please try again.',
+        noBioOptimization: 'No bio optimization available. Please scan your profile first.',
+        bioOptimized: '✅ Optimized bio copied to clipboard! Paste it into your LinkedIn profile',
+      },
+      answerFinder: {
+        title: 'Answer Finder',
+        searchPlaceholder: 'Search by keyword...',
+      },
+      keywordSniper: {
+        title: 'Keyword Sniper',
+        uploadResume: 'Upload Resume',
+        pasteJob: 'Paste Job Description',
+        analyzing: 'Analyzing keywords...',
+        generateError: 'Failed to generate phrases. Please try again.',
+        applied: 'Suggestion applied! Your resume has been updated.',
+        rewritten: 'Resume rewritten successfully!',
+        exampleDescription: 'View how top candidates incorporate this keyword effectively.',
+      },
+      bullet: {
+        noInput: 'Please enter a bullet point to rewrite',
+        optimized: 'Bullet point optimized!',
+        rewriteError: 'Failed to rewrite bullet point',
+        examplePlaceholder: 'Example: Worked on improving the website performance...',
+        rolePlaceholder: 'e.g., Software Engineer',
+        powerStatementCopied: 'Power Statement copied!',
+      },
+      coverLetter: {
+        title: 'Cover Letter Generator',
+        upgradeDescription: 'Upgrade to generate AI-powered cover letters',
+        noJobDescription: 'Please enter a job description',
+        generated: 'Cover letter generated successfully!',
+        generateError: 'Failed to generate cover letter',
+        selectResume: 'Select a resume...',
+        companyPlaceholder: 'e.g. Acme Corp',
+        rolePlaceholder: 'e.g. Senior Engineer',
+      },
+      dm: {
+        title: 'DM Generator',
+        noProfile: 'Profile text is missing. Please analyze your profile first.',
+        generated: 'DMs generated successfully!',
+        generateError: 'Failed to generate DMs. Please try again.',
+        copied: 'DM copied to clipboard!',
+        namePlaceholder: 'e.g. Sarah Smith',
+      },
+      headline: {
+        title: 'Headline Optimizer',
+        copied: 'Headline copied to clipboard!',
+      },
+      liveOptimizer: {
+        title: 'Live Resume Optimizer',
+        placeholder: 'Paste your resume content here and watch the score update in real-time...',
+      },
+    },
+    dashboardExtended: {
+      applications: {
+        upgradeDescription: 'Upgrade to track applications and get AI-powered insights',
+        added: 'Application added successfully',
+        addError: 'Failed to add application',
+        companyPlaceholder: 'e.g., Acme Corp',
+        rolePlaceholder: 'e.g., Senior Engineer',
+        urlPlaceholder: 'https://...',
+        jobDescPlaceholder: 'Paste the job description here for AI-powered keyword matching...',
+      },
+      projects: {
+        created: 'Project created successfully!',
+        createError: 'Failed to create project',
+        projectPlaceholder: 'e.g. Senior SWE Hunt at Google',
+        titlePlaceholder: 'e.g. Senior Software Engineer, Product Manager...',
+        urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+        jobDescPlaceholder: 'Paste the full job description here...',
+        uploadSuccess: 'CV Uploaded Successfully!',
+      },
+      ats: {
+        textCopied: 'Raw text copied to clipboard',
+        textDownloaded: 'Raw text downloaded',
+        searchPlaceholder: 'Search by keyword...',
+      },
+      fluff: {
+        metricCopied: 'Metric copied to clipboard!',
+        copyError: 'Failed to copy to clipboard',
+        copyErrorDescription: 'Please try selecting the text manually.',
+        noMetricSelected: 'Please select a metric first',
+        noMetricDescription: 'Choose one of the AI-suggested quantifications above.',
+      },
+      sanitize: {
+        noResume: 'Cannot sanitize: Resume ID missing',
+        success: 'PDF Sanitized successfully!',
+        successDescription: 'Text layer integrity has been restored.',
+        error: 'Failed to sanitize PDF',
+      },
+      scanning: {
+        fileValidation: 'File Validation',
+        fileValidationSubtitle: 'PDF structure is valid.',
+        layoutIntegrity: 'Layout Integrity',
+        layoutIntegritySubtitle: 'Checking margins & text-flow.',
+        keywordMatch: 'Keyword Match',
+        keywordMatchSubtitle: 'PENDING',
+        timeline: 'Experience Timeline',
+        timelineSubtitle: 'Analyzing career progression.',
+        scoring: 'Scoring & Report',
+        scoringSubtitle: 'Calculating final score.',
+      },
+      metrics: {
+        noQuantified: 'Please provide a quantified version',
+        replaceBrackets: 'Don\'t forget to replace the [bracketed] values with your actual numbers!',
+        updated: 'Bullet point updated with metrics!',
+      },
+      insights: {
+        overall: 'Overall',
+        keywordMatch: 'Keyword Match',
+        actionVerbs: 'Action Verbs',
+        impact: 'Impact',
+        structure: 'Structure',
+      },
+      kanban: {
+        applied: 'Applied',
+        interviewing: 'Interviewing',
+        accepted: 'Accepted',
+      },
+      analysis: {
+        error: 'Resume analysis failed. Please try again.',
+      },
+      reportUnlocked: '🎉 Resume report unlocked! Your credits have been applied.',
+      resumeDeleted: 'Resume deleted',
+      upgrade: {
+        interviewSprintRequired: 'Interview Sprint plan required',
+      },
+      feedback: {
+        noRating: 'Please select a rating',
+        success: 'Thank you for your feedback!',
+        submitError: 'Failed to submit feedback',
+        commentPlaceholder: 'Any additional comments? (optional)',
+        tellMore: 'Tell us more (optional)',
+      },
+    },
+    payment: {
+      success: 'Payment successful! Unlocking your resume report...',
+      creditError: 'Payment recorded but credit update failed. Please contact support',
+      noTransactionId: 'No transaction ID available',
+      receiptDownloaded: 'Receipt downloaded successfully',
+      downloadError: 'Failed to download receipt',
+      checkoutError: 'Failed to start checkout',
+      loginRequired: 'Please log in to purchase credits',
+      initiateError: 'Failed to initiate checkout',
+    },
+    pages: {
+      nursing: {
+        title: 'ATS Scanner for Nurses',
+        clinical: 'Clinical Keywords Optimizer',
+        healthcare: 'Healthcare ATS Compatibility',
+        credentials: 'License & Credential Validator',
+      },
+      medSurg: {
+        title: 'Med-Surg Nurse ATS Optimizer',
+        generic: 'Generic',
+        patientRatios: 'Patient Ratios Not Quantified',
+        surgicalExperience: 'Surgical Experience Buried',
+      },
+      softwareEngineer: {
+        title: 'Software Engineer Keyword Sniper',
+        techStack: 'Tech Stack Keyword Sniper',
+        faang: 'FAANG ATS Compatibility',
+        systemDesign: 'System Design Validator',
+      },
+      dataAnalyst: {
+        title: 'Resume Debug for Data Analysts',
+        skills: 'Technical Skills Parser',
+        metrics: 'Metrics Impact Analyzer',
+        techStack: 'Tech Stack Keyword Matcher',
+      },
+      finance: {
+        title: 'Finance Internship ATS Optimizer',
+        ibKeywords: 'IB Keywords Validator',
+        format: 'Internship Format Checker',
+        metricsOptimizer: 'Finance Metrics Optimizer',
+      },
+      about: {
+        title: 'About CVDebug - AI-Powered ATS Resume Optimization',
+        missionDriven: 'Mission-Driven',
+        jobSeeker: 'Job Seeker First',
+        innovation: 'Innovation',
+        privacyTitle: 'Privacy & Trust',
+      },
+      blog: {
+        title: 'ATS Resume Tips & Job Search Strategies Blog | CVDebug',
+      },
+      privacy: {
+        title: 'Privacy Policy | CVDebug',
+      },
+      terms: {
+        title: 'Terms & Conditions | CVDebug',
+      },
+      contact: {
+        title: 'Contact Us | CVDebug Support',
+        email: 'Email Support',
+        chat: 'Live Chat',
+        responseTime: 'Response Time',
+        location: 'Location',
+        namePlaceholder: 'John Doe',
+        emailPlaceholder: 'john@example.com',
+        messagePlaceholder: 'How can we help you?',
+      },
+    },
+    previewScanExtended: {
+      processError: 'Failed to process file',
+    },
   },
   'es': {
     hero: {
@@ -999,6 +1665,335 @@ export const translations: Record<SupportedLocale, Translation> = {
         unlockButton: 'Desbloquear Informe Completo',
         maybeLater: 'Quizás Después',
       },
+    },
+    toasts: {
+      errors: {
+        selectRating: 'Por favor selecciona una calificación',
+        submissionFailed: 'Error al enviar comentarios',
+        fileRequired: 'Por favor selecciona un archivo',
+        invalidFormat: 'Formato de archivo inválido',
+        uploadFailed: 'Error al cargar',
+        aiProcessingError: 'Error de procesamiento de IA',
+        fetchError: 'Error al obtener datos',
+        unauthorized: 'Acceso no autorizado',
+        noCredits: 'No quedan créditos. Por favor actualiza para continuar.',
+        apiKeyNotConfigured: 'Clave API no configurada. Por favor contacta soporte en cvdebug@outlook.com',
+        noTransactionId: 'No hay ID de transacción disponible',
+        checkoutError: 'Error al iniciar pago',
+        loginRequired: 'Por favor inicia sesión para comprar créditos',
+        initiateError: 'Error al iniciar pago',
+      },
+      success: {
+        feedbackSubmitted: '¡Gracias por tus comentarios!',
+        cvUploaded: '¡CV Cargado Exitosamente!',
+        saved: '¡Cambios guardados!',
+        deleted: 'Eliminado exitosamente',
+        updated: 'Actualizado exitosamente',
+        copied: '¡Copiado al portapapeles!',
+        downloaded: 'Descargado exitosamente',
+        generated: '¡Generado exitosamente!',
+        optimized: '¡Optimizado exitosamente!',
+        applied: '¡Aplicado exitosamente!',
+      },
+      warnings: {
+        fileTooLarge: 'El archivo es demasiado grande',
+        limitReached: 'Límite alcanzado',
+        replaceBrackets: '¡No olvides reemplazar los valores [entre corchetes] con tus números reales!',
+      },
+    },
+    images: {
+      userAvatar: 'Avatar de usuario',
+      logo: 'Logo de CVDebug',
+      feature: 'Ilustración de función',
+    },
+    admin: {
+      title: 'Panel Admin',
+      users: 'Usuarios',
+      analytics: 'Analíticas',
+      settings: 'Configuración',
+      import: {
+        syncComplete: 'Sincronización Completa',
+        syncFailed: 'Sincronización Fallida',
+        importFailed: 'Importación Fallida',
+        importSuccess: 'Importación Exitosa',
+      },
+      grant: {
+        emailPlaceholder: 'usuario@ejemplo.com o user_2...',
+        namePlaceholder: 'Juan Pérez',
+        planPlaceholder: 'Seleccionar plan',
+      },
+      payment: {
+        emailPlaceholder: 'Email del Usuario',
+      },
+      payments: {
+        received: '💰 ¡Nuevo Pago Recibido!',
+      },
+      usersTable: {
+        searchPlaceholder: 'Buscar usuarios...',
+        updated: 'Usuario actualizado exitosamente',
+        updateError: 'Error al actualizar usuario',
+      },
+      fix: {
+        error: 'Error al arreglar usuarios',
+        complete: 'Arreglo Completo',
+        reportedError: 'Error al arreglar usuarios reportados',
+        reportedComplete: 'Arreglo de Usuarios Reportados Completo',
+        deleteSuccess: 'Usuario eliminado',
+        deleteError: 'Error al eliminar usuario',
+      },
+    },
+    tools: {
+      writingForge: {
+        title: 'Forja de Escritura',
+        description: 'Editor de CV con IA',
+        placeholder: 'Pega el texto de tu CV aquí...',
+        analyzing: 'Analizando con IA...',
+        error: 'Error de procesamiento',
+        noText: 'Sin texto para procesar',
+        tooShort: 'El texto es demasiado corto',
+        generating: 'Generando mejoras...',
+        improvementReady: '¡Mejoras listas!',
+        noResume: 'Sin texto de CV para editar',
+        emptyResume: 'El CV no puede estar vacío',
+        saveError: 'No se pueden guardar los cambios',
+        saved: '¡Cambios guardados!',
+        saveFailed: 'Error al guardar cambios',
+        noTextToRegenerate: 'Sin texto de CV para regenerar',
+        regenerating: 'Regenerando con IA...',
+        regenerated: '¡CV regenerado!',
+        preparingPdf: 'Preparando descarga de PDF...',
+        editPlaceholder: 'Edita el texto de tu CV aquí...',
+      },
+      interviewBattle: {
+        title: 'Plan de Batalla para Entrevistas',
+        description: 'Prepárate para entrevistas con estrategia generada por IA',
+        noResumeText: 'No hay suficiente texto de CV para generar preguntas',
+        regenerating: 'Regenerando preguntas con algoritmos ML...',
+        questionsRegenerated: '¡Preguntas regeneradas con ML! Preguntas frescas basadas en tu CV.',
+        generateError: 'Error al generar preguntas. Usando preguntas de respaldo.',
+        enhancing: 'Mejorando tu respuesta con IA...',
+        answerEnhanced: '¡Respuesta mejorada con sugerencias de IA!',
+        actionPlaceholder: 'Describe las acciones que tomaste...',
+        downloading: 'Descargando documento de estrategia...',
+        noJobDesc: 'Por favor pega la descripción del trabajo primero',
+        battlePlanGenerated: '¡Plan de batalla generado!',
+        battlePlanError: 'Error al generar plan de batalla',
+        jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
+        invalidJobDesc: 'Por favor proporciona una descripción de trabajo válida para generar preparación de entrevista.',
+        shortResume: 'El texto del CV es demasiado corto. Por favor carga un CV válido primero.',
+        requiresSubscription: 'Error al generar preparación. Esta función requiere una suscripción activa.',
+      },
+      linkedIn: {
+        title: 'Optimizador de LinkedIn',
+        description: 'Optimiza tu perfil de LinkedIn para máxima visibilidad',
+        upgradeDescription: 'Actualiza para optimizar tu perfil de LinkedIn',
+        noProfileText: 'Por favor pega el texto de tu perfil de LinkedIn',
+        analyzed: '✅ ¡Perfil de LinkedIn analizado exitosamente!',
+        scanError: 'Error al escanear perfil. Por favor intenta de nuevo.',
+        noBioOptimization: 'No hay optimización de biografía disponible. Por favor escanea tu perfil primero.',
+        bioOptimized: '✅ ¡Biografía optimizada copiada al portapapeles! Pégala en tu perfil de LinkedIn',
+      },
+      answerFinder: {
+        title: 'Buscador de Respuestas',
+        searchPlaceholder: 'Buscar por palabra clave...',
+      },
+      keywordSniper: {
+        title: 'Francotirador de Palabras Clave',
+        uploadResume: 'Cargar CV',
+        pasteJob: 'Pegar Descripción del Trabajo',
+        analyzing: 'Analizando palabras clave...',
+        generateError: 'Error al generar frases. Por favor intenta de nuevo.',
+        applied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
+        rewritten: '¡CV reescrito exitosamente!',
+        exampleDescription: 'Ver cómo los mejores candidatos incorporan esta palabra clave efectivamente.',
+      },
+      bullet: {
+        noInput: 'Por favor ingresa un punto para reescribir',
+        optimized: '¡Punto optimizado!',
+        rewriteError: 'Error al reescribir punto',
+        examplePlaceholder: 'Ejemplo: Trabajé en mejorar el rendimiento del sitio web...',
+        rolePlaceholder: 'ej., Ingeniero de Software',
+        powerStatementCopied: '¡Declaración Poderosa copiada!',
+      },
+      coverLetter: {
+        title: 'Generador de Cartas de Presentación',
+        upgradeDescription: 'Actualiza para generar cartas de presentación con IA',
+        noJobDescription: 'Por favor ingresa una descripción de trabajo',
+        generated: '¡Carta de presentación generada exitosamente!',
+        generateError: 'Error al generar carta de presentación',
+        selectResume: 'Seleccionar un CV...',
+        companyPlaceholder: 'ej. Acme Corp',
+        rolePlaceholder: 'ej. Ingeniero Senior',
+      },
+      dm: {
+        title: 'Generador de MDs',
+        noProfile: 'Falta texto de perfil. Por favor analiza tu perfil primero.',
+        generated: '¡MDs generados exitosamente!',
+        generateError: 'Error al generar MDs. Por favor intenta de nuevo.',
+        copied: '¡MD copiado al portapapeles!',
+        namePlaceholder: 'ej. Sarah Smith',
+      },
+      headline: {
+        title: 'Optimizador de Titular',
+        copied: '¡Titular copiado al portapapeles!',
+      },
+      liveOptimizer: {
+        title: 'Optimizador de CV en Vivo',
+        placeholder: 'Pega el contenido de tu CV aquí y observa la puntuación actualizarse en tiempo real...',
+      },
+    },
+    dashboardExtended: {
+      applications: {
+        upgradeDescription: 'Actualiza para rastrear aplicaciones y obtener insights con IA',
+        added: 'Aplicación agregada exitosamente',
+        addError: 'Error al agregar aplicación',
+        companyPlaceholder: 'ej., Acme Corp',
+        rolePlaceholder: 'ej., Ingeniero Senior',
+        urlPlaceholder: 'https://...',
+        jobDescPlaceholder: 'Pega la descripción del trabajo aquí para coincidencia de palabras clave con IA...',
+      },
+      projects: {
+        created: '¡Proyecto creado exitosamente!',
+        createError: 'Error al crear proyecto',
+        projectPlaceholder: 'ej. Búsqueda de Ingeniero Senior en Google',
+        titlePlaceholder: 'ej. Ingeniero de Software Senior, Product Manager...',
+        urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+        jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
+        uploadSuccess: '¡CV Cargado Exitosamente!',
+      },
+      ats: {
+        textCopied: 'Texto sin formato copiado al portapapeles',
+        textDownloaded: 'Texto sin formato descargado',
+        searchPlaceholder: 'Buscar por palabra clave...',
+      },
+      fluff: {
+        metricCopied: '¡Métrica copiada al portapapeles!',
+        copyError: 'Error al copiar al portapapeles',
+        copyErrorDescription: 'Por favor intenta seleccionar el texto manualmente.',
+        noMetricSelected: 'Por favor selecciona una métrica primero',
+        noMetricDescription: 'Elige una de las cuantificaciones sugeridas por IA arriba.',
+      },
+      sanitize: {
+        noResume: 'No se puede sanitizar: falta ID de CV',
+        success: '¡PDF sanitizado exitosamente!',
+        successDescription: 'La integridad de la capa de texto ha sido restaurada.',
+        error: 'Error al sanitizar PDF',
+      },
+      scanning: {
+        fileValidation: 'Validación de Archivo',
+        fileValidationSubtitle: 'La estructura del PDF es válida.',
+        layoutIntegrity: 'Integridad del Diseño',
+        layoutIntegritySubtitle: 'Verificando márgenes y flujo de texto.',
+        keywordMatch: 'Coincidencia de Palabras Clave',
+        keywordMatchSubtitle: 'PENDIENTE',
+        timeline: 'Línea de Tiempo de Experiencia',
+        timelineSubtitle: 'Analizando progresión de carrera.',
+        scoring: 'Puntuación e Informe',
+        scoringSubtitle: 'Calculando puntuación final.',
+      },
+      metrics: {
+        noQuantified: 'Por favor proporciona una versión cuantificada',
+        replaceBrackets: '¡No olvides reemplazar los valores [entre corchetes] con tus números reales!',
+        updated: '¡Punto actualizado con métricas!',
+      },
+      insights: {
+        overall: 'General',
+        keywordMatch: 'Coincidencia de Palabras Clave',
+        actionVerbs: 'Verbos de Acción',
+        impact: 'Impacto',
+        structure: 'Estructura',
+      },
+      kanban: {
+        applied: 'Aplicado',
+        interviewing: 'En Entrevistas',
+        accepted: 'Aceptado',
+      },
+      analysis: {
+        error: 'El análisis del CV falló. Por favor intenta de nuevo.',
+      },
+      reportUnlocked: '🎉 ¡Informe de CV desbloqueado! Tus créditos han sido aplicados.',
+      resumeDeleted: 'CV eliminado',
+      upgrade: {
+        interviewSprintRequired: 'Se requiere plan Sprint de Entrevistas',
+      },
+      feedback: {
+        noRating: 'Por favor selecciona una calificación',
+        success: '¡Gracias por tus comentarios!',
+        submitError: 'Error al enviar comentarios',
+        commentPlaceholder: '¿Algún comentario adicional? (opcional)',
+        tellMore: 'Cuéntanos más (opcional)',
+      },
+    },
+    payment: {
+      success: '¡Pago exitoso! Desbloqueando tu informe de CV...',
+      creditError: 'Pago registrado pero actualización de créditos falló. Por favor contacta soporte',
+      noTransactionId: 'No hay ID de transacción disponible',
+      receiptDownloaded: 'Recibo descargado exitosamente',
+      downloadError: 'Error al descargar recibo',
+      checkoutError: 'Error al iniciar pago',
+      loginRequired: 'Por favor inicia sesión para comprar créditos',
+      initiateError: 'Error al iniciar pago',
+    },
+    pages: {
+      nursing: {
+        title: 'Escáner ATS para Enfermeras',
+        clinical: 'Optimizador de Palabras Clave Clínicas',
+        healthcare: 'Compatibilidad ATS de Salud',
+        credentials: 'Validador de Licencias y Credenciales',
+      },
+      medSurg: {
+        title: 'Optimizador ATS para Enfermeras Med-Surg',
+        generic: 'Genérico',
+        patientRatios: 'Proporciones de Pacientes No Cuantificadas',
+        surgicalExperience: 'Experiencia Quirúrgica Enterrada',
+      },
+      softwareEngineer: {
+        title: 'Francotirador de Palabras Clave para Ingenieros de Software',
+        techStack: 'Francotirador de Palabras Clave de Tech Stack',
+        faang: 'Compatibilidad ATS FAANG',
+        systemDesign: 'Validador de Diseño de Sistemas',
+      },
+      dataAnalyst: {
+        title: 'Depuración de CV para Analistas de Datos',
+        skills: 'Analizador de Habilidades Técnicas',
+        metrics: 'Analizador de Impacto de Métricas',
+        techStack: 'Coincidencia de Palabras Clave de Tech Stack',
+      },
+      finance: {
+        title: 'Optimizador ATS para Pasantías Financieras',
+        ibKeywords: 'Validador de Palabras Clave IB',
+        format: 'Verificador de Formato de Pasantías',
+        metricsOptimizer: 'Optimizador de Métricas Financieras',
+      },
+      about: {
+        title: 'Acerca de CVDebug - Optimización de CV ATS con IA',
+        missionDriven: 'Impulsado por la Misión',
+        jobSeeker: 'Buscador de Empleo Primero',
+        innovation: 'Innovación',
+        privacyTitle: 'Privacidad y Confianza',
+      },
+      blog: {
+        title: 'Consejos de CV ATS y Estrategias de Búsqueda de Empleo Blog | CVDebug',
+      },
+      privacy: {
+        title: 'Política de Privacidad | CVDebug',
+      },
+      terms: {
+        title: 'Términos y Condiciones | CVDebug',
+      },
+      contact: {
+        title: 'Contáctanos | Soporte CVDebug',
+        email: 'Soporte por Email',
+        chat: 'Chat en Vivo',
+        responseTime: 'Tiempo de Respuesta',
+        location: 'Ubicación',
+        namePlaceholder: 'Juan Pérez',
+        emailPlaceholder: 'juan@ejemplo.com',
+        messagePlaceholder: '¿Cómo podemos ayudarte?',
+      },
+    },
+    previewScanExtended: {
+      processError: 'Error al procesar archivo',
     },
   },
   'fr': {
@@ -1326,6 +2321,335 @@ export const translations: Record<SupportedLocale, Translation> = {
         maybeLater: 'Peut-être Plus Tard',
       },
     },
+    toasts: {
+      errors: {
+        selectRating: 'Veuillez sélectionner une note',
+        submissionFailed: 'Échec de l\'envoi des commentaires',
+        fileRequired: 'Veuillez sélectionner un fichier',
+        invalidFormat: 'Format de fichier invalide',
+        uploadFailed: 'Échec du téléchargement',
+        aiProcessingError: 'Erreur de traitement IA',
+        fetchError: 'Échec de récupération des données',
+        unauthorized: 'Accès non autorisé',
+        noCredits: 'Plus de crédits disponibles. Veuillez mettre à niveau pour continuer.',
+        apiKeyNotConfigured: 'Clé API non configurée. Veuillez contacter le support à cvdebug@outlook.com',
+        noTransactionId: 'Aucun ID de transaction disponible',
+        checkoutError: 'Échec du démarrage du paiement',
+        loginRequired: 'Veuillez vous connecter pour acheter des crédits',
+        initiateError: 'Échec de l\'initialisation du paiement',
+      },
+      success: {
+        feedbackSubmitted: 'Merci pour vos commentaires !',
+        cvUploaded: 'CV Téléchargé avec Succès !',
+        saved: 'Modifications enregistrées !',
+        deleted: 'Supprimé avec succès',
+        updated: 'Mis à jour avec succès',
+        copied: 'Copié dans le presse-papiers !',
+        downloaded: 'Téléchargé avec succès',
+        generated: 'Généré avec succès !',
+        optimized: 'Optimisé avec succès !',
+        applied: 'Appliqué avec succès !',
+      },
+      warnings: {
+        fileTooLarge: 'Le fichier est trop volumineux',
+        limitReached: 'Limite atteinte',
+        replaceBrackets: 'N\'oubliez pas de remplacer les valeurs [entre crochets] par vos chiffres réels !',
+      },
+    },
+    images: {
+      userAvatar: 'Avatar utilisateur',
+      logo: 'Logo CVDebug',
+      feature: 'Illustration de fonctionnalité',
+    },
+    admin: {
+      title: 'Panneau Admin',
+      users: 'Utilisateurs',
+      analytics: 'Analyses',
+      settings: 'Paramètres',
+      import: {
+        syncComplete: 'Synchronisation Terminée',
+        syncFailed: 'Échec de Synchronisation',
+        importFailed: 'Échec de l\'Importation',
+        importSuccess: 'Importation Réussie',
+      },
+      grant: {
+        emailPlaceholder: 'utilisateur@exemple.com ou user_2...',
+        namePlaceholder: 'Jean Dupont',
+        planPlaceholder: 'Sélectionner un forfait',
+      },
+      payment: {
+        emailPlaceholder: 'Email de l\'Utilisateur',
+      },
+      payments: {
+        received: '💰 Nouveau Paiement Reçu !',
+      },
+      usersTable: {
+        searchPlaceholder: 'Rechercher des utilisateurs...',
+        updated: 'Utilisateur mis à jour avec succès',
+        updateError: 'Échec de mise à jour de l\'utilisateur',
+      },
+      fix: {
+        error: 'Échec de correction des utilisateurs',
+        complete: 'Correction Terminée',
+        reportedError: 'Échec de correction des utilisateurs signalés',
+        reportedComplete: 'Correction des Utilisateurs Signalés Terminée',
+        deleteSuccess: 'Utilisateur supprimé',
+        deleteError: 'Échec de suppression de l\'utilisateur',
+      },
+    },
+    tools: {
+      writingForge: {
+        title: 'Forge d\'Écriture',
+        description: 'Éditeur de CV propulsé par IA',
+        placeholder: 'Collez le texte de votre CV ici...',
+        analyzing: 'Analyse avec l\'IA...',
+        error: 'Erreur de traitement',
+        noText: 'Aucun texte à traiter',
+        tooShort: 'Le texte est trop court',
+        generating: 'Génération d\'améliorations...',
+        improvementReady: 'Améliorations prêtes !',
+        noResume: 'Aucun texte de CV à éditer',
+        emptyResume: 'Le CV ne peut pas être vide',
+        saveError: 'Impossible d\'enregistrer les modifications',
+        saved: 'Modifications enregistrées !',
+        saveFailed: 'Échec de l\'enregistrement des modifications',
+        noTextToRegenerate: 'Aucun texte de CV à régénérer',
+        regenerating: 'Régénération avec l\'IA...',
+        regenerated: 'CV régénéré !',
+        preparingPdf: 'Préparation du téléchargement PDF...',
+        editPlaceholder: 'Modifiez le texte de votre CV ici...',
+      },
+      interviewBattle: {
+        title: 'Plan de Bataille d\'Entretien',
+        description: 'Préparez vos entretiens avec une stratégie générée par IA',
+        noResumeText: 'Pas assez de texte de CV pour générer des questions',
+        regenerating: 'Régénération des questions avec algorithmes ML...',
+        questionsRegenerated: 'Questions régénérées avec ML ! Nouvelles questions basées sur votre CV.',
+        generateError: 'Échec de génération des questions. Utilisation des questions de secours.',
+        enhancing: 'Amélioration de votre réponse avec l\'IA...',
+        answerEnhanced: 'Réponse améliorée avec suggestions IA !',
+        actionPlaceholder: 'Décrivez les actions que vous avez prises...',
+        downloading: 'Téléchargement du document de stratégie...',
+        noJobDesc: 'Veuillez d\'abord coller la description du poste',
+        battlePlanGenerated: 'Plan de bataille généré !',
+        battlePlanError: 'Échec de génération du plan de bataille',
+        jobDescPlaceholder: 'Collez ici la description complète du poste...',
+        invalidJobDesc: 'Veuillez fournir une description de poste valide pour générer la préparation d\'entretien.',
+        shortResume: 'Le texte du CV est trop court. Veuillez d\'abord télécharger un CV valide.',
+        requiresSubscription: 'Échec de génération de la préparation. Cette fonctionnalité nécessite un abonnement actif.',
+      },
+      linkedIn: {
+        title: 'Optimiseur LinkedIn',
+        description: 'Optimisez votre profil LinkedIn pour une visibilité maximale',
+        upgradeDescription: 'Mettez à niveau pour optimiser votre profil LinkedIn',
+        noProfileText: 'Veuillez coller le texte de votre profil LinkedIn',
+        analyzed: '✅ Profil LinkedIn analysé avec succès !',
+        scanError: 'Échec de l\'analyse du profil. Veuillez réessayer.',
+        noBioOptimization: 'Aucune optimisation de bio disponible. Veuillez d\'abord analyser votre profil.',
+        bioOptimized: '✅ Bio optimisée copiée dans le presse-papiers ! Collez-la dans votre profil LinkedIn',
+      },
+      answerFinder: {
+        title: 'Chercheur de Réponses',
+        searchPlaceholder: 'Rechercher par mot-clé...',
+      },
+      keywordSniper: {
+        title: 'Sniper de Mots-Clés',
+        uploadResume: 'Télécharger CV',
+        pasteJob: 'Coller la Description du Poste',
+        analyzing: 'Analyse des mots-clés...',
+        generateError: 'Échec de génération des phrases. Veuillez réessayer.',
+        applied: 'Suggestion appliquée ! Votre CV a été mis à jour.',
+        rewritten: 'CV réécrit avec succès !',
+        exampleDescription: 'Découvrez comment les meilleurs candidats intègrent efficacement ce mot-clé.',
+      },
+      bullet: {
+        noInput: 'Veuillez entrer un point à réécrire',
+        optimized: 'Point optimisé !',
+        rewriteError: 'Échec de réécriture du point',
+        examplePlaceholder: 'Exemple : J\'ai travaillé sur l\'amélioration des performances du site web...',
+        rolePlaceholder: 'ex., Ingénieur Logiciel',
+        powerStatementCopied: 'Déclaration Puissante copiée !',
+      },
+      coverLetter: {
+        title: 'Générateur de Lettre de Motivation',
+        upgradeDescription: 'Mettez à niveau pour générer des lettres de motivation propulsées par IA',
+        noJobDescription: 'Veuillez entrer une description de poste',
+        generated: 'Lettre de motivation générée avec succès !',
+        generateError: 'Échec de génération de la lettre de motivation',
+        selectResume: 'Sélectionner un CV...',
+        companyPlaceholder: 'ex. Acme Corp',
+        rolePlaceholder: 'ex. Ingénieur Senior',
+      },
+      dm: {
+        title: 'Générateur de Messages',
+        noProfile: 'Texte de profil manquant. Veuillez d\'abord analyser votre profil.',
+        generated: 'Messages générés avec succès !',
+        generateError: 'Échec de génération des messages. Veuillez réessayer.',
+        copied: 'Message copié dans le presse-papiers !',
+        namePlaceholder: 'ex. Sarah Smith',
+      },
+      headline: {
+        title: 'Optimiseur de Titre',
+        copied: 'Titre copié dans le presse-papiers !',
+      },
+      liveOptimizer: {
+        title: 'Optimiseur de CV en Direct',
+        placeholder: 'Collez le contenu de votre CV ici et regardez le score se mettre à jour en temps réel...',
+      },
+    },
+    dashboardExtended: {
+      applications: {
+        upgradeDescription: 'Mettez à niveau pour suivre les candidatures et obtenir des insights propulsés par IA',
+        added: 'Candidature ajoutée avec succès',
+        addError: 'Échec de l\'ajout de la candidature',
+        companyPlaceholder: 'ex., Acme Corp',
+        rolePlaceholder: 'ex., Ingénieur Senior',
+        urlPlaceholder: 'https://...',
+        jobDescPlaceholder: 'Collez la description du poste ici pour une correspondance de mots-clés propulsée par IA...',
+      },
+      projects: {
+        created: 'Projet créé avec succès !',
+        createError: 'Échec de création du projet',
+        projectPlaceholder: 'ex. Recherche d\'Ingénieur Senior chez Google',
+        titlePlaceholder: 'ex. Ingénieur Logiciel Senior, Chef de Produit...',
+        urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+        jobDescPlaceholder: 'Collez ici la description complète du poste...',
+        uploadSuccess: 'CV Téléchargé avec Succès !',
+      },
+      ats: {
+        textCopied: 'Texte brut copié dans le presse-papiers',
+        textDownloaded: 'Texte brut téléchargé',
+        searchPlaceholder: 'Rechercher par mot-clé...',
+      },
+      fluff: {
+        metricCopied: 'Métrique copiée dans le presse-papiers !',
+        copyError: 'Échec de copie dans le presse-papiers',
+        copyErrorDescription: 'Veuillez essayer de sélectionner le texte manuellement.',
+        noMetricSelected: 'Veuillez d\'abord sélectionner une métrique',
+        noMetricDescription: 'Choisissez l\'une des quantifications suggérées par IA ci-dessus.',
+      },
+      sanitize: {
+        noResume: 'Impossible de nettoyer : ID de CV manquant',
+        success: 'PDF nettoyé avec succès !',
+        successDescription: 'L\'intégrité de la couche de texte a été restaurée.',
+        error: 'Échec du nettoyage du PDF',
+      },
+      scanning: {
+        fileValidation: 'Validation du Fichier',
+        fileValidationSubtitle: 'La structure du PDF est valide.',
+        layoutIntegrity: 'Intégrité de la Mise en Page',
+        layoutIntegritySubtitle: 'Vérification des marges et du flux de texte.',
+        keywordMatch: 'Correspondance de Mots-Clés',
+        keywordMatchSubtitle: 'EN ATTENTE',
+        timeline: 'Chronologie de l\'Expérience',
+        timelineSubtitle: 'Analyse de la progression de carrière.',
+        scoring: 'Notation et Rapport',
+        scoringSubtitle: 'Calcul du score final.',
+      },
+      metrics: {
+        noQuantified: 'Veuillez fournir une version quantifiée',
+        replaceBrackets: 'N\'oubliez pas de remplacer les valeurs [entre crochets] par vos chiffres réels !',
+        updated: 'Point mis à jour avec des métriques !',
+      },
+      insights: {
+        overall: 'Global',
+        keywordMatch: 'Correspondance de Mots-Clés',
+        actionVerbs: 'Verbes d\'Action',
+        impact: 'Impact',
+        structure: 'Structure',
+      },
+      kanban: {
+        applied: 'Postulé',
+        interviewing: 'En Entretien',
+        accepted: 'Accepté',
+      },
+      analysis: {
+        error: 'L\'analyse du CV a échoué. Veuillez réessayer.',
+      },
+      reportUnlocked: '🎉 Rapport de CV débloqué ! Vos crédits ont été appliqués.',
+      resumeDeleted: 'CV supprimé',
+      upgrade: {
+        interviewSprintRequired: 'Forfait Sprint d\'Entretien requis',
+      },
+      feedback: {
+        noRating: 'Veuillez sélectionner une note',
+        success: 'Merci pour vos commentaires !',
+        submitError: 'Échec de l\'envoi des commentaires',
+        commentPlaceholder: 'Des commentaires supplémentaires ? (optionnel)',
+        tellMore: 'Dites-nous en plus (optionnel)',
+      },
+    },
+    payment: {
+      success: 'Paiement réussi ! Déblocage de votre rapport de CV...',
+      creditError: 'Paiement enregistré mais échec de mise à jour des crédits. Veuillez contacter le support',
+      noTransactionId: 'Aucun ID de transaction disponible',
+      receiptDownloaded: 'Reçu téléchargé avec succès',
+      downloadError: 'Échec du téléchargement du reçu',
+      checkoutError: 'Échec du démarrage du paiement',
+      loginRequired: 'Veuillez vous connecter pour acheter des crédits',
+      initiateError: 'Échec de l\'initialisation du paiement',
+    },
+    pages: {
+      nursing: {
+        title: 'Scanner ATS pour Infirmières',
+        clinical: 'Optimiseur de Mots-Clés Cliniques',
+        healthcare: 'Compatibilité ATS Santé',
+        credentials: 'Validateur de Licence et Accréditation',
+      },
+      medSurg: {
+        title: 'Optimiseur ATS pour Infirmières Médico-Chirurgicales',
+        generic: 'Générique',
+        patientRatios: 'Ratios de Patients Non Quantifiés',
+        surgicalExperience: 'Expérience Chirurgicale Enfouie',
+      },
+      softwareEngineer: {
+        title: 'Sniper de Mots-Clés pour Ingénieurs Logiciels',
+        techStack: 'Sniper de Mots-Clés Tech Stack',
+        faang: 'Compatibilité ATS FAANG',
+        systemDesign: 'Validateur de Conception de Systèmes',
+      },
+      dataAnalyst: {
+        title: 'Débogage de CV pour Analystes de Données',
+        skills: 'Analyseur de Compétences Techniques',
+        metrics: 'Analyseur d\'Impact des Métriques',
+        techStack: 'Correspondance de Mots-Clés Tech Stack',
+      },
+      finance: {
+        title: 'Optimiseur ATS pour Stages en Finance',
+        ibKeywords: 'Validateur de Mots-Clés IB',
+        format: 'Vérificateur de Format de Stage',
+        metricsOptimizer: 'Optimiseur de Métriques Financières',
+      },
+      about: {
+        title: 'À Propos de CVDebug - Optimisation de CV ATS Propulsée par IA',
+        missionDriven: 'Guidé par la Mission',
+        jobSeeker: 'Chercheur d\'Emploi d\'Abord',
+        innovation: 'Innovation',
+        privacyTitle: 'Confidentialité et Confiance',
+      },
+      blog: {
+        title: 'Conseils CV ATS et Stratégies de Recherche d\'Emploi Blog | CVDebug',
+      },
+      privacy: {
+        title: 'Politique de Confidentialité | CVDebug',
+      },
+      terms: {
+        title: 'Conditions Générales | CVDebug',
+      },
+      contact: {
+        title: 'Contactez-Nous | Support CVDebug',
+        email: 'Support Email',
+        chat: 'Chat en Direct',
+        responseTime: 'Temps de Réponse',
+        location: 'Localisation',
+        namePlaceholder: 'Jean Dupont',
+        emailPlaceholder: 'jean@exemple.com',
+        messagePlaceholder: 'Comment pouvons-nous vous aider ?',
+      },
+    },
+    previewScanExtended: {
+      processError: 'Échec du traitement du fichier',
+    },
   },
   'de': {
     hero: {
@@ -1652,6 +2976,335 @@ export const translations: Record<SupportedLocale, Translation> = {
         maybeLater: 'Vielleicht Später',
       },
     },
+    toasts: {
+      errors: {
+        selectRating: 'Bitte wählen Sie eine Bewertung',
+        submissionFailed: 'Feedback-Übermittlung fehlgeschlagen',
+        fileRequired: 'Bitte wählen Sie eine Datei',
+        invalidFormat: 'Ungültiges Dateiformat',
+        uploadFailed: 'Upload fehlgeschlagen',
+        aiProcessingError: 'KI-Verarbeitungsfehler',
+        fetchError: 'Daten konnten nicht abgerufen werden',
+        unauthorized: 'Unbefugter Zugriff',
+        noCredits: 'Keine Credits mehr verfügbar. Bitte upgraden, um fortzufahren.',
+        apiKeyNotConfigured: 'API-Schlüssel nicht konfiguriert. Bitte kontaktieren Sie den Support unter cvdebug@outlook.com',
+        noTransactionId: 'Keine Transaktions-ID verfügbar',
+        checkoutError: 'Checkout konnte nicht gestartet werden',
+        loginRequired: 'Bitte einloggen, um Credits zu kaufen',
+        initiateError: 'Zahlung konnte nicht initiiert werden',
+      },
+      success: {
+        feedbackSubmitted: 'Vielen Dank für Ihr Feedback!',
+        cvUploaded: 'CV Erfolgreich Hochgeladen!',
+        saved: 'Änderungen gespeichert!',
+        deleted: 'Erfolgreich gelöscht',
+        updated: 'Erfolgreich aktualisiert',
+        copied: 'In Zwischenablage kopiert!',
+        downloaded: 'Erfolgreich heruntergeladen',
+        generated: 'Erfolgreich generiert!',
+        optimized: 'Erfolgreich optimiert!',
+        applied: 'Erfolgreich angewendet!',
+      },
+      warnings: {
+        fileTooLarge: 'Datei ist zu groß',
+        limitReached: 'Limit erreicht',
+        replaceBrackets: 'Vergessen Sie nicht, die Werte [in eckigen Klammern] durch Ihre tatsächlichen Zahlen zu ersetzen!',
+      },
+    },
+    images: {
+      userAvatar: 'Benutzer-Avatar',
+      logo: 'CVDebug-Logo',
+      feature: 'Feature-Illustration',
+    },
+    admin: {
+      title: 'Admin-Panel',
+      users: 'Benutzer',
+      analytics: 'Analytics',
+      settings: 'Einstellungen',
+      import: {
+        syncComplete: 'Synchronisierung Abgeschlossen',
+        syncFailed: 'Synchronisierung Fehlgeschlagen',
+        importFailed: 'Import Fehlgeschlagen',
+        importSuccess: 'Import Erfolgreich',
+      },
+      grant: {
+        emailPlaceholder: 'benutzer@beispiel.de oder user_2...',
+        namePlaceholder: 'Max Mustermann',
+        planPlaceholder: 'Plan auswählen',
+      },
+      payment: {
+        emailPlaceholder: 'Benutzer-E-Mail',
+      },
+      payments: {
+        received: '💰 Neue Zahlung Erhalten!',
+      },
+      usersTable: {
+        searchPlaceholder: 'Benutzer suchen...',
+        updated: 'Benutzer erfolgreich aktualisiert',
+        updateError: 'Benutzeraktualisierung fehlgeschlagen',
+      },
+      fix: {
+        error: 'Benutzer-Fix fehlgeschlagen',
+        complete: 'Fix Abgeschlossen',
+        reportedError: 'Fix gemeldeter Benutzer fehlgeschlagen',
+        reportedComplete: 'Fix Gemeldeter Benutzer Abgeschlossen',
+        deleteSuccess: 'Benutzer gelöscht',
+        deleteError: 'Benutzer-Löschung fehlgeschlagen',
+      },
+    },
+    tools: {
+      writingForge: {
+        title: 'Schreibwerkstatt',
+        description: 'KI-gesteuerter CV-Editor',
+        placeholder: 'Fügen Sie Ihren CV-Text hier ein...',
+        analyzing: 'Mit KI analysieren...',
+        error: 'Verarbeitungsfehler',
+        noText: 'Kein Text zum Verarbeiten',
+        tooShort: 'Text ist zu kurz',
+        generating: 'Verbesserungen generieren...',
+        improvementReady: 'Verbesserungen bereit!',
+        noResume: 'Kein CV-Text zum Bearbeiten',
+        emptyResume: 'CV darf nicht leer sein',
+        saveError: 'Änderungen konnten nicht gespeichert werden',
+        saved: 'Änderungen gespeichert!',
+        saveFailed: 'Speichern fehlgeschlagen',
+        noTextToRegenerate: 'Kein CV-Text zum Regenerieren',
+        regenerating: 'Mit KI regenerieren...',
+        regenerated: 'CV regeneriert!',
+        preparingPdf: 'PDF-Download vorbereiten...',
+        editPlaceholder: 'Bearbeiten Sie Ihren CV hier...',
+      },
+      interviewBattle: {
+        title: 'Interview-Battle',
+        description: 'Üben Sie Interviewfragen mit KI',
+        noResumeText: 'Bitte laden Sie zuerst einen CV hoch',
+        regenerating: 'Regeneriere Fragen...',
+        questionsRegenerated: 'Fragen regeneriert!',
+        generateError: 'Fragenerstellung fehlgeschlagen',
+        enhancing: 'Verbessere Antwort...',
+        answerEnhanced: 'Antwort verbessert!',
+        actionPlaceholder: 'Was haben Sie getan?',
+        downloading: 'Lade herunter...',
+        noJobDesc: 'Keine Stellenbeschreibung',
+        battlePlanGenerated: 'Battle Plan generiert!',
+        battlePlanError: 'Battle Plan-Generierung fehlgeschlagen',
+        jobDescPlaceholder: 'Stellenbeschreibung einfügen...',
+        invalidJobDesc: 'Ungültige Stellenbeschreibung',
+        shortResume: 'CV ist zu kurz',
+        requiresSubscription: 'Erfordert Abo',
+      },
+      linkedIn: {
+        title: 'LinkedIn-Optimierer',
+        description: 'Optimieren Sie Ihr LinkedIn-Profil',
+        upgradeDescription: 'Upgrade für LinkedIn-Optimierung',
+        noProfileText: 'Bitte geben Sie Profiltext ein',
+        analyzed: 'Profil analysiert!',
+        scanError: 'Scan fehlgeschlagen',
+        noBioOptimization: 'Keine Bio-Optimierung verfügbar',
+        bioOptimized: 'Bio optimiert!',
+      },
+      answerFinder: {
+        title: 'Antwort-Finder',
+        searchPlaceholder: 'Suche nach Antworten...',
+      },
+      keywordSniper: {
+        title: 'Keyword-Sniper',
+        uploadResume: 'CV hochladen',
+        pasteJob: 'Stellenbeschreibung einfügen',
+        analyzing: 'Analysiere Keywords...',
+        generateError: 'Generierung fehlgeschlagen',
+        applied: 'Angewendet!',
+        rewritten: 'Umgeschrieben!',
+        exampleDescription: 'Beispiel-Stellenbeschreibung',
+      },
+      bullet: {
+        noInput: 'Keine Eingabe',
+        optimized: 'Optimiert!',
+        rewriteError: 'Umschreiben fehlgeschlagen',
+        examplePlaceholder: 'Beispiel-Bullet-Point...',
+        rolePlaceholder: 'Rolle eingeben...',
+        powerStatementCopied: 'Power Statement kopiert!',
+      },
+      coverLetter: {
+        title: 'Anschreiben-Generator',
+        upgradeDescription: 'Upgrade für Anschreiben',
+        noJobDescription: 'Keine Stellenbeschreibung',
+        generated: 'Anschreiben generiert!',
+        generateError: 'Generierung fehlgeschlagen',
+        selectResume: 'CV auswählen',
+        companyPlaceholder: 'Firmenname',
+        rolePlaceholder: 'Stellentitel',
+      },
+      dm: {
+        title: 'DM-Generator',
+        noProfile: 'Kein Profil',
+        generated: 'DM generiert!',
+        generateError: 'Generierung fehlgeschlagen',
+        copied: 'Kopiert!',
+        namePlaceholder: 'Name eingeben',
+      },
+      headline: {
+        title: 'Headline-Generator',
+        copied: 'Headline kopiert!',
+      },
+      liveOptimizer: {
+        title: 'Live-Optimierer',
+        placeholder: 'Text hier eingeben...',
+      },
+    },
+    dashboardExtended: {
+      applications: {
+        upgradeDescription: 'Upgraden Sie, um Bewerbungen zu verfolgen und KI-gestützte Insights zu erhalten',
+        added: 'Bewerbung erfolgreich hinzugefügt',
+        addError: 'Fehler beim Hinzufügen der Bewerbung',
+        companyPlaceholder: 'z.B., Acme GmbH',
+        rolePlaceholder: 'z.B., Senior Ingenieur',
+        urlPlaceholder: 'https://...',
+        jobDescPlaceholder: 'Fügen Sie die Stellenbeschreibung hier ein für KI-gestütztes Schlüsselwort-Matching...',
+      },
+      projects: {
+        created: 'Projekt erfolgreich erstellt!',
+        createError: 'Fehler beim Erstellen des Projekts',
+        projectPlaceholder: 'z.B. Senior SWE Suche bei Google',
+        titlePlaceholder: 'z.B. Senior Software-Ingenieur, Produktmanager...',
+        urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+        jobDescPlaceholder: 'Fügen Sie hier die vollständige Stellenbeschreibung ein...',
+        uploadSuccess: 'Lebenslauf Erfolgreich Hochgeladen!',
+      },
+      ats: {
+        textCopied: 'Rohtext in die Zwischenablage kopiert',
+        textDownloaded: 'Rohtext heruntergeladen',
+        searchPlaceholder: 'Nach Schlüsselwort suchen...',
+      },
+      fluff: {
+        metricCopied: 'Metrik in die Zwischenablage kopiert!',
+        copyError: 'Fehler beim Kopieren in die Zwischenablage',
+        copyErrorDescription: 'Bitte versuchen Sie, den Text manuell auszuwählen.',
+        noMetricSelected: 'Bitte wählen Sie zuerst eine Metrik',
+        noMetricDescription: 'Wählen Sie eine der oben vorgeschlagenen KI-Quantifizierungen.',
+      },
+      sanitize: {
+        noResume: 'Kann nicht bereinigen: Lebenslauf-ID fehlt',
+        success: 'PDF erfolgreich bereinigt!',
+        successDescription: 'Die Integrität der Textebene wurde wiederhergestellt.',
+        error: 'Fehler beim Bereinigen des PDFs',
+      },
+      scanning: {
+        fileValidation: 'Dateivalidierung',
+        fileValidationSubtitle: 'PDF-Struktur ist gültig.',
+        layoutIntegrity: 'Layout-Integrität',
+        layoutIntegritySubtitle: 'Überprüfe Ränder und Textfluss.',
+        keywordMatch: 'Schlüsselwort-Übereinstimmung',
+        keywordMatchSubtitle: 'AUSSTEHEND',
+        timeline: 'Erfahrungs-Zeitlinie',
+        timelineSubtitle: 'Analysiere Karriereverlauf.',
+        scoring: 'Bewertung und Bericht',
+        scoringSubtitle: 'Berechne Endbewertung.',
+      },
+      metrics: {
+        noQuantified: 'Bitte geben Sie eine quantifizierte Version an',
+        replaceBrackets: 'Vergessen Sie nicht, die [geklammerten] Werte durch Ihre tatsächlichen Zahlen zu ersetzen!',
+        updated: 'Aufzählungspunkt mit Metriken aktualisiert!',
+      },
+      insights: {
+        overall: 'Gesamt',
+        keywordMatch: 'Schlüsselwort-Übereinstimmung',
+        actionVerbs: 'Aktionsverben',
+        impact: 'Wirkung',
+        structure: 'Struktur',
+      },
+      kanban: {
+        applied: 'Beworben',
+        interviewing: 'Im Interview',
+        accepted: 'Angenommen',
+      },
+      analysis: {
+        error: 'Lebenslaufanalyse fehlgeschlagen. Bitte versuchen Sie es erneut.',
+      },
+      reportUnlocked: '🎉 Lebenslaufbericht freigeschaltet! Ihre Credits wurden angewendet.',
+      resumeDeleted: 'Lebenslauf gelöscht',
+      upgrade: {
+        interviewSprintRequired: 'Interview-Sprint-Plan erforderlich',
+      },
+      feedback: {
+        noRating: 'Bitte wählen Sie eine Bewertung',
+        success: 'Vielen Dank für Ihr Feedback!',
+        submitError: 'Fehler beim Übermitteln des Feedbacks',
+        commentPlaceholder: 'Weitere Kommentare? (optional)',
+        tellMore: 'Erzählen Sie uns mehr (optional)',
+      },
+    },
+    pages: {
+      nursing: {
+        title: 'ATS-Scanner für Krankenschwestern',
+        clinical: 'Klinische Schlüsselwort-Optimierer',
+        healthcare: 'Gesundheitswesen-ATS-Kompatibilität',
+        credentials: 'Lizenz- und Zertifikatsvalidator',
+      },
+      medSurg: {
+        title: 'Med-Surg Krankenschwester ATS-Optimierer',
+        generic: 'Generisch',
+        patientRatios: 'Patientenverhältnisse Nicht Quantifiziert',
+        surgicalExperience: 'Chirurgische Erfahrung Vergraben',
+      },
+      softwareEngineer: {
+        title: 'Software-Ingenieur Schlüsselwort-Scharfschütze',
+        techStack: 'Tech-Stack Schlüsselwort-Scharfschütze',
+        faang: 'FAANG ATS-Kompatibilität',
+        systemDesign: 'Systemdesign-Validator',
+      },
+      dataAnalyst: {
+        title: 'Lebenslauf-Debug für Datenanalysten',
+        skills: 'Technische Fähigkeiten-Parser',
+        metrics: 'Metriken-Wirkungsanalyse',
+        techStack: 'Tech-Stack Schlüsselwort-Matcher',
+      },
+      finance: {
+        title: 'Finanz-Praktikum ATS-Optimierer',
+        ibKeywords: 'IB-Schlüsselwort-Validator',
+        format: 'Praktikumsformat-Prüfer',
+        metricsOptimizer: 'Finanzmetriken-Optimierer',
+      },
+      about: {
+        title: 'Über CVDebug - KI-gestützte ATS-Lebenslauf-Optimierung',
+        missionDriven: 'Missionsgetrieben',
+        jobSeeker: 'Arbeitssuchender Zuerst',
+        innovation: 'Innovation',
+        privacyTitle: 'Datenschutz und Vertrauen',
+      },
+      blog: {
+        title: 'ATS-Lebenslauf-Tipps und Jobsuche-Strategien Blog | CVDebug',
+      },
+      privacy: {
+        title: 'Datenschutzrichtlinie | CVDebug',
+      },
+      terms: {
+        title: 'Allgemeine Geschäftsbedingungen | CVDebug',
+      },
+      contact: {
+        title: 'Kontaktieren Sie Uns | CVDebug Support',
+        email: 'E-Mail-Support',
+        chat: 'Live-Chat',
+        responseTime: 'Antwortzeit',
+        location: 'Standort',
+        namePlaceholder: 'Max Mustermann',
+        emailPlaceholder: 'max@beispiel.de',
+        messagePlaceholder: 'Wie können wir Ihnen helfen?',
+      },
+    },
+    payment: {
+      success: 'Zahlung erfolgreich! Entsperren Sie Ihren CV-Bericht...',
+      creditError: 'Zahlung registriert, aber Guthaben-Update fehlgeschlagen. Bitte kontaktieren Sie Support',
+      noTransactionId: 'Keine Transaktions-ID verfügbar',
+      receiptDownloaded: 'Quittung erfolgreich heruntergeladen',
+      downloadError: 'Fehler beim Herunterladen der Quittung',
+      checkoutError: 'Fehler beim Starten der Zahlung',
+      loginRequired: 'Bitte melden Sie sich an, um Guthaben zu kaufen',
+      initiateError: 'Fehler beim Einleiten der Zahlung',
+    },
+    previewScanExtended: {
+      processError: 'Fehler beim Verarbeiten der Datei',
+    },
   },
   'pt': {
     hero: {
@@ -1977,6 +3630,335 @@ export const translations: Record<SupportedLocale, Translation> = {
         unlockButton: 'Desbloquear Relatório Completo',
         maybeLater: 'Talvez Depois',
       },
+    },
+    toasts: {
+      errors: {
+        selectRating: 'Por favor, selecione uma avaliação',
+        submissionFailed: 'Falha no envio do feedback',
+        fileRequired: 'Por favor, selecione um arquivo',
+        invalidFormat: 'Formato de arquivo inválido',
+        uploadFailed: 'Falha no upload',
+        aiProcessingError: 'Erro no processamento da IA',
+        fetchError: 'Falha ao buscar dados',
+        unauthorized: 'Acesso não autorizado',
+        noCredits: 'Sem créditos disponíveis. Faça upgrade para continuar.',
+        apiKeyNotConfigured: 'Chave API não configurada. Entre em contato com o suporte em cvdebug@outlook.com',
+        noTransactionId: 'Nenhum ID de transação disponível',
+        checkoutError: 'Falha ao iniciar checkout',
+        loginRequired: 'Por favor, faça login para comprar créditos',
+        initiateError: 'Falha ao iniciar pagamento',
+      },
+      success: {
+        feedbackSubmitted: 'Obrigado pelo seu feedback!',
+        cvUploaded: 'CV Enviado com Sucesso!',
+        saved: 'Alterações salvas!',
+        deleted: 'Excluído com sucesso',
+        updated: 'Atualizado com sucesso',
+        copied: 'Copiado para a área de transferência!',
+        downloaded: 'Baixado com sucesso',
+        generated: 'Gerado com sucesso!',
+        optimized: 'Otimizado com sucesso!',
+        applied: 'Aplicado com sucesso!',
+      },
+      warnings: {
+        fileTooLarge: 'Arquivo muito grande',
+        limitReached: 'Limite atingido',
+        replaceBrackets: 'Não se esqueça de substituir os valores [entre colchetes] pelos seus números reais!',
+      },
+    },
+    images: {
+      userAvatar: 'Avatar do usuário',
+      logo: 'Logo CVDebug',
+      feature: 'Ilustração do recurso',
+    },
+    admin: {
+      title: 'Painel Admin',
+      users: 'Usuários',
+      analytics: 'Analytics',
+      settings: 'Configurações',
+      import: {
+        syncComplete: 'Sincronização Concluída',
+        syncFailed: 'Sincronização Falhou',
+        importFailed: 'Importação Falhou',
+        importSuccess: 'Importação Bem-Sucedida',
+      },
+      grant: {
+        emailPlaceholder: 'usuario@exemplo.com ou user_2...',
+        namePlaceholder: 'João Silva',
+        planPlaceholder: 'Selecionar plano',
+      },
+      payment: {
+        emailPlaceholder: 'E-mail do Usuário',
+      },
+      payments: {
+        received: '💰 Novo Pagamento Recebido!',
+      },
+      usersTable: {
+        searchPlaceholder: 'Buscar usuários...',
+        updated: 'Usuário atualizado com sucesso',
+        updateError: 'Falha ao atualizar usuário',
+      },
+      fix: {
+        error: 'Falha ao corrigir usuários',
+        complete: 'Correção Concluída',
+        reportedError: 'Falha ao corrigir usuários reportados',
+        reportedComplete: 'Correção de Usuários Reportados Concluída',
+        deleteSuccess: 'Usuário excluído',
+        deleteError: 'Falha ao excluir usuário',
+      },
+    },
+    tools: {
+      writingForge: {
+        title: 'Forja de Escrita',
+        description: 'Editor de CV com IA',
+        placeholder: 'Cole o texto do seu CV aqui...',
+        analyzing: 'Analisando com IA...',
+        error: 'Erro no processamento',
+        noText: 'Nenhum texto para processar',
+        tooShort: 'Texto muito curto',
+        generating: 'Gerando melhorias...',
+        improvementReady: 'Melhorias prontas!',
+        noResume: 'Nenhum texto de CV para editar',
+        emptyResume: 'CV não pode estar vazio',
+        saveError: 'Não foi possível salvar as alterações',
+        saved: 'Alterações salvas!',
+        saveFailed: 'Falha ao salvar alterações',
+        noTextToRegenerate: 'Nenhum texto de CV para regenerar',
+        regenerating: 'Regenerando com IA...',
+        regenerated: 'CV regenerado!',
+        preparingPdf: 'Preparando download do PDF...',
+        editPlaceholder: 'Edite seu CV aqui...',
+      },
+      interviewBattle: {
+        title: 'Battle de Entrevistas',
+        description: 'Pratique perguntas de entrevista com IA',
+        noResumeText: 'Por favor, envie um CV primeiro',
+        regenerating: 'Regenerando perguntas...',
+        questionsRegenerated: 'Perguntas regeneradas!',
+        generateError: 'Falha na geração de perguntas',
+        enhancing: 'Melhorando resposta...',
+        answerEnhanced: 'Resposta melhorada!',
+        actionPlaceholder: 'O que você fez?',
+        downloading: 'Baixando...',
+        noJobDesc: 'Sem descrição da vaga',
+        battlePlanGenerated: 'Plano de Battle gerado!',
+        battlePlanError: 'Falha na geração do Plano de Battle',
+        jobDescPlaceholder: 'Cole a descrição da vaga...',
+        invalidJobDesc: 'Descrição da vaga inválida',
+        shortResume: 'CV muito curto',
+        requiresSubscription: 'Requer assinatura',
+      },
+      linkedIn: {
+        title: 'Otimizador de LinkedIn',
+        description: 'Otimize seu perfil do LinkedIn',
+        upgradeDescription: 'Upgrade para otimização do LinkedIn',
+        noProfileText: 'Por favor, insira texto do perfil',
+        analyzed: 'Perfil analisado!',
+        scanError: 'Falha no scan',
+        noBioOptimization: 'Sem otimização de bio disponível',
+        bioOptimized: 'Bio otimizada!',
+      },
+      answerFinder: {
+        title: 'Localizador de Respostas',
+        searchPlaceholder: 'Buscar por respostas...',
+      },
+      keywordSniper: {
+        title: 'Sniper de Palavras-Chave',
+        uploadResume: 'Enviar CV',
+        pasteJob: 'Colar descrição da vaga',
+        analyzing: 'Analisando palavras-chave...',
+        generateError: 'Falha na geração',
+        applied: 'Aplicado!',
+        rewritten: 'Reescrito!',
+        exampleDescription: 'Descrição de exemplo',
+      },
+      bullet: {
+        noInput: 'Sem entrada',
+        optimized: 'Otimizado!',
+        rewriteError: 'Falha na reescrita',
+        examplePlaceholder: 'Exemplo de bullet point...',
+        rolePlaceholder: 'Inserir cargo...',
+        powerStatementCopied: 'Power Statement copiado!',
+      },
+      coverLetter: {
+        title: 'Gerador de Carta de Apresentação',
+        upgradeDescription: 'Upgrade para carta de apresentação',
+        noJobDescription: 'Sem descrição da vaga',
+        generated: 'Carta gerada!',
+        generateError: 'Falha na geração',
+        selectResume: 'Selecionar CV',
+        companyPlaceholder: 'Nome da empresa',
+        rolePlaceholder: 'Título da vaga',
+      },
+      dm: {
+        title: 'Gerador de DM',
+        noProfile: 'Sem perfil',
+        generated: 'DM gerada!',
+        generateError: 'Falha na geração',
+        copied: 'Copiado!',
+        namePlaceholder: 'Inserir nome',
+      },
+      headline: {
+        title: 'Gerador de Headline',
+        copied: 'Headline copiada!',
+      },
+      liveOptimizer: {
+        title: 'Otimizador ao Vivo',
+        placeholder: 'Digite o texto aqui...',
+      },
+    },
+    dashboardExtended: {
+      applications: {
+        upgradeDescription: 'Faça upgrade para rastrear candidaturas e obter insights com IA',
+        added: 'Candidatura adicionada com sucesso',
+        addError: 'Erro ao adicionar candidatura',
+        companyPlaceholder: 'ex., Acme Corp',
+        rolePlaceholder: 'ex., Engenheiro Sênior',
+        urlPlaceholder: 'https://...',
+        jobDescPlaceholder: 'Cole a descrição da vaga aqui para correspondência de palavras-chave com IA...',
+      },
+      projects: {
+        created: 'Projeto criado com sucesso!',
+        createError: 'Erro ao criar projeto',
+        projectPlaceholder: 'ex. Busca por Engenheiro Sênior no Google',
+        titlePlaceholder: 'ex. Engenheiro de Software Sênior, Gerente de Produto...',
+        urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+        jobDescPlaceholder: 'Cole aqui a descrição completa da vaga...',
+        uploadSuccess: 'CV Carregado com Sucesso!',
+      },
+      ats: {
+        textCopied: 'Texto bruto copiado para a área de transferência',
+        textDownloaded: 'Texto bruto baixado',
+        searchPlaceholder: 'Pesquisar por palavra-chave...',
+      },
+      fluff: {
+        metricCopied: 'Métrica copiada para a área de transferência!',
+        copyError: 'Erro ao copiar para a área de transferência',
+        copyErrorDescription: 'Por favor, tente selecionar o texto manualmente.',
+        noMetricSelected: 'Por favor, selecione uma métrica primeiro',
+        noMetricDescription: 'Escolha uma das quantificações sugeridas pela IA acima.',
+      },
+      sanitize: {
+        noResume: 'Não é possível higienizar: ID do CV ausente',
+        success: 'PDF higienizado com sucesso!',
+        successDescription: 'A integridade da camada de texto foi restaurada.',
+        error: 'Erro ao higienizar PDF',
+      },
+      scanning: {
+        fileValidation: 'Validação do Arquivo',
+        fileValidationSubtitle: 'A estrutura do PDF é válida.',
+        layoutIntegrity: 'Integridade do Layout',
+        layoutIntegritySubtitle: 'Verificando margens e fluxo de texto.',
+        keywordMatch: 'Correspondência de Palavras-Chave',
+        keywordMatchSubtitle: 'PENDENTE',
+        timeline: 'Linha do Tempo da Experiência',
+        timelineSubtitle: 'Analisando progressão de carreira.',
+        scoring: 'Pontuação e Relatório',
+        scoringSubtitle: 'Calculando pontuação final.',
+      },
+      metrics: {
+        noQuantified: 'Por favor, forneça uma versão quantificada',
+        replaceBrackets: 'Não se esqueça de substituir os valores [entre colchetes] pelos seus números reais!',
+        updated: 'Ponto de marcador atualizado com métricas!',
+      },
+      insights: {
+        overall: 'Geral',
+        keywordMatch: 'Correspondência de Palavras-Chave',
+        actionVerbs: 'Verbos de Ação',
+        impact: 'Impacto',
+        structure: 'Estrutura',
+      },
+      kanban: {
+        applied: 'Candidatado',
+        interviewing: 'Em Entrevista',
+        accepted: 'Aceito',
+      },
+      analysis: {
+        error: 'A análise do CV falhou. Por favor, tente novamente.',
+      },
+      reportUnlocked: '🎉 Relatório de CV desbloqueado! Seus créditos foram aplicados.',
+      resumeDeleted: 'CV excluído',
+      upgrade: {
+        interviewSprintRequired: 'Plano Sprint de Entrevista necessário',
+      },
+      feedback: {
+        noRating: 'Por favor, selecione uma avaliação',
+        success: 'Obrigado pelo seu feedback!',
+        submitError: 'Erro ao enviar feedback',
+        commentPlaceholder: 'Algum comentário adicional? (opcional)',
+        tellMore: 'Conte-nos mais (opcional)',
+      },
+    },
+    pages: {
+      nursing: {
+        title: 'Scanner ATS para Enfermeiras',
+        clinical: 'Otimizador de Palavras-Chave Clínicas',
+        healthcare: 'Compatibilidade ATS de Saúde',
+        credentials: 'Validador de Licença e Credenciais',
+      },
+      medSurg: {
+        title: 'Otimizador ATS para Enfermeiras Med-Surg',
+        generic: 'Genérico',
+        patientRatios: 'Proporções de Pacientes Não Quantificadas',
+        surgicalExperience: 'Experiência Cirúrgica Enterrada',
+      },
+      softwareEngineer: {
+        title: 'Atirador de Palavras-Chave para Engenheiros de Software',
+        techStack: 'Atirador de Palavras-Chave de Tech Stack',
+        faang: 'Compatibilidade ATS FAANG',
+        systemDesign: 'Validador de Design de Sistemas',
+      },
+      dataAnalyst: {
+        title: 'Depuração de CV para Analistas de Dados',
+        skills: 'Analisador de Habilidades Técnicas',
+        metrics: 'Analisador de Impacto de Métricas',
+        techStack: 'Correspondência de Palavras-Chave de Tech Stack',
+      },
+      finance: {
+        title: 'Otimizador ATS para Estágios Financeiros',
+        ibKeywords: 'Validador de Palavras-Chave IB',
+        format: 'Verificador de Formato de Estágio',
+        metricsOptimizer: 'Otimizador de Métricas Financeiras',
+      },
+      about: {
+        title: 'Sobre o CVDebug - Otimização de CV ATS com IA',
+        missionDriven: 'Orientado pela Missão',
+        jobSeeker: 'Candidato em Primeiro Lugar',
+        innovation: 'Inovação',
+        privacyTitle: 'Privacidade e Confiança',
+      },
+      blog: {
+        title: 'Dicas de CV ATS e Estratégias de Busca de Emprego Blog | CVDebug',
+      },
+      privacy: {
+        title: 'Política de Privacidade | CVDebug',
+      },
+      terms: {
+        title: 'Termos e Condições | CVDebug',
+      },
+      contact: {
+        title: 'Fale Conosco | Suporte CVDebug',
+        email: 'Suporte por Email',
+        chat: 'Chat ao Vivo',
+        responseTime: 'Tempo de Resposta',
+        location: 'Localização',
+        namePlaceholder: 'João Silva',
+        emailPlaceholder: 'joao@exemplo.com',
+        messagePlaceholder: 'Como podemos ajudá-lo?',
+      },
+    },
+    payment: {
+      success: 'Pagamento bem-sucedido! Desbloqueando seu relatório de CV...',
+      creditError: 'Pagamento registrado mas falha ao atualizar créditos. Por favor contate o suporte',
+      noTransactionId: 'Nenhuma ID de transação disponível',
+      receiptDownloaded: 'Recibo baixado com sucesso',
+      downloadError: 'Erro ao baixar recibo',
+      checkoutError: 'Erro ao iniciar pagamento',
+      loginRequired: 'Por favor faça login para comprar créditos',
+      initiateError: 'Erro ao iniciar pagamento',
+    },
+    previewScanExtended: {
+      processError: 'Erro ao processar arquivo',
     },
   },
 };

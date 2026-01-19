@@ -146,8 +146,122 @@ function semanticSimilarity(keyword: string, text: string): number {
 // ==================== ML-POWERED KEYWORD ANALYSIS ====================
 
 /**
+ * JOBSCAN-STYLE SECTION DETECTION
+ * Identifies which section of the resume a keyword appears in
+ * Section placement affects scoring (e.g., "Python" in Skills > Python in Hobbies)
+ */
+function detectKeywordSection(keyword: string, resumeText: string): {
+  section: string;
+  sectionScore: number; // 0.5 - 1.5 multiplier based on section appropriateness
+} {
+  const text = resumeText.toLowerCase();
+  const kwLower = keyword.toLowerCase();
+
+  // Find keyword position
+  const kwIndex = text.indexOf(kwLower);
+  if (kwIndex === -1) return { section: "unknown", sectionScore: 1.0 };
+
+  // Look backwards up to 200 chars to find section header
+  const contextBefore = text.substring(Math.max(0, kwIndex - 200), kwIndex);
+
+  // Section patterns with their value multipliers
+  const sectionPatterns = [
+    { pattern: /\b(skills|technical skills|core competencies|technologies|expertise)\b/i, name: "Skills", score: 1.5 },
+    { pattern: /\b(experience|work experience|employment|professional experience)\b/i, name: "Experience", score: 1.4 },
+    { pattern: /\b(projects|key projects|technical projects)\b/i, name: "Projects", score: 1.3 },
+    { pattern: /\b(certifications|certificates|credentials)\b/i, name: "Certifications", score: 1.2 },
+    { pattern: /\b(education|academic)\b/i, name: "Education", score: 1.0 },
+    { pattern: /\b(summary|profile|objective|about)\b/i, name: "Summary", score: 1.1 },
+    { pattern: /\b(awards|achievements|honors)\b/i, name: "Awards", score: 0.9 },
+    { pattern: /\b(hobbies|interests|activities)\b/i, name: "Hobbies", score: 0.5 }
+  ];
+
+  for (const { pattern, name, score } of sectionPatterns) {
+    if (pattern.test(contextBefore)) {
+      return { section: name, sectionScore: score };
+    }
+  }
+
+  return { section: "Body", sectionScore: 1.0 };
+}
+
+/**
+ * JOBSCAN-STYLE PHRASE MATCHING
+ * Matches multi-word phrases exactly, not just individual words
+ * "machine learning" should match as a phrase, not "machine" and "learning" separately
+ */
+function matchPhraseExact(phrase: string, text: string): {
+  found: boolean;
+  matches: number;
+  contexts: string[]; // Surrounding context for each match
+} {
+  const escapedPhrase = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`\\b${escapedPhrase}\\b`, 'gi');
+  const matches = text.match(regex) || [];
+
+  const contexts: string[] = [];
+  let match;
+  const globalRegex = new RegExp(`\\b${escapedPhrase}\\b`, 'gi');
+
+  while ((match = globalRegex.exec(text)) !== null) {
+    const start = Math.max(0, match.index - 50);
+    const end = Math.min(text.length, match.index + phrase.length + 50);
+    contexts.push(text.substring(start, end));
+  }
+
+  return {
+    found: matches.length > 0,
+    matches: matches.length,
+    contexts
+  };
+}
+
+/**
+ * JOBSCAN-STYLE CONTEXTUAL PROXIMITY SCORING
+ * Keywords near action verbs, metrics, or impact statements score higher
+ * "Led Python team" > "Studied Python" > "Python mentioned"
+ */
+function calculateContextualProximity(keyword: string, text: string): number {
+  const kwLower = keyword.toLowerCase();
+  const textLower = text.toLowerCase();
+
+  const kwIndex = textLower.indexOf(kwLower);
+  if (kwIndex === -1) return 0;
+
+  // Extract 100 char window around keyword
+  const start = Math.max(0, kwIndex - 100);
+  const end = Math.min(text.length, kwIndex + keyword.length + 100);
+  const window = textLower.substring(start, end);
+
+  let proximityScore = 1.0; // Base score
+
+  // High-value action verbs (within 5 words = +0.5)
+  const strongActionVerbs = /\b(led|managed|architected|designed|built|developed|implemented|created|launched|shipped|deployed|optimized|scaled|increased|reduced|improved|achieved|delivered|established|pioneered|spearheaded)\b/i;
+  if (strongActionVerbs.test(window)) proximityScore += 0.5;
+
+  // Metrics nearby (within 15 words = +0.4)
+  const metricsPattern = /(\d+%|\d+x|\$[\d,]+(?:K|M|B)?|\d+\s*(?:million|billion|thousand)|[0-9,]+\s*(?:users|customers|requests|records|lines of code))/i;
+  if (metricsPattern.test(window)) proximityScore += 0.4;
+
+  // Team/leadership indicators (+0.3)
+  const leadershipPattern = /\b(team of \d+|managed \d+|led \d+|mentored|coached|trained)\b/i;
+  if (leadershipPattern.test(window)) proximityScore += 0.3;
+
+  // Proficiency indicators (+0.2)
+  const proficiencyPattern = /\b(expert|advanced|proficient|experienced|specialized|5\+ years|years of experience)\b/i;
+  if (proficiencyPattern.test(window)) proximityScore += 0.2;
+
+  // Weak indicators (-0.3)
+  const weakPattern = /\b(familiar with|exposure to|basic|studied|coursework)\b/i;
+  if (weakPattern.test(window)) proximityScore -= 0.3;
+
+  return Math.max(0.5, Math.min(2.0, proximityScore)); // Cap between 0.5x - 2.0x
+}
+
+/**
  * ADVANCED ML: Predict keyword relevance using ensemble learning
  * Combines multiple signals: TF-IDF, semantic similarity, contextual proximity
+ * NOW WITH JOBSCAN-STYLE ENHANCEMENTS
  */
 function predictKeywordRelevance(
   keyword: string,
@@ -195,8 +309,18 @@ function predictKeywordRelevance(
   const isTechnical = /[A-Z]/.test(keyword) || keyword.includes('.') || keyword.includes('-') || keyword.length <= 4;
   features.push(isTechnical ? 0.9 : 0.5);
 
-  // ENSEMBLE MODEL: Weighted average of all features
-  const weights = [0.25, 0.15, 0.20, 0.15, 0.15, 0.10]; // Sums to 1.0
+  // NEW Feature 7: Phrase coherence (multi-word phrases are more valuable)
+  const wordCount = keyword.split(' ').length;
+  const phraseScore = wordCount >= 3 ? 1.0 : (wordCount === 2 ? 0.85 : 0.6);
+  features.push(phraseScore);
+
+  // NEW Feature 8: Section appropriateness in resume
+  const sectionInfo = detectKeywordSection(keyword, resumeText);
+  const sectionScore = sectionInfo.sectionScore / 1.5; // Normalize to ~0-1
+  features.push(sectionScore);
+
+  // ENSEMBLE MODEL: Weighted average of all features (NOW 8 FEATURES)
+  const weights = [0.22, 0.13, 0.18, 0.13, 0.13, 0.08, 0.08, 0.05]; // Sums to 1.0
   const relevanceScore = features.reduce((sum, feat, idx) => sum + feat * weights[idx], 0);
 
   return relevanceScore;
@@ -944,7 +1068,20 @@ export function calculateKeywordScore(
       const result = findKeywordWithSynonyms(term, ocrText);
 
       if (result.found) {
-        // Enhanced context detection
+        // ============ JOBSCAN-STYLE ENHANCEMENTS ============
+
+        // 1. Section-aware scoring (keywords in right sections get bonus)
+        const sectionInfo = detectKeywordSection(term, ocrText);
+        const sectionMultiplier = sectionInfo.sectionScore;
+
+        // 2. Contextual proximity scoring (action verbs, metrics nearby = bonus)
+        const proximityMultiplier = calculateContextualProximity(term, ocrText);
+
+        // 3. Phrase matching (exact phrase match gets bonus)
+        const phraseMatch = matchPhraseExact(term, ocrText);
+        const phraseMultiplier = phraseMatch.found ? 1.2 : 1.0;
+
+        // 4. Enhanced context detection (original logic kept for compatibility)
         const contextPatterns = [
           new RegExp(`(experience|project|developed|built|designed|implemented|created|led|managed).*${result.matchedTerm}`, 'i'),
           new RegExp(`${result.matchedTerm}.*(experience|project|developed|built|designed|implemented|created|led|managed)`, 'i'),
@@ -953,17 +1090,26 @@ export function calculateKeywordScore(
         ];
 
         const hasContext = contextPatterns.some(pattern => pattern.test(text));
-        const contextMultiplier = hasContext ? 1.6 : 1.0;
+        const contextMultiplier = hasContext ? 1.3 : 1.0; // Reduced from 1.6 since we have proximity
 
-        // Recency detection (first 30% of resume)
+        // 5. Recency detection (first 30% of resume)
         const firstThird = ocrText.substring(0, ocrText.length * 0.3);
         const isRecent = findKeywordWithSynonyms(term, firstThird).found;
-        const recencyMultiplier = isRecent ? 1.3 : 1.0;
+        const recencyMultiplier = isRecent ? 1.2 : 1.0; // Reduced from 1.3
 
-        // Frequency bonus
-        const frequencyMultiplier = Math.min(1.5, 1.0 + (result.matches * 0.1));
+        // 6. Frequency bonus
+        const frequencyMultiplier = Math.min(1.4, 1.0 + (result.matches * 0.08)); // Reduced from 0.1
 
-        const finalWeight = weight * contextMultiplier * recencyMultiplier * frequencyMultiplier;
+        // JOBSCAN-STYLE FINAL WEIGHT CALCULATION
+        const finalWeight = weight *
+          sectionMultiplier *      // NEW: 0.5x - 1.5x based on section
+          proximityMultiplier *    // NEW: 0.5x - 2.0x based on context quality
+          phraseMultiplier *       // NEW: 1.2x for exact phrase match
+          contextMultiplier *      // 1.0x - 1.3x (kept)
+          recencyMultiplier *      // 1.0x - 1.2x (kept)
+          frequencyMultiplier;     // 1.0x - 1.4x (kept)
+
+        console.log(`[Jobscan] Keyword "${term}": Section=${sectionInfo.section}(${sectionMultiplier.toFixed(2)}x), Proximity=${proximityMultiplier.toFixed(2)}x, Final=${finalWeight.toFixed(2)}`);
 
         foundKeywords.push({
           keyword: term,
