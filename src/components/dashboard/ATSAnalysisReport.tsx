@@ -226,7 +226,8 @@ export function ATSAnalysisReport({
             <img
               src="/assets/cvdebug-logo.png?v=11"
               alt="CVDebug Logo"
-              className="h-12 md:h-16 lg:h-20 w-auto object-contain"
+              className="h-8 md:h-10 w-auto object-contain"
+              style={{ maxHeight: '40px', maxWidth: '150px' }}
             />
           </motion.div>
 
