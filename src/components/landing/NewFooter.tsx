@@ -15,7 +15,13 @@ export function NewFooter() {
             <img
               src="/assets/cvdebug-logo.png?v=11"
               alt="CVDebug"
-              className="h-7 w-auto max-w-[90px] object-contain mb-4"
+              className="h-7 w-auto object-contain mb-4"
+              style={{
+                maxHeight: '28px',
+                maxWidth: '140px',
+                objectFit: 'contain',
+                imageRendering: '-webkit-optimize-contrast'
+              }}
             />
             <p className="text-[#475569] text-sm">
               {t.footer.description}

@@ -25,11 +25,16 @@ export function Logo({
         src="/assets/cvdebug-logo.png?v=11"
         alt="CVDebug"
         className={cn(
-          "h-8 w-auto object-contain relative z-10 transition-transform duration-300 hover:scale-105",
+          "h-7 w-auto object-contain relative z-10 transition-transform duration-300 hover:scale-105",
           iconClassName,
-          !showText && "h-9"
+          !showText && "h-8"
         )}
-        style={{ maxHeight: '32px', maxWidth: '120px' }}
+        style={{
+          maxHeight: '28px',
+          maxWidth: '140px',
+          objectFit: 'contain',
+          imageRendering: '-webkit-optimize-contrast'
+        }}
       />
     </div>
   );
