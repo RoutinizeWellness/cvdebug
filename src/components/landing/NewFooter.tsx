@@ -10,7 +10,7 @@ export function NewFooter() {
           {/* Company Info */}
           <div>
             <img
-              src="/assets/cvdebug-logo.png"
+              src="/assets/cvdebug-logo.svg"
               alt="CVDebug"
               className="h-10 w-auto object-contain mb-4"
             />
