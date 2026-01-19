@@ -184,17 +184,52 @@ export function KeywordAnalysis({
     return `Add "${keyword}" with specific examples: where you used it, what problems you solved, and measurable results achieved (time saved, efficiency gained, or revenue impact).`;
   };
 
-  // Common industry keywords as fallback suggestions
-  const commonSuggestions = [
-    'leadership', 'collaboration', 'communication', 'problem solving',
-    'project management', 'agile', 'data analysis', 'strategic planning'
-  ];
+  // Generate smart keyword suggestions based on what's already in the CV
+  const generateSmartSuggestions = (): string[] => {
+    const suggestions: string[] = [];
+    const matchedLower = matchedKeywords.map(k => k.toLowerCase());
+
+    // Technical keywords - suggest related/complementary skills
+    if (matchedLower.some(k => k.includes('python') || k.includes('javascript') || k.includes('java'))) {
+      if (!matchedLower.some(k => k.includes('git'))) suggestions.push('Git');
+      if (!matchedLower.some(k => k.includes('docker'))) suggestions.push('Docker');
+      if (!matchedLower.some(k => k.includes('ci/cd') || k.includes('jenkins'))) suggestions.push('CI/CD');
+    }
+
+    // Data/Analytics keywords
+    if (matchedLower.some(k => k.includes('sql') || k.includes('data') || k.includes('analytics'))) {
+      if (!matchedLower.some(k => k.includes('tableau') || k.includes('power bi'))) suggestions.push('Tableau');
+      if (!matchedLower.some(k => k.includes('excel'))) suggestions.push('Excel');
+      if (!matchedLower.some(k => k.includes('etl'))) suggestions.push('ETL');
+    }
+
+    // Cloud keywords
+    if (matchedLower.some(k => k.includes('aws') || k.includes('azure') || k.includes('cloud'))) {
+      if (!matchedLower.some(k => k.includes('kubernetes'))) suggestions.push('Kubernetes');
+      if (!matchedLower.some(k => k.includes('terraform'))) suggestions.push('Terraform');
+    }
+
+    // Soft skills - always relevant
+    if (!matchedLower.some(k => k.includes('leadership'))) suggestions.push('Leadership');
+    if (!matchedLower.some(k => k.includes('communication'))) suggestions.push('Communication');
+    if (!matchedLower.some(k => k.includes('collaboration'))) suggestions.push('Collaboration');
+
+    // Methodologies
+    if (!matchedLower.some(k => k.includes('agile') || k.includes('scrum'))) suggestions.push('Agile');
+    if (!matchedLower.some(k => k.includes('project management'))) suggestions.push('Project Management');
+
+    // Always suggest these if not present
+    if (!matchedLower.some(k => k.includes('problem solving'))) suggestions.push('Problem Solving');
+    if (!matchedLower.some(k => k.includes('team'))) suggestions.push('Team Collaboration');
+
+    return suggestions.slice(0, 8); // Max 8 suggestions
+  };
 
   // Map missing keywords to critical signals with REAL impact
-  // If no missing keywords provided, suggest common ones that aren't in matched keywords
+  // If no missing keywords provided, generate smart suggestions based on matched keywords
   const keywordsToAnalyze = missingKeywords.length > 0
     ? missingKeywords
-    : commonSuggestions.filter(kw => !matchedKeywords.some(mk => mk.toLowerCase().includes(kw.toLowerCase())));
+    : generateSmartSuggestions();
 
   const missingCount = Math.min(keywordsToAnalyze.length, 8);
   const missingSignals: MissingKeyword[] = keywordsToAnalyze.slice(0, missingCount).map((keyword, index) => {
