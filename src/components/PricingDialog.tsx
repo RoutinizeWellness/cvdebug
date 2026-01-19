@@ -260,27 +260,42 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-3 mb-6 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#8B5CF6]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                Unlimited Scans (7d)
+                Unlimited CV Scans (7d)
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Full Debug Suite
+                Robot View Terminal
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Missing Signals Detector
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Seniority Match Audit
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Industry Selector (FAANG/Finance)
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                Bullet Tone Elevator
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
                 Battle Plan Generator
               </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Cover Letter Gen
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                LinkedIn Optimizer
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Bullet Rewriter
+              <div className="pt-2 border-t border-slate-200">
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Bonus Extras:</p>
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+                  <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
+                  Cover Letter Gen
+                </div>
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+                  <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
+                  LinkedIn Optimizer
+                </div>
               </div>
             </div>
             <div className="mb-6 pt-4 border-t border-slate-100">

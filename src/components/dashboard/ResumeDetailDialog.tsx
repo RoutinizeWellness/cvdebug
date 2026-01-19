@@ -2,6 +2,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   FileText,
   Download,
@@ -87,6 +88,7 @@ export function ResumeDetailDialog({
   const [showRobotPulse, setShowRobotPulse] = useState(false);
   const [isPdfCollapsed, setIsPdfCollapsed] = useState(false);
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
+  const [selectedIndustry, setSelectedIndustry] = useState<string>("general");
 
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useMutation(apiAny.resumes.analyzeResume);
@@ -122,6 +124,24 @@ export function ResumeDetailDialog({
       setShowRobotPulse(false);
     }
   }, [activeTab]);
+
+  // Industry selector feedback
+  useEffect(() => {
+    if (selectedIndustry !== "general" && displayResume) {
+      const industryNames: Record<string, string> = {
+        google: "Google",
+        meta: "Meta",
+        amazon: "Amazon",
+        apple: "Apple",
+        microsoft: "Microsoft",
+        deloitte: "Deloitte",
+        mckinsey: "McKinsey",
+        goldman: "Goldman Sachs",
+        jpmorgan: "JP Morgan"
+      };
+      toast.success(`Now optimizing for ${industryNames[selectedIndustry] || selectedIndustry} standards`);
+    }
+  }, [selectedIndustry]);
 
   useEffect(() => {
 
@@ -599,20 +619,25 @@ export function ResumeDetailDialog({
                 Apply Rewrite
               </Button>
             )}
-            <Button
-              variant="default"
-              size="sm"
-              className="hidden sm:flex gap-2 font-bold bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white border-0 shadow-lg shadow-[#8B5CF6]/20"
-              onClick={() => {
-                toast.success("Optimizing for FAANG companies...");
-                // TODO: Implement FAANG-specific optimization
-                // This would analyze resume against Google/Meta/Amazon/Apple/Netflix standards
-              }}
-              disabled={!displayResume}
-            >
-              <Target className="h-4 w-4" />
-              Optimize for FAANG
-            </Button>
+            {/* Industry Selector - Critical Feature */}
+            <Select value={selectedIndustry} onValueChange={setSelectedIndustry}>
+              <SelectTrigger className="hidden sm:flex w-[180px] h-9 gap-2 font-bold border-2 border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/5">
+                <Building className="h-4 w-4" />
+                <SelectValue placeholder="Select Industry" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="general">General (Standard)</SelectItem>
+                <SelectItem value="google">🔍 Google</SelectItem>
+                <SelectItem value="meta">📘 Meta</SelectItem>
+                <SelectItem value="amazon">📦 Amazon</SelectItem>
+                <SelectItem value="apple">🍎 Apple</SelectItem>
+                <SelectItem value="microsoft">💠 Microsoft</SelectItem>
+                <SelectItem value="deloitte">💼 Deloitte</SelectItem>
+                <SelectItem value="mckinsey">📊 McKinsey</SelectItem>
+                <SelectItem value="goldman">💰 Goldman Sachs</SelectItem>
+                <SelectItem value="jpmorgan">🏦 JP Morgan</SelectItem>
+              </SelectContent>
+            </Select>
             <Button
               variant="outline"
               size="sm"
@@ -977,6 +1002,11 @@ Software Engineer | StartupXYZ
                           <span className="text-[#EF4444] font-mono text-xs font-bold ml-2">
                             ▸ ROBOT_VIEW_TERMINAL.exe
                           </span>
+                          {selectedIndustry !== "general" && (
+                            <span className="text-[#8B5CF6] font-mono text-[10px] bg-[#8B5CF6]/10 px-2 py-0.5 rounded border border-[#8B5CF6]">
+                              {selectedIndustry.toUpperCase()}_MODE
+                            </span>
+                          )}
                         </div>
                         <span className="text-[#64748B] font-mono text-[10px]">
                           PID: {Math.floor(Math.random() * 99999)} | MEM: {displayResume?.ocrText?.length || 0}B
