@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api;
 
 export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "interview_sprint" | "iteration_pass" | null; resumeId?: string }) {
+  const { t } = useI18n();
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
   const user = useQuery(apiAny.users.currentUser);
   const { isAuthenticated } = useAuth();
