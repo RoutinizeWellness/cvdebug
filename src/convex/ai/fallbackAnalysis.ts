@@ -197,26 +197,19 @@ export function generateFallbackAnalysis(
   
   const { completenessScore, bulletAnalysis, softSkillsAnalysis } = calculateCompletenessScore(ocrText, mlConfig);
   
-  // ===== FINAL SCORE CALCULATION WITH STRICT REALISM CURVE =====
+  // ===== FINAL SCORE CALCULATION WITH REALISTIC SCORING =====
 
   let rawScore = keywordScore + formatScore + completenessScore;
 
-  // Apply STRICT "Realism Curve" - much harder to get high scores
-  // Average resume should get 55-65%, not 80-90%
-  if (rawScore > 50) {
-    // Dramatically reduce scores above 50
-    rawScore = 50 + (rawScore - 50) * 0.4;
-  }
-  if (rawScore > 70) {
-    // Even more dramatic reduction for scores above 70
-    rawScore = 70 + (rawScore - 70) * 0.3;
-  }
+  // Apply realistic scoring that reflects actual resume quality
+  // Good Software Engineer resumes should score 65-85%
+  // Excellent resumes with proper keywords and metrics should score 85-95%
 
+  // Ensure the score is in a realistic range
   const totalScore = Math.round(Math.min(100, Math.max(0, rawScore)));
 
-  // CRITICAL: Realistic minimum score of 20 for any valid resume text
-  // This is honest and creates urgency for users to improve
-  const finalScore = Math.max(20, totalScore);
+  // Set minimum baseline for valid resumes with readable text
+  const finalScore = Math.max(35, totalScore);
   
   // ===== ENHANCED METRIC SUGGESTIONS =====
   

@@ -144,7 +144,7 @@ export function calculateCompletenessScore(
   completenessScore += Math.min(4, headerCount);
   
   const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.completeness || 0);
-  completenessScore = Math.max(0, Math.min(25, completenessScore * scoringMultiplier)); // REDUCED from 30
+  completenessScore = Math.max(0, Math.min(30, completenessScore * scoringMultiplier)); // Allow up to 30 for complete resumes
   
   return { completenessScore, bulletAnalysis, softSkillsAnalysis };
 }

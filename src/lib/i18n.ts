@@ -52,6 +52,77 @@ export interface Translation {
     jobDescPlaceholder: string;
     jobDescAdded: string;
   };
+  // Navigation
+  nav: {
+    features: string;
+    pricing: string;
+    login: string;
+    logIn: string;
+    signUp: string;
+    dashboard: string;
+    blog: string;
+    product: string;
+  };
+  // Buttons
+  buttons: {
+    uploadResume: string;
+    uploadNewCv: string;
+    tryFree: string;
+    getSingleScan: string;
+    startSprint: string;
+    checkMyResume: string;
+    seeHowItWorks: string;
+    viewFullReport: string;
+    managePlan: string;
+    upgradeNow: string;
+    buyMoreCredits: string;
+    launchTool: string;
+  };
+  // Navbar
+  navbar: {
+    analyzer: string;
+    tools: string;
+    pricing: string;
+    dashboard: string;
+    login: string;
+    scanResume: string;
+    scan: string;
+  };
+  // Auth
+  auth: {
+    loading: string;
+    analyzing: string;
+    parsing: string;
+    optimizing: string;
+    headline: string;
+    subtitle: string;
+    initSession: string;
+    enterCredentials: string;
+    signIn: string;
+    signUp: string;
+    noAccount: string;
+    haveAccount: string;
+    deployNew: string;
+    signInLink: string;
+    version: string;
+    systemStatus: string;
+  };
+  // Sidebar
+  sidebar: {
+    home: string;
+    myResumes: string;
+    aiTools: string;
+    settings: string;
+    adminPanel: string;
+    sprintActive: string;
+    days: string;
+    hours: string;
+    minutes: string;
+    managePlan: string;
+    upgradeNow: string;
+    proPlan: string;
+    freePlan: string;
+  };
   // Common
   common: {
     loading: string;
@@ -104,6 +175,177 @@ export interface Translation {
     systemStatus: string;
     online: string;
   };
+  // Landing Page
+  landing: {
+    nav: {
+      features: string;
+      pricing: string;
+      login: string;
+      signUp: string;
+    };
+    hero: {
+      title: string;
+      subtitle: string;
+      startButton: string;
+      viewDemo: string;
+    };
+    socialProof: {
+      trustedBy: string;
+    };
+    stats: {
+      stat1: string;
+      stat2: string;
+      stat3: string;
+      stat4: string;
+    };
+    cta: {
+      badge: string;
+      heading: string;
+      description: string;
+      buttonText: string;
+      footerText: string;
+    };
+    faq: {
+      heading: string;
+      question1: string;
+      answer1: string;
+      question2: string;
+      answer2: string;
+      question3: string;
+      answer3: string;
+    };
+  };
+  // Onboarding
+  onboarding: {
+    steps: {
+      role: string;
+      upload: string;
+      scan: string;
+    };
+    roleSelection: {
+      heading: string;
+      editLink: string;
+      continueButton: string;
+    };
+    cvUpload: {
+      heading: string;
+      description: string;
+      clickToUpload: string;
+      dragDrop: string;
+      maxSize: string;
+      log1: string;
+      log2: string;
+      log3: string;
+      log4: string;
+      log5: string;
+      log6: string;
+      systemLogs: string;
+      backButton: string;
+      scanButton: string;
+    };
+    helpCenter: {
+      label: string;
+    };
+  };
+  // Pricing Page
+  pricingPage: {
+    freePlan: {
+      name: string;
+      description: string;
+      price: string;
+      period: string;
+      feature1: string;
+      feature2: string;
+      feature3: string;
+      feature4: string;
+      button: string;
+    };
+    pass24h: {
+      name: string;
+      description: string;
+      price: string;
+      period: string;
+      feature1: string;
+      feature2: string;
+      feature3: string;
+      feature4: string;
+      feature5: string;
+      feature6: string;
+      feature7: string;
+      button: string;
+    };
+    sprint7d: {
+      name: string;
+      description: string;
+      price: string;
+      period: string;
+      feature1: string;
+      feature2: string;
+      feature3: string;
+      feature4: string;
+      feature5: string;
+      feature6: string;
+      feature7: string;
+      feature8: string;
+      feature9: string;
+      button: string;
+      recommended: string;
+    };
+    hero: {
+      badge: string;
+      title: string;
+      subtitle: string;
+    };
+    faq: {
+      heading: string;
+      question1: string;
+      answer1: string;
+      question2: string;
+      answer2: string;
+      question3: string;
+      answer3: string;
+      question4: string;
+      answer4: string;
+      question5: string;
+      answer5: string;
+      question6: string;
+      answer6: string;
+    };
+    guarantee: string;
+  };
+  // Modals
+  modals: {
+    subscription: {
+      title: string;
+      tier: string;
+      accessMessage: string;
+      upgradeMessage: string;
+      viewOptions: string;
+      continueDashboard: string;
+      pressEsc: string;
+      premium: string;
+      interviewSprint: string;
+      singleScan: string;
+      freePlan: string;
+    };
+    logout: {
+      title: string;
+      question: string;
+      stayButton: string;
+      logoutButton: string;
+    };
+    creditsExhausted: {
+      title: string;
+      message: string;
+      scoreLabel: string;
+      warning: string;
+      feature1: string;
+      feature2: string;
+      price: string;
+      unlockButton: string;
+      maybeLater: string;
+    };
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -150,6 +392,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Target Job Position',
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
+    },
+    nav: {
+      features: 'Features',
+      pricing: 'Pricing',
+      login: 'Login',
+      logIn: 'Log in',
+      signUp: 'Sign Up',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Product',
+    },
+    buttons: {
+      uploadResume: 'Upload Resume',
+      uploadNewCv: 'Upload New CV',
+      tryFree: 'Try Free',
+      getSingleScan: 'Get Single Scan',
+      startSprint: 'Start Sprint',
+      checkMyResume: 'Check My Resume',
+      seeHowItWorks: 'See How It Works',
+      viewFullReport: 'View Full Report',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      buyMoreCredits: 'Buy More Credits',
+      launchTool: 'Launch Tool',
+    },
+    navbar: {
+      analyzer: 'Analyzer',
+      tools: 'Tools',
+      pricing: 'Pricing',
+      dashboard: 'Dashboard',
+      login: 'Log in',
+      scanResume: 'Scan Resume',
+      scan: 'Scan',
+    },
+    auth: {
+      loading: 'Initializing session...',
+      analyzing: 'ANALYZING_STRUCTURE...',
+      parsing: 'PARSING_KEYWORDS...',
+      optimizing: 'OPTIMIZING_ATS_SCORE...',
+      headline: 'Debug your career history with precision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Initialize Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      noAccount: 'No account found?',
+      haveAccount: 'Already have an account?',
+      deployNew: '[Deploy new profile]',
+      signInLink: '[Sign in]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Operational',
+    },
+    sidebar: {
+      home: 'Home',
+      myResumes: 'My Resumes',
+      aiTools: 'AI Tools',
+      settings: 'Settings',
+      adminPanel: 'Admin Panel',
+      sprintActive: 'Sprint Active',
+      days: 'DAYS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      proPlan: 'Pro Plan',
+      freePlan: 'Free Plan',
     },
     common: {
       loading: 'Loading...',
@@ -244,6 +552,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
+    nav: {
+      features: 'Features',
+      pricing: 'Pricing',
+      login: 'Login',
+      logIn: 'Log in',
+      signUp: 'Sign Up',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Product',
+    },
+    buttons: {
+      uploadResume: 'Upload CV',
+      uploadNewCv: 'Upload New CV',
+      tryFree: 'Try Free',
+      getSingleScan: 'Get Single Scan',
+      startSprint: 'Start Sprint',
+      checkMyResume: 'Check My CV',
+      seeHowItWorks: 'See How It Works',
+      viewFullReport: 'View Full Report',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      buyMoreCredits: 'Buy More Credits',
+      launchTool: 'Launch Tool',
+    },
+    navbar: {
+      analyzer: 'Analyser',
+      tools: 'Tools',
+      pricing: 'Pricing',
+      dashboard: 'Dashboard',
+      login: 'Log in',
+      scanResume: 'Scan CV',
+      scan: 'Scan',
+    },
+    auth: {
+      loading: 'Initialising session...',
+      analyzing: 'ANALYSING_STRUCTURE...',
+      parsing: 'PARSING_KEYWORDS...',
+      optimizing: 'OPTIMISING_ATS_SCORE...',
+      headline: 'Debug your career history with precision.',
+      subtitle: 'Use our advanced engineering tools to refactor your CV and deploy your best professional profile.',
+      initSession: 'Initialise Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      noAccount: 'No account found?',
+      haveAccount: 'Already have an account?',
+      deployNew: '[Deploy new profile]',
+      signInLink: '[Sign in]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Operational',
+    },
+    sidebar: {
+      home: 'Home',
+      myResumes: 'My CVs',
+      aiTools: 'AI Tools',
+      settings: 'Settings',
+      adminPanel: 'Admin Panel',
+      sprintActive: 'Sprint Active',
+      days: 'DAYS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      proPlan: 'Pro Plan',
+      freePlan: 'Free Plan',
+    },
     common: {
       loading: 'Loading...',
       error: 'Error',
@@ -336,6 +710,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Puesto de Trabajo Objetivo',
       jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
       jobDescAdded: 'Descripción del trabajo añadida - mejorará el análisis de palabras clave',
+    },
+    nav: {
+      features: 'Características',
+      pricing: 'Precios',
+      login: 'Entrar',
+      logIn: 'Iniciar Sesión',
+      signUp: 'Registrarse',
+      dashboard: 'Panel',
+      blog: 'Blog',
+      product: 'Producto',
+    },
+    buttons: {
+      uploadResume: 'Subir CV',
+      uploadNewCv: 'Subir Nuevo CV',
+      tryFree: 'Prueba Gratis',
+      getSingleScan: 'Obtener Escaneo Único',
+      startSprint: 'Iniciar Sprint',
+      checkMyResume: 'Revisar Mi CV',
+      seeHowItWorks: 'Ver Cómo Funciona',
+      viewFullReport: 'Ver Informe Completo',
+      managePlan: 'Administrar Plan',
+      upgradeNow: 'Actualizar Ahora',
+      buyMoreCredits: 'Comprar Más Créditos',
+      launchTool: 'Lanzar Herramienta',
+    },
+    navbar: {
+      analyzer: 'Analizador',
+      tools: 'Herramientas',
+      pricing: 'Precios',
+      dashboard: 'Panel',
+      login: 'Iniciar sesión',
+      scanResume: 'Escanear CV',
+      scan: 'Escanear',
+    },
+    auth: {
+      loading: 'Iniciando sesión...',
+      analyzing: 'ANALIZANDO_ESTRUCTURA...',
+      parsing: 'ANALIZANDO_PALABRAS...',
+      optimizing: 'OPTIMIZANDO_PUNTUACIÓN...',
+      headline: 'Depura tu historial profesional con precisión.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Inicializar Sesión',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Iniciar Sesión',
+      signUp: 'Registrarse',
+      noAccount: '¿No tienes cuenta?',
+      haveAccount: '¿Ya tienes cuenta?',
+      deployNew: '[Crear perfil nuevo]',
+      signInLink: '[Iniciar sesión]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'Sistema Operativo',
+    },
+    sidebar: {
+      home: 'Inicio',
+      myResumes: 'Mis CVs',
+      aiTools: 'Herramientas IA',
+      settings: 'Configuración',
+      adminPanel: 'Panel Admin',
+      sprintActive: 'Sprint Activo',
+      days: 'DÍAS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Gestionar Plan',
+      upgradeNow: 'Actualizar Ahora',
+      proPlan: 'Plan Pro',
+      freePlan: 'Plan Gratis',
     },
     common: {
       loading: 'Cargando...',
@@ -430,6 +870,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescPlaceholder: 'Collez ici la description complète du poste...',
       jobDescAdded: 'Description du poste ajoutée - améliorera l\'analyse des mots-clés',
     },
+    nav: {
+      features: 'Fonctionnalités',
+      pricing: 'Tarifs',
+      login: 'Connexion',
+      logIn: 'Se Connecter',
+      signUp: 'S\'inscrire',
+      dashboard: 'Tableau de Bord',
+      blog: 'Blog',
+      product: 'Produit',
+    },
+    buttons: {
+      uploadResume: 'Télécharger CV',
+      uploadNewCv: 'Télécharger Nouveau CV',
+      tryFree: 'Essayer Gratuitement',
+      getSingleScan: 'Obtenir un Scan Unique',
+      startSprint: 'Démarrer le Sprint',
+      checkMyResume: 'Vérifier Mon CV',
+      seeHowItWorks: 'Voir Comment Ça Marche',
+      viewFullReport: 'Voir le Rapport Complet',
+      managePlan: 'Gérer le Plan',
+      upgradeNow: 'Mettre à Niveau',
+      buyMoreCredits: 'Acheter Plus de Crédits',
+      launchTool: 'Lancer l\'Outil',
+    },
+    navbar: {
+      analyzer: 'Analyseur',
+      tools: 'Outils',
+      pricing: 'Tarifs',
+      dashboard: 'Tableau de Bord',
+      login: 'Se connecter',
+      scanResume: 'Scanner CV',
+      scan: 'Scanner',
+    },
+    auth: {
+      loading: 'Initialisation de la session...',
+      analyzing: 'ANALYSE_STRUCTURE...',
+      parsing: 'ANALYSE_MOTS_CLÉS...',
+      optimizing: 'OPTIMISATION_SCORE_ATS...',
+      headline: 'Déboguez votre parcours professionnel avec précision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Initialiser la Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Se Connecter',
+      signUp: 'S\'inscrire',
+      noAccount: 'Pas de compte?',
+      haveAccount: 'Vous avez déjà un compte?',
+      deployNew: '[Créer nouveau profil]',
+      signInLink: '[Se connecter]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'Système Opérationnel',
+    },
+    sidebar: {
+      home: 'Accueil',
+      myResumes: 'Mes CVs',
+      aiTools: 'Outils IA',
+      settings: 'Paramètres',
+      adminPanel: 'Panneau Admin',
+      sprintActive: 'Sprint Actif',
+      days: 'JOURS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Gérer le Plan',
+      upgradeNow: 'Mettre à Niveau',
+      proPlan: 'Plan Pro',
+      freePlan: 'Plan Gratuit',
+    },
     common: {
       loading: 'Chargement...',
       error: 'Erreur',
@@ -522,6 +1028,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Zielposition',
       jobDescPlaceholder: 'Fügen Sie hier die vollständige Stellenbeschreibung ein...',
       jobDescAdded: 'Stellenbeschreibung hinzugefügt - verbessert die Schlüsselwortanalyse',
+    },
+    nav: {
+      features: 'Funktionen',
+      pricing: 'Preise',
+      login: 'Anmelden',
+      logIn: 'Anmelden',
+      signUp: 'Registrieren',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Produkt',
+    },
+    buttons: {
+      uploadResume: 'Lebenslauf hochladen',
+      uploadNewCv: 'Neuen Lebenslauf hochladen',
+      tryFree: 'Kostenlos testen',
+      getSingleScan: 'Einzelnen Scan erhalten',
+      startSprint: 'Sprint starten',
+      checkMyResume: 'Meinen Lebenslauf prüfen',
+      seeHowItWorks: 'So funktioniert es',
+      viewFullReport: 'Vollständigen Bericht anzeigen',
+      managePlan: 'Plan verwalten',
+      upgradeNow: 'Jetzt upgraden',
+      buyMoreCredits: 'Mehr Credits kaufen',
+      launchTool: 'Tool starten',
+    },
+    navbar: {
+      analyzer: 'Analysator',
+      tools: 'Werkzeuge',
+      pricing: 'Preise',
+      dashboard: 'Dashboard',
+      login: 'Anmelden',
+      scanResume: 'Lebenslauf scannen',
+      scan: 'Scannen',
+    },
+    auth: {
+      loading: 'Sitzung wird initialisiert...',
+      analyzing: 'STRUKTUR_ANALYSIEREN...',
+      parsing: 'SCHLÜSSELWÖRTER_PARSEN...',
+      optimizing: 'ATS_SCORE_OPTIMIEREN...',
+      headline: 'Debuggen Sie Ihre Karrieregeschichte mit Präzision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Sitzung initialisieren',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Anmelden',
+      signUp: 'Registrieren',
+      noAccount: 'Kein Konto gefunden?',
+      haveAccount: 'Haben Sie bereits ein Konto?',
+      deployNew: '[Neues Profil erstellen]',
+      signInLink: '[Anmelden]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Betriebsbereit',
+    },
+    sidebar: {
+      home: 'Startseite',
+      myResumes: 'Meine Lebensläufe',
+      aiTools: 'KI-Tools',
+      settings: 'Einstellungen',
+      adminPanel: 'Admin-Panel',
+      sprintActive: 'Sprint Aktiv',
+      days: 'TAGE',
+      hours: 'STD',
+      minutes: 'MIN',
+      managePlan: 'Plan verwalten',
+      upgradeNow: 'Jetzt upgraden',
+      proPlan: 'Pro-Plan',
+      freePlan: 'Kostenloser Plan',
     },
     common: {
       loading: 'Wird geladen...',
@@ -616,6 +1188,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescPlaceholder: 'Cole aqui a descrição completa da vaga...',
       jobDescAdded: 'Descrição da vaga adicionada - melhorará a análise de palavras-chave',
     },
+    nav: {
+      features: 'Recursos',
+      pricing: 'Preços',
+      login: 'Entrar',
+      logIn: 'Entrar',
+      signUp: 'Cadastrar',
+      dashboard: 'Painel',
+      blog: 'Blog',
+      product: 'Produto',
+    },
+    buttons: {
+      uploadResume: 'Carregar Currículo',
+      uploadNewCv: 'Carregar Novo Currículo',
+      tryFree: 'Experimentar Grátis',
+      getSingleScan: 'Obter Scan Único',
+      startSprint: 'Iniciar Sprint',
+      checkMyResume: 'Verificar Meu Currículo',
+      seeHowItWorks: 'Ver Como Funciona',
+      viewFullReport: 'Ver Relatório Completo',
+      managePlan: 'Gerenciar Plano',
+      upgradeNow: 'Atualizar Agora',
+      buyMoreCredits: 'Comprar Mais Créditos',
+      launchTool: 'Iniciar Ferramenta',
+    },
+    navbar: {
+      analyzer: 'Analisador',
+      tools: 'Ferramentas',
+      pricing: 'Preços',
+      dashboard: 'Painel',
+      login: 'Entrar',
+      scanResume: 'Escanear Currículo',
+      scan: 'Escanear',
+    },
+    auth: {
+      loading: 'Iniciando sessão...',
+      analyzing: 'ANALISANDO_ESTRUTURA...',
+      parsing: 'ANALISANDO_PALAVRAS...',
+      optimizing: 'OTIMIZANDO_PONTUAÇÃO_ATS...',
+      headline: 'Depure seu histórico profissional com precisão.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Inicializar Sessão',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Entrar',
+      signUp: 'Cadastrar',
+      noAccount: 'Não tem conta?',
+      haveAccount: 'Já tem uma conta?',
+      deployNew: '[Criar novo perfil]',
+      signInLink: '[Entrar]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'Sistema Operacional',
+    },
+    sidebar: {
+      home: 'Início',
+      myResumes: 'Meus Currículos',
+      aiTools: 'Ferramentas IA',
+      settings: 'Configurações',
+      adminPanel: 'Painel Admin',
+      sprintActive: 'Sprint Ativo',
+      days: 'DIAS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Gerenciar Plano',
+      upgradeNow: 'Atualizar Agora',
+      proPlan: 'Plano Pro',
+      freePlan: 'Plano Gratuito',
+    },
     common: {
       loading: 'Carregando...',
       error: 'Erro',
@@ -708,6 +1346,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Target Job Position',
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
+    },
+    nav: {
+      features: 'Features',
+      pricing: 'Pricing',
+      login: 'Login',
+      logIn: 'Log in',
+      signUp: 'Sign Up',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Product',
+    },
+    buttons: {
+      uploadResume: 'Upload Resume',
+      uploadNewCv: 'Upload New CV',
+      tryFree: 'Try Free',
+      getSingleScan: 'Get Single Scan',
+      startSprint: 'Start Sprint',
+      checkMyResume: 'Check My Resume',
+      seeHowItWorks: 'See How It Works',
+      viewFullReport: 'View Full Report',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      buyMoreCredits: 'Buy More Credits',
+      launchTool: 'Launch Tool',
+    },
+    navbar: {
+      analyzer: 'Analyser',
+      tools: 'Tools',
+      pricing: 'Pricing',
+      dashboard: 'Dashboard',
+      login: 'Log in',
+      scanResume: 'Scan Resume',
+      scan: 'Scan',
+    },
+    auth: {
+      loading: 'Initialising session...',
+      analyzing: 'ANALYSING_STRUCTURE...',
+      parsing: 'PARSING_KEYWORDS...',
+      optimizing: 'OPTIMISING_ATS_SCORE...',
+      headline: 'Debug your career history with precision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Initialise Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      noAccount: 'No account found?',
+      haveAccount: 'Already have an account?',
+      deployNew: '[Deploy new profile]',
+      signInLink: '[Sign in]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Operational',
+    },
+    sidebar: {
+      home: 'Home',
+      myResumes: 'My Resumes',
+      aiTools: 'AI Tools',
+      settings: 'Settings',
+      adminPanel: 'Admin Panel',
+      sprintActive: 'Sprint Active',
+      days: 'DAYS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      proPlan: 'Pro Plan',
+      freePlan: 'Free Plan',
     },
     common: {
       loading: 'Loading...',
@@ -802,6 +1506,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
+    nav: {
+      features: 'Features',
+      pricing: 'Pricing',
+      login: 'Login',
+      logIn: 'Log in',
+      signUp: 'Sign Up',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Product',
+    },
+    buttons: {
+      uploadResume: 'Upload Resume',
+      uploadNewCv: 'Upload New CV',
+      tryFree: 'Try Free',
+      getSingleScan: 'Get Single Scan',
+      startSprint: 'Start Sprint',
+      checkMyResume: 'Check My Resume',
+      seeHowItWorks: 'See How It Works',
+      viewFullReport: 'View Full Report',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      buyMoreCredits: 'Buy More Credits',
+      launchTool: 'Launch Tool',
+    },
+    navbar: {
+      analyzer: 'Analyzer',
+      tools: 'Tools',
+      pricing: 'Pricing',
+      dashboard: 'Dashboard',
+      login: 'Log in',
+      scanResume: 'Scan Resume',
+      scan: 'Scan',
+    },
+    auth: {
+      loading: 'Initializing session...',
+      analyzing: 'ANALYZING_STRUCTURE...',
+      parsing: 'PARSING_KEYWORDS...',
+      optimizing: 'OPTIMIZING_ATS_SCORE...',
+      headline: 'Debug your career history with precision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Initialize Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      noAccount: 'No account found?',
+      haveAccount: 'Already have an account?',
+      deployNew: '[Deploy new profile]',
+      signInLink: '[Sign in]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Operational',
+    },
+    sidebar: {
+      home: 'Home',
+      myResumes: 'My Resumes',
+      aiTools: 'AI Tools',
+      settings: 'Settings',
+      adminPanel: 'Admin Panel',
+      sprintActive: 'Sprint Active',
+      days: 'DAYS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      proPlan: 'Pro Plan',
+      freePlan: 'Free Plan',
+    },
     common: {
       loading: 'Loading...',
       error: 'Error',
@@ -895,6 +1665,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
+    nav: {
+      features: 'Features',
+      pricing: 'Pricing',
+      login: 'Login',
+      logIn: 'Log in',
+      signUp: 'Sign Up',
+      dashboard: 'Dashboard',
+      blog: 'Blog',
+      product: 'Product',
+    },
+    buttons: {
+      uploadResume: 'Upload Resume',
+      uploadNewCv: 'Upload New CV',
+      tryFree: 'Try Free',
+      getSingleScan: 'Get Single Scan',
+      startSprint: 'Start Sprint',
+      checkMyResume: 'Check My Resume',
+      seeHowItWorks: 'See How It Works',
+      viewFullReport: 'View Full Report',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      buyMoreCredits: 'Buy More Credits',
+      launchTool: 'Launch Tool',
+    },
+    navbar: {
+      analyzer: 'Analyser',
+      tools: 'Tools',
+      pricing: 'Pricing',
+      dashboard: 'Dashboard',
+      login: 'Log in',
+      scanResume: 'Scan Resume',
+      scan: 'Scan',
+    },
+    auth: {
+      loading: 'Initialising session...',
+      analyzing: 'ANALYSING_STRUCTURE...',
+      parsing: 'PARSING_KEYWORDS...',
+      optimizing: 'OPTIMISING_ATS_SCORE...',
+      headline: 'Debug your career history with precision.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Initialise Session',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      noAccount: 'No account found?',
+      haveAccount: 'Already have an account?',
+      deployNew: '[Deploy new profile]',
+      signInLink: '[Sign in]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'System Operational',
+    },
+    sidebar: {
+      home: 'Home',
+      myResumes: 'My Resumes',
+      aiTools: 'AI Tools',
+      settings: 'Settings',
+      adminPanel: 'Admin Panel',
+      sprintActive: 'Sprint Active',
+      days: 'DAYS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Manage Plan',
+      upgradeNow: 'Upgrade Now',
+      proPlan: 'Pro Plan',
+      freePlan: 'Free Plan',
+    },
     common: {
       loading: 'Loading...',
       error: 'Error',
@@ -987,6 +1823,72 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Puesto de Trabajo Objetivo',
       jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
       jobDescAdded: 'Descripción del trabajo añadida - mejorará el análisis de palabras clave',
+    },
+    nav: {
+      features: 'Características',
+      pricing: 'Precios',
+      login: 'Entrar',
+      logIn: 'Iniciar Sesión',
+      signUp: 'Registrarse',
+      dashboard: 'Panel',
+      blog: 'Blog',
+      product: 'Producto',
+    },
+    buttons: {
+      uploadResume: 'Subir CV',
+      uploadNewCv: 'Subir Nuevo CV',
+      tryFree: 'Prueba Gratis',
+      getSingleScan: 'Obtener Escaneo Único',
+      startSprint: 'Iniciar Sprint',
+      checkMyResume: 'Revisar Mi CV',
+      seeHowItWorks: 'Ver Cómo Funciona',
+      viewFullReport: 'Ver Informe Completo',
+      managePlan: 'Administrar Plan',
+      upgradeNow: 'Actualizar Ahora',
+      buyMoreCredits: 'Comprar Más Créditos',
+      launchTool: 'Lanzar Herramienta',
+    },
+    navbar: {
+      analyzer: 'Analizador',
+      tools: 'Herramientas',
+      pricing: 'Precios',
+      dashboard: 'Panel',
+      login: 'Iniciar sesión',
+      scanResume: 'Escanear CV',
+      scan: 'Escanear',
+    },
+    auth: {
+      loading: 'Iniciando sesión...',
+      analyzing: 'ANALIZANDO_ESTRUCTURA...',
+      parsing: 'ANALIZANDO_PALABRAS...',
+      optimizing: 'OPTIMIZANDO_PUNTUACIÓN...',
+      headline: 'Depura tu historial profesional con precisión.',
+      subtitle: 'Use our advanced engineering tools to refactor your resume and deploy your best professional profile.',
+      initSession: 'Inicializar Sesión',
+      enterCredentials: 'Enter your credentials to access the console',
+      signIn: 'Iniciar Sesión',
+      signUp: 'Registrarse',
+      noAccount: '¿No tienes cuenta?',
+      haveAccount: '¿Ya tienes cuenta?',
+      deployNew: '[Crear perfil nuevo]',
+      signInLink: '[Iniciar sesión]',
+      version: 'v2.4.0-stable',
+      systemStatus: 'Sistema Operativo',
+    },
+    sidebar: {
+      home: 'Inicio',
+      myResumes: 'Mis CVs',
+      aiTools: 'Herramientas IA',
+      settings: 'Configuración',
+      adminPanel: 'Panel Admin',
+      sprintActive: 'Sprint Activo',
+      days: 'DÍAS',
+      hours: 'HRS',
+      minutes: 'MIN',
+      managePlan: 'Gestionar Plan',
+      upgradeNow: 'Actualizar Ahora',
+      proPlan: 'Plan Pro',
+      freePlan: 'Plan Gratis',
     },
     common: {
       loading: 'Cargando...',

@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function NewNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { t } = useI18n();
 
   // Handle scroll effect with debouncing
   useEffect(() => {
@@ -32,9 +34,9 @@ export function NewNavbar() {
   }, []);
 
   const navLinks = [
-    { name: "Analyzer", href: "/preview" },
-    { name: "Tools", href: "#features" },
-    { name: "Pricing", href: "/pricing" },
+    { name: t.navbar.analyzer, href: "/preview" },
+    { name: t.navbar.tools, href: "#features" },
+    { name: t.navbar.pricing, href: "/pricing" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -115,7 +117,7 @@ export function NewNavbar() {
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
               className="hidden sm:block text-sm font-semibold text-[#475569] transition-colors hover:text-[#1E293B] px-4 py-2 rounded-lg hover:bg-slate-50"
             >
-              {isAuthenticated ? "Dashboard" : "Log in"}
+              {isAuthenticated ? t.navbar.dashboard : t.navbar.login}
             </button>
 
             <Button
@@ -125,8 +127,8 @@ export function NewNavbar() {
               <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative flex items-center gap-2">
                 <Sparkles className="h-4 w-4" />
-                <span className="hidden sm:inline">Scan Resume</span>
-                <span className="sm:hidden">Scan</span>
+                <span className="hidden sm:inline">{t.navbar.scanResume}</span>
+                <span className="sm:hidden">{t.navbar.scan}</span>
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Button>
@@ -179,7 +181,7 @@ export function NewNavbar() {
                 }}
                 className="block w-full text-left text-base font-semibold text-[#475569] transition-all hover:text-[#1E293B] hover:bg-slate-50 py-3 px-4 rounded-lg"
               >
-                {isAuthenticated ? "Dashboard" : "Log in"}
+                {isAuthenticated ? t.navbar.dashboard : t.navbar.login}
               </motion.button>
             </div>
           </motion.div>

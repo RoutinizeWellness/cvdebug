@@ -956,7 +956,7 @@ export function calculateKeywordScore(
     console.log(`[ML Keywords] Top 3 high-impact missing: ${predictedImpacts.slice(0, 3).map(p => `${p.keyword}(${p.impact})`).join(', ')}`);
 
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
-    keywordScore = Math.min(30, keywordScore * scoringMultiplier); // REDUCED from 40 - be stricter
+    keywordScore = Math.min(40, keywordScore * scoringMultiplier); // Allow up to 40 for excellent keyword optimization
 
     // ============ ML INSIGHTS: Return comprehensive ML analysis ============
     const mlInsights = {
@@ -1145,7 +1145,7 @@ export function calculateKeywordScore(
     console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Total}`);
 
     const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
-    keywordScore = Math.min(30, keywordScore * scoringMultiplier); // REDUCED from 40 - be stricter
+    keywordScore = Math.min(40, keywordScore * scoringMultiplier); // Allow up to 40 for excellent keyword optimization
   }
   
   return {

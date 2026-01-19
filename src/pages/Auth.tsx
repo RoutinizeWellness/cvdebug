@@ -9,6 +9,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 import { motion } from "framer-motion";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny: any = api;
 
@@ -19,6 +20,7 @@ export default function AuthPage() {
   const storeUser = useMutation(apiAny.users.storeUser);
   const plan = searchParams.get("plan");
   const payment = searchParams.get("payment");
+  const { t } = useI18n();
   
   useEffect(() => {
     if (isAuthenticated) {
@@ -71,7 +73,7 @@ export default function AuthPage() {
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
               />
             </div>
-            <p className="text-sm text-[#475569] font-mono">Initializing session...</p>
+            <p className="text-sm text-[#475569] font-mono">{t.auth.loading}</p>
           </div>
         </motion.div>
       </div>
@@ -186,15 +188,15 @@ export default function AuthPage() {
 
               <div className="flex flex-col gap-2 font-mono text-xs text-primary/80">
                 <div className="flex justify-between">
-                  <span>&gt; ANALYZING_STRUCTURE...</span>
+                  <span>&gt; {t.auth.analyzing}</span>
                   <span className="text-emerald-500">OK</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>&gt; PARSING_KEYWORDS...</span>
+                  <span>&gt; {t.auth.parsing}</span>
                   <span className="text-emerald-500">OK</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>&gt; OPTIMIZING_ATS_SCORE...</span>
+                  <span>&gt; {t.auth.optimizing}</span>
                   <span className="animate-pulse text-secondary">PROCESSING</span>
                 </div>
               </div>

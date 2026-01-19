@@ -212,41 +212,22 @@ export function generateIntelligentFallback(
 
   if (!isPremium) {
     // FREE USERS STRATEGY:
-    // 1. Cap scores but ALLOW improvements when user makes real changes
-    // 2. Use content-based hash so improvements ARE reflected
-    // 3. Still maintain ceiling to encourage upgrades
+    // Provide realistic scores that reflect actual resume quality
+    // NO artificial caps that make the product unusable
 
-    // Calculate content quality hash (changes when content improves)
-    // This allows score to improve when user makes actual changes
-    const contentFeatures = [
-      mlFeatures.actionVerbDensity,
-      mlFeatures.metricDensity,
-      mlFeatures.bulletPointCount,
-      mlFeatures.quantifiableResultsCount
-    ].map(f => Math.round(f * 10)).join('');
+    // Ensure minimum baseline scores for valid resumes
+    finalKeywordScore = Math.max(45, finalKeywordScore);
+    finalFormatScore = Math.max(50, finalFormatScore);
+    finalCompletenessScore = Math.max(48, finalCompletenessScore);
 
-    const contentHash = contentFeatures.split('').reduce((acc, char) => {
-      return ((acc << 5) - acc) + char.charCodeAt(0);
-    }, 0);
-    const qualitySeed = Math.abs(contentHash % 100) / 100; // 0.00 to 0.99
+    // Apply realistic scoring without artificial caps
+    // Good resumes should get good scores (65-85%)
+    // Excellent resumes should get excellent scores (85-95%)
+    finalKeywordScore = Math.min(92, finalKeywordScore);
+    finalFormatScore = Math.min(90, finalFormatScore);
+    finalCompletenessScore = Math.min(91, finalCompletenessScore);
 
-    // Base caps with content-driven variance (allows 52-72 range)
-    // Better content = higher cap within free tier range
-    const keywordCap = 62 + (qualitySeed * 10); // 62-72 based on content quality
-    const formatCap = 60 + (qualitySeed * 10);   // 60-70 based on content quality
-    const completenessCap = 64 + (qualitySeed * 10); // 64-74 based on content quality
-
-    // Apply caps
-    finalKeywordScore = Math.min(finalKeywordScore, keywordCap);
-    finalFormatScore = Math.min(finalFormatScore, formatCap);
-    finalCompletenessScore = Math.min(finalCompletenessScore, completenessCap);
-
-    // Moderate penalty (not too harsh) - allows reaching ~70 with good content
-    finalKeywordScore = Math.max(52, finalKeywordScore - 5);
-    finalFormatScore = Math.max(54, finalFormatScore - 4);
-    finalCompletenessScore = Math.max(56, finalCompletenessScore - 4);
-
-    console.log(`[Free User] Quality-based scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
+    console.log(`[Free User] Realistic scores - Keywords: ${finalKeywordScore.toFixed(1)}, Format: ${finalFormatScore.toFixed(1)}, Completeness: ${finalCompletenessScore.toFixed(1)}`);
   } else {
     // PREMIUM USERS: Ultra-precise ML-powered analysis
     // Apply advanced ML learning from historical data
