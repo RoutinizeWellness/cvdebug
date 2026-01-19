@@ -25,7 +25,7 @@ export function Logo({
     return (
       <div className={cn("flex items-center", className)}>
         <img
-          src="/logo.png?v=15"
+          src="/favicon.png?v=16"
           alt="CVDebug"
           className={cn(
             "h-8 w-8 transition-transform duration-300 hover:scale-105",

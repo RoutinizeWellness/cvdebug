@@ -40,7 +40,7 @@ export function LogoDropdown() {
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-10 w-10">
             <img
-              src="/logo.png?v=15"
+              src="/favicon.png?v=16"
               alt="CVDebug Logo"
               width={32}
               height={32}
