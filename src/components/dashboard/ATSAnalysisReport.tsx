@@ -223,15 +223,12 @@ export function ATSAnalysisReport({
             transition={{ duration: 0.5 }}
             className="w-full flex justify-center mb-4 md:mb-6"
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center">
               <img
-                src="/favicon.png?v=18"
+                src="/favicon.png?v=19"
                 alt="CVDebug Logo"
-                className="w-7 h-7"
+                className="w-10 h-10"
               />
-              <span className="text-xl md:text-2xl font-bold text-[#1E293B]">
-                CV<span className="text-[#8B5CF6]">Debug</span>
-              </span>
             </div>
           </motion.div>
 

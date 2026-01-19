@@ -6,12 +6,12 @@ interface LogoIconProps {
 }
 
 /**
- * CVDebug Logo Icon - New logo design
+ * CVDebug Logo Icon - Logo only (no text)
  */
-export function LogoIcon({ className, size = 24 }: LogoIconProps) {
+export function LogoIcon({ className, size = 40 }: LogoIconProps) {
   return (
     <img
-      src="/favicon.png?v=18"
+      src="/favicon.png?v=19"
       alt="CVDebug"
       width={size}
       height={size}

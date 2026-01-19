@@ -70,15 +70,12 @@ export function NewNavbar() {
             className="cursor-pointer flex items-center gap-3 group"
             onClick={() => navigate("/")}
           >
-            <div className="relative flex items-center gap-2.5">
+            <div className="relative flex items-center">
               <img
-                src="/favicon.png?v=18"
+                src="/favicon.png?v=19"
                 alt="CVDebug Logo"
-                className="w-6 h-6 transition-transform duration-300 group-hover:scale-105"
+                className="w-10 h-10 transition-transform duration-300 group-hover:scale-105"
               />
-              <span className="text-xl font-bold text-[#1E293B] tracking-tight">
-                CV<span className="text-[#8B5CF6]">Debug</span>
-              </span>
               <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
             </div>
           </motion.div>

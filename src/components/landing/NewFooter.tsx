@@ -12,15 +12,12 @@ export function NewFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
+            <div className="flex items-center mb-4">
               <img
-                src="/favicon.png?v=18"
+                src="/favicon.png?v=19"
                 alt="CVDebug Logo"
-                className="w-6 h-6"
+                className="w-10 h-10"
               />
-              <span className="text-xl font-bold text-[#1E293B] tracking-tight">
-                CV<span className="text-[#8B5CF6]">Debug</span>
-              </span>
             </div>
             <p className="text-[#475569] text-sm">
               {t.footer.description}

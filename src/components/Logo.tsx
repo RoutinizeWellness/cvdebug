@@ -18,43 +18,19 @@ export function Logo({
   showText = true,
   variant = "default",
   iconOnly = false,
-  size = 24,
+  size = 32,
 }: LogoProps) {
-  // If icon only, use the new logo
-  if (iconOnly || !showText) {
-    return (
-      <div className={cn("flex items-center", className)}>
-        <img
-          src="/favicon.png?v=18"
-          alt="CVDebug"
-          className={cn(
-            "h-8 w-8 transition-transform duration-300 hover:scale-105",
-            iconClassName
-          )}
-        />
-      </div>
-    );
-  }
-
-  // Full logo with text
+  // Always show only the logo image (no text)
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      {/* Icon from favicon */}
-      <LogoIcon
-        size={size}
-        className={cn("hover:scale-105", iconClassName)}
-      />
-
-      {/* Text */}
-      <span
+    <div className={cn("flex items-center", className)}>
+      <img
+        src="/favicon.png?v=19"
+        alt="CVDebug"
         className={cn(
-          "text-xl font-bold tracking-tight",
-          variant === "light" ? "text-white" : "text-[#1E293B]",
-          textClassName
+          "h-10 w-10 transition-transform duration-300 hover:scale-105",
+          iconClassName
         )}
-      >
-        CV<span className="text-[#8B5CF6]">Debug</span>
-      </span>
+      />
     </div>
   );
 }
