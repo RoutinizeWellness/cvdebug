@@ -173,14 +173,16 @@ export function InterviewBattlePlan({
       });
 
       if (newQuestions && newQuestions.length > 0) {
-        // Map ML questions to component format
-        const formattedQuestions: Question[] = newQuestions.map((q: any) => ({
-          id: q.id,
-          type: q.type,
-          question: q.question,
-          relevance: q.relevance,
-          color: q.color,
-        }));
+        // Map ML questions to component format, filtering out any undefined/null entries
+        const formattedQuestions: Question[] = newQuestions
+          .filter((q: any) => q && q.type && q.question)
+          .map((q: any) => ({
+            id: q.id,
+            type: q.type,
+            question: q.question,
+            relevance: q.relevance,
+            color: q.color,
+          }));
 
         setQuestions(formattedQuestions);
 
@@ -491,7 +493,7 @@ STRATEGIC TALKING POINTS:
 ${strengths.map((s, i) => `${i + 1}. ${s.title}\n   ${s.description}`).join('\n\n')}
 
 EXPECTED QUESTIONS:
-${questions.map((q, i) => `${i + 1}. [${q.type}] ${q.question}`).join('\n\n')}
+${questions.filter(q => q && q.type && q.question).map((q, i) => `${i + 1}. [${q.type}] ${q.question}`).join('\n\n')}
 
 STAR STORY:
 Situation: ${starStory.situation}
