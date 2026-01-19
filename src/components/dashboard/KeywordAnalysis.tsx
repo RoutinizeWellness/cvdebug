@@ -184,10 +184,20 @@ export function KeywordAnalysis({
     return `Add "${keyword}" with specific examples: where you used it, what problems you solved, and measurable results achieved (time saved, efficiency gained, or revenue impact).`;
   };
 
+  // Common industry keywords as fallback suggestions
+  const commonSuggestions = [
+    'leadership', 'collaboration', 'communication', 'problem solving',
+    'project management', 'agile', 'data analysis', 'strategic planning'
+  ];
+
   // Map missing keywords to critical signals with REAL impact
-  // Show more missing keywords (5-8) to give users realistic problems to fix
-  const missingCount = Math.min(missingKeywords.length, 8);
-  const missingSignals: MissingKeyword[] = missingKeywords.slice(0, missingCount).map((keyword, index) => {
+  // If no missing keywords provided, suggest common ones that aren't in matched keywords
+  const keywordsToAnalyze = missingKeywords.length > 0
+    ? missingKeywords
+    : commonSuggestions.filter(kw => !matchedKeywords.some(mk => mk.toLowerCase().includes(kw.toLowerCase())));
+
+  const missingCount = Math.min(keywordsToAnalyze.length, 8);
+  const missingSignals: MissingKeyword[] = keywordsToAnalyze.slice(0, missingCount).map((keyword, index) => {
     const impact = calculateImpact(keyword, index);
 
     return {

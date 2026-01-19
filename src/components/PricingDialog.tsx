@@ -159,9 +159,9 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
         <div className="p-12 lg:p-16 pb-12 text-center">
           <DialogHeader>
-            <DialogTitle className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-slate-900">Simple, Transparent Pricing</DialogTitle>
+            <DialogTitle className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-slate-900">{t.pricingDialog.title}</DialogTitle>
             <DialogDescription className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
-              One-time payments for professional results. No recurring subscriptions or hidden fees.
+              {t.pricingDialog.subtitle}
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -194,7 +194,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               onClick={() => onOpenChange(false)}
               className="w-full h-11 rounded-lg border border-[#E2E8F0] bg-white text-slate-900 font-bold text-sm hover:bg-slate-50 transition-colors"
             >
-              Try Free
+              {t.pricingDialog.tryFree}
             </button>
           </div>
 
@@ -202,7 +202,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="bg-white border-2 border-[#8B5CF6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(134,85,246,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">rocket_launch</span>
-              RECOMMENDED
+              {t.pricingDialog.recommended}
             </div>
             <div className="mb-6">
               <div className="flex justify-between items-start">
@@ -277,7 +277,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               disabled={!!isLoading}
               className="w-full h-11 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isLoading === "interview_sprint" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Start 7-Day Sprint 🚀"}
+              {isLoading === "interview_sprint" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.start7DaySprint}
             </button>
           </div>
 
@@ -326,7 +326,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         <div className="mt-16 pb-8 text-center">
           <div className="inline-flex items-center gap-2 text-slate-400 font-mono text-[11px] uppercase tracking-widest">
             <span className="material-symbols-outlined text-sm">lock</span>
-            Secure 256-bit Encrypted Checkout
+            {t.pricingDialog.secureCheckout}
           </div>
         </div>
       </DialogContent>

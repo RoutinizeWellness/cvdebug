@@ -44,6 +44,10 @@ export interface Translation {
     recommended: string;
     tryFree: string;
     noThanksJust24h: string;
+    title: string;
+    subtitle: string;
+    start7DaySprint: string;
+    secureCheckout: string;
   };
   // Dashboard
   dashboard: {
@@ -1020,6 +1024,10 @@ export const translations: Record<SupportedLocale, Translation> = {
       recommended: 'RECOMMENDED',
       tryFree: 'Try Free',
       noThanksJust24h: 'No thanks, just 24h Pass',
+      title: 'Simple, Transparent Pricing',
+      subtitle: 'One-time payments for professional results. No recurring subscriptions or hidden fees.',
+      start7DaySprint: 'Start 7-Day Sprint 🚀',
+      secureCheckout: 'Secure 256-bit Encrypted Checkout',
     },
     dashboard: {
       welcome: 'Welcome back',
@@ -1957,6 +1965,10 @@ export const translations: Record<SupportedLocale, Translation> = {
       recommended: 'RECOMENDADO',
       tryFree: 'Probar Gratis',
       noThanksJust24h: 'No gracias, solo Pase 24h',
+      title: 'Precios Simples y Transparentes',
+      subtitle: 'Pagos únicos para resultados profesionales. Sin suscripciones recurrentes ni tarifas ocultas.',
+      start7DaySprint: 'Comenzar Sprint 7 Días 🚀',
+      secureCheckout: 'Pago Seguro Encriptado de 256 bits',
     },
     dashboard: {
       welcome: 'Bienvenido de nuevo',
@@ -2894,6 +2906,10 @@ export const translations: Record<SupportedLocale, Translation> = {
       recommended: 'RECOMMANDÉ',
       tryFree: 'Essayer Gratuitement',
       noThanksJust24h: 'Non merci, juste Pass 24h',
+      title: 'Tarification Simple et Transparente',
+      subtitle: 'Paiements uniques pour des résultats professionnels. Pas d\'abonnements récurrents ni de frais cachés.',
+      start7DaySprint: 'Commencer Sprint 7 Jours 🚀',
+      secureCheckout: 'Paiement Sécurisé Crypté 256 bits',
     },
     dashboard: {
       welcome: 'Bon retour',
@@ -3831,6 +3847,10 @@ export const translations: Record<SupportedLocale, Translation> = {
       recommended: 'EMPFOHLEN',
       tryFree: 'Kostenlos Testen',
       noThanksJust24h: 'Nein danke, nur 24h Pass',
+      title: 'Einfache, Transparente Preise',
+      subtitle: 'Einmalige Zahlungen für professionelle Ergebnisse. Keine wiederkehrenden Abonnements oder versteckte Gebühren.',
+      start7DaySprint: '7-Tage-Sprint Starten 🚀',
+      secureCheckout: 'Sichere 256-Bit-Verschlüsselte Kasse',
     },
     dashboard: {
       welcome: 'Willkommen zurück',
@@ -4768,6 +4788,10 @@ export const translations: Record<SupportedLocale, Translation> = {
       recommended: 'RECOMENDADO',
       tryFree: 'Experimentar Grátis',
       noThanksJust24h: 'Não obrigado, apenas Passe 24h',
+      title: 'Preços Simples e Transparentes',
+      subtitle: 'Pagamentos únicos para resultados profissionais. Sem assinaturas recorrentes ou taxas ocultas.',
+      start7DaySprint: 'Começar Sprint 7 Dias 🚀',
+      secureCheckout: 'Pagamento Seguro Criptografado de 256 bits',
     },
     dashboard: {
       welcome: 'Bem-vindo de volta',
