@@ -13,8 +13,10 @@ import { Home, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
 import { useState } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function LogoDropdown() {
+  const { t } = useI18n();
   const { isAuthenticated, signOut } = useAuth();
   const navigate = useNavigate();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -49,7 +51,7 @@ export function LogoDropdown() {
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuItem onClick={handleGoHome} className="cursor-pointer">
             <Home className="mr-2 h-4 w-4" />
-            Landing Page
+            {t.common.landingPage}
           </DropdownMenuItem>
           {isAuthenticated && (
             <>
@@ -59,7 +61,7 @@ export function LogoDropdown() {
                 className="cursor-pointer text-destructive focus:text-destructive"
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                Sign Out
+                {t.common.signOut}
               </DropdownMenuItem>
             </>
           )}

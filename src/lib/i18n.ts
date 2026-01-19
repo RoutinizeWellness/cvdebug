@@ -39,6 +39,13 @@ export interface Translation {
     uploadMasterCv: string;
     uploadToStart: string;
     noKeywordsYet: string;
+    noResumeFound: string;
+    uploadToSeeATS: string;
+    uploadToSeeText: string;
+    resumeEditor: string;
+    downloadAsTxt: string;
+    noResumeLoaded: string;
+    uploadToGetStarted: string;
   };
   // Preview Scan
   previewScan: {
@@ -131,6 +138,11 @@ export interface Translation {
     cancel: string;
     save: string;
     delete: string;
+    landingPage: string;
+    signOut: string;
+    upload: string;
+    download: string;
+    edit: string;
   };
   // Showcase Gallery
   showcase: {
@@ -956,6 +968,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       uploadMasterCv: 'Upload your Master CV',
       uploadToStart: 'Upload resume to start',
       noKeywordsYet: 'No keywords yet',
+      noResumeFound: 'No Resume Found',
+      uploadToSeeATS: 'Upload a resume to see how ATS robots interpret your document.',
+      uploadToSeeText: 'Upload a resume to see raw text extraction',
+      resumeEditor: 'Resume Editor',
+      downloadAsTxt: 'Download as .txt',
+      noResumeLoaded: 'No resume loaded. Upload a resume from the dashboard to start editing.',
+      uploadToGetStarted: 'Upload a resume to get started',
     },
     previewScan: {
       title: 'Deep Diagnostic Scan',
@@ -1041,6 +1060,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancel',
       save: 'Save',
       delete: 'Delete',
+      landingPage: 'Landing Page',
+      signOut: 'Sign Out',
+      upload: 'Upload',
+      download: 'Download',
+      edit: 'Edit',
     },
     showcase: {
       badge: 'Free ATS Scanner',
@@ -1836,6 +1860,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       uploadMasterCv: 'Sube tu CV Maestro',
       uploadToStart: 'Sube tu CV para empezar',
       noKeywordsYet: 'Aún no hay palabras clave',
+      noResumeFound: 'No se Encontró CV',
+      uploadToSeeATS: 'Sube un CV para ver cómo los robots ATS interpretan tu documento.',
+      uploadToSeeText: 'Sube un CV para ver la extracción de texto sin procesar',
+      resumeEditor: 'Editor de CV',
+      downloadAsTxt: 'Descargar como .txt',
+      noResumeLoaded: 'No hay CV cargado. Sube un CV desde el panel para empezar a editar.',
+      uploadToGetStarted: 'Sube un CV para comenzar',
     },
     previewScan: {
       title: 'Escaneo Diagnóstico Profundo',
@@ -1921,6 +1952,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       save: 'Guardar',
       delete: 'Eliminar',
+      landingPage: 'Página Principal',
+      signOut: 'Cerrar Sesión',
+      upload: 'Subir',
+      download: 'Descargar',
+      edit: 'Editar',
     },
     showcase: {
       badge: 'Escáner ATS Gratuito',
@@ -2716,6 +2752,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       uploadMasterCv: 'Téléchargez votre CV Principal',
       uploadToStart: 'Téléchargez votre CV pour commencer',
       noKeywordsYet: 'Pas encore de mots-clés',
+      noResumeFound: 'Aucun CV Trouvé',
+      uploadToSeeATS: 'Téléchargez un CV pour voir comment les robots ATS interprètent votre document.',
+      uploadToSeeText: 'Téléchargez un CV pour voir l\'extraction de texte brut',
+      resumeEditor: 'Éditeur de CV',
+      downloadAsTxt: 'Télécharger en .txt',
+      noResumeLoaded: 'Aucun CV chargé. Téléchargez un CV depuis le tableau de bord pour commencer l\'édition.',
+      uploadToGetStarted: 'Téléchargez un CV pour commencer',
     },
     previewScan: {
       title: 'Scan Diagnostique Approfondi',
@@ -2801,6 +2844,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Annuler',
       save: 'Enregistrer',
       delete: 'Supprimer',
+      landingPage: 'Page d\'Accueil',
+      signOut: 'Se Déconnecter',
+      upload: 'Télécharger',
+      download: 'Télécharger',
+      edit: 'Modifier',
     },
     showcase: {
       badge: 'Scanner ATS Gratuit',
@@ -3596,6 +3644,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       uploadMasterCv: 'Laden Sie Ihren Hauptlebenslauf hoch',
       uploadToStart: 'Lebenslauf hochladen um zu starten',
       noKeywordsYet: 'Noch keine Schlüsselwörter',
+      noResumeFound: 'Kein Lebenslauf Gefunden',
+      uploadToSeeATS: 'Laden Sie einen Lebenslauf hoch, um zu sehen, wie ATS-Roboter Ihr Dokument interpretieren.',
+      uploadToSeeText: 'Laden Sie einen Lebenslauf hoch, um die Rohtext-Extraktion zu sehen',
+      resumeEditor: 'Lebenslauf-Editor',
+      downloadAsTxt: 'Als .txt herunterladen',
+      noResumeLoaded: 'Kein Lebenslauf geladen. Laden Sie einen Lebenslauf vom Dashboard hoch, um mit der Bearbeitung zu beginnen.',
+      uploadToGetStarted: 'Laden Sie einen Lebenslauf hoch, um zu beginnen',
     },
     previewScan: {
       title: 'Tiefgehender Diagnosescan',
@@ -3681,6 +3736,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Abbrechen',
       save: 'Speichern',
       delete: 'Löschen',
+      landingPage: 'Startseite',
+      signOut: 'Abmelden',
+      upload: 'Hochladen',
+      download: 'Herunterladen',
+      edit: 'Bearbeiten',
     },
     showcase: {
       badge: 'Kostenloser ATS-Scanner',
@@ -4476,6 +4536,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       uploadMasterCv: 'Carregue seu Currículo Principal',
       uploadToStart: 'Carregue seu currículo para começar',
       noKeywordsYet: 'Ainda sem palavras-chave',
+      noResumeFound: 'Nenhum Currículo Encontrado',
+      uploadToSeeATS: 'Carregue um currículo para ver como os robôs ATS interpretam seu documento.',
+      uploadToSeeText: 'Carregue um currículo para ver a extração de texto bruto',
+      resumeEditor: 'Editor de Currículo',
+      downloadAsTxt: 'Baixar como .txt',
+      noResumeLoaded: 'Nenhum currículo carregado. Carregue um currículo do painel para começar a editar.',
+      uploadToGetStarted: 'Carregue um currículo para começar',
     },
     previewScan: {
       title: 'Scan Diagnóstico Profundo',
@@ -4561,6 +4628,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       save: 'Salvar',
       delete: 'Excluir',
+      landingPage: 'Página Inicial',
+      signOut: 'Sair',
+      upload: 'Enviar',
+      download: 'Baixar',
+      edit: 'Editar',
     },
     showcase: {
       badge: 'Scanner ATS Gratuito',
