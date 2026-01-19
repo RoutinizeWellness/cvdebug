@@ -72,7 +72,7 @@ export function NewNavbar() {
           >
             <div className="relative flex items-center">
               <img
-                src="/favicon.png?v=19"
+                src="/favicon.png?v=20"
                 alt="CVDebug Logo"
                 className="w-10 h-10 transition-transform duration-300 group-hover:scale-105"
               />

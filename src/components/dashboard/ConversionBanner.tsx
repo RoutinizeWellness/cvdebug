@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Sparkles, Zap, TrendingUp, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface ConversionBannerProps {
   currentScore: number;
@@ -8,6 +9,7 @@ interface ConversionBannerProps {
 }
 
 export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerProps) {
+  const { t } = useI18n();
   // Calculate bracket and potential
   const targetScore = 95;
   const scoreDifference = targetScore - currentScore;
@@ -35,34 +37,34 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-bold text-primary">Current Bracket: {bracket}</span>
+                <span className="text-sm font-bold text-primary">{t.conversionBanner.currentBracket}: {bracket}</span>
               </div>
 
               {/* Main Headline */}
               <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] leading-tight">
-                You are in the <span className="text-primary">{bracket} bracket</span>.
+                {t.conversionBanner.youAreInBracket} <span className="text-primary">{bracket} bracket</span>.
               </h3>
 
               {/* Subheadline */}
               <p className="text-base md:text-lg text-[#475569] font-medium max-w-2xl">
-                Unlock the <span className="font-bold text-[#0F172A]">Sprint Engine</span> to reach{" "}
-                <span className="font-bold text-emerald-600">95%</span> and match{" "}
-                <span className="font-bold text-[#0F172A]">FAANG signals</span> instantly.
+                {t.conversionBanner.unlockSprint} <span className="font-bold text-[#0F172A]">{t.conversionBanner.sprintEngine}</span> {t.conversionBanner.reach}{" "}
+                <span className="font-bold text-emerald-600">95%</span> {t.conversionBanner.matchFaang}{" "}
+                <span className="font-bold text-[#0F172A]">FAANG signals</span> {t.conversionBanner.instantly}.
               </p>
 
               {/* Benefits List */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                  <span><span className="font-bold text-[#0F172A]">+{scoreDifference} points</span> boost potential</span>
+                  <span><span className="font-bold text-[#0F172A]">+{scoreDifference} {t.conversionBanner.points}</span> {t.conversionBanner.pointsBoost}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                  <span><span className="font-bold text-[#0F172A]">FAANG-level</span> keywords</span>
+                  <span><span className="font-bold text-[#0F172A]">{t.conversionBanner.faangKeywords}</span></span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                  <span><span className="font-bold text-[#0F172A]">24-hour</span> access</span>
+                  <span><span className="font-bold text-[#0F172A]">{t.conversionBanner.hourAccess}</span></span>
                 </div>
               </div>
             </div>
@@ -77,7 +79,7 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
               >
                 <span className="relative z-10 flex items-center justify-center gap-2 font-bold">
                   <Zap className="w-5 h-5" />
-                  Get 24-Hour Sprint Pass
+                  {t.conversionBanner.get24hPass}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -86,10 +88,10 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
               {/* Price Info */}
               <div className="text-center space-y-1">
                 <p className="text-sm text-[#64748B]">
-                  One-time payment • <span className="font-bold text-[#0F172A]">14,99€</span>
+                  {t.conversionBanner.oneTimePayment} • <span className="font-bold text-[#0F172A]">14,99€</span>
                 </p>
                 <p className="text-xs text-[#94A3B8]">
-                  Fix everything in 24 hours. No subscription.
+                  {t.conversionBanner.fixEverything}
                 </p>
               </div>
             </div>
@@ -106,7 +108,7 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-400 border-2 border-white flex items-center justify-center text-white text-xs font-bold">S</div>
                   </div>
                   <span className="text-sm text-[#64748B]">
-                    <span className="font-bold text-[#0F172A]">2,847</span> devs upgraded this week
+                    <span className="font-bold text-[#0F172A]">2,847</span> {t.conversionBanner.devsUpgraded}
                   </span>
                 </div>
               </div>
@@ -114,7 +116,7 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-emerald-500" />
                 <span className="text-sm font-medium text-[#64748B]">
-                  Avg. score increase: <span className="font-bold text-emerald-600">+23 points</span>
+                  {t.conversionBanner.avgIncrease}: <span className="font-bold text-emerald-600">+23 {t.conversionBanner.points}</span>
                 </span>
               </div>
             </div>

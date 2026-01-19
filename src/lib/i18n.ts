@@ -968,6 +968,12 @@ export interface Translation {
     groupedByType: string;
     noMissingSignals: string;
     excellentKeywordCoverage: string;
+    matchType: string;
+    exactMatch: string;
+    synonymMatch: string;
+    semanticMatch: string;
+    foundInResume: string;
+    clickToHide: string;
   };
   // AI Feedback
   aiFeedback: {
@@ -982,6 +988,26 @@ export interface Translation {
     selectRating: string;
     thankYou: string;
     submitError: string;
+  };
+  // Conversion Banner
+  conversionBanner: {
+    currentBracket: string;
+    youAreInBracket: string;
+    unlockSprint: string;
+    sprintEngine: string;
+    reach: string;
+    matchFaang: string;
+    instantly: string;
+    pointsBoost: string;
+    faangKeywords: string;
+    hourAccess: string;
+    get24hPass: string;
+    oneTimePayment: string;
+    fixEverything: string;
+    noSubscription: string;
+    devsUpgraded: string;
+    avgIncrease: string;
+    points: string;
   };
 }
 
@@ -1912,6 +1938,12 @@ export const translations: Record<SupportedLocale, Translation> = {
       groupedByType: 'Grouped by type',
       noMissingSignals: 'No Missing Signals',
       excellentKeywordCoverage: 'Great job! Your resume has excellent keyword coverage.',
+      matchType: 'Match Type',
+      exactMatch: 'Exact Match',
+      synonymMatch: 'Synonym Match',
+      semanticMatch: 'Semantic Match',
+      foundInResume: 'Found in resume',
+      clickToHide: 'Click to hide details',
     },
     aiFeedback: {
       rateResponse: 'Rate this response',
@@ -1925,6 +1957,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Please select a rating',
       thankYou: 'Thank you for your feedback!',
       submitError: 'Failed to submit feedback',
+    },
+    conversionBanner: {
+      currentBracket: 'Current Bracket',
+      youAreInBracket: 'You are in the',
+      unlockSprint: 'Unlock the',
+      sprintEngine: 'Sprint Engine',
+      reach: 'to reach',
+      matchFaang: 'and match',
+      instantly: 'instantly',
+      pointsBoost: 'points boost potential',
+      faangKeywords: 'FAANG-level keywords',
+      hourAccess: '24-hour access',
+      get24hPass: 'Get 24-Hour Sprint Pass',
+      oneTimePayment: 'One-time payment',
+      fixEverything: 'Fix everything in 24 hours. No subscription.',
+      noSubscription: 'No subscription',
+      devsUpgraded: 'devs upgraded this week',
+      avgIncrease: 'Avg. score increase',
+      points: 'points',
     },
   },
   'es': {
@@ -2853,6 +2904,12 @@ export const translations: Record<SupportedLocale, Translation> = {
       groupedByType: 'Agrupado por tipo',
       noMissingSignals: 'Sin Señales Faltantes',
       excellentKeywordCoverage: '¡Buen trabajo! Tu currículum tiene una excelente cobertura de palabras clave.',
+      matchType: 'Tipo de Coincidencia',
+      exactMatch: 'Coincidencia Exacta',
+      synonymMatch: 'Coincidencia de Sinónimo',
+      semanticMatch: 'Coincidencia Semántica',
+      foundInResume: 'Encontrado en currículum',
+      clickToHide: 'Click para ocultar detalles',
     },
     aiFeedback: {
       rateResponse: 'Califica esta respuesta',
@@ -2866,6 +2923,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Por favor selecciona una calificación',
       thankYou: '¡Gracias por tus comentarios!',
       submitError: 'Error al enviar comentarios',
+    },
+    conversionBanner: {
+      currentBracket: 'Rango Actual',
+      youAreInBracket: 'Estás en el',
+      unlockSprint: 'Desbloquea el',
+      sprintEngine: 'Motor Sprint',
+      reach: 'para alcanzar',
+      matchFaang: 'y coincidir con',
+      instantly: 'instantáneamente',
+      pointsBoost: 'puntos de aumento potencial',
+      faangKeywords: 'palabras clave nivel FAANG',
+      hourAccess: 'acceso de 24 horas',
+      get24hPass: 'Obtener Pase Sprint de 24 Horas',
+      oneTimePayment: 'Pago único',
+      fixEverything: 'Arregla todo en 24 horas. Sin suscripción.',
+      noSubscription: 'Sin suscripción',
+      devsUpgraded: 'devs actualizaron esta semana',
+      avgIncrease: 'Aumento promedio de puntuación',
+      points: 'puntos',
     },
   },
   'fr': {
@@ -3794,6 +3870,12 @@ export const translations: Record<SupportedLocale, Translation> = {
       groupedByType: 'Groupé par type',
       noMissingSignals: 'Aucun Signal Manquant',
       excellentKeywordCoverage: 'Bon travail ! Votre CV a une excellente couverture de mots-clés.',
+      matchType: 'Type de Correspondance',
+      exactMatch: 'Correspondance Exacte',
+      synonymMatch: 'Correspondance Synonyme',
+      semanticMatch: 'Correspondance Sémantique',
+      foundInResume: 'Trouvé dans le CV',
+      clickToHide: 'Cliquez pour masquer les détails',
     },
     aiFeedback: {
       rateResponse: 'Évaluer cette réponse',
@@ -3807,6 +3889,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Veuillez sélectionner une note',
       thankYou: 'Merci pour vos commentaires !',
       submitError: 'Échec de l\'envoi des commentaires',
+    },
+    conversionBanner: {
+      currentBracket: 'Tranche Actuelle',
+      youAreInBracket: 'Vous êtes dans la',
+      unlockSprint: 'Débloquez le',
+      sprintEngine: 'Moteur Sprint',
+      reach: 'pour atteindre',
+      matchFaang: 'et correspondre aux',
+      instantly: 'instantanément',
+      pointsBoost: 'points d\'augmentation potentielle',
+      faangKeywords: 'mots-clés niveau FAANG',
+      hourAccess: 'accès de 24 heures',
+      get24hPass: 'Obtenir le Pass Sprint 24 Heures',
+      oneTimePayment: 'Paiement unique',
+      fixEverything: 'Tout réparer en 24 heures. Pas d\'abonnement.',
+      noSubscription: 'Pas d\'abonnement',
+      devsUpgraded: 'développeurs ont mis à niveau cette semaine',
+      avgIncrease: 'Augmentation moyenne du score',
+      points: 'points',
     },
   },
   'de': {
@@ -5689,6 +5790,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Por favor selecione uma avaliação',
       thankYou: 'Obrigado pelo seu feedback!',
       submitError: 'Falha ao enviar feedback',
+    },
+    conversionBanner: {
+      currentBracket: 'Faixa Atual',
+      youAreInBracket: 'Você está na',
+      unlockSprint: 'Desbloqueie o',
+      sprintEngine: 'Motor Sprint',
+      reach: 'para alcançar',
+      matchFaang: 'e corresponder a',
+      instantly: 'instantaneamente',
+      pointsBoost: 'pontos de aumento potencial',
+      faangKeywords: 'palavras-chave nível FAANG',
+      hourAccess: 'acesso de 24 horas',
+      get24hPass: 'Obter Passe Sprint de 24 Horas',
+      oneTimePayment: 'Pagamento único',
+      fixEverything: 'Corrigir tudo em 24 horas. Sem assinatura.',
+      noSubscription: 'Sem assinatura',
+      devsUpgraded: 'desenvolvedores atualizaram esta semana',
+      avgIncrease: 'Aumento médio de pontuação',
+      points: 'pontos',
     },
   },
 };

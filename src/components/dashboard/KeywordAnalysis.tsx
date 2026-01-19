@@ -555,25 +555,25 @@ export function KeywordAnalysis({
                         >
                           <div className="space-y-2">
                             <div className="flex items-center gap-2 text-[10px]">
-                              <span className="font-bold text-[#64748B] uppercase">Match Type:</span>
+                              <span className="font-bold text-[#64748B] uppercase">{t.keywordAnalysis.matchType}:</span>
                               <span className={`px-2 py-0.5 rounded font-medium ${
                                 signal.matchType === 'exact' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
                                 signal.matchType === 'synonym' ? 'bg-[#3B82F6]/10 text-[#3B82F6]' :
                                 'bg-[#F59E0B]/10 text-[#F59E0B]'
                               }`}>
-                                {signal.matchType === 'exact' ? 'Exact Match' :
-                                 signal.matchType === 'synonym' ? 'Synonym Match' :
-                                 'Semantic Match'}
+                                {signal.matchType === 'exact' ? t.keywordAnalysis.exactMatch :
+                                 signal.matchType === 'synonym' ? t.keywordAnalysis.synonymMatch :
+                                 t.keywordAnalysis.semanticMatch}
                               </span>
                             </div>
                             <div>
-                              <p className="text-[10px] font-bold text-[#64748B] uppercase mb-1">Found in resume:</p>
+                              <p className="text-[10px] font-bold text-[#64748B] uppercase mb-1">{t.keywordAnalysis.foundInResume}:</p>
                               <p className="text-[11px] text-[#475569] bg-white p-2 rounded border border-[#E2E8F0] italic">
                                 "...{signal.context}..."
                               </p>
                             </div>
                             <p className="text-[9px] text-[#94A3B8] italic">
-                              Click to hide details
+                              {t.keywordAnalysis.clickToHide}
                             </p>
                           </div>
                         </motion.div>
