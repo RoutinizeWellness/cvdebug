@@ -337,3 +337,252 @@ function getGrade(score: number): string {
   if (score >= 60) return 'D';
   return 'F';
 }
+
+// ==================== NEW ML ACTIONS ====================
+
+/**
+ * Predict interview callback rate with ML
+ */
+export const predictInterviewRateAction = action({
+  args: {
+    resumeText: v.string(),
+    jobDescription: v.optional(v.string()),
+    yearsExperience: v.number(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { resumeText, jobDescription = '', yearsExperience } = args;
+
+      // Get comprehensive score first
+      const bulletPoints = extractBulletPoints(resumeText);
+      const achievementQuality = scoreAchievementQuality(bulletPoints);
+      const skills = extractSkillsFromText(resumeText);
+      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const keywordScore = estimateKeywordScore(resumeText, jobDescription);
+      const impactMetricsCount = countImpactMetrics(resumeText);
+      const atsCompatibilityScore = 75; // Default, should be calculated properly
+
+      const semanticMatch = calculateSemanticSimilarity(resumeText, jobDescription);
+
+      const comprehensiveScore = calculateComprehensiveScore(
+        keywordScore,
+        achievementQuality,
+        skillRelevance,
+        impactMetricsCount,
+        atsCompatibilityScore,
+        semanticMatch
+      );
+
+      // Import the new function
+      const { predictInterviewRate } = require('./advancedScoringEngine');
+      const hasJobDescription = jobDescription.trim().length > 0;
+
+      const interviewPrediction = predictInterviewRate(
+        comprehensiveScore,
+        yearsExperience,
+        hasJobDescription
+      );
+
+      return {
+        success: true,
+        data: interviewPrediction,
+      };
+    } catch (error) {
+      console.error('Interview rate prediction failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      };
+    }
+  },
+});
+
+/**
+ * Generate personalized recommendations with ML
+ */
+export const generatePersonalizedRecommendationsAction = action({
+  args: {
+    resumeText: v.string(),
+    jobDescription: v.optional(v.string()),
+    yearsExperience: v.number(),
+    jobLevel: v.optional(v.union(
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("principal")
+    )),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { resumeText, jobDescription = '', yearsExperience, jobLevel = 'mid' } = args;
+
+      // Get comprehensive analysis
+      const bulletPoints = extractBulletPoints(resumeText);
+      const achievementQuality = scoreAchievementQuality(bulletPoints);
+      const skills = extractSkillsFromText(resumeText);
+      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const keywordScore = estimateKeywordScore(resumeText, jobDescription);
+      const impactMetricsCount = countImpactMetrics(resumeText);
+      const atsCompatibilityScore = 75;
+      const semanticMatch = calculateSemanticSimilarity(resumeText, jobDescription);
+
+      const comprehensiveScore = calculateComprehensiveScore(
+        keywordScore,
+        achievementQuality,
+        skillRelevance,
+        impactMetricsCount,
+        atsCompatibilityScore,
+        semanticMatch
+      );
+
+      const competitiveAnalysis = analyzeCompetitivePosition(
+        comprehensiveScore,
+        jobLevel
+      );
+
+      // Import the new functions
+      const { predictInterviewRate, generatePersonalizedRecommendations } = require('./advancedScoringEngine');
+      const hasJobDescription = jobDescription.trim().length > 0;
+
+      const interviewPrediction = predictInterviewRate(
+        comprehensiveScore,
+        yearsExperience,
+        hasJobDescription
+      );
+
+      const recommendations = generatePersonalizedRecommendations(
+        comprehensiveScore,
+        competitiveAnalysis,
+        interviewPrediction
+      );
+
+      return {
+        success: true,
+        data: {
+          recommendations,
+          comprehensiveScore,
+          competitiveAnalysis,
+          interviewPrediction,
+        },
+      };
+    } catch (error) {
+      console.error('Personalized recommendations failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      };
+    }
+  },
+});
+
+/**
+ * Complete ML Analysis - All features combined
+ */
+export const runCompleteMLAnalysis = action({
+  args: {
+    resumeText: v.string(),
+    jobDescription: v.optional(v.string()),
+    yearsExperience: v.number(),
+    jobLevel: v.optional(v.union(
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("principal")
+    )),
+  },
+  handler: async (ctx, args) => {
+    try {
+      const { resumeText, jobDescription = '', yearsExperience, jobLevel = 'mid' } = args;
+
+      // Full comprehensive analysis
+      const bulletPoints = extractBulletPoints(resumeText);
+      const achievementQuality = scoreAchievementQuality(bulletPoints);
+      const skills = extractSkillsFromText(resumeText);
+      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const keywordScore = estimateKeywordScore(resumeText, jobDescription);
+      const impactMetricsCount = countImpactMetrics(resumeText);
+      const atsCompatibilityScore = 75;
+      const semanticMatch = calculateSemanticSimilarity(resumeText, jobDescription);
+
+      const comprehensiveScore = calculateComprehensiveScore(
+        keywordScore,
+        achievementQuality,
+        skillRelevance,
+        impactMetricsCount,
+        atsCompatibilityScore,
+        semanticMatch
+      );
+
+      const competitiveAnalysis = analyzeCompetitivePosition(
+        comprehensiveScore,
+        jobLevel
+      );
+
+      // Import the new ML functions
+      const { predictInterviewRate, generatePersonalizedRecommendations } = require('./advancedScoringEngine');
+      const hasJobDescription = jobDescription.trim().length > 0;
+
+      const interviewPrediction = predictInterviewRate(
+        comprehensiveScore,
+        yearsExperience,
+        hasJobDescription
+      );
+
+      const recommendations = generatePersonalizedRecommendations(
+        comprehensiveScore,
+        competitiveAnalysis,
+        interviewPrediction
+      );
+
+      return {
+        success: true,
+        data: {
+          // Core scores
+          overallScore: comprehensiveScore.overallScore,
+          grade: comprehensiveScore.grade,
+          percentile: comprehensiveScore.percentile,
+
+          // Component breakdowns
+          componentScores: comprehensiveScore.componentScores,
+          achievementQuality,
+          skillRelevance,
+          semanticMatch,
+
+          // Competitive insights
+          competitiveAnalysis,
+
+          // Interview prediction (ML)
+          interviewPrediction,
+
+          // Personalized recommendations (ML)
+          recommendations,
+
+          // Quick wins and critical issues
+          strengths: comprehensiveScore.strengths,
+          criticalIssues: comprehensiveScore.criticalIssues,
+          quickWins: comprehensiveScore.quickWins,
+
+          // ATS metrics
+          estimatedATSPassRate: comprehensiveScore.estimatedATSPassRate,
+
+          // Metadata
+          metadata: {
+            analyzedAt: new Date().toISOString(),
+            jobLevel,
+            yearsExperience,
+            hasJobDescription,
+            bulletPointCount: bulletPoints.length,
+            impactMetricsCount,
+            skillCount: skills.length,
+          },
+        },
+      };
+    } catch (error) {
+      console.error('Complete ML analysis failed:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      };
+    }
+  },
+});
