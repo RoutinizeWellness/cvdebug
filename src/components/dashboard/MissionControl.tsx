@@ -13,6 +13,7 @@ import {
   Wrench
 } from "lucide-react";
 import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
 
@@ -23,6 +24,7 @@ interface MissionControlProps {
 }
 
 export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: MissionControlProps) {
+  const { t } = useI18n();
   const currentUser = useQuery(apiAny.users.currentUser);
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.jobTracker.getJobHistory);
@@ -118,7 +120,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </span>
             </div>
             <p className="text-[#64748B] text-base">
-              Welcome back, <span className="font-semibold text-[#0F172A]">{userName}</span>. Eliminate bugs until you reach 95% visibility.
+              {t.dashboard.welcomeBack}, <span className="font-semibold text-[#0F172A]">{userName}</span>. Eliminate bugs until you reach 95% visibility.
             </p>
           </div>
           <Button

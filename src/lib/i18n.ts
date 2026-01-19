@@ -33,6 +33,24 @@ export interface Translation {
     analyzing: string;
     score: string;
     issues: string;
+    signIn: string;
+    continueDashboard: string;
+    welcomeBack: string;
+    uploadMasterCv: string;
+    uploadToStart: string;
+    noKeywordsYet: string;
+  };
+  // Preview Scan
+  previewScan: {
+    title: string;
+    subtitle: string;
+    dropHere: string;
+    orBrowse: string;
+    supports: string;
+    addJobDesc: string;
+    targetJobPosition: string;
+    jobDescPlaceholder: string;
+    jobDescAdded: string;
   };
   // Common
   common: {
@@ -115,6 +133,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analyzing your resume...',
       score: 'ATS Score',
       issues: 'Issues Found',
+      signIn: 'Sign In',
+      continueDashboard: 'Continue to Dashboard',
+      welcomeBack: 'Welcome back',
+      uploadMasterCv: 'Upload your Master CV',
+      uploadToStart: 'Upload resume to start',
+      noKeywordsYet: 'No keywords yet',
+    },
+    previewScan: {
+      title: 'Deep Diagnostic Scan',
+      subtitle: 'See exactly how ATS systems parse your resume - no signup required',
+      dropHere: 'Drop your resume here',
+      orBrowse: 'or click to browse files',
+      supports: 'Supports PDF, Word, and Images',
+      addJobDesc: 'Add target job description for better matching (optional)',
+      targetJobPosition: 'Target Job Position',
+      jobDescPlaceholder: 'Paste the full job description here...',
+      jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
     common: {
       loading: 'Loading...',
@@ -191,6 +226,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analysing your CV...',
       score: 'ATS Score',
       issues: 'Issues Found',
+      signIn: 'Sign In',
+      continueDashboard: 'Continue to Dashboard',
+      welcomeBack: 'Welcome back',
+      uploadMasterCv: 'Upload your Master CV',
+      uploadToStart: 'Upload CV to start',
+      noKeywordsYet: 'No keywords yet',
+    },
+    previewScan: {
+      title: 'Deep Diagnostic Scan',
+      subtitle: 'See exactly how ATS systems parse your CV - no signup required',
+      dropHere: 'Drop your CV here',
+      orBrowse: 'or click to browse files',
+      supports: 'Supports PDF, Word, and Images',
+      addJobDesc: 'Add target job description for better matching (optional)',
+      targetJobPosition: 'Target Job Position',
+      jobDescPlaceholder: 'Paste the full job description here...',
+      jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
     common: {
       loading: 'Loading...',
@@ -267,6 +319,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analizando tu CV...',
       score: 'Puntuación ATS',
       issues: 'Problemas Encontrados',
+      signIn: 'Iniciar Sesión',
+      continueDashboard: 'Continuar al Panel',
+      welcomeBack: 'Bienvenido de nuevo',
+      uploadMasterCv: 'Sube tu CV Maestro',
+      uploadToStart: 'Sube tu CV para empezar',
+      noKeywordsYet: 'Aún no hay palabras clave',
+    },
+    previewScan: {
+      title: 'Escaneo Diagnóstico Profundo',
+      subtitle: 'Ve exactamente cómo los sistemas ATS analizan tu CV - sin registro',
+      dropHere: 'Suelta tu CV aquí',
+      orBrowse: 'o haz clic para examinar archivos',
+      supports: 'Compatible con PDF, Word e Imágenes',
+      addJobDesc: 'Añadir descripción del puesto objetivo para mejor coincidencia (opcional)',
+      targetJobPosition: 'Puesto de Trabajo Objetivo',
+      jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
+      jobDescAdded: 'Descripción del trabajo añadida - mejorará el análisis de palabras clave',
     },
     common: {
       loading: 'Cargando...',
@@ -343,6 +412,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analyse de votre CV...',
       score: 'Score ATS',
       issues: 'Problèmes Trouvés',
+      signIn: 'Se Connecter',
+      continueDashboard: 'Continuer vers le Tableau de Bord',
+      welcomeBack: 'Bon retour',
+      uploadMasterCv: 'Téléchargez votre CV Principal',
+      uploadToStart: 'Téléchargez votre CV pour commencer',
+      noKeywordsYet: 'Pas encore de mots-clés',
+    },
+    previewScan: {
+      title: 'Scan Diagnostique Approfondi',
+      subtitle: 'Voyez exactement comment les systèmes ATS analysent votre CV - sans inscription',
+      dropHere: 'Déposez votre CV ici',
+      orBrowse: 'ou cliquez pour parcourir les fichiers',
+      supports: 'Supporte PDF, Word et Images',
+      addJobDesc: 'Ajouter la description du poste cible pour une meilleure correspondance (optionnel)',
+      targetJobPosition: 'Poste Cible',
+      jobDescPlaceholder: 'Collez ici la description complète du poste...',
+      jobDescAdded: 'Description du poste ajoutée - améliorera l\'analyse des mots-clés',
     },
     common: {
       loading: 'Chargement...',
@@ -419,6 +505,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analysiere deinen Lebenslauf...',
       score: 'ATS-Score',
       issues: 'Gefundene Probleme',
+      signIn: 'Anmelden',
+      continueDashboard: 'Weiter zum Dashboard',
+      welcomeBack: 'Willkommen zurück',
+      uploadMasterCv: 'Laden Sie Ihren Hauptlebenslauf hoch',
+      uploadToStart: 'Lebenslauf hochladen um zu starten',
+      noKeywordsYet: 'Noch keine Schlüsselwörter',
+    },
+    previewScan: {
+      title: 'Tiefgehender Diagnosescan',
+      subtitle: 'Sehen Sie genau, wie ATS-Systeme Ihren Lebenslauf analysieren - keine Anmeldung erforderlich',
+      dropHere: 'Legen Sie Ihren Lebenslauf hier ab',
+      orBrowse: 'oder klicken Sie zum Durchsuchen der Dateien',
+      supports: 'Unterstützt PDF, Word und Bilder',
+      addJobDesc: 'Zielbeschreibung hinzufügen für bessere Übereinstimmung (optional)',
+      targetJobPosition: 'Zielposition',
+      jobDescPlaceholder: 'Fügen Sie hier die vollständige Stellenbeschreibung ein...',
+      jobDescAdded: 'Stellenbeschreibung hinzugefügt - verbessert die Schlüsselwortanalyse',
     },
     common: {
       loading: 'Wird geladen...',
@@ -495,6 +598,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analisando seu currículo...',
       score: 'Pontuação ATS',
       issues: 'Problemas Encontrados',
+      signIn: 'Entrar',
+      continueDashboard: 'Continuar para o Painel',
+      welcomeBack: 'Bem-vindo de volta',
+      uploadMasterCv: 'Carregue seu Currículo Principal',
+      uploadToStart: 'Carregue seu currículo para começar',
+      noKeywordsYet: 'Ainda sem palavras-chave',
+    },
+    previewScan: {
+      title: 'Scan Diagnóstico Profundo',
+      subtitle: 'Veja exatamente como os sistemas ATS analisam seu currículo - sem cadastro',
+      dropHere: 'Solte seu currículo aqui',
+      orBrowse: 'ou clique para procurar arquivos',
+      supports: 'Suporta PDF, Word e Imagens',
+      addJobDesc: 'Adicionar descrição da vaga alvo para melhor correspondência (opcional)',
+      targetJobPosition: 'Posição Alvo',
+      jobDescPlaceholder: 'Cole aqui a descrição completa da vaga...',
+      jobDescAdded: 'Descrição da vaga adicionada - melhorará a análise de palavras-chave',
     },
     common: {
       loading: 'Carregando...',
@@ -571,6 +691,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analysing your resume...',
       score: 'ATS Score',
       issues: 'Issues Found',
+      signIn: 'Sign In',
+      continueDashboard: 'Continue to Dashboard',
+      welcomeBack: 'Welcome back',
+      uploadMasterCv: 'Upload your Master CV',
+      uploadToStart: 'Upload resume to start',
+      noKeywordsYet: 'No keywords yet',
+    },
+    previewScan: {
+      title: 'Deep Diagnostic Scan',
+      subtitle: 'See exactly how ATS systems parse your resume - no signup required',
+      dropHere: 'Drop your resume here',
+      orBrowse: 'or click to browse files',
+      supports: 'Supports PDF, Word, and Images',
+      addJobDesc: 'Add target job description for better matching (optional)',
+      targetJobPosition: 'Target Job Position',
+      jobDescPlaceholder: 'Paste the full job description here...',
+      jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
     common: {
       loading: 'Loading...',
@@ -647,6 +784,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analyzing your resume...',
       score: 'ATS Score',
       issues: 'Issues Found',
+      signIn: 'Sign In',
+      continueDashboard: 'Continue to Dashboard',
+      welcomeBack: 'Welcome back',
+      uploadMasterCv: 'Upload your Master CV',
+      uploadToStart: 'Upload resume to start',
+      noKeywordsYet: 'No keywords yet',
+    },
+    previewScan: {
+      title: 'Deep Diagnostic Scan',
+      subtitle: 'See exactly how ATS systems parse your resume - no signup required',
+      dropHere: 'Drop your resume here',
+      orBrowse: 'or click to browse files',
+      supports: 'Supports PDF, Word, and Images',
+      addJobDesc: 'Add target job description for better matching (optional)',
+      targetJobPosition: 'Target Job Position',
+      jobDescPlaceholder: 'Paste the full job description here...',
+      jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
     common: {
       loading: 'Loading...',
@@ -723,6 +877,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analysing your resume...',
       score: 'ATS Score',
       issues: 'Issues Found',
+      signIn: 'Sign In',
+      continueDashboard: 'Continue to Dashboard',
+      welcomeBack: 'Welcome back',
+      uploadMasterCv: 'Upload your Master CV',
+      uploadToStart: 'Upload resume to start',
+      noKeywordsYet: 'No keywords yet',
+    },
+    previewScan: {
+      title: 'Deep Diagnostic Scan',
+      subtitle: 'See exactly how ATS systems parse your resume - no signup required',
+      dropHere: 'Drop your resume here',
+      orBrowse: 'or click to browse files',
+      supports: 'Supports PDF, Word, and Images',
+      addJobDesc: 'Add target job description for better matching (optional)',
+      targetJobPosition: 'Target Job Position',
+      jobDescPlaceholder: 'Paste the full job description here...',
+      jobDescAdded: 'Job description added - will enhance keyword analysis',
     },
     common: {
       loading: 'Loading...',
@@ -799,6 +970,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       analyzing: 'Analizando tu CV...',
       score: 'Puntuación ATS',
       issues: 'Problemas Encontrados',
+      signIn: 'Iniciar Sesión',
+      continueDashboard: 'Continuar al Panel',
+      welcomeBack: 'Bienvenido de nuevo',
+      uploadMasterCv: 'Sube tu CV Maestro',
+      uploadToStart: 'Sube tu CV para empezar',
+      noKeywordsYet: 'Aún no hay palabras clave',
+    },
+    previewScan: {
+      title: 'Escaneo Diagnóstico Profundo',
+      subtitle: 'Ve exactamente cómo los sistemas ATS analizan tu CV - sin registro',
+      dropHere: 'Suelta tu CV aquí',
+      orBrowse: 'o haz clic para examinar archivos',
+      supports: 'Compatible con PDF, Word e Imágenes',
+      addJobDesc: 'Añadir descripción del puesto objetivo para mejor coincidencia (opcional)',
+      targetJobPosition: 'Puesto de Trabajo Objetivo',
+      jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
+      jobDescAdded: 'Descripción del trabajo añadida - mejorará el análisis de palabras clave',
     },
     common: {
       loading: 'Cargando...',

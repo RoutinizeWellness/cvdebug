@@ -3,6 +3,7 @@ import { FileText, Trash2, Upload, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useResumeUpload } from "@/hooks/use-resume-upload";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface StepUploadCVProps {
   onComplete: (resumeId: string) => void;
@@ -11,6 +12,7 @@ interface StepUploadCVProps {
 }
 
 export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: StepUploadCVProps) {
+  const { t } = useI18n();
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const {
@@ -60,7 +62,7 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
               Current Step
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-[#0F172A]">Upload your Master CV</h3>
+          <h3 className="text-2xl font-bold text-[#0F172A]">{t.dashboard.uploadMasterCv}</h3>
           <p className="text-[#64748B] text-sm">
             We'll use this as the baseline for all future optimizations.
           </p>

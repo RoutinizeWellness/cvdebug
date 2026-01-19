@@ -10,6 +10,7 @@ import mammoth from "mammoth";
 import { createWorker } from "tesseract.js";
 import { RegistrationWall } from "@/components/paywalls/RegistrationWall";
 import { analyzeResumeClient } from "@/lib/clientAnalysis";
+import { useI18n } from "@/contexts/I18nContext";
 
 // Set up PDF.js worker
 const pdfVersion = pdfjsLib.version || "4.0.379";
@@ -23,6 +24,7 @@ interface LogEntry {
 
 export default function PreviewScan() {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -371,7 +373,7 @@ export default function PreviewScan() {
             onClick={() => navigate("/auth")}
             className="text-[#475569] hover:text-[#1E293B]"
           >
-            Sign In
+            {t.dashboard.signIn}
           </Button>
         </div>
       </header>
@@ -395,10 +397,10 @@ export default function PreviewScan() {
                 className="mb-12"
               >
                 <h1 className="text-4xl md:text-5xl font-black text-[#1E293B] mb-4">
-                  Deep <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">Diagnostic Scan</span>
+                  {t.previewScan.title.split(' ').slice(0, 1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">{t.previewScan.title.split(' ').slice(1).join(' ')}</span>
                 </h1>
                 <p className="text-xl text-[#475569] max-w-2xl mx-auto">
-                  See exactly how ATS systems parse your resume - no signup required
+                  {t.previewScan.subtitle}
                 </p>
               </motion.div>
 
@@ -422,9 +424,9 @@ export default function PreviewScan() {
                   <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-[#3B82F6]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Upload className="h-10 w-10 text-[#8B5CF6]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#1E293B] mb-2">Drop your resume here</h3>
-                  <p className="text-[#475569] mb-6">or click to browse files</p>
-                  <p className="text-sm text-[#64748B]">Supports PDF, Word, and Images • No account needed</p>
+                  <h3 className="text-2xl font-bold text-[#1E293B] mb-2">{t.previewScan.dropHere}</h3>
+                  <p className="text-[#475569] mb-6">{t.previewScan.orBrowse}</p>
+                  <p className="text-sm text-[#64748B]">{t.previewScan.supports} • No account needed</p>
                 </div>
               </motion.div>
 
@@ -441,7 +443,7 @@ export default function PreviewScan() {
                     className="text-sm text-[#8B5CF6] hover:text-[#7C3AED] font-medium flex items-center gap-2 mx-auto transition-colors"
                   >
                     <Sparkles className="h-4 w-4" />
-                    Add target job description for better matching (optional)
+                    {t.previewScan.addJobDesc}
                   </button>
                 ) : (
                   <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
@@ -450,7 +452,7 @@ export default function PreviewScan() {
                         <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-bold text-[#1E293B] mb-1">Target Job Position</h4>
+                        <h4 className="text-sm font-bold text-[#1E293B] mb-1">{t.previewScan.targetJobPosition}</h4>
                         <p className="text-xs text-[#64748B]">Paste the job description to get keyword matching insights</p>
                       </div>
                       <button
@@ -466,13 +468,13 @@ export default function PreviewScan() {
                     <textarea
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
-                      placeholder="Paste the full job description here...&#10;&#10;Example:&#10;We are looking for a Senior Software Engineer with 5+ years of experience in Python, React, and AWS..."
+                      placeholder={t.previewScan.jobDescPlaceholder + "\n\nExample:\nWe are looking for a Senior Software Engineer with 5+ years of experience in Python, React, and AWS..."}
                       className="w-full min-h-[120px] p-3 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent resize-none font-mono text-[#475569] bg-[#F8FAFC]"
                     />
                     {jobDescription && (
                       <p className="text-xs text-[#22C55E] mt-2 flex items-center gap-1">
                         <CheckCircle2 className="h-3 w-3" />
-                        Job description added - will enhance keyword analysis
+                        {t.previewScan.jobDescAdded}
                       </p>
                     )}
                   </div>
