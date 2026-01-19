@@ -348,151 +348,153 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
 
         {/* RIGHT PANEL: Recruiter Metrics */}
         <aside className="w-[340px] flex flex-col border-l border-[#E2E8F0] bg-[#F8FAFC] shrink-0 overflow-y-auto">
-          {/* Gauge Section */}
-          <div className="p-6 border-b border-[#E2E8F0] text-center">
-            <h2 className="text-sm font-semibold text-[#64748B] uppercase tracking-wider mb-6">Job Fit Score</h2>
-            <div className="relative w-48 h-48 mx-auto mb-4 flex items-center justify-center">
-              {/* SVG Gauge Background */}
-              <svg className="w-full h-full transform -rotate-90">
-                <circle
-                  className="text-[#475569]"
-                  cx="96"
-                  cy="96"
-                  fill="transparent"
-                  r="88"
-                  stroke="currentColor"
-                  strokeWidth="12"
-                ></circle>
-                {/* Gauge Progress */}
-                <circle
-                  className="text-primary transition-all duration-1000 ease-out"
-                  cx="96"
-                  cy="96"
-                  fill="transparent"
-                  r="88"
-                  stroke="currentColor"
-                  strokeDasharray="552"
-                  strokeDashoffset={552 - (552 * score) / 100}
-                  strokeWidth="12"
-                ></circle>
-              </svg>
-              <div className="absolute flex flex-col items-center">
-                <span className="text-5xl font-bold text-[#0F172A] tracking-tighter">{score}</span>
-                <span className={`text-sm font-medium mt-1 ${scoreColor}`}>{scoreLabel}</span>
+          <div className="flex-1 overflow-y-auto">
+            {/* Seniority Match Analysis Section */}
+            <section className="bg-white border-b border-[#E2E8F0] p-6">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="material-symbols-outlined text-primary text-lg">track_changes</span>
+                <h2 className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
               </div>
-            </div>
-            <p className="text-xs text-[#64748B] px-4">
-              Based on skills, experience duration, and semantic role matching.
-            </p>
-          </div>
 
-          {/* Analysis Cards */}
-          <div className="p-4 space-y-4 flex-1">
-            {/* Seniority Match */}
-            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-sm font-medium text-[#0F172A]">Seniority Level</h3>
-                <span className="text-xs font-mono text-green-400">
-                  {seniorityLevel >= 2 ? "Match" : "Below"}
-                </span>
-              </div>
-              {/* Stepper */}
-              <div className="flex items-center justify-between text-[10px] text-[#64748B] mb-2 font-mono uppercase">
-                <span className={seniorityLevel === 0 ? "text-[#0F172A] font-bold" : ""}>Jr</span>
-                <span className={seniorityLevel === 1 ? "text-[#0F172A] font-bold" : ""}>Mid</span>
-                <span className={seniorityLevel === 2 ? "text-[#0F172A] font-bold" : ""}>Senior</span>
-                <span className={seniorityLevel === 3 ? "text-[#0F172A] font-bold" : ""}>Lead</span>
-              </div>
-              <div className="h-2 bg-slate-700 rounded-full overflow-hidden flex">
-                <div className={`w-1/4 ${seniorityLevel >= 0 ? "bg-slate-600" : "bg-slate-700"} border-r border-[#0F172A]`}></div>
-                <div className={`w-1/4 ${seniorityLevel >= 1 ? "bg-slate-600" : "bg-slate-700"} border-r border-[#0F172A]`}></div>
-                <div className={`w-1/4 ${seniorityLevel >= 2 ? "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]" : "bg-slate-700"} border-r border-[#0F172A]`}></div>
-                <div className={`w-1/4 ${seniorityLevel >= 3 ? "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]" : "bg-slate-700"}`}></div>
-              </div>
-            </div>
+              <div className="space-y-6">
+                {/* Detected Level */}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold tracking-tight text-[#0F172A]">
+                      {seniorityLevel === 0 ? 'Junior' : seniorityLevel === 1 ? 'Mid' : seniorityLevel === 2 ? 'Senior' : 'Lead'}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase border ${
+                      seniorityLevel >= 2
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                        : 'bg-amber-50 text-amber-600 border-amber-100'
+                    }`}>
+                      {seniorityLevel >= 2 ? 'Match' : 'Review Required'}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] text-[#64748B]">
+                    <span className="material-symbols-outlined text-xs">analytics</span>
+                    <span>Confidence Score: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
+                  </div>
+                </div>
 
-            {/* Gap Analysis */}
-            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
-              <h3 className="text-sm font-medium text-[#0F172A] mb-3">Technical Gap Analysis</h3>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs text-[#64748B] mb-1 flex justify-between">
-                    <span>Found (High Importance)</span>
-                    <span className="text-[#22C55E]">{matchedKeywords.length}/{matchedKeywords.length + missingKeywords.length}</span>
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {matchedKeywords.slice(0, 4).map((keyword: string, i: number) => (
-                      <span key={i} className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#22C55E]/10 text-green-400 border border-green-500/20">
-                        {keyword}
+                {/* Experience Audit */}
+                <div className="space-y-3 border-l border-[#E2E8F0] pl-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
+                  <div className="space-y-1">
+                    <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
+                      {resume.stats?.yearsOfExperience || 0} years
+                    </p>
+                    <p className="text-[10px] text-[#64748B]">
+                      Expected requirement: <span className="font-bold text-[#0F172A]">
+                        {seniorityLevel === 0 ? 'JUNIOR' : seniorityLevel === 1 ? 'MID' : seniorityLevel === 2 ? 'SENIOR' : 'LEAD'}
                       </span>
-                    ))}
+                    </p>
                   </div>
                 </div>
-                {missingKeywords.length > 0 && (
-                  <>
-                    <div className="h-px bg-slate-700 my-2"></div>
-                    <div>
-                      <p className="text-xs text-[#64748B] mb-1 flex justify-between">
-                        <span>Missing (Nice to have)</span>
-                        <span className="text-[#F59E0B]">{missingKeywords.length}</span>
-                      </p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {missingKeywords.slice(0, 2).map((item: any, i: number) => (
-                          <span key={i} className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#F59E0B]/10 text-[#F59E0B] border border-amber-500/20 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[10px]">close</span>
-                            {typeof item === 'string' ? item : item.keyword}
-                          </span>
-                        ))}
-                      </div>
+
+                {/* Signal Density */}
+                <div className="space-y-3 border-l border-[#E2E8F0] pl-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
+                  <div className="space-y-1">
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-2xl font-bold tracking-tight text-primary">{matchedKeywords.length}</p>
+                      <span className="text-[10px] font-medium text-[#64748B]">signals detected</span>
                     </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Soft Skills AI Guess */}
-            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
-              <h3 className="text-sm font-medium text-[#0F172A] mb-3 flex items-center gap-2">
-                <span className="material-symbols-outlined text-teal-400 text-sm">psychology</span>
-                Soft Skills AI Inference
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-[#475569]">
-                  <span>Leadership</span>
-                  <div className="flex gap-0.5">
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 70 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 80 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 90 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-xs text-[#475569]">
-                  <span>Communication</span>
-                  <div className="flex gap-0.5">
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 60 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
-                    <div className={`w-8 h-1.5 rounded-full ${score >= 75 ? "bg-teal-500" : "bg-teal-500/30"}`}></div>
-                    <div className="w-8 h-1.5 rounded-full bg-teal-500/30"></div>
+                    <p className="text-[10px] text-[#64748B]">
+                      Signal strength: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
+                        {matchedKeywords.length >= 10 ? 'STRONG' : matchedKeywords.length >= 5 ? 'MEDIUM' : 'WEAK'}
+                      </span>
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
 
-          {/* Sticky Actions Footer */}
-          <div className="p-4 border-t border-[#E2E8F0] bg-[#F8FAFC] sticky bottom-0 z-10">
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <button className="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-slate-600 text-[#475569] hover:bg-slate-700 hover:text-[#0F172A] transition-all text-sm font-medium">
-                <span className="material-symbols-outlined text-lg">close</span>
-                Reject
-              </button>
-              <button className="flex items-center justify-center gap-2 py-2.5 rounded-lg border border-slate-600 text-[#475569] hover:bg-slate-700 hover:text-[#0F172A] transition-all text-sm font-medium">
-                <span className="material-symbols-outlined text-lg">schedule</span>
-                Waitlist
-              </button>
+            {/* Three Cards Grid */}
+            <div className="p-4 space-y-3">
+              {/* Readability Card */}
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32">
+                <div className="flex justify-between items-start">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Readability</p>
+                  <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#0F172A]">High Integrity</h3>
+                  <p className="text-[10px] text-[#64748B] mt-1">Structure follows industry standard patterns</p>
+                </div>
+              </div>
+
+              {/* Image Traps Card */}
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32">
+                <div className="flex justify-between items-start">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Image Traps</p>
+                  <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[9px] font-bold tracking-wide uppercase">Safe</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#0F172A]">None Detected</h3>
+                  <p className="text-[10px] text-[#64748B] mt-1">No invisible elements or keyword stuffing</p>
+                </div>
+              </div>
+
+              {/* ATS Global Score Card */}
+              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32 relative overflow-hidden">
+                <div className="flex justify-between items-start z-10">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">ATS Global Score</p>
+                </div>
+                <div className="flex items-end justify-between z-10">
+                  <div>
+                    <h3 className="text-3xl font-mono font-bold text-[#0F172A]">
+                      76<span className="text-[#CBD5E1] text-xl">/100</span>
+                    </h3>
+                    <p className="text-[10px] text-[#64748B] mt-1">Score based on parsing efficiency</p>
+                  </div>
+                  <div className="relative w-12 h-12 flex items-center justify-center">
+                    <svg className="w-full h-full transform -rotate-90">
+                      <circle className="text-[#F1F5F9]" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" strokeWidth="3"></circle>
+                      <circle
+                        cx="24"
+                        cy="24"
+                        fill="transparent"
+                        r="20"
+                        stroke="url(#scoreGradient)"
+                        strokeDasharray="125.66"
+                        strokeDashoffset={125.66 - (125.66 * 76) / 100}
+                        strokeLinecap="round"
+                        strokeWidth="3"
+                      ></circle>
+                      <defs>
+                        <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                          <stop offset="0%" stopColor="#818cf8"></stop>
+                          <stop offset="100%" stopColor="#4F46E5"></stop>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <span className="absolute text-[9px] font-mono text-[#64748B]">76%</span>
+                  </div>
+                </div>
+                <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-primary/5 rounded-full blur-2xl"></div>
+              </div>
             </div>
-            <button className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-primary hover:bg-[#3B82F6] text-[#0F172A] shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all text-sm font-bold">
-              <span className="material-symbols-outlined text-lg">check_circle</span>
-              Advance to Interview
-            </button>
+
+            {/* Bottom Footer */}
+            <div className="px-4 py-3 border-t border-[#E2E8F0]">
+              <div className="flex items-center justify-between text-[10px] text-[#94A3B8]">
+                <div className="flex items-center gap-3">
+                  <span>Ref: CV-{scanId.slice(-4)}-X</span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
+                    Live Analysis
+                  </span>
+                </div>
+                <button onClick={onBack} className="font-semibold text-primary hover:underline flex items-center gap-1 text-[10px]">
+                  Full Report
+                  <span className="material-symbols-outlined text-xs">arrow_right_alt</span>
+                </button>
+              </div>
+            </div>
           </div>
         </aside>
       </div>

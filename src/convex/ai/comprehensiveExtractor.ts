@@ -359,14 +359,21 @@ function extractExperience(text: string) {
   // Extract years of experience with robust validation
   const yearPatterns = [
     /(\d+)\+?\s*years?\s+(?:of\s+)?(?:professional\s+)?experience/gi,
-    /(\d{4})\s*[-–]\s*(?:present|current|now|today)/gi,
-    /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{4})\s*[-–]\s*(?:present|current|now)/gi,
-    /(\d{4})\s*[-–]\s*(\d{4})/gi
+    /(\d{4})\s*[-–—]\s*(?:present|current|now|today)/gi,
+    // Enhanced: Month YYYY - Present format (e.g., "June 2024 - Present", "Jan 2023 - Current")
+    /(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+(\d{4})\s*[-–—]\s*(?:present|current|now|today)/gi,
+    // Month/Year - Present format (e.g., "06/2024 - Present", "12/2023 - Current")
+    /(\d{1,2})\/(\d{4})\s*[-–—]\s*(?:present|current|now|today)/gi,
+    // Year only ranges
+    /(\d{4})\s*[-–—]\s*(\d{4})/gi,
+    // Month YYYY - Month YYYY format
+    /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{4})\s*[-–—]\s*(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{4})/gi
   ];
 
   let totalYears = 0;
   const experienceYears: number[] = [];
   const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // 1-12
   const minValidYear = 1970;
   const maxValidYear = currentYear + 1;
 
@@ -380,8 +387,42 @@ function extractExperience(text: string) {
     }
   }
 
-  // Calculate from date ranges
-  const dateRanges = [...text.matchAll(yearPatterns[3])];
+  // Current job (ongoing) - Year only format (YYYY - Present)
+  const currentYearMatches = [...text.matchAll(yearPatterns[1])];
+  for (const match of currentYearMatches) {
+    const start = parseInt(match[1]);
+    if (isValidYear(start) && start <= currentYear && currentYear - start <= 50) {
+      experienceYears.push(currentYear - start);
+    }
+  }
+
+  // Current job with full month name (June 2024 - Present)
+  const currentMonthNameMatches = [...text.matchAll(yearPatterns[2])];
+  for (const match of currentMonthNameMatches) {
+    const startYear = parseInt(match[1]);
+    if (isValidYear(startYear) && startYear <= currentYear && currentYear - startYear <= 50) {
+      // Calculate fractional years including months
+      const yearsDiff = currentYear - startYear;
+      // Add partial year (assume mid-year if month not specified, adds ~0.5 years for current year experiences)
+      const fractionalYears = startYear === currentYear ? 1 : yearsDiff;
+      experienceYears.push(fractionalYears);
+    }
+  }
+
+  // Current job with MM/YYYY format (06/2024 - Present)
+  const currentMonthSlashMatches = [...text.matchAll(yearPatterns[3])];
+  for (const match of currentMonthSlashMatches) {
+    const startMonth = parseInt(match[1]);
+    const startYear = parseInt(match[2]);
+    if (isValidYear(startYear) && startYear <= currentYear && currentYear - startYear <= 50 && startMonth >= 1 && startMonth <= 12) {
+      const totalMonths = (currentYear - startYear) * 12 + (currentMonth - startMonth);
+      const years = Math.max(1, Math.floor(totalMonths / 12));
+      experienceYears.push(years);
+    }
+  }
+
+  // Calculate from year-only date ranges (YYYY - YYYY)
+  const dateRanges = [...text.matchAll(yearPatterns[4])];
   for (const match of dateRanges) {
     const start = parseInt(match[1]);
     const end = parseInt(match[2]);
@@ -392,21 +433,13 @@ function extractExperience(text: string) {
     }
   }
 
-  // Current job (ongoing) - standard format
-  const currentMatches = [...text.matchAll(yearPatterns[1])];
-  for (const match of currentMatches) {
+  // Month YYYY - Month YYYY ranges
+  const monthRangeMatches = [...text.matchAll(yearPatterns[5])];
+  for (const match of monthRangeMatches) {
     const start = parseInt(match[1]);
-    if (isValidYear(start) && start <= currentYear && currentYear - start <= 50) {
-      experienceYears.push(currentYear - start);
-    }
-  }
-
-  // Current job with month format
-  const currentMonthMatches = [...text.matchAll(yearPatterns[2])];
-  for (const match of currentMonthMatches) {
-    const start = parseInt(match[1]);
-    if (isValidYear(start) && start <= currentYear && currentYear - start <= 50) {
-      experienceYears.push(currentYear - start);
+    const end = parseInt(match[2]);
+    if (isValidYear(start) && isValidYear(end) && end >= start && end - start <= 50) {
+      experienceYears.push(end - start);
     }
   }
 
@@ -414,6 +447,11 @@ function extractExperience(text: string) {
   if (experienceYears.length > 0 && totalYears === 0) {
     // Sum all unique experiences (cap at 50 years max)
     totalYears = Math.min(50, experienceYears.reduce((a, b) => a + b, 0));
+  }
+
+  // Ensure at least 0 years if we found any work history indicators
+  if (totalYears === 0 && experienceYears.length > 0) {
+    totalYears = Math.max(1, ...experienceYears);
   }
 
   // Extract companies with robust validation
