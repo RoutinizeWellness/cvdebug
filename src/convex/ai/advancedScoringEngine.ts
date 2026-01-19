@@ -465,8 +465,8 @@ export function calculateComprehensiveScore(
 }
 
 function calculateAvgSkillRelevance(skills: SkillRelevance[]): number {
-  if (skills.length === 0) return 0;
-  const sum = skills.reduce((acc, s) => acc + s.relevanceScore, 0);
+  if (!Array.isArray(skills) || skills.length === 0) return 50; // Default to 50 if no skills
+  const sum = skills.reduce((acc, s) => acc + (s?.relevanceScore || 0), 0);
   return Math.round(sum / skills.length);
 }
 

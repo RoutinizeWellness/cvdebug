@@ -50,7 +50,9 @@ export const runComprehensiveScoring = action({
 
       // 3. Analyze skill relevance
       const skills = extractedData?.skills?.technical || extractSkillsFromText(resumeText);
-      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const skillRelevance = Array.isArray(skills) && skills.length > 0
+        ? analyzeSkillRelevance(skills, 'software')
+        : [];
 
       // 4. Get keyword and impact scores (from extracted data or estimate)
       const keywordScore = extractedData?.keywordScore || estimateKeywordScore(resumeText, jobDescription);
@@ -357,7 +359,9 @@ export const predictInterviewRateAction = action({
       const bulletPoints = extractBulletPoints(resumeText);
       const achievementQuality = scoreAchievementQuality(bulletPoints);
       const skills = extractSkillsFromText(resumeText);
-      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const skillRelevance = Array.isArray(skills) && skills.length > 0
+        ? analyzeSkillRelevance(skills, 'software')
+        : [];
       const keywordScore = estimateKeywordScore(resumeText, jobDescription);
       const impactMetricsCount = countImpactMetrics(resumeText);
       const atsCompatibilityScore = 75; // Default, should be calculated properly
@@ -420,7 +424,9 @@ export const generatePersonalizedRecommendationsAction = action({
       const bulletPoints = extractBulletPoints(resumeText);
       const achievementQuality = scoreAchievementQuality(bulletPoints);
       const skills = extractSkillsFromText(resumeText);
-      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const skillRelevance = Array.isArray(skills) && skills.length > 0
+        ? analyzeSkillRelevance(skills, 'software')
+        : [];
       const keywordScore = estimateKeywordScore(resumeText, jobDescription);
       const impactMetricsCount = countImpactMetrics(resumeText);
       const atsCompatibilityScore = 75;
@@ -498,7 +504,9 @@ export const runCompleteMLAnalysis = action({
       const bulletPoints = extractBulletPoints(resumeText);
       const achievementQuality = scoreAchievementQuality(bulletPoints);
       const skills = extractSkillsFromText(resumeText);
-      const skillRelevance = analyzeSkillRelevance(skills, 'software');
+      const skillRelevance = Array.isArray(skills) && skills.length > 0
+        ? analyzeSkillRelevance(skills, 'software')
+        : [];
       const keywordScore = estimateKeywordScore(resumeText, jobDescription);
       const impactMetricsCount = countImpactMetrics(resumeText);
       const atsCompatibilityScore = 75;
