@@ -1,20 +1,20 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="512" height="512" fill="#3B4252" rx="96"/>
+  <!-- White Background -->
+  <rect width="512" height="512" fill="white" rx="96"/>
 
-  <!-- Document frame (white background) -->
-  <rect x="140" y="100" width="232" height="312" rx="8" fill="white"/>
+  <!-- Document frame (light purple background) -->
+  <rect x="140" y="100" width="232" height="312" rx="8" fill="#F3F0FF"/>
 
-  <!-- Document border (dark outline) -->
-  <path d="M 140 100 L 140 412 L 372 412 L 372 160 L 340 100 Z" fill="none" stroke="#3B4252" stroke-width="24" stroke-linejoin="round"/>
+  <!-- Document border (purple outline) -->
+  <path d="M 140 100 L 140 412 L 372 412 L 372 160 L 340 100 Z" fill="none" stroke="#8B5CF6" stroke-width="24" stroke-linejoin="round"/>
 
   <!-- Top-right folded corner -->
-  <path d="M 340 100 L 340 160 L 372 160" fill="none" stroke="#3B4252" stroke-width="24" stroke-linejoin="round"/>
+  <path d="M 340 100 L 340 160 L 372 160" fill="none" stroke="#8B5CF6" stroke-width="24" stroke-linejoin="round"/>
 
-  <!-- Wavy tilde line through the document -->
-  <path d="M 180 220 Q 220 180, 260 220 T 340 220" fill="none" stroke="#3B4252" stroke-width="28" stroke-linecap="round"/>
+  <!-- Wavy tilde line through the document (red for debug) -->
+  <path d="M 180 220 Q 220 180, 260 220 T 340 220" fill="none" stroke="#EF4444" stroke-width="28" stroke-linecap="round"/>
 
-  <!-- Small decorative lines inside document (optional, for detail) -->
-  <line x1="180" y1="300" x2="330" y2="300" stroke="#3B4252" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
-  <line x1="180" y1="340" x2="300" y2="340" stroke="#3B4252" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+  <!-- Small decorative lines inside document (purple) -->
+  <line x1="180" y1="300" x2="330" y2="300" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <line x1="180" y1="340" x2="300" y2="340" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
 </svg>
