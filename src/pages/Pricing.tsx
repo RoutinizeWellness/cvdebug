@@ -39,7 +39,7 @@ export default function PricingPage() {
       plan: "free",
     },
     {
-      name: "24-Hour Iteration Pass",
+      name: "24-Hour Pass",
       description: "Everything you need to land an interview this week. No subscriptions. No BS.",
       price: "14.99€",
       period: "24 hours",
@@ -56,7 +56,7 @@ export default function PricingPage() {
       buttonVariant: "default" as const,
       borderColor: "border-blue-900/50",
       hoverBorder: "hover:border-[#3B82F6]/50",
-      plan: "iteration_pass",
+      plan: "single_scan",
       highlighted: false,
     },
     {

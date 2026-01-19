@@ -198,47 +198,6 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* 24-Hour Iteration Pass - NEW */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
-            <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">Quick Fix</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">24h Pass</h2>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black tracking-tighter">€14.99</span>
-              </div>
-              <span className="text-slate-400 text-[10px] font-medium mt-1 block">24-hour access</span>
-            </div>
-            <div className="space-y-3 mb-8 flex-grow">
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Unlimited Scans (24h)
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Full [ERROR] Report
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Robot X-Ray View
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Keyword Optimizer
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Battle Plan Generator
-              </div>
-            </div>
-            <button
-              onClick={() => handleUpgrade("iteration_pass")}
-              disabled={!!isLoading}
-              className="w-full h-11 rounded-lg bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-colors disabled:opacity-50"
-            >
-              {isLoading === "iteration_pass" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get 24h Pass"}
-            </button>
-          </div>
-
           {/* 7-Day Sprint - RECOMMENDED */}
           <div className="bg-white border-2 border-[#8B5CF6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(134,85,246,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
@@ -322,36 +281,36 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* 24-Hour Iteration Pass */}
+          {/* 24-Hour Pass */}
           <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
             <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">24-Hour Pass</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Iteration Pass</h2>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">{t.pricingDialog.quickFix}</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.pass24h}</h2>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black tracking-tighter">€14.99</span>
+                <span className="text-3xl font-black tracking-tighter">{t.pricingDialog.price24h}</span>
               </div>
-              <span className="text-slate-400 text-[10px] font-medium mt-1 block">Unlimited scans for 24 hours</span>
+              <span className="text-slate-400 text-[10px] font-medium mt-1 block">{t.pricingDialog.access24h}</span>
             </div>
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Unlimited CV Scans (24h)
+                {t.pricingDialog.unlimitedScans24h}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Full Robot X-Ray View
+                {t.pricingDialog.fullErrorReport}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                ERROR/WARN Labels + Fixes
+                {t.pricingDialog.robotXRayView}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Missing Signals Detector
+                {t.pricingDialog.keywordOptimizer}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                Instant Fixes
+                {t.pricingDialog.battlePlanGenerator}
               </div>
             </div>
             <button
@@ -359,7 +318,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               disabled={!!isLoading}
               className="w-full h-11 rounded-lg bg-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-300 transition-colors disabled:opacity-50"
             >
-              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Get 24h Access"}
+              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : t.pricingDialog.get24hPass}
             </button>
           </div>
         </div>

@@ -26,6 +26,25 @@ export interface Translation {
     sprint7d: string;
     currency: string;
   };
+  pricingDialog: {
+    quickFix: string;
+    pass24h: string;
+    price24h: string;
+    access24h: string;
+    unlimitedScans24h: string;
+    fullErrorReport: string;
+    robotXRayView: string;
+    keywordOptimizer: string;
+    battlePlanGenerator: string;
+    get24hPass: string;
+    sprint7d: string;
+    price7d: string;
+    access7d: string;
+    unlimitedScans7d: string;
+    recommended: string;
+    tryFree: string;
+    noThanksJust24h: string;
+  };
   // Dashboard
   dashboard: {
     welcome: string;
@@ -956,6 +975,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7d: '7-Day Sprint',
       currency: '$',
     },
+    pricingDialog: {
+      quickFix: 'Quick Fix',
+      pass24h: '24h Pass',
+      price24h: '$14.99',
+      access24h: '24-hour access',
+      unlimitedScans24h: 'Unlimited Scans (24h)',
+      fullErrorReport: 'Full [ERROR] Report',
+      robotXRayView: 'Robot X-Ray View',
+      keywordOptimizer: 'Keyword Optimizer',
+      battlePlanGenerator: 'Battle Plan Generator',
+      get24hPass: 'Get 24h Pass',
+      sprint7d: '7-Day Sprint',
+      price7d: '$39.99',
+      access7d: '7-day access',
+      unlimitedScans7d: 'Unlimited Scans (7 Days)',
+      recommended: 'RECOMMENDED',
+      tryFree: 'Try Free',
+      noThanksJust24h: 'No thanks, just 24h Pass',
+    },
     dashboard: {
       welcome: 'Welcome back',
       uploadCv: 'Upload your resume',
@@ -1847,6 +1885,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: 'Pase 24 Horas',
       sprint7d: 'Sprint 7 Días',
       currency: '€',
+    },
+    pricingDialog: {
+      quickFix: 'Solución Rápida',
+      pass24h: 'Pase 24h',
+      price24h: '€14.99',
+      access24h: 'acceso de 24 horas',
+      unlimitedScans24h: 'Escaneos Ilimitados (24h)',
+      fullErrorReport: 'Informe Completo de [ERRORES]',
+      robotXRayView: 'Vista Rayos X del Robot',
+      keywordOptimizer: 'Optimizador de Palabras Clave',
+      battlePlanGenerator: 'Generador de Plan de Batalla',
+      get24hPass: 'Obtener Pase 24h',
+      sprint7d: 'Sprint 7 Días',
+      price7d: '€39.99',
+      access7d: 'acceso de 7 días',
+      unlimitedScans7d: 'Escaneos Ilimitados (7 Días)',
+      recommended: 'RECOMENDADO',
+      tryFree: 'Probar Gratis',
+      noThanksJust24h: 'No gracias, solo Pase 24h',
     },
     dashboard: {
       welcome: 'Bienvenido de nuevo',
@@ -2740,6 +2797,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7d: 'Sprint 7 Jours',
       currency: '€',
     },
+    pricingDialog: {
+      quickFix: 'Solution Rapide',
+      pass24h: 'Pass 24h',
+      price24h: '€14.99',
+      access24h: 'accès 24 heures',
+      unlimitedScans24h: 'Scans Illimités (24h)',
+      fullErrorReport: 'Rapport Complet d\'[ERREURS]',
+      robotXRayView: 'Vue Rayons X du Robot',
+      keywordOptimizer: 'Optimiseur de Mots-clés',
+      battlePlanGenerator: 'Générateur de Plan de Bataille',
+      get24hPass: 'Obtenir Pass 24h',
+      sprint7d: 'Sprint 7 Jours',
+      price7d: '€39.99',
+      access7d: 'accès 7 jours',
+      unlimitedScans7d: 'Scans Illimités (7 Jours)',
+      recommended: 'RECOMMANDÉ',
+      tryFree: 'Essayer Gratuitement',
+      noThanksJust24h: 'Non merci, juste Pass 24h',
+    },
     dashboard: {
       welcome: 'Bon retour',
       uploadCv: 'Téléchargez votre CV',
@@ -3632,6 +3708,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7d: '7-Tage-Sprint',
       currency: '€',
     },
+    pricingDialog: {
+      quickFix: 'Schnelle Lösung',
+      pass24h: '24h Pass',
+      price24h: '€14.99',
+      access24h: '24-Stunden-Zugang',
+      unlimitedScans24h: 'Unbegrenzte Scans (24h)',
+      fullErrorReport: 'Vollständiger [FEHLER] Bericht',
+      robotXRayView: 'Roboter-Röntgenansicht',
+      keywordOptimizer: 'Keyword-Optimierer',
+      battlePlanGenerator: 'Kampfplan-Generator',
+      get24hPass: '24h Pass Erhalten',
+      sprint7d: '7-Tage-Sprint',
+      price7d: '€39.99',
+      access7d: '7-Tage-Zugang',
+      unlimitedScans7d: 'Unbegrenzte Scans (7 Tage)',
+      recommended: 'EMPFOHLEN',
+      tryFree: 'Kostenlos Testen',
+      noThanksJust24h: 'Nein danke, nur 24h Pass',
+    },
     dashboard: {
       welcome: 'Willkommen zurück',
       uploadCv: 'Laden Sie Ihren Lebenslauf hoch',
@@ -4523,6 +4618,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: 'Passe 24 Horas',
       sprint7d: 'Sprint 7 Dias',
       currency: 'R$',
+    },
+    pricingDialog: {
+      quickFix: 'Solução Rápida',
+      pass24h: 'Passe 24h',
+      price24h: 'R$74.99',
+      access24h: 'acesso de 24 horas',
+      unlimitedScans24h: 'Scans Ilimitados (24h)',
+      fullErrorReport: 'Relatório Completo de [ERROS]',
+      robotXRayView: 'Vista Raio-X do Robô',
+      keywordOptimizer: 'Otimizador de Palavras-chave',
+      battlePlanGenerator: 'Gerador de Plano de Batalha',
+      get24hPass: 'Obter Passe 24h',
+      sprint7d: 'Sprint 7 Dias',
+      price7d: 'R$199.99',
+      access7d: 'acesso de 7 dias',
+      unlimitedScans7d: 'Scans Ilimitados (7 Dias)',
+      recommended: 'RECOMENDADO',
+      tryFree: 'Experimentar Grátis',
+      noThanksJust24h: 'Não obrigado, apenas Passe 24h',
     },
     dashboard: {
       welcome: 'Bem-vindo de volta',
