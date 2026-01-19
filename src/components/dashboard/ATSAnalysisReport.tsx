@@ -224,7 +224,7 @@ export function ATSAnalysisReport({
             className="w-full flex justify-center mb-4 md:mb-6"
           >
             <img
-              src="/assets/cvdebug-logo.svg"
+              src="/assets/cvdebug-logo.png?v=11"
               alt="CVDebug Logo"
               className="h-12 md:h-16 lg:h-20 w-auto object-contain"
             />

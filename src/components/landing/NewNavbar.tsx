@@ -72,7 +72,7 @@ export function NewNavbar() {
           >
             <div className="relative">
               <img
-                src="/assets/cvdebug-logo.svg"
+                src="/assets/cvdebug-logo.png?v=11"
                 alt="CVDebug"
                 className="h-6 w-auto max-w-[80px] object-contain transition-all duration-300 group-hover:scale-105"
               />
