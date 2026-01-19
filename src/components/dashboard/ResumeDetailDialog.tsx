@@ -1465,6 +1465,10 @@ Impact: AUTO_REJECT (100% rejection rate)
                     matchedKeywords={foundKeywords}
                     missingKeywords={criticalKeywords.map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw.term || '')}
                     matchRate={displayResume?.score || 0}
+                    resumeText={displayResume?.ocrText || ''}
+                    jobDescription={displayResume?.jobDescription || ''}
+                    category={displayResume?.category || ''}
+                    seniorityLevel={displayResume?.stats?.seniorityLevel || 'mid'}
                   />
                 </TabsContent>
 

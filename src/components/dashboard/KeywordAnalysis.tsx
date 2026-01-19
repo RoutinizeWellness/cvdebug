@@ -10,6 +10,10 @@ interface KeywordAnalysisProps {
   missingKeywords: string[];
   matchRate?: number;
   onUpgrade?: () => void;
+  resumeText?: string;
+  jobDescription?: string;
+  category?: string;
+  seniorityLevel?: string;
 }
 
 interface FoundKeyword {
@@ -30,7 +34,11 @@ export function KeywordAnalysis({
   matchedKeywords,
   missingKeywords,
   matchRate = 0, // Real data only, no fake score
-  onUpgrade
+  onUpgrade,
+  resumeText = '',
+  jobDescription = '',
+  category = '',
+  seniorityLevel = 'mid'
 }: KeywordAnalysisProps) {
   const { t } = useI18n();
   const [showExamples, setShowExamples] = useState<string | null>(null);
@@ -184,52 +192,135 @@ export function KeywordAnalysis({
     return `Add "${keyword}" with specific examples: where you used it, what problems you solved, and measurable results achieved (time saved, efficiency gained, or revenue impact).`;
   };
 
-  // Generate smart keyword suggestions based on what's already in the CV
-  const generateSmartSuggestions = (): string[] => {
-    const suggestions: string[] = [];
+  // ML-powered keyword suggestion engine - analyzes CV context, industry, seniority
+  const generateMLKeywordSuggestions = (): string[] => {
+    const suggestions: Set<string> = new Set();
     const matchedLower = matchedKeywords.map(k => k.toLowerCase());
+    const resumeLower = resumeText.toLowerCase();
+    const jdLower = jobDescription.toLowerCase();
 
-    // Technical keywords - suggest related/complementary skills
-    if (matchedLower.some(k => k.includes('python') || k.includes('javascript') || k.includes('java'))) {
-      if (!matchedLower.some(k => k.includes('git'))) suggestions.push('Git');
-      if (!matchedLower.some(k => k.includes('docker'))) suggestions.push('Docker');
-      if (!matchedLower.some(k => k.includes('ci/cd') || k.includes('jenkins'))) suggestions.push('CI/CD');
+    // Helper: check if keyword exists in CV
+    const hasKeyword = (keywords: string[]) =>
+      keywords.some(kw => matchedLower.some(m => m.includes(kw.toLowerCase())));
+
+    // Helper: check if keyword in JD but not in CV
+    const inJDNotCV = (keyword: string) =>
+      jdLower.includes(keyword.toLowerCase()) && !matchedLower.some(m => m.includes(keyword.toLowerCase()));
+
+    // === 1. JOB DESCRIPTION ANALYSIS (highest priority) ===
+    if (jobDescription) {
+      // Extract technical terms from JD that are missing from CV
+      const jdTechTerms = [
+        'kubernetes', 'docker', 'terraform', 'ansible', 'jenkins',
+        'react', 'vue', 'angular', 'node.js', 'typescript',
+        'postgresql', 'mongodb', 'redis', 'elasticsearch',
+        'aws', 'azure', 'gcp', 'serverless', 'microservices',
+        'machine learning', 'deep learning', 'nlp', 'computer vision',
+        'rest api', 'graphql', 'grpc', 'websocket',
+        'agile', 'scrum', 'kanban', 'ci/cd', 'devops'
+      ];
+
+      for (const term of jdTechTerms) {
+        if (inJDNotCV(term) && suggestions.size < 8) {
+          suggestions.add(term.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '));
+        }
+      }
     }
 
-    // Data/Analytics keywords
-    if (matchedLower.some(k => k.includes('sql') || k.includes('data') || k.includes('analytics'))) {
-      if (!matchedLower.some(k => k.includes('tableau') || k.includes('power bi'))) suggestions.push('Tableau');
-      if (!matchedLower.some(k => k.includes('excel'))) suggestions.push('Excel');
-      if (!matchedLower.some(k => k.includes('etl'))) suggestions.push('ETL');
+    // === 2. CATEGORY-BASED RECOMMENDATIONS ===
+    const categoryKeywords: Record<string, string[]> = {
+      'software': ['Git', 'Unit Testing', 'Code Review', 'API Design', 'System Design'],
+      'data': ['Data Modeling', 'Statistical Analysis', 'A/B Testing', 'Data Visualization', 'ETL'],
+      'ml': ['Model Training', 'Feature Engineering', 'Model Deployment', 'MLOps', 'Experiment Tracking'],
+      'devops': ['Infrastructure as Code', 'Container Orchestration', 'Monitoring', 'Log Management', 'Security'],
+      'frontend': ['Responsive Design', 'Web Performance', 'Accessibility', 'State Management', 'Component Design'],
+      'backend': ['Database Design', 'Caching', 'Message Queues', 'Load Balancing', 'Authentication']
+    };
+
+    const cat = category.toLowerCase();
+    if (categoryKeywords[cat]) {
+      for (const keyword of categoryKeywords[cat]) {
+        if (!hasKeyword([keyword]) && suggestions.size < 8) {
+          suggestions.add(keyword);
+        }
+      }
     }
 
-    // Cloud keywords
-    if (matchedLower.some(k => k.includes('aws') || k.includes('azure') || k.includes('cloud'))) {
-      if (!matchedLower.some(k => k.includes('kubernetes'))) suggestions.push('Kubernetes');
-      if (!matchedLower.some(k => k.includes('terraform'))) suggestions.push('Terraform');
+    // === 3. SENIORITY-LEVEL ANALYSIS ===
+    const seniorityKeywords: Record<string, string[]> = {
+      'junior': ['Code Quality', 'Best Practices', 'Documentation', 'Version Control', 'Testing'],
+      'mid': ['System Design', 'Performance Optimization', 'Scalability', 'Mentoring', 'Code Review'],
+      'senior': ['Architecture Design', 'Technical Leadership', 'Cross-functional Collaboration', 'Strategic Planning', 'Team Mentorship'],
+      'lead': ['Engineering Strategy', 'Stakeholder Management', 'Technical Roadmap', 'Budget Planning', 'Hiring']
+    };
+
+    const seniority = seniorityLevel.toLowerCase();
+    if (seniorityKeywords[seniority]) {
+      for (const keyword of seniorityKeywords[seniority]) {
+        if (!hasKeyword([keyword]) && suggestions.size < 8) {
+          suggestions.add(keyword);
+        }
+      }
     }
 
-    // Soft skills - always relevant
-    if (!matchedLower.some(k => k.includes('leadership'))) suggestions.push('Leadership');
-    if (!matchedLower.some(k => k.includes('communication'))) suggestions.push('Communication');
-    if (!matchedLower.some(k => k.includes('collaboration'))) suggestions.push('Collaboration');
+    // === 4. TECHNICAL STACK INFERENCE ===
+    const stackInferences: Record<string, string[]> = {
+      'python': ['pip', 'virtualenv', 'pytest', 'Django', 'Flask', 'FastAPI', 'pandas', 'numpy'],
+      'javascript': ['npm', 'webpack', 'babel', 'eslint', 'jest', 'React', 'Node.js'],
+      'java': ['Maven', 'Gradle', 'Spring Boot', 'JUnit', 'Hibernate'],
+      'react': ['Redux', 'React Router', 'Hooks', 'Context API', 'Next.js'],
+      'aws': ['EC2', 'S3', 'Lambda', 'RDS', 'CloudWatch', 'IAM'],
+      'sql': ['Query Optimization', 'Indexing', 'Stored Procedures', 'Transactions'],
+      'docker': ['Docker Compose', 'Dockerfile', 'Multi-stage Builds', 'Container Registry']
+    };
 
-    // Methodologies
-    if (!matchedLower.some(k => k.includes('agile') || k.includes('scrum'))) suggestions.push('Agile');
-    if (!matchedLower.some(k => k.includes('project management'))) suggestions.push('Project Management');
+    for (const [tech, relatedTerms] of Object.entries(stackInferences)) {
+      if (hasKeyword([tech])) {
+        for (const term of relatedTerms) {
+          if (!hasKeyword([term]) && suggestions.size < 8) {
+            suggestions.add(term);
+            break; // Only add one related term per stack
+          }
+        }
+      }
+    }
 
-    // Always suggest these if not present
-    if (!matchedLower.some(k => k.includes('problem solving'))) suggestions.push('Problem Solving');
-    if (!matchedLower.some(k => k.includes('team'))) suggestions.push('Team Collaboration');
+    // === 5. ROLE-BASED SOFT SKILLS ===
+    const softSkillsByRole: string[] = (() => {
+      if (resumeLower.includes('lead') || resumeLower.includes('manager')) {
+        return ['Strategic Thinking', 'Team Leadership', 'Conflict Resolution'];
+      } else if (resumeLower.includes('senior')) {
+        return ['Mentoring', 'Technical Leadership', 'Cross-team Collaboration'];
+      } else {
+        return ['Teamwork', 'Learning Agility', 'Communication'];
+      }
+    })();
 
-    return suggestions.slice(0, 8); // Max 8 suggestions
+    for (const skill of softSkillsByRole) {
+      if (!hasKeyword([skill]) && suggestions.size < 8) {
+        suggestions.add(skill);
+      }
+    }
+
+    // === 6. INDUSTRY STANDARD TOOLS ===
+    const standardTools = [
+      'Git', 'Jira', 'Confluence', 'Slack', 'Agile', 'Scrum'
+    ];
+
+    for (const tool of standardTools) {
+      if (!hasKeyword([tool]) && suggestions.size < 8) {
+        suggestions.add(tool);
+      }
+    }
+
+    return Array.from(suggestions).slice(0, 8);
   };
 
   // Map missing keywords to critical signals with REAL impact
-  // If no missing keywords provided, generate smart suggestions based on matched keywords
+  // If no missing keywords provided, use ML to generate smart suggestions
   const keywordsToAnalyze = missingKeywords.length > 0
     ? missingKeywords
-    : generateSmartSuggestions();
+    : generateMLKeywordSuggestions();
 
   const missingCount = Math.min(keywordsToAnalyze.length, 8);
   const missingSignals: MissingKeyword[] = keywordsToAnalyze.slice(0, missingCount).map((keyword, index) => {
