@@ -10,9 +10,9 @@ export function NewFooter() {
           {/* Company Info */}
           <div>
             <img
-              src="/assets/cvdebug-logo.png"
+              src="/assets/cvdebug-logo.svg"
               alt="CVDebug"
-              className="h-6 w-auto max-w-[100px] object-contain mb-4"
+              className="h-8 w-auto object-contain mb-4"
             />
             <p className="text-[#475569] text-sm">
               Beat ATS systems with AI-powered resume optimization. Get hired faster.

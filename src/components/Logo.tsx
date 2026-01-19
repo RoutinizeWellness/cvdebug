@@ -22,12 +22,12 @@ export function Logo({
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
       <img
-        src="/assets/cvdebug-logo.png"
+        src="/assets/cvdebug-logo.svg"
         alt="CVDebug"
         className={cn(
-          "h-5 w-auto max-w-[100px] object-contain relative z-10 transition-transform duration-300 hover:scale-110",
+          "h-7 w-auto object-contain relative z-10 transition-transform duration-300 hover:scale-110",
           iconClassName,
-          !showText && "h-6"
+          !showText && "h-8"
         )}
       />
     </div>
