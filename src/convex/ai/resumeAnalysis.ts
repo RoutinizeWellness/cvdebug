@@ -221,12 +221,12 @@ export const analyzeResume = internalAction({
       const safeAnalysisResult = {
         title: String(analysisResult.title || "Resume").substring(0, 200),
         category: String(analysisResult.category || "General"),
-        score: Math.round(Math.max(0, Math.min(100, Number(analysisResult.score) || 0))),
+        score: Math.round(Math.max(35, Math.min(100, Number(analysisResult.score) || 35))),
         analysis: String(analysisResult.analysis || "Analysis completed."),
         scoreBreakdown: {
-          keywords: Math.round(Number(analysisResult.scoreBreakdown?.keywords) || 0),
-          format: Math.round(Number(analysisResult.scoreBreakdown?.format) || 0),
-          completeness: Math.round(Number(analysisResult.scoreBreakdown?.completeness) || 0),
+          keywords: Math.round(Math.max(10, Number(analysisResult.scoreBreakdown?.keywords) || 10)),
+          format: Math.round(Math.max(12, Number(analysisResult.scoreBreakdown?.format) || 12)),
+          completeness: Math.round(Math.max(13, Number(analysisResult.scoreBreakdown?.completeness) || 13)),
         },
         matchedKeywords: Array.isArray(analysisResult.matchedKeywords)
           ? analysisResult.matchedKeywords.slice(0, 50).map(String).filter((kw: string) => kw.length > 0)

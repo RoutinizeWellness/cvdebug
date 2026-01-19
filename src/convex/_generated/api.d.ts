@@ -59,6 +59,7 @@ import type * as ai_references_referenceManager from "../ai/references/reference
 import type * as ai_references_referenceManagerData from "../ai/references/referenceManagerData.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
 import type * as ai_resumeRewrite from "../ai/resumeRewrite.js";
+import type * as ai_scoring_advancedScoring from "../ai/scoring/advancedScoring.js";
 import type * as ai_scoring_analysisFormatter from "../ai/scoring/analysisFormatter.js";
 import type * as ai_scoring_atsSimulation from "../ai/scoring/atsSimulation.js";
 import type * as ai_scoring_bm25Scoring from "../ai/scoring/bm25Scoring.js";
@@ -180,6 +181,7 @@ declare const fullApi: ApiFromModules<{
   "ai/references/referenceManagerData": typeof ai_references_referenceManagerData;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;
   "ai/resumeRewrite": typeof ai_resumeRewrite;
+  "ai/scoring/advancedScoring": typeof ai_scoring_advancedScoring;
   "ai/scoring/analysisFormatter": typeof ai_scoring_analysisFormatter;
   "ai/scoring/atsSimulation": typeof ai_scoring_atsSimulation;
   "ai/scoring/bm25Scoring": typeof ai_scoring_bm25Scoring;
