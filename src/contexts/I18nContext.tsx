@@ -26,12 +26,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('cvdebug-locale', newLocale);
 
     // Update HTML lang attribute
-    document.documentElement.lang = newLocale.split('-')[0];
+    document.documentElement.lang = newLocale;
   };
 
   useEffect(() => {
     // Set initial lang attribute
-    document.documentElement.lang = locale.split('-')[0];
+    document.documentElement.lang = locale;
   }, []);
 
   return (
@@ -46,7 +46,7 @@ export function useI18n() {
   if (!context) {
     // Fallback: Return default locale if provider is not available
     // This prevents errors in edge cases where component renders before provider
-    const defaultLocale: SupportedLocale = 'en-US';
+    const defaultLocale: SupportedLocale = 'en';
     return {
       locale: defaultLocale,
       setLocale: () => {},

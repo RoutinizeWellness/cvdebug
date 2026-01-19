@@ -4,16 +4,11 @@ import { useI18n } from "@/contexts/I18nContext";
 import { SupportedLocale } from "@/lib/i18n";
 
 const localeNames: Record<SupportedLocale, { flag: string; name: string }> = {
-  'en-US': { flag: '🇺🇸', name: 'English (US)' },
-  'en-GB': { flag: '🇬🇧', name: 'English (UK)' },
-  'en-CA': { flag: '🇨🇦', name: 'English (CA)' },
-  'en-AU': { flag: '🇦🇺', name: 'English (AU)' },
-  'en-IN': { flag: '🇮🇳', name: 'English (IN)' },
-  'es-ES': { flag: '🇪🇸', name: 'Español (ES)' },
-  'es-MX': { flag: '🇲🇽', name: 'Español (MX)' },
-  'fr-FR': { flag: '🇫🇷', name: 'Français' },
-  'de-DE': { flag: '🇩🇪', name: 'Deutsch' },
-  'pt-BR': { flag: '🇧🇷', name: 'Português' },
+  'en': { flag: '🌍', name: 'English' },
+  'es': { flag: '🇪🇸', name: 'Español' },
+  'fr': { flag: '🇫🇷', name: 'Français' },
+  'de': { flag: '🇩🇪', name: 'Deutsch' },
+  'pt': { flag: '🇧🇷', name: 'Português' },
 };
 
 export function LanguageSelector() {
@@ -31,63 +26,27 @@ export function LanguageSelector() {
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 mb-1">
-          English
-        </div>
-        <SelectItem value="en-US">
+        <SelectItem value="en">
           <span className="flex items-center gap-2">
-            <span>🇺🇸</span> United States
+            <span>🌍</span> English
           </span>
         </SelectItem>
-        <SelectItem value="en-GB">
+        <SelectItem value="es">
           <span className="flex items-center gap-2">
-            <span>🇬🇧</span> United Kingdom
+            <span>🇪🇸</span> Español
           </span>
         </SelectItem>
-        <SelectItem value="en-CA">
-          <span className="flex items-center gap-2">
-            <span>🇨🇦</span> Canada
-          </span>
-        </SelectItem>
-        <SelectItem value="en-AU">
-          <span className="flex items-center gap-2">
-            <span>🇦🇺</span> Australia
-          </span>
-        </SelectItem>
-        <SelectItem value="en-IN">
-          <span className="flex items-center gap-2">
-            <span>🇮🇳</span> India
-          </span>
-        </SelectItem>
-
-        <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
-          Español
-        </div>
-        <SelectItem value="es-ES">
-          <span className="flex items-center gap-2">
-            <span>🇪🇸</span> España
-          </span>
-        </SelectItem>
-        <SelectItem value="es-MX">
-          <span className="flex items-center gap-2">
-            <span>🇲🇽</span> México
-          </span>
-        </SelectItem>
-
-        <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
-          Autres Langues
-        </div>
-        <SelectItem value="fr-FR">
+        <SelectItem value="fr">
           <span className="flex items-center gap-2">
             <span>🇫🇷</span> Français
           </span>
         </SelectItem>
-        <SelectItem value="de-DE">
+        <SelectItem value="de">
           <span className="flex items-center gap-2">
             <span>🇩🇪</span> Deutsch
           </span>
         </SelectItem>
-        <SelectItem value="pt-BR">
+        <SelectItem value="pt">
           <span className="flex items-center gap-2">
             <span>🇧🇷</span> Português
           </span>
