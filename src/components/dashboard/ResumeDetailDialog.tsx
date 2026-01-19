@@ -402,6 +402,9 @@ export function ResumeDetailDialog({
     // Only add items if there are actual issues detected
     if (formatIssues.length > 0) {
       formatIssues.forEach((issue: any) => {
+        // Defensive check: skip if issue is undefined or null
+        if (!issue) return;
+
         const issueText = issue.issue || issue.message || "";
         const issueLower = issueText.toLowerCase();
 

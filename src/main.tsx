@@ -83,6 +83,7 @@ import "./types/global.d.ts";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
 import { getBackendUrl } from "@/config/backend";
+import { I18nProvider } from "@/contexts/I18nContext";
 
 // Use hardcoded backend configuration
 const convexUrl = getBackendUrl();
@@ -270,16 +271,18 @@ createRoot(document.getElementById("root")!).render(
     <ErrorBoundary>
       <VlyToolbar />
       <InstrumentationProvider>
-        <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
-          <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-            <UserSyncer />
-            <BrowserRouter>
-              <RouteSyncer />
-              <AnimatedRoutes />
-            </BrowserRouter>
-            <Toaster />
-          </ConvexProviderWithClerk>
-        </ClerkProvider>
+        <I18nProvider>
+          <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+            <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+              <UserSyncer />
+              <BrowserRouter>
+                <RouteSyncer />
+                <AnimatedRoutes />
+              </BrowserRouter>
+              <Toaster />
+            </ConvexProviderWithClerk>
+          </ClerkProvider>
+        </I18nProvider>
       </InstrumentationProvider>
     </ErrorBoundary>
   </StrictMode>,

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export function NewNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -106,6 +107,10 @@ export function NewNavbar() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex items-center gap-3"
           >
+            <div className="hidden lg:block">
+              <LanguageSelector />
+            </div>
+
             <button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
               className="hidden sm:block text-sm font-semibold text-[#475569] transition-colors hover:text-[#1E293B] px-4 py-2 rounded-lg hover:bg-slate-50"
