@@ -383,7 +383,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
                   <div className="space-y-1">
                     <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
-                      {resume.stats?.yearsOfExperience || 0} years
+                      {resume.extractedData?.totalYearsExperience || 0} years
                     </p>
                     <p className="text-[10px] text-[#64748B]">
                       Expected requirement: <span className="font-bold text-[#0F172A]">

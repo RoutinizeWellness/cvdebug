@@ -2,6 +2,7 @@ import { ScanResultsHeader } from "./ScanResultsHeader";
 import { RobotTerminalView } from "./RobotTerminalView";
 import { ATSScoreCard } from "./ATSScoreCard";
 import { PaywalledKeywords } from "./PaywalledKeywords";
+import { ConversionBanner } from "../ConversionBanner";
 import { motion } from "framer-motion";
 
 interface ScanResultsLayoutProps {
@@ -44,6 +45,16 @@ export function ScanResultsLayout({
         onShare={onShare}
         onExportPDF={onExportPDF}
       />
+
+      {/* Conversion Banner - Show to non-premium users */}
+      {!isPremium && (
+        <div className="mb-8">
+          <ConversionBanner
+            currentScore={score}
+            onUpgrade={onUnlock || (() => {})}
+          />
+        </div>
+      )}
 
       {/* Split View Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 h-full min-h-[600px]">
