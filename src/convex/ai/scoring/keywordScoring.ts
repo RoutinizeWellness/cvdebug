@@ -589,6 +589,144 @@ function fuzzyMatch(keyword: string, text: string, threshold: number = 0.85): bo
   return false;
 }
 
+/**
+ * CRITICAL FIX: Analyze CV content depth and quality
+ * This ensures different CVs get different scores based on ACTUAL content, not just keyword presence
+ */
+function analyzeCVQuality(ocrText: string): {
+  leadershipLevel: number; // 0-10: Based on leadership indicators (led, managed, mentored)
+  seniorityLevel: number; // 0-10: Based on job titles and experience depth
+  metricQuality: number; // 0-10: Quality of quantifiable metrics (% improvements, $ amounts, scale)
+  technicalDepth: number; // 0-10: Depth of technical context around keywords
+  uniqueness: number; // 0-10: How unique/specific is the content (vs generic)
+  experienceYears: number; // Estimated years of experience from date ranges
+} {
+  const text = ocrText.toLowerCase();
+
+  // 1. LEADERSHIP LEVEL ANALYSIS
+  const leadershipIndicators = [
+    { pattern: /\b(led|managed|directed|supervised)\s+(team|teams|group|groups)\s+of\s+(\d+)/gi, weight: 3 },
+    { pattern: /\b(mentored|coached|trained)\s+(\d+)/gi, weight: 2 },
+    { pattern: /\b(led|spearheaded|drove|directed)\s+/gi, weight: 1.5 },
+    { pattern: /\b(managed|oversaw|supervised)\s+/gi, weight: 1.2 },
+    { pattern: /\b(senior|principal|lead|staff|architect|director|vp|c-level)\b/gi, weight: 1 }
+  ];
+
+  let leadershipScore = 0;
+  leadershipIndicators.forEach(({ pattern, weight }) => {
+    const matches = ocrText.match(pattern);
+    if (matches) leadershipScore += matches.length * weight;
+  });
+
+  const leadershipLevel = Math.min(10, leadershipScore);
+
+  // 2. SENIORITY LEVEL ANALYSIS
+  const seniorityTitles = {
+    intern: 1, junior: 2, associate: 3, mid: 4, 'mid-level': 4,
+    senior: 6, staff: 7, principal: 8, director: 9, vp: 9, 'c-level': 10
+  };
+
+  let seniorityScore = 0;
+  for (const [title, score] of Object.entries(seniorityTitles)) {
+    if (new RegExp(`\\b${title}\\b`, 'i').test(text)) {
+      seniorityScore = Math.max(seniorityScore, score);
+    }
+  }
+
+  // Check for experience indicators
+  if (/\b(\d+)\+?\s*(years?|yrs?)\s+(of\s+)?experience\b/i.test(text)) {
+    const yearMatch = text.match(/\b(\d+)\+?\s*(years?|yrs?)\s+(of\s+)?experience\b/i);
+    if (yearMatch) {
+      const years = parseInt(yearMatch[1]);
+      seniorityScore = Math.max(seniorityScore, Math.min(10, years / 2));
+    }
+  }
+
+  const seniorityLevel = seniorityScore;
+
+  // 3. METRIC QUALITY ANALYSIS (not just count, but QUALITY)
+  const strongMetrics = [
+    { pattern: /\b(increased|grew|boosted)\s+[^.]*?(\d+%|\d+x)/gi, quality: 3 },
+    { pattern: /\b(reduced|decreased|saved)\s+[^.]*?\$[\d,]+(?:K|M|B)?/gi, quality: 3 },
+    { pattern: /\b(managed|oversaw)\s+[^.]*?\$[\d,]+(?:K|M|B)?/gi, quality: 2.5 },
+    { pattern: /\b\d+\+?\s*(million|billion|thousand)\b/gi, quality: 2 },
+    { pattern: /\b\d{2,3}%/g, quality: 1.5 }, // High percentages (10%+)
+    { pattern: /\b\d{1}%/g, quality: 0.5 } // Low percentages (single digit)
+  ];
+
+  let metricQualityScore = 0;
+  strongMetrics.forEach(({ pattern, quality }) => {
+    const matches = ocrText.match(pattern);
+    if (matches) metricQualityScore += matches.length * quality;
+  });
+
+  const metricQuality = Math.min(10, metricQualityScore);
+
+  // 4. TECHNICAL DEPTH ANALYSIS (context around keywords)
+  const technicalContextPatterns = [
+    /\b(architected|designed|built|implemented|developed|engineered)\s+[^.]{20,100}\b(system|platform|service|application|infrastructure)\b/gi,
+    /\b(optimized|improved|enhanced)\s+[^.]{20,100}\b(performance|scalability|reliability|efficiency)\b/gi,
+    /\b(deployed|launched|shipped|released)\s+[^.]{20,100}\b(production|live|users|customers)\b/gi
+  ];
+
+  let technicalDepthScore = 0;
+  technicalContextPatterns.forEach(pattern => {
+    const matches = ocrText.match(pattern);
+    if (matches) technicalDepthScore += matches.length * 2;
+  });
+
+  const technicalDepth = Math.min(10, technicalDepthScore);
+
+  // 5. UNIQUENESS ANALYSIS (specific project details vs generic)
+  const genericPhrases = [
+    'responsible for', 'duties included', 'worked on', 'helped with',
+    'assisted in', 'participated in', 'involved in', 'contributed to'
+  ];
+
+  let genericCount = 0;
+  genericPhrases.forEach(phrase => {
+    const regex = new RegExp(`\\b${phrase}\\b`, 'gi');
+    const matches = ocrText.match(regex);
+    if (matches) genericCount += matches.length;
+  });
+
+  // Count specific project descriptions (lines with numbers + technical terms)
+  const lines = ocrText.split('\n');
+  let specificLines = 0;
+  lines.forEach(line => {
+    if (line.length > 30 && /\d/.test(line) && /\b(built|developed|created|designed|implemented|optimized|improved)\b/i.test(line)) {
+      specificLines++;
+    }
+  });
+
+  const uniqueness = Math.min(10, Math.max(0, specificLines / 2 - genericCount));
+
+  // 6. EXPERIENCE YEARS ESTIMATION
+  const dateRanges = ocrText.match(/\b(20\d{2})\s*[-–]\s*(20\d{2}|present|current)\b/gi) || [];
+  let totalYears = 0;
+  dateRanges.forEach(range => {
+    const match = range.match(/(\d{4})\s*[-–]\s*(\d{4}|present|current)/i);
+    if (match) {
+      const start = parseInt(match[1]);
+      const end = match[2].toLowerCase().includes('present') || match[2].toLowerCase().includes('current')
+        ? new Date().getFullYear()
+        : parseInt(match[2]);
+      totalYears += Math.max(0, end - start);
+    }
+  });
+
+  const experienceYears = Math.min(20, totalYears);
+
+  return {
+    leadershipLevel: Math.round(leadershipLevel * 10) / 10,
+    seniorityLevel: Math.round(seniorityLevel * 10) / 10,
+    metricQuality: Math.round(metricQuality * 10) / 10,
+    technicalDepth: Math.round(technicalDepth * 10) / 10,
+    uniqueness: Math.round(uniqueness * 10) / 10,
+    experienceYears
+  };
+}
+
 export function calculateKeywordScore(
   ocrText: string,
   category: RoleCategory,
@@ -655,11 +793,17 @@ export function calculateKeywordScore(
     predictedImpact: Array<{keyword: string, impact: number}>;
   } | undefined = undefined;
 
+  // ============ CONTENT-AWARE SCORING: Analyze CV depth and quality ============
+
+  // NEW: Extract CV quality indicators FIRST (these should influence ALL scoring)
+  const cvQualityScore = analyzeCVQuality(ocrText);
+  console.log(`[CV Quality] Leadership: ${cvQualityScore.leadershipLevel}, Seniority: ${cvQualityScore.seniorityLevel}, Metrics: ${cvQualityScore.metricQuality}, Depth: ${cvQualityScore.technicalDepth}`);
+
   if (hasJD) {
     // Enhanced JD parsing with n-gram extraction
     const jdWords = jdLower.match(/\b[a-z0-9]+\b/g) || [];
     const jdFrequency: Record<string, number> = {};
-    
+
     const stopWords = new Set(['the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those', 'we', 'you', 'they', 'our', 'your', 'their']);
     
     // Unigrams
@@ -955,7 +1099,18 @@ export function calculateKeywordScore(
     console.log(`[Keywords] JD-based analysis: ${foundKeywords.length} found, ${missingKeywords.length} missing from ${sortedJDKeywords.length} JD terms`);
     console.log(`[ML Keywords] Top 3 high-impact missing: ${predictedImpacts.slice(0, 3).map(p => `${p.keyword}(${p.impact})`).join(', ')}`);
 
-    const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
+    // CRITICAL FIX: Apply CV quality multiplier to differentiate resumes
+    // A CV with better metrics, leadership, and depth should score higher even with same keywords
+    const qualityMultiplier = 1.0 +
+      (cvQualityScore.metricQuality / 100) + // 0-0.10 bonus for metric quality
+      (cvQualityScore.leadershipLevel / 100) + // 0-0.10 bonus for leadership
+      (cvQualityScore.technicalDepth / 100) + // 0-0.10 bonus for technical depth
+      (cvQualityScore.uniqueness / 100); // 0-0.10 bonus for uniqueness
+    // Total possible bonus: up to 40% more points for excellent CVs
+
+    console.log(`[Keywords] Quality multiplier: ${qualityMultiplier.toFixed(3)}x (metric: ${cvQualityScore.metricQuality}/10, leadership: ${cvQualityScore.leadershipLevel}/10, depth: ${cvQualityScore.technicalDepth}/10, unique: ${cvQualityScore.uniqueness}/10)`);
+
+    const scoringMultiplier = qualityMultiplier * (1.0 + (mlConfig?.scoringAdjustments?.keywords || 0));
     keywordScore = Math.min(40, keywordScore * scoringMultiplier); // Allow up to 40 for excellent keyword optimization
 
     // ============ ML INSIGHTS: Return comprehensive ML analysis ============
@@ -1144,7 +1299,16 @@ export function calculateKeywordScore(
     const tier3Total = totalKeywords - tier1Count - tier2Count;
     console.log(`[Keywords] Tier coverage: T1=${tier1Found}/${tier1Count}, T2=${tier2Found}/${tier2Count}, T3=${tier3Found}/${tier3Total}`);
 
-    const scoringMultiplier = 1.0 + (mlConfig?.scoringAdjustments?.keywords || 0);
+    // CRITICAL FIX: Apply CV quality multiplier to differentiate resumes (same as JD path)
+    const qualityMultiplier = 1.0 +
+      (cvQualityScore.metricQuality / 100) +
+      (cvQualityScore.leadershipLevel / 100) +
+      (cvQualityScore.technicalDepth / 100) +
+      (cvQualityScore.uniqueness / 100);
+
+    console.log(`[Keywords] Quality multiplier: ${qualityMultiplier.toFixed(3)}x (metric: ${cvQualityScore.metricQuality}/10, leadership: ${cvQualityScore.leadershipLevel}/10, depth: ${cvQualityScore.technicalDepth}/10, unique: ${cvQualityScore.uniqueness}/10)`);
+
+    const scoringMultiplier = qualityMultiplier * (1.0 + (mlConfig?.scoringAdjustments?.keywords || 0));
     keywordScore = Math.min(40, keywordScore * scoringMultiplier); // Allow up to 40 for excellent keyword optimization
   }
   

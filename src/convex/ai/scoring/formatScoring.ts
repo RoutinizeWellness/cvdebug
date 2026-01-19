@@ -113,9 +113,10 @@ export function calculateFormatScore(
     }
   }
   
-  // Score contact info with STRICT quality bonuses - much lower points
+  // CRITICAL FIX: Score contact info with VERY STRICT quality bonuses
+  // Email is REQUIRED, but quality varies
   if (emailMatch) {
-    formatScore += 3 + Math.floor(emailQuality / 2); // 3-4 points (was 5-10)
+    formatScore += 2 + Math.floor(emailQuality / 3); // 2-3 points (reduced further)
   } else {
     // Check if @ symbol exists (indicates email might be present but unreadable)
     const hasAtSymbol = /@/.test(ocrText);
@@ -133,7 +134,7 @@ export function calculateFormatScore(
   }
 
   if (phoneMatch) {
-    formatScore += 2 + Math.floor(phoneQuality / 2); // 2-3 points (was 5-8)
+    formatScore += 1 + Math.floor(phoneQuality / 3); // 1-2 points (reduced further)
   } else {
     // Check if numbers exist that could be a phone
     const hasNumberSequence = /\d{3,}/.test(ocrText);

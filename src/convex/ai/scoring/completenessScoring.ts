@@ -26,32 +26,57 @@ export function calculateCompletenessScore(
   const bulletAnalysis = analyzeBulletPoints(ocrText);
   const softSkillsAnalysis = analyzeSoftSkills(ocrText);
   
-  // Enhanced metric detection patterns
-  const metricPatterns = [
-    /\d+%/g,
-    /\$[\d,]+(?:\.\d{2})?[KMB]?/g,
-    /\d+\+?\s*(users|customers|clients|employees|projects|applications)/gi,
-    /increased|improved|reduced|optimized|enhanced|accelerated|streamlined/gi,
-    /\d+x\s/g,
-    /\d+\s*(million|billion|thousand|hundred)/gi,
-    /\d+[-–]\d+%/g, // Range percentages
-    /\d+\s*to\s*\d+/gi, // "10 to 20" format
+  // CRITICAL FIX: Analyze QUALITY of metrics, not just count
+  // A CV with "increased by 150%" should score higher than one with "increased by 5%"
+
+  interface MetricQuality {
+    pattern: RegExp;
+    quality: number; // How impressive is this metric?
+  }
+
+  const qualityMetricPatterns: MetricQuality[] = [
+    // EXCEPTIONAL metrics (5 points each)
+    { pattern: /\b(increased|grew|boosted)\s+[^.]*?(\d{2,3}%|\d+x)/gi, quality: 5 }, // "increased by 150%"
+    { pattern: /\b(reduced|saved|decreased)\s+[^.]*?\$([\d,]+(?:K|M|B))/gi, quality: 5 }, // "saved $2M"
+    { pattern: /\b(managed|oversaw|led)\s+[^.]*?\$([\d,]+(?:M|B))/gi, quality: 5 }, // "managed $10M budget"
+    { pattern: /\b(built|developed|created)\s+[^.]*?(million|billion)\b/gi, quality: 5 }, // "built system serving 10 million users"
+
+    // STRONG metrics (3 points each)
+    { pattern: /\b\d{2}%/g, quality: 3 }, // "40%" - double digit percentages
+    { pattern: /\$[\d,]+K\b/g, quality: 3 }, // "$50K" - thousands
+    { pattern: /\b\d+\+?\s*(thousand|hundred)\b/gi, quality: 3 }, // "10 thousand users"
+    { pattern: /\b(team|group)\s+of\s+(\d+)/gi, quality: 3 }, // "team of 8 engineers"
+
+    // MODERATE metrics (2 points each)
+    { pattern: /\b\d{1}%/g, quality: 2 }, // "8%" - single digit percentages
+    { pattern: /\b\d+\+?\s*(users|customers|clients)/gi, quality: 2 }, // "1000 users"
+
+    // WEAK metrics (1 point each)
+    { pattern: /\b(experience|worked)\s+[^.]*?\d+\s*(years?|months?)/gi, quality: 1 }, // Just stating duration
   ];
-  
-  let metricCount = 0;
-  metricPatterns.forEach(pattern => {
+
+  let metricQualityScore = 0;
+  let totalMetricsMentioned = 0;
+
+  qualityMetricPatterns.forEach(({ pattern, quality }) => {
     const matches = ocrText.match(pattern);
-    if (matches) metricCount += matches.length;
+    if (matches) {
+      metricQualityScore += matches.length * quality;
+      totalMetricsMentioned += matches.length;
+    }
   });
 
-  // STRICT metric scoring - much harder to get points
-  // Having metrics is EXPECTED, not exceptional
-  if (metricCount >= 20) completenessScore += 8; // REDUCED from 18
-  else if (metricCount >= 15) completenessScore += 6; // REDUCED from 15
-  else if (metricCount >= 10) completenessScore += 5; // REDUCED from 12
-  else if (metricCount >= 6) completenessScore += 3; // REDUCED from 8
-  else if (metricCount >= 3) completenessScore += 1; // REDUCED from 4
-  // else: 0 points if less than 3 metrics - this is failing
+  console.log(`[Completeness] Metrics: ${totalMetricsMentioned} total, quality score: ${metricQualityScore}`);
+
+  // STRICT metric scoring based on QUALITY
+  // 20+ quality points = exceptional CV with strong metrics
+  if (metricQualityScore >= 60) completenessScore += 12; // Exceptional
+  else if (metricQualityScore >= 40) completenessScore += 10; // Strong
+  else if (metricQualityScore >= 25) completenessScore += 7; // Good
+  else if (metricQualityScore >= 15) completenessScore += 5; // Moderate
+  else if (metricQualityScore >= 8) completenessScore += 3; // Basic
+  else if (metricQualityScore >= 3) completenessScore += 1; // Minimal
+  // else: 0 points if quality score < 3 - failing
 
   const bulletQualityContribution = (bulletAnalysis.score / 100) * 6; // REDUCED from 12
   completenessScore += bulletQualityContribution;
