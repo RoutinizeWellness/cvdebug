@@ -192,8 +192,8 @@ export function MachineParsingVision({
                         <span className="text-[#3B82F6]/50">PARSED: 98%</span>
                       </div>
                       <div className="mt-8 ml-4 border-l border-dashed border-[#3B82F6]/30 pl-4 py-2">
-                        <div className="text-[#3B82F6]">ROLE: {extractedFields.experience[0].role || 'N/A'}</div>
-                        <div className="text-[#3B82F6]/60">COMPANY: {extractedFields.experience[0].company || 'N/A'}</div>
+                        <div className="text-[#3B82F6]">ROLE: {extractedFields.experience?.[0]?.role || 'N/A'}</div>
+                        <div className="text-[#3B82F6]/60">COMPANY: {extractedFields.experience?.[0]?.company || 'N/A'}</div>
                       </div>
                     </div>
                   )}
@@ -347,12 +347,12 @@ export function MachineParsingVision({
                     <span className="size-2 rounded-full bg-[#22C55E]"></span>
                   </div>
                   <div className="font-mono text-xs text-[#475569] space-y-1 overflow-hidden">
-                    {extractedFields.experience[0].company && (
+                    {extractedFields.experience?.[0]?.company && (
                       <div className="flex gap-2">
                         <span className="text-[#3B82F6] opacity-60">"company":</span> "{extractedFields.experience[0].company}"
                       </div>
                     )}
-                    {extractedFields.experience[0].role && (
+                    {extractedFields.experience?.[0]?.role && (
                       <div className="flex gap-2">
                         <span className="text-[#3B82F6] opacity-60">"role":</span> "{extractedFields.experience[0].role}"
                       </div>

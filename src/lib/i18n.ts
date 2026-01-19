@@ -219,6 +219,7 @@ export interface Translation {
     testimonials: {
       badge: string;
       heading: string;
+      subheading: string;
       subtitle: string;
       joinThousands: string;
       subreddits: string;
@@ -1124,6 +1125,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       testimonials: {
         badge: 'Reddit Wall of Love',
         heading: 'Trusted by Redditors Worldwide',
+        subheading: 'Real feedback from r/resumes, r/developersIndia, r/cscareerquestions, and more.',
         subtitle: 'Real feedback from r/resumes, r/developersIndia, r/cscareerquestions, and more.',
         joinThousands: 'Join thousands of job seekers optimizing their resumes',
         subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
@@ -2003,6 +2005,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       testimonials: {
         badge: 'Muro de Amor de Reddit',
         heading: 'Confiado por Redditors en Todo el Mundo',
+        subheading: 'Comentarios reales de r/resumes, r/developersIndia, r/cscareerquestions, y más.',
         subtitle: 'Comentarios reales de r/resumes, r/developersIndia, r/cscareerquestions, y más.',
         joinThousands: 'Únete a miles de buscadores de empleo optimizando sus CVs',
         subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
@@ -2882,6 +2885,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       testimonials: {
         badge: 'Mur d\'Amour Reddit',
         heading: 'Approuvé par les Redditors du Monde Entier',
+        subheading: 'Retours réels de r/resumes, r/developersIndia, r/cscareerquestions, et plus.',
         subtitle: 'Retours réels de r/resumes, r/developersIndia, r/cscareerquestions, et plus.',
         joinThousands: 'Rejoignez des milliers de chercheurs d\'emploi optimisant leurs CVs',
         subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
@@ -3761,6 +3765,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       testimonials: {
         badge: 'Reddit Liebeswand',
         heading: 'Vertraut von Redditors Weltweit',
+        subheading: 'Echtes Feedback von r/resumes, r/developersIndia, r/cscareerquestions, und mehr.',
         subtitle: 'Echtes Feedback von r/resumes, r/developersIndia, r/cscareerquestions, und mehr.',
         joinThousands: 'Schließen Sie sich Tausenden von Jobsuchenden an, die ihre Lebensläufe optimieren',
         subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
@@ -4640,6 +4645,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       testimonials: {
         badge: 'Mural de Amor do Reddit',
         heading: 'Confiado por Redditors em Todo o Mundo',
+        subheading: 'Feedback real de r/resumes, r/developersIndia, r/cscareerquestions, e mais.',
         subtitle: 'Feedback real de r/resumes, r/developersIndia, r/cscareerquestions, e mais.',
         joinThousands: 'Junte-se a milhares de candidatos otimizando seus currículos',
         subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
