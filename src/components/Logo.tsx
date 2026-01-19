@@ -20,12 +20,12 @@ export function Logo({
   iconOnly = false,
   size = 24,
 }: LogoProps) {
-  // If icon only, use the favicon square
+  // If icon only, use the new logo
   if (iconOnly || !showText) {
     return (
       <div className={cn("flex items-center", className)}>
         <img
-          src="/favicon-square.svg?v=14"
+          src="/logo.png?v=15"
           alt="CVDebug"
           className={cn(
             "h-8 w-8 transition-transform duration-300 hover:scale-105",
