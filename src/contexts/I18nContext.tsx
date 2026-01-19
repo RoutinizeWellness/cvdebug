@@ -44,7 +44,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 export function useI18n() {
   const context = useContext(I18nContext);
   if (!context) {
-    throw new Error('useI18n must be used within I18nProvider');
+    // Fallback: Return default locale if provider is not available
+    // This prevents errors in edge cases where component renders before provider
+    const defaultLocale: SupportedLocale = 'en-US';
+    return {
+      locale: defaultLocale,
+      setLocale: () => {},
+      t: getTranslation(defaultLocale)
+    };
   }
   return context;
 }
