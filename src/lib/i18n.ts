@@ -213,6 +213,37 @@ export interface Translation {
       answer2: string;
       question3: string;
       answer3: string;
+      stillHaveQuestions: string;
+      tryFreeScan: string;
+    };
+    testimonials: {
+      badge: string;
+      heading: string;
+      subtitle: string;
+      joinThousands: string;
+      subreddits: string;
+    };
+    enterprise: {
+      badge: string;
+      heading: string;
+      subheading: string;
+      contactSales: string;
+      viewPricing: string;
+      teamManagement: {
+        title: string;
+        description: string;
+      };
+      soc2: {
+        title: string;
+        description: string;
+      };
+      api: {
+        title: string;
+        description: string;
+      };
+      ctaHeading: string;
+      ctaSubheading: string;
+      ctaButton: string;
     };
   };
   // Onboarding
@@ -1087,6 +1118,37 @@ export const translations: Record<SupportedLocale, Translation> = {
         answer2: 'CVDebug shows you exactly how ATS systems parse your resume, identifies missing keywords, and provides actionable recommendations to improve your ATS score.',
         question3: 'Is my data secure?',
         answer3: 'Yes! We use enterprise-grade encryption and never share your data with third parties. Your resume is processed securely and deleted after analysis unless you save it.',
+        stillHaveQuestions: 'Still have questions? Try our free ATS scanner now',
+        tryFreeScan: 'Scan Your Resume Free →',
+      },
+      testimonials: {
+        badge: 'Reddit Wall of Love',
+        heading: 'Trusted by Redditors Worldwide',
+        subtitle: 'Real feedback from r/resumes, r/developersIndia, r/cscareerquestions, and more.',
+        joinThousands: 'Join thousands of job seekers optimizing their resumes',
+        subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
+      },
+      enterprise: {
+        badge: 'Enterprise',
+        heading: 'Scale Your Hiring',
+        subheading: 'Without Compromise',
+        contactSales: 'Contact Sales',
+        viewPricing: 'View Pricing',
+        teamManagement: {
+          title: 'Team Management',
+          description: 'Centralized dashboard for HR teams to track all candidate applications',
+        },
+        soc2: {
+          title: 'SOC 2 Compliant',
+          description: 'Enterprise-grade security with SSO and role-based access control',
+        },
+        api: {
+          title: 'API Access',
+          description: 'Integrate ATS scanning directly into your recruitment workflow',
+        },
+        ctaHeading: 'Ready to debug your career?',
+        ctaSubheading: 'Join 10,000+ developers who fixed their parsing errors and doubled their interview rate.',
+        ctaButton: 'Check My Visibility (Free Scan)',
       },
     },
     onboarding: {
@@ -1935,6 +1997,37 @@ export const translations: Record<SupportedLocale, Translation> = {
         answer2: 'CVDebug te muestra exactamente cómo los sistemas ATS analizan tu CV, identifica palabras clave faltantes y proporciona recomendaciones para mejorar tu puntuación ATS.',
         question3: '¿Mis datos están seguros?',
         answer3: '¡Sí! Utilizamos encriptación de nivel empresarial y nunca compartimos tus datos con terceros. Tu CV se procesa de forma segura y se elimina después del análisis a menos que lo guardes.',
+        stillHaveQuestions: '¿Aún tienes preguntas? Prueba nuestro escáner ATS gratis ahora',
+        tryFreeScan: 'Escanea Tu CV Gratis →',
+      },
+      testimonials: {
+        badge: 'Muro de Amor de Reddit',
+        heading: 'Confiado por Redditors en Todo el Mundo',
+        subtitle: 'Comentarios reales de r/resumes, r/developersIndia, r/cscareerquestions, y más.',
+        joinThousands: 'Únete a miles de buscadores de empleo optimizando sus CVs',
+        subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
+      },
+      enterprise: {
+        badge: 'Empresarial',
+        heading: 'Escala Tu Contratación',
+        subheading: 'Sin Compromisos',
+        contactSales: 'Contactar Ventas',
+        viewPricing: 'Ver Precios',
+        teamManagement: {
+          title: 'Gestión de Equipo',
+          description: 'Panel centralizado para equipos de RRHH para rastrear todas las aplicaciones de candidatos',
+        },
+        soc2: {
+          title: 'Cumplimiento SOC 2',
+          description: 'Seguridad de nivel empresarial con SSO y control de acceso basado en roles',
+        },
+        api: {
+          title: 'Acceso a API',
+          description: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
+        },
+        ctaHeading: '¿Listo para depurar tu carrera?',
+        ctaSubheading: 'Únete a más de 10,000 desarrolladores que corrigieron sus errores de análisis y duplicaron su tasa de entrevistas.',
+        ctaButton: 'Verifica Mi Visibilidad (Escaneo Gratis)',
       },
     },
     onboarding: {
@@ -2783,6 +2876,37 @@ export const translations: Record<SupportedLocale, Translation> = {
         answer2: 'CVDebug vous montre exactement comment les systèmes ATS analysent votre CV, identifie les mots-clés manquants et fournit des recommandations pour améliorer votre score ATS.',
         question3: 'Mes données sont-elles sécurisées?',
         answer3: 'Oui! Nous utilisons un cryptage de niveau entreprise et ne partageons jamais vos données avec des tiers. Votre CV est traité en toute sécurité et supprimé après analyse, sauf si vous le sauvegardez.',
+        stillHaveQuestions: 'Vous avez encore des questions? Essayez notre scanner ATS gratuit maintenant',
+        tryFreeScan: 'Scannez Votre CV Gratuitement →',
+      },
+      testimonials: {
+        badge: 'Mur d\'Amour Reddit',
+        heading: 'Approuvé par les Redditors du Monde Entier',
+        subtitle: 'Retours réels de r/resumes, r/developersIndia, r/cscareerquestions, et plus.',
+        joinThousands: 'Rejoignez des milliers de chercheurs d\'emploi optimisant leurs CVs',
+        subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
+      },
+      enterprise: {
+        badge: 'Entreprise',
+        heading: 'Développez Votre Recrutement',
+        subheading: 'Sans Compromis',
+        contactSales: 'Contacter les Ventes',
+        viewPricing: 'Voir les Tarifs',
+        teamManagement: {
+          title: 'Gestion d\'Équipe',
+          description: 'Tableau de bord centralisé pour les équipes RH pour suivre toutes les candidatures',
+        },
+        soc2: {
+          title: 'Conformité SOC 2',
+          description: 'Sécurité de niveau entreprise avec SSO et contrôle d\'accès basé sur les rôles',
+        },
+        api: {
+          title: 'Accès API',
+          description: 'Intégrez le scan ATS directement dans votre flux de travail de recrutement',
+        },
+        ctaHeading: 'Prêt à déboguer votre carrière?',
+        ctaSubheading: 'Rejoignez plus de 10 000 développeurs qui ont corrigé leurs erreurs d\'analyse et doublé leur taux d\'entretien.',
+        ctaButton: 'Vérifiez Ma Visibilité (Scan Gratuit)',
       },
     },
     onboarding: {
@@ -3631,6 +3755,37 @@ export const translations: Record<SupportedLocale, Translation> = {
         answer2: 'CVDebug zeigt Ihnen genau, wie ATS-Systeme Ihren Lebenslauf analysieren, identifiziert fehlende Schlüsselwörter und bietet umsetzbare Empfehlungen zur Verbesserung Ihres ATS-Scores.',
         question3: 'Sind meine Daten sicher?',
         answer3: 'Ja! Wir verwenden Verschlüsselung auf Unternehmensniveau und geben Ihre Daten niemals an Dritte weiter. Ihr Lebenslauf wird sicher verarbeitet und nach der Analyse gelöscht, es sei denn, Sie speichern ihn.',
+        stillHaveQuestions: 'Haben Sie noch Fragen? Probieren Sie jetzt unseren kostenlosen ATS-Scanner aus',
+        tryFreeScan: 'Scannen Sie Ihren Lebenslauf Kostenlos →',
+      },
+      testimonials: {
+        badge: 'Reddit Liebeswand',
+        heading: 'Vertraut von Redditors Weltweit',
+        subtitle: 'Echtes Feedback von r/resumes, r/developersIndia, r/cscareerquestions, und mehr.',
+        joinThousands: 'Schließen Sie sich Tausenden von Jobsuchenden an, die ihre Lebensläufe optimieren',
+        subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
+      },
+      enterprise: {
+        badge: 'Unternehmen',
+        heading: 'Skalieren Sie Ihre Einstellung',
+        subheading: 'Ohne Kompromisse',
+        contactSales: 'Vertrieb Kontaktieren',
+        viewPricing: 'Preise Ansehen',
+        teamManagement: {
+          title: 'Team-Management',
+          description: 'Zentralisiertes Dashboard für HR-Teams zur Verfolgung aller Bewerbungen',
+        },
+        soc2: {
+          title: 'SOC 2 Konform',
+          description: 'Sicherheit auf Unternehmensniveau mit SSO und rollenbasierter Zugriffskontrolle',
+        },
+        api: {
+          title: 'API-Zugang',
+          description: 'Integrieren Sie ATS-Scanning direkt in Ihren Recruiting-Workflow',
+        },
+        ctaHeading: 'Bereit, Ihre Karriere zu debuggen?',
+        ctaSubheading: 'Schließen Sie sich über 10.000 Entwicklern an, die ihre Parsing-Fehler behoben und ihre Interview-Rate verdoppelt haben.',
+        ctaButton: 'Meine Sichtbarkeit Prüfen (Kostenloser Scan)',
       },
     },
     onboarding: {
@@ -4479,6 +4634,37 @@ export const translations: Record<SupportedLocale, Translation> = {
         answer2: 'O CVDebug mostra exatamente como os sistemas ATS analisam seu currículo, identifica palavras-chave ausentes e fornece recomendações práticas para melhorar sua pontuação ATS.',
         question3: 'Meus dados estão seguros?',
         answer3: 'Sim! Usamos criptografia de nível empresarial e nunca compartilhamos seus dados com terceiros. Seu currículo é processado com segurança e excluído após a análise, a menos que você o salve.',
+        stillHaveQuestions: 'Ainda tem dúvidas? Experimente nosso scanner ATS gratuito agora',
+        tryFreeScan: 'Escaneie Seu Currículo Grátis →',
+      },
+      testimonials: {
+        badge: 'Mural de Amor do Reddit',
+        heading: 'Confiado por Redditors em Todo o Mundo',
+        subtitle: 'Feedback real de r/resumes, r/developersIndia, r/cscareerquestions, e mais.',
+        joinThousands: 'Junte-se a milhares de candidatos otimizando seus currículos',
+        subreddits: 'r/resumes, r/developersIndia, r/cscareerquestions, r/ProductManagement, r/datascience',
+      },
+      enterprise: {
+        badge: 'Empresarial',
+        heading: 'Escale Seu Recrutamento',
+        subheading: 'Sem Concessões',
+        contactSales: 'Contatar Vendas',
+        viewPricing: 'Ver Preços',
+        teamManagement: {
+          title: 'Gestão de Equipe',
+          description: 'Painel centralizado para equipes de RH rastrearem todas as candidaturas',
+        },
+        soc2: {
+          title: 'Conformidade SOC 2',
+          description: 'Segurança de nível empresarial com SSO e controle de acesso baseado em funções',
+        },
+        api: {
+          title: 'Acesso à API',
+          description: 'Integre o escaneamento ATS diretamente no seu fluxo de trabalho de recrutamento',
+        },
+        ctaHeading: 'Pronto para depurar sua carreira?',
+        ctaSubheading: 'Junte-se a mais de 10.000 desenvolvedores que corrigiram seus erros de análise e dobraram sua taxa de entrevistas.',
+        ctaButton: 'Verificar Minha Visibilidade (Scan Grátis)',
       },
     },
     onboarding: {
