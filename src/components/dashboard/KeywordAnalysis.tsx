@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
 import { PremiumFeatureModal } from "@/components/PremiumFeatureModal";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface KeywordAnalysisProps {
   matchedKeywords: string[];
@@ -31,6 +32,7 @@ export function KeywordAnalysis({
   matchRate = 0, // Real data only, no fake score
   onUpgrade
 }: KeywordAnalysisProps) {
+  const { t } = useI18n();
   const [showExamples, setShowExamples] = useState<string | null>(null);
   const [showPremiumModal, setShowPremiumModal] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<string>("");
@@ -46,8 +48,8 @@ export function KeywordAnalysis({
   // Handle View Examples
   const handleViewExamples = (keyword: string) => {
     setShowExamples(keyword);
-    toast.info(`Showing examples for "${keyword}"`, {
-      description: "View how top candidates incorporate this keyword effectively."
+    toast.info(`${t.keywordAnalysis.showingExamples} "${keyword}"`, {
+      description: t.keywordAnalysis.viewHowTopCandidates
     });
   };
 
@@ -217,14 +219,14 @@ export function KeywordAnalysis({
       {/* Header */}
       <div className="flex justify-between items-end mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-1">Keyword Analysis</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A] mb-1">{t.keywordAnalysis.title}</h2>
           <p className="text-sm text-[#475569]">
-            Semantic matching against standard Data Science JDs.
+            {t.keywordAnalysis.subtitle}
           </p>
         </div>
         <div className="text-right">
           <div className="text-3xl font-mono font-bold text-[#3B82F6]">{matchRate}%</div>
-          <div className="text-xs text-[#475569] uppercase tracking-wider">Match Rate</div>
+          <div className="text-xs text-[#475569] uppercase tracking-wider">{t.keywordAnalysis.matchRate}</div>
         </div>
       </div>
 
@@ -235,33 +237,33 @@ export function KeywordAnalysis({
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-[#0F172A] flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#22C55E]"></span>
-              Found Signals
+              {t.keywordAnalysis.foundSignals}
               <span className="bg-[#E2E8F0] text-[#475569] text-[10px] px-2 py-0.5 rounded-full font-mono">
-                {foundSignals.length} Total
+                {foundSignals.length} {t.keywordAnalysis.total}
               </span>
             </h3>
             <div className="flex gap-2 text-xs">
               <button
                 onClick={() => {
                   setGroupByType(!groupByType);
-                  toast.info(groupByType ? "Showing all keywords" : "Grouped by type", {
-                    description: groupByType ? "Displaying in flat list" : "Keywords organized by category"
+                  toast.info(groupByType ? t.keywordAnalysis.showingAllKeywords : t.keywordAnalysis.groupedByType, {
+                    description: groupByType ? t.keywordAnalysis.displayingFlatList : t.keywordAnalysis.keywordsOrganized
                   });
                 }}
                 className={`${groupByType ? 'text-[#3B82F6] font-medium' : 'text-[#64748B]'} hover:text-[#3B82F6] transition-colors`}
               >
-                Group by Type
+                {t.keywordAnalysis.groupByType}
               </button>
               <span className="text-[#475569]">|</span>
               <button
                 onClick={() => {
                   const newMode = viewMode === 'list' ? 'grid' : 'list';
                   setViewMode(newMode);
-                  toast.info(`Switched to ${newMode} view`);
+                  toast.info(`${t.keywordAnalysis.switchedToView} ${newMode === 'list' ? t.keywordAnalysis.listView.toLowerCase() : t.keywordAnalysis.gridView.toLowerCase()}`);
                 }}
                 className="text-[#3B82F6] font-medium hover:text-[#2563EB] transition-colors"
               >
-                {viewMode === 'list' ? 'List View' : 'Grid View'}
+                {viewMode === 'list' ? t.keywordAnalysis.listView : t.keywordAnalysis.gridView}
               </button>
             </div>
           </div>
@@ -385,13 +387,13 @@ export function KeywordAnalysis({
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-semibold text-[#0F172A] flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#EF4444] animate-pulse"></span>
-              Missing Critical Signals
+              {t.keywordAnalysis.missingCriticalSignals}
               <span className="bg-[#FEF2F2] text-[#EF4444] text-[10px] px-2 py-0.5 rounded-full font-mono border border-[#EF4444]/20">
-                High Impact
+                {t.keywordAnalysis.highImpact}
               </span>
             </h3>
             <div className="text-xs text-[#64748B]">
-              Fixing these increases score by ~15%
+              {t.keywordAnalysis.fixingIncreases}
             </div>
           </div>
 
@@ -404,8 +406,19 @@ export function KeywordAnalysis({
             {/* Decorative blob */}
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#EF4444]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div className="space-y-3">
-              {missingSignals.map((signal, index) => (
+            {missingSignals.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-[#22C55E]/10 flex items-center justify-center mb-4">
+                  <span className="material-symbols-outlined text-3xl text-[#22C55E]">check_circle</span>
+                </div>
+                <h4 className="text-lg font-bold text-[#0F172A] mb-2">{t.keywordAnalysis.noMissingSignals}</h4>
+                <p className="text-sm text-[#64748B] max-w-md">
+                  {t.keywordAnalysis.excellentKeywordCoverage}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {missingSignals.map((signal, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: 20 }}
@@ -445,7 +458,7 @@ export function KeywordAnalysis({
                       {/* Premium Badge */}
                       <div className="flex items-center justify-between">
                         <PremiumFeatureBadge plan="interview_sprint" size="sm" />
-                        <span className="text-[10px] text-[#64748B]">AI-Powered</span>
+                        <span className="text-[10px] text-[#64748B]">{t.keywordAnalysis.aiPowered}</span>
                       </div>
 
                       <div className="flex gap-2">
@@ -453,20 +466,21 @@ export function KeywordAnalysis({
                           onClick={() => handleViewExamples(signal.keyword)}
                           className="flex-1 bg-[#F8FAFC] hover:bg-[#E2E8F0] text-xs text-[#0F172A] py-1.5 rounded border border-[#E2E8F0] transition-colors font-medium"
                         >
-                          View Examples
+                          {t.keywordAnalysis.viewExamples}
                         </button>
                         <button
                           onClick={() => handleAutoAdd(signal.keyword)}
                           className="px-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded text-xs transition-all font-medium shadow-lg"
                         >
-                          Auto-Add
+                          {t.keywordAnalysis.autoAdd}
                         </button>
                       </div>
                     </div>
                   )}
                 </motion.div>
               ))}
-            </div>
+              </div>
+            )}
           </motion.div>
         </div>
 
@@ -474,7 +488,7 @@ export function KeywordAnalysis({
         <div className="col-span-12 mt-4">
           <h3 className="text-sm font-semibold text-[#0F172A] mb-3 flex items-center gap-2">
             <span className="material-symbols-outlined text-sm text-[#3B82F6]">cloud</span>
-            Industry Keyword Frequency
+            {t.keywordAnalysis.industryKeywordFrequency}
           </h3>
 
           <motion.div

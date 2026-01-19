@@ -938,6 +938,33 @@ export interface Translation {
     downloadReport: string;
     shareResults: string;
   };
+  // Keyword Analysis
+  keywordAnalysis: {
+    title: string;
+    subtitle: string;
+    matchRate: string;
+    foundSignals: string;
+    total: string;
+    groupByType: string;
+    listView: string;
+    gridView: string;
+    missingCriticalSignals: string;
+    highImpact: string;
+    fixingIncreases: string;
+    viewExamples: string;
+    autoAdd: string;
+    industryKeywordFrequency: string;
+    aiPowered: string;
+    showingExamples: string;
+    viewHowTopCandidates: string;
+    displayingFlatList: string;
+    keywordsOrganized: string;
+    switchedToView: string;
+    showingAllKeywords: string;
+    groupedByType: string;
+    noMissingSignals: string;
+    excellentKeywordCoverage: string;
+  };
   // AI Feedback
   aiFeedback: {
     rateResponse: string;
@@ -1852,6 +1879,32 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadReport: 'Download Report',
       shareResults: 'Share Results',
     },
+    keywordAnalysis: {
+      title: 'Keyword Analysis',
+      subtitle: 'Semantic matching against standard Data Science JDs.',
+      matchRate: 'Match Rate',
+      foundSignals: 'Found Signals',
+      total: 'Total',
+      groupByType: 'Group by Type',
+      listView: 'List View',
+      gridView: 'Grid View',
+      missingCriticalSignals: 'Missing Critical Signals',
+      highImpact: 'High Impact',
+      fixingIncreases: 'Fixing these increases score by ~15%',
+      viewExamples: 'View Examples',
+      autoAdd: 'Auto-Add',
+      industryKeywordFrequency: 'Industry Keyword Frequency',
+      aiPowered: 'AI-Powered',
+      showingExamples: 'Showing examples for',
+      viewHowTopCandidates: 'View how top candidates incorporate this keyword effectively.',
+      displayingFlatList: 'Displaying in flat list',
+      keywordsOrganized: 'Keywords organized by category',
+      switchedToView: 'Switched to',
+      showingAllKeywords: 'Showing all keywords',
+      groupedByType: 'Grouped by type',
+      noMissingSignals: 'No Missing Signals',
+      excellentKeywordCoverage: 'Great job! Your resume has excellent keyword coverage.',
+    },
     aiFeedback: {
       rateResponse: 'Rate this response',
       howHelpful: 'How helpful was this?',
@@ -2762,6 +2815,32 @@ export const translations: Record<SupportedLocale, Translation> = {
       criticalMessage: 'Encontramos 3 errores críticos que podrían estar causando rechazo automático. Estos necesitan atención inmediata.',
       downloadReport: 'Descargar Informe',
       shareResults: 'Compartir Resultados',
+    },
+    keywordAnalysis: {
+      title: 'Análisis de Palabras Clave',
+      subtitle: 'Coincidencia semántica con descripciones de trabajo estándar.',
+      matchRate: 'Tasa de Coincidencia',
+      foundSignals: 'Señales Encontradas',
+      total: 'Total',
+      groupByType: 'Agrupar por Tipo',
+      listView: 'Vista de Lista',
+      gridView: 'Vista de Cuadrícula',
+      missingCriticalSignals: 'Señales Críticas Faltantes',
+      highImpact: 'Alto Impacto',
+      fixingIncreases: 'Arreglar esto aumenta la puntuación en ~15%',
+      viewExamples: 'Ver Ejemplos',
+      autoAdd: 'Añadir Auto',
+      industryKeywordFrequency: 'Frecuencia de Palabras Clave de la Industria',
+      aiPowered: 'Impulsado por IA',
+      showingExamples: 'Mostrando ejemplos para',
+      viewHowTopCandidates: 'Ve cómo los mejores candidatos incorporan esta palabra clave de manera efectiva.',
+      displayingFlatList: 'Mostrando en lista plana',
+      keywordsOrganized: 'Palabras clave organizadas por categoría',
+      switchedToView: 'Cambiado a',
+      showingAllKeywords: 'Mostrando todas las palabras clave',
+      groupedByType: 'Agrupado por tipo',
+      noMissingSignals: 'Sin Señales Faltantes',
+      excellentKeywordCoverage: '¡Buen trabajo! Tu currículum tiene una excelente cobertura de palabras clave.',
     },
     aiFeedback: {
       rateResponse: 'Califica esta respuesta',
@@ -3674,6 +3753,32 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadReport: 'Télécharger le Rapport',
       shareResults: 'Partager les Résultats',
     },
+    keywordAnalysis: {
+      title: 'Analyse des Mots-clés',
+      subtitle: 'Correspondance sémantique avec les descriptions de poste standard.',
+      matchRate: 'Taux de Correspondance',
+      foundSignals: 'Signaux Trouvés',
+      total: 'Total',
+      groupByType: 'Grouper par Type',
+      listView: 'Vue Liste',
+      gridView: 'Vue Grille',
+      missingCriticalSignals: 'Signaux Critiques Manquants',
+      highImpact: 'Impact Élevé',
+      fixingIncreases: 'Corriger cela augmente le score d\'environ 15%',
+      viewExamples: 'Voir les Exemples',
+      autoAdd: 'Ajout Auto',
+      industryKeywordFrequency: 'Fréquence des Mots-clés de l\'Industrie',
+      aiPowered: 'Propulsé par IA',
+      showingExamples: 'Affichage d\'exemples pour',
+      viewHowTopCandidates: 'Voir comment les meilleurs candidats intègrent efficacement ce mot-clé.',
+      displayingFlatList: 'Affichage en liste plate',
+      keywordsOrganized: 'Mots-clés organisés par catégorie',
+      switchedToView: 'Basculé vers',
+      showingAllKeywords: 'Affichage de tous les mots-clés',
+      groupedByType: 'Groupé par type',
+      noMissingSignals: 'Aucun Signal Manquant',
+      excellentKeywordCoverage: 'Bon travail ! Votre CV a une excellente couverture de mots-clés.',
+    },
     aiFeedback: {
       rateResponse: 'Évaluer cette réponse',
       howHelpful: 'Dans quelle mesure cela a-t-il été utile ?',
@@ -4585,6 +4690,32 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadReport: 'Bericht Herunterladen',
       shareResults: 'Ergebnisse Teilen',
     },
+    keywordAnalysis: {
+      title: 'Schlüsselwortanalyse',
+      subtitle: 'Semantische Übereinstimmung mit Standard-Stellenbeschreibungen.',
+      matchRate: 'Übereinstimmungsrate',
+      foundSignals: 'Gefundene Signale',
+      total: 'Gesamt',
+      groupByType: 'Nach Typ Gruppieren',
+      listView: 'Listenansicht',
+      gridView: 'Rasteransicht',
+      missingCriticalSignals: 'Fehlende Kritische Signale',
+      highImpact: 'Hohe Auswirkung',
+      fixingIncreases: 'Das Beheben erhöht die Punktzahl um ~15%',
+      viewExamples: 'Beispiele Anzeigen',
+      autoAdd: 'Auto-Hinzufügen',
+      industryKeywordFrequency: 'Häufigkeit von Branchen-Schlüsselwörtern',
+      aiPowered: 'KI-Gestützt',
+      showingExamples: 'Beispiele anzeigen für',
+      viewHowTopCandidates: 'Sehen Sie, wie Top-Kandidaten dieses Schlüsselwort effektiv einsetzen.',
+      displayingFlatList: 'Anzeige in flacher Liste',
+      keywordsOrganized: 'Schlüsselwörter nach Kategorie organisiert',
+      switchedToView: 'Gewechselt zu',
+      showingAllKeywords: 'Alle Schlüsselwörter anzeigen',
+      groupedByType: 'Nach Typ gruppiert',
+      noMissingSignals: 'Keine Fehlenden Signale',
+      excellentKeywordCoverage: 'Gute Arbeit! Ihr Lebenslauf hat eine ausgezeichnete Schlüsselwort-Abdeckung.',
+    },
     aiFeedback: {
       rateResponse: 'Diese Antwort bewerten',
       howHelpful: 'Wie hilfreich war dies?',
@@ -5495,6 +5626,32 @@ export const translations: Record<SupportedLocale, Translation> = {
       criticalMessage: 'Encontramos 3 erros críticos que podem estar causando rejeição automática. Estes precisam de atenção imediata.',
       downloadReport: 'Baixar Relatório',
       shareResults: 'Compartilhar Resultados',
+    },
+    keywordAnalysis: {
+      title: 'Análise de Palavras-chave',
+      subtitle: 'Correspondência semântica com descrições de trabalho padrão.',
+      matchRate: 'Taxa de Correspondência',
+      foundSignals: 'Sinais Encontrados',
+      total: 'Total',
+      groupByType: 'Agrupar por Tipo',
+      listView: 'Visualização em Lista',
+      gridView: 'Visualização em Grade',
+      missingCriticalSignals: 'Sinais Críticos Ausentes',
+      highImpact: 'Alto Impacto',
+      fixingIncreases: 'Corrigir isso aumenta a pontuação em ~15%',
+      viewExamples: 'Ver Exemplos',
+      autoAdd: 'Adicionar Auto',
+      industryKeywordFrequency: 'Frequência de Palavras-chave da Indústria',
+      aiPowered: 'Alimentado por IA',
+      showingExamples: 'Mostrando exemplos para',
+      viewHowTopCandidates: 'Veja como os principais candidatos incorporam essa palavra-chave de forma eficaz.',
+      displayingFlatList: 'Exibindo em lista plana',
+      keywordsOrganized: 'Palavras-chave organizadas por categoria',
+      switchedToView: 'Alternado para',
+      showingAllKeywords: 'Mostrando todas as palavras-chave',
+      groupedByType: 'Agrupado por tipo',
+      noMissingSignals: 'Sem Sinais Ausentes',
+      excellentKeywordCoverage: 'Bom trabalho! Seu currículo tem uma excelente cobertura de palavras-chave.',
     },
     aiFeedback: {
       rateResponse: 'Avaliar esta resposta',
