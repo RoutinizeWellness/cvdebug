@@ -337,37 +337,37 @@ export default function PreviewScan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-30"
+    <div className="min-h-screen bg-[#FFFFFF] relative overflow-hidden">
+      {/* Background Effects - Light Theme */}
+      <div className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px)
+            linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px)
           `,
           backgroundSize: "32px 32px",
         }}
       />
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 left-1/4 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-[#3B82F6]/5 rounded-full blur-3xl" />
 
       {/* Scan line effect */}
       {isProcessing && !showResults && (
         <motion.div
-          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"
+          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[#8B5CF6] to-transparent"
           animate={{ y: [0, window.innerHeight] }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         />
       )}
 
       {/* Header */}
-      <header className="relative z-10 border-b border-slate-800/50 backdrop-blur-sm">
+      <header className="relative z-10 border-b border-[#E2E8F0] backdrop-blur-sm bg-white/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Logo />
           <Button
             variant="ghost"
             onClick={() => navigate("/auth")}
-            className="text-slate-300 hover:text-white"
+            className="text-[#475569] hover:text-[#1E293B]"
           >
             Sign In
           </Button>
@@ -392,10 +392,10 @@ export default function PreviewScan() {
                 transition={{ delay: 0.1 }}
                 className="mb-12"
               >
-                <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-                  Deep <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Diagnostic Scan</span>
+                <h1 className="text-4xl md:text-5xl font-black text-[#1E293B] mb-4">
+                  Deep <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">Diagnostic Scan</span>
                 </h1>
-                <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+                <p className="text-xl text-[#475569] max-w-2xl mx-auto">
                   See exactly how ATS systems parse your resume - no signup required
                 </p>
               </motion.div>
@@ -415,13 +415,13 @@ export default function PreviewScan() {
                 />
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="glass-panel p-12 rounded-2xl border-2 border-dashed border-primary/30 hover:border-primary/60 cursor-pointer transition-all group"
+                  className="bg-white p-12 rounded-2xl border-2 border-dashed border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 cursor-pointer transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Upload className="h-10 w-10 text-primary" />
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-[#3B82F6]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Upload className="h-10 w-10 text-[#8B5CF6]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Drop your resume here</h3>
-                  <p className="text-slate-400 mb-6">or click to browse files</p>
+                  <h3 className="text-2xl font-bold text-[#1E293B] mb-2">Drop your resume here</h3>
+                  <p className="text-[#475569] mb-6">or click to browse files</p>
                   <p className="text-sm text-[#64748B]">Supports PDF, Word, and Images • No account needed</p>
                 </div>
               </motion.div>
@@ -431,18 +431,18 @@ export default function PreviewScan() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-12 flex items-center justify-center gap-8 text-sm text-slate-400"
+                className="mt-12 flex items-center justify-center gap-8 text-sm text-[#475569]"
               >
                 <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
+                  <Lock className="h-4 w-4 text-[#8B5CF6]" />
                   <span>Secure & Private</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4" />
+                  <Zap className="h-4 w-4 text-[#8B5CF6]" />
                   <span>Instant Results</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-4 w-4 text-[#8B5CF6]" />
                   <span>No Credit Card</span>
                 </div>
               </motion.div>
@@ -455,17 +455,17 @@ export default function PreviewScan() {
               className="grid grid-cols-1 lg:grid-cols-3 gap-6"
             >
               {/* Terminal View - Left Side (2/3 width) */}
-              <div className="lg:col-span-2 glass-panel rounded-2xl overflow-hidden border border-slate-800/50">
-                <div className="bg-slate-900/80 px-4 py-3 border-b border-slate-800/50 flex items-center gap-3">
+              <div className="lg:col-span-2 bg-white rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                <div className="bg-[#F8FAFC] px-4 py-3 border-b border-[#E2E8F0] flex items-center gap-3">
                   <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-[#EF4444]/60" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                    <div className="w-3 h-3 rounded-full bg-[#22C55E]/60" />
+                    <div className="w-3 h-3 rounded-full bg-[#EF4444]" />
+                    <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
+                    <div className="w-3 h-3 rounded-full bg-[#22C55E]" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">resume_parser_v2.log</span>
+                  <span className="text-xs text-[#64748B] font-mono">resume_parser_v2.log</span>
                 </div>
 
-                <div className="bg-[#0a0e1a] p-6 h-[600px] overflow-y-auto font-mono text-sm custom-scrollbar">
+                <div className="bg-white p-6 h-[600px] overflow-y-auto font-mono text-sm custom-scrollbar">
                   {logs.map((log, i) => (
                     <motion.div
                       key={i}
@@ -473,17 +473,17 @@ export default function PreviewScan() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
                       className={`mb-2 ${
-                        log.type === "success" ? "text-green-400" :
-                        log.type === "error" ? "text-red-400" :
-                        log.type === "warning" ? "text-yellow-400" :
-                        "text-blue-300"
+                        log.type === "success" ? "text-[#22C55E]" :
+                        log.type === "error" ? "text-[#EF4444]" :
+                        log.type === "warning" ? "text-[#F59E0B]" :
+                        "text-[#3B82F6]"
                       }`}
                     >
                       {log.message}
                     </motion.div>
                   ))}
                   <motion.span
-                    className="inline-block w-2 h-4 bg-green-400 ml-1"
+                    className="inline-block w-2 h-4 bg-[#22C55E] ml-1"
                     animate={{ opacity: [1, 0] }}
                     transition={{ duration: 0.8, repeat: Infinity }}
                   />
@@ -492,46 +492,46 @@ export default function PreviewScan() {
 
               {/* Diagnostics Panel - Right Side (1/3 width) */}
               <div className="space-y-6">
-                <div className="glass-panel p-6 rounded-2xl border border-slate-800/50">
-                  <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-lg">analytics</span>
+                <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                  <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#8B5CF6] text-lg">analytics</span>
                     Diagnostics
                   </h3>
 
                   <div className="space-y-4">
                     {/* Encoding Health */}
-                    <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+                    <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-slate-400">Encoding</span>
-                        <span className="text-xs font-semibold text-green-400">{diagnostics.encoding}</span>
+                        <span className="text-xs text-[#64748B]">Encoding</span>
+                        <span className="text-xs font-semibold text-[#22C55E]">{diagnostics.encoding}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-xs text-slate-300">Valid</span>
+                        <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
+                        <span className="text-xs text-[#475569]">Valid</span>
                       </div>
                     </div>
 
                     {/* File Size */}
-                    <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+                    <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-slate-400">File Size</span>
-                        <span className="text-xs font-semibold text-blue-400">{diagnostics.fileSize}</span>
+                        <span className="text-xs text-[#64748B]">File Size</span>
+                        <span className="text-xs font-semibold text-[#3B82F6]">{diagnostics.fileSize}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-blue-400 text-sm">description</span>
-                        <span className="text-xs text-slate-300">Optimal</span>
+                        <span className="material-symbols-outlined text-[#3B82F6] text-sm">description</span>
+                        <span className="text-xs text-[#475569]">Optimal</span>
                       </div>
                     </div>
 
                     {/* Text-to-Image Ratio */}
-                    <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-slate-700">
+                    <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs text-slate-400">Text Extraction</span>
-                        <span className="text-xs font-semibold text-primary">{diagnostics.textRatio.toFixed(0)}%</span>
+                        <span className="text-xs text-[#64748B]">Text Extraction</span>
+                        <span className="text-xs font-semibold text-[#8B5CF6]">{diagnostics.textRatio.toFixed(0)}%</span>
                       </div>
-                      <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-[#E2E8F0] rounded-full h-2 overflow-hidden">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-primary to-secondary"
+                          className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]"
                           initial={{ width: 0 }}
                           animate={{ width: `${diagnostics.textRatio}%` }}
                           transition={{ duration: 0.8 }}
@@ -542,23 +542,23 @@ export default function PreviewScan() {
                 </div>
 
                 {/* Progress Card */}
-                <div className="glass-panel p-6 rounded-2xl border border-slate-800/50">
-                  <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-lg">hourglass_top</span>
+                <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                  <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#8B5CF6] text-lg">hourglass_top</span>
                     Progress
                   </h3>
 
                   <div className="space-y-3">
                     <div className="text-center">
-                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-2">
+                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mb-2">
                         {progress}%
                       </p>
-                      <p className="text-xs text-slate-400">{currentStep || "Processing..."}</p>
+                      <p className="text-xs text-[#64748B]">{currentStep || "Processing..."}</p>
                     </div>
 
-                    <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden relative">
+                    <div className="w-full bg-[#E2E8F0] rounded-full h-3 overflow-hidden relative">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-primary to-secondary relative"
+                        className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] relative"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.3 }}
@@ -587,60 +587,60 @@ export default function PreviewScan() {
               className="space-y-6 max-w-4xl mx-auto"
             >
               {/* Score Card - Partially Revealed */}
-              <div className="glass-panel p-8 rounded-2xl text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10" />
+              <div className="bg-white p-8 rounded-2xl text-center relative overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/10 to-[#3B82F6]/10" />
                 <div className="relative z-10">
-                  <h2 className="text-2xl font-bold text-white mb-4">Your Resume Score</h2>
+                  <h2 className="text-2xl font-bold text-[#1E293B] mb-4">Your Resume Score</h2>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", duration: 0.8 }}
-                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary mb-4"
+                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mb-4"
                   >
                     {previewScore}
                   </motion.div>
-                  <p className="text-slate-400 mb-6">Out of 100</p>
+                  <p className="text-[#475569] mb-6">Out of 100</p>
 
                   <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-                    <div className="bg-[#1e293b]/50 rounded-lg p-4">
-                      <p className="text-sm text-slate-400 mb-1">Extraction</p>
-                      <p className="text-2xl font-bold text-green-400">✓ Success</p>
+                    <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
+                      <p className="text-sm text-[#64748B] mb-1">Extraction</p>
+                      <p className="text-2xl font-bold text-[#22C55E]">✓ Success</p>
                     </div>
-                    <div className="bg-[#1e293b]/50 rounded-lg p-4">
-                      <p className="text-sm text-slate-400 mb-1">Processing Time</p>
-                      <p className="text-2xl font-bold text-white">&lt; 10s</p>
+                    <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
+                      <p className="text-sm text-[#64748B] mb-1">Processing Time</p>
+                      <p className="text-2xl font-bold text-[#1E293B]">&lt; 10s</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Robot View Preview */}
-              <div className="glass-panel p-6 rounded-2xl">
+              <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center">
-                    <Eye className="h-5 w-5 text-green-400" />
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#22C55E]/20 to-[#10B981]/20 flex items-center justify-center">
+                    <Eye className="h-5 w-5 text-[#22C55E]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Robot View Preview</h3>
-                    <p className="text-sm text-slate-400">This is what ATS systems actually see</p>
+                    <h3 className="text-lg font-bold text-[#1E293B]">Robot View Preview</h3>
+                    <p className="text-sm text-[#475569]">This is what ATS systems actually see</p>
                   </div>
                 </div>
 
-                <div className="bg-[#0F172A] rounded-lg p-6 border border-slate-800 font-mono text-sm relative">
-                  <div className="text-green-400 whitespace-pre-wrap max-h-60 overflow-hidden">
+                <div className="bg-[#F8FAFC] rounded-lg p-6 border border-[#E2E8F0] font-mono text-sm relative">
+                  <div className="text-[#22C55E] whitespace-pre-wrap max-h-60 overflow-hidden">
                     {extractedText.substring(0, 500)}
                     {extractedText.length > 500 && "..."}
                   </div>
 
                   {/* Blur overlay for bottom half */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0F172A] pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#F8FAFC] pointer-events-none" />
 
                   {/* Locked overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-[#0F172A]/80 backdrop-blur-sm">
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm">
                     <div className="text-center">
-                      <Lock className="h-12 w-12 text-primary mx-auto mb-4" />
-                      <p className="text-white font-bold text-lg mb-2">Create free account to see full Robot View</p>
-                      <p className="text-slate-400 text-sm">Plus detailed keyword analysis and actionable fixes</p>
+                      <Lock className="h-12 w-12 text-[#8B5CF6] mx-auto mb-4" />
+                      <p className="text-[#1E293B] font-bold text-lg mb-2">Create free account to see full Robot View</p>
+                      <p className="text-[#475569] text-sm">Plus detailed keyword analysis and actionable fixes</p>
                     </div>
                   </div>
                 </div>
