@@ -1,7 +1,10 @@
 import { Github, Twitter } from "lucide-react";
 import { Link } from "react-router";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function NewFooter() {
+  const { t } = useI18n();
+
   return (
     <footer className="bg-[#F8FAFC] mt-24 border-t border-[#E2E8F0]">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
@@ -15,27 +18,27 @@ export function NewFooter() {
               className="h-7 w-auto max-w-[90px] object-contain mb-4"
             />
             <p className="text-[#475569] text-sm">
-              Beat ATS systems with AI-powered resume optimization. Get hired faster.
+              {t.footer.description}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="text-[#1E293B] font-semibold mb-4">Product</h3>
+            <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.product}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/pricing" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Pricing
+                  {t.footer.pricing}
                 </Link>
               </li>
               <li>
                 <Link to="/preview" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Free Scanner
+                  {t.footer.freeScanner}
                 </Link>
               </li>
               <li>
                 <Link to="/blog" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Blog
+                  {t.footer.blog}
                 </Link>
               </li>
             </ul>
@@ -43,16 +46,16 @@ export function NewFooter() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-[#1E293B] font-semibold mb-4">Resources</h3>
+            <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.resources}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  About Us
+                  {t.footer.aboutUs}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Contact Us
+                  {t.footer.contactUs}
                 </Link>
               </li>
             </ul>
@@ -60,16 +63,16 @@ export function NewFooter() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-[#1E293B] font-semibold mb-4">Legal</h3>
+            <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.legal}</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/privacy" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Privacy Policy
+                  {t.footer.privacy}
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
-                  Terms & Conditions
+                  {t.footer.terms}
                 </Link>
               </li>
             </ul>
@@ -79,7 +82,7 @@ export function NewFooter() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-center text-xs leading-5 text-[#475569]">
-            © 2026 CVDebug Inc. All rights reserved. System Status: <span className="text-[#22C55E]">Online</span>
+            {t.footer.copyright} <span className="text-[#22C55E]">{t.footer.online}</span>
           </p>
 
           <div className="flex justify-center space-x-6">

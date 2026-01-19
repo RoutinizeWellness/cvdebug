@@ -43,6 +43,49 @@ export interface Translation {
     save: string;
     delete: string;
   };
+  // Showcase Gallery
+  showcase: {
+    badge: string;
+    heading: string;
+    subheading: string;
+    description: string;
+    robotTech: string;
+    robotDesc: string;
+    instantScore: string;
+    instantDesc: string;
+    smartKeyword: string;
+    smartDesc: string;
+    enterpriseSec: string;
+    enterpriseDesc: string;
+    ctaBanner: string;
+    ctaSubtext: string;
+    ctaButton: string;
+  };
+  // Comparison Section
+  comparison: {
+    badge: string;
+    heading: string;
+    description: string;
+    humanView: string;
+    robotView: string;
+  };
+  // Footer
+  footer: {
+    description: string;
+    product: string;
+    pricing: string;
+    freeScanner: string;
+    blog: string;
+    resources: string;
+    aboutUs: string;
+    contactUs: string;
+    legal: string;
+    privacy: string;
+    terms: string;
+    copyright: string;
+    systemStatus: string;
+    online: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -81,6 +124,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       save: 'Save',
       delete: 'Delete',
     },
+    showcase: {
+      badge: 'Free ATS Scanner',
+      heading: 'Beat ATS Systems',
+      subheading: 'In 10 Seconds',
+      description: 'See your resume the way robots see it. Get instant feedback and land more interviews.',
+      robotTech: 'Robot View Technology',
+      robotDesc: 'See exactly what ATS robots see - no guessing',
+      instantScore: 'Instant ATS Score',
+      instantDesc: 'Get your compatibility score in 10 seconds',
+      smartKeyword: 'Smart Keyword Analysis',
+      smartDesc: 'AI-powered matching with job descriptions',
+      enterpriseSec: 'Enterprise Security',
+      enterpriseDesc: 'Your data stays private and secure',
+      ctaBanner: 'Get Your Free ATS Score',
+      ctaSubtext: 'Scan your resume in 10 seconds - no signup required',
+      ctaButton: 'Try Free Scan →',
+    },
+    comparison: {
+      badge: 'Reality Check',
+      heading: 'What you see vs. What they see',
+      description: 'Most modern resume templates look great to humans but are a nightmare for robots. Columns, icons, and graphics often break the parsing logic.',
+      humanView: 'Human View (PDF)',
+      robotView: 'Robot View (Parsed)',
+    },
+    footer: {
+      description: 'Beat ATS systems with AI-powered resume optimization. Get hired faster.',
+      product: 'Product',
+      pricing: 'Pricing',
+      freeScanner: 'Free Scanner',
+      blog: 'Blog',
+      resources: 'Resources',
+      aboutUs: 'About Us',
+      contactUs: 'Contact Us',
+      legal: 'Legal',
+      privacy: 'Privacy Policy',
+      terms: 'Terms & Conditions',
+      copyright: '© 2026 CVDebug Inc. All rights reserved. System Status:',
+      systemStatus: 'System Status:',
+      online: 'Online',
+    },
   },
   'en-GB': {
     hero: {
@@ -116,6 +199,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancel',
       save: 'Save',
       delete: 'Delete',
+    },
+    showcase: {
+      badge: 'Free ATS Scanner',
+      heading: 'Beat ATS Systems',
+      subheading: 'In 10 Seconds',
+      description: 'See your CV the way robots see it. Get instant feedback and land more interviews.',
+      robotTech: 'Robot View Technology',
+      robotDesc: 'See exactly what ATS robots see - no guessing',
+      instantScore: 'Instant ATS Score',
+      instantDesc: 'Get your compatibility score in 10 seconds',
+      smartKeyword: 'Smart Keyword Analysis',
+      smartDesc: 'AI-powered matching with job descriptions',
+      enterpriseSec: 'Enterprise Security',
+      enterpriseDesc: 'Your data stays private and secure',
+      ctaBanner: 'Get Your Free ATS Score',
+      ctaSubtext: 'Scan your CV in 10 seconds - no signup required',
+      ctaButton: 'Try Free Scan →',
+    },
+    comparison: {
+      badge: 'Reality Check',
+      heading: 'What you see vs. What they see',
+      description: 'Most modern CV templates look great to humans but are a nightmare for robots. Columns, icons, and graphics often break the parsing logic.',
+      humanView: 'Human View (PDF)',
+      robotView: 'Robot View (Parsed)',
+    },
+    footer: {
+      description: 'Beat ATS systems with AI-powered CV optimisation. Get hired faster.',
+      product: 'Product',
+      pricing: 'Pricing',
+      freeScanner: 'Free Scanner',
+      blog: 'Blog',
+      resources: 'Resources',
+      aboutUs: 'About Us',
+      contactUs: 'Contact Us',
+      legal: 'Legal',
+      privacy: 'Privacy Policy',
+      terms: 'Terms & Conditions',
+      copyright: '© 2026 CVDebug Inc. All rights reserved. System Status:',
+      systemStatus: 'System Status:',
+      online: 'Online',
     },
   },
   'es-ES': {
@@ -153,6 +276,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       save: 'Guardar',
       delete: 'Eliminar',
     },
+    showcase: {
+      badge: 'Escáner ATS Gratuito',
+      heading: 'Supera los Sistemas ATS',
+      subheading: 'En 10 Segundos',
+      description: 'Ve tu CV como lo ven los robots. Obtén comentarios instantáneos y consigue más entrevistas.',
+      robotTech: 'Tecnología Vista Robot',
+      robotDesc: 'Ve exactamente lo que ven los robots ATS - sin adivinar',
+      instantScore: 'Puntuación ATS Instantánea',
+      instantDesc: 'Obtén tu puntuación de compatibilidad en 10 segundos',
+      smartKeyword: 'Análisis Inteligente de Palabras Clave',
+      smartDesc: 'Coincidencia con descripciones de trabajo con IA',
+      enterpriseSec: 'Seguridad Empresarial',
+      enterpriseDesc: 'Tus datos permanecen privados y seguros',
+      ctaBanner: 'Obtén tu Puntuación ATS Gratuita',
+      ctaSubtext: 'Escanea tu CV en 10 segundos - sin registro',
+      ctaButton: 'Prueba el Escaneo Gratis →',
+    },
+    comparison: {
+      badge: 'Verificación de Realidad',
+      heading: 'Lo que ves vs. Lo que ven ellos',
+      description: 'La mayoría de las plantillas de CV modernas se ven geniales para los humanos pero son una pesadilla para los robots. Las columnas, iconos y gráficos a menudo rompen la lógica de análisis.',
+      humanView: 'Vista Humana (PDF)',
+      robotView: 'Vista Robot (Analizado)',
+    },
+    footer: {
+      description: 'Supera los sistemas ATS con optimización de CV con IA. Consigue trabajo más rápido.',
+      product: 'Producto',
+      pricing: 'Precios',
+      freeScanner: 'Escáner Gratuito',
+      blog: 'Blog',
+      resources: 'Recursos',
+      aboutUs: 'Sobre Nosotros',
+      contactUs: 'Contáctanos',
+      legal: 'Legal',
+      privacy: 'Política de Privacidad',
+      terms: 'Términos y Condiciones',
+      copyright: '© 2026 CVDebug Inc. Todos los derechos reservados. Estado del Sistema:',
+      systemStatus: 'Estado del Sistema:',
+      online: 'En Línea',
+    },
   },
   'fr-FR': {
     hero: {
@@ -188,6 +351,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Annuler',
       save: 'Enregistrer',
       delete: 'Supprimer',
+    },
+    showcase: {
+      badge: 'Scanner ATS Gratuit',
+      heading: 'Battez les Systèmes ATS',
+      subheading: 'En 10 Secondes',
+      description: 'Voyez votre CV comme les robots le voient. Obtenez des retours instantanés et décrochez plus d\'entretiens.',
+      robotTech: 'Technologie Vue Robot',
+      robotDesc: 'Voyez exactement ce que voient les robots ATS - sans deviner',
+      instantScore: 'Score ATS Instantané',
+      instantDesc: 'Obtenez votre score de compatibilité en 10 secondes',
+      smartKeyword: 'Analyse Intelligente des Mots-Clés',
+      smartDesc: 'Correspondance alimentée par l\'IA avec les descriptions de poste',
+      enterpriseSec: 'Sécurité Entreprise',
+      enterpriseDesc: 'Vos données restent privées et sécurisées',
+      ctaBanner: 'Obtenez Votre Score ATS Gratuit',
+      ctaSubtext: 'Scannez votre CV en 10 secondes - sans inscription',
+      ctaButton: 'Essayez le Scan Gratuit →',
+    },
+    comparison: {
+      badge: 'Vérification de Réalité',
+      heading: 'Ce que vous voyez vs. Ce qu\'ils voient',
+      description: 'La plupart des modèles de CV modernes sont magnifiques pour les humains mais sont un cauchemar pour les robots. Les colonnes, icônes et graphiques cassent souvent la logique d\'analyse.',
+      humanView: 'Vue Humaine (PDF)',
+      robotView: 'Vue Robot (Analysé)',
+    },
+    footer: {
+      description: 'Battez les systèmes ATS avec l\'optimisation de CV alimentée par l\'IA. Soyez embauché plus rapidement.',
+      product: 'Produit',
+      pricing: 'Tarifs',
+      freeScanner: 'Scanner Gratuit',
+      blog: 'Blog',
+      resources: 'Ressources',
+      aboutUs: 'À Propos',
+      contactUs: 'Contactez-nous',
+      legal: 'Légal',
+      privacy: 'Politique de Confidentialité',
+      terms: 'Conditions Générales',
+      copyright: '© 2026 CVDebug Inc. Tous droits réservés. État du Système:',
+      systemStatus: 'État du Système:',
+      online: 'En Ligne',
     },
   },
   'de-DE': {
@@ -225,6 +428,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       save: 'Speichern',
       delete: 'Löschen',
     },
+    showcase: {
+      badge: 'Kostenloser ATS-Scanner',
+      heading: 'ATS-Systeme Schlagen',
+      subheading: 'In 10 Sekunden',
+      description: 'Sehen Sie Ihren Lebenslauf so, wie Roboter ihn sehen. Erhalten Sie sofortiges Feedback und landen Sie mehr Vorstellungsgespräche.',
+      robotTech: 'Roboter-Ansicht Technologie',
+      robotDesc: 'Sehen Sie genau, was ATS-Roboter sehen - kein Raten',
+      instantScore: 'Sofortiger ATS-Score',
+      instantDesc: 'Erhalten Sie Ihren Kompatibilitätswert in 10 Sekunden',
+      smartKeyword: 'Intelligente Schlüsselwort-Analyse',
+      smartDesc: 'KI-gestützte Übereinstimmung mit Stellenbeschreibungen',
+      enterpriseSec: 'Unternehmenssicherheit',
+      enterpriseDesc: 'Ihre Daten bleiben privat und sicher',
+      ctaBanner: 'Holen Sie sich Ihren Kostenlosen ATS-Score',
+      ctaSubtext: 'Scannen Sie Ihren Lebenslauf in 10 Sekunden - keine Anmeldung',
+      ctaButton: 'Kostenlosen Scan Testen →',
+    },
+    comparison: {
+      badge: 'Realitätscheck',
+      heading: 'Was Sie sehen vs. Was sie sehen',
+      description: 'Die meisten modernen Lebenslauf-Vorlagen sehen für Menschen großartig aus, sind aber ein Albtraum für Roboter. Spalten, Symbole und Grafiken brechen oft die Analyse-Logik.',
+      humanView: 'Menschliche Ansicht (PDF)',
+      robotView: 'Roboter-Ansicht (Analysiert)',
+    },
+    footer: {
+      description: 'Schlagen Sie ATS-Systeme mit KI-gestützter Lebenslauf-Optimierung. Schneller eingestellt werden.',
+      product: 'Produkt',
+      pricing: 'Preise',
+      freeScanner: 'Kostenloser Scanner',
+      blog: 'Blog',
+      resources: 'Ressourcen',
+      aboutUs: 'Über Uns',
+      contactUs: 'Kontaktieren Sie Uns',
+      legal: 'Rechtliches',
+      privacy: 'Datenschutzrichtlinie',
+      terms: 'Allgemeine Geschäftsbedingungen',
+      copyright: '© 2026 CVDebug Inc. Alle Rechte vorbehalten. Systemstatus:',
+      systemStatus: 'Systemstatus:',
+      online: 'Online',
+    },
   },
   'pt-BR': {
     hero: {
@@ -260,6 +503,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       save: 'Salvar',
       delete: 'Excluir',
+    },
+    showcase: {
+      badge: 'Scanner ATS Gratuito',
+      heading: 'Vença os Sistemas ATS',
+      subheading: 'Em 10 Segundos',
+      description: 'Veja seu currículo como os robôs veem. Obtenha feedback instantâneo e consiga mais entrevistas.',
+      robotTech: 'Tecnologia Visão Robô',
+      robotDesc: 'Veja exatamente o que os robôs ATS veem - sem adivinhação',
+      instantScore: 'Pontuação ATS Instantânea',
+      instantDesc: 'Obtenha sua pontuação de compatibilidade em 10 segundos',
+      smartKeyword: 'Análise Inteligente de Palavras-Chave',
+      smartDesc: 'Correspondência alimentada por IA com descrições de vagas',
+      enterpriseSec: 'Segurança Empresarial',
+      enterpriseDesc: 'Seus dados permanecem privados e seguros',
+      ctaBanner: 'Obtenha Sua Pontuação ATS Grátis',
+      ctaSubtext: 'Escaneie seu currículo em 10 segundos - sem cadastro',
+      ctaButton: 'Experimente o Scan Grátis →',
+    },
+    comparison: {
+      badge: 'Verificação de Realidade',
+      heading: 'O que você vê vs. O que eles veem',
+      description: 'A maioria dos modelos de currículo modernos parecem ótimos para humanos, mas são um pesadelo para robôs. Colunas, ícones e gráficos frequentemente quebram a lógica de análise.',
+      humanView: 'Visão Humana (PDF)',
+      robotView: 'Visão Robô (Analisado)',
+    },
+    footer: {
+      description: 'Vença os sistemas ATS com otimização de currículo alimentada por IA. Seja contratado mais rápido.',
+      product: 'Produto',
+      pricing: 'Preços',
+      freeScanner: 'Scanner Gratuito',
+      blog: 'Blog',
+      resources: 'Recursos',
+      aboutUs: 'Sobre Nós',
+      contactUs: 'Fale Conosco',
+      legal: 'Legal',
+      privacy: 'Política de Privacidade',
+      terms: 'Termos e Condições',
+      copyright: '© 2026 CVDebug Inc. Todos os direitos reservados. Status do Sistema:',
+      systemStatus: 'Status do Sistema:',
+      online: 'Online',
     },
   },
   'en-IN': {
@@ -297,6 +580,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       save: 'Save',
       delete: 'Delete',
     },
+    showcase: {
+      badge: 'Free ATS Scanner',
+      heading: 'Beat ATS Systems',
+      subheading: 'In 10 Seconds',
+      description: 'See your resume the way robots see it. Get instant feedback and land more interviews.',
+      robotTech: 'Robot View Technology',
+      robotDesc: 'See exactly what ATS robots see - no guessing',
+      instantScore: 'Instant ATS Score',
+      instantDesc: 'Get your compatibility score in 10 seconds',
+      smartKeyword: 'Smart Keyword Analysis',
+      smartDesc: 'AI-powered matching with job descriptions',
+      enterpriseSec: 'Enterprise Security',
+      enterpriseDesc: 'Your data stays private and secure',
+      ctaBanner: 'Get Your Free ATS Score',
+      ctaSubtext: 'Scan your resume in 10 seconds - no signup required',
+      ctaButton: 'Try Free Scan →',
+    },
+    comparison: {
+      badge: 'Reality Check',
+      heading: 'What you see vs. What they see',
+      description: 'Most modern resume templates look great to humans but are a nightmare for robots. Columns, icons, and graphics often break the parsing logic.',
+      humanView: 'Human View (PDF)',
+      robotView: 'Robot View (Parsed)',
+    },
+    footer: {
+      description: 'Beat ATS systems with AI-powered resume optimization. Get hired faster.',
+      product: 'Product',
+      pricing: 'Pricing',
+      freeScanner: 'Free Scanner',
+      blog: 'Blog',
+      resources: 'Resources',
+      aboutUs: 'About Us',
+      contactUs: 'Contact Us',
+      legal: 'Legal',
+      privacy: 'Privacy Policy',
+      terms: 'Terms & Conditions',
+      copyright: '© 2026 CVDebug Inc. All rights reserved. System Status:',
+      systemStatus: 'System Status:',
+      online: 'Online',
+    },
   },
   'en-CA': {
     hero: {
@@ -332,6 +655,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancel',
       save: 'Save',
       delete: 'Delete',
+    },
+    showcase: {
+      badge: 'Free ATS Scanner',
+      heading: 'Beat ATS Systems',
+      subheading: 'In 10 Seconds',
+      description: 'See your resume the way robots see it. Get instant feedback and land more interviews.',
+      robotTech: 'Robot View Technology',
+      robotDesc: 'See exactly what ATS robots see - no guessing',
+      instantScore: 'Instant ATS Score',
+      instantDesc: 'Get your compatibility score in 10 seconds',
+      smartKeyword: 'Smart Keyword Analysis',
+      smartDesc: 'AI-powered matching with job descriptions',
+      enterpriseSec: 'Enterprise Security',
+      enterpriseDesc: 'Your data stays private and secure',
+      ctaBanner: 'Get Your Free ATS Score',
+      ctaSubtext: 'Scan your resume in 10 seconds - no signup required',
+      ctaButton: 'Try Free Scan →',
+    },
+    comparison: {
+      badge: 'Reality Check',
+      heading: 'What you see vs. What they see',
+      description: 'Most modern resume templates look great to humans but are a nightmare for robots. Columns, icons, and graphics often break the parsing logic.',
+      humanView: 'Human View (PDF)',
+      robotView: 'Robot View (Parsed)',
+    },
+    footer: {
+      description: 'Beat ATS systems with AI-powered resume optimization. Get hired faster.',
+      product: 'Product',
+      pricing: 'Pricing',
+      freeScanner: 'Free Scanner',
+      blog: 'Blog',
+      resources: 'Resources',
+      aboutUs: 'About Us',
+      contactUs: 'Contact Us',
+      legal: 'Legal',
+      privacy: 'Privacy Policy',
+      terms: 'Terms & Conditions',
+      copyright: '© 2026 CVDebug Inc. All rights reserved. System Status:',
+      systemStatus: 'System Status:',
+      online: 'Online',
     },
   },
   'en-AU': {
@@ -369,6 +732,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       save: 'Save',
       delete: 'Delete',
     },
+    showcase: {
+      badge: 'Free ATS Scanner',
+      heading: 'Beat ATS Systems',
+      subheading: 'In 10 Seconds',
+      description: 'See your resume the way robots see it. Get instant feedback and land more interviews.',
+      robotTech: 'Robot View Technology',
+      robotDesc: 'See exactly what ATS robots see - no guessing',
+      instantScore: 'Instant ATS Score',
+      instantDesc: 'Get your compatibility score in 10 seconds',
+      smartKeyword: 'Smart Keyword Analysis',
+      smartDesc: 'AI-powered matching with job descriptions',
+      enterpriseSec: 'Enterprise Security',
+      enterpriseDesc: 'Your data stays private and secure',
+      ctaBanner: 'Get Your Free ATS Score',
+      ctaSubtext: 'Scan your resume in 10 seconds - no signup required',
+      ctaButton: 'Try Free Scan →',
+    },
+    comparison: {
+      badge: 'Reality Check',
+      heading: 'What you see vs. What they see',
+      description: 'Most modern resume templates look great to humans but are a nightmare for robots. Columns, icons, and graphics often break the parsing logic.',
+      humanView: 'Human View (PDF)',
+      robotView: 'Robot View (Parsed)',
+    },
+    footer: {
+      description: 'Beat ATS systems with AI-powered resume optimization. Get hired faster.',
+      product: 'Product',
+      pricing: 'Pricing',
+      freeScanner: 'Free Scanner',
+      blog: 'Blog',
+      resources: 'Resources',
+      aboutUs: 'About Us',
+      contactUs: 'Contact Us',
+      legal: 'Legal',
+      privacy: 'Privacy Policy',
+      terms: 'Terms & Conditions',
+      copyright: '© 2026 CVDebug Inc. All rights reserved. System Status:',
+      systemStatus: 'System Status:',
+      online: 'Online',
+    },
   },
   'es-MX': {
     hero: {
@@ -404,6 +807,46 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       save: 'Guardar',
       delete: 'Eliminar',
+    },
+    showcase: {
+      badge: 'Escáner ATS Gratuito',
+      heading: 'Supera los Sistemas ATS',
+      subheading: 'En 10 Segundos',
+      description: 'Ve tu CV como lo ven los robots. Obtén comentarios instantáneos y consigue más entrevistas.',
+      robotTech: 'Tecnología Vista Robot',
+      robotDesc: 'Ve exactamente lo que ven los robots ATS - sin adivinar',
+      instantScore: 'Puntuación ATS Instantánea',
+      instantDesc: 'Obtén tu puntuación de compatibilidad en 10 segundos',
+      smartKeyword: 'Análisis Inteligente de Palabras Clave',
+      smartDesc: 'Coincidencia con descripciones de trabajo con IA',
+      enterpriseSec: 'Seguridad Empresarial',
+      enterpriseDesc: 'Tus datos permanecen privados y seguros',
+      ctaBanner: 'Obtén tu Puntuación ATS Gratuita',
+      ctaSubtext: 'Escanea tu CV en 10 segundos - sin registro',
+      ctaButton: 'Prueba el Escaneo Gratis →',
+    },
+    comparison: {
+      badge: 'Verificación de Realidad',
+      heading: 'Lo que ves vs. Lo que ven ellos',
+      description: 'La mayoría de las plantillas de CV modernas se ven geniales para los humanos pero son una pesadilla para los robots. Las columnas, iconos y gráficos a menudo rompen la lógica de análisis.',
+      humanView: 'Vista Humana (PDF)',
+      robotView: 'Vista Robot (Analizado)',
+    },
+    footer: {
+      description: 'Supera los sistemas ATS con optimización de CV con IA. Consigue trabajo más rápido.',
+      product: 'Producto',
+      pricing: 'Precios',
+      freeScanner: 'Escáner Gratuito',
+      blog: 'Blog',
+      resources: 'Recursos',
+      aboutUs: 'Sobre Nosotros',
+      contactUs: 'Contáctanos',
+      legal: 'Legal',
+      privacy: 'Política de Privacidad',
+      terms: 'Términos y Condiciones',
+      copyright: '© 2026 CVDebug Inc. Todos los derechos reservados. Estado del Sistema:',
+      systemStatus: 'Estado del Sistema:',
+      online: 'En Línea',
     },
   },
 };

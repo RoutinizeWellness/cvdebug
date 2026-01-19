@@ -4,10 +4,12 @@ import { ArrowRight, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function NewHeroSection() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { t } = useI18n();
   const [savedCount, setSavedCount] = useState(141);
   const [unlockedToday, setUnlockedToday] = useState(7);
 
@@ -61,7 +63,7 @@ export function NewHeroSection() {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-center px-4 max-w-5xl mx-auto"
         >
           <span className="text-[#1E293B]">
-            Stop guessing why you're being{" "}
+            {t.hero.title.split('ghosted')[0]}
           </span>
           <br className="hidden sm:block" />
           <span
@@ -83,9 +85,7 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mt-6 text-lg sm:text-xl leading-8 text-[#475569] max-w-3xl mx-auto px-4 text-center"
         >
-          <span className="font-bold text-[#1E293B]">Debug your resume's invisible bugs</span> and land interviews in 7 days.
-          <br className="mt-2 block" />
-          We don't sell pretty CVs—we sell <span className="font-semibold text-[#8B5CF6]">total algorithmic legibility</span>.
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.div
@@ -103,7 +103,7 @@ export function NewHeroSection() {
               onClick={() => navigate("/preview")}
               className="gradient-button relative flex h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 text-lg font-bold text-white border-0 group shadow-soft"
             >
-              <span className="relative z-10">See Robot View - Free</span>
+              <span className="relative z-10">{t.hero.ctaPrimary}</span>
               <motion.div
                 className="relative z-10"
                 animate={{ x: [0, 3, 0] }}
@@ -120,7 +120,7 @@ export function NewHeroSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span>Sign Up for Full Access</span>
+            <span>{t.hero.ctaSecondary}</span>
           </motion.button>
         </motion.div>
 
@@ -130,7 +130,7 @@ export function NewHeroSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-6 text-sm text-[#475569] px-4 text-center"
         >
-          No credit card • No sign up required • Instant results in 10 seconds
+          {t.hero.trustIndicator}
         </motion.p>
       </div>
     </section>

@@ -1,40 +1,43 @@
 import { motion } from "framer-motion";
 import { Sparkles, TrendingUp, Zap, Shield } from "lucide-react";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { useI18n } from "@/contexts/I18nContext";
 
 /**
  * Premium Product Showcase Gallery
  * High-quality mockups for Product Hunt launch
  */
 export function ProductShowcaseGallery() {
+  const { t } = useI18n();
+
   const showcaseItems = [
     {
-      title: "Robot View Technology",
-      description: "See exactly what ATS robots see - no guessing",
+      title: t.showcase.robotTech,
+      description: t.showcase.robotDesc,
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
       icon: Sparkles,
       color: "#8B5CF6",
       stats: "95% accuracy rate"
     },
     {
-      title: "Instant ATS Score",
-      description: "Get your compatibility score in 10 seconds",
+      title: t.showcase.instantScore,
+      description: t.showcase.instantDesc,
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
       icon: Zap,
       color: "#8B5CF6",
       stats: "10s scan time"
     },
     {
-      title: "Smart Keyword Analysis",
-      description: "AI-powered matching with job descriptions",
+      title: t.showcase.smartKeyword,
+      description: t.showcase.smartDesc,
       image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
       icon: TrendingUp,
       color: "#3B82F6",
       stats: "1000+ keywords"
     },
     {
-      title: "Enterprise Security",
-      description: "Your data stays private and secure",
+      title: t.showcase.enterpriseSec,
+      description: t.showcase.enterpriseDesc,
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
       icon: Shield,
       color: "#10B981",
@@ -60,18 +63,18 @@ export function ProductShowcaseGallery() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6">
             <Sparkles className="h-4 w-4 text-[#3B82F6]" />
-            <span className="text-sm font-semibold text-[#3B82F6]">Free ATS Scanner</span>
+            <span className="text-sm font-semibold text-[#3B82F6]">{t.showcase.badge}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] mb-4 sm:mb-6 px-4">
-            Beat ATS Systems
+            {t.showcase.heading}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mt-2">
-              In 10 Seconds
+              {t.showcase.subheading}
             </span>
           </h2>
 
           <p className="text-base sm:text-lg md:text-xl text-[#475569] max-w-2xl mx-auto px-4">
-            See your resume the way robots see it. Get instant feedback and land more interviews.
+            {t.showcase.description}
           </p>
         </motion.div>
 
@@ -152,14 +155,14 @@ export function ProductShowcaseGallery() {
         >
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-[#8B5CF6]/20 to-[#3B82F6]/20 border border-[#3B82F6]/30 rounded-2xl p-6 sm:p-8">
             <div className="text-left">
-              <p className="text-[#1E293B] font-bold text-lg mb-1">Get Your Free ATS Score</p>
-              <p className="text-[#475569] text-sm">Scan your resume in 10 seconds - no signup required</p>
+              <p className="text-[#1E293B] font-bold text-lg mb-1">{t.showcase.ctaBanner}</p>
+              <p className="text-[#475569] text-sm">{t.showcase.ctaSubtext}</p>
             </div>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap"
             >
-              Try Free Scan →
+              {t.showcase.ctaButton}
             </button>
           </div>
         </motion.div>

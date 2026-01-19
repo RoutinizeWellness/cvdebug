@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Eye, Bug } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function ComparisonVisualSection() {
+  const { t } = useI18n();
+
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden bg-[#FFFFFF]" id="how-it-works">
       {/* Background texture */}
@@ -16,15 +19,13 @@ export function ComparisonVisualSection() {
           className="mx-auto max-w-2xl text-center mb-16"
         >
           <h2 className="text-base font-semibold leading-7 text-[#3B82F6]">
-            Reality Check
+            {t.comparison.badge}
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-[#1E293B] sm:text-4xl">
-            What you see vs. What they see
+            {t.comparison.heading}
           </p>
           <p className="mt-6 text-lg leading-8 text-[#475569]">
-            Most modern resume templates look great to humans but are a
-            nightmare for robots. Columns, icons, and graphics often break the
-            parsing logic.
+            {t.comparison.description}
           </p>
         </motion.div>
 
@@ -41,7 +42,7 @@ export function ComparisonVisualSection() {
             >
               <div className="mb-4 flex items-center gap-2 rounded-full bg-[#1E293B]/10 px-3 py-1 text-xs font-medium text-[#475569]">
                 <Eye className="h-3.5 w-3.5" />
-                Human View (PDF)
+                {t.comparison.humanView}
               </div>
 
               {/* Mock Resume Document */}
@@ -87,7 +88,7 @@ export function ComparisonVisualSection() {
                 <div className="mb-4 flex items-center justify-between">
                   <div className="flex items-center gap-2 rounded-full bg-[#EF4444]/10 px-3 py-1 text-xs font-medium text-[#EF4444] border border-[#EF4444]/20">
                     <Bug className="h-3.5 w-3.5" />
-                    Robot View (Parsed)
+                    {t.comparison.robotView}
                   </div>
                   <div className="flex gap-1.5">
                     <div className="size-2.5 rounded-full bg-[#64748B]"></div>
