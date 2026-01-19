@@ -86,7 +86,7 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
               {/* Price Info */}
               <div className="text-center space-y-1">
                 <p className="text-sm text-[#64748B]">
-                  One-time payment • <span className="font-bold text-[#0F172A]">$29</span>
+                  One-time payment • <span className="font-bold text-[#0F172A]">14,99€</span>
                 </p>
                 <p className="text-xs text-[#94A3B8]">
                   Fix everything in 24 hours. No subscription.
