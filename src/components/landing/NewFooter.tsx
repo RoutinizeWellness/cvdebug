@@ -12,17 +12,20 @@ export function NewFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <img
-              src="/assets/cvdebug-logo.png?v=11"
-              alt="CVDebug"
-              className="h-7 w-auto object-contain mb-4"
-              style={{
-                maxHeight: '28px',
-                maxWidth: '140px',
-                objectFit: 'contain',
-                imageRendering: '-webkit-optimize-contrast'
-              }}
-            />
+            <div className="flex items-center gap-2.5 mb-4">
+              <svg width="24" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="4" width="20" height="24" rx="3" fill="#8B5CF6"/>
+                <line x1="10" y1="10" x2="22" y2="10" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.9"/>
+                <line x1="10" y1="14" x2="22" y2="14" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.9"/>
+                <line x1="10" y1="18" x2="18" y2="18" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.9"/>
+                <circle cx="22" cy="22" r="6" fill="#EF4444"/>
+                <line x1="22" y1="18" x2="22" y2="26" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                <line x1="18" y1="22" x2="26" y2="22" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              <span className="text-xl font-bold text-[#1E293B] tracking-tight">
+                CV<span className="text-[#8B5CF6]">Debug</span>
+              </span>
+            </div>
             <p className="text-[#475569] text-sm">
               {t.footer.description}
             </p>

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { LogoIcon } from "./LogoIcon";
 
 interface LogoProps {
   className?: string;
@@ -6,36 +7,54 @@ interface LogoProps {
   textClassName?: string;
   showText?: boolean;
   variant?: "default" | "light";
+  iconOnly?: boolean;
+  size?: number;
 }
 
-export function Logo({ 
-  className, 
-  iconClassName, 
-  textClassName, 
+export function Logo({
+  className,
+  iconClassName,
+  textClassName,
   showText = true,
-  variant = "default"
+  variant = "default",
+  iconOnly = false,
+  size = 24,
 }: LogoProps) {
-  const gradientClass = variant === "light" 
-    ? "from-white via-primary to-white" 
-    : "from-foreground via-primary to-foreground";
+  // If icon only, use the favicon square
+  if (iconOnly || !showText) {
+    return (
+      <div className={cn("flex items-center", className)}>
+        <img
+          src="/favicon-square.svg?v=14"
+          alt="CVDebug"
+          className={cn(
+            "h-8 w-8 transition-transform duration-300 hover:scale-105",
+            iconClassName
+          )}
+        />
+      </div>
+    );
+  }
 
+  // Full logo with text
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <img
-        src="/assets/cvdebug-logo.png?v=11"
-        alt="CVDebug"
-        className={cn(
-          "h-7 w-auto object-contain relative z-10 transition-transform duration-300 hover:scale-105",
-          iconClassName,
-          !showText && "h-8"
-        )}
-        style={{
-          maxHeight: '28px',
-          maxWidth: '140px',
-          objectFit: 'contain',
-          imageRendering: '-webkit-optimize-contrast'
-        }}
+      {/* Icon from favicon */}
+      <LogoIcon
+        size={size}
+        className={cn("hover:scale-105", iconClassName)}
       />
+
+      {/* Text */}
+      <span
+        className={cn(
+          "text-xl font-bold tracking-tight",
+          variant === "light" ? "text-white" : "text-[#1E293B]",
+          textClassName
+        )}
+      >
+        CV<span className="text-[#8B5CF6]">Debug</span>
+      </span>
     </div>
   );
 }
