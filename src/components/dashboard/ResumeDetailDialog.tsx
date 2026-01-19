@@ -620,24 +620,53 @@ export function ResumeDetailDialog({
               </Button>
             )}
             {/* Industry Selector - Critical Feature */}
-            <Select value={selectedIndustry} onValueChange={setSelectedIndustry}>
-              <SelectTrigger className="hidden sm:flex w-[180px] h-9 gap-2 font-bold border-2 border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/5">
-                <Building className="h-4 w-4" />
-                <SelectValue placeholder="Select Industry" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="general">General (Standard)</SelectItem>
-                <SelectItem value="google">🔍 Google</SelectItem>
-                <SelectItem value="meta">📘 Meta</SelectItem>
-                <SelectItem value="amazon">📦 Amazon</SelectItem>
-                <SelectItem value="apple">🍎 Apple</SelectItem>
-                <SelectItem value="microsoft">💠 Microsoft</SelectItem>
-                <SelectItem value="deloitte">💼 Deloitte</SelectItem>
-                <SelectItem value="mckinsey">📊 McKinsey</SelectItem>
-                <SelectItem value="goldman">💰 Goldman Sachs</SelectItem>
-                <SelectItem value="jpmorgan">🏦 JP Morgan</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="hidden sm:flex items-center gap-2">
+              <Select value={selectedIndustry} onValueChange={setSelectedIndustry}>
+                <SelectTrigger className="w-[200px] h-9 gap-2 font-semibold border-2 border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all">
+                  <Building className="h-4 w-4" />
+                  <SelectValue>
+                    {selectedIndustry === "general" ? "General (Standard)" :
+                     selectedIndustry === "google" ? "🔍 Google" :
+                     selectedIndustry === "meta" ? "📘 Meta" :
+                     selectedIndustry === "amazon" ? "📦 Amazon" :
+                     selectedIndustry === "apple" ? "🍎 Apple" :
+                     selectedIndustry === "microsoft" ? "💠 Microsoft" :
+                     selectedIndustry === "deloitte" ? "💼 Deloitte" :
+                     selectedIndustry === "mckinsey" ? "📊 McKinsey" :
+                     selectedIndustry === "goldman" ? "💰 Goldman Sachs" :
+                     selectedIndustry === "jpmorgan" ? "🏦 JP Morgan" : "Select Company"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">
+                    <span className="font-medium">General (Standard)</span>
+                  </SelectItem>
+                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
+                    Tech (FAANG)
+                  </div>
+                  <SelectItem value="google">🔍 Google</SelectItem>
+                  <SelectItem value="meta">📘 Meta</SelectItem>
+                  <SelectItem value="amazon">📦 Amazon</SelectItem>
+                  <SelectItem value="apple">🍎 Apple</SelectItem>
+                  <SelectItem value="microsoft">💠 Microsoft</SelectItem>
+                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
+                    Consulting
+                  </div>
+                  <SelectItem value="deloitte">💼 Deloitte</SelectItem>
+                  <SelectItem value="mckinsey">📊 McKinsey</SelectItem>
+                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
+                    Finance
+                  </div>
+                  <SelectItem value="goldman">💰 Goldman Sachs</SelectItem>
+                  <SelectItem value="jpmorgan">🏦 JP Morgan</SelectItem>
+                </SelectContent>
+              </Select>
+              {selectedIndustry !== "general" && (
+                <span className="text-xs font-mono text-[#8B5CF6] bg-[#8B5CF6]/10 px-2 py-1 rounded border border-[#8B5CF6]">
+                  ACTIVE
+                </span>
+              )}
+            </div>
             <Button
               variant="outline"
               size="sm"
