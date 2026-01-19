@@ -12,7 +12,7 @@ export function NewFooter() {
             <img
               src="/assets/cvdebug-logo.png"
               alt="CVDebug"
-              className="h-10 w-auto object-contain mb-4"
+              className="h-8 w-auto object-contain mb-4"
             />
             <p className="text-[#475569] text-sm">
               Beat ATS systems with AI-powered resume optimization. Get hired faster.
