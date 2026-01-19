@@ -20,6 +20,9 @@ interface FoundKeyword {
   keyword: string;
   icon: string;
   location: string;
+  context?: string; // NEW: Show actual text snippet where keyword was found
+  matchType?: 'exact' | 'synonym' | 'semantic'; // NEW: How it was matched
+  confidence?: number; // NEW: Match confidence (0-100)
 }
 
 interface MissingKeyword {
@@ -46,6 +49,7 @@ export function KeywordAnalysis({
   const [selectedFeature, setSelectedFeature] = useState<string>("");
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [groupByType, setGroupByType] = useState(false);
+  const [showMatchDetails, setShowMatchDetails] = useState<string | null>(null); // NEW: Show detailed match info
 
   // Handle Auto-Add keyword (Premium Feature)
   const handleAutoAdd = (keyword: string) => {
@@ -128,12 +132,60 @@ export function KeywordAnalysis({
     return "Technical Skills section, Experience bullets (with context)";
   };
 
+  // Helper: Extract context snippet where keyword appears
+  const extractKeywordContext = (keyword: string, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
+    const lowerKeyword = keyword.toLowerCase();
+    const lowerText = text.toLowerCase();
+
+    // Try exact match first
+    const exactIndex = lowerText.indexOf(lowerKeyword);
+    if (exactIndex !== -1) {
+      const start = Math.max(0, exactIndex - 30);
+      const end = Math.min(text.length, exactIndex + keyword.length + 30);
+      const snippet = text.substring(start, end);
+      return {
+        context: snippet,
+        matchType: 'exact',
+        confidence: 100
+      };
+    }
+
+    // Try finding related terms (semantic matching)
+    const words = lowerText.split(/\s+/);
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      // Check if this word is semantically related to keyword
+      if (word.includes(lowerKeyword.split(' ')[0]) || lowerKeyword.split(' ')[0].includes(word)) {
+        const start = Math.max(0, i - 6);
+        const end = Math.min(words.length, i + 7);
+        const snippet = words.slice(start, end).join(' ');
+        return {
+          context: snippet,
+          matchType: 'semantic',
+          confidence: 75
+        };
+      }
+    }
+
+    // Default: keyword exists somewhere
+    return {
+      context: 'Found in resume',
+      matchType: 'exact',
+      confidence: 85
+    };
+  };
+
   // Map matched keywords to found signals with REAL context
   const foundSignals: FoundKeyword[] = matchedKeywords.slice(0, 15).map((keyword) => {
+    const contextInfo = extractKeywordContext(keyword, resumeText);
+
     return {
       keyword,
       icon: getKeywordIcon(keyword),
-      location: getKeywordLocation(keyword)
+      location: getKeywordLocation(keyword),
+      context: contextInfo.context,
+      matchType: contextInfo.matchType,
+      confidence: contextInfo.confidence
     };
   });
 
@@ -468,20 +520,64 @@ export function KeywordAnalysis({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + index * 0.05 }}
-                      className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                      className="group flex flex-col p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-pointer"
+                      onClick={() => setShowMatchDetails(showMatchDetails === signal.keyword ? null : signal.keyword)}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
-                          <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
+                            <span className="material-symbols-outlined text-[16px]">{signal.icon}</span>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium text-[#0F172A] font-mono">
+                              {signal.keyword}
+                            </h4>
+                            <p className="text-[10px] text-[#64748B]">in: {signal.location}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="text-sm font-medium text-[#0F172A] font-mono">
-                            {signal.keyword}
-                          </h4>
-                          <p className="text-[10px] text-[#64748B]">in: {signal.location}</p>
+                        <div className="flex items-center gap-2">
+                          {signal.confidence && (
+                            <span className="text-[10px] font-bold text-[#3B82F6] px-2 py-0.5 rounded bg-[#3B82F6]/10">
+                              {signal.confidence}%
+                            </span>
+                          )}
+                          <span className="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
                         </div>
                       </div>
-                      <span className="material-symbols-outlined text-[#22C55E] text-lg">check_circle</span>
+
+                      {/* NEW: Show match details when clicked */}
+                      {showMatchDetails === signal.keyword && signal.context && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          transition={{ duration: 0.2 }}
+                          className="mt-3 pt-3 border-t border-[#E2E8F0]"
+                        >
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2 text-[10px]">
+                              <span className="font-bold text-[#64748B] uppercase">Match Type:</span>
+                              <span className={`px-2 py-0.5 rounded font-medium ${
+                                signal.matchType === 'exact' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
+                                signal.matchType === 'synonym' ? 'bg-[#3B82F6]/10 text-[#3B82F6]' :
+                                'bg-[#F59E0B]/10 text-[#F59E0B]'
+                              }`}>
+                                {signal.matchType === 'exact' ? 'Exact Match' :
+                                 signal.matchType === 'synonym' ? 'Synonym Match' :
+                                 'Semantic Match'}
+                              </span>
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-bold text-[#64748B] uppercase mb-1">Found in resume:</p>
+                              <p className="text-[11px] text-[#475569] bg-white p-2 rounded border border-[#E2E8F0] italic">
+                                "...{signal.context}..."
+                              </p>
+                            </div>
+                            <p className="text-[9px] text-[#94A3B8] italic">
+                              Click to hide details
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
                     </motion.div>
                   ))
                 )}

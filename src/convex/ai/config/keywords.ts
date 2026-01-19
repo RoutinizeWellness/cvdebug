@@ -330,11 +330,16 @@ export const industrySpecificKeywords = [
   "cap table", "capitalization table", "fundraising", "series a", "series b",
   "venture capital", "private equity", "m&a", "mergers and acquisitions",
 
-  // Operations & Supply Chain
-  "supply chain optimization", "inventory management", "demand forecasting",
+  // Operations & Supply Chain (EXPANDED for better matching)
+  "supply chain optimization", "supply chain management", "supply chain planning",
+  "supply chain scheduler", "production planning", "capacity planning",
+  "inventory management", "demand forecasting", "demand planning",
   "logistics", "warehouse management", "wms", "erp", "enterprise resource planning",
   "lean manufacturing", "six sigma", "kaizen", "continuous improvement",
-  "just in time", "jit", "total quality management", "tqm"
+  "just in time", "jit", "total quality management", "tqm",
+  "operations research", "scheduling algorithms", "resource allocation",
+  "critical path method", "cpm", "pert", "project scheduling", "task scheduling",
+  "dag", "directed acyclic graph", "dependency graph", "workflow optimization"
 ];
 
 // Enhanced Soft Skills & Leadership (30+ keywords)
@@ -466,7 +471,21 @@ export const synonymMap: Record<string, string[]> = {
   "change management": ["organizational change", "change leadership"],
   "stakeholder management": ["stakeholder engagement", "stakeholder relations"],
   "dei": ["diversity equity inclusion", "diversity and inclusion", "diversity equity and inclusion"],
-  "design thinking": ["human centered design", "human-centered design"]
+  "design thinking": ["human centered design", "human-centered design"],
+
+  // Supply Chain & Operations Synonyms (NEW for technical term matching)
+  "supply chain": ["supply chain management", "supply chain optimization", "supply chain planning",
+    "logistics", "operations", "production planning", "capacity planning", "demand planning",
+    "dag cpm engine", "cpm scheduler", "critical path", "scheduling algorithm", "resource scheduling"],
+  "supply chain planning": ["production planning", "capacity planning", "demand planning",
+    "master production schedule", "mps", "material requirements planning", "mrp",
+    "dag engine", "cpm engine", "critical path method", "scheduling optimization"],
+  "scheduler": ["scheduling", "scheduling algorithm", "task scheduler", "job scheduler",
+    "production scheduler", "cpm scheduler", "dag scheduler", "workflow scheduler"],
+  "cpm": ["critical path method", "critical path analysis", "cpm scheduling", "dag cpm"],
+  "dag": ["directed acyclic graph", "dependency graph", "task graph", "workflow graph", "dag engine"],
+  "optimization": ["optimization algorithm", "resource optimization", "scheduling optimization",
+    "supply chain optimization", "operations optimization", "constraint optimization"]
 };
 
 // Role classification training data with weighted patterns
