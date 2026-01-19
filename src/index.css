@@ -714,7 +714,7 @@ img {
 /* Dark mode improvements for mobile */
 @media (prefers-color-scheme: dark) and (max-width: 640px) {
   .mobile-dark-adjust {
-    @apply bg-opacity-95;
+    @apply bg-black/95;
   }
 }
 
