@@ -1015,21 +1015,8 @@ export function ResumeDetailDialog({
                         user={user}
                         onUpgrade={() => setShowPricing(true)}
                         onContentUpdate={(newContent) => {
-                          // Content is automatically saved and re-analyzed by the component
-                          toast.success("Re-analyzing your updated resume...");
-                          // Trigger re-analysis
-                          if (displayResume._id) {
-                            setIsReanalyzing(true);
-                            analyzeResume({ id: displayResume._id })
-                              .then(() => {
-                                toast.success("✓ Analysis complete!");
-                                setIsReanalyzing(false);
-                              })
-                              .catch((err) => {
-                                toast.error("Re-analysis failed");
-                                setIsReanalyzing(false);
-                              });
-                          }
+                          // Content is automatically saved and re-analyzed by the InlineResumeEditor component
+                          // No need to duplicate the analysis here
                         }}
                       />
                     )}

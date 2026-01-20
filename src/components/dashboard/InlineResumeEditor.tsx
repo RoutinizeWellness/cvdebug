@@ -41,7 +41,8 @@ export function InlineResumeEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState<number | null>(null);
-  const updateResume = useMutation(api.resumes.updateResumeContent);
+  const updateResume = useMutation(api.resumes.updateResumeText);
+  const analyzeResume = useMutation(api.resumes.analyzeResume);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isReanalyzing, setIsReanalyzing] = useState(false);
@@ -123,9 +124,14 @@ export function InlineResumeEditor({
       setHasChanges(false);
       setLastSaved(new Date());
 
-      // Set re-analyzing state to track completion
+      // Trigger re-analysis
       setIsReanalyzing(true);
+      await analyzeResume({ id: resumeId });
+
       toast.success("✓ Changes saved! Re-analyzing...");
+
+      // Call parent callback
+      onContentUpdate(content);
     } catch (error) {
       toast.error("Failed to save. Try again?");
       setIsReanalyzing(false);
