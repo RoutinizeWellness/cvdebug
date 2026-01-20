@@ -96,7 +96,8 @@ export function ResumeDetailDialog({
   const [isReanalyzing, setIsReanalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState("robot");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
-  const [isPdfCollapsed, setIsPdfCollapsed] = useState(false);
+  // PDF collapsed by default on mobile (true), expanded on desktop
+  const [isPdfCollapsed, setIsPdfCollapsed] = useState(true);
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState<string>("general");
 
@@ -1107,6 +1108,77 @@ Software Engineer | StartupXYZ
                         </span>
                       </div>
 
+                      {/* CRITICAL ERROR ALERTS - AHA! MOMENT */}
+                      {(!displayResume?.stats?.hasQuantifiableAchievements ||
+                        (displayResume?.missingKeywords && displayResume.missingKeywords.length > 5) ||
+                        (displayResume?.missingElements && displayResume.missingElements.length > 0)) && (
+                        <div className="bg-gradient-to-r from-red-950 to-red-900 border-4 border-[#EF4444] p-6">
+                          <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0">
+                              <div className="w-16 h-16 bg-[#EF4444] rounded-full flex items-center justify-center animate-pulse">
+                                <AlertTriangle className="h-8 w-8 text-white" />
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-white font-black text-2xl mb-3 flex items-center gap-2">
+                                🚨 CRITICAL: ATS AUTO-REJECT DETECTED
+                              </h3>
+
+                              {!displayResume?.stats?.hasQuantifiableAchievements && (
+                                <div className="bg-black/40 border-2 border-[#EF4444] rounded-lg p-4 mb-3">
+                                  <div className="flex items-start gap-3">
+                                    <XCircle className="h-6 w-6 text-[#EF4444] flex-shrink-0 mt-1" />
+                                    <div>
+                                      <p className="text-[#EF4444] font-bold text-lg mb-1">0% METRICS DETECTED</p>
+                                      <p className="text-gray-300 text-sm mb-2">
+                                        No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.
+                                      </p>
+                                      <p className="text-white font-semibold text-sm">
+                                        ✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {displayResume?.missingElements && displayResume.missingElements.length > 0 && (
+                                <div className="bg-black/40 border-2 border-[#F59E0B] rounded-lg p-4 mb-3">
+                                  <div className="flex items-start gap-3">
+                                    <AlertTriangle className="h-6 w-6 text-[#F59E0B] flex-shrink-0 mt-1" />
+                                    <div>
+                                      <p className="text-[#F59E0B] font-bold text-lg mb-1">MISSING CRITICAL SECTIONS</p>
+                                      <p className="text-gray-300 text-sm mb-2">
+                                        Required sections not found: {displayResume.missingElements.join(', ')}
+                                      </p>
+                                      <p className="text-white font-semibold text-sm">
+                                        ✅ FIX: Add clear section headers (Experience, Education, Skills)
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {displayResume?.missingKeywords && displayResume.missingKeywords.length > 5 && (
+                                <div className="bg-black/40 border-2 border-[#F59E0B] rounded-lg p-4">
+                                  <div className="flex items-start gap-3">
+                                    <AlertTriangle className="h-6 w-6 text-[#F59E0B] flex-shrink-0 mt-1" />
+                                    <div>
+                                      <p className="text-[#F59E0B] font-bold text-lg mb-1">{displayResume.missingKeywords.length} MISSING KEYWORDS</p>
+                                      <p className="text-gray-300 text-sm mb-2">
+                                        Critical signals: {displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}...
+                                      </p>
+                                      <p className="text-white font-semibold text-sm">
+                                        ✅ FIX: Use the "Edit" tab to add missing keywords instantly
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* DIRTY Terminal Output - Real Error Console Style */}
                       <div className="bg-[#000000] p-4 space-y-0">
                         {/* Startup Log - Make it look messy */}
@@ -1642,14 +1714,25 @@ Impact: AUTO_REJECT (100% rejection rate)
                 </TabsContent>
               </Tabs>
 
-              {/* PDF Preview - Now Full Width When Tabs Don't Need It */}
-              <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'flex-1'} bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 min-h-[50vh] lg:min-h-0 print:hidden border-l border-[#E2E8F0]`}>
+              {/* Floating "View CV" button for mobile */}
+              {isPdfCollapsed && (
+                <button
+                  onClick={() => setIsPdfCollapsed(false)}
+                  className="lg:hidden fixed bottom-6 right-6 z-40 px-6 py-3 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold rounded-full shadow-2xl hover:shadow-[#3B82F6]/50 transition-all flex items-center gap-2 animate-pulse"
+                >
+                  <Eye className="h-5 w-5" />
+                  View CV
+                </button>
+              )}
+
+              {/* PDF Preview - Hidden on mobile by default, collapsible on desktop */}
+              <div className={`${isPdfCollapsed ? 'hidden' : 'fixed inset-0 z-50 lg:relative lg:flex-1'} bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 lg:min-h-0 print:hidden lg:border-l border-[#E2E8F0]`}>
                 <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
 
                 {/* Collapse/Expand Button */}
                 <button
                   onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
-                  className="absolute top-4 left-4 z-20 p-2 bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A] rounded-lg backdrop-blur-sm transition-all shadow-lg"
+                  className="absolute top-4 left-4 z-20 p-3 bg-[#3B82F6] hover:bg-blue-700 text-white rounded-lg backdrop-blur-sm transition-all shadow-lg"
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
