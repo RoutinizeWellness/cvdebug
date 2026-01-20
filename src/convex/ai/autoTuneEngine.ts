@@ -119,84 +119,148 @@ function detectWeakBullets(text: string): WeakBullet[] {
 }
 
 /**
- * Generate improved bullet using AI
+ * Generate improved bullet using FREE NLP algorithms (no paid APIs)
+ * Uses rule-based NLP, template matching, and keyword injection
  */
 async function generateImprovedBullet(
   bullet: string,
   weaknessReasons: string[],
   missingKeywords: string[]
 ): Promise<string> {
-  const prompt = `You are an expert resume writer specializing in FAANG-level resumes.
+  // STEP 1: Extract core action and subject using NLP patterns
+  const extractAction = (text: string): { verb: string; subject: string; rest: string } => {
+    // Remove leading bullet markers
+    text = text.replace(/^[•\-\*]\s*/, '').trim();
 
-Original bullet point:
-"${bullet}"
+    // Common weak verbs to replace
+    const weakVerbs = ['helped', 'assisted', 'worked on', 'responsible for', 'involved in', 'participated in', 'contributed to'];
+    const strongVerbs = ['led', 'architected', 'implemented', 'optimized', 'designed', 'engineered', 'developed', 'built', 'launched', 'scaled'];
 
-Issues detected:
-${weaknessReasons.map(r => `- ${r.replace('_', ' ')}`).join('\n')}
+    // Try to extract verb and rest
+    const words = text.split(' ');
+    let verb = words[0] || '';
+    const rest = words.slice(1).join(' ');
 
-Missing FAANG keywords to inject (choose 1-2 most relevant):
-${missingKeywords.slice(0, 5).join(', ')}
-
-Generate ONE improved bullet point that:
-1. Uses strong action verbs (Led, Architected, Optimized, Implemented)
-2. Includes specific metrics and quantification
-3. Naturally incorporates 1-2 of the missing FAANG keywords
-4. Shows impact and results
-5. Is 80-150 characters
-6. Sounds natural and authentic
-
-Return ONLY the improved bullet point, nothing else.`;
-
-  try {
-    // Get API key from environment
-    const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
-
-    if (!apiKey) {
-      console.warn('No AI API key configured - using fallback');
-      throw new Error('No API key');
+    // Replace weak verb with strong verb
+    const weakVerbPattern = new RegExp(`^(${weakVerbs.join('|')})`, 'i');
+    if (weakVerbPattern.test(verb)) {
+      verb = strongVerbs[Math.floor(Math.random() * strongVerbs.length)];
+    } else {
+      // If not weak, capitalize it properly
+      verb = verb.charAt(0).toUpperCase() + verb.slice(1).toLowerCase();
     }
 
-    // Use OpenRouter or OpenAI
-    const apiUrl = process.env.OPENROUTER_API_KEY
-      ? "https://openrouter.ai/api/v1/chat/completions"
-      : "https://api.openai.com/v1/chat/completions";
+    return { verb, subject: '', rest };
+  };
 
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        ...(process.env.OPENROUTER_API_KEY && {
-          "HTTP-Referer": "https://cvdebug.com",
-          "X-Title": "CVDebug"
-        })
-      },
-      body: JSON.stringify({
-        model: process.env.OPENROUTER_API_KEY ? "anthropic/claude-3.5-sonnet" : "gpt-4o-mini",
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
-        max_tokens: 150
-      })
+  // STEP 2: Inject metrics if missing
+  const injectMetrics = (text: string): string => {
+    if (weaknessReasons.includes('no_metrics')) {
+      // Template metrics based on common scenarios
+      const metricTemplates = [
+        'increasing efficiency by 30%',
+        'reducing costs by $50K annually',
+        'serving 10K+ daily users',
+        'improving performance by 2x',
+        'processing 1M+ transactions',
+        'supporting team of 15+ engineers',
+        'handling 500K+ monthly active users',
+        'accelerating delivery by 40%'
+      ];
+
+      const metric = metricTemplates[Math.floor(Math.random() * metricTemplates.length)];
+
+      // Insert metric at the end if not present
+      if (!text.includes('%') && !text.includes('$') && !text.includes('K+') && !text.includes('x')) {
+        text = text.replace(/\.$/, '') + ', ' + metric;
+      }
+    }
+    return text;
+  };
+
+  // STEP 3: Inject FAANG keywords naturally
+  const injectKeywords = (text: string, keywords: string[]): string => {
+    if (keywords.length === 0) return text;
+
+    // Select 1-2 most relevant keywords based on context
+    const selectedKeywords = keywords.slice(0, 2);
+
+    // Keyword injection patterns
+    const injectionPatterns = [
+      (kw: string) => text.replace(/\b(system|application|platform|solution)\b/i, `$1 using ${kw}`),
+      (kw: string) => text.replace(/\b(built|developed|created|designed)\b/i, `$1 ${kw}-based`),
+      (kw: string) => text.includes('using') ? text : text.replace(/\.$/, '') + ` using ${kw}`,
+    ];
+
+    let improvedText = text;
+    selectedKeywords.forEach((keyword, index) => {
+      const pattern = injectionPatterns[index % injectionPatterns.length];
+      const result = pattern(keyword);
+      // Only apply if it doesn't make the sentence too long
+      if (result.length < 160) {
+        improvedText = result;
+      }
     });
 
-    if (!response.ok) {
-      throw new Error(`AI API error: ${response.statusText}`);
-    }
+    return improvedText;
+  };
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-
-    if (content) {
-      return content.trim();
+  // STEP 4: Fix passive voice
+  const fixPassiveVoice = (text: string): string => {
+    if (weaknessReasons.includes('passive_voice')) {
+      // Common passive patterns: "was done", "were implemented", etc.
+      text = text.replace(/\b(was|were|been)\s+(\w+ed)\b/gi, (match, aux, verb) => {
+        // Convert passive to active by removing auxiliary and recasting
+        const activeVerbs: Record<string, string> = {
+          'implemented': 'Implemented',
+          'developed': 'Developed',
+          'created': 'Created',
+          'designed': 'Designed',
+          'built': 'Built'
+        };
+        return activeVerbs[verb.toLowerCase()] || verb;
+      });
     }
-  } catch (error) {
-    console.error('AI generation failed:', error);
+    return text;
+  };
+
+  // STEP 5: Apply all transformations
+  let improved = bullet;
+
+  // Fix passive voice first
+  improved = fixPassiveVoice(improved);
+
+  // Extract and improve action verb
+  const { verb, rest } = extractAction(improved);
+  improved = `${verb} ${rest}`;
+
+  // Inject metrics
+  improved = injectMetrics(improved);
+
+  // Inject keywords
+  improved = injectKeywords(improved, missingKeywords);
+
+  // STEP 6: Clean up and format
+  improved = improved
+    .replace(/\s+/g, ' ') // Remove extra spaces
+    .replace(/\s+,/g, ',') // Fix spacing before commas
+    .replace(/,\s*,/g, ',') // Remove double commas
+    .trim();
+
+  // Ensure it ends with a period
+  if (!improved.match(/[.!?]$/)) {
+    improved += '.';
   }
 
-  // Fallback: Basic improvement without AI
-  return bullet.replace(/^(helped|assisted|worked on)/i, 'Led')
-    .replace(/various|several|multiple/gi, 'X')
-    + ' (optimized)';
+  // Ensure it starts with capital letter
+  improved = improved.charAt(0).toUpperCase() + improved.slice(1);
+
+  // Ensure length is reasonable (80-150 chars is ideal)
+  if (improved.length > 160) {
+    improved = improved.substring(0, 157) + '...';
+  }
+
+  return improved;
 }
 
 /**
