@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useState, useMemo } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface ResumeGridProps {
   resumes: any[] | undefined;
@@ -21,6 +22,7 @@ interface ResumeGridProps {
 }
 
 export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryFilter, onUpload, onCreateProject, onCreateManual }: ResumeGridProps) {
+  const { t } = useI18n();
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
@@ -28,7 +30,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
     return (
       <div className="flex flex-col items-center justify-center py-24 gap-4">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
-        <p className="text-muted-foreground font-medium animate-pulse">Loading your resumes...</p>
+        <p className="text-muted-foreground font-medium animate-pulse">{t.resumeGrid.loadingResumes}</p>
       </div>
     );
   }
@@ -48,16 +50,16 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
       return (
         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-700/20 text-[#64748B] border border-[#E2E8F0]/30">
           <Loader2 className="h-3 w-3 animate-spin mr-1.5" />
-          Analyzing...
+          {t.resumeGrid.analyzing}
         </div>
       );
     }
-    
+
     if (status === 'failed') {
       return (
         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
-          Error
+          {t.resumeGrid.error}
         </div>
       );
     }
@@ -66,21 +68,21 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
       return (
         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#22C55E]/10 text-[#22C55E] border border-emerald-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
-          {score}% Excellent
+          {score}% {t.resumeGrid.excellent}
         </div>
       );
     } else if (score >= 50) {
       return (
         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#F59E0B]/10 text-[#F59E0B] border border-amber-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
-          {score}% Moderate
+          {score}% {t.resumeGrid.moderate}
         </div>
       );
     } else {
       return (
         <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20">
           <span className="mr-1.5 text-[8px]">●</span>
-          {score}% Critical
+          {score}% {t.resumeGrid.critical}
         </div>
       );
     }
@@ -114,27 +116,27 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
         <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
           <FileText className="h-10 w-10 text-muted-foreground/50" />
         </div>
-        <h3 className="text-xl font-bold mb-2">No resumes found</h3>
+        <h3 className="text-xl font-bold mb-2">{t.resumeGrid.noResumesFound}</h3>
         <p className="text-muted-foreground max-w-sm text-center mb-8">
-          Upload your resume to get an instant ATS score and AI-powered feedback.
+          {t.resumeGrid.noResumesDesc}
         </p>
         <div className="flex gap-3">
           {onUpload && (
             <Button onClick={onUpload} className="font-bold">
               <Plus className="h-4 w-4 mr-2" />
-              Upload Resume
+              {t.resumeGrid.uploadResume}
             </Button>
           )}
           {onCreateManual && (
             <Button onClick={onCreateManual} variant="outline" className="font-bold">
               <Edit className="h-4 w-4 mr-2" />
-              Create Manually
+              {t.resumeGrid.createManually}
             </Button>
           )}
           {onCreateProject && (
             <Button onClick={onCreateProject} variant="outline" className="font-bold">
               <FolderPlus className="h-4 w-4 mr-2" />
-              Create Project
+              {t.resumeGrid.createProject}
             </Button>
           )}
         </div>
@@ -150,7 +152,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
         <div className="relative w-full lg:w-96">
           <Input
             type="text"
-            placeholder="Search resumes by name, skill, or ID..."
+            placeholder={t.resumeGrid.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 bg-[#FFFFFF] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
@@ -166,7 +168,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               className="bg-primary text-[#0F172A] font-bold hover:bg-primary/90"
             >
               <Edit className="h-4 w-4 mr-2" />
-              Create Manually
+              {t.resumeGrid.createManually}
             </Button>
           )}
           {onCreateProject && (
@@ -176,7 +178,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
               className="font-bold"
             >
               <FolderPlus className="h-4 w-4 mr-2" />
-              Create Project
+              {t.resumeGrid.createProject}
             </Button>
           )}
           <Button
@@ -185,7 +187,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             onClick={() => setViewMode("list")}
             className="font-medium"
           >
-            List View
+            {t.resumeGrid.listView}
           </Button>
           <Button
             variant={viewMode === "grid" ? "default" : "outline"}
@@ -193,7 +195,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             onClick={() => setViewMode("grid")}
             className="font-medium"
           >
-            Grid View
+            {t.resumeGrid.gridView}
           </Button>
         </div>
       </div>
@@ -205,19 +207,19 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             <thead className="bg-[#F8FAFC]">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider">
-                  Resume Name
+                  {t.resumeGrid.resumeName}
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider hidden sm:table-cell">
-                  Upload Date
+                  {t.resumeGrid.uploadDate}
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider hidden md:table-cell">
-                  Last Analyzed
+                  {t.resumeGrid.lastAnalyzed}
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider">
-                  Health Score
+                  {t.resumeGrid.healthScore}
                 </th>
                 <th className="px-6 py-4 text-right text-xs font-semibold text-[#64748B] uppercase tracking-wider">
-                  Actions
+                  {t.resumeGrid.actions}
                 </th>
               </tr>
             </thead>
@@ -250,7 +252,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                     {resume.status === 'completed' ? (
                       <span className="flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]"></span>
-                        Just now
+                        {t.resumeGrid.justNow}
                       </span>
                     ) : resume.status === 'processing' ? (
                       '--'
@@ -266,14 +268,14 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                       <button
                         onClick={() => setSelectedResume(resume)}
                         className="text-[#64748B] hover:text-[#0F172A] p-1.5 hover:bg-slate-100 rounded-md transition-colors"
-                        title="View Details"
+                        title={t.resumeGrid.viewDetails}
                       >
                         <Eye className="h-5 w-5" />
                       </button>
                       <button
                         onClick={() => setSelectedResume(resume)}
                         className="text-primary hover:text-primary/80 p-1.5 hover:bg-primary/10 rounded-md transition-colors"
-                        title="Re-Analyze"
+                        title={t.resumeGrid.reAnalyze}
                         disabled={resume.status === 'processing'}
                       >
                         <RefreshCw className="h-5 w-5" />
@@ -284,7 +286,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                           handleDelete(resume._id);
                         }}
                         className="text-rose-500 hover:text-rose-600 p-1.5 hover:bg-rose-50 rounded-md transition-colors"
-                        title="Delete"
+                        title={t.resumeGrid.delete}
                       >
                         <Trash2 className="h-5 w-5" />
                       </button>
@@ -298,9 +300,9 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           {/* Pagination */}
           <div className="flex items-center justify-between px-6 py-4 border-t border-[#E2E8F0] bg-[#F8FAFC]">
             <div className="text-sm text-[#64748B]">
-              Showing <span className="font-medium text-[#0F172A]">1</span> to{" "}
-              <span className="font-medium text-[#0F172A]">{Math.min(filteredResumes.length, 10)}</span> of{" "}
-              <span className="font-medium text-[#0F172A]">{filteredResumes.length}</span> results
+              {t.resumeGrid.showing} <span className="font-medium text-[#0F172A]">1</span> {t.resumeGrid.to}{" "}
+              <span className="font-medium text-[#0F172A]">{Math.min(filteredResumes.length, 10)}</span> {t.resumeGrid.of}{" "}
+              <span className="font-medium text-[#0F172A]">{filteredResumes.length}</span> {t.resumeGrid.results}
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -309,7 +311,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                 disabled
                 className="text-[#64748B] bg-[#FFFFFF] border-[#E2E8F0]"
               >
-                Previous
+                {t.resumeGrid.previous}
               </Button>
               <Button
                 variant="outline"
@@ -317,7 +319,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                 disabled={filteredResumes.length <= 10}
                 className="text-[#64748B] bg-[#FFFFFF] border-[#E2E8F0]"
               >
-                Next
+                {t.resumeGrid.next}
               </Button>
             </div>
           </div>
@@ -367,7 +369,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                       setSelectedResume(resume);
                     }}
                   >
-                    <Eye className="h-4 w-4 mr-2" /> View Analysis
+                    <Eye className="h-4 w-4 mr-2" /> {t.resumeGrid.viewDetails}
                   </Button>
                 </div>
 
@@ -399,7 +401,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                         e.stopPropagation();
                         handleDelete(resume._id);
                       }}>
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
+                        <Trash2 className="h-4 w-4 mr-2" /> {t.resumeGrid.delete}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -421,7 +423,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
 
       {filteredResumes.length === 0 && searchQuery !== "" && (
         <div className="text-center py-12 text-[#64748B]">
-          <p>No resumes match your search query.</p>
+          <p>{t.resumeGrid.noSearchResults}</p>
         </div>
       )}
     </div>

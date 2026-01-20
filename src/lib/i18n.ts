@@ -1157,27 +1157,6 @@ export interface Translation {
     successMessage: string;
     errorMessage: string;
   };
-  // AI Feedback Widget
-  aiFeedback: {
-    rateResponse: string;
-    howHelpful: string;
-    feedbackHelps: string;
-    helpful: string;
-    okay: string;
-    notHelpful: string;
-    additionalComments: string;
-    submitFeedback: string;
-    thankYou: string;
-    wasHelpful: string;
-    yes: string;
-    somewhat: string;
-    no: string;
-    tellMore: string;
-    submit: string;
-    feedbackSubmitted: string;
-    selectRating: string;
-    submitError: string;
-  };
   // Create Application Dialog
   createApplication: {
     title: string;
@@ -1284,6 +1263,60 @@ export interface Translation {
     openProjectBoard: string;
     createNewProject: string;
     createNewProjectDesc: string;
+  };
+  // Resume Grid
+  resumeGrid: {
+    loadingResumes: string;
+    analyzing: string;
+    error: string;
+    excellent: string;
+    moderate: string;
+    critical: string;
+    noResumesFound: string;
+    noResumesDesc: string;
+    uploadResume: string;
+    createManually: string;
+    createProject: string;
+    searchPlaceholder: string;
+    listView: string;
+    gridView: string;
+    resumeName: string;
+    uploadDate: string;
+    lastAnalyzed: string;
+    healthScore: string;
+    actions: string;
+    viewDetails: string;
+    reAnalyze: string;
+    delete: string;
+    justNow: string;
+    showing: string;
+    to: string;
+    of: string;
+    results: string;
+    previous: string;
+    next: string;
+    noSearchResults: string;
+  };
+  // AI Feedback Widget
+  aiFeedback: {
+    rateResponse: string;
+    howHelpful: string;
+    feedbackHelps: string;
+    helpful: string;
+    okay: string;
+    notHelpful: string;
+    additionalComments: string;
+    submitFeedback: string;
+    thankYou: string;
+    wasHelpful: string;
+    yes: string;
+    somewhat: string;
+    no: string;
+    tellMore: string;
+    submit: string;
+    selectRating: string;
+    feedbackSubmitted: string;
+    submitError: string;
   };
 }
 
@@ -2395,26 +2428,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       successMessage: 'Project created successfully!',
       errorMessage: 'Failed to create project',
     },
-    aiFeedback: {
-      rateResponse: 'Rate this response',
-      howHelpful: 'How helpful was this?',
-      feedbackHelps: 'Your feedback helps us improve our AI features',
-      helpful: 'Helpful',
-      okay: 'Okay',
-      notHelpful: 'Not Helpful',
-      additionalComments: 'Any additional comments? (optional)',
-      submitFeedback: 'Submit Feedback',
-      thankYou: 'Thank you! 🎉',
-      wasHelpful: 'Was this helpful?',
-      yes: 'Yes',
-      somewhat: 'Somewhat',
-      no: 'No',
-      tellMore: 'Tell us more (optional)',
-      submit: 'Submit',
-      feedbackSubmitted: '✓ Thank you for your feedback!',
-      selectRating: 'Please select a rating',
-      submitError: 'Failed to submit feedback',
-    },
     createApplication: {
       title: 'Add New Application',
       sprintRequired: 'Interview Sprint Required',
@@ -2518,6 +2531,58 @@ export const translations: Record<SupportedLocale, Translation> = {
       openProjectBoard: 'Open Project Board',
       createNewProject: 'Create New Project',
       createNewProjectDesc: 'Start a new mission or upload a CV to analyze.',
+    },
+    resumeGrid: {
+      loadingResumes: 'Loading your resumes...',
+      analyzing: 'Analyzing...',
+      error: 'Error',
+      excellent: 'Excellent',
+      moderate: 'Moderate',
+      critical: 'Critical',
+      noResumesFound: 'No resumes found',
+      noResumesDesc: 'Upload your resume to get an instant ATS score and AI-powered feedback.',
+      uploadResume: 'Upload Resume',
+      createManually: 'Create Manually',
+      createProject: 'Create Project',
+      searchPlaceholder: 'Search resumes by name, skill, or ID...',
+      listView: 'List View',
+      gridView: 'Grid View',
+      resumeName: 'Resume Name',
+      uploadDate: 'Upload Date',
+      lastAnalyzed: 'Last Analyzed',
+      healthScore: 'Health Score',
+      actions: 'Actions',
+      viewDetails: 'View Details',
+      reAnalyze: 'Re-Analyze',
+      delete: 'Delete',
+      justNow: 'Just now',
+      showing: 'Showing',
+      to: 'to',
+      of: 'of',
+      results: 'results',
+      previous: 'Previous',
+      next: 'Next',
+      noSearchResults: 'No resumes match your search query.',
+    },
+    aiFeedback: {
+      rateResponse: 'Rate this response',
+      howHelpful: 'How helpful was this response?',
+      feedbackHelps: 'Your feedback helps us improve our AI.',
+      helpful: 'Helpful',
+      okay: 'Okay',
+      notHelpful: 'Not Helpful',
+      additionalComments: 'Additional comments (optional)...',
+      submitFeedback: 'Submit Feedback',
+      thankYou: 'Thank you for your feedback!',
+      wasHelpful: 'Was this response helpful?',
+      yes: 'Yes',
+      somewhat: 'Somewhat',
+      no: 'No',
+      tellMore: 'Tell us more (optional)...',
+      submit: 'Submit',
+      selectRating: 'Please select a rating',
+      feedbackSubmitted: 'Thank you! Feedback submitted.',
+      submitError: 'Failed to submit feedback. Please try again.',
     },
   },
   'es': {
@@ -3627,26 +3692,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       successMessage: '¡Proyecto creado con éxito!',
       errorMessage: 'Error al crear el proyecto',
     },
-    aiFeedback: {
-      rateResponse: 'Califica esta respuesta',
-      howHelpful: '¿Qué tan útil fue esto?',
-      feedbackHelps: 'Tu comentario nos ayuda a mejorar nuestras funciones de IA',
-      helpful: 'Útil',
-      okay: 'Regular',
-      notHelpful: 'No Útil',
-      additionalComments: '¿Comentarios adicionales? (opcional)',
-      submitFeedback: 'Enviar Comentario',
-      thankYou: '¡Gracias! 🎉',
-      wasHelpful: '¿Fue esto útil?',
-      yes: 'Sí',
-      somewhat: 'Algo',
-      no: 'No',
-      tellMore: 'Cuéntanos más (opcional)',
-      submit: 'Enviar',
-      feedbackSubmitted: '✓ ¡Gracias por tu comentario!',
-      selectRating: 'Por favor selecciona una calificación',
-      submitError: 'Error al enviar el comentario',
-    },
     createApplication: {
       title: 'Agregar Nueva Solicitud',
       sprintRequired: 'Interview Sprint Requerido',
@@ -3750,6 +3795,58 @@ export const translations: Record<SupportedLocale, Translation> = {
       openProjectBoard: 'Abrir Panel de Proyecto',
       createNewProject: 'Crear Nuevo Proyecto',
       createNewProjectDesc: 'Inicia una nueva misión o carga un CV para analizar.',
+    },
+    resumeGrid: {
+      loadingResumes: 'Cargando tus currículums...',
+      analyzing: 'Analizando...',
+      error: 'Error',
+      excellent: 'Excelente',
+      moderate: 'Moderado',
+      critical: 'Crítico',
+      noResumesFound: 'No se encontraron currículums',
+      noResumesDesc: 'Sube tu currículum para obtener una puntuación ATS instantánea y retroalimentación impulsada por IA.',
+      uploadResume: 'Subir Currículum',
+      createManually: 'Crear Manualmente',
+      createProject: 'Crear Proyecto',
+      searchPlaceholder: 'Buscar currículums por nombre, habilidad o ID...',
+      listView: 'Vista de Lista',
+      gridView: 'Vista de Cuadrícula',
+      resumeName: 'Nombre del Currículum',
+      uploadDate: 'Fecha de Carga',
+      lastAnalyzed: 'Último Análisis',
+      healthScore: 'Puntuación de Salud',
+      actions: 'Acciones',
+      viewDetails: 'Ver Detalles',
+      reAnalyze: 'Re-Analizar',
+      delete: 'Eliminar',
+      justNow: 'Justo ahora',
+      showing: 'Mostrando',
+      to: 'a',
+      of: 'de',
+      results: 'resultados',
+      previous: 'Anterior',
+      next: 'Siguiente',
+      noSearchResults: 'No se encontraron currículums que coincidan con tu búsqueda.',
+    },
+    aiFeedback: {
+      rateResponse: 'Calificar respuesta',
+      howHelpful: '¿Qué tan útil fue esta respuesta?',
+      feedbackHelps: 'Tu opinión nos ayuda a mejorar nuestra IA.',
+      helpful: 'Útil',
+      okay: 'Regular',
+      notHelpful: 'No útil',
+      additionalComments: 'Comentarios adicionales (opcional)...',
+      submitFeedback: 'Enviar opinión',
+      thankYou: '¡Gracias por tu opinión!',
+      wasHelpful: '¿Fue útil esta respuesta?',
+      yes: 'Sí',
+      somewhat: 'Un poco',
+      no: 'No',
+      tellMore: 'Cuéntanos más (opcional)...',
+      submit: 'Enviar',
+      selectRating: 'Por favor selecciona una calificación',
+      feedbackSubmitted: '¡Gracias! Opinión enviada.',
+      submitError: 'Error al enviar opinión. Inténtalo de nuevo.',
     },
   },
   'fr': {
@@ -4859,26 +4956,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       successMessage: 'Projet créé avec succès !',
       errorMessage: 'Échec de la création du projet',
     },
-    aiFeedback: {
-      rateResponse: 'Évaluer cette réponse',
-      howHelpful: 'Dans quelle mesure cela a-t-il été utile ?',
-      feedbackHelps: 'Vos commentaires nous aident à améliorer nos fonctionnalités IA',
-      helpful: 'Utile',
-      okay: 'Moyen',
-      notHelpful: 'Pas Utile',
-      additionalComments: 'Commentaires supplémentaires ? (optionnel)',
-      submitFeedback: 'Soumettre un Commentaire',
-      thankYou: 'Merci ! 🎉',
-      wasHelpful: 'Était-ce utile ?',
-      yes: 'Oui',
-      somewhat: 'Un peu',
-      no: 'Non',
-      tellMore: 'Dites-nous en plus (optionnel)',
-      submit: 'Soumettre',
-      feedbackSubmitted: '✓ Merci pour vos commentaires !',
-      selectRating: 'Veuillez sélectionner une évaluation',
-      submitError: 'Échec de l\'envoi du commentaire',
-    },
     createApplication: {
       title: 'Ajouter une Nouvelle Candidature',
       sprintRequired: 'Interview Sprint Requis',
@@ -4982,6 +5059,58 @@ export const translations: Record<SupportedLocale, Translation> = {
       openProjectBoard: 'Ouvrir le Tableau de Projet',
       createNewProject: 'Créer Nouveau Projet',
       createNewProjectDesc: 'Lancez une nouvelle mission ou téléchargez un CV à analyser.',
+    },
+    resumeGrid: {
+      loadingResumes: 'Chargement de vos CV...',
+      analyzing: 'Analyse en cours...',
+      error: 'Erreur',
+      excellent: 'Excellent',
+      moderate: 'Modéré',
+      critical: 'Critique',
+      noResumesFound: 'Aucun CV trouvé',
+      noResumesDesc: 'Téléchargez votre CV pour obtenir un score ATS instantané et des retours alimentés par IA.',
+      uploadResume: 'Télécharger CV',
+      createManually: 'Créer Manuellement',
+      createProject: 'Créer Projet',
+      searchPlaceholder: 'Rechercher des CV par nom, compétence ou ID...',
+      listView: 'Vue Liste',
+      gridView: 'Vue Grille',
+      resumeName: 'Nom du CV',
+      uploadDate: 'Date de Téléchargement',
+      lastAnalyzed: 'Dernière Analyse',
+      healthScore: 'Score de Santé',
+      actions: 'Actions',
+      viewDetails: 'Voir Détails',
+      reAnalyze: 'Ré-analyser',
+      delete: 'Supprimer',
+      justNow: 'À l\'instant',
+      showing: 'Affichage',
+      to: 'à',
+      of: 'de',
+      results: 'résultats',
+      previous: 'Précédent',
+      next: 'Suivant',
+      noSearchResults: 'Aucun CV ne correspond à votre recherche.',
+    },
+    aiFeedback: {
+      rateResponse: 'Noter cette réponse',
+      howHelpful: 'Cette réponse vous a-t-elle été utile ?',
+      feedbackHelps: 'Vos commentaires nous aident à améliorer notre IA.',
+      helpful: 'Utile',
+      okay: 'Correct',
+      notHelpful: 'Pas utile',
+      additionalComments: 'Commentaires supplémentaires (optionnel)...',
+      submitFeedback: 'Envoyer les commentaires',
+      thankYou: 'Merci pour vos commentaires !',
+      wasHelpful: 'Cette réponse a-t-elle été utile ?',
+      yes: 'Oui',
+      somewhat: 'Un peu',
+      no: 'Non',
+      tellMore: 'Dites-nous en plus (optionnel)...',
+      submit: 'Envoyer',
+      selectRating: 'Veuillez sélectionner une note',
+      feedbackSubmitted: 'Merci ! Commentaires envoyés.',
+      submitError: 'Échec de l\'envoi des commentaires. Veuillez réessayer.',
     },
   },
   'de': {
@@ -6091,26 +6220,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       successMessage: 'Projekt erfolgreich erstellt!',
       errorMessage: 'Fehler beim Erstellen des Projekts',
     },
-    aiFeedback: {
-      rateResponse: 'Diese Antwort bewerten',
-      howHelpful: 'Wie hilfreich war das?',
-      feedbackHelps: 'Ihr Feedback hilft uns, unsere KI-Funktionen zu verbessern',
-      helpful: 'Hilfreich',
-      okay: 'Okay',
-      notHelpful: 'Nicht Hilfreich',
-      additionalComments: 'Zusätzliche Kommentare? (optional)',
-      submitFeedback: 'Feedback Senden',
-      thankYou: 'Danke! 🎉',
-      wasHelpful: 'War das hilfreich?',
-      yes: 'Ja',
-      somewhat: 'Etwas',
-      no: 'Nein',
-      tellMore: 'Erzählen Sie uns mehr (optional)',
-      submit: 'Senden',
-      feedbackSubmitted: '✓ Vielen Dank für Ihr Feedback!',
-      selectRating: 'Bitte wählen Sie eine Bewertung',
-      submitError: 'Fehler beim Senden des Feedbacks',
-    },
     createApplication: {
       title: 'Neue Bewerbung Hinzufügen',
       sprintRequired: 'Interview Sprint Erforderlich',
@@ -6214,6 +6323,58 @@ export const translations: Record<SupportedLocale, Translation> = {
       openProjectBoard: 'Projekt-Board öffnen',
       createNewProject: 'Neues Projekt erstellen',
       createNewProjectDesc: 'Starten Sie eine neue Mission oder laden Sie einen CV zur Analyse hoch.',
+    },
+    resumeGrid: {
+      loadingResumes: 'Ihre Lebensläufe werden geladen...',
+      analyzing: 'Analysiere...',
+      error: 'Fehler',
+      excellent: 'Ausgezeichnet',
+      moderate: 'Moderat',
+      critical: 'Kritisch',
+      noResumesFound: 'Keine Lebensläufe gefunden',
+      noResumesDesc: 'Laden Sie Ihren Lebenslauf hoch, um einen sofortigen ATS-Score und KI-gestütztes Feedback zu erhalten.',
+      uploadResume: 'Lebenslauf Hochladen',
+      createManually: 'Manuell Erstellen',
+      createProject: 'Projekt Erstellen',
+      searchPlaceholder: 'Lebensläufe nach Name, Fähigkeit oder ID suchen...',
+      listView: 'Listenansicht',
+      gridView: 'Rasteransicht',
+      resumeName: 'Lebenslauf Name',
+      uploadDate: 'Upload-Datum',
+      lastAnalyzed: 'Zuletzt Analysiert',
+      healthScore: 'Gesundheitswert',
+      actions: 'Aktionen',
+      viewDetails: 'Details Anzeigen',
+      reAnalyze: 'Neu Analysieren',
+      delete: 'Löschen',
+      justNow: 'Gerade eben',
+      showing: 'Anzeigen',
+      to: 'bis',
+      of: 'von',
+      results: 'Ergebnisse',
+      previous: 'Zurück',
+      next: 'Weiter',
+      noSearchResults: 'Keine Lebensläufe entsprechen Ihrer Suchanfrage.',
+    },
+    aiFeedback: {
+      rateResponse: 'Antwort bewerten',
+      howHelpful: 'Wie hilfreich war diese Antwort?',
+      feedbackHelps: 'Ihr Feedback hilft uns, unsere KI zu verbessern.',
+      helpful: 'Hilfreich',
+      okay: 'In Ordnung',
+      notHelpful: 'Nicht hilfreich',
+      additionalComments: 'Zusätzliche Kommentare (optional)...',
+      submitFeedback: 'Feedback senden',
+      thankYou: 'Vielen Dank für Ihr Feedback!',
+      wasHelpful: 'War diese Antwort hilfreich?',
+      yes: 'Ja',
+      somewhat: 'Etwas',
+      no: 'Nein',
+      tellMore: 'Erzählen Sie uns mehr (optional)...',
+      submit: 'Senden',
+      selectRating: 'Bitte wählen Sie eine Bewertung',
+      feedbackSubmitted: 'Danke! Feedback gesendet.',
+      submitError: 'Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     },
   },
   'pt': {
@@ -7323,26 +7484,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       successMessage: 'Projeto criado com sucesso!',
       errorMessage: 'Falha ao criar projeto',
     },
-    aiFeedback: {
-      rateResponse: 'Avaliar esta resposta',
-      howHelpful: 'Quão útil foi isso?',
-      feedbackHelps: 'Seu feedback nos ajuda a melhorar nossos recursos de IA',
-      helpful: 'Útil',
-      okay: 'Regular',
-      notHelpful: 'Não Útil',
-      additionalComments: 'Comentários adicionais? (opcional)',
-      submitFeedback: 'Enviar Feedback',
-      thankYou: 'Obrigado! 🎉',
-      wasHelpful: 'Isso foi útil?',
-      yes: 'Sim',
-      somewhat: 'Mais ou Menos',
-      no: 'Não',
-      tellMore: 'Conte-nos mais (opcional)',
-      submit: 'Enviar',
-      feedbackSubmitted: '✓ Obrigado pelo seu feedback!',
-      selectRating: 'Por favor, selecione uma avaliação',
-      submitError: 'Falha ao enviar feedback',
-    },
     createApplication: {
       title: 'Adicionar Nova Candidatura',
       sprintRequired: 'Interview Sprint Necessário',
@@ -7446,6 +7587,58 @@ export const translations: Record<SupportedLocale, Translation> = {
       openProjectBoard: 'Abrir Painel de Projeto',
       createNewProject: 'Criar Novo Projeto',
       createNewProjectDesc: 'Inicie uma nova missão ou carregue um CV para analisar.',
+    },
+    resumeGrid: {
+      loadingResumes: 'Carregando seus currículos...',
+      analyzing: 'Analisando...',
+      error: 'Erro',
+      excellent: 'Excelente',
+      moderate: 'Moderado',
+      critical: 'Crítico',
+      noResumesFound: 'Nenhum currículo encontrado',
+      noResumesDesc: 'Envie seu currículo para obter uma pontuação ATS instantânea e feedback alimentado por IA.',
+      uploadResume: 'Enviar Currículo',
+      createManually: 'Criar Manualmente',
+      createProject: 'Criar Projeto',
+      searchPlaceholder: 'Buscar currículos por nome, habilidade ou ID...',
+      listView: 'Visualização em Lista',
+      gridView: 'Visualização em Grade',
+      resumeName: 'Nome do Currículo',
+      uploadDate: 'Data de Envio',
+      lastAnalyzed: 'Última Análise',
+      healthScore: 'Pontuação de Saúde',
+      actions: 'Ações',
+      viewDetails: 'Ver Detalhes',
+      reAnalyze: 'Re-Analisar',
+      delete: 'Excluir',
+      justNow: 'Agora mesmo',
+      showing: 'Mostrando',
+      to: 'até',
+      of: 'de',
+      results: 'resultados',
+      previous: 'Anterior',
+      next: 'Próximo',
+      noSearchResults: 'Nenhum currículo corresponde à sua pesquisa.',
+    },
+    aiFeedback: {
+      rateResponse: 'Avaliar resposta',
+      howHelpful: 'Quão útil foi esta resposta?',
+      feedbackHelps: 'Seu feedback nos ajuda a melhorar nossa IA.',
+      helpful: 'Útil',
+      okay: 'Regular',
+      notHelpful: 'Não útil',
+      additionalComments: 'Comentários adicionais (opcional)...',
+      submitFeedback: 'Enviar feedback',
+      thankYou: 'Obrigado pelo seu feedback!',
+      wasHelpful: 'Esta resposta foi útil?',
+      yes: 'Sim',
+      somewhat: 'Um pouco',
+      no: 'Não',
+      tellMore: 'Conte-nos mais (opcional)...',
+      submit: 'Enviar',
+      selectRating: 'Por favor, selecione uma avaliação',
+      feedbackSubmitted: 'Obrigado! Feedback enviado.',
+      submitError: 'Falha ao enviar feedback. Tente novamente.',
     },
   },
 };
