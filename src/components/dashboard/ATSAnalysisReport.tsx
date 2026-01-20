@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
 import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
+import { AutoTuneButton } from "./AutoTuneButton";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -846,6 +847,39 @@ export function ATSAnalysisReport({
 
           {/* ML-Powered Analysis - INTERNAL USE ONLY (not shown in UI) */}
           {/* MLInsights is used internally to improve algorithms, not displayed to avoid UI saturation */}
+
+          {/* Auto-Tune Button - PAID USERS ONLY */}
+          {isPaidUser && ocrText && missingKeywords.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="w-full mb-6 md:mb-8"
+            >
+              <div className="bg-white rounded-xl shadow-lg border border-[#E2E8F0] p-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                      Sprint Engine - Auto-Tune Resume
+                    </h3>
+                    <p className="text-sm text-[#64748B]">
+                      Our ML-powered engine automatically optimizes weak bullets and injects FAANG-level keywords
+                    </p>
+                  </div>
+                  <AutoTuneButton
+                    resumeText={ocrText}
+                    missingKeywords={missingKeywords}
+                    onOptimized={(optimizedText) => {
+                      // User would need to save the optimized text
+                      console.log('Optimized text:', optimizedText);
+                    }}
+                    isPremium={isPaidUser}
+                    onUpgrade={onUpgrade}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Weak Bullet Suggestions - PAID USERS ONLY */}
           {resume?._id && (
