@@ -38,7 +38,8 @@ import {
   Share2,
   TrendingUp,
   ListChecks,
-  Settings
+  Settings,
+  Lock
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -692,126 +693,115 @@ export function ResumeDetailDialog({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="hidden sm:flex gap-2 font-bold"
+            {/* 🟢 GREEN - Primary Action: AI Rewrite (Always Visible) */}
+            {!isFree ? (
+              <>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="gap-2 font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] hover:from-[#16A34A] hover:to-[#15803D] text-white shadow-lg hover:shadow-xl transition-all"
+                  onClick={handleOptimize}
+                  disabled={isGenerating || !displayResume}
+                >
+                  <Wand2 className="h-4 w-4" />
+                  {isGenerating ? "Optimizing..." : "AI Rewrite"}
+                </Button>
+                {displayResume?.rewrittenText && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="gap-2 font-bold bg-[#3B82F6] hover:bg-[#2563EB] text-white"
+                    onClick={handleApplyRewrite}
+                    disabled={!displayResume}
+                  >
+                    <CheckCircle2 className="h-4 w-4" />
+                    Apply
+                  </Button>
+                )}
+              </>
+            ) : (
+              <Button
+                variant="default"
+                size="sm"
+                className="gap-2 font-bold bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg hover:shadow-xl transition-all"
+                onClick={() => setShowPricing(true)}
+              >
+                <Sparkles className="h-4 w-4" />
+                Upgrade to Fix
+              </Button>
+            )}
+
+            {/* 🟡 YELLOW - Secondary Action: Add Job Description */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="hidden md:flex gap-2 font-bold border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6]/5"
               onClick={() => setShowJobDescriptionInput(!showJobDescriptionInput)}
               disabled={!displayResume}
             >
               <Target className="h-4 w-4" />
-              {displayResume?.jobDescription ? "Update JD" : "Add Job Description"}
+              {displayResume?.jobDescription ? "Update JD" : "Add Job"}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex gap-2 font-bold"
-              onClick={handleOptimize}
-              disabled={isGenerating || !displayResume}
-            >
-              <Wand2 className="h-4 w-4" />
-              {isGenerating ? "Optimizing..." : "AI Rewrite"}
-            </Button>
-            {displayResume?.rewrittenText && (
-              <Button
-                variant="default"
-                size="sm"
-                className="hidden sm:flex gap-2 font-bold bg-[#22C55E] hover:bg-[#16A34A] text-white"
-                onClick={handleApplyRewrite}
-                disabled={!displayResume}
-              >
-                <CheckCircle2 className="h-4 w-4" />
-                Apply Rewrite
-              </Button>
-            )}
-            {/* Industry Selector - Critical Feature */}
-            <div className="hidden sm:flex items-center gap-2">
-              <Select value={selectedIndustry} onValueChange={setSelectedIndustry}>
-                <SelectTrigger className="w-[200px] h-9 gap-2 font-semibold border-2 border-[#8B5CF6] text-[#8B5CF6] hover:bg-[#8B5CF6]/5 transition-all">
-                  <Building className="h-4 w-4" />
-                  <SelectValue>
-                    {selectedIndustry === "general" ? "General (Standard)" :
-                     selectedIndustry === "google" ? "🔍 Google" :
-                     selectedIndustry === "meta" ? "📘 Meta" :
-                     selectedIndustry === "amazon" ? "📦 Amazon" :
-                     selectedIndustry === "apple" ? "🍎 Apple" :
-                     selectedIndustry === "microsoft" ? "💠 Microsoft" :
-                     selectedIndustry === "deloitte" ? "💼 Deloitte" :
-                     selectedIndustry === "mckinsey" ? "📊 McKinsey" :
-                     selectedIndustry === "goldman" ? "💰 Goldman Sachs" :
-                     selectedIndustry === "jpmorgan" ? "🏦 JP Morgan" : "Select Company"}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="general">
-                    <span className="font-medium">General (Standard)</span>
-                  </SelectItem>
-                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
-                    Tech (FAANG)
-                  </div>
-                  <SelectItem value="google">🔍 Google</SelectItem>
-                  <SelectItem value="meta">📘 Meta</SelectItem>
-                  <SelectItem value="amazon">📦 Amazon</SelectItem>
-                  <SelectItem value="apple">🍎 Apple</SelectItem>
-                  <SelectItem value="microsoft">💠 Microsoft</SelectItem>
-                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
-                    Consulting
-                  </div>
-                  <SelectItem value="deloitte">💼 Deloitte</SelectItem>
-                  <SelectItem value="mckinsey">📊 McKinsey</SelectItem>
-                  <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider border-t border-b border-slate-100 my-1">
-                    Finance
-                  </div>
-                  <SelectItem value="goldman">💰 Goldman Sachs</SelectItem>
-                  <SelectItem value="jpmorgan">🏦 JP Morgan</SelectItem>
-                </SelectContent>
-              </Select>
-              {selectedIndustry !== "general" && (
-                <span className="text-xs font-mono text-[#8B5CF6] bg-[#8B5CF6]/10 px-2 py-1 rounded border border-[#8B5CF6]">
-                  ACTIVE
-                </span>
-              )}
-            </div>
-            {!isFree ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className="hidden sm:flex gap-2 font-bold"
-                onClick={() => setShowSanitizerDialog(true)}
-                disabled={!displayResume}
-              >
-                <FileSearch className="h-4 w-4" />
-                Sanitizer
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                className="hidden sm:flex gap-2 font-bold relative"
-                onClick={() => setShowPricing(true)}
-              >
-                <FileSearch className="h-4 w-4" />
-                Sanitizer
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
-                  <span className="material-symbols-outlined text-[12px] text-amber-500">lock</span>
-                </span>
-              </Button>
-            )}
-            {/* Actions Menu - Grouped Download/Print/Share/Delete */}
+
+            {/* 🔴 RED - Tools Dropdown (Everything Else) */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hidden sm:flex gap-2 font-bold"
+                  className="gap-2 font-bold"
                   disabled={!displayResume}
                 >
                   <Settings className="h-4 w-4" />
-                  Actions
-                  <MoreVertical className="h-3 w-3 ml-1" />
+                  <span className="hidden sm:inline">Tools</span>
+                  <MoreVertical className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
+              <DropdownMenuContent align="end" className="w-56">
+                {/* Company Selector */}
+                <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                  Company Mode
+                </div>
+                <DropdownMenuItem
+                  onClick={() => setSelectedIndustry("general")}
+                  className={selectedIndustry === "general" ? "bg-slate-100" : ""}
+                >
+                  <Building className="h-4 w-4 mr-2" />
+                  General (Standard)
+                  {selectedIndustry === "general" && <Check className="h-4 w-4 ml-auto" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedIndustry("google")}>
+                  <span className="mr-2">🔍</span> Google
+                  {selectedIndustry === "google" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedIndustry("meta")}>
+                  <span className="mr-2">📘</span> Meta
+                  {selectedIndustry === "meta" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setSelectedIndustry("amazon")}>
+                  <span className="mr-2">📦</span> Amazon
+                  {selectedIndustry === "amazon" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                {/* Sanitizer */}
+                {!isFree ? (
+                  <DropdownMenuItem onClick={() => setShowSanitizerDialog(true)}>
+                    <FileSearch className="h-4 w-4 mr-2" />
+                    Sanitizer
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem onClick={() => setShowPricing(true)}>
+                    <FileSearch className="h-4 w-4 mr-2" />
+                    Sanitizer
+                    <Lock className="h-3 w-3 ml-auto text-amber-500" />
+                  </DropdownMenuItem>
+                )}
+
+                <DropdownMenuSeparator />
+
+                {/* Export/Share Actions */}
                 <DropdownMenuItem onClick={handleDownloadFile} disabled={!displayResume}>
                   <Download className="h-4 w-4 mr-2" />
                   Download CV
@@ -824,7 +814,10 @@ export function ResumeDetailDialog({
                   <Link2 className="h-4 w-4 mr-2" />
                   Share Link
                 </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
+
+                {/* Delete */}
                 <DropdownMenuItem
                   onClick={() => displayResume && onDelete(displayResume._id)}
                   disabled={!displayResume}

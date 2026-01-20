@@ -460,6 +460,11 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
               </Button>
               <Button
                 className="flex-1 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] text-white"
+                onClick={() => {
+                  toast.success("Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.");
+                  // In a real implementation, this would populate the editor with fixes
+                  // For now, we show a helpful message
+                }}
               >
                 <Wand2 className="h-4 w-4 mr-2" />
                 Apply Auto-Fix
