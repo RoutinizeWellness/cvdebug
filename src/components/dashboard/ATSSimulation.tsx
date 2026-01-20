@@ -460,7 +460,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 <h2 className="text-sm font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
               </div>
 
-              <div className="grid grid-cols-1 gap-12">
+              <div className="space-y-8">
                 {/* Detected Level */}
                 <div className="space-y-4">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
@@ -483,7 +483,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
 
                 {/* Experience Audit */}
-                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
+                <div className="space-y-4 border-t border-[#E2E8F0] pt-6">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
                   <div className="space-y-1">
                     <p className="text-3xl font-bold tracking-tight text-[#0F172A]">
@@ -498,7 +498,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
 
                 {/* Signal Density */}
-                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
+                <div className="space-y-4 border-t border-[#E2E8F0] pt-6">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
