@@ -1110,6 +1110,41 @@ export interface Translation {
     liveAnalysis: string;
     fullReport: string;
   };
+  // Keyword Sniper
+  keywordSniper: {
+    title: string;
+    subtitle: string;
+    noJobDescription: string;
+    noJobDescriptionDesc: string;
+    howToUseTitle: string;
+    howToStep1: string;
+    howToStep2: string;
+    howToStep3: string;
+    howToStep4: string;
+    backToDashboard: string;
+    interviewSprintRequired: string;
+    injectKeywordsDesc: string;
+    keywordInjection: string;
+    liveScoreTracking: string;
+    priorityTargeting: string;
+    contextAwareAI: string;
+    upgradeToSprint: string;
+    back: string;
+    targeting: string;
+    currentResume: string;
+    aiPremiumTools: string;
+    viewExamples: string;
+    viewExamplesDesc: string;
+    applyMetric: string;
+    applyMetricDesc: string;
+    rewriteAll: string;
+    rewriteAllDesc: string;
+    battlePlan: string;
+    battlePlanDesc: string;
+    suggestionApplied: string;
+    noMissingKeywords: string;
+    rewriteSuccess: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -2174,6 +2209,40 @@ export const translations: Record<SupportedLocale, Translation> = {
       liveAnalysis: 'Live Analysis',
       fullReport: 'Full Report',
     },
+    keywordSniper: {
+      title: 'Keyword Sniper Tool',
+      subtitle: 'Optimize your bullet points with AI-powered keyword injection',
+      noJobDescription: 'No Job Description Analyzed Yet',
+      noJobDescriptionDesc: 'The Keyword Sniper needs a job description to analyze and extract missing keywords.',
+      howToUseTitle: 'How to use Keyword Sniper:',
+      howToStep1: 'Create a project with your target role',
+      howToStep2: 'Add a job application with the job description',
+      howToStep3: 'Analyze the job description to extract keywords',
+      howToStep4: 'Return here to get AI-powered keyword suggestions',
+      backToDashboard: 'Back to Dashboard',
+      interviewSprintRequired: 'Interview Sprint Required',
+      injectKeywordsDesc: 'Inject missing keywords into your resume bullets with AI-powered suggestions.',
+      keywordInjection: 'Keyword injection',
+      liveScoreTracking: 'Live score tracking',
+      priorityTargeting: 'Priority targeting',
+      contextAwareAI: 'Context-aware AI',
+      upgradeToSprint: 'Upgrade to Interview Sprint',
+      back: 'Back',
+      targeting: 'Targeting',
+      currentResume: 'Current Resume',
+      aiPremiumTools: 'AI Premium Tools',
+      viewExamples: 'View Examples',
+      viewExamplesDesc: 'See senior-level examples of how to integrate keywords naturally',
+      applyMetric: 'Apply Metric',
+      applyMetricDesc: 'Transform weak bullets into quantified impact statements',
+      rewriteAll: 'Rewrite All',
+      rewriteAllDesc: 'AI engine to rewrite your entire CV at senior+ level',
+      battlePlan: 'Battle Plan',
+      battlePlanDesc: 'Generate hardest questions + strategic answers for interviews',
+      suggestionApplied: 'Suggestion applied! Your resume has been updated.',
+      noMissingKeywords: 'No missing keywords to show examples for',
+      rewriteSuccess: 'Resume rewritten successfully!',
+    },
   },
   'es': {
     hero: {
@@ -3235,6 +3304,40 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsingEfficiency: 'Puntuación basada en eficiencia de análisis',
       liveAnalysis: 'Análisis en Vivo',
       fullReport: 'Informe Completo',
+    },
+    keywordSniper: {
+      title: 'Herramienta Keyword Sniper',
+      subtitle: 'Optimiza tus bullets con inyección de keywords potenciada por IA',
+      noJobDescription: 'Sin Descripción de Trabajo Analizada',
+      noJobDescriptionDesc: 'Keyword Sniper necesita una descripción de trabajo para analizar y extraer keywords faltantes.',
+      howToUseTitle: 'Cómo usar Keyword Sniper:',
+      howToStep1: 'Crea un proyecto con tu rol objetivo',
+      howToStep2: 'Añade una aplicación de trabajo con la descripción',
+      howToStep3: 'Analiza la descripción para extraer keywords',
+      howToStep4: 'Vuelve aquí para obtener sugerencias de IA',
+      backToDashboard: 'Volver al Panel',
+      interviewSprintRequired: 'Interview Sprint Requerido',
+      injectKeywordsDesc: 'Inyecta keywords faltantes en tus bullets con sugerencias de IA.',
+      keywordInjection: 'Inyección de keywords',
+      liveScoreTracking: 'Seguimiento de puntuación en vivo',
+      priorityTargeting: 'Objetivo prioritario',
+      contextAwareAI: 'IA consciente del contexto',
+      upgradeToSprint: 'Actualizar a Interview Sprint',
+      back: 'Atrás',
+      targeting: 'Objetivo',
+      currentResume: 'CV Actual',
+      aiPremiumTools: 'Herramientas Premium IA',
+      viewExamples: 'Ver Ejemplos',
+      viewExamplesDesc: 'Ver ejemplos de nivel senior sobre cómo integrar keywords naturalmente',
+      applyMetric: 'Aplicar Métrica',
+      applyMetricDesc: 'Transforma bullets débiles en declaraciones de impacto cuantificadas',
+      rewriteAll: 'Reescribir Todo',
+      rewriteAllDesc: 'Motor de IA para reescribir tu CV completo a nivel senior+',
+      battlePlan: 'Plan de Batalla',
+      battlePlanDesc: 'Genera las preguntas más difíciles + respuestas estratégicas para entrevistas',
+      suggestionApplied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
+      noMissingKeywords: 'No hay keywords faltantes para mostrar ejemplos',
+      rewriteSuccess: '¡CV reescrito con éxito!',
     },
   },
   'fr': {
@@ -4298,6 +4401,40 @@ export const translations: Record<SupportedLocale, Translation> = {
       liveAnalysis: 'Analyse en Direct',
       fullReport: 'Rapport Complet',
     },
+    keywordSniper: {
+      title: 'Outil Keyword Sniper',
+      subtitle: 'Optimisez vos points avec injection de mots-clés IA',
+      noJobDescription: 'Aucune Description de Poste Analysée',
+      noJobDescriptionDesc: 'Keyword Sniper a besoin d\'une description de poste pour analyser et extraire les mots-clés manquants.',
+      howToUseTitle: 'Comment utiliser Keyword Sniper :',
+      howToStep1: 'Créez un projet avec votre rôle cible',
+      howToStep2: 'Ajoutez une candidature avec la description du poste',
+      howToStep3: 'Analysez la description pour extraire les mots-clés',
+      howToStep4: 'Revenez ici pour obtenir des suggestions IA',
+      backToDashboard: 'Retour au Tableau de Bord',
+      interviewSprintRequired: 'Interview Sprint Requis',
+      injectKeywordsDesc: 'Injectez des mots-clés manquants dans vos points avec des suggestions IA.',
+      keywordInjection: 'Injection de mots-clés',
+      liveScoreTracking: 'Suivi du score en direct',
+      priorityTargeting: 'Ciblage prioritaire',
+      contextAwareAI: 'IA consciente du contexte',
+      upgradeToSprint: 'Passer à Interview Sprint',
+      back: 'Retour',
+      targeting: 'Ciblage',
+      currentResume: 'CV Actuel',
+      aiPremiumTools: 'Outils Premium IA',
+      viewExamples: 'Voir des Exemples',
+      viewExamplesDesc: 'Voir des exemples de niveau senior sur l\'intégration naturelle des mots-clés',
+      applyMetric: 'Appliquer une Métrique',
+      applyMetricDesc: 'Transformez des points faibles en déclarations d\'impact quantifiées',
+      rewriteAll: 'Tout Réécrire',
+      rewriteAllDesc: 'Moteur IA pour réécrire votre CV complet au niveau senior+',
+      battlePlan: 'Plan de Bataille',
+      battlePlanDesc: 'Générez les questions les plus difficiles + réponses stratégiques pour les entretiens',
+      suggestionApplied: 'Suggestion appliquée ! Votre CV a été mis à jour.',
+      noMissingKeywords: 'Aucun mot-clé manquant pour afficher des exemples',
+      rewriteSuccess: 'CV réécrit avec succès !',
+    },
   },
   'de': {
     hero: {
@@ -5360,6 +5497,40 @@ export const translations: Record<SupportedLocale, Translation> = {
       liveAnalysis: 'Live-Analyse',
       fullReport: 'Vollständiger Bericht',
     },
+    keywordSniper: {
+      title: 'Keyword Sniper Tool',
+      subtitle: 'Optimieren Sie Ihre Bulletpoints mit KI-gestützter Keyword-Injektion',
+      noJobDescription: 'Keine Stellenbeschreibung Analysiert',
+      noJobDescriptionDesc: 'Keyword Sniper benötigt eine Stellenbeschreibung, um fehlende Keywords zu analysieren und zu extrahieren.',
+      howToUseTitle: 'So verwenden Sie Keyword Sniper:',
+      howToStep1: 'Erstellen Sie ein Projekt mit Ihrer Zielrolle',
+      howToStep2: 'Fügen Sie eine Bewerbung mit der Stellenbeschreibung hinzu',
+      howToStep3: 'Analysieren Sie die Beschreibung, um Keywords zu extrahieren',
+      howToStep4: 'Kehren Sie hierher zurück, um KI-Vorschläge zu erhalten',
+      backToDashboard: 'Zurück zum Dashboard',
+      interviewSprintRequired: 'Interview Sprint Erforderlich',
+      injectKeywordsDesc: 'Fügen Sie fehlende Keywords in Ihre Bulletpoints mit KI-Vorschlägen ein.',
+      keywordInjection: 'Keyword-Injektion',
+      liveScoreTracking: 'Live-Score-Tracking',
+      priorityTargeting: 'Prioritäts-Targeting',
+      contextAwareAI: 'Kontextbewusste KI',
+      upgradeToSprint: 'Upgrade auf Interview Sprint',
+      back: 'Zurück',
+      targeting: 'Targeting',
+      currentResume: 'Aktueller Lebenslauf',
+      aiPremiumTools: 'KI-Premium-Tools',
+      viewExamples: 'Beispiele Ansehen',
+      viewExamplesDesc: 'Sehen Sie Senior-Level-Beispiele zur natürlichen Integration von Keywords',
+      applyMetric: 'Metrik Anwenden',
+      applyMetricDesc: 'Wandeln Sie schwache Bulletpoints in quantifizierte Impact-Statements um',
+      rewriteAll: 'Alles Neu Schreiben',
+      rewriteAllDesc: 'KI-Engine zum Umschreiben Ihres gesamten Lebenslaufs auf Senior+-Level',
+      battlePlan: 'Schlachtplan',
+      battlePlanDesc: 'Generieren Sie die schwierigsten Fragen + strategische Antworten für Interviews',
+      suggestionApplied: 'Vorschlag angewendet! Ihr Lebenslauf wurde aktualisiert.',
+      noMissingKeywords: 'Keine fehlenden Keywords zum Anzeigen von Beispielen',
+      rewriteSuccess: 'Lebenslauf erfolgreich neu geschrieben!',
+    },
   },
   'pt': {
     hero: {
@@ -6421,6 +6592,40 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsingEfficiency: 'Pontuação baseada na eficiência de análise',
       liveAnalysis: 'Análise ao Vivo',
       fullReport: 'Relatório Completo',
+    },
+    keywordSniper: {
+      title: 'Ferramenta Keyword Sniper',
+      subtitle: 'Otimize seus bullets com injeção de palavras-chave por IA',
+      noJobDescription: 'Nenhuma Descrição de Vaga Analisada',
+      noJobDescriptionDesc: 'Keyword Sniper precisa de uma descrição de vaga para analisar e extrair palavras-chave ausentes.',
+      howToUseTitle: 'Como usar Keyword Sniper:',
+      howToStep1: 'Crie um projeto com sua função alvo',
+      howToStep2: 'Adicione uma candidatura com a descrição da vaga',
+      howToStep3: 'Analise a descrição para extrair palavras-chave',
+      howToStep4: 'Volte aqui para obter sugestões de IA',
+      backToDashboard: 'Voltar ao Painel',
+      interviewSprintRequired: 'Interview Sprint Necessário',
+      injectKeywordsDesc: 'Injete palavras-chave ausentes em seus bullets com sugestões de IA.',
+      keywordInjection: 'Injeção de palavras-chave',
+      liveScoreTracking: 'Acompanhamento de pontuação ao vivo',
+      priorityTargeting: 'Segmentação prioritária',
+      contextAwareAI: 'IA consciente do contexto',
+      upgradeToSprint: 'Atualizar para Interview Sprint',
+      back: 'Voltar',
+      targeting: 'Segmentação',
+      currentResume: 'Currículo Atual',
+      aiPremiumTools: 'Ferramentas Premium IA',
+      viewExamples: 'Ver Exemplos',
+      viewExamplesDesc: 'Veja exemplos de nível sênior sobre como integrar palavras-chave naturalmente',
+      applyMetric: 'Aplicar Métrica',
+      applyMetricDesc: 'Transforme bullets fracos em declarações de impacto quantificadas',
+      rewriteAll: 'Reescrever Tudo',
+      rewriteAllDesc: 'Motor de IA para reescrever seu currículo completo em nível sênior+',
+      battlePlan: 'Plano de Batalha',
+      battlePlanDesc: 'Gere as perguntas mais difíceis + respostas estratégicas para entrevistas',
+      suggestionApplied: 'Sugestão aplicada! Seu currículo foi atualizado.',
+      noMissingKeywords: 'Nenhuma palavra-chave ausente para mostrar exemplos',
+      rewriteSuccess: 'Currículo reescrito com sucesso!',
     },
   },
 };

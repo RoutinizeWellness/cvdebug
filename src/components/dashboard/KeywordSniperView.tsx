@@ -11,6 +11,7 @@ import { ApplyMetricModal } from "./ApplyMetricModal";
 import { RewriteAllModal } from "./RewriteAllModal";
 import { InterviewBattlePlanModal } from "./InterviewBattlePlanModal";
 import { motion } from "framer-motion";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api;
 
@@ -20,6 +21,7 @@ interface KeywordSniperViewProps {
 }
 
 export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps) {
+  const { t } = useI18n();
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.applications.getApplications);
   const currentUser = useQuery(apiAny.users.currentUser);
@@ -73,7 +75,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   const currentBullet = bullets[0] || "Led cross-functional teams to deliver projects on time and within budget, resulting in increased efficiency.";
 
   const handleApplySuggestion = (newText: string) => {
-    toast.success("Suggestion applied! Your resume has been updated.");
+    toast.success(t.keywordSniper.suggestionApplied);
     // In real implementation, this would update the resume in Convex
     console.log("New bullet point:", newText);
   };
@@ -94,24 +96,24 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-6">
         <Target className="h-16 w-16 text-slate-300 mb-4" />
-        <h3 className="text-xl font-bold text-[#0F172A] mb-2">No Job Description Analyzed Yet</h3>
+        <h3 className="text-xl font-bold text-[#0F172A] mb-2">{t.keywordSniper.noJobDescription}</h3>
         <p className="text-[#64748B] max-w-md mb-4">
-          The Keyword Sniper needs a job description to analyze and extract missing keywords.
+          {t.keywordSniper.noJobDescriptionDesc}
         </p>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mb-6">
           <p className="text-sm text-blue-700 mb-2">
-            <span className="font-semibold">How to use Keyword Sniper:</span>
+            <span className="font-semibold">{t.keywordSniper.howToUseTitle}</span>
           </p>
           <ol className="text-xs text-[#475569] space-y-1 text-left list-decimal list-inside">
-            <li>Create a project with your target role</li>
-            <li>Add a job application with the job description</li>
-            <li>Analyze the job description to extract keywords</li>
-            <li>Return here to get AI-powered keyword suggestions</li>
+            <li>{t.keywordSniper.howToStep1}</li>
+            <li>{t.keywordSniper.howToStep2}</li>
+            <li>{t.keywordSniper.howToStep3}</li>
+            <li>{t.keywordSniper.howToStep4}</li>
           </ol>
         </div>
         <Button onClick={onBack}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dashboard
+          {t.keywordSniper.backToDashboard}
         </Button>
       </div>
     );
@@ -131,9 +133,9 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 <Diamond className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
+                <h3 className="text-[#0F172A] font-bold text-base mb-1">{t.keywordSniper.interviewSprintRequired}</h3>
                 <p className="text-[#475569] text-sm leading-relaxed">
-                  Inject missing keywords into your resume bullets with AI-powered suggestions.
+                  {t.keywordSniper.injectKeywordsDesc}
                 </p>
               </div>
             </div>
@@ -142,19 +144,19 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
               <div className="flex items-center gap-2 text-xs text-[#475569]">
                 <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Keyword injection</span>
+                <span>{t.keywordSniper.keywordInjection}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-[#475569]">
                 <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Live score tracking</span>
+                <span>{t.keywordSniper.liveScoreTracking}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-[#475569]">
                 <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Priority targeting</span>
+                <span>{t.keywordSniper.priorityTargeting}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-[#475569]">
                 <span className="text-[#22C55E] font-bold">✓</span>
-                <span>Context-aware AI</span>
+                <span>{t.keywordSniper.contextAwareAI}</span>
               </div>
             </div>
 
@@ -163,7 +165,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
               className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
             >
               <Sparkles className="h-4 w-4" />
-              <span>Upgrade to Interview Sprint</span>
+              <span>{t.keywordSniper.upgradeToSprint}</span>
             </Button>
           </div>
         </Alert>
@@ -179,16 +181,16 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
             className="text-[#64748B] hover:text-[#0F172A]"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t.keywordSniper.back}
           </Button>
           <div className="flex items-center gap-3">
             <div>
               <h1 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">radar</span>
-                Keyword Sniper Tool
+                {t.keywordSniper.title}
               </h1>
               <p className="text-[#64748B] text-sm">
-                Optimize your bullet points with AI-powered keyword injection
+                {t.keywordSniper.subtitle}
               </p>
             </div>
             {!hasInterviewSprint && (
@@ -199,7 +201,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         <div className="flex items-center gap-3">
           <div className="text-right">
             <p className="text-xs text-slate-400">
-              {applicationWithJob ? "Targeting" : "Current Resume"}
+              {applicationWithJob ? t.keywordSniper.targeting : t.keywordSniper.currentResume}
             </p>
             <p className="text-sm font-medium text-[#0F172A]">
               {applicationWithJob ? `${jobTitle} at ${company}` : masterResume?.title || "Resume"}
@@ -211,7 +213,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
       {/* Premium AI Tools */}
       {hasInterviewSprint && (
         <div className="w-full mb-6">
-          <h2 className="text-lg font-bold text-[#0F172A] mb-4">AI Premium Tools</h2>
+          <h2 className="text-lg font-bold text-[#0F172A] mb-4">{t.keywordSniper.aiPremiumTools}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* View Examples */}
             <button
@@ -220,7 +222,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                   setSelectedKeyword(missingKeywords[0].keyword || missingKeywords[0]);
                   setShowExamplesModal(true);
                 } else {
-                  toast.info("No missing keywords to show examples for");
+                  toast.info(t.keywordSniper.noMissingKeywords);
                 }
               }}
               className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#3B82F6] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(59,130,246,0.15)]"
@@ -229,10 +231,10 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 <div className="w-10 h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
                   <Eye className="h-5 w-5 text-[#3B82F6]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0F172A]">View Examples</h3>
+                <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.viewExamples}</h3>
               </div>
               <p className="text-xs text-[#64748B] leading-relaxed">
-                See senior-level examples of how to integrate keywords naturally
+                {t.keywordSniper.viewExamplesDesc}
               </p>
             </button>
 
@@ -248,10 +250,10 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 <div className="w-10 h-10 rounded-lg bg-[#22C55E]/10 flex items-center justify-center">
                   <TrendingUp className="h-5 w-5 text-[#22C55E]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0F172A]">Apply Metric</h3>
+                <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.applyMetric}</h3>
               </div>
               <p className="text-xs text-[#64748B] leading-relaxed">
-                Transform weak bullets into quantified impact statements
+                {t.keywordSniper.applyMetricDesc}
               </p>
             </button>
 
@@ -264,10 +266,10 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 <div className="w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
                   <RefreshCw className="h-5 w-5 text-[#8B5CF6]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0F172A]">Rewrite All</h3>
+                <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.rewriteAll}</h3>
               </div>
               <p className="text-xs text-[#64748B] leading-relaxed">
-                AI engine to rewrite your entire CV at senior+ level
+                {t.keywordSniper.rewriteAllDesc}
               </p>
             </button>
 
@@ -280,10 +282,10 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 <div className="w-10 h-10 rounded-lg bg-[#EF4444]/10 flex items-center justify-center">
                   <Shield className="h-5 w-5 text-[#EF4444]" />
                 </div>
-                <h3 className="text-sm font-bold text-[#0F172A]">Battle Plan</h3>
+                <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.battlePlan}</h3>
               </div>
               <p className="text-xs text-[#64748B] leading-relaxed">
-                Generate hardest questions + strategic answers for interviews
+                {t.keywordSniper.battlePlanDesc}
               </p>
             </button>
           </div>
@@ -351,7 +353,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         }}
         keywords={missingKeywords.map((kw: any) => typeof kw === "string" ? kw : kw.keyword)}
         onComplete={(rewrittenData: any) => {
-          toast.success("Resume rewritten successfully!");
+          toast.success(t.keywordSniper.rewriteSuccess);
           setShowRewriteModal(false);
         }}
       />
