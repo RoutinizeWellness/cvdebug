@@ -13,8 +13,9 @@ import {
   Zap
 } from "lucide-react";
 import { toast } from "sonner";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface InlineResumeEditorProps {
   resumeId: string;
@@ -42,6 +43,11 @@ export function InlineResumeEditor({
   const updateResume = useMutation(api.resumes.updateResumeContent);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isReanalyzing, setIsReanalyzing] = useState(false);
+  const [previousScore, setPreviousScore] = useState<number | null>(null);
+
+  // Subscribe to resume updates in real-time
+  const resumeData = useQuery(api.resumes.getResume, { id: resumeId as Id<"resumes"> });
 
   // Check if user has paid plan
   const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
@@ -51,6 +57,37 @@ export function InlineResumeEditor({
       setHasChanges(true);
     }
   }, [content, initialContent]);
+
+  // Watch for re-analysis completion
+  useEffect(() => {
+    if (resumeData && isReanalyzing) {
+      // Check if status changed from "processing" to "analyzed"
+      if (resumeData.status === "analyzed") {
+        setIsReanalyzing(false);
+
+        // Show success notification with score change
+        const newScore = resumeData.score || 0;
+        if (previousScore !== null) {
+          const scoreDiff = newScore - previousScore;
+          if (scoreDiff > 0) {
+            toast.success(`✓ Re-analysis complete! Score improved by +${scoreDiff}% (${newScore}%)`);
+          } else if (scoreDiff < 0) {
+            toast.success(`✓ Re-analysis complete! New score: ${newScore}% (${scoreDiff}%)`);
+          } else {
+            toast.success(`✓ Re-analysis complete! Score: ${newScore}%`);
+          }
+        } else {
+          toast.success(`✓ Re-analysis complete! Score: ${newScore}%`);
+        }
+
+        // Reset previous score
+        setPreviousScore(null);
+
+        // Notify parent component
+        onContentUpdate(resumeData.ocrText || content);
+      }
+    }
+  }, [resumeData?.status, resumeData?.score, isReanalyzing, previousScore, content, onContentUpdate]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(content);
@@ -73,13 +110,22 @@ export function InlineResumeEditor({
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      // Save current score before updating
+      if (resumeData?.score) {
+        setPreviousScore(resumeData.score);
+      }
+
       await updateResume({ id: resumeId, newContent: content });
       setHasChanges(false);
       setLastSaved(new Date());
-      onContentUpdate(content);
+
+      // Set re-analyzing state to track completion
+      setIsReanalyzing(true);
       toast.success("✓ Changes saved! Re-analyzing...");
     } catch (error) {
       toast.error("Failed to save. Try again?");
+      setIsReanalyzing(false);
+      setPreviousScore(null);
     } finally {
       setIsSaving(false);
     }
@@ -142,7 +188,18 @@ export function InlineResumeEditor({
           <div>
             <h3 className="font-bold text-[#0F172A] text-sm sm:text-base">Inline Editor</h3>
             <p className="text-xs text-[#64748B]">
-              {hasChanges ? "You have unsaved changes" : lastSaved ? `Last saved ${lastSaved.toLocaleTimeString()}` : "Edit directly, no re-upload needed"}
+              {isReanalyzing ? (
+                <span className="flex items-center gap-1.5">
+                  <RefreshCw className="h-3 w-3 animate-spin" />
+                  Re-analyzing resume...
+                </span>
+              ) : hasChanges ? (
+                "You have unsaved changes"
+              ) : lastSaved ? (
+                `Last saved ${lastSaved.toLocaleTimeString()}`
+              ) : (
+                "Edit directly, no re-upload needed"
+              )}
             </p>
           </div>
         </div>
