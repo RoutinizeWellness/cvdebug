@@ -209,9 +209,9 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                         </svg>
                       </div>
                     </div>
-                    <div>
-                      <h3 className="text-[#0F172A] font-bold text-base leading-tight">{project.name}</h3>
-                      <p className="text-[#64748B] text-sm">@ {project.targetRole}</p>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-[#0F172A] font-bold text-base leading-tight truncate">{project.name}</h3>
+                      <p className="text-[#64748B] text-sm truncate">@ {project.targetRole}</p>
                     </div>
                   </div>
                   <button
@@ -251,7 +251,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 <div className="space-y-3">
                   <div className="flex flex-wrap gap-2">
                     {project.description && project.description.split(',').slice(0, 3).map((tag, i) => (
-                      <span key={i} className="px-2 py-1 rounded-md bg-slate-100 text-[#475569] text-xs font-mono border border-[#E2E8F0]">
+                      <span key={i} className="px-2 py-1 rounded-md bg-slate-100 text-[#475569] text-xs font-mono border border-[#E2E8F0] max-w-[150px] truncate inline-block">
                         {tag.trim()}
                       </span>
                     ))}

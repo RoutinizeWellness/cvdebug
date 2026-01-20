@@ -203,7 +203,7 @@ export default function AuthPage() {
             </motion.div>
 
             <motion.h1
-              className="text-4xl font-bold text-[#0F172A] mb-4 leading-tight"
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] mb-4 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -211,7 +211,7 @@ export default function AuthPage() {
               {t.auth.headline}
             </motion.h1>
             <motion.p
-              className="text-[#475569] font-body text-lg"
+              className="text-[#475569] font-body text-sm sm:text-base lg:text-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -232,8 +232,8 @@ export default function AuthPage() {
         >
           {/* Header */}
           <div className="text-center mb-2">
-            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight mb-2">{t.auth.initSession}</h2>
-            <p className="text-[#475569] font-body text-sm">{t.auth.enterCredentials}</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#0F172A] tracking-tight mb-2">{t.auth.initSession}</h2>
+            <p className="text-[#475569] font-body text-xs sm:text-sm">{t.auth.enterCredentials}</p>
           </div>
 
           {/* Enhanced glass card */}

@@ -13,6 +13,7 @@ import {
   Wrench
 } from "lucide-react";
 import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
+import { ApplicationMicroTracker } from "./ApplicationMicroTracker";
 import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
@@ -111,24 +112,25 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       {/* Page Heading - ResumeWorded Style */}
       <header className="bg-[#FFFFFF] rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-8">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-          <div className="space-y-3">
+          <div className="space-y-3 flex-1 min-w-0">
             <div className="flex items-center gap-3">
-              <h2 className="text-[#0F172A] text-4xl font-bold tracking-tight">{t.missionControl.title}</h2>
-              <span className="relative flex h-2.5 w-2.5">
+              <h2 className="text-[#0F172A] text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">{t.missionControl.title}</h2>
+              <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22C55E]"></span>
               </span>
             </div>
-            <p className="text-[#64748B] text-base">
+            <p className="text-[#64748B] text-sm sm:text-base">
               {t.missionControl.welcomeBack}, <span className="font-semibold text-[#0F172A]">{userName}</span>. {t.missionControl.eliminateBugs}
             </p>
           </div>
           <Button
             onClick={() => onNavigate("projects")}
-            className="btn-power px-6 py-3 text-[#0F172A] font-semibold rounded-lg flex items-center gap-2 group border-0"
+            className="btn-power px-4 sm:px-6 py-3 text-[#0F172A] font-semibold rounded-lg flex items-center gap-2 group border-0 whitespace-nowrap"
           >
-            <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-            <span>{t.missionControl.newApplication}</span>
+            <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300 flex-shrink-0" />
+            <span className="hidden sm:inline">{t.missionControl.newApplication}</span>
+            <span className="sm:hidden">New</span>
           </Button>
         </div>
       </header>
@@ -371,6 +373,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       {/* Success Insights Widget */}
       <SuccessInsightsWidget />
 
+      {/* Application Micro Tracker */}
+      <ApplicationMicroTracker />
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[400px]">
         {/* Kanban Board */}
         <section className="lg:col-span-2 flex flex-col gap-4">
@@ -388,9 +393,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
 
           <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] p-1 rounded-xl flex-1 overflow-x-auto">
-            <div className="flex gap-3 h-full min-w-[600px] p-3">
+            <div className="flex gap-3 h-full sm:min-w-[600px] p-3">
               {/* Column 1: Applied */}
-              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+              <div className="flex-1 flex flex-col gap-3 min-w-[180px] sm:min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
                     {t.missionControl.applied} ({applicationsByStatus.applied.length})
@@ -409,9 +414,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border border-[#E2E8F0] hover:border-primary transition-colors cursor-pointer group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm truncate">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3">{app.company || t.missionControl.company}</p>
+                      <p className="text-[#64748B] text-xs mb-3 truncate">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center gap-2 text-[10px] text-[#64748B] font-mono">
                         <span className="material-symbols-outlined text-xs">schedule</span>
                         {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : t.missionControl.recent}
@@ -422,7 +427,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
 
               {/* Column 2: Interviewing */}
-              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+              <div className="flex-1 flex flex-col gap-3 min-w-[180px] sm:min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-primary uppercase tracking-wider">
                     {t.missionControl.interviewing} ({applicationsByStatus.interviewing.length})
@@ -441,9 +446,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border-l-2 border-l-primary border-y border-r border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors cursor-pointer relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm truncate">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || t.missionControl.company}</p>
+                      <p className="text-[#64748B] text-xs mb-3 relative z-10 truncate">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                           {app.stage || t.missionControl.inProgress}
@@ -458,7 +463,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               </div>
 
               {/* Column 3: Accepted */}
-              <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
+              <div className="flex-1 flex flex-col gap-3 min-w-[180px] sm:min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-secondary uppercase tracking-wider">
                     {t.missionControl.accepted} ({applicationsByStatus.accepted.length})
@@ -477,9 +482,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border-l-2 border-l-secondary border-y border-r border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors cursor-pointer relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm truncate">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || t.missionControl.company}</p>
+                      <p className="text-[#64748B] text-xs mb-3 relative z-10 truncate">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
                           {t.missionControl.accepted}

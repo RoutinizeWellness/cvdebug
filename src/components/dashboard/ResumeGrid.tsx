@@ -231,14 +231,15 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
                       <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-lg bg-slate-100 border border-[#E2E8F0]">
                         {getFileIcon(resume.mimeType)}
                       </div>
-                      <div className="ml-4">
+                      <div className="ml-4 min-w-0">
                         <div
-                          className="text-sm font-medium text-[#0F172A] group-hover:text-primary transition-colors cursor-pointer"
+                          className="text-sm font-medium text-[#0F172A] group-hover:text-primary transition-colors cursor-pointer truncate max-w-[200px]"
                           onClick={() => setSelectedResume(resume)}
+                          title={resume.title}
                         >
                           {resume.title}
                         </div>
-                        <div className="text-xs text-[#64748B]">
+                        <div className="text-xs text-[#64748B] truncate max-w-[200px]">
                           {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
                           {resume.fileSize && ` • ${formatFileSize(resume.fileSize)}`}
                         </div>
