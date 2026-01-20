@@ -127,6 +127,52 @@ export function LiveRecruiterSimulation({
 
   const workExperience = extractWorkExperience(resumeText);
 
+  // Annotate resume text with [CRIT] and [WARN] tags
+  const annotateResumeText = (text: string): { __html: string } => {
+    if (!text) return { __html: "No text available" };
+
+    let annotatedText = text;
+
+    // Add [CRIT] tags for critical format issues
+    const criticalIssues = formatIssues.filter(f => f.severity === "critical" || f.issue.toLowerCase().includes("parse") || f.issue.toLowerCase().includes("extract"));
+    if (criticalIssues.length > 0) {
+      annotatedText = `<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-600 font-bold text-sm">[CRIT]</span>
+          <span class="text-red-700 font-semibold text-sm">Critical Format Errors Detected</span>
+        </div>
+        ${criticalIssues.map(issue => `<div class="text-xs text-red-600 ml-6">• ${issue.issue}</div>`).join('')}
+      </div>` + annotatedText;
+    }
+
+    // Add [WARN] tags for missing keywords
+    if (missingKeywords.length > 0) {
+      const topMissing = missingKeywords.slice(0, 5);
+      annotatedText = `<div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-500 rounded">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-amber-600 font-bold text-sm">[WARN]</span>
+          <span class="text-amber-700 font-semibold text-sm">Missing Critical Keywords</span>
+        </div>
+        <div class="text-xs text-amber-600 ml-6 space-y-1">
+          ${topMissing.map(kw => `<div>• ${kw} - Not found in resume</div>`).join('')}
+        </div>
+      </div>` + annotatedText;
+    }
+
+    // Highlight missing keywords in the text
+    missingKeywords.slice(0, 10).forEach(keyword => {
+      // Only highlight if keyword is not in the text (case insensitive)
+      const regex = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+      if (!regex.test(text)) {
+        // Add a note at the end
+        const note = `\n<span class="text-amber-600 bg-amber-50 px-2 py-1 rounded text-xs">[WARN: Missing "${keyword}"]</span>`;
+        annotatedText += note;
+      }
+    });
+
+    return { __html: annotatedText };
+  };
+
   // Calculate fit score percentage
   const fitScore = Math.min(100, Math.max(0, score));
   const fitLevel = fitScore >= 80 ? "Excellent" : fitScore >= 60 ? "Good" : "Fair";
@@ -298,6 +344,72 @@ export function LiveRecruiterSimulation({
             </motion.div>
           </div>
 
+          {/* Visual Error Tags - Critical & Warning */}
+          {(formatIssues.length > 0 || missingKeywords.length > 0) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="bg-[#FFFFFF] border-2 border-[#EF4444]/20 rounded-xl p-6 shadow-[0_10px_40px_-10px_rgba(239,68,68,0.2)]"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-red-50 rounded-lg">
+                  <span className="material-symbols-outlined text-[#EF4444]">error</span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#0F172A]">ATS Detection Issues</h3>
+                  <p className="text-sm text-[#64748B]">Your resume has issues that will likely cause automatic rejection</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {/* Format Issues - CRITICAL */}
+                {formatIssues.map((issue, idx) => (
+                  <div
+                    key={`format-${idx}`}
+                    className="flex items-start gap-3 p-4 rounded-lg bg-red-50 border-l-4 border-[#EF4444]"
+                  >
+                    <span className="px-2 py-1 bg-[#EF4444] text-white text-xs font-bold rounded uppercase tracking-wider flex-shrink-0">
+                      [CRIT]
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-[#0F172A]">{issue.issue}</p>
+                      <p className="text-xs text-[#64748B] mt-1">
+                        Format errors can cause ATS to fail parsing your resume entirely
+                      </p>
+                    </div>
+                    <span className="material-symbols-outlined text-[#EF4444] flex-shrink-0">cancel</span>
+                  </div>
+                ))}
+
+                {/* Missing Keywords - WARNING */}
+                {missingKeywords.slice(0, 5).map((keyword, idx) => (
+                  <div
+                    key={`keyword-${idx}`}
+                    className="flex items-start gap-3 p-4 rounded-lg bg-amber-50 border-l-4 border-[#F59E0B]"
+                  >
+                    <span className="px-2 py-1 bg-[#F59E0B] text-white text-xs font-bold rounded uppercase tracking-wider flex-shrink-0">
+                      [WARN]
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-[#0F172A]">Missing keyword: "{keyword}"</p>
+                      <p className="text-xs text-[#64748B] mt-1">
+                        This keyword appears in the job description but not in your resume
+                      </p>
+                    </div>
+                    <span className="material-symbols-outlined text-[#F59E0B] flex-shrink-0">warning</span>
+                  </div>
+                ))}
+
+                {missingKeywords.length > 5 && (
+                  <div className="text-center py-2 text-sm text-[#64748B]">
+                    + {missingKeywords.length - 5} more missing keywords
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
           {/* Parsed Candidate Data */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -417,9 +529,10 @@ export function LiveRecruiterSimulation({
               )}
 
               {viewMode === "raw" && (
-                <pre className="whitespace-pre-wrap text-xs text-[#475569]">
-                  {resumeText || "No raw text available. This is a preview of how the ATS system would display the extracted text from your resume."}
-                </pre>
+                <div
+                  className="whitespace-pre-wrap text-xs text-[#475569]"
+                  dangerouslySetInnerHTML={annotateResumeText(resumeText)}
+                />
               )}
 
               {viewMode === "pdf" && (

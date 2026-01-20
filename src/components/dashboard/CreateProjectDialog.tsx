@@ -52,21 +52,21 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-lg glass-panel bg-[#FFFFFF] rounded-2xl border border-[#E2E8F0] shadow-2xl flex flex-col max-h-[90vh]"
+            className="w-full max-w-lg glass-panel bg-[#FFFFFF] rounded-2xl border border-[#E2E8F0] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
           >
             {/* Header */}
-            <div className="px-6 py-5 border-b border-[#E2E8F0] flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-semibold text-[#0F172A] tracking-tight">
-                  Create New Job Search Project
+            <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#E2E8F0] flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg sm:text-xl font-semibold text-[#0F172A] tracking-tight">
+                  Create New Project
                 </h3>
-                <p className="text-[#64748B] text-sm mt-0.5 font-light">
-                  Configure your new tracking campaign.
+                <p className="text-[#64748B] text-xs sm:text-sm mt-0.5 font-light">
+                  Configure your job search campaign
                 </p>
               </div>
               <button
                 onClick={() => onOpenChange(false)}
-                className="text-[#64748B] hover:text-[#0F172A] transition-colors p-2 hover:bg-[#F8FAFC] rounded-lg"
+                className="text-[#64748B] hover:text-[#0F172A] transition-colors p-2 hover:bg-[#F8FAFC] rounded-lg flex-shrink-0"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -74,8 +74,8 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
 
             {/* Form Content */}
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
-              <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
-                <div className="flex flex-col gap-6">
+              <div className="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-1">
+                <div className="flex flex-col gap-4 sm:gap-6">
                   {/* Project Name */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-[#475569] block">
@@ -193,32 +193,33 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   </div>
 
                   {/* AI Info Box */}
-                  <div className="p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 flex gap-3 items-start">
-                    <Sparkles className="text-indigo-600 mt-0.5 h-5 w-5" />
-                    <div className="text-xs text-indigo-900">
+                  <div className="p-3 sm:p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 flex gap-2 sm:gap-3 items-start">
+                    <Sparkles className="text-indigo-600 mt-0.5 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    <div className="text-xs text-indigo-900 min-w-0">
                       <strong className="text-indigo-900 block mb-0.5 font-semibold">
                         AI Analysis Enabled
                       </strong>
-                      We will automatically extract keywords from the provided JD to optimize your CV
-                      and calculate match scores.
+                      <span className="break-words">
+                        We'll extract keywords from the JD to optimize your CV and calculate match scores.
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="px-6 py-5 border-t border-[#E2E8F0] flex items-center justify-end gap-3 bg-[#F8FAFC] rounded-b-2xl">
+              <div className="px-4 sm:px-6 py-4 sm:py-5 border-t border-[#E2E8F0] flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 bg-[#F8FAFC] rounded-b-2xl">
                 <button
                   type="button"
                   onClick={() => onOpenChange(false)}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] border border-[#E2E8F0] hover:bg-slate-100 hover:text-[#0F172A] hover:border-[#E2E8F0] transition-all"
+                  className="order-2 sm:order-1 px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] border border-[#E2E8F0] hover:bg-slate-100 hover:text-[#0F172A] hover:border-[#E2E8F0] transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#0F172A] bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="order-1 sm:order-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Creating..." : "Create Project"}
                 </button>

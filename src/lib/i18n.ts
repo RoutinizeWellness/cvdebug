@@ -394,6 +394,12 @@ export interface Translation {
       interviewSprint: string;
       singleScan: string;
       freePlan: string;
+      // Score explanation
+      scoreChanged: string;
+      nowMatching: string;
+      realVisibility: string;
+      whyLower: string;
+      industryStandards: string;
     };
     logout: {
       title: string;
@@ -1433,6 +1439,11 @@ export const translations: Record<SupportedLocale, Translation> = {
         interviewSprint: '7-Day Sprint',
         singleScan: '24-Hour Pass',
         freePlan: 'Free Plan',
+        scoreChanged: 'Your score changed? Here\'s why',
+        nowMatching: 'Now matching your CV against Industry Standards.',
+        realVisibility: 'Your real visibility is',
+        whyLower: 'The preview scan was a quick check. The dashboard shows your actual ATS compatibility.',
+        industryStandards: 'We compare against real job market requirements.',
       },
       logout: {
         title: 'Log Out',
@@ -2444,6 +2455,11 @@ export const translations: Record<SupportedLocale, Translation> = {
         interviewSprint: 'Sprint 7 Días',
         singleScan: 'Pase 24 Horas',
         freePlan: 'Plan Gratis',
+        scoreChanged: '¿Tu puntuación cambió? Aquí está el porqué',
+        nowMatching: 'Ahora comparamos tu CV contra Estándares de la Industria.',
+        realVisibility: 'Tu visibilidad real es',
+        whyLower: 'El escaneo de vista previa fue una revisión rápida. El panel muestra tu compatibilidad ATS real.',
+        industryStandards: 'Comparamos contra requisitos reales del mercado laboral.',
       },
       logout: {
         title: 'Cerrar Sesión',
@@ -3455,6 +3471,11 @@ export const translations: Record<SupportedLocale, Translation> = {
         interviewSprint: 'Sprint 7 Jours',
         singleScan: 'Pass 24 Heures',
         freePlan: 'Plan Gratuit',
+        scoreChanged: 'Votre score a changé ? Voici pourquoi',
+        nowMatching: 'Nous comparons maintenant votre CV aux Normes de l\'Industrie.',
+        realVisibility: 'Votre visibilité réelle est',
+        whyLower: 'Le scan de prévisualisation était une vérification rapide. Le tableau de bord montre votre compatibilité ATS réelle.',
+        industryStandards: 'Nous comparons aux exigences réelles du marché du travail.',
       },
       logout: {
         title: 'Se Déconnecter',
@@ -4466,6 +4487,11 @@ export const translations: Record<SupportedLocale, Translation> = {
         interviewSprint: '7-Tage-Sprint',
         singleScan: '24-Stunden-Pass',
         freePlan: 'Kostenloser Plan',
+        scoreChanged: 'Ihr Score hat sich geändert? Hier ist warum',
+        nowMatching: 'Wir vergleichen Ihren Lebenslauf jetzt mit Branchenstandards.',
+        realVisibility: 'Ihre tatsächliche Sichtbarkeit ist',
+        whyLower: 'Der Vorschau-Scan war eine schnelle Prüfung. Das Dashboard zeigt Ihre tatsächliche ATS-Kompatibilität.',
+        industryStandards: 'Wir vergleichen mit echten Anforderungen des Arbeitsmarktes.',
       },
       logout: {
         title: 'Abmelden',
@@ -5458,6 +5484,11 @@ export const translations: Record<SupportedLocale, Translation> = {
         interviewSprint: 'Sprint 7 Dias',
         singleScan: 'Passe 24 Horas',
         freePlan: 'Plano Gratuito',
+        scoreChanged: 'Sua pontuação mudou? Veja o porquê',
+        nowMatching: 'Agora comparamos seu CV com os Padrões da Indústria.',
+        realVisibility: 'Sua visibilidade real é',
+        whyLower: 'O scan de prévia foi uma verificação rápida. O painel mostra sua compatibilidade ATS real.',
+        industryStandards: 'Comparamos com requisitos reais do mercado de trabalho.',
       },
       logout: {
         title: 'Sair',

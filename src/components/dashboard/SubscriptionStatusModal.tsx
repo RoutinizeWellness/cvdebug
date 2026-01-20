@@ -12,9 +12,10 @@ interface SubscriptionStatusModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onUpgrade: () => void;
+  currentScore?: number;
 }
 
-export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: SubscriptionStatusModalProps) {
+export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade, currentScore }: SubscriptionStatusModalProps) {
   const user = useQuery(api.users.currentUser);
   const { t } = useI18n();
 
@@ -90,18 +91,40 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade }: Subsc
               </p>
             </div>
 
+            {/* Score Explanation - Only for free users with a current score */}
+            {isFree && currentScore !== undefined && (
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#8B5CF6]/10 to-[#EC4899]/10 border border-[#8B5CF6]/20">
+                  <span className="material-symbols-outlined text-[#8B5CF6] text-xl">info</span>
+                  <p className="text-[#475569] text-sm font-bold">{t.modals.subscription.scoreChanged}</p>
+                </div>
+                <div className="text-left space-y-2 px-4 py-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
+                  <p className="text-[#64748B] text-sm leading-relaxed">
+                    {t.modals.subscription.nowMatching}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#0F172A] text-sm font-bold">{t.modals.subscription.realVisibility}</span>
+                    <span className="text-2xl font-bold font-mono text-[#EF4444]">{currentScore}/100</span>
+                  </div>
+                  <p className="text-[#64748B] text-xs leading-relaxed">
+                    {t.modals.subscription.whyLower}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Feature check */}
             {isPremium ? (
               <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFFFFF]/50 border border-[#E2E8F0]/50">
                 <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
                 <p className="text-[#475569] text-sm font-medium">{t.modals.subscription.accessMessage}</p>
               </div>
-            ) : (
+            ) : !currentScore ? (
               <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F59E0B]/10 border border-amber-500/20">
                 <span className="material-symbols-outlined text-amber-400 text-xl">info</span>
                 <p className="text-[#475569] text-sm font-medium">{t.modals.subscription.upgradeMessage}</p>
               </div>
-            )}
+            ) : null}
 
             {/* Spacer */}
             <div className="h-2" />

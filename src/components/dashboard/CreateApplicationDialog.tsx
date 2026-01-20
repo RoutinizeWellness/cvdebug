@@ -123,7 +123,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
               <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
                 <div className="flex flex-col gap-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-[#475569] block">
                         Company Name
@@ -187,18 +187,18 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
               </div>
 
               {/* Footer */}
-              <div className="px-6 py-4 border-t border-[#E2E8F0] flex gap-3 justify-end">
+              <div className="px-4 sm:px-6 py-4 border-t border-[#E2E8F0] flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 sm:justify-end">
                 <button
                   type="button"
                   onClick={() => onOpenChange(false)}
-                  className="px-6 py-2.5 text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC] rounded-lg transition-colors font-medium"
+                  className="w-full sm:w-auto px-6 py-2.5 text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC] rounded-lg transition-colors font-medium text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading || !hasInterviewSprint}
-                  className="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-200 disabled:text-[#64748B] text-[#0F172A] font-bold rounded-lg transition-colors flex items-center gap-2"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-200 disabled:text-[#64748B] text-[#0F172A] font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
                   {isLoading ? "Adding..." : "Add Application"}

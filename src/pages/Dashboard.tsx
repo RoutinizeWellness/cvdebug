@@ -740,6 +740,7 @@ export default function Dashboard() {
           setShowSubscriptionModal(false);
           setShowPricing(true);
         }}
+        currentScore={resumes?.[0]?.score}
       />
 
       {showResumeBuilder && (
