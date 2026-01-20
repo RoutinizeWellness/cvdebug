@@ -226,7 +226,7 @@ export function ATSAnalysisReport({
           >
             <div className="flex items-center">
               <img
-                src="/favicon.png?v=21"
+                src="/favicon.png?v=22"
                 alt="CVDebug Logo"
                 className="w-12 h-12"
               />

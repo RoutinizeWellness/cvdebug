@@ -11,7 +11,7 @@ interface LogoIconProps {
 export function LogoIcon({ className, size = 48 }: LogoIconProps) {
   return (
     <img
-      src="/favicon.png?v=21"
+      src="/favicon.png?v=22"
       alt="CVDebug"
       width={size}
       height={size}

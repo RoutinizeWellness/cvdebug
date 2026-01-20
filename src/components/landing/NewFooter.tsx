@@ -14,7 +14,7 @@ export function NewFooter() {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src="/favicon.png?v=21"
+                src="/favicon.png?v=22"
                 alt="CVDebug Logo"
                 className="w-12 h-12"
               />
