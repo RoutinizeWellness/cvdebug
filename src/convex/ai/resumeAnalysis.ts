@@ -8,6 +8,7 @@ import { generateFallbackAnalysis } from "./fallbackAnalysis";
 import { generateIntelligentFallback } from "./intelligentFallback";
 import { extractContactInfo } from "./contactExtractor";
 import { extractComprehensiveData } from "./comprehensiveExtractor";
+import { humanizeParsingError, createFriendlyAnalysis } from "./humanizeErrors";
 
 // Cast to any to avoid deep type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -47,11 +48,16 @@ export const analyzeResume = internalAction({
       if (!cleanText || cleanText.trim().length < 10) {
         console.log(`[AI Analysis] Text too short (${cleanText?.length} chars), returning minimal valid data`);
         console.log(`[AI Analysis] First 50 chars of text: "${cleanText?.substring(0, 50)}"`);
+
+        // Humanize the critical parsing error
+        const humanError = humanizeParsingError("scanned image or OCR failure");
+        const friendlyAnalysis = createFriendlyAnalysis(15, [humanError], []);
+
         await ctx.runMutation(internalAny.resumes.updateResumeMetadata, {
           id: args.id,
           title: "Resume",
           category: "General",
-          analysis: "⚠️ **Critical Parsing Issue Detected**\n\nYour resume appears to have very limited readable text. This will severely impact ATS compatibility.\n\n**Immediate Actions Required:**\n• Ensure your resume is a text-based PDF (not a scanned image)\n• Use 'Print to PDF' or 'Save as PDF' from your word processor\n• Verify all text is selectable when you open the PDF\n• Remove any image-based elements that may block text extraction\n\n**Current Issues:**\n• Less than 50 characters of readable text detected\n• ATS systems will likely reject this format\n• Applicant Tracking Systems cannot parse image-based resumes\n\n**Need help?** Contact support at cvdebug@outlook.com",
+          analysis: friendlyAnalysis,
           score: 15,
           scoreBreakdown: { keywords: 5, format: 5, completeness: 5 },
           matchedKeywords: [],
@@ -59,17 +65,17 @@ export const analyzeResume = internalAction({
             keyword: "Readable text content",
             priority: "critical",
             section: "Overall",
-            context: "Your resume needs to be in a text-based format that ATS systems can parse. Convert from image/scan to proper PDF.",
+            context: humanError.action,
             frequency: 1,
             impact: 20,
             synonyms: ["Text-based PDF", "Selectable text"]
           }],
           formatIssues: [{
-            issue: "Critical: Resume appears to be scanned image or has unreadable text",
+            issue: humanError.title,
             severity: "critical",
-            fix: "Convert to text-based PDF using 'Print to PDF' or export from Word/Google Docs",
+            fix: humanError.action,
             location: "Overall document",
-            atsImpact: "ATS systems will likely reject this resume entirely - 0% chance of parsing"
+            atsImpact: humanError.message
           }],
           metricSuggestions: [],
           status: "completed",

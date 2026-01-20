@@ -34,6 +34,8 @@ import type * as ai_deepLearningEngine from "../ai/deepLearningEngine.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
 import type * as ai_feedbackLoop from "../ai/feedbackLoop.js";
+import type * as ai_humanizeErrors from "../ai/humanizeErrors.js";
+import type * as ai_humanizedMessages from "../ai/humanizedMessages.js";
 import type * as ai_intelligence_marketIntelligence from "../ai/intelligence/marketIntelligence.js";
 import type * as ai_intelligence_marketIntelligenceData from "../ai/intelligence/marketIntelligenceData.js";
 import type * as ai_intelligentCache from "../ai/intelligentCache.js";
@@ -158,6 +160,8 @@ declare const fullApi: ApiFromModules<{
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;
   "ai/feedbackLoop": typeof ai_feedbackLoop;
+  "ai/humanizeErrors": typeof ai_humanizeErrors;
+  "ai/humanizedMessages": typeof ai_humanizedMessages;
   "ai/intelligence/marketIntelligence": typeof ai_intelligence_marketIntelligence;
   "ai/intelligence/marketIntelligenceData": typeof ai_intelligence_marketIntelligenceData;
   "ai/intelligentCache": typeof ai_intelligentCache;

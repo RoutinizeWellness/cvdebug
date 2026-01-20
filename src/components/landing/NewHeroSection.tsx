@@ -101,11 +101,11 @@ export function NewHeroSection() {
           >
             <Button
               onClick={() => navigate("/preview")}
-              className="gradient-button relative flex h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 overflow-hidden rounded-lg px-8 text-lg font-bold text-white border-0 group shadow-soft"
+              className="gradient-button relative flex h-12 sm:h-14 w-full sm:flex-1 sm:max-w-xs items-center justify-center gap-2 overflow-hidden rounded-lg px-6 sm:px-8 text-base sm:text-lg font-bold text-white border-0 group shadow-soft"
             >
-              <span className="relative z-10">{t.hero.ctaPrimary}</span>
+              <span className="relative z-10 truncate">{t.hero.ctaPrimary}</span>
               <motion.div
-                className="relative z-10"
+                className="relative z-10 flex-shrink-0"
                 animate={{ x: [0, 3, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
@@ -116,11 +116,11 @@ export function NewHeroSection() {
 
           <motion.button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="group flex h-14 w-full sm:min-w-[240px] items-center justify-center gap-2 rounded-lg border-2 border-[#E2E8F0] bg-[#FFFFFF] px-8 text-base font-semibold text-[#1E293B] hover:bg-[#F8FAFC] transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+            className="group flex h-12 sm:h-14 w-full sm:flex-1 sm:max-w-xs items-center justify-center gap-2 rounded-lg border-2 border-[#E2E8F0] bg-[#FFFFFF] px-6 sm:px-8 text-sm sm:text-base font-semibold text-[#1E293B] hover:bg-[#F8FAFC] transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span>{t.hero.ctaSecondary}</span>
+            <span className="truncate">{t.hero.ctaSecondary}</span>
           </motion.button>
         </motion.div>
 
