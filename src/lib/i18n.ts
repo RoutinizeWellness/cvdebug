@@ -1043,20 +1043,6 @@ export interface Translation {
     keywordOptimized: string;
     unlockRecruiter: string;
   };
-  // AI Feedback
-  aiFeedback: {
-    rateResponse: string;
-    howHelpful: string;
-    feedbackHelps: string;
-    helpful: string;
-    okay: string;
-    notHelpful: string;
-    additionalComments: string;
-    submitFeedback: string;
-    selectRating: string;
-    thankYou: string;
-    submitError: string;
-  };
   // Conversion Banner
   conversionBanner: {
     currentBracket: string;
@@ -1144,6 +1130,9 @@ export interface Translation {
     suggestionApplied: string;
     noMissingKeywords: string;
     rewriteSuccess: string;
+    lockedTitle: string;
+    lockedDesc: string;
+    upgradeNow: string;
   };
   // Create Project Dialog
   createProject: {
@@ -1167,6 +1156,106 @@ export interface Translation {
     creating: string;
     successMessage: string;
     errorMessage: string;
+  };
+  // AI Feedback Widget
+  aiFeedback: {
+    rateResponse: string;
+    howHelpful: string;
+    feedbackHelps: string;
+    helpful: string;
+    okay: string;
+    notHelpful: string;
+    additionalComments: string;
+    submitFeedback: string;
+    thankYou: string;
+    wasHelpful: string;
+    yes: string;
+    somewhat: string;
+    no: string;
+    tellMore: string;
+    submit: string;
+    feedbackSubmitted: string;
+    selectRating: string;
+    submitError: string;
+  };
+  // Create Application Dialog
+  createApplication: {
+    title: string;
+    sprintRequired: string;
+    upgradeDesc: string;
+    upgradeNow: string;
+    companyName: string;
+    companyPlaceholder: string;
+    jobTitle: string;
+    jobTitlePlaceholder: string;
+    jobUrl: string;
+    optional: string;
+    urlPlaceholder: string;
+    jobDescription: string;
+    recommendedAI: string;
+    descriptionPlaceholder: string;
+    cancel: string;
+    addApplication: string;
+    adding: string;
+    planRequired: string;
+    planRequiredDesc: string;
+    successMessage: string;
+    errorMessage: string;
+    featureRestricted: string;
+  };
+  // Mission Control
+  missionControl: {
+    title: string;
+    welcomeBack: string;
+    eliminateBugs: string;
+    newApplication: string;
+    visibilityScore: string;
+    howRecruitersFind: string;
+    activeApplications: string;
+    interviewsScheduled: string;
+    missingSignals: string;
+    critical: string;
+    impactingMatchScore: string;
+    robotViewTitle: string;
+    robotViewSubtitle: string;
+    uploadToSeeExtraction: string;
+    missingKeywords: string;
+    allKeywordsDetected: string;
+    needPoints: string;
+    reachEliteTier: string;
+    viewFullReport: string;
+    uploadResume: string;
+    careerHealth: string;
+    elite: string;
+    pro: string;
+    rising: string;
+    starter: string;
+    progressToElite: string;
+    cvScore: string;
+    applications: string;
+    interviews: string;
+    applicationKanban: string;
+    viewAll: string;
+    applied: string;
+    noApplicationsYet: string;
+    position: string;
+    company: string;
+    recent: string;
+    interviewing: string;
+    noInterviewsYet: string;
+    inProgress: string;
+    accepted: string;
+    noOffersYet: string;
+    topErrors: string;
+    noCVLoaded: string;
+    consoleBash: string;
+    noCriticalErrors: string;
+    allSystemsOperational: string;
+    debugMasterCV: string;
+    missingKeyword: string;
+    matchScoreImpact: string;
+    dateFormatInconsistency: string;
+    atExperienceBlock: string;
   };
 }
 
@@ -2168,19 +2257,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimized: 'Keyword-optimized for your target role',
       unlockRecruiter: 'Unlock DM Generator',
     },
-    aiFeedback: {
-      rateResponse: 'Rate this response',
-      howHelpful: 'How helpful was this?',
-      feedbackHelps: 'Your feedback helps us improve our AI features',
-      helpful: 'Helpful',
-      okay: 'Okay',
-      notHelpful: 'Not Helpful',
-      additionalComments: 'Any additional comments? (optional)',
-      submitFeedback: 'Submit Feedback',
-      selectRating: 'Please select a rating',
-      thankYou: 'Thank you for your feedback!',
-      submitError: 'Failed to submit feedback',
-    },
     conversionBanner: {
       currentBracket: 'Current Bracket',
       youAreInBracket: 'You are in the',
@@ -2265,6 +2341,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Suggestion applied! Your resume has been updated.',
       noMissingKeywords: 'No missing keywords to show examples for',
       rewriteSuccess: 'Resume rewritten successfully!',
+      lockedTitle: 'Interview Sprint Required',
+      lockedDesc: 'Unlock the Keyword Sniper Tool to inject missing keywords and boost your ATS score.',
+      upgradeNow: 'Upgrade Now',
     },
     createProject: {
       title: 'Create New Project',
@@ -2287,6 +2366,103 @@ export const translations: Record<SupportedLocale, Translation> = {
       creating: 'Creating...',
       successMessage: 'Project created successfully!',
       errorMessage: 'Failed to create project',
+    },
+    aiFeedback: {
+      rateResponse: 'Rate this response',
+      howHelpful: 'How helpful was this?',
+      feedbackHelps: 'Your feedback helps us improve our AI features',
+      helpful: 'Helpful',
+      okay: 'Okay',
+      notHelpful: 'Not Helpful',
+      additionalComments: 'Any additional comments? (optional)',
+      submitFeedback: 'Submit Feedback',
+      thankYou: 'Thank you! 🎉',
+      wasHelpful: 'Was this helpful?',
+      yes: 'Yes',
+      somewhat: 'Somewhat',
+      no: 'No',
+      tellMore: 'Tell us more (optional)',
+      submit: 'Submit',
+      feedbackSubmitted: '✓ Thank you for your feedback!',
+      selectRating: 'Please select a rating',
+      submitError: 'Failed to submit feedback',
+    },
+    createApplication: {
+      title: 'Add New Application',
+      sprintRequired: 'Interview Sprint Required',
+      upgradeDesc: 'Upgrade to track applications, get keyword analysis, and receive ghosting alerts.',
+      upgradeNow: 'Upgrade Now',
+      companyName: 'Company Name',
+      companyPlaceholder: 'e.g., Acme Corp',
+      jobTitle: 'Job Title',
+      jobTitlePlaceholder: 'e.g., Senior Engineer',
+      jobUrl: 'Job Posting URL',
+      optional: '(Optional)',
+      urlPlaceholder: 'https://...',
+      jobDescription: 'Job Description',
+      recommendedAI: '(Recommended for AI Analysis)',
+      descriptionPlaceholder: 'Paste the job description here for AI-powered keyword matching...',
+      cancel: 'Cancel',
+      addApplication: 'Add Application',
+      adding: 'Adding...',
+      planRequired: 'Interview Sprint plan required',
+      planRequiredDesc: 'Upgrade to track applications and get AI-powered insights',
+      successMessage: 'Application added successfully',
+      errorMessage: 'Failed to add application',
+      featureRestricted: 'This feature is only available with an active Interview Sprint subscription',
+    },
+    missionControl: {
+      title: 'Mission Control',
+      welcomeBack: 'Welcome back',
+      eliminateBugs: 'Eliminate bugs until you reach 95% visibility.',
+      newApplication: 'New Application',
+      visibilityScore: 'Visibility Score',
+      howRecruitersFind: 'How recruiters find your resume',
+      activeApplications: 'Active Applications',
+      interviewsScheduled: 'interviews scheduled',
+      missingSignals: 'Missing Signals',
+      critical: 'CRITICAL',
+      impactingMatchScore: 'Impacting match score by',
+      robotViewTitle: 'Robot View: What ATS Actually Reads',
+      robotViewSubtitle: 'Is critical information missing from your resume?',
+      uploadToSeeExtraction: 'Upload a resume to see raw text extraction',
+      missingKeywords: 'Missing',
+      allKeywordsDetected: 'All critical keywords detected',
+      needPoints: 'Need',
+      reachEliteTier: 'points to reach ELITE tier',
+      viewFullReport: 'View Full Report',
+      uploadResume: 'Upload Resume',
+      careerHealth: 'Career Health',
+      elite: 'ELITE',
+      pro: 'PRO',
+      rising: 'RISING',
+      starter: 'STARTER',
+      progressToElite: 'Progress to ELITE (85%+)',
+      cvScore: 'CV Score',
+      applications: 'Applications',
+      interviews: 'Interviews',
+      applicationKanban: 'Application Kanban',
+      viewAll: 'VIEW ALL',
+      applied: 'Applied',
+      noApplicationsYet: 'No applications yet',
+      position: 'Position',
+      company: 'Company',
+      recent: 'Recent',
+      interviewing: 'Interviewing',
+      noInterviewsYet: 'No interviews yet',
+      inProgress: 'In Progress',
+      accepted: 'Accepted',
+      noOffersYet: 'No offers yet',
+      topErrors: 'Top Errors',
+      noCVLoaded: 'No CV loaded',
+      consoleBash: 'console — bash',
+      noCriticalErrors: 'No critical errors detected',
+      allSystemsOperational: 'All systems operational',
+      debugMasterCV: 'DEBUG MASTER CV',
+      missingKeyword: 'Missing keyword',
+      matchScoreImpact: 'match_score impact:',
+      dateFormatInconsistency: 'Date format inconsistency found',
+      atExperienceBlock: 'at Experience.block (Line 42)',
     },
   },
   'es': {
@@ -3286,19 +3462,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimized: 'Optimizado con keywords para tu rol objetivo',
       unlockRecruiter: 'Desbloquear Generador de DM',
     },
-    aiFeedback: {
-      rateResponse: 'Califica esta respuesta',
-      howHelpful: '¿Qué tan útil fue esto?',
-      feedbackHelps: 'Tus comentarios nos ayudan a mejorar nuestras funciones de IA',
-      helpful: 'Útil',
-      okay: 'Regular',
-      notHelpful: 'No Útil',
-      additionalComments: '¿Algún comentario adicional? (opcional)',
-      submitFeedback: 'Enviar Comentarios',
-      selectRating: 'Por favor selecciona una calificación',
-      thankYou: '¡Gracias por tus comentarios!',
-      submitError: 'Error al enviar comentarios',
-    },
     conversionBanner: {
       currentBracket: 'Rango Actual',
       youAreInBracket: 'Estás en el',
@@ -3383,6 +3546,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
       noMissingKeywords: 'No hay keywords faltantes para mostrar ejemplos',
       rewriteSuccess: '¡CV reescrito con éxito!',
+      lockedTitle: 'Interview Sprint Requerido',
+      lockedDesc: 'Desbloquea la Herramienta Keyword Sniper para inyectar keywords faltantes y mejorar tu puntuación ATS.',
+      upgradeNow: 'Actualizar Ahora',
     },
     createProject: {
       title: 'Crear Nuevo Proyecto',
@@ -3405,6 +3571,103 @@ export const translations: Record<SupportedLocale, Translation> = {
       creating: 'Creando...',
       successMessage: '¡Proyecto creado con éxito!',
       errorMessage: 'Error al crear el proyecto',
+    },
+    aiFeedback: {
+      rateResponse: 'Califica esta respuesta',
+      howHelpful: '¿Qué tan útil fue esto?',
+      feedbackHelps: 'Tu comentario nos ayuda a mejorar nuestras funciones de IA',
+      helpful: 'Útil',
+      okay: 'Regular',
+      notHelpful: 'No Útil',
+      additionalComments: '¿Comentarios adicionales? (opcional)',
+      submitFeedback: 'Enviar Comentario',
+      thankYou: '¡Gracias! 🎉',
+      wasHelpful: '¿Fue esto útil?',
+      yes: 'Sí',
+      somewhat: 'Algo',
+      no: 'No',
+      tellMore: 'Cuéntanos más (opcional)',
+      submit: 'Enviar',
+      feedbackSubmitted: '✓ ¡Gracias por tu comentario!',
+      selectRating: 'Por favor selecciona una calificación',
+      submitError: 'Error al enviar el comentario',
+    },
+    createApplication: {
+      title: 'Agregar Nueva Solicitud',
+      sprintRequired: 'Interview Sprint Requerido',
+      upgradeDesc: 'Actualiza para rastrear solicitudes, obtener análisis de keywords y recibir alertas de ghosting.',
+      upgradeNow: 'Actualizar Ahora',
+      companyName: 'Nombre de la Empresa',
+      companyPlaceholder: 'ej., Acme Corp',
+      jobTitle: 'Título del Puesto',
+      jobTitlePlaceholder: 'ej., Ingeniero Senior',
+      jobUrl: 'URL de la Oferta de Trabajo',
+      optional: '(Opcional)',
+      urlPlaceholder: 'https://...',
+      jobDescription: 'Descripción del Trabajo',
+      recommendedAI: '(Recomendado para Análisis de IA)',
+      descriptionPlaceholder: 'Pega la descripción del trabajo aquí para coincidencia de keywords con IA...',
+      cancel: 'Cancelar',
+      addApplication: 'Agregar Solicitud',
+      adding: 'Agregando...',
+      planRequired: 'Plan Interview Sprint requerido',
+      planRequiredDesc: 'Actualiza para rastrear solicitudes y obtener insights con IA',
+      successMessage: 'Solicitud agregada con éxito',
+      errorMessage: 'Error al agregar la solicitud',
+      featureRestricted: 'Esta función solo está disponible con una suscripción activa de Interview Sprint',
+    },
+    missionControl: {
+      title: 'Control de Misión',
+      welcomeBack: 'Bienvenido de nuevo',
+      eliminateBugs: 'Elimina errores hasta alcanzar el 95% de visibilidad.',
+      newApplication: 'Nueva Solicitud',
+      visibilityScore: 'Puntuación de Visibilidad',
+      howRecruitersFind: 'Cómo los reclutadores encuentran tu CV',
+      activeApplications: 'Solicitudes Activas',
+      interviewsScheduled: 'entrevistas programadas',
+      missingSignals: 'Señales Faltantes',
+      critical: 'CRÍTICO',
+      impactingMatchScore: 'Impactando puntuación de coincidencia en',
+      robotViewTitle: 'Vista Robot: Lo que ATS Realmente Lee',
+      robotViewSubtitle: '¿Falta información crítica en tu CV?',
+      uploadToSeeExtraction: 'Sube un CV para ver la extracción de texto sin procesar',
+      missingKeywords: 'Faltantes',
+      allKeywordsDetected: 'Todas las palabras clave críticas detectadas',
+      needPoints: 'Necesitas',
+      reachEliteTier: 'puntos para alcanzar el nivel ELITE',
+      viewFullReport: 'Ver Informe Completo',
+      uploadResume: 'Subir CV',
+      careerHealth: 'Salud Profesional',
+      elite: 'ELITE',
+      pro: 'PRO',
+      rising: 'RISING',
+      starter: 'STARTER',
+      progressToElite: 'Progreso a ELITE (85%+)',
+      cvScore: 'Puntuación CV',
+      applications: 'Solicitudes',
+      interviews: 'Entrevistas',
+      applicationKanban: 'Kanban de Solicitudes',
+      viewAll: 'VER TODO',
+      applied: 'Aplicado',
+      noApplicationsYet: 'Aún no hay solicitudes',
+      position: 'Posición',
+      company: 'Empresa',
+      recent: 'Reciente',
+      interviewing: 'Entrevistando',
+      noInterviewsYet: 'Aún no hay entrevistas',
+      inProgress: 'En Progreso',
+      accepted: 'Aceptado',
+      noOffersYet: 'Aún no hay ofertas',
+      topErrors: 'Principales Errores',
+      noCVLoaded: 'No hay CV cargado',
+      consoleBash: 'consola — bash',
+      noCriticalErrors: 'No se detectaron errores críticos',
+      allSystemsOperational: 'Todos los sistemas operativos',
+      debugMasterCV: 'DEBUG MASTER CV',
+      missingKeyword: 'Palabra clave faltante',
+      matchScoreImpact: 'impacto en match_score:',
+      dateFormatInconsistency: 'Inconsistencia de formato de fecha encontrada',
+      atExperienceBlock: 'en Experience.block (Línea 42)',
     },
   },
   'fr': {
@@ -4404,19 +4667,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimized: 'Optimisé avec mots-clés pour votre rôle cible',
       unlockRecruiter: 'Débloquer le Générateur de DM',
     },
-    aiFeedback: {
-      rateResponse: 'Évaluer cette réponse',
-      howHelpful: 'Dans quelle mesure cela a-t-il été utile ?',
-      feedbackHelps: 'Vos commentaires nous aident à améliorer nos fonctionnalités IA',
-      helpful: 'Utile',
-      okay: 'Correct',
-      notHelpful: 'Pas Utile',
-      additionalComments: 'Des commentaires supplémentaires ? (facultatif)',
-      submitFeedback: 'Soumettre les Commentaires',
-      selectRating: 'Veuillez sélectionner une note',
-      thankYou: 'Merci pour vos commentaires !',
-      submitError: 'Échec de l\'envoi des commentaires',
-    },
     conversionBanner: {
       currentBracket: 'Bracket Actuel',
       youAreInBracket: 'Vous êtes dans le',
@@ -4501,6 +4751,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Suggestion appliquée ! Votre CV a été mis à jour.',
       noMissingKeywords: 'Aucun mot-clé manquant pour afficher des exemples',
       rewriteSuccess: 'CV réécrit avec succès !',
+      lockedTitle: 'Interview Sprint Requis',
+      lockedDesc: 'Débloquez l\'Outil Keyword Sniper pour injecter des mots-clés manquants et améliorer votre score ATS.',
+      upgradeNow: 'Mettre à Niveau Maintenant',
     },
     createProject: {
       title: 'Créer un Nouveau Projet',
@@ -4523,6 +4776,103 @@ export const translations: Record<SupportedLocale, Translation> = {
       creating: 'Création...',
       successMessage: 'Projet créé avec succès !',
       errorMessage: 'Échec de la création du projet',
+    },
+    aiFeedback: {
+      rateResponse: 'Évaluer cette réponse',
+      howHelpful: 'Dans quelle mesure cela a-t-il été utile ?',
+      feedbackHelps: 'Vos commentaires nous aident à améliorer nos fonctionnalités IA',
+      helpful: 'Utile',
+      okay: 'Moyen',
+      notHelpful: 'Pas Utile',
+      additionalComments: 'Commentaires supplémentaires ? (optionnel)',
+      submitFeedback: 'Soumettre un Commentaire',
+      thankYou: 'Merci ! 🎉',
+      wasHelpful: 'Était-ce utile ?',
+      yes: 'Oui',
+      somewhat: 'Un peu',
+      no: 'Non',
+      tellMore: 'Dites-nous en plus (optionnel)',
+      submit: 'Soumettre',
+      feedbackSubmitted: '✓ Merci pour vos commentaires !',
+      selectRating: 'Veuillez sélectionner une évaluation',
+      submitError: 'Échec de l\'envoi du commentaire',
+    },
+    createApplication: {
+      title: 'Ajouter une Nouvelle Candidature',
+      sprintRequired: 'Interview Sprint Requis',
+      upgradeDesc: 'Passez à la version supérieure pour suivre les candidatures, obtenir une analyse des mots-clés et recevoir des alertes de ghosting.',
+      upgradeNow: 'Mettre à Niveau Maintenant',
+      companyName: 'Nom de l\'Entreprise',
+      companyPlaceholder: 'ex., Acme Corp',
+      jobTitle: 'Titre du Poste',
+      jobTitlePlaceholder: 'ex., Ingénieur Senior',
+      jobUrl: 'URL de l\'Offre d\'Emploi',
+      optional: '(Facultatif)',
+      urlPlaceholder: 'https://...',
+      jobDescription: 'Description du Poste',
+      recommendedAI: '(Recommandé pour l\'Analyse IA)',
+      descriptionPlaceholder: 'Collez la description du poste ici pour la correspondance des mots-clés par IA...',
+      cancel: 'Annuler',
+      addApplication: 'Ajouter une Candidature',
+      adding: 'Ajout...',
+      planRequired: 'Plan Interview Sprint requis',
+      planRequiredDesc: 'Passez à la version supérieure pour suivre les candidatures et obtenir des informations basées sur l\'IA',
+      successMessage: 'Candidature ajoutée avec succès',
+      errorMessage: 'Échec de l\'ajout de la candidature',
+      featureRestricted: 'Cette fonctionnalité n\'est disponible qu\'avec un abonnement Interview Sprint actif',
+    },
+    missionControl: {
+      title: 'Centre de Contrôle',
+      welcomeBack: 'Bon retour',
+      eliminateBugs: 'Éliminez les bugs jusqu\'à atteindre 95% de visibilité.',
+      newApplication: 'Nouvelle Candidature',
+      visibilityScore: 'Score de Visibilité',
+      howRecruitersFind: 'Comment les recruteurs trouvent votre CV',
+      activeApplications: 'Candidatures Actives',
+      interviewsScheduled: 'entretiens programmés',
+      missingSignals: 'Signaux Manquants',
+      critical: 'CRITIQUE',
+      impactingMatchScore: 'Impact sur le score de correspondance de',
+      robotViewTitle: 'Vue Robot : Ce que l\'ATS Lit Réellement',
+      robotViewSubtitle: 'Des informations critiques manquent-elles dans votre CV ?',
+      uploadToSeeExtraction: 'Téléchargez un CV pour voir l\'extraction de texte brut',
+      missingKeywords: 'Manquants',
+      allKeywordsDetected: 'Tous les mots-clés critiques détectés',
+      needPoints: 'Besoin de',
+      reachEliteTier: 'points pour atteindre le niveau ELITE',
+      viewFullReport: 'Voir le Rapport Complet',
+      uploadResume: 'Télécharger le CV',
+      careerHealth: 'Santé Professionnelle',
+      elite: 'ELITE',
+      pro: 'PRO',
+      rising: 'RISING',
+      starter: 'STARTER',
+      progressToElite: 'Progression vers ELITE (85%+)',
+      cvScore: 'Score CV',
+      applications: 'Candidatures',
+      interviews: 'Entretiens',
+      applicationKanban: 'Kanban des Candidatures',
+      viewAll: 'VOIR TOUT',
+      applied: 'Postulé',
+      noApplicationsYet: 'Pas encore de candidatures',
+      position: 'Poste',
+      company: 'Entreprise',
+      recent: 'Récent',
+      interviewing: 'En Entretien',
+      noInterviewsYet: 'Pas encore d\'entretiens',
+      inProgress: 'En Cours',
+      accepted: 'Accepté',
+      noOffersYet: 'Pas encore d\'offres',
+      topErrors: 'Erreurs Principales',
+      noCVLoaded: 'Aucun CV chargé',
+      consoleBash: 'console — bash',
+      noCriticalErrors: 'Aucune erreur critique détectée',
+      allSystemsOperational: 'Tous les systèmes opérationnels',
+      debugMasterCV: 'DEBUG MASTER CV',
+      missingKeyword: 'Mot-clé manquant',
+      matchScoreImpact: 'impact sur match_score :',
+      dateFormatInconsistency: 'Incohérence de format de date trouvée',
+      atExperienceBlock: 'à Experience.block (Ligne 42)',
     },
   },
   'de': {
@@ -5522,19 +5872,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimized: 'Schlüsselwort-optimiert für Ihre Zielrolle',
       unlockRecruiter: 'DM-Generator Freischalten',
     },
-    aiFeedback: {
-      rateResponse: 'Diese Antwort bewerten',
-      howHelpful: 'Wie hilfreich war dies?',
-      feedbackHelps: 'Ihr Feedback hilft uns, unsere KI-Funktionen zu verbessern',
-      helpful: 'Hilfreich',
-      okay: 'Okay',
-      notHelpful: 'Nicht Hilfreich',
-      additionalComments: 'Zusätzliche Kommentare? (optional)',
-      submitFeedback: 'Feedback Absenden',
-      selectRating: 'Bitte wählen Sie eine Bewertung',
-      thankYou: 'Vielen Dank für Ihr Feedback!',
-      submitError: 'Fehler beim Absenden des Feedbacks',
-    },
     conversionBanner: {
       currentBracket: 'Aktuelle Stufe',
       youAreInBracket: 'Sie sind in der',
@@ -5619,6 +5956,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Vorschlag angewendet! Ihr Lebenslauf wurde aktualisiert.',
       noMissingKeywords: 'Keine fehlenden Keywords zum Anzeigen von Beispielen',
       rewriteSuccess: 'Lebenslauf erfolgreich neu geschrieben!',
+      lockedTitle: 'Interview Sprint Erforderlich',
+      lockedDesc: 'Schalten Sie das Keyword Sniper Tool frei, um fehlende Keywords einzufügen und Ihren ATS-Score zu verbessern.',
+      upgradeNow: 'Jetzt Upgraden',
     },
     createProject: {
       title: 'Neues Projekt Erstellen',
@@ -5641,6 +5981,103 @@ export const translations: Record<SupportedLocale, Translation> = {
       creating: 'Erstellen...',
       successMessage: 'Projekt erfolgreich erstellt!',
       errorMessage: 'Fehler beim Erstellen des Projekts',
+    },
+    aiFeedback: {
+      rateResponse: 'Diese Antwort bewerten',
+      howHelpful: 'Wie hilfreich war das?',
+      feedbackHelps: 'Ihr Feedback hilft uns, unsere KI-Funktionen zu verbessern',
+      helpful: 'Hilfreich',
+      okay: 'Okay',
+      notHelpful: 'Nicht Hilfreich',
+      additionalComments: 'Zusätzliche Kommentare? (optional)',
+      submitFeedback: 'Feedback Senden',
+      thankYou: 'Danke! 🎉',
+      wasHelpful: 'War das hilfreich?',
+      yes: 'Ja',
+      somewhat: 'Etwas',
+      no: 'Nein',
+      tellMore: 'Erzählen Sie uns mehr (optional)',
+      submit: 'Senden',
+      feedbackSubmitted: '✓ Vielen Dank für Ihr Feedback!',
+      selectRating: 'Bitte wählen Sie eine Bewertung',
+      submitError: 'Fehler beim Senden des Feedbacks',
+    },
+    createApplication: {
+      title: 'Neue Bewerbung Hinzufügen',
+      sprintRequired: 'Interview Sprint Erforderlich',
+      upgradeDesc: 'Upgrade, um Bewerbungen zu verfolgen, Keyword-Analysen zu erhalten und Ghosting-Warnungen zu bekommen.',
+      upgradeNow: 'Jetzt Upgraden',
+      companyName: 'Firmenname',
+      companyPlaceholder: 'z.B., Acme Corp',
+      jobTitle: 'Stellenbezeichnung',
+      jobTitlePlaceholder: 'z.B., Senior-Ingenieur',
+      jobUrl: 'Stellenanzeigen-URL',
+      optional: '(Optional)',
+      urlPlaceholder: 'https://...',
+      jobDescription: 'Stellenbeschreibung',
+      recommendedAI: '(Empfohlen für KI-Analyse)',
+      descriptionPlaceholder: 'Fügen Sie hier die Stellenbeschreibung für KI-gestütztes Keyword-Matching ein...',
+      cancel: 'Abbrechen',
+      addApplication: 'Bewerbung Hinzufügen',
+      adding: 'Wird hinzugefügt...',
+      planRequired: 'Interview Sprint Plan erforderlich',
+      planRequiredDesc: 'Upgrade für Bewerbungsverfolgung und KI-gestützte Insights',
+      successMessage: 'Bewerbung erfolgreich hinzugefügt',
+      errorMessage: 'Fehler beim Hinzufügen der Bewerbung',
+      featureRestricted: 'Diese Funktion ist nur mit einem aktiven Interview Sprint Abonnement verfügbar',
+    },
+    missionControl: {
+      title: 'Missionskontrolle',
+      welcomeBack: 'Willkommen zurück',
+      eliminateBugs: 'Beseitigen Sie Fehler, bis Sie 95% Sichtbarkeit erreichen.',
+      newApplication: 'Neue Bewerbung',
+      visibilityScore: 'Sichtbarkeitswert',
+      howRecruitersFind: 'Wie Recruiter Ihren Lebenslauf finden',
+      activeApplications: 'Aktive Bewerbungen',
+      interviewsScheduled: 'Vorstellungsgespräche geplant',
+      missingSignals: 'Fehlende Signale',
+      critical: 'KRITISCH',
+      impactingMatchScore: 'Beeinträchtigt Match-Score um',
+      robotViewTitle: 'Roboter-Ansicht: Was ATS Tatsächlich Liest',
+      robotViewSubtitle: 'Fehlen kritische Informationen in Ihrem Lebenslauf?',
+      uploadToSeeExtraction: 'Laden Sie einen Lebenslauf hoch, um die Rohtextextraktion zu sehen',
+      missingKeywords: 'Fehlend',
+      allKeywordsDetected: 'Alle kritischen Schlüsselwörter erkannt',
+      needPoints: 'Benötigen',
+      reachEliteTier: 'Punkte, um ELITE-Stufe zu erreichen',
+      viewFullReport: 'Vollständigen Bericht Anzeigen',
+      uploadResume: 'Lebenslauf Hochladen',
+      careerHealth: 'Karrieregesundheit',
+      elite: 'ELITE',
+      pro: 'PRO',
+      rising: 'RISING',
+      starter: 'STARTER',
+      progressToElite: 'Fortschritt zu ELITE (85%+)',
+      cvScore: 'CV-Score',
+      applications: 'Bewerbungen',
+      interviews: 'Vorstellungsgespräche',
+      applicationKanban: 'Bewerbungs-Kanban',
+      viewAll: 'ALLE ANZEIGEN',
+      applied: 'Beworben',
+      noApplicationsYet: 'Noch keine Bewerbungen',
+      position: 'Position',
+      company: 'Unternehmen',
+      recent: 'Aktuell',
+      interviewing: 'Im Gespräch',
+      noInterviewsYet: 'Noch keine Vorstellungsgespräche',
+      inProgress: 'In Bearbeitung',
+      accepted: 'Angenommen',
+      noOffersYet: 'Noch keine Angebote',
+      topErrors: 'Hauptfehler',
+      noCVLoaded: 'Kein CV geladen',
+      consoleBash: 'konsole — bash',
+      noCriticalErrors: 'Keine kritischen Fehler erkannt',
+      allSystemsOperational: 'Alle Systeme betriebsbereit',
+      debugMasterCV: 'DEBUG MASTER CV',
+      missingKeyword: 'Fehlendes Schlüsselwort',
+      matchScoreImpact: 'match_score Auswirkung:',
+      dateFormatInconsistency: 'Datumsformat-Inkonsistenz gefunden',
+      atExperienceBlock: 'bei Experience.block (Zeile 42)',
     },
   },
   'pt': {
@@ -6640,19 +7077,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimized: 'Otimizado com palavras-chave para sua função alvo',
       unlockRecruiter: 'Desbloquear Gerador de DM',
     },
-    aiFeedback: {
-      rateResponse: 'Avaliar esta resposta',
-      howHelpful: 'Quão útil foi isso?',
-      feedbackHelps: 'Seu feedback nos ajuda a melhorar nossos recursos de IA',
-      helpful: 'Útil',
-      okay: 'Regular',
-      notHelpful: 'Não Útil',
-      additionalComments: 'Algum comentário adicional? (opcional)',
-      submitFeedback: 'Enviar Feedback',
-      selectRating: 'Por favor selecione uma avaliação',
-      thankYou: 'Obrigado pelo seu feedback!',
-      submitError: 'Falha ao enviar feedback',
-    },
     conversionBanner: {
       currentBracket: 'Categoria Atual',
       youAreInBracket: 'Você está na',
@@ -6737,6 +7161,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Sugestão aplicada! Seu currículo foi atualizado.',
       noMissingKeywords: 'Nenhuma palavra-chave ausente para mostrar exemplos',
       rewriteSuccess: 'Currículo reescrito com sucesso!',
+      lockedTitle: 'Interview Sprint Necessário',
+      lockedDesc: 'Desbloqueie a Ferramenta Keyword Sniper para injetar palavras-chave ausentes e melhorar sua pontuação ATS.',
+      upgradeNow: 'Atualizar Agora',
     },
     createProject: {
       title: 'Criar Novo Projeto',
@@ -6759,6 +7186,103 @@ export const translations: Record<SupportedLocale, Translation> = {
       creating: 'Criando...',
       successMessage: 'Projeto criado com sucesso!',
       errorMessage: 'Falha ao criar projeto',
+    },
+    aiFeedback: {
+      rateResponse: 'Avaliar esta resposta',
+      howHelpful: 'Quão útil foi isso?',
+      feedbackHelps: 'Seu feedback nos ajuda a melhorar nossos recursos de IA',
+      helpful: 'Útil',
+      okay: 'Regular',
+      notHelpful: 'Não Útil',
+      additionalComments: 'Comentários adicionais? (opcional)',
+      submitFeedback: 'Enviar Feedback',
+      thankYou: 'Obrigado! 🎉',
+      wasHelpful: 'Isso foi útil?',
+      yes: 'Sim',
+      somewhat: 'Mais ou Menos',
+      no: 'Não',
+      tellMore: 'Conte-nos mais (opcional)',
+      submit: 'Enviar',
+      feedbackSubmitted: '✓ Obrigado pelo seu feedback!',
+      selectRating: 'Por favor, selecione uma avaliação',
+      submitError: 'Falha ao enviar feedback',
+    },
+    createApplication: {
+      title: 'Adicionar Nova Candidatura',
+      sprintRequired: 'Interview Sprint Necessário',
+      upgradeDesc: 'Atualize para rastrear candidaturas, obter análise de palavras-chave e receber alertas de ghosting.',
+      upgradeNow: 'Atualizar Agora',
+      companyName: 'Nome da Empresa',
+      companyPlaceholder: 'ex., Acme Corp',
+      jobTitle: 'Título do Cargo',
+      jobTitlePlaceholder: 'ex., Engenheiro Sênior',
+      jobUrl: 'URL da Vaga',
+      optional: '(Opcional)',
+      urlPlaceholder: 'https://...',
+      jobDescription: 'Descrição da Vaga',
+      recommendedAI: '(Recomendado para Análise de IA)',
+      descriptionPlaceholder: 'Cole a descrição da vaga aqui para correspondência de palavras-chave com IA...',
+      cancel: 'Cancelar',
+      addApplication: 'Adicionar Candidatura',
+      adding: 'Adicionando...',
+      planRequired: 'Plano Interview Sprint necessário',
+      planRequiredDesc: 'Atualize para rastrear candidaturas e obter insights baseados em IA',
+      successMessage: 'Candidatura adicionada com sucesso',
+      errorMessage: 'Falha ao adicionar candidatura',
+      featureRestricted: 'Esta funcionalidade está disponível apenas com uma assinatura Interview Sprint ativa',
+    },
+    missionControl: {
+      title: 'Controle de Missão',
+      welcomeBack: 'Bem-vindo de volta',
+      eliminateBugs: 'Elimine bugs até alcançar 95% de visibilidade.',
+      newApplication: 'Nova Candidatura',
+      visibilityScore: 'Pontuação de Visibilidade',
+      howRecruitersFind: 'Como recrutadores encontram seu currículo',
+      activeApplications: 'Candidaturas Ativas',
+      interviewsScheduled: 'entrevistas agendadas',
+      missingSignals: 'Sinais Ausentes',
+      critical: 'CRÍTICO',
+      impactingMatchScore: 'Impactando pontuação de correspondência em',
+      robotViewTitle: 'Visão Robô: O que o ATS Realmente Lê',
+      robotViewSubtitle: 'Há informações críticas faltando no seu currículo?',
+      uploadToSeeExtraction: 'Envie um currículo para ver a extração de texto bruto',
+      missingKeywords: 'Faltando',
+      allKeywordsDetected: 'Todas as palavras-chave críticas detectadas',
+      needPoints: 'Precisa de',
+      reachEliteTier: 'pontos para alcançar o nível ELITE',
+      viewFullReport: 'Ver Relatório Completo',
+      uploadResume: 'Enviar Currículo',
+      careerHealth: 'Saúde da Carreira',
+      elite: 'ELITE',
+      pro: 'PRO',
+      rising: 'RISING',
+      starter: 'STARTER',
+      progressToElite: 'Progresso para ELITE (85%+)',
+      cvScore: 'Pontuação CV',
+      applications: 'Candidaturas',
+      interviews: 'Entrevistas',
+      applicationKanban: 'Kanban de Candidaturas',
+      viewAll: 'VER TUDO',
+      applied: 'Candidatado',
+      noApplicationsYet: 'Ainda sem candidaturas',
+      position: 'Posição',
+      company: 'Empresa',
+      recent: 'Recente',
+      interviewing: 'Em Entrevista',
+      noInterviewsYet: 'Ainda sem entrevistas',
+      inProgress: 'Em Andamento',
+      accepted: 'Aceito',
+      noOffersYet: 'Ainda sem ofertas',
+      topErrors: 'Principais Erros',
+      noCVLoaded: 'Nenhum CV carregado',
+      consoleBash: 'console — bash',
+      noCriticalErrors: 'Nenhum erro crítico detectado',
+      allSystemsOperational: 'Todos os sistemas operacionais',
+      debugMasterCV: 'DEBUG MASTER CV',
+      missingKeyword: 'Palavra-chave ausente',
+      matchScoreImpact: 'impacto no match_score:',
+      dateFormatInconsistency: 'Inconsistência de formato de data encontrada',
+      atExperienceBlock: 'em Experience.block (Linha 42)',
     },
   },
 };

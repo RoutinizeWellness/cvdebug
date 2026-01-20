@@ -298,16 +298,16 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
           <div className="absolute inset-0 z-10 bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
             <div className="text-center p-8 max-w-md">
               <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Interview Sprint Required</h3>
+              <h3 className="text-xl font-bold text-white mb-2">{t.keywordSniper.lockedTitle}</h3>
               <p className="text-slate-300 text-sm mb-6">
-                Unlock the Keyword Sniper Tool to inject missing keywords and boost your ATS score.
+                {t.keywordSniper.lockedDesc}
               </p>
               <Button
                 onClick={onUpgrade}
                 className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-bold"
               >
                 <Sparkles className="h-5 w-5 mr-2" />
-                Upgrade Now
+                {t.keywordSniper.upgradeNow}
               </Button>
             </div>
           </div>

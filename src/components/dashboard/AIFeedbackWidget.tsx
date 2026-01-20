@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface AIFeedbackWidgetProps {
   featureType: "chatbot" | "resume_analysis" | "interview_prep" | "cover_letter" | "keyword_sniper" | "linkedin_optimizer" | "recruiter_dm";
@@ -22,6 +23,7 @@ interface AIFeedbackWidgetProps {
 }
 
 export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compact = false }: AIFeedbackWidgetProps) {
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState<"helpful" | "somewhat_helpful" | "not_helpful" | null>(null);
   const [comment, setComment] = useState("");
@@ -31,7 +33,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
 
   const handleSubmit = async () => {
     if (!selectedRating) {
-      toast.error("Please select a rating");
+      toast.error(t.aiFeedback.selectRating);
       return;
     }
 
@@ -44,7 +46,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
         relatedId,
       });
 
-      toast.success("Thank you for your feedback!");
+      toast.success(t.aiFeedback.feedbackSubmitted);
       setSubmitted(true);
       setTimeout(() => {
         setIsOpen(false);
@@ -53,7 +55,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
         setComment("");
       }, 1500);
     } catch (error) {
-      toast.error("Failed to submit feedback");
+      toast.error(t.aiFeedback.submitError);
       console.error(error);
     }
   };
@@ -63,14 +65,14 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground">
-            Rate this response
+            {t.aiFeedback.rateResponse}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>How helpful was this?</DialogTitle>
+            <DialogTitle>{t.aiFeedback.howHelpful}</DialogTitle>
             <DialogDescription>
-              Your feedback helps us improve our AI features
+              {t.aiFeedback.feedbackHelps}
             </DialogDescription>
           </DialogHeader>
           
@@ -84,7 +86,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
                   className="flex-1"
                 >
                   <ThumbsUp className="w-5 h-5 mr-2" />
-                  Helpful
+                  {t.aiFeedback.helpful}
                 </Button>
                 <Button
                   variant={selectedRating === "somewhat_helpful" ? "default" : "outline"}
@@ -93,7 +95,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
                   className="flex-1"
                 >
                   <Meh className="w-5 h-5 mr-2" />
-                  Okay
+                  {t.aiFeedback.okay}
                 </Button>
                 <Button
                   variant={selectedRating === "not_helpful" ? "default" : "outline"}
@@ -102,24 +104,24 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
                   className="flex-1"
                 >
                   <ThumbsDown className="w-5 h-5 mr-2" />
-                  Not Helpful
+                  {t.aiFeedback.notHelpful}
                 </Button>
               </div>
 
               <Textarea
-                placeholder="Any additional comments? (optional)"
+                placeholder={t.aiFeedback.additionalComments}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows={3}
               />
 
               <Button onClick={handleSubmit} className="w-full" disabled={!selectedRating}>
-                Submit Feedback
+                {t.aiFeedback.submitFeedback}
               </Button>
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-lg font-medium text-[#22C55E]">Thank you! 🎉</p>
+              <p className="text-lg font-medium text-[#22C55E]">{t.aiFeedback.thankYou}</p>
             </div>
           )}
         </DialogContent>
@@ -129,7 +131,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
 
   return (
     <div className="border rounded-lg p-4 bg-muted/30">
-      <p className="text-sm font-medium mb-3">Was this helpful?</p>
+      <p className="text-sm font-medium mb-3">{t.aiFeedback.wasHelpful}</p>
       <div className="flex gap-2">
         <Button
           variant={selectedRating === "helpful" ? "default" : "outline"}
@@ -137,7 +139,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
           onClick={() => setSelectedRating("helpful")}
         >
           <ThumbsUp className="w-4 h-4 mr-1" />
-          Yes
+          {t.aiFeedback.yes}
         </Button>
         <Button
           variant={selectedRating === "somewhat_helpful" ? "default" : "outline"}
@@ -145,7 +147,7 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
           onClick={() => setSelectedRating("somewhat_helpful")}
         >
           <Meh className="w-4 h-4 mr-1" />
-          Somewhat
+          {t.aiFeedback.somewhat}
         </Button>
         <Button
           variant={selectedRating === "not_helpful" ? "default" : "outline"}
@@ -153,27 +155,27 @@ export function AIFeedbackWidget({ featureType, wasAIGenerated, relatedId, compa
           onClick={() => setSelectedRating("not_helpful")}
         >
           <ThumbsDown className="w-4 h-4 mr-1" />
-          No
+          {t.aiFeedback.no}
         </Button>
       </div>
-      
+
       {selectedRating && !submitted && (
         <div className="mt-3 space-y-2">
           <Textarea
-            placeholder="Tell us more (optional)"
+            placeholder={t.aiFeedback.tellMore}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows={2}
             className="text-sm"
           />
           <Button onClick={handleSubmit} size="sm" className="w-full">
-            Submit
+            {t.aiFeedback.submit}
           </Button>
         </div>
       )}
-      
+
       {submitted && (
-        <p className="text-sm text-[#22C55E] mt-2">✓ Thank you for your feedback!</p>
+        <p className="text-sm text-[#22C55E] mt-2">{t.aiFeedback.feedbackSubmitted}</p>
       )}
     </div>
   );

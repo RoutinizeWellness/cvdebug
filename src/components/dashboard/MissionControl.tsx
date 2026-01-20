@@ -113,14 +113,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <h2 className="text-[#0F172A] text-4xl font-bold tracking-tight">Mission Control</h2>
+              <h2 className="text-[#0F172A] text-4xl font-bold tracking-tight">{t.missionControl.title}</h2>
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#22C55E]"></span>
               </span>
             </div>
             <p className="text-[#64748B] text-base">
-              {t.dashboard.welcomeBack}, <span className="font-semibold text-[#0F172A]">{userName}</span>. Eliminate bugs until you reach 95% visibility.
+              {t.missionControl.welcomeBack}, <span className="font-semibold text-[#0F172A]">{userName}</span>. {t.missionControl.eliminateBugs}
             </p>
           </div>
           <Button
@@ -128,7 +128,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             className="btn-power px-6 py-3 text-[#0F172A] font-semibold rounded-lg flex items-center gap-2 group border-0"
           >
             <Plus className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-            <span>New Application</span>
+            <span>{t.missionControl.newApplication}</span>
           </Button>
         </div>
       </header>
@@ -148,7 +148,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <div className="flex flex-col gap-3 relative z-10">
             <div className="flex items-center justify-between">
               <p className="text-[#64748B] text-sm font-semibold uppercase tracking-wider">
-                Visibility Score
+                {t.missionControl.visibilityScore}
               </p>
               <div className="p-2 rounded-lg bg-slate-100">
                 <TrendingUp className="h-5 w-5 text-[#475569]" />
@@ -161,7 +161,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <span className="text-2xl text-[#64748B] font-semibold">/100</span>
             </div>
             <p className="text-[#64748B] text-sm mt-2">
-              How recruiters find your resume
+              {t.missionControl.howRecruitersFind}
             </p>
             {/* Progress Bar with Cyber Gradient */}
             <div className="w-full bg-slate-200 rounded-full h-2 mt-4 overflow-hidden">
@@ -191,14 +191,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
           <div className="flex flex-col gap-1 relative z-10">
             <p className="text-[#64748B] text-sm font-medium uppercase tracking-wider">
-              Active Applications
+              {t.missionControl.activeApplications}
             </p>
             <div className="flex items-baseline gap-2 mt-1">
               <p className="text-[#0F172A] text-4xl font-mono font-bold">{activeApplications}</p>
             </div>
             <div className="flex items-center gap-1 mt-2 text-[#3B82F6] text-xs font-mono bg-blue-50 w-fit px-2 py-1 rounded border border-blue-200">
               <span className="material-symbols-outlined text-sm">bolt</span>
-              2 interviews scheduled
+              2 {t.missionControl.interviewsScheduled}
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
@@ -218,17 +218,17 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
           <div className="flex flex-col gap-1 relative z-10">
             <p className="text-[#64748B] text-sm font-medium uppercase tracking-wider">
-              Missing Signals
+              {t.missionControl.missingSignals}
             </p>
             <div className="flex items-baseline gap-2 mt-1">
               <p className="text-[#0F172A] text-4xl font-mono font-bold">{criticalErrorsCount}</p>
               <span className="text-rose-600 font-bold text-sm bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
-                CRITICAL
+                {t.missionControl.critical}
               </span>
             </div>
             <div className="flex items-center gap-1 mt-2 text-rose-600 text-xs font-mono">
               <span className="material-symbols-outlined text-sm">arrow_downward</span>
-              Impacting match score by -{criticalErrorsCount * 5}%
+              {t.missionControl.impactingMatchScore} -{criticalErrorsCount * 5}%
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
@@ -250,8 +250,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 <span className="text-2xl">👁️</span>
               </div>
               <div>
-                <h3 className="text-[#0F172A] text-lg font-bold">Robot View: What ATS Actually Reads</h3>
-                <p className="text-[#22C55E] text-xs font-mono">Is critical information missing from your resume?</p>
+                <h3 className="text-[#0F172A] text-lg font-bold">{t.missionControl.robotViewTitle}</h3>
+                <p className="text-[#22C55E] text-xs font-mono">{t.missionControl.robotViewSubtitle}</p>
               </div>
             </div>
             <span className="relative flex h-3 w-3">
@@ -265,7 +265,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div className="flex gap-2">
                 <span className="text-[#22C55E] shrink-0">[ATS]</span>
                 <span className="text-[#475569]">
-                  {masterResume?.ocrText ? masterResume.ocrText.slice(0, 300) + "..." : "Upload a resume to see raw text extraction"}
+                  {masterResume?.ocrText ? masterResume.ocrText.slice(0, 300) + "..." : t.missionControl.uploadToSeeExtraction}
                 </span>
               </div>
               {masterResume && (
@@ -274,15 +274,15 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                     <span className="text-[#F59E0B] shrink-0">[WARN]</span>
                     <span className="text-[#64748B]">
                       {missingKeywords.length > 0
-                        ? `Missing ${missingKeywords.length} high-impact keywords: ${missingKeywords.slice(0, 2).join(", ")}...`
-                        : "All critical keywords detected"}
+                        ? `${t.missionControl.missingKeywords} ${missingKeywords.length} high-impact keywords: ${missingKeywords.slice(0, 2).join(", ")}...`
+                        : t.missionControl.allKeywordsDetected}
                     </span>
                   </div>
                   {visibilityScore < 85 && (
                     <div className="flex gap-2">
                       <span className="text-rose-600 shrink-0">[CRIT]</span>
                       <span className="text-[#64748B]">
-                        Score {visibilityScore}/100 - Need {85 - visibilityScore} points to reach ELITE tier
+                        Score {visibilityScore}/100 - {t.missionControl.needPoints} {85 - visibilityScore} {t.missionControl.reachEliteTier}
                       </span>
                     </div>
                   )}
@@ -297,7 +297,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 hover:border-green-300"
             >
               <span className="material-symbols-outlined mr-2">visibility</span>
-              View Full Report
+              {t.missionControl.viewFullReport}
             </Button>
             {!masterResume && (
               <Button
@@ -305,7 +305,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 className="flex-1 bg-primary hover:bg-primary/90"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Upload Resume
+                {t.missionControl.uploadResume}
               </Button>
             )}
           </div>
@@ -319,23 +319,23 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         className="bg-[#FFFFFF] rounded-xl p-6 border-l-4 border-l-primary border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-[#0F172A] text-lg font-bold">Career Health</h3>
+          <h3 className="text-[#0F172A] text-lg font-bold">{t.missionControl.careerHealth}</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
             visibilityScore >= 85 ? "bg-teal-50 text-teal-600 border border-teal-200" :
             visibilityScore >= 70 ? "bg-blue-50 text-[#3B82F6] border border-blue-200" :
             visibilityScore >= 50 ? "bg-amber-50 text-[#F59E0B] border border-amber-200" :
             "bg-slate-100 text-[#64748B] border border-[#E2E8F0]"
           }`}>
-            {visibilityScore >= 85 ? "🏆 ELITE" :
-             visibilityScore >= 70 ? "⭐ PRO" :
-             visibilityScore >= 50 ? "📈 RISING" :
-             "🎯 STARTER"}
+            {visibilityScore >= 85 ? `🏆 ${t.missionControl.elite}` :
+             visibilityScore >= 70 ? `⭐ ${t.missionControl.pro}` :
+             visibilityScore >= 50 ? `📈 ${t.missionControl.rising}` :
+             `🎯 ${t.missionControl.starter}`}
           </span>
         </div>
 
         <div className="space-y-2 mb-4">
           <div className="flex justify-between text-sm">
-            <span className="text-[#64748B]">Progress to ELITE (85%+)</span>
+            <span className="text-[#64748B]">{t.missionControl.progressToElite}</span>
             <span className="text-[#0F172A] font-bold font-mono">{visibilityScore}/85</span>
           </div>
           <div className="h-3 bg-slate-200 rounded-full overflow-hidden relative">
@@ -354,15 +354,15 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
         <div className="grid grid-cols-3 gap-3 text-center">
           <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">CV Score</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.missionControl.cvScore}</p>
             <p className="text-2xl font-bold text-[#0F172A]">{visibilityScore}</p>
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">Applications</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.missionControl.applications}</p>
             <p className="text-2xl font-bold text-[#0F172A]">{activeApplications}</p>
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">Interviews</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.missionControl.interviews}</p>
             <p className="text-2xl font-bold text-[#0F172A]">{applicationsByStatus.interviewing.length}</p>
           </div>
         </div>
@@ -377,13 +377,13 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <div className="flex items-center justify-between">
             <h3 className="text-[#0F172A] text-lg font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">view_kanban</span>
-              Application Kanban
+              {t.missionControl.applicationKanban}
             </h3>
             <button
               onClick={() => onNavigate("projects")}
               className="text-xs text-primary hover:text-secondary font-mono transition-colors"
             >
-              VIEW ALL <ArrowRight className="inline h-3 w-3" />
+              {t.missionControl.viewAll} <ArrowRight className="inline h-3 w-3" />
             </button>
           </div>
 
@@ -393,14 +393,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
-                    Applied ({applicationsByStatus.applied.length})
+                    {t.missionControl.applied} ({applicationsByStatus.applied.length})
                   </span>
                   <div className="h-1.5 w-1.5 rounded-full bg-slate-400"></div>
                 </div>
 
                 {applicationsByStatus.applied.length === 0 ? (
                   <div className="bg-[#F8FAFC] border border-[#E2E8F0] p-6 rounded text-center text-[#64748B] text-sm">
-                    No applications yet
+                    {t.missionControl.noApplicationsYet}
                   </div>
                 ) : (
                   applicationsByStatus.applied.map((app: any) => (
@@ -409,12 +409,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border border-[#E2E8F0] hover:border-primary transition-colors cursor-pointer group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3">{app.company || "Company"}</p>
+                      <p className="text-[#64748B] text-xs mb-3">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center gap-2 text-[10px] text-[#64748B] font-mono">
                         <span className="material-symbols-outlined text-xs">schedule</span>
-                        {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : "Recent"}
+                        {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : t.missionControl.recent}
                       </div>
                     </div>
                   ))
@@ -425,14 +425,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-primary uppercase tracking-wider">
-                    Interviewing ({applicationsByStatus.interviewing.length})
+                    {t.missionControl.interviewing} ({applicationsByStatus.interviewing.length})
                   </span>
                   <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
                 </div>
 
                 {applicationsByStatus.interviewing.length === 0 ? (
                   <div className="bg-[#F8FAFC] border border-[#E2E8F0] p-6 rounded text-center text-[#64748B] text-sm">
-                    No interviews yet
+                    {t.missionControl.noInterviewsYet}
                   </div>
                 ) : (
                   applicationsByStatus.interviewing.map((app: any) => (
@@ -441,15 +441,15 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border-l-2 border-l-primary border-y border-r border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors cursor-pointer relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                          {app.stage || "In Progress"}
+                          {app.stage || t.missionControl.inProgress}
                         </div>
                         <span className="text-[10px] text-[#64748B]">
-                          {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : "Recent"}
+                          {app._creationTime ? new Date(app._creationTime).toLocaleDateString('es-ES') : t.missionControl.recent}
                         </span>
                       </div>
                     </div>
@@ -461,14 +461,14 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               <div className="flex-1 flex flex-col gap-3 min-w-[200px]">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs font-bold text-secondary uppercase tracking-wider">
-                    Accepted ({applicationsByStatus.accepted.length})
+                    {t.missionControl.accepted} ({applicationsByStatus.accepted.length})
                   </span>
                   <div className="h-1.5 w-1.5 rounded-full bg-secondary"></div>
                 </div>
 
                 {applicationsByStatus.accepted.length === 0 ? (
                   <div className="bg-[#F8FAFC] border border-[#E2E8F0] p-6 rounded text-center text-[#64748B] text-sm">
-                    No offers yet
+                    {t.missionControl.noOffersYet}
                   </div>
                 ) : (
                   applicationsByStatus.accepted.map((app: any) => (
@@ -477,12 +477,12 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       className="bg-[#FFFFFF] p-3 rounded border-l-2 border-l-secondary border-y border-r border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors cursor-pointer relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     >
                       <div className="flex justify-between items-start mb-2 relative z-10">
-                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || "Position"}</span>
+                        <span className="text-[#0F172A] font-semibold text-sm">{app.jobTitle || app.title || t.missionControl.position}</span>
                       </div>
-                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || "Company"}</p>
+                      <p className="text-[#64748B] text-xs mb-3 relative z-10">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
-                          Accepted
+                          {t.missionControl.accepted}
                         </div>
                       </div>
                     </div>
@@ -498,10 +498,10 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <div className="flex items-center justify-between">
             <h3 className="text-[#0F172A] text-lg font-bold flex items-center gap-2">
               <span className="material-symbols-outlined text-rose-500">bug_report</span>
-              Top Errors
+              {t.missionControl.topErrors}
             </h3>
             <span className="text-xs text-[#64748B] font-mono">
-              {masterResume?.title || "No CV loaded"}
+              {masterResume?.title || t.missionControl.noCVLoaded}
             </span>
           </div>
 
@@ -513,7 +513,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 <div className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]"></div>
               </div>
-              <span className="ml-2 text-[10px] text-[#64748B] font-mono">console — bash</span>
+              <span className="ml-2 text-[10px] text-[#64748B] font-mono">{t.missionControl.consoleBash}</span>
             </div>
 
             {/* Terminal Body */}
@@ -522,8 +522,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 <div className="flex gap-3">
                   <span className="text-[#22C55E] font-bold shrink-0">[OK]</span>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#475569]">No critical errors detected</span>
-                    <span className="text-[#64748B]">All systems operational</span>
+                    <span className="text-[#475569]">{t.missionControl.noCriticalErrors}</span>
+                    <span className="text-[#64748B]">{t.missionControl.allSystemsOperational}</span>
                   </div>
                 </div>
               ) : (
@@ -553,7 +553,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                 className="w-full flex items-center justify-center gap-2 rounded-md h-8 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 text-xs font-bold border border-rose-200 hover:border-rose-300 transition-all"
               >
                 <Wrench className="h-4 w-4" />
-                DEBUG MASTER CV
+                {t.missionControl.debugMasterCV}
               </button>
             </div>
           </div>

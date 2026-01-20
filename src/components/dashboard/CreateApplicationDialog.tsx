@@ -5,6 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
 import { motion, AnimatePresence } from "framer-motion";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface CreateApplicationDialogProps {
   open: boolean;
@@ -14,6 +15,7 @@ interface CreateApplicationDialogProps {
 }
 
 export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgrade }: CreateApplicationDialogProps) {
+  const { t } = useI18n();
   const createApplication = useMutation(api.applications.createApplication);
   const currentUser = useQuery((api as any).users.currentUser);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,8 +34,8 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
     e.preventDefault();
 
     if (!hasInterviewSprint) {
-      toast.error("Interview Sprint plan required", {
-        description: "Upgrade to track applications and get AI-powered insights"
+      toast.error(t.createApplication.planRequired, {
+        description: t.createApplication.planRequiredDesc
       });
       onUpgrade?.();
       return;
@@ -48,18 +50,18 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
         jobUrl: formData.jobUrl || undefined,
         jobDescriptionText: formData.jobDescriptionText || undefined,
       });
-      toast.success("Application added successfully");
+      toast.success(t.createApplication.successMessage);
       onOpenChange(false);
       setFormData({ companyName: "", jobTitle: "", jobUrl: "", jobDescriptionText: "" });
     } catch (error: any) {
       console.error(error);
       if (error.message?.includes("PLAN_RESTRICTION")) {
-        toast.error("Interview Sprint plan required", {
-          description: "This feature is only available with an active Interview Sprint subscription"
+        toast.error(t.createApplication.planRequired, {
+          description: t.createApplication.featureRestricted
         });
         onUpgrade?.();
       } else {
-        toast.error("Failed to add application");
+        toast.error(t.createApplication.errorMessage);
       }
     } finally {
       setIsLoading(false);
@@ -83,7 +85,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
             <div className="px-6 py-5 border-b border-[#E2E8F0] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-semibold text-[#0F172A] tracking-tight">
-                  Add New Application
+                  {t.createApplication.title}
                 </h3>
                 {!hasInterviewSprint && (
                   <Lock className="h-4 w-4 text-[#64748B]" />
@@ -103,16 +105,16 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                 <div className="flex gap-3">
                   <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-bold text-[#0F172A]">Interview Sprint Required</p>
+                    <p className="text-sm font-bold text-[#0F172A]">{t.createApplication.sprintRequired}</p>
                     <p className="text-xs text-[#475569] mt-1">
-                      Upgrade to track applications, get keyword analysis, and receive ghosting alerts.
+                      {t.createApplication.upgradeDesc}
                     </p>
                     <button
                       onClick={onUpgrade}
                       className="mt-3 bg-primary hover:bg-primary/90 text-black font-bold text-sm px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                     >
                       <Sparkles className="h-4 w-4" />
-                      Upgrade Now
+                      {t.createApplication.upgradeNow}
                     </button>
                   </div>
                 </div>
@@ -126,10 +128,10 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-[#475569] block">
-                        Company Name
+                        {t.createApplication.companyName}
                       </label>
                       <input
-                        placeholder="e.g., Acme Corp"
+                        placeholder={t.createApplication.companyPlaceholder}
                         value={formData.companyName}
                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                         required
@@ -139,10 +141,10 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-[#475569] block">
-                        Job Title
+                        {t.createApplication.jobTitle}
                       </label>
                       <input
-                        placeholder="e.g., Senior Engineer"
+                        placeholder={t.createApplication.jobTitlePlaceholder}
                         value={formData.jobTitle}
                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
                         required
@@ -154,11 +156,11 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-[#475569] block">
-                      Job Posting URL <span className="text-[#64748B] font-normal">(Optional)</span>
+                      {t.createApplication.jobUrl} <span className="text-[#64748B] font-normal">{t.createApplication.optional}</span>
                     </label>
                     <input
                       type="url"
-                      placeholder="https://..."
+                      placeholder={t.createApplication.urlPlaceholder}
                       value={formData.jobUrl}
                       onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
                       disabled={!hasInterviewSprint}
@@ -168,11 +170,11 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-[#475569] block">
-                      Job Description
-                      <span className="text-primary text-xs ml-2 font-normal">(Recommended for AI Analysis)</span>
+                      {t.createApplication.jobDescription}
+                      <span className="text-primary text-xs ml-2 font-normal">{t.createApplication.recommendedAI}</span>
                     </label>
                     <textarea
-                      placeholder="Paste the job description here for AI-powered keyword matching..."
+                      placeholder={t.createApplication.descriptionPlaceholder}
                       value={formData.jobDescriptionText}
                       onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
                       rows={6}
@@ -193,7 +195,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                   onClick={() => onOpenChange(false)}
                   className="w-full sm:w-auto px-6 py-2.5 text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC] rounded-lg transition-colors font-medium text-center"
                 >
-                  Cancel
+                  {t.createApplication.cancel}
                 </button>
                 <button
                   type="submit"
@@ -201,7 +203,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                   className="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-200 disabled:text-[#64748B] text-[#0F172A] font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {isLoading ? "Adding..." : "Add Application"}
+                  {isLoading ? t.createApplication.adding : t.createApplication.addApplication}
                 </button>
               </div>
             </form>
