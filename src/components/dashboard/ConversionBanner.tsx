@@ -90,8 +90,11 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
                 <p className="text-sm text-[#64748B]">
                   {t.conversionBanner.oneTimePayment} • <span className="font-bold text-[#0F172A]">14,99€</span>
                 </p>
-                <p className="text-xs text-[#94A3B8]">
-                  {t.conversionBanner.fixEverything}
+                <p className="text-xs font-medium text-[#0F172A]">
+                  Unlimited attempts for 24 hours.
+                </p>
+                <p className="text-xs text-[#64748B]">
+                  No stress, no double-charges, just results.
                 </p>
               </div>
             </div>

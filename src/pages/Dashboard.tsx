@@ -40,6 +40,7 @@ import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
 import { SettingsView } from "@/components/dashboard/SettingsView";
 import { SubscriptionView } from "@/components/dashboard/SubscriptionView";
 import { NewYearPromoModal } from "@/components/NewYearPromoModal";
+import { PaymentSuccessModal } from "@/components/PaymentSuccessModal";
 import {
   Dialog,
   DialogContent,
@@ -80,6 +81,7 @@ export default function Dashboard() {
 
   const currentUser = useQuery(apiAny.users.currentUser);
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [paymentSuccessPlan, setPaymentSuccessPlan] = useState<"single_scan" | "interview_sprint">("single_scan");
   const [initialPlan, setInitialPlan] = useState<"single_scan" | "interview_sprint" | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -204,6 +206,7 @@ export default function Dashboard() {
           return purchaseCredits({ plan: plan as "single_scan" | "interview_sprint" });
         })
         .then(() => {
+          setPaymentSuccessPlan(plan as "single_scan" | "interview_sprint");
           if (resumeId) {
             setPendingResumeId(resumeId);
             toast.success("Payment successful! Unlocking your resume report...");
@@ -783,6 +786,12 @@ export default function Dashboard() {
           setInitialPlan("single_scan");
           setShowPricing(true);
         }}
+      />
+
+      <PaymentSuccessModal
+        open={showPaymentSuccess}
+        onClose={() => setShowPaymentSuccess(false)}
+        plan={paymentSuccessPlan}
       />
     </div>
   );
