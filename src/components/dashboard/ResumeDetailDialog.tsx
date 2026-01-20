@@ -670,16 +670,31 @@ export function ResumeDetailDialog({
                 </span>
               )}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex gap-2 font-bold"
-              onClick={() => setShowSanitizerDialog(true)}
-              disabled={!displayResume}
-            >
-              <FileSearch className="h-4 w-4" />
-              Sanitizer
-            </Button>
+            {!isFree ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex gap-2 font-bold"
+                onClick={() => setShowSanitizerDialog(true)}
+                disabled={!displayResume}
+              >
+                <FileSearch className="h-4 w-4" />
+                Sanitizer
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden sm:flex gap-2 font-bold relative"
+                onClick={() => setShowPricing(true)}
+              >
+                <FileSearch className="h-4 w-4" />
+                Sanitizer
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
+                  <span className="material-symbols-outlined text-[12px] text-amber-500">lock</span>
+                </span>
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
