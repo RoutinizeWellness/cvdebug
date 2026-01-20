@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Search, MoreHorizontal, CheckCircle, AlertTriangle, AlertCircle, Clock } from "lucide-react";
 import { useState } from "react";
 import { CreateProjectDialog } from "./CreateProjectDialog";
+import { PricingDialog } from "@/components/PricingDialog";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 import { useNavigate } from "react-router";
 
@@ -14,7 +15,10 @@ interface ProjectsViewProps {
 export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   const navigate = useNavigate();
   const projects = useQuery(api.projects.getProjects, { status: "active" });
+  const user = useQuery((api as any).users.currentUser);
+  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showPricingDialog, setShowPricingDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "high" | "review" | "archived">("all");
 
@@ -169,10 +173,15 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             Create your first project to start tracking applications and optimizing your resume.
           </p>
           <Button
-            onClick={() => setShowCreateDialog(true)}
-            className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-[#0F172A] font-semibold"
+            onClick={() => isPaidUser ? setShowCreateDialog(true) : setShowPricingDialog(true)}
+            className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-[#0F172A] font-semibold relative"
           >
             Create Your First Project
+            {!isPaidUser && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
+                <span className="material-symbols-outlined text-[12px] text-amber-500">lock</span>
+              </span>
+            )}
           </Button>
         </div>
       ) : (
@@ -267,9 +276,14 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
 
           {/* New Project Card */}
           <div
-            onClick={() => setShowCreateDialog(true)}
-            className="bg-[#FFFFFF] rounded-xl border-2 border-dashed border-[#E2E8F0] p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-[#F8FAFC] transition-all group min-h-[250px]"
+            onClick={() => isPaidUser ? setShowCreateDialog(true) : setShowPricingDialog(true)}
+            className="bg-[#FFFFFF] rounded-xl border-2 border-dashed border-[#E2E8F0] p-5 flex flex-col items-center justify-center gap-4 text-center cursor-pointer hover:border-primary hover:bg-[#F8FAFC] transition-all group min-h-[250px] relative"
           >
+            {!isPaidUser && (
+              <span className="absolute top-4 right-4 flex h-7 w-7 items-center justify-center bg-amber-50 rounded-full border border-amber-200">
+                <span className="material-symbols-outlined text-[16px] text-amber-600">lock</span>
+              </span>
+            )}
             <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-primary transition-colors border border-[#E2E8F0]">
               <Plus className="h-8 w-8 text-[#64748B] group-hover:text-[#0F172A]" />
             </div>
@@ -283,9 +297,13 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
         </div>
       )}
 
-      <CreateProjectDialog 
-        open={showCreateDialog} 
-        onOpenChange={setShowCreateDialog} 
+      <CreateProjectDialog
+        open={showCreateDialog}
+        onOpenChange={setShowCreateDialog}
+      />
+      <PricingDialog
+        open={showPricingDialog}
+        onOpenChange={setShowPricingDialog}
       />
     </div>
   );

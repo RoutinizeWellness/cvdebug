@@ -136,11 +136,11 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-cyan-500/5 pointer-events-none" />
 
             <div className="relative">
-              <div className="flex items-start gap-3 mb-3">
+              <div className="flex items-start gap-3 mb-4">
                 <div className="p-2 rounded-lg bg-primary/20 text-primary shrink-0">
                   <Diamond className="h-5 w-5" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
                   <p className="text-[#475569] text-sm leading-relaxed">
                     Optimize your LinkedIn profile with AI and get 3x more recruiter views.
@@ -149,7 +149,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
               </div>
 
               {/* Benefits Grid */}
-              <div className="grid grid-cols-2 gap-2 mb-4 ml-14">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                 <div className="flex items-center gap-2 text-xs text-[#475569]">
                   <span className="text-[#22C55E] font-bold">✓</span>
                   <span>AI headline optimization</span>
@@ -170,7 +170,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
               <Button
                 onClick={onUpgrade}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2 ml-14"
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Upgrade to Interview Sprint</span>
