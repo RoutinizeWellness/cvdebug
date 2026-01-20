@@ -14,13 +14,30 @@ export function EmailPreferences() {
   const emailStats = useQuery(api.emailPreferences.getEmailStats);
   const updatePreference = useMutation(api.emailPreferences.updateEmailPreferences);
   const [loading, setLoading] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
 
-  if (!preferences) {
+  // If preferences is undefined (loading), show loading state
+  if (preferences === undefined) {
     return (
       <div className="flex items-center justify-center p-12">
         <div className="text-center">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-sm text-muted-foreground">Loading preferences...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If preferences is null (not authenticated or error), show default preferences
+  if (preferences === null) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <div className="text-center max-w-md">
+          <AlertCircle className="h-12 w-12 text-orange-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-2">Email Preferences Not Available</h3>
+          <p className="text-sm text-muted-foreground">
+            You need to be signed in to manage email preferences. Please refresh the page or sign in again.
+          </p>
         </div>
       </div>
     );
