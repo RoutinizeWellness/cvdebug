@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveResumeBtn = document.getElementById('save-resume-btn');
   const clearResumeBtn = document.getElementById('clear-resume-btn');
   const openDashboardBtn = document.getElementById('open-dashboard-btn');
+  const jobAlertsBtn = document.getElementById('job-alerts-btn');
   const uploadSection = document.getElementById('upload-section');
   const statsSection = document.getElementById('stats-section');
   const statusIcon = document.getElementById('status-icon');
@@ -78,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.tabs.create({ url: 'https://cvdebug.com/dashboard' });
   });
 
+  // Job alerts handler
+  jobAlertsBtn.addEventListener('click', () => {
+    window.location.href = 'alerts.html';
+  });
+
   // Functions
   function loadStoredResume() {
     chrome.runtime.sendMessage({ action: 'getStoredResume' }, (response) => {
@@ -100,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     uploadSection.style.display = 'none';
     statsSection.style.display = 'flex';
     clearResumeBtn.style.display = 'block';
+    jobAlertsBtn.style.display = 'block';
 
     // Load stats from storage
     chrome.storage.local.get(['extensionStats'], (result) => {
