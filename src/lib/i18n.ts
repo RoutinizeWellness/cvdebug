@@ -1269,6 +1269,26 @@ export interface Translation {
     dateFormatInconsistency: string;
     atExperienceBlock: string;
   };
+  // ATS Report
+  atsReport: {
+    missingSignals: string;
+    critical: string;
+    important: string;
+    niceToHave: string;
+    fix: string;
+    invisibleToBot: string;
+    atsWillReject: string;
+    needsOptimization: string;
+    readyToApply: string;
+    context: string;
+    offerRequires: string;
+    youNeedToAdd: string;
+    missingThisToken: string;
+    addSignalsOf: string;
+    upgrade: string;
+    percentInvisible: string;
+    needsOptimizationBefore: string;
+  };
   // Projects View
   projectsView: {
     searchPlaceholder: string;
@@ -2571,6 +2591,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Date format inconsistency found',
       atExperienceBlock: 'at Experience.block (Line 42)',
     },
+    atsReport: {
+      missingSignals: 'Missing Signals',
+      critical: 'CRITICAL',
+      important: 'IMPORTANT',
+      niceToHave: 'NICE TO HAVE',
+      fix: 'Fix',
+      invisibleToBot: 'Invisible to the Bot',
+      atsWillReject: '⚠️ The ATS will automatically reject you',
+      needsOptimization: 'You need to optimize your CV BEFORE applying',
+      readyToApply: 'Ready to Apply',
+      context: 'Context',
+      offerRequires: 'The offer requires',
+      youNeedToAdd: 'You need to add this skill',
+      missingThisToken: 'but your CV only mentions',
+      addSignalsOf: 'You need to add signals of',
+      upgrade: 'Upgrade',
+      percentInvisible: '% Invisible to the Bot',
+      needsOptimizationBefore: 'Needs optimization BEFORE applying',
+    },
     projectsView: {
       searchPlaceholder: 'Search projects, tags...',
       uploadNewMasterCV: 'Upload New Master CV',
@@ -3867,6 +3906,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto en match_score:',
       dateFormatInconsistency: 'Inconsistencia de formato de fecha encontrada',
       atExperienceBlock: 'en Experience.block (Línea 42)',
+    },
+    atsReport: {
+      missingSignals: 'Señales Faltantes',
+      critical: 'CRÍTICO',
+      important: 'IMPORTANTE',
+      niceToHave: 'DESEABLE',
+      fix: 'Arreglar',
+      invisibleToBot: 'Invisible para el Bot',
+      atsWillReject: '⚠️ El ATS te descartará automáticamente',
+      needsOptimization: 'Necesitas optimizar tu CV ANTES de aplicar',
+      readyToApply: 'Listo para Aplicar',
+      context: 'Contexto',
+      offerRequires: 'La oferta requiere',
+      youNeedToAdd: 'Necesitas añadir esta habilidad',
+      missingThisToken: 'pero tu CV solo menciona',
+      addSignalsOf: 'Necesitas añadir señales de',
+      upgrade: 'Actualizar',
+      percentInvisible: '% Invisible para el Bot',
+      needsOptimizationBefore: 'Necesita optimización ANTES de aplicar',
     },
     projectsView: {
       searchPlaceholder: 'Buscar proyectos, etiquetas...',
@@ -5165,6 +5223,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Incohérence de format de date trouvée',
       atExperienceBlock: 'à Experience.block (Ligne 42)',
     },
+    atsReport: {
+      missingSignals: 'Signaux Manquants',
+      critical: 'CRITIQUE',
+      important: 'IMPORTANT',
+      niceToHave: 'SOUHAITABLE',
+      fix: 'Corriger',
+      invisibleToBot: 'Invisible au Bot',
+      atsWillReject: '⚠️ L\'ATS vous rejettera automatiquement',
+      needsOptimization: 'Vous devez optimiser votre CV AVANT de postuler',
+      readyToApply: 'Prêt à Postuler',
+      context: 'Contexte',
+      offerRequires: 'L\'offre nécessite',
+      youNeedToAdd: 'Vous devez ajouter cette compétence',
+      missingThisToken: 'mais votre CV ne mentionne que',
+      addSignalsOf: 'Vous devez ajouter des signaux de',
+      upgrade: 'Mettre à Niveau',
+      percentInvisible: '% Invisible au Bot',
+      needsOptimizationBefore: 'Nécessite une optimisation AVANT de postuler',
+    },
     projectsView: {
       searchPlaceholder: 'Rechercher projets, tags...',
       uploadNewMasterCV: 'Télécharger Nouveau CV Principal',
@@ -6462,6 +6539,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Datumsformat-Inkonsistenz gefunden',
       atExperienceBlock: 'bei Experience.block (Zeile 42)',
     },
+    atsReport: {
+      missingSignals: 'Fehlende Signale',
+      critical: 'KRITISCH',
+      important: 'WICHTIG',
+      niceToHave: 'WÜNSCHENSWERT',
+      fix: 'Beheben',
+      invisibleToBot: 'Unsichtbar für den Bot',
+      atsWillReject: '⚠️ Das ATS wird Sie automatisch ablehnen',
+      needsOptimization: 'Sie müssen Ihren Lebenslauf VORHER optimieren',
+      readyToApply: 'Bereit zur Bewerbung',
+      context: 'Kontext',
+      offerRequires: 'Das Angebot erfordert',
+      youNeedToAdd: 'Sie müssen diese Fähigkeit hinzufügen',
+      missingThisToken: 'aber Ihr Lebenslauf erwähnt nur',
+      addSignalsOf: 'Sie müssen Signale hinzufügen von',
+      upgrade: 'Upgrade',
+      percentInvisible: '% Unsichtbar für den Bot',
+      needsOptimizationBefore: 'Benötigt Optimierung VOR der Bewerbung',
+    },
     projectsView: {
       searchPlaceholder: 'Projekte, Tags suchen...',
       uploadNewMasterCV: 'Neuen Master-CV hochladen',
@@ -7758,6 +7854,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto no match_score:',
       dateFormatInconsistency: 'Inconsistência de formato de data encontrada',
       atExperienceBlock: 'em Experience.block (Linha 42)',
+    },
+    atsReport: {
+      missingSignals: 'Sinais Ausentes',
+      critical: 'CRÍTICO',
+      important: 'IMPORTANTE',
+      niceToHave: 'DESEJÁVEL',
+      fix: 'Corrigir',
+      invisibleToBot: 'Invisível ao Bot',
+      atsWillReject: '⚠️ O ATS irá rejeitá-lo automaticamente',
+      needsOptimization: 'Você precisa otimizar seu CV ANTES de aplicar',
+      readyToApply: 'Pronto para Aplicar',
+      context: 'Contexto',
+      offerRequires: 'A oferta requer',
+      youNeedToAdd: 'Você precisa adicionar esta habilidade',
+      missingThisToken: 'mas seu CV apenas menciona',
+      addSignalsOf: 'Você precisa adicionar sinais de',
+      upgrade: 'Atualizar',
+      percentInvisible: '% Invisível ao Bot',
+      needsOptimizationBefore: 'Requer otimização ANTES de aplicar',
     },
     projectsView: {
       searchPlaceholder: 'Buscar projetos, tags...',

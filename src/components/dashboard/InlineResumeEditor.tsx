@@ -22,6 +22,8 @@ interface InlineResumeEditorProps {
   missingKeywords: Array<{ keyword: string; context?: string }>;
   formatIssues: Array<{ issue: string; fix: string; location?: string }>;
   onContentUpdate: (newContent: string) => void;
+  user?: any;
+  onUpgrade?: () => void;
 }
 
 export function InlineResumeEditor({
@@ -29,7 +31,9 @@ export function InlineResumeEditor({
   initialContent,
   missingKeywords = [],
   formatIssues = [],
-  onContentUpdate
+  onContentUpdate,
+  user,
+  onUpgrade
 }: InlineResumeEditorProps) {
   const [content, setContent] = useState(initialContent);
   const [isEditing, setIsEditing] = useState(false);
@@ -38,6 +42,9 @@ export function InlineResumeEditor({
   const updateResume = useMutation(api.resumes.updateResumeContent);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  // Check if user has paid plan
+  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
 
   useEffect(() => {
     if (content !== initialContent) {
@@ -257,10 +264,13 @@ export function InlineResumeEditor({
       <div className="relative">
         <textarea
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => isPaidUser && setContent(e.target.value)}
           onFocus={() => setIsEditing(true)}
           onBlur={() => setIsEditing(false)}
+          disabled={!isPaidUser}
           className={`w-full min-h-[400px] p-4 bg-[#FFFFFF] border-2 rounded-lg font-mono text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none transition-all ${
+            !isPaidUser ? 'blur-[2px] pointer-events-none' : ''
+          } ${
             isEditing
               ? 'border-[#8B5CF6] shadow-[0_0_20px_rgba(139,92,246,0.2)]'
               : 'border-[#E2E8F0]'
@@ -269,10 +279,39 @@ export function InlineResumeEditor({
           spellCheck={false}
         />
 
+        {/* Paywall Overlay */}
+        {!isPaidUser && (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#FFFFFF]/80 backdrop-blur-[1px] rounded-lg">
+            <div className="text-center p-8 max-w-md">
+              <div className="w-16 h-16 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-full flex items-center justify-center mx-auto mb-4">
+                <Wand2 className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                Inline Editor is a Premium Feature
+              </h3>
+              <p className="text-[#64748B] mb-6 text-sm">
+                Upgrade to edit your resume directly, add missing keywords instantly, and re-analyze without re-uploading.
+              </p>
+              <Button
+                onClick={onUpgrade}
+                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all"
+              >
+                <Sparkles className="h-4 w-4 mr-2" />
+                Upgrade Now - $14.99
+              </Button>
+              <p className="text-xs text-[#94A3B8] mt-3">
+                24-hour access • Unlimited edits • Re-analyze instantly
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Character count */}
-        <div className="absolute bottom-2 right-2 text-[10px] text-[#94A3B8] bg-[#FFFFFF] px-2 py-1 rounded border border-[#E2E8F0]">
-          {content.length.toLocaleString()} characters
-        </div>
+        {isPaidUser && (
+          <div className="absolute bottom-2 right-2 text-[10px] text-[#94A3B8] bg-[#FFFFFF] px-2 py-1 rounded border border-[#E2E8F0]">
+            {content.length.toLocaleString()} characters
+          </div>
+        )}
       </div>
 
       {/* Help text */}
