@@ -1469,6 +1469,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                     jobDescription={displayResume?.jobDescription || ''}
                     category={displayResume?.category || ''}
                     seniorityLevel={displayResume?.stats?.seniorityLevel || 'mid'}
+                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
                   />
                 </TabsContent>
 

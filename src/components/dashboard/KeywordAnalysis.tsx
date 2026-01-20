@@ -14,6 +14,7 @@ interface KeywordAnalysisProps {
   jobDescription?: string;
   category?: string;
   seniorityLevel?: string;
+  isPaidUser?: boolean; // NEW: Check if user has paid plan
 }
 
 interface FoundKeyword {
@@ -41,7 +42,8 @@ export function KeywordAnalysis({
   resumeText = '',
   jobDescription = '',
   category = '',
-  seniorityLevel = 'mid'
+  seniorityLevel = 'mid',
+  isPaidUser = false // NEW: Default to false (free tier)
 }: KeywordAnalysisProps) {
   const { t } = useI18n();
   const [showExamples, setShowExamples] = useState<string | null>(null);
@@ -686,8 +688,13 @@ export function KeywordAnalysis({
                 {t.keywordAnalysis.highImpact}
               </span>
             </h3>
-            <div className="text-xs text-[#64748B]">
-              {t.keywordAnalysis.fixingIncreases}
+            <div className="flex items-center gap-2">
+              {!isPaidUser && (
+                <PremiumFeatureBadge plan="interview_sprint" size="sm" />
+              )}
+              <div className="text-xs text-[#64748B]">
+                {t.keywordAnalysis.fixingIncreases}
+              </div>
             </div>
           </div>
 
@@ -700,7 +707,78 @@ export function KeywordAnalysis({
             {/* Decorative blob */}
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#EF4444]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            {missingSignals.length === 0 ? (
+            {!isPaidUser ? (
+              // LOCKED CONTENT FOR FREE USERS
+              <div className="relative h-full min-h-[400px]">
+                {/* Blurred Preview */}
+                <div className="absolute inset-0 blur-sm select-none pointer-events-none opacity-40">
+                  <div className="space-y-3">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="rounded-lg p-4 border border-[#EF4444]/20 bg-[#FFFFFF]">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm text-[#EF4444]">warning_amber</span>
+                            <h4 className="text-base font-mono font-bold text-[#0F172A]">System Design</h4>
+                          </div>
+                          <span className="text-[10px] font-bold px-2 py-1 rounded bg-[#EF4444] text-white">Alto Impacto</span>
+                        </div>
+                        <p className="text-xs text-[#475569]">Add "System Design" with specific examples...</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Lock Overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
+                  <div className="text-center px-6 max-w-md">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#8B5CF6]/30">
+                      <span className="material-symbols-outlined text-4xl text-white">lock</span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
+                      Señales Críticas Faltantes
+                    </h3>
+                    <p className="text-sm text-[#64748B] mb-6 leading-relaxed">
+                      Desbloquea el análisis completo de keywords faltantes con <span className="font-semibold text-[#0F172A]">impacto cuantificado</span>,
+                      <span className="font-semibold text-[#0F172A]"> descripciones específicas</span>, y
+                      <span className="font-semibold text-[#0F172A]"> recomendaciones de IA</span> para aumentar tu score hasta +15%.
+                    </p>
+
+                    {/* Benefits List */}
+                    <div className="bg-white/80 rounded-xl p-4 mb-6 text-left border border-[#E2E8F0] shadow-sm">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-xs text-[#475569]">
+                          <span className="text-[#22C55E]">✓</span>
+                          <span>Análisis de impacto detallado (+2% por keyword)</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-[#475569]">
+                          <span className="text-[#22C55E]">✓</span>
+                          <span>Descripciones específicas para cada keyword</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-[#475569]">
+                          <span className="text-[#22C55E]">✓</span>
+                          <span>Ubicación recomendada en el CV</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-[#475569]">
+                          <span className="text-[#22C55E]">✓</span>
+                          <span>Auto-Add con IA (Writing Forge)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={onUpgrade}
+                      className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#8B5CF6]/30 hover:shadow-2xl hover:shadow-[#8B5CF6]/40 flex items-center justify-center gap-2"
+                    >
+                      <span className="material-symbols-outlined">workspace_premium</span>
+                      Desbloquear Análisis Completo
+                    </button>
+                    <p className="text-xs text-[#94A3B8] mt-3">
+                      Plan de 7 días • $4.99
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : missingSignals.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <div className="w-16 h-16 rounded-full bg-[#22C55E]/10 flex items-center justify-center mb-4">
                   <span className="material-symbols-outlined text-3xl text-[#22C55E]">check_circle</span>

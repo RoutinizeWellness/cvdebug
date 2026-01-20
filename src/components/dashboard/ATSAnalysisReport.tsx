@@ -738,13 +738,13 @@ export function ATSAnalysisReport({
                   </motion.div>
                 )}
 
-                {/* Missing Keywords - Enhanced with detailed info for paid users */}
+                {/* Missing Keywords - LOCKED FOR FREE USERS */}
                 {missingKeywords.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.75 }}
-                    className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-orange-200 hover:border-orange-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[350px] max-h-[600px]"
+                    className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-orange-200 hover:border-orange-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[350px] max-h-[600px] relative"
                   >
                     <div className="flex items-start justify-between mb-4 flex-shrink-0">
                       <div className="flex items-center gap-3">
@@ -758,8 +758,43 @@ export function ATSAnalysisReport({
                       </div>
                     </div>
 
-                    {/* Show detailed cards for paid users, simple tags for free users - Mobile Optimized */}
-                    {isPaidUser && missingKeywordsDetailed.some(kw => kw.priority || kw.context) ? (
+                    {!isPaidUser ? (
+                      // LOCKED CONTENT FOR FREE USERS
+                      <div className="relative flex-1">
+                        {/* Blurred Preview */}
+                        <div className="absolute inset-0 blur-sm select-none pointer-events-none opacity-40">
+                          <div className="space-y-2">
+                            {[...Array(5)].map((_, i) => (
+                              <div key={i} className="px-3 py-2 bg-orange-50 text-orange-700 rounded-lg border border-orange-200 text-sm font-medium">
+                                System Design, Performance Optimization, AWS
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Lock Overlay */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
+                          <div className="text-center px-4 max-w-sm">
+                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#F59E0B] to-[#EF4444] flex items-center justify-center mb-4 mx-auto shadow-xl shadow-[#F59E0B]/30">
+                              <span className="material-symbols-outlined text-3xl text-white">lock</span>
+                            </div>
+                            <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                              Keywords Faltantes Bloqueadas
+                            </h3>
+                            <p className="text-sm text-[#64748B] mb-4 leading-relaxed">
+                              Desbloquea la lista completa de keywords críticas con <span className="font-semibold text-[#0F172A]">impacto cuantificado</span> (+15% score).
+                            </p>
+                            <button
+                              onClick={onUpgrade}
+                              className="bg-gradient-to-r from-[#F59E0B] to-[#EF4444] hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-lg shadow-[#F59E0B]/30 text-sm flex items-center justify-center gap-2 mx-auto"
+                            >
+                              <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                              Desbloquear
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : isPaidUser && missingKeywordsDetailed.some(kw => kw.priority || kw.context) ? (
                       <div className="space-y-2 md:space-y-3 overflow-y-auto pr-1 md:pr-2 flex-1">
                         {missingKeywordsDetailed.slice(0, 10).map((kwDetail, index) => {
                           const priorityConfig = {
