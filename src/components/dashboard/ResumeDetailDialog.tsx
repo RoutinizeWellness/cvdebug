@@ -4,6 +4,12 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   FileText,
   Download,
   Trash2,
@@ -26,7 +32,9 @@ import {
   AlertTriangle,
   Loader2,
   Check,
-  Edit
+  Edit,
+  MoreVertical,
+  Share2
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -86,7 +94,7 @@ export function ResumeDetailDialog({
   const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
   const [jobDescription, setJobDescription] = useState("");
   const [isReanalyzing, setIsReanalyzing] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("robot");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
   const [isPdfCollapsed, setIsPdfCollapsed] = useState(false);
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
@@ -591,17 +599,6 @@ export function ResumeDetailDialog({
               <Target className="h-4 w-4" />
               {displayResume?.jobDescription ? "Update JD" : "Add Job Description"}
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="hidden sm:flex gap-2 font-bold"
-              onClick={handleShareLink}
-              title="Copy shareable link"
-              disabled={!displayResume}
-            >
-              <Link2 className="h-4 w-4" />
-              Share Link
-            </Button>
             <Button
               variant="outline"
               size="sm"
@@ -697,26 +694,35 @@ export function ResumeDetailDialog({
                 </span>
               </Button>
             )}
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden sm:flex gap-2 font-bold"
-              onClick={handleDownloadFile}
-              disabled={!displayResume}
-            >
-              <Download className="h-4 w-4" />
-              Download
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="hidden sm:flex gap-2 font-bold"
-              onClick={handleDownloadReport}
-              disabled={!displayResume}
-            >
-              <Printer className="h-4 w-4" />
-              Print Report
-            </Button>
+            {/* Export Menu - Grouped Download/Print/Share */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hidden sm:flex gap-2 font-bold"
+                  disabled={!displayResume}
+                >
+                  <Share2 className="h-4 w-4" />
+                  Export
+                  <MoreVertical className="h-3 w-3 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={handleDownloadFile} disabled={!displayResume}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download CV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownloadReport} disabled={!displayResume}>
+                  <Printer className="h-4 w-4 mr-2" />
+                  Print Report
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleShareLink} disabled={!displayResume}>
+                  <Link2 className="h-4 w-4 mr-2" />
+                  Share Link
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className="w-px h-8 bg-slate-200 mx-1 self-center hidden sm:block" />
             <button
               className="p-2 hover:bg-red-50 text-[#EF4444] rounded-lg transition-colors border border-transparent hover:border-red-200"
@@ -872,12 +878,6 @@ export function ResumeDetailDialog({
                           </span>
                         </TabsTrigger>
                       )}
-                      <TabsTrigger value="overview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-slate-700 data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                        <span className="flex items-center gap-1.5">
-                          <Eye className="h-4 w-4" />
-                          <span>Overview</span>
-                        </span>
-                      </TabsTrigger>
                     </div>
 
                     {/* PREP Group */}
@@ -1480,73 +1480,6 @@ Impact: AUTO_REJECT (100% rejection rate)
                   />
                 </TabsContent>
 
-                <TabsContent value="overview" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                  <div className="space-y-8">
-                    <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                      <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
-                      {auditItems.length > 0 ? (
-                        <div className="space-y-3">
-                          {auditItems.map((item: any, index: number) => (
-                            <div key={index} className={`p-5 rounded-xl border-l-4 shadow-sm transition-all hover:shadow-md ${
-                              item.status === "failed"
-                                ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
-                                : item.status === "warning"
-                                ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
-                                : "bg-green-50/50 border-l-green-500 border border-green-200/50"
-                            }`}>
-                              <div className="flex items-start gap-4">
-                                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-                                  item.status === "failed" ? "bg-red-100" :
-                                  item.status === "warning" ? "bg-amber-100" : "bg-green-100"
-                                }`}>
-                                  <span className="text-lg">
-                                    {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                                  </span>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <h3 className={`font-bold text-base ${
-                                      item.status === "failed" ? "text-red-800" :
-                                      item.status === "warning" ? "text-amber-800" : "text-green-800"
-                                    }`}>
-                                      {item.title}
-                                    </h3>
-                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                      item.status === "failed" ? "bg-red-200 text-red-700" :
-                                      item.status === "warning" ? "bg-amber-200 text-amber-700" :
-                                      "bg-green-200 text-green-700"
-                                    }`}>
-                                      {item.status === "failed" ? "Critical" : item.status === "warning" ? "Warning" : "Passed"}
-                                    </span>
-                                  </div>
-                                  <p className="text-[#0F172A] text-sm font-medium mb-2">{item.reason}</p>
-                                  <div className={`mt-3 p-3 rounded-lg ${
-                                    item.status === "failed" ? "bg-red-100/50" :
-                                    item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
-                                  }`}>
-                                    <p className={`text-xs font-medium ${
-                                      item.status === "failed" ? "text-red-700" :
-                                      item.status === "warning" ? "text-amber-700" : "text-green-700"
-                                    }`}>
-                                      <span className="font-bold">Fix: </span>{item.fix}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="p-6 rounded-lg bg-green-50 border border-green-200 text-center">
-                          <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                          <h3 className="font-bold text-green-700 mb-2">No Format Issues Detected</h3>
-                          <p className="text-sm text-[#475569]">Your resume has good formatting that should be ATS-compatible.</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-
                 <TabsContent value="fluff" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                   <FluffDetector
                     resumeText={displayResume.ocrText || ""}
@@ -1640,7 +1573,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                 <TabsContent value="simulation" className="flex-1 overflow-hidden p-0">
                   <ATSSimulation
                     resumeId={displayResume._id}
-                    onBack={() => setActiveTab("overview")}
+                    onBack={() => setActiveTab("robot")}
                   />
                 </TabsContent>
 

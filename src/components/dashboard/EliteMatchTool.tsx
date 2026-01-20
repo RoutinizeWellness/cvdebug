@@ -51,7 +51,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
   const [step, setStep] = useState<'input' | 'analyzing' | 'results'>('input');
 
   // Fetch current user to check subscription status
-  const currentUser = useQuery(api.users.getCurrentUser);
+  const currentUser = useQuery(api.users.currentUser);
 
   // Check if user has paid plan
   const isPaidUser = currentUser?.subscriptionTier === "single_scan" ||
