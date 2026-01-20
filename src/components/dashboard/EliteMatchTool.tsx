@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,10 +12,15 @@ import {
   Sparkles,
   TrendingUp,
   Loader2,
-  ExternalLink,
-  Wand2
+  Brain,
+  BarChart3,
+  Wand2,
+  Lock
 } from "lucide-react";
 import { toast } from "sonner";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { getPlanPrice } from "@/lib/pricing";
 
 interface MissingSignal {
   text: string;
@@ -31,8 +36,8 @@ interface MatchResult {
   missingImportant: MissingSignal[];
   matched: string[];
   robotView: {
-    redZones: string[]; // Áreas problemáticas
-    greenZones: string[]; // Áreas fuertes
+    redZones: string[];
+    greenZones: string[];
   };
   recommendations: string[];
 }
@@ -45,25 +50,43 @@ interface EliteMatchToolProps {
 export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
   const [step, setStep] = useState<'input' | 'analyzing' | 'results'>('input');
 
+  // Fetch current user to check subscription status
+  const currentUser = useQuery(api.users.getCurrentUser);
+
   // Check if user has paid plan
-  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+  const isPaidUser = currentUser?.subscriptionTier === "single_scan" ||
+                     currentUser?.subscriptionTier === "interview_sprint";
+
   const [jobDescriptionUrl, setJobDescriptionUrl] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
   const [progress, setProgress] = useState(0);
   const [progressMessage, setProgressMessage] = useState('');
 
+  // Get localized pricing
+  const [pricing, setPricing] = useState(() => getPlanPrice('single_scan'));
+
+  useEffect(() => {
+    // Detect user's locale and update pricing
+    const userLocale = navigator.language || 'en-US';
+    setPricing(getPlanPrice('single_scan', userLocale));
+  }, []);
+
   const handleAnalyze = async () => {
+    if (!isPaidUser) {
+      toast.error('Esta función es Premium. Actualiza tu plan para continuar.');
+      if (onUpgrade) onUpgrade();
+      return;
+    }
+
     if (!jobDescriptionUrl && !jobDescriptionText) {
       toast.error('Por favor pega el link de LinkedIn o el texto de la oferta');
       return;
     }
 
-    // Start analysis
     setStep('analyzing');
     setProgress(0);
 
-    // Simulate progress with realistic messages
     const progressSteps = [
       { progress: 20, message: 'Extracting Recruiter Intent...' },
       { progress: 40, message: 'Analyzing Hard Skills Requirements...' },
@@ -78,7 +101,6 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
       setProgressMessage(progressStep.message);
     }
 
-    // Mock result (in production, call backend API)
     const mockResult: MatchResult = {
       score: 67,
       missingCritical: [
@@ -99,516 +121,359 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
       ],
       missingImportant: [
         {
-          text: 'Agile Leadership',
+          text: 'Agile methodology',
           category: 'Soft Skills',
           importance: 'important',
-          suggestion: 'La oferta busca "Agile Leadership", pero tu CV es demasiado técnico. Necesitas añadir señales de liderazgo.'
-        },
-        {
-          text: 'Stakeholder Management',
-          category: 'Soft Skills',
-          importance: 'important',
-          suggestion: 'Te falta "Stakeholder Management". Añade contexto sobre cómo has trabajado con stakeholders.'
+          suggestion: 'Menciona experiencia con "metodologías ágiles" o "Scrum".'
         }
       ],
-      matched: [
-        'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker',
-        'CI/CD', 'Microservices', 'RESTful APIs'
-      ],
+      matched: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'Docker'],
       robotView: {
-        redZones: [
-          'Experience section: Missing Kubernetes references',
-          'Skills section: No AWS Lambda mentioned',
-          'Leadership section: Too technical, lacks soft skill signals'
-        ],
-        greenZones: [
-          'Technical skills: Strong match with React and TypeScript',
-          'Tools: Good coverage of modern DevOps tools',
-          'Years of experience: Matches requirement (5+ years)'
-        ]
+        redZones: ['Cloud Infrastructure', 'Container Orchestration'],
+        greenZones: ['Frontend Development', 'Backend APIs', 'Database Management']
       },
       recommendations: [
-        'Añade "Kubernetes" en tu sección de experiencia con un ejemplo concreto',
-        'Reescribe tu proyecto de AWS para incluir "Lambda" de forma natural',
-        'Añade una sección de "Leadership & Collaboration" con ejemplos específicos',
-        'Incluye métricas cuantificables (% mejora, usuarios impactados, etc.)'
+        'Añade "Kubernetes" en tu sección de skills técnicos',
+        'Incluye experiencia específica con AWS Lambda en tus proyectos',
+        'Menciona metodologías ágiles en tus responsabilidades'
       ]
     };
 
-    await new Promise(resolve => setTimeout(resolve, 500));
     setMatchResult(mockResult);
     setStep('results');
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-[#22C55E]';
-    if (score >= 70) return 'text-[#F59E0B]';
-    return 'text-[#EF4444]';
-  };
-
-  const getScoreBgColor = (score: number) => {
-    if (score >= 85) return 'bg-[#22C55E]/10';
-    if (score >= 70) return 'bg-[#F59E0B]/10';
-    return 'bg-[#EF4444]/10';
-  };
-
-  const getScoreLabel = (score: number) => {
-    if (score >= 85) return 'Ready to Apply';
-    if (score >= 70) return 'Needs Optimization';
-    return 'Invisible to the Bot';
-  };
-
   return (
-    <div className="max-w-7xl mx-auto relative">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Target className="h-8 w-8 text-[#3B82F6]" />
-          <h1 className="text-3xl font-black text-[#0F172A]">Elite Match Tool</h1>
-        </div>
-        <p className="text-[#64748B]">
-          Descubre exactamente qué le falta a tu CV para pasar el ATS de esa oferta específica
-        </p>
-      </div>
-
-      {/* Content - Blurred if not paid */}
-      <div className={!isPaidUser ? 'blur-[3px] pointer-events-none select-none' : ''}>
-        <AnimatePresence mode="wait">
-        {/* Step 1: Input */}
+    <div className="max-w-4xl mx-auto relative">
+      <AnimatePresence mode="wait">
         {step === 'input' && (
           <motion.div
             key="input"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="space-y-6"
+            className="relative"
           >
-            <div className="bg-white rounded-xl border-2 border-[#E2E8F0] p-8">
+            {/* Header */}
+            <header className="mb-8 text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center">
+                  <Target className="h-6 w-6 text-white" />
+                </div>
+                <h1 className="text-4xl font-bold text-[#0F172A] dark:text-white tracking-tight">
+                  Elite Match Tool
+                </h1>
+              </div>
+              <p className="text-lg text-[#64748B] dark:text-slate-400 max-w-xl">
+                Analyze your CV against any job offer with local ML precision.{' '}
+                <span className="block md:inline">Identify gaps and optimize for ATS instantly.</span>
+              </p>
+            </header>
+
+            {/* Input Section */}
+            <section className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-slate-800 rounded-xl shadow-sm p-8 mb-8">
               <div className="space-y-6">
-                {/* LinkedIn URL */}
+                {/* LinkedIn URL Input */}
                 <div>
-                  <label className="block text-sm font-semibold text-[#0F172A] mb-2">
-                    Link de LinkedIn (Recomendado)
+                  <label
+                    htmlFor="linkedin-url"
+                    className="block text-sm font-semibold text-[#334155] dark:text-slate-300 mb-2"
+                  >
+                    LinkedIn URL (Recommended)
                   </label>
                   <Input
-                    type="url"
+                    id="linkedin-url"
+                    type="text"
                     placeholder="https://www.linkedin.com/jobs/view/..."
                     value={jobDescriptionUrl}
                     onChange={(e) => setJobDescriptionUrl(e.target.value)}
-                    className="h-12"
+                    disabled={!isPaidUser}
+                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                   />
-                  <p className="text-xs text-[#64748B] mt-2">
-                    Pega el link directo de la oferta en LinkedIn
+                  <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
+                    Paste the direct link to the LinkedIn job offer for best extraction results.
                   </p>
                 </div>
 
                 {/* Divider */}
-                <div className="relative">
+                <div className="relative py-4">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#E2E8F0]"></div>
+                    <div className="w-full border-t border-[#E2E8F0] dark:border-slate-800"></div>
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white text-[#64748B] font-semibold">O</span>
+                  <div className="relative flex justify-center text-sm font-mono uppercase tracking-widest">
+                    <span className="px-4 bg-white dark:bg-slate-900 text-[#94A3B8] dark:text-slate-600">
+                      OR
+                    </span>
                   </div>
                 </div>
 
-                {/* Job Description Text */}
+                {/* Job Description Textarea */}
                 <div>
-                  <label className="block text-sm font-semibold text-[#0F172A] mb-2">
-                    Pega el Texto de la Oferta
+                  <label
+                    htmlFor="job-description"
+                    className="block text-sm font-semibold text-[#334155] dark:text-slate-300 mb-2"
+                  >
+                    Paste Job Description
                   </label>
                   <Textarea
-                    placeholder="About the role:&#10;We are looking for a Senior Full Stack Developer with 5+ years of experience...&#10;&#10;Requirements:&#10;- Strong experience with React and Node.js&#10;- Experience with Kubernetes and AWS&#10;- Excellent communication skills"
+                    id="job-description"
+                    placeholder="About the role:&#10;We are looking for a Senior Full Stack Developer with 5+ years of experience...&#10;&#10;Requirements:&#10;- Strong experience with React and Node.js&#10;- Experience with Kubernetes and AWS"
                     value={jobDescriptionText}
                     onChange={(e) => setJobDescriptionText(e.target.value)}
-                    rows={12}
-                    className="font-mono text-sm"
+                    disabled={!isPaidUser}
+                    rows={6}
+                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all resize-none font-mono text-sm"
                   />
-                  <p className="text-xs text-[#64748B] mt-2">
-                    Copia toda la descripción del trabajo desde cualquier portal
+                  <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
+                    Copy and paste the full job description from any portal.
                   </p>
                 </div>
 
-                {/* CTA */}
+                {/* Analyze Button */}
                 <Button
                   onClick={handleAnalyze}
-                  size="lg"
-                  className="w-full h-14 text-lg font-bold bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8]"
+                  disabled={!isPaidUser}
+                  className="w-full py-4 px-6 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-[#7C3AED]/30 group"
                 >
-                  <Zap className="h-5 w-5 mr-2" />
-                  Analizar Match Score
+                  <Zap className="h-5 w-5 mr-2 group-hover:animate-pulse" />
+                  Analyze Match Score
                 </Button>
               </div>
-            </div>
+            </section>
 
-            {/* Info Cards */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-[#EFF6FF] to-[#DBEAFE] p-6 rounded-xl border border-[#93C5FD]">
-                <Target className="h-8 w-8 text-[#3B82F6] mb-3" />
-                <h3 className="font-bold text-[#0F172A] mb-2">Entity Extraction</h3>
-                <p className="text-sm text-[#475569]">
-                  No solo keywords - extraemos Hard Skills, Soft Skills y Métricas de Industria
+            {/* Features Grid */}
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white dark:bg-slate-900/50 border border-blue-200 dark:border-blue-900/30 rounded-xl p-6 transition-all hover:shadow-md">
+                <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-4">
+                  <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Entity Extraction</h3>
+                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
+                  Not just keywords—we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] p-6 rounded-xl border border-[#FCD34D]">
-                <AlertTriangle className="h-8 w-8 text-[#F59E0B] mb-3" />
-                <h3 className="font-bold text-[#0F172A] mb-2">Gap Analysis</h3>
-                <p className="text-sm text-[#475569]">
-                  Identificamos EXACTAMENTE qué signals te faltan para pasar el ATS
+
+              <div className="bg-white dark:bg-slate-900/50 border border-amber-200 dark:border-amber-900/30 rounded-xl p-6 transition-all hover:shadow-md">
+                <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mb-4">
+                  <BarChart3 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Gap Analysis</h3>
+                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
+                  We identify EXACTLY which signals are missing from your profile to pass high-stakes ATS filters.
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-[#F0FDF4] to-[#DCFCE7] p-6 rounded-xl border border-[#86EFAC]">
-                <Sparkles className="h-8 w-8 text-[#22C55E] mb-3" />
-                <h3 className="font-bold text-[#0F172A] mb-2">Auto-Fix con IA</h3>
-                <p className="text-sm text-[#475569]">
-                  Un click y nuestra IA reescribe tu CV para incluir los signals que faltan
+
+              <div className="bg-white dark:bg-slate-900/50 border border-emerald-200 dark:border-emerald-900/30 rounded-xl p-6 transition-all hover:shadow-md">
+                <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-4">
+                  <Wand2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">AI Auto-Fix</h3>
+                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
+                  One-click AI rewriting intelligently integrates missing signals into your existing CV narrative.
                 </p>
               </div>
-            </div>
+            </section>
+
+            {/* Paywall Overlay */}
+            {!isPaidUser && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-white/95 to-[#F8FAFC]/95 dark:from-slate-900/95 dark:to-slate-800/95 backdrop-blur-sm rounded-xl z-50">
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="text-center p-12 max-w-xl"
+                >
+                  <div className="w-20 h-20 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Lock className="h-10 w-10 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-black text-[#0F172A] dark:text-white mb-3">
+                    Elite Match Tool es Premium
+                  </h2>
+                  <p className="text-[#64748B] dark:text-slate-400 mb-2 text-lg">
+                    Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#7C3AED]">ML local</span> (0 costes de API)
+                  </p>
+                  <p className="text-[#64748B] dark:text-slate-400 mb-8 text-sm">
+                    • Extracción de entidades con TF-IDF & Cosine Similarity<br/>
+                    • Gap analysis crítico/importante/nice-to-have<br/>
+                    • Robot View con zonas rojas/verdes<br/>
+                    • Auto-Fix suggestions específicas
+                  </p>
+                  <Button
+                    onClick={onUpgrade}
+                    size="lg"
+                    className="bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-[#7C3AED]/30"
+                  >
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Upgrade Now - {pricing.formatted}
+                  </Button>
+                  <p className="text-xs text-[#94A3B8] dark:text-slate-500 mt-4">
+                    24-hour access • Unlimited match analysis • ML-powered insights
+                  </p>
+                </motion.div>
+              </div>
+            )}
           </motion.div>
         )}
 
-        {/* Step 2: Analyzing */}
         {step === 'analyzing' && (
           <motion.div
             key="analyzing"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-white rounded-xl border-2 border-[#E2E8F0] p-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center justify-center py-24"
           >
-            <div className="max-w-md mx-auto text-center">
-              <div className="mb-6">
-                <Loader2 className="h-16 w-16 mx-auto text-[#3B82F6] animate-spin" />
-              </div>
-
-              <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
-                Analizando tu Match...
-              </h2>
-
-              <p className="text-[#64748B] mb-6">
-                {progressMessage}
-              </p>
-
-              {/* Progress Bar */}
-              <div className="w-full bg-[#F1F5F9] rounded-full h-3 overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-[#3B82F6] to-[#2563EB]"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.5 }}
-                />
-              </div>
-
-              <p className="text-sm font-semibold text-[#3B82F6] mt-3">
-                {progress}%
-              </p>
+            <div className="w-20 h-20 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-full flex items-center justify-center mb-6 animate-pulse">
+              <Loader2 className="h-10 w-10 text-white animate-spin" />
             </div>
+            <h3 className="text-2xl font-bold text-[#0F172A] dark:text-white mb-3">
+              {progressMessage}
+            </h3>
+            <div className="w-full max-w-md h-2 bg-[#E2E8F0] dark:bg-slate-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-[#7C3AED] to-[#4F46E5]"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+            <p className="text-[#64748B] dark:text-slate-400 mt-4 text-sm">
+              {progress}% complete
+            </p>
           </motion.div>
         )}
 
-        {/* Step 3: Results */}
         {step === 'results' && matchResult && (
           <motion.div
             key="results"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             className="space-y-6"
           >
-            {/* Match Dashboard */}
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Left: Score */}
-              <div className={`bg-white rounded-xl border-2 border-[#E2E8F0] p-8 ${getScoreBgColor(matchResult.score)}`}>
-                <div className="text-center">
-                  <div className="mb-4">
-                    <div className={`text-7xl font-black ${getScoreColor(matchResult.score)}`}>
-                      {matchResult.score}
-                      <span className="text-4xl">%</span>
-                    </div>
-                    <p className="text-lg font-bold text-[#0F172A] mt-2">
-                      {getScoreLabel(matchResult.score)}
-                    </p>
-                  </div>
-
-                  {matchResult.score < 70 && (
-                    <div className="bg-[#FEE2E2] border border-[#EF4444] rounded-lg p-4 text-left">
-                      <p className="text-sm font-semibold text-[#EF4444]">
-                        ⚠️ El ATS te descartará automáticamente
-                      </p>
-                      <p className="text-xs text-[#7F1D1D] mt-1">
-                        Necesitas optimizar tu CV ANTES de aplicar
-                      </p>
-                    </div>
-                  )}
-
-                  {matchResult.score >= 70 && matchResult.score < 85 && (
-                    <div className="bg-[#FEF3C7] border border-[#F59E0B] rounded-lg p-4 text-left">
-                      <p className="text-sm font-semibold text-[#F59E0B]">
-                        ⚡ Estás cerca, pero no destacas
-                      </p>
-                      <p className="text-xs text-[#78350F] mt-1">
-                        Optimiza para superar a los demás candidatos
-                      </p>
-                    </div>
-                  )}
-
-                  {matchResult.score >= 85 && (
-                    <div className="bg-[#DCFCE7] border border-[#22C55E] rounded-lg p-4 text-left">
-                      <p className="text-sm font-semibold text-[#22C55E]">
-                        ✅ Excelente - Apply con confianza
-                      </p>
-                      <p className="text-xs text-[#14532D] mt-1">
-                        Tienes alta probabilidad de pasar el ATS
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Center: Missing Signals */}
-              <div className="lg:col-span-2 bg-white rounded-xl border-2 border-[#E2E8F0] p-8">
-                <h3 className="text-xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-[#EF4444]" />
-                  Missing Signals
-                </h3>
-
-                <div className="space-y-3 mb-6">
-                  {matchResult.missingCritical.map((signal, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-[#FEE2E2] border-l-4 border-[#EF4444] p-4 rounded-lg"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <XCircle className="h-4 w-4 text-[#EF4444]" />
-                            <span className="font-bold text-[#EF4444] text-sm">
-                              CRÍTICO
-                            </span>
-                            <span className="font-bold text-[#0F172A]">
-                              {signal.text}
-                            </span>
-                            <span className="text-xs bg-[#EF4444]/10 text-[#EF4444] px-2 py-1 rounded">
-                              {signal.category}
-                            </span>
-                          </div>
-                          <p className="text-sm text-[#475569] mb-2">
-                            {signal.suggestion}
-                          </p>
-                          {signal.context && (
-                            <p className="text-xs text-[#64748B] italic">
-                              Contexto: "{signal.context.substring(0, 100)}..."
-                            </p>
-                          )}
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-[#EF4444] text-[#EF4444] hover:bg-[#EF4444] hover:text-white"
-                        >
-                          <Wand2 className="h-3 w-3 mr-1" />
-                          Fix
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-
-                  {matchResult.missingImportant.slice(0, 3).map((signal, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-[#FEF3C7] border-l-4 border-[#F59E0B] p-4 rounded-lg"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <AlertTriangle className="h-4 w-4 text-[#F59E0B]" />
-                            <span className="font-bold text-[#F59E0B] text-sm">
-                              IMPORTANTE
-                            </span>
-                            <span className="font-bold text-[#0F172A]">
-                              {signal.text}
-                            </span>
-                            <span className="text-xs bg-[#F59E0B]/10 text-[#F59E0B] px-2 py-1 rounded">
-                              {signal.category}
-                            </span>
-                          </div>
-                          <p className="text-sm text-[#475569]">
-                            {signal.suggestion}
-                          </p>
-                        </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-[#F59E0B] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white"
-                        >
-                          <Wand2 className="h-3 w-3 mr-1" />
-                          Fix
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Matched Skills */}
+            {/* Score Card */}
+            <div className="bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] rounded-xl p-8 text-white shadow-lg">
+              <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h4 className="text-sm font-bold text-[#22C55E] mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4" />
-                    Skills que ya tienes ({matchResult.matched.length})
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {matchResult.matched.map((skill, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-[#DCFCE7] text-[#22C55E] px-3 py-1 rounded-full text-xs font-semibold"
-                      >
-                        ✓ {skill}
-                      </span>
-                    ))}
-                  </div>
+                  <h3 className="text-lg font-semibold opacity-90">Match Score</h3>
+                  <p className="text-5xl font-black mt-2">{matchResult.score}%</p>
+                </div>
+                <div className="w-24 h-24 rounded-full border-4 border-white/30 flex items-center justify-center">
+                  <TrendingUp className="h-12 w-12" />
                 </div>
               </div>
+              <p className="text-white/80 text-sm">
+                {matchResult.score >= 80 ? 'Excelente match! Aplica con confianza.' :
+                 matchResult.score >= 60 ? 'Buen match, pero hay gaps importantes.' :
+                 'Necesitas mejorar tu CV para esta oferta.'}
+              </p>
             </div>
 
-            {/* Auto-Fix CTA */}
-            <div className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-xl p-8 text-white">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                    <Sparkles className="h-6 w-6" />
-                    Auto-Fix con IA
-                  </h3>
-                  <p className="text-white/90 mb-4">
-                    Nuestra IA reescribirá tu CV para incluir todos los Missing Signals de forma natural.
-                    En 5 minutos tendrás un CV optimizado para esta oferta específica.
-                  </p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="flex items-center gap-1">
-                      <CheckCircle2 className="h-4 w-4" />
-                      Añade keywords naturalmente
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <CheckCircle2 className="h-4 w-4" />
-                      Preserva tu experiencia real
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <CheckCircle2 className="h-4 w-4" />
-                      ATS-friendly 100%
-                    </span>
-                  </div>
+            {/* Missing Critical */}
+            {matchResult.missingCritical.length > 0 && (
+              <div className="bg-white dark:bg-slate-900/50 border border-red-200 dark:border-red-900/30 rounded-xl p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <XCircle className="h-5 w-5 text-red-600" />
+                  <h3 className="font-bold text-[#0F172A] dark:text-white">Missing Critical Signals</h3>
                 </div>
-                <Button
-                  size="lg"
-                  className="bg-white text-[#8B5CF6] hover:bg-[#F8FAFC] font-bold px-8 h-14"
-                >
-                  <Wand2 className="h-5 w-5 mr-2" />
-                  Auto-Fix por 14.99€
-                </Button>
+                <div className="space-y-3">
+                  {matchResult.missingCritical.map((signal, idx) => (
+                    <div key={idx} className="p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-200 dark:border-red-900/30">
+                      <div className="flex items-start gap-2">
+                        <span className="font-bold text-red-600">{signal.text}</span>
+                        <span className="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full">
+                          {signal.category}
+                        </span>
+                      </div>
+                      <p className="text-sm text-[#64748B] dark:text-slate-400 mt-2">{signal.suggestion}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Matched Skills */}
+            {matchResult.matched.length > 0 && (
+              <div className="bg-white dark:bg-slate-900/50 border border-emerald-200 dark:border-emerald-900/30 rounded-xl p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                  <h3 className="font-bold text-[#0F172A] dark:text-white">Matched Skills</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {matchResult.matched.map((skill, idx) => (
+                    <span key={idx} className="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-full text-sm font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Robot View */}
-            <div className="bg-white rounded-xl border-2 border-[#E2E8F0] p-8">
-              <h3 className="text-xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#3B82F6]" />
-                Robot View - Cómo el ATS prioriza tu CV
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Red Zones */}
+            <div className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-slate-800 rounded-xl p-6">
+              <h3 className="font-bold text-[#0F172A] dark:text-white mb-4">Robot View</h3>
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-bold text-[#EF4444] mb-3 flex items-center gap-2">
-                    <XCircle className="h-4 w-4" />
-                    Zonas Rojas (Bloqueadores)
-                  </h4>
-                  <div className="space-y-2">
+                  <h4 className="text-sm font-semibold text-red-600 mb-2">Red Zones</h4>
+                  <ul className="space-y-1">
                     {matchResult.robotView.redZones.map((zone, idx) => (
-                      <div key={idx} className="bg-[#FEE2E2] border-l-2 border-[#EF4444] p-3 rounded text-sm text-[#7F1D1D]">
+                      <li key={idx} className="text-sm text-[#64748B] dark:text-slate-400 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
                         {zone}
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
-
-                {/* Green Zones */}
                 <div>
-                  <h4 className="font-bold text-[#22C55E] mb-3 flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4" />
-                    Zonas Verdes (Fortalezas)
-                  </h4>
-                  <div className="space-y-2">
+                  <h4 className="text-sm font-semibold text-emerald-600 mb-2">Green Zones</h4>
+                  <ul className="space-y-1">
                     {matchResult.robotView.greenZones.map((zone, idx) => (
-                      <div key={idx} className="bg-[#DCFCE7] border-l-2 border-[#22C55E] p-3 rounded text-sm text-[#14532D]">
+                      <li key={idx} className="text-sm text-[#64748B] dark:text-slate-400 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
                         {zone}
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </div>
+            </div>
+
+            {/* Recommendations */}
+            <div className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-slate-800 rounded-xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="h-5 w-5 text-[#7C3AED]" />
+                <h3 className="font-bold text-[#0F172A] dark:text-white">Auto-Fix Recommendations</h3>
+              </div>
+              <ul className="space-y-2">
+                {matchResult.recommendations.map((rec, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm text-[#64748B] dark:text-slate-400">
+                    <span className="w-6 h-6 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                      {idx + 1}
+                    </span>
+                    {rec}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Actions */}
             <div className="flex gap-4">
               <Button
-                onClick={() => {
-                  setStep('input');
-                  setMatchResult(null);
-                  setJobDescriptionUrl('');
-                  setJobDescriptionText('');
-                }}
+                onClick={() => setStep('input')}
                 variant="outline"
-                className="flex-1"
+                className="flex-1 border-[#E2E8F0] dark:border-slate-700"
               >
-                Analizar Otra Oferta
+                Analyze Another Job
               </Button>
               <Button
-                className="flex-1 bg-gradient-to-r from-[#3B82F6] to-[#2563EB]"
+                className="flex-1 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] text-white"
               >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                Guardar Análisis
+                <Wand2 className="h-4 w-4 mr-2" />
+                Apply Auto-Fix
               </Button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
-
-      {/* Paywall Overlay */}
-      {!isPaidUser && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#FFFFFF]/95 to-[#F8FAFC]/95 backdrop-blur-sm rounded-xl z-50">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center p-12 max-w-xl"
-          >
-            <div className="w-20 h-20 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl">
-              <Target className="h-10 w-10 text-white" />
-            </div>
-            <h2 className="text-3xl font-black text-[#0F172A] mb-3">
-              Elite Match Tool es Premium
-            </h2>
-            <p className="text-[#64748B] mb-2 text-lg leading-relaxed">
-              Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#3B82F6]">ML local</span> (0 costes de API)
-            </p>
-            <p className="text-[#64748B] mb-8 text-sm">
-              • Extracción de entidades con TF-IDF & Cosine Similarity<br/>
-              • Gap analysis crítico/importante/nice-to-have<br/>
-              • Robot View con zonas rojas/verdes<br/>
-              • Auto-Fix suggestions específicas
-            </p>
-            <Button
-              onClick={onUpgrade}
-              size="lg"
-              className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold px-8 py-4 rounded-xl shadow-2xl hover:scale-105 transition-all text-lg"
-            >
-              <Sparkles className="h-5 w-5 mr-2" />
-              Upgrade Now - $14.99
-            </Button>
-            <p className="text-xs text-[#94A3B8] mt-4">
-              24-hour access • Unlimited match analysis • ML-powered insights
-            </p>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 }
