@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVDebug - LinkedIn Match Scanner</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="popup-header">
+      <div class="logo">
+        <span class="logo-icon">🐛</span>
+        <span class="logo-text">CVDebug</span>
+      </div>
+      <div class="version">v1.0</div>
+    </div>
+
+    <!-- Resume Status -->
+    <div id="resume-status" class="resume-status">
+      <div class="status-icon" id="status-icon">📄</div>
+      <div class="status-content">
+        <div class="status-title" id="status-title">No Resume Loaded</div>
+        <div class="status-subtitle" id="status-subtitle">Upload your resume to start matching</div>
+      </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div id="upload-section" class="upload-section">
+      <label for="resume-upload" class="upload-btn">
+        <span class="upload-icon">📤</span>
+        <span>Upload Resume</span>
+        <input type="file" id="resume-upload" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+      </label>
+      <div class="upload-help">
+        Paste your resume text or upload PDF/DOC
+      </div>
+      <textarea
+        id="resume-text"
+        class="resume-textarea"
+        placeholder="Or paste your resume text here..."
+        rows="6"
+      ></textarea>
+      <button id="save-resume-btn" class="save-btn" style="display: none;">
+        Save Resume
+      </button>
+    </div>
+
+    <!-- Stats Section (shown when resume loaded) -->
+    <div id="stats-section" class="stats-section" style="display: none;">
+      <div class="stat-card">
+        <div class="stat-value" id="jobs-analyzed">0</div>
+        <div class="stat-label">Jobs Analyzed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avg-match">-</div>
+        <div class="stat-label">Avg Match</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button id="open-dashboard-btn" class="action-btn primary">
+        <span>Open CVDebug</span>
+        <span class="arrow">→</span>
+      </button>
+      <button id="clear-resume-btn" class="action-btn secondary" style="display: none;">
+        Clear Resume
+      </button>
+    </div>
+
+    <!-- Info -->
+    <div class="info">
+      <div class="info-item">
+        <span class="info-icon">🎯</span>
+        <span class="info-text">Browse LinkedIn jobs to see your match score</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🔒</span>
+        <span class="info-text">Your resume stays private, stored locally</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <a href="https://cvdebug.com" target="_blank" class="footer-link">Visit CVDebug.com</a>
+      <span class="footer-separator">•</span>
+      <a href="https://cvdebug.com/privacy" target="_blank" class="footer-link">Privacy</a>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

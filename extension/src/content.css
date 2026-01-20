@@ -1,0 +1,224 @@
+/* CVDebug Chrome Extension - Styles */
+
+.cvdebug-widget {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.cvdebug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E2E8F0;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+}
+
+.cvdebug-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cvdebug-icon {
+  font-size: 20px;
+}
+
+.cvdebug-brand {
+  font-weight: 700;
+  font-size: 16px;
+  color: #FFFFFF;
+  letter-spacing: -0.5px;
+}
+
+.cvdebug-close {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.cvdebug-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+}
+
+.cvdebug-score-display {
+  padding: 24px 20px;
+  text-align: center;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.cvdebug-score-circle {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.cvdebug-score-number {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.cvdebug-score-percent {
+  font-size: 24px;
+  font-weight: 600;
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+.cvdebug-score-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cvdebug-emoji {
+  font-size: 20px;
+}
+
+/* Score color variants */
+.cvdebug-score-excellent .cvdebug-score-number {
+  color: #22C55E;
+}
+
+.cvdebug-score-excellent .cvdebug-score-display {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+}
+
+.cvdebug-score-good .cvdebug-score-number {
+  color: #3B82F6;
+}
+
+.cvdebug-score-good .cvdebug-score-display {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+}
+
+.cvdebug-score-fair .cvdebug-score-number {
+  color: #F59E0B;
+}
+
+.cvdebug-score-fair .cvdebug-score-display {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+
+.cvdebug-score-poor .cvdebug-score-number {
+  color: #EF4444;
+}
+
+.cvdebug-score-poor .cvdebug-score-display {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+}
+
+.cvdebug-missing {
+  padding: 16px 20px;
+  border-bottom: 1px solid #E2E8F0;
+  background: #FAFAFA;
+}
+
+.cvdebug-missing-header {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.cvdebug-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cvdebug-keyword {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #475569;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.cvdebug-actions {
+  padding: 16px 20px;
+}
+
+.cvdebug-btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cvdebug-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.cvdebug-btn-primary:active {
+  transform: translateY(0);
+}
+
+.cvdebug-footer {
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 11px;
+  color: #94A3B8;
+  background: #F8FAFC;
+  border-top: 1px solid #E2E8F0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .cvdebug-widget {
+    width: calc(100% - 32px);
+    max-width: 340px;
+    top: 16px;
+    right: 16px;
+  }
+}

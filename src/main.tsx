@@ -71,8 +71,8 @@ import UXDesignerATSOptimizer from "./pages/industry/UXDesignerATSOptimizer.tsx"
 import GoogleSDEOptimize from "./pages/optimize/GoogleSDE.tsx";
 import ProjectSettings from "./pages/ProjectSettings.tsx";
 import PreviewScan from "./pages/PreviewScan.tsx";
-import Blog from "./pages/Blog.tsx";
-import BlogPost from "./pages/BlogPost.tsx";
+import { Blog } from "./pages/blog/Blog.tsx";
+import { BlogPost } from "./pages/blog/BlogPost.tsx";
 import HowToBeatATSResumeScanners from "./pages/blog/HowToBeatATSResumeScanners.tsx";
 import UnderstandingATSRobotView from "./pages/blog/UnderstandingATSRobotView.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
