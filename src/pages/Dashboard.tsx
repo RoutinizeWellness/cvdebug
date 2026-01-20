@@ -603,8 +603,6 @@ export default function Dashboard() {
         return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
       case 'settings':
         return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
-      case 'profile':
-        return <SubscriptionView />;
       default:
         return (
           <MissionControl 
