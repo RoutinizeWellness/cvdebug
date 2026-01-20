@@ -3,6 +3,8 @@
 import { action } from "../_generated/server";
 import { v } from "convex/values";
 import { extractJobEntities, analyzeGaps, type JobDescriptionEntities, type GapAnalysis } from "./entityExtraction";
+import { extractKeyPhrases, cosineSimilarity, findBestInsertionPoint } from "./advancedNLP";
+import { generateSpecificRewrites, generateBeforeAfterComparison, generateIndustrySpecificExample } from "./specificRewriter";
 
 export const analyzeJobMatch = action({
   args: {
