@@ -6,7 +6,7 @@ import { useI18n } from "@/contexts/I18nContext";
 
 export function ApplicationMicroTracker() {
   const { t } = useI18n();
-  const applications = useQuery(api.applications.listApplications);
+  const applications = useQuery(api.applications.getApplications);
 
   // Get applications with CVDebug (those created after user signed up)
   const trackedApplications = applications?.filter((app: any) =>
