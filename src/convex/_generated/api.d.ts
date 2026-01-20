@@ -109,6 +109,7 @@ import type * as ml_analyzeResumeML from "../ml/analyzeResumeML.js";
 import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
+import type * as newsletter from "../newsletter.js";
 import type * as productHunt from "../productHunt.js";
 import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
@@ -235,6 +236,7 @@ declare const fullApi: ApiFromModules<{
   "ml/interviewQuestions": typeof ml_interviewQuestions;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;
+  newsletter: typeof newsletter;
   productHunt: typeof productHunt;
   projectTimeline: typeof projectTimeline;
   projects: typeof projects;

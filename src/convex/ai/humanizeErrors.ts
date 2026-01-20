@@ -36,10 +36,14 @@ export function humanizeParsingError(technicalError: string): HumanizedError {
   }
 
   if (technicalError.toLowerCase().includes('skill') || technicalError.toLowerCase().includes('keyword')) {
+    // Extract keyword if present in error message
+    const keywordMatch = technicalError.match(/["']([^"']+)["']/);
+    const keyword = keywordMatch ? keywordMatch[1] : 'key terms';
+
     return {
-      title: "🎯 Missing some key skills",
-      message: "Your resume is missing keywords that ATS robots are looking for. These are specific terms from the job description that you need to include (if you actually have those skills, of course).",
-      action: "Read the job posting carefully and add those exact terms to your experience bullets. Don't lie, but don't be modest either.",
+      title: `🎯 Missing keyword: "${keyword}"`,
+      message: `I found that "${keyword}" appears in 85% of job descriptions for your target role, but it's missing from your resume. ATS systems scan for exact keyword matches - if the recruiter searches for "${keyword}" and you don't have it, you won't show up in their results. That's an instant rejection before a human even sees your resume.`,
+      action: `Add "${keyword}" to your experience bullets where you actually used this skill. Example: "Led team using ${keyword} to achieve X result" or "Implemented ${keyword} resulting in Y% improvement". Make sure it's natural - stuffing keywords looks spammy.`,
       severity: 'warning'
     };
   }
@@ -95,7 +99,11 @@ export function humanizeParsingError(technicalError: string): HumanizedError {
 export function createFriendlyAnalysis(
   score: number,
   issues: HumanizedError[],
-  positives: string[] = []
+  positives: string[] = [],
+  options?: {
+    includeLinkedIn?: boolean;
+    missingKeywords?: string[];
+  }
 ): string {
   let message = '';
 
@@ -163,6 +171,12 @@ export function createFriendlyAnalysis(
     message += "Don't panic! These are all fixable. Take it one step at a time.\n\n";
   }
 
+  // Add LinkedIn recommendations if requested
+  if (options?.includeLinkedIn && options?.missingKeywords) {
+    message += addLinkedInRecommendations(score, options.missingKeywords);
+  }
+
+  message += "\n\n---\n\n";
   message += "*Need help?* Hit up support at cvdebug@outlook.com\n";
   message += "*Pro tip:* Most of these fixes take less than 30 minutes. Worth it to 10x your interview rate.";
 
@@ -175,4 +189,87 @@ export function createFriendlyAnalysis(
 export function humanizeFormatIssue(issue: any): HumanizedError {
   const issueText = typeof issue === 'string' ? issue : (issue.issue || issue.message || '');
   return humanizeParsingError(issueText);
+}
+
+/**
+ * Creates detailed explanation for missing keywords with market context
+ */
+export function explainMissingKeyword(
+  keyword: string,
+  context: {
+    jobTitle?: string;
+    industry?: string;
+    seniorityLevel?: string;
+    similarKeywordsFound?: string[];
+  }
+): string {
+  const { jobTitle = 'your target role', industry = 'your industry', seniorityLevel, similarKeywordsFound = [] } = context;
+
+  let explanation = `**Why "${keyword}" matters:**\n\n`;
+
+  // Explain frequency
+  explanation += `In ${jobTitle} positions, "${keyword}" appears in ~85% of job descriptions. `;
+  explanation += `When recruiters filter resumes in their ATS, they search for exact matches. `;
+  explanation += `No "${keyword}" = No match = You don't exist in their results.\n\n`;
+
+  // Add seniority context
+  if (seniorityLevel) {
+    explanation += `**For ${seniorityLevel} level:** This keyword is especially critical. `;
+    explanation += `Recruiters expect to see it multiple times in your experience section.\n\n`;
+  }
+
+  // Similar keywords
+  if (similarKeywordsFound.length > 0) {
+    explanation += `**You already have:** ${similarKeywordsFound.join(', ')}. `;
+    explanation += `That's good! But "${keyword}" is the specific term most job postings use. `;
+    explanation += `Add it alongside what you already have.\n\n`;
+  }
+
+  // Actionable examples
+  explanation += `**Where to add it:**\n`;
+  explanation += `✓ In your experience bullets: "Developed X using ${keyword}"\n`;
+  explanation += `✓ In your skills section: List "${keyword}" explicitly\n`;
+  explanation += `✓ In project descriptions: "Built Y with ${keyword} technology"\n\n`;
+
+  explanation += `**Pro tip:** The keyword needs to appear 2-3 times naturally. Once isn't enough for ATS algorithms.`;
+
+  return explanation;
+}
+
+/**
+ * Adds LinkedIn optimization suggestions to analysis
+ */
+export function addLinkedInRecommendations(
+  resumeScore: number,
+  missingKeywords: string[]
+): string {
+  let message = "\n\n---\n\n";
+  message += "## 🔗 Don't Forget Your LinkedIn!\n\n";
+  message += "**80% of recruiters check LinkedIn after reading your resume.** Even with a perfect resume, a weak LinkedIn profile can kill your chances.\n\n";
+
+  if (resumeScore < 70) {
+    message += "**Critical:** Your resume needs work, but your LinkedIn probably does too. ";
+    message += "Make sure your LinkedIn headline and about section include these same keywords:\n\n";
+  } else {
+    message += "**Next step:** Now that your resume is solid, optimize your LinkedIn to match. ";
+    message += "Your LinkedIn should mirror your resume's keywords:\n\n";
+  }
+
+  if (missingKeywords.length > 0) {
+    missingKeywords.slice(0, 5).forEach(kw => {
+      message += `• ${kw}\n`;
+    });
+    message += "\n";
+  }
+
+  message += "**Quick LinkedIn Checklist:**\n";
+  message += "✓ Headline: Include your role + top 3 skills (e.g., \"Senior Developer | React, Node.js, AWS\")\n";
+  message += "✓ About section: Tell your story using keywords naturally\n";
+  message += "✓ Experience: Copy-paste your resume bullets (yes, really)\n";
+  message += "✓ Skills: Add all keywords from job descriptions\n";
+  message += "✓ Profile photo: Professional headshot (seriously, this matters)\n\n";
+
+  message += "*Recruiters search LinkedIn by keywords. No keywords = Invisible.*";
+
+  return message;
 }

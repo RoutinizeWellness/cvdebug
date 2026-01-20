@@ -1031,6 +1031,20 @@ const schema = defineSchema(
     .index("by_growth_rate", ["growthRate"])
     .index("by_roi", ["roi"])
     .index("by_updated_at", ["updatedAt"]),
+
+  // Newsletter subscribers - The Resume Debugger weekly newsletter
+  newsletterSubscribers: defineTable({
+    email: v.string(),
+    source: v.union(v.literal("landing"), v.literal("post-scan"), v.literal("dashboard")),
+    subscribedAt: v.number(),
+    isActive: v.boolean(),
+    emailsSent: v.number(),
+    unsubscribedAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
+  })
+    .index("by_email", ["email"])
+    .index("by_source", ["source"])
+    .index("by_is_active", ["isActive"]),
   },
   {
     schemaValidation: false,
