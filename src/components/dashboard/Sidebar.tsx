@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Logo } from "@/components/Logo";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
+import { ApplicationMicroTracker } from "@/components/dashboard/ApplicationMicroTracker";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/contexts/I18nContext";
 
@@ -77,11 +78,11 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const hasActiveSprint = currentUser?.sprintExpiresAt && currentUser.sprintExpiresAt > Date.now();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-[#FFFFFF] border-r border-[#E2E8F0] flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] hidden md:flex"
+    <aside className="w-64 flex-shrink-0 bg-[#FFFFFF] border-r border-[#E2E8F0] flex flex-col z-20 shadow-[4px_0_24px_rgba(0,0,0,0.02)] hidden md:flex overflow-hidden"
       style={{ height: '100vh' }}>
 
       {/* Logo & Nav */}
-      <div className="flex flex-col p-6 mb-4">
+      <div className="flex flex-col p-6 mb-4 flex-shrink-0">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-6 cursor-pointer" onClick={() => setCurrentView('mission')}>
           <Logo iconClassName="h-12 w-auto" />
@@ -135,8 +136,16 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         </nav>
       </div>
 
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar">
+        {/* Application Tracker */}
+        <div className="mb-4">
+          <ApplicationMicroTracker />
+        </div>
+      </div>
+
       {/* Footer Area: Sprint Widget & Profile */}
-      <div className="mt-auto">
+      <div className="mt-auto flex-shrink-0">
         {/* Sprint Countdown Widget */}
         {hasActiveSprint && (
           <div className="mx-4 mb-4 p-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] relative overflow-hidden group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">

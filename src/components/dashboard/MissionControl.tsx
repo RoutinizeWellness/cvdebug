@@ -377,9 +377,6 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       {/* Success Insights Widget */}
       <SuccessInsightsWidget />
 
-      {/* Application Micro Tracker */}
-      <ApplicationMicroTracker />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full min-h-[400px]">
         {/* Kanban Board */}
         <section className="lg:col-span-2 flex flex-col gap-4">
