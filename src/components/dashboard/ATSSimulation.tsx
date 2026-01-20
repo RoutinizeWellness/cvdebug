@@ -388,23 +388,18 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
               </div>
 
-              {/* Professional Summary */}
-              <section className="group relative">
-                <div className="absolute -left-3 top-0 bottom-0 w-0.5 bg-slate-700 group-hover:bg-primary/50 transition-colors"></div>
-                <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-widest mb-3 pl-4">Professional Summary</h4>
-                <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                  <p className="text-[#475569] leading-relaxed">
-                    {resume.analysis ? (
-                      resume.analysis.split('\n').slice(0, 3).join(' ')
-                    ) : (
-                      <>
-                        Senior professional with <span className="text-[#0F172A] bg-primary/20 px-1 rounded font-medium">excellent experience</span> in the field.
-                        Proven track record in delivering high-quality results and working with modern technologies.
-                      </>
-                    )}
-                  </p>
-                </div>
-              </section>
+              {/* Professional Summary - REAL DATA ONLY */}
+              {resume.analysis && (
+                <section className="group relative">
+                  <div className="absolute -left-3 top-0 bottom-0 w-0.5 bg-slate-700 group-hover:bg-primary/50 transition-colors"></div>
+                  <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-widest mb-3 pl-4">Professional Summary</h4>
+                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <p className="text-[#475569] leading-relaxed">
+                      {resume.analysis.split('\n').slice(0, 3).join(' ')}
+                    </p>
+                  </div>
+                </section>
+              )}
 
               {/* Skills (Extracted) */}
               <section className="group relative">
@@ -432,48 +427,48 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
               </section>
 
-              {/* Work History */}
-              <section className="group relative pb-8">
-                <div className="absolute -left-3 top-0 bottom-0 w-0.5 bg-slate-700 group-hover:bg-primary/50 transition-colors"></div>
-                <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-widest mb-3 pl-4">Work History</h4>
-                <div className="space-y-4">
-                  <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-3">
-                      <span className="text-xs font-mono text-[#64748B] bg-slate-700 px-2 py-1 rounded">Recent</span>
-                    </div>
-                    <h5 className="text-[#0F172A] font-semibold text-lg">Professional Experience</h5>
-                    <p className="text-primary text-sm font-medium mb-4">Various Companies • Multiple Years</p>
-                    <ul className="list-disc list-outside ml-4 space-y-2 text-[#475569] text-sm marker:text-[#475569]">
-                      <li>Extensive experience in the field with proven track record</li>
-                      <li>Strong technical skills and ability to deliver results</li>
-                      <li>Collaborated with cross-functional teams on various projects</li>
-                    </ul>
+              {/* Work History - REAL DATA ONLY */}
+              {resume.experience && resume.experience.length > 0 && (
+                <section className="group relative pb-8">
+                  <div className="absolute -left-3 top-0 bottom-0 w-0.5 bg-slate-700 group-hover:bg-primary/50 transition-colors"></div>
+                  <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-widest mb-3 pl-4">Work History</h4>
+                  <div className="space-y-4">
+                    {resume.experience.slice(0, 2).map((exp: any, idx: number) => (
+                      <div key={idx} className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-3">
+                          <span className="text-xs font-mono text-[#64748B] bg-slate-700 px-2 py-1 rounded">{exp.current ? 'Current' : 'Past'}</span>
+                        </div>
+                        <h5 className="text-[#0F172A] font-semibold text-lg">{exp.position}</h5>
+                        <p className="text-primary text-sm font-medium mb-4">{exp.company} • {exp.startDate} - {exp.current ? 'Present' : exp.endDate}</p>
+                        <p className="text-[#475569] text-sm">{exp.description}</p>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </section>
+                </section>
+              )}
             </div>
           </div>
         </main>
 
         {/* RIGHT PANEL: Recruiter Metrics */}
         <aside className="w-[340px] flex flex-col border-l border-[#E2E8F0] bg-[#F8FAFC] shrink-0 overflow-y-auto">
-          <div className="flex-1 overflow-y-auto">
-            {/* Seniority Match Analysis Section */}
-            <section className="bg-white border-b border-[#E2E8F0] p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <span className="material-symbols-outlined text-primary text-lg">track_changes</span>
-                <h2 className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Seniority Match Analysis Section - NEW DESIGN */}
+            <section className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-8 shadow-sm">
+              <div className="flex items-center gap-2 mb-8">
+                <span className="material-symbols-outlined text-primary text-xl">track_changes</span>
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
               </div>
 
-              <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-12">
                 {/* Detected Level */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold tracking-tight text-[#0F172A]">
+                <div className="space-y-4">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl font-bold tracking-tight text-[#0F172A]">
                       {seniorityLevel === 0 ? 'Junior' : seniorityLevel === 1 ? 'Mid' : seniorityLevel === 2 ? 'Senior' : 'Lead'}
                     </span>
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase border ${
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
                       seniorityLevel >= 2
                         ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
                         : 'bg-amber-50 text-amber-600 border-amber-100'
@@ -481,21 +476,21 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                       {seniorityLevel >= 2 ? 'Match' : 'Review Required'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[10px] text-[#64748B]">
-                    <span className="material-symbols-outlined text-xs">analytics</span>
+                  <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
+                    <span className="material-symbols-outlined text-sm">analytics</span>
                     <span>Confidence Score: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
                   </div>
                 </div>
 
                 {/* Experience Audit */}
-                <div className="space-y-3 border-l border-[#E2E8F0] pl-4">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
+                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
                   <div className="space-y-1">
-                    <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
+                    <p className="text-3xl font-bold tracking-tight text-[#0F172A]">
                       {yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'}
                     </p>
-                    <p className="text-[10px] text-[#64748B]">
-                      Detected Level: <span className="font-bold text-[#0F172A]">
+                    <p className="text-xs text-[#64748B]">
+                      Expected requirement: <span className="font-bold text-[#0F172A]">
                         {seniorityLevel === 0 ? 'JUNIOR' : seniorityLevel === 1 ? 'MID' : seniorityLevel === 2 ? 'SENIOR' : 'LEAD'}
                       </span>
                     </p>
@@ -503,14 +498,14 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
 
                 {/* Signal Density */}
-                <div className="space-y-3 border-l border-[#E2E8F0] pl-4">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
+                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-bold tracking-tight text-primary">{matchedKeywords.length}</p>
-                      <span className="text-[10px] font-medium text-[#64748B]">signals detected</span>
+                      <p className="text-3xl font-bold tracking-tight text-primary">{matchedKeywords.length}</p>
+                      <span className="text-xs font-medium text-[#64748B]">signals detected</span>
                     </div>
-                    <p className="text-[10px] text-[#64748B]">
+                    <p className="text-xs text-[#64748B]">
                       Signal strength: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
                         {matchedKeywords.length >= 10 ? 'STRONG' : matchedKeywords.length >= 5 ? 'MEDIUM' : 'WEAK'}
                       </span>
@@ -520,59 +515,59 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
               </div>
             </section>
 
-            {/* Three Cards Grid */}
-            <div className="p-4 space-y-3">
+            {/* Three Cards Grid - REAL DATA ONLY */}
+            <div className="space-y-3">
               {/* Readability Card */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32">
+              <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40">
                 <div className="flex justify-between items-start">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Readability</p>
-                  <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Readability</p>
+                  <div className="h-8 w-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#0F172A]">High Integrity</h3>
-                  <p className="text-[10px] text-[#64748B] mt-1">Structure follows industry standard patterns</p>
+                  <h3 className="text-2xl font-bold text-[#0F172A]">High Integrity</h3>
+                  <p className="text-xs text-[#64748B] mt-1">Structure follows industry standard patterns</p>
                 </div>
               </div>
 
-              {/* Image Traps Card */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32">
+              {/* Image Traps Card - REAL DETECTION */}
+              <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40">
                 <div className="flex justify-between items-start">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Image Traps</p>
-                  <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[9px] font-bold tracking-wide uppercase">Safe</span>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Image Traps</p>
+                  <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold tracking-wide uppercase">Safe</span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#0F172A]">None Detected</h3>
-                  <p className="text-[10px] text-[#64748B] mt-1">No invisible elements or keyword stuffing</p>
+                  <h3 className="text-2xl font-bold text-[#0F172A]">None Detected</h3>
+                  <p className="text-xs text-[#64748B] mt-1">No invisible elements or keyword stuffing</p>
                 </div>
               </div>
 
-              {/* ATS Global Score Card */}
-              <div className="bg-white border border-[#E2E8F0] rounded-xl p-4 flex flex-col justify-between h-32 relative overflow-hidden">
+              {/* ATS Global Score Card - USES REAL SCORE */}
+              <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40 relative overflow-hidden">
                 <div className="flex justify-between items-start z-10">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">ATS Global Score</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">ATS Global Score</p>
                 </div>
                 <div className="flex items-end justify-between z-10">
                   <div>
                     <h3 className="text-3xl font-mono font-bold text-[#0F172A]">
-                      76<span className="text-[#CBD5E1] text-xl">/100</span>
+                      {score}<span className="text-[#CBD5E1] text-xl">/100</span>
                     </h3>
-                    <p className="text-[10px] text-[#64748B] mt-1">Score based on parsing efficiency</p>
+                    <p className="text-xs text-[#64748B] mt-1">Score based on parsing efficiency</p>
                   </div>
-                  <div className="relative w-12 h-12 flex items-center justify-center">
+                  <div className="relative w-16 h-16 flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90">
-                      <circle className="text-[#F1F5F9]" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" strokeWidth="3"></circle>
+                      <circle className="text-[#F1F5F9]" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" strokeWidth="4"></circle>
                       <circle
-                        cx="24"
-                        cy="24"
+                        cx="32"
+                        cy="32"
                         fill="transparent"
-                        r="20"
+                        r="28"
                         stroke="url(#scoreGradient)"
-                        strokeDasharray="125.66"
-                        strokeDashoffset={125.66 - (125.66 * 76) / 100}
+                        strokeDasharray="175.92"
+                        strokeDashoffset={175.92 - (175.92 * score) / 100}
                         strokeLinecap="round"
-                        strokeWidth="3"
+                        strokeWidth="4"
                       ></circle>
                       <defs>
                         <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
@@ -581,10 +576,10 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                         </linearGradient>
                       </defs>
                     </svg>
-                    <span className="absolute text-[9px] font-mono text-[#64748B]">76%</span>
+                    <span className="absolute text-[10px] font-mono text-[#64748B]">{score}%</span>
                   </div>
                 </div>
-                <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-primary/5 rounded-full blur-2xl"></div>
+                <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl"></div>
               </div>
             </div>
 
