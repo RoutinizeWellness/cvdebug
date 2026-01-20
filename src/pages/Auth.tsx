@@ -164,8 +164,8 @@ export default function AuthPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="relative bg-[#FFFFFF] backdrop-blur-sm border border-[#E2E8F0] rounded-xl px-6 py-4">
-                <Logo showText={true} iconClassName="h-10 w-auto" textClassName="text-2xl" />
+              <div className="relative bg-[#FFFFFF] backdrop-blur-sm border border-[#E2E8F0] rounded-xl px-4 py-3">
+                <Logo showText={true} iconClassName="h-8 w-auto" textClassName="text-xl" />
               </div>
             </motion.div>
           </div>
