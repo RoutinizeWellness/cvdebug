@@ -4,6 +4,7 @@ import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { X, Link as LinkIcon, Sparkles, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -11,6 +12,7 @@ interface CreateProjectDialogProps {
 }
 
 export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogProps) {
+  const { t } = useI18n();
   const createProject = useMutation(api.projects.createProject);
   const [isLoading, setIsLoading] = useState(false);
   const [inputMode, setInputMode] = useState<"url" | "text">("url");
@@ -30,11 +32,11 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
         targetRole: formData.targetRole,
         description: inputMode === "url" ? formData.jobDescriptionUrl : formData.jobDescriptionText,
       });
-      toast.success("Project created successfully!");
+      toast.success(t.createProject.successMessage);
       onOpenChange(false);
       setFormData({ name: "", targetRole: "", jobDescriptionUrl: "", jobDescriptionText: "" });
     } catch (error) {
-      toast.error("Failed to create project");
+      toast.error(t.createProject.errorMessage);
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -58,10 +60,10 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-[#E2E8F0] flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg sm:text-xl font-semibold text-[#0F172A] tracking-tight">
-                  Create New Project
+                  {t.createProject.title}
                 </h3>
                 <p className="text-[#64748B] text-xs sm:text-sm mt-0.5 font-light">
-                  Configure your job search campaign
+                  {t.createProject.subtitle}
                 </p>
               </div>
               <button
@@ -79,13 +81,13 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   {/* Project Name */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-[#475569] block">
-                      Project Name
+                      {t.createProject.projectName}
                     </label>
                     <input
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                      placeholder="e.g. Senior SWE Hunt at Google"
+                      placeholder={t.createProject.projectNamePlaceholder}
                       type="text"
                       required
                     />
@@ -94,7 +96,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   {/* Target Role */}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-[#475569] block">
-                      Target Role
+                      {t.createProject.targetRole}
                     </label>
                     <div className="relative">
                       <input
@@ -102,7 +104,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                         value={formData.targetRole}
                         onChange={(e) => setFormData({ ...formData, targetRole: e.target.value })}
                         className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                        placeholder="e.g. Senior Software Engineer, Product Manager..."
+                        placeholder={t.createProject.targetRolePlaceholder}
                         type="text"
                         required
                       />
@@ -129,7 +131,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none h-4 w-4 opacity-50" />
                     </div>
                     <p className="text-xs text-[#64748B] mt-1">
-                      Type any role or select from suggestions. This helps the AI tune resume suggestions.
+                      {t.createProject.targetRoleHint}
                     </p>
                   </div>
 
@@ -137,8 +139,8 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   <div className="space-y-3 pt-2 border-t border-[#E2E8F0]">
                     <div className="flex items-center justify-between">
                       <label className="text-sm font-medium text-[#475569] block">
-                        Job Description{" "}
-                        <span className="text-[#64748B] font-normal ml-1">(Optional)</span>
+                        {t.createProject.jobDescription}{" "}
+                        <span className="text-[#64748B] font-normal ml-1">{t.createProject.optional}</span>
                       </label>
                       <div className="flex bg-[#F8FAFC] rounded-lg p-0.5 border border-[#E2E8F0]">
                         <button
@@ -150,7 +152,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                               : "text-[#64748B] hover:text-[#0F172A]"
                           }`}
                         >
-                          Link URL
+                          {t.createProject.linkUrl}
                         </button>
                         <button
                           type="button"
@@ -161,7 +163,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                               : "text-[#64748B] hover:text-[#0F172A]"
                           }`}
                         >
-                          Paste Text
+                          {t.createProject.pasteText}
                         </button>
                       </div>
                     </div>
@@ -175,7 +177,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                             setFormData({ ...formData, jobDescriptionUrl: e.target.value })
                           }
                           className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg pl-10 pr-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                          placeholder="https://linkedin.com/jobs/view/..."
+                          placeholder={t.createProject.urlPlaceholder}
                           type="url"
                         />
                       </div>
@@ -186,7 +188,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                           setFormData({ ...formData, jobDescriptionText: e.target.value })
                         }
                         className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] resize-none"
-                        placeholder="Paste the full job description here..."
+                        placeholder={t.createProject.textPlaceholder}
                         rows={4}
                       />
                     )}
@@ -197,10 +199,10 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                     <Sparkles className="text-indigo-600 mt-0.5 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                     <div className="text-xs text-indigo-900 min-w-0">
                       <strong className="text-indigo-900 block mb-0.5 font-semibold">
-                        AI Analysis Enabled
+                        {t.createProject.aiAnalysisTitle}
                       </strong>
                       <span className="break-words">
-                        We'll extract keywords from the JD to optimize your CV and calculate match scores.
+                        {t.createProject.aiAnalysisDesc}
                       </span>
                     </div>
                   </div>
@@ -214,14 +216,14 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   onClick={() => onOpenChange(false)}
                   className="order-2 sm:order-1 px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] border border-[#E2E8F0] hover:bg-slate-100 hover:text-[#0F172A] hover:border-[#E2E8F0] transition-all"
                 >
-                  Cancel
+                  {t.createProject.cancel}
                 </button>
                 <button
                   type="submit"
                   disabled={isLoading}
                   className="order-1 sm:order-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? "Creating..." : "Create Project"}
+                  {isLoading ? t.createProject.creating : t.createProject.createButton}
                 </button>
               </div>
             </form>

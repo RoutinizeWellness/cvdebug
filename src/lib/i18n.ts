@@ -1145,6 +1145,29 @@ export interface Translation {
     noMissingKeywords: string;
     rewriteSuccess: string;
   };
+  // Create Project Dialog
+  createProject: {
+    title: string;
+    subtitle: string;
+    projectName: string;
+    projectNamePlaceholder: string;
+    targetRole: string;
+    targetRolePlaceholder: string;
+    targetRoleHint: string;
+    jobDescription: string;
+    optional: string;
+    linkUrl: string;
+    pasteText: string;
+    urlPlaceholder: string;
+    textPlaceholder: string;
+    aiAnalysisTitle: string;
+    aiAnalysisDesc: string;
+    cancel: string;
+    createButton: string;
+    creating: string;
+    successMessage: string;
+    errorMessage: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -2243,6 +2266,28 @@ export const translations: Record<SupportedLocale, Translation> = {
       noMissingKeywords: 'No missing keywords to show examples for',
       rewriteSuccess: 'Resume rewritten successfully!',
     },
+    createProject: {
+      title: 'Create New Project',
+      subtitle: 'Configure your job search campaign',
+      projectName: 'Project Name',
+      projectNamePlaceholder: 'e.g. Senior SWE Hunt at Google',
+      targetRole: 'Target Role',
+      targetRolePlaceholder: 'e.g. Senior Software Engineer, Product Manager...',
+      targetRoleHint: 'Type any role or select from suggestions. This helps the AI tune resume suggestions.',
+      jobDescription: 'Job Description',
+      optional: '(Optional)',
+      linkUrl: 'Link URL',
+      pasteText: 'Paste Text',
+      urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+      textPlaceholder: 'Paste the full job description here...',
+      aiAnalysisTitle: 'AI Analysis Enabled',
+      aiAnalysisDesc: 'We\'ll extract keywords from the JD to optimize your CV and calculate match scores.',
+      cancel: 'Cancel',
+      createButton: 'Create Project',
+      creating: 'Creating...',
+      successMessage: 'Project created successfully!',
+      errorMessage: 'Failed to create project',
+    },
   },
   'es': {
     hero: {
@@ -3338,6 +3383,28 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
       noMissingKeywords: 'No hay keywords faltantes para mostrar ejemplos',
       rewriteSuccess: '¡CV reescrito con éxito!',
+    },
+    createProject: {
+      title: 'Crear Nuevo Proyecto',
+      subtitle: 'Configura tu campaña de búsqueda de empleo',
+      projectName: 'Nombre del Proyecto',
+      projectNamePlaceholder: 'ej. Búsqueda SWE Senior en Google',
+      targetRole: 'Rol Objetivo',
+      targetRolePlaceholder: 'ej. Ingeniero de Software Senior, Product Manager...',
+      targetRoleHint: 'Escribe cualquier rol o selecciona de las sugerencias. Esto ayuda a la IA a ajustar las sugerencias del CV.',
+      jobDescription: 'Descripción del Trabajo',
+      optional: '(Opcional)',
+      linkUrl: 'URL del Enlace',
+      pasteText: 'Pegar Texto',
+      urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+      textPlaceholder: 'Pega la descripción completa del trabajo aquí...',
+      aiAnalysisTitle: 'Análisis de IA Habilitado',
+      aiAnalysisDesc: 'Extraeremos keywords de la descripción para optimizar tu CV y calcular scores de coincidencia.',
+      cancel: 'Cancelar',
+      createButton: 'Crear Proyecto',
+      creating: 'Creando...',
+      successMessage: '¡Proyecto creado con éxito!',
+      errorMessage: 'Error al crear el proyecto',
     },
   },
   'fr': {
@@ -4435,6 +4502,28 @@ export const translations: Record<SupportedLocale, Translation> = {
       noMissingKeywords: 'Aucun mot-clé manquant pour afficher des exemples',
       rewriteSuccess: 'CV réécrit avec succès !',
     },
+    createProject: {
+      title: 'Créer un Nouveau Projet',
+      subtitle: 'Configurez votre campagne de recherche d\'emploi',
+      projectName: 'Nom du Projet',
+      projectNamePlaceholder: 'ex. Recherche SWE Senior chez Google',
+      targetRole: 'Rôle Cible',
+      targetRolePlaceholder: 'ex. Ingénieur Logiciel Senior, Chef de Produit...',
+      targetRoleHint: 'Tapez n\'importe quel rôle ou sélectionnez parmi les suggestions. Cela aide l\'IA à ajuster les suggestions de CV.',
+      jobDescription: 'Description du Poste',
+      optional: '(Optionnel)',
+      linkUrl: 'URL du Lien',
+      pasteText: 'Coller le Texte',
+      urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+      textPlaceholder: 'Collez la description complète du poste ici...',
+      aiAnalysisTitle: 'Analyse IA Activée',
+      aiAnalysisDesc: 'Nous extrairons les mots-clés de la description pour optimiser votre CV et calculer les scores de correspondance.',
+      cancel: 'Annuler',
+      createButton: 'Créer un Projet',
+      creating: 'Création...',
+      successMessage: 'Projet créé avec succès !',
+      errorMessage: 'Échec de la création du projet',
+    },
   },
   'de': {
     hero: {
@@ -5531,6 +5620,28 @@ export const translations: Record<SupportedLocale, Translation> = {
       noMissingKeywords: 'Keine fehlenden Keywords zum Anzeigen von Beispielen',
       rewriteSuccess: 'Lebenslauf erfolgreich neu geschrieben!',
     },
+    createProject: {
+      title: 'Neues Projekt Erstellen',
+      subtitle: 'Konfigurieren Sie Ihre Jobsuchkampagne',
+      projectName: 'Projektname',
+      projectNamePlaceholder: 'z.B. Senior SWE Suche bei Google',
+      targetRole: 'Zielrolle',
+      targetRolePlaceholder: 'z.B. Senior Software-Ingenieur, Produktmanager...',
+      targetRoleHint: 'Geben Sie eine beliebige Rolle ein oder wählen Sie aus Vorschlägen. Dies hilft der KI, Lebenslauf-Vorschläge anzupassen.',
+      jobDescription: 'Stellenbeschreibung',
+      optional: '(Optional)',
+      linkUrl: 'Link-URL',
+      pasteText: 'Text Einfügen',
+      urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+      textPlaceholder: 'Fügen Sie hier die vollständige Stellenbeschreibung ein...',
+      aiAnalysisTitle: 'KI-Analyse Aktiviert',
+      aiAnalysisDesc: 'Wir extrahieren Keywords aus der Stellenbeschreibung, um Ihren Lebenslauf zu optimieren und Match-Scores zu berechnen.',
+      cancel: 'Abbrechen',
+      createButton: 'Projekt Erstellen',
+      creating: 'Erstellen...',
+      successMessage: 'Projekt erfolgreich erstellt!',
+      errorMessage: 'Fehler beim Erstellen des Projekts',
+    },
   },
   'pt': {
     hero: {
@@ -6626,6 +6737,28 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Sugestão aplicada! Seu currículo foi atualizado.',
       noMissingKeywords: 'Nenhuma palavra-chave ausente para mostrar exemplos',
       rewriteSuccess: 'Currículo reescrito com sucesso!',
+    },
+    createProject: {
+      title: 'Criar Novo Projeto',
+      subtitle: 'Configure sua campanha de busca de emprego',
+      projectName: 'Nome do Projeto',
+      projectNamePlaceholder: 'ex. Busca SWE Sênior no Google',
+      targetRole: 'Função Alvo',
+      targetRolePlaceholder: 'ex. Engenheiro de Software Sênior, Gerente de Produto...',
+      targetRoleHint: 'Digite qualquer função ou selecione das sugestões. Isso ajuda a IA a ajustar as sugestões de currículo.',
+      jobDescription: 'Descrição da Vaga',
+      optional: '(Opcional)',
+      linkUrl: 'URL do Link',
+      pasteText: 'Colar Texto',
+      urlPlaceholder: 'https://linkedin.com/jobs/view/...',
+      textPlaceholder: 'Cole a descrição completa da vaga aqui...',
+      aiAnalysisTitle: 'Análise de IA Ativada',
+      aiAnalysisDesc: 'Extrairemos palavras-chave da descrição para otimizar seu currículo e calcular pontuações de correspondência.',
+      cancel: 'Cancelar',
+      createButton: 'Criar Projeto',
+      creating: 'Criando...',
+      successMessage: 'Projeto criado com sucesso!',
+      errorMessage: 'Falha ao criar projeto',
     },
   },
 };
