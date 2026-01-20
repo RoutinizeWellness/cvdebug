@@ -1077,6 +1077,39 @@ export interface Translation {
     avgIncrease: string;
     points: string;
   };
+  // ATS Simulation
+  atsSimulation: {
+    seniorityMatch: string;
+    detectedLevel: string;
+    experienceAudit: string;
+    signalDensity: string;
+    score: string;
+    expected: string;
+    signals: string;
+    strength: string;
+    junior: string;
+    mid: string;
+    senior: string;
+    lead: string;
+    match: string;
+    review: string;
+    year: string;
+    years: string;
+    strong: string;
+    medium: string;
+    weak: string;
+    readability: string;
+    highIntegrity: string;
+    industryPatterns: string;
+    imageTraps: string;
+    safe: string;
+    noneDetected: string;
+    noInvisibleElements: string;
+    atsGlobalScore: string;
+    parsingEfficiency: string;
+    liveAnalysis: string;
+    fullReport: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -2109,6 +2142,38 @@ export const translations: Record<SupportedLocale, Translation> = {
       avgIncrease: 'Avg. score increase',
       points: 'points',
     },
+    atsSimulation: {
+      seniorityMatch: 'Seniority Match Analysis',
+      detectedLevel: 'Detected Level',
+      experienceAudit: 'Experience Audit',
+      signalDensity: 'Signal Density',
+      score: 'Score',
+      expected: 'Expected',
+      signals: 'signals',
+      strength: 'Strength',
+      junior: 'Junior',
+      mid: 'Mid',
+      senior: 'Senior',
+      lead: 'Lead',
+      match: 'Match',
+      review: 'Review',
+      year: 'year',
+      years: 'years',
+      strong: 'STRONG',
+      medium: 'MEDIUM',
+      weak: 'WEAK',
+      readability: 'Readability',
+      highIntegrity: 'High Integrity',
+      industryPatterns: 'Structure follows industry standard patterns',
+      imageTraps: 'Image Traps',
+      safe: 'Safe',
+      noneDetected: 'None Detected',
+      noInvisibleElements: 'No invisible elements or keyword stuffing',
+      atsGlobalScore: 'ATS Global Score',
+      parsingEfficiency: 'Score based on parsing efficiency',
+      liveAnalysis: 'Live Analysis',
+      fullReport: 'Full Report',
+    },
   },
   'es': {
     hero: {
@@ -3138,6 +3203,38 @@ export const translations: Record<SupportedLocale, Translation> = {
       devsUpgraded: 'devs actualizaron esta semana',
       avgIncrease: 'Aumento promedio de puntuación',
       points: 'puntos',
+    },
+    atsSimulation: {
+      seniorityMatch: 'Análisis de Coincidencia de Seniority',
+      detectedLevel: 'Nivel Detectado',
+      experienceAudit: 'Auditoría de Experiencia',
+      signalDensity: 'Densidad de Señales',
+      score: 'Puntuación',
+      expected: 'Esperado',
+      signals: 'señales',
+      strength: 'Fuerza',
+      junior: 'Junior',
+      mid: 'Mid',
+      senior: 'Senior',
+      lead: 'Lead',
+      match: 'Coincide',
+      review: 'Revisar',
+      year: 'año',
+      years: 'años',
+      strong: 'FUERTE',
+      medium: 'MEDIA',
+      weak: 'DÉBIL',
+      readability: 'Legibilidad',
+      highIntegrity: 'Alta Integridad',
+      industryPatterns: 'La estructura sigue patrones estándar de la industria',
+      imageTraps: 'Trampas de Imagen',
+      safe: 'Seguro',
+      noneDetected: 'Ninguno Detectado',
+      noInvisibleElements: 'Sin elementos invisibles ni keyword stuffing',
+      atsGlobalScore: 'Puntuación Global ATS',
+      parsingEfficiency: 'Puntuación basada en eficiencia de análisis',
+      liveAnalysis: 'Análisis en Vivo',
+      fullReport: 'Informe Completo',
     },
   },
   'fr': {
@@ -4169,6 +4266,38 @@ export const translations: Record<SupportedLocale, Translation> = {
       avgIncrease: 'Augmentation moyenne du score',
       points: 'points',
     },
+    atsSimulation: {
+      seniorityMatch: 'Analyse de Correspondance de Séniorité',
+      detectedLevel: 'Niveau Détecté',
+      experienceAudit: 'Audit d\'Expérience',
+      signalDensity: 'Densité de Signaux',
+      score: 'Score',
+      expected: 'Attendu',
+      signals: 'signaux',
+      strength: 'Force',
+      junior: 'Junior',
+      mid: 'Intermédiaire',
+      senior: 'Senior',
+      lead: 'Lead',
+      match: 'Correspond',
+      review: 'Réviser',
+      year: 'année',
+      years: 'années',
+      strong: 'FORT',
+      medium: 'MOYEN',
+      weak: 'FAIBLE',
+      readability: 'Lisibilité',
+      highIntegrity: 'Haute Intégrité',
+      industryPatterns: 'La structure suit les modèles standard de l\'industrie',
+      imageTraps: 'Pièges d\'Image',
+      safe: 'Sûr',
+      noneDetected: 'Aucun Détecté',
+      noInvisibleElements: 'Aucun élément invisible ou bourrage de mots-clés',
+      atsGlobalScore: 'Score Global ATS',
+      parsingEfficiency: 'Score basé sur l\'efficacité d\'analyse',
+      liveAnalysis: 'Analyse en Direct',
+      fullReport: 'Rapport Complet',
+    },
   },
   'de': {
     hero: {
@@ -5199,6 +5328,38 @@ export const translations: Record<SupportedLocale, Translation> = {
       avgIncrease: 'Durchschnittliche Score-Steigerung',
       points: 'Punkte',
     },
+    atsSimulation: {
+      seniorityMatch: 'Senioritäts-Übereinstimmungsanalyse',
+      detectedLevel: 'Erkanntes Level',
+      experienceAudit: 'Erfahrungsaudit',
+      signalDensity: 'Signaldichte',
+      score: 'Punktzahl',
+      expected: 'Erwartet',
+      signals: 'signale',
+      strength: 'Stärke',
+      junior: 'Junior',
+      mid: 'Mittel',
+      senior: 'Senior',
+      lead: 'Lead',
+      match: 'Übereinstimmung',
+      review: 'Überprüfen',
+      year: 'jahr',
+      years: 'jahre',
+      strong: 'STARK',
+      medium: 'MITTEL',
+      weak: 'SCHWACH',
+      readability: 'Lesbarkeit',
+      highIntegrity: 'Hohe Integrität',
+      industryPatterns: 'Struktur folgt Industriestandardmustern',
+      imageTraps: 'Bildfallen',
+      safe: 'Sicher',
+      noneDetected: 'Keine erkannt',
+      noInvisibleElements: 'Keine unsichtbaren Elemente oder Keyword-Stuffing',
+      atsGlobalScore: 'ATS Globaler Score',
+      parsingEfficiency: 'Score basierend auf Parsing-Effizienz',
+      liveAnalysis: 'Live-Analyse',
+      fullReport: 'Vollständiger Bericht',
+    },
   },
   'pt': {
     hero: {
@@ -6228,6 +6389,38 @@ export const translations: Record<SupportedLocale, Translation> = {
       devsUpgraded: 'desenvolvedores atualizaram esta semana',
       avgIncrease: 'Aumento médio de pontuação',
       points: 'pontos',
+    },
+    atsSimulation: {
+      seniorityMatch: 'Análise de Correspondência de Senioridade',
+      detectedLevel: 'Nível Detectado',
+      experienceAudit: 'Auditoria de Experiência',
+      signalDensity: 'Densidade de Sinais',
+      score: 'Pontuação',
+      expected: 'Esperado',
+      signals: 'sinais',
+      strength: 'Força',
+      junior: 'Júnior',
+      mid: 'Pleno',
+      senior: 'Sênior',
+      lead: 'Lead',
+      match: 'Corresponde',
+      review: 'Revisar',
+      year: 'ano',
+      years: 'anos',
+      strong: 'FORTE',
+      medium: 'MÉDIO',
+      weak: 'FRACO',
+      readability: 'Legibilidade',
+      highIntegrity: 'Alta Integridade',
+      industryPatterns: 'Estrutura segue padrões padrão da indústria',
+      imageTraps: 'Armadilhas de Imagem',
+      safe: 'Seguro',
+      noneDetected: 'Nenhum Detectado',
+      noInvisibleElements: 'Sem elementos invisíveis ou preenchimento de palavras-chave',
+      atsGlobalScore: 'Pontuação Global ATS',
+      parsingEfficiency: 'Pontuação baseada na eficiência de análise',
+      liveAnalysis: 'Análise ao Vivo',
+      fullReport: 'Relatório Completo',
     },
   },
 };

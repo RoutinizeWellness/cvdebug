@@ -3,6 +3,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { motion } from "framer-motion";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api;
 
@@ -12,6 +13,7 @@ interface ATSSimulationProps {
 }
 
 export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
+  const { t } = useI18n();
   const resume = useQuery(apiAny.resumes.getResume, { id: resumeId });
   const [activeView, setActiveView] = useState<"parsed" | "raw" | "pdf">("parsed");
   const [selectedCandidate, setSelectedCandidate] = useState<number>(0);
@@ -457,41 +459,41 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
             <section className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-6">
                 <span className="material-symbols-outlined text-primary text-xl">track_changes</span>
-                <h2 className="text-sm font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-wider text-[#64748B]">{t.atsSimulation.seniorityMatch}</h2>
               </div>
 
               <div className="grid grid-cols-3 gap-6">
                 {/* Detected Level */}
                 <div className="space-y-4">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.detectedLevel}</p>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-bold tracking-tight text-[#0F172A]">
-                      {seniorityLevel === 0 ? 'Junior' : seniorityLevel === 1 ? 'Mid' : seniorityLevel === 2 ? 'Senior' : 'Lead'}
+                      {seniorityLevel === 0 ? t.atsSimulation.junior : seniorityLevel === 1 ? t.atsSimulation.mid : seniorityLevel === 2 ? t.atsSimulation.senior : t.atsSimulation.lead}
                     </span>
                     <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border ${
                       seniorityLevel >= 2
                         ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
                         : 'bg-amber-50 text-amber-600 border-amber-100'
                     }`}>
-                      {seniorityLevel >= 2 ? 'Match' : 'Review'}
+                      {seniorityLevel >= 2 ? t.atsSimulation.match : t.atsSimulation.review}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] text-[#64748B]">
                     <span className="material-symbols-outlined text-xs">analytics</span>
-                    <span>Score: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
+                    <span>{t.atsSimulation.score}: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
                   </div>
                 </div>
 
                 {/* Experience Audit */}
                 <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.experienceAudit}</p>
                   <div className="space-y-1">
                     <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
-                      {yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'}
+                      {yearsOfExperience} {yearsOfExperience === 1 ? t.atsSimulation.year : t.atsSimulation.years}
                     </p>
                     <p className="text-[10px] text-[#64748B]">
-                      Expected: <span className="font-bold text-[#0F172A]">
-                        {seniorityLevel === 0 ? 'JUNIOR' : seniorityLevel === 1 ? 'MID' : seniorityLevel === 2 ? 'SENIOR' : 'LEAD'}
+                      {t.atsSimulation.expected}: <span className="font-bold text-[#0F172A]">
+                        {seniorityLevel === 0 ? t.atsSimulation.junior.toUpperCase() : seniorityLevel === 1 ? t.atsSimulation.mid.toUpperCase() : seniorityLevel === 2 ? t.atsSimulation.senior.toUpperCase() : t.atsSimulation.lead.toUpperCase()}
                       </span>
                     </p>
                   </div>
@@ -499,15 +501,15 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
 
                 {/* Signal Density */}
                 <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.signalDensity}</p>
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
                       <p className="text-2xl font-bold tracking-tight text-[#7C3AED]">{matchedKeywords.length}</p>
-                      <span className="text-[10px] font-medium text-[#64748B]">signals</span>
+                      <span className="text-[10px] font-medium text-[#64748B]">{t.atsSimulation.signals}</span>
                     </div>
                     <p className="text-[10px] text-[#64748B]">
-                      Strength: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
-                        {matchedKeywords.length >= 10 ? 'STRONG' : matchedKeywords.length >= 5 ? 'MEDIUM' : 'WEAK'}
+                      {t.atsSimulation.strength}: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
+                        {matchedKeywords.length >= 10 ? t.atsSimulation.strong : matchedKeywords.length >= 5 ? t.atsSimulation.medium : t.atsSimulation.weak}
                       </span>
                     </p>
                   </div>
@@ -520,40 +522,40 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
               {/* Readability Card */}
               <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40">
                 <div className="flex justify-between items-start">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Readability</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.readability}</p>
                   <div className="h-8 w-8 rounded-full bg-emerald-50 flex items-center justify-center">
                     <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-[#0F172A]">High Integrity</h3>
-                  <p className="text-xs text-[#64748B] mt-1">Structure follows industry standard patterns</p>
+                  <h3 className="text-2xl font-bold text-[#0F172A]">{t.atsSimulation.highIntegrity}</h3>
+                  <p className="text-xs text-[#64748B] mt-1">{t.atsSimulation.industryPatterns}</p>
                 </div>
               </div>
 
               {/* Image Traps Card - REAL DETECTION */}
               <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40">
                 <div className="flex justify-between items-start">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Image Traps</p>
-                  <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold tracking-wide uppercase">Safe</span>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.imageTraps}</p>
+                  <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold tracking-wide uppercase">{t.atsSimulation.safe}</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-[#0F172A]">None Detected</h3>
-                  <p className="text-xs text-[#64748B] mt-1">No invisible elements or keyword stuffing</p>
+                  <h3 className="text-2xl font-bold text-[#0F172A]">{t.atsSimulation.noneDetected}</h3>
+                  <p className="text-xs text-[#64748B] mt-1">{t.atsSimulation.noInvisibleElements}</p>
                 </div>
               </div>
 
               {/* ATS Global Score Card - USES REAL SCORE */}
               <div className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40 relative overflow-hidden">
                 <div className="flex justify-between items-start z-10">
-                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">ATS Global Score</p>
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.atsGlobalScore}</p>
                 </div>
                 <div className="flex items-end justify-between z-10">
                   <div>
                     <h3 className="text-3xl font-mono font-bold text-[#0F172A]">
                       {score}<span className="text-[#CBD5E1] text-xl">/100</span>
                     </h3>
-                    <p className="text-xs text-[#64748B] mt-1">Score based on parsing efficiency</p>
+                    <p className="text-xs text-[#64748B] mt-1">{t.atsSimulation.parsingEfficiency}</p>
                   </div>
                   <div className="relative w-16 h-16 flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90">
@@ -590,11 +592,11 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                   <span>Ref: CV-{scanId.slice(-4)}-X</span>
                   <span className="flex items-center gap-1">
                     <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
-                    Live Analysis
+                    {t.atsSimulation.liveAnalysis}
                   </span>
                 </div>
                 <button onClick={onBack} className="font-semibold text-primary hover:underline flex items-center gap-1 text-[10px]">
-                  Full Report
+                  {t.atsSimulation.fullReport}
                   <span className="material-symbols-outlined text-xs">arrow_right_alt</span>
                 </button>
               </div>
