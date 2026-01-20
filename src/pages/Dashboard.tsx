@@ -63,6 +63,7 @@ const ResumePreview = lazy(() => import("@/components/resume/ResumePreview").the
 const BulletRewriter = lazy(() => import("@/components/dashboard/BulletRewriter").then(m => ({ default: m.BulletRewriter }))); // Reimplemented with ML
 const CoverLetterGenerator = lazy(() => import("@/components/dashboard/tools/CoverLetterGenerator").then(m => ({ default: m.CoverLetterGenerator })));
 const LinkedInOptimizer = lazy(() => import("@/components/dashboard/tools/LinkedInOptimizer").then(m => ({ default: m.LinkedInOptimizer })));
+const EliteMatchToolLazy = lazy(() => import("@/components/dashboard/EliteMatchTool").then(m => ({ default: m.EliteMatchTool })));
 
 const apiAny = api as any;
 
@@ -611,10 +612,7 @@ export default function Dashboard() {
               </div>
             </div>
             <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-              {React.createElement(() => {
-                const { EliteMatchTool } = require('@/components/dashboard/EliteMatchTool');
-                return <EliteMatchTool />;
-              })}
+              <EliteMatchToolLazy />
             </Suspense>
           </div>
         );
