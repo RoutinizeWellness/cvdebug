@@ -47,24 +47,23 @@ export function ConversionBanner({ currentScore, onUpgrade }: ConversionBannerPr
 
               {/* Subheadline */}
               <p className="text-base md:text-lg text-[#475569] font-medium max-w-2xl">
-                {t.conversionBanner.unlockSprint} <span className="font-bold text-[#0F172A]">{t.conversionBanner.sprintEngine}</span> {t.conversionBanner.reach}{" "}
-                <span className="font-bold text-emerald-600">95%</span> {t.conversionBanner.matchFaang}{" "}
-                <span className="font-bold text-[#0F172A]">FAANG signals</span> {t.conversionBanner.instantly}.
+                Our <span className="font-bold text-[#0F172A]">'{t.conversionBanner.sprintEngine}'</span> auto-tunes your bullets to match{" "}
+                <span className="font-bold text-[#0F172A]">FAANG-level</span> requirements.
               </p>
 
               {/* Benefits List */}
               <div className="flex flex-wrap gap-4 pt-2">
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                  <span><span className="font-bold text-[#0F172A]">+{scoreDifference} {t.conversionBanner.points}</span> {t.conversionBanner.pointsBoost}</span>
+                  <span><span className="font-bold text-[#0F172A]">Auto-tune</span> your bullets instantly</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                  <span><span className="font-bold text-[#0F172A]">{t.conversionBanner.faangKeywords}</span></span>
+                  <span><span className="font-bold text-[#0F172A]">FAANG-level</span> keywords injected</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#64748B]">
                   <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                  <span><span className="font-bold text-[#0F172A]">{t.conversionBanner.hourAccess}</span></span>
+                  <span><span className="font-bold text-[#0F172A]">Unlimited</span> attempts for 24h</span>
                 </div>
               </div>
             </div>
