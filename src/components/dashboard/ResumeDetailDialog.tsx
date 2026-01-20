@@ -1870,13 +1870,13 @@ Impact: AUTO_REJECT (100% rejection rate)
               )}
 
               {/* PDF Preview - Hidden on mobile by default, collapsible on desktop */}
-              <div className={`${isPdfCollapsed ? 'hidden' : 'fixed inset-0 z-50 lg:relative lg:flex-1'} bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 lg:min-h-0 print:hidden lg:border-l border-[#E2E8F0]`}>
+              <div className={`${isPdfCollapsed ? 'hidden lg:block lg:w-12' : 'fixed inset-0 z-50 lg:relative lg:flex-1'} bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 overflow-hidden relative group transition-all duration-300 lg:min-h-0 print:hidden lg:border-l border-[#E2E8F0]`}>
                 <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
 
-                {/* Collapse/Expand Button */}
+                {/* Collapse/Expand Button - Always visible on desktop */}
                 <button
                   onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
-                  className="absolute top-4 left-4 z-20 p-3 bg-[#3B82F6] hover:bg-blue-700 text-white rounded-lg backdrop-blur-sm transition-all shadow-lg"
+                  className={`${isPdfCollapsed ? 'lg:relative lg:top-4 lg:left-0' : 'absolute top-4 left-4'} z-20 p-3 bg-[#3B82F6] hover:bg-blue-700 text-white rounded-lg backdrop-blur-sm transition-all shadow-lg`}
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
