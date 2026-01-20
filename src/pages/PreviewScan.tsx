@@ -11,6 +11,7 @@ import { createWorker } from "tesseract.js";
 import { RegistrationWall } from "@/components/paywalls/RegistrationWall";
 import { analyzeResumeClient } from "@/lib/clientAnalysis";
 import { useI18n } from "@/contexts/I18nContext";
+import { ScanMethodBanner } from "@/components/ScanMethodBanner";
 
 // Set up PDF.js worker
 const pdfVersion = pdfjsLib.version || "4.0.379";
@@ -641,6 +642,9 @@ export default function PreviewScan() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6 max-w-4xl mx-auto"
             >
+              {/* Scan Method Explanation Banner */}
+              <ScanMethodBanner method="preview" />
+
               {/* Score Card - Partially Revealed */}
               <div className="bg-white p-8 rounded-2xl text-center relative overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/10 to-[#3B82F6]/10" />

@@ -4,6 +4,7 @@ import { ATSScoreCard } from "./ATSScoreCard";
 import { PaywalledKeywords } from "./PaywalledKeywords";
 import { ConversionBanner } from "../ConversionBanner";
 import { motion } from "framer-motion";
+import { ScanMethodBanner } from "@/components/ScanMethodBanner";
 
 interface ScanResultsLayoutProps {
   scanId: string;
@@ -45,6 +46,11 @@ export function ScanResultsLayout({
         onShare={onShare}
         onExportPDF={onExportPDF}
       />
+
+      {/* Scan Method Explanation Banner */}
+      <div className="mb-6">
+        <ScanMethodBanner method="dashboard" />
+      </div>
 
       {/* Conversion Banner - Show to non-premium users */}
       {!isPremium && (
