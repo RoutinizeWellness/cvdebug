@@ -27,7 +27,7 @@ export function Logo({
         src="/favicon.png?v=20"
         alt="CVDebug"
         className={cn(
-          "h-10 w-10 transition-transform duration-300 hover:scale-105",
+          "h-12 w-12 transition-transform duration-300 hover:scale-105",
           iconClassName
         )}
       />

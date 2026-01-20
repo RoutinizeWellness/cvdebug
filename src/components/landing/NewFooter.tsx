@@ -16,7 +16,7 @@ export function NewFooter() {
               <img
                 src="/favicon.png?v=20"
                 alt="CVDebug Logo"
-                className="w-10 h-10"
+                className="w-12 h-12"
               />
             </div>
             <p className="text-[#475569] text-sm">

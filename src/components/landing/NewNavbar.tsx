@@ -74,7 +74,7 @@ export function NewNavbar() {
               <img
                 src="/favicon.png?v=20"
                 alt="CVDebug Logo"
-                className="w-10 h-10 transition-transform duration-300 group-hover:scale-105"
+                className="w-12 h-12 transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
             </div>

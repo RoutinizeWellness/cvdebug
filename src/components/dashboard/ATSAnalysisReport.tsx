@@ -227,7 +227,7 @@ export function ATSAnalysisReport({
               <img
                 src="/favicon.png?v=20"
                 alt="CVDebug Logo"
-                className="w-10 h-10"
+                className="w-12 h-12"
               />
             </div>
           </motion.div>
