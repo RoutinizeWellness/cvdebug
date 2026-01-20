@@ -48,34 +48,90 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const scoreColor = score >= 80 ? "text-green-400" : score >= 60 ? "text-[#F59E0B]" : "text-orange-500";
   const scoreLabel = score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Fair";
 
-  // Calculate years of experience from resume text using ML algorithm
+  // Calculate years of experience from resume text using IMPROVED ML algorithm
   const calculateYearsOfExperience = (text: string): number => {
     if (!text) return 0;
 
     const currentYear = new Date().getFullYear();
-    const yearPattern = /\b(19|20)\d{2}\b/g;
-    const dateRangePattern = /\b(19|20)\d{2}\s*[-–—]\s*((19|20)\d{2}|present|current|now)\b/gi;
 
-    const dateRanges = text.match(dateRangePattern);
-    if (!dateRanges || dateRanges.length === 0) {
-      // Fallback: count number of companies/positions mentioned
-      const experienceKeywords = text.match(/\b(experience|worked|employed|developer|engineer|manager|lead|senior|junior)\b/gi);
-      return experienceKeywords ? Math.min(Math.floor(experienceKeywords.length / 3), 10) : 0;
-    }
+    // PATTERN 1: Date ranges (2018-2023, 2020-Present, Jan 2019 - Dec 2022)
+    const dateRangePattern = /\b(19|20)\d{2}\s*[-–—]\s*((19|20)\d{2}|present|current|now|actual|actualidad)\b/gi;
+    const dateRanges = text.match(dateRangePattern) || [];
 
     let totalYears = 0;
+    let rangesFound = 0;
+
+    // Calculate years from date ranges
     dateRanges.forEach(range => {
       const years = range.match(/\b(19|20)\d{2}\b/g);
       if (years && years.length >= 1) {
         const startYear = parseInt(years[0]);
-        const endYear = range.toLowerCase().includes('present') || range.toLowerCase().includes('current') || range.toLowerCase().includes('now')
+        const endYear = range.toLowerCase().match(/(present|current|now|actual|actualidad)/)
           ? currentYear
           : (years[1] ? parseInt(years[1]) : currentYear);
-        totalYears += Math.max(0, endYear - startYear);
+        const duration = Math.max(0, endYear - startYear);
+        if (duration <= 20) { // Reasonable job duration
+          totalYears += duration;
+          rangesFound++;
+        }
       }
     });
 
-    return Math.min(totalYears, 50); // Cap at 50 years maximum
+    if (rangesFound > 0) {
+      return Math.min(totalYears, 50); // Cap at 50 years maximum
+    }
+
+    // PATTERN 2: Explicit experience statements ("5+ years", "3 years of experience")
+    const explicitYearsPattern = /\b(\d+)\+?\s*(year|año|años|years)/gi;
+    const explicitMatches = text.match(explicitYearsPattern);
+    if (explicitMatches && explicitMatches.length > 0) {
+      const yearNumbers = explicitMatches.map(m => {
+        const num = m.match(/\d+/);
+        return num ? parseInt(num[0]) : 0;
+      });
+      // Take the maximum mentioned (likely total experience)
+      return Math.max(...yearNumbers);
+    }
+
+    // PATTERN 3: Count standalone years and estimate
+    const allYears = text.match(/\b(19|20)\d{2}\b/g);
+    if (allYears && allYears.length >= 2) {
+      const uniqueYears = [...new Set(allYears.map(y => parseInt(y)))].sort((a, b) => a - b);
+      if (uniqueYears.length >= 2) {
+        const earliest = uniqueYears[0];
+        const latest = uniqueYears[uniqueYears.length - 1];
+        // Estimate: time span from earliest to latest year
+        const span = Math.max(0, latest - earliest);
+        if (span > 0 && span <= 30) {
+          // Assume ~70% working time (account for gaps)
+          return Math.floor(span * 0.7);
+        }
+      }
+    }
+
+    // PATTERN 4: Role seniority keywords (estimate based on titles)
+    const seniorityPatterns = [
+      { pattern: /\b(chief|cto|ceo|vp|vice president|director|head of)\b/gi, years: 10 },
+      { pattern: /\b(principal|staff|lead|senior|sr\.?)\b/gi, years: 5 },
+      { pattern: /\b(mid|midlevel|mid-level)\b/gi, years: 3 },
+      { pattern: /\b(junior|jr\.?|associate|entry)\b/gi, years: 1 },
+    ];
+
+    for (const { pattern, years } of seniorityPatterns) {
+      if (pattern.test(text)) {
+        return years;
+      }
+    }
+
+    // PATTERN 5: Fallback - count job positions/companies
+    const positionKeywords = text.match(/\b(experience|worked|employed|developer|engineer|manager|designer|analyst|scientist|consultant|architect|specialist)\b/gi);
+    if (positionKeywords && positionKeywords.length >= 3) {
+      // Estimate: ~2 years per position mentioned
+      return Math.min(Math.floor(positionKeywords.length / 2), 10);
+    }
+
+    // No indicators found
+    return 0;
   };
 
   const yearsOfExperience = resume.extractedData?.totalYearsExperience ||

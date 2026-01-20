@@ -207,41 +207,103 @@ export function KeywordAnalysis({
     return { impact: `Impact +${2 + index}%`, percent: 2 + index, isPriority: false };
   };
 
-  // Generate REAL context-aware descriptions
+  // Generate REAL context-aware descriptions with SPECIFIC guidance
   const getKeywordDescription = (keyword: string): string => {
     const lower = keyword.toLowerCase();
 
     // Programming Languages
-    if (/python/.test(lower)) return `Essential for technical roles. Add to "Technical Skills" with specific frameworks (Django, Flask, FastAPI) and use cases.`;
+    if (/\bpython\b/.test(lower)) return `Essential for technical roles. Add to "Technical Skills" with specific frameworks (Django, Flask, FastAPI) and use cases.`;
     if (/javascript|typescript/.test(lower)) return `Core web development skill. Mention frameworks (React, Node.js, Vue) and projects where you used it.`;
-    if (/java/.test(lower)) return `Enterprise development staple. Include Spring, Maven, or microservices architecture experience.`;
+    if (/\bjava\b/.test(lower)) return `Enterprise development staple. Include Spring, Maven, or microservices architecture experience.`;
+    if (/\bc\+\+|cpp\b/.test(lower)) return `Systems programming language. Highlight performance-critical applications, memory management, or embedded systems work.`;
+    if (/\bruby\b/.test(lower)) return `Web development with Rails. Mention API development, test-driven development, or automation scripts built.`;
+    if (/\bgo\b|golang/.test(lower)) return `Cloud-native language. Describe microservices built, concurrency patterns used, or CLI tools developed.`;
 
     // Databases & Data
     if (/\bsql\b/.test(lower)) return `Critical database skill. Include specific databases (PostgreSQL, MySQL) and mention query optimization or data analysis with measurable results.`;
+    if (/postgresql|postgres/.test(lower)) return `Advanced SQL database. Detail complex queries, indexing strategies, or database performance tuning you implemented.`;
+    if (/mysql/.test(lower)) return `Popular relational database. Mention schema design, query optimization, or replication setup you managed.`;
+    if (/mongodb/.test(lower)) return `NoSQL document database. Describe data modeling, aggregation pipelines, or scalability improvements achieved.`;
+    if (/redis/.test(lower)) return `In-memory cache. Detail caching strategies, session management, or latency reductions (e.g., from 500ms to 50ms).`;
+    if (/elasticsearch/.test(lower)) return `Search and analytics engine. Mention search features built, query performance, or log analysis systems implemented.`;
     if (/excel/.test(lower)) return `Data analysis tool. Highlight advanced functions (VLOOKUP, Pivot Tables, Macros) and how you automated reports or analysis.`;
-    if (/etl/.test(lower)) return `Data pipeline expertise. Describe data volumes processed, transformation logic, and pipeline reliability improvements.`;
+    if (/\betl\b/.test(lower)) return `Data pipeline expertise. Describe data volumes processed, transformation logic, and pipeline reliability improvements.`;
     if (/data warehouse/.test(lower)) return `Big data infrastructure. Mention tools (Redshift, Snowflake, BigQuery), data volume, and query performance gains.`;
 
     // Big Data & Analytics
     if (/big data/.test(lower)) return `Large-scale data processing. Quantify data volumes (TB/PB), processing speed improvements, and business insights generated.`;
     if (/hadoop/.test(lower)) return `Distributed computing platform. Specify cluster size, data processed, and performance optimizations achieved.`;
-    if (/spark/.test(lower)) return `Fast data processing engine. Mention job optimization, processing time reductions, and data volume handled.`;
-    if (/hive/.test(lower)) return `SQL-on-Hadoop tool. Describe query optimization, data warehouse design, and analytics capabilities built.`;
-    if (/pig/.test(lower)) return `Data transformation language. Detail ETL pipelines created, data processing efficiency, and workflow automation.`;
+    if (/\bspark\b/.test(lower)) return `Fast data processing engine. Mention job optimization, processing time reductions, and data volume handled.`;
+    if (/\bhive\b/.test(lower)) return `SQL-on-Hadoop tool. Describe query optimization, data warehouse design, and analytics capabilities built.`;
+    if (/\bpig\b/.test(lower)) return `Data transformation language. Detail ETL pipelines created, data processing efficiency, and workflow automation.`;
+    if (/kafka/.test(lower)) return `Event streaming platform. Describe message throughput, stream processing, or real-time data pipelines built.`;
+    if (/airflow/.test(lower)) return `Workflow orchestration. Mention DAGs created, task scheduling, or data pipeline automation implemented.`;
 
     // Cloud & Infrastructure
-    if (/aws|azure|gcp/.test(lower)) return `Cloud platforms are highly valued. Specify services used (S3, EC2, Lambda) and scale of infrastructure managed.`;
-    if (/kubernetes|docker/.test(lower)) return `Container orchestration expertise. Mention cluster size, deployment automation, and uptime improvements.`;
+    if (/\baws\b/.test(lower)) return `Cloud platforms are highly valued. Specify services used (S3, EC2, Lambda, RDS) and scale of infrastructure managed.`;
+    if (/\bec2\b/.test(lower)) return `AWS compute service. Detail instance types managed, auto-scaling setups, or cost optimizations achieved.`;
+    if (/\bs3\b/.test(lower)) return `AWS object storage. Mention data volume stored, backup strategies, or CDN integrations implemented.`;
+    if (/lambda/.test(lower)) return `Serverless compute. Describe functions deployed, event triggers, or cost savings from serverless architecture.`;
+    if (/azure/.test(lower)) return `Microsoft cloud platform. Specify services used (VMs, App Services, Cosmos DB) and infrastructure scale.`;
+    if (/\bgcp\b|google cloud/.test(lower)) return `Google cloud platform. Detail services used (Compute Engine, BigQuery, Cloud Functions) and projects deployed.`;
+    if (/kubernetes|k8s/.test(lower)) return `Container orchestration. Mention cluster size (nodes/pods), deployment strategies, or uptime SLAs achieved.`;
+    if (/docker/.test(lower)) return `Containerization platform. Describe Dockerfiles written, image optimization, or CI/CD integration implemented.`;
+    if (/terraform/.test(lower)) return `Infrastructure as code. Detail resources provisioned, environments managed, or deployment automation built.`;
+    if (/ansible/.test(lower)) return `Configuration management. Mention servers managed, playbooks written, or deployment time reductions achieved.`;
 
     // AI/ML
-    if (/machine learning|ml/.test(lower)) return `High-demand AI skill. Detail algorithms used, model performance metrics, and business impact.`;
+    if (/machine learning|\bml\b/.test(lower)) return `High-demand AI skill. Detail algorithms used (regression, neural nets), model accuracy, and business impact.`;
+    if (/deep learning/.test(lower)) return `Advanced AI technique. Mention neural architectures (CNN, RNN, Transformer), model performance, and applications built.`;
+    if (/tensorflow/.test(lower)) return `ML framework. Describe models trained, training time optimizations, or inference performance improvements.`;
+    if (/pytorch/.test(lower)) return `ML research framework. Detail model architectures implemented, experiment tracking, or research contributions.`;
+    if (/\bnlp\b|natural language/.test(lower)) return `Text processing AI. Mention tasks (sentiment analysis, NER, translation), accuracy metrics, and use cases.`;
 
-    // Methodologies
-    if (/agile|scrum/.test(lower)) return `Project management methodology. Describe sprint cadence, velocity improvements, and team collaboration.`;
-    if (/git|github/.test(lower)) return `Version control is expected. Mention CI/CD pipelines, code review practices, or open source contributions.`;
+    // Web Frameworks
+    if (/\breact\b/.test(lower)) return `Popular UI library. Describe components built, state management (Redux/Context), or performance optimizations.`;
+    if (/\bvue\b/.test(lower)) return `Progressive framework. Mention components, Vuex state management, or SPAs built with measurable load times.`;
+    if (/angular/.test(lower)) return `Enterprise framework. Detail modules created, RxJS reactive patterns, or large-scale apps architected.`;
+    if (/node\.?js/.test(lower)) return `Server-side JavaScript. Describe APIs built, concurrent connections handled, or microservices developed.`;
+    if (/express/.test(lower)) return `Node.js framework. Mention REST APIs built, middleware implemented, or request throughput achieved.`;
+    if (/django/.test(lower)) return `Python web framework. Detail MVT architecture, ORM usage, or web apps deployed with user metrics.`;
+    if (/flask/.test(lower)) return `Lightweight Python framework. Describe microservices built, API endpoints created, or integration complexity.`;
+    if (/spring/.test(lower)) return `Java enterprise framework. Mention Spring Boot apps, dependency injection, or microservices architecture.`;
 
-    // Generic but context-aware
-    return `Add "${keyword}" with specific examples: where you used it, what problems you solved, and measurable results achieved (time saved, efficiency gained, or revenue impact).`;
+    // DevOps & Tools
+    if (/\bgit\b/.test(lower)) return `Version control is expected. Mention branching strategies, merge conflict resolution, or monorepo management.`;
+    if (/github|gitlab|bitbucket/.test(lower)) return `Code hosting platform. Detail CI/CD pipelines, PR review process, or open source contributions made.`;
+    if (/jenkins/.test(lower)) return `CI/CD automation. Describe pipelines built, build time reductions, or deployment frequency improvements.`;
+    if (/\bci\s*\/?\s*cd\b/.test(lower)) return `Automated deployment pipeline. Mention deployment frequency (daily/hourly), rollback strategies, or zero-downtime deploys.`;
+    if (/maven/.test(lower)) return `Java build tool. Detail dependency management, build optimization, or multi-module project configurations.`;
+    if (/\bpip\b/.test(lower)) return `Python package manager. Mention dependency management, virtual environments, or package distribution setup.`;
+    if (/npm|yarn/.test(lower)) return `JavaScript package manager. Describe dependency updates, security audits, or monorepo tooling setup.`;
+
+    // Soft Skills & Leadership
+    if (/system design/.test(lower)) return `Architecture skill. Describe systems designed (scalability, reliability), traffic handled (QPS), or architecture decisions made.`;
+    if (/performance optimization/.test(lower)) return `Critical skill. Quantify improvements: latency reductions (500ms→50ms), throughput increases (100→1000 req/s), or resource savings.`;
+    if (/scalability/.test(lower)) return `Growth capability. Mention scale achieved (10K→1M users), load testing, or horizontal/vertical scaling strategies.`;
+    if (/mentoring/.test(lower)) return `Leadership skill. Quantify: engineers mentored, code reviews conducted, or junior→mid promotions facilitated.`;
+    if (/code review/.test(lower)) return `Quality practice. Detail review volume (PRs/week), bug prevention rate, or code quality improvements measured.`;
+    if (/agile|scrum/.test(lower)) return `Project management methodology. Describe sprint cadence, velocity improvements (story points/sprint), and team collaboration.`;
+    if (/kanban/.test(lower)) return `Workflow visualization. Mention WIP limits set, cycle time reductions, or throughput improvements achieved.`;
+    if (/leadership/.test(lower)) return `Management skill. Quantify: team size led, projects delivered, or key initiatives championed with business impact.`;
+
+    // Testing & Quality
+    if (/\bunit test|testing/.test(lower)) return `Quality assurance. Mention test coverage % achieved, testing frameworks used (Jest, PyTest), or bug reduction rates.`;
+    if (/integration test/.test(lower)) return `End-to-end validation. Describe test suites built, CI integration, or production incidents prevented.`;
+    if (/\btdd\b|test.driven/.test(lower)) return `Development methodology. Detail test coverage, refactoring confidence, or code quality improvements.`;
+
+    // Security
+    if (/security|encryption/.test(lower)) return `Critical concern. Mention security audits, vulnerability fixes, encryption implementations, or compliance achieved.`;
+    if (/oauth|authentication/.test(lower)) return `User security. Describe auth flows implemented, SSO integration, or security improvements (e.g., MFA).`;
+
+    // APIs & Protocols
+    if (/\brest\b|\brest\s*api/.test(lower)) return `API design pattern. Mention endpoints created, API versioning, or throughput handled (requests/sec).`;
+    if (/graphql/.test(lower)) return `Query language. Describe schemas designed, resolver optimization, or over-fetching reductions achieved.`;
+    if (/\bgrpc\b/.test(lower)) return `High-performance RPC. Detail services built, performance gains over REST, or microservices communication.`;
+    if (/websocket/.test(lower)) return `Real-time communication. Mention concurrent connections, latency targets, or live features built (chat, notifications).`;
+
+    // Generic but context-aware fallback
+    return `Include "${keyword}" in Technical Skills or Experience. Add context: tools/versions used, scale of work, and quantifiable impact (faster, cheaper, more reliable).`;
   };
 
   // ML-powered keyword suggestion engine - analyzes CV context, industry, seniority
