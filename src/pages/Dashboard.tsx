@@ -385,50 +385,6 @@ export default function Dashboard() {
 
         return (
           <div className="space-y-8 pb-24 md:pb-6">
-            {/* 2026 New Year Banner */}
-            <div className="relative w-full rounded-2xl overflow-hidden border border-indigo-100 shadow-xl shadow-indigo-100/50 group bg-[#FFFFFF]">
-              <div className="absolute inset-0 z-0">
-                <img
-                  alt="Fireworks background"
-                  className="w-full h-full object-cover opacity-20 mix-blend-overlay"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA0wAv1FuCaB34T2Iy0f_rr8s6w5qzc2v1vnEid0uZWPo9e6s-ifHM1O_9P85DafDswLiya2c1l2zLijjgsBK7Lr81AHFuC0xtjadz8ID_wqi0XeYz9baWd7ZqTncJQc7GltfGLl-iYihEAxjEnf9VYW12XgnfVQkLNXAhrkm9BCH5IuaUxYjJvFETX1D1PaI33uyjLrQpiHnXh_3PVbz5NGpRJW5GKwSMdyHeJhcWSTE5OaqUPhirp-WT6BDEygVny9u5Z5Sd-Q"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-fuchsia-500 opacity-90"></div>
-              </div>
-
-              <div className="relative z-10 p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-                <div className="flex flex-col gap-4 max-w-2xl">
-                  <div className="text-yellow-200 text-xs font-bold tracking-[0.2em] uppercase bg-[#FFFFFF]/10 w-fit px-3 py-1 rounded backdrop-blur-md border border-white/20">
-                    New Year Resolution Hack
-                  </div>
-                  <h1 className="text-3xl md:text-4xl font-black text-white leading-tight drop-shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                    2026 is the year you get the job. <br className="hidden md:block" />
-                    <span className="text-indigo-100">
-                      Stop being invisible.
-                    </span>
-                  </h1>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-indigo-50 font-medium text-lg">
-                      New Year Pass: <span className="text-white font-bold">$4.99</span> for 1 Full Audit + Keyword Sniper (Single Use).
-                    </p>
-                    <p className="text-indigo-200 text-sm italic">
-                      $4.99 is an impulse fix—your robots see it instantly and so will recruiters.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex-shrink-0">
-                  <button
-                    onClick={() => setShowPricing(true)}
-                    className="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 font-bold py-3 px-6 rounded-lg shadow-[0_4px_14px_rgba(250,204,21,0.4)] transition-all transform hover:scale-105 flex items-center gap-2 border border-yellow-300 ring-2 ring-transparent hover:ring-yellow-200"
-                  >
-                    <span className="material-symbols-outlined text-xl">auto_awesome</span>
-                    Unlock New Year Pass
-                  </button>
-                </div>
-              </div>
-            </div>
-
             {/* AI Tools Section */}
             <div>
               <h2 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">

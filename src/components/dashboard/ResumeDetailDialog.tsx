@@ -100,8 +100,11 @@ export function ResumeDetailDialog({
   const [isReanalyzing, setIsReanalyzing] = useState(false);
   const [activeTab, setActiveTab] = useState("robot");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
-  // PDF collapsed by default on mobile (true), expanded on desktop
-  const [isPdfCollapsed, setIsPdfCollapsed] = useState(true);
+  // PDF collapsed by default on mobile, expanded on desktop
+  const [isPdfCollapsed, setIsPdfCollapsed] = useState(() => {
+    // Check if we're on mobile (less than 1024px which is lg breakpoint)
+    return typeof window !== 'undefined' ? window.innerWidth < 1024 : true;
+  });
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState<string>("general");
 
