@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useI18n } from "@/contexts/I18nContext";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 // Cast to any to avoid type instantiation issues
 const apiAny = api as any;
@@ -320,11 +322,24 @@ export function InterviewBattlePlan({
             </span>
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded border border-green-200 text-xs md:text-sm">
             <span className="material-symbols-outlined text-sm">check_circle</span>
             <span className="font-medium">Ready for Interview</span>
           </div>
+          <Button
+            onClick={() => {
+              toast.success("Preparing interview guide PDF...");
+              // Use browser print for now - can be enhanced with PDF library later
+              window.print();
+            }}
+            variant="outline"
+            size="sm"
+            className="gap-2 font-semibold border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+          >
+            <Download className="h-4 w-4" />
+            <span className="hidden sm:inline">Export to PDF</span>
+          </Button>
         </div>
       </div>
 

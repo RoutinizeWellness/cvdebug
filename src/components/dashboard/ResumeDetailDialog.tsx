@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -36,7 +37,8 @@ import {
   MoreVertical,
   Share2,
   TrendingUp,
-  ListChecks
+  ListChecks,
+  Settings
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -107,6 +109,7 @@ export function ResumeDetailDialog({
   });
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState<string>("general");
+  const [showSystemLogs, setShowSystemLogs] = useState(false);
 
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useMutation(apiAny.resumes.analyzeResume);
@@ -794,7 +797,7 @@ export function ResumeDetailDialog({
                 </span>
               </Button>
             )}
-            {/* Export Menu - Grouped Download/Print/Share */}
+            {/* Actions Menu - Grouped Download/Print/Share/Delete */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -803,12 +806,12 @@ export function ResumeDetailDialog({
                   className="hidden sm:flex gap-2 font-bold"
                   disabled={!displayResume}
                 >
-                  <Share2 className="h-4 w-4" />
-                  Export
+                  <Settings className="h-4 w-4" />
+                  Actions
                   <MoreVertical className="h-3 w-3 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-52">
                 <DropdownMenuItem onClick={handleDownloadFile} disabled={!displayResume}>
                   <Download className="h-4 w-4 mr-2" />
                   Download CV
@@ -821,17 +824,17 @@ export function ResumeDetailDialog({
                   <Link2 className="h-4 w-4 mr-2" />
                   Share Link
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => displayResume && onDelete(displayResume._id)}
+                  disabled={!displayResume}
+                  className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Resume
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="w-px h-8 bg-slate-200 mx-1 self-center hidden sm:block" />
-            <button
-              className="p-2 hover:bg-red-50 text-[#EF4444] rounded-lg transition-colors border border-transparent hover:border-red-200"
-              onClick={() => displayResume && onDelete(displayResume._id)}
-              title="Delete"
-              disabled={!displayResume}
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
             <button
               className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-[#475569] hover:text-[#0F172A]"
               onClick={onClose}
@@ -1291,17 +1294,37 @@ Software Engineer | StartupXYZ
                       )}
 
                       {/* DIRTY Terminal Output - Real Error Console Style */}
-                      <div className="bg-[#000000] p-4 space-y-0">
-                        {/* Startup Log - Make it look messy */}
-                        <div className="font-mono text-[10px] text-[#4A4A4A] mb-2 space-y-0 leading-tight">
-                          <div>[{new Date().toISOString()}] Starting ATS_Parser v3.8.12...</div>
-                          <div>[{new Date().toISOString()}] Loading resume_analysis.dll</div>
-                          <div>[{new Date().toISOString()}] Initializing keyword_extraction_engine</div>
-                          <div className="text-[#22C55E]">[{new Date().toISOString()}] ✓ Parser initialized successfully</div>
-                          <div className="text-[#F59E0B]">[{new Date().toISOString()}] ⚠ WARN: Strict mode enabled - high rejection rate</div>
-                        </div>
+                      <div className="bg-[#000000] space-y-0">
+                        {/* Collapsible System Logs Header */}
+                        <button
+                          onClick={() => setShowSystemLogs(!showSystemLogs)}
+                          className="w-full p-4 flex items-center justify-between hover:bg-[#1A1A1A] transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="text-[#64748B] text-xs font-mono uppercase tracking-wider">
+                              {showSystemLogs ? '▼' : '▶'} System Logs
+                            </span>
+                            <span className="text-[#4A4A4A] text-[10px] font-mono">
+                              (Technical diagnostics)
+                            </span>
+                          </div>
+                          <span className="text-[#64748B] text-[10px] font-mono">
+                            {showSystemLogs ? 'Hide' : 'Show'} Details
+                          </span>
+                        </button>
 
-                        <div className="h-px bg-[#1E1E1E] my-3"></div>
+                        {showSystemLogs && (
+                          <div className="p-4 pt-0">
+                            {/* Startup Log - Make it look messy */}
+                            <div className="font-mono text-[10px] text-[#4A4A4A] mb-2 space-y-0 leading-tight">
+                              <div>[{new Date().toISOString()}] Starting ATS_Parser v3.8.12...</div>
+                              <div>[{new Date().toISOString()}] Loading resume_analysis.dll</div>
+                              <div>[{new Date().toISOString()}] Initializing keyword_extraction_engine</div>
+                              <div className="text-[#22C55E]">[{new Date().toISOString()}] ✓ Parser initialized successfully</div>
+                              <div className="text-[#F59E0B]">[{new Date().toISOString()}] ⚠ WARN: Strict mode enabled - high rejection rate</div>
+                            </div>
+
+                            <div className="h-px bg-[#1E1E1E] my-3"></div>
 
                         {/* ERROR SPAM - Make it overwhelming like real bugs */}
                         <div className="space-y-1.5 font-mono text-[11px] leading-tight">
@@ -1403,6 +1426,8 @@ Impact: AUTO_REJECT (100% rejection rate)
                             </pre>
                           </div>
                         </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Image Trap Warning */}

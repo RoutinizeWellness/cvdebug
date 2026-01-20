@@ -598,12 +598,15 @@ export function LiveRecruiterSimulation({
             transition={{ delay: 0.5 }}
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-bold text-[#475569] uppercase tracking-widest">Seniority Level</h3>
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-[#22C55E] font-medium border border-emerald-200">
                 MATCH
               </span>
             </div>
+            <p className="text-[10px] text-[#64748B] italic mb-3 border-l-2 border-amber-300 pl-2 bg-amber-50/50 py-1 rounded">
+              ⚠️ Based on extracted dates only
+            </p>
             <div className="relative h-2 bg-slate-100 rounded-full mb-2 overflow-hidden border border-[#E2E8F0]">
               <div
                 className="absolute top-0 bottom-0 bg-blue-200 opacity-50"
