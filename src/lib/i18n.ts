@@ -974,6 +974,24 @@ export interface Translation {
     semanticMatch: string;
     foundInResume: string;
     clickToHide: string;
+    // Paywall content
+    criticalSignalsLocked: string;
+    unlockFullAnalysis: string;
+    unlockDescription: string;
+    quantifiedImpact: string;
+    specificDescriptions: string;
+    aiRecommendations: string;
+    increaseScoreBy: string;
+    detailedImpactAnalysis: string;
+    impactPerKeyword: string;
+    specificForEachKeyword: string;
+    recommendedLocation: string;
+    autoAddWithAI: string;
+    unlockComplete: string;
+    sevenDayPlan: string;
+    keywordsMissingLocked: string;
+    unlockCompleteList: string;
+    unlockButton: string;
   };
   // AI Feedback
   aiFeedback: {
@@ -1944,6 +1962,24 @@ export const translations: Record<SupportedLocale, Translation> = {
       semanticMatch: 'Semantic Match',
       foundInResume: 'Found in resume',
       clickToHide: 'Click to hide details',
+      // Paywall content
+      criticalSignalsLocked: 'Critical Signals Locked',
+      unlockFullAnalysis: 'Unlock Full Analysis',
+      unlockDescription: 'Unlock the complete missing keywords analysis with quantified impact, specific descriptions, and AI recommendations to increase your score by up to +15%.',
+      quantifiedImpact: 'quantified impact',
+      specificDescriptions: 'specific descriptions',
+      aiRecommendations: 'AI recommendations',
+      increaseScoreBy: 'to increase your score by up to +15%',
+      detailedImpactAnalysis: 'Detailed impact analysis (+2% per keyword)',
+      impactPerKeyword: '+2% per keyword',
+      specificForEachKeyword: 'Specific descriptions for each keyword',
+      recommendedLocation: 'Recommended location in resume',
+      autoAddWithAI: 'Auto-Add with AI (Writing Forge)',
+      unlockComplete: 'Unlock Complete Analysis',
+      sevenDayPlan: '7-Day Plan • $4.99',
+      keywordsMissingLocked: 'Missing Keywords Locked',
+      unlockCompleteList: 'Unlock the complete list of critical keywords with quantified impact (+15% score).',
+      unlockButton: 'Unlock',
     },
     aiFeedback: {
       rateResponse: 'Rate this response',
@@ -2910,6 +2946,24 @@ export const translations: Record<SupportedLocale, Translation> = {
       semanticMatch: 'Coincidencia Semántica',
       foundInResume: 'Encontrado en currículum',
       clickToHide: 'Click para ocultar detalles',
+      // Paywall content
+      criticalSignalsLocked: 'Señales Críticas Bloqueadas',
+      unlockFullAnalysis: 'Desbloquear Análisis Completo',
+      unlockDescription: 'Desbloquea el análisis completo de keywords faltantes con impacto cuantificado, descripciones específicas, y recomendaciones de IA para aumentar tu score hasta +15%.',
+      quantifiedImpact: 'impacto cuantificado',
+      specificDescriptions: 'descripciones específicas',
+      aiRecommendations: 'recomendaciones de IA',
+      increaseScoreBy: 'para aumentar tu score hasta +15%',
+      detailedImpactAnalysis: 'Análisis de impacto detallado (+2% por keyword)',
+      impactPerKeyword: '+2% por keyword',
+      specificForEachKeyword: 'Descripciones específicas para cada keyword',
+      recommendedLocation: 'Ubicación recomendada en el CV',
+      autoAddWithAI: 'Auto-Add con IA (Writing Forge)',
+      unlockComplete: 'Desbloquear Análisis Completo',
+      sevenDayPlan: 'Plan de 7 días • $4.99',
+      keywordsMissingLocked: 'Keywords Faltantes Bloqueadas',
+      unlockCompleteList: 'Desbloquea la lista completa de keywords críticas con impacto cuantificado (+15% score).',
+      unlockButton: 'Desbloquear',
     },
     aiFeedback: {
       rateResponse: 'Califica esta respuesta',
@@ -3876,6 +3930,24 @@ export const translations: Record<SupportedLocale, Translation> = {
       semanticMatch: 'Correspondance Sémantique',
       foundInResume: 'Trouvé dans le CV',
       clickToHide: 'Cliquez pour masquer les détails',
+      // Paywall content
+      criticalSignalsLocked: 'Signaux Critiques Verrouillés',
+      unlockFullAnalysis: 'Débloquer l\'Analyse Complète',
+      unlockDescription: 'Débloquez l\'analyse complète des mots-clés manquants avec impact quantifié, descriptions spécifiques, et recommandations IA pour augmenter votre score jusqu\'à +15%.',
+      quantifiedImpact: 'impact quantifié',
+      specificDescriptions: 'descriptions spécifiques',
+      aiRecommendations: 'recommandations IA',
+      increaseScoreBy: 'pour augmenter votre score jusqu\'à +15%',
+      detailedImpactAnalysis: 'Analyse d\'impact détaillée (+2% par mot-clé)',
+      impactPerKeyword: '+2% par mot-clé',
+      specificForEachKeyword: 'Descriptions spécifiques pour chaque mot-clé',
+      recommendedLocation: 'Emplacement recommandé dans le CV',
+      autoAddWithAI: 'Ajout Auto avec IA (Writing Forge)',
+      unlockComplete: 'Débloquer l\'Analyse Complète',
+      sevenDayPlan: 'Plan de 7 jours • $4.99',
+      keywordsMissingLocked: 'Mots-clés Manquants Verrouillés',
+      unlockCompleteList: 'Débloquez la liste complète des mots-clés critiques avec impact quantifié (+15% score).',
+      unlockButton: 'Débloquer',
     },
     aiFeedback: {
       rateResponse: 'Évaluer cette réponse',
@@ -4842,6 +4914,24 @@ export const translations: Record<SupportedLocale, Translation> = {
       semanticMatch: 'Semantische Übereinstimmung',
       foundInResume: 'Im Lebenslauf gefunden',
       clickToHide: 'Klicken zum Ausblenden',
+      // Paywall content
+      criticalSignalsLocked: 'Kritische Signale Gesperrt',
+      unlockFullAnalysis: 'Vollständige Analyse Freischalten',
+      unlockDescription: 'Schalten Sie die vollständige Analyse fehlender Schlüsselwörter mit quantifizierter Wirkung, spezifischen Beschreibungen und KI-Empfehlungen frei, um Ihre Punktzahl um bis zu +15% zu erhöhen.',
+      quantifiedImpact: 'quantifizierte Wirkung',
+      specificDescriptions: 'spezifische Beschreibungen',
+      aiRecommendations: 'KI-Empfehlungen',
+      increaseScoreBy: 'um Ihre Punktzahl um bis zu +15% zu erhöhen',
+      detailedImpactAnalysis: 'Detaillierte Wirkungsanalyse (+2% pro Schlüsselwort)',
+      impactPerKeyword: '+2% pro Schlüsselwort',
+      specificForEachKeyword: 'Spezifische Beschreibungen für jedes Schlüsselwort',
+      recommendedLocation: 'Empfohlener Standort im Lebenslauf',
+      autoAddWithAI: 'Auto-Add mit KI (Writing Forge)',
+      unlockComplete: 'Vollständige Analyse Freischalten',
+      sevenDayPlan: '7-Tage-Plan • $4.99',
+      keywordsMissingLocked: 'Fehlende Schlüsselwörter Gesperrt',
+      unlockCompleteList: 'Schalten Sie die vollständige Liste kritischer Schlüsselwörter mit quantifizierter Wirkung (+15% Punktzahl) frei.',
+      unlockButton: 'Freischalten',
     },
     aiFeedback: {
       rateResponse: 'Diese Antwort bewerten',
@@ -5789,6 +5879,24 @@ export const translations: Record<SupportedLocale, Translation> = {
       semanticMatch: 'Correspondência Semântica',
       foundInResume: 'Encontrado no Currículo',
       clickToHide: 'Clique para Ocultar',
+      // Paywall content
+      criticalSignalsLocked: 'Sinais Críticos Bloqueados',
+      unlockFullAnalysis: 'Desbloquear Análise Completa',
+      unlockDescription: 'Desbloqueie a análise completa de palavras-chave ausentes com impacto quantificado, descrições específicas e recomendações de IA para aumentar sua pontuação em até +15%.',
+      quantifiedImpact: 'impacto quantificado',
+      specificDescriptions: 'descrições específicas',
+      aiRecommendations: 'recomendações de IA',
+      increaseScoreBy: 'para aumentar sua pontuação em até +15%',
+      detailedImpactAnalysis: 'Análise de impacto detalhada (+2% por palavra-chave)',
+      impactPerKeyword: '+2% por palavra-chave',
+      specificForEachKeyword: 'Descrições específicas para cada palavra-chave',
+      recommendedLocation: 'Localização recomendada no currículo',
+      autoAddWithAI: 'Adicionar Auto com IA (Writing Forge)',
+      unlockComplete: 'Desbloquear Análise Completa',
+      sevenDayPlan: 'Plano de 7 dias • $4.99',
+      keywordsMissingLocked: 'Palavras-chave Ausentes Bloqueadas',
+      unlockCompleteList: 'Desbloqueie a lista completa de palavras-chave críticas com impacto quantificado (+15% pontuação).',
+      unlockButton: 'Desbloquear',
     },
     aiFeedback: {
       rateResponse: 'Avaliar esta resposta',

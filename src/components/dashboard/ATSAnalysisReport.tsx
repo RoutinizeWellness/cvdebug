@@ -6,6 +6,7 @@ import { WeakBulletSuggestions } from "./WeakBulletSuggestions";
 import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
 import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
 import { AutoTuneButton } from "./AutoTuneButton";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -24,6 +25,7 @@ export function ATSAnalysisReport({
   onDownloadPDF,
   onUpgrade
 }: ATSAnalysisReportProps) {
+  const { t } = useI18n();
   const score = resume?.score || 0; // No fake score - show real data only
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
@@ -779,17 +781,17 @@ export function ATSAnalysisReport({
                               <span className="material-symbols-outlined text-3xl text-white">lock</span>
                             </div>
                             <h3 className="text-xl font-bold text-[#0F172A] mb-2">
-                              Keywords Faltantes Bloqueadas
+                              {t.keywordAnalysis.keywordsMissingLocked}
                             </h3>
                             <p className="text-sm text-[#64748B] mb-4 leading-relaxed">
-                              Desbloquea la lista completa de keywords críticas con <span className="font-semibold text-[#0F172A]">impacto cuantificado</span> (+15% score).
+                              {t.keywordAnalysis.unlockCompleteList}
                             </p>
                             <button
                               onClick={onUpgrade}
                               className="bg-gradient-to-r from-[#F59E0B] to-[#EF4444] hover:opacity-90 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-lg shadow-[#F59E0B]/30 text-sm flex items-center justify-center gap-2 mx-auto"
                             >
                               <span className="material-symbols-outlined text-sm">workspace_premium</span>
-                              Desbloquear
+                              {t.keywordAnalysis.unlockButton}
                             </button>
                           </div>
                         </div>

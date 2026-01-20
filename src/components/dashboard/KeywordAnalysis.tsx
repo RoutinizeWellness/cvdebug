@@ -735,12 +735,10 @@ export function KeywordAnalysis({
                       <span className="material-symbols-outlined text-4xl text-white">lock</span>
                     </div>
                     <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
-                      Señales Críticas Faltantes
+                      {t.keywordAnalysis.criticalSignalsLocked}
                     </h3>
                     <p className="text-sm text-[#64748B] mb-6 leading-relaxed">
-                      Desbloquea el análisis completo de keywords faltantes con <span className="font-semibold text-[#0F172A]">impacto cuantificado</span>,
-                      <span className="font-semibold text-[#0F172A]"> descripciones específicas</span>, y
-                      <span className="font-semibold text-[#0F172A]"> recomendaciones de IA</span> para aumentar tu score hasta +15%.
+                      {t.keywordAnalysis.unlockDescription}
                     </p>
 
                     {/* Benefits List */}
@@ -748,19 +746,19 @@ export function KeywordAnalysis({
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
                           <span className="text-[#22C55E]">✓</span>
-                          <span>Análisis de impacto detallado (+2% por keyword)</span>
+                          <span>{t.keywordAnalysis.detailedImpactAnalysis}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
                           <span className="text-[#22C55E]">✓</span>
-                          <span>Descripciones específicas para cada keyword</span>
+                          <span>{t.keywordAnalysis.specificForEachKeyword}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
                           <span className="text-[#22C55E]">✓</span>
-                          <span>Ubicación recomendada en el CV</span>
+                          <span>{t.keywordAnalysis.recommendedLocation}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
                           <span className="text-[#22C55E]">✓</span>
-                          <span>Auto-Add con IA (Writing Forge)</span>
+                          <span>{t.keywordAnalysis.autoAddWithAI}</span>
                         </div>
                       </div>
                     </div>
@@ -770,10 +768,10 @@ export function KeywordAnalysis({
                       className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#8B5CF6]/30 hover:shadow-2xl hover:shadow-[#8B5CF6]/40 flex items-center justify-center gap-2"
                     >
                       <span className="material-symbols-outlined">workspace_premium</span>
-                      Desbloquear Análisis Completo
+                      {t.keywordAnalysis.unlockComplete}
                     </button>
                     <p className="text-xs text-[#94A3B8] mt-3">
-                      Plan de 7 días • $4.99
+                      {t.keywordAnalysis.sevenDayPlan}
                     </p>
                   </div>
                 </div>
