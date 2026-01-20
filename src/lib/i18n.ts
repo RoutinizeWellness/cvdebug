@@ -1257,6 +1257,34 @@ export interface Translation {
     dateFormatInconsistency: string;
     atExperienceBlock: string;
   };
+  // Projects View
+  projectsView: {
+    searchPlaceholder: string;
+    uploadNewMasterCV: string;
+    allProjects: string;
+    highMatch: string;
+    needsReview: string;
+    archived: string;
+    sortBy: string;
+    lastUpdated: string;
+    loadingProjects: string;
+    noProjectsYet: string;
+    noProjectsDesc: string;
+    createFirstProject: string;
+    matchScore: string;
+    stable: string;
+    missingData: string;
+    highPriority: string;
+    strong: string;
+    moderate: string;
+    low: string;
+    hoursAgo: string;
+    daysAgo: string;
+    weeksAgo: string;
+    openProjectBoard: string;
+    createNewProject: string;
+    createNewProjectDesc: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -2464,6 +2492,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Date format inconsistency found',
       atExperienceBlock: 'at Experience.block (Line 42)',
     },
+    projectsView: {
+      searchPlaceholder: 'Search projects, tags...',
+      uploadNewMasterCV: 'Upload New Master CV',
+      allProjects: 'All Projects',
+      highMatch: 'High Match',
+      needsReview: 'Needs Review',
+      archived: 'Archived',
+      sortBy: 'Sort by:',
+      lastUpdated: 'Last Updated',
+      loadingProjects: 'Loading projects...',
+      noProjectsYet: 'No projects yet',
+      noProjectsDesc: 'Create your first project to start tracking applications and optimizing your resume.',
+      createFirstProject: 'Create Your First Project',
+      matchScore: 'Match Score',
+      stable: 'Stable',
+      missingData: 'Missing Data',
+      highPriority: 'High Priority',
+      strong: 'Strong',
+      moderate: 'Moderate',
+      low: 'Low',
+      hoursAgo: 'h ago',
+      daysAgo: 'd ago',
+      weeksAgo: 'w ago',
+      openProjectBoard: 'Open Project Board',
+      createNewProject: 'Create New Project',
+      createNewProjectDesc: 'Start a new mission or upload a CV to analyze.',
+    },
   },
   'es': {
     hero: {
@@ -3668,6 +3723,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto en match_score:',
       dateFormatInconsistency: 'Inconsistencia de formato de fecha encontrada',
       atExperienceBlock: 'en Experience.block (Línea 42)',
+    },
+    projectsView: {
+      searchPlaceholder: 'Buscar proyectos, etiquetas...',
+      uploadNewMasterCV: 'Cargar Nuevo CV Maestro',
+      allProjects: 'Todos los Proyectos',
+      highMatch: 'Alta Coincidencia',
+      needsReview: 'Necesita Revisión',
+      archived: 'Archivado',
+      sortBy: 'Ordenar por:',
+      lastUpdated: 'Última Actualización',
+      loadingProjects: 'Cargando proyectos...',
+      noProjectsYet: 'Aún no hay proyectos',
+      noProjectsDesc: 'Crea tu primer proyecto para comenzar a rastrear solicitudes y optimizar tu CV.',
+      createFirstProject: 'Crear Tu Primer Proyecto',
+      matchScore: 'Puntuación de Coincidencia',
+      stable: 'Estable',
+      missingData: 'Datos Faltantes',
+      highPriority: 'Alta Prioridad',
+      strong: 'Fuerte',
+      moderate: 'Moderado',
+      low: 'Bajo',
+      hoursAgo: 'h atrás',
+      daysAgo: 'd atrás',
+      weeksAgo: 's atrás',
+      openProjectBoard: 'Abrir Panel de Proyecto',
+      createNewProject: 'Crear Nuevo Proyecto',
+      createNewProjectDesc: 'Inicia una nueva misión o carga un CV para analizar.',
     },
   },
   'fr': {
@@ -4874,6 +4956,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Incohérence de format de date trouvée',
       atExperienceBlock: 'à Experience.block (Ligne 42)',
     },
+    projectsView: {
+      searchPlaceholder: 'Rechercher projets, tags...',
+      uploadNewMasterCV: 'Télécharger Nouveau CV Principal',
+      allProjects: 'Tous les Projets',
+      highMatch: 'Forte Correspondance',
+      needsReview: 'À Réviser',
+      archived: 'Archivé',
+      sortBy: 'Trier par:',
+      lastUpdated: 'Dernière Mise à Jour',
+      loadingProjects: 'Chargement des projets...',
+      noProjectsYet: 'Pas encore de projets',
+      noProjectsDesc: 'Créez votre premier projet pour commencer à suivre les candidatures et optimiser votre CV.',
+      createFirstProject: 'Créer Votre Premier Projet',
+      matchScore: 'Score de Correspondance',
+      stable: 'Stable',
+      missingData: 'Données Manquantes',
+      highPriority: 'Haute Priorité',
+      strong: 'Fort',
+      moderate: 'Modéré',
+      low: 'Faible',
+      hoursAgo: 'h',
+      daysAgo: 'j',
+      weeksAgo: 's',
+      openProjectBoard: 'Ouvrir le Tableau de Projet',
+      createNewProject: 'Créer Nouveau Projet',
+      createNewProjectDesc: 'Lancez une nouvelle mission ou téléchargez un CV à analyser.',
+    },
   },
   'de': {
     hero: {
@@ -6079,6 +6188,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       dateFormatInconsistency: 'Datumsformat-Inkonsistenz gefunden',
       atExperienceBlock: 'bei Experience.block (Zeile 42)',
     },
+    projectsView: {
+      searchPlaceholder: 'Projekte, Tags suchen...',
+      uploadNewMasterCV: 'Neuen Master-CV hochladen',
+      allProjects: 'Alle Projekte',
+      highMatch: 'Hohe Übereinstimmung',
+      needsReview: 'Überprüfung erforderlich',
+      archived: 'Archiviert',
+      sortBy: 'Sortieren nach:',
+      lastUpdated: 'Zuletzt aktualisiert',
+      loadingProjects: 'Projekte werden geladen...',
+      noProjectsYet: 'Noch keine Projekte',
+      noProjectsDesc: 'Erstellen Sie Ihr erstes Projekt, um Bewerbungen zu verfolgen und Ihren Lebenslauf zu optimieren.',
+      createFirstProject: 'Ihr Erstes Projekt Erstellen',
+      matchScore: 'Übereinstimmungswert',
+      stable: 'Stabil',
+      missingData: 'Fehlende Daten',
+      highPriority: 'Hohe Priorität',
+      strong: 'Stark',
+      moderate: 'Moderat',
+      low: 'Niedrig',
+      hoursAgo: 'Std',
+      daysAgo: 'T',
+      weeksAgo: 'W',
+      openProjectBoard: 'Projekt-Board öffnen',
+      createNewProject: 'Neues Projekt erstellen',
+      createNewProjectDesc: 'Starten Sie eine neue Mission oder laden Sie einen CV zur Analyse hoch.',
+    },
   },
   'pt': {
     hero: {
@@ -7283,6 +7419,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto no match_score:',
       dateFormatInconsistency: 'Inconsistência de formato de data encontrada',
       atExperienceBlock: 'em Experience.block (Linha 42)',
+    },
+    projectsView: {
+      searchPlaceholder: 'Buscar projetos, tags...',
+      uploadNewMasterCV: 'Carregar Novo CV Principal',
+      allProjects: 'Todos os Projetos',
+      highMatch: 'Alta Correspondência',
+      needsReview: 'Requer Revisão',
+      archived: 'Arquivado',
+      sortBy: 'Ordenar por:',
+      lastUpdated: 'Última Atualização',
+      loadingProjects: 'Carregando projetos...',
+      noProjectsYet: 'Ainda sem projetos',
+      noProjectsDesc: 'Crie seu primeiro projeto para começar a rastrear candidaturas e otimizar seu CV.',
+      createFirstProject: 'Criar Seu Primeiro Projeto',
+      matchScore: 'Pontuação de Correspondência',
+      stable: 'Estável',
+      missingData: 'Dados Ausentes',
+      highPriority: 'Alta Prioridade',
+      strong: 'Forte',
+      moderate: 'Moderado',
+      low: 'Baixo',
+      hoursAgo: 'h atrás',
+      daysAgo: 'd atrás',
+      weeksAgo: 's atrás',
+      openProjectBoard: 'Abrir Painel de Projeto',
+      createNewProject: 'Criar Novo Projeto',
+      createNewProjectDesc: 'Inicie uma nova missão ou carregue um CV para analisar.',
     },
   },
 };

@@ -7,12 +7,14 @@ import { CreateProjectDialog } from "./CreateProjectDialog";
 import { PricingDialog } from "@/components/PricingDialog";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 import { useNavigate } from "react-router";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface ProjectsViewProps {
   onSelectProject: (id: Id<"projects">) => void;
 }
 
 export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
+  const { t } = useI18n();
   const navigate = useNavigate();
   const projects = useQuery(api.projects.getProjects, { status: "active" });
   const user = useQuery((api as any).users.currentUser);
@@ -32,10 +34,10 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   const getHealthStatus = (project: Doc<"projects">) => {
     const status = project.healthStatus || 'healthy';
     const score = (project as any).globalScore || 0;
-    
+
     if (status === 'healthy' && score >= 80) {
       return {
-        label: "Stable",
+        label: t.projectsView.stable,
         color: "text-emerald-400",
         bgColor: "bg-[#22C55E]/10",
         borderColor: "border-emerald-500/20",
@@ -43,7 +45,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
       };
     } else if (status === 'warning' || (score >= 40 && score < 80)) {
       return {
-        label: "Needs Review",
+        label: t.projectsView.needsReview,
         color: "text-yellow-400",
         bgColor: "bg-yellow-500/10",
         borderColor: "border-yellow-500/20",
@@ -51,7 +53,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
       };
     }
     return {
-      label: "Missing Data",
+      label: t.projectsView.missingData,
       color: "text-red-400",
       bgColor: "bg-[#EF4444]/10",
       borderColor: "border-red-500/20",
@@ -60,10 +62,10 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 80) return "High Priority";
-    if (score >= 60) return "Strong";
-    if (score >= 40) return "Moderate";
-    return "Low";
+    if (score >= 80) return t.projectsView.highPriority;
+    if (score >= 60) return t.projectsView.strong;
+    if (score >= 40) return t.projectsView.moderate;
+    return t.projectsView.low;
   };
 
   const formatTimeAgo = (timestamp: number) => {
@@ -71,10 +73,10 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
     const diff = now - timestamp;
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
-    return `${Math.floor(days / 7)}w ago`;
+
+    if (hours < 24) return `${hours}${t.projectsView.hoursAgo}`;
+    if (days < 7) return `${days}${t.projectsView.daysAgo}`;
+    return `${Math.floor(days / 7)}${t.projectsView.weeksAgo}`;
   };
 
   return (
@@ -86,21 +88,21 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
             <Search className="h-4 w-4 text-[#64748B]" />
             <input
               className="bg-transparent border-none text-sm text-[#0F172A] placeholder-slate-500 focus:ring-0 w-full ml-2 p-0 h-auto outline-none"
-              placeholder="Search projects, tags..."
+              placeholder={t.projectsView.searchPlaceholder}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
-        <Button 
+        <Button
           onClick={() => navigate("/onboarding")}
           className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-[#0F172A] font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-0.5 flex items-center gap-2"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
-          Upload New Master CV
+          {t.projectsView.uploadNewMasterCV}
         </Button>
       </div>
 
@@ -115,7 +117,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 : "bg-[#FFFFFF] text-[#64748B] border-[#E2E8F0] hover:text-[#0F172A] hover:border-[#E2E8F0]"
             }`}
           >
-            All Projects
+            {t.projectsView.allProjects}
           </button>
           <button
             onClick={() => setFilterStatus("high")}
@@ -125,7 +127,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 : "bg-[#FFFFFF] text-[#64748B] border-[#E2E8F0] hover:text-[#0F172A] hover:border-[#E2E8F0]"
             }`}
           >
-            High Match
+            {t.projectsView.highMatch}
           </button>
           <button
             onClick={() => setFilterStatus("review")}
@@ -135,7 +137,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 : "bg-[#FFFFFF] text-[#64748B] border-[#E2E8F0] hover:text-[#0F172A] hover:border-[#E2E8F0]"
             }`}
           >
-            Needs Review
+            {t.projectsView.needsReview}
           </button>
           <button
             onClick={() => setFilterStatus("archived")}
@@ -145,14 +147,14 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                 : "bg-[#FFFFFF] text-[#64748B] border-[#E2E8F0] hover:text-[#0F172A] hover:border-[#E2E8F0]"
             }`}
           >
-            Archived
+            {t.projectsView.archived}
           </button>
         </div>
 
         <div className="flex items-center gap-2 text-sm text-[#64748B]">
-          <span>Sort by:</span>
+          <span>{t.projectsView.sortBy}</span>
           <button className="flex items-center gap-1 font-medium text-[#0F172A] hover:text-primary transition-colors">
-            Last Updated
+            {t.projectsView.lastUpdated}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -162,21 +164,21 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
 
       {/* Projects Grid */}
       {projects === undefined ? (
-        <div className="text-center py-12 text-[#64748B]">Loading projects...</div>
+        <div className="text-center py-12 text-[#64748B]">{t.projectsView.loadingProjects}</div>
       ) : projects.length === 0 ? (
         <div className="text-center py-20 bg-[#FFFFFF] border-2 border-dashed border-[#E2E8F0] rounded-2xl">
           <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#E2E8F0]">
             <Plus className="h-8 w-8 text-[#64748B]" />
           </div>
-          <h3 className="text-xl font-bold text-[#0F172A] mb-2">No projects yet</h3>
+          <h3 className="text-xl font-bold text-[#0F172A] mb-2">{t.projectsView.noProjectsYet}</h3>
           <p className="text-[#64748B] max-w-sm mx-auto mb-6">
-            Create your first project to start tracking applications and optimizing your resume.
+            {t.projectsView.noProjectsDesc}
           </p>
           <Button
             onClick={() => isPaidUser ? setShowCreateDialog(true) : setShowPricingDialog(true)}
             className="bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-[#0F172A] font-semibold relative"
           >
-            Create Your First Project
+            {t.projectsView.createFirstProject}
             {!isPaidUser && (
               <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center">
                 <span className="material-symbols-outlined text-[12px] text-amber-500">lock</span>
@@ -235,7 +237,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                       </div>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[#64748B] text-xs">Match Score</span>
+                      <span className="text-[#64748B] text-xs">{t.projectsView.matchScore}</span>
                       <span className="text-[#0F172A] text-sm font-semibold">{getScoreLabel(score)}</span>
                     </div>
                   </div>
@@ -266,7 +268,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
                       }}
                       className="text-sm font-medium text-primary hover:text-[#0F172A] transition-colors"
                     >
-                      Open Project Board
+                      {t.projectsView.openProjectBoard}
                     </button>
                   </div>
                 </div>
@@ -288,9 +290,9 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
               <Plus className="h-8 w-8 text-[#64748B] group-hover:text-[#0F172A]" />
             </div>
             <div>
-              <h3 className="text-[#0F172A] font-bold text-lg">Create New Project</h3>
+              <h3 className="text-[#0F172A] font-bold text-lg">{t.projectsView.createNewProject}</h3>
               <p className="text-[#64748B] text-sm mt-1 max-w-[200px] mx-auto">
-                Start a new mission or upload a CV to analyze.
+                {t.projectsView.createNewProjectDesc}
               </p>
             </div>
           </div>
