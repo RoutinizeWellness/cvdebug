@@ -3,12 +3,14 @@ import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useCurrency } from "@/hooks/use-currency";
 
 const apiAny = api as any;
 
 export function SubscriptionView() {
   const user = useQuery(apiAny.users.currentUser);
   const [timeRemaining, setTimeRemaining] = useState({ days: 4, hours: 12, minutes: 30 });
+  const { formatPrice } = useCurrency();
 
   // Calculate sprint countdown
   useEffect(() => {
@@ -270,8 +272,8 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">€24.99</span>
-                    <span className="text-[#64748B] line-through text-xl font-bold">€49.99</span>
+                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">{formatPrice('sprint_7day')}</span>
+                    <span className="text-[#64748B] line-through text-xl font-bold">{formatPrice('interview_sprint')}</span>
                   </div>
 
                   <div className="flex items-center gap-2 mb-6">

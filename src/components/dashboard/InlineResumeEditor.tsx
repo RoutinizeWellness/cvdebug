@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useCurrency } from "@/hooks/use-currency";
 
 interface InlineResumeEditorProps {
   resumeId: string;
@@ -51,6 +52,9 @@ export function InlineResumeEditor({
 
   // Check if user has paid plan
   const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+
+  // Get localized pricing
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     if (content !== initialContent) {
@@ -354,7 +358,7 @@ export function InlineResumeEditor({
                 className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all"
               >
                 <Sparkles className="h-4 w-4 mr-2" />
-                Upgrade Now - $14.99
+                Upgrade Now - {formatPrice('single_scan')}
               </Button>
               <p className="text-xs text-[#94A3B8] mt-3">
                 24-hour access • Unlimited edits • Re-analyze instantly

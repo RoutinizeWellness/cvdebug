@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +20,7 @@ import {
 import { toast } from "sonner";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { getPlanPrice } from "@/lib/pricing";
+import { useCurrency } from "@/hooks/use-currency";
 
 interface MissingSignal {
   text: string;
@@ -64,13 +64,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
   const [progressMessage, setProgressMessage] = useState('');
 
   // Get localized pricing
-  const [pricing, setPricing] = useState(() => getPlanPrice('single_scan'));
-
-  useEffect(() => {
-    // Detect user's locale and update pricing
-    const userLocale = navigator.language || 'en-US';
-    setPricing(getPlanPrice('single_scan', userLocale));
-  }, []);
+  const { formatPrice } = useCurrency();
 
   const handleAnalyze = async () => {
     if (!isPaidUser) {
@@ -303,7 +297,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     className="bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-[#7C3AED]/30"
                   >
                     <Sparkles className="h-5 w-5 mr-2" />
-                    Upgrade Now - {pricing.formatted}
+                    Upgrade Now - {formatPrice('single_scan')}
                   </Button>
                   <p className="text-xs text-[#94A3B8] dark:text-slate-500 mt-4">
                     24-hour access • Unlimited match analysis • ML-powered insights

@@ -41,7 +41,7 @@ export default function PricingPage() {
     {
       name: "24-Hour Pass",
       description: "Everything you need to land an interview this week. No subscriptions. No BS.",
-      price: "14.99€",
+      price: formatPrice("single_scan"),
       period: "24 hours",
       features: [
         "Unlimited CV Scans (24h)",
@@ -62,7 +62,7 @@ export default function PricingPage() {
     {
       name: "7-Day Sprint",
       description: "Debug your CV, land interviews, win offers. One week to ship your career.",
-      price: "24.99€",
+      price: formatPrice("sprint_7day"),
       period: "7 days",
       features: [
         "Unlimited CV Scans (7 days)",
@@ -94,7 +94,7 @@ export default function PricingPage() {
     {
       question: "What's the difference between 24-Hour Pass and 7-Day Sprint?",
       answer:
-        "Both give unlimited scans and full access. The 24-Hour Pass (14.99€) is perfect if you have one interview coming up this week and need quick fixes. The 7-Day Sprint (24.99€) is RECOMMENDED for job seekers applying to multiple roles - you get priority support, advanced optimization, and a full week to iterate on your CV.",
+        `Both give unlimited scans and full access. The 24-Hour Pass (${formatPrice("single_scan")}) is perfect if you have one interview coming up this week and need quick fixes. The 7-Day Sprint (${formatPrice("sprint_7day")}) is RECOMMENDED for job seekers applying to multiple roles - you get priority support, advanced optimization, and a full week to iterate on your CV.`,
     },
     {
       question: "Do I need a subscription?",
