@@ -38,6 +38,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
   const updateStatus = useMutation(api.applications.updateApplicationStatus);
   const analyzeApplicationKeywords = useMutation(apiAny.applications.analyzeApplicationKeywords);
   const resumes = useQuery(apiAny.resumes.getResumes, {});
+  const user = useQuery(apiAny.users.currentUser);
   const [selectedApplication, setSelectedApplication] = useState<any>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDMGenerator, setShowDMGenerator] = useState(false);
@@ -219,9 +220,11 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
         onUpgrade={onUpgrade}
       />
 
-    <RecruiterDMGenerator 
-      open={showDMGenerator} 
+    <RecruiterDMGenerator
+      open={showDMGenerator}
       onOpenChange={setShowDMGenerator}
+      isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+      onUpgrade={onUpgrade}
     />
     </>
   );

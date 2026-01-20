@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
 import { toast } from "sonner";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface WeakPhrase {
   phrase: string;
@@ -20,13 +21,18 @@ interface UnquantifiedAchievement {
 interface FluffDetectorProps {
   resumeText?: string;
   clarityScore?: number;
+  isPaidUser?: boolean;
+  onUpgrade?: () => void;
 }
 
 export function FluffDetector({
   resumeText = "",
-  clarityScore = 73
+  clarityScore = 73,
+  isPaidUser = false,
+  onUpgrade
 }: FluffDetectorProps) {
 
+  const { t } = useI18n();
   const [selectedMetrics, setSelectedMetrics] = useState<Record<number, number>>({});
 
   // Detect weak phrases from actual resume text - STRICT ALGORITHM
@@ -430,6 +436,77 @@ export function FluffDetector({
 
   const circumferenceScore = 2 * Math.PI * 45;
   const offsetScore = circumferenceScore - (clarityScore / 100) * circumferenceScore;
+
+  if (!isPaidUser) {
+    return (
+      <div className="relative w-full min-h-[600px]">
+        {/* Blurred Preview */}
+        <div className="absolute inset-0 blur-sm select-none pointer-events-none opacity-30">
+          <div className="w-full">
+            <div className="mb-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold text-[#0F172A] mb-2">Clarity & Impact Audit</h2>
+                  <p className="text-[#475569] text-sm">Detecting weak language, buzzwords, and unquantified claims.</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6">
+                    <div className="h-16 bg-gray-200 rounded"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Lock Overlay */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
+          <div className="text-center px-6 max-w-lg">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#8B5CF6]/30">
+              <span className="material-symbols-outlined text-4xl text-white">lock</span>
+            </div>
+            <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
+              {t.fluffDetector.locked}
+            </h3>
+            <p className="text-sm text-[#64748B] mb-6 leading-relaxed">
+              {t.fluffDetector.description}
+            </p>
+
+            {/* Benefits List */}
+            <div className="bg-white/80 rounded-xl p-4 mb-6 text-left border border-[#E2E8F0] shadow-sm">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-xs text-[#475569]">
+                  <span className="text-[#22C55E]">✓</span>
+                  <span>{t.fluffDetector.weakPhraseAnalysis}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[#475569]">
+                  <span className="text-[#22C55E]">✓</span>
+                  <span>{t.fluffDetector.quantifiedMetrics}</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[#475569]">
+                  <span className="text-[#22C55E]">✓</span>
+                  <span>{t.fluffDetector.actionableReplacements}</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={onUpgrade}
+              className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#8B5CF6]/30 hover:shadow-2xl hover:shadow-[#8B5CF6]/40 flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined">workspace_premium</span>
+              {t.fluffDetector.unlockFluff}
+            </button>
+            <p className="text-xs text-[#94A3B8] mt-3">
+              {t.keywordAnalysis.sevenDayPlan}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

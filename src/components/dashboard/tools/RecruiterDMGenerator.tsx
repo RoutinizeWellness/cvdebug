@@ -18,6 +18,7 @@ import { Loader2, MessageSquare, Sparkles, Copy, CheckCircle2 } from "lucide-rea
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
+import { useI18n } from "@/contexts/I18nContext";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -25,9 +26,12 @@ const apiAny = api as any;
 interface RecruiterDMGeneratorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isPaidUser?: boolean;
+  onUpgrade?: () => void;
 }
 
-export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGeneratorProps) {
+export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, onUpgrade }: RecruiterDMGeneratorProps) {
+  const { t } = useI18n();
   const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [recruiterName, setRecruiterName] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -111,7 +115,69 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
+        {!isPaidUser ? (
+          <div className="relative flex-1 min-h-[400px]">
+            {/* Blurred Preview */}
+            <div className="absolute inset-0 blur-sm select-none pointer-events-none opacity-30">
+              <div className="p-4">
+                <div className="space-y-4">
+                  <div className="h-12 bg-gray-200 rounded"></div>
+                  <div className="h-12 bg-gray-200 rounded"></div>
+                  <div className="h-32 bg-gray-200 rounded"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Lock Overlay */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
+              <div className="text-center px-6 max-w-md">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] flex items-center justify-center mb-4 mx-auto shadow-xl shadow-[#3B82F6]/30">
+                  <span className="material-symbols-outlined text-3xl text-white">lock</span>
+                </div>
+                <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                  {t.recruiterDM.locked}
+                </h3>
+                <p className="text-sm text-[#64748B] mb-4 leading-relaxed">
+                  {t.recruiterDM.description}
+                </p>
+
+                {/* Benefits List */}
+                <div className="bg-white/80 rounded-xl p-3 mb-4 text-left border border-[#E2E8F0] shadow-sm">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-xs text-[#475569]">
+                      <span className="text-[#22C55E]">✓</span>
+                      <span>{t.recruiterDM.personalizedMessages}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-[#475569]">
+                      <span className="text-[#22C55E]">✓</span>
+                      <span>{t.recruiterDM.multipleVariations}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-[#475569]">
+                      <span className="text-[#22C55E]">✓</span>
+                      <span>{t.recruiterDM.keywordOptimized}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    onUpgrade?.();
+                    onOpenChange(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-lg shadow-[#3B82F6]/30 text-sm flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                  {t.recruiterDM.unlockRecruiter}
+                </button>
+                <p className="text-xs text-[#94A3B8] mt-2">
+                  {t.keywordAnalysis.sevenDayPlan}
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="job" className="text-[#475569]">Target Application</Label>
             <Select value={selectedJobId} onValueChange={setSelectedJobId}>
@@ -181,19 +247,21 @@ export function RecruiterDMGenerator({ open, onOpenChange }: RecruiterDMGenerato
           </div>
         )}
 
-        <DialogFooter className="pt-4 border-t border-[#E2E8F0]">
-          <Button
-            onClick={handleGenerate}
-            disabled={isGenerating || !selectedJobId}
-            className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white font-bold"
-          >
-            {isGenerating ? (
-              <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>
-            ) : (
-              <><Sparkles className="mr-2 h-4 w-4" /> Generate DMs</>
-            )}
-          </Button>
-        </DialogFooter>
+            <DialogFooter className="pt-4 border-t border-[#E2E8F0]">
+              <Button
+                onClick={handleGenerate}
+                disabled={isGenerating || !selectedJobId}
+                className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white font-bold"
+              >
+                {isGenerating ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>
+                ) : (
+                  <><Sparkles className="mr-2 h-4 w-4" /> Generate DMs</>
+                )}
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

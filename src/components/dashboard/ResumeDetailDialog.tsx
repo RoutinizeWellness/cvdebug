@@ -1472,6 +1472,8 @@ Impact: AUTO_REJECT (100% rejection rate)
                   <FluffDetector
                     resumeText={displayResume.ocrText || ""}
                     clarityScore={displayResume?.score || 0}
+                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
 
@@ -1536,6 +1538,8 @@ Impact: AUTO_REJECT (100% rejection rate)
                     targetRole={displayResume.jobTitle || "Data Science Role"}
                     companyName={displayResume.company || "TechCorp"}
                     resumeText={displayResume.ocrText || ""}
+                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
 

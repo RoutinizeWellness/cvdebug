@@ -16,6 +16,7 @@ interface UpsellSidebarProps {
 export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
   const currentUser = useQuery(apiAny.users.currentUser);
   const isSprintActive = currentUser?.subscriptionTier === "interview_sprint";
+  const isPaidUser = currentUser?.subscriptionTier === "single_scan" || currentUser?.subscriptionTier === "interview_sprint";
   const [showDMGenerator, setShowDMGenerator] = useState(false);
 
   return (
@@ -125,7 +126,12 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
         </div>
       </div>
 
-      <RecruiterDMGenerator open={showDMGenerator} onOpenChange={setShowDMGenerator} />
+      <RecruiterDMGenerator
+        open={showDMGenerator}
+        onOpenChange={setShowDMGenerator}
+        isPaidUser={isPaidUser}
+        onUpgrade={() => onNavigate('pricing')}
+      />
     </div>
   );
 }

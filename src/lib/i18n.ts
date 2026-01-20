@@ -993,6 +993,36 @@ export interface Translation {
     unlockCompleteList: string;
     unlockButton: string;
   };
+  // Fluff Detector
+  fluffDetector: {
+    locked: string;
+    unlockPremium: string;
+    description: string;
+    weakPhraseAnalysis: string;
+    quantifiedMetrics: string;
+    actionableReplacements: string;
+    unlockFluff: string;
+  };
+  // Interview Prep
+  interviewPrep: {
+    locked: string;
+    unlockBattlePlan: string;
+    description: string;
+    expectedQuestions: string;
+    starStories: string;
+    talkingPoints: string;
+    unlockInterview: string;
+  };
+  // Recruiter DM
+  recruiterDM: {
+    locked: string;
+    unlockDMGenerator: string;
+    description: string;
+    personalizedMessages: string;
+    multipleVariations: string;
+    keywordOptimized: string;
+    unlockRecruiter: string;
+  };
   // AI Feedback
   aiFeedback: {
     rateResponse: string;
@@ -1981,6 +2011,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       unlockCompleteList: 'Unlock the complete list of critical keywords with quantified impact (+15% score).',
       unlockButton: 'Unlock',
     },
+    fluffDetector: {
+      locked: 'Fluff Detector Locked',
+      unlockPremium: 'Unlock Premium Analysis',
+      description: 'Unlock AI-powered fluff detection to identify weak phrases, unquantified achievements, and get actionable replacements.',
+      weakPhraseAnalysis: 'Weak phrase detection with context',
+      quantifiedMetrics: 'Unquantified achievements analysis',
+      actionableReplacements: 'AI-powered actionable replacements',
+      unlockFluff: 'Unlock Fluff Detector',
+    },
+    interviewPrep: {
+      locked: 'Interview Battle Plan Locked',
+      unlockBattlePlan: 'Unlock Interview Prep',
+      description: 'Generate personalized interview prep with expected questions, STAR stories, and strategic talking points based on your resume and job description.',
+      expectedQuestions: 'Expected interview questions',
+      starStories: 'STAR format story suggestions',
+      talkingPoints: 'Strategic talking points',
+      unlockInterview: 'Unlock Battle Plan',
+    },
+    recruiterDM: {
+      locked: 'Recruiter DM Generator Locked',
+      unlockDMGenerator: 'Unlock DM Generator',
+      description: 'Generate personalized recruiter messages with multiple variations optimized with keywords from your target job description.',
+      personalizedMessages: 'Personalized recruiter messages',
+      multipleVariations: '3 variations per message',
+      keywordOptimized: 'Keyword-optimized for your target role',
+      unlockRecruiter: 'Unlock DM Generator',
+    },
     aiFeedback: {
       rateResponse: 'Rate this response',
       howHelpful: 'How helpful was this?',
@@ -2964,6 +3021,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordsMissingLocked: 'Keywords Faltantes Bloqueadas',
       unlockCompleteList: 'Desbloquea la lista completa de keywords críticas con impacto cuantificado (+15% score).',
       unlockButton: 'Desbloquear',
+    },
+    fluffDetector: {
+      locked: 'Detector de Fluff Bloqueado',
+      unlockPremium: 'Desbloquear Análisis Premium',
+      description: 'Desbloquea la detección de fluff con IA para identificar frases débiles, logros sin cuantificar, y obtener reemplazos accionables.',
+      weakPhraseAnalysis: 'Detección de frases débiles con contexto',
+      quantifiedMetrics: 'Análisis de logros sin cuantificar',
+      actionableReplacements: 'Reemplazos accionables con IA',
+      unlockFluff: 'Desbloquear Detector de Fluff',
+    },
+    interviewPrep: {
+      locked: 'Plan de Batalla de Entrevista Bloqueado',
+      unlockBattlePlan: 'Desbloquear Prep de Entrevista',
+      description: 'Genera preparación personalizada de entrevista con preguntas esperadas, historias STAR, y puntos de conversación estratégicos basados en tu CV y descripción del trabajo.',
+      expectedQuestions: 'Preguntas de entrevista esperadas',
+      starStories: 'Sugerencias de historias formato STAR',
+      talkingPoints: 'Puntos de conversación estratégicos',
+      unlockInterview: 'Desbloquear Plan de Batalla',
+    },
+    recruiterDM: {
+      locked: 'Generador de DM para Recruiters Bloqueado',
+      unlockDMGenerator: 'Desbloquear Generador de DM',
+      description: 'Genera mensajes personalizados para recruiters con múltiples variaciones optimizadas con keywords de tu descripción del trabajo objetivo.',
+      personalizedMessages: 'Mensajes personalizados para recruiters',
+      multipleVariations: '3 variaciones por mensaje',
+      keywordOptimized: 'Optimizado con keywords para tu rol objetivo',
+      unlockRecruiter: 'Desbloquear Generador de DM',
     },
     aiFeedback: {
       rateResponse: 'Califica esta respuesta',
@@ -3949,6 +4033,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       unlockCompleteList: 'Débloquez la liste complète des mots-clés critiques avec impact quantifié (+15% score).',
       unlockButton: 'Débloquer',
     },
+    fluffDetector: {
+      locked: 'Détecteur de Fluff Verrouillé',
+      unlockPremium: 'Débloquer l\'Analyse Premium',
+      description: 'Débloquez la détection de fluff alimentée par IA pour identifier les phrases faibles, les réalisations non quantifiées, et obtenir des remplacements actionnables.',
+      weakPhraseAnalysis: 'Détection de phrases faibles avec contexte',
+      quantifiedMetrics: 'Analyse des réalisations non quantifiées',
+      actionableReplacements: 'Remplacements actionnables alimentés par IA',
+      unlockFluff: 'Débloquer le Détecteur de Fluff',
+    },
+    interviewPrep: {
+      locked: 'Plan de Bataille d\'Entretien Verrouillé',
+      unlockBattlePlan: 'Débloquer la Préparation d\'Entretien',
+      description: 'Générez une préparation d\'entretien personnalisée avec des questions attendues, des histoires STAR, et des points de discussion stratégiques basés sur votre CV et la description du poste.',
+      expectedQuestions: 'Questions d\'entretien attendues',
+      starStories: 'Suggestions d\'histoires format STAR',
+      talkingPoints: 'Points de discussion stratégiques',
+      unlockInterview: 'Débloquer le Plan de Bataille',
+    },
+    recruiterDM: {
+      locked: 'Générateur de DM pour Recruteurs Verrouillé',
+      unlockDMGenerator: 'Débloquer le Générateur de DM',
+      description: 'Générez des messages personnalisés pour les recruteurs avec plusieurs variations optimisées avec les mots-clés de votre description de poste cible.',
+      personalizedMessages: 'Messages personnalisés pour recruteurs',
+      multipleVariations: '3 variations par message',
+      keywordOptimized: 'Optimisé avec mots-clés pour votre rôle cible',
+      unlockRecruiter: 'Débloquer le Générateur de DM',
+    },
     aiFeedback: {
       rateResponse: 'Évaluer cette réponse',
       howHelpful: 'Dans quelle mesure cela a-t-il été utile ?',
@@ -4933,6 +5044,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       unlockCompleteList: 'Schalten Sie die vollständige Liste kritischer Schlüsselwörter mit quantifizierter Wirkung (+15% Punktzahl) frei.',
       unlockButton: 'Freischalten',
     },
+    fluffDetector: {
+      locked: 'Fluff-Detektor Gesperrt',
+      unlockPremium: 'Premium-Analyse Freischalten',
+      description: 'Schalten Sie KI-gestützte Fluff-Erkennung frei, um schwache Phrasen, nicht quantifizierte Erfolge zu identifizieren und umsetzbare Ersetzungen zu erhalten.',
+      weakPhraseAnalysis: 'Erkennung schwacher Phrasen mit Kontext',
+      quantifiedMetrics: 'Analyse nicht quantifizierter Erfolge',
+      actionableReplacements: 'KI-gestützte umsetzbare Ersetzungen',
+      unlockFluff: 'Fluff-Detektor Freischalten',
+    },
+    interviewPrep: {
+      locked: 'Interview-Schlachtplan Gesperrt',
+      unlockBattlePlan: 'Interview-Vorbereitung Freischalten',
+      description: 'Generieren Sie personalisierte Interview-Vorbereitung mit erwarteten Fragen, STAR-Geschichten und strategischen Gesprächsthemen basierend auf Ihrem Lebenslauf und der Stellenbeschreibung.',
+      expectedQuestions: 'Erwartete Interview-Fragen',
+      starStories: 'STAR-Format-Geschichtenvorschläge',
+      talkingPoints: 'Strategische Gesprächsthemen',
+      unlockInterview: 'Schlachtplan Freischalten',
+    },
+    recruiterDM: {
+      locked: 'Recruiter-DM-Generator Gesperrt',
+      unlockDMGenerator: 'DM-Generator Freischalten',
+      description: 'Generieren Sie personalisierte Recruiter-Nachrichten mit mehreren Variationen, optimiert mit Schlüsselwörtern aus Ihrer Ziel-Stellenbeschreibung.',
+      personalizedMessages: 'Personalisierte Recruiter-Nachrichten',
+      multipleVariations: '3 Variationen pro Nachricht',
+      keywordOptimized: 'Schlüsselwort-optimiert für Ihre Zielrolle',
+      unlockRecruiter: 'DM-Generator Freischalten',
+    },
     aiFeedback: {
       rateResponse: 'Diese Antwort bewerten',
       howHelpful: 'Wie hilfreich war dies?',
@@ -5897,6 +6035,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordsMissingLocked: 'Palavras-chave Ausentes Bloqueadas',
       unlockCompleteList: 'Desbloqueie a lista completa de palavras-chave críticas com impacto quantificado (+15% pontuação).',
       unlockButton: 'Desbloquear',
+    },
+    fluffDetector: {
+      locked: 'Detector de Fluff Bloqueado',
+      unlockPremium: 'Desbloquear Análise Premium',
+      description: 'Desbloqueie a detecção de fluff alimentada por IA para identificar frases fracas, conquistas não quantificadas, e obter substituições acionáveis.',
+      weakPhraseAnalysis: 'Detecção de frases fracas com contexto',
+      quantifiedMetrics: 'Análise de conquistas não quantificadas',
+      actionableReplacements: 'Substituições acionáveis alimentadas por IA',
+      unlockFluff: 'Desbloquear Detector de Fluff',
+    },
+    interviewPrep: {
+      locked: 'Plano de Batalha de Entrevista Bloqueado',
+      unlockBattlePlan: 'Desbloquear Preparação de Entrevista',
+      description: 'Gere preparação de entrevista personalizada com perguntas esperadas, histórias STAR, e pontos de conversa estratégicos baseados no seu currículo e descrição da vaga.',
+      expectedQuestions: 'Perguntas de entrevista esperadas',
+      starStories: 'Sugestões de histórias formato STAR',
+      talkingPoints: 'Pontos de conversa estratégicos',
+      unlockInterview: 'Desbloquear Plano de Batalha',
+    },
+    recruiterDM: {
+      locked: 'Gerador de DM para Recrutadores Bloqueado',
+      unlockDMGenerator: 'Desbloquear Gerador de DM',
+      description: 'Gere mensagens personalizadas para recrutadores com múltiplas variações otimizadas com palavras-chave da sua descrição de vaga alvo.',
+      personalizedMessages: 'Mensagens personalizadas para recrutadores',
+      multipleVariations: '3 variações por mensagem',
+      keywordOptimized: 'Otimizado com palavras-chave para sua função alvo',
+      unlockRecruiter: 'Desbloquear Gerador de DM',
     },
     aiFeedback: {
       rateResponse: 'Avaliar esta resposta',
