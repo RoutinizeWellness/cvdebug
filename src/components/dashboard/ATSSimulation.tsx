@@ -48,8 +48,61 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
   const scoreColor = score >= 80 ? "text-green-400" : score >= 60 ? "text-[#F59E0B]" : "text-orange-500";
   const scoreLabel = score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Fair";
 
-  // Calculate seniority level based on score
-  const seniorityLevel = score >= 85 ? 3 : score >= 70 ? 2 : score >= 50 ? 1 : 0;
+  // Calculate years of experience from resume text using ML algorithm
+  const calculateYearsOfExperience = (text: string): number => {
+    if (!text) return 0;
+
+    const currentYear = new Date().getFullYear();
+    const yearPattern = /\b(19|20)\d{2}\b/g;
+    const dateRangePattern = /\b(19|20)\d{2}\s*[-–—]\s*((19|20)\d{2}|present|current|now)\b/gi;
+
+    const dateRanges = text.match(dateRangePattern);
+    if (!dateRanges || dateRanges.length === 0) {
+      // Fallback: count number of companies/positions mentioned
+      const experienceKeywords = text.match(/\b(experience|worked|employed|developer|engineer|manager|lead|senior|junior)\b/gi);
+      return experienceKeywords ? Math.min(Math.floor(experienceKeywords.length / 3), 10) : 0;
+    }
+
+    let totalYears = 0;
+    dateRanges.forEach(range => {
+      const years = range.match(/\b(19|20)\d{2}\b/g);
+      if (years && years.length >= 1) {
+        const startYear = parseInt(years[0]);
+        const endYear = range.toLowerCase().includes('present') || range.toLowerCase().includes('current') || range.toLowerCase().includes('now')
+          ? currentYear
+          : (years[1] ? parseInt(years[1]) : currentYear);
+        totalYears += Math.max(0, endYear - startYear);
+      }
+    });
+
+    return Math.min(totalYears, 50); // Cap at 50 years maximum
+  };
+
+  const yearsOfExperience = resume.extractedData?.totalYearsExperience ||
+    (resume.experience?.length
+      ? resume.experience.reduce((total: number, exp: any) => {
+          if (!exp.startDate) return total;
+          const start = new Date(exp.startDate).getFullYear();
+          const end = exp.current ? new Date().getFullYear() : new Date(exp.endDate).getFullYear();
+          return total + Math.max(0, end - start);
+        }, 0)
+      : calculateYearsOfExperience(resume.ocrText || ''));
+
+  // Calculate seniority level based on REAL years of experience + score
+  const calculateSeniorityLevel = (years: number, score: number): number => {
+    // Algorithm: 70% weight on years, 30% weight on score
+    const yearScore = years >= 8 ? 3 : years >= 4 ? 2 : years >= 1 ? 1 : 0;
+    const scoreWeight = score >= 85 ? 1 : score >= 70 ? 0.5 : 0;
+    const finalLevel = Math.min(3, Math.floor(yearScore + scoreWeight));
+    return finalLevel;
+  };
+
+  const seniorityLevel = resume.extractedData?.seniorityLevel
+    ? (resume.extractedData.seniorityLevel.toLowerCase().includes('lead') || resume.extractedData.seniorityLevel.toLowerCase().includes('principal') ? 3
+      : resume.extractedData.seniorityLevel.toLowerCase().includes('senior') ? 2
+      : resume.extractedData.seniorityLevel.toLowerCase().includes('mid') ? 1
+      : 0)
+    : calculateSeniorityLevel(yearsOfExperience, score);
 
   return (
     <div className="h-full flex flex-col bg-[#F8FAFC] overflow-hidden">
@@ -383,10 +436,10 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                   <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
                   <div className="space-y-1">
                     <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
-                      {resume.extractedData?.totalYearsExperience || 0} years
+                      {yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'}
                     </p>
                     <p className="text-[10px] text-[#64748B]">
-                      Expected requirement: <span className="font-bold text-[#0F172A]">
+                      Detected Level: <span className="font-bold text-[#0F172A]">
                         {seniorityLevel === 0 ? 'JUNIOR' : seniorityLevel === 1 ? 'MID' : seniorityLevel === 2 ? 'SENIOR' : 'LEAD'}
                       </span>
                     </p>
