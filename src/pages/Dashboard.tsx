@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Logo } from "@/components/Logo";
+import { useI18n } from "@/contexts/I18nContext";
 import {
   Loader2,
   Upload,
@@ -69,6 +70,7 @@ const apiAny = api as any;
 
 export default function Dashboard() {
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [showPricing, setShowPricing] = useState(false);
@@ -355,7 +357,7 @@ export default function Dashboard() {
             <div className="bg-[#FFFFFF] rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-8">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="space-y-2">
-                  <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">Master CVs</h1>
+                  <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">{t.dashboard.masterCvs}</h1>
                   <p className="text-[#475569] text-base">Your base resume templates - manage and optimize</p>
                 </div>
                 <Button
@@ -389,7 +391,7 @@ export default function Dashboard() {
             <div>
               <h2 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <span className="bg-[#3B82F6] w-1.5 h-6 rounded-full inline-block"></span>
-                AI Tools
+                {t.dashboard.tools}
               </h2>
 
               <div className="grid grid-cols-1 gap-4">
@@ -405,7 +407,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#3B82F6] transition-colors flex items-center gap-2">
-                        AI Bullet Rewriter
+                        {t.dashboard.bulletRewriter}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
@@ -432,7 +434,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#8B5CF6] transition-colors flex items-center gap-2">
-                        Cover Letter Generator
+                        {t.dashboard.coverLetterGen}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
@@ -459,7 +461,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-indigo-600 transition-colors flex items-center gap-2">
-                        LinkedIn Optimizer
+                        {t.dashboard.linkedinOptimizer}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
@@ -486,7 +488,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
-                        Keyword Sniper Tool
+                        {t.dashboard.keywordSniper}
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
                           Featured
                         </span>

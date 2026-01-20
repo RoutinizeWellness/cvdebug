@@ -116,6 +116,27 @@ export interface Translation {
     downloadAsTxt: string;
     noResumeLoaded: string;
     uploadToGetStarted: string;
+    // New nav items
+    masterCvs: string;
+    tools: string;
+    applications: string;
+    match: string;
+    missionControl: string;
+    // Tool names
+    keywordSniper: string;
+    writingForge: string;
+    bulletRewriter: string;
+    coverLetterGen: string;
+    linkedinOptimizer: string;
+    // Actions
+    upgradeToFix: string;
+    aiRewrite: string;
+    addJob: string;
+    toolsMenu: string;
+    // Status messages
+    visibilityDebugger: string;
+    autoRejectDetected: string;
+    criticalError: string;
   };
   // Preview Scan
   previewScan: {
@@ -1483,6 +1504,27 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadAsTxt: 'Download as .txt',
       noResumeLoaded: 'No resume loaded. Upload a resume from the dashboard to start editing.',
       uploadToGetStarted: 'Upload a resume to get started',
+      // New nav items
+      masterCvs: 'Master CVs',
+      tools: 'AI Tools',
+      applications: 'Applications',
+      match: 'Elite Match',
+      missionControl: 'Mission Control',
+      // Tool names
+      keywordSniper: 'Keyword Sniper',
+      writingForge: 'Writing Forge',
+      bulletRewriter: 'Bullet Rewriter',
+      coverLetterGen: 'Cover Letter',
+      linkedinOptimizer: 'LinkedIn Optimizer',
+      // Actions
+      upgradeToFix: 'Upgrade to Fix',
+      aiRewrite: 'AI Rewrite',
+      addJob: 'Add Job',
+      toolsMenu: 'Tools',
+      // Status messages
+      visibilityDebugger: 'Visibility Debugger',
+      autoRejectDetected: 'AUTO_REJECT DETECTED',
+      criticalError: 'CRITICAL ERROR',
     },
     previewScan: {
       title: 'Deep Diagnostic Scan',
@@ -2799,6 +2841,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadAsTxt: 'Descargar como .txt',
       noResumeLoaded: 'No hay CV cargado. Sube un CV desde el panel para empezar a editar.',
       uploadToGetStarted: 'Sube un CV para comenzar',
+      masterCvs: 'CVs Maestros',
+      tools: 'Herramientas IA',
+      applications: 'Aplicaciones',
+      match: 'Elite Match',
+      missionControl: 'Centro de Control',
+      keywordSniper: 'Francotirador de Palabras Clave',
+      writingForge: 'Forja de Escritura',
+      bulletRewriter: 'Reescritor de Viñetas',
+      coverLetterGen: 'Carta de Presentación',
+      linkedinOptimizer: 'Optimizador de LinkedIn',
+      upgradeToFix: 'Actualizar para Arreglar',
+      aiRewrite: 'Reescritura IA',
+      addJob: 'Añadir Trabajo',
+      toolsMenu: 'Herramientas',
+      visibilityDebugger: 'Debugger de Visibilidad',
+      autoRejectDetected: 'AUTO-RECHAZO DETECTADO',
+      criticalError: 'ERROR CRÍTICO',
     },
     previewScan: {
       title: 'Escaneo Diagnóstico Profundo',
@@ -4115,6 +4174,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadAsTxt: 'Télécharger en .txt',
       noResumeLoaded: 'Aucun CV chargé. Téléchargez un CV depuis le tableau de bord pour commencer l\'édition.',
       uploadToGetStarted: 'Téléchargez un CV pour commencer',
+      masterCvs: 'CVs Principaux',
+      tools: 'Outils IA',
+      applications: 'Candidatures',
+      match: 'Elite Match',
+      missionControl: 'Centre de Contrôle',
+      keywordSniper: 'Sniper de Mots-Clés',
+      writingForge: 'Forge d\'Écriture',
+      bulletRewriter: 'Réécriture de Puces',
+      coverLetterGen: 'Lettre de Motivation',
+      linkedinOptimizer: 'Optimiseur LinkedIn',
+      upgradeToFix: 'Mettre à Niveau pour Corriger',
+      aiRewrite: 'Réécriture IA',
+      addJob: 'Ajouter Emploi',
+      toolsMenu: 'Outils',
+      visibilityDebugger: 'Débogueur de Visibilité',
+      autoRejectDetected: 'AUTO-REJET DÉTECTÉ',
+      criticalError: 'ERREUR CRITIQUE',
     },
     previewScan: {
       title: 'Scan Diagnostique Approfondi',
@@ -5431,6 +5507,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadAsTxt: 'Als .txt herunterladen',
       noResumeLoaded: 'Kein Lebenslauf geladen. Laden Sie einen Lebenslauf vom Dashboard hoch, um mit der Bearbeitung zu beginnen.',
       uploadToGetStarted: 'Laden Sie einen Lebenslauf hoch, um zu beginnen',
+      masterCvs: 'Hauptlebensläufe',
+      tools: 'KI-Werkzeuge',
+      applications: 'Bewerbungen',
+      match: 'Elite Match',
+      missionControl: 'Missionskontrolle',
+      keywordSniper: 'Keyword-Scharfschütze',
+      writingForge: 'Schreib-Schmiede',
+      bulletRewriter: 'Aufzählungsumschreiber',
+      coverLetterGen: 'Anschreiben',
+      linkedinOptimizer: 'LinkedIn-Optimierer',
+      upgradeToFix: 'Upgrade zum Beheben',
+      aiRewrite: 'KI-Umschreibung',
+      addJob: 'Job Hinzufügen',
+      toolsMenu: 'Werkzeuge',
+      visibilityDebugger: 'Sichtbarkeits-Debugger',
+      autoRejectDetected: 'AUTO-ABLEHNUNG ERKANNT',
+      criticalError: 'KRITISCHER FEHLER',
     },
     previewScan: {
       title: 'Tiefgehender Diagnosescan',
@@ -6747,6 +6840,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadAsTxt: 'Baixar como .txt',
       noResumeLoaded: 'Nenhum currículo carregado. Carregue um currículo do painel para começar a editar.',
       uploadToGetStarted: 'Carregue um currículo para começar',
+      masterCvs: 'Currículos Mestres',
+      tools: 'Ferramentas IA',
+      applications: 'Candidaturas',
+      match: 'Elite Match',
+      missionControl: 'Centro de Controle',
+      keywordSniper: 'Atirador de Palavras-Chave',
+      writingForge: 'Forja de Escrita',
+      bulletRewriter: 'Reescritor de Marcadores',
+      coverLetterGen: 'Carta de Apresentação',
+      linkedinOptimizer: 'Otimizador do LinkedIn',
+      upgradeToFix: 'Atualizar para Corrigir',
+      aiRewrite: 'Reescrita IA',
+      addJob: 'Adicionar Emprego',
+      toolsMenu: 'Ferramentas',
+      visibilityDebugger: 'Debugger de Visibilidade',
+      autoRejectDetected: 'AUTO-REJEIÇÃO DETECTADA',
+      criticalError: 'ERRO CRÍTICO',
     },
     previewScan: {
       title: 'Scan Diagnóstico Profundo',
