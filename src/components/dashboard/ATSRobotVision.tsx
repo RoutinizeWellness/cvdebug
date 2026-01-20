@@ -14,7 +14,7 @@ export function ATSRobotVision() {
   
   const resumes = useQuery(apiAny.resumes.getResumes);
   const latestResume = resumes && resumes.length > 0 ? resumes[0] : null;
-  const user = useQuery(apiAny.users.getUser);
+  const user = useQuery(apiAny.users.currentUser);
 
   if (resumes === undefined) {
     return (
