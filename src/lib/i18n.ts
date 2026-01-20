@@ -62,6 +62,39 @@ export interface Translation {
     subtitle: string;
     start7DaySprint: string;
     secureCheckout: string;
+    // Upsell section
+    waitBeforeCheckout: string;
+    applyingToOneJob: string;
+    justMoreGetSprint: string;
+    whyUpgrade: string;
+    save60: string;
+    unlimitedScansNotOne: string;
+    aiCoverLetters: string;
+    linkedinOptimization: string;
+    candidatesChoseSprint: string;
+    upgradeToSprint: string;
+    // More hardcoded strings
+    scorePreview: string;
+    errorLabels: string;
+    topKeywords: string;
+    bestValue: string;
+    sevenDaySprint: string;
+    sevenDaysAccess: string;
+    unlimitedCVScans: string;
+    robotViewTerminal: string;
+    missingSignalsDetector: string;
+    seniorityMatchAudit: string;
+    industrySelectorFAANG: string;
+    bulletToneElevator: string;
+    bonusExtras: string;
+    coverLetterGen: string;
+    linkedinOptimizer: string;
+    devsJoined: string;
+    sprintTestimonial: string;
+    fastStart: string;
+    loginToPurchase: string;
+    checkoutFailed: string;
+    checkoutError: string;
   };
   // Dashboard
   dashboard: {
@@ -1377,6 +1410,39 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'One-time payments for professional results. No recurring subscriptions or hidden fees.',
       start7DaySprint: 'Start 7-Day Sprint 🚀',
       secureCheckout: 'Secure 256-bit Encrypted Checkout',
+      // Upsell section
+      waitBeforeCheckout: '⚠️ WAIT! Before You Checkout...',
+      applyingToOneJob: 'Are You Applying to Only ONE Job?',
+      justMoreGetSprint: 'For just €10 more, get the Interview Sprint.',
+      whyUpgrade: 'Why Upgrade?',
+      save60: 'Save 60%',
+      unlimitedScansNotOne: 'Unlimited scans for 7 days (not just one)',
+      aiCoverLetters: 'AI-powered cover letters for every application',
+      linkedinOptimization: 'LinkedIn profile optimization included',
+      candidatesChoseSprint: '1,200+ candidates chose Interview Sprint and landed roles at:',
+      upgradeToSprint: 'Yes, Upgrade to Sprint (€24.99) 🚀',
+      // More hardcoded strings
+      scorePreview: 'Score Preview',
+      errorLabels: '[ERROR] Labels',
+      topKeywords: 'Top 2 Keywords',
+      bestValue: 'BEST VALUE',
+      sevenDaySprint: '7-Day Sprint',
+      sevenDaysAccess: '7 days full access',
+      unlimitedCVScans: 'Unlimited CV Scans (7d)',
+      robotViewTerminal: 'Robot View Terminal',
+      missingSignalsDetector: 'Missing Signals Detector',
+      seniorityMatchAudit: 'Seniority Match Audit',
+      industrySelectorFAANG: 'Industry Selector (FAANG/Finance)',
+      bulletToneElevator: 'Bullet Tone Elevator',
+      bonusExtras: 'Bonus Extras:',
+      coverLetterGen: 'Cover Letter Gen',
+      linkedinOptimizer: 'LinkedIn Optimizer',
+      devsJoined: '1,200+ devs joined',
+      sprintTestimonial: '"Sprint helped me fix bugs and land 5 interviews in 1 week"',
+      fastStart: 'FAST START',
+      loginToPurchase: 'Please log in to purchase credits',
+      checkoutFailed: 'Failed to start checkout',
+      checkoutError: 'Failed to initiate checkout',
     },
     dashboard: {
       welcome: 'Welcome back',
@@ -2641,6 +2707,39 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'Pagos únicos para resultados profesionales. Sin suscripciones recurrentes ni tarifas ocultas.',
       start7DaySprint: 'Comenzar Sprint 7 Días 🚀',
       secureCheckout: 'Pago Seguro Encriptado de 256 bits',
+      // Upsell section
+      waitBeforeCheckout: '⚠️ ¡ESPERA! Antes de finalizar...',
+      applyingToOneJob: '¿Postulas Solo a UN Trabajo?',
+      justMoreGetSprint: 'Por solo €10 más, obtén el Interview Sprint.',
+      whyUpgrade: '¿Por qué mejorar?',
+      save60: 'Ahorra 60%',
+      unlimitedScansNotOne: 'Escaneos ilimitados por 7 días (no solo uno)',
+      aiCoverLetters: 'Cartas de presentación con IA para cada aplicación',
+      linkedinOptimization: 'Optimización de perfil de LinkedIn incluida',
+      candidatesChoseSprint: '1,200+ candidatos eligieron Interview Sprint y consiguieron roles en:',
+      upgradeToSprint: 'Sí, mejorar a Sprint (€24.99) 🚀',
+      // More hardcoded strings
+      scorePreview: 'Vista Previa del Puntaje',
+      errorLabels: 'Etiquetas [ERROR]',
+      topKeywords: 'Top 2 Palabras Clave',
+      bestValue: 'MEJOR VALOR',
+      sevenDaySprint: 'Sprint de 7 Días',
+      sevenDaysAccess: '7 días de acceso completo',
+      unlimitedCVScans: 'Escaneos de CV Ilimitados (7d)',
+      robotViewTerminal: 'Terminal Vista Robot',
+      missingSignalsDetector: 'Detector de Señales Faltantes',
+      seniorityMatchAudit: 'Auditoría de Nivel de Experiencia',
+      industrySelectorFAANG: 'Selector de Industria (FAANG/Finanzas)',
+      bulletToneElevator: 'Elevador de Tono de Viñetas',
+      bonusExtras: 'Extras de Bonificación:',
+      coverLetterGen: 'Generador de Cartas',
+      linkedinOptimizer: 'Optimizador de LinkedIn',
+      devsJoined: '1,200+ desarrolladores se unieron',
+      sprintTestimonial: '"Sprint me ayudó a corregir errores y conseguir 5 entrevistas en 1 semana"',
+      fastStart: 'INICIO RÁPIDO',
+      loginToPurchase: 'Inicia sesión para comprar créditos',
+      checkoutFailed: 'Error al iniciar el pago',
+      checkoutError: 'Error al iniciar el proceso de pago',
     },
     dashboard: {
       welcome: 'Bienvenido de nuevo',
@@ -3905,6 +4004,39 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'Paiements uniques pour des résultats professionnels. Pas d\'abonnements récurrents ni de frais cachés.',
       start7DaySprint: 'Commencer Sprint 7 Jours 🚀',
       secureCheckout: 'Paiement Sécurisé Crypté 256 bits',
+      // Upsell section
+      waitBeforeCheckout: '⚠️ ATTENDEZ! Avant de payer...',
+      applyingToOneJob: 'Postulez-vous pour UN SEUL Emploi?',
+      justMoreGetSprint: 'Pour seulement €10 de plus, obtenez l\'Interview Sprint.',
+      whyUpgrade: 'Pourquoi mettre à niveau?',
+      save60: 'Économisez 60%',
+      unlimitedScansNotOne: 'Scans illimités pendant 7 jours (pas un seul)',
+      aiCoverLetters: 'Lettres de motivation générées par IA pour chaque candidature',
+      linkedinOptimization: 'Optimisation du profil LinkedIn incluse',
+      candidatesChoseSprint: '1,200+ candidats ont choisi Interview Sprint et ont décroché des postes chez:',
+      upgradeToSprint: 'Oui, passer au Sprint (€24.99) 🚀',
+      // More hardcoded strings
+      scorePreview: 'Aperçu du Score',
+      errorLabels: 'Étiquettes [ERREUR]',
+      topKeywords: 'Top 2 Mots-Clés',
+      bestValue: 'MEILLEUR RAPPORT',
+      sevenDaySprint: 'Sprint de 7 Jours',
+      sevenDaysAccess: '7 jours d\'accès complet',
+      unlimitedCVScans: 'Scans de CV Illimités (7j)',
+      robotViewTerminal: 'Terminal Vue Robot',
+      missingSignalsDetector: 'Détecteur de Signaux Manquants',
+      seniorityMatchAudit: 'Audit de Correspondance d\'Expérience',
+      industrySelectorFAANG: 'Sélecteur d\'Industrie (FAANG/Finance)',
+      bulletToneElevator: 'Améliorateur de Ton des Puces',
+      bonusExtras: 'Extras Bonus:',
+      coverLetterGen: 'Générateur de Lettres',
+      linkedinOptimizer: 'Optimiseur LinkedIn',
+      devsJoined: '1,200+ développeurs ont rejoint',
+      sprintTestimonial: '"Sprint m\'a aidé à corriger des bugs et décrocher 5 entretiens en 1 semaine"',
+      fastStart: 'DÉMARRAGE RAPIDE',
+      loginToPurchase: 'Connectez-vous pour acheter des crédits',
+      checkoutFailed: 'Échec du démarrage du paiement',
+      checkoutError: 'Échec de l\'initialisation du paiement',
     },
     dashboard: {
       welcome: 'Bon retour',
@@ -5169,6 +5301,39 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'Einmalige Zahlungen für professionelle Ergebnisse. Keine wiederkehrenden Abonnements oder versteckte Gebühren.',
       start7DaySprint: '7-Tage-Sprint Starten 🚀',
       secureCheckout: 'Sichere 256-Bit-Verschlüsselte Kasse',
+      // Upsell section
+      waitBeforeCheckout: '⚠️ WARTEN SIE! Bevor Sie bezahlen...',
+      applyingToOneJob: 'Bewerben Sie sich nur auf EINEN Job?',
+      justMoreGetSprint: 'Für nur €10 mehr erhalten Sie den Interview Sprint.',
+      whyUpgrade: 'Warum upgraden?',
+      save60: 'Sparen Sie 60%',
+      unlimitedScansNotOne: 'Unbegrenzte Scans für 7 Tage (nicht nur einen)',
+      aiCoverLetters: 'KI-generierte Anschreiben für jede Bewerbung',
+      linkedinOptimization: 'LinkedIn-Profiloptimierung inklusive',
+      candidatesChoseSprint: '1,200+ Kandidaten wählten Interview Sprint und bekamen Jobs bei:',
+      upgradeToSprint: 'Ja, auf Sprint upgraden (€24.99) 🚀',
+      // More hardcoded strings
+      scorePreview: 'Score-Vorschau',
+      errorLabels: '[FEHLER]-Labels',
+      topKeywords: 'Top 2 Schlüsselwörter',
+      bestValue: 'BESTER WERT',
+      sevenDaySprint: '7-Tage-Sprint',
+      sevenDaysAccess: '7 Tage voller Zugriff',
+      unlimitedCVScans: 'Unbegrenzte CV-Scans (7T)',
+      robotViewTerminal: 'Roboter-Ansicht-Terminal',
+      missingSignalsDetector: 'Fehlende-Signale-Detektor',
+      seniorityMatchAudit: 'Erfahrungsstufen-Audit',
+      industrySelectorFAANG: 'Branchenauswahl (FAANG/Finanzen)',
+      bulletToneElevator: 'Stichpunkt-Ton-Elevator',
+      bonusExtras: 'Bonus-Extras:',
+      coverLetterGen: 'Anschreiben-Generator',
+      linkedinOptimizer: 'LinkedIn-Optimierer',
+      devsJoined: '1,200+ Entwickler sind beigetreten',
+      sprintTestimonial: '"Sprint half mir, Bugs zu beheben und 5 Interviews in 1 Woche zu bekommen"',
+      fastStart: 'SCHNELLER START',
+      loginToPurchase: 'Melden Sie sich an, um Guthaben zu kaufen',
+      checkoutFailed: 'Checkout-Start fehlgeschlagen',
+      checkoutError: 'Checkout-Initialisierung fehlgeschlagen',
     },
     dashboard: {
       welcome: 'Willkommen zurück',
@@ -6433,6 +6598,39 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'Pagamentos únicos para resultados profissionais. Sem assinaturas recorrentes ou taxas ocultas.',
       start7DaySprint: 'Começar Sprint 7 Dias 🚀',
       secureCheckout: 'Pagamento Seguro Criptografado de 256 bits',
+      // Upsell section
+      waitBeforeCheckout: '⚠️ AGUARDE! Antes de finalizar...',
+      applyingToOneJob: 'Você está se candidatando a Apenas UM Emprego?',
+      justMoreGetSprint: 'Por apenas €10 a mais, obtenha o Interview Sprint.',
+      whyUpgrade: 'Por que atualizar?',
+      save60: 'Economize 60%',
+      unlimitedScansNotOne: 'Escaneamentos ilimitados por 7 dias (não apenas um)',
+      aiCoverLetters: 'Cartas de apresentação com IA para cada candidatura',
+      linkedinOptimization: 'Otimização de perfil do LinkedIn incluída',
+      candidatesChoseSprint: '1,200+ candidatos escolheram Interview Sprint e conseguiram vagas em:',
+      upgradeToSprint: 'Sim, atualizar para Sprint (€24.99) 🚀',
+      // More hardcoded strings
+      scorePreview: 'Prévia da Pontuação',
+      errorLabels: 'Etiquetas [ERRO]',
+      topKeywords: 'Top 2 Palavras-Chave',
+      bestValue: 'MELHOR VALOR',
+      sevenDaySprint: 'Sprint de 7 Dias',
+      sevenDaysAccess: '7 dias de acesso completo',
+      unlimitedCVScans: 'Escaneamentos de CV Ilimitados (7d)',
+      robotViewTerminal: 'Terminal Visão Robô',
+      missingSignalsDetector: 'Detector de Sinais Faltantes',
+      seniorityMatchAudit: 'Auditoria de Correspondência de Senioridade',
+      industrySelectorFAANG: 'Seletor de Indústria (FAANG/Finanças)',
+      bulletToneElevator: 'Elevador de Tom de Marcadores',
+      bonusExtras: 'Extras Bônus:',
+      coverLetterGen: 'Gerador de Cartas',
+      linkedinOptimizer: 'Otimizador do LinkedIn',
+      devsJoined: '1,200+ desenvolvedores se juntaram',
+      sprintTestimonial: '"Sprint me ajudou a corrigir bugs e conseguir 5 entrevistas em 1 semana"',
+      fastStart: 'INÍCIO RÁPIDO',
+      loginToPurchase: 'Faça login para comprar créditos',
+      checkoutFailed: 'Falha ao iniciar o checkout',
+      checkoutError: 'Falha ao iniciar o processo de checkout',
     },
     dashboard: {
       welcome: 'Bem-vindo de volta',

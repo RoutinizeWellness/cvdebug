@@ -46,7 +46,7 @@ export function ProductShowcaseGallery() {
   ];
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden bg-[#FFFFFF]">
+    <section id="features" className="py-24 px-4 relative overflow-hidden bg-[#FFFFFF]">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-radial from-[#3B82F6]/5 via-transparent to-transparent opacity-40"></div>
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl"></div>

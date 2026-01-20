@@ -31,7 +31,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
   const handleUpgrade = async (plan: "single_scan" | "interview_sprint" | "iteration_pass") => {
     if (!isAuthenticated) {
-      toast.error("Please log in to purchase credits");
+      toast.error(t.pricingDialog.loginToPurchase);
       onOpenChange(false);
       navigate("/auth");
       return;
@@ -54,11 +54,11 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
       if (url) {
         window.location.href = url;
       } else {
-        toast.error("Failed to start checkout");
+        toast.error(t.pricingDialog.checkoutFailed);
       }
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to initiate checkout");
+      toast.error(error.message || t.pricingDialog.checkoutError);
     } finally {
       setIsLoading(null);
     }
@@ -77,12 +77,12 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] landscape:max-h-[85vh] overflow-y-auto p-0 border-2 border-[#8B5CF6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
           <div className="bg-[#F8FAFC] p-6 sm:p-8 text-center relative border-b border-[#E2E8F0]">
             <div className="absolute top-0 left-0 right-0 bg-[#F59E0B] text-white text-xs font-bold py-2 text-center uppercase">
-              ⚠️ WAIT! Before You Checkout...
+              {t.pricingDialog.waitBeforeCheckout}
             </div>
             <div className="mt-8">
-              <h2 className="text-2xl sm:text-3xl font-black mb-4 text-[#0F172A] drop-shadow-lg">Are You Applying to Only ONE Job?</h2>
+              <h2 className="text-2xl sm:text-3xl font-black mb-4 text-[#0F172A] drop-shadow-lg">{t.pricingDialog.applyingToOneJob}</h2>
               <p className="text-base sm:text-lg text-[#475569] mb-6">
-                For just <span className="text-[#8B5CF6] font-black text-xl sm:text-2xl drop-shadow-md">€10 more</span>, get the <span className="font-black text-[#0F172A]">Interview Sprint</span>.
+                {t.pricingDialog.justMoreGetSprint}
               </p>
             </div>
           </div>
@@ -90,28 +90,28 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="p-6 sm:p-8 space-y-6 bg-white">
             <div className="bg-[#F8FAFC] rounded-xl p-5 sm:p-6 border-2 border-[#F3E8FF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold text-[#8B5CF6] uppercase tracking-wide">Why Upgrade?</span>
-                <Badge className="bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20 text-xs font-bold">Save 60%</Badge>
+                <span className="text-xs font-bold text-[#8B5CF6] uppercase tracking-wide">{t.pricingDialog.whyUpgrade}</span>
+                <Badge className="bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20 text-xs font-bold">{t.pricingDialog.save60}</Badge>
               </div>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-[#475569] font-medium">Unlimited scans for 7 days (not just one)</p>
+                  <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.unlimitedScansNotOne}</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-[#475569] font-medium">AI-powered cover letters for every application</p>
+                  <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.aiCoverLetters}</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-[#475569] font-medium">LinkedIn profile optimization included</p>
+                  <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.linkedinOptimization}</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-[#8B5CF6]/5 to-[#6366F1]/5 rounded-xl p-5 sm:p-6 border border-[#8B5CF6]/20">
               <p className="text-center text-sm text-[#475569] mb-4">
-                <span className="font-black text-[#0F172A]">1,200+ candidates</span> chose Interview Sprint and landed roles at:
+                {t.pricingDialog.candidatesChoseSprint}
               </p>
               <div className="flex items-center justify-center gap-4 flex-wrap">
                 <span className="text-xs font-bold text-[#475569]">Google</span>
@@ -128,7 +128,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 onClick={() => handleUpgrade("interview_sprint")}
                 disabled={!!isLoading}
               >
-                {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : "Yes, Upgrade to Sprint (€24.99) 🚀"}
+                {isLoading === "interview_sprint" ? <Loader2 className="h-6 w-6 animate-spin" /> : t.pricingDialog.upgradeToSprint}
               </Button>
               <Button
                 variant="ghost"
@@ -136,7 +136,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                 onClick={() => handleUpgrade("single_scan")}
                 disabled={!!isLoading}
               >
-                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : "No thanks, just 24h Pass (€14.99)"}
+                {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" /> : t.pricingDialog.noThanksJust24h}
               </Button>
             </div>
           </div>
@@ -179,15 +179,15 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                Score Preview
+                {t.pricingDialog.scorePreview}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                [ERROR] Labels
+                {t.pricingDialog.errorLabels}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                Top 2 Keywords
+                {t.pricingDialog.topKeywords}
               </div>
             </div>
             <button
@@ -207,7 +207,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="mb-6">
               <div className="flex justify-between items-start">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#3B82F6] font-mono">{t.pricingDialog.quickFix}</span>
-                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">FAST START</span>
+                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">{t.pricingDialog.fastStart}</span>
               </div>
               <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.pass24h}</h2>
               <div className="mt-3 flex flex-col">
@@ -252,60 +252,60 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="bg-white border border-[#8B5CF6]/30 rounded-xl p-6 flex flex-col h-full relative">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">workspace_premium</span>
-              BEST VALUE
+              {t.pricingDialog.bestValue}
             </div>
             <div className="mb-6">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B5CF6] font-mono">7-Day Sprint</span>
-                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">BEST VALUE</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B5CF6] font-mono">{t.pricingDialog.sevenDaySprint}</span>
+                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">{t.pricingDialog.bestValue}</span>
               </div>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">7-Day Sprint</h2>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.sevenDaySprint}</h2>
               <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-black tracking-tighter text-slate-900">€24.99</span>
                   <span className="text-slate-400 line-through text-xs font-medium">€59.99</span>
                 </div>
-                <span className="text-slate-400 text-[10px] font-medium mt-1">7 days full access</span>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">{t.pricingDialog.sevenDaysAccess}</span>
               </div>
             </div>
             <div className="space-y-3 mb-6 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#8B5CF6]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                Unlimited CV Scans (7d)
+                {t.pricingDialog.unlimitedCVScans}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Robot View Terminal
+                {t.pricingDialog.robotViewTerminal}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Missing Signals Detector
+                {t.pricingDialog.missingSignalsDetector}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Seniority Match Audit
+                {t.pricingDialog.seniorityMatchAudit}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Industry Selector (FAANG/Finance)
+                {t.pricingDialog.industrySelectorFAANG}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Bullet Tone Elevator
+                {t.pricingDialog.bulletToneElevator}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
-                Battle Plan Generator
+                {t.pricingDialog.battlePlanGenerator}
               </div>
               <div className="pt-2 border-t border-slate-200">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Bonus Extras:</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{t.pricingDialog.bonusExtras}</p>
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
                   <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
-                  Cover Letter Gen
+                  {t.pricingDialog.coverLetterGen}
                 </div>
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
                   <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
-                  LinkedIn Optimizer
+                  {t.pricingDialog.linkedinOptimizer}
                 </div>
               </div>
             </div>
@@ -316,10 +316,10 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
                   <div className="size-5 rounded-full border-2 border-white bg-slate-100"></div>
                   <div className="size-5 rounded-full border-2 border-white bg-slate-100"></div>
                 </div>
-                <span className="text-[10px] font-bold text-slate-500">1,200+ devs joined</span>
+                <span className="text-[10px] font-bold text-slate-500">{t.pricingDialog.devsJoined}</span>
               </div>
               <p className="text-[10px] italic text-slate-400 leading-relaxed font-medium">
-                "Sprint helped me fix bugs and land 5 interviews in 1 week"
+                {t.pricingDialog.sprintTestimonial}
               </p>
             </div>
             <button
