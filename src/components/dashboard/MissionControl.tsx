@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
 import { ApplicationMicroTracker } from "./ApplicationMicroTracker";
+import { EliteMatchTool } from "./EliteMatchTool";
 import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
@@ -313,6 +314,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           </div>
         </div>
       </motion.section>
+
+      {/* Elite Match Tool - Flagship Feature */}
+      <EliteMatchTool />
 
       {/* Career Health Gamification */}
       <motion.section

@@ -24,7 +24,7 @@ import {
   Briefcase,
   Lock
 } from "lucide-react";
-import { useRef, useState, useEffect, lazy, Suspense } from "react";
+import React, { useRef, useState, useEffect, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import { useNavigate, useSearchParams } from "react-router";
 import { PricingDialog } from "@/components/PricingDialog";
@@ -601,6 +601,23 @@ export default function Dashboard() {
         return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
       case 'keyword-sniper':
         return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
+      case 'match':
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            <div className="bg-[#FFFFFF] rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-8">
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">Elite Match Tool</h1>
+                <p className="text-[#475569] text-base">Analiza tu CV contra cualquier oferta de trabajo con ML local (0 APIs)</p>
+              </div>
+            </div>
+            <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+              {React.createElement(() => {
+                const { EliteMatchTool } = require('@/components/dashboard/EliteMatchTool');
+                return <EliteMatchTool />;
+              })}
+            </Suspense>
+          </div>
+        );
       case 'settings':
         return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       default:

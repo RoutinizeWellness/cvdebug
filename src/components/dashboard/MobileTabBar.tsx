@@ -1,4 +1,4 @@
-import { Home, FileText, Sparkles, User, Upload } from "lucide-react";
+import { Home, FileText, Sparkles, User, Upload, Target } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -11,8 +11,8 @@ interface MobileTabBarProps {
 export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTabBarProps) {
   const tabs = [
     { id: "mission", label: "Home", icon: Home },
-    { id: "resumes", label: "Scans", icon: FileText },
-    { id: "tools", label: "AI Tools", icon: Sparkles },
+    { id: "match", label: "Match", icon: Target },
+    { id: "tools", label: "AI", icon: Sparkles },
     { id: "profile", label: "Profile", icon: User },
   ];
 

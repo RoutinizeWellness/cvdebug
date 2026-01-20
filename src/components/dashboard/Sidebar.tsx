@@ -111,6 +111,13 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           />
 
           <NavItem
+            active={currentView === 'match'}
+            icon="target"
+            label="Elite Match"
+            onClick={() => setCurrentView('match')}
+          />
+
+          <NavItem
             active={currentView === 'settings'}
             icon="settings"
             label={t.sidebar.settings}
