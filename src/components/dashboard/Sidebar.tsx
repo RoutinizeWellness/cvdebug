@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Logo } from "@/components/Logo";
 import { LogoutConfirmDialog } from "@/components/LogoutConfirmDialog";
-import { ApplicationMicroTracker } from "@/components/dashboard/ApplicationMicroTracker";
+import { SidebarApplicationTracker } from "@/components/dashboard/SidebarApplicationTracker";
 import { useState, useEffect } from "react";
 import { useI18n } from "@/contexts/I18nContext";
 
@@ -139,9 +139,9 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar">
-        {/* Application Tracker */}
+        {/* Application Tracker Compacto */}
         <div className="mb-4">
-          <ApplicationMicroTracker />
+          <SidebarApplicationTracker />
         </div>
       </div>
 
