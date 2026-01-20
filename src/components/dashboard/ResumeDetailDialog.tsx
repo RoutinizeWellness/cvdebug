@@ -25,7 +25,8 @@ import {
   FileSearch,
   AlertTriangle,
   Loader2,
-  Check
+  Check,
+  Edit
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -57,6 +58,7 @@ import { ATSSimulation } from "./ATSSimulation";
 import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
 import { FluffDetector } from "./FluffDetector";
+import { InlineResumeEditor } from "./InlineResumeEditor";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -811,6 +813,18 @@ export function ResumeDetailDialog({
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
                 <div className="bg-[#FFFFFF] flex-shrink-0 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 border-b border-[#E2E8F0]">
                   <TabsList className="inline-flex w-auto min-w-full gap-1 h-auto bg-transparent">
+                    {/* EDIT Group - NEW */}
+                    <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
+                      <TabsTrigger
+                        value="edit"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#8B5CF6] data-[state=active]:to-[#6366F1] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Edit className="h-4 w-4" />
+                          <span>Edit</span>
+                        </span>
+                      </TabsTrigger>
+                    </div>
                     {/* DIAGNOSIS Group */}
                     <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
                       <TabsTrigger
@@ -880,6 +894,24 @@ export function ResumeDetailDialog({
                     </div>
                   </TabsList>
                 </div>
+
+                {/* NEW: Edit Tab Content */}
+                <TabsContent value="edit" className="flex-1 overflow-auto p-0 m-0">
+                  <div className="h-full bg-[#F8FAFC] p-6">
+                    {displayResume && (
+                      <InlineResumeEditor
+                        resumeId={displayResume._id}
+                        initialContent={displayResume.ocrText || ""}
+                        missingKeywords={displayResume.missingKeywords || []}
+                        formatIssues={displayResume.formatIssues || []}
+                        onContentUpdate={(newContent) => {
+                          // Content is automatically saved and re-analyzed by the component
+                          toast.success("Re-analyzing your updated resume...");
+                        }}
+                      />
+                    )}
+                  </div>
+                </TabsContent>
 
                 <TabsContent value="robot" className="flex-1 overflow-auto p-0 m-0">
                   <div className="h-full bg-[#F8FAFC] relative">

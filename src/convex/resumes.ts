@@ -825,6 +825,40 @@ export const updateResumeText = mutation({
   },
 });
 
+export const updateResumeContent = mutation({
+  args: {
+    id: v.id("resumes"),
+    newContent: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new ConvexError("UNAUTHORIZED");
+    }
+
+    // Update the content
+    await ctx.db.patch(args.id, {
+      ocrText: args.newContent,
+      status: "processing",
+    });
+
+    // Trigger re-analysis with updated content
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+      id: args.id,
+      ocrText: args.newContent,
+      jobDescription: resume.jobDescription,
+    });
+
+    console.log("[updateResumeContent] Resume content updated and re-analysis scheduled:", args.id);
+    return { success: true };
+  },
+});
+
 export const applyRewriteToResume = mutation({
   args: {
     id: v.id("resumes"),
