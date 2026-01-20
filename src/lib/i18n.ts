@@ -25,6 +25,20 @@ export interface Translation {
     pass24h: string;
     sprint7d: string;
     currency: string;
+    enterprise: {
+      badge: string;
+      title: string;
+      subtitle: string;
+      description: string;
+      contactSales: string;
+      viewPricing: string;
+      feature1: string;
+      feature1Desc: string;
+      feature2: string;
+      feature2Desc: string;
+      feature3: string;
+      feature3Desc: string;
+    };
   };
   pricingDialog: {
     quickFix: string;
@@ -239,6 +253,8 @@ export interface Translation {
       description: string;
       buttonText: string;
       footerText: string;
+      secondary: string;
+      button: string;
     };
     faq: {
       heading: string;
@@ -261,25 +277,23 @@ export interface Translation {
     };
     enterprise: {
       badge: string;
-      heading: string;
-      subheading: string;
+      title: string;
+      subtitle: string;
+      description: string;
       contactSales: string;
       viewPricing: string;
-      teamManagement: {
-        title: string;
-        description: string;
-      };
-      soc2: {
-        title: string;
-        description: string;
-      };
-      api: {
-        title: string;
-        description: string;
-      };
-      ctaHeading: string;
-      ctaSubheading: string;
-      ctaButton: string;
+      feature1: string;
+      feature1Desc: string;
+      feature2: string;
+      feature2Desc: string;
+      feature3: string;
+      feature3Desc: string;
+    };
+    finalCta: {
+      heading: string;
+      description: string;
+      button: string;
+      footer: string;
     };
   };
   // Onboarding
@@ -1085,6 +1099,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: '24-Hour Pass',
       sprint7d: '7-Day Sprint',
       currency: '$',
+      enterprise: {
+        badge: 'Enterprise',
+        title: 'Scale Your Hiring',
+        subtitle: 'Without Compromise',
+        description: 'Built for recruiting teams that process thousands of applications. Get volume discounts, dedicated support, and custom integrations.',
+        contactSales: 'Contact Sales',
+        viewPricing: 'View Pricing',
+        feature1: 'Team Management',
+        feature1Desc: 'Centralized dashboard for HR teams to track all candidate applications',
+        feature2: 'SOC 2 Compliant',
+        feature2Desc: 'Enterprise-grade security with SSO and role-based access control',
+        feature3: 'API Access',
+        feature3Desc: 'Integrate ATS scanning directly into your recruitment workflow',
+      },
     },
     pricingDialog: {
       quickFix: 'Quick Fix',
@@ -1287,6 +1315,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         description: 'Join thousands of successful job seekers who fixed their resumes with CVDebug.',
         buttonText: 'Start Free Scan Now',
         footerText: 'No credit card required',
+        secondary: 'Still have questions? Try our free ATS scanner now',
+        button: 'Scan Your Resume Free →',
       },
       faq: {
         heading: 'Frequently Asked Questions',
@@ -1309,25 +1339,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       enterprise: {
         badge: 'Enterprise',
-        heading: 'Scale Your Hiring',
-        subheading: 'Without Compromise',
+        title: 'Scale Your Hiring',
+        subtitle: 'Without Compromise',
+        description: 'Built for recruiting teams that process thousands of applications. Get volume discounts, dedicated support, and custom integrations.',
         contactSales: 'Contact Sales',
         viewPricing: 'View Pricing',
-        teamManagement: {
-          title: 'Team Management',
-          description: 'Centralized dashboard for HR teams to track all candidate applications',
-        },
-        soc2: {
-          title: 'SOC 2 Compliant',
-          description: 'Enterprise-grade security with SSO and role-based access control',
-        },
-        api: {
-          title: 'API Access',
-          description: 'Integrate ATS scanning directly into your recruitment workflow',
-        },
-        ctaHeading: 'Ready to debug your career?',
-        ctaSubheading: 'Join 10,000+ developers who fixed their parsing errors and doubled their interview rate.',
-        ctaButton: 'Check My Visibility (Free Scan)',
+        feature1: 'Team Management',
+        feature1Desc: 'Centralized dashboard for HR teams to track all candidate applications',
+        feature2: 'SOC 2 Compliant',
+        feature2Desc: 'Enterprise-grade security with SSO and role-based access control',
+        feature3: 'API Access',
+        feature3Desc: 'Integrate ATS scanning directly into your recruitment workflow',
+      },
+      finalCta: {
+        heading: 'Ready to debug your career?',
+        description: 'Join 10,000+ developers who fixed their parsing errors and doubled their interview rate.',
+        button: 'Check My Visibility (Free Scan)',
+        footer: 'No credit card required • GDPR Compliant • Instant Result',
       },
     },
     onboarding: {
@@ -2101,6 +2129,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: 'Pase 24 Horas',
       sprint7d: 'Sprint 7 Días',
       currency: '€',
+      enterprise: {
+        badge: 'Empresarial',
+        title: 'Escala Tu Contratación',
+        subtitle: 'Sin Compromisos',
+        description: 'Diseñado para equipos de reclutamiento que procesan miles de aplicaciones. Obtén descuentos por volumen, soporte dedicado e integraciones personalizadas.',
+        contactSales: 'Contactar Ventas',
+        viewPricing: 'Ver Precios',
+        feature1: 'Gestión de Equipo',
+        feature1Desc: 'Panel centralizado para equipos de RRHH para rastrear todas las aplicaciones de candidatos',
+        feature2: 'Cumplimiento SOC 2',
+        feature2Desc: 'Seguridad de nivel empresarial con SSO y control de acceso basado en roles',
+        feature3: 'Acceso a API',
+        feature3Desc: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
+      },
     },
     pricingDialog: {
       quickFix: 'Solución Rápida',
@@ -2303,6 +2345,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         description: 'Únete a miles de profesionales exitosos que mejoraron sus CVs con CVDebug.',
         buttonText: 'Iniciar Escaneo Gratis Ahora',
         footerText: 'No se requiere tarjeta de crédito',
+        secondary: '¿Aún tienes preguntas? Prueba nuestro escáner ATS gratis ahora',
+        button: 'Escanea Tu CV Gratis →',
       },
       faq: {
         heading: 'Preguntas Frecuentes',
@@ -2325,25 +2369,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       enterprise: {
         badge: 'Empresarial',
-        heading: 'Escala Tu Contratación',
-        subheading: 'Sin Compromisos',
+        title: 'Escala Tu Contratación',
+        subtitle: 'Sin Compromisos',
+        description: 'Diseñado para equipos de reclutamiento que procesan miles de aplicaciones. Obtén descuentos por volumen, soporte dedicado e integraciones personalizadas.',
         contactSales: 'Contactar Ventas',
         viewPricing: 'Ver Precios',
-        teamManagement: {
-          title: 'Gestión de Equipo',
-          description: 'Panel centralizado para equipos de RRHH para rastrear todas las aplicaciones de candidatos',
-        },
-        soc2: {
-          title: 'Cumplimiento SOC 2',
-          description: 'Seguridad de nivel empresarial con SSO y control de acceso basado en roles',
-        },
-        api: {
-          title: 'Acceso a API',
-          description: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
-        },
-        ctaHeading: '¿Listo para depurar tu carrera?',
-        ctaSubheading: 'Únete a más de 10,000 desarrolladores que corrigieron sus errores de análisis y duplicaron su tasa de entrevistas.',
-        ctaButton: 'Verifica Mi Visibilidad (Escaneo Gratis)',
+        feature1: 'Gestión de Equipo',
+        feature1Desc: 'Panel centralizado para equipos de RRHH para rastrear todas las aplicaciones de candidatos',
+        feature2: 'Cumplimiento SOC 2',
+        feature2Desc: 'Seguridad de nivel empresarial con SSO y control de acceso basado en roles',
+        feature3: 'Acceso a API',
+        feature3Desc: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
+      },
+      finalCta: {
+        heading: '¿Listo para depurar tu carrera?',
+        description: 'Únete a más de 10,000 desarrolladores que corrigieron sus errores de análisis y duplicaron su tasa de entrevistas.',
+        button: 'Verifica Mi Visibilidad (Escaneo Gratis)',
+        footer: 'No se requiere tarjeta de crédito • Cumplimiento RGPD • Resultado Instantáneo',
       },
     },
     onboarding: {
@@ -3117,6 +3159,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: 'Pass 24 Heures',
       sprint7d: 'Sprint 7 Jours',
       currency: '€',
+      enterprise: {
+        badge: 'Entreprise',
+        title: 'Développez Votre Recrutement',
+        subtitle: 'Sans Compromis',
+        description: 'Conçu pour les équipes de recrutement qui traitent des milliers de candidatures. Bénéficiez de remises sur volume, d\'un support dédié et d\'intégrations personnalisées.',
+        contactSales: 'Contacter les Ventes',
+        viewPricing: 'Voir les Tarifs',
+        feature1: 'Gestion d\'Équipe',
+        feature1Desc: 'Tableau de bord centralisé pour les équipes RH pour suivre toutes les candidatures',
+        feature2: 'Conformité SOC 2',
+        feature2Desc: 'Sécurité de niveau entreprise avec SSO et contrôle d\'accès basé sur les rôles',
+        feature3: 'Accès API',
+        feature3Desc: 'Intégrez le scan ATS directement dans votre flux de travail de recrutement',
+      },
     },
     pricingDialog: {
       quickFix: 'Solution Rapide',
@@ -3319,6 +3375,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         description: 'Rejoignez des milliers de chercheurs d\'emploi qui ont amélioré leurs CVs avec CVDebug.',
         buttonText: 'Commencer le Scan Gratuit Maintenant',
         footerText: 'Aucune carte de crédit requise',
+        secondary: 'Vous avez encore des questions? Essayez notre scanner ATS gratuit maintenant',
+        button: 'Scannez Votre CV Gratuitement →',
       },
       faq: {
         heading: 'Foire Aux Questions',
@@ -3341,25 +3399,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       enterprise: {
         badge: 'Entreprise',
-        heading: 'Développez Votre Recrutement',
-        subheading: 'Sans Compromis',
+        title: 'Développez Votre Recrutement',
+        subtitle: 'Sans Compromis',
+        description: 'Conçu pour les équipes de recrutement qui traitent des milliers de candidatures. Bénéficiez de remises sur volume, d\'un support dédié et d\'intégrations personnalisées.',
         contactSales: 'Contacter les Ventes',
         viewPricing: 'Voir les Tarifs',
-        teamManagement: {
-          title: 'Gestion d\'Équipe',
-          description: 'Tableau de bord centralisé pour les équipes RH pour suivre toutes les candidatures',
-        },
-        soc2: {
-          title: 'Conformité SOC 2',
-          description: 'Sécurité de niveau entreprise avec SSO et contrôle d\'accès basé sur les rôles',
-        },
-        api: {
-          title: 'Accès API',
-          description: 'Intégrez le scan ATS directement dans votre flux de travail de recrutement',
-        },
-        ctaHeading: 'Prêt à déboguer votre carrière?',
-        ctaSubheading: 'Rejoignez plus de 10 000 développeurs qui ont corrigé leurs erreurs d\'analyse et doublé leur taux d\'entretien.',
-        ctaButton: 'Vérifiez Ma Visibilité (Scan Gratuit)',
+        feature1: 'Gestion d\'Équipe',
+        feature1Desc: 'Tableau de bord centralisé pour les équipes RH pour suivre toutes les candidatures',
+        feature2: 'Conformité SOC 2',
+        feature2Desc: 'Sécurité de niveau entreprise avec SSO et contrôle d\'accès basé sur les rôles',
+        feature3: 'Accès API',
+        feature3Desc: 'Intégrez le scan ATS directement dans votre flux de travail de recrutement',
+      },
+      finalCta: {
+        heading: 'Prêt à déboguer votre carrière?',
+        description: 'Rejoignez plus de 10 000 développeurs qui ont corrigé leurs erreurs d\'analyse et doublé leur taux d\'entretien.',
+        button: 'Vérifiez Ma Visibilité (Scan Gratuit)',
+        footer: 'Aucune carte de crédit requise • Conformité RGPD • Résultat Instantané',
       },
     },
     onboarding: {
@@ -4133,6 +4189,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: '24-Stunden-Pass',
       sprint7d: '7-Tage-Sprint',
       currency: '€',
+      enterprise: {
+        badge: 'Unternehmen',
+        title: 'Skalieren Sie Ihre Einstellung',
+        subtitle: 'Ohne Kompromisse',
+        description: 'Entwickelt für Recruiting-Teams, die Tausende von Bewerbungen bearbeiten. Erhalten Sie Mengenrabatte, dedizierten Support und individuelle Integrationen.',
+        contactSales: 'Vertrieb Kontaktieren',
+        viewPricing: 'Preise Ansehen',
+        feature1: 'Team-Management',
+        feature1Desc: 'Zentralisiertes Dashboard für HR-Teams zur Verfolgung aller Bewerbungen',
+        feature2: 'SOC 2 Konform',
+        feature2Desc: 'Sicherheit auf Unternehmensniveau mit SSO und rollenbasierter Zugriffskontrolle',
+        feature3: 'API-Zugang',
+        feature3Desc: 'Integrieren Sie ATS-Scanning direkt in Ihren Recruiting-Workflow',
+      },
     },
     pricingDialog: {
       quickFix: 'Schnelle Lösung',
@@ -4335,6 +4405,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         description: 'Schließen Sie sich Tausenden erfolgreicher Jobsuchender an, die ihre Lebensläufe mit CVDebug verbessert haben.',
         buttonText: 'Jetzt Kostenlosen Scan Starten',
         footerText: 'Keine Kreditkarte erforderlich',
+        secondary: 'Haben Sie noch Fragen? Probieren Sie jetzt unseren kostenlosen ATS-Scanner aus',
+        button: 'Scannen Sie Ihren Lebenslauf Kostenlos →',
       },
       faq: {
         heading: 'Häufig Gestellte Fragen',
@@ -4357,25 +4429,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       enterprise: {
         badge: 'Unternehmen',
-        heading: 'Skalieren Sie Ihre Einstellung',
-        subheading: 'Ohne Kompromisse',
+        title: 'Skalieren Sie Ihre Einstellung',
+        subtitle: 'Ohne Kompromisse',
+        description: 'Entwickelt für Recruiting-Teams, die Tausende von Bewerbungen bearbeiten. Erhalten Sie Mengenrabatte, dedizierten Support und individuelle Integrationen.',
         contactSales: 'Vertrieb Kontaktieren',
         viewPricing: 'Preise Ansehen',
-        teamManagement: {
-          title: 'Team-Management',
-          description: 'Zentralisiertes Dashboard für HR-Teams zur Verfolgung aller Bewerbungen',
-        },
-        soc2: {
-          title: 'SOC 2 Konform',
-          description: 'Sicherheit auf Unternehmensniveau mit SSO und rollenbasierter Zugriffskontrolle',
-        },
-        api: {
-          title: 'API-Zugang',
-          description: 'Integrieren Sie ATS-Scanning direkt in Ihren Recruiting-Workflow',
-        },
-        ctaHeading: 'Bereit, Ihre Karriere zu debuggen?',
-        ctaSubheading: 'Schließen Sie sich über 10.000 Entwicklern an, die ihre Parsing-Fehler behoben und ihre Interview-Rate verdoppelt haben.',
-        ctaButton: 'Meine Sichtbarkeit Prüfen (Kostenloser Scan)',
+        feature1: 'Team-Management',
+        feature1Desc: 'Zentralisiertes Dashboard für HR-Teams zur Verfolgung aller Bewerbungen',
+        feature2: 'SOC 2 Konform',
+        feature2Desc: 'Sicherheit auf Unternehmensniveau mit SSO und rollenbasierter Zugriffskontrolle',
+        feature3: 'API-Zugang',
+        feature3Desc: 'Integrieren Sie ATS-Scanning direkt in Ihren Recruiting-Workflow',
+      },
+      finalCta: {
+        heading: 'Bereit, Ihre Karriere zu debuggen?',
+        description: 'Schließen Sie sich über 10.000 Entwicklern an, die ihre Parsing-Fehler behoben und ihre Interview-Rate verdoppelt haben.',
+        button: 'Meine Sichtbarkeit Prüfen (Kostenloser Scan)',
+        footer: 'Keine Kreditkarte erforderlich • DSGVO-konform • Sofortiges Ergebnis',
       },
     },
     onboarding: {
@@ -5149,6 +5219,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24h: 'Passe 24 Horas',
       sprint7d: 'Sprint 7 Dias',
       currency: 'R$',
+      enterprise: {
+        badge: 'Empresarial',
+        title: 'Escale Seu Recrutamento',
+        subtitle: 'Sem Concessões',
+        description: 'Desenvolvido para equipes de recrutamento que processam milhares de candidaturas. Obtenha descontos por volume, suporte dedicado e integrações personalizadas.',
+        contactSales: 'Contatar Vendas',
+        viewPricing: 'Ver Preços',
+        feature1: 'Gestão de Equipe',
+        feature1Desc: 'Painel centralizado para equipes de RH rastrearem todas as candidaturas',
+        feature2: 'Conformidade SOC 2',
+        feature2Desc: 'Segurança de nível empresarial com SSO e controle de acesso baseado em funções',
+        feature3: 'Acesso à API',
+        feature3Desc: 'Integre o escaneamento ATS diretamente no seu fluxo de trabalho de recrutamento',
+      },
     },
     pricingDialog: {
       quickFix: 'Solução Rápida',
@@ -5351,6 +5435,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         description: 'Junte-se a milhares de profissionais bem-sucedidos que melhoraram seus currículos com CVDebug.',
         buttonText: 'Iniciar Scan Grátis Agora',
         footerText: 'Não é necessário cartão de crédito',
+        secondary: 'Ainda tem dúvidas? Experimente nosso scanner ATS gratuito agora',
+        button: 'Escaneie Seu Currículo Grátis →',
       },
       faq: {
         heading: 'Perguntas Frequentes',
@@ -5373,25 +5459,23 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       enterprise: {
         badge: 'Empresarial',
-        heading: 'Escale Seu Recrutamento',
-        subheading: 'Sem Concessões',
+        title: 'Escale Seu Recrutamento',
+        subtitle: 'Sem Concessões',
+        description: 'Desenvolvido para equipes de recrutamento que processam milhares de candidaturas. Obtenha descontos por volume, suporte dedicado e integrações personalizadas.',
         contactSales: 'Contatar Vendas',
         viewPricing: 'Ver Preços',
-        teamManagement: {
-          title: 'Gestão de Equipe',
-          description: 'Painel centralizado para equipes de RH rastrearem todas as candidaturas',
-        },
-        soc2: {
-          title: 'Conformidade SOC 2',
-          description: 'Segurança de nível empresarial com SSO e controle de acesso baseado em funções',
-        },
-        api: {
-          title: 'Acesso à API',
-          description: 'Integre o escaneamento ATS diretamente no seu fluxo de trabalho de recrutamento',
-        },
-        ctaHeading: 'Pronto para depurar sua carreira?',
-        ctaSubheading: 'Junte-se a mais de 10.000 desenvolvedores que corrigiram seus erros de análise e dobraram sua taxa de entrevistas.',
-        ctaButton: 'Verificar Minha Visibilidade (Scan Grátis)',
+        feature1: 'Gestão de Equipe',
+        feature1Desc: 'Painel centralizado para equipes de RH rastrearem todas as candidaturas',
+        feature2: 'Conformidade SOC 2',
+        feature2Desc: 'Segurança de nível empresarial com SSO e controle de acesso baseado em funções',
+        feature3: 'Acesso à API',
+        feature3Desc: 'Integre o escaneamento ATS diretamente no seu fluxo de trabalho de recrutamento',
+      },
+      finalCta: {
+        heading: 'Pronto para depurar sua carreira?',
+        description: 'Junte-se a mais de 10.000 desenvolvedores que corrigiram seus erros de análise e dobraram sua taxa de entrevistas.',
+        button: 'Verificar Minha Visibilidade (Scan Grátis)',
+        footer: 'Não é necessário cartão de crédito • Conformidade LGPD • Resultado Instantâneo',
       },
     },
     onboarding: {

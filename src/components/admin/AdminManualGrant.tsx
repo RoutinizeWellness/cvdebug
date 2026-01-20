@@ -65,7 +65,7 @@ export function AdminManualGrant({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="single_scan">Single Scan (€9.99)</SelectItem>
-                <SelectItem value="interview_sprint">Interview Sprint (€19.99)</SelectItem>
+                <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
               </SelectContent>
             </Select>
           </div>

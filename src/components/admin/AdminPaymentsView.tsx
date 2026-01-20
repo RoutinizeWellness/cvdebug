@@ -101,7 +101,7 @@ export function AdminPaymentsView() {
           <h3 className="text-2xl font-display font-bold text-white">
             {interviewSprintCount}
           </h3>
-          <p className="text-xs text-slate-500 mt-1">${(interviewSprintCount * 19.99).toFixed(2)}</p>
+          <p className="text-xs text-slate-500 mt-1">${(interviewSprintCount * 24.99).toFixed(2)}</p>
         </motion.div>
       </div>
 

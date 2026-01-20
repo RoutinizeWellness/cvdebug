@@ -805,7 +805,7 @@ export default function AdminPage() {
                       <div className="flex gap-2 border-l-2 border-cyan-500/50 pl-2 bg-cyan-500/5 py-1 rounded-r">
                         <span className="text-[#64748B] min-w-[52px]">10:43:12</span>
                         <div className="flex-1 text-cyan-200">
-                          <span className="text-cyan-400 font-bold">[STRIPE]</span> Payment Succeeded - €19.99
+                          <span className="text-cyan-400 font-bold">[STRIPE]</span> Payment Succeeded - €24.99
                           <span className="text-[#64748B] text-[10px] block mt-1">user: {user.email}</span>
                         </div>
                       </div>
@@ -902,7 +902,7 @@ export default function AdminPage() {
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <SelectItem value="free">Free</SelectItem>
                   <SelectItem value="single_scan">Single Scan (€4.99)</SelectItem>
-                  <SelectItem value="interview_sprint">Interview Sprint (€19.99)</SelectItem>
+                  <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -1000,7 +1000,7 @@ export default function AdminPage() {
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <SelectItem value="free">Free Preview</SelectItem>
                   <SelectItem value="single_scan">Single Scan (€4.99)</SelectItem>
-                  <SelectItem value="interview_sprint">Interview Sprint (€19.99)</SelectItem>
+                  <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -42,7 +42,7 @@ export function PremiumFeatureModal({
     },
     interview_sprint: {
       name: "Interview Sprint",
-      price: "€19.99",
+      price: "€24.99",
       priceSubtext: "per month",
       color: "from-[#8B5CF6] to-[#EC4899]",
       icon: Crown,

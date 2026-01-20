@@ -289,7 +289,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           toast.error(
             "No scans remaining.",
             {
-              description: "Upgrade to Single Scan (€4.99) or Interview Sprint (€19.99) for unlimited scans",
+              description: "Upgrade to Single Scan (€4.99) or Interview Sprint (€24.99) for unlimited scans",
               duration: 6000,
             }
           );

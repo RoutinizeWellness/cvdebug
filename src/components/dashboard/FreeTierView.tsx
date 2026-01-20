@@ -429,7 +429,7 @@ export function FreeTierView({
             </div>
 
             <p className="text-xs text-[#64748B]">
-              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#3B82F6] underline font-semibold">Interview Sprint (€19.99)</button> for unlimited scans + cover letter optimizer
+              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#3B82F6] underline font-semibold">Interview Sprint (€24.99)</button> for unlimited scans + cover letter optimizer
             </p>
           </div>
           

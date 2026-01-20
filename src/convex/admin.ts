@@ -112,7 +112,7 @@ export const getAdminStats = query({
 
     // Calculate total revenue (approximate)
     const singleScanRevenue = singleScanUsers.length * 4.99;
-    const sprintRevenue = sprintUsers.length * 19.99;
+    const sprintRevenue = sprintUsers.length * 24.99;
     const totalRevenue = singleScanRevenue + sprintRevenue;
 
     return {
@@ -158,8 +158,8 @@ export const getPremiumUsers = query({
 
     // Enhance with payment info
     const usersWithPaymentInfo = premiumUsers.map(user => {
-      const plan = user.subscriptionTier === "single_scan" ? "Single Scan (€4.99)" : "Interview Sprint (€19.99)";
-      const revenue = user.subscriptionTier === "single_scan" ? 4.99 : 19.99;
+      const plan = user.subscriptionTier === "single_scan" ? "Single Scan (€4.99)" : "Interview Sprint (€24.99)";
+      const revenue = user.subscriptionTier === "single_scan" ? 4.99 : 24.99;
       const isActive = user.subscriptionTier === "interview_sprint"
         ? (user.sprintExpiresAt && user.sprintExpiresAt > Date.now())
         : true;

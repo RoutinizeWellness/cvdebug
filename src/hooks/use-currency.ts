@@ -10,7 +10,7 @@ export interface CurrencyInfo {
 // Base prices in EUR (€)
 const BASE_PRICES = {
   single_scan: 9.99,
-  interview_sprint: 19.99,
+  interview_sprint: 24.99,
 };
 
 // Currency conversion rates (from EUR)

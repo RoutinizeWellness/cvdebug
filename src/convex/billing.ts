@@ -76,7 +76,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
           tokenIdentifier: customer_id,
           plan,
           transactionId: transaction_id,
-          amount: amount || (plan === "single_scan" ? 9.99 : 19.99),
+          amount: amount || (plan === "single_scan" ? 9.99 : 24.99),
         });
         console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored - Admin panel will auto-sync`);
       } catch (error: any) {

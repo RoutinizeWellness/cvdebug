@@ -31,7 +31,7 @@ export default function PaymentSuccess() {
   const email = payment?.userEmail || searchParams.get("email") || "user@example.com";
   const userName = payment?.userName || "User";
   const plan = payment?.plan || "interview_sprint";
-  const amount = payment?.amount || 19.99;
+  const amount = payment?.amount || 24.99;
 
   const [timeLeft, setTimeLeft] = useState({
     days: 6,

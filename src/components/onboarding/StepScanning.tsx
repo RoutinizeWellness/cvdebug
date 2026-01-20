@@ -142,7 +142,7 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
               className="w-full h-14 bg-gradient-to-r from-[#3B82F6] to-[#F59E0B] hover:from-[#3B82F6]/90 hover:to-[#F59E0B]/90 text-white font-black text-lg shadow-lg shadow-[#3B82F6]/30"
             >
               <Zap className="h-5 w-5 mr-2" />
-              Unlock Full Report & Fix Errors - €19.99
+              Unlock Full Report & Fix Errors - €24.99
             </Button>
             <p className="text-center text-xs text-[#64748B]">
               7-Day Interview Sprint • Unlimited Scans • AI Fixes

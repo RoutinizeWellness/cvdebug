@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { useI18n } from "@/contexts/I18nContext";
 
 /**
  * SEO-Optimized FAQ Section
@@ -9,31 +10,16 @@ import { useState } from "react";
  */
 export function SEOFAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { t } = useI18n();
 
   const faqs = [
     {
-      question: "What is an ATS resume scanner?",
-      answer: "An ATS (Applicant Tracking System) resume scanner is a tool that shows you how ATS software reads and parses your resume. CVDebug's Robot View feature lets you see exactly what hiring bots see, helping you optimize your resume for a higher ATS score and better interview callbacks. Most companies use ATS systems like Workday, Taleo, Greenhouse, Lever, and iCIMS to automatically screen resumes before human recruiters see them."
+      question: t.landing.faq.question1,
+      answer: t.landing.faq.answer1
     },
     {
-      question: "How does Robot View work?",
-      answer: "Robot View uses advanced parsing technology to show you the exact text and structure that ATS systems extract from your resume. This unique feature helps you identify formatting issues, missing keywords, and sections that ATS robots can't read properly. Unlike other resume scanners, Robot View shows you a side-by-side comparison of what you see vs. what the ATS bot sees, making it easy to spot and fix problems instantly."
-    },
-    {
-      question: "Is CVDebug free to use?",
-      answer: "Yes! CVDebug offers a free ATS scan that shows your ATS score and basic optimization tips. No credit card or signup required. Simply upload your resume and get instant results in 10 seconds. Premium plans start at €9.99 for detailed analysis with keyword gap identification, formatting fixes, and unlimited scans. Over 10,000 job seekers have used CVDebug to optimize their resumes and land more interviews."
-    },
-    {
-      question: "What is a good ATS score?",
-      answer: "An ATS score above 80% is considered good and means your resume is highly compatible with most ATS systems. Scores of 90%+ are excellent and significantly increase your chances of getting past the initial screening. If your score is below 70%, you should fix formatting issues and add missing keywords immediately. CVDebug helps you improve your score by identifying exactly what's holding you back, whether it's formatting problems, missing keywords, or sections the ATS can't parse."
-    },
-    {
-      question: "Which companies use ATS?",
-      answer: "98% of Fortune 500 companies use ATS software including Google, Meta (Facebook), Amazon, Microsoft, Apple, Netflix, Tesla, and thousands more. Popular ATS platforms include Workday, Taleo (Oracle), Greenhouse, Lever, iCIMS, SAP SuccessFactors, BambooHR, and Jobvite. Even small and medium-sized companies use ATS systems. In India, companies like TCS, Infosys, Wipro, HCL, and Tech Mahindra all use ATS. In the Philippines, BPO companies like Accenture, Concentrix, and Teleperformance rely heavily on ATS screening."
-    },
-    {
-      question: "Why is my resume getting rejected by ATS?",
-      answer: "Common reasons for ATS rejection include: 1) Complex formatting like tables, columns, or text boxes that ATS can't parse, 2) Missing keywords from the job description, 3) Headers and footers with important information that gets ignored, 4) Graphics, images, or fancy fonts that are invisible to ATS, 5) Incorrect section headings that ATS doesn't recognize. CVDebug's Robot View shows you exactly which parts of your resume are unreadable to ATS systems so you can fix them and increase your pass rate."
+      question: t.landing.faq.question2,
+      answer: t.landing.faq.answer2
     }
   ];
 
@@ -57,10 +43,10 @@ export function SEOFAQSection() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1E293B] mb-4">
-            Frequently Asked Questions
+            {t.landing.faq.heading}
           </h2>
           <p className="text-lg text-[#475569] max-w-2xl mx-auto">
-            Everything you need to know about ATS resume scanners and how CVDebug helps you beat them
+            {t.landing.hero.subtitle}
           </p>
         </motion.div>
 
@@ -128,10 +114,10 @@ export function SEOFAQSection() {
           className="mt-12 text-center"
         >
           <p className="text-[#475569] mb-4">
-            Still have questions? Try our free ATS scanner now
+            {t.landing.cta.secondary}
           </p>
           <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#3B82F6]/50 transition-all duration-300 hover:scale-105">
-            Scan Your Resume Free →
+            {t.landing.cta.button}
           </button>
         </motion.div>
       </div>

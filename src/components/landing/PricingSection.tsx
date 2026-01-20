@@ -8,7 +8,7 @@ export function PricingSection() {
   const navigate = useNavigate();
   const [prices, setPrices] = useState({
     single: "€9.99",
-    premium: "€19.99",
+    premium: "€24.99",
     discount: undefined as number | undefined,
     region: "Europe",
   });
@@ -16,7 +16,7 @@ export function PricingSection() {
   useEffect(() => {
     const region = getCurrentRegion();
     const singlePrice = getRegionalPrice(9.99);
-    const premiumPrice = getRegionalPrice(19.99);
+    const premiumPrice = getRegionalPrice(24.99);
 
     setPrices({
       single: singlePrice.formatted,
@@ -160,7 +160,7 @@ export function PricingSection() {
                 <span className="text-5xl font-black text-white">{prices.premium}</span>
                 {prices.discount && (
                   <span className="text-lg text-slate-500 line-through">
-                    {getRegionalPrice(19.99 / (1 - prices.discount / 100)).formatted}
+                    {getRegionalPrice(24.99 / (1 - prices.discount / 100)).formatted}
                   </span>
                 )}
               </div>

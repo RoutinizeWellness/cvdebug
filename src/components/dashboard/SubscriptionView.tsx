@@ -270,7 +270,7 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">€19.99</span>
+                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">€24.99</span>
                     <span className="text-[#64748B] line-through text-xl font-bold">€49.99</span>
                   </div>
 

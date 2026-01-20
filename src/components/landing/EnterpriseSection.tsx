@@ -2,25 +2,27 @@ import { motion } from "framer-motion";
 import { Building2, Shield, Users, Zap, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function EnterpriseSection() {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const features = [
     {
       icon: Users,
-      title: "Team Management",
-      description: "Centralized dashboard for HR teams to track all candidate applications",
+      title: t.pricing.enterprise.feature1,
+      description: t.pricing.enterprise.feature1Desc,
     },
     {
       icon: Shield,
-      title: "SOC 2 Compliant",
-      description: "Enterprise-grade security with SSO and role-based access control",
+      title: t.pricing.enterprise.feature2,
+      description: t.pricing.enterprise.feature2Desc,
     },
     {
       icon: Zap,
-      title: "API Access",
-      description: "Integrate ATS scanning directly into your recruitment workflow",
+      title: t.pricing.enterprise.feature3,
+      description: t.pricing.enterprise.feature3Desc,
     },
   ];
 
@@ -47,7 +49,7 @@ export function EnterpriseSection() {
               >
                 <Building2 className="h-4 w-4 text-[#3B82F6]" />
                 <span className="text-xs font-semibold text-[#3B82F6] uppercase tracking-wider">
-                  Enterprise
+                  {t.pricing.enterprise.badge}
                 </span>
               </motion.div>
 
@@ -58,9 +60,9 @@ export function EnterpriseSection() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1E293B] mb-4"
               >
-                Scale Your Hiring<br />
+                {t.pricing.enterprise.title}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">
-                  Without Compromise
+                  {t.pricing.enterprise.subtitle}
                 </span>
               </motion.h2>
 
@@ -71,8 +73,7 @@ export function EnterpriseSection() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-[#475569] text-lg mb-8 leading-relaxed"
               >
-                Built for recruiting teams that process thousands of applications.
-                Get volume discounts, dedicated support, and custom integrations.
+                {t.pricing.enterprise.description}
               </motion.p>
 
               <motion.div
@@ -86,7 +87,7 @@ export function EnterpriseSection() {
                   onClick={() => window.open("mailto:enterprise@cvdebug.com", "_blank")}
                   className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(59,130,246,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all border-0"
                 >
-                  <span className="mr-2">Contact Sales</span>
+                  <span className="mr-2">{t.pricing.enterprise.contactSales}</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
                 <Button
@@ -94,7 +95,7 @@ export function EnterpriseSection() {
                   variant="outline"
                   className="px-6 py-3 rounded-lg border border-[#E2E8F0] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#1E293B] hover:border-[#3B82F6] transition-all"
                 >
-                  View Pricing
+                  {t.pricing.enterprise.viewPricing}
                 </Button>
               </motion.div>
             </div>

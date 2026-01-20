@@ -1429,6 +1429,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                       toast.success("Generating PDF report...");
                       // Implement PDF generation
                     }}
+                    onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
 
@@ -1437,23 +1438,54 @@ Impact: AUTO_REJECT (100% rejection rate)
                     <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                       <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
                       {auditItems.length > 0 ? (
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                           {auditItems.map((item: any, index: number) => (
-                            <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
-                              <div className="flex items-start justify-between mb-2">
-                                <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
-                                  {item.title}
-                                </h3>
-                                <span className={`px-2 py-0.5 rounded-full text-xs ${
-                                  item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
-                                  item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
-                                  "bg-green-100 text-green-700 border border-green-200"
+                            <div key={index} className={`p-5 rounded-xl border-l-4 shadow-sm transition-all hover:shadow-md ${
+                              item.status === "failed"
+                                ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
+                                : item.status === "warning"
+                                ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
+                                : "bg-green-50/50 border-l-green-500 border border-green-200/50"
+                            }`}>
+                              <div className="flex items-start gap-4">
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                                  item.status === "failed" ? "bg-red-100" :
+                                  item.status === "warning" ? "bg-amber-100" : "bg-green-100"
                                 }`}>
-                                  {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                                </span>
+                                  <span className="text-lg">
+                                    {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
+                                  </span>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <h3 className={`font-bold text-base ${
+                                      item.status === "failed" ? "text-red-800" :
+                                      item.status === "warning" ? "text-amber-800" : "text-green-800"
+                                    }`}>
+                                      {item.title}
+                                    </h3>
+                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                      item.status === "failed" ? "bg-red-200 text-red-700" :
+                                      item.status === "warning" ? "bg-amber-200 text-amber-700" :
+                                      "bg-green-200 text-green-700"
+                                    }`}>
+                                      {item.status === "failed" ? "Critical" : item.status === "warning" ? "Warning" : "Passed"}
+                                    </span>
+                                  </div>
+                                  <p className="text-[#0F172A] text-sm font-medium mb-2">{item.reason}</p>
+                                  <div className={`mt-3 p-3 rounded-lg ${
+                                    item.status === "failed" ? "bg-red-100/50" :
+                                    item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
+                                  }`}>
+                                    <p className={`text-xs font-medium ${
+                                      item.status === "failed" ? "text-red-700" :
+                                      item.status === "warning" ? "text-amber-700" : "text-green-700"
+                                    }`}>
+                                      <span className="font-bold">Fix: </span>{item.fix}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-                              <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
-                              <p className="text-xs text-[#475569]">{item.fix}</p>
                             </div>
                           ))}
                         </div>
@@ -1487,6 +1519,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                     category={displayResume?.category || ''}
                     seniorityLevel={displayResume?.stats?.seniorityLevel || 'mid'}
                     isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
 
@@ -1495,23 +1528,54 @@ Impact: AUTO_REJECT (100% rejection rate)
                     <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                       <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
                       {auditItems.length > 0 ? (
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                           {auditItems.map((item: any, index: number) => (
-                            <div key={index} className={`p-4 rounded-lg border shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ${item.status === "failed" ? "bg-red-50 border-red-200" : item.status === "warning" ? "bg-yellow-50 border-yellow-200" : "bg-green-50 border-green-200"}`}>
-                              <div className="flex items-start justify-between mb-2">
-                                <h3 className={`font-semibold ${item.status === "failed" ? "text-red-700" : item.status === "warning" ? "text-yellow-700" : "text-green-700"}`}>
-                                  {item.title}
-                                </h3>
-                                <span className={`px-2 py-0.5 rounded-full text-xs ${
-                                  item.status === "failed" ? "bg-red-100 text-red-700 border border-red-200" :
-                                  item.status === "warning" ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
-                                  "bg-green-100 text-green-700 border border-green-200"
+                            <div key={index} className={`p-5 rounded-xl border-l-4 shadow-sm transition-all hover:shadow-md ${
+                              item.status === "failed"
+                                ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
+                                : item.status === "warning"
+                                ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
+                                : "bg-green-50/50 border-l-green-500 border border-green-200/50"
+                            }`}>
+                              <div className="flex items-start gap-4">
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                                  item.status === "failed" ? "bg-red-100" :
+                                  item.status === "warning" ? "bg-amber-100" : "bg-green-100"
                                 }`}>
-                                  {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                                </span>
+                                  <span className="text-lg">
+                                    {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
+                                  </span>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <h3 className={`font-bold text-base ${
+                                      item.status === "failed" ? "text-red-800" :
+                                      item.status === "warning" ? "text-amber-800" : "text-green-800"
+                                    }`}>
+                                      {item.title}
+                                    </h3>
+                                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                      item.status === "failed" ? "bg-red-200 text-red-700" :
+                                      item.status === "warning" ? "bg-amber-200 text-amber-700" :
+                                      "bg-green-200 text-green-700"
+                                    }`}>
+                                      {item.status === "failed" ? "Critical" : item.status === "warning" ? "Warning" : "Passed"}
+                                    </span>
+                                  </div>
+                                  <p className="text-[#0F172A] text-sm font-medium mb-2">{item.reason}</p>
+                                  <div className={`mt-3 p-3 rounded-lg ${
+                                    item.status === "failed" ? "bg-red-100/50" :
+                                    item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
+                                  }`}>
+                                    <p className={`text-xs font-medium ${
+                                      item.status === "failed" ? "text-red-700" :
+                                      item.status === "warning" ? "text-amber-700" : "text-green-700"
+                                    }`}>
+                                      <span className="font-bold">Fix: </span>{item.fix}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-                              <p className="text-[#475569] text-sm mb-3">{item.reason}</p>
-                              <p className="text-xs text-[#475569]">{item.fix}</p>
                             </div>
                           ))}
                         </div>

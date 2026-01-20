@@ -21,7 +21,7 @@ export function PremiumFeatureBadge({
     },
     interview_sprint: {
       label: "Interview Sprint",
-      price: "€19.99",
+      price: "€24.99",
       color: "from-[#8B5CF6] to-[#EC4899]",
       icon: Crown
     }

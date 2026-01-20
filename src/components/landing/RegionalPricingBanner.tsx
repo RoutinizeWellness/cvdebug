@@ -13,7 +13,7 @@ export function RegionalPricingBanner() {
 
   useEffect(() => {
     const region = getCurrentRegion();
-    const regionalPrice = getRegionalPrice(19.99); // Base price $19.99/month
+    const regionalPrice = getRegionalPrice(24.99); // Base price $24.99/month
 
     // Only show banner if user gets a discount (emerging markets)
     if (regionalPrice.discount) {
