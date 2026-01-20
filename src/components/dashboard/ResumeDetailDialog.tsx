@@ -34,7 +34,9 @@ import {
   Check,
   Edit,
   MoreVertical,
-  Share2
+  Share2,
+  TrendingUp,
+  ListChecks
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -67,6 +69,8 @@ import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
 import { FluffDetector } from "./FluffDetector";
 import { InlineResumeEditor } from "./InlineResumeEditor";
+import { ScoreProgressChart } from "./ScoreProgressChart";
+import { ActionPlan } from "./ActionPlan";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -537,9 +541,101 @@ export function ResumeDetailDialog({
   };
   
   const foundKeywords = extractFoundKeywords(
-    displayResume?.analysis || '', 
+    displayResume?.analysis || '',
     displayResume?.ocrText || ''
   );
+
+  // Generate action steps from resume issues
+  const generateActionSteps = () => {
+    const steps: Array<{
+      id: string;
+      title: string;
+      description: string;
+      priority: 'critical' | 'important' | 'recommended';
+      completed: boolean;
+      estimatedImpact: string;
+    }> = [];
+    let stepId = 1;
+
+    if (!displayResume) return steps;
+
+    // CRITICAL: No metrics (0% quantifiable achievements)
+    if (!displayResume.stats?.hasQuantifiableAchievements) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: "Add Quantifiable Metrics (0% Detected)",
+        description: "89% of ATS systems auto-reject resumes without numbers. Add metrics like percentages, dollar amounts, or counts to every achievement.",
+        priority: 'critical' as const,
+        completed: false,
+        estimatedImpact: "+15-25%"
+      });
+    }
+
+    // CRITICAL: Missing sections
+    if (displayResume.missingElements && displayResume.missingElements.length > 0) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: `Add Missing Sections: ${displayResume.missingElements.slice(0, 2).join(', ')}`,
+        description: `Required sections not found: ${displayResume.missingElements.join(', ')}. ATS parsers expect standard headers.`,
+        priority: 'critical' as const,
+        completed: false,
+        estimatedImpact: "+10-15%"
+      });
+    }
+
+    // IMPORTANT: Missing keywords (5+)
+    if (displayResume.missingKeywords && displayResume.missingKeywords.length > 5) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: `Add ${displayResume.missingKeywords.length} Missing Keywords`,
+        description: `Critical keywords not found: ${displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}...`,
+        priority: 'important' as const,
+        completed: false,
+        estimatedImpact: "+8-12%"
+      });
+    }
+
+    // IMPORTANT: Low keyword density
+    if (displayResume.stats?.keywordDensity && displayResume.stats.keywordDensity < 2) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: "Increase Keyword Density",
+        description: `Current density: ${displayResume.stats.keywordDensity.toFixed(1)}%. Aim for 2-4% by naturally incorporating industry terms throughout your CV.`,
+        priority: 'important' as const,
+        completed: false,
+        estimatedImpact: "+5-8%"
+      });
+    }
+
+    // RECOMMENDED: Improve score to 90%+
+    if (displayResume.score && displayResume.score < 90) {
+      const neededPoints = 90 - displayResume.score;
+      steps.push({
+        id: `step-${stepId++}`,
+        title: `Reach 90% Score (Currently ${displayResume.score}%)`,
+        description: `You need ${neededPoints} more points to reach the 90% threshold. Focus on the critical issues above first.`,
+        priority: 'recommended' as const,
+        completed: false,
+        estimatedImpact: `+${neededPoints}%`
+      });
+    }
+
+    // RECOMMENDED: Fluff detection
+    if (displayResume.stats?.hasVagueLanguage) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: "Remove Vague Language & Fluff",
+        description: "Replace weak phrases like 'responsible for' and 'helped with' with strong action verbs and concrete achievements.",
+        priority: 'recommended' as const,
+        completed: false,
+        estimatedImpact: "+3-5%"
+      });
+    }
+
+    return steps;
+  };
+
+  const actionSteps = generateActionSteps();
 
   return (
     <Dialog open={!!resumeId} onOpenChange={(open) => !open && onClose()}>
@@ -848,6 +944,18 @@ export function ResumeDetailDialog({
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                           </span>
                         )}
+                      </TabsTrigger>
+                      <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3B82F6] data-[state=active]:to-[#8B5CF6] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                        <span className="flex items-center gap-1.5">
+                          <TrendingUp className="h-4 w-4" />
+                          <span>Progress</span>
+                        </span>
+                      </TabsTrigger>
+                      <TabsTrigger value="action-plan" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#F59E0B] data-[state=active]:to-[#EF4444] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                        <span className="flex items-center gap-1.5">
+                          <ListChecks className="h-4 w-4" />
+                          <span>Action Plan</span>
+                        </span>
                       </TabsTrigger>
                       <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
@@ -1520,6 +1628,34 @@ Impact: AUTO_REJECT (100% rejection rate)
                     </div>
                     )}
                   </div>
+                </TabsContent>
+
+                <TabsContent value="progress" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
+                  <ScoreProgressChart
+                    history={[
+                      {
+                        version: 1,
+                        score: displayResume.score || 0,
+                        timestamp: displayResume._creationTime,
+                        changes: ["Initial scan"]
+                      }
+                    ]}
+                    currentScore={displayResume.score || 0}
+                  />
+                </TabsContent>
+
+                <TabsContent value="action-plan" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
+                  <ActionPlan
+                    steps={actionSteps}
+                    onStepClick={(stepId) => {
+                      // Navigate to Edit tab for fixes
+                      setActiveTab('edit');
+                      toast.info("Opening inline editor to fix this issue...");
+                    }}
+                    onCompleteStep={(stepId) => {
+                      toast.success("Step marked as complete! Keep up the great work!");
+                    }}
+                  />
                 </TabsContent>
 
                 <TabsContent value="ats-report" className="flex-1 overflow-auto p-6">
