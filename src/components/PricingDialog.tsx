@@ -198,11 +198,61 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* 7-Day Sprint - RECOMMENDED */}
-          <div className="bg-white border-2 border-[#8B5CF6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(134,85,246,0.1)]">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
-              <span className="material-symbols-outlined text-xs">rocket_launch</span>
+          {/* 24-Hour Pass - RECOMMENDED (Moved to 2nd position) */}
+          <div className="bg-white border-2 border-[#3B82F6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(59,130,246,0.1)]">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+              <span className="material-symbols-outlined text-xs">bolt</span>
               {t.pricingDialog.recommended}
+            </div>
+            <div className="mb-6">
+              <div className="flex justify-between items-start">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#3B82F6] font-mono">{t.pricingDialog.quickFix}</span>
+                <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">FAST START</span>
+              </div>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.pass24h}</h2>
+              <div className="mt-3 flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black tracking-tighter text-slate-900">{t.pricingDialog.price24h}</span>
+                </div>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">{t.pricingDialog.access24h}</span>
+              </div>
+            </div>
+            <div className="space-y-3 mb-8 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#3B82F6]">
+                <span className="material-symbols-outlined text-base">verified</span>
+                {t.pricingDialog.unlimitedScans24h}
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                {t.pricingDialog.fullErrorReport}
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                {t.pricingDialog.robotXRayView}
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                {t.pricingDialog.keywordOptimizer}
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                {t.pricingDialog.battlePlanGenerator}
+              </div>
+            </div>
+            <button
+              onClick={() => handleUpgrade("single_scan")}
+              disabled={!!isLoading}
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold text-sm shadow-lg shadow-[#3B82F6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.get24hPass}
+            </button>
+          </div>
+
+          {/* 7-Day Sprint - BEST VALUE (Moved to 3rd position) */}
+          <div className="bg-white border border-[#8B5CF6]/30 rounded-xl p-6 flex flex-col h-full relative">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+              <span className="material-symbols-outlined text-xs">workspace_premium</span>
+              BEST VALUE
             </div>
             <div className="mb-6">
               <div className="flex justify-between items-start">
@@ -278,47 +328,6 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               className="w-full h-11 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isLoading === "interview_sprint" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.start7DaySprint}
-            </button>
-          </div>
-
-          {/* 24-Hour Pass */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex flex-col h-full hover:border-slate-300 transition-colors">
-            <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">{t.pricingDialog.quickFix}</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.pass24h}</h2>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-black tracking-tighter">{t.pricingDialog.price24h}</span>
-              </div>
-              <span className="text-slate-400 text-[10px] font-medium mt-1 block">{t.pricingDialog.access24h}</span>
-            </div>
-            <div className="space-y-3 mb-8 flex-grow">
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                {t.pricingDialog.unlimitedScans24h}
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                {t.pricingDialog.fullErrorReport}
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                {t.pricingDialog.robotXRayView}
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                {t.pricingDialog.keywordOptimizer}
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-slate-400 text-base">check_circle</span>
-                {t.pricingDialog.battlePlanGenerator}
-              </div>
-            </div>
-            <button
-              onClick={() => handleUpgrade("single_scan")}
-              disabled={!!isLoading}
-              className="w-full h-11 rounded-lg bg-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-300 transition-colors disabled:opacity-50"
-            >
-              {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : t.pricingDialog.get24hPass}
             </button>
           </div>
         </div>

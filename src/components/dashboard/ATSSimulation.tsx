@@ -453,44 +453,44 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
         {/* RIGHT PANEL: Recruiter Metrics */}
         <aside className="w-[340px] flex flex-col border-l border-[#E2E8F0] bg-[#F8FAFC] shrink-0 overflow-y-auto">
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
-            {/* Seniority Match Analysis Section - NEW DESIGN */}
-            <section className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-8 shadow-sm">
-              <div className="flex items-center gap-2 mb-8">
+            {/* Seniority Match Analysis Section - GRID LAYOUT */}
+            <section className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-6">
                 <span className="material-symbols-outlined text-primary text-xl">track_changes</span>
                 <h2 className="text-sm font-semibold uppercase tracking-wider text-[#64748B]">Seniority Match Analysis</h2>
               </div>
 
-              <div className="space-y-8">
+              <div className="grid grid-cols-3 gap-6">
                 {/* Detected Level */}
                 <div className="space-y-4">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Detected Level</p>
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl font-bold tracking-tight text-[#0F172A]">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold tracking-tight text-[#0F172A]">
                       {seniorityLevel === 0 ? 'Junior' : seniorityLevel === 1 ? 'Mid' : seniorityLevel === 2 ? 'Senior' : 'Lead'}
                     </span>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
+                    <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase border ${
                       seniorityLevel >= 2
                         ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
                         : 'bg-amber-50 text-amber-600 border-amber-100'
                     }`}>
-                      {seniorityLevel >= 2 ? 'Match' : 'Review Required'}
+                      {seniorityLevel >= 2 ? 'Match' : 'Review'}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
-                    <span className="material-symbols-outlined text-sm">analytics</span>
-                    <span>Confidence Score: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
+                  <div className="flex items-center gap-1.5 text-[10px] text-[#64748B]">
+                    <span className="material-symbols-outlined text-xs">analytics</span>
+                    <span>Score: <span className="font-mono text-[#0F172A]">{score}/100</span></span>
                   </div>
                 </div>
 
                 {/* Experience Audit */}
-                <div className="space-y-4 border-t border-[#E2E8F0] pt-6">
+                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Experience Audit</p>
                   <div className="space-y-1">
-                    <p className="text-3xl font-bold tracking-tight text-[#0F172A]">
+                    <p className="text-2xl font-bold tracking-tight text-[#0F172A]">
                       {yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'}
                     </p>
-                    <p className="text-xs text-[#64748B]">
-                      Expected requirement: <span className="font-bold text-[#0F172A]">
+                    <p className="text-[10px] text-[#64748B]">
+                      Expected: <span className="font-bold text-[#0F172A]">
                         {seniorityLevel === 0 ? 'JUNIOR' : seniorityLevel === 1 ? 'MID' : seniorityLevel === 2 ? 'SENIOR' : 'LEAD'}
                       </span>
                     </p>
@@ -498,15 +498,15 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                 </div>
 
                 {/* Signal Density */}
-                <div className="space-y-4 border-t border-[#E2E8F0] pt-6">
+                <div className="space-y-4 border-l border-[#E2E8F0] pl-6">
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">Signal Density</p>
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
-                      <p className="text-3xl font-bold tracking-tight text-primary">{matchedKeywords.length}</p>
-                      <span className="text-xs font-medium text-[#64748B]">signals detected</span>
+                      <p className="text-2xl font-bold tracking-tight text-[#7C3AED]">{matchedKeywords.length}</p>
+                      <span className="text-[10px] font-medium text-[#64748B]">signals</span>
                     </div>
-                    <p className="text-xs text-[#64748B]">
-                      Signal strength: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
+                    <p className="text-[10px] text-[#64748B]">
+                      Strength: <span className={`font-bold ${matchedKeywords.length >= 10 ? 'text-emerald-500' : matchedKeywords.length >= 5 ? 'text-amber-500' : 'text-rose-500'}`}>
                         {matchedKeywords.length >= 10 ? 'STRONG' : matchedKeywords.length >= 5 ? 'MEDIUM' : 'WEAK'}
                       </span>
                     </p>
