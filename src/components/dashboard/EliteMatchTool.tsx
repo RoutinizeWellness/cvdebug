@@ -37,8 +37,16 @@ interface MatchResult {
   recommendations: string[];
 }
 
-export function EliteMatchTool() {
+interface EliteMatchToolProps {
+  user?: any;
+  onUpgrade?: () => void;
+}
+
+export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
   const [step, setStep] = useState<'input' | 'analyzing' | 'results'>('input');
+
+  // Check if user has paid plan
+  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
   const [jobDescriptionUrl, setJobDescriptionUrl] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
@@ -151,7 +159,7 @@ export function EliteMatchTool() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto relative">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -163,7 +171,9 @@ export function EliteMatchTool() {
         </p>
       </div>
 
-      <AnimatePresence mode="wait">
+      {/* Content - Blurred if not paid */}
+      <div className={!isPaidUser ? 'blur-[3px] pointer-events-none select-none' : ''}>
+        <AnimatePresence mode="wait">
         {/* Step 1: Input */}
         {step === 'input' && (
           <motion.div
@@ -560,6 +570,45 @@ export function EliteMatchTool() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
+
+      {/* Paywall Overlay */}
+      {!isPaidUser && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#FFFFFF]/95 to-[#F8FAFC]/95 backdrop-blur-sm rounded-xl z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center p-12 max-w-xl"
+          >
+            <div className="w-20 h-20 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl">
+              <Target className="h-10 w-10 text-white" />
+            </div>
+            <h2 className="text-3xl font-black text-[#0F172A] mb-3">
+              Elite Match Tool es Premium
+            </h2>
+            <p className="text-[#64748B] mb-2 text-lg leading-relaxed">
+              Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#3B82F6]">ML local</span> (0 costes de API)
+            </p>
+            <p className="text-[#64748B] mb-8 text-sm">
+              • Extracción de entidades con TF-IDF & Cosine Similarity<br/>
+              • Gap analysis crítico/importante/nice-to-have<br/>
+              • Robot View con zonas rojas/verdes<br/>
+              • Auto-Fix suggestions específicas
+            </p>
+            <Button
+              onClick={onUpgrade}
+              size="lg"
+              className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold px-8 py-4 rounded-xl shadow-2xl hover:scale-105 transition-all text-lg"
+            >
+              <Sparkles className="h-5 w-5 mr-2" />
+              Upgrade Now - $14.99
+            </Button>
+            <p className="text-xs text-[#94A3B8] mt-4">
+              24-hour access • Unlimited match analysis • ML-powered insights
+            </p>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

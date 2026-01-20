@@ -31,7 +31,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate("/");
+      // Use window.location for full page reload after sign out
+      window.location.href = "/";
     } catch (error) {
       console.error("Sign out error:", error);
     }
