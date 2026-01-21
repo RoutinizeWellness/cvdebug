@@ -44,23 +44,8 @@ import NursePractitionerATSOptimizer from "./pages/industry/NursePractitionerATS
 import CaseManagerNurseATSOptimizer from "./pages/industry/CaseManagerNurseATSOptimizer";
 import HomeHealthNurseATSOptimizer from "./pages/industry/HomeHealthNurseATSOptimizer";
 import SchoolNurseATSResumeScanner from "./pages/industry/SchoolNurseATSResumeScanner";
-import OncologyNurseATSScanner from "./pages/industry/OncologyNurseATSScanner";
-import LaborDeliveryNurseATSScanner from "./pages/industry/LaborDeliveryNurseATSScanner";
 import PsychiatricNurseResumeScanner from "./pages/industry/PsychiatricNurseResumeScanner";
-import ORNurseATSScanner from "./pages/industry/ORNurseATSScanner";
-import PACUNurseATSScanner from "./pages/industry/PACUNurseATSScanner";
-import TelemetryNurseATSScanner from "./pages/industry/TelemetryNurseATSScanner";
-import NICUNurseATSScanner from "./pages/industry/NICUNurseATSScanner";
 import DialysisNurseATSScanner from "./pages/industry/DialysisNurseATSScanner";
-import HospiceNurseATSScanner from "./pages/industry/HospiceNurseATSScanner";
-import PublicHealthNurseATSScanner from "./pages/industry/PublicHealthNurseATSScanner";
-import CRNAATSScanner from "./pages/industry/CRNAATSScanner";
-import ClinicalNurseSpecialistATSScanner from "./pages/industry/ClinicalNurseSpecialistATSScanner";
-import NurseEducatorATSScanner from "./pages/industry/NurseEducatorATSScanner";
-import NurseManagerATSScanner from "./pages/industry/NurseManagerATSScanner";
-import ChargeNurseATSScanner from "./pages/industry/ChargeNurseATSScanner";
-import FlightNurseATSScanner from "./pages/industry/FlightNurseATSScanner";
-import InfusionNurseATSScanner from "./pages/industry/InfusionNurseATSScanner";
 import WoundCareNurseATSOptimizer from "./pages/industry/WoundCareNurseATSOptimizer";
 import RehabNurseATSOptimizer from "./pages/industry/RehabNurseATSOptimizer";
 import TransplantNurseATSOptimizer from "./pages/industry/TransplantNurseATSOptimizer";
@@ -144,23 +129,8 @@ function App() {
       <Route path="/industry/case-manager-nurse-ats-optimizer" element={<CaseManagerNurseATSOptimizer />} />
       <Route path="/industry/home-health-nurse-ats-optimizer" element={<HomeHealthNurseATSOptimizer />} />
       <Route path="/industry/school-nurse-ats-resume-scanner" element={<SchoolNurseATSResumeScanner />} />
-      <Route path="/industry/oncology-nurse-ats-scanner" element={<OncologyNurseATSScanner />} />
-      <Route path="/industry/labor-delivery-nurse-ats-scanner" element={<LaborDeliveryNurseATSScanner />} />
       <Route path="/industry/psychiatric-nurse-resume-scanner" element={<PsychiatricNurseResumeScanner />} />
-      <Route path="/industry/or-nurse-ats-scanner" element={<ORNurseATSScanner />} />
-      <Route path="/industry/pacu-nurse-ats-scanner" element={<PACUNurseATSScanner />} />
-      <Route path="/industry/telemetry-nurse-ats-scanner" element={<TelemetryNurseATSScanner />} />
-      <Route path="/industry/nicu-nurse-ats-scanner" element={<NICUNurseATSScanner />} />
       <Route path="/industry/dialysis-nurse-ats-scanner" element={<DialysisNurseATSScanner />} />
-      <Route path="/industry/hospice-nurse-ats-scanner" element={<HospiceNurseATSScanner />} />
-      <Route path="/industry/public-health-nurse-ats-scanner" element={<PublicHealthNurseATSScanner />} />
-      <Route path="/industry/crna-ats-scanner" element={<CRNAATSScanner />} />
-      <Route path="/industry/clinical-nurse-specialist-ats-scanner" element={<ClinicalNurseSpecialistATSScanner />} />
-      <Route path="/industry/nurse-educator-ats-scanner" element={<NurseEducatorATSScanner />} />
-      <Route path="/industry/nurse-manager-ats-scanner" element={<NurseManagerATSScanner />} />
-      <Route path="/industry/charge-nurse-ats-scanner" element={<ChargeNurseATSScanner />} />
-      <Route path="/industry/flight-nurse-ats-scanner" element={<FlightNurseATSScanner />} />
-      <Route path="/industry/infusion-nurse-ats-scanner" element={<InfusionNurseATSScanner />} />
       <Route path="/industry/wound-care-nurse-ats-optimizer" element={<WoundCareNurseATSOptimizer />} />
       <Route path="/industry/rehab-nurse-ats-optimizer" element={<RehabNurseATSOptimizer />} />
       <Route path="/industry/transplant-nurse-ats-optimizer" element={<TransplantNurseATSOptimizer />} />

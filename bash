@@ -1,1 +1,1 @@
-grep -r "ClerkProvider" .
+ls src/pages/blog

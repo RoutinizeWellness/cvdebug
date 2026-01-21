@@ -194,3 +194,5 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
     </motion.article>
   );
 }
+
+export default Blog;
