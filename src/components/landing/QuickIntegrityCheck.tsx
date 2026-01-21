@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { createWorker, type Worker as TesseractWorker } from 'tesseract.js';
 
 export function QuickIntegrityCheck() {
   const [file, setFile] = useState<File | null>(null);
@@ -33,16 +32,30 @@ export function QuickIntegrityCheck() {
     setResult(null);
 
     try {
-      // Extract text from PDF/image using Tesseract OCR
+      // Extract text from PDF/image using dynamic import to avoid blocking
       let extractedText = "";
 
-      // Extract text using Tesseract OCR
-      const worker = await createWorker(['eng']);
       try {
-        const { data: { text } } = await worker.recognize(selectedFile);
-        extractedText = text;
-      } finally {
-        await worker.terminate();
+        // Dynamically import Tesseract.js to avoid blocking the main bundle
+        const { createWorker } = await import('tesseract.js');
+        const worker = await createWorker(['eng']);
+        try {
+          const { data: { text } } = await worker.recognize(selectedFile);
+          extractedText = text;
+        } finally {
+          await worker.terminate();
+        }
+      } catch (ocrError) {
+        console.error("OCR failed:", ocrError);
+        // Fallback: Show a message that we couldn't analyze the file
+        setResult({
+          score: 0,
+          hasIssue: true,
+          message: "⚠️ Unable to analyze - PDF may have parsing issues",
+          details: "Your file structure prevented analysis. This is a red flag for ATS systems. Try uploading a different format or sign up for full analysis."
+        });
+        setChecking(false);
+        return;
       }
 
       // Call the real ML scoring engine (same as dashboard)
