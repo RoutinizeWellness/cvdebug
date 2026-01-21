@@ -222,6 +222,19 @@ export function LiveRecruiterSimulation({
 
   const metricsAnalysis = detectMetrics(resumeText);
 
+  // Calculate metrics density percentage (0-100%)
+  // Based on industry standards: 5-8+ metrics = excellent, 3-4 = good, 1-2 = poor, 0 = critical
+  const calculateMetricsDensity = (count: number): number => {
+    if (count === 0) return 0;
+    if (count >= 8) return 100;
+    if (count >= 5) return 75;
+    if (count >= 3) return 50;
+    if (count >= 2) return 30;
+    return 15; // 1 metric
+  };
+
+  const metricsPercentage = calculateMetricsDensity(metricsAnalysis.count);
+
   // Annotate resume text with [CRIT] and [WARN] tags
   const annotateResumeText = (text: string): { __html: string } => {
     if (!text) return { __html: "No text available" };
@@ -235,7 +248,7 @@ export function LiveRecruiterSimulation({
           <span class="text-red-600 font-bold text-sm">[CRIT]</span>
           <span class="text-red-700 font-semibold text-sm">🚨 ATS AUTO-REJECT DETECTED</span>
         </div>
-        <div class="text-xs text-red-700 font-semibold ml-6 mb-1">0% METRICS DETECTED</div>
+        <div class="text-xs text-red-700 font-semibold ml-6 mb-1">${metricsPercentage}% METRICS DENSITY (${metricsAnalysis.count} found)</div>
         <div class="text-xs text-red-600 ml-6">No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.</div>
         <div class="text-xs text-emerald-700 ml-6 mt-2 font-semibold">✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"</div>
       </div>` + annotatedText;
@@ -245,7 +258,8 @@ export function LiveRecruiterSimulation({
           <span class="text-amber-600 font-bold text-sm">[WARN]</span>
           <span class="text-amber-700 font-semibold text-sm">⚠️ Low Metrics Density</span>
         </div>
-        <div class="text-xs text-amber-600 ml-6">Only ${metricsAnalysis.count} quantifiable metric${metricsAnalysis.count === 1 ? '' : 's'} found. Add more numbers to strengthen your impact.</div>
+        <div class="text-xs text-amber-700 font-semibold ml-6 mb-1">${metricsPercentage}% METRICS DENSITY (${metricsAnalysis.count} found)</div>
+        <div class="text-xs text-amber-600 ml-6">Only ${metricsAnalysis.count} quantifiable metric${metricsAnalysis.count === 1 ? '' : 's'} detected. Add more numbers to strengthen your impact.</div>
         ${metricsAnalysis.examples.length > 0 ? `<div class="text-xs text-emerald-700 ml-6 mt-2">Found: ${metricsAnalysis.examples.join(', ')}</div>` : ''}
       </div>` + annotatedText;
     }
@@ -488,7 +502,7 @@ export function LiveRecruiterSimulation({
                     </span>
                     <div className="flex-1">
                       <p className="text-sm font-bold text-[#EF4444]">🚨 ATS AUTO-REJECT DETECTED</p>
-                      <p className="text-xs font-semibold text-[#0F172A] mt-1">0% METRICS DETECTED</p>
+                      <p className="text-xs font-semibold text-[#0F172A] mt-1">{metricsPercentage}% METRICS DENSITY ({metricsAnalysis.count} found)</p>
                       <p className="text-xs text-[#64748B] mt-1">
                         No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.
                       </p>
@@ -508,8 +522,9 @@ export function LiveRecruiterSimulation({
                     </span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-[#0F172A]">⚠️ Low Metrics Density</p>
+                      <p className="text-xs font-semibold text-[#0F172A] mt-1">{metricsPercentage}% METRICS DENSITY ({metricsAnalysis.count} found)</p>
                       <p className="text-xs text-[#64748B] mt-1">
-                        Only {metricsAnalysis.count} quantifiable metric{metricsAnalysis.count === 1 ? '' : 's'} found. Add more numbers to strengthen your impact.
+                        Only {metricsAnalysis.count} quantifiable metric{metricsAnalysis.count === 1 ? '' : 's'} detected. Add more numbers to strengthen your impact.
                       </p>
                       {metricsAnalysis.examples.length > 0 && (
                         <p className="text-xs text-emerald-700 mt-2">
