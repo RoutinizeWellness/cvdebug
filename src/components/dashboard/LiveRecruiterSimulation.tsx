@@ -129,38 +129,49 @@ export function LiveRecruiterSimulation({
 
   // Calculate total years of experience from all date ranges in resume
   const calculateTotalYears = (text: string): number => {
-    if (!text) return 0;
+    try {
+      if (!text) return 0;
 
-    const datePattern = /(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(20\d{2}|19\d{2})\s*[-–—]\s*(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*)?(20\d{2}|present|current|now)/gi;
+      const datePattern = /(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(20\d{2}|19\d{2})\s*[-–—]\s*(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*)?(20\d{2}|present|current|now)/gi;
 
-    const matches = text.match(datePattern);
-    if (!matches || matches.length === 0) return 0;
+      const matches = text.match(datePattern);
+      if (!matches || matches.length === 0) return 0;
 
-    let totalMonths = 0;
-    const currentYear = new Date().getFullYear();
+      let totalMonths = 0;
+      const currentYear = new Date().getFullYear();
 
-    matches.forEach(match => {
-      // Extract start and end years
-      const yearMatches = match.match(/(20\d{2}|19\d{2})/g);
-      if (!yearMatches || yearMatches.length === 0) return;
+      matches.forEach(match => {
+        try {
+          // Extract start and end years
+          const yearMatches = match.match(/(20\d{2}|19\d{2})/g);
+          if (!yearMatches || yearMatches.length === 0) return;
 
-      const startYear = parseInt(yearMatches[0]);
-      let endYear = currentYear;
+          const startYear = parseInt(yearMatches[0]);
+          let endYear = currentYear;
 
-      // Check if there's an end year or if it's "present/current"
-      if (yearMatches.length > 1) {
-        endYear = parseInt(yearMatches[1]);
-      } else if (match.match(/present|current|now/i)) {
-        endYear = currentYear;
-      }
+          // Check if there's an end year or if it's "present/current"
+          if (yearMatches.length > 1) {
+            endYear = parseInt(yearMatches[1]);
+          } else if (match.match(/present|current|now/i)) {
+            endYear = currentYear;
+          }
 
-      // Calculate months (assuming full years for simplicity)
-      const months = (endYear - startYear) * 12;
-      totalMonths += Math.max(0, months);
-    });
+          // Calculate months (assuming full years for simplicity)
+          const months = (endYear - startYear) * 12;
+          totalMonths += Math.max(0, months);
+        } catch (e) {
+          // Skip invalid date ranges
+          console.warn("Error parsing date range:", match, e);
+        }
+      });
 
-    // Convert to years, rounded to 1 decimal
-    return Math.round((totalMonths / 12) * 10) / 10;
+      // Convert to years, rounded to 1 decimal
+      const years = Math.round((totalMonths / 12) * 10) / 10;
+      return isNaN(years) ? 0 : years;
+    } catch (e) {
+      console.warn("Error calculating total years:", e);
+      return 0;
+    }
   };
 
   const totalYearsExperience = calculateTotalYears(resumeText);

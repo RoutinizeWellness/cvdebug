@@ -31,15 +31,7 @@ export function useActivityReminder(currentUserId?: string, currentScore?: numbe
 
     setDaysSinceActive(diffDays);
 
-    // Update last active date to today
-    const updatedData: ActivityData = {
-      lastActiveDate: todayStr,
-      lastScore: currentScore,
-      reminderShown: false,
-    };
-    localStorage.setItem(storageKey, JSON.stringify(updatedData));
-
-    // Show reminder if user hasn't been active for 3+ days
+    // Show reminder if user hasn't been active for 3+ days and reminder hasn't been shown yet
     if (diffDays >= 3 && !activityData.reminderShown) {
       setShowReminderBanner(true);
 
@@ -58,7 +50,19 @@ export function useActivityReminder(currentUserId?: string, currentScore?: numbe
       });
 
       // Mark reminder as shown
-      updatedData.reminderShown = true;
+      const updatedData: ActivityData = {
+        lastActiveDate: activityData.lastActiveDate, // Keep old date
+        lastScore: activityData.lastScore, // Keep old score
+        reminderShown: true,
+      };
+      localStorage.setItem(storageKey, JSON.stringify(updatedData));
+    } else if (diffDays === 0 || activityData.lastActiveDate !== todayStr) {
+      // User is active today - update their activity
+      const updatedData: ActivityData = {
+        lastActiveDate: todayStr,
+        lastScore: currentScore,
+        reminderShown: false, // Reset for next time they're inactive
+      };
       localStorage.setItem(storageKey, JSON.stringify(updatedData));
     }
   }, [currentUserId, currentScore]);

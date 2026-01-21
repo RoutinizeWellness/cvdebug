@@ -17,8 +17,6 @@ export function ActivityReminderBanner({
   onDismiss,
   onAction,
 }: ActivityReminderBannerProps) {
-  if (!show) return null;
-
   const getMessage = (): { title: string; description: string; urgency: "high" | "medium" | "low" } => {
     if (daysSinceActive >= 7) {
       return {
@@ -65,7 +63,8 @@ export function ActivityReminderBanner({
 
   return (
     <AnimatePresence>
-      <motion.div
+      {show && (
+        <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
@@ -151,6 +150,7 @@ export function ActivityReminderBanner({
           </div>
         </div>
       </motion.div>
+      )}
     </AnimatePresence>
   );
 }
