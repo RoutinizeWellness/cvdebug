@@ -235,6 +235,83 @@ export function LiveRecruiterSimulation({
 
   const metricsPercentage = calculateMetricsDensity(metricsAnalysis.count);
 
+  // Analyze readability based on resume structure and format
+  const analyzeReadability = (text: string, formatIssuesCount: number): { level: string; status: string; icon: string; color: string } => {
+    const lines = text.split('\n').filter(l => l.trim());
+    const avgLineLength = lines.reduce((sum, line) => sum + line.length, 0) / lines.length;
+
+    // Check for good structure indicators
+    const hasHeaders = /(?:experience|education|skills|summary|projects)/gi.test(text);
+    const hasBulletPoints = /^[\s]*[•\-\*◦]/m.test(text);
+    const wellFormatted = avgLineLength < 120 && avgLineLength > 20;
+
+    // Score based on multiple factors
+    let score = 0;
+    if (hasHeaders) score += 2;
+    if (hasBulletPoints) score += 2;
+    if (wellFormatted) score += 2;
+    if (formatIssuesCount === 0) score += 2;
+    if (formatIssuesCount > 3) score -= 2;
+
+    if (score >= 6) return { level: "High Integrity", status: "Excellent", icon: "check_circle", color: "emerald" };
+    if (score >= 4) return { level: "Good Format", status: "Acceptable", icon: "check_circle", color: "emerald" };
+    if (score >= 2) return { level: "Fair Format", status: "Needs Work", icon: "warning", color: "amber" };
+    return { level: "Poor Format", status: "Critical", icon: "error", color: "red" };
+  };
+
+  // Detect image traps and suspicious patterns
+  const detectImageTraps = (text: string, formatIssuesArr: Array<{ issue: string }>) => {
+    // Check for suspicious patterns that ATS can't parse
+    const hasInvisibleChars = /[\u200B-\u200D\uFEFF]/.test(text);
+    const hasExcessiveWhitespace = /\s{10,}/.test(text);
+    const hasSuspiciousFormatting = formatIssuesArr.some(f =>
+      f.issue.toLowerCase().includes('parse') ||
+      f.issue.toLowerCase().includes('extract') ||
+      f.issue.toLowerCase().includes('image')
+    );
+
+    const trapCount = [hasInvisibleChars, hasExcessiveWhitespace, hasSuspiciousFormatting].filter(Boolean).length;
+
+    if (trapCount === 0) return { status: "None Detected", badge: "Safe", description: "No invisible elements or keyword stuffing", color: "emerald" };
+    if (trapCount === 1) return { status: "Minor Issues", badge: "Warning", description: "Some formatting concerns detected", color: "amber" };
+    return { status: "Issues Found", badge: "Risk", description: "Suspicious patterns that may affect ATS parsing", color: "red" };
+  };
+
+  // Analyze soft skills from resume content
+  const analyzeSoftSkills = (text: string): { leadership: number; communication: number; problemSolving: number; teamwork: number } => {
+    const lowerText = text.toLowerCase();
+
+    // Leadership keywords
+    const leadershipKeywords = ['led', 'managed', 'directed', 'supervised', 'coordinated', 'mentored', 'trained', 'established', 'founded', 'initiated'];
+    const leadership = leadershipKeywords.filter(kw => lowerText.includes(kw)).length;
+
+    // Communication keywords
+    const commKeywords = ['presented', 'communicated', 'collaborated', 'negotiated', 'documented', 'reported', 'liaison', 'stakeholder', 'client-facing'];
+    const communication = commKeywords.filter(kw => lowerText.includes(kw)).length;
+
+    // Problem solving keywords
+    const problemKeywords = ['solved', 'resolved', 'optimized', 'improved', 'analyzed', 'debugged', 'troubleshot', 'innovated', 'developed solution'];
+    const problemSolving = problemKeywords.filter(kw => lowerText.includes(kw)).length;
+
+    // Teamwork keywords
+    const teamKeywords = ['collaborated', 'team', 'partnership', 'cross-functional', 'agile', 'scrum', 'peer', 'contributed'];
+    const teamwork = teamKeywords.filter(kw => lowerText.includes(kw)).length;
+
+    // Normalize to 0-4 scale (for 4 bars)
+    const normalize = (count: number) => Math.min(4, Math.ceil(count / 2));
+
+    return {
+      leadership: normalize(leadership),
+      communication: normalize(communication),
+      problemSolving: normalize(problemSolving),
+      teamwork: normalize(teamwork)
+    };
+  };
+
+  const readabilityAnalysis = analyzeReadability(resumeText, formatIssues.length);
+  const imageTrapsAnalysis = detectImageTraps(resumeText, formatIssues);
+  const softSkillsAnalysis = analyzeSoftSkills(resumeText);
+
   // Annotate resume text with [CRIT] and [WARN] tags
   const annotateResumeText = (text: string): { __html: string } => {
     if (!text) return { __html: "No text available" };
@@ -835,12 +912,18 @@ export function LiveRecruiterSimulation({
           >
             <div className="flex justify-between items-start">
               <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Readability</p>
-              <div className="h-8 w-8 rounded-full bg-emerald-50 flex items-center justify-center">
-                <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
+              <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                readabilityAnalysis.color === 'emerald' ? 'bg-emerald-50' :
+                readabilityAnalysis.color === 'amber' ? 'bg-amber-50' : 'bg-red-50'
+              }`}>
+                <span className={`material-symbols-outlined text-lg ${
+                  readabilityAnalysis.color === 'emerald' ? 'text-emerald-500' :
+                  readabilityAnalysis.color === 'amber' ? 'text-amber-500' : 'text-red-500'
+                }`}>{readabilityAnalysis.icon}</span>
               </div>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-slate-900">High Integrity</h3>
+              <h3 className="text-2xl font-bold text-slate-900">{readabilityAnalysis.level}</h3>
               <p className="text-xs text-slate-500 mt-1">Structure follows industry standard patterns</p>
             </div>
           </motion.div>
@@ -853,13 +936,16 @@ export function LiveRecruiterSimulation({
           >
             <div className="flex justify-between items-start">
               <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Image Traps</p>
-              <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold tracking-wide uppercase">
-                Safe
+              <span className={`px-2 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase ${
+                imageTrapsAnalysis.color === 'emerald' ? 'bg-emerald-50 text-emerald-600' :
+                imageTrapsAnalysis.color === 'amber' ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-600'
+              }`}>
+                {imageTrapsAnalysis.badge}
               </span>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-slate-900">None Detected</h3>
-              <p className="text-xs text-slate-500 mt-1">No invisible elements or keyword stuffing</p>
+              <h3 className="text-2xl font-bold text-slate-900">{imageTrapsAnalysis.status}</h3>
+              <p className="text-xs text-slate-500 mt-1">{imageTrapsAnalysis.description}</p>
             </div>
           </motion.div>
 
@@ -955,10 +1041,9 @@ export function LiveRecruiterSimulation({
                   <span className="text-[#475569]">Leadership</span>
                 </div>
                 <div className="flex gap-1">
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-slate-200"></div>
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.leadership ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                  ))}
                 </div>
               </div>
               <div>
@@ -966,10 +1051,29 @@ export function LiveRecruiterSimulation({
                   <span className="text-[#475569]">Communication</span>
                 </div>
                 <div className="flex gap-1">
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
-                  <div className="h-1.5 w-full rounded-sm bg-[#8B5CF6]"></div>
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.communication ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-[#475569]">Problem Solving</span>
+                </div>
+                <div className="flex gap-1">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.problemSolving ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="text-[#475569]">Teamwork</span>
+                </div>
+                <div className="flex gap-1">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.teamwork ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                  ))}
                 </div>
               </div>
             </div>
