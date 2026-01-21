@@ -57,17 +57,20 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
       if (currentIndex < logMessages.length) {
         const now = new Date();
         const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+        const currentLog = logMessages[currentIndex];
 
         setLogs((prev) => [
           ...prev,
           {
             time: timeStr,
-            type: logMessages[currentIndex].type,
-            message: logMessages[currentIndex].message,
-            color: logMessages[currentIndex].color,
+            type: currentLog.type,
+            message: currentLog.message,
+            color: currentLog.color,
           },
         ]);
         currentIndex++;
+      } else {
+        clearInterval(logInterval);
       }
     }, 2000);
 
