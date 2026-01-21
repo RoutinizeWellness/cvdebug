@@ -9,6 +9,8 @@ import { api } from "@/convex/_generated/api";
 export function QuickIntegrityCheck() {
   const [file, setFile] = useState<File | null>(null);
   const [checking, setChecking] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [statusMessage, setStatusMessage] = useState("Initializing...");
   const [result, setResult] = useState<{
     score: number;
     hasIssue: boolean;
@@ -29,6 +31,8 @@ export function QuickIntegrityCheck() {
 
     setFile(selectedFile);
     setChecking(true);
+    setProgress(0);
+    setStatusMessage("Initializing engine...");
     setResult(null);
 
     try {
@@ -45,7 +49,22 @@ export function QuickIntegrityCheck() {
         ]) as typeof import('tesseract.js');
         
         const { createWorker } = tesseractModule;
-        const worker = await createWorker(['eng']);
+        // Initialize worker with logger for progress updates
+        const worker = await createWorker(['eng'], 1, {
+          logger: (m: any) => {
+            if (m.status === 'recognizing text') {
+              setProgress(Math.round(m.progress * 100));
+              setStatusMessage("Scanning document structure...");
+            } else if (m.status === 'loading tesseract core') {
+               setStatusMessage("Loading OCR engine...");
+            } else if (m.status === 'initializing api') {
+               setStatusMessage("Preparing analysis...");
+            } else {
+               setStatusMessage("Processing...");
+            }
+          }
+        });
+        
         try {
           const { data: { text } } = await worker.recognize(selectedFile);
           extractedText = text;
@@ -66,6 +85,7 @@ export function QuickIntegrityCheck() {
       }
 
       // Call the real ML scoring engine (same as dashboard)
+      setStatusMessage("Analyzing ATS compatibility...");
       const scoreResult = await getQuickScore({
         resumeText: extractedText
       });
@@ -103,6 +123,7 @@ export function QuickIntegrityCheck() {
       });
     } finally {
       setChecking(false);
+      setProgress(0);
     }
   };
 
@@ -150,10 +171,25 @@ export function QuickIntegrityCheck() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex items-center justify-center gap-3 py-6 text-slate-300"
+                  className="flex flex-col items-center justify-center gap-4 py-6 text-slate-300 w-full max-w-md mx-auto"
                 >
-                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                  <span>Analyzing PDF structure...</span>
+                  <div className="flex items-center gap-3">
+                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                    <span className="font-medium text-white">{statusMessage}</span>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="w-full h-1.5 bg-slate-700/50 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.max(5, progress)}%` }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Analyzing readability and ATS compatibility...
+                  </p>
                 </motion.div>
               )}
 
