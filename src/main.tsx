@@ -1,4 +1,4 @@
-// Main entry v2 - Fixed Clerk StrictMode issue
+// Main entry v3 - Added HelmetProvider for React 19
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ConvexProvider, ConvexReactClient } from "convex/react";

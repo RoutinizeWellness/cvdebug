@@ -1,4 +1,4 @@
-// I18nContext v2 - Fixed provider error handling
+// I18nContext v3 - Cache bust for deployment
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SupportedLocale, Translation, detectLocale, useTranslation as getTranslation } from '@/lib/i18n';
 
