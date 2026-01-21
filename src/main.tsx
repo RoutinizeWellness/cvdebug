@@ -103,7 +103,7 @@ function App() {
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/payment-success" element={<PaymentSuccess />} />
-      <Route path="/preview-scan" element={<PreviewScan />} />
+      <Route path="/preview" element={<PreviewScan />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/admin" element={<Admin />} />
