@@ -1,2 +1,0 @@
-# Placeholder Bun lockfile for hosting build steps that expect bun.lockb.
-# CVDebug uses pnpm, so this file is intentionally minimal.
