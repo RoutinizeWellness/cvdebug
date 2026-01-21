@@ -16,6 +16,7 @@ import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
 import { ApplicationMicroTracker } from "./ApplicationMicroTracker";
 import { EliteMatchTool } from "./EliteMatchTool";
 import { useI18n } from "@/contexts/I18nContext";
+import { GamificationBadges, useBadges } from "./GamificationBadges";
 
 const apiAny = api as any;
 
@@ -30,6 +31,9 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const currentUser = useQuery(apiAny.users.currentUser);
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.jobTracker.getJobHistory);
+
+  // Gamification badges based on master resume
+  const badges = useBadges(resumes?.[0]);
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
@@ -564,6 +568,21 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             </div>
           </div>
         </section>
+
+        {/* Gamification Badges Section */}
+        {masterResume && badges.length > 0 && (
+          <section className="mt-8">
+            <GamificationBadges
+              badges={badges}
+              onBadgeClick={(badge) => {
+                // Navigate to relevant section based on badge
+                if (badge.id.includes("score") || badge.id === "perfect-score") {
+                  onNavigate("master-cvs");
+                }
+              }}
+            />
+          </section>
+        )}
       </div>
     </div>
   );

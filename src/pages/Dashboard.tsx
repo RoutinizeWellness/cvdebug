@@ -57,6 +57,8 @@ import { MissionControl } from "@/components/dashboard/MissionControl";
 import { MobileTabBar } from "@/components/dashboard/MobileTabBar";
 import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
 import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStatusModal";
+import { OnboardingTour, useOnboarding } from "@/components/dashboard/OnboardingTour";
+import { EcosystemPrompts } from "@/components/dashboard/EcosystemPrompts";
 
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
@@ -98,7 +100,10 @@ export default function Dashboard() {
   const [editingResumeId, setEditingResumeId] = useState<Id<"resumes"> | null>(null);
   const [previewResumeId, setPreviewResumeId] = useState<Id<"resumes"> | null>(null);
   const [showNewYearPromo, setShowNewYearPromo] = useState(false);
-  
+
+  // Onboarding Tour
+  const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
+
   const {
     isUploading,
     isDragging,
@@ -363,6 +368,7 @@ export default function Dashboard() {
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   className="px-6 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.3)] transition-all duration-200 flex items-center gap-2"
+                  data-onboarding="upload-button"
                 >
                   <Upload className="h-5 w-5" />
                   Upload New CV
@@ -763,6 +769,22 @@ export default function Dashboard() {
         onClose={() => setShowPaymentSuccess(false)}
         plan={paymentSuccessPlan}
       />
+
+      {/* Onboarding Tour for First-Time Users */}
+      {showOnboarding && (
+        <OnboardingTour
+          onComplete={completeOnboarding}
+          onSkip={skipOnboarding}
+        />
+      )}
+
+      {/* Ecosystem Integration Prompts (FREE) */}
+      {user && (
+        <EcosystemPrompts
+          userId={user.id}
+          userScore={resumes && resumes.length > 0 ? resumes[0].score : undefined}
+        />
+      )}
     </div>
   );
 }
