@@ -14,15 +14,19 @@ const localeNames: Record<SupportedLocale, { flag: string; name: string }> = {
 export function LanguageSelector() {
   const { locale, setLocale } = useI18n();
 
+  // Safety check - if locale is undefined, don't render
+  if (!locale || !localeNames[locale]) {
+    return null;
+  }
+
   return (
     <Select value={locale} onValueChange={(value) => setLocale(value as SupportedLocale)}>
-      <SelectTrigger className="w-[180px] h-9 gap-2 border-[#E2E8F0]">
-        <Globe className="h-4 w-4 text-[#64748B]" />
+      <SelectTrigger className="w-[140px] bg-background/50 backdrop-blur-sm border-border/50">
         <SelectValue>
-          <span className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <span>{localeNames[locale].flag}</span>
             <span className="text-sm">{localeNames[locale].name}</span>
-          </span>
+          </div>
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
