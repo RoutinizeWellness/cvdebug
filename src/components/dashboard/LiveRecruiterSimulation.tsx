@@ -176,11 +176,79 @@ export function LiveRecruiterSimulation({
 
   const totalYearsExperience = calculateTotalYears(resumeText);
 
+  // Detect quantifiable metrics in resume
+  const detectMetrics = (text: string): { count: number; examples: string[] } => {
+    if (!text) return { count: 0, examples: [] };
+
+    const metrics: string[] = [];
+    const lines = text.split('\n');
+
+    // Patterns for quantifiable achievements
+    const patterns = [
+      /\d+%/g,                                    // Percentages: 40%, 125%
+      /\$[\d,]+(?:\.\d+)?[KMB]?/g,               // Money: $50K, $1.2M, $500
+      /\d+[xX]/g,                                 // Multipliers: 3x, 10x
+      /\b\d+\s*(?:million|billion|thousand)\b/gi, // Large numbers: 5 million
+      /\b(?:increased|decreased|reduced|improved|grew|generated|saved|managed|led)\s+(?:by\s+)?\d+/gi, // Action + number
+      /\b(?:team of|managed|led)\s+\d+/gi,        // Team size
+      /\b\d+\+?\s*(?:years?|months?|clients?|customers?|users?|projects?|products?|employees?|members?)\b/gi, // Counts
+    ];
+
+    lines.forEach(line => {
+      patterns.forEach(pattern => {
+        const matches = line.match(pattern);
+        if (matches) {
+          matches.forEach(match => {
+            // Only add if we haven't already collected this metric
+            const cleanMatch = match.trim();
+            if (cleanMatch && !metrics.includes(cleanMatch) && metrics.length < 10) {
+              // Get context around the metric (up to 60 chars)
+              const index = line.indexOf(match);
+              const start = Math.max(0, index - 20);
+              const end = Math.min(line.length, index + match.length + 40);
+              const context = line.substring(start, end).trim();
+              metrics.push(context);
+            }
+          });
+        }
+      });
+    });
+
+    return {
+      count: metrics.length,
+      examples: metrics.slice(0, 3), // Top 3 examples
+    };
+  };
+
+  const metricsAnalysis = detectMetrics(resumeText);
+
   // Annotate resume text with [CRIT] and [WARN] tags
   const annotateResumeText = (text: string): { __html: string } => {
     if (!text) return { __html: "No text available" };
 
     let annotatedText = text;
+
+    // Add [CRIT] tags for no quantifiable metrics (ATS auto-reject risk)
+    if (metricsAnalysis.count === 0) {
+      annotatedText = `<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-red-600 font-bold text-sm">[CRIT]</span>
+          <span class="text-red-700 font-semibold text-sm">🚨 ATS AUTO-REJECT DETECTED</span>
+        </div>
+        <div class="text-xs text-red-700 font-semibold ml-6 mb-1">0% METRICS DETECTED</div>
+        <div class="text-xs text-red-600 ml-6">No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.</div>
+        <div class="text-xs text-emerald-700 ml-6 mt-2 font-semibold">✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"</div>
+      </div>` + annotatedText;
+    } else if (metricsAnalysis.count < 3) {
+      annotatedText = `<div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-500 rounded">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-amber-600 font-bold text-sm">[WARN]</span>
+          <span class="text-amber-700 font-semibold text-sm">⚠️ Low Metrics Density</span>
+        </div>
+        <div class="text-xs text-amber-600 ml-6">Only ${metricsAnalysis.count} quantifiable metric${metricsAnalysis.count === 1 ? '' : 's'} found. Add more numbers to strengthen your impact.</div>
+        ${metricsAnalysis.examples.length > 0 ? `<div class="text-xs text-emerald-700 ml-6 mt-2">Found: ${metricsAnalysis.examples.join(', ')}</div>` : ''}
+      </div>` + annotatedText;
+    }
 
     // Add [CRIT] tags for critical format issues
     const criticalIssues = formatIssues.filter(f => f.severity === "critical" || f.issue.toLowerCase().includes("parse") || f.issue.toLowerCase().includes("extract"));
@@ -394,7 +462,7 @@ export function LiveRecruiterSimulation({
           </div>
 
           {/* Visual Error Tags - Critical & Warning */}
-          {(formatIssues.length > 0 || missingKeywords.length > 0) && (
+          {(formatIssues.length > 0 || missingKeywords.length > 0 || metricsAnalysis.count < 3) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -412,6 +480,47 @@ export function LiveRecruiterSimulation({
               </div>
 
               <div className="space-y-3">
+                {/* Metrics Detection - CRITICAL */}
+                {metricsAnalysis.count === 0 && (
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-red-50 border-l-4 border-[#EF4444]">
+                    <span className="px-2 py-1 bg-[#EF4444] text-white text-xs font-bold rounded uppercase tracking-wider flex-shrink-0">
+                      [CRIT]
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-[#EF4444]">🚨 ATS AUTO-REJECT DETECTED</p>
+                      <p className="text-xs font-semibold text-[#0F172A] mt-1">0% METRICS DETECTED</p>
+                      <p className="text-xs text-[#64748B] mt-1">
+                        No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.
+                      </p>
+                      <p className="text-xs text-emerald-700 mt-2 font-semibold">
+                        ✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"
+                      </p>
+                    </div>
+                    <span className="material-symbols-outlined text-[#EF4444] flex-shrink-0">cancel</span>
+                  </div>
+                )}
+
+                {/* Metrics Detection - WARNING */}
+                {metricsAnalysis.count > 0 && metricsAnalysis.count < 3 && (
+                  <div className="flex items-start gap-3 p-4 rounded-lg bg-amber-50 border-l-4 border-[#F59E0B]">
+                    <span className="px-2 py-1 bg-[#F59E0B] text-white text-xs font-bold rounded uppercase tracking-wider flex-shrink-0">
+                      [WARN]
+                    </span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-[#0F172A]">⚠️ Low Metrics Density</p>
+                      <p className="text-xs text-[#64748B] mt-1">
+                        Only {metricsAnalysis.count} quantifiable metric{metricsAnalysis.count === 1 ? '' : 's'} found. Add more numbers to strengthen your impact.
+                      </p>
+                      {metricsAnalysis.examples.length > 0 && (
+                        <p className="text-xs text-emerald-700 mt-2">
+                          Examples found: {metricsAnalysis.examples.join(', ')}
+                        </p>
+                      )}
+                    </div>
+                    <span className="material-symbols-outlined text-[#F59E0B] flex-shrink-0">warning</span>
+                  </div>
+                )}
+
                 {/* Format Issues - CRITICAL */}
                 {formatIssues.map((issue, idx) => (
                   <div
