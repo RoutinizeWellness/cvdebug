@@ -159,8 +159,8 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 </h1>
               </div>
               <p className="text-lg text-[#64748B] dark:text-slate-400 max-w-xl">
-                Analyze your CV against any job offer with local ML precision.{' '}
-                <span className="block md:inline">Identify gaps and optimize for ATS instantly.</span>
+                Analiza tu CV contra cualquier oferta con precisión ML local.{' '}
+                <span className="block md:inline">Identifica gaps y optimiza para ATS instantáneamente.</span>
               </p>
             </header>
 
@@ -173,7 +173,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     htmlFor="linkedin-url"
                     className="block text-sm font-semibold text-[#334155] dark:text-slate-300 mb-2"
                   >
-                    LinkedIn URL (Recommended)
+                    URL de LinkedIn (Recomendado)
                   </label>
                   <Input
                     id="linkedin-url"
@@ -185,7 +185,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                   />
                   <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
-                    Paste the direct link to the LinkedIn job offer for best extraction results.
+                    Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.
                   </p>
                 </div>
 
@@ -196,7 +196,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                   </div>
                   <div className="relative flex justify-center text-sm font-mono uppercase tracking-widest">
                     <span className="px-4 bg-white dark:bg-slate-900 text-[#94A3B8] dark:text-slate-600">
-                      OR
+                      O
                     </span>
                   </div>
                 </div>
@@ -207,11 +207,11 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     htmlFor="job-description"
                     className="block text-sm font-semibold text-[#334155] dark:text-slate-300 mb-2"
                   >
-                    Paste Job Description
+                    Pega la Descripción del Trabajo
                   </label>
                   <Textarea
                     id="job-description"
-                    placeholder="About the role:&#10;We are looking for a Senior Full Stack Developer with 5+ years of experience...&#10;&#10;Requirements:&#10;- Strong experience with React and Node.js&#10;- Experience with Kubernetes and AWS"
+                    placeholder="Sobre el rol:&#10;Buscamos un Senior Full Stack Developer con 5+ años de experiencia...&#10;&#10;Requisitos:&#10;- Experiencia sólida con React y Node.js&#10;- Experiencia con Kubernetes y AWS"
                     value={jobDescriptionText}
                     onChange={(e) => setJobDescriptionText(e.target.value)}
                     disabled={!isPaidUser}
@@ -219,7 +219,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all resize-none font-mono text-sm"
                   />
                   <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
-                    Copy and paste the full job description from any portal.
+                    Copia y pega la descripción completa del trabajo de cualquier portal.
                   </p>
                 </div>
 
@@ -230,7 +230,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                   className="w-full py-4 px-6 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-[#7C3AED]/30 group"
                 >
                   <Zap className="h-5 w-5 mr-2 group-hover:animate-pulse" />
-                  Analyze Match Score
+                  Analizar Puntuación de Coincidencia
                 </Button>
               </div>
             </section>
@@ -241,9 +241,9 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-4">
                   <Brain className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Entity Extraction</h3>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Extracción de Entidades</h3>
                 <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  Not just keywords—we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.
+                  No solo palabras clave: extraemos Hard Skills, Soft Skills y Métricas de Industria con comprensión semántica profunda.
                 </p>
               </div>
 
@@ -251,9 +251,9 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mb-4">
                   <BarChart3 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
                 </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Gap Analysis</h3>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Análisis de Gaps</h3>
                 <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  We identify EXACTLY which signals are missing from your profile to pass high-stakes ATS filters.
+                  Identificamos EXACTAMENTE qué señales faltan en tu perfil para pasar los filtros ATS de alto riesgo.
                 </p>
               </div>
 
@@ -261,9 +261,9 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-4">
                   <Wand2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">AI Auto-Fix</h3>
+                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">Auto-Fix con IA</h3>
                 <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  One-click AI rewriting intelligently integrates missing signals into your existing CV narrative.
+                  Reescritura con IA de un clic que integra inteligentemente las señales faltantes en tu narrativa de CV existente.
                 </p>
               </div>
             </section>
@@ -348,7 +348,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             <div className="bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] rounded-xl p-8 text-white shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold opacity-90">Match Score</h3>
+                  <h3 className="text-lg font-semibold opacity-90">Puntuación de Coincidencia</h3>
                   <p className="text-5xl font-black mt-2">{matchResult.score}%</p>
                 </div>
                 <div className="w-24 h-24 rounded-full border-4 border-white/30 flex items-center justify-center">
@@ -367,7 +367,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
               <div className="bg-white dark:bg-slate-900/50 border border-red-200 dark:border-red-900/30 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <XCircle className="h-5 w-5 text-red-600" />
-                  <h3 className="font-bold text-[#0F172A] dark:text-white">Missing Critical Signals</h3>
+                  <h3 className="font-bold text-[#0F172A] dark:text-white">Señales Críticas Faltantes</h3>
                 </div>
                 <div className="space-y-3">
                   {matchResult.missingCritical.map((signal, idx) => (
@@ -390,7 +390,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
               <div className="bg-white dark:bg-slate-900/50 border border-emerald-200 dark:border-emerald-900/30 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-                  <h3 className="font-bold text-[#0F172A] dark:text-white">Matched Skills</h3>
+                  <h3 className="font-bold text-[#0F172A] dark:text-white">Habilidades Coincidentes</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {matchResult.matched.map((skill, idx) => (
