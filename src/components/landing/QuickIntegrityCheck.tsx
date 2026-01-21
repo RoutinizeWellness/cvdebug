@@ -37,7 +37,14 @@ export function QuickIntegrityCheck() {
 
       try {
         // Dynamically import Tesseract.js to avoid blocking the main bundle
-        const { createWorker } = await import('tesseract.js');
+        const tesseractModule = await Promise.race([
+          import('tesseract.js'),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Tesseract.js import timeout')), 10000)
+          )
+        ]) as typeof import('tesseract.js');
+        
+        const { createWorker } = tesseractModule;
         const worker = await createWorker(['eng']);
         try {
           const { data: { text } } = await worker.recognize(selectedFile);
