@@ -1205,7 +1205,7 @@ Software Engineer | StartupXYZ
                       </div>
 
                       {/* CRITICAL ERROR ALERTS - AHA! MOMENT */}
-                      {(!displayResume?.stats?.hasQuantifiableAchievements ||
+                      {(!displayResume?.extractedData?.hasQuantifiableResults ||
                         (displayResume?.missingKeywords && displayResume.missingKeywords.length > 5) ||
                         (displayResume?.missingElements && displayResume.missingElements.length > 0)) && (
                         <div className="bg-gradient-to-r from-red-950 to-red-900 border-4 border-[#EF4444] p-6">
@@ -1426,7 +1426,7 @@ Software Engineer | StartupXYZ
                         {/* ERROR SPAM - Make it overwhelming like real bugs */}
                         <div className="space-y-1.5 font-mono text-[11px] leading-tight">
                           {/* CRITICAL ERRORS - Spam them like real terminal */}
-                          {(!displayResume?.stats?.hasQuantifiableAchievements) && (
+                          {(!displayResume?.extractedData?.hasQuantifiableResults) && (
                             <>
                               <div className="text-[#EF4444]">
                                 <span className="font-bold">[ERROR]</span> resume_parser.cpp:142 - MISSING_QUANTIFIABLE_METRICS
@@ -1471,13 +1471,13 @@ Software Engineer | StartupXYZ
                             </>
                           )}
 
-                          {displayResume?.stats?.experienceYears && displayResume.stats.experienceYears < 3 && (
+                          {displayResume?.extractedData?.totalYearsExperience && displayResume.extractedData.totalYearsExperience < 3 && (
                             <>
                               <div className="text-[#F59E0B] mt-2">
                                 <span className="font-bold">[WARN]</span> experience_calculator.cpp:56 - LOW_SENIORITY_SIGNALS
                               </div>
                               <div className="text-[#F59E0B] pl-8">
-                                └─▸ Detected: {displayResume.stats.experienceYears} years (threshold: 3y+)
+                                └─▸ Detected: {displayResume.extractedData.totalYearsExperience} years (threshold: 3y+)
                               </div>
                               <div className="text-[#F59E0B] pl-8">
                                 └─▸ 73% of companies filter out &lt;3y candidates
@@ -1670,7 +1670,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                                           <br />
                                           → leadership_signals: {senioritySignals.length} (EXPECTED: 3+)
                                           <br />
-                                          → quantified_impact: {displayResume?.stats?.hasQuantifiableAchievements ? 'true' : 'false'} (REQUIRED: true)
+                                          → quantified_impact: {displayResume?.extractedData?.hasQuantifiableResults ? 'true' : 'false'} (REQUIRED: true)
                                           <br />
                                           → classification_result: {levelDisplay.label} ❌
                                         </p>
@@ -1845,7 +1845,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                     resumeText={displayResume?.ocrText || ''}
                     jobDescription={displayResume?.jobDescription || ''}
                     category={displayResume?.category || ''}
-                    seniorityLevel={displayResume?.stats?.seniorityLevel || 'mid'}
+                    seniorityLevel={displayResume?.extractedData?.seniorityLevel || 'mid'}
                     isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
                     onUpgrade={() => setShowPricing(true)}
                   />
