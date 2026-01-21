@@ -1,10 +1,9 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
+import { RefreshCcw, AlertTriangle } from "lucide-react";
 
 interface Props {
   children: ReactNode;
-  fallback?: ReactNode;
 }
 
 interface State {
@@ -23,56 +22,39 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
     if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback;
-      }
-
       return (
-        <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-4">
-          <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="mb-6 flex justify-center">
-              <div className="h-16 w-16 rounded-full bg-red-100 flex items-center justify-center">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
-              </div>
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+          <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center border border-slate-200">
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <AlertTriangle className="h-8 w-8 text-red-500" />
             </div>
-
-            <h1 className="text-2xl font-bold text-[#0F172A] mb-3">
-              Oops! Something went wrong
-            </h1>
-
-            <p className="text-[#475569] mb-6">
-              We encountered an unexpected error. Don't worry, your data is safe.
+            <h1 className="text-2xl font-bold text-slate-900 mb-2">Something went wrong</h1>
+            <p className="text-slate-600 mb-6">
+              We encountered an unexpected error. Please try refreshing the page.
             </p>
-
-            {this.state.error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
-                <p className="text-xs font-mono text-red-800 break-words">
-                  {this.state.error.message}
-                </p>
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                onClick={() => {
-                  this.setState({ hasError: false, error: null });
-                }}
-                variant="outline"
-                className="font-bold"
+            <div className="bg-slate-100 p-4 rounded-lg text-left mb-6 overflow-auto max-h-40">
+              <code className="text-xs text-slate-700 font-mono">
+                {this.state.error?.message || "Unknown error"}
+              </code>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <Button 
+                onClick={() => window.location.reload()} 
+                className="gap-2 bg-slate-900 hover:bg-slate-800"
+              >
+                <RefreshCcw className="h-4 w-4" />
+                Reload Page
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => this.setState({ hasError: false, error: null })}
               >
                 Try Again
-              </Button>
-
-              <Button
-                onClick={() => window.location.href = "/"}
-                className="font-bold"
-              >
-                Go to Homepage
               </Button>
             </div>
           </div>
