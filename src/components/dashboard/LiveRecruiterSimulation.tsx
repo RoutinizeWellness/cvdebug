@@ -127,6 +127,44 @@ export function LiveRecruiterSimulation({
 
   const workExperience = extractWorkExperience(resumeText);
 
+  // Calculate total years of experience from all date ranges in resume
+  const calculateTotalYears = (text: string): number => {
+    if (!text) return 0;
+
+    const datePattern = /(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*(20\d{2}|19\d{2})\s*[-–—]\s*(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)?\s*)?(20\d{2}|present|current|now)/gi;
+
+    const matches = text.match(datePattern);
+    if (!matches || matches.length === 0) return 0;
+
+    let totalMonths = 0;
+    const currentYear = new Date().getFullYear();
+
+    matches.forEach(match => {
+      // Extract start and end years
+      const yearMatches = match.match(/(20\d{2}|19\d{2})/g);
+      if (!yearMatches || yearMatches.length === 0) return;
+
+      const startYear = parseInt(yearMatches[0]);
+      let endYear = currentYear;
+
+      // Check if there's an end year or if it's "present/current"
+      if (yearMatches.length > 1) {
+        endYear = parseInt(yearMatches[1]);
+      } else if (match.match(/present|current|now/i)) {
+        endYear = currentYear;
+      }
+
+      // Calculate months (assuming full years for simplicity)
+      const months = (endYear - startYear) * 12;
+      totalMonths += Math.max(0, months);
+    });
+
+    // Convert to years, rounded to 1 decimal
+    return Math.round((totalMonths / 12) * 10) / 10;
+  };
+
+  const totalYearsExperience = calculateTotalYears(resumeText);
+
   // Annotate resume text with [CRIT] and [WARN] tags
   const annotateResumeText = (text: string): { __html: string } => {
     if (!text) return { __html: "No text available" };
@@ -626,7 +664,9 @@ export function LiveRecruiterSimulation({
               <div className="space-y-4 border-l border-slate-100 md:pl-8">
                 <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Experience Audit</p>
                 <div className="space-y-1">
-                  <p className="text-3xl font-bold tracking-tight text-slate-900">0 years</p>
+                  <p className="text-3xl font-bold tracking-tight text-slate-900">
+                    {totalYearsExperience > 0 ? `${totalYearsExperience}` : '0'} years
+                  </p>
                   <p className="text-xs text-slate-500">
                     Expected requirement: <span className="font-bold text-slate-700">{seniorityLevel}</span>
                   </p>

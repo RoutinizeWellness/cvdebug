@@ -59,6 +59,8 @@ import { SprintProgressBar } from "@/components/dashboard/SprintProgressBar";
 import { SubscriptionStatusModal } from "@/components/dashboard/SubscriptionStatusModal";
 import { OnboardingTour, useOnboarding } from "@/components/dashboard/OnboardingTour";
 import { EcosystemPrompts } from "@/components/dashboard/EcosystemPrompts";
+import { ActivityReminderBanner } from "@/components/dashboard/ActivityReminderBanner";
+import { useActivityReminder } from "@/hooks/use-activity-reminder";
 
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
@@ -116,14 +118,20 @@ export default function Dashboard() {
     handleDragLeave,
     handleDrop
   } = useResumeUpload(jobDescription, setJobDescription);
-  
+
   const storeUser = useMutation(apiAny.users.storeUser);
   const purchaseCredits = useMutation(apiAny.users.purchaseCredits);
   const deleteResume = useMutation(apiAny.resumes.deleteResume);
-  
-  const resumes = useQuery(apiAny.resumes.getResumes, { 
+
+  const resumes = useQuery(apiAny.resumes.getResumes, {
     category: categoryFilter || undefined
   });
+
+  // Activity Reminder - must be after resumes query
+  const { showReminderBanner, daysSinceActive, dismissReminder } = useActivityReminder(
+    user?.id,
+    resumes && resumes.length > 0 ? resumes[0].score : undefined
+  );
 
   useEffect(() => {
     if (currentUser && !isLoading) {
@@ -539,6 +547,18 @@ export default function Dashboard() {
               {currentUser?.sprintExpiresAt && (
                 <SprintProgressBar />
               )}
+
+              {/* Activity Reminder Banner */}
+              <ActivityReminderBanner
+                show={showReminderBanner}
+                daysSinceActive={daysSinceActive}
+                lastScore={resumes && resumes.length > 0 ? resumes[0].score : undefined}
+                onDismiss={dismissReminder}
+                onAction={() => {
+                  dismissReminder();
+                  setCurrentView('master-cvs');
+                }}
+              />
             </div>
           </div>
         );
