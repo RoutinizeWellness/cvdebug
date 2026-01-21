@@ -48,6 +48,7 @@ export function useI18n() {
   // Provide fallback if context is not available
   // This handles edge cases during initial render or HMR
   if (!context) {
+    console.warn("I18nContext not found, using fallback");
     const defaultLocale: SupportedLocale = 'en';
     return {
       locale: defaultLocale,
