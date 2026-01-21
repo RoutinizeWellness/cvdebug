@@ -238,7 +238,7 @@ export function LiveRecruiterSimulation({
   // Analyze readability based on resume structure and format
   const analyzeReadability = (text: string, formatIssuesCount: number): { level: string; status: string; icon: string; color: string } => {
     const lines = text.split('\n').filter(l => l.trim());
-    const avgLineLength = lines.reduce((sum, line) => sum + line.length, 0) / lines.length;
+    const avgLineLength = lines.length > 0 ? lines.reduce((sum, line) => sum + line.length, 0) / lines.length : 0;
 
     // Check for good structure indicators
     const hasHeaders = /(?:experience|education|skills|summary|projects)/gi.test(text);
@@ -298,7 +298,7 @@ export function LiveRecruiterSimulation({
     const teamwork = teamKeywords.filter(kw => lowerText.includes(kw)).length;
 
     // Normalize to 0-4 scale (for 4 bars)
-    const normalize = (count: number) => Math.min(4, Math.ceil(count / 2));
+    const normalize = (count: number) => count === 0 ? 0 : Math.min(4, Math.ceil(count / 2));
 
     return {
       leadership: normalize(leadership),
