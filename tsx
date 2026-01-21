@@ -1,1 +1,5 @@
-<div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+<ClerkProvider publishableKey="pk_test_...">
+  <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+    <App />
+  </ConvexProviderWithClerk>
+</ClerkProvider>
