@@ -592,37 +592,151 @@ export function LiveRecruiterSimulation({
           </motion.div>
 
           {/* Seniority Level */}
+          {/* Seniority Match Analysis - New Design */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+            className="col-span-2 bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-8 shadow-sm"
           >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-bold text-[#475569] uppercase tracking-widest">Seniority Level</h3>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-[#22C55E] font-medium border border-emerald-200">
-                MATCH
+            <div className="flex items-center gap-2 mb-6">
+              <span className="material-symbols-outlined text-[#4F46E5] text-xl">track_changes</span>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+                Seniority Match Analysis
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Detected Level */}
+              <div className="space-y-4">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Detected Level</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-3xl font-bold tracking-tight text-slate-900">{seniorityLevel}</span>
+                  <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-600 text-[10px] font-bold uppercase border border-amber-100">
+                    Review Required
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                  <span className="material-symbols-outlined text-sm">analytics</span>
+                  <span>Confidence Score: <span className="font-mono text-slate-700">{fitScore}/100</span></span>
+                </div>
+              </div>
+
+              {/* Experience Audit */}
+              <div className="space-y-4 border-l border-slate-100 md:pl-8">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Experience Audit</p>
+                <div className="space-y-1">
+                  <p className="text-3xl font-bold tracking-tight text-slate-900">0 years</p>
+                  <p className="text-xs text-slate-500">
+                    Expected requirement: <span className="font-bold text-slate-700">{seniorityLevel}</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Signal Density */}
+              <div className="space-y-4 border-l border-slate-100 md:pl-8">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Signal Density</p>
+                <div className="space-y-1">
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-3xl font-bold tracking-tight text-[#7c3aed]">{foundCount}</p>
+                    <span className="text-xs font-medium text-slate-400">signals detected</span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Signal strength: <span className={`font-bold ${foundCount >= 8 ? 'text-emerald-500' : foundCount >= 4 ? 'text-amber-500' : 'text-rose-500'}`}>
+                      {foundCount >= 8 ? 'STRONG' : foundCount >= 4 ? 'MODERATE' : 'WEAK'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Additional Integrity Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40"
+          >
+            <div className="flex justify-between items-start">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Readability</p>
+              <div className="h-8 w-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                <span className="material-symbols-outlined text-emerald-500 text-lg">check_circle</span>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900">High Integrity</h3>
+              <p className="text-xs text-slate-500 mt-1">Structure follows industry standard patterns</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40"
+          >
+            <div className="flex justify-between items-start">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Image Traps</p>
+              <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-bold tracking-wide uppercase">
+                Safe
               </span>
             </div>
-            <p className="text-[10px] text-[#64748B] italic mb-3 border-l-2 border-amber-300 pl-2 bg-amber-50/50 py-1 rounded">
-              ⚠️ Based on extracted dates only
-            </p>
-            <div className="relative h-2 bg-slate-100 rounded-full mb-2 overflow-hidden border border-[#E2E8F0]">
-              <div
-                className="absolute top-0 bottom-0 bg-blue-200 opacity-50"
-                style={{ left: `${parseInt(seniorityPosition) - 15}%`, width: '30%' }}
-              />
-              <div
-                className="absolute top-0 bottom-0 bg-[#3B82F6] w-1 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] z-10"
-                style={{ left: seniorityPosition }}
-              />
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900">None Detected</h3>
+              <p className="text-xs text-slate-500 mt-1">No invisible elements or keyword stuffing</p>
             </div>
-            <div className="flex justify-between text-[10px] text-[#64748B] font-mono uppercase">
-              <span className={seniorityLevel === "JUNIOR" ? "text-[#3B82F6] font-bold" : ""}>JR</span>
-              <span className={seniorityLevel === "MID" ? "text-[#3B82F6] font-bold" : ""}>MID</span>
-              <span className={seniorityLevel === "SENIOR" ? "text-[#3B82F6] font-bold" : ""}>SENIOR</span>
-              <span>LEAD</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-6 shadow-sm flex flex-col justify-between h-40 relative overflow-hidden"
+          >
+            <div className="flex justify-between items-start z-10">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">ATS Global Score</p>
             </div>
+            <div className="flex items-end justify-between z-10">
+              <div>
+                <h3 className="text-3xl font-mono font-bold text-slate-900">
+                  {score}<span className="text-slate-300 text-xl">/100</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">Score based on parsing efficiency</p>
+              </div>
+              <div className="relative w-16 h-16 flex items-center justify-center">
+                <svg className="w-full h-full transform -rotate-90">
+                  <circle
+                    className="text-slate-100"
+                    cx="32"
+                    cy="32"
+                    fill="transparent"
+                    r="28"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <circle
+                    cx="32"
+                    cy="32"
+                    fill="transparent"
+                    r="28"
+                    stroke="url(#scoreGradient)"
+                    strokeDasharray="175.92"
+                    strokeDashoffset={175.92 - (175.92 * score) / 100}
+                    strokeLinecap="round"
+                    strokeWidth="4"
+                  />
+                  <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#818cf8" />
+                      <stop offset="100%" stopColor="#4F46E5" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <span className="absolute text-[10px] font-mono text-slate-400">{score}%</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#4F46E5]/5 rounded-full blur-2xl"></div>
           </motion.div>
 
           {/* Technical Gap Analysis */}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Chrome, Mail, Linkedin, ExternalLink, Copy, Check } from "lucide-react";
+import { X, Chrome, Mail, Linkedin, ExternalLink, Copy, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -37,31 +37,31 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
 
     const prompts: EcosystemPrompt[] = [
       {
-        id: "chrome-extension",
-        title: "🔥 Chrome Extension (Gratuita)",
-        description: "Escanea descripciones de trabajo directamente desde LinkedIn, Indeed o cualquier sitio web. Extrae keywords al instante sin copiar/pegar.",
+        id: "copy-paste-tip",
+        title: "💡 Pro Tip: Copia desde LinkedIn",
+        description: "Ve a un job posting en LinkedIn → Selecciona todo el texto → Ctrl+C → Pégalo en 'Add Job Description'. Automático, sin extensiones.",
         icon: <Chrome className="h-8 w-8 text-[#3B82F6]" />,
-        actionLabel: "Ver Instrucciones",
+        actionLabel: "Entendido",
         badge: "GRATIS",
-        onAction: () => showBookmarkletInstructions(),
+        onAction: () => toast.success("¡Perfecto! Usa Ctrl+C en cualquier job posting."),
       },
       {
-        id: "gmail-integration",
-        title: "📧 Analiza Respuestas de Reclutadores (Gratis)",
-        description: "¿Te escribieron por email? Pega la respuesta aquí para ver qué keywords buscan y ajustar tu CV antes de aplicar.",
-        icon: <Mail className="h-8 w-8 text-[#EF4444]" />,
-        actionLabel: "Activar Analizador",
-        badge: "GRATIS",
-        onAction: () => showEmailAnalyzer(),
-      },
-      {
-        id: "linkedin-sync",
-        title: "🔗 Mantén LinkedIn Sincronizado",
-        description: "Tu CV está optimizado, pero 87% de reclutadores buscan en LinkedIn primero. Actualiza tu perfil para no perder llamadas.",
+        id: "linkedin-reminder",
+        title: "🔗 Recordatorio: Actualiza LinkedIn",
+        description: "Tu CV está en {score}%. 89% de reclutadores buscan en LinkedIn antes de llamar. Copia las mejoras de tu CV a tu perfil de LinkedIn.",
         icon: <Linkedin className="h-8 w-8 text-[#0A66C2]" />,
-        actionLabel: "Ver Checklist",
+        actionLabel: "Ir a LinkedIn",
         badge: "GRATIS",
-        onAction: () => showLinkedInChecklist(),
+        onAction: () => window.open("https://www.linkedin.com/in/me/", "_blank"),
+      },
+      {
+        id: "keyboard-shortcuts",
+        title: "⌨️ Atajos de Teclado",
+        description: "Ctrl+V para pegar job description rápido. Esc para cerrar modales. Trabaja más rápido sin salir del teclado.",
+        icon: <Zap className="h-8 w-8 text-[#F59E0B]" />,
+        actionLabel: "Ver Más Atajos",
+        badge: "GRATIS",
+        onAction: () => toast.info("Atajos: Ctrl+V (pegar JD), Esc (cerrar), Tab (navegar)"),
       },
     ];
 
