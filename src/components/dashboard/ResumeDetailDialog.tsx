@@ -86,6 +86,7 @@ interface ResumeDetailDialogProps {
   onDelete: (id: Id<"resumes">) => void;
   onOpenWritingForge?: () => void;
   onOpenKeywordSniper?: () => void;
+  onOpenLinkedIn?: () => void;
 }
 
 export function ResumeDetailDialog({
@@ -93,7 +94,8 @@ export function ResumeDetailDialog({
   onClose,
   onDelete,
   onOpenWritingForge,
-  onOpenKeywordSniper
+  onOpenKeywordSniper,
+  onOpenLinkedIn
 }: ResumeDetailDialogProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
@@ -1219,17 +1221,66 @@ Software Engineer | StartupXYZ
                               </h3>
 
                               {!displayResume?.stats?.hasQuantifiableAchievements && (
-                                <div className="bg-black/40 border-2 border-[#EF4444] rounded-lg p-4 mb-3">
-                                  <div className="flex items-start gap-3">
-                                    <XCircle className="h-6 w-6 text-[#EF4444] flex-shrink-0 mt-1" />
-                                    <div>
-                                      <p className="text-[#EF4444] font-bold text-lg mb-1">0% METRICS DETECTED</p>
-                                      <p className="text-gray-300 text-sm mb-2">
-                                        No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.
-                                      </p>
-                                      <p className="text-white font-semibold text-sm">
-                                        ✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"
-                                      </p>
+                                <div className="relative bg-black/60 border-4 border-[#EF4444] rounded-lg p-5 mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] animate-pulse">
+                                  {/* Animated Corner Accent */}
+                                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#EF4444] rounded-full animate-ping"></div>
+                                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#EF4444] rounded-full"></div>
+
+                                  <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0">
+                                      <div className="w-20 h-20 bg-[#EF4444]/20 border-4 border-[#EF4444] rounded-full flex items-center justify-center animate-pulse">
+                                        <div className="text-center">
+                                          <div className="text-3xl font-black text-[#EF4444]">0%</div>
+                                          <div className="text-[8px] text-red-300 font-bold uppercase">Impact</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2 mb-2">
+                                        <XCircle className="h-6 w-6 text-[#EF4444]" />
+                                        <p className="text-[#EF4444] font-black text-xl tracking-tight">
+                                          ZERO METRICS = AUTO-REJECT
+                                        </p>
+                                      </div>
+                                      <div className="bg-red-950/60 border border-[#EF4444]/30 rounded-md p-3 mb-3">
+                                        <p className="text-red-100 text-sm font-bold mb-2">
+                                          📊 BUSINESS IMPACT:
+                                        </p>
+                                        <ul className="space-y-1 text-gray-300 text-sm">
+                                          <li className="flex items-center gap-2">
+                                            <span className="text-[#EF4444] font-bold">•</span>
+                                            <span><span className="text-white font-bold">89%</span> of ATS systems auto-reject resumes without numbers</span>
+                                          </li>
+                                          <li className="flex items-center gap-2">
+                                            <span className="text-[#EF4444] font-bold">•</span>
+                                            <span><span className="text-white font-bold">Recruiters spend 6 seconds</span> - metrics catch attention instantly</span>
+                                          </li>
+                                          <li className="flex items-center gap-2">
+                                            <span className="text-[#EF4444] font-bold">•</span>
+                                            <span><span className="text-white font-bold">3x higher callback rate</span> when quantifiable achievements present</span>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                      <div className="bg-green-950/40 border border-green-500/30 rounded-md p-3">
+                                        <p className="text-[#22C55E] font-bold text-sm mb-2 flex items-center gap-2">
+                                          <Check className="h-4 w-4" />
+                                          IMMEDIATE FIX:
+                                        </p>
+                                        <div className="text-white text-sm space-y-1 font-mono">
+                                          <div className="flex items-start gap-2">
+                                            <span className="text-[#22C55E]">✓</span>
+                                            <span><span className="text-yellow-300">%</span> "Increased sales by <span className="text-[#22C55E] font-bold">40%</span>"</span>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="text-[#22C55E]">✓</span>
+                                            <span><span className="text-yellow-300">$</span> "Reduced costs by <span className="text-[#22C55E] font-bold">$500K</span> annually"</span>
+                                          </div>
+                                          <div className="flex items-start gap-2">
+                                            <span className="text-[#22C55E]">✓</span>
+                                            <span><span className="text-yellow-300">#</span> "Led team of <span className="text-[#22C55E] font-bold">12 engineers</span>"</span>
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -1273,8 +1324,74 @@ Software Engineer | StartupXYZ
                         </div>
                       )}
 
+                      {/* LinkedIn Upsell Banner - Show when CV is optimized (score >= 70) */}
+                      {displayResume?.score !== undefined && displayResume.score >= 70 && !isFree && (
+                        <div className="bg-gradient-to-r from-[#0A66C2] to-[#004182] border-4 border-[#0A66C2] p-6 mx-4 my-4 rounded-lg shadow-2xl">
+                          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                            <div className="flex-shrink-0">
+                              <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-lg">
+                                <svg className="h-10 w-10" viewBox="0 0 24 24" fill="#0A66C2">
+                                  <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-white font-black text-xl mb-2 flex items-center gap-2">
+                                🎯 CV Optimizado → LinkedIn es el Siguiente Paso
+                              </h3>
+                              <p className="text-blue-100 text-sm mb-3">
+                                Tu CV está listo (Score: {displayResume.score}%). <span className="font-bold">89% de los reclutadores</span> revisan LinkedIn antes de contactar. No pierdas oportunidades por un perfil desactualizado.
+                              </p>
+                              <div className="flex flex-col sm:flex-row gap-2">
+                                <Button
+                                  onClick={() => {
+                                    toast.success("Navegando a LinkedIn Optimizer...");
+                                    onClose();
+                                    if (onOpenLinkedIn) {
+                                      onOpenLinkedIn();
+                                    }
+                                  }}
+                                  className="bg-white text-[#0A66C2] font-bold hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all"
+                                >
+                                  <span className="flex items-center gap-2">
+                                    <Sparkles className="h-4 w-4" />
+                                    Optimizar LinkedIn Ahora
+                                  </span>
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => {
+                                    // Maybe track that user dismissed
+                                    const banner = document.querySelector('[data-linkedin-banner]');
+                                    if (banner) banner.remove();
+                                  }}
+                                  className="border-2 border-white/30 text-white hover:bg-white/10"
+                                >
+                                  Más Tarde
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="flex-shrink-0 hidden lg:block">
+                              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                                <div className="text-xs text-white/80 mb-2 font-mono">STATS:</div>
+                                <div className="space-y-1 text-white font-bold">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-2xl">89%</span>
+                                    <span className="text-xs opacity-80">check LinkedIn</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-2xl">3x</span>
+                                    <span className="text-xs opacity-80">more callbacks</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {/* DIRTY Terminal Output - Real Error Console Style */}
-                      <div className="bg-[#000000] space-y-0">
+                      <div className="bg-[#000000] space-y-0" data-linkedin-banner>
                         {/* Collapsible System Logs Header */}
                         <button
                           onClick={() => setShowSystemLogs(!showSystemLogs)}

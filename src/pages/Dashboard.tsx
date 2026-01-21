@@ -687,6 +687,10 @@ export default function Dashboard() {
           setSelectedResumeId(null);
           setCurrentView('keyword-sniper');
         }}
+        onOpenLinkedIn={() => {
+          setSelectedResumeId(null);
+          setCurrentView('linkedin');
+        }}
       />
 
       <CreditsExhaustedModal 

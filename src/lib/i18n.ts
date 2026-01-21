@@ -138,6 +138,38 @@ export interface Translation {
     autoRejectDetected: string;
     criticalError: string;
   };
+  // Resume Detail Dialog
+  resumeDetail: {
+    // LinkedIn Upsell
+    linkedinUpsellTitle: string;
+    linkedinUpsellDescription: string;
+    optimizeLinkedIn: string;
+    maybeLater: string;
+    checkLinkedIn: string;
+    moreCallbacks: string;
+    // Critical Errors
+    zeroMetricsTitle: string;
+    businessImpact: string;
+    atsAutoReject: string;
+    recruitersSpend6Seconds: string;
+    higherCallbackRate: string;
+    immediateFix: string;
+    increasedSales: string;
+    reducedCosts: string;
+    ledTeam: string;
+    // Tabs
+    editTab: string;
+    robotView: string;
+    progressTab: string;
+    actionPlanTab: string;
+    interviewTab: string;
+    recruiterTab: string;
+    // Actions
+    apply: string;
+    optimizing: string;
+    reanalyze: string;
+    cancel: string;
+  };
   // Preview Scan
   previewScan: {
     title: string;
@@ -1526,6 +1558,37 @@ export const translations: Record<SupportedLocale, Translation> = {
       autoRejectDetected: 'AUTO_REJECT DETECTED',
       criticalError: 'CRITICAL ERROR',
     },
+    resumeDetail: {
+      // LinkedIn Upsell
+      linkedinUpsellTitle: 'CV Optimized → LinkedIn is Next',
+      linkedinUpsellDescription: 'Your CV is ready (Score: {score}%). 89% of recruiters check LinkedIn before contacting. Don\'t lose opportunities due to an outdated profile.',
+      optimizeLinkedIn: 'Optimize LinkedIn Now',
+      maybeLater: 'Maybe Later',
+      checkLinkedIn: 'check LinkedIn',
+      moreCallbacks: 'more callbacks',
+      // Critical Errors
+      zeroMetricsTitle: 'ZERO METRICS = AUTO-REJECT',
+      businessImpact: 'BUSINESS IMPACT:',
+      atsAutoReject: 'of ATS systems auto-reject resumes without numbers',
+      recruitersSpend6Seconds: 'Recruiters spend 6 seconds - metrics catch attention instantly',
+      higherCallbackRate: 'higher callback rate when quantifiable achievements present',
+      immediateFix: 'IMMEDIATE FIX:',
+      increasedSales: 'Increased sales by',
+      reducedCosts: 'Reduced costs by',
+      ledTeam: 'Led team of',
+      // Tabs
+      editTab: 'Edit',
+      robotView: 'Robot View',
+      progressTab: 'Progress',
+      actionPlanTab: 'Action Plan',
+      interviewTab: 'Interview',
+      recruiterTab: 'Recruiter',
+      // Actions
+      apply: 'Apply',
+      optimizing: 'Optimizing...',
+      reanalyze: 'Re-analyze',
+      cancel: 'Cancel',
+    },
     previewScan: {
       title: 'Deep Diagnostic Scan',
       subtitle: 'See exactly how ATS systems parse your resume - no signup required',
@@ -2858,6 +2921,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Debugger de Visibilidad',
       autoRejectDetected: 'AUTO-RECHAZO DETECTADO',
       criticalError: 'ERROR CRÍTICO',
+    },
+    resumeDetail: {
+      linkedinUpsellTitle: 'CV Optimizado → LinkedIn es el Siguiente Paso',
+      linkedinUpsellDescription: 'Tu CV está listo (Score: {score}%). 89% de los reclutadores revisan LinkedIn antes de contactar. No pierdas oportunidades por un perfil desactualizado.',
+      optimizeLinkedIn: 'Optimizar LinkedIn Ahora',
+      maybeLater: 'Más Tarde',
+      checkLinkedIn: 'revisan LinkedIn',
+      moreCallbacks: 'más llamadas',
+      zeroMetricsTitle: 'CERO MÉTRICAS = AUTO-RECHAZO',
+      businessImpact: 'IMPACTO DE NEGOCIO:',
+      atsAutoReject: 'de sistemas ATS auto-rechazan CVs sin números',
+      recruitersSpend6Seconds: 'Los reclutadores pasan 6 segundos - las métricas captan atención al instante',
+      higherCallbackRate: 'tasa de llamadas más alta cuando hay logros cuantificables',
+      immediateFix: 'SOLUCIÓN INMEDIATA:',
+      increasedSales: 'Aumenté las ventas en',
+      reducedCosts: 'Reduje los costos en',
+      ledTeam: 'Lideré un equipo de',
+      editTab: 'Editar',
+      robotView: 'Vista Robot',
+      progressTab: 'Progreso',
+      actionPlanTab: 'Plan de Acción',
+      interviewTab: 'Entrevista',
+      recruiterTab: 'Reclutador',
+      apply: 'Aplicar',
+      optimizing: 'Optimizando...',
+      reanalyze: 'Re-analizar',
+      cancel: 'Cancelar',
     },
     previewScan: {
       title: 'Escaneo Diagnóstico Profundo',
@@ -4192,6 +4282,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       autoRejectDetected: 'AUTO-REJET DÉTECTÉ',
       criticalError: 'ERREUR CRITIQUE',
     },
+    resumeDetail: {
+      linkedinUpsellTitle: 'CV Optimisé → LinkedIn est le Suivant',
+      linkedinUpsellDescription: 'Votre CV est prêt (Score: {score}%). 89% des recruteurs consultent LinkedIn avant de contacter. Ne perdez pas d\'opportunités à cause d\'un profil obsolète.',
+      optimizeLinkedIn: 'Optimiser LinkedIn Maintenant',
+      maybeLater: 'Plus Tard',
+      checkLinkedIn: 'consultent LinkedIn',
+      moreCallbacks: 'plus de rappels',
+      zeroMetricsTitle: 'ZÉRO MÉTRIQUE = AUTO-REJET',
+      businessImpact: 'IMPACT COMMERCIAL:',
+      atsAutoReject: 'des systèmes ATS rejettent automatiquement les CV sans chiffres',
+      recruitersSpend6Seconds: 'Les recruteurs passent 6 secondes - les métriques attirent l\'attention instantanément',
+      higherCallbackRate: 'taux de rappel plus élevé quand il y a des réalisations quantifiables',
+      immediateFix: 'CORRECTION IMMÉDIATE:',
+      increasedSales: 'Augmentation des ventes de',
+      reducedCosts: 'Réduction des coûts de',
+      ledTeam: 'Direction d\'une équipe de',
+      editTab: 'Éditer',
+      robotView: 'Vue Robot',
+      progressTab: 'Progrès',
+      actionPlanTab: 'Plan d\'Action',
+      interviewTab: 'Entretien',
+      recruiterTab: 'Recruteur',
+      apply: 'Appliquer',
+      optimizing: 'Optimisation...',
+      reanalyze: 'Ré-analyser',
+      cancel: 'Annuler',
+    },
     previewScan: {
       title: 'Scan Diagnostique Approfondi',
       subtitle: 'Voyez exactement comment les systèmes ATS analysent votre CV - sans inscription',
@@ -5525,6 +5642,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       autoRejectDetected: 'AUTO-ABLEHNUNG ERKANNT',
       criticalError: 'KRITISCHER FEHLER',
     },
+    resumeDetail: {
+      linkedinUpsellTitle: 'CV Optimiert → LinkedIn ist als Nächstes',
+      linkedinUpsellDescription: 'Ihr CV ist bereit (Score: {score}%). 89% der Recruiter prüfen LinkedIn vor der Kontaktaufnahme. Verlieren Sie keine Chancen durch ein veraltetes Profil.',
+      optimizeLinkedIn: 'LinkedIn Jetzt Optimieren',
+      maybeLater: 'Später Vielleicht',
+      checkLinkedIn: 'prüfen LinkedIn',
+      moreCallbacks: 'mehr Rückrufe',
+      zeroMetricsTitle: 'NULL METRIKEN = AUTO-ABLEHNUNG',
+      businessImpact: 'GESCHÄFTLICHE AUSWIRKUNG:',
+      atsAutoReject: 'der ATS-Systeme lehnen Lebensläufe ohne Zahlen automatisch ab',
+      recruitersSpend6Seconds: 'Recruiter verbringen 6 Sekunden - Metriken ziehen sofort Aufmerksamkeit an',
+      higherCallbackRate: 'höhere Rückrufrate bei quantifizierbaren Erfolgen',
+      immediateFix: 'SOFORTIGE LÖSUNG:',
+      increasedSales: 'Umsatzsteigerung um',
+      reducedCosts: 'Kostensenkung um',
+      ledTeam: 'Leitung eines Teams von',
+      editTab: 'Bearbeiten',
+      robotView: 'Roboter-Ansicht',
+      progressTab: 'Fortschritt',
+      actionPlanTab: 'Aktionsplan',
+      interviewTab: 'Interview',
+      recruiterTab: 'Recruiter',
+      apply: 'Anwenden',
+      optimizing: 'Optimierung...',
+      reanalyze: 'Neu Analysieren',
+      cancel: 'Abbrechen',
+    },
     previewScan: {
       title: 'Tiefgehender Diagnosescan',
       subtitle: 'Sehen Sie genau, wie ATS-Systeme Ihren Lebenslauf analysieren - keine Anmeldung erforderlich',
@@ -6857,6 +7001,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Debugger de Visibilidade',
       autoRejectDetected: 'AUTO-REJEIÇÃO DETECTADA',
       criticalError: 'ERRO CRÍTICO',
+    },
+    resumeDetail: {
+      linkedinUpsellTitle: 'CV Otimizado → LinkedIn é o Próximo',
+      linkedinUpsellDescription: 'Seu CV está pronto (Score: {score}%). 89% dos recrutadores verificam o LinkedIn antes de entrar em contato. Não perca oportunidades por causa de um perfil desatualizado.',
+      optimizeLinkedIn: 'Otimizar LinkedIn Agora',
+      maybeLater: 'Talvez Mais Tarde',
+      checkLinkedIn: 'verificam LinkedIn',
+      moreCallbacks: 'mais retornos',
+      zeroMetricsTitle: 'ZERO MÉTRICAS = AUTO-REJEIÇÃO',
+      businessImpact: 'IMPACTO DE NEGÓCIO:',
+      atsAutoReject: 'dos sistemas ATS rejeitam automaticamente currículos sem números',
+      recruitersSpend6Seconds: 'Recrutadores passam 6 segundos - métricas chamam atenção instantaneamente',
+      higherCallbackRate: 'taxa de retorno mais alta quando há conquistas quantificáveis',
+      immediateFix: 'CORREÇÃO IMEDIATA:',
+      increasedSales: 'Aumentei as vendas em',
+      reducedCosts: 'Reduzi os custos em',
+      ledTeam: 'Liderei uma equipe de',
+      editTab: 'Editar',
+      robotView: 'Visão Robô',
+      progressTab: 'Progresso',
+      actionPlanTab: 'Plano de Ação',
+      interviewTab: 'Entrevista',
+      recruiterTab: 'Recrutador',
+      apply: 'Aplicar',
+      optimizing: 'Otimizando...',
+      reanalyze: 'Re-analisar',
+      cancel: 'Cancelar',
     },
     previewScan: {
       title: 'Scan Diagnóstico Profundo',
