@@ -46,7 +46,7 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="CVDebug ATS Resume Scanner - See What Robots See" />
-    <meta property="og:url" content="/" />
+    <meta property="og:url" content="https://cvdebug.com" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -65,7 +65,7 @@
 
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="/" />
+    <link rel="canonical" href="https://cvdebug.com" />
 
     <!-- Advanced SEO Meta Tags for Enhanced SERP Presence -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, notranslate" />
@@ -81,7 +81,7 @@
     <meta name="designer" content="CVDebug Team" />
     <meta name="reply-to" content="cvdebug@outlook.com" />
     <meta name="owner" content="CVDebug Inc." />
-    <meta name="url" content="/" />
+    <meta name="url" content="https://cvdebug.com" />
     <meta name="directory" content="submission" />
     <meta name="pagename" content="CVDebug - Free ATS Resume Scanner" />
     <meta name="copyright" content="CVDebug © 2024-2026" />
@@ -91,7 +91,7 @@
     <meta name="revisit-after" content="7 days" />
     <meta name="category" content="Career Tools, Resume Optimization, Job Search" />
     <meta name="coverage" content="Worldwide" />
-    <meta name="identifier-URL" content="/" />
+    <meta name="identifier-URL" content="https://cvdebug.com" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="CVDebug" />
 
@@ -109,14 +109,14 @@
     <!-- Additional OpenGraph tags -->
     <meta property="og:type" content="website" />
     <meta property="og:updated_time" content="2026-01-12T00:00:00Z" />
-    <meta property="article:publisher" content="/" />
+    <meta property="article:publisher" content="https://cvdebug.com" />
     <meta property="og:see_also" content="/blog" />
     <meta property="og:see_also" content="/pricing" />
 
     <!-- Alternative Languages (for future expansion) -->
-    <link rel="alternate" hreflang="en" href="/" />
-    <link rel="alternate" hreflang="es" href="/" />
-    <link rel="alternate" hreflang="x-default" href="/" />
+    <link rel="alternate" hreflang="en" href="https://cvdebug.com" />
+    <link rel="alternate" hreflang="es" href="https://cvdebug.com" />
+    <link rel="alternate" hreflang="x-default" href="https://cvdebug.com" />
 
     <!-- Spanish Keywords for SEO -->
     <meta name="keywords" content="escáner ATS CV profesional, analizador currículum ATS, optimización CV España, verificador ATS resume, sistema seguimiento candidatos, palabras clave CV, optimizar currículum ATS, formato CV compatible ATS, revisar CV online, herramienta optimización currículum, scanner ATS premium" lang="es" />
@@ -149,9 +149,9 @@
 
     <!-- Advanced SEO Meta Tags for Authority & Credibility -->
     <meta name="news_keywords" content="ATS resume scanner, job search tools 2026, career technology, resume optimization, applicant tracking systems" />
-    <meta name="syndication-source" content="/" />
-    <meta name="original-source" content="/" />
-    <meta name="base-domain" content="" />
+    <meta name="syndication-source" content="https://cvdebug.com" />
+    <meta name="original-source" content="https://cvdebug.com" />
+    <meta name="base-domain" content="cvdebug.com" />
     <meta name="content-language" content="en" />
     <meta name="audience" content="job seekers, career professionals, HR professionals, recruiters" />
     <meta name="document-type" content="Web Application" />
@@ -216,8 +216,8 @@
     <meta name="copyright" content="CVDebug © 2024-2026" />
     <meta name="reply-to" content="support@cvdebug.com" />
     <meta name="owner" content="CVDebug" />
-    <meta name="url" content="/" />
-    <meta name="identifier-URL" content="/" />
+    <meta name="url" content="https://cvdebug.com" />
+    <meta name="identifier-URL" content="https://cvdebug.com" />
     <meta name="directory" content="submission" />
     <meta name="category" content="Business, Career Tools, Job Search, HR Technology" />
     <meta name="pagename" content="CVDebug - Free ATS Resume Scanner" />
@@ -289,7 +289,7 @@
         }
       ],
       "description": "Free ATS resume scanner used by 10,000+ job seekers to beat applicant tracking systems. Instantly check your ATS score (0-100%), see Robot View of what hiring bots extract, identify keyword gaps, and fix parsing errors. 98% of Fortune 500 companies use ATS. Get hired faster with CVDebug's 10-second resume analysis.",
-      "url": "",
+      "url": "https://cvdebug.com",
       "image": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
       "screenshot": "/og-image.png",
       "featureList": [
@@ -308,7 +308,7 @@
       "author": {
         "@type": "Organization",
         "name": "CVDebug",
-        "url": "",
+        "url": "https://cvdebug.com",
         "logo": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
         "sameAs": [
           "https://twitter.com/Aherme13"
@@ -326,7 +326,7 @@
         "@type": "UseAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": "",
+          "urlTemplate": "https://cvdebug.com",
           "actionPlatform": [
             "http://schema.org/DesktopWebPlatform",
             "http://schema.org/MobileWebPlatform"
@@ -344,7 +344,7 @@
       "name": "CVDebug",
       "alternateName": ["CV Debug", "CVDebug ATS Scanner", "CVDebug Inc"],
       "legalName": "CVDebug Inc.",
-      "url": "",
+      "url": "https://cvdebug.com",
       "logo": {
         "@type": "ImageObject",
         "url": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
@@ -628,7 +628,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": ""
+          "item": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
@@ -664,7 +664,7 @@
           "position": 1,
           "name": "ATS Resume Scanner",
           "description": "Free ATS resume scanner and checker",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "SiteNavigationElement",
@@ -713,7 +713,7 @@
       "areaServed": "Worldwide",
       "availableChannel": {
         "@type": "ServiceChannel",
-        "serviceUrl": ""
+        "serviceUrl": "https://cvdebug.com"
       },
       "audience": {
         "@type": "Audience",
@@ -770,7 +770,7 @@
           "price": "0",
           "priceCurrency": "EUR",
           "availability": "https://schema.org/InStock",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "Offer",
@@ -880,7 +880,7 @@
           "position": 1,
           "name": "Upload Your Resume to Free ATS Scanner",
           "text": "Visit CVDebug.com and upload your resume in PDF format to the free ATS scanner. The scanner accepts .pdf files up to 2MB and analyzes them instantly. No signup required for basic scan. Works with all resume formats including single-column, two-column, and modern designs.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -901,7 +901,7 @@
           "position": 2,
           "name": "Review Your ATS Compatibility Score (0-100%)",
           "text": "Check your ATS compatibility score on a scale of 0-100%. Scores above 80% are excellent and pass most ATS systems including Workday, Taleo, Greenhouse, iCIMS. Scores 60-79% need optimization. Below 60% means your resume is likely being rejected before human review. The Robot View shows exactly what ATS parsing extracts from your resume - text, formatting, sections, and contact info.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -922,7 +922,7 @@
           "position": 3,
           "name": "Analyze Missing Keywords and Skill Gaps",
           "text": "Use CVDebug's Keyword Gap Analysis to compare your resume against target job descriptions. The tool identifies high-value keywords you're missing, shows keyword frequency, and suggests where to naturally incorporate them. Focus on hard skills (technical abilities, certifications, tools) and relevant action verbs. For tech roles, include programming languages and frameworks. For nursing, include certifications like RN, BSN, ACLS. For finance, include software like Bloomberg Terminal, Excel modeling.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -947,7 +947,7 @@
           "position": 4,
           "name": "Fix ATS Formatting and Parsing Errors",
           "text": "Address formatting errors that block ATS parsing: remove tables and text boxes (ATS can't read them), eliminate headers/footers, use standard section headings like 'Work Experience' and 'Education' (not creative names), avoid graphics and images, use simple fonts (Arial, Calibri, Times New Roman), save as PDF not Word doc, remove columns if text is jumbled in Robot View. CVDebug flags all these issues automatically.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -976,7 +976,7 @@
           "position": 5,
           "name": "Re-scan and Verify Improvements",
           "text": "After making changes, upload your optimized resume again to CVDebug's free ATS scanner to verify improvements. Your ATS score should increase significantly (typically from 60% to 85%+). Compare the new Robot View with the original to confirm formatting is now parsed correctly. Check that all missing keywords are now detected. Most users see 20-30 point score improvements after fixing major issues.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -1001,7 +1001,7 @@
           "position": 6,
           "name": "Customize for Each Job Application",
           "text": "For best results, customize your resume for each specific job application. Use CVDebug's Keyword Sniper tool to compare your resume against each new job description. Add role-specific keywords, adjust your summary to match the job title, and reorder experience bullets to highlight most relevant achievements. ATS systems score resumes higher when they closely match the job posting. Aim for 80%+ keyword match rate.",
-          "url": "",
+          "url": "https://cvdebug.com",
           "itemListElement": [
             {
               "@type": "HowToDirection",
@@ -1054,7 +1054,7 @@
       },
       "softwareVersion": "2.0",
       "releaseNotes": "Enhanced Robot View technology with 99% parsing accuracy, AI-powered keyword suggestions, real-time ATS simulation for Workday/Taleo/Greenhouse, industry-specific optimization (nursing, tech, finance), unlimited scans for premium users",
-      "downloadUrl": "",
+      "downloadUrl": "https://cvdebug.com",
       "softwareRequirements": "Modern web browser with JavaScript enabled (Chrome, Firefox, Safari, Edge)",
       "memoryRequirements": "None - runs entirely in browser",
       "storageRequirements": "None - no installation required",
@@ -1071,8 +1071,8 @@
       "name": "CVDebug - Free ATS Resume Scanner",
       "description": "Professional ATS resume scanning service helping Spanish job seekers optimize resumes for applicant tracking systems. Free instant analysis with Robot View technology trusted by 10,000+ users.",
       "image": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
-      "@id": "",
-      "url": "",
+      "@id": "https://cvdebug.com",
+      "url": "https://cvdebug.com",
       "telephone": "",
       "priceRange": "€0-€20",
       "address": {
@@ -1147,7 +1147,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "url": "",
+      "url": "https://cvdebug.com",
       "name": "CVDebug",
       "alternateName": "CV Debug ATS Scanner",
       "potentialAction": {
@@ -1171,7 +1171,7 @@
       "provider": {
         "@type": "Organization",
         "name": "CVDebug",
-        "sameAs": ""
+        "sameAs": "https://cvdebug.com"
       },
       "hasCourseInstance": {
         "@type": "CourseInstance",
@@ -1240,49 +1240,49 @@
           "position": 1,
           "name": "Robot View Technology with 99% Parsing Accuracy",
           "description": "Proprietary Robot View shows exactly what ATS systems (Workday, Taleo, Greenhouse, iCIMS, Lever) extract from your resume. See parsed text, formatting, sections, and contact info in real-time.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Keyword Gap Analysis & Sniper Tool",
           "description": "AI-powered keyword analysis compares your resume to target job descriptions, identifies missing high-value keywords, and shows frequency counts. Increase keyword match rate to 80%+ for better ATS scoring.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "ATS Compatibility Score (0-100%)",
           "description": "Instant ATS compatibility scoring on 0-100% scale. Scores 80%+ pass most ATS systems. Get detailed breakdown of what's working and what's blocking your resume from reaching recruiters.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "Formatting Error Detection & Fixes",
           "description": "Automatically detects ATS-blocking formatting issues: tables, text boxes, headers/footers, incompatible fonts, graphics, complex layouts. Provides specific fixes to increase parsing accuracy.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 5,
           "name": "Industry-Specific ATS Scanners (Nursing, Tech, Finance)",
           "description": "Specialized ATS optimization for Nursing (RN, BSN, ACLS certifications), Software Engineering (JavaScript, Python, React), Finance (CFA, Bloomberg Terminal, Excel modeling). Role-specific keyword databases.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 6,
           "name": "AI-Powered Resume Suggestions",
           "description": "Context-aware AI analyzes your experience level (student, mid-level, senior) and provides tailored bullet point improvements, keyword injection strategies, and achievement quantification using Google XYZ formula.",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "ListItem",
           "position": 7,
           "name": "Real-Time Preview",
           "description": "See changes reflected instantly",
-          "url": ""
+          "url": "https://cvdebug.com"
         }
       ]
     }
@@ -1311,7 +1311,7 @@
             "@type": "Place",
             "name": "Worldwide"
           },
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "Offer",
@@ -1374,7 +1374,7 @@
       "organizer": {
         "@type": "Organization",
         "name": "CVDebug",
-        "url": ""
+        "url": "https://cvdebug.com"
       },
       "offers": {
         "@type": "Offer",
@@ -1441,11 +1441,11 @@
       "publisher": {
         "@type": "Organization",
         "name": "CVDebug",
-        "url": ""
+        "url": "https://cvdebug.com"
       },
       "announcementLocation": {
         "@type": "VirtualLocation",
-        "url": ""
+        "url": "https://cvdebug.com"
       }
     }
     </script>
@@ -1497,7 +1497,7 @@
       "description": "CVDebug is a free web-based ATS resume scanner that helps job seekers optimize their resumes for Applicant Tracking Systems. The tool provides instant analysis showing how ATS robots parse resumes, identifies formatting errors, detects missing keywords, and provides actionable recommendations to increase interview rates.",
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "Resume Optimization and Career Tools",
-      "url": "",
+      "url": "https://cvdebug.com",
       "featureList": [
         "Robot View: Visualizes exactly how ATS systems parse and extract text from resumes with 99% accuracy",
         "ATS Score: Provides 0-100% compatibility score indicating likelihood of passing ATS screening (80%+ is excellent)",
@@ -1748,7 +1748,7 @@
           }
         ]
       },
-      "mainEntityOfPage": "",
+      "mainEntityOfPage": "https://cvdebug.com",
       "inLanguage": ["en", "es"],
       "availableLanguage": ["English", "Spanish"],
       "operatingSystem": "Web-based (works on Windows, Mac, Linux, iOS, Android)",
@@ -1766,7 +1766,7 @@
       "provider": {
         "@type": "Organization",
         "name": "CVDebug Inc.",
-        "url": "",
+        "url": "https://cvdebug.com",
         "logo": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
         "foundingDate": "2024",
         "foundingLocation": {
@@ -1920,7 +1920,7 @@
       "text": "CVDebug achieves 99% parsing accuracy in replicating how major ATS systems (Workday, Taleo, Greenhouse, iCIMS, Lever) extract and interpret resume data",
       "appearance": {
         "@type": "WebPage",
-        "url": "",
+        "url": "https://cvdebug.com",
         "datePublished": "2024-01-01"
       },
       "claimReview": [
@@ -1997,6 +1997,8 @@
     <script>
       // Check if current domain is resumeatsoptimizer.vly.site
       if (window.location.hostname === 'resumeatsoptimizer.vly.site') {
+        // Redirect to cvdebug.com while preserving the path and query parameters
+        window.location.replace('https://cvdebug.com' + window.location.pathname + window.location.search + window.location.hash);
       }
     </script>
 
@@ -2023,16 +2025,16 @@
         "worstRating": "1"
       },
       "description": "Free ATS resume scanner with Robot View technology. Check your ATS score, see exactly what hiring bots see, and fix formatting errors in 10 seconds. Trusted by 10,000+ job seekers.",
-      "url": "",
+      "url": "https://cvdebug.com",
       "author": {
         "@type": "Organization",
         "name": "CVDebug",
-        "url": ""
+        "url": "https://cvdebug.com"
       },
       "provider": {
         "@type": "Organization",
         "name": "CVDebug Inc.",
-        "url": "",
+        "url": "https://cvdebug.com",
         "logo": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
         "sameAs": [
           "https://twitter.com/CVDebug",
@@ -2056,7 +2058,7 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "CVDebug",
-      "url": "",
+      "url": "https://cvdebug.com",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "/search?q={search_term_string}",
@@ -2083,7 +2085,7 @@
           "price": "0",
           "priceCurrency": "EUR",
           "availability": "https://schema.org/InStock",
-          "url": ""
+          "url": "https://cvdebug.com"
         },
         {
           "@type": "Offer",
@@ -2115,7 +2117,7 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "CVDebug",
-      "url": "",
+      "url": "https://cvdebug.com",
       "logo": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f",
       "description": "CVDebug is the #1 ATS resume scanner with Robot View technology, trusted by 10,000+ job seekers worldwide.",
       "contactPoint": {
@@ -2271,7 +2273,7 @@
         "worstRating": "1"
       },
       "description": "Professional ATS resume scanner with 99% parsing accuracy. Beat applicant tracking systems used by Fortune 500 companies.",
-      "downloadUrl": "",
+      "downloadUrl": "https://cvdebug.com",
       "featureList": "Robot View Technology, Keyword Analysis, ATS Score, Formatting Check, Industry-Specific Optimization",
       "screenshot": "/og-image.png",
       "softwareVersion": "3.0",
@@ -2469,7 +2471,7 @@
           "/html/head/meta[@name='description']/@content"
         ]
       },
-      "url": ""
+      "url": "https://cvdebug.com"
     }
     </script>
 
@@ -2615,8 +2617,8 @@
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "Resume Optimization Tool",
       "operatingSystem": "Web, Windows, Mac, Linux, iOS, Android",
-      "downloadUrl": "",
-      "installUrl": "",
+      "downloadUrl": "https://cvdebug.com",
+      "installUrl": "https://cvdebug.com",
       "softwareVersion": "2.0",
       "datePublished": "2024-01-01",
       "dateModified": "2026-01-18",
@@ -2785,7 +2787,7 @@
 
         <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e0e0e0;">
           <p style="text-align: center; color: #666;">
-            <strong>Contact:</strong> cvdebug@outlook.com | <strong>Website:</strong> <a href="/" style="color: #0066cc;">CVDebug</a>
+            <strong>Contact:</strong> cvdebug@outlook.com | <strong>Website:</strong> <a href="https://cvdebug.com" style="color: #0066cc;">cvdebug.com</a>
           </p>
           <p style="text-align: center; color: #999; font-size: 0.95rem; margin-top: 1rem;">
             Trusted by 10,000+ professionals worldwide | 4.8/5 rating (1,000+ reviews) | GDPR Compliant
@@ -2963,7 +2965,7 @@
 
         <section id="llm-contact">
           <h2>Contact & Links</h2>
-          <p><strong>Website:</strong> <a href="/" itemprop="url">CVDebug</a></p>
+          <p><strong>Website:</strong> <a href="https://cvdebug.com" itemprop="url">https://cvdebug.com</a></p>
           <p><strong>Email:</strong> cvdebug@outlook.com</p>
           <p><strong>Twitter/X:</strong> @Aherme13</p>
           <p><strong>Blog:</strong> /blog</p>
