@@ -4,6 +4,8 @@
  * Centralized metadata for consistent SEO across the application
  */
 
+import { BASE_URL, SITE_CONFIG } from './config';
+
 export interface PageMetadata {
   title: string;
   description: string;
@@ -15,8 +17,8 @@ export interface PageMetadata {
 
 export const SEO_CONFIG = {
   siteName: "CVDebug",
-  siteUrl: "https://cvdebug.com",
-  defaultOgImage: "https://cvdebug.com/og-image.png",
+  siteUrl: BASE_URL,
+  defaultOgImage: SITE_CONFIG.defaultOgImage,
   twitterHandle: "@cvdebug",
   defaultKeywords: [
     "ATS resume checker",

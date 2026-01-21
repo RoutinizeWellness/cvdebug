@@ -3,6 +3,8 @@
  * This file defines the SEO strategy, internal linking, and sitemap generation
  */
 
+import { BASE_URL } from '../lib/config';
+
 export interface SEOPage {
   url: string;
   title: string;
@@ -160,7 +162,7 @@ export const seoPages: Record<string, SEOPage> = {
  * Generate XML sitemap
  */
 export const generateSitemap = (): string => {
-  const baseUrl = "https://cvdebug.com";
+  const baseUrl = BASE_URL;
   const today = new Date().toISOString().split('T')[0];
 
   const urls = Object.values(seoPages).map(page => `
