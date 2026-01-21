@@ -4,7 +4,7 @@ import { getPostBySlug, getAllPosts } from "@/data/blogPosts";
 import { Clock, Calendar, Tag, ArrowLeft, Share2, Twitter, Linkedin, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
