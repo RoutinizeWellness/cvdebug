@@ -1220,7 +1220,7 @@ Software Engineer | StartupXYZ
                                 🚨 CRITICAL: ATS AUTO-REJECT DETECTED
                               </h3>
 
-                              {!displayResume?.stats?.hasQuantifiableAchievements && (
+                              {!displayResume?.extractedData?.hasQuantifiableResults && (
                                 <div className="relative bg-black/60 border-4 border-[#EF4444] rounded-lg p-5 mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] animate-pulse">
                                   {/* Animated Corner Accent */}
                                   <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#EF4444] rounded-full animate-ping"></div>
@@ -1544,11 +1544,26 @@ Impact: AUTO_REJECT (100% rejection rate)
 
                       {/* SENIORITY MATCH - Critical Indicator (ML-Based) */}
                       {(() => {
-                        // Use ML-calculated seniority from backend (clientAnalysis.ts)
-                        const seniorityLevel = displayResume?.stats?.seniorityLevel || 'junior';
-                        const seniorityScore = displayResume?.stats?.seniorityScore || 0;
-                        const senioritySignals = displayResume?.stats?.senioritySignals || [];
-                        const years = displayResume?.stats?.experienceYears || 0;
+                        // Use ML-calculated seniority from backend extractedData
+                        const seniorityLevel = displayResume?.extractedData?.seniorityLevel || 'junior';
+                        const years = displayResume?.extractedData?.totalYearsExperience || 0;
+
+                        // Calculate seniority score based on years and extracted data
+                        let seniorityScore = 0;
+                        if (years >= 10) seniorityScore = 85;
+                        else if (years >= 7) seniorityScore = 70;
+                        else if (years >= 3) seniorityScore = 50;
+                        else seniorityScore = 25;
+
+                        // Detect seniority signals from extracted data
+                        const senioritySignals: string[] = [];
+                        if (years >= 7) senioritySignals.push(`${years} years experience`);
+                        if (displayResume?.extractedData?.currentRole?.toLowerCase().includes('senior')) senioritySignals.push('Senior title');
+                        if (displayResume?.extractedData?.currentRole?.toLowerCase().includes('lead')) senioritySignals.push('Leadership title');
+                        if (displayResume?.extractedData?.currentRole?.toLowerCase().includes('principal')) senioritySignals.push('Principal title');
+                        if ((displayResume?.extractedData?.companies?.length || 0) >= 3) senioritySignals.push(`${displayResume.extractedData.companies.length} companies`);
+                        if ((displayResume?.extractedData?.technicalSkills?.length || 0) >= 10) senioritySignals.push(`${displayResume.extractedData.technicalSkills.length} technical skills`);
+                        if (displayResume?.extractedData?.certifications && displayResume.extractedData.certifications.length > 0) senioritySignals.push('Professional certifications');
 
                         // Map seniority levels to display
                         const levelMap: Record<string, { label: string; color: string; bgColor: string; borderColor: string }> = {
@@ -1675,7 +1690,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                                           <span>Add leadership verbs (Led, Managed, Architected)</span>
                                         </div>
                                       )}
-                                      {!displayResume?.stats?.hasQuantifiableAchievements && (
+                                      {!displayResume?.extractedData?.hasQuantifiableResults && (
                                         <div className="flex items-center gap-2 text-xs text-[#64748B]">
                                           <span className="text-[#EF4444]">✗</span>
                                           <span>Add metrics showing scale (X users, $Y revenue)</span>
