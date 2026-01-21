@@ -266,7 +266,12 @@ function AnimatedRoutes() {
 // Hide SSR content when React loads
 document.body.classList.add('react-loaded');
 
-createRoot(document.getElementById("root")!).render(
+// Ensure we only mount once (prevent hot-reload duplication)
+const rootElement = document.getElementById("root")!;
+if (!rootElement.hasAttribute('data-react-mounted')) {
+  rootElement.setAttribute('data-react-mounted', 'true');
+  
+  createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>
       {/* <VlyToolbar /> */}
@@ -286,4 +291,5 @@ createRoot(document.getElementById("root")!).render(
       </InstrumentationProvider>
     </ErrorBoundary>
   </StrictMode>,
-);
+  );
+}
