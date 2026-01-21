@@ -69,13 +69,6 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
         price: "0",
         priceCurrency: "USD",
       },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.9",
-        ratingCount: "12847",
-        bestRating: "5",
-        worstRating: "1",
-      },
     },
   },
   pricing: {
