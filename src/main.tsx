@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
-import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
+// import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { InstrumentationProvider } from "@/instrumentation.tsx";
 import { ErrorBoundary } from "@/components/ErrorBoundary.tsx";
 import AuthPage from "@/pages/Auth.tsx";
@@ -269,7 +269,7 @@ document.body.classList.add('react-loaded');
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
-      <VlyToolbar />
+      {/* <VlyToolbar /> */}
       <InstrumentationProvider>
         <I18nProvider>
           <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>

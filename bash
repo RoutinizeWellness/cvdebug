@@ -1,1 +1,1 @@
-grep -r "ClerkProvider" src
+grep -r "ClerkProvider" .
