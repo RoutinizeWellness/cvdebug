@@ -176,21 +176,23 @@ function App() {
   );
 }
 
+const RootApp = () => (
+  <ErrorBoundary>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          <I18nProvider>
+            <BrowserRouter>
+              <App />
+              <Toaster />
+            </BrowserRouter>
+          </I18nProvider>
+        </ThemeProvider>
+      </ConvexProviderWithClerk>
+    </ClerkProvider>
+  </ErrorBoundary>
+);
+
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-        <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-            <I18nProvider>
-              <BrowserRouter>
-                <App />
-                <Toaster />
-              </BrowserRouter>
-            </I18nProvider>
-          </ThemeProvider>
-        </ConvexProviderWithClerk>
-      </ClerkProvider>
-    </ErrorBoundary>
-  </StrictMode>,
+  import.meta.env.DEV ? <RootApp /> : <StrictMode><RootApp /></StrictMode>
 );
