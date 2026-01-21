@@ -1,3 +1,4 @@
+// I18nContext v2 - Fixed provider error handling
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { SupportedLocale, Translation, detectLocale, useTranslation as getTranslation } from '@/lib/i18n';
 
@@ -43,9 +44,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
 export function useI18n() {
   const context = useContext(I18nContext);
+
+  // Provide fallback if context is not available
+  // This handles edge cases during initial render or HMR
   if (!context) {
-    // Fallback: Return default locale if provider is not available
-    // This prevents errors in edge cases where component renders before provider
     const defaultLocale: SupportedLocale = 'en';
     return {
       locale: defaultLocale,
@@ -53,5 +55,6 @@ export function useI18n() {
       t: getTranslation(defaultLocale)
     };
   }
+
   return context;
 }

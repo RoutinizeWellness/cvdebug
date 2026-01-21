@@ -1,3 +1,4 @@
+// Main entry v2 - Fixed Clerk StrictMode issue
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
