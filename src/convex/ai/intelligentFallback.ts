@@ -435,7 +435,8 @@ export function generateIntelligentFallback(
     ]
   } : undefined;
 
-  return {
+  // Trigger webhook notification for completed analysis
+  const analysisResult = {
     title: extractTitle(ocrText, category),
     category,
     score: overallScore,
@@ -451,6 +452,24 @@ export function generateIntelligentFallback(
     analysis,
     upgradeIncentive
   };
+
+  // Asynchronously trigger webhook (non-blocking)
+  // Determine severity based on score and issues
+  const severity: 'low' | 'medium' | 'high' | 'critical' =
+    overallScore < 40 ? 'critical' :
+    overallScore < 55 ? 'high' :
+    overallScore < 70 ? 'medium' : 'low';
+
+  // Note: Webhook triggering should be done from the calling function
+  // to avoid circular dependencies. This result includes metadata for webhook.
+  (analysisResult as any).webhookMetadata = {
+    severity,
+    analysisTime: Date.now(),
+    isPremium,
+    hasIssues: formatIssues.length > 0 || missingKeywords.length > 5
+  };
+
+  return analysisResult;
 }
 
 function generateMinimalResume(isPremium: boolean): AnalysisResult {

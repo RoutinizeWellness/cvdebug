@@ -311,6 +311,55 @@ export class MLAnalytics {
   }
 
   /**
+   * Check for anomalies and trigger webhooks if needed
+   * Returns anomalies that should trigger webhooks
+   */
+  detectAndPrepareWebhooks(window: number = 100): Array<{
+    type: 'high_latency' | 'low_score' | 'low_confidence' | 'error_spike';
+    severity: 'low' | 'medium' | 'high' | 'critical';
+    message: string;
+    affectedCount: number;
+    webhookData: any;
+  }> {
+    const anomalies = this.detectAnomalies(window);
+
+    // Convert anomalies to webhook-ready format
+    return anomalies.map(anomaly => {
+      // Upgrade severity for critical anomalies
+      const webhookSeverity: 'low' | 'medium' | 'high' | 'critical' =
+        anomaly.affectedCount > window * 0.3 ? 'critical' :
+        anomaly.affectedCount > window * 0.2 ? 'high' :
+        anomaly.severity as 'low' | 'medium' | 'high';
+
+      return {
+        ...anomaly,
+        severity: webhookSeverity,
+        webhookData: {
+          anomalyType: anomaly.type,
+          message: anomaly.message,
+          affectedCount: anomaly.affectedCount,
+          detectedAt: Date.now(),
+          window,
+          recommendation: this.getAnomalyRecommendation(anomaly.type)
+        }
+      };
+    });
+  }
+
+  /**
+   * Get recommendation for anomaly type
+   */
+  private getAnomalyRecommendation(type: string): string {
+    const recommendations: Record<string, string> = {
+      'high_latency': 'Check server resources and database query performance. Consider scaling infrastructure.',
+      'low_score': 'Review ML model accuracy. May need retraining or recalibration.',
+      'low_confidence': 'Model confidence is low. Consider collecting more training data or adjusting feature weights.',
+      'error_spike': 'Investigate error logs immediately. May indicate system degradation or bad data.'
+    };
+    return recommendations[type] || 'Monitor system closely and investigate further.';
+  }
+
+  /**
    * Export metrics for analysis
    */
   exportMetrics(format: 'json' | 'csv' = 'json'): string {

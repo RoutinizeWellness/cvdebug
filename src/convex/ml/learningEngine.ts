@@ -157,11 +157,16 @@ export function updateModelWeights(
   newWeights.lastUpdated = Date.now();
 
   // Version bump every 100 examples
-  if (newWeights.trainingExamples % 100 === 0) {
+  const shouldNotifyUpdate = newWeights.trainingExamples % 100 === 0;
+  if (shouldNotifyUpdate) {
     newWeights.version += 1;
+    console.log(`[Learning] 🎉 Model version bumped to ${newWeights.version} - Ready for webhook notification`);
   }
 
   console.log(`[Learning] Updated weights - Examples: ${newWeights.trainingExamples}, Version: ${newWeights.version}`);
+
+  // Mark if webhook should be triggered (checked by caller)
+  (newWeights as any).shouldNotifyWebhook = shouldNotifyUpdate;
 
   return newWeights;
 }
@@ -382,4 +387,44 @@ export function calculateAdaptiveLearningRate(
 
   // Clamp between min and max
   return Math.max(0.001, Math.min(0.05, adaptiveRate));
+}
+
+/**
+ * Prepare model update data for webhook notification
+ */
+export function prepareModelUpdateWebhook(weights: ModelWeights, accuracy?: number): {
+  modelVersion: number;
+  trainingExamples: number;
+  accuracy: number;
+  lastUpdated: number;
+  significantChanges: string[];
+  featureImportance: Array<{ feature: string; importance: number }>;
+} {
+  const featureImportance = analyzeFeatureImportance(weights);
+
+  // Identify significant changes (simplified - in production, compare with previous version)
+  const significantChanges: string[] = [];
+
+  if (weights.trainingExamples >= 1000) {
+    significantChanges.push('Model reached maturity milestone (1000+ examples)');
+  }
+
+  if (weights.version % 5 === 0) {
+    significantChanges.push('Major version milestone reached');
+  }
+
+  // Estimate accuracy if not provided
+  const estimatedAccuracy = accuracy || Math.min(95, 65 + (weights.trainingExamples / 100) * 2);
+
+  return {
+    modelVersion: weights.version,
+    trainingExamples: weights.trainingExamples,
+    accuracy: Math.round(estimatedAccuracy * 10) / 10,
+    lastUpdated: weights.lastUpdated,
+    significantChanges,
+    featureImportance: featureImportance.slice(0, 5).map(f => ({
+      feature: f.feature,
+      importance: Math.round(f.importance * 1000) / 1000
+    }))
+  };
 }
