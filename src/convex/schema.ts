@@ -1045,6 +1045,25 @@ const schema = defineSchema(
     .index("by_email", ["email"])
     .index("by_source", ["source"])
     .index("by_is_active", ["isActive"]),
+
+  // Webhooks - Real-time event notifications
+  webhooks: defineTable({
+    url: v.string(),
+    events: v.array(v.string()),
+    enabled: v.boolean(),
+    secret: v.optional(v.string()),
+    retryPolicy: v.object({
+      maxRetries: v.number(),
+      backoffMs: v.number()
+    }),
+    filters: v.optional(v.any()),
+    createdAt: v.number(),
+    lastTriggered: v.optional(v.number()),
+    successCount: v.number(),
+    failureCount: v.number()
+  })
+    .index("by_enabled", ["enabled"])
+    .index("by_created_at", ["createdAt"]),
   },
   {
     schemaValidation: false,

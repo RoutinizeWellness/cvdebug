@@ -140,6 +140,7 @@ import type * as userSettings from "../userSettings.js";
 import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
 import type * as webhooks from "../webhooks.js";
+import type * as webhooks_webhookSystem from "../webhooks/webhookSystem.js";
 
 import type {
   ApiFromModules,
@@ -280,6 +281,7 @@ declare const fullApi: ApiFromModules<{
   users: typeof users;
   waitlist: typeof waitlist;
   webhooks: typeof webhooks;
+  "webhooks/webhookSystem": typeof webhooks_webhookSystem;
 }>;
 
 /**
