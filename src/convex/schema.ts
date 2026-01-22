@@ -1136,6 +1136,51 @@ const schema = defineSchema(
     .index("by_severity", ["severity"])
     .index("by_resolved", ["resolved"])
     .index("by_category_and_severity", ["category", "severity"]),
+
+  // Recommendation Interaction Tracking
+  recommendationInteractions: defineTable({
+    userId: v.id("users"),
+    recommendationType: v.string(),
+    action: v.union(
+      v.literal("viewed"),
+      v.literal("clicked"),
+      v.literal("dismissed"),
+      v.literal("completed")
+    ),
+    metadata: v.any(),
+    timestamp: v.number(),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_type_and_action", ["recommendationType", "action"]),
+
+  // Smart Notifications
+  smartNotifications: defineTable({
+    userId: v.id("users"),
+    type: v.string(),
+    title: v.string(),
+    message: v.string(),
+    priority: v.union(
+      v.literal("low"),
+      v.literal("medium"),
+      v.literal("high"),
+      v.literal("urgent")
+    ),
+    metadata: v.any(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("scheduled"),
+      v.literal("delivered"),
+      v.literal("failed")
+    ),
+    scheduledFor: v.number(),
+    createdAt: v.number(),
+    read: v.boolean(),
+    readAt: v.optional(v.number()),
+  })
+    .index("by_user_and_created", ["userId", "createdAt"])
+    .index("by_status_and_scheduled", ["status", "scheduledFor"])
+    .index("by_priority", ["priority"]),
   },
   {
     schemaValidation: false,

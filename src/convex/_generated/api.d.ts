@@ -62,8 +62,10 @@ import type * as ai_mlLearning from "../ai/mlLearning.js";
 import type * as ai_multiLanguage_culturalAdaptation from "../ai/multiLanguage/culturalAdaptation.js";
 import type * as ai_multiLanguage_languageIntelligence from "../ai/multiLanguage/languageIntelligence.js";
 import type * as ai_performOcr from "../ai/performOcr.js";
+import type * as ai_predictiveAnalytics from "../ai/predictiveAnalytics.js";
 import type * as ai_prompts from "../ai/prompts.js";
 import type * as ai_qualityChecks from "../ai/qualityChecks.js";
+import type * as ai_recommendations from "../ai/recommendations.js";
 import type * as ai_references_referenceManager from "../ai/references/referenceManager.js";
 import type * as ai_references_referenceManagerData from "../ai/references/referenceManagerData.js";
 import type * as ai_resumeAnalysis from "../ai/resumeAnalysis.js";
@@ -83,6 +85,7 @@ import type * as ai_scoring_keywordScoring from "../ai/scoring/keywordScoring.js
 import type * as ai_scoring_semanticSimilarity from "../ai/scoring/semanticSimilarity.js";
 import type * as ai_serverOcr from "../ai/serverOcr.js";
 import type * as ai_skillsGapAnalyzer from "../ai/skillsGapAnalyzer.js";
+import type * as ai_smartNotifications from "../ai/smartNotifications.js";
 import type * as ai_socialIntegration_brandAnalyzer from "../ai/socialIntegration/brandAnalyzer.js";
 import type * as ai_socialIntegration_brandAnalyzerData from "../ai/socialIntegration/brandAnalyzerData.js";
 import type * as ai_specificRewriter from "../ai/specificRewriter.js";
@@ -214,8 +217,10 @@ declare const fullApi: ApiFromModules<{
   "ai/multiLanguage/culturalAdaptation": typeof ai_multiLanguage_culturalAdaptation;
   "ai/multiLanguage/languageIntelligence": typeof ai_multiLanguage_languageIntelligence;
   "ai/performOcr": typeof ai_performOcr;
+  "ai/predictiveAnalytics": typeof ai_predictiveAnalytics;
   "ai/prompts": typeof ai_prompts;
   "ai/qualityChecks": typeof ai_qualityChecks;
+  "ai/recommendations": typeof ai_recommendations;
   "ai/references/referenceManager": typeof ai_references_referenceManager;
   "ai/references/referenceManagerData": typeof ai_references_referenceManagerData;
   "ai/resumeAnalysis": typeof ai_resumeAnalysis;
@@ -235,6 +240,7 @@ declare const fullApi: ApiFromModules<{
   "ai/scoring/semanticSimilarity": typeof ai_scoring_semanticSimilarity;
   "ai/serverOcr": typeof ai_serverOcr;
   "ai/skillsGapAnalyzer": typeof ai_skillsGapAnalyzer;
+  "ai/smartNotifications": typeof ai_smartNotifications;
   "ai/socialIntegration/brandAnalyzer": typeof ai_socialIntegration_brandAnalyzer;
   "ai/socialIntegration/brandAnalyzerData": typeof ai_socialIntegration_brandAnalyzerData;
   "ai/specificRewriter": typeof ai_specificRewriter;
