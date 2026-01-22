@@ -54,7 +54,7 @@ export function SeniorityMatchAnalysis({
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-slate-900 border border-lilac-200 dark:border-slate-800 rounded-xl p-8 shadow-sm"
+        className="card-professional p-8"
       >
         <div className="flex items-center gap-2 mb-8">
           <Target className="text-primary text-xl" />
@@ -120,7 +120,7 @@ export function SeniorityMatchAnalysis({
             </p>
             <div className="space-y-1">
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-bold tracking-tight text-lilac-600 dark:text-lilac-300">
+                <p className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
                   {signalsDetected}
                 </p>
                 <span className="text-xs font-medium text-slate-400">signals detected</span>
@@ -153,7 +153,7 @@ export function SeniorityMatchAnalysis({
               {detectedSignals.map((signal, idx) => (
                 <span
                   key={idx}
-                  className="text-xs bg-lilac-50 dark:bg-lilac-900/20 text-lilac-600 dark:text-lilac-300 px-3 py-1.5 rounded-full font-medium border border-lilac-100 dark:border-lilac-800"
+                  className="badge-professional-blue px-3 py-1.5 rounded-full"
                 >
                   ✓ {signal}
                 </span>
@@ -170,7 +170,7 @@ export function SeniorityMatchAnalysis({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between h-40"
+          className="card-professional p-6 flex flex-col justify-between h-40"
         >
           <div className="flex justify-between items-start">
             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
@@ -193,7 +193,7 @@ export function SeniorityMatchAnalysis({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between h-40"
+          className="card-professional p-6 flex flex-col justify-between h-40"
         >
           <div className="flex justify-between items-start">
             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
@@ -216,7 +216,7 @@ export function SeniorityMatchAnalysis({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex flex-col justify-between h-40 relative overflow-hidden"
+          className="card-professional p-6 flex flex-col justify-between h-40 relative overflow-hidden"
         >
           <div className="flex justify-between items-start z-10">
             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
@@ -255,8 +255,8 @@ export function SeniorityMatchAnalysis({
                 />
                 <defs>
                   <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-                    <stop offset="0%" stopColor="#818cf8" />
-                    <stop offset="100%" stopColor="#4F46E5" />
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="100%" stopColor="#22C55E" />
                   </linearGradient>
                 </defs>
               </svg>
