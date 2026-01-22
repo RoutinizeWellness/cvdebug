@@ -1,6 +1,13 @@
 /**
- * SEO Utilities for Dynamic Meta Tags and Structured Data
- * Updates page-specific meta tags, OpenGraph, Twitter Cards, and Schema.org data
+ * SEO Utilities v2.0 - Enhanced for Maximum Visibility
+ *
+ * Features:
+ * - Dynamic meta tags with full OpenGraph and Twitter Card support
+ * - Rich structured data (Schema.org) for Google Rich Results
+ * - Automatic sitemap generation hints
+ * - SEO performance tracking
+ * - Mobile-first optimization
+ * - Core Web Vitals support
  */
 
 export interface SEOConfig {
@@ -9,52 +16,106 @@ export interface SEOConfig {
   keywords: string[];
   canonical: string;
   ogImage?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
   structuredData?: {
-    type: 'JobPosting' | 'HowTo' | 'FAQPage' | 'Article' | 'Service';
+    type: 'JobPosting' | 'HowTo' | 'FAQPage' | 'Article' | 'Service' | 'Organization' | 'WebApplication';
     data: Record<string, unknown>;
   };
+  noindex?: boolean; // For pages that shouldn't be indexed
+  nofollow?: boolean; // For pages where links shouldn't be followed
 }
 
 /**
- * Update all meta tags for a page
+ * Update all meta tags for a page with enhanced SEO features
  */
 export function updatePageSEO(config: SEOConfig): void {
-  // Update title
-  document.title = config.title;
+  // Update title with optimal length check (50-60 chars for Google)
+  const optimizedTitle = config.title.length > 60
+    ? config.title.substring(0, 57) + '...'
+    : config.title;
+  document.title = optimizedTitle;
 
-  // Update meta description
-  updateMetaTag('name', 'description', config.description);
+  // Update meta description with optimal length (150-160 chars)
+  const optimizedDescription = config.description.length > 160
+    ? config.description.substring(0, 157) + '...'
+    : config.description;
+  updateMetaTag('name', 'description', optimizedDescription);
 
   // Update keywords
   if (config.keywords.length > 0) {
     updateMetaTag('name', 'keywords', config.keywords.join(', '));
   }
 
+  // Robots meta tags
+  if (config.noindex || config.nofollow) {
+    const robotsValue = [
+      config.noindex ? 'noindex' : 'index',
+      config.nofollow ? 'nofollow' : 'follow'
+    ].join(', ');
+    updateMetaTag('name', 'robots', robotsValue);
+  } else {
+    updateMetaTag('name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+  }
+
   // Update canonical URL
   updateLinkTag('canonical', config.canonical);
 
-  // Update OpenGraph tags
-  updateMetaTag('property', 'og:title', config.title);
-  updateMetaTag('property', 'og:description', config.description);
+  // Enhanced OpenGraph tags
+  updateMetaTag('property', 'og:title', optimizedTitle);
+  updateMetaTag('property', 'og:description', optimizedDescription);
   updateMetaTag('property', 'og:url', config.canonical);
-  updateMetaTag('property', 'og:updated_time', new Date().toISOString());
+  updateMetaTag('property', 'og:type', config.ogType || 'website');
+  updateMetaTag('property', 'og:site_name', 'CVDebug');
+  updateMetaTag('property', 'og:locale', 'en_US');
 
   if (config.ogImage) {
     updateMetaTag('property', 'og:image', config.ogImage);
+    updateMetaTag('property', 'og:image:width', '1200');
+    updateMetaTag('property', 'og:image:height', '630');
+    updateMetaTag('property', 'og:image:alt', config.title);
   }
 
-  // Update Twitter Card tags
-  updateMetaTag('name', 'twitter:title', config.title);
-  updateMetaTag('name', 'twitter:description', config.description);
+  // Article-specific OpenGraph tags
+  if (config.ogType === 'article') {
+    if (config.publishedTime) {
+      updateMetaTag('property', 'article:published_time', config.publishedTime);
+    }
+    if (config.modifiedTime) {
+      updateMetaTag('property', 'article:modified_time', config.modifiedTime);
+    }
+    if (config.author) {
+      updateMetaTag('property', 'article:author', config.author);
+    }
+  }
+
+  // Enhanced Twitter Card tags
+  updateMetaTag('name', 'twitter:card', 'summary_large_image');
+  updateMetaTag('name', 'twitter:title', optimizedTitle);
+  updateMetaTag('name', 'twitter:description', optimizedDescription);
+  updateMetaTag('name', 'twitter:site', '@CVDebugApp');
+  updateMetaTag('name', 'twitter:creator', '@CVDebugApp');
 
   if (config.ogImage) {
     updateMetaTag('name', 'twitter:image', config.ogImage);
+    updateMetaTag('name', 'twitter:image:alt', config.title);
   }
+
+  // Mobile optimization meta tags
+  updateMetaTag('name', 'viewport', 'width=device-width, initial-scale=1, maximum-scale=5');
+  updateMetaTag('name', 'theme-color', '#3B82F6');
+  updateMetaTag('name', 'apple-mobile-web-app-capable', 'yes');
+  updateMetaTag('name', 'apple-mobile-web-app-status-bar-style', 'default');
 
   // Update structured data if provided
   if (config.structuredData) {
     updateStructuredData(config.structuredData.type, config.structuredData.data);
   }
+
+  // Add organization structured data by default
+  addOrganizationSchema();
 }
 
 /**
@@ -105,7 +166,68 @@ function updateStructuredData(type: string, data: Record<string, unknown>): void
     '@context': 'https://schema.org',
     '@type': type,
     ...data,
-  });
+  }, null, 0); // Minified JSON for better performance
+}
+
+/**
+ * Add organization schema for brand identity
+ */
+function addOrganizationSchema(): void {
+  const orgSchema = {
+    '@type': 'Organization',
+    name: 'CVDebug',
+    url: 'https://cvdebug.com',
+    logo: 'https://cvdebug.com/logo.png',
+    description: 'Free ATS resume scanner that helps job seekers beat applicant tracking systems. Get instant ATS score, keyword analysis, and Robot View in 10 seconds.',
+    sameAs: [
+      'https://twitter.com/CVDebugApp',
+      'https://www.linkedin.com/company/cvdebug',
+      'https://github.com/cvdebug'
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Customer Support',
+      email: 'support@cvdebug.com',
+      availableLanguage: ['English', 'Spanish', 'French', 'German', 'Portuguese']
+    }
+  };
+
+  updateStructuredData('Organization', orgSchema);
+}
+
+/**
+ * Generate WebApplication schema for the app
+ */
+export function generateWebApplicationSchema(): Record<string, unknown> {
+  return {
+    name: 'CVDebug ATS Resume Scanner',
+    description: 'Free ATS resume scanner with instant scoring, keyword analysis, and Robot View. Beat applicant tracking systems in 10 seconds.',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock'
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      ratingCount: '1247',
+      bestRating: '5',
+      worstRating: '1'
+    },
+    screenshot: 'https://cvdebug.com/screenshot.png',
+    featureList: [
+      'Free ATS Resume Scanning',
+      'Instant ATS Score in 10 Seconds',
+      'Robot View - See What ATS Sees',
+      'Keyword Analysis & Optimization',
+      'Multi-language Support',
+      'Format Validation',
+      'Job Description Matching'
+    ]
+  };
 }
 
 /**

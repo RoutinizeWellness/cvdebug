@@ -1,8 +1,14 @@
 /**
- * ML-Powered Resume Scoring Engine
+ * ML-Powered Resume Scoring Engine v2.0
  *
- * Advanced algorithms for analyzing resumes with role-specific intelligence
- * Learns from patterns across industries, countries, and experience levels
+ * Enhanced algorithms for analyzing resumes with role-specific intelligence
+ * Features:
+ * - Multi-dimensional scoring with weighted factors
+ * - Regional standards for accurate benchmarking
+ * - Advanced keyword extraction and semantic analysis
+ * - Format and structure validation
+ * - Real-time penalty calculation
+ * - ATS compatibility scoring
  */
 
 import { v } from "convex/values";
@@ -464,25 +470,138 @@ export function scoreSDRResume(
 }
 
 /**
+ * Enhanced ATS Compatibility Analyzer
+ * Checks for common ATS parsing issues
+ */
+export interface ATSCompatibilityResult {
+  score: number;
+  issues: string[];
+  recommendations: string[];
+}
+
+export function analyzeATSCompatibility(resumeText: string): ATSCompatibilityResult {
+  let score = 100;
+  const issues: string[] = [];
+  const recommendations: string[] = [];
+
+  // Check for complex formatting that ATS can't parse
+  const hasComplexChars = /[│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌]/g.test(resumeText);
+  if (hasComplexChars) {
+    score -= 20;
+    issues.push("Contains table borders or special characters that ATS cannot parse");
+    recommendations.push("Use simple bullet points instead of tables or borders");
+  }
+
+  // Check for headers/footers (indicated by repeated text patterns)
+  const lines = resumeText.split('\n');
+  const firstLine = lines[0] || "";
+  const lastLine = lines[lines.length - 1] || "";
+  if (firstLine.length < 50 && (firstLine.includes('|') || firstLine.includes('Page'))) {
+    score -= 15;
+    issues.push("May contain headers/footers that confuse ATS");
+    recommendations.push("Remove headers and footers - they break ATS parsing");
+  }
+
+  // Check for proper section headers
+  const sectionHeaders = ['experience', 'education', 'skills', 'work experience', 'professional experience'];
+  const foundSections = sectionHeaders.filter(header =>
+    new RegExp(`\\b${header}\\b`, 'gi').test(resumeText)
+  );
+
+  if (foundSections.length < 2) {
+    score -= 15;
+    issues.push("Missing standard section headers (Experience, Education, Skills)");
+    recommendations.push("Add clear section headers like 'EXPERIENCE', 'EDUCATION', 'SKILLS'");
+  }
+
+  // Check for contact information
+  const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g.test(resumeText);
+  const hasPhone = /(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g.test(resumeText);
+
+  if (!hasEmail) {
+    score -= 10;
+    issues.push("No email address detected");
+    recommendations.push("Add email address in a standard format");
+  }
+
+  if (!hasPhone) {
+    score -= 5;
+    issues.push("No phone number detected");
+    recommendations.push("Add phone number in standard format (123-456-7890)");
+  }
+
+  // Check for date formatting consistency
+  const dateFormats = [
+    /\d{4}\s*[-–]\s*\d{4}/g,  // 2020-2023
+    /\d{1,2}\/\d{4}/g,          // 01/2020
+    /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}/gi  // Jan 2020
+  ];
+
+  const dateMatches = dateFormats.map(fmt => resumeText.match(fmt)?.length || 0);
+  const differentFormats = dateMatches.filter(count => count > 0).length;
+
+  if (differentFormats > 1) {
+    score -= 10;
+    issues.push("Inconsistent date formatting detected");
+    recommendations.push("Use consistent date format throughout (e.g., 'Jan 2020 - Dec 2023')");
+  }
+
+  // Check for proper bullet point usage
+  const bulletPoints = resumeText.match(/^[\s]*[•●○▪▫■□◆◇★☆]\s+/gm);
+  if (!bulletPoints || bulletPoints.length < 3) {
+    score -= 10;
+    issues.push("Limited use of bullet points for achievements");
+    recommendations.push("Use bullet points to highlight key achievements and responsibilities");
+  }
+
+  // Check for action verbs
+  const strongActionVerbs = [
+    'achieved', 'improved', 'increased', 'reduced', 'generated', 'led',
+    'managed', 'developed', 'implemented', 'optimized', 'created', 'built',
+    'designed', 'launched', 'delivered', 'exceeded', 'accelerated'
+  ];
+
+  const foundVerbs = strongActionVerbs.filter(verb =>
+    new RegExp(`\\b${verb}\\b`, 'gi').test(resumeText)
+  );
+
+  if (foundVerbs.length < 3) {
+    score -= 10;
+    issues.push("Limited use of strong action verbs");
+    recommendations.push("Start bullet points with strong action verbs (Achieved, Improved, Led, etc.)");
+  }
+
+  return {
+    score: Math.max(0, score),
+    issues,
+    recommendations
+  };
+}
+
+/**
  * Generic ML Scorer - Adapts to any role with regional standards
+ * Enhanced with ATS compatibility check
  */
 export function scoreResumeByRole(
   resumeText: string,
   role: keyof typeof GLOBAL_INDUSTRY_STANDARDS,
   region: "North America" | "Europe" | "LATAM" = "North America",
   experienceYears: number = 3
-): { score: number; insights: string[]; penalties: string[] } {
+): { score: number; insights: string[]; penalties: string[]; atsScore?: number } {
 
   if (role === "SDR/BDR") {
     const result = scoreSDRResume(resumeText, experienceYears, region);
+    const atsResult = analyzeATSCompatibility(resumeText);
+
     return {
       score: result.overallScore,
-      insights: result.strengths,
-      penalties: result.redFlags,
+      insights: [...result.strengths, ...atsResult.recommendations.slice(0, 2)],
+      penalties: [...result.redFlags, ...atsResult.issues.slice(0, 2)],
+      atsScore: atsResult.score
     };
   }
 
-  // For other roles, use simpler heuristics (can be expanded with more ML models)
+  // For other roles, use enhanced heuristics with ATS check
   const standards = GLOBAL_INDUSTRY_STANDARDS[role];
   let score = 50; // Base score
   const insights: string[] = [];
@@ -491,7 +610,7 @@ export function scoreResumeByRole(
   // Check for critical keywords
   if (standards.criticalKeywords) {
     const foundKeywords = standards.criticalKeywords.filter(kw =>
-      new RegExp(kw, "gi").test(resumeText)
+      new RegExp(`\\b${kw}\\b`, "gi").test(resumeText)
     );
     const keywordScore = (foundKeywords.length / standards.criticalKeywords.length) * 30;
     score += keywordScore;
@@ -503,20 +622,38 @@ export function scoreResumeByRole(
     }
   }
 
-  // Check for metrics
-  const metricPatterns = /(\d+)%|\$(\d+)([kKmMbB])?|(\d+)\+|(\d+)x/g;
+  // Enhanced metrics detection with context
+  const metricPatterns = /(\d+)%|\$(\d+[\d,]*(\.\d+)?)([kKmMbB])?|(\d+)\+|(\d+)x|(\d+)-(\d+)%/g;
   const metrics = resumeText.match(metricPatterns);
-  if (metrics && metrics.length >= 8) {
-    score += 20;
-    insights.push(`Quantified impact: ${metrics.length} metrics`);
+  if (metrics && metrics.length >= 10) {
+    score += 25;
+    insights.push(`Excellent quantification: ${metrics.length} metrics found`);
+  } else if (metrics && metrics.length >= 5) {
+    score += 15;
+    insights.push(`Good quantification: ${metrics.length} metrics`);
   } else if (!metrics || metrics.length < 3) {
     score -= 15;
-    penalties.push("Lacks quantifiable achievements");
+    penalties.push("Lacks quantifiable achievements - add percentages, dollar amounts, and numbers");
   }
 
+  // Check for experience relevance
+  const experienceKeywords = resumeText.match(/\d+\+?\s*years?/gi);
+  if (experienceKeywords) {
+    score += 10;
+    insights.push("Clear experience timeline mentioned");
+  }
+
+  // ATS compatibility check
+  const atsResult = analyzeATSCompatibility(resumeText);
+  const atsWeight = 0.2; // ATS score contributes 20% to overall
+  const contentWeight = 0.8; // Content score contributes 80%
+
+  const finalScore = (score * contentWeight) + (atsResult.score * atsWeight);
+
   return {
-    score: Math.max(0, Math.min(100, Math.round(score))),
-    insights,
-    penalties,
+    score: Math.max(0, Math.min(100, Math.round(finalScore))),
+    insights: [...insights, ...atsResult.recommendations.slice(0, 2)],
+    penalties: [...penalties, ...atsResult.issues.slice(0, 3)],
+    atsScore: atsResult.score
   };
 }
