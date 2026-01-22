@@ -109,7 +109,7 @@ export function NewNavbar() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex items-center gap-3"
           >
-            <div className="hidden lg:block">
+            <div className="hidden sm:block">
               <LanguageSelector />
             </div>
 
