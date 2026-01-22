@@ -65,6 +65,7 @@ export const getWaitlist = query({
       throw new Error("Unauthorized");
     }
 
-    return await ctx.db.query("waitlist").order("desc").collect();
+    // OPTIMIZED: Limit results to prevent memory issues on large datasets
+    return await ctx.db.query("waitlist").order("desc").take(1000);
   },
 });

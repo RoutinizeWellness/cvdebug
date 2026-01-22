@@ -77,9 +77,10 @@ export const unsubscribe = mutation({
 export const getSubscriberCount = query({
   args: {},
   handler: async (ctx) => {
+    // OPTIMIZED: Use index instead of filter
     const subscribers = await ctx.db
       .query("newsletterSubscribers")
-      .filter(q => q.eq(q.field("isActive"), true))
+      .withIndex("by_is_active", (q) => q.eq("isActive", true))
       .collect();
 
     return {

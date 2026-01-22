@@ -2,7 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Card } from "@/components/ui/card";
 import { Activity, Zap, TrendingUp, Database, Clock } from "lucide-react";
-import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { SimpleTrendChart } from "./SimpleTrendChart";
 
 export function MLPerformanceDashboard() {
   const metrics = useQuery(api.ml.mlMetrics.getMetricsSummary, { timeWindowHours: 24 });
@@ -104,49 +104,7 @@ export function MLPerformanceDashboard() {
           </p>
         </div>
 
-        {cachePerformance.trendData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={cachePerformance.trendData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
-              <XAxis
-                dataKey="hour"
-                stroke="#64748B"
-                tickFormatter={(hour) => {
-                  const date = new Date(hour * 60 * 60 * 1000);
-                  return `${date.getHours()}:00`;
-                }}
-              />
-              <YAxis stroke="#64748B" domain={[0, 100]} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "8px",
-                }}
-                labelFormatter={(hour) => {
-                  const date = new Date(hour * 60 * 60 * 1000);
-                  return `${date.toLocaleString()}`;
-                }}
-                formatter={(value: number, name: string) => {
-                  if (name === "hitRate") return [`${value.toFixed(1)}%`, "Hit Rate"];
-                  return [value, name];
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="hitRate"
-                stroke="#10B981"
-                strokeWidth={2}
-                dot={{ fill: "#10B981", r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="h-[300px] flex items-center justify-center text-slate-500">
-            No cache performance data available yet
-          </div>
-        )}
+        <SimpleTrendChart data={cachePerformance.trendData} height={300} />
       </Card>
 
       {/* Performance Insights */}
