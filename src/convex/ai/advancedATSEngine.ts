@@ -219,8 +219,8 @@ export function analyzeKeywordSaturation(
       weight: inJobDesc ? kwDef.weight + 2 : kwDef.weight, // Boost weight if in job desc
       matched: isMatched,
       frequency,
-      sections: [], // TODO: Add section detection
-      context: '', // TODO: Extract surrounding context
+      sections: detectKeywordSections(resumeText, keyword),
+      context: extractKeywordContext(resumeText, keyword),
       relatedSkillsFound,
     };
 
@@ -760,3 +760,72 @@ export const runAdvancedATSAnalysis = internalMutation({
     };
   },
 });
+
+// ==================== HELPER FUNCTIONS ====================
+
+/**
+ * Detect which sections contain the keyword
+ */
+function detectKeywordSections(resumeText: string, keyword: string): string[] {
+  const sections: string[] = [];
+  const lowerText = resumeText.toLowerCase();
+  const lowerKeyword = keyword.toLowerCase();
+
+  // Common resume sections
+  const sectionPatterns = [
+    { name: 'Experience', patterns: ['experience', 'employment', 'work history'] },
+    { name: 'Skills', patterns: ['skills', 'technical skills', 'competencies'] },
+    { name: 'Education', patterns: ['education', 'academic', 'qualifications'] },
+    { name: 'Projects', patterns: ['projects', 'portfolio'] },
+    { name: 'Certifications', patterns: ['certifications', 'certificates', 'licenses'] },
+  ];
+
+  for (const section of sectionPatterns) {
+    for (const pattern of section.patterns) {
+      const sectionIndex = lowerText.indexOf(pattern);
+      const keywordIndex = lowerText.indexOf(lowerKeyword);
+
+      if (sectionIndex !== -1 && keywordIndex !== -1 && keywordIndex > sectionIndex) {
+        // Check if keyword is within 500 characters after section start
+        if (keywordIndex - sectionIndex < 500) {
+          sections.push(section.name);
+          break;
+        }
+      }
+    }
+  }
+
+  return sections.length > 0 ? sections : ['Body'];
+}
+
+/**
+ * Extract context around keyword (30 words before and after)
+ */
+function extractKeywordContext(resumeText: string, keyword: string): string {
+  const lowerText = resumeText.toLowerCase();
+  const lowerKeyword = keyword.toLowerCase();
+  const keywordIndex = lowerText.indexOf(lowerKeyword);
+
+  if (keywordIndex === -1) return '';
+
+  // Get words around the keyword
+  const words = resumeText.split(/\s+/);
+  let currentPos = 0;
+  let keywordWordIndex = -1;
+
+  for (let i = 0; i < words.length; i++) {
+    if (currentPos >= keywordIndex) {
+      keywordWordIndex = i;
+      break;
+    }
+    currentPos += words[i].length + 1; // +1 for space
+  }
+
+  if (keywordWordIndex === -1) return '';
+
+  const start = Math.max(0, keywordWordIndex - 15);
+  const end = Math.min(words.length, keywordWordIndex + 15);
+  const contextWords = words.slice(start, end);
+
+  return contextWords.join(' ').slice(0, 200) + '...';
+}
