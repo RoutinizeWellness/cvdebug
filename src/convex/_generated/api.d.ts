@@ -115,6 +115,7 @@ import type * as ml_analyzeResumeML from "../ml/analyzeResumeML.js";
 import type * as ml_intelligentAnalyzer from "../ml/intelligentAnalyzer.js";
 import type * as ml_intelligentKeywordExtractor from "../ml/intelligentKeywordExtractor.js";
 import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
+import type * as ml_learningEngine from "../ml/learningEngine.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as newsletter from "../newsletter.js";
@@ -250,6 +251,7 @@ declare const fullApi: ApiFromModules<{
   "ml/intelligentAnalyzer": typeof ml_intelligentAnalyzer;
   "ml/intelligentKeywordExtractor": typeof ml_intelligentKeywordExtractor;
   "ml/interviewQuestions": typeof ml_interviewQuestions;
+  "ml/learningEngine": typeof ml_learningEngine;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;
   newsletter: typeof newsletter;
