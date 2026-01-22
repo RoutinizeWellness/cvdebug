@@ -34,33 +34,33 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* CHANGE VALUES FOR THEME - CVDebug Unified Purple-Blue System */
+/* CHANGE VALUES FOR THEME - CVDebug Professional System */
 :root {
-  --background: 0 0% 100%; /* White background for light theme */
-  --foreground: 222 47% 11%; /* Dark slate for text */
+  --background: 0 0% 100%; /* Pure white background */
+  --foreground: 222 47% 11%; /* Dark slate text */
   --card: 0 0% 100%; /* White cards */
   --card-foreground: 222 47% 11%;
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
-  --primary: 262 83% 58%; /* Purple 600 (#8B5CF6) - CVDebug Brand */
+  --primary: 221 83% 53%; /* Professional blue (#3B82F6) - CVDebug Brand */
   --primary-foreground: 0 0% 100%;
-  --secondary: 217 91% 60%; /* Blue 600 (#3B82F6) */
-  --secondary-foreground: 0 0% 100%;
-  --muted: 210 40% 96%; /* slate-50 */
-  --muted-foreground: 215 16% 47%; /* slate-600 */
-  --accent: 262 83% 58%; /* Purple accent */
+  --secondary: 215 20% 65%; /* Slate-400 for secondary actions */
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 98%; /* Nearly white for subtle backgrounds */
+  --muted-foreground: 215 16% 47%; /* Slate-600 */
+  --accent: 142 76% 36%; /* Professional green accent (#22C55E) */
   --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 214 32% 91%; /* slate-200 */
+  --border: 214 32% 91%; /* Slate-200 */
   --input: 214 32% 91%;
-  --ring: 262 83% 58%; /* Purple ring */
-  --radius: 0.75rem;
-  --chart-1: 262 83% 58%; /* Purple */
-  --chart-2: 217 91% 60%; /* Blue */
-  --chart-3: 271 91% 65%; /* Fuchsia */
-  --chart-4: 280 79% 70%; /* Light purple */
-  --chart-5: 199 89% 48%; /* Cyan accent */
+  --ring: 221 83% 53%; /* Blue ring */
+  --radius: 0.5rem; /* Slightly tighter radius for professional look */
+  --chart-1: 221 83% 53%; /* Blue */
+  --chart-2: 142 76% 36%; /* Green */
+  --chart-3: 262 83% 58%; /* Purple */
+  --chart-4: 32 95% 44%; /* Orange */
+  --chart-5: 199 89% 48%; /* Cyan */
 }
 
 .dark {
@@ -70,24 +70,24 @@
   --card-foreground: 210 40% 98%;
   --popover: 217 33% 17%;
   --popover-foreground: 210 40% 98%;
-  --primary: 262 83% 58%; /* Purple 600 (#8B5CF6) - CVDebug Brand */
+  --primary: 221 83% 53%; /* Professional blue (#3B82F6) */
   --primary-foreground: 0 0% 100%;
-  --secondary: 217 91% 60%; /* Blue 600 (#3B82F6) */
-  --secondary-foreground: 0 0% 100%;
+  --secondary: 215 20% 65%; /* Slate-400 */
+  --secondary-foreground: 222 47% 11%;
   --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%; /* slate-400 */
-  --accent: 262 83% 58%;
+  --muted-foreground: 215 20% 65%; /* Slate-400 */
+  --accent: 142 76% 36%; /* Green accent */
   --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --border: 217 33% 24%;
   --input: 217 33% 24%;
-  --ring: 262 83% 58%;
-  --chart-1: 262 83% 58%; /* Purple */
-  --chart-2: 217 91% 60%; /* Blue */
-  --chart-3: 271 91% 65%; /* Fuchsia */
-  --chart-4: 280 79% 70%; /* Light purple */
-  --chart-5: 199 89% 48%; /* Cyan accent */
+  --ring: 221 83% 53%;
+  --chart-1: 221 83% 53%; /* Blue */
+  --chart-2: 142 76% 36%; /* Green */
+  --chart-3: 262 83% 58%; /* Purple */
+  --chart-4: 32 95% 44%; /* Orange */
+  --chart-5: 199 89% 48%; /* Cyan */
 }
 
 @layer base {
@@ -95,87 +95,124 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
     cursor: pointer;
   }
+
+  /* Professional Typography Scale */
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-3xl font-bold tracking-tight;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply text-xl font-semibold;
+  }
+
+  h5 {
+    @apply text-lg font-semibold;
+  }
+
+  h6 {
+    @apply text-base font-semibold;
+  }
+
+  p {
+    @apply text-base leading-7;
+  }
+
+  /* Improved readability for small text */
+  .text-xs, .text-sm {
+    letter-spacing: 0.01em;
+  }
 }
 
-/* Custom Scrollbar for Console and Lists - Unified Purple Theme */
+/* Custom Scrollbar - Professional Theme */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(222, 47%, 11%);
+  background: hsl(210, 40%, 96%);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  background: hsl(221, 83%, 53%);
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%);
+  background: hsl(221, 83%, 60%);
 }
 
 .glass-panel {
-  background: rgba(139, 92, 246, 0.05);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(226, 232, 240, 1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .glass-paywall {
   background: rgba(17, 24, 39, 0.95);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(139, 92, 246, 0.35);
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .glass-notification {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(139, 92, 246, 0.25);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(226, 232, 240, 1);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
 }
 
 .glass-header {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  border-bottom: 1px solid rgba(226, 232, 240, 1);
 }
 
 .glow-button {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
   transition: all 0.3s ease;
 }
 
 .glow-button:hover {
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.55), 0 0 40px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.15);
   transform: translateY(-1px);
 }
 
 .neon-glow {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.1), 0 2px 4px rgba(59, 130, 246, 0.1);
 }
 
-/* Updated hero glow with unified purple-blue theme */
+/* Professional hero background */
 .bg-hero-glow {
-  background: conic-gradient(from 180deg at 50% 50%, hsl(262, 83%, 58%) 0deg, hsl(217, 91%, 60%) 120deg, hsl(271, 91%, 65%) 240deg, hsl(262, 83%, 58%) 360deg);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
 }
 
 /* Material Symbols font styling */
@@ -195,23 +232,22 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* AI Highlight styles for Writing Forge - Unified Purple Theme */
+/* AI Highlight styles for Writing Forge - Professional Theme */
 .ai-highlight {
   text-decoration: underline;
-  text-decoration-color: hsl(262, 83%, 58%);
+  text-decoration-color: hsl(221, 83%, 53%);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
-  text-shadow: 0 0 8px rgba(139, 92, 246, 0.45);
   transition: all 0.2s ease;
 }
 
 .ai-highlight:hover {
-  background-color: rgba(139, 92, 246, 0.12);
+  background-color: rgba(59, 130, 246, 0.08);
   border-radius: 4px;
   cursor: pointer;
 }
 
-/* Terminal scrollbar for ATS Report - Unified Purple Theme */
+/* Terminal scrollbar for ATS Report - Professional Theme */
 .terminal-scroll::-webkit-scrollbar {
   width: 8px;
 }
@@ -221,89 +257,89 @@
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  background: hsl(221, 83%, 53%);
   border-radius: 4px;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%);
+  background: hsl(221, 83%, 60%);
 }
 
-/* Promo Modal Styles - Unified Purple Theme */
+/* Promo Modal Styles - Professional Theme */
 .glow-text {
-  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6), 0 0 24px rgba(59, 130, 246, 0.35);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
 }
 
 .bg-fireworks {
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.12) 0%, transparent 60%);
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 60%);
 }
 
-/* Premium Gradients - Vercel/Stripe Style */
+/* Professional Gradients - Minimal & Clean */
 
-/* 1. Power Gradient - For CTAs and Primary Buttons (AI & Premium Value) */
+/* 1. Primary Gradient - For CTAs and Key Actions */
 .gradient-power {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
+  background: hsl(221, 83%, 53%);
 }
 
 .gradient-power-hover {
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #E879F9 100%);
+  background: hsl(221, 83%, 60%);
 }
 
-/* 2. Cyber Diagnostic - For Progress Bars and Scans (Data & Technical Analysis) */
+/* 2. Success Gradient - For Progress Bars and Success States */
 .gradient-cyber {
-  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
 }
 
 .gradient-cyber-glow {
-  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), 0 0 40px rgba(6, 182, 212, 0.3);
+  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
 }
 
-/* 3. Deep Mesh - For Backgrounds and Hero Sections (Glassmorphism) */
+/* 3. Subtle Backgrounds - For Hero Sections */
 .bg-deep-mesh {
-  background: radial-gradient(circle at center, #1E1B4B 0%, #020617 100%);
+  background: #0F172A;
 }
 
 .bg-deep-mesh-subtle {
-  background: radial-gradient(ellipse at top, #1E1B4B 0%, #020617 50%, #020617 100%);
+  background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
 }
 
 /* Gradient Text Effects */
 .text-gradient-power {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: hsl(221, 83%, 53%);
+  font-weight: 700;
 }
 
 .text-gradient-cyber {
-  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Button Hover Effects with Gradients */
+/* Button Hover Effects */
 .btn-power {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #D946EF 100%);
-  box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
-  transition: all 0.3s ease;
+  background: hsl(221, 83%, 53%);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
+  transition: all 0.2s ease;
 }
 
 .btn-power:hover {
-  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #E879F9 100%);
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.6), 0 0 50px rgba(217, 70, 239, 0.4);
-  transform: translateY(-2px);
+  background: hsl(221, 83%, 60%);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
 }
 
-/* Progress Bar Gradient */
+/* Progress Bar */
 .progress-cyber {
-  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 100%);
+  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
   position: relative;
   overflow: hidden;
+  border-radius: 9999px;
 }
 
 .progress-cyber::after {
@@ -313,7 +349,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -322,19 +358,18 @@
   100% { left: 100%; }
 }
 
-/* Score Ring Gradient */
+/* Score Ring */
 .ring-cyber {
-  stroke: url(#cyber-gradient);
-  filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.6));
+  stroke: hsl(221, 83%, 53%);
 }
 
-/* Card Glow Effects */
+/* Card Effects */
 .card-power-glow {
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15), 0 0 60px rgba(217, 70, 239, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .card-cyber-glow {
-  box-shadow: 0 0 30px rgba(37, 99, 235, 0.15), 0 0 60px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Light Theme Styles for Landing Page */
@@ -348,9 +383,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 80% 60%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 30%);
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, rgba(34, 197, 94, 0.02) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -367,16 +401,17 @@
 }
 
 .gradient-logo {
-  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  background: hsl(221, 83%, 53%);
 }
 
 .gradient-button {
-  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
-  transition: all 0.3s ease;
+  background: hsl(221, 83%, 53%);
+  transition: all 0.2s ease;
 }
 
 .gradient-button:hover {
-  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+  background: hsl(221, 83%, 60%);
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.15);
   transform: translateY(-1px);
 }
 
@@ -746,6 +781,109 @@ img {
 .responsive-margin {
   @apply m-4 sm:m-6 lg:m-8;
 }
+
+/* ==================== PROFESSIONAL DESIGN UTILITIES ==================== */
+
+/* Card Styles - Consistent Professional Look */
+.card-professional {
+  @apply bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800;
+  @apply shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+.card-professional-flat {
+  @apply bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800;
+}
+
+/* Button Variants - Professional */
+.btn-professional-primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg px-4 py-2;
+  @apply transition-all duration-200 shadow-sm hover:shadow-md;
+}
+
+.btn-professional-secondary {
+  @apply bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700;
+  @apply text-slate-900 dark:text-white font-medium rounded-lg px-4 py-2;
+  @apply transition-all duration-200;
+}
+
+.btn-professional-ghost {
+  @apply bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800;
+  @apply text-slate-700 dark:text-slate-300 font-medium rounded-lg px-4 py-2;
+  @apply transition-all duration-200;
+}
+
+/* Section Spacing - Consistent Vertical Rhythm */
+.section-spacing {
+  @apply py-12 sm:py-16 lg:py-20;
+}
+
+.section-spacing-sm {
+  @apply py-8 sm:py-10 lg:py-12;
+}
+
+.section-spacing-lg {
+  @apply py-16 sm:py-20 lg:py-24;
+}
+
+/* Content Width - Professional Container */
+.content-width {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.content-width-narrow {
+  @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.content-width-wide {
+  @apply max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Text Styles - Professional */
+.text-professional-heading {
+  @apply text-slate-900 dark:text-white font-bold tracking-tight;
+}
+
+.text-professional-body {
+  @apply text-slate-600 dark:text-slate-400 leading-relaxed;
+}
+
+.text-professional-muted {
+  @apply text-slate-500 dark:text-slate-500;
+}
+
+/* Badge Styles - Clean & Minimal */
+.badge-professional {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium;
+  @apply bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200;
+}
+
+.badge-professional-blue {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium;
+  @apply bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400;
+  @apply border border-blue-200 dark:border-blue-800;
+}
+
+.badge-professional-green {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium;
+  @apply bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400;
+  @apply border border-green-200 dark:border-green-800;
+}
+
+/* Divider Styles */
+.divider-professional {
+  @apply border-t border-slate-200 dark:border-slate-800;
+}
+
+/* Input Styles - Professional */
+.input-professional {
+  @apply w-full px-3 py-2 border border-slate-300 dark:border-slate-700;
+  @apply rounded-lg bg-white dark:bg-slate-900;
+  @apply text-slate-900 dark:text-white placeholder-slate-400;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  @apply transition-all duration-200;
+}
+
+/* ==================== END PROFESSIONAL UTILITIES ==================== */
 
 /* Mobile menu improvements */
 .mobile-menu {
