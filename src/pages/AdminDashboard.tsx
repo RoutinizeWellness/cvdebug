@@ -1,9 +1,10 @@
 /**
  * Comprehensive Admin Dashboard
  * Central hub for monitoring, analytics, and system management
+ * OPTIMIZED: Lazy loading for better performance
  */
 
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import {
   BarChart3,
@@ -12,14 +13,18 @@ import {
   Users,
   FileText,
   Bell,
-  TrendingUp
+  TrendingUp,
+  Search,
+  Download,
+  Loader2
 } from 'lucide-react';
-import { MLDashboard } from '@/components/admin/MLDashboard';
-import { PerformanceMonitor } from '@/components/admin/PerformanceMonitor';
-import { MLMonitoringDashboard } from '@/components/admin/MLMonitoringDashboard';
-import { SEOAnalyticsDashboard } from '@/components/admin/SEOAnalyticsDashboard';
-import { DataExporter } from '@/components/admin/DataExporter';
-import { Search, Download } from 'lucide-react';
+
+// Lazy load heavy dashboard components for better performance
+const MLDashboard = lazy(() => import('@/components/admin/MLDashboard').then(m => ({ default: m.MLDashboard })));
+const PerformanceMonitor = lazy(() => import('@/components/admin/PerformanceMonitor').then(m => ({ default: m.PerformanceMonitor })));
+const MLMonitoringDashboard = lazy(() => import('@/components/admin/MLMonitoringDashboard').then(m => ({ default: m.MLMonitoringDashboard })));
+const SEOAnalyticsDashboard = lazy(() => import('@/components/admin/SEOAnalyticsDashboard').then(m => ({ default: m.SEOAnalyticsDashboard })));
+const DataExporter = lazy(() => import('@/components/admin/DataExporter').then(m => ({ default: m.DataExporter })));
 
 type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
 
@@ -97,23 +102,25 @@ export default function AdminDashboard() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto p-6">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2 }}
-        >
-          {activeTab === 'overview' && <OverviewTab />}
-          {activeTab === 'ml-analytics' && <MLDashboard />}
-          {activeTab === 'ml-monitoring' && <MLMonitoringDashboard />}
-          {activeTab === 'seo-analytics' && <SEOAnalyticsDashboard />}
-          {activeTab === 'performance' && <PerformanceMonitor />}
-          {activeTab === 'data-export' && <DataExporter />}
-          {activeTab === 'users' && <UsersTab />}
-          {activeTab === 'alerts' && <AlertsTab />}
-          {activeTab === 'settings' && <SettingsTab />}
-        </motion.div>
+        <Suspense fallback={<LoadingFallback />}>
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === 'overview' && <OverviewTab />}
+            {activeTab === 'ml-analytics' && <MLDashboard />}
+            {activeTab === 'ml-monitoring' && <MLMonitoringDashboard />}
+            {activeTab === 'seo-analytics' && <SEOAnalyticsDashboard />}
+            {activeTab === 'performance' && <PerformanceMonitor />}
+            {activeTab === 'data-export' && <DataExporter />}
+            {activeTab === 'users' && <UsersTab />}
+            {activeTab === 'alerts' && <AlertsTab />}
+            {activeTab === 'settings' && <SettingsTab />}
+          </motion.div>
+        </Suspense>
       </div>
     </div>
   );
@@ -291,6 +298,18 @@ function ActivityItem({
         <div className="text-xs text-slate-500 dark:text-slate-400">
           {user} • {timestamp}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Loading fallback component for lazy loaded dashboards
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="text-center">
+        <Loader2 className="w-12 h-12 text-blue-500 animate-spin mx-auto mb-4" />
+        <p className="text-slate-600 dark:text-slate-400">Loading dashboard...</p>
       </div>
     </div>
   );

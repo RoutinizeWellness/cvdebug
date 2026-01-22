@@ -118,6 +118,7 @@ import type * as ml_intelligentKeywordExtractor from "../ml/intelligentKeywordEx
 import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
 import type * as ml_learningEngine from "../ml/learningEngine.js";
 import type * as ml_mlOptimizer from "../ml/mlOptimizer.js";
+import type * as ml_optimizedMLEngine from "../ml/optimizedMLEngine.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
 import type * as monitoring from "../monitoring.js";
@@ -262,6 +263,7 @@ declare const fullApi: ApiFromModules<{
   "ml/interviewQuestions": typeof ml_interviewQuestions;
   "ml/learningEngine": typeof ml_learningEngine;
   "ml/mlOptimizer": typeof ml_mlOptimizer;
+  "ml/optimizedMLEngine": typeof ml_optimizedMLEngine;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;
   monitoring: typeof monitoring;
