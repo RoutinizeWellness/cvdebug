@@ -1,9 +1,9 @@
 // Auth configuration for Clerk integration
-// Uses dynamic domain configuration
+// Uses cvdebug.com for production
 export default {
   providers: [
     {
-      domain: process.env.CONVEX_SITE_URL || "https://lazy-badgers-roll.vly.sh",
+      domain: process.env.CONVEX_SITE_URL || "https://cvdebug.com",
       applicationID: "convex",
     },
   ],
