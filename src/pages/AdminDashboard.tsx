@@ -17,8 +17,11 @@ import {
 import { MLDashboard } from '@/components/admin/MLDashboard';
 import { PerformanceMonitor } from '@/components/admin/PerformanceMonitor';
 import { MLMonitoringDashboard } from '@/components/admin/MLMonitoringDashboard';
+import { SEOAnalyticsDashboard } from '@/components/admin/SEOAnalyticsDashboard';
+import { DataExporter } from '@/components/admin/DataExporter';
+import { Search, Download } from 'lucide-react';
 
-type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'performance' | 'users' | 'alerts' | 'settings';
+type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -27,7 +30,9 @@ export default function AdminDashboard() {
     { id: 'overview' as TabType, label: 'Overview', icon: BarChart3 },
     { id: 'ml-analytics' as TabType, label: 'ML Analytics', icon: TrendingUp },
     { id: 'ml-monitoring' as TabType, label: 'ML Monitoring', icon: Activity },
+    { id: 'seo-analytics' as TabType, label: 'SEO Analytics', icon: Search },
     { id: 'performance' as TabType, label: 'Performance', icon: Activity },
+    { id: 'data-export' as TabType, label: 'Data Export', icon: Download },
     { id: 'users' as TabType, label: 'Users', icon: Users },
     { id: 'alerts' as TabType, label: 'Alerts', icon: Bell },
     { id: 'settings' as TabType, label: 'Settings', icon: Settings }
@@ -102,7 +107,9 @@ export default function AdminDashboard() {
           {activeTab === 'overview' && <OverviewTab />}
           {activeTab === 'ml-analytics' && <MLDashboard />}
           {activeTab === 'ml-monitoring' && <MLMonitoringDashboard />}
+          {activeTab === 'seo-analytics' && <SEOAnalyticsDashboard />}
           {activeTab === 'performance' && <PerformanceMonitor />}
+          {activeTab === 'data-export' && <DataExporter />}
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'alerts' && <AlertsTab />}
           {activeTab === 'settings' && <SettingsTab />}

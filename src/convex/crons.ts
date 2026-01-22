@@ -39,4 +39,12 @@ crons.interval(
   {}
 );
 
+// System Health Check: Monitor system health and trigger alerts every 5 minutes
+crons.interval(
+  "system_health_check",
+  { minutes: 5 },
+  internalAny.system.healthCheck.runHealthCheck,
+  {}
+);
+
 export default crons;
