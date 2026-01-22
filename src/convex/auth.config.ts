@@ -4,8 +4,8 @@ export default {
   providers: [
     {
       // Use the CONVEX_SITE_URL environment variable for dynamic domain configuration
-      // This allows the same code to work across different deployments
-      domain: process.env.CONVEX_SITE_URL,
+      // Falls back to resumeatsoptimizer.vly.site if not set
+      domain: process.env.CONVEX_SITE_URL || "https://resumeatsoptimizer.vly.site",
       applicationID: "convex",
     },
   ],
