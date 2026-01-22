@@ -1,6 +1,5 @@
 import { NewNavbar } from "@/components/landing/NewNavbar";
 import { NewHeroSection } from "@/components/landing/NewHeroSection";
-import { ChromeExtensionBanner } from "@/components/landing/ChromeExtensionBanner";
 import { NewSocialProofSection } from "@/components/landing/NewSocialProofSection";
 import { ComparisonVisualSection } from "@/components/landing/ComparisonVisualSection";
 import { ProductShowcaseGallery } from "@/components/landing/ProductShowcaseGallery";
@@ -62,7 +61,6 @@ export default function Landing() {
 
       <main className="flex-grow pt-32 relative z-10">
         <NewHeroSection />
-        <ChromeExtensionBanner />
         <NewSocialProofSection />
         <ProductShowcaseGallery />
         <ComparisonVisualSection />
