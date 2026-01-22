@@ -29,6 +29,13 @@ const SEOAnalyticsDashboard = lazy(() => import('@/components/admin/SEOAnalytics
 const DataExporter = lazy(() => import('@/components/admin/DataExporter').then(m => ({ default: m.DataExporter })));
 const MLPerformanceDashboard = lazy(() => import('@/components/admin/MLPerformanceDashboard').then(m => ({ default: m.MLPerformanceDashboard })));
 
+// Import new advanced visualization components
+import { RealtimeStatsCard } from '@/components/admin/RealtimeStatsCard';
+import { RealtimeActivityFeed } from '@/components/admin/RealtimeActivityFeed';
+import { UserGrowthChart } from '@/components/admin/UserGrowthChart';
+import { SubscriptionDistribution } from '@/components/admin/SubscriptionDistribution';
+import { SystemHealthMonitor } from '@/components/admin/SystemHealthMonitor';
+
 type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'ml-performance' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
 
 export default function AdminDashboard() {
@@ -132,108 +139,35 @@ export default function AdminDashboard() {
 }
 
 function OverviewTab() {
-  const stats = useQuery(api.admin.stats.getSystemStats);
-  const activity = useQuery(api.admin.stats.getRecentActivity, { limit: 5 });
-  const performance = useQuery(api.admin.stats.getPerformanceOverview);
-
-  if (!stats || !activity || !performance) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-slate-900 dark:text-white">System Overview</h2>
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">System Overview</h2>
+        <p className="text-slate-600 dark:text-slate-400 mt-1">
+          Real-time monitoring and analytics dashboard
+        </p>
+      </motion.div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <QuickStatCard
-          label="Total Users"
-          value={stats.totalUsers.toLocaleString()}
-          change={`${stats.userGrowth >= 0 ? '+' : ''}${stats.userGrowth}%`}
-          trend={stats.userGrowth >= 0 ? "up" : "down"}
-          icon={<Users className="w-5 h-5" />}
-        />
-        <QuickStatCard
-          label="Active Users (24h)"
-          value={stats.activeUsers.toLocaleString()}
-          change={`${stats.recentResumes} today`}
-          trend="up"
-          icon={<Activity className="w-5 h-5" />}
-        />
-        <QuickStatCard
-          label="Resumes Analyzed"
-          value={stats.totalResumes.toLocaleString()}
-          change={`${stats.resumeGrowth >= 0 ? '+' : ''}${stats.resumeGrowth}%`}
-          trend={stats.resumeGrowth >= 0 ? "up" : "down"}
-          icon={<FileText className="w-5 h-5" />}
-        />
-        <QuickStatCard
-          label="System Health"
-          value={`${stats.systemHealth}%`}
-          change={performance.successRate >= 99 ? 'Excellent' : 'Good'}
-          trend="up"
-          icon={<TrendingUp className="w-5 h-5" />}
-        />
-      </div>
+      {/* Real-time Stats Cards */}
+      <RealtimeStatsCard />
 
-      {/* Recent Activity */}
-      <div className="card-professional p-6">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-          Recent Activity
-        </h3>
-        <div className="space-y-3">
-          {activity.recentResumes.slice(0, 3).map((resume: any) => (
-            <ActivityItem
-              key={resume.id}
-              timestamp={formatTimeAgo(resume.createdAt)}
-              event="Resume analyzed"
-              user={`Score: ${resume.score || 'N/A'}`}
-              status={resume.status === 'completed' ? 'success' : resume.status === 'failed' ? 'error' : 'info'}
-            />
-          ))}
-          {activity.recentUsers.slice(0, 2).map((user: any) => (
-            <ActivityItem
-              key={user.id}
-              timestamp={formatTimeAgo(user.createdAt)}
-              event="User registered"
-              user={user.email}
-              status="success"
-            />
-          ))}
-        </div>
-      </div>
+      {/* System Health Monitor */}
+      <SystemHealthMonitor />
 
-      {/* Performance Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card-professional p-6">
-          <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Avg Processing Time</div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white">{performance.avgProcessingTime}ms</div>
-        </div>
-        <div className="card-professional p-6">
-          <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Avg Resume Score</div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white">{performance.avgScore}/100</div>
-        </div>
-        <div className="card-professional p-6">
-          <div className="text-sm text-slate-600 dark:text-slate-400 mb-1">Success Rate</div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white">{performance.successRate}%</div>
-        </div>
-      </div>
+      {/* User Growth Chart */}
+      <UserGrowthChart />
+
+      {/* Subscription Distribution */}
+      <SubscriptionDistribution />
+
+      {/* Recent Activity Feed */}
+      <RealtimeActivityFeed />
     </div>
   );
-}
-
-// Helper function to format time ago
-function formatTimeAgo(timestamp: number): string {
-  const seconds = Math.floor((Date.now() - timestamp) / 1000);
-
-  if (seconds < 60) return `${seconds}s ago`;
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
 }
 
 function UsersTab() {
@@ -270,71 +204,6 @@ function SettingsTab() {
         <p className="text-slate-600 dark:text-slate-400">
           System settings and configuration options coming soon...
         </p>
-      </div>
-    </div>
-  );
-}
-
-function QuickStatCard({
-  label,
-  value,
-  change,
-  trend,
-  icon
-}: {
-  label: string;
-  value: string;
-  change: string;
-  trend: 'up' | 'down';
-  icon: React.ReactNode;
-}) {
-  return (
-    <div className="card-professional p-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="text-slate-600 dark:text-slate-400">{icon}</div>
-        <span className={`text-sm font-medium ${
-          trend === 'up' ? 'text-green-500' : 'text-red-500'
-        }`}>
-          {change}
-        </span>
-      </div>
-      <div className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
-        {value}
-      </div>
-      <div className="text-sm text-slate-600 dark:text-slate-400">
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function ActivityItem({
-  timestamp,
-  event,
-  user,
-  status
-}: {
-  timestamp: string;
-  event: string;
-  user: string;
-  status: 'success' | 'error' | 'info';
-}) {
-  const statusColors = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500'
-  };
-
-  return (
-    <div className="flex items-center gap-3 py-2 border-b border-slate-200 dark:border-slate-700 last:border-0">
-      <div className={`w-2 h-2 rounded-full ${statusColors[status]}`} />
-      <div className="flex-1">
-        <div className="text-sm font-medium text-slate-900 dark:text-white">
-          {event}
-        </div>
-        <div className="text-xs text-slate-500 dark:text-slate-400">
-          {user} • {timestamp}
-        </div>
       </div>
     </div>
   );
