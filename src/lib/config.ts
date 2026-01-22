@@ -10,8 +10,8 @@ export const getBaseUrl = (): string => {
     return window.location.origin;
   }
   
-  // For SSR/build time, use environment variable or default
-  return import.meta.env.VITE_BASE_URL || 'https://resumeatsoptimizer.vly.site';
+  // For SSR/build time, use production domain
+  return 'https://cvdebug.com';
 };
 
 // Export as constant for convenience
