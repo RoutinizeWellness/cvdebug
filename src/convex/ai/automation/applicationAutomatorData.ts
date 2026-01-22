@@ -125,6 +125,12 @@ export const getApplicationStats = query({
       ? Math.round(((reviewing + interview + offer + rejected) / total) * 100)
       : 0;
 
+    // Calculate average match score from applications with scores
+    const applicationsWithScores = applications.filter(a => a.matchScore !== undefined && a.matchScore > 0);
+    const avgMatchScore = applicationsWithScores.length > 0
+      ? Math.round(applicationsWithScores.reduce((sum, a) => sum + (a.matchScore || 0), 0) / applicationsWithScores.length)
+      : 0;
+
     return {
       total,
       applied,
@@ -133,7 +139,7 @@ export const getApplicationStats = query({
       offer,
       rejected,
       responseRate,
-      avgMatchScore: 0, // TODO: Calculate from stored match scores
+      avgMatchScore,
     };
   },
 });

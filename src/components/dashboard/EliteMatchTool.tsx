@@ -18,7 +18,7 @@ import {
   Lock
 } from "lucide-react";
 import { toast } from "sonner";
-import { useQuery } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCurrency } from "@/hooks/use-currency";
 
@@ -52,6 +52,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
 
   // Fetch current user to check subscription status
   const currentUser = useQuery(api.users.currentUser);
+  const resumes = useQuery(api.resumes.getResumes);
 
   // Check if user has paid plan
   const isPaidUser = currentUser?.subscriptionTier === "single_scan" ||
@@ -65,6 +66,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
 
   // Get localized pricing
   const { formatPrice } = useCurrency();
+  const analyzeJobMatch = useAction(api.ai.eliteMatch.analyzeJobMatch);
 
   const handleAnalyze = async () => {
     if (!isPaidUser) {
@@ -81,60 +83,65 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
     setStep('analyzing');
     setProgress(0);
 
-    const progressSteps = [
-      { progress: 20, message: 'Extracting Recruiter Intent...' },
-      { progress: 40, message: 'Analyzing Hard Skills Requirements...' },
-      { progress: 60, message: 'Detecting Soft Skills Signals...' },
-      { progress: 80, message: 'Calculating ATS Compatibility...' },
-      { progress: 100, message: 'Generating Missing Signals Report...' }
-    ];
+    try {
+      // Check if user has resumes
+      if (!resumes || resumes.length === 0) {
+        toast.error('No se encontró ningún CV. Por favor sube un CV primero.');
+        setStep('input');
+        return;
+      }
 
-    for (const progressStep of progressSteps) {
+      const latestResume = resumes[0];
+      if (!latestResume.ocrText) {
+        toast.error('Tu CV no tiene texto extraído. Por favor re-sube tu CV.');
+        setStep('input');
+        return;
+      }
+
+      // Simulate progress for better UX
+      const progressInterval = setInterval(() => {
+        setProgress(prev => Math.min(prev + 10, 90));
+      }, 400);
+
+      setProgressMessage('Extracting Recruiter Intent...');
       await new Promise(resolve => setTimeout(resolve, 800));
-      setProgress(progressStep.progress);
-      setProgressMessage(progressStep.message);
+      setProgressMessage('Analyzing Hard Skills Requirements...');
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setProgressMessage('Detecting Soft Skills Signals...');
+
+      // Call real analysis API
+      const result = await analyzeJobMatch({
+        resumeText: latestResume.ocrText,
+        jobDescription: jobDescriptionText || jobDescriptionUrl,
+        jobUrl: jobDescriptionUrl || undefined
+      });
+
+      clearInterval(progressInterval);
+      setProgress(100);
+      setProgressMessage('Generating Missing Signals Report...');
+
+      if (!result.success || !result.data) {
+        throw new Error(result.error || 'Analysis failed');
+      }
+
+      // Transform API response to match component's MatchResult interface
+      const matchResult: MatchResult = {
+        score: result.data.score,
+        missingCritical: result.data.missingCritical,
+        missingImportant: result.data.missingImportant,
+        matched: result.data.matched,
+        robotView: result.data.robotView,
+        recommendations: result.data.recommendations
+      };
+
+      setMatchResult(matchResult);
+      setStep('results');
+    } catch (error: any) {
+      console.error('Elite Match error:', error);
+      toast.error('Error al analizar el match: ' + (error.message || 'Error desconocido'));
+      setStep('input');
+      setProgress(0);
     }
-
-    const mockResult: MatchResult = {
-      score: 67,
-      missingCritical: [
-        {
-          text: 'Kubernetes',
-          category: 'DevOps',
-          importance: 'critical',
-          context: 'Experience with Kubernetes for container orchestration',
-          suggestion: 'La oferta pide experiencia en "Kubernetes" (CRÍTICO). Sin esto, el ATS te descarta automáticamente. Necesitas añadir este skill.'
-        },
-        {
-          text: 'AWS Lambda',
-          category: 'Cloud',
-          importance: 'critical',
-          context: 'Hands-on experience with AWS Lambda serverless architecture',
-          suggestion: 'La oferta busca "AWS Lambda", pero tu CV solo menciona "EC2". Te falta este token crítico.'
-        }
-      ],
-      missingImportant: [
-        {
-          text: 'Agile methodology',
-          category: 'Soft Skills',
-          importance: 'important',
-          suggestion: 'Menciona experiencia con "metodologías ágiles" o "Scrum".'
-        }
-      ],
-      matched: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'Docker'],
-      robotView: {
-        redZones: ['Cloud Infrastructure', 'Container Orchestration'],
-        greenZones: ['Frontend Development', 'Backend APIs', 'Database Management']
-      },
-      recommendations: [
-        'Añade "Kubernetes" en tu sección de skills técnicos',
-        'Incluye experiencia específica con AWS Lambda en tus proyectos',
-        'Menciona metodologías ágiles en tus responsabilidades'
-      ]
-    };
-
-    setMatchResult(mockResult);
-    setStep('results');
   };
 
   return (
