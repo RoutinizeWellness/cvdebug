@@ -143,6 +143,8 @@ import type * as testing from "../testing.js";
 import type * as unlockResume from "../unlockResume.js";
 import type * as userSettings from "../userSettings.js";
 import type * as users from "../users.js";
+import type * as utils_queryHelpers from "../utils/queryHelpers.js";
+import type * as utils_validation from "../utils/validation.js";
 import type * as waitlist from "../waitlist.js";
 import type * as webhooks from "../webhooks.js";
 import type * as webhooks_testWebhooks from "../webhooks/testWebhooks.js";
@@ -290,6 +292,8 @@ declare const fullApi: ApiFromModules<{
   unlockResume: typeof unlockResume;
   userSettings: typeof userSettings;
   users: typeof users;
+  "utils/queryHelpers": typeof utils_queryHelpers;
+  "utils/validation": typeof utils_validation;
   waitlist: typeof waitlist;
   webhooks: typeof webhooks;
   "webhooks/testWebhooks": typeof webhooks_testWebhooks;
