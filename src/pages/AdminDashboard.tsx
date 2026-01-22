@@ -16,8 +16,9 @@ import {
 } from 'lucide-react';
 import { MLDashboard } from '@/components/admin/MLDashboard';
 import { PerformanceMonitor } from '@/components/admin/PerformanceMonitor';
+import { MLMonitoringDashboard } from '@/components/admin/MLMonitoringDashboard';
 
-type TabType = 'overview' | 'ml-analytics' | 'performance' | 'users' | 'alerts' | 'settings';
+type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'performance' | 'users' | 'alerts' | 'settings';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -25,6 +26,7 @@ export default function AdminDashboard() {
   const tabs = [
     { id: 'overview' as TabType, label: 'Overview', icon: BarChart3 },
     { id: 'ml-analytics' as TabType, label: 'ML Analytics', icon: TrendingUp },
+    { id: 'ml-monitoring' as TabType, label: 'ML Monitoring', icon: Activity },
     { id: 'performance' as TabType, label: 'Performance', icon: Activity },
     { id: 'users' as TabType, label: 'Users', icon: Users },
     { id: 'alerts' as TabType, label: 'Alerts', icon: Bell },
@@ -99,6 +101,7 @@ export default function AdminDashboard() {
         >
           {activeTab === 'overview' && <OverviewTab />}
           {activeTab === 'ml-analytics' && <MLDashboard />}
+          {activeTab === 'ml-monitoring' && <MLMonitoringDashboard />}
           {activeTab === 'performance' && <PerformanceMonitor />}
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'alerts' && <AlertsTab />}

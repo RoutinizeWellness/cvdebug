@@ -45,7 +45,7 @@ export interface WebhookSubscription {
   };
   filters?: {
     userId?: string;
-    severity?: WebhookEvent['metadata']['severity'];
+    severity?: 'low' | 'medium' | 'high' | 'critical';
   };
   createdAt: number;
   lastTriggered?: number;
@@ -99,7 +99,12 @@ export const triggerWebhook = internalAction({
       userId: v.optional(v.string()),
       resumeId: v.optional(v.string()),
       modelVersion: v.optional(v.number()),
-      severity: v.optional(v.string())
+      severity: v.optional(v.union(
+        v.literal("low"),
+        v.literal("medium"),
+        v.literal("high"),
+        v.literal("critical")
+      ))
     }))
   },
   handler: async (ctx, args) => {
@@ -141,7 +146,12 @@ export const getMatchingWebhooks = internalMutation({
   args: {
     eventType: v.string(),
     userId: v.optional(v.string()),
-    severity: v.optional(v.string())
+    severity: v.optional(v.union(
+      v.literal("low"),
+      v.literal("medium"),
+      v.literal("high"),
+      v.literal("critical")
+    ))
   },
   handler: async (ctx, args) => {
     const allWebhooks = await ctx.db
