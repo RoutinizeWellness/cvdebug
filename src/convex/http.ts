@@ -3,8 +3,12 @@ import { handleWebhook } from "./billing";
 import { httpAction } from "./_generated/server";
 import { Webhook } from "svix";
 import { generateSitemap } from "./seo/sitemap";
+import { auth } from "./auth";
 
 const http = httpRouter();
+
+// Add Clerk auth routes - CRITICAL for authentication to work
+auth.addHttpRoutes(http);
 
 // Autumn webhook for payments
 http.route({
