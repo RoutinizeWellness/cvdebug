@@ -3,13 +3,9 @@
 export default {
   providers: [
     {
-      // Production domain (only used when deployed to cvdebug.com)
-      domain: "https://clerk.cvdebug.com",
-      applicationID: "convex",
-    },
-    {
-      // Development domain (used for local development)
-      domain: "https://hopeful-doe-56.clerk.accounts.dev",
+      // Use the CONVEX_SITE_URL environment variable for dynamic domain configuration
+      // This allows the same code to work across different deployments
+      domain: process.env.CONVEX_SITE_URL,
       applicationID: "convex",
     },
   ],
