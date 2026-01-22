@@ -1,18 +1,19 @@
 /**
- * Intelligent ML-based Fallback System - ENHANCED WITH DEEP LEARNING
+ * Intelligent ML-based Fallback System - ENHANCED WITH DEEP LEARNING + NLP
  *
- * This advanced system uses Deep Learning and Machine Learning to provide
+ * This advanced system uses Deep Learning, Machine Learning, and NLP to provide
  * MORE ACCURATE results than traditional AI APIs. It learns from every
  * analysis and continuously improves its predictions.
  *
  * Strategy:
  * 1. Deep Learning: Semantic embeddings, neural networks, sentiment analysis
- * 2. ML-powered feature extraction with transformer-inspired attention
- * 3. Gradient boosting ensemble for robust predictions
- * 4. Free users get capped but accurate scores (52-72 range)
- * 5. Premium users get ultra-precise DL analysis (85-98 range)
- * 6. System learns from interactions and improves over time
- * 7. Deterministic scoring prevents gaming by rescanning
+ * 2. NLP-powered keyword extraction with industry-specific databases
+ * 3. ML-powered feature extraction with transformer-inspired attention
+ * 4. Gradient boosting ensemble for robust predictions
+ * 5. Free users get capped but accurate scores (52-72 range)
+ * 6. Premium users get ultra-precise DL+NLP analysis (85-98 range)
+ * 7. System learns from interactions and improves over time
+ * 8. Deterministic scoring prevents gaming by rescanning
  */
 
 import { classifyRole, actionVerbs } from "./config/keywords";
@@ -29,6 +30,7 @@ import {
   type NeuralScoringResult,
   type CoherenceAnalysis
 } from "./deepLearningEngine";
+import { analyzeResumeIntelligently } from "../ml/intelligentAnalyzer";
 
 interface MLConfig {
   keywordWeights?: Record<string, number>;
@@ -119,6 +121,13 @@ export function generateIntelligentFallback(
     console.log(`[Deep Learning] 📈 Coherence score: ${(coherenceAnalysis.overallCoherence * 100).toFixed(1)}%`);
   }
 
+  // Step 2.5: NLP-Powered Intelligent Analysis (ALL users get this)
+  console.log("[NLP Engine] 🎯 Running intelligent keyword extraction and industry analysis...");
+  const intelligentAnalysis = analyzeResumeIntelligently(ocrText, jobDescription);
+  console.log(`[NLP Engine] ✅ Overall Score: ${intelligentAnalysis.overallScore}, Industry: ${intelligentAnalysis.detectedIndustry}`);
+  console.log(`[NLP Engine] 📊 Extracted ${intelligentAnalysis.extractedKeywords.length} keywords, ${intelligentAnalysis.missingCriticalKeywords.length} missing critical`);
+  console.log(`[NLP Engine] ⚡ ATS Compatibility: ${intelligentAnalysis.atsCompatibilityScore}, JD Match: ${intelligentAnalysis.jdMatchScore || 'N/A'}`);
+
   // Step 3: Extract ML features (enhanced with DL insights)
   const mlFeatures = extractFeatures(ocrText, category);
   console.log(`[ML Features] Extracted ${Object.keys(mlFeatures).length} features for analysis`);
@@ -171,18 +180,29 @@ export function generateIntelligentFallback(
   let baseCompletenessScore: number;
 
   if (isPremium && neuralScore) {
-    // Premium: Deep Learning-enhanced scoring
-    console.log("[Deep Learning] 🚀 Applying neural network ensemble...");
+    // Premium: Deep Learning + NLP enhanced scoring
+    console.log("[Deep Learning] 🚀 Applying neural network ensemble with NLP fusion...");
 
-    // Use neural network predictions to adjust traditional scores
+    // Use neural network predictions + NLP analysis to adjust traditional scores
     const nnAdjustment = (neuralScore.predictedScore - mlPrediction.predictedScore) * 0.3;
 
-    baseKeywordScore = (keywordResult.keywordScore * 0.4) + (mlPrediction.predictedScore * 0.3) + (neuralScore.predictedScore * 0.3);
-    baseFormatScore = (formatResult.formatScore * 0.5) + (mlFeatures.professionalTone * 0.3) + (sentimentResult.score * 100 * 0.2);
-    baseCompletenessScore = (completenessResult.completenessScore * 0.4) + (mlFeatures.coherenceScore * 0.3);
+    // Blend: Traditional (30%) + ML (20%) + Neural (25%) + NLP (25%)
+    baseKeywordScore = (keywordResult.keywordScore * 0.3) +
+                       (mlPrediction.predictedScore * 0.2) +
+                       (neuralScore.predictedScore * 0.25) +
+                       (intelligentAnalysis.keywordScore * 0.25);
+
+    baseFormatScore = (formatResult.formatScore * 0.3) +
+                      (mlFeatures.professionalTone * 0.2) +
+                      (sentimentResult.score * 100 * 0.2) +
+                      (intelligentAnalysis.formatScore * 0.3);
+
+    baseCompletenessScore = (completenessResult.completenessScore * 0.3) +
+                            (mlFeatures.coherenceScore * 0.2) +
+                            (intelligentAnalysis.completenessScore * 0.3);
 
     if (coherenceAnalysis) {
-      baseCompletenessScore += (coherenceAnalysis.overallCoherence * 100 * 0.3);
+      baseCompletenessScore += (coherenceAnalysis.overallCoherence * 100 * 0.2);
     }
 
     // Apply neural network-derived bonuses
@@ -190,17 +210,35 @@ export function generateIntelligentFallback(
     if (neuralScore.featureImportance.coherenceScore > 5) baseCompletenessScore += 4;
     if (sentimentResult.aspects.impact > 0.7) baseKeywordScore += 2;
     if (sentimentResult.aspects.achievement > 0.7) baseFormatScore += 2;
+
+    // Apply NLP-derived bonuses (Premium gets full benefit)
+    if (intelligentAnalysis.atsCompatibilityScore > 85) baseFormatScore += 3;
+    if (intelligentAnalysis.jdMatchScore && intelligentAnalysis.jdMatchScore > 80) baseKeywordScore += 4;
+    if (intelligentAnalysis.industryMatchScore > 85) baseKeywordScore += 2;
   } else {
-    // Free users: Traditional ML scoring
-    baseKeywordScore = (keywordResult.keywordScore * 0.6) + (mlPrediction.predictedScore * 0.4);
-    baseFormatScore = (formatResult.formatScore * 0.7) + (mlFeatures.professionalTone * 0.3);
-    baseCompletenessScore = (completenessResult.completenessScore * 0.6) + (mlFeatures.coherenceScore * 0.4);
+    // Free users: Traditional ML + NLP scoring (slightly capped but still accurate)
+    // Blend: Traditional (40%) + ML (30%) + NLP (30%)
+    baseKeywordScore = (keywordResult.keywordScore * 0.4) +
+                       (mlPrediction.predictedScore * 0.3) +
+                       (intelligentAnalysis.keywordScore * 0.3);
+
+    baseFormatScore = (formatResult.formatScore * 0.5) +
+                      (mlFeatures.professionalTone * 0.2) +
+                      (intelligentAnalysis.formatScore * 0.3);
+
+    baseCompletenessScore = (completenessResult.completenessScore * 0.4) +
+                            (mlFeatures.coherenceScore * 0.3) +
+                            (intelligentAnalysis.completenessScore * 0.3);
 
     // Apply ML-derived bonuses
     if (mlFeatures.impactScore > 70) baseKeywordScore += 3;
     if (mlFeatures.industryAlignment > 80) baseKeywordScore += 2;
     if (mlFeatures.readabilityScore > 75) baseFormatScore += 2;
     if (mlFeatures.relevanceScore > 80) baseCompletenessScore += 3;
+
+    // Apply NLP-derived bonuses (Free users get partial benefit)
+    if (intelligentAnalysis.atsCompatibilityScore > 90) baseFormatScore += 2;
+    if (intelligentAnalysis.jdMatchScore && intelligentAnalysis.jdMatchScore > 85) baseKeywordScore += 2;
   }
 
   console.log(`[${isPremium ? 'Deep Learning' : 'ML'} Fusion] Base scores - Keywords: ${baseKeywordScore.toFixed(1)}, Format: ${baseFormatScore.toFixed(1)}, Completeness: ${baseCompletenessScore.toFixed(1)}`);
@@ -255,29 +293,47 @@ export function generateIntelligentFallback(
   // Step 7: Generate ML-enhanced recommendations
   const matchedKeywords = keywordResult.matchedKeywords.slice(0, isPremium ? 15 : 8);
 
-  // Combine traditional keyword analysis with ML suggestions
+  // Combine traditional + ML + NLP keyword analysis
   const traditionalMissingKeywords = keywordResult.missingKeywords.slice(0, isPremium ? 10 : 5);
   const mlSuggestions = mlPrediction.suggestions.slice(0, isPremium ? 6 : 3);
+  const nlpMissingKeywords = intelligentAnalysis.missingCriticalKeywords.slice(0, isPremium ? 8 : 4);
 
-  const missingKeywords = traditionalMissingKeywords.map((kw: any) => ({
+  // Start with NLP keywords (most accurate and contextual)
+  const missingKeywords = nlpMissingKeywords.map(kw => ({
     keyword: kw.keyword,
-    priority: kw.impact > 15 ? "critical" : kw.impact > 10 ? "important" : "suggested",
+    priority: kw.priority,
     section: kw.section,
-    context: isPremium
-      ? `Add this to your ${kw.section} section. ${kw.examples?.[0] || ''}`
-      : `Add this keyword to improve your score.`,
-    frequency: kw.frequency,
+    context: isPremium ? kw.context : `Add "${kw.keyword}" to improve your score.`,
+    frequency: 0,
     impact: kw.impact,
-    synonyms: kw.synonyms || []
+    synonyms: kw.synonyms
   }));
 
-  // Add ML-derived keyword suggestions
+  // Add traditional keywords that aren't already in NLP results
+  const nlpKeywordSet = new Set(nlpMissingKeywords.map(k => k.keyword.toLowerCase()));
+  traditionalMissingKeywords.forEach((kw: any) => {
+    if (!nlpKeywordSet.has(kw.keyword.toLowerCase()) && missingKeywords.length < (isPremium ? 15 : 8)) {
+      missingKeywords.push({
+        keyword: kw.keyword,
+        priority: kw.impact > 15 ? "critical" : kw.impact > 10 ? "high" : "medium",
+        section: kw.section,
+        context: isPremium
+          ? `Add this to your ${kw.section} section. ${kw.examples?.[0] || ''}`
+          : `Add this keyword to improve your score.`,
+        frequency: kw.frequency,
+        impact: kw.impact,
+        synonyms: kw.synonyms || []
+      });
+    }
+  });
+
+  // Add ML-derived keyword suggestions (Premium only)
   if (isPremium) {
     mlSuggestions.forEach((suggestion, idx) => {
-      if (idx < 2 && suggestion.includes('keyword')) { // Only add keyword-specific ML suggestions
+      if (idx < 2 && suggestion.includes('keyword')) {
         missingKeywords.push({
           keyword: `ML Insight ${idx + 1}`,
-          priority: "important",
+          priority: "high",
           section: "Overall",
           context: suggestion,
           frequency: 0,
@@ -288,8 +344,23 @@ export function generateIntelligentFallback(
     });
   }
 
-  // Step 8: Format issues (ML-enhanced)
-  const formatIssues = formatResult.formatIssues.slice(0, isPremium ? 10 : 5);
+  // Step 8: Format issues (ML + NLP enhanced)
+  const traditionalFormatIssues = formatResult.formatIssues.slice(0, isPremium ? 8 : 4);
+  const nlpAtsIssues = intelligentAnalysis.atsIssues.slice(0, isPremium ? 7 : 3);
+
+  // Combine NLP ATS issues with traditional format issues
+  const formatIssues = [
+    ...nlpAtsIssues.map(issue => ({
+      issue: issue.issue,
+      severity: issue.severity,
+      fix: issue.fix,
+      location: issue.location,
+      atsImpact: issue.atsImpact
+    })),
+    ...traditionalFormatIssues.filter((tIssue: any) =>
+      !nlpAtsIssues.some(nIssue => nIssue.issue.toLowerCase().includes(tIssue.issue.toLowerCase().substring(0, 20)))
+    )
+  ].slice(0, isPremium ? 12 : 6);
 
   // Add Deep Learning-derived format suggestions for premium users
   if (isPremium && mlFeatures.readabilityScore < 70) {
