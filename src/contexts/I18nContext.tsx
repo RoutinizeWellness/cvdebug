@@ -11,6 +11,11 @@ interface I18nContextType {
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
+  // Debug log to verify provider mounting
+  useEffect(() => {
+    console.log("[I18nProvider] Mounted");
+  }, []);
+
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
     // Check localStorage first
     const saved = localStorage.getItem('cvdebug-locale');
@@ -48,11 +53,11 @@ export function useI18n() {
   // Provide fallback if context is not available
   // This handles edge cases during initial render or HMR
   if (!context) {
-    console.warn("I18nContext not found, using fallback");
+    console.warn("[useI18n] Context not found, using fallback. Ensure I18nProvider is at the root.");
     const defaultLocale: SupportedLocale = 'en';
     return {
       locale: defaultLocale,
-      setLocale: () => {},
+      setLocale: () => console.warn("[useI18n] Cannot set locale in fallback mode"),
       t: getTranslation(defaultLocale)
     };
   }

@@ -14,6 +14,10 @@ import { updatePageSEO } from "@/lib/seo";
 
 export default function Landing() {
   useEffect(() => {
+    // Set body background safely to avoid hydration mismatches
+    const originalBackground = document.body.style.background;
+    document.body.style.background = '#FFFFFF';
+
     // Dynamic SEO for homepage - uses the main keywords from index.html
     updatePageSEO({
       title: 'Free ATS Resume Scanner & Checker | Beat ATS in 10 Seconds | CVDebug',
@@ -46,16 +50,14 @@ export default function Landing() {
       canonical: 'https://cvdebug.com/',
       ogImage: 'https://cvdebug.com/og-image.jpg',
     });
+
+    return () => {
+      document.body.style.background = originalBackground;
+    };
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-purple-100 antialiased mesh-gradient">
-      <style>{`
-        body {
-          background: #FFFFFF; /* Main white background */
-        }
-      `}</style>
-
       <NewNavbar />
 
       <main className="flex-grow pt-32 relative z-10">
