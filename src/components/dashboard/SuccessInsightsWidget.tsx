@@ -2,10 +2,12 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { TrendingUp, Sparkles, Target, Lock } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
 
 export function SuccessInsightsWidget() {
+  const { t } = useI18n();
   const analytics = useQuery(apiAny.applications.getSuccessAnalytics);
 
   // Not enough data yet
@@ -21,18 +23,18 @@ export function SuccessInsightsWidget() {
             <Lock className="h-5 w-5 text-[#3B82F6]" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-[#0F172A]">Success Insights</h3>
-            <p className="text-xs text-[#64748B]">Personalized analytics unlocked soon</p>
+            <h3 className="text-lg font-bold text-[#0F172A]">{t.dashboard.successInsights}</h3>
+            <p className="text-xs text-[#64748B]">{t.dashboard.personalizedAnalytics}</p>
           </div>
         </div>
 
         <div className="bg-[#F8FAFC] rounded-lg p-4 text-center border border-[#E2E8F0]">
           <p className="text-sm text-[#475569] mb-2">
-            Track 3+ applications and get your first interview to unlock personalized insights
+            {t.dashboard.trackApplicationsToUnlock}
           </p>
           <div className="flex items-center justify-center gap-2 text-xs text-[#8B5CF6] font-mono">
             <Sparkles className="h-4 w-4" />
-            <span>Your personal data moat awaits</span>
+            <span>{t.dashboard.personalDataMoat}</span>
           </div>
         </div>
       </motion.div>
@@ -55,13 +57,13 @@ export function SuccessInsightsWidget() {
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#0F172A]">Success Insights</h3>
-              <p className="text-xs text-[#64748B]">Your personal data advantage</p>
+              <h3 className="text-lg font-bold text-[#0F172A]">{t.dashboard.successInsights}</h3>
+              <p className="text-xs text-[#64748B]">{t.dashboard.yourPersonalDataAdvantage}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#22C55E]/10 border border-[#22C55E]/20">
             <Sparkles className="h-3.5 w-3.5 text-[#22C55E]" />
-            <span className="text-xs font-bold text-[#22C55E]">MOAT</span>
+            <span className="text-xs font-bold text-[#22C55E]">{t.dashboard.moat}</span>
           </div>
         </div>
 
@@ -74,10 +76,10 @@ export function SuccessInsightsWidget() {
                 <p className="text-[#0F172A] font-semibold mb-1">{analytics.topInsight.message}</p>
                 <div className="flex items-center gap-4 text-xs">
                   <span className="text-[#22C55E] font-mono font-bold">
-                    +{analytics.topInsight.lift}% vs average
+                    +{analytics.topInsight.lift}% {t.dashboard.vsAverage}
                   </span>
                   <span className="text-[#64748B]">
-                    {analytics.topInsight.successRate}% success rate
+                    {analytics.topInsight.successRate}% {t.dashboard.successRateLabel}
                   </span>
                 </div>
               </div>
@@ -88,15 +90,15 @@ export function SuccessInsightsWidget() {
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-[#F8FAFC] rounded-lg p-3 text-center border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">Applications</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.dashboard.applicationsCount}</p>
             <p className="text-2xl font-bold text-[#0F172A]">{analytics.totalApplications}</p>
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 text-center border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">Interviews</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.dashboard.interviewsCount}</p>
             <p className="text-2xl font-bold text-[#3B82F6]">{analytics.interviewCount}</p>
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 text-center border border-[#E2E8F0]">
-            <p className="text-xs text-[#64748B] mb-1">Success Rate</p>
+            <p className="text-xs text-[#64748B] mb-1">{t.dashboard.successRateLabel}</p>
             <p className="text-2xl font-bold text-[#22C55E]">{analytics.averageSuccessRate}%</p>
           </div>
         </div>
@@ -105,7 +107,7 @@ export function SuccessInsightsWidget() {
         {analytics.topKeywords.length > 0 && (
           <div>
             <p className="text-xs text-[#64748B] mb-2 font-semibold uppercase tracking-wider">
-              Top Performing Keywords
+              {t.dashboard.topPerformingKeywords}
             </p>
             <div className="space-y-2">
               {analytics.topKeywords.slice(0, 5).map((kw: any, idx: number) => (
@@ -136,7 +138,7 @@ export function SuccessInsightsWidget() {
 
         <div className="mt-4 pt-4 border-t border-[#E2E8F0]">
           <p className="text-xs text-[#64748B] text-center">
-            🔒 This data is unique to you and cannot be replicated by competitors
+            {t.dashboard.dataUniqueToYou}
           </p>
         </div>
       </div>

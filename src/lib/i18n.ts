@@ -137,6 +137,19 @@ export interface Translation {
     visibilityDebugger: string;
     autoRejectDetected: string;
     criticalError: string;
+    // Success Insights
+    successInsights: string;
+    personalizedAnalytics: string;
+    trackApplicationsToUnlock: string;
+    personalDataMoat: string;
+    yourPersonalDataAdvantage: string;
+    moat: string;
+    vsAverage: string;
+    successRateLabel: string;
+    applicationsCount: string;
+    interviewsCount: string;
+    topPerformingKeywords: string;
+    dataUniqueToYou: string;
   };
   // Resume Detail Dialog
   resumeDetail: {
@@ -1557,6 +1570,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Visibility Debugger',
       autoRejectDetected: 'AUTO_REJECT DETECTED',
       criticalError: 'CRITICAL ERROR',
+      // Success Insights
+      successInsights: 'Success Insights',
+      personalizedAnalytics: 'Personalized analytics unlocked soon',
+      trackApplicationsToUnlock: 'Track 3+ applications and get your first interview to unlock personalized insights',
+      personalDataMoat: 'Your personal data moat awaits',
+      yourPersonalDataAdvantage: 'Your personal data advantage',
+      moat: 'MOAT',
+      vsAverage: 'vs average',
+      successRateLabel: 'success rate',
+      applicationsCount: 'Applications',
+      interviewsCount: 'Interviews',
+      topPerformingKeywords: 'Top Performing Keywords',
+      dataUniqueToYou: '🔒 This data is unique to you and cannot be replicated by competitors',
     },
     resumeDetail: {
       // LinkedIn Upsell
@@ -2921,6 +2947,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Debugger de Visibilidad',
       autoRejectDetected: 'AUTO-RECHAZO DETECTADO',
       criticalError: 'ERROR CRÍTICO',
+      // Success Insights
+      successInsights: 'Insights de Éxito',
+      personalizedAnalytics: 'Análisis personalizados próximamente',
+      trackApplicationsToUnlock: 'Rastrea 3+ aplicaciones y consigue tu primera entrevista para desbloquear insights personalizados',
+      personalDataMoat: 'Tu ventaja de datos personales te espera',
+      yourPersonalDataAdvantage: 'Tu ventaja de datos personales',
+      moat: 'VENTAJA',
+      vsAverage: 'vs promedio',
+      successRateLabel: 'tasa de éxito',
+      applicationsCount: 'Aplicaciones',
+      interviewsCount: 'Entrevistas',
+      topPerformingKeywords: 'Palabras Clave de Mayor Rendimiento',
+      dataUniqueToYou: '🔒 Estos datos son únicos para ti y no pueden ser replicados por competidores',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimizado → LinkedIn es el Siguiente Paso',
@@ -4281,6 +4320,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Débogueur de Visibilité',
       autoRejectDetected: 'AUTO-REJET DÉTECTÉ',
       criticalError: 'ERREUR CRITIQUE',
+      // Success Insights
+      successInsights: 'Insights de Succès',
+      personalizedAnalytics: 'Analyses personnalisées bientôt disponibles',
+      trackApplicationsToUnlock: 'Suivez 3+ candidatures et obtenez votre premier entretien pour débloquer des insights personnalisés',
+      personalDataMoat: 'Votre avantage de données personnelles vous attend',
+      yourPersonalDataAdvantage: 'Votre avantage de données personnelles',
+      moat: 'AVANTAGE',
+      vsAverage: 'vs moyenne',
+      successRateLabel: 'taux de succès',
+      applicationsCount: 'Candidatures',
+      interviewsCount: 'Entretiens',
+      topPerformingKeywords: 'Mots-Clés les Plus Performants',
+      dataUniqueToYou: '🔒 Ces données sont uniques à vous et ne peuvent être répliquées par les concurrents',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimisé → LinkedIn est le Suivant',
@@ -5641,6 +5693,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Sichtbarkeits-Debugger',
       autoRejectDetected: 'AUTO-ABLEHNUNG ERKANNT',
       criticalError: 'KRITISCHER FEHLER',
+      // Success Insights
+      successInsights: 'Erfolgs-Einblicke',
+      personalizedAnalytics: 'Personalisierte Analysen bald verfügbar',
+      trackApplicationsToUnlock: 'Verfolgen Sie 3+ Bewerbungen und erhalten Sie Ihr erstes Interview, um personalisierte Einblicke freizuschalten',
+      personalDataMoat: 'Ihr persönlicher Datenvorteil erwartet Sie',
+      yourPersonalDataAdvantage: 'Ihr persönlicher Datenvorteil',
+      moat: 'VORTEIL',
+      vsAverage: 'vs Durchschnitt',
+      successRateLabel: 'Erfolgsrate',
+      applicationsCount: 'Bewerbungen',
+      interviewsCount: 'Interviews',
+      topPerformingKeywords: 'Top-performante Schlüsselwörter',
+      dataUniqueToYou: '🔒 Diese Daten sind einzigartig für Sie und können nicht von Wettbewerbern repliziert werden',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimiert → LinkedIn ist als Nächstes',
@@ -7001,6 +7066,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       visibilityDebugger: 'Debugger de Visibilidade',
       autoRejectDetected: 'AUTO-REJEIÇÃO DETECTADA',
       criticalError: 'ERRO CRÍTICO',
+      // Success Insights
+      successInsights: 'Insights de Sucesso',
+      personalizedAnalytics: 'Análises personalizadas em breve',
+      trackApplicationsToUnlock: 'Rastreie 3+ candidaturas e consiga sua primeira entrevista para desbloquear insights personalizados',
+      personalDataMoat: 'Sua vantagem de dados pessoais te espera',
+      yourPersonalDataAdvantage: 'Sua vantagem de dados pessoais',
+      moat: 'VANTAGEM',
+      vsAverage: 'vs média',
+      successRateLabel: 'taxa de sucesso',
+      applicationsCount: 'Candidaturas',
+      interviewsCount: 'Entrevistas',
+      topPerformingKeywords: 'Palavras-Chave de Melhor Desempenho',
+      dataUniqueToYou: '🔒 Estes dados são únicos para você e não podem ser replicados por concorrentes',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Otimizado → LinkedIn é o Próximo',
