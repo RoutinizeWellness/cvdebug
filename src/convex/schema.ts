@@ -542,6 +542,27 @@ const schema = defineSchema(
     .index("by_user", ["userId"])
     .index("by_timestamp", ["timestamp"]),
 
+  // ML Performance Metrics: Track cache performance and prediction latency
+  mlMetrics: defineTable({
+    metricType: v.union(
+      v.literal("cache_hit"),
+      v.literal("cache_miss"),
+      v.literal("prediction_latency"),
+      v.literal("feature_extraction_latency"),
+      v.literal("analysis_complete")
+    ),
+    value: v.number(),
+    metadata: v.object({
+      role: v.optional(v.string()),
+      region: v.optional(v.string()),
+      cacheKey: v.optional(v.string()),
+    }),
+    timestamp: v.number(),
+  })
+    .index("by_timestamp", ["timestamp"])
+    .index("by_metric_type", ["metricType"])
+    .index("by_type_and_timestamp", ["metricType", "timestamp"]),
+
   // NEW: ML Training Data - Advanced ML system for continuous learning
   mlTrainingData: defineTable({
     userId: v.string(),

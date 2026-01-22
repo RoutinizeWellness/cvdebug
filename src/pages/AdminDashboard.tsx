@@ -25,8 +25,9 @@ const PerformanceMonitor = lazy(() => import('@/components/admin/PerformanceMoni
 const MLMonitoringDashboard = lazy(() => import('@/components/admin/MLMonitoringDashboard').then(m => ({ default: m.MLMonitoringDashboard })));
 const SEOAnalyticsDashboard = lazy(() => import('@/components/admin/SEOAnalyticsDashboard').then(m => ({ default: m.SEOAnalyticsDashboard })));
 const DataExporter = lazy(() => import('@/components/admin/DataExporter').then(m => ({ default: m.DataExporter })));
+const MLPerformanceDashboard = lazy(() => import('@/components/admin/MLPerformanceDashboard').then(m => ({ default: m.MLPerformanceDashboard })));
 
-type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
+type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'ml-performance' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -35,6 +36,7 @@ export default function AdminDashboard() {
     { id: 'overview' as TabType, label: 'Overview', icon: BarChart3 },
     { id: 'ml-analytics' as TabType, label: 'ML Analytics', icon: TrendingUp },
     { id: 'ml-monitoring' as TabType, label: 'ML Monitoring', icon: Activity },
+    { id: 'ml-performance' as TabType, label: 'ML Performance', icon: TrendingUp },
     { id: 'seo-analytics' as TabType, label: 'SEO Analytics', icon: Search },
     { id: 'performance' as TabType, label: 'Performance', icon: Activity },
     { id: 'data-export' as TabType, label: 'Data Export', icon: Download },
@@ -113,6 +115,7 @@ export default function AdminDashboard() {
             {activeTab === 'overview' && <OverviewTab />}
             {activeTab === 'ml-analytics' && <MLDashboard />}
             {activeTab === 'ml-monitoring' && <MLMonitoringDashboard />}
+            {activeTab === 'ml-performance' && <MLPerformanceDashboard />}
             {activeTab === 'seo-analytics' && <SEOAnalyticsDashboard />}
             {activeTab === 'performance' && <PerformanceMonitor />}
             {activeTab === 'data-export' && <DataExporter />}
