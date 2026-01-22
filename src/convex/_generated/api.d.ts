@@ -103,6 +103,7 @@ import type * as crons from "../crons.js";
 import type * as cvHealthMonitor from "../cvHealthMonitor.js";
 import type * as devUsers from "../devUsers.js";
 import type * as emailPreferences from "../emailPreferences.js";
+import type * as feedback from "../feedback.js";
 import type * as fluffDetector from "../fluffDetector.js";
 import type * as gamification from "../gamification.js";
 import type * as http from "../http.js";
@@ -118,7 +119,9 @@ import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
 import type * as ml_learningEngine from "../ml/learningEngine.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
+import type * as monitoring from "../monitoring.js";
 import type * as newsletter from "../newsletter.js";
+import type * as notifications from "../notifications.js";
 import type * as productHunt from "../productHunt.js";
 import type * as projectTimeline from "../projectTimeline.js";
 import type * as projects from "../projects.js";
@@ -136,6 +139,7 @@ import type * as unlockResume from "../unlockResume.js";
 import type * as userSettings from "../userSettings.js";
 import type * as users from "../users.js";
 import type * as waitlist from "../waitlist.js";
+import type * as webhooks from "../webhooks.js";
 
 import type {
   ApiFromModules,
@@ -239,6 +243,7 @@ declare const fullApi: ApiFromModules<{
   cvHealthMonitor: typeof cvHealthMonitor;
   devUsers: typeof devUsers;
   emailPreferences: typeof emailPreferences;
+  feedback: typeof feedback;
   fluffDetector: typeof fluffDetector;
   gamification: typeof gamification;
   http: typeof http;
@@ -254,7 +259,9 @@ declare const fullApi: ApiFromModules<{
   "ml/learningEngine": typeof ml_learningEngine;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;
+  monitoring: typeof monitoring;
   newsletter: typeof newsletter;
+  notifications: typeof notifications;
   productHunt: typeof productHunt;
   projectTimeline: typeof projectTimeline;
   projects: typeof projects;
@@ -272,6 +279,7 @@ declare const fullApi: ApiFromModules<{
   userSettings: typeof userSettings;
   users: typeof users;
   waitlist: typeof waitlist;
+  webhooks: typeof webhooks;
 }>;
 
 /**
