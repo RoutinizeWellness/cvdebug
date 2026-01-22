@@ -154,9 +154,10 @@ export const getMatchingWebhooks = internalMutation({
     ))
   },
   handler: async (ctx, args) => {
+    // OPTIMIZED: Use index instead of filter for better performance
     const allWebhooks = await ctx.db
       .query("webhooks")
-      .filter(q => q.eq(q.field("enabled"), true))
+      .withIndex("by_enabled", (q) => q.eq("enabled", true))
       .collect();
 
     // Filter webhooks that match the event

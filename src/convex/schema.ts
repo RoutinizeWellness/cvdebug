@@ -417,7 +417,8 @@ const schema = defineSchema(
   })
     .index("by_resume", ["resumeId"])
     .index("by_user", ["userId"])
-    .index("by_feedback_type", ["feedbackType"]),
+    .index("by_feedback_type", ["feedbackType"])
+    .index("by_timestamp", ["timestamp"]),
 
   // ML Learning: Track successful outcomes
   mlSuccessTracking: defineTable({

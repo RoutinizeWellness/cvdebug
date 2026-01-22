@@ -91,9 +91,10 @@ export const getFeedbackStats = query({
     const days = args.days || 30;
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
 
+    // OPTIMIZED: Use index instead of filter for better performance
     const feedback = await ctx.db
       .query("mlFeedback")
-      .filter((q) => q.gte(q.field("timestamp"), cutoff))
+      .withIndex("by_timestamp", (q) => q.gte("timestamp", cutoff))
       .take(1000);
 
     if (feedback.length === 0) {
