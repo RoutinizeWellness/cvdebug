@@ -11,6 +11,7 @@
 import type * as abTesting from "../abTesting.js";
 import type * as abandonmentEmails from "../abandonmentEmails.js";
 import type * as admin from "../admin.js";
+import type * as admin_stats from "../admin/stats.js";
 import type * as adminActions from "../adminActions.js";
 import type * as ai from "../ai.js";
 import type * as ai_abTesting from "../ai/abTesting.js";
@@ -160,6 +161,7 @@ declare const fullApi: ApiFromModules<{
   abTesting: typeof abTesting;
   abandonmentEmails: typeof abandonmentEmails;
   admin: typeof admin;
+  "admin/stats": typeof admin_stats;
   adminActions: typeof adminActions;
   ai: typeof ai;
   "ai/abTesting": typeof ai_abTesting;
