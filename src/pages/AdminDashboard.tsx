@@ -35,8 +35,9 @@ import { RealtimeActivityFeed } from '@/components/admin/RealtimeActivityFeed';
 import { UserGrowthChart } from '@/components/admin/UserGrowthChart';
 import { SubscriptionDistribution } from '@/components/admin/SubscriptionDistribution';
 import { SystemHealthMonitor } from '@/components/admin/SystemHealthMonitor';
+import { ErrorTrackingDashboard } from '@/components/admin/ErrorTrackingDashboard';
 
-type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'ml-performance' | 'seo-analytics' | 'performance' | 'data-export' | 'users' | 'alerts' | 'settings';
+type TabType = 'overview' | 'ml-analytics' | 'ml-monitoring' | 'ml-performance' | 'seo-analytics' | 'performance' | 'data-export' | 'error-tracking' | 'users' | 'alerts' | 'settings';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
     { id: 'seo-analytics' as TabType, label: 'SEO Analytics', icon: Search },
     { id: 'performance' as TabType, label: 'Performance', icon: Activity },
     { id: 'data-export' as TabType, label: 'Data Export', icon: Download },
+    { id: 'error-tracking' as TabType, label: 'Error Tracking', icon: FileText },
     { id: 'users' as TabType, label: 'Users', icon: Users },
     { id: 'alerts' as TabType, label: 'Alerts', icon: Bell },
     { id: 'settings' as TabType, label: 'Settings', icon: Settings }
@@ -128,6 +130,7 @@ export default function AdminDashboard() {
             {activeTab === 'seo-analytics' && <SEOAnalyticsDashboard />}
             {activeTab === 'performance' && <PerformanceMonitor />}
             {activeTab === 'data-export' && <DataExporter />}
+            {activeTab === 'error-tracking' && <ErrorTrackingDashboard />}
             {activeTab === 'users' && <UsersTab />}
             {activeTab === 'alerts' && <AlertsTab />}
             {activeTab === 'settings' && <SettingsTab />}

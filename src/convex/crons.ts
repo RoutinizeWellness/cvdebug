@@ -47,4 +47,53 @@ crons.interval(
   {}
 );
 
+// Automated Cleanup Jobs: Maintain database hygiene and optimize storage
+// Clean up old metrics data (30+ days) - runs daily at 2 AM UTC
+crons.interval(
+  "cleanup_old_metrics",
+  { hours: 24 },
+  internalAny.maintenance.cleanup.cleanupOldMetrics,
+  {}
+);
+
+// Clean up old feedback data (90+ days) - runs daily at 3 AM UTC
+crons.interval(
+  "cleanup_old_feedback",
+  { hours: 24 },
+  internalAny.maintenance.cleanup.cleanupOldFeedback,
+  {}
+);
+
+// Clean up failed resumes (7+ days) - runs every 12 hours
+crons.interval(
+  "cleanup_failed_resumes",
+  { hours: 12 },
+  internalAny.maintenance.cleanup.cleanupFailedResumes,
+  {}
+);
+
+// Archive old completed resumes (180+ days) - runs weekly
+crons.interval(
+  "archive_old_resumes",
+  { hours: 168 }, // 7 days
+  internalAny.maintenance.cleanup.archiveOldResumes,
+  {}
+);
+
+// Clean up inactive waitlist entries - runs daily
+crons.interval(
+  "cleanup_inactive_waitlist",
+  { hours: 24 },
+  internalAny.maintenance.cleanup.cleanupInactiveWaitlist,
+  {}
+);
+
+// Auto-resolve stale errors (no occurrences in 30 days) - runs daily
+crons.interval(
+  "auto_resolve_stale_errors",
+  { hours: 24 },
+  internalAny.monitoring.errorTracking.autoResolveStaleErrors,
+  {}
+);
+
 export default crons;

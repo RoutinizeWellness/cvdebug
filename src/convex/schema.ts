@@ -1094,6 +1094,48 @@ const schema = defineSchema(
   })
     .index("by_enabled", ["enabled"])
     .index("by_created_at", ["createdAt"]),
+
+  // Error Tracking System
+  errorLogs: defineTable({
+    message: v.string(),
+    stack: v.optional(v.string()),
+    severity: v.union(
+      v.literal("low"),
+      v.literal("medium"),
+      v.literal("high"),
+      v.literal("critical")
+    ),
+    category: v.union(
+      v.literal("validation"),
+      v.literal("authentication"),
+      v.literal("authorization"),
+      v.literal("database"),
+      v.literal("network"),
+      v.literal("api"),
+      v.literal("ml_processing"),
+      v.literal("file_processing"),
+      v.literal("payment"),
+      v.literal("unknown")
+    ),
+    userId: v.optional(v.id("users")),
+    metadata: v.object({
+      endpoint: v.optional(v.string()),
+      userAgent: v.optional(v.string()),
+      ip: v.optional(v.string()),
+      requestId: v.optional(v.string()),
+      additionalData: v.optional(v.any()),
+    }),
+    resolved: v.boolean(),
+    resolvedAt: v.optional(v.number()),
+    resolution: v.optional(v.string()),
+    occurrenceCount: v.number(),
+    firstOccurrence: v.number(),
+    lastOccurrence: v.number(),
+  })
+    .index("by_last_occurrence", ["lastOccurrence"])
+    .index("by_severity", ["severity"])
+    .index("by_resolved", ["resolved"])
+    .index("by_category_and_severity", ["category", "severity"]),
   },
   {
     schemaValidation: false,
