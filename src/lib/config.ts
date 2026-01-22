@@ -10,8 +10,8 @@ export const getBaseUrl = (): string => {
     return window.location.origin;
   }
   
-  // For SSR/build time, use production domain
-  return 'https://cvdebug.com';
+  // For SSR/build time, use the working vly.sh domain
+  return 'https://lazy-badgers-roll.vly.sh';
 };
 
 // Export as constant for convenience
