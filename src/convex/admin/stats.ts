@@ -12,8 +12,9 @@ import { v } from "convex/values";
 export const getSystemStats = query({
   args: {},
   handler: async (ctx) => {
-    // Get total users
-    const users = await ctx.db.query("users").collect();
+    // OPTIMIZED: Limit to prevent memory issues
+    // Get total users (sample for large datasets)
+    const users = await ctx.db.query("users").take(10000);
     const totalUsers = users.length;
 
     // Get active users (last 24 hours)
@@ -21,7 +22,7 @@ export const getSystemStats = query({
     const activeUsers = users.filter(u => u.lastSeen && u.lastSeen > last24h).length;
 
     // Get total resumes
-    const resumes = await ctx.db.query("resumes").take(10000);
+    const resumes = await ctx.db.query("resumes").order("desc").take(10000);
     const totalResumes = resumes.length;
 
     // Get resumes analyzed in last 24 hours
@@ -69,7 +70,8 @@ export const getSystemStats = query({
 export const getSubscriptionStats = query({
   args: {},
   handler: async (ctx) => {
-    const users = await ctx.db.query("users").collect();
+    // OPTIMIZED: Limit for performance
+    const users = await ctx.db.query("users").take(10000);
 
     const byTier = {
       free: users.filter(u => u.subscriptionTier === "free").length,
