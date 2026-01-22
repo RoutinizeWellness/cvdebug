@@ -1,10 +1,9 @@
 // Auth configuration for Clerk integration
-// Uses CONVEX_SITE_URL from environment (set by Convex automatically)
-// Falls back to the Convex deployment URL for local development
+// Uses the vly.sh domain that Clerk is configured with
 export default {
   providers: [
     {
-      domain: process.env.CONVEX_SITE_URL || "https://next-cod-660.convex.site",
+      domain: "https://lazy-badgers-roll.vly.sh",
       applicationID: "convex",
     },
   ],
