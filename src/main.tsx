@@ -26,6 +26,7 @@ const BlogPost = lazy(() => import("./pages/blog/BlogPost"));
 const Blog = lazy(() => import("./pages/blog/Blog"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminWaitlist = lazy(() => import("./pages/AdminWaitlist"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsConditions = lazy(() => import("./pages/TermsConditions"));
@@ -120,6 +121,7 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/waitlist" element={<AdminWaitlist />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/contact" element={<ContactUs />} />
