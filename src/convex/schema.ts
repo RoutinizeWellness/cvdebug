@@ -488,6 +488,14 @@ const schema = defineSchema(
     lastUpdated: v.number(),
   }),
 
+  // ML Model Weights: Store continuous learning model state
+  mlModelWeights: defineTable({
+    weights: v.any(), // ModelWeights interface from learningEngine
+    version: v.number(),
+    lastUpdated: v.number(),
+  })
+    .index("by_version", ["version"]),
+
   // NEW: Store evaluation results
   evaluationResults: defineTable({
     accuracy: v.number(),

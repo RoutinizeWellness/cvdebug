@@ -131,10 +131,16 @@ http.route({
         timestamp: Date.now()
       });
 
-      // Log significant feedback (future: trigger ML model update)
+      // Trigger ML model learning from significant feedback
       if (rating <= 2 || rating >= 4) {
         console.log(`[Webhook] Significant feedback received for resume ${resumeId}: ${rating}/5`);
-        // TODO: Implement ML model update with feedback
+
+        // Schedule background model update (non-blocking)
+        await ctx.scheduler.runAfter(0, internal.ml.learningEngine.learnFromFeedback, {
+          resumeId,
+          rating,
+          feedback: feedback || "",
+        });
       }
 
       return new Response(

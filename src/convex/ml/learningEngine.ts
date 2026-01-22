@@ -10,6 +10,9 @@
  * Uses online learning algorithms to continuously improve predictions
  */
 
+import { internalMutation } from "../_generated/server";
+import { v } from "convex/values";
+
 export interface LearningDataPoint {
   resumeId: string;
   userId: string;
@@ -428,3 +431,93 @@ export function prepareModelUpdateWebhook(weights: ModelWeights, accuracy?: numb
     }))
   };
 }
+
+/**
+ * Convex mutation: Learn from user feedback
+ * Updates ML model weights based on user ratings
+ */
+export const learnFromFeedback = internalMutation({
+  args: {
+    resumeId: v.string(),
+    rating: v.number(),
+    feedback: v.string(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      // Get resume data to extract features
+      const resume = await ctx.db
+        .query("resumes")
+        .filter((q) => q.eq(q.field("_id"), args.resumeId))
+        .first();
+
+      if (!resume) {
+        console.log(`[Learning] Resume ${args.resumeId} not found`);
+        return;
+      }
+
+      // Get or initialize model weights
+      let modelWeightsDoc = await ctx.db
+        .query("mlModelWeights")
+        .first();
+
+      let currentWeights: ModelWeights;
+      if (!modelWeightsDoc) {
+        currentWeights = initializeModelWeights();
+      } else {
+        currentWeights = modelWeightsDoc.weights as ModelWeights;
+      }
+
+      // Extract features from resume analysis and extractedData
+      const extractedData = resume.extractedData || {};
+      const scoreBreakdown = resume.scoreBreakdown || { keywords: 0, format: 0, completeness: 0 };
+
+      const features = {
+        keywordDensity: extractedData.keywordDensity || (scoreBreakdown.keywords / 100) || 0.5,
+        formatScore: (scoreBreakdown.format / 100) || 0.75,
+        completenessScore: (scoreBreakdown.completeness / 100) || 0.8,
+        industryMatchScore: 0.7, // Default, could be computed from category match
+        atsCompatibilityScore: (resume.score || 75) / 100,
+        experienceYears: extractedData.totalYearsExperience || 3,
+        educationLevel: extractedData.totalYearsEducation || 3,
+        hasMetrics: (extractedData.totalMetrics || 0) > 0,
+        actionVerbCount: extractedData.hasActionVerbs ? 10 : 0,
+        technicalSkillsCount: (extractedData.technicalSkills?.length || 0),
+      };
+
+      // Create learning data point
+      const dataPoint: LearningDataPoint = {
+        resumeId: args.resumeId,
+        userId: resume.userId,
+        features,
+        predictedScore: resume.score || 0,
+        actualOutcome: {
+          userRating: args.rating,
+        },
+        industry: resume.category || "general",
+        targetRole: resume.jobTitle,
+        timestamp: Date.now(),
+      };
+
+      // Update model weights
+      const newWeights = updateModelWeights(currentWeights, dataPoint, 0.01);
+
+      // Save updated weights
+      if (modelWeightsDoc) {
+        await ctx.db.patch(modelWeightsDoc._id, {
+          weights: newWeights,
+          lastUpdated: Date.now(),
+        });
+      } else {
+        await ctx.db.insert("mlModelWeights", {
+          weights: newWeights,
+          version: newWeights.version,
+          lastUpdated: Date.now(),
+        });
+      }
+
+      console.log(`[Learning] Model updated from feedback on resume ${args.resumeId} (rating: ${args.rating}/5)`);
+    } catch (error: any) {
+      console.error("[Learning] Error updating model from feedback:", error);
+    }
+  },
+});

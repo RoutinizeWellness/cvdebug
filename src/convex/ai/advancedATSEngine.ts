@@ -219,8 +219,8 @@ export function analyzeKeywordSaturation(
       weight: inJobDesc ? kwDef.weight + 2 : kwDef.weight, // Boost weight if in job desc
       matched: isMatched,
       frequency,
-      sections: detectKeywordSections(resumeText, keyword),
-      context: extractKeywordContext(resumeText, keyword),
+      sections: detectKeywordSections(resumeText, kwDef.term),
+      context: extractKeywordContext(resumeText, kwDef.term),
       relatedSkillsFound,
     };
 
