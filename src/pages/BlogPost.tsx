@@ -9,6 +9,7 @@ import { api } from "@/convex/_generated/api";
 import { useEffect } from "react";
 import { updatePageSEO } from "@/lib/seo";
 import { toast } from "sonner";
+import { SEOHead } from "@/components/SEOHead";
 
 export default function BlogPost() {
   const navigate = useNavigate();
@@ -56,9 +57,14 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Structured Data for SEO */}
-      <script type="application/ld+json">
-        {JSON.stringify({
+      <SEOHead
+        title={post.metaTitle || `${post.title} | CVDebug Blog`}
+        description={post.metaDescription || post.excerpt}
+        keywords={post.keywords || []}
+        ogType="article"
+        ogImage={post.featuredImage}
+        canonical={post.canonicalUrl || `https://cvdebug.com/blog/${post.slug}`}
+        structuredData={{
           "@context": "https://schema.org",
           "@type": "BlogPosting",
           "headline": post.title,
@@ -67,7 +73,7 @@ export default function BlogPost() {
             "@type": "Person",
             "name": post.author
           },
-          "datePublished": post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+          "datePublished": post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date().toISOString(),
           "image": post.featuredImage,
           "publisher": {
             "@type": "Organization",
@@ -81,8 +87,8 @@ export default function BlogPost() {
             "@type": "WebPage",
             "@id": `https://cvdebug.com/blog/${post.slug}`
           }
-        })}
-      </script>
+        }}
+      />
 
       <NewNavbar />
 

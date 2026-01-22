@@ -2,6 +2,7 @@
 import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
 import { scoreSDRResume, scoreResumeByRole, GLOBAL_INDUSTRY_STANDARDS } from "./resumeScoring";
+import { getCachedPrediction, extractFeaturesOptimized } from "./optimizedMLEngine";
 
 // Cast internal to any to avoid type instantiation issues
 const internalAny = require("../_generated/api").internal;
@@ -43,6 +44,11 @@ export const analyzeResumeWithML = internalAction({
       detectedRole = await detectRoleFromResume(resumeText);
       console.log(`[ML] Auto-detected role: ${detectedRole}`);
     }
+
+    // Extract optimized features for caching and performance
+    const jobDescription = `${detectedRole} position in ${region}`;
+    const features = extractFeaturesOptimized(resumeText, jobDescription);
+    console.log(`[ML] Extracted ${Object.keys(features).length} optimized features (cache-enabled)`);
 
     // Run ML scoring based on role
     let mlResult: any;

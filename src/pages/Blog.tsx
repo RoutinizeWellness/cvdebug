@@ -8,6 +8,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect } from "react";
 import { updatePageSEO } from "@/lib/seo";
+import { SEOHead, StructuredDataTemplates } from "@/components/SEOHead";
 
 export default function Blog() {
   const navigate = useNavigate();
@@ -47,6 +48,22 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEOHead
+        title="ATS Resume Tips & Job Search Strategies Blog"
+        description="Expert advice on beating ATS systems, optimizing your resume, and landing more interviews. Learn proven strategies to get hired faster."
+        keywords={[
+          'ATS tips',
+          'resume writing',
+          'job search strategies',
+          'interview preparation',
+          'career advice',
+          'resume optimization',
+          'ATS resume scanner'
+        ]}
+        ogType="website"
+        canonical="https://cvdebug.com/blog"
+        structuredData={StructuredDataTemplates.website('CVDebug Blog', 'https://cvdebug.com/blog')}
+      />
       <NewNavbar />
 
       <main className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
