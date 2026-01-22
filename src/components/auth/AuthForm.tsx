@@ -1,5 +1,6 @@
 import { SignIn, SignUp } from "@clerk/clerk-react";
 import { Logo } from "@/components/Logo";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface AuthFormProps {
   isSignIn: boolean;
@@ -9,6 +10,8 @@ interface AuthFormProps {
 }
 
 export function AuthForm({ isSignIn, setIsSignIn, redirectUrl, clerkAppearance }: AuthFormProps) {
+  const { t } = useI18n();
+
   return (
     <div className="relative z-10 w-full max-w-md m-auto p-6">
       <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-white/50 p-8">
@@ -17,20 +20,20 @@ export function AuthForm({ isSignIn, setIsSignIn, redirectUrl, clerkAppearance }
         </div>
 
         <div className="mb-6 flex p-1 bg-slate-100/80 rounded-lg relative">
-          <div 
+          <div
             className={`absolute inset-y-1 w-[calc(50%-4px)] bg-white rounded-md shadow-sm transition-all duration-300 ease-out ${isSignIn ? 'left-1' : 'left-[calc(50%+0px)]'}`}
           />
           <button
             onClick={() => setIsSignIn(true)}
             className={`flex-1 relative z-10 py-2 text-sm font-medium transition-colors duration-200 ${isSignIn ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
           >
-            Sign In
+            {t.auth.signIn}
           </button>
           <button
             onClick={() => setIsSignIn(false)}
             className={`flex-1 relative z-10 py-2 text-sm font-medium transition-colors duration-200 ${!isSignIn ? 'text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
           >
-            Sign Up
+            {t.auth.signUp}
           </button>
         </div>
 
@@ -52,7 +55,7 @@ export function AuthForm({ isSignIn, setIsSignIn, redirectUrl, clerkAppearance }
 
         <div className="mt-6 pt-6 border-t border-slate-100 text-center">
           <p className="text-xs text-slate-400">
-            By continuing, you agree to our Terms of Service and Privacy Policy.
+            {t.auth.termsAgreement}
           </p>
         </div>
       </div>

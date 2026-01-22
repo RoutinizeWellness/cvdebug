@@ -150,11 +150,11 @@ export default function AuthPage() {
             </div>
             
             <h2 className="text-3xl font-bold mb-4 leading-tight">
-              Debug Your Resume Like a Pro
+              {t.auth.headline}
             </h2>
-            
+
             <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-              Join thousands of job seekers who've optimized their resumes with AI-powered insights and landed their dream jobs.
+              {t.auth.subtitle}
             </p>
 
             <div className="space-y-4">
@@ -163,28 +163,28 @@ export default function AuthPage() {
                   <div className="h-2 w-2 rounded-full bg-[#3B82F6]"></div>
                 </div>
                 <div>
-                  <p className="font-semibold">ATS Robot Vision</p>
-                  <p className="text-sm text-slate-400">See exactly what recruiters' systems see</p>
+                  <p className="font-semibold">{t.auth.atsVision}</p>
+                  <p className="text-sm text-slate-400">{t.auth.atsVisionDesc}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <div className="h-2 w-2 rounded-full bg-[#8B5CF6]"></div>
                 </div>
                 <div>
-                  <p className="font-semibold">AI-Powered Analysis</p>
-                  <p className="text-sm text-slate-400">Get instant feedback on keywords, format, and impact</p>
+                  <p className="font-semibold">{t.auth.aiAnalysis}</p>
+                  <p className="text-sm text-slate-400">{t.auth.aiAnalysisDesc}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="h-6 w-6 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <div className="h-2 w-2 rounded-full bg-[#3B82F6]"></div>
                 </div>
                 <div>
-                  <p className="font-semibold">Track Applications</p>
-                  <p className="text-sm text-slate-400">Manage your job search in one place</p>
+                  <p className="font-semibold">{t.auth.trackApps}</p>
+                  <p className="text-sm text-slate-400">{t.auth.trackAppsDesc}</p>
                 </div>
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function AuthPage() {
 
           {/* Footer text */}
           <p className="text-center text-xs text-[#64748B] mt-6">
-            By continuing, you agree to our Terms of Service and Privacy Policy
+            {t.auth.termsAgreement}
           </p>
         </motion.div>
       </div>
