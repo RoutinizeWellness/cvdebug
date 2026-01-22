@@ -133,6 +133,7 @@ import type * as seedBlog from "../seedBlog.js";
 import type * as seo_sitemap from "../seo/sitemap.js";
 import type * as smartEmailDispatcher from "../smartEmailDispatcher.js";
 import type * as sprintExpiration from "../sprintExpiration.js";
+import type * as system_healthCheck from "../system/healthCheck.js";
 import type * as testEmail from "../testEmail.js";
 import type * as testing from "../testing.js";
 import type * as unlockResume from "../unlockResume.js";
@@ -275,6 +276,7 @@ declare const fullApi: ApiFromModules<{
   "seo/sitemap": typeof seo_sitemap;
   smartEmailDispatcher: typeof smartEmailDispatcher;
   sprintExpiration: typeof sprintExpiration;
+  "system/healthCheck": typeof system_healthCheck;
   testEmail: typeof testEmail;
   testing: typeof testing;
   unlockResume: typeof unlockResume;
