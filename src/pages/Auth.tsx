@@ -4,7 +4,7 @@ import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { Navigate } from "react-router";
 import { useSearchParams } from "react-router";
-import { Loader2, Terminal, Mail, Key } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { getDeviceFingerprint } from "@/lib/deviceFingerprint";
@@ -145,8 +145,7 @@ export default function AuthPage() {
             transition={{ duration: 0.6 }}
           >
             <div className="flex items-center gap-3 mb-8">
-              <Terminal className="h-10 w-10 text-[#3B82F6]" />
-              <h1 className="text-4xl font-black tracking-tight">CVDebug</h1>
+              <Logo className="h-10 w-auto" />
             </div>
             
             <h2 className="text-3xl font-bold mb-4 leading-tight">
