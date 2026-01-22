@@ -69,80 +69,73 @@ export const getPersonalizedRecommendations = query({
     }> = [];
 
     if (currentResume && currentResume.status === "completed") {
-      // Analyze ATS score
-      if ((currentResume.atsScore || 0) < 70) {
+      const currentScore = currentResume.score || 0;
+
+      // Analyze overall score
+      if (currentScore < 70) {
         recommendations.push({
           type: "critical",
-          category: "ATS Optimization",
-          title: "Improve ATS Compatibility",
-          description: "Your resume scores below 70% on ATS systems. Add more relevant keywords and improve formatting.",
+          category: "Overall Quality",
+          title: "Improve Resume Score",
+          description: "Your resume scores below 70%. Focus on adding relevant keywords, improving formatting, and quantifying achievements.",
           impact: 25,
           actionable: true,
         });
-      }
-
-      // Analyze keyword density
-      if ((currentResume.keywordDensity || 0) < 0.03) {
+      } else if (currentScore < 80) {
         recommendations.push({
           type: "high",
-          category: "Keywords",
-          title: "Increase Keyword Relevance",
-          description: "Your resume lacks industry-specific keywords. Add 5-7 more relevant terms for your target role.",
+          category: "Optimization",
+          title: "Boost Your Score",
+          description: "You're close to excellence! Add more industry-specific keywords and quantifiable results to reach 80+.",
           impact: 20,
           actionable: true,
         });
       }
 
-      // Analyze formatting
-      if ((currentResume.formattingScore || 0) < 75) {
+      // Check for analysis content
+      const analysisText = (currentResume.analysis || "").toLowerCase();
+      const ocrText = (currentResume.ocrText || "").toLowerCase();
+      const combinedText = analysisText + " " + ocrText;
+
+      // Check for keywords mentioned in analysis
+      if (analysisText.includes("keyword") || analysisText.includes("missing")) {
+        recommendations.push({
+          type: "high",
+          category: "Keywords",
+          title: "Optimize Keywords",
+          description: "Your analysis suggests missing keywords. Review the detailed feedback and add relevant industry terms.",
+          impact: 22,
+          actionable: true,
+        });
+      }
+
+      // Check for formatting issues
+      if (analysisText.includes("format") || analysisText.includes("structure")) {
         recommendations.push({
           type: "medium",
           category: "Formatting",
-          title: "Enhance Visual Structure",
-          description: "Improve section headers, bullet points, and whitespace for better readability.",
+          title: "Improve Document Structure",
+          description: "Your resume formatting needs attention. Ensure clear sections, consistent styling, and proper spacing.",
           impact: 15,
           actionable: true,
         });
       }
 
-      // Check for missing sections
-      const parsedText = currentResume.parsedText || "";
-      if (!parsedText.toLowerCase().includes("experience")) {
-        recommendations.push({
-          type: "critical",
-          category: "Content",
-          title: "Add Work Experience Section",
-          description: "Your resume is missing a clear work experience section, which is essential for ATS systems.",
-          impact: 30,
-          actionable: true,
-        });
-      }
-
-      // Check resume length
-      const wordCount = parsedText.split(/\s+/).length;
-      if (wordCount < 200) {
+      // Check if OCR text is very short (indicates potential issues)
+      if (ocrText.length > 0 && ocrText.length < 200) {
         recommendations.push({
           type: "high",
           category: "Content",
           title: "Expand Resume Content",
-          description: "Your resume is too short. Aim for 400-600 words with detailed accomplishments and metrics.",
+          description: "Your resume appears to be too brief. Add detailed accomplishments, metrics, and relevant experiences.",
           impact: 18,
-          actionable: true,
-        });
-      } else if (wordCount > 800) {
-        recommendations.push({
-          type: "medium",
-          category: "Content",
-          title: "Condense Resume Content",
-          description: "Your resume may be too long. Focus on the most impactful achievements and remove redundancies.",
-          impact: 12,
           actionable: true,
         });
       }
 
       // Check for quantifiable achievements
-      const hasNumbers = /\d+/.test(parsedText);
-      if (!hasNumbers) {
+      const hasNumbers = /\d+/.test(ocrText);
+      if (!hasNumbers && ocrText.length > 0) {
         recommendations.push({
           type: "high",
           category: "Impact",
@@ -154,9 +147,9 @@ export const getPersonalizedRecommendations = query({
       }
     }
 
-    // Industry-specific recommendations based on detected role
-    if (currentResume && currentResume.targetRole) {
-      const role = currentResume.targetRole.toLowerCase();
+    // Industry-specific recommendations based on job title if available
+    if (currentResume && currentResume.jobTitle) {
+      const role = currentResume.jobTitle.toLowerCase();
 
       if (role.includes("engineer") || role.includes("developer")) {
         recommendations.push({
@@ -264,7 +257,7 @@ export const getNextBestActions = query({
     }
 
     // Check for incomplete resumes
-    const incompleteResumes = resumes.filter(r => r.status === "pending" || r.status === "processing");
+    const incompleteResumes = resumes.filter(r => r.status === "processing" || r.status === "deep_processing");
     if (incompleteResumes.length > 0) {
       actions.push({
         priority: "medium",

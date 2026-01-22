@@ -26,7 +26,9 @@ export const predictJobMatchScore = query({
       };
     }
 
-    const parsedText = (resume.parsedText || "").toLowerCase();
+    const ocrText = (resume.ocrText || "").toLowerCase();
+    const analysisText = (resume.analysis || "").toLowerCase();
+    const combinedText = ocrText + " " + analysisText;
     const jobTitle = args.jobTitle.toLowerCase();
     const jobDescription = (args.jobDescription || "").toLowerCase();
 
@@ -40,7 +42,7 @@ export const predictJobMatchScore = query({
     // Factor 1: Title match (weight: 25%)
     const titleWords = jobTitle.split(/\s+/);
     const titleMatchCount = titleWords.filter(word =>
-      word.length > 3 && parsedText.includes(word)
+      word.length > 3 && combinedText.includes(word)
     ).length;
     const titleMatchScore = Math.min(100, (titleMatchCount / titleWords.length) * 100);
     factors.push({
@@ -50,18 +52,17 @@ export const predictJobMatchScore = query({
       impact: titleMatchScore > 60 ? "positive" : titleMatchScore > 30 ? "neutral" : "negative",
     });
 
-    // Factor 2: Keyword relevance (weight: 30%)
-    const keywords = resume.keywords || [];
+    // Factor 2: Content relevance (weight: 30%)
     const jobKeywords = jobDescription.split(/\s+/)
       .filter(word => word.length > 4)
       .slice(0, 50);
 
-    const keywordMatches = keywords.filter(kw =>
-      jobKeywords.some(jk => jk.includes(kw.toLowerCase()) || kw.toLowerCase().includes(jk))
+    const contentMatches = jobKeywords.filter((kw: string) =>
+      combinedText.includes(kw.toLowerCase())
     );
-    const keywordScore = Math.min(100, (keywordMatches.length / Math.max(keywords.length, 1)) * 150);
+    const keywordScore = Math.min(100, (contentMatches.length / Math.max(jobKeywords.length, 1)) * 150);
     factors.push({
-      factor: "Keyword Match",
+      factor: "Content Match",
       score: Math.round(keywordScore),
       weight: 30,
       impact: keywordScore > 70 ? "positive" : keywordScore > 40 ? "neutral" : "negative",
@@ -72,14 +73,14 @@ export const predictJobMatchScore = query({
     if (jobTitle.includes("senior") || jobTitle.includes("lead") || jobTitle.includes("principal")) {
       // Check for senior indicators
       const seniorIndicators = ["led", "managed", "architected", "designed", "directed"];
-      const seniorMatches = seniorIndicators.filter(ind => parsedText.includes(ind)).length;
+      const seniorMatches = seniorIndicators.filter(ind => combinedText.includes(ind)).length;
       experienceScore = Math.min(100, 40 + (seniorMatches * 15));
     } else if (jobTitle.includes("junior") || jobTitle.includes("entry")) {
       // Junior roles - less experience is fine
       experienceScore = 75;
     } else {
       // Mid-level - check for relevant experience
-      const hasExperience = parsedText.includes("experience") || parsedText.includes("years");
+      const hasExperience = combinedText.includes("experience") || combinedText.includes("years");
       experienceScore = hasExperience ? 70 : 50;
     }
     factors.push({
@@ -89,22 +90,23 @@ export const predictJobMatchScore = query({
       impact: experienceScore > 65 ? "positive" : experienceScore > 45 ? "neutral" : "negative",
     });
 
-    // Factor 4: ATS compatibility (weight: 15%)
-    const atsScore = resume.atsScore || 0;
-    factors.push({
-      factor: "ATS Compatibility",
-      score: Math.round(atsScore),
-      weight: 15,
-      impact: atsScore > 75 ? "positive" : atsScore > 60 ? "neutral" : "negative",
-    });
-
-    // Factor 5: Overall resume quality (weight: 10%)
-    const overallScore = resume.score || 0;
+    // Factor 4: Resume quality (weight: 15%)
+    const resumeScore = resume.score || 0;
     factors.push({
       factor: "Resume Quality",
-      score: Math.round(overallScore),
+      score: Math.round(resumeScore),
+      weight: 15,
+      impact: resumeScore > 75 ? "positive" : resumeScore > 60 ? "neutral" : "negative",
+    });
+
+    // Factor 5: Analysis completeness (weight: 10%)
+    const hasDetailedAnalysis = (analysisText.length > 100);
+    const analysisScore = hasDetailedAnalysis ? 80 : 50;
+    factors.push({
+      factor: "Analysis Completeness",
+      score: analysisScore,
       weight: 10,
-      impact: overallScore > 75 ? "positive" : overallScore > 60 ? "neutral" : "negative",
+      impact: hasDetailedAnalysis ? "positive" : "neutral",
     });
 
     // Calculate weighted match score
@@ -113,9 +115,9 @@ export const predictJobMatchScore = query({
 
     // Calculate confidence based on available data
     const hasDescription = jobDescription.length > 50;
-    const hasKeywords = keywords.length > 3;
-    const hasGoodATS = atsScore > 60;
-    const confidenceFactors = [hasDescription, hasKeywords, hasGoodATS].filter(Boolean).length;
+    const hasContent = combinedText.length > 200;
+    const hasGoodScore = resumeScore > 60;
+    const confidenceFactors = [hasDescription, hasContent, hasGoodScore].filter(Boolean).length;
     const confidence = Math.min(100, 40 + (confidenceFactors * 20));
 
     return {
@@ -174,10 +176,9 @@ export const predictApplicationSuccess = query({
     else if (currentScore > 70) successProbability += 15;
     else if (currentScore > 60) successProbability += 5;
 
-    // Factor: ATS score
-    const atsScore = resume.atsScore || 0;
-    if (atsScore > 80) successProbability += 20;
-    else if (atsScore > 70) successProbability += 10;
+    // Factor: Resume completeness
+    const hasAnalysis = (resume.analysis || "").length > 100;
+    if (hasAnalysis) successProbability += 15;
 
     // Factor: Historical performance
     if (avgScore > 75) successProbability += 10;
@@ -196,11 +197,8 @@ export const predictApplicationSuccess = query({
     if (currentScore < 70) {
       recommendations.push("Improve overall resume score to above 70%");
     }
-    if (atsScore < 75) {
-      recommendations.push("Optimize for ATS systems - add more relevant keywords");
-    }
-    if (!resume.keywords || resume.keywords.length < 10) {
-      recommendations.push("Include more industry-specific keywords");
+    if (!hasAnalysis) {
+      recommendations.push("Complete full analysis to get detailed feedback");
     }
     if (successProbability < 60) {
       recommendations.push("Consider tailoring your resume specifically for this role");
@@ -212,7 +210,7 @@ export const predictApplicationSuccess = query({
       recommendations,
       factors: {
         resumeQuality: Math.round(currentScore),
-        atsCompatibility: Math.round(atsScore),
+        analysisComplete: hasAnalysis,
         historicalPerformance: Math.round(avgScore),
         accountStatus: user.subscriptionTier,
       },
@@ -240,19 +238,22 @@ export const analyzeIndustryTrends = internalQuery({
     const recent = recentResumes.filter(r => r._creationTime > last30Days);
     const older = recentResumes.filter(r => r._creationTime > last90Days && r._creationTime <= last30Days);
 
-    // Count keyword frequency
-    const countKeywords = (resumes: typeof recentResumes) => {
+    // Extract keywords from analysis text
+    const extractKeywords = (resumes: typeof recentResumes) => {
       const keywordMap = new Map<string, number>();
       resumes.forEach(r => {
-        (r.keywords || []).forEach(kw => {
-          keywordMap.set(kw.toLowerCase(), (keywordMap.get(kw.toLowerCase()) || 0) + 1);
+        const text = (r.analysis || "") + " " + (r.ocrText || "");
+        // Extract words longer than 4 characters
+        const words = text.toLowerCase().match(/\b\w{5,}\b/g) || [];
+        words.forEach(word => {
+          keywordMap.set(word, (keywordMap.get(word) || 0) + 1);
         });
       });
       return keywordMap;
     };
 
-    const recentKeywords = countKeywords(recent);
-    const olderKeywords = countKeywords(older);
+    const recentKeywords = extractKeywords(recent);
+    const olderKeywords = extractKeywords(older);
 
     // Find trending keywords (growing in frequency)
     const trendingKeywords: Array<{
@@ -354,14 +355,14 @@ export const generateCareerInsights = query({
       });
     }
 
-    // Check for consistent ATS optimization
-    const atsScores = userResumes.map(r => r.atsScore || 0);
-    const avgATS = atsScores.reduce((a, b) => a + b, 0) / atsScores.length;
-    if (avgATS > 75) {
+    // Check for consistent high scores
+    const allScores = userResumes.map(r => r.score || 0);
+    const avgAllScores = allScores.reduce((a, b) => a + b, 0) / allScores.length;
+    if (avgAllScores > 75) {
       insights.push({
         type: "trend",
-        title: "ATS Optimization Expert",
-        description: `Your resumes consistently score high on ATS systems (avg: ${Math.round(avgATS)}%). This significantly improves your chances.`,
+        title: "Consistent Excellence",
+        description: `Your resumes consistently score high (avg: ${Math.round(avgAllScores)}%). This significantly improves your chances.`,
         timestamp: Date.now(),
       });
     }

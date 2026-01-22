@@ -40,7 +40,7 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
 
   const { recommendations, insights } = data;
   const visibleRecommendations = recommendations.filter(
-    (_, index) => !dismissedIds.has(`rec-${index}`)
+    (_: any, index: number) => !dismissedIds.has(`rec-${index}`)
   );
 
   const getTypeIcon = (type: string) => {
@@ -177,7 +177,7 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
       ) : (
         <div className="space-y-3">
           <AnimatePresence mode="popLayout">
-            {visibleRecommendations.map((rec, index) => {
+            {visibleRecommendations.map((rec: any, index: number) => {
               const colors = getTypeColor(rec.type);
               return (
                 <motion.div
