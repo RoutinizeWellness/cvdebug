@@ -3,7 +3,7 @@
 export default {
   providers: [
     {
-      domain: process.env.CONVEX_SITE_URL || "https://lazy-badgers-roll.vly.sh",
+      domain: process.env.CONVEX_SITE_URL || "https://cvdebug.com",
       applicationID: "convex",
     },
   ],
