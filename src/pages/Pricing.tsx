@@ -6,8 +6,12 @@ import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { useCurrency } from "@/hooks/use-currency";
 import { motion } from "framer-motion";
+import { usePresetSEO } from "@/hooks/useIntelligentSEO";
 
 export default function PricingPage() {
+  // Intelligent SEO for pricing page
+  usePresetSEO('pricing');
+
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { formatPrice, currencyInfo } = useCurrency();

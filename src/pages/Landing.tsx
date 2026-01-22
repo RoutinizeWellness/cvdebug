@@ -9,46 +9,20 @@ import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
 import { useEffect } from "react";
-import { updatePageSEO } from "@/lib/seo";
+import { usePresetSEO } from "@/hooks/useIntelligentSEO";
 
 export default function Landing() {
+  // Intelligent SEO with automatic optimization
+  usePresetSEO('landing', {
+    canonicalUrl: 'https://cvdebug.com/',
+    image: 'https://cvdebug.com/og-image.jpg',
+    socialProof: 'Trusted by 50,000+ job seekers worldwide'
+  });
+
   useEffect(() => {
     // Set body background safely to avoid hydration mismatches
     const originalBackground = document.body.style.background;
     document.body.style.background = '#FFFFFF';
-
-    // Dynamic SEO for homepage - uses the main keywords from index.html
-    updatePageSEO({
-      title: 'Free ATS Resume Scanner & Checker | Beat ATS in 10 Seconds | CVDebug',
-      description: 'Free ATS resume scanner trusted by 1000+ job seekers. See exactly what ATS robots see with Robot View technology. Get your ATS score, keyword analysis, and formatting fixes in 10 seconds. Beat applicant tracking systems.',
-      keywords: [
-        'ATS resume scanner',
-        'free ATS checker',
-        'applicant tracking system test',
-        'resume parser online',
-        'ATS optimization',
-        'resume keyword analyzer',
-        'ATS score',
-        'resume robot view',
-        'beat ATS',
-        'ATS friendly resume',
-        'resume formatting checker',
-        'ATS compatibility',
-        'job application tracker',
-        'resume screening tool',
-        'CV debugger',
-        'ATS pass rate',
-        'resume match score',
-        'keyword optimization',
-        'hiring software scanner',
-        'recruitment system checker',
-        'resume ATS scan',
-        'career tools',
-        'job search optimizer'
-      ],
-      canonical: 'https://cvdebug.com/',
-      ogImage: 'https://cvdebug.com/og-image.jpg',
-    });
 
     return () => {
       document.body.style.background = originalBackground;

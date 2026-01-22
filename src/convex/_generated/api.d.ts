@@ -112,6 +112,8 @@ import type * as linkedinProfile from "../linkedinProfile.js";
 import type * as marketing from "../marketing.js";
 import type * as migrations_syncClerkUsers from "../migrations/syncClerkUsers.js";
 import type * as ml_analyzeResumeML from "../ml/analyzeResumeML.js";
+import type * as ml_intelligentAnalyzer from "../ml/intelligentAnalyzer.js";
+import type * as ml_intelligentKeywordExtractor from "../ml/intelligentKeywordExtractor.js";
 import type * as ml_interviewQuestions from "../ml/interviewQuestions.js";
 import type * as ml_resumeScoring from "../ml/resumeScoring.js";
 import type * as mlLearning from "../mlLearning.js";
@@ -245,6 +247,8 @@ declare const fullApi: ApiFromModules<{
   marketing: typeof marketing;
   "migrations/syncClerkUsers": typeof migrations_syncClerkUsers;
   "ml/analyzeResumeML": typeof ml_analyzeResumeML;
+  "ml/intelligentAnalyzer": typeof ml_intelligentAnalyzer;
+  "ml/intelligentKeywordExtractor": typeof ml_intelligentKeywordExtractor;
   "ml/interviewQuestions": typeof ml_interviewQuestions;
   "ml/resumeScoring": typeof ml_resumeScoring;
   mlLearning: typeof mlLearning;

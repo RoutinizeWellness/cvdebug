@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Logo } from "@/components/Logo";
 import { useI18n } from "@/contexts/I18nContext";
+import { usePresetSEO } from "@/hooks/useIntelligentSEO";
 import {
   Loader2,
   Upload,
@@ -73,6 +74,9 @@ const EliteMatchToolLazy = lazy(() => import("@/components/dashboard/EliteMatchT
 const apiAny = api as any;
 
 export default function Dashboard() {
+  // Intelligent SEO for dashboard
+  usePresetSEO('dashboard');
+
   const { user, signOut, isAuthenticated, isLoading } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
