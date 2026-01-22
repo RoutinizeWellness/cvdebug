@@ -11,7 +11,7 @@ export const getBaseUrl = (): string => {
   }
   
   // For SSR/build time, use environment variable or default
-  return import.meta.env.VITE_BASE_URL || 'https://cvdebug.com';
+  return import.meta.env.VITE_BASE_URL || 'https://resumeatsoptimizer.vly.site';
 };
 
 // Export as constant for convenience
