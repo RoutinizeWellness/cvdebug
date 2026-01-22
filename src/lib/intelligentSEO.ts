@@ -452,6 +452,17 @@ export interface SEOAnalysisResult {
     primary: number;
     secondary: Record<string, number>;
   };
+  // Additional metrics for detailed analysis
+  wordCount: number;
+  keywordCount: number;
+  keywordDensity: number;
+  hasH1: boolean;
+  headingCount: number;
+  internalLinks: number;
+  externalLinks: number;
+  imageCount: number;
+  imagesWithAlt: number;
+  readabilityScore: number;
 }
 
 export function analyzeSEOContent(
@@ -548,11 +559,19 @@ export function analyzeSEOContent(
   // Check readability (simple Flesch-Kincaid approximation)
   const sentences = content.split(/[.!?]+/).length;
   const avgWordsPerSentence = wordCount / sentences;
+  const readabilityScore = Math.max(0, Math.min(100, 100 - (avgWordsPerSentence - 10) * 5));
 
   if (avgWordsPerSentence > 20) {
     score -= 5;
     recommendations.push('Reduce average sentence length (currently > 20 words)');
   }
+
+  // Count headings
+  const headingCount = h1Count + h2Count + (content.match(/<h3/gi) || []).length;
+
+  // Count internal vs external links
+  const internalLinks = (content.match(/<a\s+href=["'](?!http)/gi) || []).length;
+  const externalLinks = linkCount - internalLinks;
 
   return {
     score: Math.max(0, score),
@@ -561,6 +580,16 @@ export function analyzeSEOContent(
     keyword_usage: {
       primary: primaryMatches,
       secondary: secondaryUsage
-    }
+    },
+    wordCount,
+    keywordCount: primaryMatches,
+    keywordDensity: primaryDensity,
+    hasH1: h1Count === 1,
+    headingCount,
+    internalLinks,
+    externalLinks,
+    imageCount,
+    imagesWithAlt: altCount,
+    readabilityScore
   };
 }
