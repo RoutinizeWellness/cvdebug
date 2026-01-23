@@ -95,9 +95,9 @@ export default function AuthPage() {
       footerAction: "hidden",
       footerActionLink: "hidden",
       footerActionText: "hidden",
-      formButtonPrimary: "bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#7C3AED] hover:to-[#4F46E5] text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all rounded-lg py-3 font-bold w-full border-0 transform hover:-translate-y-0.5",
-      formFieldLabel: "text-xs font-mono text-[#3B82F6] font-medium tracking-wide uppercase ml-1 mb-1.5",
-      formFieldInput: "block w-full pl-10 pr-3 py-3 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/50 focus:shadow-[0_0_20px_rgba(59,130,246,0.2)] font-mono transition-all duration-300",
+      formButtonPrimary: "bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#0F172A] hover:to-[#1E293B] text-white shadow-[0_10px_40px_-10px_rgba(30,41,59,0.3)] hover:shadow-[0_10px_40px_-10px_rgba(30,41,59,0.5)] transition-all rounded-lg py-3 font-bold w-full border-0 transform hover:-translate-y-0.5",
+      formFieldLabel: "text-xs font-mono text-[#1E293B] font-medium tracking-wide uppercase ml-1 mb-1.5",
+      formFieldInput: "block w-full pl-10 pr-3 py-3 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#1E293B] focus:ring-2 focus:ring-[#1E293B]/50 focus:shadow-[0_0_20px_rgba(30,41,59,0.2)] font-mono transition-all duration-300",
       formFieldRow: "w-full space-y-1",
       formFieldInputGroup: "w-full relative group",
       form: "w-full flex flex-col gap-5",
@@ -105,14 +105,14 @@ export default function AuthPage() {
       identityPreviewEditButton: "hidden",
       footerPages: "hidden",
       footerPagesLink: "hidden",
-      socialButtonsBlockButton: "flex-1 flex items-center justify-center gap-2 h-11 rounded-lg bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#3B82F6] transition-all duration-200 text-sm font-medium text-[#475569] hover:text-[#0F172A] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]",
+      socialButtonsBlockButton: "flex-1 flex items-center justify-center gap-2 h-11 rounded-lg bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#1E293B] transition-all duration-200 text-sm font-medium text-[#475569] hover:text-[#0F172A] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]",
       socialButtonsBlockButtonText: "text-[#475569] font-medium",
       socialButtonsIconButton: "text-[#0F172A]",
       dividerLine: "border-[#E2E8F0]",
       dividerText: "text-[#64748B] text-xs font-mono uppercase tracking-widest mx-4",
-      formFieldAction: "text-xs text-[#3B82F6] hover:text-[#8B5CF6] transition-colors",
-      otpCodeFieldInput: "bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/50 focus:shadow-[0_0_15px_rgba(59,130,246,0.2)] rounded-lg transition-all duration-300",
-      formResendCodeLink: "text-[#3B82F6] hover:text-[#8B5CF6] font-medium",
+      formFieldAction: "text-xs text-[#1E293B] hover:text-[#334155] transition-colors",
+      otpCodeFieldInput: "bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] focus:border-[#1E293B] focus:ring-2 focus:ring-[#1E293B]/50 focus:shadow-[0_0_15px_rgba(30,41,59,0.2)] rounded-lg transition-all duration-300",
+      formResendCodeLink: "text-[#1E293B] hover:text-[#334155] font-medium",
       identityPreview: "bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg",
       formFieldSuccessText: "text-emerald-500 font-semibold text-xs",
       formFieldErrorText: "text-red-500 font-semibold text-xs",
@@ -128,14 +128,14 @@ export default function AuthPage() {
         {/* Animated grid pattern */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
-            backgroundImage: `linear-gradient(#3B82F6 1px, transparent 1px), linear-gradient(90deg, #3B82F6 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(#1E293B 1px, transparent 1px), linear-gradient(90deg, #1E293B 1px, transparent 1px)`,
             backgroundSize: '50px 50px',
           }}></div>
         </div>
 
         {/* Ambient glow */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#3B82F6]/20 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#8B5CF6]/20 rounded-full blur-[120px]"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#1E293B]/20 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#334155]/20 rounded-full blur-[120px]"></div>
 
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center px-16 text-white">
@@ -158,8 +158,8 @@ export default function AuthPage() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="h-2 w-2 rounded-full bg-[#3B82F6]"></div>
+                <div className="h-6 w-6 rounded-full bg-[#64748B]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="h-2 w-2 rounded-full bg-[#64748B]"></div>
                 </div>
                 <div>
                   <p className="font-semibold">{t.auth.atsVision}</p>
@@ -168,8 +168,8 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="h-2 w-2 rounded-full bg-[#8B5CF6]"></div>
+                <div className="h-6 w-6 rounded-full bg-[#64748B]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="h-2 w-2 rounded-full bg-[#64748B]"></div>
                 </div>
                 <div>
                   <p className="font-semibold">{t.auth.aiAnalysis}</p>
@@ -178,8 +178,8 @@ export default function AuthPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-[#3B82F6]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="h-2 w-2 rounded-full bg-[#3B82F6]"></div>
+                <div className="h-6 w-6 rounded-full bg-[#64748B]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="h-2 w-2 rounded-full bg-[#64748B]"></div>
                 </div>
                 <div>
                   <p className="font-semibold">{t.auth.trackApps}</p>
@@ -222,7 +222,7 @@ export default function AuthPage() {
               onClick={() => setIsSignIn(true)}
               className={`flex-1 py-3 px-4 rounded-md font-bold text-sm transition-all duration-200 ${
                 isSignIn
-                  ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]'
+                  ? 'bg-gradient-to-r from-[#1E293B] to-[#334155] text-white shadow-[0_10px_40px_-10px_rgba(30,41,59,0.3)]'
                   : 'text-[#64748B] hover:text-[#0F172A]'
               }`}
             >
@@ -232,7 +232,7 @@ export default function AuthPage() {
               onClick={() => setIsSignIn(false)}
               className={`flex-1 py-3 px-4 rounded-md font-bold text-sm transition-all duration-200 ${
                 !isSignIn
-                  ? 'bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]'
+                  ? 'bg-gradient-to-r from-[#1E293B] to-[#334155] text-white shadow-[0_10px_40px_-10px_rgba(30,41,59,0.3)]'
                   : 'text-[#64748B] hover:text-[#0F172A]'
               }`}
             >

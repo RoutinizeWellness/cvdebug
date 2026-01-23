@@ -379,7 +379,7 @@ export default function Dashboard() {
                 </div>
                 <Button
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-6 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.3)] transition-all duration-200 flex items-center gap-2"
+                  className="px-6 py-3 bg-[#1E293B] hover:bg-[#0F172A] text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.3)] transition-all duration-200 flex items-center gap-2"
                   data-onboarding="upload-button"
                 >
                   <Upload className="h-5 w-5" />
@@ -408,7 +408,7 @@ export default function Dashboard() {
             {/* AI Tools Section */}
             <div>
               <h2 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
-                <span className="bg-[#3B82F6] w-1.5 h-6 rounded-full inline-block"></span>
+                <span className="bg-[#1E293B] w-1.5 h-6 rounded-full inline-block"></span>
                 {t.dashboard.tools}
               </h2>
 
@@ -416,15 +416,15 @@ export default function Dashboard() {
                 {/* AI Bullet Rewriter */}
                 <button
                   onClick={() => setCurrentView('bullet-rewriter')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-blue-400 hover:shadow-[0_8px_30px_rgba(59,130,246,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-700 hover:shadow-[0_8px_30px_rgba(59,130,246,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0 text-[#3B82F6] group-hover:scale-110 transition-transform duration-300">
+                    <div className="h-12 w-12 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0 text-[#1E293B] group-hover:scale-110 transition-transform duration-300">
                       <span className="material-symbols-outlined">auto_fix_high</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#3B82F6] transition-colors flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#1E293B] transition-colors flex items-center gap-2">
                         {t.dashboard.bulletRewriter}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
@@ -435,7 +435,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-blue-400">arrow_forward</span>
+                      <span className="material-symbols-outlined text-slate-600">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -443,15 +443,15 @@ export default function Dashboard() {
                 {/* Cover Letter Generator */}
                 <button
                   onClick={() => setCurrentView('cover-letter')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-purple-400 hover:shadow-[0_8px_30px_rgba(168,85,247,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-600 hover:shadow-[0_8px_30px_rgba(168,85,247,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-purple-50 border border-purple-100 flex items-center justify-center flex-shrink-0 text-[#8B5CF6] group-hover:scale-110 transition-transform duration-300">
+                    <div className="h-12 w-12 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center flex-shrink-0 text-[#334155] group-hover:scale-110 transition-transform duration-300">
                       <span className="material-symbols-outlined">description</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#8B5CF6] transition-colors flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#334155] transition-colors flex items-center gap-2">
                         {t.dashboard.coverLetterGen}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
@@ -462,7 +462,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-[#8B5CF6]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[#334155]">arrow_forward</span>
                     </div>
                   </div>
                 </button>
@@ -537,13 +537,13 @@ export default function Dashboard() {
               <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-[#0F172A]">Credits</h3>
-                  <span className="text-2xl font-black text-[#3B82F6]">
+                  <span className="text-2xl font-black text-[#1E293B]">
                     {currentUser?.credits || 0}
                   </span>
                 </div>
                 <Button
                   onClick={() => setShowPricing(true)}
-                  className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]"
+                  className="w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]"
                 >
                   Buy More Credits
                 </Button>
@@ -614,7 +614,7 @@ export default function Dashboard() {
   if (isLoading || currentUser === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
-        <Loader2 className="h-8 w-8 text-[#3B82F6] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#1E293B] animate-spin" />
       </div>
     );
   }
@@ -633,7 +633,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#3B82F6] selection:text-white overflow-hidden">
+    <div className="flex h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#1E293B] selection:text-white overflow-hidden">
       <Sidebar
         categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}
