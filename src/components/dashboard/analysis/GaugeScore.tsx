@@ -15,8 +15,8 @@ export function GaugeScore({ score }: GaugeScoreProps) {
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <div className="flex-shrink-0 relative flex items-center justify-center">
-      <svg className="size-64 md:size-72" viewBox="0 0 100 100">
+    <div className="flex-shrink-0 relative flex items-center justify-center w-full max-w-[280px] mx-auto">
+      <svg className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72" viewBox="0 0 100 100">
         <circle 
           className="text-stone-800 stroke-current" 
           cx="50" 
@@ -42,8 +42,8 @@ export function GaugeScore({ score }: GaugeScoreProps) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <motion.span 
-          className="text-5xl font-bold !text-[#0F172A]"
+        <motion.span
+          className="text-4xl sm:text-5xl md:text-6xl font-bold !text-[#0F172A]"
           style={{ color: '#ffffff' }}
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -51,7 +51,7 @@ export function GaugeScore({ score }: GaugeScoreProps) {
         >
           {score}
         </motion.span>
-        <span className="text-sm font-medium !text-zinc-400 mt-1" style={{ color: '#a1a1aa' }}>out of 100</span>
+        <span className="text-xs sm:text-sm font-medium !text-zinc-400 mt-0.5 sm:mt-1" style={{ color: '#a1a1aa' }}>out of 100</span>
       </div>
     </div>
   );

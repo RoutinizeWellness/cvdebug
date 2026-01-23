@@ -221,7 +221,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Z-Pattern Layout: Top Row - Mobile Optimized */}
-      <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* 1. THE GLOBAL SCORE GAUGE - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -410,7 +410,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       </motion.div>
 
       {/* Bottom Row: Contact Info + Seniority + Impact */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {/* 4. CONTACT & SOCIALS */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
