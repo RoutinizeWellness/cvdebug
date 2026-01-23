@@ -256,15 +256,13 @@ export default function AuthPage() {
               <SignIn
                 appearance={clerkAppearance}
                 routing="virtual"
-                forceRedirectUrl={redirectUrl}
-                afterSignInUrl={redirectUrl}
+                fallbackRedirectUrl={redirectUrl}
               />
             ) : (
               <SignUp
                 appearance={clerkAppearance}
                 routing="virtual"
-                forceRedirectUrl={redirectUrl}
-                afterSignUpUrl={redirectUrl}
+                fallbackRedirectUrl={redirectUrl}
               />
             )}
           </div>
