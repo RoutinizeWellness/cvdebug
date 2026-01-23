@@ -27,65 +27,74 @@ export default function PricingPage() {
   const pricingTiers = [
     {
       name: "FREE Debug",
-      description: "See what's broken. Get the diagnosis.",
+      tag: "EL GANCHO",
+      tagColor: "bg-[#64748B]/10 text-[#64748B]",
+      description: "Descubre qué keywords NO ve el robot. Detección de invisibilidad.",
       price: `${currencyInfo.symbol}0`,
       period: "forever",
       features: [
-        "Robot View Preview (blurred)",
-        "Global ATS Score",
-        "Basic [ERROR] Labels",
-        "Seniority Match Preview",
+        { text: "Detección de Invisibilidad (2 keywords)", icon: "[ERR]", guaranteed: false },
+        { text: "Global ATS Score", icon: "[OK]", guaranteed: false },
+        { text: "Vista Robot (bloqueada)", icon: "[ERR]", guaranteed: false },
+        { text: "Preview Seniority Match", icon: "[FIX]", guaranteed: false },
       ],
-      buttonText: "Run Free Scan",
+      buttonText: "Escanear Gratis",
       buttonVariant: "outline" as const,
       borderColor: "border-slate-800",
       hoverBorder: "hover:border-slate-600",
       plan: "free",
     },
     {
-      name: "24-Hour Pass",
-      description: "Everything you need to land an interview this week. No subscriptions. No BS.",
+      name: "Pase 24h",
+      tag: "HOT FIX / URGENTE",
+      tagColor: "bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/30",
+      description: "Debug Inmediato. Solución para entrevista mañana. Sin suscripciones.",
       price: formatPrice("single_scan"),
-      period: "24 hours",
+      period: "24 horas",
       features: [
-        "Unlimited CV Scans (24h)",
-        "Full Robot X-Ray View",
-        "ERROR/WARN Labels + Fixes",
-        "Seniority Match Analysis",
-        "Keyword Gap Detection",
-        "Battle Plan Generator",
-        "Bullet Point Rewriter",
+        { text: "Scans Ilimitados (24h)", icon: "[OK]", guaranteed: true },
+        { text: "Vista X-Ray Robot Completa", icon: "[OK]", guaranteed: true },
+        { text: "Etiquetas [ERROR] + [WARN] + Fixes", icon: "[FIX]", guaranteed: true },
+        { text: "Análisis Seniority Match", icon: "[OK]", guaranteed: true },
+        { text: "Detector Gap de Keywords", icon: "[FIX]", guaranteed: true },
+        { text: "Generador Battle Plan", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible por ATS", icon: "[OK]", guaranteed: true },
       ],
-      buttonText: "Get 24h Access",
+      buttonText: "Acceso 24h →",
       buttonVariant: "default" as const,
       borderColor: "border-[#0F172A]/50",
-      hoverBorder: "hover:border-[#3B82F6]/50",
+      hoverBorder: "hover:border-[#EF4444]/50",
       plan: "single_scan",
       highlighted: false,
+      showGuarantee: true,
     },
     {
-      name: "7-Day Sprint",
-      description: "Debug your CV, land interviews, win offers. One week to ship your career.",
+      name: "Sprint 7 Días",
+      tag: "INTENSIVO / RECOMENDADO",
+      tagColor: "bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white",
+      description: "Modo Bestia. Ataque total de 7 días para conseguir trabajo ya.",
       price: formatPrice("sprint_7day"),
-      period: "7 days",
+      period: "7 días",
       features: [
-        "Unlimited CV Scans (7 days)",
-        "Robot View Terminal (dirty console)",
-        "Missing Signals Detector",
-        "Seniority Match Audit",
-        "Industry Selector (FAANG/Deloitte/Finance)",
-        "Bullet Tone Elevator",
-        "Interview Battle Plan",
-        "Export Sanitized CV (ATS-safe)",
-        "BONUS: Cover Letter Gen + LinkedIn Optimizer",
+        { text: "Scans Ilimitados (7 días)", icon: "[OK]", guaranteed: true },
+        { text: "Robot View Terminal (consola dirty)", icon: "[OK]", guaranteed: true },
+        { text: "Detector Missing Signals", icon: "[FIX]", guaranteed: true },
+        { text: "Auditoría Seniority Match", icon: "[OK]", guaranteed: true },
+        { text: "Selector Industria (FAANG/Finanzas)", icon: "[OK]", guaranteed: true },
+        { text: "Elevador Tono Viñetas (AI Rewrite)", icon: "[FIX]", guaranteed: true },
+        { text: "Battle Plan Entrevistas", icon: "[OK]", guaranteed: true },
+        { text: "Export CV Sanitizado (ATS-safe)", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
+        { text: "BONUS: Cover Letter + LinkedIn", icon: "[OK]", guaranteed: true },
       ],
-      buttonText: "Start 7-Day Sprint",
+      buttonText: "Empezar Sprint 7 Días →",
       buttonVariant: "premium" as const,
       borderColor: "border-indigo-500/30",
       hoverBorder: "hover:border-indigo-500/50",
       plan: "sprint_7day",
       highlighted: true,
-      badge: "RECOMMENDED",
+      badge: "MEJOR VALOR",
+      showGuarantee: true,
     },
   ];
 
@@ -188,22 +197,25 @@ export default function PricingPage() {
                     : "border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)]"
                 }`}
               >
+                {/* Tag (para todos los tiers) */}
+                {tier.tag && (
+                  <div className="absolute top-5 right-5">
+                    <span className={`inline-flex items-center px-3 py-1 rounded text-[10px] font-bold font-mono ${tier.tagColor} shadow-sm`}>
+                      {tier.tag}
+                    </span>
+                  </div>
+                )}
+
                 {tier.highlighted && (
                   <>
                     {/* Glow Effect Background */}
                     <div className="absolute inset-0 bg-gradient-to-b from-[#8B5CF6]/5 to-[#6366F1]/5 rounded-2xl blur-xl -z-10"></div>
                     {/* Top Gradient Line */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] via-[#6366F1] to-[#8B5CF6] rounded-t-xl"></div>
-                    {/* Badge */}
-                    <div className="absolute top-5 right-5">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold font-mono bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white border-0 shadow-[0_4px_14px_rgba(139,92,246,0.4)]">
-                        {tier.badge}
-                      </span>
-                    </div>
                   </>
                 )}
 
-                <div className={`mb-6 ${tier.highlighted ? "mt-2" : ""}`}>
+                <div className={`mb-6 ${tier.highlighted || tier.tag ? "mt-8" : "mt-2"}`}>
                   <h3
                     className={`${
                       tier.highlighted ? "text-[#0F172A] text-xl" : "text-[#0F172A] text-lg"
@@ -234,27 +246,38 @@ export default function PricingPage() {
                   <span className="text-[#64748B] text-sm">/ {tier.period}</span>
                 </div>
 
-                <ul className="flex-col gap-4 mb-8 flex flex-1">
-                  {tier.features.map((feature) => (
+                <ul className="flex-col gap-3 mb-8 flex flex-1">
+                  {tier.features.map((feature, idx) => (
                     <li
-                      key={feature}
+                      key={idx}
                       className={`flex items-start gap-3 text-sm ${
                         tier.highlighted ? "text-[#475569] font-medium" : "text-[#475569]"
                       }`}
                     >
-                      <CheckCircle2
-                        className={`h-5 w-5 flex-shrink-0 ${
-                          tier.highlighted
-                            ? "text-[#8B5CF6]"
-                            : tier.plan === "single_scan"
-                            ? "text-[#6366F1]"
-                            : "text-[#22C55E]"
+                      <span
+                        className={`flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                          feature.icon === "[OK]"
+                            ? "bg-[#22C55E]/10 text-[#22C55E]"
+                            : feature.icon === "[ERR]"
+                            ? "bg-[#EF4444]/10 text-[#EF4444]"
+                            : "bg-[#F59E0B]/10 text-[#F59E0B]"
                         }`}
-                      />
-                      <span>{feature}</span>
+                      >
+                        {feature.icon}
+                      </span>
+                      <span className="flex-1">{feature.text}</span>
                     </li>
                   ))}
                 </ul>
+
+                {/* Guarantee Badge */}
+                {tier.showGuarantee && (
+                  <div className="mb-4 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
+                    <span className="text-xs font-mono font-bold text-[#22C55E]">
+                      ✓ PLANTILLA 100% LEGIBLE GARANTIZADA
+                    </span>
+                  </div>
+                )}
 
                 {tier.buttonVariant === "premium" ? (
                   <Button
