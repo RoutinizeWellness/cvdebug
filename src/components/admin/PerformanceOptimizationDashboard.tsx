@@ -135,7 +135,7 @@ export function PerformanceOptimizationDashboard() {
             onClick={() => setSelectedCategory(cat as any)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
               selectedCategory === cat
-                ? 'bg-blue-500 text-white'
+                ? 'bg-[#1E293B] text-white'
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
@@ -197,9 +197,9 @@ function StatCard({
   color: 'blue' | 'green' | 'purple';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900 text-blue-600 dark:text-blue-400',
+    blue: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
     green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900 text-green-600 dark:text-green-400',
-    purple: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-900 text-purple-600 dark:text-purple-400'
+    purple: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]'
   };
 
   return (
@@ -240,13 +240,13 @@ function RecommendationCard({ recommendation }: { recommendation: OptimizationRe
   const impactColors = {
     high: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
     medium: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400',
-    low: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+    low: 'bg-[#F1F5F9] dark:bg-[#0F172A]/30 text-[#0F172A] dark:text-[#94A3B8]'
   };
 
   const effortColors = {
     easy: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
     medium: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
-    hard: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400'
+    hard: 'bg-[#F1F5F9] dark:bg-[#0F172A]/30 text-[#0F172A] dark:text-[#94A3B8]'
   };
 
   const categoryIcons = {
@@ -288,9 +288,9 @@ function RecommendationCard({ recommendation }: { recommendation: OptimizationRe
       </div>
 
       {/* Estimated Improvement */}
-      <div className="flex items-center gap-2 mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-        <TrendingUp className="w-4 h-4 text-blue-500" />
-        <span className="text-sm font-medium text-blue-700 dark:text-blue-400">
+      <div className="flex items-center gap-2 mb-4 p-3 bg-[#F8FAFC] dark:bg-[#0F172A]/20 rounded-lg">
+        <TrendingUp className="w-4 h-4 text-[#1E293B]" />
+        <span className="text-sm font-medium text-[#0F172A] dark:text-[#94A3B8]">
           {recommendation.estimatedImprovement}
         </span>
       </div>
@@ -303,7 +303,7 @@ function RecommendationCard({ recommendation }: { recommendation: OptimizationRe
         <ul className="space-y-2">
           {recommendation.actionItems.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-              <ArrowRight className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+              <ArrowRight className="w-4 h-4 text-[#1E293B] mt-0.5 flex-shrink-0" />
               {item}
             </li>
           ))}
@@ -333,8 +333,8 @@ function RoadmapColumn({
 }) {
   const colorClasses = {
     green: 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-900/20',
-    blue: 'border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/20',
-    purple: 'border-purple-200 dark:border-purple-900 bg-purple-50 dark:bg-purple-900/20'
+    blue: 'border-[#E2E8F0] dark:border-[#0F172A] bg-[#F8FAFC] dark:bg-[#0F172A]/20',
+    purple: 'border-[#E2E8F0] dark:border-[#0F172A] bg-[#F8FAFC] dark:bg-[#0F172A]/20'
   };
 
   return (

@@ -74,13 +74,13 @@ export default function Blog() {
           transition={{ duration: 0.5 }}
           className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 mb-6">
-            <BookOpen className="w-4 h-4 text-blue-600" />
-            <span className="text-blue-600 font-semibold text-sm">Career Resources</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] mb-6">
+            <BookOpen className="w-4 h-4 text-[#1E293B]" />
+            <span className="text-[#1E293B] font-semibold text-sm">Career Resources</span>
           </div>
 
           <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-            CVDebug <span className="text-blue-600">Blog</span>
+            CVDebug <span className="text-[#1E293B]">Blog</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Expert guides and proven strategies to help you beat ATS systems and land more interviews.
@@ -97,10 +97,10 @@ export default function Blog() {
           >
             <div
               onClick={() => navigate(`/blog/${featuredPost.slug}`)}
-              className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-blue-300 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#CBD5E1] hover:shadow-xl transition-all duration-300 cursor-pointer group"
             >
               {/* Featured badge */}
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3">
+              <div className="bg-gradient-to-r from-[#0F172A] to-indigo-600 px-6 py-3">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-white text-[20px]">star</span>
                   <span className="text-white text-sm font-bold uppercase tracking-wider">Featured Article</span>
@@ -109,12 +109,12 @@ export default function Blog() {
 
               <div className="p-8 md:p-12">
                 <div className="flex items-center gap-3 mb-6">
-                  <span className="px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-semibold">
+                  <span className="px-4 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-[#0F172A] text-sm font-semibold">
                     {featuredPost.category}
                   </span>
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-[#1E293B] transition-colors">
                   {featuredPost.title}
                 </h2>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
@@ -146,7 +146,7 @@ export default function Blog() {
                   )}
                 </div>
 
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all">
+                <Button className="bg-[#0F172A] hover:bg-[#0F172A] text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all">
                   Read Full Article
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -173,7 +173,7 @@ export default function Blog() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 * (index + 2) }}
                 onClick={() => navigate(`/blog/${post.slug}`)}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer group flex flex-col h-full"
+                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-[#CBD5E1] hover:shadow-lg transition-all duration-300 cursor-pointer group flex flex-col h-full"
               >
                 <div className="p-6 flex flex-col h-full">
                   {/* Category Badge */}
@@ -190,7 +190,7 @@ export default function Blog() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight group-hover:text-[#1E293B] transition-colors line-clamp-2">
                     {post.title}
                   </h3>
 
@@ -246,15 +246,15 @@ export default function Blog() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-20 p-12 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl text-center"
+          className="mt-20 p-12 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border border-[#E2E8F0] rounded-2xl text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-blue-200 mb-6">
-            <span className="material-symbols-outlined text-blue-600 text-[20px]">rocket_launch</span>
-            <span className="text-blue-600 font-semibold text-sm">Start Your Journey</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#E2E8F0] mb-6">
+            <span className="material-symbols-outlined text-[#1E293B] text-[20px]">rocket_launch</span>
+            <span className="text-[#1E293B] font-semibold text-sm">Start Your Journey</span>
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Ready to See Your <span className="text-blue-600">ATS Score</span>?
+            Ready to See Your <span className="text-[#1E293B]">ATS Score</span>?
           </h2>
           <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
             Stop guessing and start optimizing. Scan your resume and get instant AI-powered insights in seconds.
@@ -262,7 +262,7 @@ export default function Blog() {
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transition-all"
+            className="bg-[#0F172A] hover:bg-[#0F172A] text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transition-all"
           >
             <span className="flex items-center gap-2">
               Scan Your Resume for Free

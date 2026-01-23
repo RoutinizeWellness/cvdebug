@@ -55,7 +55,7 @@ export function SEOWidget({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Search className="w-5 h-5 text-blue-500" />
+            <Search className="w-5 h-5 text-[#1E293B]" />
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white">
                 SEO Analysis
@@ -103,7 +103,7 @@ export function SEOWidget({
               transition={{ duration: 0.5, ease: "easeOut" }}
               className={`h-full ${
                 analysis.score >= 90 ? 'bg-green-500' :
-                analysis.score >= 70 ? 'bg-blue-500' :
+                analysis.score >= 70 ? 'bg-[#1E293B]' :
                 analysis.score >= 50 ? 'bg-orange-500' :
                 'bg-red-500'
               }`}
@@ -192,7 +192,7 @@ export function SEOWidget({
               <button
                 onClick={reanalyze}
                 disabled={isAnalyzing}
-                className="w-full py-2 px-4 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-2 px-4 bg-[#F8FAFC] dark:bg-[#0F172A]/20 text-[#1E293B] dark:text-[#94A3B8] rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#0F172A]/30 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <RefreshCw className={`w-4 h-4 ${isAnalyzing ? 'animate-spin' : ''}`} />
                 {isAnalyzing ? 'Analyzing...' : 'Reanalyze'}
@@ -252,13 +252,13 @@ function RecommendationCard({
   const priorityColors = {
     high: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900',
     medium: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900',
-    low: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900'
+    low: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A]'
   };
 
   const priorityIcons = {
     high: <AlertCircle className="w-4 h-4 text-red-500" />,
     medium: <AlertCircle className="w-4 h-4 text-orange-500" />,
-    low: <TrendingUp className="w-4 h-4 text-blue-500" />
+    low: <TrendingUp className="w-4 h-4 text-[#1E293B]" />
   };
 
   return (
@@ -274,7 +274,7 @@ function RecommendationCard({
           </p>
         </div>
         <div className="text-right">
-          <div className="text-sm font-bold text-blue-600 dark:text-blue-400">
+          <div className="text-sm font-bold text-[#1E293B] dark:text-[#94A3B8]">
             +{recommendation.impact}
           </div>
           <div className="text-xs text-slate-500">

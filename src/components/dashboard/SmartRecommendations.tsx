@@ -112,10 +112,10 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
   return (
     <div className="space-y-6">
       {/* Insights Header */}
-      <Card className="p-6 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-purple-900/20 dark:to-blue-900/20 border-[#E2E8F0] dark:border-[#1E293B]">
+      <Card className="p-6 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20 border-[#E2E8F0] dark:border-[#1E293B]">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-[#F1F5F9] dark:bg-purple-900/40 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full bg-[#F1F5F9] dark:bg-[#0F172A]/40 flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-[#1E293B] dark:text-[#CBD5E1]" />
             </div>
             <div>

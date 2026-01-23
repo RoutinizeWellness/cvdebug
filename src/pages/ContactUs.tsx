@@ -203,7 +203,7 @@ export default function ContactUs() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white py-6 text-lg"
+                className="w-full bg-[#3B82F6] hover:bg-[#0F172A] text-white py-6 text-lg"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
@@ -259,7 +259,7 @@ export default function ContactUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-50 to-teal-50 border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+          className="p-12 bg-gradient-to-r from-[#F8FAFC] to-[#F1F5F9] border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
           <h2 className="text-3xl font-bold text-[#0F172A] mb-4">
             Ready to Optimize Your Resume?
@@ -269,7 +269,7 @@ export default function ContactUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#3B82F6] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

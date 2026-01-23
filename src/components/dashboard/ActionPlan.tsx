@@ -37,7 +37,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
       case 'important':
         return 'border-orange-500 bg-orange-50 dark:bg-orange-900/20';
       case 'recommended':
-        return 'border-[#334155] bg-blue-50 dark:bg-blue-900/20';
+        return 'border-[#334155] bg-[#F8FAFC] dark:bg-[#0F172A]/20';
       default:
         return 'border-slate-300 bg-slate-50 dark:bg-slate-800';
     }
@@ -59,7 +59,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
         );
       case 'recommended':
         return (
-          <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-blue-300 dark:border-blue-700">
+          <span className="px-2 py-0.5 bg-[#F1F5F9] dark:bg-[#0F172A]/40 text-[#0F172A] dark:text-[#CBD5E1] text-[10px] font-bold uppercase tracking-wider rounded-full border border-[#CBD5E1] dark:border-[#1E293B]">
             Recommended
           </span>
         );

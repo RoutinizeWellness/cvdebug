@@ -208,12 +208,12 @@ export function BookmarkletInstructions() {
       </div>
 
       <div className="space-y-4">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
+        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
+          <h4 className="font-bold text-[#0F172A] mb-2 flex items-center gap-2">
             <span className="bg-[#334155] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
             Copia el bookmarklet
           </h4>
-          <div className="bg-white border border-blue-300 rounded p-3 font-mono text-xs break-all mb-2 max-h-32 overflow-y-auto">
+          <div className="bg-white border border-[#CBD5E1] rounded p-3 font-mono text-xs break-all mb-2 max-h-32 overflow-y-auto">
             {bookmarklet}
           </div>
           <Button
@@ -248,11 +248,11 @@ export function BookmarkletInstructions() {
         </div>
 
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
-          <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+          <h4 className="font-bold text-[#0F172A] mb-2 flex items-center gap-2">
             <span className="bg-[#1E293B] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
             Úsalo en cualquier sitio
           </h4>
-          <p className="text-sm text-purple-800">
+          <p className="text-sm text-[#0F172A]">
             Ve a LinkedIn, Indeed, o cualquier job posting → Haz clic en el marcador "Job Scanner" → Se extraerá el texto → Pégalo en tu analizador de CV
           </p>
         </div>

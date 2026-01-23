@@ -56,7 +56,7 @@ export function MLDashboard() {
   if (isLoading && !snapshot) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <RefreshCw className="w-8 h-8 animate-spin text-blue-500" />
+        <RefreshCw className="w-8 h-8 animate-spin text-[#1E293B]" />
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function MLDashboard() {
               onClick={() => setSelectedPeriod(24)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 selectedPeriod === 24
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#1E293B] text-white'
                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
               }`}
             >
@@ -91,7 +91,7 @@ export function MLDashboard() {
               onClick={() => setSelectedPeriod(168)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 selectedPeriod === 168
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#1E293B] text-white'
                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
               }`}
             >
@@ -101,7 +101,7 @@ export function MLDashboard() {
               onClick={() => setSelectedPeriod(720)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 selectedPeriod === 720
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#1E293B] text-white'
                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300'
               }`}
             >
@@ -226,7 +226,7 @@ export function MLDashboard() {
                     <div className="flex items-center gap-3">
                       <div className="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-blue-500"
+                          className="h-full bg-[#1E293B]"
                           style={{
                             width: `${(count / snapshot.totalAnalyses) * 100}%`
                           }}
@@ -260,7 +260,7 @@ function MetricCard({
   color: 'blue' | 'green' | 'orange' | 'red';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900 text-blue-600 dark:text-blue-400',
+    blue: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
     green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900 text-green-600 dark:text-green-400',
     orange: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900 text-orange-600 dark:text-orange-400',
     red: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900 text-red-600 dark:text-red-400'

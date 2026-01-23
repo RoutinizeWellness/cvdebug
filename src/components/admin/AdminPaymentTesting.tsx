@@ -57,7 +57,7 @@ export function AdminPaymentTesting({
                 disabled={!!isTestingPayment}
                 variant="outline"
                 size="sm"
-                className="border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                className="border-[#E2E8F0] hover:bg-[#F8FAFC] hover:text-[#0F172A]"
               >
                 {isTestingPayment === "interview_sprint" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Building2 className="mr-2 h-3 w-3" />}
                 Test Sprint (€24.99)

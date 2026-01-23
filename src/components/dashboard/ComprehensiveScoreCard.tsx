@@ -49,8 +49,8 @@ export function ComprehensiveScoreCard({
   const gradeColors: Record<string, { bg: string; text: string; border: string }> = {
     'A+': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300' },
     'A': { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' },
-    'B+': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-300' },
-    'B': { bg: 'bg-blue-50', text: 'text-[#1E293B]', border: 'border-blue-200' },
+    'B+': { bg: 'bg-[#F8FAFC]', text: 'text-[#0F172A]', border: 'border-[#CBD5E1]' },
+    'B': { bg: 'bg-[#F8FAFC]', text: 'text-[#1E293B]', border: 'border-[#E2E8F0]' },
     'C+': { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' },
     'C': { bg: 'bg-yellow-50', text: 'text-yellow-600', border: 'border-yellow-200' },
     'D': { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' },
@@ -211,9 +211,9 @@ export function ComprehensiveScoreCard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-gradient-to-br from-[#F8FAFC] to-indigo-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm"
+          className="bg-gradient-to-br from-[#F8FAFC] to-indigo-50 rounded-xl p-6 border-2 border-[#E2E8F0] shadow-sm"
         >
-          <h4 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
+          <h4 className="text-lg font-bold text-[#0F172A] mb-3 flex items-center gap-2">
             <Zap className="h-5 w-5 text-[#1E293B]" />
             Quick Wins - High Impact Improvements
           </h4>
@@ -229,7 +229,7 @@ export function ComprehensiveScoreCard({
                 <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#334155] text-white flex items-center justify-center text-xs font-bold">
                   {idx + 1}
                 </div>
-                <span className="text-sm text-blue-900 font-medium">{win}</span>
+                <span className="text-sm text-[#0F172A] font-medium">{win}</span>
               </motion.div>
             ))}
           </div>
@@ -273,7 +273,7 @@ export function ComprehensiveScoreCard({
           transition={{ delay: 0.35 }}
           className="bg-gradient-to-br from-[#F8FAFC] to-pink-50 rounded-xl p-6 border-2 border-[#E2E8F0] shadow-sm"
         >
-          <h4 className="text-lg font-bold text-purple-900 mb-4 flex items-center gap-2">
+          <h4 className="text-lg font-bold text-[#0F172A] mb-4 flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-[#1E293B]" />
             Competitive Analysis
           </h4>
@@ -297,7 +297,7 @@ export function ComprehensiveScoreCard({
           {/* Competitive Advantages */}
           {competitiveAnalysis.competitiveAdvantages.length > 0 && (
             <div className="mb-4">
-              <h5 className="text-sm font-bold text-purple-800 mb-2 flex items-center gap-1">
+              <h5 className="text-sm font-bold text-[#0F172A] mb-2 flex items-center gap-1">
                 <TrendingUp className="h-4 w-4" />
                 Competitive Advantages
               </h5>
@@ -315,7 +315,7 @@ export function ComprehensiveScoreCard({
           {/* Vulnerabilities */}
           {competitiveAnalysis.vulnerabilities.length > 0 && (
             <div className="mb-4">
-              <h5 className="text-sm font-bold text-purple-800 mb-2 flex items-center gap-1">
+              <h5 className="text-sm font-bold text-[#0F172A] mb-2 flex items-center gap-1">
                 <TrendingDown className="h-4 w-4" />
                 Vulnerabilities
               </h5>
@@ -333,7 +333,7 @@ export function ComprehensiveScoreCard({
           {/* Must-have Improvements */}
           {competitiveAnalysis.mustHaveImprovements.length > 0 && (
             <div>
-              <h5 className="text-sm font-bold text-purple-800 mb-2 flex items-center gap-1">
+              <h5 className="text-sm font-bold text-[#0F172A] mb-2 flex items-center gap-1">
                 <Minus className="h-4 w-4" />
                 Must-Have to Stay Competitive
               </h5>

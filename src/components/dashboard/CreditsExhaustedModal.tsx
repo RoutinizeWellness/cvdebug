@@ -95,7 +95,7 @@ export function CreditsExhaustedModal({ open, onOpenChange, currentScore, onUpgr
             <div className="px-6 py-4 border-t border-[#E2E8F0] flex gap-3 flex-col sm:flex-row">
               <button
                 onClick={onUpgrade}
-                className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-teal-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-cyan-500/25 rounded-lg text-[#0F172A] flex items-center justify-center gap-2 transition-all"
+                className="flex-1 font-bold text-base h-12 bg-gradient-to-r from-teal-600 to-pink-600 hover:from-[#1E293B] hover:to-pink-700 shadow-lg shadow-cyan-500/25 rounded-lg text-[#0F172A] flex items-center justify-center gap-2 transition-all"
               >
                 <Sparkles className="h-5 w-5" />
                 Unlock Full Report - €9.99

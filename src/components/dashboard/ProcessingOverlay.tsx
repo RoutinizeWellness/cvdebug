@@ -95,7 +95,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
           </h2>
         </div>
         <div className="flex items-center gap-6">
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-[#E2E8F0] bg-[#F8FAFC]">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3B82F6]"></span>
@@ -121,7 +121,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
           {/* Central 3D Scanning Visualization */}
           <div className="perspective-[1000px] relative w-full max-w-[320px] aspect-[1/1.4] md:max-w-[380px] group">
             {/* Glowing backdrop */}
-            <div className="absolute inset-0 bg-blue-200/30 blur-[60px] rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 bg-[#E2E8F0]/30 blur-[60px] rounded-full animate-pulse"></div>
 
             {/* The 3D Card */}
             <div className="relative w-full h-full bg-[#FFFFFF]/90 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden border border-[#E2E8F0]"
@@ -154,7 +154,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                   </div>
                 </div>
                 {/* Highlight boxes for detected zones */}
-                <div className="absolute top-[120px] left-[30px] w-[200px] h-[80px] border border-blue-300 bg-blue-50 rounded">
+                <div className="absolute top-[120px] left-[30px] w-[200px] h-[80px] border border-[#CBD5E1] bg-[#F8FAFC] rounded">
                   <div className="absolute -top-3 -right-3 bg-[#3B82F6] text-[#0F172A] text-[9px] font-mono px-1 rounded-sm">
                     EDUCATION
                   </div>
@@ -212,7 +212,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             </div>
 
             {/* Terminal Output */}
-            <div className="bg-[#FFFFFF]/90 backdrop-blur-xl rounded-lg p-4 font-mono text-sm h-40 overflow-hidden flex flex-col relative group hover:border-blue-300 transition-colors border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <div className="bg-[#FFFFFF]/90 backdrop-blur-xl rounded-lg p-4 font-mono text-sm h-40 overflow-hidden flex flex-col relative group hover:border-[#CBD5E1] transition-colors border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
               <div className="absolute top-2 right-2 flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>

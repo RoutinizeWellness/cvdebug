@@ -179,7 +179,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-blue-50 text-[#3B82F6] border border-blue-200">
+                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0]">
                       Active
                     </span>
                     <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
@@ -312,7 +312,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                       Current Password
                     </label>
                     <input
-                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                       placeholder="••••••••••••"
                       type="password"
                     />
@@ -323,7 +323,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                         New Password
                       </label>
                       <input
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />
@@ -333,7 +333,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                         Confirm New
                       </label>
                       <input
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-blue-500 transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />

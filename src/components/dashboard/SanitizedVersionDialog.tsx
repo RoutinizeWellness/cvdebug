@@ -136,8 +136,8 @@ export function SanitizedVersionDialog({ resumeId, open, onOpenChange }: Sanitiz
               </Button>
             </div>
 
-            <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
-              <h4 className="font-semibold text-blue-700 mb-2">Next Steps:</h4>
+            <div className="p-4 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
+              <h4 className="font-semibold text-[#0F172A] mb-2">Next Steps:</h4>
               <ol className="text-sm text-[#475569] space-y-1 list-decimal list-inside">
                 <li>Copy the text above</li>
                 <li>Open a fresh Google Docs or Word document</li>

@@ -337,7 +337,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                     <h4 className="text-xs md:text-sm font-bold text-[#0F172A] mb-1">{failure.title}</h4>
                     <p className="text-[11px] md:text-xs text-[#475569] mb-2 whitespace-pre-line leading-relaxed">{failure.description}</p>
                     {failure.howToFix && (
-                      <div className="mt-1.5 md:mt-2 p-1.5 md:p-2 bg-blue-50/50 border border-blue-200/30 rounded text-[11px] md:text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
+                      <div className="mt-1.5 md:mt-2 p-1.5 md:p-2 bg-[#F8FAFC]/50 border border-[#E2E8F0]/30 rounded text-[11px] md:text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
                         <span className="font-semibold text-[#3B82F6]">How to fix:</span> {failure.howToFix}
                       </div>
                     )}

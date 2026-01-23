@@ -6,7 +6,7 @@ interface AIProTipProps {
 
 export function AIProTip({ tip }: AIProTipProps) {
   return (
-    <div className="relative overflow-hidden rounded-xl border border-teal-500/30 bg-gradient-to-br from-purple-900/20 to-slate-900 p-6">
+    <div className="relative overflow-hidden rounded-xl border border-teal-500/30 bg-gradient-to-br from-[#0F172A]/20 to-slate-900 p-6">
       <div className="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-teal-500/20 blur-2xl" />
       
       <div className="relative flex gap-4">

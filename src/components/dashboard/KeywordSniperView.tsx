@@ -100,8 +100,8 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         <p className="text-[#64748B] max-w-md mb-4">
           {t.keywordSniper.noJobDescriptionDesc}
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mb-6">
-          <p className="text-sm text-blue-700 mb-2">
+        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4 max-w-md mb-6">
+          <p className="text-sm text-[#0F172A] mb-2">
             <span className="font-semibold">{t.keywordSniper.howToUseTitle}</span>
           </p>
           <ol className="text-xs text-[#475569] space-y-1 text-left list-decimal list-inside">

@@ -20,10 +20,10 @@ export function AdminBulkGrant({
   bulkResult
 }: AdminBulkGrantProps) {
   return (
-    <Card className="mb-8 border-blue-500/20 bg-blue-500/5">
+    <Card className="mb-8 border-[#1E293B]/20 bg-[#1E293B]/5">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-blue-600" />
+          <Sparkles className="h-5 w-5 text-[#1E293B]" />
           Bulk Grant from Text
         </CardTitle>
       </CardHeader>
@@ -40,7 +40,7 @@ export function AdminBulkGrant({
             />
           </div>
           <div className="flex items-start justify-between gap-4">
-            <Button onClick={handleBulkGrant} disabled={isBulkProcessing} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleBulkGrant} disabled={isBulkProcessing} className="bg-[#0F172A] hover:bg-[#0F172A]">
               {isBulkProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
               Process Bulk Grants
             </Button>

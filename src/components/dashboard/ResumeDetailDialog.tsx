@@ -328,9 +328,9 @@ export function ResumeDetailDialog({
             borderClass = "border-green-200";
           } else if (title.includes("🤖") || title.includes("Parsing")) {
             icon = <Cpu className="h-4 w-4 text-[#3B82F6]" />;
-            headerClass = "text-blue-700";
-            bgClass = "bg-blue-50";
-            borderClass = "border-blue-200";
+            headerClass = "text-[#0F172A]";
+            bgClass = "bg-[#F8FAFC]";
+            borderClass = "border-[#E2E8F0]";
           } else if (title.includes("📊") || title.includes("Score")) {
             icon = <ScanLine className="h-4 w-4 text-teal-600" />;
             headerClass = "text-teal-700";
@@ -364,7 +364,7 @@ export function ResumeDetailDialog({
                       const [, number, text] = match;
                       return (
                         <div key={i} className="flex items-start gap-3 p-3 bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                          <span className="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center border border-blue-200">
+                          <span className="flex-shrink-0 h-6 w-6 rounded-full bg-[#F1F5F9] text-[#0F172A] font-bold text-xs flex items-center justify-center border border-[#E2E8F0]">
                             {number}
                           </span>
                           <span className="flex-1 leading-relaxed font-medium text-[#0F172A]">{text}</span>
@@ -869,13 +869,13 @@ export function ResumeDetailDialog({
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
                       placeholder="Paste the full job description here..."
-                      className="w-full h-32 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-sm p-3 focus:ring-2 focus:ring-blue-500/20 focus:border-[#3B82F6] outline-none resize-none leading-relaxed transition-all placeholder:text-[#64748B] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                      className="w-full h-32 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-sm p-3 focus:ring-2 focus:ring-[#1E293B]/20 focus:border-[#3B82F6] outline-none resize-none leading-relaxed transition-all placeholder:text-[#64748B] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     />
                     <div className="flex gap-2 mt-3">
                       <Button
                         onClick={handleReanalyzeWithJD}
                         disabled={isReanalyzing || !jobDescription.trim()}
-                        className="bg-[#3B82F6] text-[#0F172A] font-bold hover:bg-blue-700"
+                        className="bg-[#3B82F6] text-[#0F172A] font-bold hover:bg-[#0F172A]"
                       >
                         {isReanalyzing ? (
                           <>
@@ -1345,7 +1345,7 @@ Software Engineer | StartupXYZ
                               <h3 className="text-white font-black text-xl mb-2 flex items-center gap-2">
                                 🎯 CV Optimizado → LinkedIn es el Siguiente Paso
                               </h3>
-                              <p className="text-blue-100 text-sm mb-3">
+                              <p className="text-[#F1F5F9] text-sm mb-3">
                                 Tu CV está listo (Score: {displayResume.score}%). <span className="font-bold">89% de los reclutadores</span> revisan LinkedIn antes de contactar. No pierdas oportunidades por un perfil desactualizado.
                               </p>
                               <div className="flex flex-col sm:flex-row gap-2">
@@ -1357,7 +1357,7 @@ Software Engineer | StartupXYZ
                                       onOpenLinkedIn();
                                     }
                                   }}
-                                  className="bg-white text-[#0A66C2] font-bold hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all"
+                                  className="bg-white text-[#0A66C2] font-bold hover:bg-[#F8FAFC] shadow-lg hover:shadow-xl transition-all"
                                 >
                                   <span className="flex items-center gap-2">
                                     <Sparkles className="h-4 w-4" />
@@ -1903,7 +1903,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                 {/* Collapse/Expand Button - Always visible on desktop */}
                 <button
                   onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
-                  className={`${isPdfCollapsed ? 'lg:relative lg:top-4 lg:left-0' : 'absolute top-4 left-4'} z-20 p-3 bg-[#3B82F6] hover:bg-blue-700 text-white rounded-lg backdrop-blur-sm transition-all shadow-lg`}
+                  className={`${isPdfCollapsed ? 'lg:relative lg:top-4 lg:left-0' : 'absolute top-4 left-4'} z-20 p-3 bg-[#3B82F6] hover:bg-[#0F172A] text-white rounded-lg backdrop-blur-sm transition-all shadow-lg`}
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
@@ -1932,7 +1932,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                         <p className="text-[#475569] mb-8">
                           This file type cannot be previewed directly in the browser. You can download it to view the content.
                         </p>
-                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-[#3B82F6] hover:bg-blue-700 text-[#0F172A]">
+                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-[#3B82F6] hover:bg-[#0F172A] text-[#0F172A]">
                           <Download className="h-4 w-4 mr-2" /> Download File
                         </Button>
                       </div>

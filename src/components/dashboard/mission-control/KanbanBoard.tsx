@@ -74,7 +74,7 @@ function DraggableCard({ card, column }: { card: KanbanCard; column: KanbanColum
           <div className="flex justify-between items-start gap-2">
             <span className="text-[#0F172A] font-semibold text-sm line-clamp-1">{card.title}</span>
             {card.matchScore !== undefined && (
-              <div className="bg-blue-50 text-[#3B82F6] rounded px-2 py-0.5 text-[10px] font-bold border border-blue-200">
+              <div className="bg-[#F8FAFC] text-[#3B82F6] rounded px-2 py-0.5 text-[10px] font-bold border border-[#E2E8F0]">
                 {card.matchScore}%
               </div>
             )}

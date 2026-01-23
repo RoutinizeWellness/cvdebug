@@ -796,7 +796,7 @@ img {
 
 /* Button Variants - Professional */
 .btn-professional-primary {
-  @apply bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg px-4 py-2;
+  @apply bg-[#1E293B] hover:bg-[#0F172A] text-white font-medium rounded-lg px-4 py-2;
   @apply transition-all duration-200 shadow-sm hover:shadow-md;
 }
 
@@ -859,8 +859,8 @@ img {
 
 .badge-professional-blue {
   @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium;
-  @apply bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400;
-  @apply border border-blue-200 dark:border-blue-800;
+  @apply bg-[#F8FAFC] text-[#1E293B] dark:bg-[#0F172A]/30 dark:text-[#94A3B8];
+  @apply border border-[#E2E8F0] dark:border-[#0F172A];
 }
 
 .badge-professional-green {
@@ -879,7 +879,7 @@ img {
   @apply w-full px-3 py-2 border border-slate-300 dark:border-slate-700;
   @apply rounded-lg bg-white dark:bg-slate-900;
   @apply text-slate-900 dark:text-white placeholder-slate-400;
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  @apply focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent;
   @apply transition-all duration-200;
 }
 

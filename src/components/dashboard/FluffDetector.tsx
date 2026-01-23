@@ -787,7 +787,7 @@ export function FluffDetector({
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-[20px]">query_stats</span>
                 Impact Quantification Audit
-                <span className="bg-[#F8FAFC] text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-purple-100">
+                <span className="bg-[#F8FAFC] text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-[#F1F5F9]">
                   {unquantifiedAchievements.length} Missing
                 </span>
               </h3>
@@ -836,7 +836,7 @@ export function FluffDetector({
                               name={`metric-${index}`}
                               checked={selectedMetrics[index] === sIndex}
                               onChange={() => setSelectedMetrics({ ...selectedMetrics, [index]: sIndex })}
-                              className="mt-0.5 w-4 h-4 text-[#8B5CF6] focus:ring-purple-500 focus:ring-2"
+                              className="mt-0.5 w-4 h-4 text-[#8B5CF6] focus:ring-[#1E293B] focus:ring-2"
                             />
                             <span className="text-xs text-[#475569] group-hover:text-[#0F172A] flex-1">
                               {suggestion}

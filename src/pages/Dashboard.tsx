@@ -650,8 +650,8 @@ export default function Dashboard() {
         onDrop={handleDrop}
       >
         {/* Gradient blur effects */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-200/20 rounded-full blur-[120px] pointer-events-none mix-blend-multiply"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-200/20 rounded-full blur-[100px] pointer-events-none mix-blend-multiply"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#E2E8F0]/20 rounded-full blur-[120px] pointer-events-none mix-blend-multiply"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#CBD5E1]/20 rounded-full blur-[100px] pointer-events-none mix-blend-multiply"></div>
 
         <div className="md:hidden flex items-center justify-between p-4 border-b border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative z-10">
           <Logo />

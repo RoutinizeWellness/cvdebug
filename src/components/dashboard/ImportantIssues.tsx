@@ -57,7 +57,7 @@ export function ImportantIssues({ formatIssues = [], importantKeywords }: Import
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
                               severity === 'high' ? 'bg-red-100 text-red-700' :
                               severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-blue-100 text-blue-700'
+                              'bg-[#F1F5F9] text-[#0F172A]'
                             }`}>
                               {severity.toUpperCase()}
                             </span>

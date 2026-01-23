@@ -76,7 +76,7 @@ export function ScoreEvolutionChart() {
           <p className="text-xs font-semibold text-[#475569] text-center">Current Score</p>
           <p className={`text-3xl font-black text-center ${
             latestScore >= 90 ? "text-green-400"
-            : latestScore >= 70 ? "text-blue-400"
+            : latestScore >= 70 ? "text-[#94A3B8]"
             : "text-orange-400"
           }`}>
             {latestScore}
@@ -116,12 +116,12 @@ export function ScoreEvolutionChart() {
 
         <div className="bg-[#1e293b]/50 rounded-lg p-4 border border-[#E2E8F0]">
           <div className="flex items-center gap-2 mb-2">
-            <Zap className="h-4 w-4 text-blue-400" />
+            <Zap className="h-4 w-4 text-[#94A3B8]" />
             <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider">
               Average
             </p>
           </div>
-          <p className="text-2xl font-bold text-blue-400">{avgScore}</p>
+          <p className="text-2xl font-bold text-[#94A3B8]">{avgScore}</p>
           <p className="text-xs text-[#64748B] mt-1">mean score</p>
         </div>
       </div>
@@ -220,10 +220,10 @@ export function ScoreEvolutionChart() {
           {isImproving ? (
             <TrendingUp className="h-5 w-5 text-green-400" />
           ) : (
-            <Target className="h-5 w-5 text-blue-400" />
+            <Target className="h-5 w-5 text-[#94A3B8]" />
           )}
           <div>
-            <p className={`font-semibold ${isImproving ? "text-green-400" : "text-blue-400"}`}>
+            <p className={`font-semibold ${isImproving ? "text-green-400" : "text-[#94A3B8]"}`}>
               {isImproving
                 ? "🎉 You're on a roll! Keep optimizing!"
                 : "Keep pushing! Your next scan could be your best yet."}

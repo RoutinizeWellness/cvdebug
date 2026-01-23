@@ -46,7 +46,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
           {analytics.message}
         </p>
         <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-4">
-          <p className="text-blue-400 text-sm font-semibold mb-2">💡 Pro Tip:</p>
+          <p className="text-[#94A3B8] text-sm font-semibold mb-2">💡 Pro Tip:</p>
           <p className="text-[#475569] text-sm">
             When adding applications, label each CV version (e.g., "V1_React", "V2_Backend").
             We'll automatically track which versions get you more interviews!
@@ -63,7 +63,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
       case "warning":
         return <AlertCircle className="w-5 h-5 text-yellow-400" />;
       case "info":
-        return <Info className="w-5 h-5 text-blue-400" />;
+        return <Info className="w-5 h-5 text-[#94A3B8]" />;
       default:
         return <Info className="w-5 h-5 text-[#64748B]" />;
     }
@@ -283,25 +283,25 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         <h4 className="text-lg font-bold text-[#0F172A] mb-3">💡 How to Use This Data</h4>
         <ul className="space-y-2 text-[#475569] text-sm">
           <li className="flex items-start gap-2">
-            <span className="text-blue-400 font-bold">1.</span>
+            <span className="text-[#94A3B8] font-bold">1.</span>
             <span>
               When applying to jobs, note which CV version you're using (e.g., "V1_React", "V2_Backend")
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-400 font-bold">2.</span>
+            <span className="text-[#94A3B8] font-bold">2.</span>
             <span>
               After 5+ applications per version, check which one has a higher interview rate
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-400 font-bold">3.</span>
+            <span className="text-[#94A3B8] font-bold">3.</span>
             <span>
               Focus on your winning version and iterate on losing ones with keyword changes
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-blue-400 font-bold">4.</span>
+            <span className="text-[#94A3B8] font-bold">4.</span>
             <span>
               This is YOUR unique data - competitors can't replicate it. Use it to your advantage!
             </span>

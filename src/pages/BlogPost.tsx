@@ -116,7 +116,7 @@ export default function BlogPost() {
           transition={{ duration: 0.5 }}
         >
           <header className="mb-12">
-            <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-sm font-semibold mb-6">
+            <span className="inline-block px-4 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-[#0F172A] text-sm font-semibold mb-6">
               {post.category}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
@@ -287,10 +287,10 @@ export default function BlogPost() {
           )}
 
           {/* Author Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 mb-12">
+          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-8 mb-12">
             <h3 className="text-xl font-bold text-gray-900 mb-2">About the Author</h3>
             <p className="text-gray-700">
-              Written by <span className="text-blue-600 font-semibold">{post.author}</span>
+              Written by <span className="text-[#1E293B] font-semibold">{post.author}</span>
             </p>
           </div>
         </motion.article>
@@ -307,12 +307,12 @@ export default function BlogPost() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                  className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer hover:border-blue-300 hover:shadow-lg transition-all"
+                  className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer hover:border-[#CBD5E1] hover:shadow-lg transition-all"
                 >
                   <span className="inline-block px-3 py-1 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-semibold mb-3">
                     {relatedPost.category}
                   </span>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-[#1E293B] transition-colors">
                     {relatedPost.title}
                   </h3>
                   <p className="text-gray-600 text-sm line-clamp-2">
@@ -329,7 +329,7 @@ export default function BlogPost() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-12 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl text-center"
+          className="p-12 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border border-[#E2E8F0] rounded-2xl text-center"
         >
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Ready to Optimize Your Resume?
@@ -340,7 +340,7 @@ export default function BlogPost() {
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg"
+            className="bg-[#0F172A] hover:bg-[#0F172A] text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg"
           >
             Scan Your Resume for Free
           </Button>

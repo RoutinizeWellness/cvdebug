@@ -216,7 +216,7 @@ export function ResumePreview({ resume, onClose, onEdit }: ResumePreviewProps) {
                           href={proj.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline"
+                          className="text-sm text-[#1E293B] hover:underline"
                         >
                           {proj.link}
                         </a>

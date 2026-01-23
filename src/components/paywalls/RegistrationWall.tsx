@@ -52,8 +52,8 @@ export function RegistrationWall({ type, errorCount = 0, onSignUp, className = "
     },
     "save-history": {
       icon: Save,
-      iconColor: "text-blue-500",
-      iconBg: "bg-blue-500/10",
+      iconColor: "text-[#1E293B]",
+      iconBg: "bg-[#1E293B]/10",
       title: "No pierdas este análisis",
       subtitle: "Crea una cuenta para comparar este CV con otros puestos",
       benefits: [
@@ -68,8 +68,8 @@ export function RegistrationWall({ type, errorCount = 0, onSignUp, className = "
     },
     "ai-sprint": {
       icon: Sparkles,
-      iconColor: "text-purple-500",
-      iconBg: "bg-purple-500/10",
+      iconColor: "text-[#1E293B]",
+      iconBg: "bg-[#1E293B]/10",
       title: "Desbloquea el Poder de la IA",
       subtitle: "Sprint requiere una cuenta para acceder a herramientas premium",
       benefits: [

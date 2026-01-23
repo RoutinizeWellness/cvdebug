@@ -67,8 +67,8 @@ export function AdminDataImport() {
 
       <div className="flex items-center justify-between gap-4 border-t border-slate-800 pt-4">
         <div className="flex items-center gap-4">
-          <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-            <RefreshCw className="h-5 w-5 text-blue-500" />
+          <div className="h-10 w-10 rounded-lg bg-[#1E293B]/10 flex items-center justify-center border border-[#1E293B]/20">
+            <RefreshCw className="h-5 w-5 text-[#1E293B]" />
           </div>
           <div>
             <h3 className="text-base font-display font-bold text-white">Sync Recent Users</h3>

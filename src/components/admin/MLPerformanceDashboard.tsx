@@ -12,7 +12,7 @@ export function MLPerformanceDashboard() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <Activity className="w-12 h-12 text-blue-500 animate-pulse mx-auto mb-4" />
+          <Activity className="w-12 h-12 text-[#1E293B] animate-pulse mx-auto mb-4" />
           <p className="text-slate-600 dark:text-slate-400">Loading ML performance metrics...</p>
         </div>
       </div>
@@ -41,16 +41,16 @@ export function MLPerformanceDashboard() {
       value: `${metrics.avgFeatureLatency}ms`,
       subtitle: "Average time",
       icon: Clock,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-[#1E293B]",
+      bgColor: "bg-[#F8FAFC]",
     },
     {
       title: "Total Analyses",
       value: metrics.totalAnalyses.toString(),
       subtitle: "Last 24 hours",
       icon: TrendingUp,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-[#1E293B]",
+      bgColor: "bg-[#F8FAFC]",
     },
   ];
 
@@ -146,11 +146,11 @@ export function MLPerformanceDashboard() {
           )}
 
           {metrics.avgPredictionLatency < 100 && (
-            <div className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <Zap className="w-5 h-5 text-blue-600 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg">
+              <Zap className="w-5 h-5 text-[#1E293B] mt-0.5" />
               <div>
-                <p className="font-medium text-blue-900">Fast Predictions</p>
-                <p className="text-sm text-blue-700">
+                <p className="font-medium text-[#0F172A]">Fast Predictions</p>
+                <p className="text-sm text-[#0F172A]">
                   Average prediction latency of {metrics.avgPredictionLatency}ms is very fast. Users are getting near-instant results.
                 </p>
               </div>
@@ -158,11 +158,11 @@ export function MLPerformanceDashboard() {
           )}
 
           {metrics.totalAnalyses > 100 && (
-            <div className="flex items-start gap-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-              <TrendingUp className="w-5 h-5 text-purple-600 mt-0.5" />
+            <div className="flex items-start gap-3 p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg">
+              <TrendingUp className="w-5 h-5 text-[#1E293B] mt-0.5" />
               <div>
-                <p className="font-medium text-purple-900">High Volume</p>
-                <p className="text-sm text-purple-700">
+                <p className="font-medium text-[#0F172A]">High Volume</p>
+                <p className="text-sm text-[#0F172A]">
                   {metrics.totalAnalyses} analyses in the last 24 hours shows strong engagement with ML features.
                 </p>
               </div>

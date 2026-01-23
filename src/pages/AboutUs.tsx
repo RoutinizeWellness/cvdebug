@@ -100,7 +100,7 @@ export default function AboutUs() {
                 className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               >
                 <div className="w-12 h-12 bg-[#3B82F6]/20 rounded-lg flex items-center justify-center mb-4">
-                  <value.icon className="w-6 h-6 text-blue-400" />
+                  <value.icon className="w-6 h-6 text-[#94A3B8]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-3">{value.title}</h3>
                 <p className="text-[#475569] leading-relaxed">{value.description}</p>
@@ -119,15 +119,15 @@ export default function AboutUs() {
           <h2 className="text-3xl font-bold text-[#0F172A] mb-8 text-center">Our Impact</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-blue-400 mb-2">10,000+</div>
+              <div className="text-4xl font-bold text-[#94A3B8] mb-2">10,000+</div>
               <div className="text-[#475569]">Resumes Scanned</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-blue-400 mb-2">3,500+</div>
+              <div className="text-4xl font-bold text-[#94A3B8] mb-2">3,500+</div>
               <div className="text-[#475569]">Happy Users</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-blue-400 mb-2">92%</div>
+              <div className="text-4xl font-bold text-[#94A3B8] mb-2">92%</div>
               <div className="text-[#475569]">Success Rate</div>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function AboutUs() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="p-12 bg-gradient-to-r from-blue-50 to-teal-50 border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+          className="p-12 bg-gradient-to-r from-[#F8FAFC] to-[#F1F5F9] border border-[#E2E8F0] rounded-2xl text-center shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         >
           <h2 className="text-3xl font-bold text-[#0F172A] mb-4">
             Ready to Beat ATS?
@@ -161,7 +161,7 @@ export default function AboutUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-[#3B82F6] hover:bg-blue-700 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#3B82F6] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

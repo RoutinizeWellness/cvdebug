@@ -33,7 +33,7 @@ export function ErrorTrackingDashboard() {
     return (
       <Card className="p-6">
         <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
+          <Loader2 className="w-6 h-6 text-[#1E293B] animate-spin" />
         </div>
       </Card>
     );
@@ -52,7 +52,7 @@ export function ErrorTrackingDashboard() {
           <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
         );
       case "low":
-        return <Info className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+        return <Info className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />;
       default:
         return <Info className="w-5 h-5 text-slate-600 dark:text-slate-400" />;
     }
@@ -80,9 +80,9 @@ export function ErrorTrackingDashboard() {
         };
       case "low":
         return {
-          bg: "bg-blue-50 dark:bg-blue-900/20",
-          text: "text-blue-700 dark:text-blue-400",
-          border: "border-blue-200 dark:border-blue-800",
+          bg: "bg-[#F8FAFC] dark:bg-[#0F172A]/20",
+          text: "text-[#0F172A] dark:text-[#94A3B8]",
+          border: "border-[#E2E8F0] dark:border-[#0F172A]",
         };
       default:
         return {
@@ -208,10 +208,10 @@ export function ErrorTrackingDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.3 }}
         >
-          <Card className="p-4 border-2 border-blue-200 dark:border-blue-800">
+          <Card className="p-4 border-2 border-[#E2E8F0] dark:border-[#0F172A]">
             <div className="flex items-center justify-between mb-2">
-              <Info className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-2xl font-bold text-blue-700 dark:text-blue-400">
+              <Info className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />
+              <span className="text-2xl font-bold text-[#0F172A] dark:text-[#94A3B8]">
                 {severityCounts.low}
               </span>
             </div>

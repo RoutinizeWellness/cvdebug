@@ -251,7 +251,7 @@ export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, o
               <Button
                 onClick={handleGenerate}
                 disabled={isGenerating || !selectedJobId}
-                className="w-full bg-[#3B82F6] hover:bg-blue-700 text-white font-bold"
+                className="w-full bg-[#3B82F6] hover:bg-[#0F172A] text-white font-bold"
               >
                 {isGenerating ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>

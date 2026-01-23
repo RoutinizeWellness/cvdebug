@@ -213,8 +213,8 @@ export function ATSAnalysisReport({
     <div className="relative w-full bg-[#F8FAFC] min-h-screen overflow-y-auto">
       {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-blue-200/20 rounded-full blur-[80px]"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-purple-200/20 rounded-full blur-[80px]"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#E2E8F0]/20 rounded-full blur-[80px]"></div>
       </div>
 
       <div className="relative w-full z-10">
@@ -518,7 +518,7 @@ export function ATSAnalysisReport({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-gradient-to-br from-slate-900/90 to-indigo-900/40 rounded-lg md:rounded-xl p-4 md:p-6 border-2 border-blue-400/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
+                  className="bg-gradient-to-br from-slate-900/90 to-indigo-900/40 rounded-lg md:rounded-xl p-4 md:p-6 border-2 border-[#475569]/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
                   onClick={onOpenWritingForge}
                 >
                   {/* Decorative gradient background */}
@@ -526,7 +526,7 @@ export function ATSAnalysisReport({
 
                   <div className="relative">
                     <div className="flex justify-between items-start mb-3 md:mb-4">
-                      <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-[#3B82F6]/20 text-blue-400">
+                      <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-[#3B82F6]/20 text-[#94A3B8]">
                         <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
                       </div>
                       <span className="px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-bold text-[#0F172A] bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center gap-1">
@@ -578,13 +578,13 @@ export function ATSAnalysisReport({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300"
+                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-[#E2E8F0] hover:border-[#475569] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="p-3 rounded-xl bg-blue-100 text-[#1E293B]">
+                  <div className="p-3 rounded-xl bg-[#F1F5F9] text-[#1E293B]">
                     <span className="material-symbols-outlined text-2xl">visibility</span>
                   </div>
-                  <span className="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-100 rounded-full">
+                  <span className="px-3 py-1.5 text-xs font-bold text-[#0F172A] bg-[#F1F5F9] rounded-full">
                     Excellent
                   </span>
                 </div>
@@ -604,7 +604,7 @@ export function ATSAnalysisReport({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-[#E2E8F0] hover:border-purple-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
+                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-[#E2E8F0] hover:border-[#475569] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 rounded-xl bg-[#F1F5F9] text-[#1E293B]">
@@ -990,16 +990,16 @@ export function ATSAnalysisReport({
                     <span className="text-[#475569]">cv-debug --analyze --target=resume.pdf</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-blue-400">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
+                    <span className="text-[#94A3B8]">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-blue-400">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
+                    <span className="text-[#94A3B8]">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-blue-400">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
+                    <span className="text-[#94A3B8]">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
                   </div>
                   <div className="text-[#64748B] pl-4">
-                    <span className="text-blue-400">→</span> Role classification: Technical | Format: Machine-readable
+                    <span className="text-[#94A3B8]">→</span> Role classification: Technical | Format: Machine-readable
                   </div>
                   <div className="text-emerald-400 font-bold pl-4 pt-2">
                     <span className="text-[#22C55E]">✓</span> [SUCCESS] Visibility Score: {scorePercentage}% | Grade: {getVisibilityGrade(scorePercentage)}

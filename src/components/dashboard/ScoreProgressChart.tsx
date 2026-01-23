@@ -190,14 +190,14 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-[#F8FAFC] to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-          <div className="text-xs text-[#1E293B] dark:text-blue-400 font-semibold mb-1">BEST SCORE</div>
-          <div className="text-2xl font-black text-blue-700 dark:text-blue-300">{maxScore}%</div>
+        <div className="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-[#0F172A]">
+          <div className="text-xs text-[#1E293B] dark:text-[#94A3B8] font-semibold mb-1">BEST SCORE</div>
+          <div className="text-2xl font-black text-[#0F172A] dark:text-[#CBD5E1]">{maxScore}%</div>
         </div>
 
-        <div className="bg-gradient-to-br from-[#F8FAFC] to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-purple-800">
-          <div className="text-xs text-[#1E293B] dark:text-purple-400 font-semibold mb-1">CURRENT</div>
-          <div className="text-2xl font-black text-[#1E293B] dark:text-purple-300">{lastScore}%</div>
+        <div className="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-[#0F172A]">
+          <div className="text-xs text-[#1E293B] dark:text-[#94A3B8] font-semibold mb-1">CURRENT</div>
+          <div className="text-2xl font-black text-[#1E293B] dark:text-[#CBD5E1]">{lastScore}%</div>
         </div>
 
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">

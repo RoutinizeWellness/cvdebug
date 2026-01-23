@@ -188,7 +188,7 @@ export default function PaymentSuccess() {
             <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 tracking-tight">
               {plan === "interview_sprint" ? "Sprint Activated." : "Scan Unlocked."}
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#475569] to-[#64748B]">
                 Let's land that job.
               </span>
             </h1>

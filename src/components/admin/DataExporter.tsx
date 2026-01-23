@@ -80,7 +80,7 @@ export function DataExporter() {
   return (
     <div className="card-professional p-6">
       <div className="flex items-center gap-3 mb-6">
-        <Download className="w-6 h-6 text-blue-500" />
+        <Download className="w-6 h-6 text-[#1E293B]" />
         <div>
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             Export Analytics Data
@@ -168,7 +168,7 @@ export function DataExporter() {
       <button
         onClick={handleExport}
         disabled={isExporting}
-        className="w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+        className="w-full py-3 px-4 bg-[#1E293B] hover:bg-[#0F172A] disabled:bg-slate-400 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
       >
         {isExporting ? (
           <>
@@ -216,7 +216,7 @@ function DataTypeCard({
       onClick={onClick}
       className={`p-4 rounded-lg border-2 transition-all text-left ${
         selected
-          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+          ? 'border-[#1E293B] bg-[#F8FAFC] dark:bg-[#0F172A]/20'
           : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
       }`}
     >
@@ -224,13 +224,13 @@ function DataTypeCard({
         <div
           className={`p-2 rounded-lg ${
             selected
-              ? 'bg-blue-500 text-white'
+              ? 'bg-[#1E293B] text-white'
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
           }`}
         >
           {icon}
         </div>
-        {selected && <CheckCircle className="w-5 h-5 text-blue-500 ml-auto" />}
+        {selected && <CheckCircle className="w-5 h-5 text-[#1E293B] ml-auto" />}
       </div>
       <h4 className="font-semibold text-slate-900 dark:text-white mb-1">
         {title}
@@ -260,7 +260,7 @@ function FormatButton({
       onClick={onClick}
       className={`flex-1 p-4 rounded-lg border-2 transition-all ${
         selected
-          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+          ? 'border-[#1E293B] bg-[#F8FAFC] dark:bg-[#0F172A]/20'
           : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
       }`}
     >
@@ -268,7 +268,7 @@ function FormatButton({
         <div
           className={`p-1.5 rounded ${
             selected
-              ? 'bg-blue-500 text-white'
+              ? 'bg-[#1E293B] text-white'
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
           }`}
         >
@@ -277,7 +277,7 @@ function FormatButton({
         <span className="font-semibold text-slate-900 dark:text-white">
           {label}
         </span>
-        {selected && <CheckCircle className="w-4 h-4 text-blue-500 ml-auto" />}
+        {selected && <CheckCircle className="w-4 h-4 text-[#1E293B] ml-auto" />}
       </div>
       <p className="text-xs text-slate-600 dark:text-slate-400">
         {description}

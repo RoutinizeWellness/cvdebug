@@ -169,7 +169,7 @@ export function AdminUserTable({
                               })}
                               title="View Payment History"
                             >
-                              <Receipt className="h-4 w-4 text-blue-500" />
+                              <Receipt className="h-4 w-4 text-[#1E293B]" />
                             </Button>
                             <Button variant="ghost" size="icon" onClick={() => handleEditClick(userData)}>
                               <Pencil className="h-4 w-4 text-muted-foreground" />

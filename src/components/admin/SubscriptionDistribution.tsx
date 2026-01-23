@@ -68,8 +68,8 @@ export function SubscriptionDistribution() {
   return (
     <Card className="p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-          <DollarSign className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+        <div className="w-10 h-10 rounded-lg bg-[#F1F5F9] dark:bg-[#0F172A]/30 flex items-center justify-center">
+          <DollarSign className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />
         </div>
         <div>
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -203,18 +203,18 @@ export function SubscriptionDistribution() {
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.7 }}
-          className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20"
+          className="p-4 rounded-lg bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-[#0F172A]/20 dark:to-[#0F172A]/20"
         >
           <div className="flex items-center gap-2 mb-2">
-            <Users className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <p className="text-xs font-medium text-blue-700 dark:text-blue-400">
+            <Users className="w-4 h-4 text-[#1E293B] dark:text-[#94A3B8]" />
+            <p className="text-xs font-medium text-[#0F172A] dark:text-[#94A3B8]">
               Paying Users
             </p>
           </div>
-          <p className="text-2xl font-bold text-blue-900 dark:text-blue-300">
+          <p className="text-2xl font-bold text-[#0F172A] dark:text-[#CBD5E1]">
             {subscriptionStats.totalPaying.toLocaleString()}
           </p>
-          <p className="text-xs text-blue-600 dark:text-blue-500 mt-1">
+          <p className="text-xs text-[#1E293B] dark:text-[#1E293B] mt-1">
             Active subscriptions
           </p>
         </motion.div>

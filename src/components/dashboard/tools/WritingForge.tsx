@@ -548,7 +548,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                     {!isEditing ? (
                       <button
                         onClick={handleEdit}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3B82F6] bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3B82F6] bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg hover:bg-[#F1F5F9] transition-colors"
                       >
                         <Edit className="h-4 w-4" />
                         Edit Resume
@@ -579,7 +579,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                     <textarea
                       value={editedText}
                       onChange={(e) => setEditedText(e.target.value)}
-                      className="w-full min-h-[900px] p-4 text-sm leading-relaxed text-[#0F172A] font-sans border border-blue-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+                      className="w-full min-h-[900px] p-4 text-sm leading-relaxed text-[#0F172A] font-sans border border-[#CBD5E1] rounded focus:outline-none focus:ring-2 focus:ring-[#1E293B] resize-y"
                       placeholder="Edit your resume text here..."
                     />
                   ) : (

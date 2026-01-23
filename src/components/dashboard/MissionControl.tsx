@@ -199,7 +199,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             <div className="flex items-baseline gap-2 mt-1">
               <p className="text-[#0F172A] text-2xl sm:text-3xl md:text-4xl font-mono font-bold">{activeApplications}</p>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-[#3B82F6] text-xs font-mono bg-blue-50 w-fit px-2 py-1 rounded border border-blue-200">
+            <div className="flex items-center gap-1 mt-2 text-[#3B82F6] text-xs font-mono bg-[#F8FAFC] w-fit px-2 py-1 rounded border border-[#E2E8F0]">
               <span className="material-symbols-outlined text-sm">bolt</span>
               2 {t.missionControl.interviewsScheduled}
             </div>
@@ -328,7 +328,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <h3 className="text-[#0F172A] text-lg font-bold">{t.missionControl.careerHealth}</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
             visibilityScore >= 85 ? "bg-teal-50 text-teal-600 border border-teal-200" :
-            visibilityScore >= 70 ? "bg-blue-50 text-[#3B82F6] border border-blue-200" :
+            visibilityScore >= 70 ? "bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0]" :
             visibilityScore >= 50 ? "bg-amber-50 text-[#F59E0B] border border-amber-200" :
             "bg-slate-100 text-[#64748B] border border-[#E2E8F0]"
           }`}>
@@ -451,7 +451,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       </div>
                       <p className="text-[#64748B] text-xs mb-3 relative z-10 truncate">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                        <div className="flex items-center gap-2 text-[10px] text-primary font-mono font-bold bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#E2E8F0]">
                           {app.stage || t.missionControl.inProgress}
                         </div>
                         <span className="text-[10px] text-[#64748B]">

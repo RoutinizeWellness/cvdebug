@@ -87,7 +87,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
                   ? 'bg-red-50 border-red-200'
                   : rec.type === 'important'
                   ? 'bg-amber-50 border-amber-200'
-                  : 'bg-blue-50 border-blue-200'
+                  : 'bg-[#F8FAFC] border-[#E2E8F0]'
               }`}
             >
               {rec.type === 'critical' ? (
@@ -134,7 +134,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
                   verb.strength >= 0.8
                     ? 'bg-green-50 border-green-200 text-green-700'
                     : verb.strength >= 0.5
-                    ? 'bg-blue-50 border-blue-200 text-blue-700'
+                    ? 'bg-[#F8FAFC] border-[#E2E8F0] text-[#0F172A]'
                     : 'bg-red-50 border-red-200 text-red-700'
                 }`}
               >

@@ -16,7 +16,7 @@ export function RealtimeStatsCard() {
     return (
       <Card className="p-6">
         <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
+          <Loader2 className="w-6 h-6 text-[#1E293B] animate-spin" />
         </div>
       </Card>
     );
@@ -63,9 +63,9 @@ export function RealtimeStatsCard() {
 
   const colorClasses = {
     blue: {
-      bg: "bg-blue-50 dark:bg-blue-900/20",
-      icon: "text-blue-600 dark:text-blue-400",
-      border: "border-blue-200 dark:border-blue-800",
+      bg: "bg-[#F8FAFC] dark:bg-[#0F172A]/20",
+      icon: "text-[#1E293B] dark:text-[#94A3B8]",
+      border: "border-[#E2E8F0] dark:border-[#0F172A]",
     },
     green: {
       bg: "bg-green-50 dark:bg-green-900/20",
@@ -73,9 +73,9 @@ export function RealtimeStatsCard() {
       border: "border-green-200 dark:border-green-800",
     },
     purple: {
-      bg: "bg-purple-50 dark:bg-purple-900/20",
-      icon: "text-purple-600 dark:text-purple-400",
-      border: "border-purple-200 dark:border-purple-800",
+      bg: "bg-[#F8FAFC] dark:bg-[#0F172A]/20",
+      icon: "text-[#1E293B] dark:text-[#94A3B8]",
+      border: "border-[#E2E8F0] dark:border-[#0F172A]",
     },
     yellow: {
       bg: "bg-yellow-50 dark:bg-yellow-900/20",
@@ -149,13 +149,13 @@ export function RealtimeStatsCard() {
               <p className="text-sm text-slate-600 dark:text-slate-400">Free Users</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              <p className="text-2xl font-bold text-[#1E293B] dark:text-[#94A3B8]">
                 {subscriptions.byTier.single_scan.toLocaleString()}
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">24-Hour Pass</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              <p className="text-2xl font-bold text-[#1E293B] dark:text-[#94A3B8]">
                 {subscriptions.byTier.interview_sprint.toLocaleString()}
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">Interview Sprint</p>

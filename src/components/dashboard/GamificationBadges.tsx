@@ -26,14 +26,14 @@ const rarityColors = {
     glow: "shadow-gray-400/20",
   },
   rare: {
-    bg: "bg-blue-100",
-    border: "border-blue-400",
-    text: "text-blue-700",
+    bg: "bg-[#F1F5F9]",
+    border: "border-[#475569]",
+    text: "text-[#0F172A]",
     glow: "shadow-blue-400/30",
   },
   epic: {
     bg: "bg-[#F1F5F9]",
-    border: "border-purple-400",
+    border: "border-[#475569]",
     text: "text-[#1E293B]",
     glow: "shadow-purple-400/40",
   },

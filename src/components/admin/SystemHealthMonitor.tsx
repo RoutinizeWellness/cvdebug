@@ -82,10 +82,10 @@ export function SystemHealthMonitor() {
         };
       case "good":
         return {
-          bg: "bg-blue-100 dark:bg-blue-900/30",
-          text: "text-blue-700 dark:text-blue-400",
-          border: "border-blue-200 dark:border-blue-800",
-          icon: <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+          bg: "bg-[#F1F5F9] dark:bg-[#0F172A]/30",
+          text: "text-[#0F172A] dark:text-[#94A3B8]",
+          border: "border-[#E2E8F0] dark:border-[#0F172A]",
+          icon: <CheckCircle2 className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />,
         };
       case "warning":
         return {

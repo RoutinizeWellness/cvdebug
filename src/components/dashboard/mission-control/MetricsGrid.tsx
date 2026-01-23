@@ -133,8 +133,8 @@ export function MetricsGrid({ metrics }: MetricsGridProps) {
       default:
         return {
           bar: "bg-[#3B82F6] shadow-[0_0_10px_#3b82f6]",
-          trend: "text-blue-400 bg-blue-400/10",
-          icon: "text-blue-400",
+          trend: "text-[#94A3B8] bg-[#475569]/10",
+          icon: "text-[#94A3B8]",
           border: "",
         };
     }

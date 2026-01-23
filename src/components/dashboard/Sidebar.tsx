@@ -64,7 +64,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
       onClick={onClick}
       className={`group flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors relative ${
         active
-          ? "text-blue-700 bg-blue-50 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ring-1 ring-blue-100"
+          ? "text-[#0F172A] bg-[#F8FAFC] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] ring-1 ring-[#F1F5F9]"
           : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
       }`}
     >

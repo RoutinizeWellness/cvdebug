@@ -382,7 +382,7 @@ export function InlineResumeEditor({
       </div>
 
       {/* Help text */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-[#475569]">
+      <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-3 text-xs text-[#475569]">
         <p className="font-semibold text-[#0F172A] mb-1">💡 Pro Tips:</p>
         <ul className="space-y-1 ml-4 list-disc">
           <li>Click the "+ keyword" buttons to add missing skills instantly</li>

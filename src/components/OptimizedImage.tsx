@@ -280,7 +280,7 @@ export function AvatarImage({ name, size = 'md', ...props }: AvatarImageProps) {
   if (showFallback || !props.src) {
     return (
       <div
-        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold`}
+        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-[#1E293B] to-[#0F172A] flex items-center justify-center text-white font-semibold`}
       >
         {initials}
       </div>

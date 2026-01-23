@@ -58,7 +58,7 @@ export default function PricingPage() {
       ],
       buttonText: "Get 24h Access",
       buttonVariant: "default" as const,
-      borderColor: "border-blue-900/50",
+      borderColor: "border-[#0F172A]/50",
       hoverBorder: "hover:border-[#3B82F6]/50",
       plan: "single_scan",
       highlighted: false,

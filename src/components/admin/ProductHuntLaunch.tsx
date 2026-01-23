@@ -125,7 +125,7 @@ Every upvote counts. Thank you! 🙏`,
               <p className="text-sm text-muted-foreground">PH Visits</p>
               <p className="text-3xl font-bold text-white">{stats.totalVisits}</p>
             </div>
-            <TrendingUp className="h-8 w-8 text-blue-500" />
+            <TrendingUp className="h-8 w-8 text-[#1E293B]" />
           </div>
         </Card>
 

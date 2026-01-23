@@ -57,7 +57,7 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
 
         case 'quote':
           return (
-            <blockquote key={index} className="border-l-4 border-blue-500 pl-6 py-4 my-8 bg-slate-800/50 rounded-r-lg">
+            <blockquote key={index} className="border-l-4 border-[#1E293B] pl-6 py-4 my-8 bg-slate-800/50 rounded-r-lg">
               <p className="text-slate-200 text-lg italic leading-relaxed">
                 {section.content}
               </p>
@@ -66,14 +66,14 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
 
         case 'cta':
           return (
-            <div key={index} className="my-12 p-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl text-center">
+            <div key={index} className="my-12 p-8 bg-gradient-to-r from-[#0F172A]/20 to-[#0F172A]/20 border border-[#1E293B]/30 rounded-xl text-center">
               <p className="text-xl text-white font-semibold mb-4">
                 {section.content}
               </p>
               <Button
                 onClick={() => navigate('/')}
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg"
+                className="bg-[#0F172A] hover:bg-[#0F172A] text-white px-8 py-6 text-lg"
               >
                 Scan Your Resume Now
               </Button>
@@ -127,7 +127,7 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
         >
           <header className="mb-8">
             <div className="flex items-center gap-4 mb-4 flex-wrap">
-              <span className="px-3 py-1 bg-blue-600/20 border border-blue-500/30 rounded-full text-blue-400 text-sm">
+              <span className="px-3 py-1 bg-[#0F172A]/20 border border-[#1E293B]/30 rounded-full text-[#94A3B8] text-sm">
                 {post.category}
               </span>
               <div className="flex items-center gap-2 text-slate-400 text-sm">
@@ -206,9 +206,9 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 * index }}
                   onClick={() => navigate(`/blog/${relatedPost.slug}`)}
-                  className="glass-panel rounded-xl p-6 cursor-pointer hover:border-blue-500/50 transition-all"
+                  className="glass-panel rounded-xl p-6 cursor-pointer hover:border-[#1E293B]/50 transition-all"
                 >
-                  <span className="text-xs text-blue-400 font-semibold">
+                  <span className="text-xs text-[#94A3B8] font-semibold">
                     {relatedPost.category}
                   </span>
                   <h3 className="text-lg font-semibold text-white mt-2 mb-3 line-clamp-2">
@@ -232,7 +232,7 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 p-12 bg-gradient-to-r from-blue-600/10 to-purple-600/10 border border-blue-500/20 rounded-2xl text-center"
+          className="mt-16 p-12 bg-gradient-to-r from-[#0F172A]/10 to-[#0F172A]/10 border border-[#1E293B]/20 rounded-2xl text-center"
         >
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Optimize Your Resume?
@@ -243,7 +243,7 @@ export function BlogPost({ post, relatedPosts }: BlogPostProps) {
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-6 text-lg"
+            className="bg-[#0F172A] hover:bg-[#0F172A] text-white px-10 py-6 text-lg"
           >
             Scan Your Resume for Free
           </Button>

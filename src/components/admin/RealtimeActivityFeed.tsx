@@ -33,7 +33,7 @@ export function RealtimeActivityFeed() {
     return (
       <Card className="p-6">
         <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
+          <Loader2 className="w-6 h-6 text-[#1E293B] animate-spin" />
         </div>
       </Card>
     );
@@ -55,7 +55,7 @@ export function RealtimeActivityFeed() {
       case 'failed':
         return <XCircle className="w-4 h-4 text-red-500" />;
       case 'processing':
-        return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
+        return <Loader2 className="w-4 h-4 text-[#1E293B] animate-spin" />;
       default:
         return <Clock className="w-4 h-4 text-slate-400" />;
     }
@@ -66,7 +66,7 @@ export function RealtimeActivityFeed() {
       {/* Recent Resumes */}
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
-          <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+          <FileText className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             Recent Resumes
           </h3>
@@ -120,7 +120,7 @@ export function RealtimeActivityFeed() {
       {/* Recent Users */}
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Users className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <Users className="w-5 h-5 text-[#1E293B] dark:text-[#94A3B8]" />
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             New Users
           </h3>
@@ -140,7 +140,7 @@ export function RealtimeActivityFeed() {
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-sm font-semibold">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1E293B] to-[#1E293B] flex items-center justify-center text-white text-sm font-semibold">
                   {(user.name || user.email).charAt(0).toUpperCase()}
                 </div>
 
@@ -151,9 +151,9 @@ export function RealtimeActivityFeed() {
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
                       user.subscriptionTier === 'interview_sprint'
-                        ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                        ? 'bg-[#F1F5F9] text-[#0F172A] dark:bg-[#0F172A]/30 dark:text-[#94A3B8]'
                         : user.subscriptionTier === 'single_scan'
-                        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                        ? 'bg-[#F1F5F9] text-[#0F172A] dark:bg-[#0F172A]/30 dark:text-[#94A3B8]'
                         : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                     }`}>
                       {user.subscriptionTier === 'interview_sprint'

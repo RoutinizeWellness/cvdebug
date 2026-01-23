@@ -81,7 +81,7 @@ export function AutoTuneButton({
       <Button
         onClick={handleAutoTune}
         disabled={isProcessing || !resumeText}
-        className="bg-gradient-to-r from-[#0F172A] to-[#334155] hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg"
+        className="bg-gradient-to-r from-[#0F172A] to-[#334155] hover:from-[#1E293B] hover:to-[#0F172A] text-white font-bold shadow-lg"
         size="lg"
       >
         {isProcessing ? (
@@ -140,7 +140,7 @@ export function AutoTuneButton({
                     <p className="text-xs text-[#64748B]">Bullets Optimized</p>
                     <p className="text-xl font-bold text-[#0F172A]">{results.bulletsOptimized}</p>
                   </div>
-                  <div className="bg-white rounded-lg p-3 border border-blue-200">
+                  <div className="bg-white rounded-lg p-3 border border-[#E2E8F0]">
                     <p className="text-xs text-[#64748B]">Keywords Injected</p>
                     <p className="text-xl font-bold text-[#0F172A]">{results.keywordsInjected}</p>
                   </div>
@@ -181,7 +181,7 @@ export function AutoTuneButton({
                         {improvement.keywordsAdded.map((kw: string, i: number) => (
                           <span
                             key={i}
-                            className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded"
+                            className="px-2 py-1 bg-[#F1F5F9] text-[#0F172A] text-xs font-medium rounded"
                           >
                             {kw}
                           </span>

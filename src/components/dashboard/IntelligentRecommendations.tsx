@@ -68,7 +68,7 @@ export function IntelligentRecommendations({
       case 'high':
         return 'border-orange-200 dark:border-orange-900 bg-orange-50 dark:bg-orange-900/10';
       case 'medium':
-        return 'border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/10';
+        return 'border-[#E2E8F0] dark:border-[#0F172A] bg-[#F8FAFC] dark:bg-[#0F172A]/10';
       case 'low':
         return 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/10';
     }
@@ -143,7 +143,7 @@ export function IntelligentRecommendations({
 
               {/* Impact Score */}
               <div className="text-right ml-4">
-                <div className="text-2xl font-bold text-[#1E293B] dark:text-blue-400">
+                <div className="text-2xl font-bold text-[#1E293B] dark:text-[#94A3B8]">
                   {rec.impact}
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-500">

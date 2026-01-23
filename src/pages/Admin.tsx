@@ -793,7 +793,7 @@ export default function AdminPage() {
                       <div className="flex gap-2 opacity-60">
                         <span className="text-[#64748B] min-w-[60px]">10:41:02</span>
                         <div className="flex-1">
-                          <span className="text-blue-400">[INFO]</span> System initialization complete.
+                          <span className="text-[#94A3B8]">[INFO]</span> System initialization complete.
                         </div>
                       </div>
                       <div className="flex gap-2">

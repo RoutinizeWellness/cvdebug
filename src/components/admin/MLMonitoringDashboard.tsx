@@ -57,7 +57,7 @@ export function MLMonitoringDashboard() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-3 text-blue-500" />
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-3 text-[#1E293B]" />
           <p className="text-slate-600 dark:text-slate-400">Loading metrics...</p>
         </div>
       </div>
@@ -98,7 +98,7 @@ export function MLMonitoringDashboard() {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 transition-colors disabled:opacity-50"
+            className="px-4 py-2 bg-[#0F172A] hover:bg-[#0F172A] text-white rounded-lg flex items-center gap-2 transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
@@ -168,7 +168,7 @@ export function MLMonitoringDashboard() {
       <div className="card-professional p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Database className="w-5 h-5 text-blue-500" />
+            <Database className="w-5 h-5 text-[#1E293B]" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
               Cache Performance
             </h3>
@@ -213,7 +213,7 @@ export function MLMonitoringDashboard() {
       {Object.keys(snapshot.industryBreakdown).length > 0 && (
         <div className="card-professional p-6">
           <div className="flex items-center gap-3 mb-6">
-            <BarChart3 className="w-5 h-5 text-purple-500" />
+            <BarChart3 className="w-5 h-5 text-[#1E293B]" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
               Industry Distribution
             </h3>
@@ -230,7 +230,7 @@ export function MLMonitoringDashboard() {
                   <div className="flex items-center gap-3 flex-1 ml-4">
                     <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-purple-500"
+                        className="h-full bg-[#1E293B]"
                         style={{
                           width: `${(count / snapshot.totalAnalyses) * 100}%`
                         }}
@@ -290,10 +290,10 @@ function MetricCard({
   trend?: 'up' | 'down';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-500',
+    blue: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 text-[#1E293B]',
     green: 'bg-green-50 dark:bg-green-900/20 text-green-500',
     orange: 'bg-orange-50 dark:bg-orange-900/20 text-orange-500',
-    purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-500'
+    purple: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 text-[#1E293B]'
   };
 
   return (

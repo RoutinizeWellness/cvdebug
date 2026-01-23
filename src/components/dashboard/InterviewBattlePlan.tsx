@@ -137,7 +137,7 @@ export function InterviewBattlePlan({
       primary: {
         border: "border-l-blue-500",
         text: "text-[#3B82F6]",
-        bg: "bg-blue-50 border-blue-100"
+        bg: "bg-[#F8FAFC] border-[#F1F5F9]"
       },
       amber: {
         border: "border-l-amber-500",
@@ -146,8 +146,8 @@ export function InterviewBattlePlan({
       },
       blue: {
         border: "border-l-blue-500",
-        text: "text-blue-700",
-        bg: "bg-blue-50 border-blue-100"
+        text: "text-[#0F172A]",
+        bg: "bg-[#F8FAFC] border-[#F1F5F9]"
       }
     };
     return colorMap[color] || colorMap.primary;
@@ -317,7 +317,7 @@ export function InterviewBattlePlan({
           <p className="text-[#64748B] mt-2 flex items-center gap-2 flex-wrap text-sm md:text-base">
             <span className="material-symbols-outlined text-sm">psychology</span>
             AI-generated strategy for{" "}
-            <span className="text-[#3B82F6] font-mono text-xs md:text-sm bg-blue-50 px-2 py-0.5 rounded">
+            <span className="text-[#3B82F6] font-mono text-xs md:text-sm bg-[#F8FAFC] px-2 py-0.5 rounded">
               {targetRole} @ {companyName}
             </span>
           </p>
@@ -335,7 +335,7 @@ export function InterviewBattlePlan({
             }}
             variant="outline"
             size="sm"
-            className="gap-2 font-semibold border-blue-200 text-[#1E293B] hover:bg-blue-50 hover:text-blue-700"
+            className="gap-2 font-semibold border-[#E2E8F0] text-[#1E293B] hover:bg-[#F8FAFC] hover:text-[#0F172A]"
           >
             <Download className="h-4 w-4" />
             <span className="hidden sm:inline">Export to PDF</span>
@@ -376,7 +376,7 @@ export function InterviewBattlePlan({
                       toast.success(`Selected: ${q.type} question`);
                     }}
                     className={`group p-3 rounded-lg border border-l-4 hover:border-[#3B82F6] ${colors.border} bg-[#FFFFFF] transition-all cursor-pointer ${
-                      selectedQuestion === index ? 'ring-2 ring-blue-500/20 bg-blue-50/50' : ''
+                      selectedQuestion === index ? 'ring-2 ring-[#1E293B]/20 bg-[#F8FAFC]/50' : ''
                     }`}
                   >
                     <div className="flex justify-between items-start mb-1">
@@ -405,7 +405,7 @@ export function InterviewBattlePlan({
               <button
                 onClick={() => handleRegenerateQuestions(false)}
                 disabled={isRegeneratingQuestions}
-                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
+                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-[#F8FAFC] rounded border border-transparent hover:border-[#E2E8F0] transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
               >
                 <span className={`material-symbols-outlined text-lg ${isRegeneratingQuestions ? 'animate-spin' : ''}`}>
                   autorenew
@@ -481,14 +481,14 @@ export function InterviewBattlePlan({
                 <textarea
                   value={starStory.action}
                   onChange={(e) => setStarStory({ ...starStory, action: e.target.value })}
-                  className="w-full h-32 p-3 rounded bg-[#FFFFFF] border border-[#3B82F6] ring-1 ring-blue-500/20 text-sm text-[#0F172A] focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
+                  className="w-full h-32 p-3 rounded bg-[#FFFFFF] border border-[#3B82F6] ring-1 ring-[#1E293B]/20 text-sm text-[#0F172A] focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
                   placeholder="Describe the actions you took..."
                 />
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <button
                     onClick={handleEnhanceAction}
                     disabled={isEnhancingAction}
-                    className="p-1 rounded bg-blue-100 text-[#3B82F6] hover:bg-blue-200 transition-colors disabled:opacity-50"
+                    className="p-1 rounded bg-[#F1F5F9] text-[#3B82F6] hover:bg-[#E2E8F0] transition-colors disabled:opacity-50"
                     title="Enhance with AI"
                   >
                     <span className={`material-symbols-outlined text-sm ${isEnhancingAction ? 'animate-pulse' : ''}`}>

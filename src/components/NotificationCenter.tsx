@@ -133,7 +133,7 @@ export function NotificationCenter({
                   onClick={() => setFilter(f as any)}
                   className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
                     filter === f
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-[#1E293B] text-white'
                       : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'
                   }`}
                 >
@@ -181,14 +181,14 @@ function NotificationItem({
     success: <CheckCircle className="w-5 h-5 text-green-500" />,
     error: <XCircle className="w-5 h-5 text-red-500" />,
     warning: <AlertTriangle className="w-5 h-5 text-orange-500" />,
-    info: <Info className="w-5 h-5 text-blue-500" />
+    info: <Info className="w-5 h-5 text-[#1E293B]" />
   };
 
   const bgColorMap = {
     success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900',
     error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900',
     warning: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900',
-    info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900'
+    info: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A]'
   };
 
   const severityBadge = notification.metadata?.severity ? (
@@ -200,7 +200,7 @@ function NotificationItem({
           ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
           : notification.metadata.severity === 'medium'
           ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
-          : 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+          : 'bg-[#F1F5F9] dark:bg-[#0F172A]/30 text-[#0F172A] dark:text-[#94A3B8]'
       }`}
     >
       {notification.metadata.severity}
@@ -245,7 +245,7 @@ function NotificationItem({
             {notification.metadata?.actionUrl && (
               <a
                 href={notification.metadata.actionUrl}
-                className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                className="text-xs text-[#1E293B] dark:text-[#94A3B8] hover:underline font-medium"
               >
                 {notification.metadata.actionLabel || 'View'}
               </a>

@@ -182,7 +182,7 @@ export function PerformanceMonitor() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: `${height}%`, opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex-1 bg-blue-500 rounded-t"
+                      className="flex-1 bg-[#1E293B] rounded-t"
                       style={{ minHeight: '4px' }}
                     />
                   );
@@ -266,8 +266,8 @@ function MetricCard({
   color: 'blue' | 'purple' | 'orange' | 'green';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900 text-blue-600 dark:text-blue-400',
-    purple: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-900 text-purple-600 dark:text-purple-400',
+    blue: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
+    purple: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
     orange: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900 text-orange-600 dark:text-orange-400',
     green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900 text-green-600 dark:text-green-400'
   };
@@ -311,9 +311,9 @@ function CacheStatusCard({
   const hitRateColor = hitRateNum >= 80 ? 'text-green-500' : hitRateNum >= 60 ? 'text-orange-500' : 'text-red-500';
 
   const colorClasses = {
-    blue: 'border-blue-200 dark:border-blue-900',
+    blue: 'border-[#E2E8F0] dark:border-[#0F172A]',
     green: 'border-green-200 dark:border-green-900',
-    purple: 'border-purple-200 dark:border-purple-900'
+    purple: 'border-[#E2E8F0] dark:border-[#0F172A]'
   };
 
   return (

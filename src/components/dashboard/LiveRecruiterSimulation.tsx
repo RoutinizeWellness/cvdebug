@@ -417,7 +417,7 @@ export function LiveRecruiterSimulation({
           </div>
           <span className="text-[#475569] text-sm hidden md:inline">/</span>
           <div className="flex items-center gap-1 md:gap-2 min-w-0">
-            <span className="text-[10px] md:text-xs font-mono px-1.5 md:px-2 py-0.5 rounded bg-blue-50 text-[#3B82F6] border border-blue-200 truncate max-w-[100px] md:max-w-none">
+            <span className="text-[10px] md:text-xs font-mono px-1.5 md:px-2 py-0.5 rounded bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0] truncate max-w-[100px] md:max-w-none">
               {targetRole.toUpperCase()}
             </span>
             <span className="text-[10px] md:text-xs text-[#64748B] font-mono hidden lg:inline">ID: {sessionId}</span>
@@ -454,7 +454,7 @@ export function LiveRecruiterSimulation({
         <button className="hidden lg:flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
           <span className="material-symbols-outlined text-base">dashboard</span> Format
         </button>
-        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#3B82F6] bg-blue-50 rounded-lg border border-blue-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] whitespace-nowrap">
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#3B82F6] bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] whitespace-nowrap">
           <span className="material-symbols-outlined text-base">support_agent</span> Recruiter
         </button>
       </nav>
@@ -717,7 +717,7 @@ export function LiveRecruiterSimulation({
                     <span className="inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#1E293B] bg-[#F1F5F9] rounded mb-2 border border-[#E2E8F0]">
                       [PROFESSIONAL SUMMARY]
                     </span>
-                    <p className="pl-4 border-l-2 border-purple-300 text-[#475569]">
+                    <p className="pl-4 border-l-2 border-[#CBD5E1] text-[#475569]">
                       {professionalSummary}
                     </p>
                   </div>
@@ -725,14 +725,14 @@ export function LiveRecruiterSimulation({
                   {/* Skills Extracted */}
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 bg-blue-100 rounded border border-blue-200">
+                      <span className="inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#0F172A] bg-[#F1F5F9] rounded border border-[#E2E8F0]">
                         [SKILLS EXTRACTED]
                       </span>
                       <span className="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
                         High Match with JD
                       </span>
                     </div>
-                    <div className="pl-4 border-l-2 border-blue-300 flex flex-wrap gap-2">
+                    <div className="pl-4 border-l-2 border-[#CBD5E1] flex flex-wrap gap-2">
                       {displaySkills.map((skill, index) => (
                         <span
                           key={index}

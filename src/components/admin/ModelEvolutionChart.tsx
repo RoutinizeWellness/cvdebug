@@ -129,7 +129,7 @@ export function ModelEvolutionChart() {
               onClick={() => setSelectedMetric('accuracy')}
               className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                 selectedMetric === 'accuracy'
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#1E293B] text-white'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
               }`}
             >
@@ -139,7 +139,7 @@ export function ModelEvolutionChart() {
               onClick={() => setSelectedMetric('examples')}
               className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                 selectedMetric === 'examples'
-                  ? 'bg-blue-500 text-white'
+                  ? 'bg-[#1E293B] text-white'
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
               }`}
             >
@@ -167,7 +167,7 @@ export function ModelEvolutionChart() {
                   initial={{ height: 0 }}
                   animate={{ height: `${height}%` }}
                   transition={{ delay: idx * 0.1, duration: 0.5 }}
-                  className="w-full bg-gradient-to-t from-blue-500 to-purple-500 rounded-t-lg relative group cursor-pointer"
+                  className="w-full bg-gradient-to-t from-[#1E293B] to-[#1E293B] rounded-t-lg relative group cursor-pointer"
                 >
                   {/* Tooltip */}
                   <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
@@ -261,9 +261,9 @@ function StatCard({
   color: 'blue' | 'green' | 'purple' | 'orange';
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900 text-blue-600 dark:text-blue-400',
+    blue: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
     green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900 text-green-600 dark:text-green-400',
-    purple: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-900 text-purple-600 dark:text-purple-400',
+    purple: 'bg-[#F8FAFC] dark:bg-[#0F172A]/20 border-[#E2E8F0] dark:border-[#0F172A] text-[#1E293B] dark:text-[#94A3B8]',
     orange: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900 text-orange-600 dark:text-orange-400'
   };
 
@@ -322,7 +322,7 @@ function FeatureBar({
           <span className="text-slate-600 dark:text-slate-400">
             Importance: {(importance * 100).toFixed(1)}%
           </span>
-          <span className="text-blue-600 dark:text-blue-400 font-medium">
+          <span className="text-[#1E293B] dark:text-[#94A3B8] font-medium">
             +{averageImpact.toFixed(0)} pts
           </span>
         </div>
@@ -332,7 +332,7 @@ function FeatureBar({
           initial={{ width: 0 }}
           animate={{ width: `${importance * 100}%` }}
           transition={{ duration: 0.5, delay: rank * 0.05 }}
-          className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+          className="h-full bg-gradient-to-r from-[#1E293B] to-[#1E293B]"
         />
       </div>
     </div>
