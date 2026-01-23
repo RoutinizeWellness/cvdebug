@@ -81,7 +81,7 @@ export function AutoTuneButton({
       <Button
         onClick={handleAutoTune}
         disabled={isProcessing || !resumeText}
-        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg"
+        className="bg-gradient-to-r from-[#0F172A] to-[#334155] hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-lg"
         size="lg"
       >
         {isProcessing ? (
@@ -102,7 +102,7 @@ export function AutoTuneButton({
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-2xl">
-              <Sparkles className="w-6 h-6 text-purple-600" />
+              <Sparkles className="w-6 h-6 text-[#1E293B]" />
               Auto-Tune Results
             </DialogTitle>
             <DialogDescription>
@@ -113,7 +113,7 @@ export function AutoTuneButton({
           {results && (
             <div className="space-y-6 mt-4">
               {/* Score Improvement */}
-              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl p-6 border-2 border-emerald-200">
+              <div className="bg-gradient-to-r from-emerald-50 to-[#F1F5F9] rounded-xl p-6 border-2 border-emerald-200">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <p className="text-sm text-[#64748B] font-medium">Resume Score</p>
@@ -177,7 +177,7 @@ export function AutoTuneButton({
                     {/* Keywords Added */}
                     {improvement.keywordsAdded.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-xs font-bold text-blue-600">Keywords added:</p>
+                        <p className="text-xs font-bold text-[#1E293B]">Keywords added:</p>
                         {improvement.keywordsAdded.map((kw: string, i: number) => (
                           <span
                             key={i}

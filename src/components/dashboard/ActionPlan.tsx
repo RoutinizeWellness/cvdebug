@@ -37,7 +37,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
       case 'important':
         return 'border-orange-500 bg-orange-50 dark:bg-orange-900/20';
       case 'recommended':
-        return 'border-blue-500 bg-blue-50 dark:bg-blue-900/20';
+        return 'border-[#334155] bg-blue-50 dark:bg-blue-900/20';
       default:
         return 'border-slate-300 bg-slate-50 dark:bg-slate-800';
     }
@@ -89,7 +89,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
               ? 'bg-red-500 text-white'
               : step.priority === 'important'
               ? 'bg-orange-500 text-white'
-              : 'bg-blue-500 text-white'
+              : 'bg-[#334155] text-white'
           }`}>
             {step.completed ? (
               <CheckCircle2 className="h-5 w-5" />
@@ -229,7 +229,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
         {recommendedSteps.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
-              <Circle className="h-5 w-5 text-blue-500" />
+              <Circle className="h-5 w-5 text-[#334155]" />
               <h3 className="font-bold text-[#0F172A] dark:text-white">Recommended (Polish)</h3>
             </div>
             {recommendedSteps.map((step, idx) =>

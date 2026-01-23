@@ -470,7 +470,7 @@ export function LiveRecruiterSimulation({
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-4 flex items-center justify-between shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
             <div className="flex items-center gap-4">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-[#0F172A] font-bold text-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#334155] to-[#1E293B] flex items-center justify-center text-[#0F172A] font-bold text-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                 {candidateName.split(' ').map(n => n[0]).join('').substring(0, 2)}
               </div>
               <div>
@@ -714,7 +714,7 @@ export function LiveRecruiterSimulation({
                 <>
                   {/* Professional Summary */}
                   <div className="mb-6">
-                    <span className="inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider text-purple-700 bg-purple-100 rounded mb-2 border border-purple-200">
+                    <span className="inline-block px-2 py-0.5 text-[10px] font-bold tracking-wider text-[#1E293B] bg-[#F1F5F9] rounded mb-2 border border-[#E2E8F0]">
                       [PROFESSIONAL SUMMARY]
                     </span>
                     <p className="pl-4 border-l-2 border-purple-300 text-[#475569]">

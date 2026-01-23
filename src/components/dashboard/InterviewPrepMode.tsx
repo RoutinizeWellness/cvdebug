@@ -89,7 +89,7 @@ export function InterviewPrepMode({
     return (
       <Card className="bg-[#FFFFFF] border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <CardContent className="flex flex-col items-center justify-center py-12">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500/20 to-blue-500/20 flex items-center justify-center mb-4 border border-teal-500/30">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500/20 to-[#475569]/20 flex items-center justify-center mb-4 border border-teal-500/30">
             <BrainCircuit className="h-8 w-8 text-teal-400" />
           </div>
           <h3 className="text-xl font-bold text-[#0F172A] mb-2">Interview Battle Plan</h3>

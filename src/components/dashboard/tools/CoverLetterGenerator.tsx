@@ -100,7 +100,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
         {!hasInterviewSprint && (
           <Alert className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden">
             {/* Decorative gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[#334155]/5 pointer-events-none" />
 
             <div className="relative">
               <div className="flex items-start gap-3 mb-4">

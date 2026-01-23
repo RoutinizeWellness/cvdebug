@@ -85,7 +85,7 @@ export function PaywalledKeywords({
             {onUnlock && (
               <Button
                 onClick={onUnlock}
-                className="w-full bg-gradient-to-r from-[#840bda] to-accent hover:to-blue-500 text-[#0F172A] font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-[#840bda] to-accent hover:to-[#475569] text-[#0F172A] font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-primary/50 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
               >
                 <span>Fix My CV Now</span>
                 <span className="bg-[#FFFFFF]/20 px-1.5 py-0.5 rounded text-xs font-medium">

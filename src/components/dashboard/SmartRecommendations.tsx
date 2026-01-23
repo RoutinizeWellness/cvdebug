@@ -31,7 +31,7 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
     return (
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-4">
-          <Sparkles className="w-5 h-5 text-purple-500 animate-pulse" />
+          <Sparkles className="w-5 h-5 text-[#1E293B] animate-pulse" />
           <h3 className="text-lg font-semibold">Loading AI Recommendations...</h3>
         </div>
       </Card>
@@ -52,9 +52,9 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
       case "medium":
         return <Lightbulb className="w-5 h-5 text-yellow-500" />;
       case "low":
-        return <CheckCircle2 className="w-5 h-5 text-blue-500" />;
+        return <CheckCircle2 className="w-5 h-5 text-[#334155]" />;
       default:
-        return <Sparkles className="w-5 h-5 text-purple-500" />;
+        return <Sparkles className="w-5 h-5 text-[#1E293B]" />;
     }
   };
 
@@ -83,17 +83,17 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
         };
       case "low":
         return {
-          bg: "bg-blue-50 dark:bg-blue-900/20",
-          border: "border-blue-200 dark:border-blue-800",
-          text: "text-blue-700 dark:text-blue-400",
-          badge: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300",
+          bg: "bg-[#F8FAFC] dark:bg-[#1E293B]/20",
+          border: "border-[#E2E8F0] dark:border-[#334155]",
+          text: "text-[#1E293B] dark:text-[#CBD5E1]",
+          badge: "bg-[#F1F5F9] dark:bg-[#1E293B]/40 text-[#1E293B] dark:text-[#94A3B8]",
         };
       default:
         return {
-          bg: "bg-purple-50 dark:bg-purple-900/20",
-          border: "border-purple-200 dark:border-purple-800",
-          text: "text-purple-700 dark:text-purple-400",
-          badge: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300",
+          bg: "bg-[#F8FAFC] dark:bg-[#0F172A]/20",
+          border: "border-[#E2E8F0] dark:border-[#1E293B]",
+          text: "text-[#1E293B] dark:text-[#CBD5E1]",
+          badge: "bg-[#F1F5F9] dark:bg-[#0F172A]/40 text-[#1E293B] dark:text-[#94A3B8]",
         };
     }
   };
@@ -112,11 +112,11 @@ export function SmartRecommendations({ userId, resumeId }: SmartRecommendationsP
   return (
     <div className="space-y-6">
       {/* Insights Header */}
-      <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200 dark:border-purple-800">
+      <Card className="p-6 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] dark:from-purple-900/20 dark:to-blue-900/20 border-[#E2E8F0] dark:border-[#1E293B]">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            <div className="w-10 h-10 rounded-full bg-[#F1F5F9] dark:bg-purple-900/40 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-[#1E293B] dark:text-[#CBD5E1]" />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">

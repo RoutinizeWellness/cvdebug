@@ -62,17 +62,17 @@ export function AdvancedATSInsights({
         className="bg-gradient-to-br from-purple-900/90 to-blue-900/40 rounded-xl p-6 border-2 border-purple-400/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
         onClick={onUpgrade}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/10 via-transparent to-[#475569]/10 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity" />
 
         <div className="relative">
           <div className="flex items-start gap-4 mb-4">
-            <div className="p-3 rounded-xl bg-purple-600/20 text-purple-400">
+            <div className="p-3 rounded-xl bg-[#0F172A]/20 text-purple-400">
               <span className="material-symbols-outlined text-3xl">neurology</span>
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <h3 className="text-xl font-bold text-white">Advanced ML Analysis</h3>
-                <span className="px-2 py-1 text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center gap-1">
+                <span className="px-2 py-1 text-xs font-bold text-white bg-gradient-to-r from-[#0F172A] to-[#334155] rounded-full flex items-center gap-1">
                   <span className="material-symbols-outlined text-xs">lock</span>
                   PRO
                 </span>
@@ -123,17 +123,17 @@ export function AdvancedATSInsights({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
-      className="bg-white rounded-xl p-6 border-2 border-purple-200 shadow-lg"
+      className="bg-white rounded-xl p-6 border-2 border-[#E2E8F0] shadow-lg"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-purple-100 text-purple-600">
+          <div className="p-3 rounded-xl bg-[#F1F5F9] text-[#1E293B]">
             <span className="material-symbols-outlined text-2xl">neurology</span>
           </div>
           <div>
             <h3 className="text-xl font-bold text-[#0F172A] flex items-center gap-2">
               Advanced ML Analysis
-              <span className="px-2 py-1 text-xs font-bold text-purple-700 bg-purple-100 rounded-full">
+              <span className="px-2 py-1 text-xs font-bold text-[#1E293B] bg-[#F1F5F9] rounded-full">
                 PREMIUM
               </span>
             </h3>
@@ -145,7 +145,7 @@ export function AdvancedATSInsights({
           <button
             onClick={handleRunAnalysis}
             disabled={loading}
-            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all disabled:opacity-50"
+            className="px-4 py-2 bg-[#0F172A] hover:bg-purple-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-all disabled:opacity-50"
           >
             {loading ? (
               <>
@@ -168,17 +168,17 @@ export function AdvancedATSInsights({
           <div className="border-t border-gray-200 pt-4">
             <h4 className="text-lg font-bold text-[#0F172A] mb-3">Keyword Intelligence</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
-                <div className="text-3xl font-bold text-purple-700">
+              <div className="bg-gradient-to-br from-[#F8FAFC] to-purple-100 rounded-lg p-4">
+                <div className="text-3xl font-bold text-[#1E293B]">
                   {analysisResult.keywordAnalysis.overallScore}
                 </div>
-                <div className="text-xs text-purple-600 font-medium">Overall Score</div>
+                <div className="text-xs text-[#1E293B] font-medium">Overall Score</div>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-[#F8FAFC] to-blue-100 rounded-lg p-4">
                 <div className="text-3xl font-bold text-blue-700">
                   {analysisResult.keywordAnalysis.categoryBreakdown.technical.score}
                 </div>
-                <div className="text-xs text-blue-600 font-medium">Technical</div>
+                <div className="text-xs text-[#1E293B] font-medium">Technical</div>
               </div>
               <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4">
                 <div className="text-3xl font-bold text-green-700">
@@ -240,11 +240,11 @@ export function AdvancedATSInsights({
                 </div>
                 <div className="text-xs text-indigo-600 font-medium">Total Metrics</div>
               </div>
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
-                <div className="text-3xl font-bold text-purple-700">
+              <div className="bg-gradient-to-br from-[#F8FAFC] to-purple-100 rounded-lg p-4">
+                <div className="text-3xl font-bold text-[#1E293B]">
                   {analysisResult.impactAnalysis.impactScore}
                 </div>
-                <div className="text-xs text-purple-600 font-medium">Impact Score</div>
+                <div className="text-xs text-[#1E293B] font-medium">Impact Score</div>
               </div>
               <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg p-4">
                 <div className="text-2xl font-bold text-pink-700 uppercase">
@@ -269,7 +269,7 @@ export function AdvancedATSInsights({
                         <div className="text-xs text-slate-600 line-clamp-1">{metric.context}</div>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded font-medium">
+                        <span className="text-xs px-2 py-0.5 bg-[#F1F5F9] text-[#1E293B] rounded font-medium">
                           {metric.impactScore}/10
                         </span>
                       </div>
@@ -286,7 +286,7 @@ export function AdvancedATSInsights({
                 <ul className="space-y-1">
                   {analysisResult.impactAnalysis.improvementSuggestions.map((suggestion: string, idx: number) => (
                     <li key={idx} className="text-sm text-blue-700 flex items-start gap-2">
-                      <span className="text-blue-500">•</span>
+                      <span className="text-[#334155]">•</span>
                       <span>{suggestion}</span>
                     </li>
                   ))}
@@ -353,11 +353,11 @@ export function AdvancedATSInsights({
             <div className="border-t border-gray-200 pt-4">
               <h4 className="text-lg font-bold text-[#0F172A] mb-3">ATS Compatibility Score</h4>
               <div className="grid grid-cols-3 gap-4 mb-4">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 text-center">
+                <div className="bg-gradient-to-br from-[#F8FAFC] to-blue-100 rounded-lg p-4 text-center">
                   <div className="text-3xl font-bold text-blue-700">
                     {analysisResult.atsCompatibility.overallScore}
                   </div>
-                  <div className="text-xs text-blue-600 font-medium">Overall</div>
+                  <div className="text-xs text-[#1E293B] font-medium">Overall</div>
                 </div>
                 <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 text-center">
                   <div className="text-3xl font-bold text-green-700">
@@ -365,11 +365,11 @@ export function AdvancedATSInsights({
                   </div>
                   <div className="text-xs text-green-600 font-medium">Format</div>
                 </div>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 text-center">
-                  <div className="text-3xl font-bold text-purple-700">
+                <div className="bg-gradient-to-br from-[#F8FAFC] to-purple-100 rounded-lg p-4 text-center">
+                  <div className="text-3xl font-bold text-[#1E293B]">
                     {analysisResult.atsCompatibility.contentScore}
                   </div>
-                  <div className="text-xs text-purple-600 font-medium">Content</div>
+                  <div className="text-xs text-[#1E293B] font-medium">Content</div>
                 </div>
               </div>
 

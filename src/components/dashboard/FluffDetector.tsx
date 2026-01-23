@@ -787,7 +787,7 @@ export function FluffDetector({
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#8B5CF6] text-[20px]">query_stats</span>
                 Impact Quantification Audit
-                <span className="bg-purple-50 text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-purple-100">
+                <span className="bg-[#F8FAFC] text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-purple-100">
                   {unquantifiedAchievements.length} Missing
                 </span>
               </h3>
@@ -804,7 +804,7 @@ export function FluffDetector({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
-                    className="bg-purple-50 rounded-lg border border-purple-200 p-4"
+                    className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4"
                   >
                     <div className="mb-3">
                       <div className="flex items-start gap-2 mb-1">
@@ -829,7 +829,7 @@ export function FluffDetector({
                         {achievement.suggestions.map((suggestion, sIndex) => (
                           <label
                             key={sIndex}
-                            className="flex items-start gap-3 p-2 rounded hover:bg-[#FFFFFF] cursor-pointer transition-colors group border border-transparent hover:border-purple-200"
+                            className="flex items-start gap-3 p-2 rounded hover:bg-[#FFFFFF] cursor-pointer transition-colors group border border-transparent hover:border-[#E2E8F0]"
                           >
                             <input
                               type="radio"
@@ -882,7 +882,7 @@ export function FluffDetector({
                 ))
               ) : (
                 <div className="p-6 text-center">
-                  <span className="material-symbols-outlined text-purple-600 text-4xl mb-2 block">query_stats</span>
+                  <span className="material-symbols-outlined text-[#1E293B] text-4xl mb-2 block">query_stats</span>
                   <p className="text-sm font-semibold text-[#0F172A] mb-1">All Achievements Quantified</p>
                   <p className="text-xs text-[#64748B]">Your resume includes metrics and specific results.</p>
                 </div>
@@ -893,7 +893,7 @@ export function FluffDetector({
       </div>
 
       {/* Floating Chat Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-blue-600 hover:to-purple-600 text-[#0F172A] rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-[#1E293B] hover:to-[#1E293B] text-[#0F172A] rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
         <span className="material-symbols-outlined text-2xl">chat</span>
       </button>
     </div>

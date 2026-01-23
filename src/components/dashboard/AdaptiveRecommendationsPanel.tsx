@@ -52,11 +52,11 @@ export function AdaptiveRecommendationsPanel({
   return (
     <div className="space-y-6">
       {/* Header with Improvement Estimate */}
-      <div className="card-professional p-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-800">
+      <div className="card-professional p-6 bg-gradient-to-r from-[#F8FAFC] to-[#F1F5F9] dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-800">
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <Sparkles className="w-5 h-5 text-[#1E293B] dark:text-blue-400" />
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 AI-Powered Recommendations
               </h3>
@@ -115,7 +115,7 @@ export function AdaptiveRecommendationsPanel({
           onClick={() => setSelectedView('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             selectedView === 'all'
-              ? 'bg-blue-500 text-white'
+              ? 'bg-[#334155] text-white'
               : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
           }`}
         >
@@ -192,14 +192,14 @@ function RecommendationCard({
   const priorityColors = {
     critical: 'border-red-500 dark:border-red-900 bg-red-50 dark:bg-red-900/10',
     high: 'border-orange-500 dark:border-orange-900 bg-orange-50 dark:bg-orange-900/10',
-    medium: 'border-blue-500 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/10',
+    medium: 'border-[#334155] dark:border-blue-900 bg-blue-50 dark:bg-blue-900/10',
     low: 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800'
   };
 
   const priorityIcons = {
     critical: <AlertTriangle className="w-5 h-5 text-red-500" />,
     high: <TrendingUp className="w-5 h-5 text-orange-500" />,
-    medium: <Target className="w-5 h-5 text-blue-500" />,
+    medium: <Target className="w-5 h-5 text-[#334155]" />,
     low: <Info className="w-5 h-5 text-slate-500" />
   };
 
@@ -277,7 +277,7 @@ function RecommendationCard({
               {/* Personalized Reason */}
               <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <div className="flex items-start gap-2">
-                  <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+                  <Sparkles className="w-4 h-4 text-[#1E293B] dark:text-blue-400 mt-0.5" />
                   <div>
                     <div className="text-xs font-semibold text-blue-900 dark:text-blue-300 mb-1">
                       Why this matters for you
@@ -297,7 +297,7 @@ function RecommendationCard({
                 <ol className="space-y-2">
                   {recommendation.actionSteps.map((step, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-medium">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-[#1E293B] dark:text-blue-400 flex items-center justify-center text-xs font-medium">
                         {idx + 1}
                       </span>
                       {step}

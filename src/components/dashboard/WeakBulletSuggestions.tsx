@@ -782,8 +782,8 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
                 onClick={() => setSelectedSuggestionIndex(idx)}
                 className={`w-full text-left p-3 md:p-4 rounded-lg border-2 transition-all duration-300 group ${
                   selectedSuggestionIndex === idx
-                    ? 'bg-purple-500/10 border-purple-500/50'
-                    : 'bg-[#F8FAFC]/30 border-[#E2E8F0] hover:border-purple-500/30 hover:bg-[#F8FAFC]/50'
+                    ? 'bg-[#1E293B]/10 border-[#1E293B]/50'
+                    : 'bg-[#F8FAFC]/30 border-[#E2E8F0] hover:border-[#1E293B]/30 hover:bg-[#F8FAFC]/50'
                 }`}
               >
                 {/* Type Badge */}

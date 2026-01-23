@@ -16,17 +16,17 @@ interface SeniorityMatchProps {
 
 const levelColors = {
   JUNIOR: "text-amber-600 dark:text-amber-400",
-  "MID-LEVEL": "text-blue-600 dark:text-blue-400",
+  "MID-LEVEL": "text-[#1E293B] dark:text-blue-400",
   SENIOR: "text-emerald-600 dark:text-emerald-400",
-  LEAD: "text-purple-600 dark:text-purple-400",
+  LEAD: "text-[#1E293B] dark:text-purple-400",
   PRINCIPAL: "text-indigo-600 dark:text-indigo-400",
 };
 
 const levelBadges = {
   JUNIOR: "bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-800",
-  "MID-LEVEL": "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-800",
+  "MID-LEVEL": "bg-blue-50 dark:bg-blue-900/30 text-[#1E293B] dark:text-blue-400 border-blue-100 dark:border-blue-800",
   SENIOR: "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800",
-  LEAD: "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-800",
+  LEAD: "bg-[#F8FAFC] dark:bg-purple-900/30 text-[#1E293B] dark:text-purple-400 border-purple-100 dark:border-purple-800",
   PRINCIPAL: "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-800",
 };
 
@@ -120,7 +120,7 @@ export function SeniorityMatchAnalysis({
             </p>
             <div className="space-y-1">
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
+                <p className="text-3xl font-bold tracking-tight text-[#1E293B] dark:text-blue-400">
                   {signalsDetected}
                 </p>
                 <span className="text-xs font-medium text-slate-400">signals detected</span>

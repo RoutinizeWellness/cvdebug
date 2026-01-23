@@ -239,7 +239,7 @@ export function InterviewBattlePlan({
         <div className="absolute inset-0 blur-sm select-none pointer-events-none opacity-30">
           <div className="w-full">
             <div className="mb-6">
-              <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+              <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#334155] to-[#1E293B]">
                 Interview Battle Plan
               </h2>
               <p className="text-[#64748B] mt-2">AI-generated strategy</p>
@@ -311,7 +311,7 @@ export function InterviewBattlePlan({
       {/* Header */}
       <div className="mb-6 md:mb-8 flex flex-col gap-4">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600">
+          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#334155] to-[#1E293B]">
             Interview Battle Plan
           </h2>
           <p className="text-[#64748B] mt-2 flex items-center gap-2 flex-wrap text-sm md:text-base">
@@ -335,7 +335,7 @@ export function InterviewBattlePlan({
             }}
             variant="outline"
             size="sm"
-            className="gap-2 font-semibold border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+            className="gap-2 font-semibold border-blue-200 text-[#1E293B] hover:bg-blue-50 hover:text-blue-700"
           >
             <Download className="h-4 w-4" />
             <span className="hidden sm:inline">Export to PDF</span>
@@ -425,7 +425,7 @@ export function InterviewBattlePlan({
             className="bg-[#FFFFFF] backdrop-blur-sm rounded-xl border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col h-full relative overflow-hidden"
           >
             {/* Top gradient accent */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#334155] via-violet-500 to-[#475569]"></div>
 
             {/* Header */}
             <div className="p-4 md:p-5 border-b border-[#E2E8F0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">

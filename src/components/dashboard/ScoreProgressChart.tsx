@@ -190,14 +190,14 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-          <div className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-1">BEST SCORE</div>
+        <div className="bg-gradient-to-br from-[#F8FAFC] to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+          <div className="text-xs text-[#1E293B] dark:text-blue-400 font-semibold mb-1">BEST SCORE</div>
           <div className="text-2xl font-black text-blue-700 dark:text-blue-300">{maxScore}%</div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
-          <div className="text-xs text-purple-600 dark:text-purple-400 font-semibold mb-1">CURRENT</div>
-          <div className="text-2xl font-black text-purple-700 dark:text-purple-300">{lastScore}%</div>
+        <div className="bg-gradient-to-br from-[#F8FAFC] to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg p-4 border border-[#E2E8F0] dark:border-purple-800">
+          <div className="text-xs text-[#1E293B] dark:text-purple-400 font-semibold mb-1">CURRENT</div>
+          <div className="text-2xl font-black text-[#1E293B] dark:text-purple-300">{lastScore}%</div>
         </div>
 
         <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">

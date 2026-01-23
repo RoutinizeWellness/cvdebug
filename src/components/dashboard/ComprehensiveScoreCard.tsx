@@ -50,7 +50,7 @@ export function ComprehensiveScoreCard({
     'A+': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-300' },
     'A': { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200' },
     'B+': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-300' },
-    'B': { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200' },
+    'B': { bg: 'bg-blue-50', text: 'text-[#1E293B]', border: 'border-blue-200' },
     'C+': { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' },
     'C': { bg: 'bg-yellow-50', text: 'text-yellow-600', border: 'border-yellow-200' },
     'D': { bg: 'bg-orange-50', text: 'text-orange-600', border: 'border-orange-200' },
@@ -116,7 +116,7 @@ export function ComprehensiveScoreCard({
             </div>
             <div className="bg-white/60 rounded-lg p-3 backdrop-blur">
               <div className="text-xs text-slate-600 font-medium mb-1">Quick Wins</div>
-              <div className="text-2xl font-bold text-blue-600">{quickWins.length}</div>
+              <div className="text-2xl font-bold text-[#1E293B]">{quickWins.length}</div>
             </div>
             <div className="bg-white/60 rounded-lg p-3 backdrop-blur">
               <div className="text-xs text-slate-600 font-medium mb-1">Critical Issues</div>
@@ -134,7 +134,7 @@ export function ComprehensiveScoreCard({
         className="bg-white rounded-xl p-6 border-2 border-slate-200 shadow-sm"
       >
         <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-          <span className="material-symbols-outlined text-blue-600">analytics</span>
+          <span className="material-symbols-outlined text-[#1E293B]">analytics</span>
           Component Scores
         </h4>
 
@@ -152,7 +152,7 @@ export function ComprehensiveScoreCard({
             const label = labels[key];
             const barColor =
               score >= 80 ? 'bg-emerald-500' :
-              score >= 60 ? 'bg-blue-500' :
+              score >= 60 ? 'bg-[#334155]' :
               score >= 40 ? 'bg-yellow-500' :
               'bg-red-500';
 
@@ -211,10 +211,10 @@ export function ComprehensiveScoreCard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm"
+          className="bg-gradient-to-br from-[#F8FAFC] to-indigo-50 rounded-xl p-6 border-2 border-blue-200 shadow-sm"
         >
           <h4 className="text-lg font-bold text-blue-900 mb-3 flex items-center gap-2">
-            <Zap className="h-5 w-5 text-blue-600" />
+            <Zap className="h-5 w-5 text-[#1E293B]" />
             Quick Wins - High Impact Improvements
           </h4>
           <div className="space-y-3">
@@ -226,7 +226,7 @@ export function ComprehensiveScoreCard({
                 transition={{ delay: 0.35 + idx * 0.05 }}
                 className="flex items-start gap-3 p-3 bg-white/60 backdrop-blur rounded-lg"
               >
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#334155] text-white flex items-center justify-center text-xs font-bold">
                   {idx + 1}
                 </div>
                 <span className="text-sm text-blue-900 font-medium">{win}</span>
@@ -271,10 +271,10 @@ export function ComprehensiveScoreCard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border-2 border-purple-200 shadow-sm"
+          className="bg-gradient-to-br from-[#F8FAFC] to-pink-50 rounded-xl p-6 border-2 border-[#E2E8F0] shadow-sm"
         >
           <h4 className="text-lg font-bold text-purple-900 mb-4 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-purple-600" />
+            <TrendingUp className="h-5 w-5 text-[#1E293B]" />
             Competitive Analysis
           </h4>
 
@@ -282,7 +282,7 @@ export function ComprehensiveScoreCard({
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="bg-white/60 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-xs text-slate-600 font-medium mb-1">Your Score</div>
-              <div className="text-3xl font-bold text-purple-700">{competitiveAnalysis.yourScore}</div>
+              <div className="text-3xl font-bold text-[#1E293B]">{competitiveAnalysis.yourScore}</div>
             </div>
             <div className="bg-white/60 backdrop-blur rounded-lg p-4 text-center">
               <div className="text-xs text-slate-600 font-medium mb-1">Avg Competitor</div>
@@ -303,7 +303,7 @@ export function ComprehensiveScoreCard({
               </h5>
               <div className="space-y-1">
                 {competitiveAnalysis.competitiveAdvantages.map((adv, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm text-purple-700">
+                  <div key={idx} className="flex items-start gap-2 text-sm text-[#1E293B]">
                     <span className="text-green-500">▲</span>
                     <span>{adv}</span>
                   </div>
@@ -321,7 +321,7 @@ export function ComprehensiveScoreCard({
               </h5>
               <div className="space-y-1">
                 {competitiveAnalysis.vulnerabilities.map((vuln, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm text-purple-700">
+                  <div key={idx} className="flex items-start gap-2 text-sm text-[#1E293B]">
                     <span className="text-red-500">▼</span>
                     <span>{vuln}</span>
                   </div>
@@ -339,7 +339,7 @@ export function ComprehensiveScoreCard({
               </h5>
               <div className="space-y-1">
                 {competitiveAnalysis.mustHaveImprovements.map((imp, idx) => (
-                  <div key={idx} className="flex items-start gap-2 text-sm text-purple-700">
+                  <div key={idx} className="flex items-start gap-2 text-sm text-[#1E293B]">
                     <span className="text-orange-500">→</span>
                     <span>{imp}</span>
                   </div>

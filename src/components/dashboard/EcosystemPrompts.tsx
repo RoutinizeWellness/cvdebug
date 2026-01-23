@@ -210,7 +210,7 @@ export function BookmarkletInstructions() {
       <div className="space-y-4">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2">
-            <span className="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+            <span className="bg-[#334155] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
             Copia el bookmarklet
           </h4>
           <div className="bg-white border border-blue-300 rounded p-3 font-mono text-xs break-all mb-2 max-h-32 overflow-y-auto">
@@ -247,9 +247,9 @@ export function BookmarkletInstructions() {
           </ul>
         </div>
 
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
           <h4 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
-            <span className="bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+            <span className="bg-[#1E293B] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
             Úsalo en cualquier sitio
           </h4>
           <p className="text-sm text-purple-800">

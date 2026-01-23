@@ -195,7 +195,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   </div>
 
                   {/* AI Info Box */}
-                  <div className="p-3 sm:p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 flex gap-2 sm:gap-3 items-start">
+                  <div className="p-3 sm:p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-[#F1F5F9] border border-indigo-200 flex gap-2 sm:gap-3 items-start">
                     <Sparkles className="text-indigo-600 mt-0.5 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                     <div className="text-xs text-indigo-900 min-w-0">
                       <strong className="text-indigo-900 block mb-0.5 font-semibold">
@@ -221,7 +221,7 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="order-1 sm:order-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-blue-500 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="order-1 sm:order-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-500 hover:to-[#475569] shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? t.createProject.creating : t.createProject.createButton}
                 </button>

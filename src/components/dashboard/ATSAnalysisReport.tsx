@@ -581,7 +581,7 @@ export function ATSAnalysisReport({
                 className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-blue-200 hover:border-blue-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="p-3 rounded-xl bg-blue-100 text-blue-600">
+                  <div className="p-3 rounded-xl bg-blue-100 text-[#1E293B]">
                     <span className="material-symbols-outlined text-2xl">visibility</span>
                   </div>
                   <span className="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-100 rounded-full">
@@ -604,13 +604,13 @@ export function ATSAnalysisReport({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-purple-200 hover:border-purple-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
+                className="bg-[#FFFFFF] rounded-xl p-6 border-2 border-[#E2E8F0] hover:border-purple-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 md:col-span-2 lg:col-span-1"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="p-3 rounded-xl bg-purple-100 text-purple-600">
+                  <div className="p-3 rounded-xl bg-[#F1F5F9] text-[#1E293B]">
                     <span className="material-symbols-outlined text-2xl">bar_chart_4_bars</span>
                   </div>
-                  <span className="px-3 py-1.5 text-xs font-bold text-purple-700 bg-purple-100 rounded-full">
+                  <span className="px-3 py-1.5 text-xs font-bold text-[#1E293B] bg-[#F1F5F9] rounded-full">
                     High Saturation
                   </span>
                 </div>

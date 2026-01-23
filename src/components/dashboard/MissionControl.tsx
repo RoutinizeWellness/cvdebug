@@ -351,7 +351,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
               transition={{ duration: 1, ease: "easeOut" }}
               className={`h-full ${
                 visibilityScore >= 85 ? "bg-gradient-to-r from-teal-500 to-pink-500" :
-                visibilityScore >= 70 ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
+                visibilityScore >= 70 ? "bg-gradient-to-r from-[#334155] to-cyan-500" :
                 "bg-gradient-to-r from-amber-500 to-orange-500"
               }`}
             ></motion.div>
@@ -487,7 +487,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
                       </div>
                       <p className="text-[#64748B] text-xs mb-3 relative z-10 truncate">{app.company || t.missionControl.company}</p>
                       <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                        <div className="flex items-center gap-2 text-[10px] text-secondary font-mono font-bold bg-[#F8FAFC] px-2 py-0.5 rounded border border-[#E2E8F0]">
                           {t.missionControl.accepted}
                         </div>
                       </div>

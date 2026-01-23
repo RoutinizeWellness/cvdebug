@@ -55,7 +55,7 @@ export function IntelligentRecommendations({
       case 'high':
         return <AlertTriangle className="w-5 h-5 text-orange-500" />;
       case 'medium':
-        return <Info className="w-5 h-5 text-blue-500" />;
+        return <Info className="w-5 h-5 text-[#334155]" />;
       case 'low':
         return <CheckCircle2 className="w-5 h-5 text-slate-500" />;
     }
@@ -143,7 +143,7 @@ export function IntelligentRecommendations({
 
               {/* Impact Score */}
               <div className="text-right ml-4">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <div className="text-2xl font-bold text-[#1E293B] dark:text-blue-400">
                   {rec.impact}
                 </div>
                 <div className="text-xs text-slate-500 dark:text-slate-500">
@@ -155,7 +155,7 @@ export function IntelligentRecommendations({
             {/* Actionable Steps */}
             <div className="bg-white dark:bg-slate-900/50 rounded-md p-3 mb-3">
               <div className="flex items-start gap-2">
-                <Zap className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                <Zap className="w-4 h-4 text-[#334155] mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                   {rec.actionable}
                 </p>

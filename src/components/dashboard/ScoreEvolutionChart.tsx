@@ -69,7 +69,7 @@ export function ScoreEvolutionChart() {
             latestScore >= 90
               ? "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-2 border-green-500/30"
               : latestScore >= 70
-              ? "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-2 border-[#3B82F6]/30"
+              ? "bg-gradient-to-br from-[#334155]/20 to-cyan-500/20 border-2 border-[#3B82F6]/30"
               : "bg-gradient-to-br from-orange-500/20 to-red-500/20 border-2 border-orange-500/30"
           }`}
         >

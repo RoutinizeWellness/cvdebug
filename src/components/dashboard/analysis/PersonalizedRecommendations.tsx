@@ -42,11 +42,11 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
         };
       case 'medium':
         return {
-          bg: 'bg-blue-50',
-          border: 'border-blue-200',
-          text: 'text-blue-700',
+          bg: 'bg-[#F8FAFC]',
+          border: 'border-[#CBD5E1]',
+          text: 'text-[#475569]',
           badge: 'bg-[#E2E8F0] text-[#334155]',
-          icon: 'text-blue-500',
+          icon: 'text-[#64748B]',
         };
     }
   };
