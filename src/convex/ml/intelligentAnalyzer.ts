@@ -461,11 +461,13 @@ function calculateScores(
   resumeText: string
 ): { overall: number; keywords: number; format: number; completeness: number } {
 
-  // Keyword score based on density and variety
+  // IMPROVED: Keyword score based on density and variety - MORE FLEXIBLE
   const keywordScore = Math.min(100, Math.round(
-    (keywordExtraction.unique_keyword_count * 2) + // More unique keywords = better
-    (keywordExtraction.keyword_density > 3 && keywordExtraction.keyword_density < 8 ? 20 : 0) + // Optimal density
-    (jdAnalysis ? jdAnalysis.keywordOverlap * 0.3 : 0) // JD match bonus
+    (keywordExtraction.unique_keyword_count * 2.5) + // More unique keywords = better (increased from 2 to 2.5)
+    (keywordExtraction.keyword_density > 2 && keywordExtraction.keyword_density < 12 ? 25 :
+     keywordExtraction.keyword_density >= 1 ? 15 : 0) + // More flexible density range (was 3-8, now 2-12)
+    (jdAnalysis ? jdAnalysis.keywordOverlap * 0.3 : 0) + // JD match bonus
+    (keywordExtraction.unique_keyword_count > 10 ? 10 : 0) // Bonus for good variety
   ));
 
   // Format score is ATS compatibility
@@ -474,45 +476,87 @@ function calculateScores(
   // Completeness score based on sections and content
   const completenessScore = calculateCompletenessScore(resumeText);
 
-  // Overall score is weighted average
+  // IMPROVED: Overall score is weighted average with content focus
   const overall = Math.round(
-    (keywordScore * 0.35) + // 35% keywords
-    (formatScore * 0.35) + // 35% format/ATS
-    (completenessScore * 0.3) // 30% completeness
+    (keywordScore * 0.40) + // 40% keywords (increased from 35% - content matters most)
+    (formatScore * 0.30) + // 30% format/ATS (decreased from 35% - format less critical)
+    (completenessScore * 0.30) // 30% completeness (same)
   );
 
+  // IMPROVED: More lenient minimum scores
   return {
-    overall: Math.max(30, Math.min(100, overall)),
-    keywords: Math.max(10, Math.min(100, keywordScore)),
-    format: Math.max(10, Math.min(100, formatScore)),
-    completeness: Math.max(10, Math.min(100, completenessScore))
+    overall: Math.max(35, Math.min(100, overall)), // Raised min from 30 to 35
+    keywords: Math.max(20, Math.min(100, keywordScore)), // Raised min from 10 to 20
+    format: Math.max(20, Math.min(100, formatScore)), // Raised min from 10 to 20
+    completeness: Math.max(20, Math.min(100, completenessScore)) // Raised min from 10 to 20
   };
 }
 
 /**
- * Calculate completeness score
+ * Calculate completeness score - IMPROVED: More flexible with format variations
  */
 function calculateCompletenessScore(resumeText: string): number {
-  let score = 50; // Base score
+  let score = 60; // Increased base score from 50 to 60
 
-  // Check for essential sections
-  if (/\bexperience\b/gi.test(resumeText)) score += 15;
-  if (/\beducation\b/gi.test(resumeText)) score += 15;
-  if (/\bskills\b/gi.test(resumeText)) score += 10;
-  if (/\bsummary\b|\babout\b|\bprofile\b/gi.test(resumeText)) score += 10;
+  // IMPROVED: Check for essential sections with more variations (English + common patterns)
+  // Experience section (various names)
+  if (/\b(experience|work history|employment|professional experience|career|positions?)\b/gi.test(resumeText)) {
+    score += 12;
+  }
+
+  // Education section (various names)
+  if (/\b(education|academic|qualifications?|degrees?|university|college)\b/gi.test(resumeText)) {
+    score += 12;
+  }
+
+  // Skills section (various names)
+  if (/\b(skills?|competencies|technologies|technical|expertise|proficiencies)\b/gi.test(resumeText)) {
+    score += 10;
+  }
+
+  // Summary/Profile (various names)
+  if (/\b(summary|about|profile|objective|overview|introduction)\b/gi.test(resumeText)) {
+    score += 8;
+  }
+
+  // IMPROVED: Check for content indicators (not just section names)
+  // Dates indicating work history
+  if (/\d{4}\s*[-–—]\s*(?:\d{4}|present|current)/gi.test(resumeText)) {
+    score += 5; // Has work history with dates
+  }
+
+  // Years of experience mentioned
+  if (/\d+\+?\s*years?\s+(?:of\s+)?experience/gi.test(resumeText)) {
+    score += 5;
+  }
 
   // Check for optional but valuable sections
-  if (/\bprojects\b/gi.test(resumeText)) score += 5;
-  if (/\bcertifications?\b/gi.test(resumeText)) score += 5;
-  if (/\bawards?\b|\bachievements?\b/gi.test(resumeText)) score += 3;
+  if (/\bprojects?\b/gi.test(resumeText)) score += 4;
+  if (/\bcertifications?\b/gi.test(resumeText)) score += 4;
+  if (/\b(awards?|achievements?|honors?)\b/gi.test(resumeText)) score += 3;
+  if (/\b(languages?|idiomas?)\b/gi.test(resumeText)) score += 2;
 
-  // Check word count
+  // IMPROVED: More lenient word count requirements
   const wordCount = resumeText.split(/\s+/).length;
-  if (wordCount < 200) score -= 20;
-  else if (wordCount < 400) score -= 10;
-  else if (wordCount > 800) score += 5;
+  if (wordCount < 150) score -= 15; // Very short (was -20 for < 200)
+  else if (wordCount < 300) score -= 5; // Short (was -10 for < 400)
+  else if (wordCount >= 500) score += 5; // Good length
+  else if (wordCount >= 800) score += 3; // Detailed (was +5 for > 800)
 
-  return Math.max(0, Math.min(100, score));
+  // BONUS: Technical indicators (good for developer CVs)
+  const technicalPatterns = [
+    /\b(c#|\.net|java|python|javascript|react|angular|aws|azure)\b/gi,
+    /\b(developed|implemented|designed|built|created|deployed)\b/gi,
+    /\b(team|led|managed|mentored)\b/gi
+  ];
+
+  let technicalScore = 0;
+  technicalPatterns.forEach(pattern => {
+    if (pattern.test(resumeText)) technicalScore += 2;
+  });
+  score += Math.min(10, technicalScore);
+
+  return Math.max(20, Math.min(100, score)); // Raised minimum from 0 to 20
 }
 
 /**
