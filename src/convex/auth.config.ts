@@ -3,7 +3,7 @@
 // Development (vly.sh): hopeful-doe-56.clerk.accounts.dev
 // Production (cvdebug.com): clerk.cvdebug.com
 
-const isProduction = process.env.CONVEX_CLOUD_URL?.includes("shocking-meerkat-209");
+const isProduction = process.env.CONVEX_CLOUD_URL?.includes("next-cod-660");
 
 export default {
   providers: [
