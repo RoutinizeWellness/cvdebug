@@ -5,6 +5,7 @@
 
 import { internalQuery, query, internalMutation } from "../_generated/server";
 import { v } from "convex/values";
+import { extractUserProfileHelper } from "./userProfileLearning";
 
 /**
  * Generate personalized resume improvement recommendations
@@ -16,6 +17,9 @@ export const getPersonalizedRecommendations = query({
     resumeId: v.optional(v.id("resumes")),
   },
   handler: async (ctx, args) => {
+    // Get user profile for personalized recommendations
+    const userProfile = await extractUserProfileHelper(ctx, args.userId);
+
     // Get user's resume history
     const userResumes = await ctx.db
       .query("resumes")
@@ -30,6 +34,7 @@ export const getPersonalizedRecommendations = query({
           totalResumes: 0,
           avgScore: 0,
           improvement: 0,
+          userProfile: null,
         },
       };
     }
@@ -71,22 +76,36 @@ export const getPersonalizedRecommendations = query({
     if (currentResume && currentResume.status === "completed") {
       const currentScore = currentResume.score || 0;
 
-      // Analyze overall score
+      // Personalized score recommendations based on user profile
       if (currentScore < 70) {
+        const industryContext = userProfile
+          ? `for ${userProfile.dominantIndustry} ${userProfile.dominantSeniority} roles`
+          : "for your target roles";
+
         recommendations.push({
           type: "critical",
           category: "Overall Quality",
-          title: "Improve Resume Score",
-          description: "Your resume scores below 70%. Focus on adding relevant keywords, improving formatting, and quantifying achievements.",
+          title: `Improve Resume Score ${industryContext}`,
+          description: userProfile
+            ? `Your resume scores below 70% for ${userProfile.dominantIndustry} roles. Based on your profile as a ${userProfile.dominantSeniority} professional, focus on: ${userProfile.dominantIndustry.toLowerCase().includes('tech') ? 'technical keywords, system architecture, and measurable impact' : userProfile.dominantIndustry.toLowerCase().includes('health') ? 'clinical competencies, certifications, and patient outcomes' : 'relevant keywords, achievements, and industry expertise'}.`
+            : "Your resume scores below 70%. Focus on adding relevant keywords, improving formatting, and quantifying achievements.",
           impact: 25,
           actionable: true,
         });
       } else if (currentScore < 80) {
+        const seniorityAdvice = userProfile?.dominantSeniority === 'senior' || userProfile?.dominantSeniority === 'lead'
+          ? 'leadership impact, team mentoring, and strategic initiatives'
+          : userProfile?.dominantSeniority === 'junior'
+          ? 'technical fundamentals, learning agility, and project contributions'
+          : 'quantifiable results and industry-specific keywords';
+
         recommendations.push({
           type: "high",
           category: "Optimization",
-          title: "Boost Your Score",
-          description: "You're close to excellence! Add more industry-specific keywords and quantifiable results to reach 80+.",
+          title: "Boost Your Score to Elite Level",
+          description: userProfile
+            ? `You're close to excellence! For ${userProfile.dominantSeniority} ${userProfile.dominantIndustry} roles, emphasize ${seniorityAdvice} to reach 80+.`
+            : "You're close to excellence! Add more industry-specific keywords and quantifiable results to reach 80+.",
           impact: 20,
           actionable: true,
         });
@@ -97,13 +116,23 @@ export const getPersonalizedRecommendations = query({
       const ocrText = (currentResume.ocrText || "").toLowerCase();
       const combinedText = analysisText + " " + ocrText;
 
-      // Check for keywords mentioned in analysis
+      // Personalized keyword recommendations
       if (analysisText.includes("keyword") || analysisText.includes("missing")) {
+        const keywordAdvice = userProfile
+          ? userProfile.dominantIndustry.toLowerCase().includes('tech')
+            ? `${userProfile.dominantSeniority === 'senior' || userProfile.dominantSeniority === 'lead' ? 'Technical leadership keywords (e.g., "system architecture", "technical roadmap", "team mentoring")' : 'Core technical keywords (e.g., "agile", "CI/CD", "code review")'} specific to ${userProfile.dominantIndustry}`
+            : userProfile.dominantIndustry.toLowerCase().includes('health')
+            ? `Clinical keywords like "patient-centered care", "EHR documentation", and relevant certifications (BLS, ACLS, etc.)`
+            : `Industry-specific keywords relevant to ${userProfile.dominantIndustry} ${userProfile.dominantSeniority} roles`
+          : "relevant industry terms";
+
         recommendations.push({
           type: "high",
           category: "Keywords",
-          title: "Optimize Keywords",
-          description: "Your analysis suggests missing keywords. Review the detailed feedback and add relevant industry terms.",
+          title: `Optimize ${userProfile ? userProfile.dominantIndustry : 'Industry'} Keywords`,
+          description: userProfile
+            ? `Based on your ${userProfile.dominantIndustry} background, add: ${keywordAdvice}.`
+            : "Your analysis suggests missing keywords. Review the detailed feedback and add relevant industry terms.",
           impact: 22,
           actionable: true,
         });
@@ -133,24 +162,77 @@ export const getPersonalizedRecommendations = query({
         });
       }
 
-      // Check for quantifiable achievements
+      // Personalized quantifiable achievements recommendations
       const hasNumbers = /\d+/.test(ocrText);
       if (!hasNumbers && ocrText.length > 0) {
+        const metricsExamples = userProfile
+          ? userProfile.dominantIndustry.toLowerCase().includes('tech')
+            ? userProfile.dominantSeniority === 'senior' || userProfile.dominantSeniority === 'lead'
+              ? '"Led team of 8 engineers", "Reduced latency by 40%", "Architected system serving 1M+ users"'
+              : '"Implemented feature used by 50K users", "Reduced bug rate by 25%", "Delivered 15+ projects"'
+            : userProfile.dominantIndustry.toLowerCase().includes('health')
+            ? '"Managed 20-bed unit", "Improved patient satisfaction by 15%", "Reduced readmission rate by 10%"'
+            : '"Increased efficiency by 30%", "Managed $500K budget", "Led team of 5"'
+          : "'30% increase', '5 projects', '$2M revenue'";
+
         recommendations.push({
           type: "high",
           category: "Impact",
-          title: "Add Quantifiable Achievements",
-          description: "Include specific numbers, percentages, or metrics to demonstrate your impact (e.g., '30% increase', '5 projects').",
+          title: `Add Quantifiable Achievements for ${userProfile?.dominantSeniority || 'Your'} ${userProfile?.dominantIndustry || 'Role'}`,
+          description: userProfile
+            ? `As a ${userProfile.dominantSeniority} ${userProfile.dominantIndustry} professional, include metrics like: ${metricsExamples}.`
+            : "Include specific numbers, percentages, or metrics to demonstrate your impact (e.g., '30% increase', '5 projects').",
           impact: 22,
           actionable: true,
         });
       }
     }
 
-    // Industry-specific recommendations based on job title if available
-    if (currentResume && currentResume.jobTitle) {
-      const role = currentResume.jobTitle.toLowerCase();
+    // Personalized industry-specific recommendations based on user profile
+    if (userProfile) {
+      const industry = userProfile.dominantIndustry.toLowerCase();
+      const seniority = userProfile.dominantSeniority;
 
+      if (industry.includes("tech") || industry.includes("engineer")) {
+        const techAdvice = seniority === 'senior' || seniority === 'lead'
+          ? "system architecture decisions, technical mentoring impact, and cross-team initiatives you've led"
+          : seniority === 'junior'
+          ? "specific technologies mastered, projects completed, and code quality contributions"
+          : "programming languages, frameworks, and technical projects with measurable outcomes";
+
+        recommendations.push({
+          type: "medium",
+          category: "Technical Excellence",
+          title: `Showcase ${seniority} ${industry} Expertise`,
+          description: `For ${seniority} ${industry} roles, emphasize: ${techAdvice}.`,
+          impact: seniority === 'senior' || seniority === 'lead' ? 18 : 16,
+          actionable: true,
+        });
+      } else if (industry.includes("health") || industry.includes("nurs")) {
+        recommendations.push({
+          type: "medium",
+          category: "Clinical Expertise",
+          title: `Highlight ${industry} Competencies`,
+          description: `Showcase your clinical skills, certifications (BLS, ACLS, specialty certs), patient care outcomes, and unit-specific experience.`,
+          impact: 17,
+          actionable: true,
+        });
+      }
+
+      // Seniority-specific recommendations
+      if (seniority === 'senior' || seniority === 'lead') {
+        recommendations.push({
+          type: "medium",
+          category: "Leadership Impact",
+          title: "Demonstrate Leadership at Your Level",
+          description: `As a ${seniority} professional, highlight: team size managed, mentoring impact, strategic decisions, and organizational influence.`,
+          impact: 18,
+          actionable: true,
+        });
+      }
+    } else if (currentResume && currentResume.jobTitle) {
+      // Fallback to generic recommendations only if no profile exists
+      const role = currentResume.jobTitle.toLowerCase();
       if (role.includes("engineer") || role.includes("developer")) {
         recommendations.push({
           type: "medium",
@@ -158,24 +240,6 @@ export const getPersonalizedRecommendations = query({
           title: "Highlight Technical Stack",
           description: "Ensure your resume clearly lists programming languages, frameworks, and tools you've used.",
           impact: 16,
-          actionable: true,
-        });
-      } else if (role.includes("manager") || role.includes("lead")) {
-        recommendations.push({
-          type: "medium",
-          category: "Leadership",
-          title: "Emphasize Leadership Experience",
-          description: "Highlight team size, projects managed, and leadership accomplishments with specific metrics.",
-          impact: 18,
-          actionable: true,
-        });
-      } else if (role.includes("sales") || role.includes("business")) {
-        recommendations.push({
-          type: "medium",
-          category: "Achievements",
-          title: "Showcase Revenue Impact",
-          description: "Include specific revenue numbers, deals closed, or business growth you've driven.",
-          impact: 20,
           actionable: true,
         });
       }
@@ -203,6 +267,11 @@ export const getPersonalizedRecommendations = query({
         avgScore: Math.round(avgScore * 10) / 10,
         improvement: Math.round(improvement * 10) / 10,
         trend: improvement > 2 ? "improving" : improvement < -2 ? "declining" : "stable",
+        userProfile: userProfile ? {
+          industry: userProfile.dominantIndustry,
+          seniority: userProfile.dominantSeniority,
+          topSkills: userProfile.topSkills.slice(0, 5),
+        } : null,
       },
     };
   },

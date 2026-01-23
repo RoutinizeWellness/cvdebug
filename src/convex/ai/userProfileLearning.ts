@@ -11,8 +11,9 @@ import { Id } from "../_generated/dataModel";
 /**
  * Helper function to extract user profile from resume history
  * Learns industry, seniority, skills, and career patterns
+ * EXPORTED for use in other files (recommendations.ts, etc.)
  */
-async function extractUserProfileHelper(ctx: QueryCtx, userId: Id<"users">) {
+export async function extractUserProfileHelper(ctx: QueryCtx, userId: Id<"users">) {
   // Get all user's resumes
   const resumes = await ctx.db
     .query("resumes")
