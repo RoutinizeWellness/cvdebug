@@ -461,79 +461,157 @@ function calculateScores(
   resumeText: string
 ): { overall: number; keywords: number; format: number; completeness: number } {
 
-  // IMPROVED: Keyword score based on density and variety - MORE FLEXIBLE
-  const keywordScore = Math.min(100, Math.round(
-    (keywordExtraction.unique_keyword_count * 2.5) + // More unique keywords = better (increased from 2 to 2.5)
-    (keywordExtraction.keyword_density > 2 && keywordExtraction.keyword_density < 12 ? 25 :
-     keywordExtraction.keyword_density >= 1 ? 15 : 0) + // More flexible density range (was 3-8, now 2-12)
-    (jdAnalysis ? jdAnalysis.keywordOverlap * 0.3 : 0) + // JD match bonus
-    (keywordExtraction.unique_keyword_count > 10 ? 10 : 0) // Bonus for good variety
-  ));
+  // STRICT: Keyword score based on REAL industry keywords and measurable impact
+  // Real ATS systems are looking for SPECIFIC skills, not just having sections
+  let keywordScore = 0;
 
-  // Format score is ATS compatibility
+  // Base score from unique, industry-relevant keywords (MUCH stricter)
+  const uniqueKeywordBonus = Math.min(40, keywordExtraction.unique_keyword_count * 1.5);
+  keywordScore += uniqueKeywordBonus;
+
+  // Keyword density must be in realistic range (3-8% is optimal for real ATS)
+  if (keywordExtraction.keyword_density >= 3 && keywordExtraction.keyword_density <= 8) {
+    keywordScore += 20; // Optimal range
+  } else if (keywordExtraction.keyword_density >= 2 && keywordExtraction.keyword_density < 3) {
+    keywordScore += 10; // Too sparse
+  } else if (keywordExtraction.keyword_density > 8 && keywordExtraction.keyword_density <= 12) {
+    keywordScore += 10; // Too dense (keyword stuffing)
+  } else {
+    keywordScore += 0; // Outside acceptable range
+  }
+
+  // CRITICAL: Job description match (if provided) - Real ATS heavily weight this
+  if (jdAnalysis && jdAnalysis.keywordOverlap > 0) {
+    keywordScore += Math.min(30, jdAnalysis.keywordOverlap * 0.4);
+  } else {
+    // No JD match = significant penalty (real ATS compare against JD)
+    keywordScore += 5;
+  }
+
+  // STRICT: Must have measurable achievements with numbers
+  const hasMetrics = /\d+%|\$\d+|team of \d+|\d+\+?\s*(?:years|users|customers)/gi.test(resumeText);
+  if (hasMetrics) {
+    keywordScore += 10;
+  } else {
+    // No quantifiable results = major red flag for real ATS
+    keywordScore -= 15;
+  }
+
+  keywordScore = Math.max(0, Math.min(100, keywordScore));
+
+  // Format score is ATS compatibility (already strict)
   const formatScore = atsAnalysis.score;
 
-  // Completeness score based on sections and content
+  // Completeness score based on sections and REAL content quality
   const completenessScore = calculateCompletenessScore(resumeText);
 
-  // IMPROVED: Overall score is weighted average with content focus
+  // STRICT: Overall score - Real ATS are harsh
+  // Keywords matter MOST (50%), then completeness (30%), then format (20%)
   const overall = Math.round(
-    (keywordScore * 0.40) + // 40% keywords (increased from 35% - content matters most)
-    (formatScore * 0.30) + // 30% format/ATS (decreased from 35% - format less critical)
-    (completenessScore * 0.30) // 30% completeness (same)
+    (keywordScore * 0.50) + // 50% keywords - Real ATS prioritize relevant skills
+    (completenessScore * 0.30) + // 30% completeness - Must have substance
+    (formatScore * 0.20) // 20% format - Less critical than content
   );
 
-  // IMPROVED: More lenient minimum scores
+  // REALISTIC: No artificial floor - if CV is bad, score should be bad
+  // Real ATS don't give participation trophies
   return {
-    overall: Math.max(35, Math.min(100, overall)), // Raised min from 30 to 35
-    keywords: Math.max(20, Math.min(100, keywordScore)), // Raised min from 10 to 20
-    format: Math.max(20, Math.min(100, formatScore)), // Raised min from 10 to 20
-    completeness: Math.max(20, Math.min(100, completenessScore)) // Raised min from 10 to 20
+    overall: Math.min(100, overall), // NO minimum floor
+    keywords: Math.min(100, keywordScore), // NO minimum floor
+    format: Math.max(10, Math.min(100, formatScore)), // Min 10 (completely broken format)
+    completeness: Math.min(100, completenessScore) // NO minimum floor
   };
 }
 
 /**
- * Calculate completeness score - IMPROVED: More flexible with format variations
+ * Calculate completeness score - STRICT: Real ATS requirements
+ * A generic Harvard template should NOT score high without real content
  */
 function calculateCompletenessScore(resumeText: string): number {
-  let score = 60; // Increased base score from 50 to 60
+  let score = 0; // NO free points - must earn everything
 
-  // IMPROVED: Check for essential sections with more variations (English + common patterns)
-  // Experience section (various names)
-  if (/\b(experience|work history|employment|professional experience|career|positions?)\b/gi.test(resumeText)) {
-    score += 12;
+  // CRITICAL SECTIONS (Must have these or fail)
+  let criticalSections = 0;
+
+  // Experience section - MUST have with actual job titles and dates
+  const hasExperienceSection = /\b(experience|work history|employment|professional experience)\b/gi.test(resumeText);
+  const hasJobTitles = /\b(developer|engineer|manager|analyst|consultant|specialist|coordinator|designer|architect|lead|senior|junior)\b/gi.test(resumeText);
+  const hasDates = /\d{4}\s*[-–—]\s*(?:\d{4}|present|current)/gi.test(resumeText);
+
+  if (hasExperienceSection && hasJobTitles && hasDates) {
+    score += 25; // Experience with real content
+    criticalSections++;
+  } else if (hasExperienceSection) {
+    score += 5; // Has section but no real content
   }
 
-  // Education section (various names)
-  if (/\b(education|academic|qualifications?|degrees?|university|college)\b/gi.test(resumeText)) {
-    score += 12;
+  // Education section - MUST have with degree and institution
+  const hasEducationSection = /\b(education|academic|qualifications?)\b/gi.test(resumeText);
+  const hasDegree = /\b(bachelor|master|phd|doctorate|b\.s\.|m\.s\.|mba|associate)\b/gi.test(resumeText);
+  const hasInstitution = /\b(university|college|institute|school)\b/gi.test(resumeText);
+
+  if (hasEducationSection && (hasDegree || hasInstitution)) {
+    score += 20; // Education with real content
+    criticalSections++;
+  } else if (hasEducationSection) {
+    score += 5; // Has section but no real content
   }
 
-  // Skills section (various names)
-  if (/\b(skills?|competencies|technologies|technical|expertise|proficiencies)\b/gi.test(resumeText)) {
-    score += 10;
+  // Skills section - MUST have with actual skills listed (not just section name)
+  const hasSkillsSection = /\b(skills?|competencies|technologies|technical expertise)\b/gi.test(resumeText);
+  const hasActualSkills = /\b(python|java|javascript|c\+\+|c#|react|sql|aws|azure|docker|kubernetes|agile|scrum)\b/gi.test(resumeText);
+
+  if (hasSkillsSection && hasActualSkills) {
+    score += 20; // Skills with real technologies
+    criticalSections++;
+  } else if (hasSkillsSection) {
+    score += 5; // Has section but generic/no real skills
   }
 
-  // Summary/Profile (various names)
-  if (/\b(summary|about|profile|objective|overview|introduction)\b/gi.test(resumeText)) {
-    score += 8;
+  // PENALTY: If missing critical sections, major score reduction
+  if (criticalSections < 2) {
+    score -= 20; // Missing too many critical sections
   }
 
-  // IMPROVED: Check for content indicators (not just section names)
-  // Dates indicating work history
-  if (/\d{4}\s*[-–—]\s*(?:\d{4}|present|current)/gi.test(resumeText)) {
-    score += 5; // Has work history with dates
+  // STRICT: Check for SUBSTANCE (not just section headers)
+  // Must have bullet points with actual achievements
+  const bulletPoints = resumeText.match(/^[\s]*[•●○■▪▫◦▸▹►▻⦿⦾\-–—\*]\s+.+$/gm) || [];
+  if (bulletPoints.length >= 5) {
+    score += 15; // Has detailed bullet points
+  } else if (bulletPoints.length >= 3) {
+    score += 8; // Has some bullet points
+  } else {
+    score -= 10; // No bullet points = no detail
   }
 
-  // Years of experience mentioned
-  if (/\d+\+?\s*years?\s+(?:of\s+)?experience/gi.test(resumeText)) {
-    score += 5;
+  // STRICT: Must have quantifiable achievements (numbers, metrics)
+  const hasMetrics = /\d+%|\$\d+[kmb]?|team of \d+|\d+\+?\s*(?:years|users|customers|projects)/gi.test(resumeText);
+  const metricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
+
+  if (metricCount >= 3) {
+    score += 15; // Multiple quantifiable achievements
+  } else if (hasMetrics) {
+    score += 8; // Has some metrics
+  } else {
+    score -= 10; // No metrics = generic template
   }
 
-  // Check for optional but valuable sections
-  if (/\bprojects?\b/gi.test(resumeText)) score += 4;
-  if (/\bcertifications?\b/gi.test(resumeText)) score += 4;
-  if (/\b(awards?|achievements?|honors?)\b/gi.test(resumeText)) score += 3;
+  // STRICT: Check for action verbs (shows real work)
+  const actionVerbs = /\b(led|managed|developed|implemented|designed|built|created|launched|improved|optimized|achieved|delivered|coordinated|established)\b/gi;
+  const verbCount = (resumeText.match(actionVerbs) || []).length;
+
+  if (verbCount >= 8) {
+    score += 10; // Strong action verbs
+  } else if (verbCount >= 4) {
+    score += 5; // Some action verbs
+  } else {
+    score -= 5; // Weak/passive language
+  }
+
+  // Optional sections (minor bonus only)
+  if (/\bprojects?\b/gi.test(resumeText)) score += 3;
+  if (/\bcertifications?\b/gi.test(resumeText)) score += 3;
+  if (/\b(awards?|achievements?|honors?)\b/gi.test(resumeText)) score += 2;
   if (/\b(languages?|idiomas?)\b/gi.test(resumeText)) score += 2;
 
   // IMPROVED: More lenient word count requirements
