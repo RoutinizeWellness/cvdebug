@@ -35,6 +35,7 @@ import type * as ai_contactExtractor from "../ai/contactExtractor.js";
 import type * as ai_contentAnalysis from "../ai/contentAnalysis.js";
 import type * as ai_deepLearningEngine from "../ai/deepLearningEngine.js";
 import type * as ai_eliteMatch from "../ai/eliteMatch.js";
+import type * as ai_enhancedMLAnalyzer from "../ai/enhancedMLAnalyzer.js";
 import type * as ai_entityExtraction from "../ai/entityExtraction.js";
 import type * as ai_evaluation from "../ai/evaluation.js";
 import type * as ai_fallbackAnalysis from "../ai/fallbackAnalysis.js";
@@ -191,6 +192,7 @@ declare const fullApi: ApiFromModules<{
   "ai/contentAnalysis": typeof ai_contentAnalysis;
   "ai/deepLearningEngine": typeof ai_deepLearningEngine;
   "ai/eliteMatch": typeof ai_eliteMatch;
+  "ai/enhancedMLAnalyzer": typeof ai_enhancedMLAnalyzer;
   "ai/entityExtraction": typeof ai_entityExtraction;
   "ai/evaluation": typeof ai_evaluation;
   "ai/fallbackAnalysis": typeof ai_fallbackAnalysis;

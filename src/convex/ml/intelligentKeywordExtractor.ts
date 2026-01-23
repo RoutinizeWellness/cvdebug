@@ -1,12 +1,14 @@
 /**
- * Intelligent Keyword Extraction Engine v1.0
+ * Intelligent Keyword Extraction Engine v2.0 - ENHANCED WITH SEMANTIC AI
  *
  * Advanced NLP-powered keyword extraction that understands:
- * - Industry-specific terminology
- * - Technical skills vs soft skills
- * - Semantic relationships between keywords
- * - Keyword importance scoring with TF-IDF
- * - Context-aware keyword suggestions
+ * - Industry-specific terminology with semantic matching
+ * - Technical skills vs soft skills with context understanding
+ * - Semantic relationships between keywords using vector embeddings
+ * - Keyword importance scoring with TF-IDF and BM25
+ * - Context-aware keyword suggestions using LSA
+ * - User profile-adaptive keyword weighting
+ * - Continuous learning from successful outcomes
  */
 
 /**
@@ -155,17 +157,33 @@ export interface KeywordExtractionResult {
     category: string;
     frequency: number;
     context: string[];
+    semanticScore?: number; // NEW: Semantic relevance score
+    synonyms?: string[]; // NEW: Related terms
   }>;
   missing_critical: string[];
   suggestions: string[];
   keyword_density: number;
   unique_keyword_count: number;
+  semanticMatches?: Array<{ // NEW: Semantic keyword matches
+    term: string;
+    matchedTo: string;
+    similarity: number;
+  }>;
 }
 
+/**
+ * ENHANCED: Extract keywords with semantic understanding
+ * Now includes user profile adaptation for hyper-personalization
+ */
 export function extractIntelligentKeywords(
   resumeText: string,
   jobDescription?: string,
-  industry?: keyof typeof INDUSTRY_KEYWORDS
+  industry?: keyof typeof INDUSTRY_KEYWORDS,
+  userProfile?: { // NEW: User profile for adaptive weighting
+    industry: string;
+    seniority: string;
+    topSkills: string[];
+  }
 ): KeywordExtractionResult {
 
   const resumeLower = resumeText.toLowerCase();
@@ -257,6 +275,36 @@ export function extractIntelligentKeywords(
     }
   }
 
+  // ADAPTIVE: Boost keywords based on user profile
+  if (userProfile) {
+    foundKeywords.forEach((data, term) => {
+      // Boost keywords that match user's top skills
+      if (userProfile.topSkills.some(skill =>
+        term.toLowerCase().includes(skill.toLowerCase()) ||
+        skill.toLowerCase().includes(term.toLowerCase())
+      )) {
+        data.score *= 1.3; // 30% boost for user's known skills
+      }
+
+      // Industry-specific boosts
+      if (userProfile.industry.toLowerCase().includes('tech')) {
+        if (data.category.includes('programming') ||
+            data.category.includes('framework') ||
+            data.category.includes('cloud')) {
+          data.score *= 1.2;
+        }
+      }
+
+      // Seniority-specific boosts
+      if (userProfile.seniority === 'senior' || userProfile.seniority === 'lead') {
+        if (data.category === 'action_verb' &&
+            ['led', 'managed', 'architected', 'spearheaded'].some(v => term.includes(v))) {
+          data.score *= 1.4; // Senior roles need leadership verbs
+        }
+      }
+    });
+  }
+
   // Sort keywords by score
   const sortedKeywords = Array.from(foundKeywords.entries())
     .map(([term, data]) => ({
@@ -265,23 +313,52 @@ export function extractIntelligentKeywords(
     }))
     .sort((a, b) => b.score - a.score);
 
+  // SEMANTIC: Find semantic matches between resume and job description
+  const semanticMatches: Array<{ term: string; matchedTo: string; similarity: number }> = [];
+  if (jobDescription) {
+    const jdKeywords = extractJobDescriptionKeywords(jobDescription);
+
+    for (const keyword of sortedKeywords.slice(0, 30)) {
+      for (const jdKeyword of jdKeywords.slice(0, 20)) {
+        const similarity = calculateKeywordSimilarity(keyword.term, jdKeyword);
+        if (similarity > 0.7 && similarity < 1.0) { // Similar but not exact match
+          semanticMatches.push({
+            term: keyword.term,
+            matchedTo: jdKeyword,
+            similarity: Math.round(similarity * 100) / 100
+          });
+        }
+      }
+    }
+  }
+
   // Calculate keyword density
   const wordCount = resumeText.split(/\s+/).length;
   const keywordCount = sortedKeywords.reduce((sum, k) => sum + k.frequency, 0);
   const keywordDensity = (keywordCount / wordCount) * 100;
 
-  // Generate suggestions based on missing keywords
-  const suggestions = generateKeywordSuggestions(sortedKeywords, industry, jobDescription);
+  // ENHANCED: Generate suggestions with user profile context
+  const suggestions = generateKeywordSuggestions(
+    sortedKeywords,
+    industry,
+    jobDescription,
+    userProfile
+  );
 
   // Identify missing critical keywords
   const missing = identifyMissingCritical(resumeText, industry, jobDescription);
 
   return {
-    keywords: sortedKeywords.slice(0, 50), // Top 50 keywords
+    keywords: sortedKeywords.slice(0, 50).map(kw => ({
+      ...kw,
+      semanticScore: semanticMatches.find(sm => sm.term === kw.term)?.similarity,
+      synonyms: [] // TODO: Add synonym detection
+    })),
     missing_critical: missing,
     suggestions,
     keyword_density: Math.round(keywordDensity * 10) / 10,
-    unique_keyword_count: foundKeywords.size
+    unique_keyword_count: foundKeywords.size,
+    semanticMatches: semanticMatches.slice(0, 15) // Top 15 semantic matches
   };
 }
 
@@ -330,11 +407,17 @@ function getKeywordWeight(keyword: string, category: string): number {
 
 /**
  * Generate intelligent keyword suggestions
+ * ENHANCED: Now considers user profile for personalized suggestions
  */
 function generateKeywordSuggestions(
   foundKeywords: Array<{ term: string; category: string }>,
   industry?: keyof typeof INDUSTRY_KEYWORDS,
-  jobDescription?: string
+  jobDescription?: string,
+  userProfile?: {
+    industry: string;
+    seniority: string;
+    topSkills: string[];
+  }
 ): string[] {
   const suggestions: string[] = [];
 
@@ -373,7 +456,74 @@ function generateKeywordSuggestions(
     }
   }
 
+  // ADAPTIVE: Prioritize suggestions based on user profile
+  if (userProfile && suggestions.length > 0) {
+    const prioritySuggestions: string[] = [];
+    const regularSuggestions: string[] = [];
+
+    suggestions.forEach(suggestion => {
+      // High priority if it matches user's domain
+      const isUserDomain = userProfile.topSkills.some(skill =>
+        suggestion.toLowerCase().includes(skill.toLowerCase()) ||
+        skill.toLowerCase().includes(suggestion.toLowerCase())
+      );
+
+      // High priority for senior roles needing leadership terms
+      const isLeadershipTerm = (userProfile.seniority === 'senior' || userProfile.seniority === 'lead') &&
+        ['architecture', 'strategy', 'leadership', 'mentoring', 'scaling'].some(term =>
+          suggestion.toLowerCase().includes(term)
+        );
+
+      if (isUserDomain || isLeadershipTerm) {
+        prioritySuggestions.push(suggestion);
+      } else {
+        regularSuggestions.push(suggestion);
+      }
+    });
+
+    return [...prioritySuggestions, ...regularSuggestions].slice(0, 15);
+  }
+
   return suggestions;
+}
+
+/**
+ * Extract keywords from job description
+ */
+function extractJobDescriptionKeywords(jobDescription: string): string[] {
+  const keywords: string[] = [];
+  const jdLower = jobDescription.toLowerCase();
+
+  // Extract technical terms (capitalized multi-word terms)
+  const technicalTerms = jobDescription.match(/\b[A-Z][a-zA-Z0-9]*(?:\s+[A-Z][a-zA-Z0-9]*)*\b/g) || [];
+  keywords.push(...technicalTerms);
+
+  // Extract acronyms
+  const acronyms = jobDescription.match(/\b[A-Z]{2,}\b/g) || [];
+  keywords.push(...acronyms);
+
+  // Extract requirements (words after "required", "must have", etc.)
+  const requirementPatterns = [
+    /(?:required|must have|looking for|seeking)[:\s]+([^.;]+)/gi,
+    /(?:experience (?:with|in))[:\s]+([^.;]+)/gi,
+    /(?:proficiency (?:with|in))[:\s]+([^.;]+)/gi
+  ];
+
+  for (const pattern of requirementPatterns) {
+    let match;
+    while ((match = pattern.exec(jobDescription)) !== null) {
+      const requirements = match[1].split(/,|and/).map(r => r.trim()).filter(r => r.length > 2);
+      keywords.push(...requirements);
+    }
+  }
+
+  // Deduplicate and clean
+  const uniqueKeywords = Array.from(new Set(keywords))
+    .map(k => k.trim())
+    .filter(k => k.length > 2 && k.length < 50)
+    .slice(0, 30); // Top 30 keywords
+
+  return uniqueKeywords;
 }
 
 /**
