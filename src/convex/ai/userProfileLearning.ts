@@ -76,6 +76,69 @@ export async function extractUserProfileHelper(ctx: QueryCtx, userId: Id<"users"
           const count = profile.seniorityLevels.get('mid') || 0;
           profile.seniorityLevels.set('mid', count + 1);
         }
+      }
+
+      // ENHANCED: Detect seniority from years of experience in resume text
+      const resumeText = resume.ocrText || '';
+
+      // Extract years of experience patterns
+      const yearPatterns = [
+        /(\d+)\+?\s*years?\s+(?:of\s+)?experience/gi,
+        /experience[:\s]+(\d+)\+?\s*years?/gi,
+        /(\d{4})\s*[-–—]\s*(?:present|current|\d{4})/gi,
+      ];
+
+      let totalYears = 0;
+      let yearMatches = 0;
+
+      yearPatterns.forEach(pattern => {
+        const matches = resumeText.match(pattern);
+        if (matches) {
+          matches.forEach(match => {
+            const yearMatch = match.match(/\d+/);
+            if (yearMatch) {
+              const years = parseInt(yearMatch[0]);
+              if (years > 1900 && years < 2100) {
+                // It's a year range like 2020-2024
+                const secondYear = match.match(/[-–—]\s*(\d{4})/);
+                if (secondYear) {
+                  const endYear = secondYear[1] === 'present' || secondYear[1] === 'current'
+                    ? new Date().getFullYear()
+                    : parseInt(secondYear[1]);
+                  totalYears += Math.max(0, endYear - years);
+                  yearMatches++;
+                }
+              } else if (years < 50) {
+                // It's years of experience like "5 years"
+                totalYears += years;
+                yearMatches++;
+              }
+            }
+          });
+        }
+      });
+
+      // Classify seniority based on total experience
+      if (yearMatches > 0 && totalYears > 0) {
+        let experienceSeniority = 'mid';
+
+        if (totalYears >= 8) {
+          experienceSeniority = 'senior';
+        } else if (totalYears >= 5) {
+          experienceSeniority = 'mid';
+        } else if (totalYears >= 2) {
+          experienceSeniority = 'mid';
+        } else {
+          experienceSeniority = 'junior';
+        }
+
+        // Weight experience-based detection higher (2x)
+        const count = (profile.seniorityLevels.get(experienceSeniority) || 0) + 2;
+        profile.seniorityLevels.set(experienceSeniority, count);
+      }
+
+      if (resume.title) {
+        const titleLower = resume.title.toLowerCase();
 
         // Extract role
         const roleWords = titleLower.replace(/\b(senior|junior|lead|principal|staff|sr\.|jr\.)\b/gi, '').trim();
@@ -89,14 +152,40 @@ export async function extractUserProfileHelper(ctx: QueryCtx, userId: Id<"users"
         resume.analysis || '',
       ].join(' ').toLowerCase();
 
-      // Common tech skills patterns
+      // Common tech skills patterns - ENHANCED with .NET ecosystem
       const techSkills = [
-        'python', 'javascript', 'typescript', 'java', 'c++', 'golang', 'rust',
-        'react', 'vue', 'angular', 'node.js', 'express', 'django', 'flask',
-        'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'terraform',
-        'mongodb', 'postgresql', 'mysql', 'redis', 'elasticsearch',
-        'machine learning', 'ai', 'data science', 'deep learning',
-        'agile', 'scrum', 'ci/cd', 'devops', 'microservices',
+        // Programming Languages
+        'python', 'javascript', 'typescript', 'java', 'c++', 'c#', 'csharp', 'golang', 'rust',
+        'php', 'ruby', 'swift', 'kotlin', 'scala', 'r', 'matlab',
+
+        // .NET Ecosystem
+        '.net', 'dotnet', '.net core', '.net framework', 'asp.net', 'asp.net core',
+        'blazor', 'xamarin', 'maui', 'entity framework', 'ef core', 'wcf', 'wpf',
+        'azure functions', 'azure devops',
+
+        // Frontend Frameworks
+        'react', 'vue', 'angular', 'svelte', 'next.js', 'nuxt', 'gatsby',
+
+        // Backend Frameworks
+        'node.js', 'express', 'django', 'flask', 'fastapi', 'spring boot', 'laravel',
+
+        // Cloud Platforms
+        'aws', 'azure', 'gcp', 'heroku', 'digital ocean', 'vercel', 'netlify',
+
+        // DevOps & Infrastructure
+        'docker', 'kubernetes', 'k8s', 'terraform', 'ansible', 'jenkins', 'gitlab ci',
+        'github actions', 'circleci', 'travis ci',
+
+        // Databases
+        'mongodb', 'postgresql', 'mysql', 'redis', 'elasticsearch', 'sql server', 'mssql',
+        'oracle', 'dynamodb', 'cassandra', 'neo4j',
+
+        // AI/ML
+        'machine learning', 'ai', 'data science', 'deep learning', 'tensorflow', 'pytorch',
+        'scikit-learn', 'pandas', 'numpy',
+
+        // Methodologies
+        'agile', 'scrum', 'kanban', 'ci/cd', 'devops', 'microservices', 'tdd', 'bdd',
       ];
 
       for (const skill of techSkills) {

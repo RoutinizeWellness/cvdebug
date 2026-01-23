@@ -29,13 +29,23 @@ const KEYWORD_WEIGHTS = {
 export const INDUSTRY_KEYWORDS = {
   technology: {
     programming_languages: [
-      'javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'ruby', 'go', 'rust',
-      'swift', 'kotlin', 'php', 'scala', 'r', 'matlab', 'perl', 'shell', 'bash'
+      'javascript', 'typescript', 'python', 'java', 'c++', 'c#', 'csharp', 'c sharp',
+      'ruby', 'go', 'golang', 'rust', 'swift', 'kotlin', 'php', 'scala', 'r',
+      'matlab', 'perl', 'shell', 'bash', 'powershell', 'f#', 'fsharp', 'vb.net',
+      'objective-c', 'dart', 'elixir', 'haskell', 'clojure'
     ],
     frameworks: [
-      'react', 'vue', 'angular', 'node.js', 'express', 'django', 'flask', 'spring',
-      'spring boot', 'asp.net', 'laravel', 'rails', 'next.js', 'nuxt', 'svelte',
-      'tensorflow', 'pytorch', 'keras', 'scikit-learn', 'fastapi'
+      // Frontend
+      'react', 'vue', 'angular', 'svelte', 'next.js', 'nuxt', 'gatsby', 'ember',
+      // Backend - General
+      'node.js', 'express', 'django', 'flask', 'fastapi', 'spring', 'spring boot',
+      'laravel', 'rails', 'symfony',
+      // .NET Frameworks
+      '.net', 'dotnet', '.net core', '.net framework', 'asp.net', 'asp.net core',
+      'asp.net mvc', 'blazor', 'xamarin', 'maui', 'entity framework', 'ef core',
+      'wcf', 'wpf', 'winforms', 'signalr', 'minimal api',
+      // AI/ML
+      'tensorflow', 'pytorch', 'keras', 'scikit-learn', 'ml.net'
     ],
     cloud_platforms: [
       'aws', 'azure', 'gcp', 'google cloud', 'heroku', 'digitalocean', 'cloudflare',
