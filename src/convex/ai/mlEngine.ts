@@ -432,14 +432,23 @@ function calculateIndustryAlignment(text: string, category: string): number {
 function calculateImpactScore(text: string): number {
   let score = 0;
 
-  // High-impact verbs (shows leadership and initiative)
+  // High-impact verbs (shows leadership and initiative) - ENHANCED
   const impactVerbs = [
+    // Leadership & Initiative
     'launched', 'pioneered', 'established', 'spearheaded', 'transformed',
-    'revolutionized', 'architected', 'founded', 'created', 'initiated'
+    'revolutionized', 'architected', 'founded', 'created', 'initiated',
+    // Technical Leadership
+    'designed', 'engineered', 'built', 'developed', 'implemented',
+    'deployed', 'migrated', 'scaled', 'optimized', 'refactored',
+    // Team & Management
+    'led', 'managed', 'mentored', 'coached', 'trained', 'guided',
+    'coordinated', 'collaborated', 'facilitated',
+    // Strategic
+    'defined', 'standardized', 'automated', 'streamlined', 'integrated'
   ];
   const impactVerbPattern = new RegExp(`\\b(${impactVerbs.join('|')})\\b`, 'gi');
   const impactVerbMatches = text.match(impactVerbPattern) || [];
-  score += impactVerbMatches.length * 8;
+  score += impactVerbMatches.length * 6; // Reduced from 8 to 6 since we have more verbs
 
   // Quantified improvements
   const improvementPattern = /(?:increased|improved|reduced|decreased|grew|boosted)\s+(?:by\s+)?(\d+)%/gi;
@@ -472,6 +481,24 @@ function calculateImpactScore(text: string): number {
     new RegExp(`\\b${kw}\\b`, 'i').test(text)
   ).length;
   score += recognitionMatches * 7;
+
+  // ENHANCED: Technical depth indicators (for senior developers)
+  const technicalDepthPatterns = [
+    /(?:\d+\+?\s*years?\s+(?:of\s+)?(?:experience|expertise))/gi,  // "5+ years experience"
+    /(?:senior|lead|principal|staff|architect)/gi,                  // Seniority titles
+    /(?:expert|proficient|advanced|extensive)\s+(?:in|with|knowledge)/gi, // Expertise indicators
+    /(?:designed|architected|built)\s+(?:from\s+scratch|end-to-end|scalable)/gi, // Architecture
+    /(?:mentored|coached|led)\s+(?:team|developers|engineers)/gi,   // Leadership
+    /(?:migrated|modernized|refactored)\s+(?:legacy|monolith|codebase)/gi // Modernization
+  ];
+
+  let technicalDepthScore = 0;
+  technicalDepthPatterns.forEach(pattern => {
+    const matches = text.match(pattern);
+    if (matches) technicalDepthScore += matches.length * 5;
+  });
+
+  score += Math.min(30, technicalDepthScore); // Cap at 30 points
 
   return Math.min(100, score);
 }
