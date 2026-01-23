@@ -303,11 +303,6 @@ export default function PricingPage() {
                   </Button>
                 )}
 
-                {tier.highlighted && (
-                  <p className="mt-4 text-center text-xs text-[#64748B] font-mono">
-                    14-day money-back guarantee
-                  </p>
-                )}
               </motion.div>
             ))}
           </div>
