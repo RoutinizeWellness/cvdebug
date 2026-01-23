@@ -25,10 +25,10 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
       initial={{ opacity: 0, scale: 0.98, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="relative glass-panel p-4 md:p-6 rounded-lg md:rounded-xl border-2 border-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 bg-gradient-to-br from-[#FFFFFF] via-[#F8FAFC] to-[#F1F5F9] h-full flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
+      className="relative glass-panel p-4 md:p-6 rounded-lg md:rounded-xl border-2 border-[#E2E8F0] bg-gradient-to-br from-[#FFFFFF] via-[#F8FAFC] to-[#F1F5F9] h-full flex flex-col shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
     >
       {/* Efecto de brillo animado en el fondo */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 animate-pulse pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B]/5 via-[#334155]/5 to-[#475569]/5 animate-pulse pointer-events-none"></div>
 
       {/* Icono decorativo flotante */}
       <motion.div
@@ -43,7 +43,7 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
           ease: "easeInOut"
         }}
       >
-        <Zap className="h-16 w-16 md:h-24 md:w-24 text-purple-500" />
+        <Zap className="h-16 w-16 md:h-24 md:w-24 text-[#1E293B]" />
       </motion.div>
 
       {/* Badge "HEATMAP" destacado */}
@@ -51,7 +51,7 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
-        className="absolute top-0 left-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white px-3 md:px-4 py-1 rounded-br-lg rounded-tl-lg font-bold text-[10px] md:text-xs tracking-wider shadow-lg flex items-center gap-1"
+        className="absolute top-0 left-0 bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#475569] text-white px-3 md:px-4 py-1 rounded-br-lg rounded-tl-lg font-bold text-[10px] md:text-xs tracking-wider shadow-lg flex items-center gap-1"
       >
         <TrendingUp className="h-3 w-3" />
         <span className="hidden sm:inline">KEYWORD HEATMAP</span>
@@ -64,9 +64,9 @@ export function KeywordHeatmap({ matchedKeywords, missingKeywords, onUnlock, isP
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-base md:text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent flex items-center gap-2"
+            className="text-base md:text-lg font-bold bg-gradient-to-r from-[#1E293B] to-[#334155] bg-clip-text text-transparent flex items-center gap-2"
           >
-            <Zap className="h-4 w-4 md:h-5 md:w-5 text-purple-600 animate-pulse" />
+            <Zap className="h-4 w-4 md:h-5 md:w-5 text-[#1E293B] animate-pulse" />
             Keyword DNA
           </motion.h3>
           <p className="text-xs md:text-sm text-[#64748B] mt-1">

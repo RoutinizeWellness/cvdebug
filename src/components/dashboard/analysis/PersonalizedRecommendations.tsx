@@ -45,7 +45,7 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
           bg: 'bg-blue-50',
           border: 'border-blue-200',
           text: 'text-blue-700',
-          badge: 'bg-blue-100 text-blue-700',
+          badge: 'bg-[#E2E8F0] text-[#334155]',
           icon: 'text-blue-500',
         };
     }
@@ -67,21 +67,21 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
-      className="bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-2xl p-6 border-2 border-purple-200/50 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] relative overflow-hidden"
+      className="bg-gradient-to-br from-[#F8FAFC] via-white to-[#F1F5F9] rounded-2xl p-6 border-2 border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] relative overflow-hidden"
     >
       {/* Background glow */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-300/20 to-blue-300/20 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#CBD5E1]/20 to-[#94A3B8]/20 rounded-full blur-3xl" />
 
       <div className="relative z-10">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center shadow-lg">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-lg font-bold text-[#0F172A]">Personalized Keywords for You</h3>
-              <span className="px-2 py-0.5 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-[10px] font-bold rounded uppercase tracking-wide">
+              <span className="px-2 py-0.5 bg-gradient-to-r from-[#1E293B] to-[#334155] text-white text-[10px] font-bold rounded uppercase tracking-wide">
                 AI-Powered
               </span>
             </div>
@@ -92,10 +92,10 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
         {/* User Profile Summary */}
         <div className="mb-5 p-4 bg-white/80 backdrop-blur rounded-xl border border-[#E2E8F0] shadow-sm">
           <div className="flex flex-wrap gap-2">
-            <div className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg text-xs font-semibold">
+            <div className="px-3 py-1.5 bg-[#F1F5F9] text-[#1E293B] rounded-lg text-xs font-semibold">
               {profile.industry}
             </div>
-            <div className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold">
+            <div className="px-3 py-1.5 bg-[#E2E8F0] text-[#334155] rounded-lg text-xs font-semibold">
               {profile.seniority}
             </div>
             <div className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-semibold">
@@ -166,9 +166,9 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
 
         {/* Footer CTA */}
         <div className="mt-5 space-y-3">
-          <div className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-200/50">
+          <div className="p-4 bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 rounded-xl border border-[#E2E8F0]">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center">
                 <Target className="h-4 w-4 text-white" />
               </div>
               <div className="flex-1">

@@ -522,14 +522,14 @@ export function ATSAnalysisReport({
                   onClick={onOpenWritingForge}
                 >
                   {/* Decorative gradient background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-fuchsia-500/10 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/10 via-transparent to-[#334155]/10 pointer-events-none opacity-50 group-hover:opacity-70 transition-opacity" />
 
                   <div className="relative">
                     <div className="flex justify-between items-start mb-3 md:mb-4">
                       <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-[#3B82F6]/20 text-blue-400">
                         <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
                       </div>
-                      <span className="px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-bold text-[#0F172A] bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full flex items-center gap-1">
+                      <span className="px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-bold text-[#0F172A] bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center gap-1">
                         <span className="material-symbols-outlined text-[10px] md:text-xs">lock</span>
                         LOCKED
                       </span>
@@ -625,7 +625,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.tech}%` }}
                           transition={{ duration: 0.8, delay: 0.8 }}
-                          className="w-full bg-gradient-to-t from-purple-600 to-purple-400 group-hover:from-blue-600 group-hover:to-blue-400 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-[#1E293B] to-[#334155] group-hover:from-[#0F172A] group-hover:to-[#1E293B] transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
@@ -640,7 +640,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.soft}%` }}
                           transition={{ duration: 0.8, delay: 0.9 }}
-                          className="w-full bg-gradient-to-t from-purple-600/70 to-purple-400/70 group-hover:from-blue-600/80 group-hover:to-blue-400/80 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-[#1E293B]/70 to-[#334155]/70 group-hover:from-[#0F172A]/80 group-hover:to-[#1E293B]/80 transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
@@ -655,7 +655,7 @@ export function ATSAnalysisReport({
                           initial={{ height: 0 }}
                           animate={{ height: `${keywordData.tools}%` }}
                           transition={{ duration: 0.8, delay: 1.0 }}
-                          className="w-full bg-gradient-to-t from-purple-600/85 to-purple-400/85 group-hover:from-blue-600/90 group-hover:to-blue-400/90 transition-colors duration-300"
+                          className="w-full bg-gradient-to-t from-[#1E293B]/85 to-[#334155]/85 group-hover:from-[#0F172A]/90 group-hover:to-[#1E293B]/90 transition-colors duration-300"
                         />
                       </div>
                       <div className="text-center">
