@@ -10,6 +10,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerkConfig";
 import "./index.css";
 
 // Core pages - loaded immediately
@@ -93,7 +94,7 @@ const GoogleSDE = lazy(() => import("./pages/optimize/GoogleSDE"));
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const PUBLISHABLE_KEY = CLERK_PUBLISHABLE_KEY;
 
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
