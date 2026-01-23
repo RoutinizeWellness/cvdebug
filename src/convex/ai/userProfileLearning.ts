@@ -315,6 +315,7 @@ export const getPersonalizedKeywords = query({
         topSkills: profile.topSkills,
         avgScore: profile.averageScore,
         trend: profile.improvementTrend > 0 ? 'improving' : profile.improvementTrend < 0 ? 'declining' : 'stable',
+        totalResumes: profile.totalResumes,
       },
       recommendations: recommendations.slice(0, 12),
       reasoning: `Personalized based on ${profile.totalResumes} resumes analyzed`,

@@ -78,9 +78,14 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
             <Sparkles className="h-5 w-5 text-white" />
           </div>
-          <div>
-            <h3 className="text-lg font-bold text-[#0F172A]">Personalized Keywords for You</h3>
-            <p className="text-xs text-[#64748B]">{reasoning}</p>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-lg font-bold text-[#0F172A]">Personalized Keywords for You</h3>
+              <span className="px-2 py-0.5 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-[10px] font-bold rounded uppercase tracking-wide">
+                AI-Powered
+              </span>
+            </div>
+            <p className="text-xs text-[#64748B] mt-0.5">{reasoning}</p>
           </div>
         </div>
 
@@ -160,19 +165,31 @@ export function PersonalizedRecommendations({ userId, resumeId }: PersonalizedRe
         </div>
 
         {/* Footer CTA */}
-        <div className="mt-5 p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-200/50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-              <Target className="h-4 w-4 text-white" />
+        <div className="mt-5 space-y-3">
+          <div className="p-4 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-200/50">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                <Target className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-[#0F172A] mb-0.5">
+                  Why these keywords?
+                </p>
+                <p className="text-[11px] text-[#64748B] leading-relaxed">
+                  These recommendations are tailored to your <strong>{profile.industry}</strong> background
+                  at the <strong>{profile.seniority}</strong> level. They're designed to help you stand out
+                  in your target roles.
+                </p>
+              </div>
             </div>
-            <div className="flex-1">
-              <p className="text-xs font-semibold text-[#0F172A] mb-0.5">
-                Why these keywords?
-              </p>
-              <p className="text-[11px] text-[#64748B] leading-relaxed">
-                These recommendations are tailored to your <strong>{profile.industry}</strong> background
-                at the <strong>{profile.seniority}</strong> level. They're designed to help you stand out
-                in your target roles.
+          </div>
+
+          {/* Learning indicator */}
+          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <p className="text-[11px] text-emerald-700 font-medium">
+                <strong>Learning from your profile:</strong> These keywords are based on analysis of your {profile.totalResumes || 'resume'} history{profile.trend === 'improving' ? ' and your improving trajectory' : ''}.
               </p>
             </div>
           </div>

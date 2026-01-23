@@ -7,6 +7,7 @@ import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
 import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
 import { AutoTuneButton } from "./AutoTuneButton";
 import { useI18n } from "@/contexts/I18nContext";
+import { PersonalizedRecommendations } from "./analysis/PersonalizedRecommendations";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -686,6 +687,21 @@ export function ATSAnalysisReport({
                   isPremium={isPaidUser}
                 />
               </motion.div>
+
+              {/* Personalized Recommendations - Hyper-personalized based on user profile */}
+              {user?._id && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.65 }}
+                  className="mb-6"
+                >
+                  <PersonalizedRecommendations
+                    userId={user._id}
+                    resumeId={resume?._id}
+                  />
+                </motion.div>
+              )}
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5 w-full">
                 {/* Debug info when no keywords */}
