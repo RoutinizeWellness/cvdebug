@@ -461,37 +461,45 @@ function calculateScores(
   resumeText: string
 ): { overall: number; keywords: number; format: number; completeness: number } {
 
-  // STRICT: Keyword score based on REAL industry keywords and measurable impact
-  // Real ATS systems are looking for SPECIFIC skills, not just having sections
+  // STRICT: Keyword scoring based on real ATS requirements
+  // No free points - must earn everything
   let keywordScore = 0;
 
-  // Base score from unique, industry-relevant keywords (MUCH stricter)
-  const uniqueKeywordBonus = Math.min(40, keywordExtraction.unique_keyword_count * 1.5);
-  keywordScore += uniqueKeywordBonus;
-
-  // Keyword density must be in realistic range (3-8% is optimal for real ATS)
+  // 1. Keyword density MUST be in optimal range (3-8% like real ATS)
   if (keywordExtraction.keyword_density >= 3 && keywordExtraction.keyword_density <= 8) {
     keywordScore += 20; // Optimal range
   } else if (keywordExtraction.keyword_density >= 2 && keywordExtraction.keyword_density < 3) {
     keywordScore += 10; // Too sparse
   } else if (keywordExtraction.keyword_density > 8 && keywordExtraction.keyword_density <= 12) {
-    keywordScore += 10; // Too dense (keyword stuffing)
+    keywordScore += 8; // Too dense (keyword stuffing)
   } else {
     keywordScore += 0; // Outside acceptable range
   }
 
-  // CRITICAL: Job description match (if provided) - Real ATS heavily weight this
-  if (jdAnalysis && jdAnalysis.keywordOverlap > 0) {
-    keywordScore += Math.min(30, jdAnalysis.keywordOverlap * 0.4);
+  // 2. Unique keyword count (must have variety)
+  if (keywordExtraction.unique_keyword_count >= 15) {
+    keywordScore += 25; // Excellent variety
+  } else if (keywordExtraction.unique_keyword_count >= 10) {
+    keywordScore += 18; // Good variety
+  } else if (keywordExtraction.unique_keyword_count >= 5) {
+    keywordScore += 10; // Minimal variety
   } else {
-    // No JD match = significant penalty (real ATS compare against JD)
+    keywordScore += 0; // No real keywords
+  }
+
+  // 3. Job description match (critical for real ATS)
+  if (jdAnalysis && jdAnalysis.keywordOverlap > 0) {
+    const matchBonus = Math.min(30, jdAnalysis.keywordOverlap * 0.4);
+    keywordScore += matchBonus;
+  } else {
+    // No JD provided or no match = minimal baseline
     keywordScore += 5;
   }
 
-  // STRICT: Must have measurable achievements with numbers
-  const hasMetrics = /\d+%|\$\d+|team of \d+|\d+\+?\s*(?:years|users|customers)/gi.test(resumeText);
+  // 4. Must have quantifiable achievements (numbers, metrics)
+  const hasMetrics = /\d+%|\$\d+|team of \d+|\d+\+?\s*(?:years|users|customers|projects)/gi.test(resumeText);
   if (hasMetrics) {
-    keywordScore += 10;
+    keywordScore += 10; // Has quantifiable results
   } else {
     // No quantifiable results = major red flag for real ATS
     keywordScore -= 15;
@@ -506,7 +514,7 @@ function calculateScores(
   const completenessScore = calculateCompletenessScore(resumeText);
 
   // STRICT: Overall score - Real ATS are harsh
-  // Keywords matter MOST (50%), then completeness (30%), then format (20%)
+  // Keywords = 50% (most important), Completeness = 30%, Format = 20%
   const overall = Math.round(
     (keywordScore * 0.50) + // 50% keywords - Real ATS prioritize relevant skills
     (completenessScore * 0.30) + // 30% completeness - Must have substance
@@ -514,7 +522,6 @@ function calculateScores(
   );
 
   // REALISTIC: No artificial floor - if CV is bad, score should be bad
-  // Real ATS don't give participation trophies
   return {
     overall: Math.min(100, overall), // NO minimum floor
     keywords: Math.min(100, keywordScore), // NO minimum floor
