@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle, Mail, Phone, Github, Linkedin, TrendingUp, Zap, Target, Sparkles } from "lucide-react";
 import { useState } from "react";
+import { PersonalizedRecommendations } from "./analysis/PersonalizedRecommendations";
 
 interface ATSOverviewDashboardProps {
   resume: any;
@@ -554,6 +555,14 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           </div>
         </motion.div>
       </div>
+
+      {/* Personalized Recommendations - Full Width */}
+      {user?._id && (
+        <PersonalizedRecommendations
+          userId={user._id}
+          resumeId={resume?._id}
+        />
+      )}
     </div>
   );
 }

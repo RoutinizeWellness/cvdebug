@@ -89,6 +89,7 @@ import type * as ai_smartNotifications from "../ai/smartNotifications.js";
 import type * as ai_socialIntegration_brandAnalyzer from "../ai/socialIntegration/brandAnalyzer.js";
 import type * as ai_socialIntegration_brandAnalyzerData from "../ai/socialIntegration/brandAnalyzerData.js";
 import type * as ai_specificRewriter from "../ai/specificRewriter.js";
+import type * as ai_userProfileLearning from "../ai/userProfileLearning.js";
 import type * as ai_video_videoResumeAnalyzer from "../ai/video/videoResumeAnalyzer.js";
 import type * as ai_video_videoResumeAnalyzerData from "../ai/video/videoResumeAnalyzerData.js";
 import type * as aiMonitoring from "../aiMonitoring.js";
@@ -244,6 +245,7 @@ declare const fullApi: ApiFromModules<{
   "ai/socialIntegration/brandAnalyzer": typeof ai_socialIntegration_brandAnalyzer;
   "ai/socialIntegration/brandAnalyzerData": typeof ai_socialIntegration_brandAnalyzerData;
   "ai/specificRewriter": typeof ai_specificRewriter;
+  "ai/userProfileLearning": typeof ai_userProfileLearning;
   "ai/video/videoResumeAnalyzer": typeof ai_video_videoResumeAnalyzer;
   "ai/video/videoResumeAnalyzerData": typeof ai_video_videoResumeAnalyzerData;
   aiMonitoring: typeof aiMonitoring;
