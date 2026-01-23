@@ -662,27 +662,30 @@ export function ResumeDetailDialog({
         <DialogTitle className="sr-only">Resume Analysis</DialogTitle>
         <DialogDescription className="sr-only">Detailed analysis of the selected resume</DialogDescription>
 
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#FFFFFF] backdrop-blur-sm flex-shrink-0 print:hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center gap-4">
-            <div className="h-10 w-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-200">
-              <ScanLine className="h-5 w-5 text-[#3B82F6]" />
+        {/* Header - Responsive */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-[#E2E8F0] bg-[#FFFFFF] backdrop-blur-sm flex-shrink-0 print:hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <div className="h-9 w-9 sm:h-10 sm:w-10 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-200 flex-shrink-0">
+              <ScanLine className="h-4 w-4 sm:h-5 sm:w-5 text-[#1E293B]" />
             </div>
-            <div className="overflow-hidden">
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold leading-tight tracking-tight truncate text-[#0F172A]">ATS Analysis Report</h2>
+            <div className="overflow-hidden flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-base sm:text-lg font-bold leading-tight tracking-tight text-[#0F172A]">
+                  <span className="hidden sm:inline">ATS Analysis Report</span>
+                  <span className="sm:hidden">ATS Analysis</span>
+                </h2>
                 {displayResume?.category && (
-                  <span className="px-2 py-0.5 rounded-full bg-blue-50 text-[#3B82F6] text-[10px] font-bold border border-blue-200 uppercase tracking-wider">
+                  <span className="px-2 py-0.5 rounded-full bg-slate-50 text-[#1E293B] text-[10px] font-bold border border-slate-200 uppercase tracking-wider">
                     {displayResume.category}
                   </span>
                 )}
                 {displayResume?.jobDescription && (
                   <span className="px-2 py-0.5 rounded-full bg-green-50 text-[#22C55E] text-[10px] font-bold border border-green-200 uppercase tracking-wider flex items-center gap-1">
-                    <Target className="h-3 w-3" /> Tailored
+                    <Target className="h-3 w-3" /> <span className="hidden sm:inline">Tailored</span><span className="sm:hidden">Job</span>
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 text-[10px] text-[#64748B] font-mono mt-0.5">
+              <div className="hidden sm:flex items-center gap-2 text-[10px] text-[#64748B] font-mono mt-0.5">
                 <span>ID: {resumeId?.slice(-8)}</span>
                 <span className="text-[#475569]">|</span>
                 <span className="flex items-center gap-1"><Cpu className="h-3 w-3" /> VLY-ATS-V2</span>
@@ -695,25 +698,26 @@ export function ResumeDetailDialog({
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto flex-wrap sm:flex-nowrap">
             {/* 🟢 GREEN - Primary Action: AI Rewrite (Always Visible) */}
             {!isFree ? (
               <>
                 <Button
                   variant="default"
                   size="sm"
-                  className="gap-2 font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] hover:from-[#16A34A] hover:to-[#15803D] text-white shadow-lg hover:shadow-xl transition-all"
+                  className="flex-1 sm:flex-initial gap-2 font-bold bg-gradient-to-r from-[#22C55E] to-[#16A34A] hover:from-[#16A34A] hover:to-[#15803D] text-white shadow-lg hover:shadow-xl transition-all"
                   onClick={handleOptimize}
                   disabled={isGenerating || !displayResume}
                 >
                   <Wand2 className="h-4 w-4" />
-                  {isGenerating ? "Optimizing..." : "AI Rewrite"}
+                  <span className="hidden sm:inline">{isGenerating ? "Optimizing..." : "AI Rewrite"}</span>
+                  <span className="sm:hidden">{isGenerating ? "..." : "Rewrite"}</span>
                 </Button>
                 {displayResume?.rewrittenText && (
                   <Button
                     variant="default"
                     size="sm"
-                    className="gap-2 font-bold bg-[#3B82F6] hover:bg-[#2563EB] text-white"
+                    className="flex-1 sm:flex-initial gap-2 font-bold bg-[#1E293B] hover:bg-[#0F172A] text-white"
                     onClick={handleApplyRewrite}
                     disabled={!displayResume}
                   >
@@ -726,11 +730,12 @@ export function ResumeDetailDialog({
               <Button
                 variant="default"
                 size="sm"
-                className="gap-2 font-bold bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg hover:shadow-xl transition-all"
+                className="flex-1 sm:flex-initial gap-2 font-bold bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-white shadow-lg hover:shadow-xl transition-all"
                 onClick={() => setShowPricing(true)}
               >
                 <Sparkles className="h-4 w-4" />
-                Upgrade to Fix
+                <span className="hidden sm:inline">Upgrade to Fix</span>
+                <span className="sm:hidden">Upgrade</span>
               </Button>
             )}
 
@@ -738,7 +743,7 @@ export function ResumeDetailDialog({
             <Button
               variant="outline"
               size="sm"
-              className="hidden md:flex gap-2 font-bold border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6]/5"
+              className="hidden md:flex gap-2 font-bold border-[#1E293B] text-[#1E293B] hover:bg-[#1E293B]/5"
               onClick={() => setShowJobDescriptionInput(!showJobDescriptionInput)}
               disabled={!displayResume}
             >

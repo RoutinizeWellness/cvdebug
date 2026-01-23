@@ -145,65 +145,73 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
   }
 
   return (
-    <div className="flex flex-col gap-4 pb-20">
+    <div className="flex flex-col gap-4 pb-20 md:pb-8">
       {/* Header & Filters */}
-      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-        {/* Search */}
-        <div className="relative w-full lg:w-96">
+      <div className="flex flex-col gap-3 md:gap-4">
+        {/* Search - Full width on mobile */}
+        <div className="relative w-full">
           <Input
             type="text"
             placeholder={t.resumeGrid.searchPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-[#FFFFFF] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B]"
+            className="pl-10 bg-[#FFFFFF] border-[#E2E8F0] text-[#0F172A] placeholder:text-[#64748B] h-11"
           />
           <Eye className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]" />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
-          {onCreateManual && (
+        {/* Action Buttons - Responsive layout */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+          <div className="flex gap-2 flex-1 sm:flex-initial">
+            {onCreateManual && (
+              <Button
+                onClick={onCreateManual}
+                className="flex-1 sm:flex-initial bg-primary text-white font-bold hover:bg-primary/90 h-11"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">{t.resumeGrid.createManually}</span>
+                <span className="sm:hidden">Create</span>
+              </Button>
+            )}
+            {onCreateProject && (
+              <Button
+                onClick={onCreateProject}
+                variant="outline"
+                className="flex-1 sm:flex-initial font-bold h-11"
+              >
+                <FolderPlus className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">{t.resumeGrid.createProject}</span>
+                <span className="sm:hidden">Project</span>
+              </Button>
+            )}
+          </div>
+          <div className="hidden md:flex gap-2 ml-auto">
             <Button
-              onClick={onCreateManual}
-              className="bg-primary text-[#0F172A] font-bold hover:bg-primary/90"
+              variant={viewMode === "list" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className="font-medium"
             >
-              <Edit className="h-4 w-4 mr-2" />
-              {t.resumeGrid.createManually}
+              {t.resumeGrid.listView}
             </Button>
-          )}
-          {onCreateProject && (
             <Button
-              onClick={onCreateProject}
-              variant="outline"
-              className="font-bold"
+              variant={viewMode === "grid" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className="font-medium"
             >
-              <FolderPlus className="h-4 w-4 mr-2" />
-              {t.resumeGrid.createProject}
+              {t.resumeGrid.gridView}
             </Button>
-          )}
-          <Button
-            variant={viewMode === "list" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("list")}
-            className="font-medium"
-          >
-            {t.resumeGrid.listView}
-          </Button>
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setViewMode("grid")}
-            className="font-medium"
-          >
-            {t.resumeGrid.gridView}
-          </Button>
+          </div>
         </div>
       </div>
 
-      {/* Table View */}
+      {/* Mobile Card View (always on mobile, table view on desktop if selected) */}
       {viewMode === "list" ? (
-        <div className="border border-[#E2E8F0] rounded-xl overflow-hidden bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-          <table className="min-w-full divide-y divide-slate-200">
+        <>
+          {/* Desktop Table View - Hidden on mobile */}
+          <div className="hidden md:block border border-[#E2E8F0] rounded-xl overflow-hidden bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+            <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-[#F8FAFC]">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-[#64748B] uppercase tracking-wider">
@@ -325,6 +333,80 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
             </div>
           </div>
         </div>
+
+          {/* Mobile Card View - Shown only on mobile */}
+          <div className="md:hidden flex flex-col gap-3">
+            {filteredResumes.map((resume) => (
+              <motion.div
+                key={resume._id}
+                className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-4 shadow-sm active:scale-[0.98] transition-transform"
+                onClick={() => setSelectedResume(resume)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {/* Header with icon and actions */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="flex-shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-slate-50 border border-[#E2E8F0]">
+                      {getFileIcon(resume.mimeType)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-sm font-semibold text-[#0F172A] truncate">
+                        {resume.title}
+                      </h3>
+                      <p className="text-xs text-[#64748B] mt-0.5">
+                        {resume.mimeType === 'application/pdf' ? 'PDF' : 'DOCX'}
+                        {resume.fileSize && ` • ${formatFileSize(resume.fileSize)}`}
+                      </p>
+                    </div>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className="p-2 hover:bg-slate-50 rounded-lg transition-colors flex-shrink-0"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <MoreVertical className="h-4 w-4 text-[#64748B]" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => setSelectedResume(resume)}>
+                        <Eye className="h-4 w-4 mr-2" />
+                        {t.resumeGrid.viewDetails}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => setSelectedResume(resume)}
+                        disabled={resume.status === 'processing'}
+                      >
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        {t.resumeGrid.reAnalyze}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(resume._id);
+                        }}
+                        className="text-rose-500"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {t.resumeGrid.delete}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                {/* Score Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-[#64748B]">
+                    <span>{formatDate(resume._creationTime)}</span>
+                  </div>
+                  {getHealthBadge(resume.score || 0, resume.status)}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </>
       ) : (
         // Grid View (existing implementation)
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
