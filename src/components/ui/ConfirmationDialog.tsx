@@ -126,7 +126,7 @@ export function ConfirmationDialog({
               <div className="p-6 pt-2 flex flex-col sm:flex-row gap-3 sm:justify-end bg-[#F8FAFC] border-t border-[#E2E8F0]">
                 <button
                   onClick={handleClose}
-                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] hover:text-[#0F172A] bg-transparent border border-[#E2E8F0] hover:bg-[#FFFFFF] transition-all focus:ring-2 focus:ring-[#3B82F6]/50 outline-none"
+                  className="px-5 py-2.5 rounded-lg text-sm font-medium text-[#475569] hover:text-[#0F172A] bg-transparent border border-[#E2E8F0] hover:bg-[#FFFFFF] transition-all focus:ring-2 focus:ring-[#1E293B]/50 outline-none"
                 >
                   Cancel
                 </button>

@@ -12,7 +12,7 @@ export function HeroSection() {
     <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
       {/* Enhanced animated background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-purple-500/10 to-background animate-pulse"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-slate-600/10 to-background animate-pulse"></div>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02]"></div>
       </div>
       
@@ -28,7 +28,7 @@ export function HeroSection() {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-20 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full blur-3xl"
+          className="absolute top-20 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-br from-primary/20 to-slate-600/20 rounded-full blur-3xl"
         ></motion.div>
         <motion.div 
           animate={{ 
@@ -41,7 +41,7 @@ export function HeroSection() {
             ease: "easeInOut",
             delay: 1
           }}
-          className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-tr from-slate-600/20 to-slate-500/20 rounded-full blur-3xl"
         ></motion.div>
       </div>
 
@@ -57,7 +57,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 text-primary text-xs md:text-sm font-bold mb-6 border-2 border-primary/30 shadow-lg backdrop-blur-sm hover:scale-105 transition-transform"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-slate-600/20 text-primary text-xs md:text-sm font-bold mb-6 border-2 border-primary/30 shadow-lg backdrop-blur-sm hover:scale-105 transition-transform"
             >
               <Sparkles className="h-4 w-4 animate-pulse" />
               New: ML-Enhanced ATS Analysis
@@ -65,7 +65,7 @@ export function HeroSection() {
             </motion.div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground leading-[1.1] mb-6">
               Is ATS blocking <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">your resume?</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-slate-700">your resume?</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0">
               <span className="font-bold text-foreground">CVDebug is a diagnostic tool, not a magic solution.</span> We analyze 20+ technical factors to help you pass automated filters. One-time payment, no subscriptions.

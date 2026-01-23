@@ -77,8 +77,8 @@ export function NotificationPopup({
     switch (type) {
       case "success":
         return {
-          accentGradient: "from-primary to-blue-600",
-          iconBg: "bg-blue-500/10 border-blue-500/20 text-primary shadow-[0_0_15px_-3px_rgba(59,130,246,0.3)]",
+          accentGradient: "from-primary to-slate-700",
+          iconBg: "bg-slate-600/10 border-slate-600/20 text-primary shadow-[0_0_15px_-3px_rgba(59,130,246,0.3)]",
           icon: CheckCircle,
           progressBar: "bg-primary shadow-[0_0_10px_2px_rgba(59,130,246,0.5)]",
           border: "border-primary/20",
@@ -93,7 +93,7 @@ export function NotificationPopup({
         };
       case "info":
         return {
-          accentGradient: "from-secondary to-purple-600",
+          accentGradient: "from-secondary to-slate-700",
           iconBg: "bg-secondary/10 border-secondary/20 text-secondary shadow-[0_0_15px_-3px_rgba(139,92,246,0.3)]",
           icon: Sparkles,
           progressBar: "bg-secondary shadow-[0_0_10px_2px_rgba(139,92,246,0.5)]",

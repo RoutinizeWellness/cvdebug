@@ -6,7 +6,7 @@ export function StatsSection() {
     { value: "75%", label: "Resumes rejected by ATS", icon: TrendingUp, color: "text-red-500" },
     { value: "No BS", label: "Transparent Pricing", icon: Shield, color: "text-green-500" },
     { value: "10s", label: "Average analysis time", icon: Zap, color: "text-yellow-500" },
-    { value: "Secure", label: "Data deleted in 30 days", icon: Lock, color: "text-blue-500" },
+    { value: "Secure", label: "Data deleted in 30 days", icon: Lock, color: "text-slate-600" },
   ];
 
   return (

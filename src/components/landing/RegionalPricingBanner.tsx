@@ -33,7 +33,7 @@ export function RegionalPricingBanner() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 text-white shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white shadow-lg"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-center gap-3 text-sm md:text-base flex-wrap">

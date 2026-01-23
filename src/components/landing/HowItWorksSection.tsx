@@ -86,17 +86,17 @@ export function HowItWorksSection() {
               <div className="flex flex-col gap-1">
                 <div><span className="text-slate-600 select-none">01</span> <span className="text-teal-400">GET</span> resume_content <span className="text-slate-500">...loading</span></div>
                 <div><span className="text-slate-600 select-none">02</span> <span className="text-green-400">SUCCESS:</span> Text layer extracted.</div>
-                <div><span className="text-slate-600 select-none">03</span> <span className="text-blue-400">PARSING:</span> Contact Info</div>
+                <div><span className="text-slate-600 select-none">03</span> <span className="text-slate-600">PARSING:</span> Contact Info</div>
                 <div><span className="text-slate-600 select-none">04</span>   Name: "Alex Designer" <span className="text-emerald-400">✓ OK</span></div>
                 <div><span className="text-slate-600 select-none">05</span>   Email: "alex@example.com" <span className="text-emerald-400">✓ OK</span></div>
-                <div><span className="text-slate-600 select-none">06</span> <span className="text-blue-400">PARSING:</span> Experience Section</div>
+                <div><span className="text-slate-600 select-none">06</span> <span className="text-slate-600">PARSING:</span> Experience Section</div>
                 <div><span className="text-slate-600 select-none">07</span>   Company: "TechCorp Inc." <span className="text-emerald-400">✓ OK</span></div>
-                <div><span className="text-slate-600 select-none">08</span> <span className="text-blue-400">PARSING:</span> Skills Section</div>
+                <div><span className="text-slate-600 select-none">08</span> <span className="text-slate-600">PARSING:</span> Skills Section</div>
                 <div><span className="text-slate-600 select-none">09</span> <span className="text-red-400 font-bold">ERROR:</span> <span className="bg-red-500/20 text-red-300 border-b border-dashed border-red-400">Unreadable Content Block detected.</span></div>
                 <div><span className="text-slate-600 select-none">10</span> <span className="text-slate-500 italic">// ATS cannot read text inside images.</span></div>
                 <div><span className="text-slate-600 select-none">11</span> <span className="text-slate-500 italic">// Candidate skills score: 0/10</span></div>
                 <div><span className="text-slate-600 select-none">12</span></div>
-                <div><span className="text-slate-600 select-none">13</span> <span className="text-blue-400">ANALYSIS:</span> Keywords</div>
+                <div><span className="text-slate-600 select-none">13</span> <span className="text-slate-600">ANALYSIS:</span> Keywords</div>
                 <div><span className="text-slate-600 select-none">14</span>   Found: "Design System", "Handoff"</div>
                 <div><span className="text-slate-600 select-none">15</span>   <span className="text-yellow-400">WARNING:</span> Missing "Figma", "Agile" from JD.</div>
                 <div><span className="text-slate-600 select-none">16</span></div>

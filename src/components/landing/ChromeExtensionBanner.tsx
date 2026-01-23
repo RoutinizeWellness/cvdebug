@@ -102,7 +102,7 @@ export function ChromeExtensionBanner() {
               >
                 <Button
                   size="lg"
-                  className="h-14 px-8 text-lg font-bold bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] text-white shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 group"
+                  className="h-14 px-8 text-lg font-bold bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] text-white shadow-2xl hover:shadow-slate-600/50 transition-all duration-300 group"
                 >
                   <Chrome className="h-5 w-5 mr-2" />
                   Add to Chrome - Free

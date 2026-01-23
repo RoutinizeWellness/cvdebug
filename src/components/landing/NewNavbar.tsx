@@ -76,7 +76,7 @@ export function NewNavbar() {
                 alt="CVDebug Logo"
                 className="w-12 h-12 transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
+              <div className="absolute -inset-2 bg-gradient-to-r from-slate-700/20 to-slate-700/20 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
             </div>
           </motion.div>
 
@@ -97,7 +97,7 @@ export function NewNavbar() {
                 className="px-4 py-2 text-sm font-semibold text-[#475569] transition-all duration-200 hover:text-[#1E293B] hover:bg-slate-50 rounded-lg relative group"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-purple-600 to-blue-600 transition-all duration-300 group-hover:w-3/4 group-hover:left-[12.5%]" />
+                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-slate-700 to-slate-700 transition-all duration-300 group-hover:w-3/4 group-hover:left-[12.5%]" />
               </motion.button>
             ))}
           </motion.div>
@@ -122,9 +122,9 @@ export function NewNavbar() {
 
             <Button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="relative group h-10 px-6 overflow-hidden rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_20px_60px_-10px_rgba(139,92,246,0.6)] transition-all duration-300 border-0"
+              className="relative group h-10 px-6 overflow-hidden rounded-lg bg-gradient-to-r from-slate-700 to-slate-700 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_20px_60px_-10px_rgba(139,92,246,0.6)] transition-all duration-300 border-0"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="absolute inset-0 bg-gradient-to-r from-slate-600 to-slate-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative flex items-center gap-2">
                 <Sparkles className="h-4 w-4" />
                 <span className="hidden sm:inline">{t.navbar.scanResume}</span>

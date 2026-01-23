@@ -117,7 +117,7 @@ export function AISuggestionsDialog({
               {/* Header */}
               <div className="flex items-start justify-between p-6 pb-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#F8FAFC] to-transparent">
                 <div className="flex gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-cyan-500/20 shrink-0 text-white">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-slate-600 to-violet-600 shadow-lg shadow-cyan-500/20 shrink-0 text-white">
                     <Sparkles className="h-7 w-7" />
                   </div>
                   <div className="flex flex-col justify-center">
@@ -166,7 +166,7 @@ export function AISuggestionsDialog({
                             matchColor === "emerald"
                               ? "bg-emerald-50 text-emerald-600 ring-emerald-200"
                               : matchColor === "blue"
-                              ? "bg-blue-50 text-blue-600 ring-blue-200"
+                              ? "bg-slate-50 text-slate-700 ring-slate-300"
                               : "bg-[#F8FAFC] text-[#64748B] ring-[#E2E8F0]"
                           }`}
                         >
@@ -177,7 +177,7 @@ export function AISuggestionsDialog({
                       {/* Content */}
                       <div className="flex flex-col flex-1 min-w-0">
                         <p
-                          className={`text-[15px] font-medium leading-normal truncate group-hover:text-[#3B82F6] transition-colors ${
+                          className={`text-[15px] font-medium leading-normal truncate group-hover:text-[#1E293B] transition-colors ${
                             isLowMatch ? "text-[#475569]" : "text-[#0F172A]"
                           }`}
                         >
@@ -189,7 +189,7 @@ export function AISuggestionsDialog({
                               matchColor === "emerald"
                                 ? "text-emerald-600 bg-emerald-50 border-emerald-200"
                                 : matchColor === "blue"
-                                ? "text-blue-600 bg-blue-50 border-blue-200"
+                                ? "text-slate-700 bg-slate-50 border-slate-300"
                                 : "text-[#64748B] bg-[#F8FAFC] border-[#E2E8F0]"
                             }`}
                           >
@@ -217,7 +217,7 @@ export function AISuggestionsDialog({
                           className={`flex items-center gap-2 h-9 px-4 rounded-lg text-white text-sm font-medium shadow-lg transition-all active:scale-95 ${
                             isLowMatch
                               ? "bg-[#64748B] hover:bg-[#475569] border border-[#E2E8F0]"
-                              : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 shadow-blue-500/20"
+                              : "bg-gradient-to-r from-slate-700 to-slate-700 hover:from-slate-600 hover:to-slate-600 shadow-slate-600/20"
                           }`}
                         >
                           <Plus className="h-4 w-4" />
@@ -238,7 +238,7 @@ export function AISuggestionsDialog({
                 <div className="flex w-full sm:w-auto items-center gap-3">
                   <button
                     onClick={onRegenerate}
-                    className="flex-1 sm:flex-none h-10 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#3B82F6] hover:bg-[#F8FAFC] text-[#475569] hover:text-[#0F172A] text-sm font-medium transition-all flex items-center justify-center gap-2"
+                    className="flex-1 sm:flex-none h-10 px-4 rounded-lg border border-[#E2E8F0] hover:border-[#1E293B] hover:bg-[#F8FAFC] text-[#475569] hover:text-[#0F172A] text-sm font-medium transition-all flex items-center justify-center gap-2"
                   >
                     <RefreshCw className="h-4 w-4" />
                     Regenerate

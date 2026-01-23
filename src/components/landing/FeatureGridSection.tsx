@@ -22,7 +22,7 @@ export function FeatureGridSection() {
           repeat: Infinity,
           repeatType: "reverse"
         }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-purple-500/5 opacity-50"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-slate-600/5 opacity-50"
       ></motion.div>
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -87,7 +87,7 @@ export function FeatureGridSection() {
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
-              className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20 rounded-3xl blur-3xl"
+              className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-slate-600/20 rounded-3xl blur-3xl"
             ></motion.div>
             <div className="relative bg-gradient-to-br from-card via-card to-card/80 border-2 border-border/50 rounded-3xl p-6 md:p-8 shadow-2xl hover:shadow-primary/20 transition-all duration-500 backdrop-blur-sm">
               {/* Enhanced Header */}
@@ -144,7 +144,7 @@ export function FeatureGridSection() {
                         <span className="text-sm font-bold text-muted-foreground uppercase tracking-wide">Overall Score</span>
                       </div>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-4xl font-black bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">85</span>
+                        <span className="text-4xl font-black bg-gradient-to-r from-primary to-slate-700 bg-clip-text text-transparent">85</span>
                         <span className="text-lg text-muted-foreground font-semibold">/100</span>
                       </div>
                   </div>
@@ -154,10 +154,10 @@ export function FeatureGridSection() {
                         whileInView={{ width: "85%" }}
                         viewport={{ once: true }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="h-full bg-gradient-to-r from-primary via-purple-500 to-purple-600 rounded-full shadow-lg" 
+                        className="h-full bg-gradient-to-r from-primary via-slate-600 to-slate-700 rounded-full shadow-lg" 
                       />
                   </div>
-                  <Button className="w-full font-bold h-12 text-base shadow-xl shadow-primary/20 hover:shadow-primary/30 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
+                  <Button className="w-full font-bold h-12 text-base shadow-xl shadow-primary/20 hover:shadow-primary/30 bg-gradient-to-r from-primary to-slate-700 hover:from-primary/90 hover:to-slate-700/90 transition-all" onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}>
                     View Full Report →
                   </Button>
               </div>

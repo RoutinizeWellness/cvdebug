@@ -28,7 +28,7 @@ export function NewSocialProofSection() {
     {
       name: "Google",
       logo: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
-      color: "from-blue-500 to-green-500",
+      color: "from-slate-600 to-green-500",
     },
     {
       name: "Amazon",
@@ -38,17 +38,17 @@ export function NewSocialProofSection() {
     {
       name: "Meta",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
-      color: "from-purple-600 to-blue-500",
+      color: "from-slate-700 to-slate-600",
     },
     {
       name: "Slack",
       logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/Slack_Technologies_Logo.svg",
-      color: "from-purple-500 to-pink-500",
+      color: "from-slate-600 to-slate-500",
     },
     {
       name: "Microsoft",
       logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-      color: "from-blue-500 to-purple-600",
+      color: "from-slate-600 to-slate-700",
     },
   ];
 

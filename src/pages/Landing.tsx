@@ -30,7 +30,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-blue-100 antialiased mesh-gradient">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-slate-100 antialiased mesh-gradient">
       <NewNavbar />
 
       <main className="flex-grow pt-20 relative z-10">

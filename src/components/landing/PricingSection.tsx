@@ -143,7 +143,7 @@ export function PricingSection() {
 
           {/* Interview Sprint - Featured */}
           <motion.div 
-            className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border border-primary/50 shadow-xl shadow-primary/10 flex flex-col gap-6 relative h-full transform md:-translate-y-4"
+            className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-slate-600/10 border border-primary/50 shadow-xl shadow-primary/10 flex flex-col gap-6 relative h-full transform md:-translate-y-4"
             whileHover={{ y: -12, boxShadow: "0 25px 50px -12px rgba(163, 127, 188, 0.2)" }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >

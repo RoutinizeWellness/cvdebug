@@ -39,14 +39,14 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-1 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6] z-10"
+                className="absolute right-4 top-4 rounded-full p-1 text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1E293B] z-10"
               >
                 <X className="h-5 w-5" />
               </button>
 
               {/* Decorative Gradient Blobs */}
-              <div className="absolute -top-24 -left-20 w-64 h-64 bg-[#3B82F6]/10 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="absolute -top-24 -right-20 w-64 h-64 bg-[#8B5CF6]/10 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -top-24 -left-20 w-64 h-64 bg-[#1E293B]/10 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -top-24 -right-20 w-64 h-64 bg-[#334155]/10 rounded-full blur-3xl pointer-events-none"></div>
 
               <div className="relative px-8 pt-10 pb-8 flex flex-col items-center">
                 {/* Hero Icon */}
@@ -56,7 +56,7 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="mb-6 relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
                   <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8FAFC] to-[#E2E8F0] border border-[#E2E8F0] shadow-xl flex items-center justify-center">
                     <Rocket className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-br from-[#0F172A] to-[#64748B]" style={{
                       filter: "drop-shadow(0 0 8px rgba(59,130,246,0.3))"
@@ -97,7 +97,7 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                         transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
                         className="flex items-start gap-3"
                       >
-                        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#3B82F6]/10 text-[#3B82F6]">
+                        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1E293B]/10 text-[#1E293B]">
                           <Check className="h-3.5 w-3.5 font-bold" />
                         </div>
                         <span className="text-sm text-[#0F172A] font-medium">
@@ -117,13 +117,13 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                 >
                   <button
                     onClick={onUpgrade}
-                    className="relative w-full h-12 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#2b3bee] shadow-lg shadow-[#3B82F6]/20 hover:shadow-[#3B82F6]/40 transition-all duration-300 group"
+                    className="relative w-full h-12 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] shadow-lg shadow-[#1E293B]/20 hover:shadow-[#1E293B]/40 transition-all duration-300 group"
                   >
                     {/* Animated gradient border effect */}
-                    <span className="absolute inset-0 bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#3B82F6] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></span>
 
                     {/* Inner button */}
-                    <div className="relative h-full w-full bg-gradient-to-r from-[#3B82F6] to-[#2b3bee] hover:brightness-110 flex items-center justify-center rounded-lg transition-all">
+                    <div className="relative h-full w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:brightness-110 flex items-center justify-center rounded-lg transition-all">
                       <span className="text-white font-semibold text-sm tracking-wide">
                         Upgrade to Interview Sprint
                       </span>
@@ -146,13 +146,13 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                   transition={{ duration: 0.5, delay: 0.9 }}
                   className="mt-6 flex items-center justify-center gap-2"
                 >
-                  <Lock className="h-3 w-3 text-[#8B5CF6]" />
+                  <Lock className="h-3 w-3 text-[#334155]" />
                   <span className="text-xs text-[#64748B] font-mono">Secured by Stripe</span>
                 </motion.div>
               </div>
 
               {/* Bottom decorative glow line */}
-              <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#8B5CF6]/50 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#334155]/50 to-transparent"></div>
             </motion.div>
           </motion.div>
         </>
