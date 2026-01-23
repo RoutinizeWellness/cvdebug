@@ -15,8 +15,9 @@ const apiAny: any = api;
 
 export default function AuthPage() {
   const { isAuthenticated, isLoading } = useAuth();
-  const [isSignIn, setIsSignIn] = useState(true);
   const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
+  const [isSignIn, setIsSignIn] = useState(mode !== "signup");
   const storeUser = useMutation(apiAny.users.storeUser);
   const plan = searchParams.get("plan");
   const payment = searchParams.get("payment");
@@ -32,6 +33,15 @@ export default function AuthPage() {
       });
     }
   }, [isAuthenticated, storeUser]);
+
+  // Update sign in/up mode when URL changes
+  useEffect(() => {
+    if (mode === "signup") {
+      setIsSignIn(false);
+    } else if (mode === "signin") {
+      setIsSignIn(true);
+    }
+  }, [mode]);
   
   let redirectUrl = "/dashboard";
   const params = new URLSearchParams();
@@ -245,18 +255,16 @@ export default function AuthPage() {
             {isSignIn ? (
               <SignIn
                 appearance={clerkAppearance}
-                routing="path"
-                path="/auth"
-                signUpUrl="/auth"
+                routing="virtual"
                 forceRedirectUrl={redirectUrl}
+                afterSignInUrl={redirectUrl}
               />
             ) : (
               <SignUp
                 appearance={clerkAppearance}
-                routing="path"
-                path="/auth"
-                signInUrl="/auth"
+                routing="virtual"
                 forceRedirectUrl={redirectUrl}
+                afterSignUpUrl={redirectUrl}
               />
             )}
           </div>
