@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { EmailPreferences } from "./EmailPreferences";
+import { ExperienceLevelSelector, type ExperienceLevel, getExperienceLevelLabel } from "@/components/ExperienceLevelSelector";
 
 const apiAny = api as any;
 
@@ -15,6 +16,8 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
   const user = useQuery(apiAny.users.currentUser);
   const resumes = useQuery(apiAny.resumes.getResumes);
   const [shareAnalytics, setShareAnalytics] = useState(true);
+  const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel | undefined>(undefined);
+  const [targetRole, setTargetRole] = useState("");
 
   // Get latest resume for score calculation
   const latestResume = resumes && resumes.length > 0
@@ -36,6 +39,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
   const toggleAnalyticsMutation = useMutation(apiAny.userSettings.toggleAnalyticsSharing);
   const generateApiKeyMutation = useMutation(apiAny.userSettings.generateApiKey);
   const requestAccountDeletionMutation = useMutation(apiAny.userSettings.requestAccountDeletion);
+  const updateExperienceLevelMutation = useMutation(apiAny.users.updateExperienceLevel);
 
   // Sync shareAnalytics with user data
   useEffect(() => {
@@ -43,6 +47,16 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
       setShareAnalytics(user.shareAnalytics);
     }
   }, [user?.shareAnalytics]);
+
+  // Sync experience level with user data
+  useEffect(() => {
+    if (user?.experienceLevel) {
+      setExperienceLevel(user.experienceLevel);
+    }
+    if (user?.targetRole) {
+      setTargetRole(user.targetRole);
+    }
+  }, [user?.experienceLevel, user?.targetRole]);
 
   // Calculate sprint progress
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
@@ -125,6 +139,25 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
       toast.error("Failed to update analytics preference");
       // Revert on error
       setShareAnalytics(!newValue);
+    }
+  };
+
+  // Handle experience level update
+  const handleExperienceLevelUpdate = async () => {
+    if (!experienceLevel) {
+      toast.error("Please select your experience level");
+      return;
+    }
+
+    try {
+      await updateExperienceLevelMutation({
+        experienceLevel,
+        targetRole: targetRole.trim() || undefined,
+      });
+      toast.success("Experience level updated! Your CV analysis will be adjusted accordingly.");
+    } catch (error) {
+      console.error("Failed to update experience level:", error);
+      toast.error("Failed to update experience level");
     }
   };
 
@@ -399,11 +432,94 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             </div>
           </motion.div>
 
-          {/* Email Preferences Section (Full Width) */}
+          {/* Experience Level Section (Full Width) */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
+            className="lg:col-span-3 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 mt-2 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <span className="material-symbols-outlined text-[#64748B]">person</span>
+              <h3 className="text-xl font-bold font-display text-[#0F172A]">
+                Career Profile
+              </h3>
+            </div>
+            <p className="text-[#64748B] text-sm mb-6">
+              Your experience level helps us provide personalized CV analysis and recommendations tailored to your career stage.
+            </p>
+
+            {/* Current Experience Display */}
+            {user?.experienceLevel && (
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-blue-600 text-xl mt-0.5">
+                    badge
+                  </span>
+                  <div>
+                    <h4 className="font-bold text-slate-900 text-sm mb-1">Current Experience Level</h4>
+                    <p className="text-sm text-slate-700 font-medium">
+                      {getExperienceLevelLabel(user.experienceLevel)}
+                    </p>
+                    {user.targetRole && (
+                      <p className="text-xs text-slate-600 mt-1">
+                        Target Role: <span className="font-semibold">{user.targetRole}</span>
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Experience Level Selector */}
+            <div className="mb-6">
+              <ExperienceLevelSelector
+                value={experienceLevel}
+                onChange={setExperienceLevel}
+                label="Update Your Experience Level"
+              />
+            </div>
+
+            {/* Target Role Input */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-[#475569] mb-2">
+                Target Role (Optional)
+              </label>
+              <input
+                type="text"
+                value={targetRole}
+                onChange={(e) => setTargetRole(e.target.value)}
+                placeholder="e.g., Software Engineer, Product Manager, SDR..."
+                className="w-full px-4 py-3 border border-[#E2E8F0] rounded-lg text-sm font-medium text-[#0F172A] bg-white focus:outline-none focus:ring-2 focus:ring-[#475569] focus:border-transparent placeholder:text-slate-400"
+              />
+              <p className="text-xs text-[#64748B] mt-1.5">
+                This helps us give more targeted feedback for your specific career goals
+              </p>
+            </div>
+
+            {/* Save Button */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleExperienceLevelUpdate}
+                disabled={!experienceLevel}
+                className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#334155] to-[#475569] text-white font-semibold text-sm shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-base">save</span>
+                Save Changes
+              </button>
+              {experienceLevel !== user?.experienceLevel && (
+                <span className="text-xs text-[#F59E0B] font-medium">
+                  Unsaved changes
+                </span>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Email Preferences Section (Full Width) */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
             className="lg:col-span-3 mt-2"
           >
             <EmailPreferences />

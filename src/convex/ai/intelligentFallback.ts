@@ -477,7 +477,7 @@ export function generateIntelligentFallback(
     });
   }
 
-  // Step 9: Generate ML-enhanced analysis text
+  // Step 9: Generate ML-enhanced analysis text with experience-level personalization
   const analysis = generateMLEnhancedAnalysisText({
     overallScore,
     category,
@@ -491,7 +491,8 @@ export function generateIntelligentFallback(
     formatIssuesCount: formatIssues.length,
     mlFeatures,
     mlPrediction,
-    mlSuggestions
+    mlSuggestions,
+    experienceLevel
   });
 
   // Step 7: Upgrade incentive (ALWAYS show for free users)
@@ -632,6 +633,7 @@ function generateMLEnhancedAnalysisText(params: {
   mlFeatures: any;
   mlPrediction: any;
   mlSuggestions: string[];
+  experienceLevel?: "internship" | "entry" | "junior" | "mid" | "senior" | "lead" | "executive";
 }): string {
   const {
     overallScore,
@@ -642,7 +644,8 @@ function generateMLEnhancedAnalysisText(params: {
     formatIssuesCount,
     mlFeatures,
     mlPrediction,
-    mlSuggestions
+    mlSuggestions,
+    experienceLevel
   } = params;
 
   let analysis = "";
@@ -725,6 +728,71 @@ function generateMLEnhancedAnalysisText(params: {
     mlSuggestions.slice(0, 4).forEach((suggestion, idx) => {
       analysis += `${idx + 1}. ${suggestion}\n`;
     });
+  }
+
+  // Experience-level specific feedback
+  if (experienceLevel) {
+    analysis += "\n**💡 Personalized Feedback for Your Career Stage:**\n";
+
+    switch (experienceLevel) {
+      case "internship":
+      case "entry":
+        analysis += "• **Focus on potential**: Highlight academic projects, coursework, and relevant skills\n";
+        analysis += "• **Education first**: Put your education section near the top with relevant coursework\n";
+        analysis += "• **Transferable skills**: Include volunteer work, clubs, and extracurricular leadership\n";
+        analysis += "• **Show enthusiasm**: Use action verbs like 'learned,' 'developed,' 'contributed to'\n";
+        if (mlFeatures.quantifiableResultsCount === 0) {
+          analysis += "• **Add metrics**: Even small wins count - 'Completed 5 projects,' 'Contributed to team of 10'\n";
+        }
+        break;
+
+      case "junior":
+        analysis += "• **Build your track record**: Start adding quantifiable results from your work\n";
+        analysis += "• **Show growth**: Highlight increasing responsibilities and skills learned\n";
+        analysis += "• **Technical depth**: List specific tools, technologies, and methodologies\n";
+        analysis += "• **Collaboration**: Emphasize teamwork and contributions to larger projects\n";
+        if (mlFeatures.quantifiableResultsCount < 2) {
+          analysis += "• **Critical**: Add at least 3-5 metrics to demonstrate your impact\n";
+        }
+        break;
+
+      case "mid":
+        analysis += "• **Prove your value**: Every bullet should have a measurable outcome\n";
+        analysis += "• **Show ownership**: Highlight projects you led or significantly influenced\n";
+        analysis += "• **Business impact**: Connect your work to company goals (revenue, efficiency, growth)\n";
+        analysis += "• **Mentorship**: Include any mentoring, training, or knowledge-sharing activities\n";
+        if (mlFeatures.quantifiableResultsCount < 3) {
+          analysis += "• **⚠️ Critical issue**: Mid-level roles MUST show quantifiable results (aim for 5-8 metrics)\n";
+        }
+        break;
+
+      case "senior":
+      case "lead":
+        analysis += "• **Leadership first**: Emphasize team leadership, architecture decisions, strategic initiatives\n";
+        analysis += "• **Scale and impact**: Show how you influenced product/org at scale (users, revenue, efficiency)\n";
+        analysis += "• **Technical vision**: Highlight system design, technical roadmaps, technology choices\n";
+        analysis += "• **Cross-functional influence**: Demonstrate collaboration with product, design, executives\n";
+        if (mlFeatures.quantifiableResultsCount < 4) {
+          analysis += "• **🚨 Major gap**: Senior roles require strong metrics - aim for 8-12 quantifiable achievements\n";
+        }
+        if (!mlFeatures.impactScore || mlFeatures.impactScore < 50) {
+          analysis += "• **Missing leadership signals**: Add verbs like 'led,' 'architected,' 'mentored,' 'scaled'\n";
+        }
+        break;
+
+      case "executive":
+        analysis += "• **Strategic impact**: Focus on business outcomes, not tasks (revenue, P&L, org transformation)\n";
+        analysis += "• **Board-level metrics**: Include $ amounts, percentages, company-wide impact\n";
+        analysis += "• **Vision and execution**: Show how you set direction AND delivered results\n";
+        analysis += "• **External recognition**: Awards, speaking engagements, industry influence\n";
+        if (mlFeatures.quantifiableResultsCount < 5) {
+          analysis += "• **❌ Critical**: Executive resumes MUST be metrics-driven (aim for 10-15 strong metrics)\n";
+        }
+        if (!mlFeatures.impactScore || mlFeatures.impactScore < 60) {
+          analysis += "• **Insufficient business impact**: Add revenue, growth rates, ROI, strategic initiatives\n";
+        }
+        break;
+    }
   }
 
   // Premium upsell (NO ML references to users)
