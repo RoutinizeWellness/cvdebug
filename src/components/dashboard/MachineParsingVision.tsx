@@ -127,7 +127,7 @@ export function MachineParsingVision({
               {/* Scanning Line Effect */}
               <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
                 <motion.div
-                  className="w-full h-0.5 bg-[#64748B] shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                  className="w-full h-0.5 bg-[#64748B] shadow-[0_0_15px_rgba(100,116,139,0.5)]"
                   animate={{ top: ['0%', '100%'] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   style={{ position: 'absolute' }}

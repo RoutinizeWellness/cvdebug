@@ -271,7 +271,7 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25 }}
-                className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border border-[#E2E8F0] hover:border-[#1E293B]/50 hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 group relative overflow-hidden"
+                className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border border-[#E2E8F0] hover:border-[#1E293B]/50 hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.3)] transition-all duration-300 group relative overflow-hidden"
               >
                 {/* Subtle background glow */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#1E293B]/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -330,7 +330,7 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="relative rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-[#F3E8FF] bg-gradient-to-br from-[#FFFFFF] via-[#FFFFFF] to-[#F3E8FF]/30 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transform hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all duration-300 group overflow-hidden"
+                className="relative rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-[#F3E8FF] bg-gradient-to-br from-[#FFFFFF] via-[#FFFFFF] to-[#F3E8FF]/30 shadow-[0_10px_40px_-10px_rgba(100,116,139,0.3)] transform hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)] transition-all duration-300 group overflow-hidden"
               >
                 {/* Animated background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/5 via-transparent to-[#64748B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -403,7 +403,7 @@ export function SubscriptionView() {
 
                   <button
                     disabled={isInterviewSprint || isIterationPass}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
                   >
                     {(isInterviewSprint || isIterationPass) ? (
                       <span className="flex items-center justify-center gap-2">

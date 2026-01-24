@@ -174,7 +174,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         <div className="mx-4 mb-4">
           <button
             onClick={() => setShowPricing(true)}
-            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(100,116,139,0.3)] transition-all flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[18px]">workspace_premium</span>
             {hasActiveSprint ? t.sidebar.managePlan : t.sidebar.upgradeNow}

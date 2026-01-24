@@ -49,7 +49,7 @@ export function MissionControlLayout({
             </div>
             <Button
               onClick={onNewApplication}
-              className="flex items-center gap-2 rounded-lg h-10 pl-3 pr-4 bg-gradient-to-r from-primary to-secondary shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_25px_rgba(59,130,246,0.5)] text-[#0F172A] text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center gap-2 rounded-lg h-10 pl-3 pr-4 bg-gradient-to-r from-primary to-secondary shadow-[0_0_20px_rgba(100,116,139,0.3)] hover:shadow-[0_0_25px_rgba(100,116,139,0.5)] text-[#0F172A] text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus className="h-5 w-5" />
               <span>New Application</span>

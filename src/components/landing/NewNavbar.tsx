@@ -122,7 +122,7 @@ export function NewNavbar() {
 
             <Button
               onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-              className="relative group h-10 px-6 overflow-hidden rounded-lg bg-gradient-to-r from-slate-700 to-slate-700 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_20px_60px_-10px_rgba(139,92,246,0.6)] transition-all duration-300 border-0"
+              className="relative group h-10 px-6 overflow-hidden rounded-lg bg-gradient-to-r from-slate-700 to-slate-700 text-white font-bold shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)] hover:shadow-[0_20px_60px_-10px_rgba(100,116,139,0.6)] transition-all duration-300 border-0"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-slate-600 to-slate-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative flex items-center gap-2">

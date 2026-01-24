@@ -444,7 +444,7 @@ export function KeywordSniperTool({
                   onClick={() => setSelectedSuggestion(suggestion.id)}
                   className={`rounded-lg p-5 transition-all relative group cursor-pointer ${
                     selectedSuggestion === suggestion.id
-                      ? "bg-[#F8FAFC]/80 border-2 border-teal-500 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
+                      ? "bg-[#F8FAFC]/80 border-2 border-teal-500 shadow-[0_0_20px_rgba(100,116,139,0.15)]"
                       : "border border-white/5 bg-[#F8FAFC]/30 hover:bg-[#F8FAFC]/50"
                   }`}
                 >
@@ -491,7 +491,7 @@ export function KeywordSniperTool({
           <div className="p-5 border-t border-white/10 flex gap-4 bg-[#FFFFFF]/40">
             <Button
               onClick={handleApplySuggestion}
-              className="flex-1 bg-primary hover:bg-[#64748B] text-[#0F172A] font-medium py-3 px-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all"
+              className="flex-1 bg-primary hover:bg-[#64748B] text-[#0F172A] font-medium py-3 px-4 rounded-lg shadow-lg shadow-slate-600/20 transition-all"
             >
               <span className="material-symbols-outlined mr-2">check_circle</span>
               Apply Selected

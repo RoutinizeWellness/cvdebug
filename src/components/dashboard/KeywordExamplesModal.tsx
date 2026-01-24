@@ -107,7 +107,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#1E293B] hover:shadow-[0_4px_20px_-4px_rgba(139,92,246,0.15)] transition-all duration-300"
+              className="group relative bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#1E293B] hover:shadow-[0_4px_20px_-4px_rgba(100,116,139,0.15)] transition-all duration-300"
             >
               {/* Category Header */}
               <div className="flex items-center gap-3 mb-4">
@@ -190,7 +190,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
           </p>
           <button
             onClick={() => onOpenChange(false)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(100,116,139,0.3)]"
           >
             Got it
           </button>

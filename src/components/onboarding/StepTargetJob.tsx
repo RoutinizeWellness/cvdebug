@@ -30,7 +30,7 @@ export function StepTargetJob({
       className="bg-white rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#64748B]/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
     >
       <div className="h-1 w-full bg-[#E2E8F0]">
-        <div className="h-full bg-gradient-to-r from-[#1E293B] to-[#64748B] w-2/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+        <div className="h-full bg-gradient-to-r from-[#1E293B] to-[#64748B] w-2/3 shadow-[0_0_10px_rgba(100,116,139,0.5)]"></div>
       </div>
       <div className="p-8 flex flex-col gap-8">
         <div className="flex flex-col gap-2">

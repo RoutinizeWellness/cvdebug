@@ -124,7 +124,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
             <div className="space-y-3">
               <Button
-                className="w-full h-14 bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-white font-black text-base shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)]"
+                className="w-full h-14 bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-white font-black text-base shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)]"
                 onClick={() => handleUpgrade("interview_sprint")}
                 disabled={!!isLoading}
               >
@@ -250,7 +250,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </div>
 
           {/* 24-Hour Pass - RECOMMENDED (Moved to 3rd position) */}
-          <div className="bg-white border-2 border-[#64748B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(59,130,246,0.1)]">
+          <div className="bg-white border-2 border-[#64748B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(100,116,139,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#64748B] to-[#475569] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">bolt</span>
               {t.pricingDialog.recommended}

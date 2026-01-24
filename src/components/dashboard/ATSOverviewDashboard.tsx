@@ -478,7 +478,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
             <div className="mb-4">
               <p className="text-xs text-[#64748B] mb-2">AI Inference: You sound like a</p>
-              <div className="inline-block px-4 py-2 rounded-xl bg-white border-2 border-[#1E293B] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]">
+              <div className="inline-block px-4 py-2 rounded-xl bg-white border-2 border-[#1E293B] shadow-[0_4px_12px_-2px_rgba(100,116,139,0.3)]">
                 <span className="text-lg font-black text-[#0F172A]">{seniorityLevel}</span>
               </div>
             </div>
@@ -486,7 +486,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
             {!isPaidUser && (
               <button
                 onClick={onUpgrade}
-                className="w-full mt-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.4)] flex items-center justify-center gap-2"
+                className="w-full mt-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(100,116,139,0.4)] flex items-center justify-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 Sound like a Senior Architect

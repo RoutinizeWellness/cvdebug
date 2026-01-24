@@ -59,7 +59,7 @@ export function HeadlineOptimizer({ currentHeadline, optimizedHeadline }: Headli
               {copied ? "Copied!" : "Copy"}
             </button>
           </div>
-          <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-[#0F172A] font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(139,92,246,0.1)]">
+          <div className="p-4 rounded-lg border border-primary/30 bg-primary/5 text-[#0F172A] font-mono text-sm leading-relaxed shadow-[0_0_15px_rgba(100,116,139,0.1)]">
             {optimizedHeadline}
           </div>
           <p className="mt-3 text-xs text-primary">

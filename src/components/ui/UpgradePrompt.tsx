@@ -59,7 +59,7 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                   <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
                   <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F8FAFC] to-[#E2E8F0] border border-[#E2E8F0] shadow-xl flex items-center justify-center">
                     <Rocket className="h-8 w-8 text-transparent bg-clip-text bg-gradient-to-br from-[#0F172A] to-[#64748B]" style={{
-                      filter: "drop-shadow(0 0 8px rgba(59,130,246,0.3))"
+                      filter: "drop-shadow(0 0 8px rgba(100,116,139,0.3))"
                     }} />
                   </div>
                 </motion.div>

@@ -340,7 +340,7 @@ export function InlineResumeEditor({
             !isPaidUser ? 'blur-[2px] pointer-events-none' : ''
           } ${
             isEditing
-              ? 'border-[#1E293B] shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+              ? 'border-[#1E293B] shadow-[0_0_20px_rgba(100,116,139,0.2)]'
               : 'border-[#E2E8F0]'
           }`}
           placeholder="Paste your resume content here and edit directly..."

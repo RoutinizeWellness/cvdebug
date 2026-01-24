@@ -21,9 +21,9 @@ export function ProgressTimeline({ currentStep }: ProgressTimelineProps) {
             <div key={step.number} className="flex gap-4">
               <div className={`relative z-10 flex items-center justify-center size-8 rounded-full ${
                 currentStep > step.number
-                  ? "bg-[#64748B] text-white shadow-lg shadow-blue-500/25"
+                  ? "bg-[#64748B] text-white shadow-lg shadow-slate-500/25"
                   : currentStep === step.number
-                  ? "bg-[#64748B] text-white shadow-lg shadow-blue-500/10"
+                  ? "bg-[#64748B] text-white shadow-lg shadow-slate-500/10"
                   : "bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]"
               } ring-4 ring-white`}>
                 {currentStep > step.number ? <Check className="h-4 w-4" /> : <span className="font-bold text-sm">{step.number}</span>}

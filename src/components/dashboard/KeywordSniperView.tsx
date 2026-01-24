@@ -225,7 +225,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                   toast.info(t.keywordSniper.noMissingKeywords);
                 }
               }}
-              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#64748B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(59,130,246,0.15)]"
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#64748B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(100,116,139,0.15)]"
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-[#64748B]/10 flex items-center justify-center">
@@ -260,7 +260,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
             {/* Rewrite All */}
             <button
               onClick={() => setShowRewriteModal(true)}
-              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#1E293B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(139,92,246,0.15)]"
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#1E293B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(100,116,139,0.15)]"
             >
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-[#1E293B]/10 flex items-center justify-center">

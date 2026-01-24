@@ -307,7 +307,7 @@ export function RobotTerminalView({
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-[#050810] via-[#0c1220] to-[#050810] border-2 border-[#64748B]/40 rounded-2xl overflow-hidden shadow-[0_0_60px_-15px_rgba(59,130,246,0.7),0_0_30px_-10px_rgba(139,92,246,0.5)] flex flex-col h-full min-h-[500px] sm:min-h-[400px]">
+    <div className="relative bg-gradient-to-br from-[#050810] via-[#0c1220] to-[#050810] border-2 border-[#64748B]/40 rounded-2xl overflow-hidden shadow-[0_0_60px_-15px_rgba(100,116,139,0.7),0_0_30px_-10px_rgba(100,116,139,0.5)] flex flex-col h-full min-h-[500px] sm:min-h-[400px]">
       {/* Animated grid background */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute inset-0" style={{
@@ -404,8 +404,8 @@ export function RobotTerminalView({
             </div>
 
             <motion.div
-              className="ml-2 sm:ml-4 flex items-center gap-2 px-3 py-1.5 bg-black/60 rounded-lg text-xs font-mono text-[#64748B] border border-[#64748B]/50 backdrop-blur-sm shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-              animate={{ borderColor: ["rgba(59,130,246,0.3)", "rgba(59,130,246,0.8)", "rgba(59,130,246,0.3)"] }}
+              className="ml-2 sm:ml-4 flex items-center gap-2 px-3 py-1.5 bg-black/60 rounded-lg text-xs font-mono text-[#64748B] border border-[#64748B]/50 backdrop-blur-sm shadow-[0_0_20px_rgba(100,116,139,0.3)]"
+              animate={{ borderColor: ["rgba(100,116,139,0.3)", "rgba(100,116,139,0.8)", "rgba(100,116,139,0.3)"] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <Terminal className="h-3.5 w-3.5" />
@@ -479,7 +479,7 @@ export function RobotTerminalView({
             animate={{ top: ["0%", "100%"] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
           >
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-[#64748B] to-transparent shadow-[0_0_20px_10px_rgba(59,130,246,0.8)]" />
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-[#64748B] to-transparent shadow-[0_0_20px_10px_rgba(100,116,139,0.8)]" />
           </motion.div>
         )}
 
@@ -491,12 +491,12 @@ export function RobotTerminalView({
                 initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
                 animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="flex items-start gap-2 sm:gap-3 group hover:bg-white/5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)]"
+                className="flex items-start gap-2 sm:gap-3 group hover:bg-white/5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_rgba(100,116,139,0.2)]"
               >
                 {/* Line number with glow */}
                 <motion.span
                   className="text-[#475569] select-none text-xs shrink-0 font-bold tabular-nums min-w-[24px]"
-                  whileHover={{ color: "#64748B", textShadow: "0 0 8px rgba(59,130,246,0.8)" }}
+                  whileHover={{ color: "#64748B", textShadow: "0 0 8px rgba(100,116,139,0.8)" }}
                 >
                   {String(log.line).padStart(2, "0")}
                 </motion.span>
@@ -509,9 +509,9 @@ export function RobotTerminalView({
                 {/* Content */}
                 {log.type === "command" ? (
                   <div className="flex-1 break-words">
-                    <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
+                    <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]">root@ats-robot</span>
                     <span className="text-[#64748B]">:</span>
-                    <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+                    <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]">~/neural-scan</span>
                     <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
                     <span className="text-white/90 ml-2">{log.message}</span>
                   </div>
@@ -548,12 +548,12 @@ export function RobotTerminalView({
                 {String(logData.length + 1).padStart(2, "0")}
               </span>
               <span className="text-[#22C55E]">✓</span>
-              <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
+              <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]">root@ats-robot</span>
               <span className="text-[#64748B]">:</span>
-              <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+              <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]">~/neural-scan</span>
               <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
               <motion.span
-                className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-2 shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
+                className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-2 shadow-[0_0_15px_5px_rgba(100,116,139,1)]"
                 animate={{ opacity: [0.2, 1, 0.2] }}
                 transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
               />

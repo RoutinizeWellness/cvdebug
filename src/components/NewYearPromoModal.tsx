@@ -161,7 +161,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onUnlock}
-              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(100,116,139,0.5)]"
             >
               <div className="relative flex h-14 w-full items-center justify-center rounded-[10px] bg-transparent px-8 transition-all group-hover:bg-white/10">
                 <span className="text-[#FFFFFF] text-lg font-bold tracking-wide mr-2">

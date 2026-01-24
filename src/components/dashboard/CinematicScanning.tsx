@@ -270,7 +270,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                       item.status === 'completed'
                         ? 'bg-[#FFFFFF] border border-[#22C55E] shadow-[0_0_10px_rgba(34,197,94,0.3)]'
                         : item.status === 'active'
-                        ? 'bg-[#FFFFFF] border border-[#64748B] shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                        ? 'bg-[#FFFFFF] border border-[#64748B] shadow-[0_0_15px_rgba(100,116,139,0.5)]'
                         : 'bg-[#F8FAFC] border border-[#E2E8F0]'
                     }`}>
                       {item.status === 'completed' && (

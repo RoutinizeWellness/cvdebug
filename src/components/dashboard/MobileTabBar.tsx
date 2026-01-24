@@ -69,7 +69,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
           >
             <Button
               onClick={onUpload}
-              className="h-14 w-14 rounded-full bg-gradient-to-br from-[#64748B] to-[#1E293B] hover:from-[#64748B]/90 hover:to-[#1E293B]/90 shadow-[0_0_30px_rgba(139,92,246,0.5)] border-4 border-[#FFFFFF]"
+              className="h-14 w-14 rounded-full bg-gradient-to-br from-[#64748B] to-[#1E293B] hover:from-[#64748B]/90 hover:to-[#1E293B]/90 shadow-[0_0_30px_rgba(100,116,139,0.5)] border-4 border-[#FFFFFF]"
               aria-label="Upload Resume"
             >
               <Upload className="h-6 w-6 text-white" />

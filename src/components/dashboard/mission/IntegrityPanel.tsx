@@ -52,7 +52,7 @@ export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: 
         </div>
         <div className="h-2 w-full bg-[#F8FAFC] rounded-full overflow-hidden">
           <div 
-            className={`h-full rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] ${
+            className={`h-full rounded-full shadow-[0_0_10px_rgba(100,116,139,0.5)] ${
               hasImageTrap ? "bg-[#EF4444]" : "bg-primary"
             }`} 
             style={{ width: `${integrityScore}%` }}

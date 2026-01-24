@@ -167,7 +167,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                 animate={{ top: ["0%", "100%"] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
-              <div className="absolute left-0 right-0 top-0 bottom-0 bg-gradient-to-b from-transparent via-blue-100/20 to-transparent opacity-30 pointer-events-none"></div>
+              <div className="absolute left-0 right-0 top-0 bottom-0 bg-gradient-to-b from-transparent via-slate-100/20 to-transparent opacity-30 pointer-events-none"></div>
             </div>
 
             {/* Floating tech decorations */}

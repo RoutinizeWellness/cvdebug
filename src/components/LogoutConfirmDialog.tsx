@@ -40,7 +40,7 @@ export function LogoutConfirmDialog({ open, onOpenChange, onConfirm }: LogoutCon
           {/* Content */}
           <div className="relative z-10 flex flex-col items-center gap-6 w-full text-center">
             {/* Icon */}
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/30 border border-slate-700/50 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-slate-800/30 border border-slate-700/50 shadow-[0_0_25px_rgba(100,116,139,0.15)]">
               <span className="material-symbols-outlined text-primary text-3xl">power_settings_new</span>
             </div>
 

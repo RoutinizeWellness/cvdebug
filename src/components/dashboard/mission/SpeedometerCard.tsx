@@ -29,7 +29,7 @@ export function SpeedometerCard({ score }: SpeedometerCardProps) {
         <svg className="size-full -rotate-90 transform" viewBox="0 0 100 100">
           <circle cx="50" cy="50" fill="transparent" r="40" stroke="#1e293b" strokeWidth="8" strokeLinecap="round"></circle>
           <circle 
-            className="drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
+            className="drop-shadow-[0_0_10px_rgba(100,116,139,0.5)]" 
             cx="50" cy="50" fill="transparent" r="40" 
             stroke="url(#gradient)" 
             strokeDasharray="251.2" 

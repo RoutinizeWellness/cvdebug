@@ -232,7 +232,7 @@ export function InterviewBattlePlanModal({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-xl p-5 border border-[#E2E8F0] hover:border-[#1E293B] hover:shadow-[0_4px_16px_rgba(139,92,246,0.1)] transition-all"
+                    className="bg-white rounded-xl p-5 border border-[#E2E8F0] hover:border-[#1E293B] hover:shadow-[0_4px_16px_rgba(100,116,139,0.1)] transition-all"
                   >
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -305,7 +305,7 @@ export function InterviewBattlePlanModal({
               </button>
               <button
                 onClick={() => onOpenChange(false)}
-                className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+                className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(100,116,139,0.3)]"
               >
                 I'm Ready 🚀
               </button>

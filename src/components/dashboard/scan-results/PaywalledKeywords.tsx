@@ -69,7 +69,7 @@ export function PaywalledKeywords({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.4, delay: 0.2, type: "spring" }}
-            className="size-12 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+            className="size-12 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(100,116,139,0.4)]"
           >
             <Lock className="h-6 w-6 text-[#0F172A]" />
           </motion.div>

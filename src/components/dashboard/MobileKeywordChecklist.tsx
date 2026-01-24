@@ -72,7 +72,7 @@ export function MobileKeywordChecklist({
               className="w-full p-3 rounded-lg bg-[#FFFFFF] border-2 border-[#F3E8FF] hover:border-[#1E293B]/60 transition-all text-left shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               whileTap={{ scale: 0.98 }}
               animate={{
-                borderColor: i === 0 ? ["rgba(139,92,246,0.3)", "rgba(139,92,246,0.6)", "rgba(139,92,246,0.3)"] : undefined
+                borderColor: i === 0 ? ["rgba(100,116,139,0.3)", "rgba(100,116,139,0.6)", "rgba(100,116,139,0.3)"] : undefined
               }}
               transition={{
                 borderColor: { duration: 2, repeat: Infinity }

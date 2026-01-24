@@ -69,7 +69,7 @@ export function SubscriptionStatusModal({ open, onOpenChange, onUpgrade, current
                 👋
               </motion.div>
               {isPremium && (
-                <div className="inline-flex items-center px-3 py-1 rounded-full border border-secondary/50 bg-secondary/10 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                <div className="inline-flex items-center px-3 py-1 rounded-full border border-secondary/50 bg-secondary/10 shadow-[0_0_15px_rgba(100,116,139,0.3)]">
                   <span className="text-xs font-bold tracking-wider text-secondary uppercase">{t.modals.subscription.premium}</span>
                 </div>
               )}

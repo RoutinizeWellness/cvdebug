@@ -893,7 +893,7 @@ export function FluffDetector({
       </div>
 
       {/* Floating Chat Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#64748B] to-[#A78BFA] hover:from-[#1E293B] hover:to-[#1E293B] text-[#0F172A] rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#64748B] to-[#A78BFA] hover:from-[#1E293B] hover:to-[#1E293B] text-[#0F172A] rounded-full shadow-lg shadow-slate-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
         <span className="material-symbols-outlined text-2xl">chat</span>
       </button>
     </div>

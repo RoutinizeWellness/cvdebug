@@ -29,7 +29,7 @@ const rarityColors = {
     bg: "bg-[#F1F5F9]",
     border: "border-[#475569]",
     text: "text-[#0F172A]",
-    glow: "shadow-blue-400/30",
+    glow: "shadow-slate-400/30",
   },
   epic: {
     bg: "bg-[#F1F5F9]",

@@ -45,9 +45,9 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
               <motion.div
                 className={`w-10 h-10 rounded-full flex items-center justify-center relative transition-all ${
                   isCompleted
-                    ? "bg-gradient-to-br from-secondary to-primary border-2 border-primary shadow-[0_0_15px_rgba(139,92,246,0.3)]"
+                    ? "bg-gradient-to-br from-secondary to-primary border-2 border-primary shadow-[0_0_15px_rgba(100,116,139,0.3)]"
                     : isActive
-                    ? "bg-surface-dark border-2 border-secondary shadow-[0_0_15px_rgba(59,130,246,0.4)]"
+                    ? "bg-surface-dark border-2 border-secondary shadow-[0_0_15px_rgba(100,116,139,0.4)]"
                     : "bg-surface-dark border-2 border-slate-700"
                 }`}
                 whileHover={{ scale: 1.05 }}

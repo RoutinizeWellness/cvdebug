@@ -269,7 +269,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
             </button>
             <button
               onClick={handleApply}
-              className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)] flex items-center gap-2"
+              className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(100,116,139,0.3)] flex items-center gap-2"
             >
               Apply to Resume
               <ArrowRight className="h-4 w-4" />

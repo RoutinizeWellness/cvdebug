@@ -137,7 +137,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                       onClick={() => setSeniorityLevel(level)}
                       className={`p-4 rounded-xl border-2 transition-all text-left ${
                         seniorityLevel === level
-                          ? "border-[#1E293B] bg-[#F3E8FF] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+                          ? "border-[#1E293B] bg-[#F3E8FF] shadow-[0_4px_12px_-2px_rgba(100,116,139,0.3)]"
                           : "border-[#E2E8F0] hover:border-[#1E293B]/50 hover:bg-[#F8FAFC]"
                       }`}
                     >
@@ -272,7 +272,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                   <button
                     onClick={handleRewrite}
                     disabled={isProcessing}
-                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(139,92,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(100,116,139,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
                     {isProcessing ? (
                       <>
