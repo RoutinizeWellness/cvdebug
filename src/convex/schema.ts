@@ -10,6 +10,12 @@ const schema = defineSchema(
     subscriptionTier: v.union(v.literal("free"), v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
     credits: v.optional(v.number()),
     sprintExpiresAt: v.optional(v.number()),
+    // Single Debug Fix tracking
+    aiRewritesUsed: v.optional(v.number()), // Track AI rewrites used for single_debug_fix plan
+    singleDebugFixUsed: v.optional(v.boolean()), // Track if single_debug_fix has been used
+    // Plan expiration notifications
+    planExpirationEmailSent: v.optional(v.boolean()),
+    planExpirationPopupShown: v.optional(v.boolean()),
     hasPriorityParsing: v.optional(v.boolean()),
     badges: v.optional(v.array(v.object({
       id: v.string(),

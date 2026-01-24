@@ -62,6 +62,8 @@ import { OnboardingTour, useOnboarding } from "@/components/dashboard/Onboarding
 import { EcosystemPrompts } from "@/components/dashboard/EcosystemPrompts";
 import { ActivityReminderBanner } from "@/components/dashboard/ActivityReminderBanner";
 import { useActivityReminder } from "@/hooks/use-activity-reminder";
+import { PlanExpirationModal } from "@/components/dashboard/PlanExpirationModal";
+import { usePlanExpiration } from "@/hooks/use-plan-expiration";
 
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
@@ -109,6 +111,16 @@ export default function Dashboard() {
 
   // Onboarding Tour
   const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
+
+  // Plan Expiration Check
+  const { shouldShowPopup: shouldShowExpirationPopup, tier: expiredTier, reason: expirationReason } = usePlanExpiration();
+  const [showExpirationModal, setShowExpirationModal] = useState(false);
+
+  useEffect(() => {
+    if (shouldShowExpirationPopup && expiredTier) {
+      setShowExpirationModal(true);
+    }
+  }, [shouldShowExpirationPopup, expiredTier]);
 
   const {
     isUploading,
@@ -807,6 +819,16 @@ export default function Dashboard() {
         <EcosystemPrompts
           userId={user.id}
           userScore={resumes && resumes.length > 0 ? resumes[0].score : undefined}
+        />
+      )}
+
+      {/* Plan Expiration Modal */}
+      {showExpirationModal && expiredTier && expirationReason && (
+        <PlanExpirationModal
+          isOpen={showExpirationModal}
+          onClose={() => setShowExpirationModal(false)}
+          tier={expiredTier}
+          reason={expirationReason}
         />
       )}
     </div>
