@@ -49,7 +49,7 @@ export default function ScanPreview({ isActive, progress }: ScanPreviewProps) {
             style={
               !isDisabled
                 ? {
-                    boxShadow: "0 0 10px rgba(139, 92, 246, 0.5)",
+                    boxShadow: "0 0 10px rgba(100, 116, 139, 0.5)",
                   }
                 : {}
             }

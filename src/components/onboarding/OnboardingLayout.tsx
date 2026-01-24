@@ -67,6 +67,14 @@ export default function OnboardingLayout({
       intervals.forEach(({ delay, progress }) => {
         const timeout = setTimeout(() => {
           setScanProgress(progress);
+          // When scan reaches 100%, automatically advance to completion after a brief delay
+          if (progress === 100) {
+            setTimeout(() => {
+              if (onComplete) {
+                onComplete();
+              }
+            }, 1500); // Wait 1.5 seconds at 100% before completing
+          }
         }, delay);
         timeouts.push(timeout);
       });
@@ -75,7 +83,7 @@ export default function OnboardingLayout({
         timeouts.forEach(clearTimeout);
       };
     }
-  }, [currentStep, uploadedFile]);
+  }, [currentStep, uploadedFile, onComplete]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-start py-10 px-4 sm:px-6 lg:px-8">

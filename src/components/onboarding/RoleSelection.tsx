@@ -149,15 +149,15 @@ export default function RoleSelection({
               whileTap={{ scale: 0.98 }}
             >
               {isSelected && (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#22C55E]/10 to-transparent opacity-50" />
               )}
 
               <div className="relative z-10 flex flex-col gap-2">
                 <Icon
                   className={`h-6 w-6 transition-colors ${
                     isSelected
-                      ? "text-primary"
-                      : "text-slate-400 group-hover:text-primary"
+                      ? "text-[#22C55E]"
+                      : "text-slate-400 group-hover:text-[#22C55E]"
                   }`}
                 />
                 <div>
@@ -182,11 +182,11 @@ export default function RoleSelection({
 
               {isSelected && (
                 <motion.div
-                  className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary"
+                  className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#22C55E]"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   style={{
-                    boxShadow: "0 0 8px rgba(100, 116, 139, 1)",
+                    boxShadow: "0 0 8px rgba(34, 197, 94, 0.8)",
                   }}
                 />
               )}
