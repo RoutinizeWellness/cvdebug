@@ -45,6 +45,30 @@ export default function PricingPage() {
       plan: "free",
     },
     {
+      name: "Single Debug Fix",
+      tag: "ARREGLA DE UNA VEZ",
+      tagColor: "bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30",
+      description: "Arregla tu CV de una vez por el precio de un café.",
+      price: formatPrice("single_debug_fix"),
+      period: "1 CV completo",
+      features: [
+        { text: "1 Escaneo Profundo Completo", icon: "[OK]", guaranteed: true },
+        { text: "Vista Robot Terminal Desbloqueada", icon: "[OK]", guaranteed: true },
+        { text: "Detector Missing Keywords Completo", icon: "[FIX]", guaranteed: true },
+        { text: "1 Optimización AI Completa (Rewrite)", icon: "[FIX]", guaranteed: true },
+        { text: "Auto-Inject Keywords Relevantes", icon: "[FIX]", guaranteed: true },
+        { text: "Export CV Optimizado ATS-safe", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
+      ],
+      buttonText: "Arreglar Mi CV →",
+      buttonVariant: "default" as const,
+      borderColor: "border-[#0F172A]/50",
+      hoverBorder: "hover:border-[#F59E0B]/50",
+      plan: "single_debug_fix",
+      highlighted: false,
+      showGuarantee: true,
+    },
+    {
       name: "Pase 24h",
       tag: "HOT FIX / URGENTE",
       tagColor: "bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/30",
@@ -105,14 +129,14 @@ export default function PricingPage() {
         "CVDebug uses ML algorithms to debug your resume just like ATS robots parse it. We find invisible bugs, add technical [ERROR] and [WARN] labels, show Robot X-Ray view, detect Seniority Match issues, and provide a 0-100 compatibility score with specific bug fixes.",
     },
     {
-      question: "What's the difference between 24-Hour Pass and 7-Day Sprint?",
+      question: "What's the difference between Single Debug Fix, 24-Hour Pass, and 7-Day Sprint?",
       answer:
-        `Both give unlimited scans and full access. The 24-Hour Pass (${formatPrice("single_scan")}) is perfect if you have one interview coming up this week and need quick fixes. The 7-Day Sprint (${formatPrice("sprint_7day")}) is RECOMMENDED for job seekers applying to multiple roles - you get priority support, advanced optimization, and a full week to iterate on your CV.`,
+        `Single Debug Fix (${formatPrice("single_debug_fix")}) is perfect for a one-time CV fix - you get 1 deep scan + 1 AI optimization at the price of a coffee. The 24-Hour Pass (${formatPrice("single_scan")}) gives unlimited scans for 24h, perfect if you have one interview coming up this week. The 7-Day Sprint (${formatPrice("sprint_7day")}) is RECOMMENDED for job seekers applying to multiple roles - you get unlimited AI rewrites, priority support, and a full week to iterate on your CV.`,
     },
     {
       question: "Do I need a subscription?",
       answer:
-        'No! Both paid plans are one-time purchases with no recurring charges. Pay once, debug your CV, land interviews. No credit card stored. You can manage everything from your Mission Control dashboard.',
+        'No! All paid plans are one-time purchases with no recurring charges. Pay once, debug your CV, land interviews. No credit card stored. You can manage everything from your Mission Control dashboard.',
     },
     {
       question: "What file formats do you support?",
@@ -183,7 +207,7 @@ export default function PricingPage() {
 
         {/* Pricing Cards Grid */}
         <section className="w-full max-w-7xl mx-auto px-4 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-6 items-start">
             {pricingTiers.map((tier, index) => (
               <motion.div
                 key={tier.name}

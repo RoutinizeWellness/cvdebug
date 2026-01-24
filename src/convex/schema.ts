@@ -7,7 +7,7 @@ const schema = defineSchema(
     tokenIdentifier: v.string(),
     email: v.string(),
     name: v.optional(v.string()),
-    subscriptionTier: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
+    subscriptionTier: v.union(v.literal("free"), v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
     credits: v.optional(v.number()),
     sprintExpiresAt: v.optional(v.number()),
     hasPriorityParsing: v.optional(v.boolean()),

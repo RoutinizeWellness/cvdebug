@@ -9,6 +9,7 @@ export interface CurrencyInfo {
 
 // Base prices in EUR (€) - OFFICIAL PRICING
 const BASE_PRICES = {
+  single_debug_fix: 5.99, // Single Debug Fix - Arregla de una vez
   single_scan: 14.99,
   interview_sprint: 49.99,
   sprint_7day: 24.99, // 7-Day Sprint

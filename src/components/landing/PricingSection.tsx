@@ -7,7 +7,8 @@ import { getRegionalPrice, getCurrentRegion } from "@/lib/locale";
 export function PricingSection() {
   const navigate = useNavigate();
   const [prices, setPrices] = useState({
-    single: "€9.99",
+    singleDebugFix: "€5.99",
+    single: "€14.99",
     premium: "€24.99",
     discount: undefined as number | undefined,
     region: "Europe",
@@ -15,10 +16,12 @@ export function PricingSection() {
 
   useEffect(() => {
     const region = getCurrentRegion();
-    const singlePrice = getRegionalPrice(9.99);
+    const singleDebugFixPrice = getRegionalPrice(5.99);
+    const singlePrice = getRegionalPrice(14.99);
     const premiumPrice = getRegionalPrice(24.99);
 
     setPrices({
+      singleDebugFix: singleDebugFixPrice.formatted,
       single: singlePrice.formatted,
       premium: premiumPrice.formatted,
       discount: premiumPrice.discount,
@@ -52,7 +55,7 @@ export function PricingSection() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
           {/* Free Tier - EL GANCHO */}
           <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-slate-700 hover:shadow-lg hover:shadow-black/20 transition-all relative"
@@ -93,6 +96,58 @@ export function PricingSection() {
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
                 Preview Seniority Match
               </div>
+            </div>
+          </motion.div>
+
+          {/* Single Debug Fix - ARREGLA DE UNA VEZ */}
+          <motion.div
+            className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-[#F59E0B]/30 hover:shadow-lg hover:shadow-[#F59E0B]/10 transition-all relative"
+            whileHover={{ y: -5 }}
+          >
+            <div className="absolute -top-3 right-4">
+              <span className="inline-flex items-center px-3 py-1 rounded text-[10px] font-bold font-mono bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 shadow-sm">
+                ARREGLA DE UNA VEZ
+              </span>
+            </div>
+            <div className="mt-2">
+              <h3 className="text-2xl font-bold mb-2 text-white">Single Debug Fix</h3>
+              <div className="flex items-baseline gap-1">
+                <span className="text-5xl font-black text-white">{prices.singleDebugFix}</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Arregla tu CV por el precio de un café</p>
+            </div>
+            <button
+              onClick={() => handlePlanSelect('single_debug_fix')}
+              className="w-full h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-[#F59E0B]/50 font-bold transition-all text-white"
+            >
+              Arreglar Mi CV →
+            </button>
+            <div className="space-y-3 pt-4 border-t border-slate-800">
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                1 Escaneo Profundo Completo
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                Vista Robot Desbloqueada
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
+                1 Optimización AI (Rewrite)
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
+                Auto-Inject Keywords
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                Export CV Optimizado
+              </div>
+            </div>
+            <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
+              <span className="text-xs font-mono font-bold text-[#22C55E]">
+                ✓ PLANTILLA LEGIBLE GARANTIZADA
+              </span>
             </div>
           </motion.div>
 
