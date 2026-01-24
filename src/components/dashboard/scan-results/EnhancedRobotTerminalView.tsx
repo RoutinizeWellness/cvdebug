@@ -1,9 +1,10 @@
-import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle } from "lucide-react";
+import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { toast } from "sonner";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -32,6 +33,7 @@ export function EnhancedRobotTerminalView({
   // Fetch user and resume data
   const user = useQuery(apiAny.users.currentUser);
   const resume = useQuery(apiAny.resumes.getResumeById, { id: resumeId });
+  const allResumes = useQuery(apiAny.resumes.getResumes);
 
   // Generate precise logs based on actual resume analysis
   const generatePreciseLogs = (): LogEntry[] => {
@@ -88,6 +90,95 @@ export function EnhancedRobotTerminalView({
         type: "info",
         message: `[ANALYZE] 🧠 Role detected: ${resume.category}`
       });
+    }
+
+    // Additional Metrics - Word Count, Sections, etc.
+    try {
+      const analysis = JSON.parse(resume.analysis);
+
+      // Extract word count from OCR text if available
+      const ocrText = resume.ocrText || "";
+      const wordCount = ocrText.split(/\s+/).filter((w: string) => w.length > 0).length;
+
+      if (wordCount > 0) {
+        const wordStatus = wordCount >= 400 && wordCount <= 800 ? "ok" :
+                          wordCount > 800 ? "warn" : "critical";
+        const wordEmoji = wordCount >= 400 && wordCount <= 800 ? "✓" :
+                         wordCount > 800 ? "⚠️" : "❌";
+
+        logs.push({
+          line: lineNum++,
+          type: wordStatus as any,
+          message: `[METRICS] ${wordEmoji} Word count: ${wordCount} words ${wordCount >= 400 && wordCount <= 800 ? '(optimal range)' : wordCount > 800 ? '(too long)' : '(too short)'}`
+        });
+      }
+
+      // Detect sections in resume
+      const sections: string[] = [];
+      const sectionPatterns = [
+        { pattern: /\b(experience|work history|employment|professional experience)\b/i, name: "Experience" },
+        { pattern: /\b(education|academic|degrees)\b/i, name: "Education" },
+        { pattern: /\b(skills|technical skills|competencies|expertise)\b/i, name: "Skills" },
+        { pattern: /\b(projects|portfolio)\b/i, name: "Projects" },
+        { pattern: /\b(certifications|certificates|licenses)\b/i, name: "Certifications" },
+        { pattern: /\b(summary|profile|objective|about)\b/i, name: "Summary" }
+      ];
+
+      sectionPatterns.forEach(({ pattern, name }) => {
+        if (pattern.test(ocrText)) {
+          sections.push(name);
+        }
+      });
+
+      if (sections.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[STRUCTURE] ✓ Sections detected: ${sections.join(", ")} (${sections.length} total)`
+        });
+      }
+
+      // Bullet points count
+      const bulletPoints = (ocrText.match(/[•●○▪▫■□◆◇★☆→]/g) || []).length;
+      if (bulletPoints > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "metric",
+          message: `[METRICS] 📌 Bullet points: ${bulletPoints} found`
+        });
+      }
+
+      // Action verbs count
+      const actionVerbs = ["led", "managed", "developed", "created", "implemented", "designed", "built", "launched", "improved", "increased", "decreased", "optimized", "achieved", "delivered"];
+      const actionVerbMatches = actionVerbs.reduce((count, verb) => {
+        const regex = new RegExp(`\\b${verb}\\b`, "gi");
+        return count + (ocrText.match(regex) || []).length;
+      }, 0);
+
+      if (actionVerbMatches > 0) {
+        const verbStatus = actionVerbMatches >= 10 ? "ok" : "warn";
+        logs.push({
+          line: lineNum++,
+          type: verbStatus as any,
+          message: `[METRICS] ${actionVerbMatches >= 10 ? '✓' : '⚠️'} Action verbs: ${actionVerbMatches} found ${actionVerbMatches >= 10 ? '(strong)' : '(needs more)'}`
+        });
+      }
+
+      // Quantifiable results detection
+      const quantifierPatterns = /\b(\d+[\d,]*%?|\$[\d,]+[kmb]?|[\d,]+\+)\b/gi;
+      const quantifiers = (ocrText.match(quantifierPatterns) || []).length;
+
+      if (quantifiers > 0) {
+        const quantStatus = quantifiers >= 5 ? "ok" : "warn";
+        logs.push({
+          line: lineNum++,
+          type: quantStatus as any,
+          message: `[METRICS] ${quantifiers >= 5 ? '✓' : '⚠️'} Quantifiable results: ${quantifiers} found ${quantifiers >= 5 ? '(good)' : '(add more metrics)'}`
+        });
+      }
+
+    } catch (e) {
+      // Continue if metrics extraction fails
     }
 
     // Score Analysis
@@ -335,6 +426,100 @@ export function EnhancedRobotTerminalView({
       });
     }
 
+    // Before/After Comparison if there are previous scans
+    if (allResumes && allResumes.length > 1) {
+      // Find previous scans (older than current resume)
+      const currentResumeTime = resume._creationTime;
+      const previousScans = allResumes
+        .filter((r: any) => r._creationTime < currentResumeTime && r.score !== undefined)
+        .sort((a: any, b: any) => b._creationTime - a._creationTime);
+
+      if (previousScans.length > 0) {
+        const previousScan = previousScans[0];
+        const scoreDiff = score - (previousScan.score || 0);
+
+        logs.push({
+          line: lineNum++,
+          type: "info",
+          message: "[COMPARE] 📊 Comparing with previous scan..."
+        });
+
+        if (scoreDiff > 0) {
+          logs.push({
+            line: lineNum++,
+            type: "ok",
+            message: `[IMPROVE] ✓ Score improved by ${scoreDiff} points! (${previousScan.score || 0} → ${score})`
+          });
+
+          // Show what improved
+          if (previousScan.scoreBreakdown && scoreBreakdown) {
+            const keywordDiff = (scoreBreakdown.keywords || 0) - (previousScan.scoreBreakdown.keywords || 0);
+            const formatDiff = (scoreBreakdown.format || 0) - (previousScan.scoreBreakdown.format || 0);
+            const completenessDiff = (scoreBreakdown.completeness || 0) - (previousScan.scoreBreakdown.completeness || 0);
+
+            if (keywordDiff > 0) {
+              logs.push({
+                line: lineNum++,
+                type: "ok",
+                message: `         → Keywords: +${keywordDiff} points`
+              });
+            }
+            if (formatDiff > 0) {
+              logs.push({
+                line: lineNum++,
+                type: "ok",
+                message: `         → Format: +${formatDiff} points`
+              });
+            }
+            if (completenessDiff > 0) {
+              logs.push({
+                line: lineNum++,
+                type: "ok",
+                message: `         → Completeness: +${completenessDiff} points`
+              });
+            }
+          }
+        } else if (scoreDiff < 0) {
+          logs.push({
+            line: lineNum++,
+            type: "warn",
+            message: `[REGRESS] ⚠️  Score decreased by ${Math.abs(scoreDiff)} points (${previousScan.score || 0} → ${score})`
+          });
+        } else {
+          logs.push({
+            line: lineNum++,
+            type: "info",
+            message: `[SAME] → Score unchanged at ${score} points`
+          });
+        }
+
+        // Time between scans
+        const timeDiff = currentResumeTime - previousScan._creationTime;
+        const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+        const daysDiff = Math.floor(hoursDiff / 24);
+
+        if (daysDiff > 0) {
+          logs.push({
+            line: lineNum++,
+            type: "metric",
+            message: `[TIME] ⏱️  ${daysDiff} day${daysDiff !== 1 ? 's' : ''} since last scan`
+          });
+        } else if (hoursDiff > 0) {
+          logs.push({
+            line: lineNum++,
+            type: "metric",
+            message: `[TIME] ⏱️  ${hoursDiff} hour${hoursDiff !== 1 ? 's' : ''} since last scan`
+          });
+        } else {
+          logs.push({
+            line: lineNum++,
+            type: "metric",
+            message: `[TIME] ⏱️  Recently scanned`
+          });
+        }
+      }
+    }
+
     logs.push({
       line: lineNum++,
       type: "ok",
@@ -418,6 +603,62 @@ export function EnhancedRobotTerminalView({
         return "◆";
       default:
         return "●";
+    }
+  };
+
+  // Export logs function
+  const exportLogs = () => {
+    try {
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
+      const fileName = `ats-scan-${resume?.title?.replace(/\s+/g, "-") || "resume"}-${timestamp}.txt`;
+
+      // Generate export content
+      let content = "=".repeat(80) + "\n";
+      content += "ATS ROBOT TERMINAL - ANALYSIS EXPORT\n";
+      content += "=".repeat(80) + "\n\n";
+      content += `Resume: ${resume?.title || "Unknown"}\n`;
+      content += `Date: ${new Date().toLocaleString()}\n`;
+      content += `Overall Score: ${resume?.score || 0}/100\n`;
+
+      if (resume?.scoreBreakdown) {
+        content += `\nScore Breakdown:\n`;
+        content += `  - Keywords: ${resume.scoreBreakdown.keywords || 0}/100\n`;
+        content += `  - Format: ${resume.scoreBreakdown.format || 0}/100\n`;
+        content += `  - Completeness: ${resume.scoreBreakdown.completeness || 0}/100\n`;
+      }
+
+      content += "\n" + "=".repeat(80) + "\n";
+      content += "DETAILED ANALYSIS\n";
+      content += "=".repeat(80) + "\n\n";
+
+      // Add all logs
+      displayedLogs.forEach((log) => {
+        const icon = getLogIcon(log.type);
+        content += `[${log.line.toString().padStart(3, "0")}] ${icon} ${log.message}\n`;
+        if (log.detail) {
+          content += `      ${log.detail}\n`;
+        }
+      });
+
+      content += "\n" + "=".repeat(80) + "\n";
+      content += "END OF ANALYSIS\n";
+      content += "=".repeat(80) + "\n";
+
+      // Create and download file
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Analysis exported successfully!");
+    } catch (error) {
+      console.error("Failed to export logs:", error);
+      toast.error("Failed to export analysis");
     }
   };
 
@@ -548,22 +789,37 @@ export function EnhancedRobotTerminalView({
             </AnimatePresence>
           </div>
 
-          {/* Right side - System stats */}
-          <div className="hidden md:flex items-center gap-3 text-[10px] font-mono">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#64748B]/30">
-              <Cpu className="h-3 w-3 text-[#64748B]" />
-              <span className="text-[#64748B]">CPU</span>
-              <motion.span
-                className="text-[#64748B] font-bold min-w-[32px] text-right"
-                animate={{ color: cpuUsage > 70 ? "#F59E0B" : "#64748B" }}
-              >
-                {cpuUsage.toFixed(0)}%
-              </motion.span>
-            </div>
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#1E293B]/30">
-              <Shield className="h-3 w-3 text-[#1E293B]" />
-              <span className="text-[#64748B]">MEM</span>
-              <span className="text-[#1E293B] font-bold min-w-[32px] text-right">{memUsage.toFixed(0)}%</span>
+          {/* Right side - System stats & Export */}
+          <div className="flex items-center gap-2 sm:gap-3 text-[10px] font-mono">
+            {/* Export Button - Always visible */}
+            <motion.button
+              onClick={exportLogs}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#3B82F6]/20 hover:bg-[#3B82F6]/30 rounded border border-[#3B82F6]/50 hover:border-[#3B82F6] transition-all text-[#3B82F6] hover:text-white group"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title="Export analysis as text file"
+            >
+              <Download className="h-3 w-3" />
+              <span className="hidden sm:inline font-semibold">Export</span>
+            </motion.button>
+
+            {/* System Stats - Hidden on small screens */}
+            <div className="hidden md:flex items-center gap-3">
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#64748B]/30">
+                <Cpu className="h-3 w-3 text-[#64748B]" />
+                <span className="text-[#64748B]">CPU</span>
+                <motion.span
+                  className="text-[#64748B] font-bold min-w-[32px] text-right"
+                  animate={{ color: cpuUsage > 70 ? "#F59E0B" : "#64748B" }}
+                >
+                  {cpuUsage.toFixed(0)}%
+                </motion.span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#1E293B]/30">
+                <Shield className="h-3 w-3 text-[#1E293B]" />
+                <span className="text-[#64748B]">MEM</span>
+                <span className="text-[#1E293B] font-bold min-w-[32px] text-right">{memUsage.toFixed(0)}%</span>
+              </div>
             </div>
           </div>
         </div>

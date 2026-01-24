@@ -75,7 +75,7 @@ import { FluffDetector } from "./FluffDetector";
 import { InlineResumeEditor } from "./InlineResumeEditor";
 import { ScoreProgressChart } from "./ScoreProgressChart";
 import { ActionPlan } from "./ActionPlan";
-import { RobotTerminalView } from "./scan-results/RobotTerminalView";
+import { EnhancedRobotTerminalView } from "./scan-results/EnhancedRobotTerminalView";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -1397,9 +1397,9 @@ Software Engineer | StartupXYZ
                         </div>
                       )}
 
-                      {/* ADAPTIVE ROBOT TERMINAL VIEW - Shows personalized seniority-based logs */}
+                      {/* ENHANCED ROBOT TERMINAL VIEW - Shows precise analysis with real data */}
                       <div className="bg-[#000000] p-4">
-                        <RobotTerminalView
+                        <EnhancedRobotTerminalView
                           resumeId={displayResume?._id}
                           autoAnimate={false}
                         />
