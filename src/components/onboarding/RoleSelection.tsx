@@ -119,14 +119,14 @@ export default function RoleSelection({
       transition={{ duration: 0.4 }}
     >
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-          {isCompleted && <CheckCircle className="h-5 w-5 text-primary" />}
+        <h2 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
+          {isCompleted && <CheckCircle className="h-5 w-5 text-[#22C55E]" />}
           {t.onboarding.roleSelection.heading}
         </h2>
         {isCompleted && (
           <button
             onClick={onEdit}
-            className="text-xs text-secondary hover:text-white underline transition-colors"
+            className="text-xs text-[#64748B] hover:text-[#0F172A] underline transition-colors"
           >
             {t.onboarding.roleSelection.editLink}
           </button>
@@ -163,7 +163,7 @@ export default function RoleSelection({
                 <div>
                   <p
                     className={`text-sm font-medium transition-colors ${
-                      isSelected ? "text-white" : "text-slate-200 group-hover:text-white"
+                      isSelected ? "text-[#0F172A]" : "text-[#1E293B] group-hover:text-[#0F172A]"
                     }`}
                   >
                     {role.label}
@@ -171,8 +171,8 @@ export default function RoleSelection({
                   <p
                     className={`text-xs transition-colors ${
                       isSelected
-                        ? "text-slate-300"
-                        : "text-slate-500 group-hover:text-slate-400"
+                        ? "text-[#64748B]"
+                        : "text-[#64748B] group-hover:text-[#475569]"
                     }`}
                   >
                     {role.subtitle}

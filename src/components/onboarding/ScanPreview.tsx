@@ -21,14 +21,14 @@ export default function ScanPreview({ isActive, progress }: ScanPreviewProps) {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-end">
           <div>
-            <h3 className="text-lg font-semibold text-white">Global Scan</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-lg font-semibold text-[#0F172A]">Global Scan</h3>
+            <p className="text-sm text-[#64748B]">
               {isDisabled ? "Analysis pending upload..." : "Scanning your CV..."}
             </p>
           </div>
           <span
             className={`text-2xl font-bold font-mono ${
-              isDisabled ? "text-slate-600" : "text-white"
+              isDisabled ? "text-slate-500" : "text-[#0F172A]"
             }`}
           >
             {progress}%
@@ -36,12 +36,12 @@ export default function ScanPreview({ isActive, progress }: ScanPreviewProps) {
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+        <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden border border-slate-300">
           <motion.div
             className={`h-2.5 rounded-full ${
               isDisabled
-                ? "bg-gradient-to-r from-slate-700 to-slate-600"
-                : "bg-gradient-to-r from-secondary to-primary"
+                ? "bg-gradient-to-r from-slate-300 to-slate-400"
+                : "bg-gradient-to-r from-[#22C55E] to-[#10B981]"
             }`}
             initial={{ width: "5%" }}
             animate={{ width: isDisabled ? "5%" : `${progress}%` }}
@@ -49,7 +49,7 @@ export default function ScanPreview({ isActive, progress }: ScanPreviewProps) {
             style={
               !isDisabled
                 ? {
-                    boxShadow: "0 0 10px rgba(100, 116, 139, 0.5)",
+                    boxShadow: "0 0 10px rgba(34, 197, 94, 0.5)",
                   }
                 : {}
             }
@@ -61,12 +61,12 @@ export default function ScanPreview({ isActive, progress }: ScanPreviewProps) {
           {[16, 24, 12].map((width, index) => (
             <motion.div
               key={index}
-              className="h-2 bg-slate-800 rounded"
+              className="h-2 bg-slate-300 rounded"
               style={{ width: `${width * 4}px` }}
               animate={
                 isDisabled
                   ? { opacity: [0.5, 1, 0.5] }
-                  : { opacity: 1, backgroundColor: "rgb(100, 116, 139)" }
+                  : { opacity: 1, backgroundColor: "rgb(34, 197, 94)" }
               }
               transition={
                 isDisabled
