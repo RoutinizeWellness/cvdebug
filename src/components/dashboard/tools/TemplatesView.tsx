@@ -11,7 +11,7 @@ export function TemplatesView() {
       category: "Technology",
       description: "Clean, single-column layout optimized for engineering roles. Highlights skills and GitHub projects.",
       tags: ["ATS-Verified", "Compact", "Modern"],
-      color: "bg-[#3B82F6]/10 text-[#3B82F6]"
+      color: "bg-[#64748B]/10 text-[#64748B]"
     },
     {
       id: "exec-classic",

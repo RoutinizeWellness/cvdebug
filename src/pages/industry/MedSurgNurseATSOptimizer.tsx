@@ -120,7 +120,7 @@ export default function MedSurgNurseATSOptimizer() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
           background: #F8FAFC;
@@ -151,7 +151,7 @@ export default function MedSurgNurseATSOptimizer() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] mb-6 leading-tight">
                   Get Your Med-Surg Resume
-                  <span className="block bg-gradient-to-r from-[#22C55E] to-[#3B82F6] bg-clip-text text-transparent">
+                  <span className="block bg-gradient-to-r from-[#22C55E] to-[#64748B] bg-clip-text text-transparent">
                     Past Hospital ATS Systems
                   </span>
                 </h1>
@@ -163,7 +163,7 @@ export default function MedSurgNurseATSOptimizer() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-[#22C55E] to-[#3B82F6] hover:from-[#22C55E] hover:to-cyan-700 text-[#FFFFFF] shadow-lg shadow-emerald-500/25 group"
+                    className="bg-gradient-to-r from-[#22C55E] to-[#64748B] hover:from-[#22C55E] hover:to-cyan-700 text-[#FFFFFF] shadow-lg shadow-emerald-500/25 group"
                     onClick={() => navigate("/auth")}
                   >
                     Scan My Med-Surg Resume Free
@@ -210,7 +210,7 @@ export default function MedSurgNurseATSOptimizer() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 + idx * 0.05 }}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#22C55E]/20 to-[#3B82F6]/20 border border-[#22C55E]/30 text-sm text-[#22C55E] font-medium"
+                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#22C55E]/20 to-[#64748B]/20 border border-[#22C55E]/30 text-sm text-[#22C55E] font-medium"
                       >
                         {keyword}
                       </motion.span>
@@ -218,15 +218,15 @@ export default function MedSurgNurseATSOptimizer() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#3B82F6]/50">
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#64748B]/50">
                       <span className="text-[#475569] text-sm">Surgical Keywords:</span>
                       <span className="text-[#22C55E] font-bold">12/15 Found</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#3B82F6]/50">
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#64748B]/50">
                       <span className="text-[#475569] text-sm">Patient Ratios Quantified:</span>
                       <span className="text-[#22C55E] font-bold">✓ Yes</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#3B82F6]/50">
+                    <div className="flex items-center justify-between p-3 rounded-lg hover:border-[#64748B]/50">
                       <span className="text-[#475569] text-sm">ATS Compatibility:</span>
                       <span className="text-2xl font-bold text-[#22C55E]">89%</span>
                     </div>
@@ -237,7 +237,7 @@ export default function MedSurgNurseATSOptimizer() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
-                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#22C55E] to-[#3B82F6] rounded-xl p-4 shadow-xl"
+                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#22C55E] to-[#64748B] rounded-xl p-4 shadow-xl"
                 >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-[#0F172A]" />
@@ -322,7 +322,7 @@ export default function MedSurgNurseATSOptimizer() {
                 </div>
                 <div className="space-y-3">
                   {beforeAfter.before.issues.map((issue, idx) => (
-                    <div key={idx} className="flex gap-3 p-3 rounded-lg hover:border-[#3B82F6]/50">
+                    <div key={idx} className="flex gap-3 p-3 rounded-lg hover:border-[#64748B]/50">
                       <div className="text-[#EF4444] mt-0.5">✗</div>
                       <p className="text-[#475569] text-sm">{issue}</p>
                     </div>
@@ -347,7 +347,7 @@ export default function MedSurgNurseATSOptimizer() {
                 </div>
                 <div className="space-y-3">
                   {beforeAfter.after.fixes.map((fix, idx) => (
-                    <div key={idx} className="flex gap-3 p-3 rounded-lg hover:border-[#3B82F6]/50">
+                    <div key={idx} className="flex gap-3 p-3 rounded-lg hover:border-[#64748B]/50">
                       <div className="text-[#22C55E] mt-0.5">✓</div>
                       <p className="text-[#475569] text-sm">{fix}</p>
                     </div>
@@ -385,7 +385,7 @@ export default function MedSurgNurseATSOptimizer() {
                   transition={{ delay: idx * 0.1 }}
                   className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-xl p-8 border border-[#E2E8F0] hover:border-[#22C55E]/50 transition-all group"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#22C55E]/20 to-[#3B82F6]/20 border border-[#22C55E]/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#22C55E]/20 to-[#64748B]/20 border border-[#22C55E]/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <feature.icon className="h-7 w-7 text-[#22C55E]" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{feature.title}</h3>
@@ -464,7 +464,7 @@ export default function MedSurgNurseATSOptimizer() {
 
         {/* CTA Section */}
         <section className="py-16 md:py-24 relative overflow-hidden bg-[#F8FAFC]">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#22C55E]/20 to-[#3B82F6]/20 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#22C55E]/20 to-[#64748B]/20 blur-3xl" />
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
@@ -480,7 +480,7 @@ export default function MedSurgNurseATSOptimizer() {
               </p>
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-[#22C55E] to-[#3B82F6] hover:from-[#22C55E] hover:to-cyan-700 text-[#FFFFFF] text-lg px-8 py-6 shadow-2xl shadow-emerald-500/25"
+                className="bg-gradient-to-r from-[#22C55E] to-[#64748B] hover:from-[#22C55E] hover:to-cyan-700 text-[#FFFFFF] text-lg px-8 py-6 shadow-2xl shadow-emerald-500/25"
                 onClick={() => navigate("/auth")}
               >
                 Scan My Med-Surg Resume Now - Free

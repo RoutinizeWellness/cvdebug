@@ -69,7 +69,7 @@ export function ScoreEvolutionChart() {
             latestScore >= 90
               ? "bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-2 border-green-500/30"
               : latestScore >= 70
-              ? "bg-gradient-to-br from-[#334155]/20 to-cyan-500/20 border-2 border-[#3B82F6]/30"
+              ? "bg-gradient-to-br from-[#334155]/20 to-cyan-500/20 border-2 border-[#64748B]/30"
               : "bg-gradient-to-br from-orange-500/20 to-red-500/20 border-2 border-orange-500/30"
           }`}
         >
@@ -214,7 +214,7 @@ export function ScoreEvolutionChart() {
       <div className={`mt-6 p-4 rounded-lg border-2 ${
         isImproving
           ? "bg-[#22C55E]/10 border-green-500/30"
-          : "bg-[#3B82F6]/10 border-[#3B82F6]/30"
+          : "bg-[#64748B]/10 border-[#64748B]/30"
       }`}>
         <div className="flex items-center gap-3">
           {isImproving ? (

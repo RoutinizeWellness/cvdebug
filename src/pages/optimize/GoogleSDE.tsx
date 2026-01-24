@@ -173,7 +173,7 @@ export default function GoogleSDEOptimize() {
                     <span className={`font-bold shrink-0 ${
                       log.type === "CRIT" ? "text-rose-500" :
                       log.type === "WARN" ? "text-[#F59E0B]" :
-                      "text-[#3B82F6]"
+                      "text-[#64748B]"
                     }`}>
                       [{log.type}]
                     </span>

@@ -27,7 +27,7 @@ interface ProjectBoardProps {
 
 const COLUMNS = [
   { id: "draft", title: "Draft", color: "bg-zinc-500" },
-  { id: "applied", title: "Applied", color: "bg-[#3B82F6]" },
+  { id: "applied", title: "Applied", color: "bg-[#64748B]" },
   { id: "interviewing", title: "Interviewing", color: "bg-yellow-500" },
   { id: "accepted", title: "Offer", color: "bg-[#22C55E]" },
   { id: "rejected", title: "Rejected", color: "bg-[#EF4444]" },

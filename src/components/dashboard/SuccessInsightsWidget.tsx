@@ -16,11 +16,11 @@ export function SuccessInsightsWidget() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#FFFFFF] rounded-xl p-6 border border-[#E2E8F0] border-l-4 border-l-[#3B82F6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+        className="bg-[#FFFFFF] rounded-xl p-6 border border-[#E2E8F0] border-l-4 border-l-[#64748B] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
       >
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/10 flex items-center justify-center border border-[#3B82F6]/20">
-            <Lock className="h-5 w-5 text-[#3B82F6]" />
+          <div className="w-10 h-10 rounded-xl bg-[#64748B]/10 flex items-center justify-center border border-[#64748B]/20">
+            <Lock className="h-5 w-5 text-[#64748B]" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#0F172A]">{t.dashboard.successInsights}</h3>
@@ -53,7 +53,7 @@ export function SuccessInsightsWidget() {
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#3B82F6] flex items-center justify-center shadow-[0_4px_12px_-2px_rgba(34,197,94,0.3)]">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#22C55E] to-[#64748B] flex items-center justify-center shadow-[0_4px_12px_-2px_rgba(34,197,94,0.3)]">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -69,7 +69,7 @@ export function SuccessInsightsWidget() {
 
         {/* Top Insight */}
         {analytics.topInsight && (
-          <div className="bg-gradient-to-r from-[#22C55E]/10 to-[#3B82F6]/10 rounded-lg p-4 mb-4 border border-[#22C55E]/30">
+          <div className="bg-gradient-to-r from-[#22C55E]/10 to-[#64748B]/10 rounded-lg p-4 mb-4 border border-[#22C55E]/30">
             <div className="flex items-start gap-3">
               <Target className="h-5 w-5 text-[#22C55E] mt-0.5 shrink-0" />
               <div className="flex-1">
@@ -95,7 +95,7 @@ export function SuccessInsightsWidget() {
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 text-center border border-[#E2E8F0]">
             <p className="text-xs text-[#64748B] mb-1">{t.dashboard.interviewsCount}</p>
-            <p className="text-2xl font-bold text-[#3B82F6]">{analytics.interviewCount}</p>
+            <p className="text-2xl font-bold text-[#64748B]">{analytics.interviewCount}</p>
           </div>
           <div className="bg-[#F8FAFC] rounded-lg p-3 text-center border border-[#E2E8F0]">
             <p className="text-xs text-[#64748B] mb-1">{t.dashboard.successRateLabel}</p>
@@ -122,7 +122,7 @@ export function SuccessInsightsWidget() {
                     </span>
                     <div className="w-16 h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#22C55E] to-[#3B82F6] rounded-full"
+                        className="h-full bg-gradient-to-r from-[#22C55E] to-[#64748B] rounded-full"
                         style={{ width: `${kw.successRate}%` }}
                       />
                     </div>

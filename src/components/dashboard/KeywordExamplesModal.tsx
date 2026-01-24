@@ -27,7 +27,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
     const templates = {
       technical: {
         icon: "code",
-        color: "#3B82F6",
+        color: "#64748B",
         template: `Architected and deployed ${keyword}-based solutions, reducing system latency by 45% and improving reliability to 99.9% uptime`
       },
       scalability: {
@@ -175,7 +175,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
                 <span className="px-2 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E] font-medium border border-[#22C55E]/20">
                   Quantified
                 </span>
-                <span className="px-2 py-0.5 rounded bg-[#3B82F6]/10 text-[#3B82F6] font-medium border border-[#3B82F6]/20">
+                <span className="px-2 py-0.5 rounded bg-[#64748B]/10 text-[#64748B] font-medium border border-[#64748B]/20">
                   Action Verb
                 </span>
               </div>

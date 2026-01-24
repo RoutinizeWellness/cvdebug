@@ -75,7 +75,7 @@ export function ApplicationMicroTracker() {
           {trackedApplications.map((app: any, index: number) => {
             const statusColors = {
               applied: 'bg-slate-100 text-[#64748B] border-slate-200',
-              interviewing: 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/20',
+              interviewing: 'bg-[#64748B]/10 text-[#64748B] border-[#64748B]/20',
               accepted: 'bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20',
               rejected: 'bg-rose-100 text-rose-600 border-rose-200'
             };
@@ -94,7 +94,7 @@ export function ApplicationMicroTracker() {
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="flex-shrink-0">
                     <div className={`w-2 h-2 rounded-full ${
-                      status === 'interviewing' ? 'bg-[#3B82F6] animate-pulse' :
+                      status === 'interviewing' ? 'bg-[#64748B] animate-pulse' :
                       status === 'accepted' ? 'bg-[#22C55E]' :
                       status === 'rejected' ? 'bg-rose-500' :
                       'bg-slate-400'
@@ -124,7 +124,7 @@ export function ApplicationMicroTracker() {
                       href={app.jobUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#64748B] hover:text-[#3B82F6] transition-colors p-1"
+                      className="text-[#64748B] hover:text-[#64748B] transition-colors p-1"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <ExternalLink className="h-3 sm:h-3.5 w-3 sm:w-3.5" />
@@ -150,7 +150,7 @@ export function ApplicationMicroTracker() {
               <span className="font-bold text-[#0F172A]">{successRate}%</span>
             </div>
           </div>
-          <button className="text-[#3B82F6] hover:text-[#8B5CF6] font-semibold transition-colors whitespace-nowrap">
+          <button className="text-[#64748B] hover:text-[#8B5CF6] font-semibold transition-colors whitespace-nowrap">
             View All →
           </button>
         </div>

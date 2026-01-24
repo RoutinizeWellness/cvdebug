@@ -184,7 +184,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
                   <textarea
                     value={quantifiedBullet}
                     onChange={(e) => setQuantifiedBullet(e.target.value)}
-                    className="w-full text-[#0F172A] text-sm leading-relaxed bg-white border border-[#E2E8F0] rounded-lg p-3 focus:outline-none focus:border-[#3B82F6] focus:ring-2 focus:ring-[#3B82F6]/20 font-mono"
+                    className="w-full text-[#0F172A] text-sm leading-relaxed bg-white border border-[#E2E8F0] rounded-lg p-3 focus:outline-none focus:border-[#64748B] focus:ring-2 focus:ring-[#64748B]/20 font-mono"
                     rows={4}
                   />
                 ) : (
@@ -203,7 +203,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
                 <span className="px-2 py-0.5 rounded-full bg-[#22C55E]/10 text-[#22C55E] text-xs font-medium border border-[#22C55E]/20">
                   Quantified
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] text-xs font-medium border border-[#3B82F6]/20">
+                <span className="px-2 py-0.5 rounded-full bg-[#64748B]/10 text-[#64748B] text-xs font-medium border border-[#64748B]/20">
                   Specific
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-medium border border-[#8B5CF6]/20">

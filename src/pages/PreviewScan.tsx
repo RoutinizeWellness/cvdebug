@@ -354,7 +354,7 @@ export default function PreviewScan() {
         }}
       />
       <div className="absolute top-20 left-1/4 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-[#3B82F6]/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-[#64748B]/5 rounded-full blur-3xl" />
 
       {/* Scan line effect */}
       {isProcessing && !showResults && (
@@ -398,7 +398,7 @@ export default function PreviewScan() {
                 className="mb-12"
               >
                 <h1 className="text-4xl md:text-5xl font-black text-[#1E293B] mb-4">
-                  {t.previewScan.title.split(' ').slice(0, 1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">{t.previewScan.title.split(' ').slice(1).join(' ')}</span>
+                  {t.previewScan.title.split(' ').slice(0, 1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">{t.previewScan.title.split(' ').slice(1).join(' ')}</span>
                 </h1>
                 <p className="text-xl text-[#475569] max-w-2xl mx-auto">
                   {t.previewScan.subtitle}
@@ -422,7 +422,7 @@ export default function PreviewScan() {
                   onClick={() => fileInputRef.current?.click()}
                   className="bg-white p-12 rounded-2xl border-2 border-dashed border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 cursor-pointer transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-[#3B82F6]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-[#64748B]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Upload className="h-10 w-10 text-[#8B5CF6]" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#1E293B] mb-2">{t.previewScan.dropHere}</h3>
@@ -449,7 +449,7 @@ export default function PreviewScan() {
                 ) : (
                   <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#3B82F6]/20 to-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#64748B]/20 to-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0">
                         <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
                       </div>
                       <div className="flex-1">
@@ -532,7 +532,7 @@ export default function PreviewScan() {
                         log.type === "success" ? "text-[#22C55E]" :
                         log.type === "error" ? "text-[#EF4444]" :
                         log.type === "warning" ? "text-[#F59E0B]" :
-                        "text-[#3B82F6]"
+                        "text-[#64748B]"
                       }`}
                     >
                       {log.message}
@@ -571,10 +571,10 @@ export default function PreviewScan() {
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-[#64748B]">File Size</span>
-                        <span className="text-xs font-semibold text-[#3B82F6]">{diagnostics.fileSize}</span>
+                        <span className="text-xs font-semibold text-[#64748B]">{diagnostics.fileSize}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[#3B82F6] text-sm">description</span>
+                        <span className="material-symbols-outlined text-[#64748B] text-sm">description</span>
                         <span className="text-xs text-[#475569]">Optimal</span>
                       </div>
                     </div>
@@ -587,7 +587,7 @@ export default function PreviewScan() {
                       </div>
                       <div className="w-full bg-[#E2E8F0] rounded-full h-2 overflow-hidden">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]"
+                          className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#64748B]"
                           initial={{ width: 0 }}
                           animate={{ width: `${diagnostics.textRatio}%` }}
                           transition={{ duration: 0.8 }}
@@ -606,7 +606,7 @@ export default function PreviewScan() {
 
                   <div className="space-y-3">
                     <div className="text-center">
-                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mb-2">
+                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B] mb-2">
                         {progress}%
                       </p>
                       <p className="text-xs text-[#64748B]">{currentStep || "Processing..."}</p>
@@ -614,7 +614,7 @@ export default function PreviewScan() {
 
                     <div className="w-full bg-[#E2E8F0] rounded-full h-3 overflow-hidden relative">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] relative"
+                        className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#64748B] relative"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.3 }}
@@ -647,14 +647,14 @@ export default function PreviewScan() {
 
               {/* Score Card - Partially Revealed */}
               <div className="bg-white p-8 rounded-2xl text-center relative overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/10 to-[#3B82F6]/10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/10 to-[#64748B]/10" />
                 <div className="relative z-10">
                   <h2 className="text-2xl font-bold text-[#1E293B] mb-4">Your Resume Score</h2>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", duration: 0.8 }}
-                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] mb-4"
+                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B] mb-4"
                   >
                     {previewScore}
                   </motion.div>

@@ -82,7 +82,7 @@ export function SidebarApplicationTracker() {
           {recentApps.map((app: any) => {
             const statusColors = {
               applied: 'bg-slate-100 text-slate-600',
-              interviewing: 'bg-[#3B82F6]/10 text-[#3B82F6]',
+              interviewing: 'bg-[#64748B]/10 text-[#64748B]',
               accepted: 'bg-[#22C55E]/10 text-[#22C55E]',
               rejected: 'bg-rose-100 text-rose-600'
             };

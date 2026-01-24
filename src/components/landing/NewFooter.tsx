@@ -29,17 +29,17 @@ export function NewFooter() {
             <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.product}</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/pricing" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/pricing" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.pricing}
                 </Link>
               </li>
               <li>
-                <Link to="/preview" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/preview" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.freeScanner}
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/blog" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.blog}
                 </Link>
               </li>
@@ -51,12 +51,12 @@ export function NewFooter() {
             <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.resources}</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/about" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/about" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.aboutUs}
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/contact" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.contactUs}
                 </Link>
               </li>
@@ -68,12 +68,12 @@ export function NewFooter() {
             <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.legal}</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/privacy" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/privacy" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.privacy}
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-[#475569] hover:text-[#3B82F6] text-sm transition-colors">
+                <Link to="/terms" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.terms}
                 </Link>
               </li>
@@ -92,7 +92,7 @@ export function NewFooter() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#475569] hover:text-[#3B82F6] transition-colors"
+              className="text-[#475569] hover:text-[#64748B] transition-colors"
             >
               <span className="sr-only">Twitter</span>
               <Twitter className="h-5 w-5" />
@@ -101,7 +101,7 @@ export function NewFooter() {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#475569] hover:text-[#3B82F6] transition-colors"
+              className="text-[#475569] hover:text-[#64748B] transition-colors"
             >
               <span className="sr-only">GitHub</span>
               <Github className="h-5 w-5" />

@@ -254,7 +254,7 @@ export function ATSAnalysisReport({
                   {/* Gradient Definition for Cyber Effect */}
                   <defs>
                     <linearGradient id="cyber-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" style={{ stopColor: "#2563EB", stopOpacity: 1 }} />
+                      <stop offset="0%" style={{ stopColor: "#475569", stopOpacity: 1 }} />
                       <stop offset="100%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
                     </linearGradient>
                     <filter id="glow">
@@ -526,7 +526,7 @@ export function ATSAnalysisReport({
 
                   <div className="relative">
                     <div className="flex justify-between items-start mb-3 md:mb-4">
-                      <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-[#3B82F6]/20 text-[#94A3B8]">
+                      <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-[#64748B]/20 text-[#94A3B8]">
                         <span className="material-symbols-outlined text-xl md:text-2xl">speed</span>
                       </div>
                       <span className="px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-bold text-[#0F172A] bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center gap-1">

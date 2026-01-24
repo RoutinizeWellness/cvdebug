@@ -164,8 +164,8 @@ export function InterviewPrepMode({
                     <Card className="bg-[#F8FAFC] border-[#E2E8F0]">
                       <CardContent className="p-4 space-y-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#3B82F6]/10 flex items-center justify-center flex-shrink-0">
-                            <HelpCircle className="h-4 w-4 text-[#3B82F6]" />
+                          <div className="w-8 h-8 rounded-full bg-[#64748B]/10 flex items-center justify-center flex-shrink-0">
+                            <HelpCircle className="h-4 w-4 text-[#64748B]" />
                           </div>
                           <div className="flex-1">
                             <p className="font-semibold text-[#0F172A] text-sm leading-relaxed">

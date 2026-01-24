@@ -74,7 +74,7 @@ function DraggableCard({ card, column }: { card: KanbanCard; column: KanbanColum
           <div className="flex justify-between items-start gap-2">
             <span className="text-[#0F172A] font-semibold text-sm line-clamp-1">{card.title}</span>
             {card.matchScore !== undefined && (
-              <div className="bg-[#F8FAFC] text-[#3B82F6] rounded px-2 py-0.5 text-[10px] font-bold border border-[#E2E8F0]">
+              <div className="bg-[#F8FAFC] text-[#64748B] rounded px-2 py-0.5 text-[10px] font-bold border border-[#E2E8F0]">
                 {card.matchScore}%
               </div>
             )}
@@ -168,7 +168,7 @@ export function KanbanBoard() {
     if (!jobHistory) {
       return [
         { title: "Applied", count: 0, color: "#14b8a6", cards: [], statusKey: "applied" },
-        { title: "Interviewing", count: 0, color: "#3B82F6", cards: [], statusKey: "interviewing" },
+        { title: "Interviewing", count: 0, color: "#64748B", cards: [], statusKey: "interviewing" },
         { title: "Accepted", count: 0, color: "#8B5CF6", cards: [], statusKey: "accepted" },
       ];
     }
@@ -210,7 +210,7 @@ export function KanbanBoard() {
       {
         title: "Interviewing",
         count: interviewingCards.length,
-        color: "#3B82F6",
+        color: "#64748B",
         cards: interviewingCards.slice(0, 5),
         statusKey: "interviewing"
       },
@@ -268,10 +268,10 @@ export function KanbanBoard() {
       <section className="lg:col-span-2 flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h3 className="text-[#0F172A] text-lg font-bold flex items-center gap-2">
-            <Columns3 className="h-5 w-5 text-[#3B82F6]" />
+            <Columns3 className="h-5 w-5 text-[#64748B]" />
             Application Kanban
           </h3>
-          <button className="text-xs text-[#3B82F6] hover:text-[#2563EB] font-mono transition-colors">
+          <button className="text-xs text-[#64748B] hover:text-[#475569] font-mono transition-colors">
             VIEW ALL &gt;
           </button>
         </div>

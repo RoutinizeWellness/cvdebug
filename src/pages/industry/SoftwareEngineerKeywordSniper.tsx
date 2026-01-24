@@ -99,7 +99,7 @@ export default function SoftwareEngineerKeywordSniper() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
           background: #F8FAFC;
@@ -169,7 +169,7 @@ export default function SoftwareEngineerKeywordSniper() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#64748B]"
               >
                 Scan My Resume (Free)
               </Button>
@@ -253,7 +253,7 @@ export default function SoftwareEngineerKeywordSniper() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:hover:border-[#3B82F6]/50 transition-colors duration-300"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:hover:border-[#64748B]/50 transition-colors duration-300"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#22C55E]/10 blur-2xl transition-all group-hover:scale-110"></div>
                   <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#22C55E]/10 text-[#22C55E] ring-1 ring-inset ring-green-500/20">

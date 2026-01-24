@@ -188,7 +188,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
   }, [template, category]);
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
           background: #F8FAFC;
@@ -201,7 +201,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         {/* Hero Section */}
         <section className="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#3B82F6]/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#64748B]/10 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl" />
           </div>
 
@@ -212,9 +212,9 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3B82F6]/10 border border-[#3B82F6]/20 mb-6">
-                  <Heart className="h-4 w-4 text-[#3B82F6]" />
-                  <span className="text-sm font-medium text-[#3B82F6]">{template.badge}</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#64748B]/10 border border-[#64748B]/20 mb-6">
+                  <Heart className="h-4 w-4 text-[#64748B]" />
+                  <span className="text-sm font-medium text-[#64748B]">{template.badge}</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] mb-6 leading-tight">
@@ -265,7 +265,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               >
                 <div className="rounded-2xl p-8 border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <div className="flex items-center gap-2 mb-6">
-                    <div className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
+                    <div className="w-2 h-2 rounded-full bg-[#64748B] animate-pulse" />
                     <span className="text-sm text-[#64748B] font-mono">ATS Scanning...</span>
                   </div>
 
@@ -287,7 +287,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
 
                   <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0]">
                     <span className="text-[#64748B] text-sm">ATS Match Score:</span>
-                    <span className="text-2xl font-bold text-[#3B82F6]">89%</span>
+                    <span className="text-2xl font-bold text-[#64748B]">89%</span>
                   </div>
                 </div>
 

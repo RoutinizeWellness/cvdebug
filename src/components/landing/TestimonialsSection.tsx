@@ -120,7 +120,7 @@ export function TestimonialsSection() {
               {/* Highlight badge */}
               {testimonial.highlight && (
                 <div className="mb-3">
-                  <span className="inline-block px-2 py-1 bg-[#3B82F6]/20 text-[#3B82F6] text-xs font-bold rounded">
+                  <span className="inline-block px-2 py-1 bg-[#64748B]/20 text-[#64748B] text-xs font-bold rounded">
                     {testimonial.highlight}
                   </span>
                 </div>

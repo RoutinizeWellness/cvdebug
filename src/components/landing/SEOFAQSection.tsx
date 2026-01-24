@@ -59,7 +59,7 @@ export function SEOFAQSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden hover:border-[#3B82F6]/50 transition-all duration-300"
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden hover:border-[#64748B]/50 transition-all duration-300"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
@@ -69,7 +69,7 @@ export function SEOFAQSection() {
                     setOpenIndex(openIndex === index ? null : index);
                   }
                 }}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#F8FAFC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:ring-offset-2"
+                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#F8FAFC] transition-colors focus:outline-none focus:ring-2 focus:ring-[#64748B] focus:ring-offset-2"
                 aria-expanded={openIndex === index}
                 aria-controls={`faq-answer-${index}`}
               >
@@ -81,7 +81,7 @@ export function SEOFAQSection() {
                   transition={{ duration: 0.3 }}
                   className="shrink-0"
                 >
-                  <ChevronDown className="h-5 w-5 text-[#3B82F6]" />
+                  <ChevronDown className="h-5 w-5 text-[#64748B]" />
                 </motion.div>
               </button>
 
@@ -116,7 +116,7 @@ export function SEOFAQSection() {
           <p className="text-[#475569] mb-4">
             {t.landing.cta.secondary}
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#3B82F6]/50 transition-all duration-300 hover:scale-105">
+          <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#64748B] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#64748B]/50 transition-all duration-300 hover:scale-105">
             {t.landing.cta.button}
           </button>
         </motion.div>

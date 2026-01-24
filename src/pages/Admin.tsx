@@ -453,7 +453,7 @@ export default function AdminPage() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden bg-[#0F172A] relative">
         {/* Background Gradient Blurs */}
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#3B82F6]/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#64748B]/10 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
         {/* Top Header */}
@@ -561,7 +561,7 @@ export default function AdminPage() {
                     className="glass-panel p-5 rounded-xl border border-slate-700/50 hover:border-slate-600 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Users className="h-12 w-12 text-[#3B82F6]" />
+                      <Users className="h-12 w-12 text-[#64748B]" />
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Total Users</p>
                     <div className="flex items-baseline gap-2">
@@ -572,7 +572,7 @@ export default function AdminPage() {
                       </span>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
-                      <div className="bg-[#3B82F6] h-full rounded-full" style={{ width: '65%' }}></div>
+                      <div className="bg-[#64748B] h-full rounded-full" style={{ width: '65%' }}></div>
                     </div>
                   </motion.div>
 
@@ -623,7 +623,7 @@ export default function AdminPage() {
                     </div>
                     <p className="text-slate-400 text-sm font-medium mb-1">Bulk Pack</p>
                     <div className="flex items-baseline gap-2">
-                      <h3 className="text-2xl font-display font-bold text-white text-[#3B82F6]">{stats?.bulkPack || 0}</h3>
+                      <h3 className="text-2xl font-display font-bold text-white text-[#64748B]">{stats?.bulkPack || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-700/30 h-1 mt-4 rounded-full overflow-hidden">
                       <div className="bg-[#22C55E] h-full rounded-full" style={{ width: '88%' }}></div>

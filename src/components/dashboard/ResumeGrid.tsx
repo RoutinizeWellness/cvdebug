@@ -100,7 +100,7 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
     if (mimeType === 'application/pdf') {
       return <FileText className="h-5 w-5 text-[#EF4444]" />;
     }
-    return <FileText className="h-5 w-5 text-[#3B82F6]" />;
+    return <FileText className="h-5 w-5 text-[#64748B]" />;
   };
 
   // File size will be displayed if available from storage metadata

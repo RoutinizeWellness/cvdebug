@@ -255,7 +255,7 @@ export function SeniorityMatchAnalysis({
                 />
                 <defs>
                   <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="0%" stopColor="#64748B" />
                     <stop offset="100%" stopColor="#22C55E" />
                   </linearGradient>
                 </defs>

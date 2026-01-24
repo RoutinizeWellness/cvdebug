@@ -89,7 +89,7 @@ export function ApplicationCommander({ onGenerateCoverLetter }: ApplicationComma
                   >
                     <TableCell>
                       <div className="flex flex-col">
-                        <span className="font-bold text-[#0F172A] group-hover:text-[#3B82F6] transition-colors">
+                        <span className="font-bold text-[#0F172A] group-hover:text-[#64748B] transition-colors">
                           {job.jobTitle || "Untitled Role"}
                         </span>
                         <span className="text-xs text-[#64748B] flex items-center gap-1">

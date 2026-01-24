@@ -24,7 +24,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
     id: "upload",
     title: "Step 1: Upload Your CV",
     description: "Drop your current resume here. We'll scan it like a real ATS robot and show you the brutal truth in 10 seconds.",
-    icon: <Upload className="h-10 w-10 text-[#3B82F6]" />,
+    icon: <Upload className="h-10 w-10 text-[#64748B]" />,
     target: "[data-onboarding='upload-button']",
     position: "bottom",
   },

@@ -109,7 +109,7 @@ export function RobotTerminalView({
       case "fail":
         return "text-[#EF4444] drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]";
       case "command":
-        return "text-[#3B82F6]";
+        return "text-[#64748B]";
       default:
         return "text-[#94a3b8]";
     }
@@ -130,13 +130,13 @@ export function RobotTerminalView({
   };
 
   return (
-    <div className="relative bg-gradient-to-br from-[#050810] via-[#0c1220] to-[#050810] border-2 border-[#3B82F6]/40 rounded-2xl overflow-hidden shadow-[0_0_60px_-15px_rgba(59,130,246,0.7),0_0_30px_-10px_rgba(139,92,246,0.5)] flex flex-col h-full min-h-[500px] sm:min-h-[400px]">
+    <div className="relative bg-gradient-to-br from-[#050810] via-[#0c1220] to-[#050810] border-2 border-[#64748B]/40 rounded-2xl overflow-hidden shadow-[0_0_60px_-15px_rgba(59,130,246,0.7),0_0_30px_-10px_rgba(139,92,246,0.5)] flex flex-col h-full min-h-[500px] sm:min-h-[400px]">
       {/* Animated grid background */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute inset-0" style={{
           backgroundImage: `
-            linear-gradient(to right, #3B82F6 1px, transparent 1px),
-            linear-gradient(to bottom, #3B82F6 1px, transparent 1px)
+            linear-gradient(to right, #64748B 1px, transparent 1px),
+            linear-gradient(to bottom, #64748B 1px, transparent 1px)
           `,
           backgroundSize: '20px 20px'
         }} />
@@ -147,7 +147,7 @@ export function RobotTerminalView({
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-[#3B82F6] rounded-full"
+            className="absolute w-1 h-1 bg-[#64748B] rounded-full"
             initial={{
               x: Math.random() * 100 + "%",
               y: "100%",
@@ -169,7 +169,7 @@ export function RobotTerminalView({
 
       {/* Animated corner glow */}
       <motion.div
-        className="absolute top-0 left-0 w-64 h-64 bg-[#3B82F6]/20 rounded-full blur-3xl"
+        className="absolute top-0 left-0 w-64 h-64 bg-[#64748B]/20 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -195,7 +195,7 @@ export function RobotTerminalView({
       />
 
       {/* Terminal Header */}
-      <div className="relative z-10 bg-gradient-to-r from-[#1e293b]/95 via-[#1e3a52]/95 to-[#1e293b]/95 backdrop-blur-xl px-4 py-3 border-b-2 border-[#3B82F6]/40">
+      <div className="relative z-10 bg-gradient-to-r from-[#1e293b]/95 via-[#1e3a52]/95 to-[#1e293b]/95 backdrop-blur-xl px-4 py-3 border-b-2 border-[#64748B]/40">
         <div className="flex items-center justify-between gap-3">
           {/* Left side */}
           <div className="flex items-center gap-2 sm:gap-3">
@@ -227,7 +227,7 @@ export function RobotTerminalView({
             </div>
 
             <motion.div
-              className="ml-2 sm:ml-4 flex items-center gap-2 px-3 py-1.5 bg-black/60 rounded-lg text-xs font-mono text-[#3B82F6] border border-[#3B82F6]/50 backdrop-blur-sm shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+              className="ml-2 sm:ml-4 flex items-center gap-2 px-3 py-1.5 bg-black/60 rounded-lg text-xs font-mono text-[#64748B] border border-[#64748B]/50 backdrop-blur-sm shadow-[0_0_20px_rgba(59,130,246,0.3)]"
               animate={{ borderColor: ["rgba(59,130,246,0.3)", "rgba(59,130,246,0.8)", "rgba(59,130,246,0.3)"] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
@@ -258,12 +258,12 @@ export function RobotTerminalView({
 
           {/* Right side - System stats */}
           <div className="hidden md:flex items-center gap-3 text-[10px] font-mono">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#3B82F6]/30">
-              <Cpu className="h-3 w-3 text-[#3B82F6]" />
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#64748B]/30">
+              <Cpu className="h-3 w-3 text-[#64748B]" />
               <span className="text-[#64748B]">CPU</span>
               <motion.span
-                className="text-[#3B82F6] font-bold min-w-[32px] text-right"
-                animate={{ color: cpuUsage > 70 ? "#F59E0B" : "#3B82F6" }}
+                className="text-[#64748B] font-bold min-w-[32px] text-right"
+                animate={{ color: cpuUsage > 70 ? "#F59E0B" : "#64748B" }}
               >
                 {cpuUsage.toFixed(0)}%
               </motion.span>
@@ -284,7 +284,7 @@ export function RobotTerminalView({
             className="mt-2 h-1 bg-black/40 rounded-full overflow-hidden"
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#22C55E]"
+              className="h-full bg-gradient-to-r from-[#64748B] via-[#8B5CF6] to-[#22C55E]"
               initial={{ width: "0%" }}
               animate={{ width: `${scanProgress}%` }}
               transition={{ duration: 0.3 }}
@@ -302,7 +302,7 @@ export function RobotTerminalView({
             animate={{ top: ["0%", "100%"] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
           >
-            <div className="w-full h-full bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent shadow-[0_0_20px_10px_rgba(59,130,246,0.8)]" />
+            <div className="w-full h-full bg-gradient-to-r from-transparent via-[#64748B] to-transparent shadow-[0_0_20px_10px_rgba(59,130,246,0.8)]" />
           </motion.div>
         )}
 
@@ -319,7 +319,7 @@ export function RobotTerminalView({
                 {/* Line number with glow */}
                 <motion.span
                   className="text-[#475569] select-none text-xs shrink-0 font-bold tabular-nums min-w-[24px]"
-                  whileHover={{ color: "#3B82F6", textShadow: "0 0 8px rgba(59,130,246,0.8)" }}
+                  whileHover={{ color: "#64748B", textShadow: "0 0 8px rgba(59,130,246,0.8)" }}
                 >
                   {String(log.line).padStart(2, "0")}
                 </motion.span>
@@ -332,7 +332,7 @@ export function RobotTerminalView({
                 {/* Content */}
                 {log.type === "command" ? (
                   <div className="flex-1 break-words">
-                    <span className="text-[#3B82F6] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
+                    <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
                     <span className="text-[#64748B]">:</span>
                     <span className="text-[#8B5CF6] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
                     <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
@@ -371,12 +371,12 @@ export function RobotTerminalView({
                 {String(logData.length + 1).padStart(2, "0")}
               </span>
               <span className="text-[#22C55E]">✓</span>
-              <span className="text-[#3B82F6] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
+              <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
               <span className="text-[#64748B]">:</span>
               <span className="text-[#8B5CF6] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
               <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
               <motion.span
-                className="inline-block w-2 h-4 bg-[#3B82F6] align-middle ml-2 shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
+                className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-2 shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
                 animate={{ opacity: [0.2, 1, 0.2] }}
                 transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
               />
@@ -386,7 +386,7 @@ export function RobotTerminalView({
       </div>
 
       {/* Bottom status bar with enhanced info */}
-      <div className="relative z-10 bg-gradient-to-r from-[#1e293b]/95 via-[#1e3a52]/95 to-[#1e293b]/95 backdrop-blur-xl px-4 py-2 border-t-2 border-[#3B82F6]/40">
+      <div className="relative z-10 bg-gradient-to-r from-[#1e293b]/95 via-[#1e3a52]/95 to-[#1e293b]/95 backdrop-blur-xl px-4 py-2 border-t-2 border-[#64748B]/40">
         <div className="flex items-center justify-between text-xs">
           {/* Left status */}
           <div className="flex items-center gap-3 sm:gap-4">
@@ -399,7 +399,7 @@ export function RobotTerminalView({
                 className="w-2 h-2 rounded-full shadow-[0_0_8px_2px_rgba(34,197,94,0.8)]"
                 animate={{
                   backgroundColor: displayedLogs.length < logData.length
-                    ? ["#22C55E", "#3B82F6", "#22C55E"]
+                    ? ["#22C55E", "#64748B", "#22C55E"]
                     : "#22C55E"
                 }}
                 transition={{ duration: 2, repeat: displayedLogs.length < logData.length ? Infinity : 0 }}
@@ -437,18 +437,18 @@ export function RobotTerminalView({
             </span>
             <div className="flex items-center gap-1 text-[10px]">
               <motion.div
-                className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]"
+                className="w-1.5 h-1.5 rounded-full bg-[#64748B]"
                 animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <span className="text-[#3B82F6] font-bold hidden sm:inline">SECURE</span>
+              <span className="text-[#64748B] font-bold hidden sm:inline">SECURE</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Corner accent lights */}
-      <div className="absolute top-0 left-0 w-32 h-32 bg-[#3B82F6]/20 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-0 w-32 h-32 bg-[#64748B]/20 blur-3xl rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#8B5CF6]/20 blur-3xl rounded-full pointer-events-none" />
     </div>
   );

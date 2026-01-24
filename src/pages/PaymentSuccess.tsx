@@ -90,7 +90,7 @@ export default function PaymentSuccess() {
   };
 
   // Confetti animation
-  const confettiColors = ["#3B82F6", "#8B5CF6", "#FFFFFF"];
+  const confettiColors = ["#64748B", "#8B5CF6", "#FFFFFF"];
   const confettiElements = Array.from({ length: 20 }, (_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
@@ -129,7 +129,7 @@ export default function PaymentSuccess() {
       {/* Navbar */}
       <header className="relative z-20 flex items-center justify-between border-b border-slate-800 bg-[#0F172A]/80 backdrop-blur-md px-6 lg:px-10 py-4">
         <div className="flex items-center gap-3 text-white">
-          <div className="size-8 flex items-center justify-center rounded bg-gradient-to-br from-[#4F46E5] to-[#3B82F6]">
+          <div className="size-8 flex items-center justify-center rounded bg-gradient-to-br from-[#4F46E5] to-[#64748B]">
             <span className="material-symbols-outlined text-[20px]">terminal</span>
           </div>
           <h2 className="text-white text-xl font-bold leading-tight tracking-tight">CVDebug</h2>
@@ -154,7 +154,7 @@ export default function PaymentSuccess() {
           className="glass-panel w-full max-w-2xl rounded-2xl p-8 sm:p-12 shadow-2xl relative overflow-hidden"
         >
           {/* Top Accent Line */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#3B82F6] via-[#8B5CF6] to-[#3B82F6] opacity-80" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#64748B] via-[#8B5CF6] to-[#64748B] opacity-80" />
 
           <div className="flex flex-col items-center text-center">
             {/* Success Icon */}
@@ -166,11 +166,11 @@ export default function PaymentSuccess() {
             >
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
               <div className="relative bg-slate-800/50 border border-[#8B5CF6]/30 rounded-full p-5 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
-                <RocketIcon className="h-12 w-12 text-transparent bg-clip-text bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6]" style={{ fill: "url(#gradient)" }} />
+                <RocketIcon className="h-12 w-12 text-transparent bg-clip-text bg-gradient-to-br from-[#64748B] to-[#8B5CF6]" style={{ fill: "url(#gradient)" }} />
                 <svg width="0" height="0">
                   <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" />
+                      <stop offset="0%" stopColor="#64748B" />
                       <stop offset="100%" stopColor="#8B5CF6" />
                     </linearGradient>
                   </defs>
@@ -179,7 +179,7 @@ export default function PaymentSuccess() {
             </motion.div>
 
             {/* Meta Text */}
-            <p className="text-[#3B82F6] font-mono text-sm tracking-widest uppercase mb-4 font-bold flex items-center gap-2">
+            <p className="text-[#64748B] font-mono text-sm tracking-widest uppercase mb-4 font-bold flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4" />
               Payment Successful
             </p>
@@ -257,7 +257,7 @@ export default function PaymentSuccess() {
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
               <Button
                 onClick={() => navigate("/dashboard")}
-                className="group relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#4F46E5] to-[#3B82F6] hover:opacity-90 transition-all duration-300 text-white font-medium py-6 px-8 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] w-full sm:w-auto overflow-hidden h-auto"
+                className="group relative flex items-center justify-center gap-3 bg-gradient-to-r from-[#4F46E5] to-[#64748B] hover:opacity-90 transition-all duration-300 text-white font-medium py-6 px-8 rounded-lg shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] w-full sm:w-auto overflow-hidden h-auto"
               >
                 <span className="relative z-10">Go to Mission Control</span>
                 <ArrowRight className="h-5 w-5 relative z-10 group-hover:translate-x-1 transition-transform" />

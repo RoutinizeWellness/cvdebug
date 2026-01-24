@@ -107,7 +107,7 @@ export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, o
       <DialogContent className="sm:max-w-[600px] bg-[#FFFFFF] border border-[#E2E8F0] text-[#0F172A] max-h-[85vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl font-bold text-[#0F172A]">
-            <MessageSquare className="h-5 w-5 text-[#3B82F6]" />
+            <MessageSquare className="h-5 w-5 text-[#64748B]" />
             Recruiter DM Generator
           </DialogTitle>
           <DialogDescription className="text-[#64748B]">
@@ -131,7 +131,7 @@ export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, o
             {/* Lock Overlay */}
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
               <div className="text-center px-6 max-w-md">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] flex items-center justify-center mb-4 mx-auto shadow-xl shadow-[#3B82F6]/30">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#64748B] to-[#8B5CF6] flex items-center justify-center mb-4 mx-auto shadow-xl shadow-[#64748B]/30">
                   <span className="material-symbols-outlined text-3xl text-white">lock</span>
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-2">
@@ -164,7 +164,7 @@ export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, o
                     onUpgrade?.();
                     onOpenChange(false);
                   }}
-                  className="w-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-lg shadow-[#3B82F6]/30 text-sm flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-2 px-4 rounded-xl transition-all shadow-lg shadow-[#64748B]/30 text-sm flex items-center justify-center gap-2"
                 >
                   <span className="material-symbols-outlined text-sm">workspace_premium</span>
                   {t.recruiterDM.unlockRecruiter}
@@ -251,7 +251,7 @@ export function RecruiterDMGenerator({ open, onOpenChange, isPaidUser = false, o
               <Button
                 onClick={handleGenerate}
                 disabled={isGenerating || !selectedJobId}
-                className="w-full bg-[#3B82F6] hover:bg-[#0F172A] text-white font-bold"
+                className="w-full bg-[#64748B] hover:bg-[#0F172A] text-white font-bold"
               >
                 {isGenerating ? (
                   <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Strategies...</>

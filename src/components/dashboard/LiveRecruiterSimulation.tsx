@@ -410,14 +410,14 @@ export function LiveRecruiterSimulation({
       {/* Header - Mobile Responsive */}
       <header className="h-14 md:h-16 border-b border-[#E2E8F0] flex items-center justify-between px-3 md:px-6 bg-[#FFFFFF] backdrop-blur-sm sticky top-0 z-50 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 md:gap-2 text-[#3B82F6] font-bold text-base md:text-lg tracking-tight">
+          <div className="flex items-center gap-1.5 md:gap-2 text-[#64748B] font-bold text-base md:text-lg tracking-tight">
             <span className="material-symbols-outlined text-lg md:text-xl">analytics</span>
             <span className="hidden sm:inline">CVDebug ATS</span>
             <span className="sm:hidden">ATS</span>
           </div>
           <span className="text-[#475569] text-sm hidden md:inline">/</span>
           <div className="flex items-center gap-1 md:gap-2 min-w-0">
-            <span className="text-[10px] md:text-xs font-mono px-1.5 md:px-2 py-0.5 rounded bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0] truncate max-w-[100px] md:max-w-none">
+            <span className="text-[10px] md:text-xs font-mono px-1.5 md:px-2 py-0.5 rounded bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0] truncate max-w-[100px] md:max-w-none">
               {targetRole.toUpperCase()}
             </span>
             <span className="text-[10px] md:text-xs text-[#64748B] font-mono hidden lg:inline">ID: {sessionId}</span>
@@ -454,7 +454,7 @@ export function LiveRecruiterSimulation({
         <button className="hidden lg:flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] hover:text-[#0F172A] transition-colors rounded-lg whitespace-nowrap">
           <span className="material-symbols-outlined text-base">dashboard</span> Format
         </button>
-        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#3B82F6] bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] whitespace-nowrap">
+        <button className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-[#64748B] bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] whitespace-nowrap">
           <span className="material-symbols-outlined text-base">support_agent</span> Recruiter
         </button>
       </nav>
@@ -677,7 +677,7 @@ export function LiveRecruiterSimulation({
                     onClick={() => setViewMode("parsed")}
                     className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
                       viewMode === "parsed"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#3B82F6]'
+                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
                         : 'text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
@@ -687,7 +687,7 @@ export function LiveRecruiterSimulation({
                     onClick={() => setViewMode("raw")}
                     className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
                       viewMode === "raw"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#3B82F6]'
+                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
                         : 'text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >
@@ -697,7 +697,7 @@ export function LiveRecruiterSimulation({
                     onClick={() => setViewMode("pdf")}
                     className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
                       viewMode === "pdf"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#3B82F6]'
+                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
                         : 'text-[#64748B] hover:text-[#0F172A]'
                     }`}
                   >

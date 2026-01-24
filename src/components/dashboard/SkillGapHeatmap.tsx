@@ -77,7 +77,7 @@ export function SkillGapHeatmap({ foundKeywords, missingKeywords }: SkillGapHeat
       {/* Hard Skills Section */}
       <div className="space-y-3">
         <h4 className="text-sm font-bold text-[#475569] uppercase tracking-wider flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#3B82F6]"></span>
+          <span className="w-2 h-2 rounded-full bg-[#64748B]"></span>
           Hard Skills
         </h4>
         <motion.div

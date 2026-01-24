@@ -7,7 +7,7 @@ export function ChromeExtensionBanner() {
     <section className="py-16 px-4 bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155] relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#3B82F6] rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#64748B] rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#22C55E] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
@@ -30,10 +30,10 @@ export function ChromeExtensionBanner() {
                 className="relative"
               >
                 {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] blur-2xl opacity-50 animate-pulse" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#64748B] to-[#475569] blur-2xl opacity-50 animate-pulse" />
 
                 {/* Chrome icon container */}
-                <div className="relative bg-gradient-to-br from-[#3B82F6] to-[#2563EB] p-6 rounded-3xl shadow-2xl">
+                <div className="relative bg-gradient-to-br from-[#64748B] to-[#475569] p-6 rounded-3xl shadow-2xl">
                   <Chrome className="h-16 w-16 text-white" />
 
                   {/* "NEW" badge */}
@@ -75,7 +75,7 @@ export function ChromeExtensionBanner() {
                     <span className="text-white text-sm font-semibold">Real-time Match Score</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
-                    <Sparkles className="h-4 w-4 text-[#3B82F6]" />
+                    <Sparkles className="h-4 w-4 text-[#64748B]" />
                     <span className="text-white text-sm font-semibold">Missing Keywords</span>
                   </div>
                   <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
@@ -102,7 +102,7 @@ export function ChromeExtensionBanner() {
               >
                 <Button
                   size="lg"
-                  className="h-14 px-8 text-lg font-bold bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:from-[#2563EB] hover:to-[#1D4ED8] text-white shadow-2xl hover:shadow-slate-600/50 transition-all duration-300 group"
+                  className="h-14 px-8 text-lg font-bold bg-gradient-to-r from-[#64748B] to-[#475569] hover:from-[#475569] hover:to-[#334155] text-white shadow-2xl hover:shadow-slate-600/50 transition-all duration-300 group"
                 >
                   <Chrome className="h-5 w-5 mr-2" />
                   Add to Chrome - Free

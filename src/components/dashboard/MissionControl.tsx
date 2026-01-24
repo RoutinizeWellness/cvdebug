@@ -199,13 +199,13 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
             <div className="flex items-baseline gap-2 mt-1">
               <p className="text-[#0F172A] text-2xl sm:text-3xl md:text-4xl font-mono font-bold">{activeApplications}</p>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-[#3B82F6] text-xs font-mono bg-[#F8FAFC] w-fit px-2 py-1 rounded border border-[#E2E8F0]">
+            <div className="flex items-center gap-1 mt-2 text-[#64748B] text-xs font-mono bg-[#F8FAFC] w-fit px-2 py-1 rounded border border-[#E2E8F0]">
               <span className="material-symbols-outlined text-sm">bolt</span>
               2 {t.missionControl.interviewsScheduled}
             </div>
           </div>
           <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
-            <div className="h-full bg-[#3B82F6] w-[40%]"></div>
+            <div className="h-full bg-[#64748B] w-[40%]"></div>
           </div>
         </motion.div>
 
@@ -328,7 +328,7 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
           <h3 className="text-[#0F172A] text-lg font-bold">{t.missionControl.careerHealth}</h3>
           <span className={`px-3 py-1 rounded-full text-xs font-bold ${
             visibilityScore >= 85 ? "bg-teal-50 text-teal-600 border border-teal-200" :
-            visibilityScore >= 70 ? "bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0]" :
+            visibilityScore >= 70 ? "bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]" :
             visibilityScore >= 50 ? "bg-amber-50 text-[#F59E0B] border border-amber-200" :
             "bg-slate-100 text-[#64748B] border border-[#E2E8F0]"
           }`}>

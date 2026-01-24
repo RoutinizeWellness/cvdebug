@@ -63,8 +63,8 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
           <ArrowRight className="h-4 w-4 text-[#64748B]" />
         </div>
         <CardContent className="p-4 space-y-3">
-          <div className="h-8 w-8 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
-            <MessageSquare className="h-4 w-4 text-[#3B82F6]" />
+          <div className="h-8 w-8 rounded-lg bg-[#64748B]/10 flex items-center justify-center">
+            <MessageSquare className="h-4 w-4 text-[#64748B]" />
           </div>
           <div>
             <h4 className="font-bold text-sm text-[#0F172A]">Recruiter DM</h4>

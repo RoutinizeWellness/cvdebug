@@ -91,7 +91,7 @@ export function TopErrors() {
       case "WARN":
         return "text-[#F59E0B]";
       default:
-        return "text-[#3B82F6]";
+        return "text-[#64748B]";
     }
   };
 

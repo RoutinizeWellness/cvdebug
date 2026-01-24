@@ -68,8 +68,8 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
       }`}
     >
-      {active && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#3B82F6] rounded-l-lg"></div>}
-      <span className="material-symbols-outlined text-[20px]" style={{ color: active ? '#3B82F6' : undefined }}>
+      {active && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#64748B] rounded-l-lg"></div>}
+      <span className="material-symbols-outlined text-[20px]" style={{ color: active ? '#64748B' : undefined }}>
         {icon}
       </span>
       <span>{label}</span>

@@ -39,7 +39,7 @@ export function LinkedInHeader({ lastScanned, profileUrl, onRescan, isScanning }
         <button
           onClick={onRescan}
           disabled={isScanning}
-          className="flex items-center gap-2 bg-primary hover:bg-[#3B82F6] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#0F172A] px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-primary/20"
+          className="flex items-center gap-2 bg-primary hover:bg-[#64748B] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-[#0F172A] px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-primary/20"
         >
           <RefreshCw className={`h-5 w-5 ${isScanning ? "animate-spin" : ""}`} />
           <span>{isScanning ? "Scanning..." : "Re-scan Profile"}</span>

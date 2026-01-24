@@ -43,12 +43,12 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
     // Add logs progressively
     const logMessages = [
       { type: "INIT", message: "Loading core modules...", color: "text-[#8B5CF6]" },
-      { type: "SCAN", message: "Detecting document layout structure...", color: "text-[#3B82F6]" },
+      { type: "SCAN", message: "Detecting document layout structure...", color: "text-[#64748B]" },
       { type: "INFO", message: "OCR confidence level: 98.2%", color: "text-[#22C55E]" },
-      { type: "PROC", message: "Extracting experience keywords...", color: "text-[#3B82F6]" },
-      { type: "ANAL", message: "Analyzing ATS compatibility...", color: "text-[#3B82F6]" },
+      { type: "PROC", message: "Extracting experience keywords...", color: "text-[#64748B]" },
+      { type: "ANAL", message: "Analyzing ATS compatibility...", color: "text-[#64748B]" },
       { type: "KEYW", message: "Identifying missing keywords...", color: "text-[#F59E0B]" },
-      { type: "FORM", message: "Checking formatting issues...", color: "text-[#3B82F6]" },
+      { type: "FORM", message: "Checking formatting issues...", color: "text-[#64748B]" },
       { type: "SCORE", message: "Calculating ATS score...", color: "text-[#22C55E]" },
     ];
 
@@ -91,16 +91,16 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             <span className="material-symbols-outlined text-xl">view_in_ar</span>
           </div>
           <h2 className="text-[#0F172A] text-lg font-bold tracking-tight">
-            CVDebug <span className="text-[#3B82F6] font-mono text-xs ml-2">v2.0 BETA</span>
+            CVDebug <span className="text-[#64748B] font-mono text-xs ml-2">v2.0 BETA</span>
           </h2>
         </div>
         <div className="flex items-center gap-6">
           <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full border border-[#E2E8F0] bg-[#F8FAFC]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3B82F6]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#64748B] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#64748B]"></span>
             </span>
-            <span className="text-[#3B82F6] text-xs font-mono font-medium">ENGINE ONLINE</span>
+            <span className="text-[#64748B] text-xs font-mono font-medium">ENGINE ONLINE</span>
           </div>
         </div>
       </header>
@@ -155,7 +155,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                 </div>
                 {/* Highlight boxes for detected zones */}
                 <div className="absolute top-[120px] left-[30px] w-[200px] h-[80px] border border-[#CBD5E1] bg-[#F8FAFC] rounded">
-                  <div className="absolute -top-3 -right-3 bg-[#3B82F6] text-[#0F172A] text-[9px] font-mono px-1 rounded-sm">
+                  <div className="absolute -top-3 -right-3 bg-[#64748B] text-[#0F172A] text-[9px] font-mono px-1 rounded-sm">
                     EDUCATION
                   </div>
                 </div>
@@ -173,7 +173,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             {/* Floating tech decorations */}
             <div className="absolute -left-12 top-1/4 hidden md:flex flex-col gap-2 opacity-60">
               <div className="h-[1px] w-8 bg-slate-400"></div>
-              <span className="text-[10px] text-[#3B82F6] font-mono rotate-90 origin-left translate-x-3">Y-AXIS</span>
+              <span className="text-[10px] text-[#64748B] font-mono rotate-90 origin-left translate-x-3">Y-AXIS</span>
             </div>
             <div className="absolute -right-12 bottom-1/3 hidden md:flex flex-col gap-2 opacity-60 items-end">
               <div className="h-[1px] w-8 bg-slate-400"></div>
@@ -186,7 +186,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             {/* Progress Bar */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-end px-1">
-                <span className="text-[#3B82F6] font-mono text-xs tracking-wider">PROCESS_ID: {processId}</span>
+                <span className="text-[#64748B] font-mono text-xs tracking-wider">PROCESS_ID: {processId}</span>
                 <span className="text-[#0F172A] font-display text-2xl font-bold">{Math.round(currentProgress)}%</span>
               </div>
               <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden border border-[#E2E8F0]">
@@ -233,7 +233,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
                     <span className={log.color}>[{log.type}]</span> {log.message}
                     {index === logs.length - 1 && (
                       <motion.span
-                        className="inline-block w-2 h-4 bg-[#3B82F6] align-middle ml-1"
+                        className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-1"
                         animate={{ opacity: [1, 0] }}
                         transition={{ duration: 0.8, repeat: Infinity }}
                       />
@@ -259,8 +259,8 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
           <span className="hidden md:inline">Server: us-east-1a</span>
         </div>
         <div className="flex gap-4">
-          <a className="hover:text-[#3B82F6] transition-colors" href="/blog">Documentation</a>
-          <a className="hover:text-[#3B82F6] transition-colors" href="/contact">Support</a>
+          <a className="hover:text-[#64748B] transition-colors" href="/blog">Documentation</a>
+          <a className="hover:text-[#64748B] transition-colors" href="/contact">Support</a>
         </div>
       </footer>
     </div>

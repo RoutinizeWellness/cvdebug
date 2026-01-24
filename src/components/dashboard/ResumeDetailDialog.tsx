@@ -327,7 +327,7 @@ export function ResumeDetailDialog({
             bgClass = "bg-green-50";
             borderClass = "border-green-200";
           } else if (title.includes("🤖") || title.includes("Parsing")) {
-            icon = <Cpu className="h-4 w-4 text-[#3B82F6]" />;
+            icon = <Cpu className="h-4 w-4 text-[#64748B]" />;
             headerClass = "text-[#0F172A]";
             bgClass = "bg-[#F8FAFC]";
             borderClass = "border-[#E2E8F0]";
@@ -376,7 +376,7 @@ export function ResumeDetailDialog({
                   if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
                     return (
                       <div key={i} className="flex items-start gap-3 pl-2">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#3B82F6] flex-shrink-0" />
+                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#64748B] flex-shrink-0" />
                         <span className="flex-1 leading-relaxed text-[#475569]">{trimmed.replace(/^[-•*]\s*/, "")}</span>
                       </div>
                     );
@@ -854,7 +854,7 @@ export function ResumeDetailDialog({
                 <div className="flex items-start gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <Target className="h-4 w-4 text-[#3B82F6]" />
+                      <Target className="h-4 w-4 text-[#64748B]" />
                       <h3 className="text-sm font-bold text-[#0F172A]">Tailor Analysis to Job Description</h3>
                       {displayResume.jobDescription && (
                         <span className="text-xs text-[#22C55E] bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
@@ -869,13 +869,13 @@ export function ResumeDetailDialog({
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
                       placeholder="Paste the full job description here..."
-                      className="w-full h-32 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-sm p-3 focus:ring-2 focus:ring-[#1E293B]/20 focus:border-[#3B82F6] outline-none resize-none leading-relaxed transition-all placeholder:text-[#64748B] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                      className="w-full h-32 bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg text-sm p-3 focus:ring-2 focus:ring-[#1E293B]/20 focus:border-[#64748B] outline-none resize-none leading-relaxed transition-all placeholder:text-[#64748B] text-[#0F172A] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                     />
                     <div className="flex gap-2 mt-3">
                       <Button
                         onClick={handleReanalyzeWithJD}
                         disabled={isReanalyzing || !jobDescription.trim()}
-                        className="bg-[#3B82F6] text-[#0F172A] font-bold hover:bg-[#0F172A]"
+                        className="bg-[#64748B] text-[#0F172A] font-bold hover:bg-[#0F172A]"
                       >
                         {isReanalyzing ? (
                           <>
@@ -908,7 +908,7 @@ export function ResumeDetailDialog({
 
           {!displayResume ? (
             <div className="flex-1 flex flex-col items-center justify-center text-[#475569] gap-4">
-              <Loader2 className="h-8 w-8 animate-spin text-[#3B82F6]" />
+              <Loader2 className="h-8 w-8 animate-spin text-[#64748B]" />
               <p>Loading analysis data...</p>
               {allResumes === undefined && (
                 <p className="text-xs text-[#EF4444] bg-red-50 px-3 py-1 rounded-full border border-red-200">
@@ -952,7 +952,7 @@ export function ResumeDetailDialog({
                           </span>
                         )}
                       </TabsTrigger>
-                      <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3B82F6] data-[state=active]:to-[#8B5CF6] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#64748B] data-[state=active]:to-[#8B5CF6] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <TrendingUp className="h-4 w-4" />
                           <span>Progress</span>
@@ -964,13 +964,13 @@ export function ResumeDetailDialog({
                           <span>Action Plan</span>
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <FileSearch className="h-4 w-4" />
                           <span>Format</span>
                         </span>
                       </TabsTrigger>
-                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Target className="h-4 w-4" />
                           <span>Keywords</span>
@@ -998,7 +998,7 @@ export function ResumeDetailDialog({
 
                     {/* PREP Group */}
                     <div className="flex gap-1 pl-3">
-                      <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#3B82F6] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <Building className="h-4 w-4" />
                           <span>Interview</span>
@@ -1889,7 +1889,7 @@ Impact: AUTO_REJECT (100% rejection rate)
               {isPdfCollapsed && (
                 <button
                   onClick={() => setIsPdfCollapsed(false)}
-                  className="lg:hidden fixed bottom-6 right-6 z-40 px-6 py-3 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] text-white font-bold rounded-full shadow-2xl hover:shadow-[#3B82F6]/50 transition-all flex items-center gap-2 animate-pulse"
+                  className="lg:hidden fixed bottom-6 right-6 z-40 px-6 py-3 bg-gradient-to-r from-[#64748B] to-[#8B5CF6] text-white font-bold rounded-full shadow-2xl hover:shadow-[#64748B]/50 transition-all flex items-center gap-2 animate-pulse"
                 >
                   <Eye className="h-5 w-5" />
                   View CV
@@ -1903,7 +1903,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                 {/* Collapse/Expand Button - Always visible on desktop */}
                 <button
                   onClick={() => setIsPdfCollapsed(!isPdfCollapsed)}
-                  className={`${isPdfCollapsed ? 'lg:relative lg:top-4 lg:left-0' : 'absolute top-4 left-4'} z-20 p-3 bg-[#3B82F6] hover:bg-[#0F172A] text-white rounded-lg backdrop-blur-sm transition-all shadow-lg`}
+                  className={`${isPdfCollapsed ? 'lg:relative lg:top-4 lg:left-0' : 'absolute top-4 left-4'} z-20 p-3 bg-[#64748B] hover:bg-[#0F172A] text-white rounded-lg backdrop-blur-sm transition-all shadow-lg`}
                   title={isPdfCollapsed ? "Show PDF Preview" : "Hide PDF Preview"}
                 >
                   {isPdfCollapsed ? <Maximize2 className="h-5 w-5" /> : <Minimize2 className="h-5 w-5" />}
@@ -1932,7 +1932,7 @@ Impact: AUTO_REJECT (100% rejection rate)
                         <p className="text-[#475569] mb-8">
                           This file type cannot be previewed directly in the browser. You can download it to view the content.
                         </p>
-                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-[#3B82F6] hover:bg-[#0F172A] text-[#0F172A]">
+                        <Button onClick={handleDownloadFile} className="font-bold shadow-lg bg-[#64748B] hover:bg-[#0F172A] text-[#0F172A]">
                           <Download className="h-4 w-4 mr-2" /> Download File
                         </Button>
                       </div>

@@ -591,7 +591,7 @@ export function FluffDetector({
                 <p className="text-[11px] text-[#64748B] uppercase tracking-widest font-bold mb-1">Buzzword Density</p>
                 <p className="text-2xl font-bold text-[#0F172A] font-mono">{buzzwordDensity}%</p>
               </div>
-              <span className="material-symbols-outlined text-[#3B82F6] text-[20px]">trending_down</span>
+              <span className="material-symbols-outlined text-[#64748B] text-[20px]">trending_down</span>
             </div>
           </motion.div>
 
@@ -737,7 +737,7 @@ export function FluffDetector({
           >
             <div className="p-5 border-b border-[#E2E8F0]">
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#3B82F6] text-[20px]">bolt</span>
+                <span className="material-symbols-outlined text-[#64748B] text-[20px]">bolt</span>
                 Power Verb Injection Library
               </h3>
               <p className="text-xs text-[#64748B] mt-1">
@@ -755,7 +755,7 @@ export function FluffDetector({
                     transition={{ delay: 0.5 + index * 0.05 }}
                     className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4"
                   >
-                    <h4 className="text-sm font-bold text-[#3B82F6] mb-3">
+                    <h4 className="text-sm font-bold text-[#64748B] mb-3">
                       {category.category}
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -893,7 +893,7 @@ export function FluffDetector({
       </div>
 
       {/* Floating Chat Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#3B82F6] to-[#A78BFA] hover:from-[#1E293B] hover:to-[#1E293B] text-[#0F172A] rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
+      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-[#64748B] to-[#A78BFA] hover:from-[#1E293B] hover:to-[#1E293B] text-[#0F172A] rounded-full shadow-lg shadow-blue-500/20 flex items-center justify-center transition-all hover:scale-105 z-50">
         <span className="material-symbols-outlined text-2xl">chat</span>
       </button>
     </div>

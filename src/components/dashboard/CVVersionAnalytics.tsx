@@ -45,7 +45,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
         <p className="text-[#475569] text-sm mb-6">
           {analytics.message}
         </p>
-        <div className="bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-lg p-4">
+        <div className="bg-[#64748B]/10 border border-[#64748B]/20 rounded-lg p-4">
           <p className="text-[#94A3B8] text-sm font-semibold mb-2">💡 Pro Tip:</p>
           <p className="text-[#475569] text-sm">
             When adding applications, label each CV version (e.g., "V1_React", "V2_Backend").
@@ -76,7 +76,7 @@ export function CVVersionAnalytics({ userId }: CVVersionAnalyticsProps) {
       case "warning":
         return "bg-yellow-600/10 border-yellow-500/20";
       case "info":
-        return "bg-[#3B82F6]/10 border-[#3B82F6]/20";
+        return "bg-[#64748B]/10 border-[#64748B]/20";
       default:
         return "bg-[#F8FAFC]/50 border-[#E2E8F0]/50";
     }

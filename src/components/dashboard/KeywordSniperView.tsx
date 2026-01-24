@@ -225,11 +225,11 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                   toast.info(t.keywordSniper.noMissingKeywords);
                 }
               }}
-              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#3B82F6] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(59,130,246,0.15)]"
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#64748B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(59,130,246,0.15)]"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center">
-                  <Eye className="h-5 w-5 text-[#3B82F6]" />
+                <div className="w-10 h-10 rounded-lg bg-[#64748B]/10 flex items-center justify-center">
+                  <Eye className="h-5 w-5 text-[#64748B]" />
                 </div>
                 <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.viewExamples}</h3>
               </div>

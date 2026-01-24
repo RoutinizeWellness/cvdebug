@@ -47,18 +47,18 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="bg-white rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#3B82F6]/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
+      className="bg-white rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#64748B]/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
     >
       <div className="h-1 w-full bg-[#E2E8F0]">
-        <div className="h-full bg-[#3B82F6] w-1/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+        <div className="h-full bg-[#64748B] w-1/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
       </div>
       <div className="p-8 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 mb-1">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#3B82F6]/20 text-[#3B82F6] text-xs font-bold">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#64748B]/20 text-[#64748B] text-xs font-bold">
               1
             </span>
-            <span className="text-xs font-bold uppercase tracking-wider text-[#3B82F6]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#64748B]">
               Current Step
             </span>
           </div>
@@ -76,7 +76,7 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
             <div className="flex-1 min-w-0">
               <p className="text-[#0F172A] text-sm font-medium truncate">{uploadedFile.name}</p>
               <div className="flex items-center gap-2">
-                {isUploading && <div className="h-2 w-2 rounded-full bg-[#3B82F6] animate-pulse" />}
+                {isUploading && <div className="h-2 w-2 rounded-full bg-[#64748B] animate-pulse" />}
                 <p className="text-[#64748B] text-xs">
                   {isUploading ? (processingStatus || "Processing...") : `${(uploadedFile.size / 1024 / 1024).toFixed(2)} MB • Uploaded`}
                 </p>
@@ -122,9 +122,9 @@ export function StepUploadCV({ onComplete, jobDescription, setJobDescription }: 
               disabled={isUploading}
             />
             <div className={`border-2 border-dashed rounded-xl p-12 text-center transition-colors bg-[#F8FAFC] ${
-              isDragging ? "border-[#3B82F6] bg-[#EFF6FF]" : "border-[#E2E8F0] hover:border-[#3B82F6] group-hover:bg-[#EFF6FF]"
+              isDragging ? "border-[#64748B] bg-[#EFF6FF]" : "border-[#E2E8F0] hover:border-[#64748B] group-hover:bg-[#EFF6FF]"
             }`}>
-              <Upload className="h-12 w-12 text-[#64748B] mx-auto mb-4 group-hover:text-[#3B82F6] transition-colors" />
+              <Upload className="h-12 w-12 text-[#64748B] mx-auto mb-4 group-hover:text-[#64748B] transition-colors" />
               <p className="text-[#0F172A] font-medium mb-1">Drop your resume here</p>
               <p className="text-[#64748B] text-sm">or click to browse</p>
               <p className="text-[#94A3B8] text-xs mt-2">PDF, DOCX, or Image up to 10MB</p>

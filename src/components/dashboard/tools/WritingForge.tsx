@@ -304,7 +304,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               </div>
               <div className="flex flex-col gap-4 rounded-xl bg-[#FFFFFF] p-4 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden group">
                 {/* Decorative gradient blob */}
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#3B82F6]/10 rounded-full blur-2xl group-hover:bg-[#3B82F6]/15 transition-all duration-500" />
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#64748B]/10 rounded-full blur-2xl group-hover:bg-[#64748B]/15 transition-all duration-500" />
 
                 <div className="flex items-center gap-3 relative z-10">
                   <div className="size-10 rounded-lg bg-[#F8FAFC] p-2 flex items-center justify-center border border-[#E2E8F0]">
@@ -321,7 +321,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 <div className="flex gap-2 relative z-10">
                   <div className="flex-1 bg-[#F8FAFC] rounded p-2 border border-[#E2E8F0]">
                     <span className="block text-[10px] text-[#64748B] uppercase">Match</span>
-                    <span className="block text-[#3B82F6] font-mono text-sm font-bold">{matchScore}%</span>
+                    <span className="block text-[#64748B] font-mono text-sm font-bold">{matchScore}%</span>
                   </div>
                   <div className="flex-1 bg-[#F8FAFC] rounded p-2 border border-[#E2E8F0]">
                     <span className="block text-[10px] text-[#64748B] uppercase">Gap</span>
@@ -548,7 +548,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                     {!isEditing ? (
                       <button
                         onClick={handleEdit}
-                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3B82F6] bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg hover:bg-[#F1F5F9] transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#64748B] bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg hover:bg-[#F1F5F9] transition-colors"
                       >
                         <Edit className="h-4 w-4" />
                         Edit Resume

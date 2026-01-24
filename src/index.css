@@ -291,11 +291,11 @@
 
 /* 2. Success Gradient - For Progress Bars and Success States */
 .gradient-cyber {
-  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
+  background: linear-gradient(90deg, #64748B 0%, #22C55E 100%);
 }
 
 .gradient-cyber-glow {
-  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
+  background: linear-gradient(90deg, #64748B 0%, #22C55E 100%);
   box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1);
 }
 
@@ -315,7 +315,7 @@
 }
 
 .text-gradient-cyber {
-  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
+  background: linear-gradient(90deg, #64748B 0%, #22C55E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -336,7 +336,7 @@
 
 /* Progress Bar */
 .progress-cyber {
-  background: linear-gradient(90deg, #3B82F6 0%, #22C55E 100%);
+  background: linear-gradient(90deg, #64748B 0%, #22C55E 100%);
   position: relative;
   overflow: hidden;
   border-radius: 9999px;

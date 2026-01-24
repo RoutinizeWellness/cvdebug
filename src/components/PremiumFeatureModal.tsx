@@ -29,7 +29,7 @@ export function PremiumFeatureModal({
       name: "Single Scan",
       price: "€4.99",
       priceSubtext: "one-time",
-      color: "from-[#3B82F6] to-[#06B6D4]",
+      color: "from-[#64748B] to-[#06B6D4]",
       icon: Lock,
       features: [
         "1 ATS Resume Scan",
@@ -86,8 +86,8 @@ export function PremiumFeatureModal({
         {/* Feature Highlight */}
         <div className="bg-gradient-to-br from-[#F8FAFC] to-[#EFF6FF] border border-[#E2E8F0] rounded-xl p-4 mb-4">
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 p-2 bg-[#3B82F6]/10 rounded-lg">
-              <Sparkles className="h-5 w-5 text-[#3B82F6]" />
+            <div className="flex-shrink-0 p-2 bg-[#64748B]/10 rounded-lg">
+              <Sparkles className="h-5 w-5 text-[#64748B]" />
             </div>
             <div>
               <h3 className="font-bold text-[#0F172A] mb-1">

@@ -37,7 +37,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
   const getEventColor = (type: string) => {
     switch (type) {
       case "created":
-        return "text-[#3B82F6] bg-[#3B82F6]/10";
+        return "text-[#64748B] bg-[#64748B]/10";
       case "status_change":
         return "text-[#22C55E] bg-[#22C55E]/10";
       case "dm_sent":

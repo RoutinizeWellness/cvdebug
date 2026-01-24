@@ -12,7 +12,7 @@ export function RoleMatchCard({ role, matchScore, confidence }: RoleMatchCardPro
     <div className="glass-panel p-6 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF]/50 h-full flex flex-col">
       <div className="flex items-start justify-between mb-6 gap-4">
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          <div className="p-2 rounded-lg bg-[#3B82F6]/10 text-[#94A3B8] flex-shrink-0">
+          <div className="p-2 rounded-lg bg-[#64748B]/10 text-[#94A3B8] flex-shrink-0">
             <Briefcase className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">

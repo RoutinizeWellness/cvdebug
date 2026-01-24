@@ -58,7 +58,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
           <div className="absolute inset-0 bg-[#F8FAFC]"></div>
           {/* Abstract Fireworks SVG Decoration */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20">
-            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-[#3B82F6] blur-[100px] opacity-30"></div>
+            <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-[#64748B] blur-[100px] opacity-30"></div>
             <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-[#8B5CF6] blur-[100px] opacity-30"></div>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-[#3B82F6] text-lg md:text-xl font-medium tracking-wide uppercase"
+                className="text-[#64748B] text-lg md:text-xl font-medium tracking-wide uppercase"
               >
                 Stop being invisible.
               </motion.p>

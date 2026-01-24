@@ -460,7 +460,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className={`px-2 py-1 rounded text-xs font-bold ${
-                        alt.type === 'Leadership' ? 'bg-[#3B82F6] text-white' :
+                        alt.type === 'Leadership' ? 'bg-[#64748B] text-white' :
                         alt.type === 'Impact' ? 'bg-[#10B981] text-white' :
                         'bg-[#8B5CF6] text-white'
                       }`}>

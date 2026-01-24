@@ -84,7 +84,7 @@ export default function ATSScannerNurses() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
           background: #F8FAFC;
@@ -119,7 +119,7 @@ export default function ATSScannerNurses() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-[#3B82F6]/10 px-3 py-1 text-sm font-medium leading-6 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
+              <div className="rounded-full bg-[#64748B]/10 px-3 py-1 text-sm font-medium leading-6 text-[#64748B] ring-1 ring-inset ring-[#64748B]/20">
                 <Heart className="inline h-4 w-4 mr-1" /> Trusted by 500+ Nurses
               </div>
             </motion.div>
@@ -131,7 +131,7 @@ export default function ATSScannerNurses() {
               className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               ATS Resume Scanner Built for{" "}
-              <span className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] bg-clip-text text-transparent">
                 Nurses
               </span>
             </motion.h1>
@@ -154,7 +154,7 @@ export default function ATSScannerNurses() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#64748B] to-[#64748B] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#64748B]"
               >
                 Scan My Nursing Resume Free
               </Button>
@@ -215,10 +215,10 @@ export default function ATSScannerNurses() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group relative overflow-hidden rounded-2xl p-8 bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-colors duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                  className="group relative overflow-hidden rounded-2xl p-8 bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#64748B]/50 transition-colors duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#3B82F6]/10 blur-2xl transition-all group-hover:scale-110"></div>
-                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#3B82F6]/10 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-[#64748B]/10 blur-2xl transition-all group-hover:scale-110"></div>
+                  <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-[#64748B]/10 text-[#64748B] ring-1 ring-inset ring-[#64748B]/20">
                     <feature.icon className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-semibold leading-8 text-[#0F172A]">{feature.title}</h3>
@@ -247,8 +247,8 @@ export default function ATSScannerNurses() {
                 >
                   <p className="text-[#475569] mb-4">"{testimonial.text}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-[#3B82F6]/20 flex items-center justify-center">
-                      <Heart className="h-5 w-5 text-[#3B82F6]" />
+                    <div className="h-10 w-10 rounded-full bg-[#64748B]/20 flex items-center justify-center">
+                      <Heart className="h-5 w-5 text-[#64748B]" />
                     </div>
                     <div>
                       <div className="font-semibold text-[#0F172A]">{testimonial.name}</div>
@@ -270,7 +270,7 @@ export default function ATSScannerNurses() {
             transition={{ duration: 0.6 }}
             className="mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
           >
-            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#3B82F6]/30 blur-[100px]"></div>
+            <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#64748B]/30 blur-[100px]"></div>
 
             <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">
               Ready to Get More Interview Callbacks?
@@ -281,7 +281,7 @@ export default function ATSScannerNurses() {
             <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#3B82F6] to-[#3B82F6] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#3B82F6] hover:to-[#3B82F6] sm:w-auto"
+                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#64748B] to-[#64748B] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#64748B] hover:to-[#64748B] sm:w-auto"
               >
                 Scan My Resume Now (Free)
               </Button>

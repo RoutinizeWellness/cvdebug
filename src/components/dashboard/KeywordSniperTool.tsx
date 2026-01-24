@@ -491,7 +491,7 @@ export function KeywordSniperTool({
           <div className="p-5 border-t border-white/10 flex gap-4 bg-[#FFFFFF]/40">
             <Button
               onClick={handleApplySuggestion}
-              className="flex-1 bg-primary hover:bg-[#3B82F6] text-[#0F172A] font-medium py-3 px-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all"
+              className="flex-1 bg-primary hover:bg-[#64748B] text-[#0F172A] font-medium py-3 px-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all"
             >
               <span className="material-symbols-outlined mr-2">check_circle</span>
               Apply Selected

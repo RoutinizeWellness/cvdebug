@@ -64,7 +64,7 @@ export function GamificationBadges({ badges, onBadgeClick }: GamificationBadgesP
           </p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-black text-[#3B82F6]">
+          <div className="text-2xl font-black text-[#64748B]">
             {unlockedCount}/{totalCount}
           </div>
           <div className="text-xs text-[#64748B] uppercase tracking-wider">
@@ -79,7 +79,7 @@ export function GamificationBadges({ badges, onBadgeClick }: GamificationBadgesP
           initial={{ width: 0 }}
           animate={{ width: `${completionRate}%` }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="h-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] rounded-full"
+          className="h-full bg-gradient-to-r from-[#64748B] to-[#8B5CF6] rounded-full"
         />
       </div>
 
@@ -144,7 +144,7 @@ export function GamificationBadges({ badges, onBadgeClick }: GamificationBadgesP
                   <div className="mt-2">
                     <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#3B82F6] rounded-full"
+                        className="h-full bg-[#64748B] rounded-full"
                         style={{ width: `${badge.progress}%` }}
                       />
                     </div>

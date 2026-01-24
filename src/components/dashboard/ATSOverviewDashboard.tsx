@@ -338,7 +338,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                     <p className="text-[11px] md:text-xs text-[#475569] mb-2 whitespace-pre-line leading-relaxed">{failure.description}</p>
                     {failure.howToFix && (
                       <div className="mt-1.5 md:mt-2 p-1.5 md:p-2 bg-[#F8FAFC]/50 border border-[#E2E8F0]/30 rounded text-[11px] md:text-xs text-[#0F172A] whitespace-pre-line leading-relaxed">
-                        <span className="font-semibold text-[#3B82F6]">How to fix:</span> {failure.howToFix}
+                        <span className="font-semibold text-[#64748B]">How to fix:</span> {failure.howToFix}
                       </div>
                     )}
                   </div>
@@ -362,14 +362,14 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#3B82F6]">settings</span>
+                <span className="material-symbols-outlined text-[20px] text-[#64748B]">settings</span>
                 <span className="text-sm font-semibold text-[#0F172A]">Technical Signal</span>
               </div>
-              <span className="text-lg font-black text-[#3B82F6]">{technicalSignal}%</span>
+              <span className="text-lg font-black text-[#64748B]">{technicalSignal}%</span>
             </div>
             <div className="h-3 bg-[#E2E8F0] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#3B82F6] to-[#6366F1] rounded-full"
+                className="h-full bg-gradient-to-r from-[#64748B] to-[#6366F1] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${technicalSignal}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
@@ -543,11 +543,11 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-[#475569]">Soft Skills</span>
-                <span className="text-lg font-black text-[#3B82F6]">{impactMetrics.softSkills}</span>
+                <span className="text-lg font-black text-[#64748B]">{impactMetrics.softSkills}</span>
               </div>
               <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#3B82F6] rounded-full"
+                  className="h-full bg-[#64748B] rounded-full"
                   style={{ width: `${Math.min(100, (impactMetrics.softSkills / 8) * 100)}%` }}
                 />
               </div>

@@ -154,8 +154,8 @@ export function FreeTierView({
       {/* Robot View - ALWAYS VISIBLE (Best Sales Weapon) */}
       <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="h-10 w-10 bg-[#3B82F6]/10 rounded-lg flex items-center justify-center border border-[#3B82F6]/20">
-            <Cpu className="h-5 w-5 text-[#3B82F6]" />
+          <div className="h-10 w-10 bg-[#64748B]/10 rounded-lg flex items-center justify-center border border-[#64748B]/20">
+            <Cpu className="h-5 w-5 text-[#64748B]" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
@@ -322,7 +322,7 @@ export function FreeTierView({
           <div className="relative">
             <div className="absolute inset-0 backdrop-blur-md bg-[#F8FAFC]/60 rounded-lg z-10 flex items-center justify-center">
               <div className="text-center p-6">
-                <Lock className="h-8 w-8 text-[#3B82F6] mx-auto mb-3" />
+                <Lock className="h-8 w-8 text-[#64748B] mx-auto mb-3" />
                 <p className="text-[#0F172A] font-bold text-lg mb-1">
                   {remainingKeywords} Critical Keywords Hidden
                 </p>
@@ -344,9 +344,9 @@ export function FreeTierView({
       </div>
 
       {/* The Paywall - Clear Value Proposition */}
-      <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 bg-gradient-to-br from-[#3B82F6]/10 via-[#8B5CF6]/10 to-[#F59E0B]/10 border-2 border-[#3B82F6]/30">
+      <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 bg-gradient-to-br from-[#64748B]/10 via-[#8B5CF6]/10 to-[#F59E0B]/10 border-2 border-[#64748B]/30">
         <div className="text-center space-y-6">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#3B82F6] to-[#F59E0B] rounded-full flex items-center justify-center">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#64748B] to-[#F59E0B] rounded-full flex items-center justify-center">
             <Lock className="h-8 w-8 text-white" />
           </div>
           
@@ -401,14 +401,14 @@ export function FreeTierView({
             <Button
               onClick={() => setShowPricing(true)}
               size="lg"
-              className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-[#3B82F6]/40 bg-gradient-to-r from-[#3B82F6] via-[#F59E0B] to-[#F59E0B] hover:from-[#3B82F6]/90 hover:via-[#F59E0B]/90 hover:to-[#F59E0B]/90 text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full max-w-md h-16 font-bold text-xl shadow-2xl shadow-[#64748B]/40 bg-gradient-to-r from-[#64748B] via-[#F59E0B] to-[#F59E0B] hover:from-[#64748B]/90 hover:via-[#F59E0B]/90 hover:to-[#F59E0B]/90 text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <Lock className="mr-3 h-6 w-6 text-white" />
               Get Certified - Only €9.99
             </Button>
 
             {/* Manual Review Option - $49 */}
-            <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#3B82F6]/10 border-2 border-[#8B5CF6]/30 rounded-lg p-4 max-w-md mx-auto">
+            <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#64748B]/10 border-2 border-[#8B5CF6]/30 rounded-lg p-4 max-w-md mx-auto">
               <div className="flex items-start gap-3 mb-3">
                 <div className="h-10 w-10 bg-[#8B5CF6]/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-[#8B5CF6]/30">
                   <span className="text-xl">👨‍💻</span>
@@ -429,7 +429,7 @@ export function FreeTierView({
             </div>
 
             <p className="text-xs text-[#64748B]">
-              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#3B82F6] underline font-semibold">Interview Sprint (€24.99)</button> for unlimited scans + cover letter optimizer
+              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#64748B] underline font-semibold">Interview Sprint (€24.99)</button> for unlimited scans + cover letter optimizer
             </p>
           </div>
           

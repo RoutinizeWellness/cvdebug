@@ -80,7 +80,7 @@ export function BlogPost() {
             >
               {/* Category Badge */}
               <div className="mb-4">
-                <span className="inline-block bg-[#3B82F6] text-white px-4 py-1.5 rounded-full text-sm font-semibold">
+                <span className="inline-block bg-[#64748B] text-white px-4 py-1.5 rounded-full text-sm font-semibold">
                   {post.category}
                 </span>
               </div>
@@ -93,7 +93,7 @@ export function BlogPost() {
               {/* Meta Info */}
               <div className="flex flex-wrap items-center gap-6 text-[#64748B] mb-8 pb-8 border-b border-[#E2E8F0]">
                 <div className="flex items-center gap-2">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] flex items-center justify-center text-white font-bold">
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#64748B] to-[#475569] flex items-center justify-center text-white font-bold">
                     CV
                   </div>
                   <span className="font-medium text-[#0F172A]">{post.author}</span>
@@ -166,7 +166,7 @@ export function BlogPost() {
               </div>
 
               {/* Article Content */}
-              <div className="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-[#0F172A] prose-p:text-[#475569] prose-a:text-[#3B82F6] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#0F172A] prose-code:text-[#EF4444] prose-code:bg-[#FEF2F2] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#0F172A] prose-pre:text-[#F8FAFC] prose-ul:text-[#475569] prose-ol:text-[#475569]">
+              <div className="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-[#0F172A] prose-p:text-[#475569] prose-a:text-[#64748B] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#0F172A] prose-code:text-[#EF4444] prose-code:bg-[#FEF2F2] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#0F172A] prose-pre:text-[#F8FAFC] prose-ul:text-[#475569] prose-ol:text-[#475569]">
                 <ReactMarkdown>{post.content}</ReactMarkdown>
               </div>
             </motion.div>
@@ -176,7 +176,7 @@ export function BlogPost() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-16 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] rounded-2xl p-8 sm:p-12 text-center"
+              className="mt-16 bg-gradient-to-br from-[#64748B] to-[#475569] rounded-2xl p-8 sm:p-12 text-center"
             >
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
                 Ready to Fix Your Resume?
@@ -185,7 +185,7 @@ export function BlogPost() {
                 Scan your resume with CVDebug's AI-powered ATS checker. Get your score in 30 seconds.
               </p>
               <Link to="/dashboard">
-                <Button className="h-14 px-8 text-lg font-bold bg-white text-[#3B82F6] hover:bg-[#F8FAFC]">
+                <Button className="h-14 px-8 text-lg font-bold bg-white text-[#64748B] hover:bg-[#F8FAFC]">
                   Scan Your Resume - Free
                 </Button>
               </Link>
@@ -202,13 +202,13 @@ export function BlogPost() {
                       to={`/blog/${relatedPost.slug}`}
                       className="group bg-white rounded-xl border border-[#E2E8F0] p-6 hover:shadow-lg transition-all"
                     >
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-2 group-hover:text-[#3B82F6] transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-2 group-hover:text-[#64748B] transition-colors line-clamp-2">
                         {relatedPost.title}
                       </h3>
                       <p className="text-sm text-[#64748B] mb-3 line-clamp-2">
                         {relatedPost.excerpt}
                       </p>
-                      <span className="text-sm font-semibold text-[#3B82F6] flex items-center gap-1">
+                      <span className="text-sm font-semibold text-[#64748B] flex items-center gap-1">
                         Read More
                         <ArrowLeft className="h-3 w-3 rotate-180" />
                       </span>

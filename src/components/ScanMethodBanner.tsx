@@ -42,8 +42,8 @@ export function ScanMethodBanner({ method }: ScanMethodBannerProps) {
       className="bg-gradient-to-r from-[#DBEAFE] to-[#E0E7FF] border border-[#93C5FD]/30 rounded-xl p-4 mb-6"
     >
       <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-          <Cloud className="h-4 w-4 text-[#3B82F6]" />
+        <div className="w-8 h-8 rounded-lg bg-[#64748B]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <Cloud className="h-4 w-4 text-[#64748B]" />
         </div>
         <div className="flex-1">
           <h4 className="text-sm font-bold text-[#1E293B] mb-1 flex items-center gap-2">

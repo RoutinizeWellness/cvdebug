@@ -35,7 +35,7 @@ export function ImpactScore({ score, quantifiedBullets, totalBullets }: ImpactSc
           <p>Recruiters prefer resumes with &gt;60% quantified bullet points.</p>
         </div>
         <div className="flex items-start gap-2 text-sm text-[#475569]">
-          <Target className="h-4 w-4 text-[#3B82F6] mt-0.5 shrink-0" />
+          <Target className="h-4 w-4 text-[#64748B] mt-0.5 shrink-0" />
           <p>Add numbers (%, $, #) to increase your impact score.</p>
         </div>
       </div>

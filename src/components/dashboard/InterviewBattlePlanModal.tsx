@@ -283,7 +283,7 @@ export function InterviewBattlePlanModal({
                       <p className="text-sm text-[#475569] mt-1">{battlePlan.killerQuestion.timing}</p>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#3B82F6]">Follow-up:</span>
+                      <span className="text-xs font-bold text-[#64748B]">Follow-up:</span>
                       <p className="text-sm text-[#475569] mt-1">{battlePlan.killerQuestion.followUp}</p>
                     </div>
                   </div>

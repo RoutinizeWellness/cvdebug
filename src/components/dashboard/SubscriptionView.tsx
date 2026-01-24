@@ -95,7 +95,7 @@ export function SubscriptionView() {
           >
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B5CF6]/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#3B82F6]/5 rounded-full blur-3xl -ml-12 -mb-12 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#64748B]/5 rounded-full blur-3xl -ml-12 -mb-12 pointer-events-none"></div>
 
             <div className="flex flex-col gap-5 relative z-10 max-w-xl flex-1">
               <div className="flex items-center gap-3 flex-wrap">
@@ -128,7 +128,7 @@ export function SubscriptionView() {
                   )}
                   {isInterviewSprint && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">Interview Sprint</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">Interview Sprint</span>
                       <span className="material-symbols-outlined text-[#8B5CF6] text-[28px]">rocket_launch</span>
                     </>
                   )}
@@ -247,7 +247,7 @@ export function SubscriptionView() {
                 className="relative rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-[#F3E8FF] bg-gradient-to-br from-[#FFFFFF] via-[#FFFFFF] to-[#F3E8FF]/30 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transform hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all duration-300 group overflow-hidden"
               >
                 {/* Animated background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/5 via-transparent to-[#3B82F6]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/5 via-transparent to-[#64748B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {/* Best Value Badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
@@ -272,7 +272,7 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6]">{formatPrice('sprint_7day')}</span>
+                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">{formatPrice('sprint_7day')}</span>
                     <span className="text-[#64748B] line-through text-xl font-bold">{formatPrice('interview_sprint')}</span>
                   </div>
 
@@ -305,7 +305,7 @@ export function SubscriptionView() {
                     <div className="flex items-center gap-2 mb-2">
                       <div className="flex -space-x-2">
                         {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#3B82F6] border-2 border-[#FFFFFF]"></div>
+                          <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#64748B] border-2 border-[#FFFFFF]"></div>
                         ))}
                       </div>
                       <span className="text-xs font-bold text-[#8B5CF6]">1,200+ Success Stories</span>

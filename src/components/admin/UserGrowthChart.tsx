@@ -135,8 +135,8 @@ export function UserGrowthChart() {
         >
           <defs>
             <linearGradient id="userGrowthGradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05" />
+              <stop offset="0%" stopColor="#64748B" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#64748B" stopOpacity="0.05" />
             </linearGradient>
           </defs>
 
@@ -198,7 +198,7 @@ export function UserGrowthChart() {
           <motion.path
             d={linePath}
             fill="none"
-            stroke="#3B82F6"
+            stroke="#64748B"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -227,7 +227,7 @@ export function UserGrowthChart() {
                   cy={y}
                   r="5"
                   fill="white"
-                  stroke="#3B82F6"
+                  stroke="#64748B"
                   strokeWidth="2"
                   className="cursor-pointer hover:r-6 transition-all"
                 />

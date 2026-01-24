@@ -88,7 +88,7 @@ export default function ContactUs() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-bold text-[#0F172A] mb-6">
-            Get in <span className="text-[#3B82F6]">Touch</span>
+            Get in <span className="text-[#64748B]">Touch</span>
           </h1>
           <p className="text-xl text-[#475569] max-w-3xl mx-auto leading-relaxed">
             Have a question or need help? Our team is here to assist you with anything related to CVDebug.
@@ -142,7 +142,7 @@ export default function ContactUs() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#64748B] transition-colors"
                   placeholder="John Doe"
                 />
               </div>
@@ -158,7 +158,7 @@ export default function ContactUs() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#64748B] transition-colors"
                   placeholder="john@example.com"
                 />
               </div>
@@ -173,7 +173,7 @@ export default function ContactUs() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] focus:outline-none focus:border-[#3B82F6] transition-colors"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] focus:outline-none focus:border-[#64748B] transition-colors"
                 >
                   <option value="">Select a subject</option>
                   <option value="technical">Technical Support</option>
@@ -195,7 +195,7 @@ export default function ContactUs() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#3B82F6] transition-colors resize-none"
+                  className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-3 text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#64748B] transition-colors resize-none"
                   placeholder="How can we help you?"
                 />
               </div>
@@ -203,7 +203,7 @@ export default function ContactUs() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#3B82F6] hover:bg-[#0F172A] text-white py-6 text-lg"
+                className="w-full bg-[#64748B] hover:bg-[#0F172A] text-white py-6 text-lg"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
@@ -269,7 +269,7 @@ export default function ContactUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-[#3B82F6] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#64748B] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

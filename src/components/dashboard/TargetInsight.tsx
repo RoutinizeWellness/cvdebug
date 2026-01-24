@@ -20,15 +20,15 @@ export function TargetInsight({ company, atsSystem, tips }: TargetInsightProps) 
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
-        <Badge className="bg-[#3B82F6]/10 border-[#3B82F6]/30 text-[#94A3B8] hover:bg-[#3B82F6]/20 cursor-help transition-all duration-300 px-3 py-1.5 rounded-full">
+        <Badge className="bg-[#64748B]/10 border-[#64748B]/30 text-[#94A3B8] hover:bg-[#64748B]/20 cursor-help transition-all duration-300 px-3 py-1.5 rounded-full">
           <Info className="h-3 w-3 mr-1.5" />
           Targeting {company} via {atsSystem} ATS
         </Badge>
       </HoverCardTrigger>
-      <HoverCardContent className="w-80 bg-[#0A0A0A] border-[#3B82F6]/30 text-[#475569] p-4">
+      <HoverCardContent className="w-80 bg-[#0A0A0A] border-[#64748B]/30 text-[#475569] p-4">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-[#3B82F6]/20 flex items-center justify-center">
+            <div className="h-8 w-8 rounded-full bg-[#64748B]/20 flex items-center justify-center">
               <Info className="h-4 w-4 text-[#94A3B8]" />
             </div>
             <div>

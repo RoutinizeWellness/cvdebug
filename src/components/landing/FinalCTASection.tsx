@@ -20,7 +20,7 @@ export function FinalCTASection() {
         className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] mx-auto max-w-4xl rounded-3xl p-8 text-center sm:p-16 relative overflow-hidden"
       >
         {/* Decorative glow behind button */}
-        <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#3B82F6]/30 blur-[100px]"></div>
+        <div className="absolute left-1/2 top-1/2 -z-10 h-[200px] w-[200px] -translate-x-1/2 -translate-y-1/2 bg-[#64748B]/30 blur-[100px]"></div>
 
         <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight text-[#1E293B] sm:text-4xl">
           {t.landing.finalCta.heading}
@@ -31,7 +31,7 @@ export function FinalCTASection() {
         <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
           <Button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="w-full max-w-md rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] px-8 py-4 text-lg font-bold text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all hover:scale-105 hover:from-[#8B5CF6] hover:to-[#3B82F6] border-0 sm:w-auto"
+            className="w-full max-w-md rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#64748B] px-8 py-4 text-lg font-bold text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all hover:scale-105 hover:from-[#8B5CF6] hover:to-[#64748B] border-0 sm:w-auto"
           >
             {t.landing.finalCta.button}
           </Button>

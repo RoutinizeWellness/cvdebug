@@ -179,7 +179,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#3B82F6] border border-[#E2E8F0]">
+                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
                       Active
                     </span>
                     <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
@@ -198,7 +198,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
               <div className="flex flex-col gap-2 mb-8">
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-[#0F172A] font-medium">Sprint Progress</span>
-                  <span className="text-[#3B82F6] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
+                  <span className="text-[#64748B] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -312,7 +312,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                       Current Password
                     </label>
                     <input
-                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                       placeholder="••••••••••••"
                       type="password"
                     />
@@ -323,7 +323,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                         New Password
                       </label>
                       <input
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />
@@ -333,7 +333,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                         Confirm New
                       </label>
                       <input
-                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#3B82F6] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                        className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
                         placeholder="••••••••••••"
                         type="password"
                       />
@@ -364,7 +364,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   <button
                     onClick={handleAnalyticsToggle}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white ${
-                      shareAnalytics ? 'bg-[#3B82F6]' : 'bg-slate-300'
+                      shareAnalytics ? 'bg-[#64748B]' : 'bg-slate-300'
                     }`}
                   >
                     <span

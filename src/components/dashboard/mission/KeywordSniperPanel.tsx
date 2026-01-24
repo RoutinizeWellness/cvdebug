@@ -230,7 +230,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                   <h3 className="text-sm font-bold text-[#64748B] uppercase tracking-wider">Fix Strategy</h3>
                   <div className="space-y-2">
                     <div className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-                      <div className="h-6 w-6 rounded-full bg-[#3B82F6]/10 text-[#3B82F6] flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
+                      <div className="h-6 w-6 rounded-full bg-[#64748B]/10 text-[#64748B] flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
                       <div className="space-y-1">
                         <p className="text-sm font-medium text-[#0F172A]">Update your Resume</p>
                         <p className="text-xs text-[#64748B]">Use the AI-generated phrases to add missing keywords naturally.</p>
@@ -259,7 +259,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
               <div className="space-y-6">
                 <div className="p-4 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
                   <h3 className="text-sm font-bold text-[#0F172A] mb-2 flex items-center gap-2">
-                    <ArrowRightLeft className="h-4 w-4 text-[#3B82F6]" />
+                    <ArrowRightLeft className="h-4 w-4 text-[#64748B]" />
                     Augmentation Visualizer
                   </h3>
                   <p className="text-xs text-[#64748B] mb-4">
@@ -277,20 +277,20 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <div className="text-xs font-bold text-[#3B82F6] uppercase tracking-wider">Target Instance</div>
-                      <div className="h-32 rounded bg-[#3B82F6]/5 border border-[#3B82F6]/20 p-2 overflow-hidden relative">
+                      <div className="text-xs font-bold text-[#64748B] uppercase tracking-wider">Target Instance</div>
+                      <div className="h-32 rounded bg-[#64748B]/5 border border-[#64748B]/20 p-2 overflow-hidden relative">
                         <div className="space-y-1">
                           {missingKeywords.slice(0, 3).map((kw: any, i: number) => (
                             <div key={i} className="flex items-center gap-1">
-                              <div className="w-1 h-1 rounded-full bg-[#3B82F6]" />
-                              <div className="h-1.5 bg-[#3B82F6]/20 rounded w-16" />
-                              <span className="text-[8px] text-[#3B82F6] font-bold">+{typeof kw === 'string' ? kw : kw.keyword}</span>
+                              <div className="w-1 h-1 rounded-full bg-[#64748B]" />
+                              <div className="h-1.5 bg-[#64748B]/20 rounded w-16" />
+                              <span className="text-[8px] text-[#64748B] font-bold">+{typeof kw === 'string' ? kw : kw.keyword}</span>
                             </div>
                           ))}
                           <div className="h-1.5 bg-[#E2E8F0] rounded w-full" />
                           <div className="h-1.5 bg-[#E2E8F0] rounded w-2/3" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#3B82F6]/5" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#64748B]/5" />
                       </div>
                     </div>
                   </div>
@@ -302,7 +302,7 @@ export function KeywordSniperPanel({ open, onOpenChange, job, onGenerateCoverLet
                     const kw = typeof keyword === 'string' ? keyword : keyword.keyword;
                     return (
                       <div key={i} className="flex items-center gap-3 p-3 rounded bg-[#F8FAFC] border border-[#E2E8F0]">
-                        <div className="w-6 h-6 rounded-full bg-[#3B82F6]/10 flex items-center justify-center text-[#3B82F6] text-xs font-bold">
+                        <div className="w-6 h-6 rounded-full bg-[#64748B]/10 flex items-center justify-center text-[#64748B] text-xs font-bold">
                           +
                         </div>
                         <div>

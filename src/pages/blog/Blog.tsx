@@ -136,7 +136,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
     >
       <Link to={`/blog/${post.slug}`}>
         {/* Featured Image Placeholder */}
-        <div className="h-48 bg-gradient-to-br from-[#3B82F6] to-[#2563EB] relative overflow-hidden">
+        <div className="h-48 bg-gradient-to-br from-[#64748B] to-[#475569] relative overflow-hidden">
           <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-6xl opacity-20">📝</span>
@@ -162,7 +162,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-[#3B82F6] transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-[#64748B] transition-colors line-clamp-2">
             {post.title}
           </h3>
 
@@ -185,7 +185,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
           </div>
 
           {/* Read More */}
-          <div className="flex items-center gap-2 text-sm font-semibold text-[#3B82F6] group-hover:gap-4 transition-all">
+          <div className="flex items-center gap-2 text-sm font-semibold text-[#64748B] group-hover:gap-4 transition-all">
             <span>Read Article</span>
             <ArrowRight className="h-4 w-4" />
           </div>

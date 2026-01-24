@@ -19,7 +19,7 @@ export function ATSRobotVision() {
   if (resumes === undefined) {
     return (
       <div className="h-full flex items-center justify-center bg-[#F8FAFC] text-[#0F172A]">
-        <Loader2 className="h-8 w-8 animate-spin text-[#3B82F6]" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#64748B]" />
       </div>
     );
   }
@@ -44,7 +44,7 @@ export function ATSRobotVision() {
       <header className="bg-[#FFFFFF] border-b border-[#E2E8F0] px-6 py-4 flex items-center justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="size-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6]">
+            <div className="size-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#64748B] to-[#8B5CF6]">
               <span className="material-symbols-outlined text-[24px]">visibility</span>
             </div>
             <div>
@@ -57,14 +57,14 @@ export function ATSRobotVision() {
         <div className="flex items-center gap-6">
           {/* Robot Vision Toggle */}
           <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0]">
-            <span className="material-symbols-outlined text-[20px] text-[#3B82F6]">
+            <span className="material-symbols-outlined text-[20px] text-[#64748B]">
               smart_toy
             </span>
             <span className="text-sm font-medium text-[#0F172A]">Robot Vision</span>
             <Switch
               checked={robotVisionEnabled}
               onCheckedChange={setRobotVisionEnabled}
-              className="data-[state=checked]:bg-[#3B82F6]"
+              className="data-[state=checked]:bg-[#64748B]"
             />
           </div>
 
@@ -79,7 +79,7 @@ export function ATSRobotVision() {
           </Button>
           <Button
             size="sm"
-            className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white"
+            className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white"
           >
             <span className="material-symbols-outlined text-[18px] mr-2">auto_fix_high</span>
             Fix All Issues
@@ -96,7 +96,7 @@ export function ATSRobotVision() {
             <div className="relative bg-[#FFFFFF] rounded-lg shadow-2xl overflow-hidden min-h-[800px]">
               {/* Scan Line Animation */}
               {robotVisionEnabled && (
-                <div className="scan-line absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-70 z-10" />
+                <div className="scan-line absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#64748B] to-transparent opacity-70 z-10" />
               )}
 
               {/* Resume Content */}
@@ -111,8 +111,8 @@ export function ATSRobotVision() {
                 </div>
 
                 {/* OCR Text Content */}
-                <div className="relative border-2 border-[#3B82F6]/50 rounded p-4 mb-6">
-                  <div className="absolute -top-3 left-2 bg-[#3B82F6] text-white text-xs font-bold px-2 py-1 rounded">
+                <div className="relative border-2 border-[#64748B]/50 rounded p-4 mb-6">
+                  <div className="absolute -top-3 left-2 bg-[#64748B] text-white text-xs font-bold px-2 py-1 rounded">
                     PARSED CONTENT
                   </div>
                   <div className="whitespace-pre-wrap font-mono text-xs text-[#475569] leading-relaxed">
@@ -146,10 +146,10 @@ export function ATSRobotVision() {
 
               {/* Robot Vision Status Overlay */}
               {robotVisionEnabled && (
-                <div className="absolute top-4 right-4 bg-[#FFFFFF] px-4 py-2 rounded-lg border border-[#3B82F6]/30 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                <div className="absolute top-4 right-4 bg-[#FFFFFF] px-4 py-2 rounded-lg border border-[#64748B]/30 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
-                    <span className="text-xs font-mono text-[#3B82F6]">SCANNING...</span>
+                    <div className="w-2 h-2 rounded-full bg-[#64748B] animate-pulse" />
+                    <span className="text-xs font-mono text-[#64748B]">SCANNING...</span>
                   </div>
                 </div>
               )}
@@ -190,7 +190,7 @@ export function ATSRobotVision() {
               <div className="h-6 w-px bg-[#E2E8F0]" />
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white"
+                className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white"
               >
                 <span className="material-symbols-outlined text-[18px] mr-2">build</span>
                 Fix Formatting

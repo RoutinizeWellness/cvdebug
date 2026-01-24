@@ -37,7 +37,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
         <ScoreCard
           label="Overall"
           score={analysis.overallScore}
-          color="from-[#3B82F6] to-[#06B6D4]"
+          color="from-[#64748B] to-[#06B6D4]"
         />
         <ScoreCard
           label="Keyword Match"
@@ -95,7 +95,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
               ) : rec.type === 'important' ? (
                 <TrendingUp className="h-5 w-5 text-[#F59E0B] flex-shrink-0 mt-0.5" />
               ) : (
-                <CheckCircle className="h-5 w-5 text-[#3B82F6] flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-[#64748B] flex-shrink-0 mt-0.5" />
               )}
 
               <div className="flex-1">
@@ -119,7 +119,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
           className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
         >
           <h3 className="font-bold text-[#0F172A] mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#3B82F6]">speed</span>
+            <span className="material-symbols-outlined text-[#64748B]">speed</span>
             Action Verb Strength Analysis
           </h3>
 
@@ -189,7 +189,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
                   {analysis.entities.technologies.map((tech, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 rounded bg-[#3B82F6]/10 text-[#3B82F6] text-xs font-medium border border-[#3B82F6]/20"
+                      className="px-2 py-1 rounded bg-[#64748B]/10 text-[#64748B] text-xs font-medium border border-[#64748B]/20"
                     >
                       {tech}
                     </span>

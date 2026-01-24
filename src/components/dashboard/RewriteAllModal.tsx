@@ -69,7 +69,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
         {/* Header */}
         <DialogHeader className="border-b border-[#E2E8F0] pb-4">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8B5CF6] via-[#6366F1] to-[#3B82F6] flex items-center justify-center shadow-lg">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8B5CF6] via-[#6366F1] to-[#64748B] flex items-center justify-center shadow-lg">
               <Sparkles className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
@@ -175,7 +175,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                   },
                   {
                     icon: CheckCircle,
-                    color: "#3B82F6",
+                    color: "#64748B",
                     title: "Polish",
                     desc: "FAANG-level language"
                   }

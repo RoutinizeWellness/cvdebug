@@ -51,7 +51,7 @@ export default function AboutUs() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-bold text-[#0F172A] mb-6">
-            About <span className="text-[#3B82F6]">CVDebug</span>
+            About <span className="text-[#64748B]">CVDebug</span>
           </h1>
           <p className="text-xl text-[#475569] max-w-3xl mx-auto leading-relaxed">
             We're building the future of job searching with AI-powered tools that help you beat ATS systems and get hired faster.
@@ -99,7 +99,7 @@ export default function AboutUs() {
                 transition={{ duration: 0.5, delay: 0.1 * (index + 3) }}
                 className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               >
-                <div className="w-12 h-12 bg-[#3B82F6]/20 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-[#64748B]/20 rounded-lg flex items-center justify-center mb-4">
                   <value.icon className="w-6 h-6 text-[#94A3B8]" />
                 </div>
                 <h3 className="text-xl font-bold text-[#0F172A] mb-3">{value.title}</h3>
@@ -161,7 +161,7 @@ export default function AboutUs() {
           </p>
           <a
             href="/"
-            className="inline-block bg-[#3B82F6] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+            className="inline-block bg-[#64748B] hover:bg-[#0F172A] text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
           >
             Get Started Free
           </a>

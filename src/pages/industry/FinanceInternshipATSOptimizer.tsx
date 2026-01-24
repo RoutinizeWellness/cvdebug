@@ -67,7 +67,7 @@ export default function FinanceInternshipATSOptimizer() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#3B82F6]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
       <style>{`
         body {
           background: #F8FAFC;
@@ -102,7 +102,7 @@ export default function FinanceInternshipATSOptimizer() {
               transition={{ duration: 0.6 }}
               className="mb-8 flex justify-center"
             >
-              <div className="rounded-full bg-[#3B82F6]/10 px-3 py-1 text-sm font-medium leading-6 text-[#3B82F6] ring-1 ring-inset ring-[#3B82F6]/20">
+              <div className="rounded-full bg-[#64748B]/10 px-3 py-1 text-sm font-medium leading-6 text-[#64748B] ring-1 ring-inset ring-[#64748B]/20">
                 <Briefcase className="inline h-4 w-4 mr-1" /> Used by 800+ Finance Students
               </div>
             </motion.div>
@@ -137,7 +137,7 @@ export default function FinanceInternshipATSOptimizer() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#3B82F6]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#64748B]"
               >
                 Optimize My Resume (Free)
               </Button>
@@ -225,7 +225,7 @@ export default function FinanceInternshipATSOptimizer() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:hover:border-[#3B82F6]/50 transition-colors duration-300"
+                  className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] group relative overflow-hidden rounded-2xl p-8 hover:hover:border-[#64748B]/50 transition-colors duration-300"
                 >
                   <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-yellow-500/10 blur-2xl transition-all group-hover:scale-110"></div>
                   <div className="mb-6 inline-flex size-12 items-center justify-center rounded-lg bg-yellow-500/10 text-[#F59E0B] ring-1 ring-inset ring-yellow-500/20">

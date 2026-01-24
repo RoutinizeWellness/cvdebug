@@ -136,7 +136,7 @@ export function InterviewBattlePlan({
       },
       primary: {
         border: "border-l-blue-500",
-        text: "text-[#3B82F6]",
+        text: "text-[#64748B]",
         bg: "bg-[#F8FAFC] border-[#F1F5F9]"
       },
       amber: {
@@ -262,7 +262,7 @@ export function InterviewBattlePlan({
         {/* Lock Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
           <div className="text-center px-6 max-w-lg">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#3B82F6] to-[#8B5CF6] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#3B82F6]/30">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#64748B] to-[#8B5CF6] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#64748B]/30">
               <span className="material-symbols-outlined text-4xl text-white">lock</span>
             </div>
             <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
@@ -292,7 +292,7 @@ export function InterviewBattlePlan({
 
             <button
               onClick={onUpgrade}
-              className="w-full bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#3B82F6]/30 hover:shadow-2xl hover:shadow-[#3B82F6]/40 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#64748B]/30 hover:shadow-2xl hover:shadow-[#64748B]/40 flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">workspace_premium</span>
               {t.interviewPrep.unlockInterview}
@@ -317,7 +317,7 @@ export function InterviewBattlePlan({
           <p className="text-[#64748B] mt-2 flex items-center gap-2 flex-wrap text-sm md:text-base">
             <span className="material-symbols-outlined text-sm">psychology</span>
             AI-generated strategy for{" "}
-            <span className="text-[#3B82F6] font-mono text-xs md:text-sm bg-[#F8FAFC] px-2 py-0.5 rounded">
+            <span className="text-[#64748B] font-mono text-xs md:text-sm bg-[#F8FAFC] px-2 py-0.5 rounded">
               {targetRole} @ {companyName}
             </span>
           </p>
@@ -356,7 +356,7 @@ export function InterviewBattlePlan({
             {/* Header */}
             <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]/50 flex justify-between items-center">
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#3B82F6]">quiz</span>
+                <span className="material-symbols-outlined text-[#64748B]">quiz</span>
                 Expected Questions
               </h3>
               <span className="text-xs bg-slate-200 text-[#475569] px-2 py-0.5 rounded-full">
@@ -375,7 +375,7 @@ export function InterviewBattlePlan({
                       setSelectedQuestion(index);
                       toast.success(`Selected: ${q.type} question`);
                     }}
-                    className={`group p-3 rounded-lg border border-l-4 hover:border-[#3B82F6] ${colors.border} bg-[#FFFFFF] transition-all cursor-pointer ${
+                    className={`group p-3 rounded-lg border border-l-4 hover:border-[#64748B] ${colors.border} bg-[#FFFFFF] transition-all cursor-pointer ${
                       selectedQuestion === index ? 'ring-2 ring-[#1E293B]/20 bg-[#F8FAFC]/50' : ''
                     }`}
                   >
@@ -405,7 +405,7 @@ export function InterviewBattlePlan({
               <button
                 onClick={() => handleRegenerateQuestions(false)}
                 disabled={isRegeneratingQuestions}
-                className="w-full py-2 text-sm font-medium text-[#3B82F6] hover:bg-[#F8FAFC] rounded border border-transparent hover:border-[#E2E8F0] transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
+                className="w-full py-2 text-sm font-medium text-[#64748B] hover:bg-[#F8FAFC] rounded border border-transparent hover:border-[#E2E8F0] transition-colors flex justify-center items-center gap-2 disabled:opacity-50"
               >
                 <span className={`material-symbols-outlined text-lg ${isRegeneratingQuestions ? 'animate-spin' : ''}`}>
                   autorenew
@@ -471,24 +471,24 @@ export function InterviewBattlePlan({
               {/* Action (Editable) */}
               <div className="space-y-1 relative">
                 <div className="flex justify-between items-end mb-1">
-                  <label className="text-xs font-mono font-semibold text-[#3B82F6] uppercase">
+                  <label className="text-xs font-mono font-semibold text-[#64748B] uppercase">
                     A - Action (Editable)
                   </label>
-                  <span className="text-[10px] text-[#3B82F6] animate-pulse">
+                  <span className="text-[10px] text-[#64748B] animate-pulse">
                     AI Enhancement Available
                   </span>
                 </div>
                 <textarea
                   value={starStory.action}
                   onChange={(e) => setStarStory({ ...starStory, action: e.target.value })}
-                  className="w-full h-32 p-3 rounded bg-[#FFFFFF] border border-[#3B82F6] ring-1 ring-[#1E293B]/20 text-sm text-[#0F172A] focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
+                  className="w-full h-32 p-3 rounded bg-[#FFFFFF] border border-[#64748B] ring-1 ring-[#1E293B]/20 text-sm text-[#0F172A] focus:outline-none focus:ring-2 resize-none font-sans leading-relaxed"
                   placeholder="Describe the actions you took..."
                 />
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <button
                     onClick={handleEnhanceAction}
                     disabled={isEnhancingAction}
-                    className="p-1 rounded bg-[#F1F5F9] text-[#3B82F6] hover:bg-[#E2E8F0] transition-colors disabled:opacity-50"
+                    className="p-1 rounded bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors disabled:opacity-50"
                     title="Enhance with AI"
                   >
                     <span className={`material-symbols-outlined text-sm ${isEnhancingAction ? 'animate-pulse' : ''}`}>
@@ -531,7 +531,7 @@ export function InterviewBattlePlan({
                 <div key={index} className="flex items-start gap-3">
                   <div
                     onClick={() => toggleSignal(index)}
-                    className="mt-0.5 w-4 h-4 rounded border border-[#E2E8F0] bg-[#FFFFFF] flex items-center justify-center shrink-0 cursor-pointer hover:border-[#3B82F6] transition-colors"
+                    className="mt-0.5 w-4 h-4 rounded border border-[#E2E8F0] bg-[#FFFFFF] flex items-center justify-center shrink-0 cursor-pointer hover:border-[#64748B] transition-colors"
                   >
                     {signal.checked && <div className="w-2 h-2 rounded-full bg-[#22C55E]"></div>}
                   </div>
@@ -553,7 +553,7 @@ export function InterviewBattlePlan({
           >
             <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC]/50">
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2 text-sm">
-                <span className="material-symbols-outlined text-[#3B82F6] text-lg">strategy</span>
+                <span className="material-symbols-outlined text-[#64748B] text-lg">strategy</span>
                 Strategic Talking Points
               </h3>
             </div>

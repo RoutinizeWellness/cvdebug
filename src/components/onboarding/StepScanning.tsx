@@ -43,12 +43,12 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
               className="absolute inset-0"
             >
-              <Radar className="h-12 w-12 text-[#3B82F6]" />
+              <Radar className="h-12 w-12 text-[#64748B]" />
             </motion.div>
           </div>
           <div>
             <h3 className="text-xl font-bold text-[#0F172A]">Scanning your future...</h3>
-            <p className="text-[#3B82F6] text-sm font-mono animate-pulse">
+            <p className="text-[#64748B] text-sm font-mono animate-pulse">
               &gt;&gt; Analysis in progress: {showPaywall ? "100%" : "67%"}
             </p>
           </div>
@@ -56,7 +56,7 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
 
         <div className="bg-[#0c121e] rounded-lg border border-[#1e293b] p-4 font-mono text-xs h-40 overflow-hidden relative shadow-inner">
           <motion.div
-            className="absolute w-full h-0.5 bg-[#3B82F6] shadow-[0_0_10px_#3B82F6] left-0"
+            className="absolute w-full h-0.5 bg-[#64748B] shadow-[0_0_10px_#64748B] left-0"
             animate={{ top: showPaywall ? "100%" : ["0%", "100%"] }}
             transition={{ duration: 2, repeat: showPaywall ? 0 : Infinity, ease: "linear" }}
           />
@@ -73,8 +73,8 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
                 <span className={
                   log.type === "success" ? "text-[#22C55E]" :
                   log.type === "warning" ? "text-[#F59E0B]" :
-                  log.type === "active" ? "text-[#3B82F6]" :
-                  "text-[#3B82F6]"
+                  log.type === "active" ? "text-[#64748B]" :
+                  "text-[#64748B]"
                 }>
                   {log.type === "success" ? "✓" : log.type === "warning" ? "⚠" : log.type === "active" ? ">" : "ℹ"}
                 </span>
@@ -139,7 +139,7 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
             {/* CTA */}
             <Button
               onClick={onUnlock}
-              className="w-full h-14 bg-gradient-to-r from-[#3B82F6] to-[#F59E0B] hover:from-[#3B82F6]/90 hover:to-[#F59E0B]/90 text-white font-black text-lg shadow-lg shadow-[#3B82F6]/30"
+              className="w-full h-14 bg-gradient-to-r from-[#64748B] to-[#F59E0B] hover:from-[#64748B]/90 hover:to-[#F59E0B]/90 text-white font-black text-lg shadow-lg shadow-[#64748B]/30"
             >
               <Zap className="h-5 w-5 mr-2" />
               Unlock Full Report & Fix Errors - €24.99

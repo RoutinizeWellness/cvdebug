@@ -110,7 +110,7 @@ export default function CVUpload({
               isDragging
                 ? "border-[#8B5CF6] bg-[#F3E8FF]"
                 : uploadedFile
-                ? "border-[#3B82F6] bg-[#EFF6FF]"
+                ? "border-[#64748B] bg-[#EFF6FF]"
                 : "border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F3E8FF] hover:border-[#8B5CF6]"
             }`}
             onDragOver={handleDragOver}
@@ -138,7 +138,7 @@ export default function CVUpload({
               <motion.div
                 className={`mb-4 p-4 rounded-full transition-colors ${
                   uploadedFile
-                    ? "bg-[#3B82F6]/20"
+                    ? "bg-[#64748B]/20"
                     : "bg-[#F3E8FF] group-hover:bg-[#8B5CF6]/20"
                 }`}
                 whileHover={{ scale: 1.1, rotate: 5 }}
@@ -146,7 +146,7 @@ export default function CVUpload({
                 <CloudUpload
                   className={`h-10 w-10 transition-colors ${
                     uploadedFile
-                      ? "text-[#3B82F6]"
+                      ? "text-[#64748B]"
                       : "text-[#64748B] group-hover:text-[#8B5CF6]"
                   }`}
                 />
@@ -239,7 +239,7 @@ export default function CVUpload({
           <button
             onClick={onNext}
             disabled={!uploadedFile}
-            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] text-white font-bold shadow-lg shadow-[#3B82F6]/25 hover:shadow-[#3B82F6]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#64748B] text-white font-bold shadow-lg shadow-[#64748B]/25 hover:shadow-[#64748B]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {t.onboarding.cvUpload.scanButton}
             <ArrowRight className="h-4 w-4" />

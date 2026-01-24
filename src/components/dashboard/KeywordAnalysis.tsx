@@ -477,7 +477,7 @@ export function KeywordAnalysis({
           </p>
         </div>
         <div className="text-right">
-          <div className="text-3xl font-mono font-bold text-[#3B82F6]">{matchRate}%</div>
+          <div className="text-3xl font-mono font-bold text-[#64748B]">{matchRate}%</div>
           <div className="text-xs text-[#475569] uppercase tracking-wider">{t.keywordAnalysis.matchRate}</div>
         </div>
       </div>
@@ -502,7 +502,7 @@ export function KeywordAnalysis({
                     description: groupByType ? t.keywordAnalysis.displayingFlatList : t.keywordAnalysis.keywordsOrganized
                   });
                 }}
-                className={`${groupByType ? 'text-[#3B82F6] font-medium' : 'text-[#64748B]'} hover:text-[#3B82F6] transition-colors`}
+                className={`${groupByType ? 'text-[#64748B] font-medium' : 'text-[#64748B]'} hover:text-[#64748B] transition-colors`}
               >
                 {t.keywordAnalysis.groupByType}
               </button>
@@ -513,7 +513,7 @@ export function KeywordAnalysis({
                   setViewMode(newMode);
                   toast.info(`${t.keywordAnalysis.switchedToView} ${newMode === 'list' ? t.keywordAnalysis.listView.toLowerCase() : t.keywordAnalysis.gridView.toLowerCase()}`);
                 }}
-                className="text-[#3B82F6] font-medium hover:text-[#2563EB] transition-colors"
+                className="text-[#64748B] font-medium hover:text-[#475569] transition-colors"
               >
                 {viewMode === 'list' ? t.keywordAnalysis.listView : t.keywordAnalysis.gridView}
               </button>
@@ -527,7 +527,7 @@ export function KeywordAnalysis({
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-4 h-full shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden"
           >
             {/* Decorative blob */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#3B82F6]/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#64748B]/5 rounded-full blur-3xl pointer-events-none"></div>
 
             {/* Keywords Display - Responsive to viewMode and groupByType */}
             {viewMode === 'list' ? (
@@ -545,7 +545,7 @@ export function KeywordAnalysis({
                     return Object.entries(grouped).map(([type, signals], groupIndex) => (
                       <div key={type} className="mb-4">
                         <h4 className="text-xs font-bold text-[#64748B] uppercase tracking-wider mb-2 flex items-center gap-2">
-                          <span className="w-1 h-4 bg-[#3B82F6] rounded"></span>
+                          <span className="w-1 h-4 bg-[#64748B] rounded"></span>
                           {type}
                           <span className="text-[10px] font-normal">({signals.length})</span>
                         </h4>
@@ -556,7 +556,7 @@ export function KeywordAnalysis({
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 0.1 + index * 0.05 }}
-                              className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                              className="group flex items-center justify-between p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#64748B]/50 transition-all cursor-default"
                             >
                               <div className="flex items-center gap-3">
                                 <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
@@ -584,7 +584,7 @@ export function KeywordAnalysis({
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + index * 0.05 }}
-                      className="group flex flex-col p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-pointer"
+                      className="group flex flex-col p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#64748B]/50 transition-all cursor-pointer"
                       onClick={() => setShowMatchDetails(showMatchDetails === signal.keyword ? null : signal.keyword)}
                     >
                       <div className="flex items-center justify-between">
@@ -601,7 +601,7 @@ export function KeywordAnalysis({
                         </div>
                         <div className="flex items-center gap-2">
                           {signal.confidence && (
-                            <span className="text-[10px] font-bold text-[#3B82F6] px-2 py-0.5 rounded bg-[#3B82F6]/10">
+                            <span className="text-[10px] font-bold text-[#64748B] px-2 py-0.5 rounded bg-[#64748B]/10">
                               {signal.confidence}%
                             </span>
                           )}
@@ -622,7 +622,7 @@ export function KeywordAnalysis({
                               <span className="font-bold text-[#64748B] uppercase">{t.keywordAnalysis.matchType}:</span>
                               <span className={`px-2 py-0.5 rounded font-medium ${
                                 signal.matchType === 'exact' ? 'bg-[#22C55E]/10 text-[#22C55E]' :
-                                signal.matchType === 'synonym' ? 'bg-[#3B82F6]/10 text-[#3B82F6]' :
+                                signal.matchType === 'synonym' ? 'bg-[#64748B]/10 text-[#64748B]' :
                                 'bg-[#F59E0B]/10 text-[#F59E0B]'
                               }`}>
                                 {signal.matchType === 'exact' ? t.keywordAnalysis.exactMatch :
@@ -655,7 +655,7 @@ export function KeywordAnalysis({
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
-                    className="group p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#3B82F6]/50 transition-all cursor-default"
+                    className="group p-3 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#64748B]/50 transition-all cursor-default"
                   >
                     <div className="flex items-start gap-2 mb-2">
                       <div className="p-1.5 rounded bg-[#E2E8F0] text-[#475569]">
@@ -857,7 +857,7 @@ export function KeywordAnalysis({
         {/* Full Width - Industry Keyword Frequency Cloud */}
         <div className="col-span-12 mt-4">
           <h3 className="text-sm font-semibold text-[#0F172A] mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-sm text-[#3B82F6]">cloud</span>
+            <span className="material-symbols-outlined text-sm text-[#64748B]">cloud</span>
             {t.keywordAnalysis.industryKeywordFrequency}
           </h3>
 
@@ -878,10 +878,10 @@ export function KeywordAnalysis({
                     text-${kw.size} font-${kw.weight}
                     ${kw.highlight
                       ? kw.color === 'primary'
-                        ? 'text-[#0F172A] bg-[#3B82F6]/20 border border-[#3B82F6]/40 px-3 py-1 rounded-lg backdrop-blur-sm'
+                        ? 'text-[#0F172A] bg-[#64748B]/20 border border-[#64748B]/40 px-3 py-1 rounded-lg backdrop-blur-sm'
                         : kw.color === 'accent'
                         ? 'text-[#8B5CF6] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 px-3 py-1 rounded-lg backdrop-blur-sm'
-                        : 'text-[#0F172A] bg-[#3B82F6]/10 border border-[#3B82F6]/30 px-2 py-1 rounded backdrop-blur-sm'
+                        : 'text-[#0F172A] bg-[#64748B]/10 border border-[#64748B]/30 px-2 py-1 rounded backdrop-blur-sm'
                       : `text-${kw.color} ${kw.size !== 'sm' ? 'border border-[#E2E8F0]/50 px-2 py-1 rounded' : 'px-2'}`
                     }
                     cursor-help transition-all hover:scale-110
@@ -895,7 +895,7 @@ export function KeywordAnalysis({
 
             <div className="mt-6 flex justify-center gap-6 text-[10px] text-[#64748B] font-mono uppercase tracking-widest border-t border-[#E2E8F0] pt-4 w-full">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded bg-[#3B82F6]/40"></div>
+                <div className="w-2 h-2 rounded bg-[#64748B]/40"></div>
                 High Demand
               </div>
               <div className="flex items-center gap-2">

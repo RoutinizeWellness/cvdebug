@@ -22,7 +22,7 @@ export function SystemConsole({ logs }: SystemConsoleProps) {
 
   const getLogColor = (type: string) => {
     switch (type) {
-      case "INFO": return "text-[#3B82F6]";
+      case "INFO": return "text-[#64748B]";
       case "WARN": return "text-[#F59E0B]";
       case "AI": return "text-[#8B5CF6]";
       case "SUCCESS": return "text-[#22C55E]";

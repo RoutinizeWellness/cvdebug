@@ -16,7 +16,7 @@ export function PremiumFeatureBadge({
     single_scan: {
       label: "Single Scan",
       price: "€4.99",
-      color: "from-[#3B82F6] to-[#06B6D4]",
+      color: "from-[#64748B] to-[#06B6D4]",
       icon: Lock
     },
     interview_sprint: {

@@ -40,7 +40,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
         id: "copy-paste-tip",
         title: "💡 Pro Tip: Copia desde LinkedIn",
         description: "Ve a un job posting en LinkedIn → Selecciona todo el texto → Ctrl+C → Pégalo en 'Add Job Description'. Automático, sin extensiones.",
-        icon: <Chrome className="h-8 w-8 text-[#3B82F6]" />,
+        icon: <Chrome className="h-8 w-8 text-[#64748B]" />,
         actionLabel: "Entendido",
         badge: "GRATIS",
         onAction: () => toast.success("¡Perfecto! Usa Ctrl+C en cualquier job posting."),
@@ -114,9 +114,9 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
         exit={{ opacity: 0, x: 300 }}
         className="fixed bottom-6 right-6 z-50 max-w-sm"
       >
-        <div className="bg-white border-2 border-[#3B82F6] rounded-xl shadow-2xl overflow-hidden">
+        <div className="bg-white border-2 border-[#64748B] rounded-xl shadow-2xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] p-4 relative">
+          <div className="bg-gradient-to-r from-[#64748B] to-[#475569] p-4 relative">
             <button
               onClick={() => dismissPrompt(activePrompt.id)}
               className="absolute top-2 right-2 text-white/80 hover:text-white transition-colors"
@@ -156,7 +156,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
                   }
                   dismissPrompt(activePrompt.id);
                 }}
-                className="flex-1 bg-gradient-to-r from-[#3B82F6] to-[#2563EB] hover:opacity-90 text-white font-semibold text-sm"
+                className="flex-1 bg-gradient-to-r from-[#64748B] to-[#475569] hover:opacity-90 text-white font-semibold text-sm"
               >
                 {activePrompt.actionLabel}
                 <ExternalLink className="h-3 w-3 ml-2" />
@@ -199,9 +199,9 @@ export function BookmarkletInstructions() {
   };
 
   return (
-    <div className="bg-white rounded-xl border-2 border-[#3B82F6] p-6 max-w-2xl mx-auto">
+    <div className="bg-white rounded-xl border-2 border-[#64748B] p-6 max-w-2xl mx-auto">
       <div className="flex items-center gap-3 mb-4">
-        <Chrome className="h-8 w-8 text-[#3B82F6]" />
+        <Chrome className="h-8 w-8 text-[#64748B]" />
         <h3 className="text-xl font-black text-[#0F172A]">
           Instalación del Scanner (1 minuto)
         </h3>
@@ -218,7 +218,7 @@ export function BookmarkletInstructions() {
           </div>
           <Button
             onClick={copyBookmarklet}
-            className="w-full bg-[#3B82F6] text-white"
+            className="w-full bg-[#64748B] text-white"
           >
             {copied ? (
               <>

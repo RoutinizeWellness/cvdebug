@@ -58,7 +58,7 @@ export function MachineParsingVision({
       <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#FFFFFF]">
         <div className="flex items-center gap-3">
           <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#3B82F6]">smart_toy</span>
+            <span className="material-symbols-outlined text-[#64748B]">smart_toy</span>
             ATS Robot Vision
           </h3>
           {imageTrapDetected && (
@@ -82,7 +82,7 @@ export function MachineParsingVision({
                 checked={showMachineView}
                 onChange={() => setShowMachineView(!showMachineView)}
               />
-              <div className="w-11 h-6 bg-[#E2E8F0] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#3B82F6]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#FFFFFF] after:border-[#E2E8F0] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#3B82F6] peer-checked:to-[#8B5CF6]"></div>
+              <div className="w-11 h-6 bg-[#E2E8F0] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#64748B]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#FFFFFF] after:border-[#E2E8F0] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#64748B] peer-checked:to-[#8B5CF6]"></div>
             </label>
           </div>
 
@@ -127,7 +127,7 @@ export function MachineParsingVision({
               {/* Scanning Line Effect */}
               <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
                 <motion.div
-                  className="w-full h-0.5 bg-[#3B82F6] shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                  className="w-full h-0.5 bg-[#64748B] shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                   animate={{ top: ['0%', '100%'] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                   style={{ position: 'absolute' }}
@@ -137,10 +137,10 @@ export function MachineParsingVision({
               {/* Robot Vision Status Overlay */}
               <div className="absolute top-6 left-6 z-20 font-mono text-xs">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[#3B82F6] flex items-center gap-2">
+                  <span className="text-[#64748B] flex items-center gap-2">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3B82F6] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#3B82F6]"></span>
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#64748B] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#64748B]"></span>
                     </span>
                     VISION_LAYER_ACTIVE
                   </span>
@@ -174,9 +174,9 @@ export function MachineParsingVision({
                 <div className="absolute inset-0 z-10 p-12 font-mono text-[10px] pointer-events-none">
                   {/* Header / Contact Info Area */}
                   {extractedFields?.name && (
-                    <div className="absolute top-[40px] left-[40px] right-[40px] h-[120px] border border-[#3B82F6]/60 bg-[#3B82F6]/5 rounded flex flex-col justify-between p-1 group hover:border-[#3B82F6] hover:bg-[#3B82F6]/10 transition-colors">
-                      <span className="bg-[#3B82F6]/20 text-[#3B82F6] px-1 w-fit">SECTION: HEADER</span>
-                      <div className="absolute top-2 right-2 flex flex-col items-end text-[#3B82F6]">
+                    <div className="absolute top-[40px] left-[40px] right-[40px] h-[120px] border border-[#64748B]/60 bg-[#64748B]/5 rounded flex flex-col justify-between p-1 group hover:border-[#64748B] hover:bg-[#64748B]/10 transition-colors">
+                      <span className="bg-[#64748B]/20 text-[#64748B] px-1 w-fit">SECTION: HEADER</span>
+                      <div className="absolute top-2 right-2 flex flex-col items-end text-[#64748B]">
                         <span>{extractedFields.name}</span>
                         {extractedFields.email && <span>{extractedFields.email}</span>}
                         {extractedFields.phone && <span>{extractedFields.phone}</span>}
@@ -186,14 +186,14 @@ export function MachineParsingVision({
 
                   {/* Experience Block */}
                   {extractedFields?.experience && extractedFields.experience.length > 0 && (
-                    <div className="absolute top-[300px] left-[40px] right-[40px] h-[180px] border border-[#3B82F6]/50 bg-[#3B82F6]/5 rounded p-1">
+                    <div className="absolute top-[300px] left-[40px] right-[40px] h-[180px] border border-[#64748B]/50 bg-[#64748B]/5 rounded p-1">
                       <div className="flex justify-between">
-                        <span className="bg-[#3B82F6]/20 text-[#3B82F6] px-1 w-fit">SECTION: EXPERIENCE_01</span>
-                        <span className="text-[#3B82F6]/50">PARSED: 98%</span>
+                        <span className="bg-[#64748B]/20 text-[#64748B] px-1 w-fit">SECTION: EXPERIENCE_01</span>
+                        <span className="text-[#64748B]/50">PARSED: 98%</span>
                       </div>
-                      <div className="mt-8 ml-4 border-l border-dashed border-[#3B82F6]/30 pl-4 py-2">
-                        <div className="text-[#3B82F6]">ROLE: {extractedFields.experience?.[0]?.role || 'N/A'}</div>
-                        <div className="text-[#3B82F6]/60">COMPANY: {extractedFields.experience?.[0]?.company || 'N/A'}</div>
+                      <div className="mt-8 ml-4 border-l border-dashed border-[#64748B]/30 pl-4 py-2">
+                        <div className="text-[#64748B]">ROLE: {extractedFields.experience?.[0]?.role || 'N/A'}</div>
+                        <div className="text-[#64748B]/60">COMPANY: {extractedFields.experience?.[0]?.company || 'N/A'}</div>
                       </div>
                     </div>
                   )}
@@ -261,7 +261,7 @@ export function MachineParsingVision({
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <div className="w-px h-6 bg-[#E2E8F0] mx-1"></div>
-                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#3B82F6] to-[#8B5CF6] hover:opacity-90 text-white rounded-full font-medium text-sm shadow-lg shadow-[#3B82F6]/25 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white rounded-full font-medium text-sm shadow-lg shadow-[#64748B]/25 transition-all">
                   <Wand2 className="h-4 w-4" />
                   <span>Fix Formatting</span>
                 </button>
@@ -293,7 +293,7 @@ export function MachineParsingVision({
               <span className="material-symbols-outlined text-[#8B5CF6]">data_object</span>
               Parsed Output
             </h2>
-            <button className="text-xs text-[#3B82F6] hover:text-[#3B82F6]/80 font-mono underline decoration-dotted underline-offset-4">
+            <button className="text-xs text-[#64748B] hover:text-[#64748B]/80 font-mono underline decoration-dotted underline-offset-4">
               Export JSON
             </button>
           </div>
@@ -316,23 +316,23 @@ export function MachineParsingVision({
             <div className="p-5 flex flex-col gap-4">
               {/* Contact Card */}
               {extractedFields?.name && (
-                <div className="border border-[#E2E8F0] bg-[#F8FAFC] rounded-lg p-3 group hover:border-[#3B82F6]/50 transition-colors cursor-pointer">
+                <div className="border border-[#E2E8F0] bg-[#F8FAFC] rounded-lg p-3 group hover:border-[#64748B]/50 transition-colors cursor-pointer">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono text-[#64748B] uppercase">Contact Info</span>
                     <span className="size-2 rounded-full bg-[#22C55E]"></span>
                   </div>
                   <div className="font-mono text-xs text-[#475569] space-y-1">
                     <div className="flex gap-2">
-                      <span className="text-[#3B82F6] opacity-60">"name":</span> "{extractedFields.name}"
+                      <span className="text-[#64748B] opacity-60">"name":</span> "{extractedFields.name}"
                     </div>
                     {extractedFields.email && (
                       <div className="flex gap-2">
-                        <span className="text-[#3B82F6] opacity-60">"email":</span> "{extractedFields.email}"
+                        <span className="text-[#64748B] opacity-60">"email":</span> "{extractedFields.email}"
                       </div>
                     )}
                     {extractedFields.phone && (
                       <div className="flex gap-2">
-                        <span className="text-[#3B82F6] opacity-60">"phone":</span> "{extractedFields.phone}"
+                        <span className="text-[#64748B] opacity-60">"phone":</span> "{extractedFields.phone}"
                       </div>
                     )}
                   </div>
@@ -341,7 +341,7 @@ export function MachineParsingVision({
 
               {/* Experience Card */}
               {extractedFields?.experience && extractedFields.experience.length > 0 && (
-                <div className="border border-[#E2E8F0] bg-[#F8FAFC] rounded-lg p-3 group hover:border-[#3B82F6]/50 transition-colors cursor-pointer">
+                <div className="border border-[#E2E8F0] bg-[#F8FAFC] rounded-lg p-3 group hover:border-[#64748B]/50 transition-colors cursor-pointer">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono text-[#64748B] uppercase">Work Experience [1]</span>
                     <span className="size-2 rounded-full bg-[#22C55E]"></span>
@@ -349,12 +349,12 @@ export function MachineParsingVision({
                   <div className="font-mono text-xs text-[#475569] space-y-1 overflow-hidden">
                     {extractedFields.experience?.[0]?.company && (
                       <div className="flex gap-2">
-                        <span className="text-[#3B82F6] opacity-60">"company":</span> "{extractedFields.experience[0].company}"
+                        <span className="text-[#64748B] opacity-60">"company":</span> "{extractedFields.experience[0].company}"
                       </div>
                     )}
                     {extractedFields.experience?.[0]?.role && (
                       <div className="flex gap-2">
-                        <span className="text-[#3B82F6] opacity-60">"role":</span> "{extractedFields.experience[0].role}"
+                        <span className="text-[#64748B] opacity-60">"role":</span> "{extractedFields.experience[0].role}"
                       </div>
                     )}
                   </div>

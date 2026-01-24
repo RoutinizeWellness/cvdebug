@@ -114,7 +114,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
 
                       <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
                         <div className="flex items-start gap-2 mb-2">
-                          <TrendingUp className="h-4 w-4 text-[#3B82F6] shrink-0 mt-0.5" />
+                          <TrendingUp className="h-4 w-4 text-[#64748B] shrink-0 mt-0.5" />
                           <div>
                             <p className="text-xs font-bold text-[#0F172A] mb-1">
                               Impact

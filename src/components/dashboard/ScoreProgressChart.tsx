@@ -107,8 +107,8 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
             {/* Area under the line (gradient fill) */}
             <defs>
               <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+                <stop offset="0%" stopColor="#64748B" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#64748B" stopOpacity="0" />
               </linearGradient>
             </defs>
 
@@ -132,7 +132,7 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
                     return `${idx === 0 ? 'M' : 'L'} ${x},${y}`;
                   }).join(' ')}
                   fill="none"
-                  stroke="#3B82F6"
+                  stroke="#64748B"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -165,8 +165,8 @@ export function ScoreProgressChart({ history, currentScore }: ScoreProgressChart
                 {/* Point */}
                 <div className={`w-4 h-4 rounded-full border-3 ${
                   isLast
-                    ? 'bg-[#3B82F6] border-white dark:border-slate-900 ring-4 ring-[#3B82F6]/30'
-                    : 'bg-white dark:bg-slate-800 border-[#3B82F6]'
+                    ? 'bg-[#64748B] border-white dark:border-slate-900 ring-4 ring-[#64748B]/30'
+                    : 'bg-white dark:bg-slate-800 border-[#64748B]'
                 } cursor-pointer hover:scale-150 transition-transform shadow-lg`}></div>
 
                 {/* Tooltip */}

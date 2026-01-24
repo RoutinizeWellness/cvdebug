@@ -97,7 +97,7 @@ export function ApplicationCard({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"
+                        className="h-6 w-6 text-[#64748B] hover:text-[#64748B] hover:bg-[#64748B]/10"
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewTimeline(app);
@@ -119,7 +119,7 @@ export function ApplicationCard({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-[#EF4444]/10" : "text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"}`}
+                        className={`h-6 w-6 ${isGhosted ? "text-red-400 hover:text-red-300 hover:bg-[#EF4444]/10" : "text-[#64748B] hover:text-[#64748B] hover:bg-[#64748B]/10"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           onRecruiterDM(app._id);
@@ -185,7 +185,7 @@ export function ApplicationCard({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 text-[#64748B] hover:text-[#3B82F6] hover:bg-[#3B82F6]/10"
+                          className="h-6 w-6 text-[#64748B] hover:text-[#64748B] hover:bg-[#64748B]/10"
                           onClick={(e) => {
                             e.stopPropagation();
                             onGenerateCoverLetter(app._id);

@@ -42,8 +42,8 @@ export function SubscriptionDistribution() {
       name: "24h Pass",
       count: subscriptionStats.byTier.single_scan,
       percentage: (subscriptionStats.byTier.single_scan / total) * 100,
-      color: "#3B82F6",
-      darkColor: "#60A5FA",
+      color: "#64748B",
+      darkColor: "#94A3B8",
       icon: "🎯",
     },
     {

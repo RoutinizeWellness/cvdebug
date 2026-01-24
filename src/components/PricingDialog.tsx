@@ -199,14 +199,14 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </div>
 
           {/* 24-Hour Pass - RECOMMENDED (Moved to 2nd position) */}
-          <div className="bg-white border-2 border-[#3B82F6]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(59,130,246,0.1)]">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+          <div className="bg-white border-2 border-[#64748B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(59,130,246,0.1)]">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#64748B] to-[#475569] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">bolt</span>
               {t.pricingDialog.recommended}
             </div>
             <div className="mb-6">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#3B82F6] font-mono">{t.pricingDialog.quickFix}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#64748B] font-mono">{t.pricingDialog.quickFix}</span>
                 <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">{t.pricingDialog.fastStart}</span>
               </div>
               <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.pass24h}</h2>
@@ -218,31 +218,31 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </div>
             </div>
             <div className="space-y-3 mb-8 flex-grow">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#3B82F6]">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#64748B]">
                 <span className="material-symbols-outlined text-base">verified</span>
                 {t.pricingDialog.unlimitedScans24h}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
                 {t.pricingDialog.fullErrorReport}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
                 {t.pricingDialog.robotXRayView}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
                 {t.pricingDialog.keywordOptimizer}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#3B82F6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
                 {t.pricingDialog.battlePlanGenerator}
               </div>
             </div>
             <button
               onClick={() => handleUpgrade("single_scan")}
               disabled={!!isLoading}
-              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#3B82F6] to-[#2563EB] text-white font-bold text-sm shadow-lg shadow-[#3B82F6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#64748B] to-[#475569] text-white font-bold text-sm shadow-lg shadow-[#64748B]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isLoading === "single_scan" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.get24hPass}
             </button>
