@@ -64,6 +64,7 @@ import { ActivityReminderBanner } from "@/components/dashboard/ActivityReminderB
 import { useActivityReminder } from "@/hooks/use-activity-reminder";
 import { PlanExpirationModal } from "@/components/dashboard/PlanExpirationModal";
 import { usePlanExpiration } from "@/hooks/use-plan-expiration";
+import { ExperienceLevelOnboarding } from "@/components/onboarding/ExperienceLevelOnboarding";
 
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
@@ -121,6 +122,20 @@ export default function Dashboard() {
       setShowExpirationModal(true);
     }
   }, [shouldShowExpirationPopup, expiredTier]);
+
+  // Experience Level Onboarding
+  const [showExperienceOnboarding, setShowExperienceOnboarding] = useState(false);
+
+  useEffect(() => {
+    // Show experience level onboarding for users without it set
+    // Wait 1 second after dashboard loads to avoid overwhelming the user
+    if (currentUser && !currentUser.experienceLevel) {
+      const timer = setTimeout(() => {
+        setShowExperienceOnboarding(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentUser]);
 
   const {
     isUploading,
@@ -831,6 +846,12 @@ export default function Dashboard() {
           reason={expirationReason}
         />
       )}
+
+      {/* Experience Level Onboarding */}
+      <ExperienceLevelOnboarding
+        open={showExperienceOnboarding}
+        onComplete={() => setShowExperienceOnboarding(false)}
+      />
     </div>
   );
 }
