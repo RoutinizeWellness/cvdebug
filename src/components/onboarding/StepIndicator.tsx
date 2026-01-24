@@ -19,16 +19,16 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
     <div className="w-full px-4">
       <div className="flex items-center justify-between relative">
         {/* Progress Bar Background */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-800 rounded-full -z-10" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-300 rounded-full -z-10" />
 
         {/* Active Progress */}
         <motion.div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-secondary to-primary rounded-full -z-10"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] rounded-full -z-10"
           initial={{ width: "0%" }}
           animate={{ width: progressWidth }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
           style={{
-            boxShadow: "0 0 10px rgba(139, 92, 246, 0.5)",
+            boxShadow: "0 0 10px rgba(34, 197, 94, 0.5)",
           }}
         />
 
@@ -45,17 +45,17 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
               <motion.div
                 className={`w-10 h-10 rounded-full flex items-center justify-center relative transition-all ${
                   isCompleted
-                    ? "bg-gradient-to-br from-secondary to-primary border-2 border-primary shadow-[0_0_15px_rgba(100,116,139,0.3)]"
+                    ? "bg-gradient-to-br from-[#22C55E] to-[#10B981] border-2 border-[#22C55E] shadow-[0_0_15px_rgba(34,197,94,0.4)]"
                     : isActive
-                    ? "bg-surface-dark border-2 border-secondary shadow-[0_0_15px_rgba(100,116,139,0.4)]"
-                    : "bg-surface-dark border-2 border-slate-700"
+                    ? "bg-white border-2 border-[#22C55E] shadow-[0_0_15px_rgba(34,197,94,0.4)]"
+                    : "bg-white border-2 border-slate-300"
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {isActive && (
                   <motion.div
-                    className="absolute w-full h-full rounded-full bg-secondary/20"
+                    className="absolute w-full h-full rounded-full bg-[#22C55E]/20"
                     animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
@@ -64,11 +64,11 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                 {isCompleted ? (
                   <Check className="h-5 w-5 text-white" />
                 ) : isActive && step.number === 2 ? (
-                  <CloudUpload className="h-5 w-5 text-white" />
+                  <CloudUpload className="h-5 w-5 text-[#22C55E]" />
                 ) : (
                   <span
                     className={`text-sm font-bold ${
-                      isActive ? "text-white" : isPending ? "text-slate-500" : "text-white"
+                      isActive ? "text-[#22C55E]" : isPending ? "text-slate-400" : "text-white"
                     }`}
                   >
                     {step.number}
@@ -78,7 +78,7 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
 
               <span
                 className={`text-xs font-medium transition-colors ${
-                  isCompleted || isActive ? "text-white" : "text-slate-500"
+                  isCompleted || isActive ? "text-[#0F172A]" : "text-slate-400"
                 }`}
               >
                 {step.label}

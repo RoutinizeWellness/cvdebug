@@ -246,7 +246,7 @@ export function QuickIntegrityCheck() {
 
                   <Button
                     onClick={() => navigate("/auth")}
-                    className="w-full bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-bold shadow-lg flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:brightness-110 text-white font-bold shadow-lg flex items-center justify-center gap-2"
                   >
                     {result.hasIssue
                       ? "See Full Analysis & Fix Issues (Free)"

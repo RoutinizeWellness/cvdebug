@@ -47,9 +47,9 @@ export function HeroVisualizerSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <button 
+        <button
           onClick={() => navigate("/auth")}
-          className="h-12 px-8 rounded-lg bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-bold shadow-[0_0_20px_rgba(100,116,139,0.3)] transition-all flex items-center gap-2"
+          className="h-12 px-8 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] hover:brightness-110 text-white font-bold shadow-[0_0_20px_rgba(30,41,59,0.3)] transition-all flex items-center gap-2"
         >
           Start Your First Project (Free)
           <ArrowRight className="h-5 w-5" />
