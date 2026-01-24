@@ -180,8 +180,8 @@ export function QuickIntegrityCheck() {
                   
                   {/* Progress Bar */}
                   <div className="w-full h-1.5 bg-slate-700/50 rounded-full overflow-hidden">
-                    <motion.div 
-                      className="h-full bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                    <motion.div
+                      className="h-full bg-primary shadow-[0_0_10px_rgba(100,116,139,0.5)]"
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.max(5, progress)}%` }}
                       transition={{ duration: 0.2 }}

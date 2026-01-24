@@ -49,7 +49,7 @@ export function HeroVisualizerSection() {
       >
         <button 
           onClick={() => navigate("/auth")}
-          className="h-12 px-8 rounded-lg bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-bold shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all flex items-center gap-2"
+          className="h-12 px-8 rounded-lg bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-bold shadow-[0_0_20px_rgba(100,116,139,0.3)] transition-all flex items-center gap-2"
         >
           Start Your First Project (Free)
           <ArrowRight className="h-5 w-5" />

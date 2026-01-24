@@ -85,7 +85,7 @@ export function EnterpriseSection() {
               >
                 <Button
                   onClick={() => window.open("mailto:enterprise@cvdebug.com", "_blank")}
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#1E293B] to-[#64748B] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(59,130,246,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all border-0"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#1E293B] to-[#64748B] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(100,116,139,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.4)] hover:scale-[1.02] transition-all border-0"
                 >
                   <span className="mr-2">{t.pricing.enterprise.contactSales}</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
