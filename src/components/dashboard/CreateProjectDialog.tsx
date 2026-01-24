@@ -195,10 +195,10 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   </div>
 
                   {/* AI Info Box */}
-                  <div className="p-3 sm:p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-[#F1F5F9] border border-indigo-200 flex gap-2 sm:gap-3 items-start">
-                    <Sparkles className="text-indigo-600 mt-0.5 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                    <div className="text-xs text-indigo-900 min-w-0">
-                      <strong className="text-indigo-900 block mb-0.5 font-semibold">
+                  <div className="p-3 sm:p-3.5 rounded-lg bg-gradient-to-br from-indigo-50 to-[#F1F5F9] border border-[#E2E8F0] flex gap-2 sm:gap-3 items-start">
+                    <Sparkles className="text-[#475569] mt-0.5 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    <div className="text-xs text-[#0F172A] min-w-0">
+                      <strong className="text-[#0F172A] block mb-0.5 font-semibold">
                         {t.createProject.aiAnalysisTitle}
                       </strong>
                       <span className="break-words">

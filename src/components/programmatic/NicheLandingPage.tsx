@@ -49,7 +49,7 @@ const getColorClasses = (color: string) => {
       keyword: "from-[#1E293B]/20 to-indigo-500/20 border-[#1E293B]/30 text-[#CBD5E1]",
       floatingBadge: "from-[#0F172A] to-indigo-600",
       bg: "bg-[#1E293B]/10",
-      bgSecondary: "bg-indigo-500/10",
+      bgSecondary: "bg-[#F8FAFC]0/10",
       text: "text-[#94A3B8]",
       border: "border-[#1E293B]/30",
       checkmark: "text-[#94A3B8]"

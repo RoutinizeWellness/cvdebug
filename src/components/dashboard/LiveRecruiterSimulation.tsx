@@ -494,7 +494,7 @@ export function LiveRecruiterSimulation({
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 <div className="w-8 h-8 rounded-full bg-slate-200 border-2 border-white flex items-center justify-center text-xs font-medium text-[#475569]">JD</div>
-                <div className="w-8 h-8 rounded-full bg-indigo-500 border-2 border-white flex items-center justify-center text-[#0F172A] text-xs font-medium">HR</div>
+                <div className="w-8 h-8 rounded-full bg-[#F8FAFC]0 border-2 border-white flex items-center justify-center text-[#0F172A] text-xs font-medium">HR</div>
               </div>
               <div className="text-right">
                 <p className="text-xs text-[#64748B]">Recruiter Admin</p>

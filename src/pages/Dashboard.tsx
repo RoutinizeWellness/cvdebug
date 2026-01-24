@@ -470,15 +470,15 @@ export default function Dashboard() {
                 {/* LinkedIn Optimizer */}
                 <button
                   onClick={() => setCurrentView('linkedin')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-indigo-400 hover:shadow-[0_8px_30px_rgba(99,102,241,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-[#64748B] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#F8FAFC] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center flex-shrink-0 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
+                    <div className="h-12 w-12 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 text-[#475569] group-hover:scale-110 transition-transform duration-300">
                       <span className="material-symbols-outlined">visibility</span>
                     </div>
                     <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-indigo-600 transition-colors flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#475569] transition-colors flex items-center gap-2">
                         {t.dashboard.linkedinOptimizer}
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
@@ -489,7 +489,7 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-indigo-400">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[#94A3B8]">arrow_forward</span>
                     </div>
                   </div>
                 </button>

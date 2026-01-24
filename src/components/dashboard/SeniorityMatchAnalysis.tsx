@@ -19,7 +19,7 @@ const levelColors = {
   "MID-LEVEL": "text-[#1E293B] dark:text-[#94A3B8]",
   SENIOR: "text-emerald-600 dark:text-emerald-400",
   LEAD: "text-[#1E293B] dark:text-[#94A3B8]",
-  PRINCIPAL: "text-indigo-600 dark:text-indigo-400",
+  PRINCIPAL: "text-[#475569] dark:text-[#94A3B8]",
 };
 
 const levelBadges = {
@@ -27,7 +27,7 @@ const levelBadges = {
   "MID-LEVEL": "bg-[#F8FAFC] dark:bg-[#0F172A]/30 text-[#1E293B] dark:text-[#94A3B8] border-[#F1F5F9] dark:border-[#0F172A]",
   SENIOR: "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800",
   LEAD: "bg-[#F8FAFC] dark:bg-[#0F172A]/30 text-[#1E293B] dark:text-[#94A3B8] border-[#F1F5F9] dark:border-[#0F172A]",
-  PRINCIPAL: "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-800",
+  PRINCIPAL: "bg-[#F8FAFC] dark:bg-[#0F172A]/30 text-[#475569] dark:text-[#94A3B8] border-[#E2E8F0] dark:border-[#1E293B]",
 };
 
 export function SeniorityMatchAnalysis({
