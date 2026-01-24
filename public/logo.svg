@@ -1,52 +1,52 @@
 <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Bug icon with CVDebug branding -->
+  <!-- Bug icon with CVDebug branding - LARGER with gray theme -->
 
-  <!-- Bug body -->
-  <ellipse cx="60" cy="63" rx="18" ry="24" fill="url(#bugGradient)"/>
+  <!-- Bug body - LARGER -->
+  <ellipse cx="60" cy="63" rx="22" ry="30" fill="url(#bugGradient)"/>
 
-  <!-- Bug head -->
-  <circle cx="60" cy="43" r="13" fill="url(#bugGradient)"/>
+  <!-- Bug head - LARGER -->
+  <circle cx="60" cy="40" r="16" fill="url(#bugGradient)"/>
 
-  <!-- Antennas -->
-  <path d="M 51 37 Q 45 30 40 25" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-  <path d="M 69 37 Q 75 30 80 25" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- Antennas - LARGER -->
+  <path d="M 49 33 Q 42 24 35 18" stroke="#64748B" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M 71 33 Q 78 24 85 18" stroke="#64748B" stroke-width="4.5" stroke-linecap="round" fill="none"/>
 
-  <!-- Antenna tips (glowing) -->
-  <circle cx="40" cy="25" r="3.5" fill="#5eead4">
+  <!-- Antenna tips (glowing) - LARGER -->
+  <circle cx="35" cy="18" r="4.5" fill="#94A3B8">
     <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="80" cy="25" r="3.5" fill="#5eead4">
+  <circle cx="85" cy="18" r="4.5" fill="#94A3B8">
     <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
   </circle>
 
-  <!-- Eyes -->
-  <circle cx="53" cy="42" r="3" fill="#0a0e1a" opacity="0.8"/>
-  <circle cx="67" cy="42" r="3" fill="#0a0e1a" opacity="0.8"/>
+  <!-- Eyes - LARGER -->
+  <circle cx="52" cy="39" r="4" fill="#0F172A" opacity="0.9"/>
+  <circle cx="68" cy="39" r="4" fill="#0F172A" opacity="0.9"/>
 
-  <!-- Eye shine -->
-  <circle cx="54" cy="41" r="1" fill="white" opacity="0.8"/>
-  <circle cx="68" cy="41" r="1" fill="white" opacity="0.8"/>
+  <!-- Eye shine - LARGER -->
+  <circle cx="53.5" cy="37.5" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="69.5" cy="37.5" r="1.5" fill="white" opacity="0.9"/>
 
-  <!-- Legs (3 per side, more prominent) -->
-  <path d="M 44 54 L 28 58" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M 42 63 L 24 68" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M 44 72 L 28 78" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Legs (3 per side, more prominent) - LARGER -->
+  <path d="M 40 52 L 20 57" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 38 63 L 16 70" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 40 74 L 20 82" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
 
-  <path d="M 76 54 L 92 58" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M 78 63 L 96 68" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
-  <path d="M 76 72 L 92 78" stroke="#14b8a6" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 80 52 L 100 57" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 82 63 L 104 70" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 80 74 L 100 82" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
 
-  <!-- Body segments (enhanced) -->
-  <line x1="47" y1="55" x2="73" y2="55" stroke="rgba(10, 14, 26, 0.3)" stroke-width="1.5"/>
-  <line x1="46" y1="63" x2="74" y2="63" stroke="rgba(10, 14, 26, 0.3)" stroke-width="1.5"/>
-  <line x1="47" y1="71" x2="73" y2="71" stroke="rgba(10, 14, 26, 0.3)" stroke-width="1.5"/>
+  <!-- Body segments (enhanced) - LARGER -->
+  <line x1="43" y1="53" x2="77" y2="53" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
+  <line x1="42" y1="63" x2="78" y2="63" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
+  <line x1="43" y1="73" x2="77" y2="73" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
 
-  <!-- Gradient definition -->
+  <!-- Gradient definition - Gray theme -->
   <defs>
     <linearGradient id="bugGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#14b8a6;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#0d9488;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0f766e;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1E293B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
     </linearGradient>
   </defs>
 </svg>
