@@ -5,6 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { RecruiterDMGenerator } from "@/components/dashboard/tools/RecruiterDMGenerator";
 import { useState } from "react";
+import { isPaidUser as checkIsPaidUser, hasInterviewSprint } from "@/lib/planHelpers";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -15,8 +16,8 @@ interface UpsellSidebarProps {
 
 export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
   const currentUser = useQuery(apiAny.users.currentUser);
-  const isSprintActive = currentUser?.subscriptionTier === "interview_sprint";
-  const isPaidUser = currentUser?.subscriptionTier === "single_scan" || currentUser?.subscriptionTier === "interview_sprint";
+  const isSprintActive = hasInterviewSprint(currentUser?.subscriptionTier, currentUser?.sprintExpiresAt);
+  const isPaidUser = checkIsPaidUser(currentUser?.subscriptionTier);
   const [showDMGenerator, setShowDMGenerator] = useState(false);
 
   return (

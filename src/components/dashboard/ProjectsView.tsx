@@ -8,6 +8,7 @@ import { PricingDialog } from "@/components/PricingDialog";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 import { useNavigate } from "react-router";
 import { useI18n } from "@/contexts/I18nContext";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface ProjectsViewProps {
   onSelectProject: (id: Id<"projects">) => void;
@@ -18,7 +19,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
   const navigate = useNavigate();
   const projects = useQuery(api.projects.getProjects, { status: "active" });
   const user = useQuery((api as any).users.currentUser);
-  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+  const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showPricingDialog, setShowPricingDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");

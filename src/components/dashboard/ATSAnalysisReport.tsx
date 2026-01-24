@@ -8,6 +8,7 @@ import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
 import { AutoTuneButton } from "./AutoTuneButton";
 import { useI18n } from "@/contexts/I18nContext";
 import { PersonalizedRecommendations } from "./analysis/PersonalizedRecommendations";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface ATSAnalysisReportProps {
   resume: any;
@@ -30,8 +31,8 @@ export function ATSAnalysisReport({
   const score = resume?.score || 0; // No fake score - show real data only
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
-  // Check if user has paid plan (single_scan or interview_sprint)
-  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+  // Check if user has paid plan (single_scan, single_debug_fix, or interview_sprint)
+  const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
 
   // Extract target role (from job title, project, or resume data)
   const targetRole = resume?.jobTitle || resume?.project?.targetRole || resume?.targetRole || null;

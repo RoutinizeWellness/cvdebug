@@ -16,6 +16,7 @@ import { ProjectTimeline } from "./ProjectTimeline";
 import { InterviewPrepMode } from "./InterviewPrepMode";
 import { BoardEmptyState } from "./board/BoardEmptyState";
 import { BoardColumn } from "./board/BoardColumn";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface ProjectBoardProps {
   projectId: Id<"projects">;
@@ -223,7 +224,7 @@ export function ProjectBoard({ projectId, onBack, onGenerateCoverLetter, initial
     <RecruiterDMGenerator
       open={showDMGenerator}
       onOpenChange={setShowDMGenerator}
-      isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+      isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
       onUpgrade={onUpgrade}
     />
     </>

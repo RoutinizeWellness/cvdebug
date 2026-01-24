@@ -16,9 +16,11 @@ export const createProject = mutation({
     if (!user) throw new Error("Not authenticated");
 
     // PAID FEATURE: Projects are only for paid users
-    const isPaidUser = user.subscriptionTier === "single_scan" || user.subscriptionTier === "interview_sprint";
+    const isPaidUser = user.subscriptionTier === "single_debug_fix" ||
+                       user.subscriptionTier === "single_scan" ||
+                       user.subscriptionTier === "interview_sprint";
     if (!isPaidUser) {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Single Scan or Interview Sprint to create job search projects.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to a paid plan to create job search projects.");
     }
 
     const identity = await ctx.auth.getUserIdentity();

@@ -78,6 +78,7 @@ import { ActionPlan } from "./ActionPlan";
 import { EnhancedRobotTerminalView } from "./scan-results/EnhancedRobotTerminalView";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -1599,7 +1600,7 @@ Software Engineer | StartupXYZ
                   <FluffDetector
                     resumeText={displayResume.ocrText || ""}
                     clarityScore={displayResume?.score || 0}
-                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
                     onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
@@ -1613,7 +1614,7 @@ Software Engineer | StartupXYZ
                     jobDescription={displayResume?.jobDescription || ''}
                     category={displayResume?.category || ''}
                     seniorityLevel={displayResume?.extractedData?.seniorityLevel || 'mid'}
-                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
                     onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>
@@ -1697,7 +1698,7 @@ Software Engineer | StartupXYZ
                     targetRole={displayResume.jobTitle || "Data Science Role"}
                     companyName={displayResume.company || "TechCorp"}
                     resumeText={displayResume.ocrText || ""}
-                    isPaidUser={user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint"}
+                    isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
                     onUpgrade={() => setShowPricing(true)}
                   />
                 </TabsContent>

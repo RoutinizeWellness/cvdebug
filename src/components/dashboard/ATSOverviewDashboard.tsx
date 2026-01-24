@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle, Mail, Phone, Github, Linkedin, TrendingUp, Zap, Target, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { PersonalizedRecommendations } from "./analysis/PersonalizedRecommendations";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface ATSOverviewDashboardProps {
   resume: any;
@@ -12,7 +13,7 @@ interface ATSOverviewDashboardProps {
 
 export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: ATSOverviewDashboardProps) {
   const score = resume?.score || 0; // No fake score - show real data only
-  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+  const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
 
   // Calculate percentile
   const getPercentile = (score: number) => {

@@ -17,6 +17,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useCurrency } from "@/hooks/use-currency";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface InlineResumeEditorProps {
   resumeId: string;
@@ -52,7 +53,7 @@ export function InlineResumeEditor({
   const resumeData = useQuery(api.resumes.getResume, { id: resumeId as Id<"resumes"> });
 
   // Check if user has paid plan
-  const isPaidUser = user?.subscriptionTier === "single_scan" || user?.subscriptionTier === "interview_sprint";
+  const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
 
   // Get localized pricing
   const { formatPrice } = useCurrency();

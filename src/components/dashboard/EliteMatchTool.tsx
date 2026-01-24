@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCurrency } from "@/hooks/use-currency";
+import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 interface MissingSignal {
   text: string;
@@ -55,8 +56,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
   const resumes = useQuery(api.resumes.getResumes);
 
   // Check if user has paid plan
-  const isPaidUser = currentUser?.subscriptionTier === "single_scan" ||
-                     currentUser?.subscriptionTier === "interview_sprint";
+  const isPaidUser = checkIsPaidUser(currentUser?.subscriptionTier);
 
   const [jobDescriptionUrl, setJobDescriptionUrl] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
