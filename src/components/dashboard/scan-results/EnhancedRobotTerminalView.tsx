@@ -1,255 +1,366 @@
-import { Terminal, Cpu, Zap, Shield, Activity } from "lucide-react";
+import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
 interface LogEntry {
   line: number;
-  type: "info" | "ok" | "warn" | "critical" | "fail" | "command";
+  type: "info" | "ok" | "warn" | "critical" | "fail" | "command" | "metric";
   message: string;
+  detail?: string;
 }
 
-interface RobotTerminalViewProps {
-  logs?: LogEntry[];
+interface EnhancedRobotTerminalViewProps {
+  resumeId: Id<"resumes">;
   autoAnimate?: boolean;
-  resumeId?: string;
 }
 
-export function RobotTerminalView({
-  logs: providedLogs,
-  autoAnimate = true,
+export function EnhancedRobotTerminalView({
   resumeId,
-}: RobotTerminalViewProps) {
+  autoAnimate = true,
+}: EnhancedRobotTerminalViewProps) {
   const [displayedLogs, setDisplayedLogs] = useState<LogEntry[]>([]);
   const [cpuUsage, setCpuUsage] = useState(45);
   const [memUsage, setMemUsage] = useState(62);
   const [scanProgress, setScanProgress] = useState(0);
 
-  // Fetch user profile and resume data for adaptive metrics
+  // Fetch user and resume data
   const user = useQuery(apiAny.users.currentUser);
-  const resumes = useQuery(apiAny.resumes.getResumes);
-  const currentResume = resumeId
-    ? resumes?.find((r: any) => r._id === resumeId)
-    : (resumes && resumes.length > 0 ? resumes[0] : null);
+  const resume = useQuery(apiAny.resumes.getResumeById, { id: resumeId });
 
-  // Determine seniority level from resume or user profile
-  const experienceLevel = user?.experienceLevel || currentResume?.experienceLevel;
-  const seniorityLevel = experienceLevel || 'mid';
-  const yearsOfExperience = currentResume?.yearsOfExperience || 0;
+  // Generate precise logs based on actual resume analysis
+  const generatePreciseLogs = (): LogEntry[] => {
+    if (!resume || !resume.analysis) {
+      return getLoadingLogs();
+    }
 
-  // Generate adaptive logs based on seniority
-  const getAdaptiveLogs = (): LogEntry[] => {
-    const isJunior = seniorityLevel === 'entry' || seniorityLevel === 'junior' || yearsOfExperience < 3;
-    const isMid = seniorityLevel === 'mid' || (yearsOfExperience >= 3 && yearsOfExperience < 8);
-    const isSenior = seniorityLevel === 'senior' || seniorityLevel === 'staff' || yearsOfExperience >= 8;
+    const logs: LogEntry[] = [];
+    let lineNum = 1;
 
-    const baseLogs: LogEntry[] = [
-      {
-        line: 1,
-        type: "command",
-        message: "./ats-scanner --mode=deep --engine=ml-v4 --target=resume.pdf",
-      },
-      {
-        line: 2,
-        type: "info",
-        message: "[INIT] 🤖 ATS Robot Engine v4.2.0 - Neural Network Active"
-      },
-      {
-        line: 3,
-        type: "ok",
-        message: "[OK] ✓ PDF structure validated • Text layer extracted successfully"
-      },
-      {
-        line: 4,
-        type: "info",
-        message: "[ANALYZE] 🧠 Running ML role detection algorithm..."
-      },
-    ];
+    // Header
+    logs.push({
+      line: lineNum++,
+      type: "command",
+      message: "./ats-scanner --mode=deep --engine=neural-v4 --precision=high"
+    });
 
-    // Adaptive role detection based on seniority
-    if (isJunior) {
-      baseLogs.push({
-        line: 5,
+    logs.push({
+      line: lineNum++,
+      type: "info",
+      message: "[INIT] 🤖 ATS Robot Engine v4.2.0 - Neural Network Active"
+    });
+
+    logs.push({
+      line: lineNum++,
+      type: "ok",
+      message: `[OK] ✓ CV loaded: ${resume.title} • ${resume.mimeType}`
+    });
+
+    // Experience Level Detection
+    const experienceLevel = user?.experienceLevel || resume.experienceLevel;
+    if (experienceLevel) {
+      const levelLabels: Record<string, string> = {
+        internship: "Internship/Entry (0-1 yrs)",
+        entry: "Entry Level (0-2 yrs)",
+        junior: "Junior (2-4 yrs)",
+        mid: "Mid-Level (4-7 yrs)",
+        senior: "Senior (7-10 yrs)",
+        lead: "Lead/Staff (10+ yrs)",
+        executive: "Executive (C-level)"
+      };
+
+      logs.push({
+        line: lineNum++,
         type: "ok",
-        message: `[DETECT] ✓ Target level: Entry/Junior (${yearsOfExperience}yrs experience)`
-      });
-      baseLogs.push({
-        line: 6,
-        type: "info",
-        message: "[SCAN] 📊 Analyzing education, projects, and internships..."
-      });
-      baseLogs.push({
-        line: 7,
-        type: "warn",
-        message: "[WARN] ⚠️  Limited work experience detected - Focus on projects & academic achievements"
-      });
-      baseLogs.push({
-        line: 8,
-        type: "info",
-        message: "[ANALYZE] 🔍 Checking for relevant coursework and technical skills..."
-      });
-      baseLogs.push({
-        line: 9,
-        type: "critical",
-        message: "[CRITICAL] ❌ Missing: Portfolio projects, GitHub links, or internship experience"
-      });
-      baseLogs.push({
-        line: 10,
-        type: "info",
-        message: '           → Recommended: Add 2-3 personal projects with live demos'
-      });
-      baseLogs.push({
-        line: 11,
-        type: "warn",
-        message: "[WARN] ⚠️  Soft skills mentioned but need concrete examples from coursework/projects"
-      });
-      baseLogs.push({
-        line: 12,
-        type: "info",
-        message: "[SCAN] 🎯 Junior roles prioritize: Learning ability, passion, and potential"
-      });
-      baseLogs.push({
-        line: 13,
-        type: "ok",
-        message: '[OK] ✓ Education section strong • Relevant coursework identified'
-      });
-      baseLogs.push({
-        line: 14,
-        type: "fail",
-        message: '[FAIL] ❌ Entry-level signal: Missing hands-on project descriptions'
-      });
-    } else if (isMid) {
-      baseLogs.push({
-        line: 5,
-        type: "ok",
-        message: `[DETECT] ✓ Target level: Mid-Level (${yearsOfExperience}yrs experience)`
-      });
-      baseLogs.push({
-        line: 6,
-        type: "info",
-        message: "[SCAN] 📊 Analyzing professional experience and technical depth..."
-      });
-      baseLogs.push({
-        line: 7,
-        type: "warn",
-        message: "[WARN] ⚠️  Experience bullets lack quantitative impact metrics"
-      });
-      baseLogs.push({
-        line: 8,
-        type: "info",
-        message: "[ANALYZE] 🔍 Evaluating skill progression and project ownership..."
-      });
-      baseLogs.push({
-        line: 9,
-        type: "critical",
-        message: "[CRITICAL] ❌ Missing key signals: Project ownership, code reviews, mentoring"
-      });
-      baseLogs.push({
-        line: 10,
-        type: "info",
-        message: '           → Mid-level roles expect: Independent delivery + some technical leadership'
-      });
-      baseLogs.push({
-        line: 11,
-        type: "warn",
-        message: "[WARN] ⚠️  Technologies listed but impact unclear (improved performance by X%?)"
-      });
-      baseLogs.push({
-        line: 12,
-        type: "info",
-        message: "[SCAN] 🎯 Mid roles prioritize: Delivery track record, technical depth, collaboration"
-      });
-      baseLogs.push({
-        line: 13,
-        type: "ok",
-        message: '[OK] ✓ Technical skills match mid-level requirements'
-      });
-      baseLogs.push({
-        line: 14,
-        type: "fail",
-        message: '[FAIL] ❌ Mid-level gap: Need measurable outcomes (0/10 achievements quantified)'
-      });
-    } else if (isSenior) {
-      baseLogs.push({
-        line: 5,
-        type: "ok",
-        message: `[DETECT] ✓ Target level: Senior/Staff (${yearsOfExperience}+ yrs experience)`
-      });
-      baseLogs.push({
-        line: 6,
-        type: "info",
-        message: "[SCAN] 📊 Analyzing leadership impact, system design, and strategic contributions..."
-      });
-      baseLogs.push({
-        line: 7,
-        type: "warn",
-        message: "[WARN] ⚠️  Senior experience not reflected: Missing architecture/design decisions"
-      });
-      baseLogs.push({
-        line: 8,
-        type: "info",
-        message: "[ANALYZE] 🔍 Checking for: Tech leadership, mentoring, cross-functional work..."
-      });
-      baseLogs.push({
-        line: 9,
-        type: "critical",
-        message: "[CRITICAL] ❌ Senior signals missing: No system architecture, team leadership, or strategic impact"
-      });
-      baseLogs.push({
-        line: 10,
-        type: "info",
-        message: '           → Senior roles expect: "Led team of X", "Architected system serving Ym users", "Reduced costs by Z%"'
-      });
-      baseLogs.push({
-        line: 11,
-        type: "warn",
-        message: "[WARN] ⚠️  Leadership & mentoring experience not quantified (mentored how many engineers?)"
-      });
-      baseLogs.push({
-        line: 12,
-        type: "info",
-        message: "[SCAN] 🎯 Senior roles prioritize: Strategic impact, technical authority, people leadership"
-      });
-      baseLogs.push({
-        line: 13,
-        type: "ok",
-        message: '[OK] ✓ Deep technical expertise evident in skill set'
-      });
-      baseLogs.push({
-        line: 14,
-        type: "fail",
-        message: '[FAIL] ❌ Seniority mismatch: 12 critical leadership/impact signals missing'
+        message: `[DETECT] ✓ Experience level: ${levelLabels[experienceLevel] || experienceLevel}`
       });
     }
 
-    baseLogs.push({
-      line: 15,
+    // Role Detection
+    if (resume.category) {
+      logs.push({
+        line: lineNum++,
+        type: "info",
+        message: `[ANALYZE] 🧠 Role detected: ${resume.category}`
+      });
+    }
+
+    // Score Analysis
+    const score = resume.score || 0;
+    const scoreBreakdown = resume.scoreBreakdown;
+
+    logs.push({
+      line: lineNum++,
       type: "info",
-      message: "[PROCESS] ⚙️  Generating ATS compatibility report..."
-    });
-    baseLogs.push({
-      line: 16,
-      type: "ok",
-      message: "[COMPLETE] ✓ Scan finished • Report ready • Score calculated"
+      message: "[SCAN] 📊 Running comprehensive ATS analysis..."
     });
 
-    return baseLogs;
+    // Keywords Analysis
+    if (scoreBreakdown?.keywords !== undefined) {
+      const keywordScore = scoreBreakdown.keywords;
+      if (keywordScore >= 70) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[KEYWORDS] ✓ Keyword optimization: ${keywordScore}/100 - Strong match`
+        });
+      } else if (keywordScore >= 50) {
+        logs.push({
+          line: lineNum++,
+          type: "warn",
+          message: `[KEYWORDS] ⚠️  Keyword optimization: ${keywordScore}/100 - Needs improvement`
+        });
+      } else {
+        logs.push({
+          line: lineNum++,
+          type: "critical",
+          message: `[KEYWORDS] ❌ Keyword optimization: ${keywordScore}/100 - Critical gaps detected`
+        });
+      }
+    }
+
+    // Format Analysis
+    if (scoreBreakdown?.format !== undefined) {
+      const formatScore = scoreBreakdown.format;
+      if (formatScore >= 70) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[FORMAT] ✓ Document structure: ${formatScore}/100 - ATS-friendly`
+        });
+      } else if (formatScore >= 50) {
+        logs.push({
+          line: lineNum++,
+          type: "warn",
+          message: `[FORMAT] ⚠️  Document structure: ${formatScore}/100 - Formatting issues found`
+        });
+      } else {
+        logs.push({
+          line: lineNum++,
+          type: "fail",
+          message: `[FORMAT] ❌ Document structure: ${formatScore}/100 - Major formatting problems`
+        });
+      }
+    }
+
+    // Completeness Analysis
+    if (scoreBreakdown?.completeness !== undefined) {
+      const completenessScore = scoreBreakdown.completeness;
+      if (completenessScore >= 70) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[COMPLETE] ✓ Content completeness: ${completenessScore}/100 - Well-rounded`
+        });
+      } else if (completenessScore >= 50) {
+        logs.push({
+          line: lineNum++,
+          type: "warn",
+          message: `[COMPLETE] ⚠️  Content completeness: ${completenessScore}/100 - Missing sections`
+        });
+      } else {
+        logs.push({
+          line: lineNum++,
+          type: "critical",
+          message: `[COMPLETE] ❌ Content completeness: ${completenessScore}/100 - Critical sections missing`
+        });
+      }
+    }
+
+    // Parse analysis for specific issues
+    try {
+      const analysis = JSON.parse(resume.analysis);
+
+      // Format Issues
+      if (analysis.formatIssues && analysis.formatIssues.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "info",
+          message: `[ISSUES] 🔍 Found ${analysis.formatIssues.length} formatting issues:`
+        });
+
+        analysis.formatIssues.slice(0, 5).forEach((issue: any) => {
+          const issueType = issue.issue || issue.type || "Issue";
+          const issueSeverity = issue.severity || "medium";
+
+          const logType = issueSeverity === "critical" ? "critical" :
+                         issueSeverity === "high" ? "fail" : "warn";
+
+          logs.push({
+            line: lineNum++,
+            type: logType,
+            message: `         → ${issueType}`,
+            detail: issue.fix || issue.suggestion
+          });
+        });
+      }
+
+      // Missing Keywords
+      if (analysis.missingKeywords && analysis.missingKeywords.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "info",
+          message: `[KEYWORDS] 📝 Missing ${analysis.missingKeywords.length} critical keywords:`
+        });
+
+        analysis.missingKeywords.slice(0, 5).forEach((kw: any) => {
+          const keyword = kw.keyword || kw;
+          const priority = kw.priority || "medium";
+
+          const logType = priority === "critical" ? "critical" :
+                         priority === "high" ? "fail" : "warn";
+
+          logs.push({
+            line: lineNum++,
+            type: logType,
+            message: `         → "${keyword}"`,
+            detail: kw.context || kw.section
+          });
+        });
+      }
+
+      // Matched Keywords (successes)
+      if (analysis.matchedKeywords && analysis.matchedKeywords.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[KEYWORDS] ✓ Found ${analysis.matchedKeywords.length} matching keywords`
+        });
+      }
+
+    } catch (e) {
+      // If analysis can't be parsed, show generic message
+      logs.push({
+        line: lineNum++,
+        type: "info",
+        message: "[ANALYZE] 📊 Detailed analysis available in report"
+      });
+    }
+
+    // Experience-Level Specific Feedback
+    if (experienceLevel) {
+      logs.push({
+        line: lineNum++,
+        type: "info",
+        message: "[ADAPTIVE] 🎯 Applying experience-level adjustments..."
+      });
+
+      switch (experienceLevel) {
+        case "internship":
+        case "entry":
+          logs.push({
+            line: lineNum++,
+            type: "info",
+            message: `         → Entry-level evaluation: Focus on potential, projects, and education`
+          });
+          if (score < 60) {
+            logs.push({
+              line: lineNum++,
+              type: "ok",
+              message: `         → Score boosted: Reduced penalty for limited work experience`
+            });
+          }
+          break;
+
+        case "junior":
+          logs.push({
+            line: lineNum++,
+            type: "info",
+            message: `         → Junior evaluation: Expect some quantifiable results`
+          });
+          break;
+
+        case "mid":
+          logs.push({
+            line: lineNum++,
+            type: "warn",
+            message: `         → Mid-level evaluation: Metrics and project ownership expected`
+          });
+          break;
+
+        case "senior":
+        case "lead":
+          logs.push({
+            line: lineNum++,
+            type: "critical",
+            message: `         → Senior evaluation: Leadership, architecture, and impact metrics required`
+          });
+          break;
+
+        case "executive":
+          logs.push({
+            line: lineNum++,
+            type: "critical",
+            message: `         → Executive evaluation: Business impact, revenue, and strategic initiatives required`
+          });
+          break;
+      }
+    }
+
+    // Final Score
+    logs.push({
+      line: lineNum++,
+      type: "info",
+      message: "[PROCESS] ⚙️  Calculating final ATS compatibility score..."
+    });
+
+    if (score >= 80) {
+      logs.push({
+        line: lineNum++,
+        type: "ok",
+        message: `[RESULT] ✓ ATS Score: ${score}/100 - Excellent! Strong candidate profile`
+      });
+    } else if (score >= 65) {
+      logs.push({
+        line: lineNum++,
+        type: "ok",
+        message: `[RESULT] ✓ ATS Score: ${score}/100 - Good! Minor improvements recommended`
+      });
+    } else if (score >= 50) {
+      logs.push({
+        line: lineNum++,
+        type: "warn",
+        message: `[RESULT] ⚠️  ATS Score: ${score}/100 - Fair! Significant improvements needed`
+      });
+    } else {
+      logs.push({
+        line: lineNum++,
+        type: "fail",
+        message: `[RESULT] ❌ ATS Score: ${score}/100 - Critical! Major revisions required`
+      });
+    }
+
+    logs.push({
+      line: lineNum++,
+      type: "ok",
+      message: "[COMPLETE] ✓ Scan finished • Full report available below"
+    });
+
+    return logs;
   };
 
-  const defaultLogs: LogEntry[] = getAdaptiveLogs();
+  const getLoadingLogs = (): LogEntry[] => {
+    return [
+      { line: 1, type: "command", message: "./ats-scanner --mode=deep --engine=neural-v4" },
+      { line: 2, type: "info", message: "[INIT] 🤖 Loading resume data..." },
+      { line: 3, type: "info", message: "[WAIT] ⏳ Processing..." }
+    ];
+  };
 
-  // Use provided logs if available, otherwise use adaptive logs
-  const logData = providedLogs || defaultLogs;
+  const logData = resume ? generatePreciseLogs() : getLoadingLogs();
 
   useEffect(() => {
     if (!autoAnimate) {
       setDisplayedLogs(logData);
       return;
     }
+
+    setDisplayedLogs([]);
 
     // Animate logs appearing one by one
     let currentIndex = 0;
@@ -261,10 +372,10 @@ export function RobotTerminalView({
       } else {
         clearInterval(interval);
       }
-    }, 150);
+    }, 120); // Slightly faster for more logs
 
     return () => clearInterval(interval);
-  }, [autoAnimate, logData]);
+  }, [autoAnimate, logData, resume]);
 
   // Simulate CPU and memory fluctuations
   useEffect(() => {
@@ -287,6 +398,8 @@ export function RobotTerminalView({
         return "text-[#EF4444] drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]";
       case "command":
         return "text-[#64748B]";
+      case "metric":
+        return "text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]";
       default:
         return "text-[#94a3b8]";
     }
@@ -301,6 +414,8 @@ export function RobotTerminalView({
       case "critical":
       case "fail":
         return "✗";
+      case "metric":
+        return "◆";
       default:
         return "●";
     }
@@ -409,8 +524,8 @@ export function RobotTerminalView({
               transition={{ duration: 2, repeat: Infinity }}
             >
               <Terminal className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">ats_robot_neural_scan.log</span>
-              <span className="sm:hidden">neural.log</span>
+              <span className="hidden sm:inline">ats_deep_scan.log</span>
+              <span className="sm:hidden">scan.log</span>
             </motion.div>
 
             <AnimatePresence>
@@ -427,7 +542,7 @@ export function RobotTerminalView({
                     transition={{ duration: 1, repeat: Infinity }}
                   />
                   <Activity className="h-3 w-3" />
-                  SCANNING ACTIVE
+                  ANALYZING
                 </motion.div>
               )}
             </AnimatePresence>
@@ -511,18 +626,25 @@ export function RobotTerminalView({
                   <div className="flex-1 break-words">
                     <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
                     <span className="text-[#64748B]">:</span>
-                    <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+                    <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/deep-scan</span>
                     <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
                     <span className="text-white/90 ml-2">{log.message}</span>
                   </div>
                 ) : (
-                  <motion.span
-                    className={`${getLogColor(log.type)} flex-1 break-words font-medium`}
-                    initial={{ opacity: 0.8 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    {log.message}
-                  </motion.span>
+                  <div className="flex-1 break-words">
+                    <motion.span
+                      className={`${getLogColor(log.type)} font-medium`}
+                      initial={{ opacity: 0.8 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      {log.message}
+                    </motion.span>
+                    {log.detail && (
+                      <div className="text-[#64748B] text-xs mt-1 ml-4">
+                        {log.detail}
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* Timestamp on hover */}
@@ -550,7 +672,7 @@ export function RobotTerminalView({
               <span className="text-[#22C55E]">✓</span>
               <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
               <span className="text-[#64748B]">:</span>
-              <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+              <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/deep-scan</span>
               <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
               <motion.span
                 className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-2 shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
@@ -596,13 +718,15 @@ export function RobotTerminalView({
               <span>{logData.length}</span>
             </div>
 
-            {displayedLogs.length === logData.length && (
+            {displayedLogs.length === logData.length && resume && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="hidden lg:flex items-center gap-1.5 px-2 py-1 bg-[#22C55E]/10 rounded border border-[#22C55E]/40"
               >
-                <span className="text-[10px] text-[#22C55E] font-bold">✓ SCAN COMPLETE</span>
+                <span className="text-[10px] text-[#22C55E] font-bold">
+                  ✓ SCORE: {resume.score || 0}/100
+                </span>
               </motion.div>
             )}
           </div>
