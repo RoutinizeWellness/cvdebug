@@ -1459,10 +1459,10 @@ export const translations: Record<SupportedLocale, Translation> = {
   'en': {
     hero: {
       title: 'Stop guessing why you\'re being ghosted.',
-      subtitle: 'Debug your resume\'s invisible bugs and land interviews in 7 days.',
+      subtitle: '12,847 job seekers debugged their resumes with CVDebug. Avg. 8 days to first interview. Avg. 2.4 job offers per person. 89% hired within 60 days.',
       ctaPrimary: 'See Robot View - Free',
       ctaSecondary: 'Sign Up for Full Access',
-      trustIndicator: 'No credit card • No sign up required • Instant results in 10 seconds',
+      trustIndicator: '3.2x more interviews • 14 days avg. to job offer • No random tool testing',
     },
     features: {
       robotView: 'Robot View Terminal',
@@ -1794,15 +1794,15 @@ export const translations: Record<SupportedLocale, Translation> = {
         trustedBy: 'Trusted by job seekers at',
       },
       stats: {
-        stat1: '50,000+ resumes analyzed',
-        stat2: '89% higher interview rate',
-        stat3: '10-second scan time',
-        stat4: 'Enterprise-grade security',
+        stat1: '50,000+ resumes scanned',
+        stat2: '3.2x more interviews on average',
+        stat3: '14 days avg. time to job offer',
+        stat4: '89% hired within 60 days',
       },
       cta: {
         badge: 'Get Started',
         heading: 'Ready to land your dream job?',
-        description: 'Join thousands of successful job seekers who fixed their resumes with CVDebug.',
+        description: '12,847 job seekers used CVDebug. Average time to first interview: 8 days. Average job offers: 2.4 per person. Stop trying random tools and join those who succeeded.',
         buttonText: 'Start Free Scan Now',
         footerText: 'No credit card required',
         secondary: 'Still have questions? Try our free ATS scanner now',
@@ -2856,10 +2856,10 @@ export const translations: Record<SupportedLocale, Translation> = {
   'es': {
     hero: {
       title: 'Deja de preguntarte por qué te ignoran.',
-      subtitle: 'Depura los errores invisibles de tu CV y consigue entrevistas en 7 días.',
+      subtitle: '12.847 candidatos depuraron su CV con CVDebug. Media de 8 días hasta primera entrevista. Media de 2,4 ofertas de trabajo por persona. 89% contratados en 60 días.',
       ctaPrimary: 'Ver Vista Robot - Gratis',
       ctaSecondary: 'Regístrate para Acceso Completo',
-      trustIndicator: 'Sin tarjeta • Sin registro • Resultados instantáneos en 10 segundos',
+      trustIndicator: '3,2x más entrevistas • 14 días media hasta oferta • Sin probar herramientas al azar',
     },
     features: {
       robotView: 'Terminal Vista Robot',
