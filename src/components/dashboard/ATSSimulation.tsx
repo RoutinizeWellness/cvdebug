@@ -504,7 +504,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                   <p className="text-[11px] font-bold uppercase tracking-widest text-[#94A3B8]">{t.atsSimulation.signalDensity}</p>
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-bold tracking-tight text-[#7C3AED]">{matchedKeywords.length}</p>
+                      <p className="text-2xl font-bold tracking-tight text-[#1E293B]">{matchedKeywords.length}</p>
                       <span className="text-[10px] font-medium text-[#64748B]">{t.atsSimulation.signals}</span>
                     </div>
                     <p className="text-[10px] text-[#64748B]">
@@ -574,7 +574,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
                       <defs>
                         <linearGradient id="scoreGradient" x1="0%" x2="100%" y1="0%" y2="0%">
                           <stop offset="0%" stopColor="#818cf8"></stop>
-                          <stop offset="100%" stopColor="#4F46E5"></stop>
+                          <stop offset="100%" stopColor="#64748B"></stop>
                         </linearGradient>
                       </defs>
                     </svg>

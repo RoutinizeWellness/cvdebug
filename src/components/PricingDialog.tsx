@@ -301,7 +301,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
           {/* 7-Day Sprint - BEST VALUE (Moved to 4th position) */}
           <div className="bg-white border border-[#1E293B]/30 rounded-xl p-6 flex flex-col h-full relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#1E293B] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#1E293B] to-[#334155] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">workspace_premium</span>
               {t.pricingDialog.bestValue}
             </div>

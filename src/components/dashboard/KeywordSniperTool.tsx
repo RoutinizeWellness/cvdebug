@@ -545,7 +545,7 @@ export function KeywordSniperTool({
                   strokeDasharray="251.2"
                   strokeLinecap="round"
                   strokeWidth="8"
-                  style={{ filter: "drop-shadow(0 0 6px rgba(59, 130, 246, 0.5))" }}
+                  style={{ filter: "drop-shadow(0 0 6px rgba(100, 116, 139, 0.5))" }}
                 ></motion.circle>
               </svg>
               <div className="absolute top-0 left-0 size-full flex flex-col items-center justify-center">
@@ -554,7 +554,7 @@ export function KeywordSniperTool({
                   initial={{ scale: 1.2, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className="text-5xl font-display font-bold text-[#0F172A]"
-                  style={{ textShadow: "0 0 10px rgba(59, 130, 246, 0.5)" }}
+                  style={{ textShadow: "0 0 10px rgba(100, 116, 139, 0.5)" }}
                 >
                   {scorePercentage}
                 </motion.span>

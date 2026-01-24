@@ -850,7 +850,7 @@ export function LiveRecruiterSimulation({
             className="col-span-2 bg-white border border-[rgba(196,181,253,0.3)] rounded-xl p-8 shadow-sm"
           >
             <div className="flex items-center gap-2 mb-6">
-              <span className="material-symbols-outlined text-[#4F46E5] text-xl">track_changes</span>
+              <span className="material-symbols-outlined text-[#64748B] text-xl">track_changes</span>
               <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
                 Seniority Match Analysis
               </h2>
@@ -990,14 +990,14 @@ export function LiveRecruiterSimulation({
                   <defs>
                     <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                       <stop offset="0%" stopColor="#818cf8" />
-                      <stop offset="100%" stopColor="#4F46E5" />
+                      <stop offset="100%" stopColor="#64748B" />
                     </linearGradient>
                   </defs>
                 </svg>
                 <span className="absolute text-[10px] font-mono text-slate-400">{score}%</span>
               </div>
             </div>
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#4F46E5]/5 rounded-full blur-2xl"></div>
+            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#64748B]/5 rounded-full blur-2xl"></div>
           </motion.div>
 
           {/* Technical Gap Analysis */}

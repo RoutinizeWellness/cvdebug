@@ -195,7 +195,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                   transition={{ duration: 0.3 }}
                   className="h-full bg-gradient-to-r from-[#64748B] via-[#64748B]/80 to-[#1E293B] rounded-full"
                   style={{
-                    boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
+                    boxShadow: '0 0 10px rgba(100, 116, 139, 0.5)'
                   }}
                 >
                   <div className="absolute inset-0 bg-[#FFFFFF]/20 w-full h-full animate-pulse skew-x-12"></div>

@@ -584,7 +584,7 @@ export function EnhancedRobotTerminalView({
       case "command":
         return "text-[#64748B]";
       case "metric":
-        return "text-[#3B82F6] drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]";
+        return "text-[#64748B] drop-shadow-[0_0_8px_rgba(100,116,139,0.5)]";
       default:
         return "text-[#94a3b8]";
     }
@@ -794,7 +794,7 @@ export function EnhancedRobotTerminalView({
             {/* Export Button - Always visible */}
             <motion.button
               onClick={exportLogs}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#3B82F6]/20 hover:bg-[#3B82F6]/30 rounded border border-[#3B82F6]/50 hover:border-[#3B82F6] transition-all text-[#3B82F6] hover:text-white group"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#64748B]/20 hover:bg-[#64748B]/30 rounded border border-[#64748B]/50 hover:border-[#64748B] transition-all text-[#64748B] hover:text-white group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               title="Export analysis as text file"

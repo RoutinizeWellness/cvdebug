@@ -872,7 +872,7 @@ export function FluffDetector({
                       disabled={selectedMetrics[index] === undefined}
                       className={`w-full mt-3 px-3 py-2 text-white text-xs font-semibold rounded transition-all ${
                         selectedMetrics[index] !== undefined
-                          ? "bg-[#1E293B] hover:bg-[#7C3AED] shadow-lg shadow-slate-500/30 cursor-pointer"
+                          ? "bg-[#1E293B] hover:bg-[#334155] shadow-lg shadow-slate-500/30 cursor-pointer"
                           : "bg-gray-300 cursor-not-allowed opacity-60"
                       }`}
                     >

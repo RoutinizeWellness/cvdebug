@@ -135,7 +135,7 @@ export function InterviewBattlePlan({
         bg: "bg-slate-50 border-slate-100"
       },
       primary: {
-        border: "border-l-blue-500",
+        border: "border-l-[#64748B]",
         text: "text-[#64748B]",
         bg: "bg-[#F8FAFC] border-[#F1F5F9]"
       },
@@ -145,7 +145,7 @@ export function InterviewBattlePlan({
         bg: "bg-amber-50 border-amber-100"
       },
       blue: {
-        border: "border-l-blue-500",
+        border: "border-l-[#64748B]",
         text: "text-[#0F172A]",
         bg: "bg-[#F8FAFC] border-[#F1F5F9]"
       }

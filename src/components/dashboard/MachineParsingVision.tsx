@@ -120,7 +120,7 @@ export function MachineParsingVision({
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-[#F8FAFC] flex justify-center overflow-auto p-8"
               style={{
-                background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.03) 0%, rgba(248, 250, 252, 1) 100%), repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(59, 130, 246, 0.03) 2px, rgba(59, 130, 246, 0.03) 3px)',
+                background: 'radial-gradient(circle at center, rgba(100, 116, 139, 0.03) 0%, rgba(248, 250, 252, 1) 100%), repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(100, 116, 139, 0.03) 2px, rgba(100, 116, 139, 0.03) 3px)',
                 backgroundSize: '100% 100%, 100% 4px'
               }}
             >

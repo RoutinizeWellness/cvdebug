@@ -158,7 +158,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             {/* Header */}
             <header className="mb-8 text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center">
                   <Target className="h-6 w-6 text-white" />
                 </div>
                 <h1 className="text-4xl font-bold text-[#0F172A] dark:text-white tracking-tight">
@@ -189,7 +189,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     value={jobDescriptionUrl}
                     onChange={(e) => setJobDescriptionUrl(e.target.value)}
                     disabled={!isPaidUser}
-                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#1E293B]/20 focus:border-[#1E293B] transition-all"
                   />
                   <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
                     Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.
@@ -223,7 +223,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     onChange={(e) => setJobDescriptionText(e.target.value)}
                     disabled={!isPaidUser}
                     rows={6}
-                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all resize-none font-mono text-sm"
+                    className="w-full px-4 py-3 bg-[#F8FAFC] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-700 rounded-xl text-[#0F172A] dark:text-white placeholder:text-[#94A3B8] focus:ring-2 focus:ring-[#1E293B]/20 focus:border-[#1E293B] transition-all resize-none font-mono text-sm"
                   />
                   <p className="mt-2 text-xs text-[#94A3B8] dark:text-slate-500">
                     Copia y pega la descripción completa del trabajo de cualquier portal.
@@ -234,7 +234,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 <Button
                   onClick={handleAnalyze}
                   disabled={!isPaidUser}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-[#7C3AED]/30 group"
+                  className="w-full py-4 px-6 bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-[#1E293B]/30 group"
                 >
                   <Zap className="h-5 w-5 mr-2 group-hover:animate-pulse" />
                   Analizar Puntuación de Coincidencia
@@ -283,14 +283,14 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                   animate={{ scale: 1, opacity: 1 }}
                   className="text-center p-12 max-w-xl"
                 >
-                  <div className="w-20 h-20 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center justify-center mx-auto mb-6">
                     <Lock className="h-10 w-10 text-white" />
                   </div>
                   <h2 className="text-3xl font-black text-[#0F172A] dark:text-white mb-3">
                     Elite Match Tool es Premium
                   </h2>
                   <p className="text-[#64748B] dark:text-slate-400 mb-2 text-lg">
-                    Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#7C3AED]">ML local</span> (0 costes de API)
+                    Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#1E293B]">ML local</span> (0 costes de API)
                   </p>
                   <p className="text-[#64748B] dark:text-slate-400 mb-8 text-sm">
                     • Extracción de entidades con TF-IDF & Cosine Similarity<br/>
@@ -301,7 +301,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                   <Button
                     onClick={onUpgrade}
                     size="lg"
-                    className="bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] hover:opacity-90 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-[#7C3AED]/30"
+                    className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-[#1E293B]/30"
                   >
                     <Sparkles className="h-5 w-5 mr-2" />
                     Upgrade Now - {formatPrice('single_scan')}
@@ -323,7 +323,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             exit={{ opacity: 0 }}
             className="flex flex-col items-center justify-center py-24"
           >
-            <div className="w-20 h-20 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <div className="w-20 h-20 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center justify-center mb-6 animate-pulse">
               <Loader2 className="h-10 w-10 text-white animate-spin" />
             </div>
             <h3 className="text-2xl font-bold text-[#0F172A] dark:text-white mb-3">
@@ -331,7 +331,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             </h3>
             <div className="w-full max-w-md h-2 bg-[#E2E8F0] dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#7C3AED] to-[#4F46E5]"
+                className="h-full bg-gradient-to-r from-[#1E293B] to-[#334155]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.3 }}
@@ -352,7 +352,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             className="space-y-6"
           >
             {/* Score Card */}
-            <div className="bg-gradient-to-br from-[#7C3AED] to-[#4F46E5] rounded-xl p-8 text-white shadow-lg">
+            <div className="bg-gradient-to-br from-[#1E293B] to-[#334155] rounded-xl p-8 text-white shadow-lg">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold opacity-90">Puntuación de Coincidencia</h3>
@@ -441,13 +441,13 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             {/* Recommendations */}
             <div className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-slate-800 rounded-xl p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Sparkles className="h-5 w-5 text-[#7C3AED]" />
+                <Sparkles className="h-5 w-5 text-[#1E293B]" />
                 <h3 className="font-bold text-[#0F172A] dark:text-white">Auto-Fix Recommendations</h3>
               </div>
               <ul className="space-y-2">
                 {matchResult.recommendations.map((rec, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-sm text-[#64748B] dark:text-slate-400">
-                    <span className="w-6 h-6 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                    <span className="w-6 h-6 rounded-full bg-[#1E293B]/10 text-[#1E293B] flex items-center justify-center flex-shrink-0 text-xs font-bold">
                       {idx + 1}
                     </span>
                     {rec}
@@ -466,7 +466,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                 Analyze Another Job
               </Button>
               <Button
-                className="flex-1 bg-gradient-to-r from-[#7C3AED] to-[#4F46E5] text-white"
+                className="flex-1 bg-gradient-to-r from-[#1E293B] to-[#334155] text-white"
                 onClick={() => {
                   toast.success("Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.");
                   // In a real implementation, this would populate the editor with fixes

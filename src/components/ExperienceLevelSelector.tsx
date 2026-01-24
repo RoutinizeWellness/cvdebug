@@ -19,7 +19,7 @@ const experienceLevels: ExperienceLevelOption[] = [
     years: "0-1 years",
     icon: GraduationCap,
     description: "Looking for internships or first job",
-    color: "from-blue-400 to-blue-600"
+    color: "from-slate-400 to-slate-600"
   },
   {
     value: "entry",
@@ -43,7 +43,7 @@ const experienceLevels: ExperienceLevelOption[] = [
     years: "4-7 years",
     icon: Award,
     description: "Solid track record and growing expertise",
-    color: "from-purple-400 to-purple-600"
+    color: "from-slate-500 to-slate-700"
   },
   {
     value: "senior",
@@ -168,10 +168,10 @@ export function ExperienceLevelSelector({
         })}
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+      <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
         <div className="flex items-start gap-2">
-          <span className="material-symbols-outlined text-blue-600 text-base mt-0.5">info</span>
-          <p className="text-xs text-blue-900 leading-relaxed">
+          <span className="material-symbols-outlined text-[#64748B] text-base mt-0.5">info</span>
+          <p className="text-xs text-slate-900 leading-relaxed">
             <strong>Why this matters:</strong> We adapt our CV scoring to your experience level.
             An internship CV is evaluated differently than a senior position CV—different expectations
             for metrics, achievements, and depth of experience.

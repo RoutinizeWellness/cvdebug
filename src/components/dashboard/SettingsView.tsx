@@ -451,9 +451,9 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
 
             {/* Current Experience Display */}
             {user?.experienceLevel && (
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-4 mb-6">
                 <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-blue-600 text-xl mt-0.5">
+                  <span className="material-symbols-outlined text-[#64748B] text-xl mt-0.5">
                     badge
                   </span>
                   <div>
