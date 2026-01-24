@@ -35,6 +35,15 @@ export const analyzeResume = internalAction({
     id: v.id("resumes"),
     ocrText: v.string(),
     jobDescription: v.optional(v.string()),
+    experienceLevel: v.optional(v.union(
+      v.literal("internship"),
+      v.literal("entry"),
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("lead"),
+      v.literal("executive")
+    )),
   },
   handler: async (ctx, args) => {
     const startTime = Date.now();
@@ -128,7 +137,7 @@ export const analyzeResume = internalAction({
         console.log(`[ML Engine] Starting analysis - isPremium: ${isPremium}, textLength: ${cleanText.length}`);
 
         try {
-          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium);
+          analysisResult = generateIntelligentFallback(cleanText, args.jobDescription, undefined, isPremium, args.experienceLevel);
         } catch (mlError: any) {
           console.error("[ML Engine] CRITICAL: generateIntelligentFallback threw error:", mlError?.message || "Unknown");
           console.error("[ML Engine] Stack:", mlError?.stack || "No stack");

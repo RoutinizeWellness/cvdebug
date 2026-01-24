@@ -16,6 +16,17 @@ const schema = defineSchema(
     ),
     credits: v.optional(v.number()),
     sprintExpiresAt: v.optional(v.number()),
+    // User profile information for adaptive scoring
+    experienceLevel: v.optional(v.union(
+      v.literal("internship"),    // 0-1 years, looking for internships
+      v.literal("entry"),          // 0-2 years, entry-level positions
+      v.literal("junior"),         // 2-4 years, junior roles
+      v.literal("mid"),            // 4-7 years, mid-level roles
+      v.literal("senior"),         // 7-10 years, senior roles
+      v.literal("lead"),           // 10+ years, lead/staff roles
+      v.literal("executive")       // C-level, VP, Director
+    )),
+    targetRole: v.optional(v.string()), // E.g., "Software Engineer", "SDR", "Product Manager"
     // Single Debug Fix tracking
     aiRewritesUsed: v.optional(v.number()), // Track AI rewrites used for single_debug_fix plan
     singleDebugFixUsed: v.optional(v.boolean()), // Track if single_debug_fix has been used

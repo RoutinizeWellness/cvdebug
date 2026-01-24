@@ -37,6 +37,8 @@ export const currentUser = query({
       credits: user?.credits ?? 1,
       sprintExpiresAt: user?.sprintExpiresAt,
       trialEndsOn: user?.trialEndsOn,
+      experienceLevel: user?.experienceLevel,
+      targetRole: user?.targetRole,
       _id: user?._id,
     };
   },
@@ -424,6 +426,39 @@ export const markFreeTrialUsed = mutation({
         freeTrialUsed: true,
       });
     }
+  },
+});
+
+export const updateExperienceLevel = mutation({
+  args: {
+    experienceLevel: v.union(
+      v.literal("internship"),
+      v.literal("entry"),
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("lead"),
+      v.literal("executive")
+    ),
+    targetRole: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+      .unique();
+
+    if (user) {
+      await ctx.db.patch(user._id, {
+        experienceLevel: args.experienceLevel,
+        targetRole: args.targetRole,
+      });
+    }
+
+    return { success: true };
   },
 });
 

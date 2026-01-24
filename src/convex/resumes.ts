@@ -29,6 +29,15 @@ export const createResume = mutation({
     jobTitle: v.optional(v.string()),
     company: v.optional(v.string()),
     projectId: v.optional(v.id("projects")),
+    experienceLevel: v.optional(v.union(
+      v.literal("internship"),
+      v.literal("entry"),
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("lead"),
+      v.literal("executive")
+    )),
   },
   handler: async (ctx, args) => {
     try {
@@ -255,6 +264,15 @@ export const analyzeResume = mutation({
     id: v.id("resumes"),
     ocrText: v.string(),
     jobDescription: v.optional(v.string()),
+    experienceLevel: v.optional(v.union(
+      v.literal("internship"),
+      v.literal("entry"),
+      v.literal("junior"),
+      v.literal("mid"),
+      v.literal("senior"),
+      v.literal("lead"),
+      v.literal("executive")
+    )),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
@@ -304,10 +322,14 @@ export const analyzeResume = mutation({
     // Priority parsing: schedule immediately for sprint users
     const delay = hasPriorityParsing ? 0 : 2000;
 
+    // Get experience level from resume args or user profile
+    const experienceLevel = args.experienceLevel || user.experienceLevel;
+
     await ctx.scheduler.runAfter(delay, internalAny.ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
       jobDescription: args.jobDescription,
+      experienceLevel: experienceLevel,
     });
 
     return { success: true, priorityParsing: hasPriorityParsing };

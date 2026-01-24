@@ -79,7 +79,8 @@ export function generateIntelligentFallback(
   ocrText: string,
   jobDescription?: string,
   mlConfig?: MLConfig,
-  isPremium: boolean = false
+  isPremium: boolean = false,
+  experienceLevel?: "internship" | "entry" | "junior" | "mid" | "senior" | "lead" | "executive"
 ): AnalysisResult {
   console.log(`[Deep Learning] 🧠 Initializing ADVANCED AI analysis - Premium: ${isPremium}`);
 
@@ -284,11 +285,92 @@ export function generateIntelligentFallback(
   }
 
   // Calculate overall score
-  const overallScore = Math.round(
+  let overallScore = Math.round(
     (finalKeywordScore * 0.45) +
     (finalFormatScore * 0.30) +
     (finalCompletenessScore * 0.25)
   );
+
+  // EXPERIENCE LEVEL ADJUSTMENTS
+  // Different expectations for different career stages
+  if (experienceLevel) {
+    console.log(`[Experience Adjustment] Base score: ${overallScore}, Level: ${experienceLevel}`);
+
+    const experienceYears = mlFeatures.experienceYears || 0;
+    const hasMetrics = mlFeatures.quantifiableResultsCount > 0;
+    const hasAchievements = mlFeatures.impactScore > 0.3;
+
+    switch (experienceLevel) {
+      case "internship":
+      case "entry":
+        // More lenient for beginners - focus on potential over track record
+        // Boost scores if they show basic competence
+        if (overallScore < 60) {
+          overallScore = Math.min(72, overallScore + 8); // Encourage beginners
+          console.log(`[Experience Adjustment] Entry-level boost applied: +8 points`);
+        }
+        // Don't penalize lack of extensive metrics
+        if (!hasMetrics && overallScore >= 50) {
+          overallScore = Math.min(75, overallScore + 3);
+          console.log(`[Experience Adjustment] Entry-level: reduced metric penalty`);
+        }
+        break;
+
+      case "junior":
+        // Moderate expectations - should have some results
+        if (overallScore >= 70 && !hasMetrics) {
+          overallScore = Math.max(60, overallScore - 5);
+          console.log(`[Experience Adjustment] Junior: missing metrics penalty -5`);
+        }
+        break;
+
+      case "mid":
+        // Higher standards - metrics expected
+        if (overallScore >= 65 && !hasMetrics) {
+          overallScore = Math.max(55, overallScore - 8);
+          console.log(`[Experience Adjustment] Mid-level: missing metrics penalty -8`);
+        }
+        if (experienceYears < 3 && overallScore >= 70) {
+          overallScore = Math.max(60, overallScore - 6);
+          console.log(`[Experience Adjustment] Mid-level: experience mismatch -6`);
+        }
+        break;
+
+      case "senior":
+      case "lead":
+        // Strict standards - strong track record required
+        if (!hasMetrics || !hasAchievements) {
+          overallScore = Math.max(45, overallScore - 12);
+          console.log(`[Experience Adjustment] Senior: missing metrics/achievements penalty -12`);
+        }
+        if (experienceYears < 6 && overallScore >= 70) {
+          overallScore = Math.max(55, overallScore - 10);
+          console.log(`[Experience Adjustment] Senior: experience mismatch -10`);
+        }
+        // Senior roles need leadership signals
+        const hasLeadershipKeywords = ocrText.toLowerCase().match(/\b(led|managed|mentored|directed|architected|built team|scaled)\b/gi);
+        if (!hasLeadershipKeywords && overallScore >= 60) {
+          overallScore = Math.max(50, overallScore - 8);
+          console.log(`[Experience Adjustment] Senior: missing leadership signals -8`);
+        }
+        break;
+
+      case "executive":
+        // Very strict - C-level/VP expectations
+        if (!hasMetrics || !hasAchievements) {
+          overallScore = Math.max(40, overallScore - 15);
+          console.log(`[Experience Adjustment] Executive: missing impact metrics penalty -15`);
+        }
+        const hasBusinessImpact = ocrText.toLowerCase().match(/\b(revenue|growth|roi|p&l|strategy|\$[0-9]+[mk])\b/gi);
+        if (!hasBusinessImpact && overallScore >= 65) {
+          overallScore = Math.max(45, overallScore - 12);
+          console.log(`[Experience Adjustment] Executive: missing business impact -12`);
+        }
+        break;
+    }
+
+    console.log(`[Experience Adjustment] Final adjusted score: ${overallScore}`);
+  }
 
   // Step 7: Generate ML-enhanced recommendations
   const matchedKeywords = keywordResult.matchedKeywords.slice(0, isPremium ? 15 : 8);
