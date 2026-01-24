@@ -12,7 +12,7 @@ import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api;
 
-export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_scan" | "interview_sprint" | "iteration_pass" | null; resumeId?: string }) {
+export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { open: boolean; onOpenChange: (open: boolean) => void; initialPlan?: "single_debug_fix" | "single_scan" | "interview_sprint" | "iteration_pass" | null; resumeId?: string }) {
   const { t } = useI18n();
   const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
   const user = useQuery(apiAny.users.currentUser);
@@ -20,7 +20,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<string | null>(null);
-  const [checkoutPlan, setCheckoutPlan] = useState<"single_scan" | "interview_sprint" | "iteration_pass" | null>(initialPlan || null);
+  const [checkoutPlan, setCheckoutPlan] = useState<"single_debug_fix" | "single_scan" | "interview_sprint" | "iteration_pass" | null>(initialPlan || null);
   const [showUpsell, setShowUpsell] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     }
   }, [initialPlan]);
 
-  const handleUpgrade = async (plan: "single_scan" | "interview_sprint" | "iteration_pass") => {
+  const handleUpgrade = async (plan: "single_debug_fix" | "single_scan" | "interview_sprint" | "iteration_pass") => {
     if (!isAuthenticated) {
       toast.error(t.pricingDialog.loginToPurchase);
       onOpenChange(false);
@@ -198,7 +198,58 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* 24-Hour Pass - RECOMMENDED (Moved to 2nd position) */}
+          {/* Single Debug Fix - NEW */}
+          <div className="bg-white border-2 border-[#F59E0B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(245,158,11,0.1)]">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+              <span className="material-symbols-outlined text-xs">build</span>
+              ARREGLA DE UNA VEZ
+            </div>
+            <div className="mb-6">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">One-Time Fix</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Single Debug Fix</h2>
+              <div className="mt-3 flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-black tracking-tighter text-slate-900">€5.99</span>
+                </div>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">Un café para arreglar tu CV</span>
+              </div>
+            </div>
+            <div className="space-y-3 mb-8 flex-grow">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#F59E0B]">
+                <span className="material-symbols-outlined text-base">verified</span>
+                1 Escaneo Profundo Completo
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
+                Vista Robot Terminal
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
+                Missing Keywords Completo
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
+                1 AI Rewrite Completo
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
+                Auto-Inject Keywords
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
+                Export CV ATS-safe
+              </div>
+            </div>
+            <button
+              onClick={() => handleUpgrade("single_debug_fix")}
+              disabled={!!isLoading}
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold text-sm shadow-lg shadow-[#F59E0B]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {isLoading === "single_debug_fix" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Arreglar Mi CV →"}
+            </button>
+          </div>
+
+          {/* 24-Hour Pass - RECOMMENDED (Moved to 3rd position) */}
           <div className="bg-white border-2 border-[#64748B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(59,130,246,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#64748B] to-[#475569] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">bolt</span>
@@ -248,7 +299,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             </button>
           </div>
 
-          {/* 7-Day Sprint - BEST VALUE (Moved to 3rd position) */}
+          {/* 7-Day Sprint - BEST VALUE (Moved to 4th position) */}
           <div className="bg-white border border-[#1E293B]/30 rounded-xl p-6 flex flex-col h-full relative">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#1E293B] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">workspace_premium</span>

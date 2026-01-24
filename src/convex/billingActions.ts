@@ -6,7 +6,12 @@ import { Autumn } from "autumn-js";
 
 export const createCheckoutSession = action({
   args: {
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(
+      v.literal("single_debug_fix"),
+      v.literal("single_scan"),
+      v.literal("interview_sprint"),
+      v.literal("iteration_pass")
+    ),
     origin: v.string(),
     resumeId: v.optional(v.string()),
   },
@@ -35,13 +40,16 @@ export const createCheckoutSession = action({
       const autumn = new Autumn({ secretKey });
 
       // Use env vars for product IDs, or default to the plan names
+      const productDebugFix = process.env.PRODUCT_SINGLE_DEBUG_FIX || "single_debug_fix";
       const productSingle = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
-      // Update default to match what the user likely has if they don't set env var, but keep env var as primary
-      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint"; 
+      const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint";
+      const productIteration = process.env.PRODUCT_ITERATION_PASS || "iteration_pass";
 
       const products = {
+        single_debug_fix: productDebugFix,
         single_scan: productSingle,
         interview_sprint: productSprint,
+        iteration_pass: productIteration,
       };
 
       const productId = products[args.plan];

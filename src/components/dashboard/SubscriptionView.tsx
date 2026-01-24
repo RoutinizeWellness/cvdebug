@@ -35,8 +35,10 @@ export function SubscriptionView() {
 
   const currentPlan = user?.subscriptionTier || "free";
   const isFreeTier = currentPlan === "free";
+  const isSingleDebugFix = currentPlan === "single_debug_fix";
   const isSingleScan = currentPlan === "single_scan";
   const isInterviewSprint = currentPlan === "interview_sprint";
+  const isIterationPass = currentPlan === "iteration_pass";
 
   // Calculate remaining credits
   const currentCredits = user?.credits || 0;
@@ -120,6 +122,12 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-[#64748B] text-[28px]">preview</span>
                     </>
                   )}
+                  {isSingleDebugFix && (
+                    <>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] to-[#D97706]">Single Debug Fix</span>
+                      <span className="material-symbols-outlined text-[#F59E0B] text-[28px]">build</span>
+                    </>
+                  )}
                   {isSingleScan && (
                     <>
                       <span>Single Scan</span>
@@ -132,15 +140,33 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">rocket_launch</span>
                     </>
                   )}
+                  {isIterationPass && (
+                    <>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">7-Day Sprint</span>
+                      <span className="material-symbols-outlined text-[#1E293B] text-[28px]">all_inclusive</span>
+                    </>
+                  )}
                 </h3>
                 <p className="text-[#475569] text-base leading-relaxed">
                   {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
+                  {isSingleDebugFix && (
+                    <>
+                      You have <span className="text-[#F59E0B] font-bold">1 complete deep scan</span> with 1 AI rewrite included. Perfect for a quick CV fix.
+                    </>
+                  )}
                   {isSingleScan && (
                     <>
                       You have <span className="text-[#1E293B] font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
                     </>
                   )}
                   {isInterviewSprint && (
+                    <>
+                      You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
+                    </>
+                  )}
+                  {isIterationPass && (
                     <>
                       You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
                       <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
@@ -179,12 +205,72 @@ export function SubscriptionView() {
               <span className="text-xs text-[#64748B] font-medium">Pay once, use forever</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              {/* Single Scan */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Single Debug Fix */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
+                className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-[#F59E0B]/40 hover:border-[#F59E0B] hover:shadow-[0_10px_40px_-10px_rgba(245,158,11,0.3)] transition-all duration-300 group relative overflow-hidden"
+              >
+                {/* Subtle background glow */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#F59E0B]/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2.5 rounded-xl bg-[#F59E0B]/10 border border-[#F59E0B]/30 group-hover:border-[#F59E0B] transition-colors">
+                      <span className="material-symbols-outlined text-[#F59E0B] text-[24px]">build</span>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold text-[#0F172A]">Single Debug Fix</h4>
+                      <p className="text-[#F59E0B] text-xs mt-0.5 font-medium uppercase tracking-wide">One-time fix</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-4xl font-black text-[#0F172A]">€5.99</span>
+                    <span className="text-[#64748B] text-base">/once</span>
+                  </div>
+
+                  <div className="space-y-3.5 mb-8 flex-1">
+                    {[
+                      { icon: "verified", text: "1 Escaneo Profundo" },
+                      { icon: "terminal", text: "Vista Robot Terminal" },
+                      { icon: "key", text: "Missing Keywords Completo" },
+                      { icon: "auto_awesome", text: "1 AI Rewrite Completo" },
+                      { icon: "integration_instructions", text: "Auto-Inject Keywords" },
+                      { icon: "download", text: "Export CV ATS-safe" }
+                    ].map((feature, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="p-1 rounded-lg bg-[#F59E0B]/10 border border-[#F59E0B]/20">
+                          <span className="material-symbols-outlined text-[#F59E0B] text-[16px]">{feature.icon}</span>
+                        </div>
+                        <p className="text-sm text-[#475569] font-medium leading-relaxed">{feature.text}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    disabled={isSingleDebugFix}
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-[#FFFFFF] font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                  >
+                    {isSingleDebugFix ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                        Current Plan
+                      </span>
+                    ) : (
+                      "Arreglar Mi CV"
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* Single Scan */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
                 className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border border-[#E2E8F0] hover:border-[#1E293B]/50 hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 group relative overflow-hidden"
               >
                 {/* Subtle background glow */}
@@ -239,7 +325,7 @@ export function SubscriptionView() {
                 </div>
               </motion.div>
 
-              {/* Interview Sprint (Highlighted) */}
+              {/* Interview Sprint / 7-Day Sprint (Highlighted) */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -316,17 +402,17 @@ export function SubscriptionView() {
                   </div>
 
                   <button
-                    disabled={isInterviewSprint}
+                    disabled={isInterviewSprint || isIterationPass}
                     className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
                   >
-                    {isInterviewSprint ? (
+                    {(isInterviewSprint || isIterationPass) ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
                         Current Plan
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-2">
-                        Start Interview Sprint
+                        Start 7-Day Sprint
                         <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </span>
                     )}

@@ -7,7 +7,13 @@ const schema = defineSchema(
     tokenIdentifier: v.string(),
     email: v.string(),
     name: v.optional(v.string()),
-    subscriptionTier: v.union(v.literal("free"), v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
+    subscriptionTier: v.union(
+      v.literal("free"),
+      v.literal("single_debug_fix"),
+      v.literal("single_scan"),
+      v.literal("interview_sprint"),
+      v.literal("iteration_pass")
+    ),
     credits: v.optional(v.number()),
     sprintExpiresAt: v.optional(v.number()),
     // Single Debug Fix tracking
@@ -658,7 +664,12 @@ const schema = defineSchema(
     userId: v.id("users"),
     tokenIdentifier: v.string(),
     email: v.string(),
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(
+      v.literal("single_debug_fix"),
+      v.literal("single_scan"),
+      v.literal("interview_sprint"),
+      v.literal("iteration_pass")
+    ),
     transactionId: v.string(),
     amount: v.number(),
     status: v.string(),
