@@ -96,4 +96,20 @@ crons.interval(
   {}
 );
 
+// Plan Expiration: Check and downgrade expired plans every hour
+crons.interval(
+  "check_expired_plans",
+  { hours: 1 },
+  internalAny.planAccess.checkAndDowngradeExpiredPlans,
+  {}
+);
+
+// Plan Expiration Emails: Send emails to users with expired plans every 2 hours
+crons.interval(
+  "send_expiration_emails",
+  { hours: 2 },
+  internalAny.emails.planExpiration.checkAndSendExpirationEmails,
+  {}
+);
+
 export default crons;

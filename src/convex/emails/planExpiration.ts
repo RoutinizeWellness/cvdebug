@@ -154,28 +154,38 @@ Si aún estás buscando trabajo, puedes volver a contratar:
 
     console.log(`[Plan Expiration Email] Sending to ${email} - Tier: ${tier}, Reason: ${reason}`);
 
-    // TODO: Integrate with actual email service (Resend, SendGrid, etc.)
-    // For now, just log
-    console.log(`[Email] Subject: ${subject}`);
-    console.log(`[Email] To: ${email}`);
-    console.log(`[Email] Tier: ${tier}, Reason: ${reason}`);
+    // Send email via Resend
+    try {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "CVDebug <noreply@cvdebug.com>",
+          to: email,
+          subject: subject,
+          html: htmlBody,
+        }),
+      });
 
-    // When integrated with real email service:
-    // await fetch("https://api.resend.com/emails", {
-    //   method: "POST",
-    //   headers: {
-    //     "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     from: "CVDebug <noreply@cvdebug.com>",
-    //     to: email,
-    //     subject: subject,
-    //     html: htmlBody,
-    //   }),
-    // });
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error(`[Resend Error] Failed to send email: ${errorData}`);
+        throw new Error(`Resend API error: ${response.status} - ${errorData}`);
+      }
 
-    return { success: true, email, tier, reason };
+      const data = await response.json();
+      console.log(`[Email] Successfully sent to ${email} - ID: ${data.id}`);
+
+      return { success: true, email, tier, reason, emailId: data.id };
+    } catch (error) {
+      console.error(`[Email] Failed to send to ${email}:`, error);
+      // Don't throw - just log the error and continue
+      // This prevents the cron job from failing if one email fails
+      return { success: false, email, tier, reason, error: String(error) };
+    }
   },
 });
 

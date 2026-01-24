@@ -75,6 +75,7 @@ import { FluffDetector } from "./FluffDetector";
 import { InlineResumeEditor } from "./InlineResumeEditor";
 import { ScoreProgressChart } from "./ScoreProgressChart";
 import { ActionPlan } from "./ActionPlan";
+import { RobotTerminalView } from "./scan-results/RobotTerminalView";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
@@ -1396,141 +1397,12 @@ Software Engineer | StartupXYZ
                         </div>
                       )}
 
-                      {/* DIRTY Terminal Output - Real Error Console Style */}
-                      <div className="bg-[#000000] space-y-0" data-linkedin-banner>
-                        {/* Collapsible System Logs Header */}
-                        <button
-                          onClick={() => setShowSystemLogs(!showSystemLogs)}
-                          className="w-full p-4 flex items-center justify-between hover:bg-[#1A1A1A] transition-colors"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-[#64748B] text-xs font-mono uppercase tracking-wider">
-                              {showSystemLogs ? '▼' : '▶'} System Logs
-                            </span>
-                            <span className="text-[#4A4A4A] text-[10px] font-mono">
-                              (Technical diagnostics)
-                            </span>
-                          </div>
-                          <span className="text-[#64748B] text-[10px] font-mono">
-                            {showSystemLogs ? 'Hide' : 'Show'} Details
-                          </span>
-                        </button>
-
-                        {showSystemLogs && (
-                          <div className="p-4 pt-0">
-                            {/* Startup Log - Make it look messy */}
-                            <div className="font-mono text-[10px] text-[#4A4A4A] mb-2 space-y-0 leading-tight">
-                              <div>[{new Date().toISOString()}] Starting ATS_Parser v3.8.12...</div>
-                              <div>[{new Date().toISOString()}] Loading resume_analysis.dll</div>
-                              <div>[{new Date().toISOString()}] Initializing keyword_extraction_engine</div>
-                              <div className="text-[#22C55E]">[{new Date().toISOString()}] ✓ Parser initialized successfully</div>
-                              <div className="text-[#F59E0B]">[{new Date().toISOString()}] ⚠ WARN: Strict mode enabled - high rejection rate</div>
-                            </div>
-
-                            <div className="h-px bg-[#1E1E1E] my-3"></div>
-
-                        {/* ERROR SPAM - Make it overwhelming like real bugs */}
-                        <div className="space-y-1.5 font-mono text-[11px] leading-tight">
-                          {/* CRITICAL ERRORS - Spam them like real terminal */}
-                          {(!displayResume?.extractedData?.hasQuantifiableResults) && (
-                            <>
-                              <div className="text-[#EF4444]">
-                                <span className="font-bold">[ERROR]</span> resume_parser.cpp:142 - MISSING_QUANTIFIABLE_METRICS
-                              </div>
-                              <div className="text-[#EF4444] pl-8">
-                                └─▸ No numeric signals found (0% | $0 | 0 users detected)
-                              </div>
-                              <div className="text-[#EF4444] pl-8">
-                                └─▸ ATS_FILTER: AUTO_REJECT (confidence: 89%)
-                              </div>
-                              <div className="text-[#4A4A4A] pl-8 text-[10px]">
-                                at parse_experience_section() line 142
-                              </div>
-                            </>
-                          )}
-
-                          {displayResume?.issues && displayResume.issues.length > 0 && (
-                            <>
-                              <div className="text-[#F59E0B] mt-2">
-                                <span className="font-bold">[WARN]</span> format_validator.cpp:87 - PARSING_ANOMALIES_DETECTED
-                              </div>
-                              <div className="text-[#F59E0B] pl-8">
-                                └─▸ {displayResume.issues.length} format inconsistencies found
-                              </div>
-                              <div className="text-[#F59E0B] pl-8">
-                                └─▸ Risk: Header scrambling, content loss
-                              </div>
-                            </>
-                          )}
-
-                          {displayResume?.missingElements && displayResume.missingElements.length > 0 && (
-                            <>
-                              <div className="text-[#EF4444] mt-2">
-                                <span className="font-bold">[ERROR]</span> section_detector.cpp:203 - CRITICAL_SECTIONS_MISSING
-                              </div>
-                              <div className="text-[#EF4444] pl-8">
-                                └─▸ Required sections: [{displayResume.missingElements.join(', ')}] NOT FOUND
-                              </div>
-                              <div className="text-[#EF4444] pl-8">
-                                └─▸ Parser confidence dropped to {Math.floor(Math.random() * 30 + 20)}%
-                              </div>
-                            </>
-                          )}
-
-                          {displayResume?.extractedData?.totalYearsExperience && displayResume.extractedData.totalYearsExperience < 3 && (
-                            <>
-                              <div className="text-[#F59E0B] mt-2">
-                                <span className="font-bold">[WARN]</span> experience_calculator.cpp:56 - LOW_SENIORITY_SIGNALS
-                              </div>
-                              <div className="text-[#F59E0B] pl-8">
-                                └─▸ Detected: {displayResume.extractedData.totalYearsExperience} years (threshold: 3y+)
-                              </div>
-                              <div className="text-[#F59E0B] pl-8">
-                                └─▸ 73% of companies filter out &lt;3y candidates
-                              </div>
-                            </>
-                          )}
-
-                          {/* Missing Signals Section - The Reddit Favorite */}
-                          {displayResume?.missingKeywords && displayResume.missingKeywords.length > 0 && (
-                            <>
-                              <div className="h-px bg-[#1E1E1E] my-3"></div>
-                              <div className="text-[#EF4444] mt-2">
-                                <span className="font-bold">[ERROR]</span> keyword_matcher.cpp:334 - MISSING_SIGNALS_DETECTED
-                              </div>
-                              <div className="text-[#EF4444] pl-8">
-                                └─▸ {displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}
-                              </div>
-                              <div className="text-[#F59E0B] pl-8">
-                                └─▸ These keywords appear in 87% of accepted resumes
-                              </div>
-                              <div className="text-[#64748B] pl-8 text-[10px]">
-                                Fix: Add these technical terms to Experience section
-                              </div>
-                            </>
-                          )}
-
-                          <div className="h-px bg-[#1E1E1E] my-4"></div>
-
-                          {/* RAW EXTRACTED TEXT - Make it look broken */}
-                          <div className="text-[#4A4A4A] text-[10px] mb-1">
-                            ━━━ RAW_PARSER_OUTPUT ━━━ ({displayResume?.ocrText?.length || 0} bytes extracted)
-                          </div>
-                          <div className="bg-[#0A0A0A] border border-[#1E1E1E] rounded p-3 max-h-[400px] overflow-y-auto">
-                            <pre className="text-[#8B949E] font-mono text-[10px] leading-relaxed whitespace-pre-wrap">
-{displayResume?.ocrText ? displayResume.ocrText : `[FATAL_ERROR] OCR_EXTRACTION_FAILED
-════════════════════════════════════════
-Exit Code: 0x8007000E
-Message: NO_TEXT_EXTRACTED
-Details: ATS parser returned NULL
-Cause: Resume likely contains images/graphics
-Impact: AUTO_REJECT (100% rejection rate)
-════════════════════════════════════════`}
-                            </pre>
-                          </div>
-                        </div>
-                          </div>
-                        )}
+                      {/* ADAPTIVE ROBOT TERMINAL VIEW - Shows personalized seniority-based logs */}
+                      <div className="bg-[#000000] p-4">
+                        <RobotTerminalView
+                          resumeId={displayResume?._id}
+                          autoAnimate={false}
+                        />
                       </div>
 
                       {/* Image Trap Warning */}

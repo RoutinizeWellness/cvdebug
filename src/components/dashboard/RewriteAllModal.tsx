@@ -1,10 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Sparkles, Zap, TrendingUp, CheckCircle, AlertCircle, Loader2, ChevronRight } from "lucide-react";
+import { Sparkles, Zap, TrendingUp, CheckCircle, AlertCircle, Loader2, ChevronRight, Lock } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAction } from "convex/react";
+import { useAction, useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 interface RewriteAllModalProps {
   open: boolean;
@@ -23,18 +24,34 @@ interface RewriteResult {
 }
 
 export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onComplete }: RewriteAllModalProps) {
+  const navigate = useNavigate();
   const [seniorityLevel, setSeniorityLevel] = useState<"Mid-Level" | "Senior" | "Staff/Principal">("Senior");
   const [isProcessing, setIsProcessing] = useState(false);
   const [results, setResults] = useState<RewriteResult[] | null>(null);
   const [showPreview, setShowPreview] = useState(false);
 
   const rewriteResume = useAction(api.aiRewriteActions.rewriteResumeWithAI as any);
+  const featureAccess = useQuery((api as any).planAccess.getFeatureAccess);
+  const incrementRewrite = useMutation((api as any).planAccess.incrementAIRewriteUsage);
+
+  const hasAccess = featureAccess?.features.aiRewritesRemaining > 0;
+  const rewritesRemaining = featureAccess?.features.aiRewritesRemaining || 0;
+  const tier = featureAccess?.tier || "free";
 
   const handleRewrite = async () => {
+    // Check if user has access
+    if (!hasAccess) {
+      toast.error("AI rewrite limit reached. Upgrade to continue.");
+      return;
+    }
+
     setIsProcessing(true);
     setShowPreview(false);
 
     try {
+      // Increment AI rewrite usage
+      await incrementRewrite();
+
       const response = await rewriteResume({
         resumeData,
         keywords,
@@ -48,9 +65,13 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
       } else {
         toast.error("Failed to rewrite resume");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Rewrite error:", error);
-      toast.error("An error occurred while rewriting");
+      if (error.message?.includes("limit reached")) {
+        toast.error("AI rewrite limit reached. Upgrade to continue.");
+      } else {
+        toast.error("An error occurred while rewriting");
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -80,9 +101,19 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                 Transform your entire resume with FAANG-level bullet points in seconds
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 rounded-full bg-[#1E293B]/10 text-[#1E293B] text-xs font-bold border border-[#1E293B]/20">
-                  🔒 Interview Sprint
-                </span>
+                {rewritesRemaining === 999 ? (
+                  <span className="px-3 py-1 rounded-full bg-[#22C55E]/10 text-[#22C55E] text-xs font-bold border border-[#22C55E]/20">
+                    ✅ Unlimited Rewrites
+                  </span>
+                ) : rewritesRemaining > 0 ? (
+                  <span className="px-3 py-1 rounded-full bg-[#F59E0B]/10 text-[#F59E0B] text-xs font-bold border border-[#F59E0B]/20">
+                    ⚡ {rewritesRemaining} Rewrite{rewritesRemaining !== 1 ? 's' : ''} Left
+                  </span>
+                ) : (
+                  <span className="px-3 py-1 rounded-full bg-[#EF4444]/10 text-[#EF4444] text-xs font-bold border border-[#EF4444]/20">
+                    🔒 No Rewrites Available
+                  </span>
+                )}
                 <span className="text-xs text-[#64748B]">•</span>
                 <span className="text-xs text-[#64748B]">Powered by GPT-4 Turbo</span>
               </div>
@@ -211,27 +242,52 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
             </div>
 
             {/* Action Button */}
-            <div className="mt-6 pt-4 border-t border-[#E2E8F0] flex justify-between items-center">
-              <p className="text-xs text-[#64748B]">
-                ⚡ This usually takes 10-15 seconds
-              </p>
-              <button
-                onClick={handleRewrite}
-                disabled={isProcessing}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(139,92,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              >
-                {isProcessing ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Rewriting...
-                  </>
-                ) : (
-                  <>
+            <div className="mt-6 pt-4 border-t border-[#E2E8F0]">
+              {!hasAccess ? (
+                // Upgrade CTA when no access
+                <div className="bg-gradient-to-br from-[#EF4444]/10 to-[#F59E0B]/10 rounded-xl p-6 border border-[#EF4444]/20">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Lock className="h-6 w-6 text-[#EF4444]" />
+                    <div>
+                      <h4 className="text-sm font-bold text-[#0F172A]">AI Rewrite Limit Reached</h4>
+                      <p className="text-xs text-[#64748B] mt-0.5">
+                        {tier === "single_debug_fix" ? "You've used your 1 AI rewrite" : "Upgrade to access AI rewrite"}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate("/pricing")}
+                    className="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-[#64748B] to-[#1E293B] text-white font-bold text-sm hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                  >
                     <Sparkles className="h-5 w-5" />
-                    Rewrite My Resume
-                  </>
-                )}
-              </button>
+                    Upgrade for More Rewrites
+                  </button>
+                </div>
+              ) : (
+                // Normal rewrite button
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-[#64748B]">
+                    ⚡ This usually takes 10-15 seconds
+                  </p>
+                  <button
+                    onClick={handleRewrite}
+                    disabled={isProcessing}
+                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(139,92,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        Rewriting...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-5 w-5" />
+                        Rewrite My Resume ({rewritesRemaining} left)
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           </>
         ) : (
