@@ -31,7 +31,7 @@ export function FinalCTASection() {
         <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
           <Button
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-            className="w-full max-w-md rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#64748B] px-8 py-4 text-lg font-bold text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all hover:scale-105 hover:from-[#8B5CF6] hover:to-[#64748B] border-0 sm:w-auto"
+            className="w-full max-w-md rounded-xl bg-gradient-to-r from-[#1E293B] to-[#64748B] px-8 py-4 text-lg font-bold text-white shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all hover:scale-105 hover:from-[#1E293B] hover:to-[#64748B] border-0 sm:w-auto"
           >
             {t.landing.finalCta.button}
           </Button>

@@ -130,9 +130,9 @@ export function InterviewBattlePlan({
   const getColorClasses = (color: string) => {
     const colorMap: Record<string, { border: string; text: string; bg: string }> = {
       violet: {
-        border: "border-l-violet-500",
-        text: "text-violet-600",
-        bg: "bg-violet-50 border-violet-100"
+        border: "border-l-slate-500",
+        text: "text-slate-600",
+        bg: "bg-slate-50 border-slate-100"
       },
       primary: {
         border: "border-l-blue-500",
@@ -262,7 +262,7 @@ export function InterviewBattlePlan({
         {/* Lock Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
           <div className="text-center px-6 max-w-lg">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#64748B] to-[#8B5CF6] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#64748B]/30">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#64748B] to-[#1E293B] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#64748B]/30">
               <span className="material-symbols-outlined text-4xl text-white">lock</span>
             </div>
             <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
@@ -292,7 +292,7 @@ export function InterviewBattlePlan({
 
             <button
               onClick={onUpgrade}
-              className="w-full bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#64748B]/30 hover:shadow-2xl hover:shadow-[#64748B]/40 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-[#64748B] to-[#1E293B] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#64748B]/30 hover:shadow-2xl hover:shadow-[#64748B]/40 flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">workspace_premium</span>
               {t.interviewPrep.unlockInterview}
@@ -425,13 +425,13 @@ export function InterviewBattlePlan({
             className="bg-[#FFFFFF] backdrop-blur-sm rounded-xl border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col h-full relative overflow-hidden"
           >
             {/* Top gradient accent */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#334155] via-violet-500 to-[#475569]"></div>
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#334155] via-slate-500 to-[#475569]"></div>
 
             {/* Header */}
             <div className="p-4 md:p-5 border-b border-[#E2E8F0] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-[#0F172A] text-base md:text-lg flex items-center gap-2">
-                  <span className="material-symbols-outlined text-violet-500 text-lg md:text-xl">auto_awesome</span>
+                  <span className="material-symbols-outlined text-slate-500 text-lg md:text-xl">auto_awesome</span>
                   STAR Story Forge
                 </h3>
                 <p className="text-xs text-[#64748B] mt-1 truncate">

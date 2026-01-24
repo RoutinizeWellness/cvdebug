@@ -18,7 +18,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
     <div className="space-y-6">
       {/* ML Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#EC4899]">
+        <div className="p-2 rounded-lg bg-gradient-to-br from-[#1E293B] to-[#EC4899]">
           <Brain className="h-5 w-5 text-white" />
         </div>
         <div>
@@ -42,7 +42,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
         <ScoreCard
           label="Keyword Match"
           score={analysis.keywordMatchScore}
-          color="from-[#8B5CF6] to-[#EC4899]"
+          color="from-[#1E293B] to-[#EC4899]"
         />
         <ScoreCard
           label="Action Verbs"
@@ -68,7 +68,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
         className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
       >
         <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+          <Sparkles className="h-5 w-5 text-[#1E293B]" />
           <h3 className="font-bold text-[#0F172A]">ML Recommendations</h3>
           <span className="text-xs text-[#64748B] bg-[#F8FAFC] px-2 py-0.5 rounded-full border border-[#E2E8F0]">
             Top {analysis.recommendations.length}
@@ -157,7 +157,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
           className="bg-[#FFFFFF] rounded-xl border border-[#E2E8F0] p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
         >
           <h3 className="font-bold text-[#0F172A] mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#8B5CF6]">psychology</span>
+            <span className="material-symbols-outlined text-[#1E293B]">psychology</span>
             ML-Detected Skills & Technologies
           </h3>
 
@@ -171,7 +171,7 @@ export function MLInsights({ resumeText, jobDescription = "" }: MLInsightsProps)
                   {analysis.entities.skills.map((skill, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 rounded bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-medium border border-[#8B5CF6]/20"
+                      className="px-2 py-1 rounded bg-[#1E293B]/10 text-[#1E293B] text-xs font-medium border border-[#1E293B]/20"
                     >
                       {skill}
                     </span>

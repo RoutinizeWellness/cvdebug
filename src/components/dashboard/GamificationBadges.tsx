@@ -35,7 +35,7 @@ const rarityColors = {
     bg: "bg-[#F1F5F9]",
     border: "border-[#475569]",
     text: "text-[#1E293B]",
-    glow: "shadow-purple-400/40",
+    glow: "shadow-slate-400/40",
   },
   legendary: {
     bg: "bg-gradient-to-br from-yellow-100 to-orange-100",
@@ -79,7 +79,7 @@ export function GamificationBadges({ badges, onBadgeClick }: GamificationBadgesP
           initial={{ width: 0 }}
           animate={{ width: `${completionRate}%` }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="h-full bg-gradient-to-r from-[#64748B] to-[#8B5CF6] rounded-full"
+          className="h-full bg-gradient-to-r from-[#64748B] to-[#1E293B] rounded-full"
         />
       </div>
 

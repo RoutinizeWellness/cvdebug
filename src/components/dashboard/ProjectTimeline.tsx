@@ -41,7 +41,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
       case "status_change":
         return "text-[#22C55E] bg-[#22C55E]/10";
       case "dm_sent":
-        return "text-[#8B5CF6] bg-[#8B5CF6]/10";
+        return "text-[#1E293B] bg-[#1E293B]/10";
       case "interview_scheduled":
         return "text-[#F59E0B] bg-[#F59E0B]/10";
       case "rejected":
@@ -57,7 +57,7 @@ export function ProjectTimeline({ events, applicationTitle, companyName }: Proje
     <Card className="bg-[#FFFFFF] border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
       <CardHeader>
         <CardTitle className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-          <Clock className="h-5 w-5 text-[#8B5CF6]" />
+          <Clock className="h-5 w-5 text-[#1E293B]" />
           Application Timeline
         </CardTitle>
         <p className="text-sm text-[#64748B]">

@@ -133,7 +133,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
         {/* Header */}
         <DialogHeader className="border-b border-[#E2E8F0] pb-4">
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8B5CF6] to-[#6366F1] flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center shadow-lg">
               <TrendingUp className="h-6 w-6 text-white" />
             </div>
             <div>
@@ -195,9 +195,9 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
               </div>
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                className="absolute top-3 right-3 p-2 rounded-lg bg-white border border-[#E2E8F0] hover:border-[#8B5CF6] hover:bg-[#F3E8FF] transition-all"
+                className="absolute top-3 right-3 p-2 rounded-lg bg-white border border-[#E2E8F0] hover:border-[#1E293B] hover:bg-[#F3E8FF] transition-all"
               >
-                <Edit3 className="h-4 w-4 text-[#64748B] hover:text-[#8B5CF6]" />
+                <Edit3 className="h-4 w-4 text-[#64748B] hover:text-[#1E293B]" />
               </button>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="px-2 py-0.5 rounded-full bg-[#22C55E]/10 text-[#22C55E] text-xs font-medium border border-[#22C55E]/20">
@@ -206,7 +206,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
                 <span className="px-2 py-0.5 rounded-full bg-[#64748B]/10 text-[#64748B] text-xs font-medium border border-[#64748B]/20">
                   Specific
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-medium border border-[#8B5CF6]/20">
+                <span className="px-2 py-0.5 rounded-full bg-[#1E293B]/10 text-[#1E293B] text-xs font-medium border border-[#1E293B]/20">
                   Impact-driven
                 </span>
               </div>
@@ -222,7 +222,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
             className="mt-6 bg-gradient-to-r from-[#EFF6FF] to-[#F3E8FF] border border-[#E2E8F0] rounded-xl p-5"
           >
             <div className="flex items-start gap-3 mb-4">
-              <Sparkles className="h-5 w-5 text-[#8B5CF6] flex-shrink-0 mt-0.5" />
+              <Sparkles className="h-5 w-5 text-[#1E293B] flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-sm font-bold text-[#0F172A] mb-1">Customize Your Metrics</h3>
                 <p className="text-xs text-[#64748B]">
@@ -238,7 +238,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
                   className="bg-white rounded-lg border border-[#E2E8F0] p-3 flex items-center gap-3"
                 >
                   <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
-                    <span className="text-xs font-mono font-bold text-[#8B5CF6]">
+                    <span className="text-xs font-mono font-bold text-[#1E293B]">
                       {placeholder.defaultValue}
                     </span>
                   </div>
@@ -269,7 +269,7 @@ export function ApplyMetricModal({ open, onOpenChange, originalBullet, onApply }
             </button>
             <button
               onClick={handleApply}
-              className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)] flex items-center gap-2"
+              className="px-6 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)] flex items-center gap-2"
             >
               Apply to Resume
               <ArrowRight className="h-4 w-4" />

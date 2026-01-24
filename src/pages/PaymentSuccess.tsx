@@ -90,7 +90,7 @@ export default function PaymentSuccess() {
   };
 
   // Confetti animation
-  const confettiColors = ["#64748B", "#8B5CF6", "#FFFFFF"];
+  const confettiColors = ["#64748B", "#1E293B", "#FFFFFF"];
   const confettiElements = Array.from({ length: 20 }, (_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
@@ -154,7 +154,7 @@ export default function PaymentSuccess() {
           className="glass-panel w-full max-w-2xl rounded-2xl p-8 sm:p-12 shadow-2xl relative overflow-hidden"
         >
           {/* Top Accent Line */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#64748B] via-[#8B5CF6] to-[#64748B] opacity-80" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#64748B] via-[#1E293B] to-[#64748B] opacity-80" />
 
           <div className="flex flex-col items-center text-center">
             {/* Success Icon */}
@@ -165,13 +165,13 @@ export default function PaymentSuccess() {
               className="mb-8 relative"
             >
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
-              <div className="relative bg-slate-800/50 border border-[#8B5CF6]/30 rounded-full p-5 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
-                <RocketIcon className="h-12 w-12 text-transparent bg-clip-text bg-gradient-to-br from-[#64748B] to-[#8B5CF6]" style={{ fill: "url(#gradient)" }} />
+              <div className="relative bg-slate-800/50 border border-[#1E293B]/30 rounded-full p-5 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                <RocketIcon className="h-12 w-12 text-transparent bg-clip-text bg-gradient-to-br from-[#64748B] to-[#1E293B]" style={{ fill: "url(#gradient)" }} />
                 <svg width="0" height="0">
                   <defs>
                     <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
                       <stop offset="0%" stopColor="#64748B" />
-                      <stop offset="100%" stopColor="#8B5CF6" />
+                      <stop offset="100%" stopColor="#1E293B" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -204,7 +204,7 @@ export default function PaymentSuccess() {
             {plan === "interview_sprint" && (
               <div className="w-full max-w-lg mb-10">
                 <div className="flex items-center justify-center gap-2 mb-3">
-                  <Timer className="h-4 w-4 text-[#8B5CF6] animate-pulse" />
+                  <Timer className="h-4 w-4 text-[#1E293B] animate-pulse" />
                   <p className="text-slate-400 text-xs uppercase tracking-widest font-mono">
                     Access Expiration Countdown
                   </p>
@@ -243,7 +243,7 @@ export default function PaymentSuccess() {
                   {/* Seconds */}
                   <div className="flex flex-col items-center">
                     <div className="bg-slate-800 w-full py-3 rounded-lg border border-slate-700/50 flex items-center justify-center mb-2">
-                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[#8B5CF6]">
+                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[#1E293B]">
                         {String(timeLeft.seconds).padStart(2, "0")}
                       </span>
                     </div>

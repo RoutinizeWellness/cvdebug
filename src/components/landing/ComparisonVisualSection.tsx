@@ -30,7 +30,7 @@ export function ComparisonVisualSection() {
         </motion.div>
 
         <div className="relative mt-16 rounded-xl bg-[#FFFFFF] ring-1 ring-[#E2E8F0] sm:mt-20">
-          <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-[#8B5CF6]/30 to-[#64748B]/30 opacity-20 blur-lg"></div>
+          <div className="absolute -inset-px rounded-xl bg-gradient-to-r from-[#1E293B]/30 to-[#64748B]/30 opacity-20 blur-lg"></div>
           <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-px bg-[#FFFFFF] rounded-xl overflow-hidden border border-[#E2E8F0]">
             {/* Left: Beautiful Resume */}
             <motion.div

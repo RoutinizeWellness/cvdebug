@@ -71,7 +71,7 @@ export default function PricingPage() {
     {
       name: "Sprint 7 Días",
       tag: "INTENSIVO / RECOMENDADO",
-      tagColor: "bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white",
+      tagColor: "bg-gradient-to-r from-[#1E293B] to-[#334155] text-white",
       description: "Modo Bestia. Ataque total de 7 días para conseguir trabajo ya.",
       price: formatPrice("sprint_7day"),
       period: "7 días",
@@ -132,7 +132,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#8B5CF6]/20 selection:text-[#6366F1]">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#1E293B]/20 selection:text-[#334155]">
       <style>{`
         body {
           background-color: #F8FAFC;
@@ -145,8 +145,8 @@ export default function PricingPage() {
         {/* Hero Section */}
         <section className="relative w-full max-w-7xl mx-auto px-4 pt-20 pb-12 flex flex-col items-center text-center">
           {/* Background Glows */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#8B5CF6]/5 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-[#6366F1]/5 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#1E293B]/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-20 left-1/3 w-[300px] h-[300px] bg-[#334155]/5 rounded-full blur-[80px] pointer-events-none"></div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -165,7 +165,7 @@ export default function PricingPage() {
             className="relative text-4xl md:text-6xl font-black tracking-tight text-[#0F172A] mb-6 leading-tight max-w-4xl"
           >
             Debug Your CV. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#6366F1]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]">
               Stop Getting Ghosted.
             </span>
           </motion.h1>
@@ -193,7 +193,7 @@ export default function PricingPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`group relative flex flex-col rounded-xl bg-[#FFFFFF] p-6 md:p-8 transition-all duration-300 ${
                   tier.highlighted
-                    ? "-mt-4 lg:-mt-8 border-2 border-[#8B5CF6] shadow-[0_20px_60px_-10px_rgba(139,92,246,0.15)]"
+                    ? "-mt-4 lg:-mt-8 border-2 border-[#1E293B] shadow-[0_20px_60px_-10px_rgba(139,92,246,0.15)]"
                     : "border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)]"
                 }`}
               >
@@ -209,9 +209,9 @@ export default function PricingPage() {
                 {tier.highlighted && (
                   <>
                     {/* Glow Effect Background */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#8B5CF6]/5 to-[#6366F1]/5 rounded-2xl blur-xl -z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#1E293B]/5 to-[#334155]/5 rounded-2xl blur-xl -z-10"></div>
                     {/* Top Gradient Line */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5CF6] via-[#6366F1] to-[#8B5CF6] rounded-t-xl"></div>
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] rounded-t-xl"></div>
                   </>
                 )}
 
@@ -222,7 +222,7 @@ export default function PricingPage() {
                     } font-bold mb-2 flex items-center gap-2`}
                   >
                     {tier.name}
-                    {tier.highlighted && <RocketIcon className="h-5 w-5 text-[#8B5CF6]" />}
+                    {tier.highlighted && <RocketIcon className="h-5 w-5 text-[#1E293B]" />}
                   </h3>
                   <p
                     className={`text-sm ${
@@ -237,7 +237,7 @@ export default function PricingPage() {
                   <span
                     className={`${
                       tier.highlighted
-                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#6366F1]"
+                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]"
                         : "text-4xl font-bold text-[#0F172A]"
                     }`}
                   >
@@ -282,14 +282,14 @@ export default function PricingPage() {
                 {tier.buttonVariant === "premium" ? (
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
-                    className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold border-0 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] hover:shadow-[0_15px_50px_-10px_rgba(139,92,246,0.4)] hover:scale-[1.02] transition-all duration-200"
+                    className="w-full py-3 px-4 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold border-0 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] hover:shadow-[0_15px_50px_-10px_rgba(139,92,246,0.4)] hover:scale-[1.02] transition-all duration-200"
                   >
                     {tier.buttonText}
                   </Button>
                 ) : tier.buttonVariant === "default" ? (
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
-                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#8B5CF6] transition-all"
+                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#1E293B] transition-all"
                   >
                     {tier.buttonText}
                   </Button>
@@ -297,7 +297,7 @@ export default function PricingPage() {
                   <Button
                     onClick={() => handleGetStarted(tier.plan)}
                     variant="outline"
-                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#8B5CF6] transition-all"
+                    className="w-full py-3 px-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] text-[#475569] font-medium hover:bg-[#F8FAFC] hover:border-[#1E293B] transition-all"
                   >
                     {tier.buttonText}
                   </Button>
@@ -327,9 +327,9 @@ export default function PricingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="group rounded-lg border border-[#E2E8F0] bg-[#FFFFFF] open:bg-[#F8FAFC] open:border-[#8B5CF6]/30 shadow-sm hover:shadow-md transition-all duration-200"
+                className="group rounded-lg border border-[#E2E8F0] bg-[#FFFFFF] open:bg-[#F8FAFC] open:border-[#1E293B]/30 shadow-sm hover:shadow-md transition-all duration-200"
               >
-                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-[#0F172A] hover:text-[#8B5CF6] font-medium select-none">
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-[#0F172A] hover:text-[#1E293B] font-medium select-none">
                   <span>{faq.question}</span>
                   <svg
                     className="h-5 w-5 text-[#64748B] transition-transform group-open:rotate-180"

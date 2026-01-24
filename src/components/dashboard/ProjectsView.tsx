@@ -26,7 +26,7 @@ export function ProjectsView({ onSelectProject }: ProjectsViewProps) {
 
   const getScoreGradient = (score: number) => {
     if (score >= 80) return `conic-gradient(#64748B ${score}%, #334155 0)`;
-    if (score >= 60) return `conic-gradient(#8B5CF6 ${score}%, #334155 0)`;
+    if (score >= 60) return `conic-gradient(#1E293B ${score}%, #334155 0)`;
     if (score >= 40) return `conic-gradient(#F59E0B ${score}%, #334155 0)`;
     return `conic-gradient(#EF4444 ${score}%, #334155 0)`;
   };

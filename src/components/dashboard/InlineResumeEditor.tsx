@@ -190,9 +190,9 @@ export function InlineResumeEditor({
   return (
     <div className="space-y-4">
       {/* Header with actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-gradient-to-r from-[#8B5CF6]/10 to-[#6366F1]/10 border border-[#8B5CF6]/20 rounded-lg p-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 border border-[#1E293B]/20 rounded-lg p-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-lg flex items-center justify-center">
             <Wand2 className="h-4 w-4 text-white" />
           </div>
           <div>
@@ -238,7 +238,7 @@ export function InlineResumeEditor({
               onClick={handleSave}
               disabled={isSaving}
               size="sm"
-              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold text-xs"
+              className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-xs"
             >
               {isSaving ? (
                 <>
@@ -261,7 +261,7 @@ export function InlineResumeEditor({
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-[#8B5CF6]" />
+              <Sparkles className="h-4 w-4 text-[#1E293B]" />
               <h4 className="font-bold text-[#0F172A] text-sm">AI Suggestions</h4>
             </div>
             {formatIssues.length > 0 && (
@@ -269,7 +269,7 @@ export function InlineResumeEditor({
                 onClick={quickFixAll}
                 variant="ghost"
                 size="sm"
-                className="text-xs text-[#8B5CF6] hover:text-[#6366F1]"
+                className="text-xs text-[#1E293B] hover:text-[#334155]"
               >
                 <Zap className="h-3 w-3 mr-1" />
                 Quick Fix All
@@ -291,7 +291,7 @@ export function InlineResumeEditor({
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: idx * 0.05 }}
                     onClick={() => applySuggestion(kw.keyword, 'keyword')}
-                    className="group flex items-center gap-1 px-2 py-1 bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#8B5CF6] rounded-md text-xs font-medium text-[#0F172A] hover:text-[#8B5CF6] transition-all"
+                    className="group flex items-center gap-1 px-2 py-1 bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#1E293B] rounded-md text-xs font-medium text-[#0F172A] hover:text-[#1E293B] transition-all"
                     title={kw.context || "Click to add"}
                   >
                     <span>+ {kw.keyword}</span>
@@ -339,7 +339,7 @@ export function InlineResumeEditor({
             !isPaidUser ? 'blur-[2px] pointer-events-none' : ''
           } ${
             isEditing
-              ? 'border-[#8B5CF6] shadow-[0_0_20px_rgba(139,92,246,0.2)]'
+              ? 'border-[#1E293B] shadow-[0_0_20px_rgba(139,92,246,0.2)]'
               : 'border-[#E2E8F0]'
           }`}
           placeholder="Paste your resume content here and edit directly..."
@@ -350,7 +350,7 @@ export function InlineResumeEditor({
         {!isPaidUser && (
           <div className="absolute inset-0 flex items-center justify-center bg-[#FFFFFF]/80 backdrop-blur-[1px] rounded-lg">
             <div className="text-center p-8 max-w-md">
-              <div className="w-16 h-16 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center justify-center mx-auto mb-4">
                 <Wand2 className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-bold text-[#0F172A] mb-2">
@@ -361,7 +361,7 @@ export function InlineResumeEditor({
               </p>
               <Button
                 onClick={onUpgrade}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-all"
               >
                 <Sparkles className="h-4 w-4 mr-2" />
                 Upgrade Now - {formatPrice('single_scan')}

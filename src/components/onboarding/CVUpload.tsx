@@ -71,7 +71,7 @@ export default function CVUpload({
 
   return (
     <motion.div
-      className="bg-white rounded-xl p-8 md:p-12 relative overflow-hidden border-t-2 border-t-[#8B5CF6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
+      className="bg-white rounded-xl p-8 md:p-12 relative overflow-hidden border-t-2 border-t-[#1E293B] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -79,7 +79,7 @@ export default function CVUpload({
     >
       {/* Background Icon */}
       <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-        <FileUp className="h-36 w-36 text-[#8B5CF6]" />
+        <FileUp className="h-36 w-36 text-[#1E293B]" />
       </div>
 
       <div className="relative z-10 flex flex-col gap-8">
@@ -108,10 +108,10 @@ export default function CVUpload({
           <label
             className={`group relative flex flex-col items-center justify-center w-full h-64 rounded-2xl border-2 border-dashed transition-all cursor-pointer overflow-hidden ${
               isDragging
-                ? "border-[#8B5CF6] bg-[#F3E8FF]"
+                ? "border-[#1E293B] bg-[#F3E8FF]"
                 : uploadedFile
                 ? "border-[#64748B] bg-[#EFF6FF]"
-                : "border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F3E8FF] hover:border-[#8B5CF6]"
+                : "border-[#E2E8F0] bg-[#F8FAFC] hover:bg-[#F3E8FF] hover:border-[#1E293B]"
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -119,7 +119,7 @@ export default function CVUpload({
           >
             {/* Hover Gradient Effect */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-b from-[#8B5CF6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute inset-0 bg-gradient-to-b from-[#1E293B]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
               animate={
                 uploadedFile
                   ? {}
@@ -139,7 +139,7 @@ export default function CVUpload({
                 className={`mb-4 p-4 rounded-full transition-colors ${
                   uploadedFile
                     ? "bg-[#64748B]/20"
-                    : "bg-[#F3E8FF] group-hover:bg-[#8B5CF6]/20"
+                    : "bg-[#F3E8FF] group-hover:bg-[#1E293B]/20"
                 }`}
                 whileHover={{ scale: 1.1, rotate: 5 }}
               >
@@ -147,7 +147,7 @@ export default function CVUpload({
                   className={`h-10 w-10 transition-colors ${
                     uploadedFile
                       ? "text-[#64748B]"
-                      : "text-[#64748B] group-hover:text-[#8B5CF6]"
+                      : "text-[#64748B] group-hover:text-[#1E293B]"
                   }`}
                 />
               </motion.div>
@@ -164,7 +164,7 @@ export default function CVUpload({
               ) : (
                 <>
                   <p className="mb-2 text-sm text-[#475569]">
-                    <span className="font-semibold text-[#8B5CF6]">{t.onboarding.cvUpload.clickToUpload}</span>{" "}
+                    <span className="font-semibold text-[#1E293B]">{t.onboarding.cvUpload.clickToUpload}</span>{" "}
                     {t.onboarding.cvUpload.dragDrop}
                   </p>
                   <p className="text-xs text-[#64748B]">{t.onboarding.cvUpload.maxSize}</p>
@@ -186,7 +186,7 @@ export default function CVUpload({
         {/* Terminal Log */}
         <div className="w-full max-w-2xl mx-auto bg-[#0d1117] rounded-lg border border-[#1e293b] p-4 font-mono text-xs md:text-sm shadow-inner relative overflow-hidden">
           {/* Accent line */}
-          <div className="absolute top-0 left-0 w-1 h-full bg-[#8B5CF6] opacity-50" />
+          <div className="absolute top-0 left-0 w-1 h-full bg-[#1E293B] opacity-50" />
 
           {/* Terminal Header */}
           <div className="flex items-center gap-2 mb-3 border-b border-[#1e293b] pb-2">
@@ -205,11 +205,11 @@ export default function CVUpload({
             {logs.map((log, index) => (
               <motion.p
                 key={index}
-                className={`before:content-['>_'] before:text-[#8B5CF6] ${
+                className={`before:content-['>_'] before:text-[#1E293B] ${
                   log.type === "info"
                     ? "text-slate-500"
                     : log.type === "secondary"
-                    ? "text-[#8B5CF6]"
+                    ? "text-[#1E293B]"
                     : log.type === "success"
                     ? "text-[#22C55E]"
                     : log.type === "pulse"
@@ -239,7 +239,7 @@ export default function CVUpload({
           <button
             onClick={onNext}
             disabled={!uploadedFile}
-            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#64748B] text-white font-bold shadow-lg shadow-[#64748B]/25 hover:shadow-[#64748B]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#64748B] text-white font-bold shadow-lg shadow-[#64748B]/25 hover:shadow-[#64748B]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {t.onboarding.cvUpload.scanButton}
             <ArrowRight className="h-4 w-4" />

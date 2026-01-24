@@ -40,7 +40,7 @@ export function SidebarApplicationTracker() {
       {/* Header Compacto */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-gradient-to-br from-[#8B5CF6] to-[#6366F1] rounded-md flex items-center justify-center">
+          <div className="w-7 h-7 bg-gradient-to-br from-[#1E293B] to-[#334155] rounded-md flex items-center justify-center">
             <Briefcase className="h-3.5 w-3.5 text-white" />
           </div>
           <div>
@@ -90,11 +90,11 @@ export function SidebarApplicationTracker() {
             return (
               <div
                 key={app._id}
-                className="bg-white/80 rounded p-2 border border-[#E2E8F0] hover:border-[#8B5CF6] transition-colors cursor-pointer group"
+                className="bg-white/80 rounded p-2 border border-[#E2E8F0] hover:border-[#1E293B] transition-colors cursor-pointer group"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-[#0F172A] truncate group-hover:text-[#8B5CF6] transition-colors">
+                    <p className="text-xs font-semibold text-[#0F172A] truncate group-hover:text-[#1E293B] transition-colors">
                       {app.jobTitle || 'Position'}
                     </p>
                     <p className="text-[10px] text-[#64748B] truncate">{app.company || 'Company'}</p>
@@ -114,7 +114,7 @@ export function SidebarApplicationTracker() {
 
       {/* View All Footer */}
       {totalApplications > 3 && (
-        <button className="w-full text-[10px] text-[#8B5CF6] hover:text-[#6366F1] font-semibold mt-2 py-1 transition-colors">
+        <button className="w-full text-[10px] text-[#1E293B] hover:text-[#334155] font-semibold mt-2 py-1 transition-colors">
           View All {totalApplications} →
         </button>
       )}

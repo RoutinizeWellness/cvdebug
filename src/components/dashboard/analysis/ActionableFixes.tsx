@@ -57,7 +57,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
     <div className="rounded-lg p-6 bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
       <div className="flex items-center gap-3 mb-4">
         <div className="p-2 rounded-full bg-[#F8FAFC]">
-          <Zap className="h-5 w-5 text-[#8B5CF6]" />
+          <Zap className="h-5 w-5 text-[#1E293B]" />
         </div>
         <h3 className="text-lg font-bold text-[#0F172A]">Actionable Intelligence</h3>
         <span className="ml-auto text-xs font-bold bg-[#EF4444]/10 text-[#EF4444] px-2 py-1 rounded-md border border-[#EF4444]/20">
@@ -127,9 +127,9 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       </div>
 
                       {fix.missingKeyword && (
-                        <div className="bg-[#F3E8FF] border border-[#8B5CF6]/20 rounded-lg p-3">
+                        <div className="bg-[#F3E8FF] border border-[#1E293B]/20 rounded-lg p-3">
                           <div className="flex items-center justify-between mb-2">
-                            <p className="text-xs font-bold text-[#8B5CF6] flex items-center gap-1">
+                            <p className="text-xs font-bold text-[#1E293B] flex items-center gap-1">
                               <Lightbulb className="h-3.5 w-3.5" />
                               AI-Generated Bullet Point
                             </p>
@@ -156,7 +156,7 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                           ) : (
                             <Button
                               size="sm"
-                              className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white text-xs h-8"
+                              className="w-full bg-[#1E293B] hover:bg-[#1E293B]/90 text-white text-xs h-8"
                               onClick={() => handleGenerateBulletPoint(fix.missingKeyword!, index)}
                               disabled={generatingFor === key}
                             >
@@ -174,8 +174,8 @@ export function ActionableFixes({ fixes }: ActionableFixesProps) {
                       )}
 
                       {!fix.missingKeyword && (
-                        <div className="bg-[#F3E8FF] border border-[#8B5CF6]/20 rounded-lg p-3">
-                          <p className="text-xs font-bold text-[#8B5CF6] mb-1">
+                        <div className="bg-[#F3E8FF] border border-[#1E293B]/20 rounded-lg p-3">
+                          <p className="text-xs font-bold text-[#1E293B] mb-1">
                             Example Fix
                           </p>
                           <p className="text-xs text-[#475569] font-mono">

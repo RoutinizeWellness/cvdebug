@@ -32,7 +32,7 @@ export function SuccessInsightsWidget() {
           <p className="text-sm text-[#475569] mb-2">
             {t.dashboard.trackApplicationsToUnlock}
           </p>
-          <div className="flex items-center justify-center gap-2 text-xs text-[#8B5CF6] font-mono">
+          <div className="flex items-center justify-center gap-2 text-xs text-[#1E293B] font-mono">
             <Sparkles className="h-4 w-4" />
             <span>{t.dashboard.personalDataMoat}</span>
           </div>
@@ -113,7 +113,7 @@ export function SuccessInsightsWidget() {
               {analytics.topKeywords.slice(0, 5).map((kw: any, idx: number) => (
                 <div key={kw.keyword} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-[#8B5CF6] font-bold">#{idx + 1}</span>
+                    <span className="text-xs font-mono text-[#1E293B] font-bold">#{idx + 1}</span>
                     <span className="text-sm text-[#0F172A] font-medium">{kw.keyword}</span>
                   </div>
                   <div className="flex items-center gap-3">

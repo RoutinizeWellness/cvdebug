@@ -74,7 +74,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         }
         onOpenChange(val);
       }}>
-        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] landscape:max-h-[85vh] overflow-y-auto p-0 border-2 border-[#8B5CF6] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
+        <DialogContent className="max-w-[95vw] sm:max-w-[500px] max-h-[90vh] landscape:max-h-[85vh] overflow-y-auto p-0 border-2 border-[#1E293B] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] bg-white">
           <div className="bg-[#F8FAFC] p-6 sm:p-8 text-center relative border-b border-[#E2E8F0]">
             <div className="absolute top-0 left-0 right-0 bg-[#F59E0B] text-white text-xs font-bold py-2 text-center uppercase">
               {t.pricingDialog.waitBeforeCheckout}
@@ -90,26 +90,26 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="p-6 sm:p-8 space-y-6 bg-white">
             <div className="bg-[#F8FAFC] rounded-xl p-5 sm:p-6 border-2 border-[#F3E8FF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-bold text-[#8B5CF6] uppercase tracking-wide">{t.pricingDialog.whyUpgrade}</span>
+                <span className="text-xs font-bold text-[#1E293B] uppercase tracking-wide">{t.pricingDialog.whyUpgrade}</span>
                 <Badge className="bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20 text-xs font-bold">{t.pricingDialog.save60}</Badge>
               </div>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
+                  <Check className="h-5 w-5 text-[#1E293B] mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.unlimitedScansNotOne}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
+                  <Check className="h-5 w-5 text-[#1E293B] mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.aiCoverLetters}</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Check className="h-5 w-5 text-[#8B5CF6] mt-0.5 flex-shrink-0" />
+                  <Check className="h-5 w-5 text-[#1E293B] mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-[#475569] font-medium">{t.pricingDialog.linkedinOptimization}</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#8B5CF6]/5 to-[#6366F1]/5 rounded-xl p-5 sm:p-6 border border-[#8B5CF6]/20">
+            <div className="bg-gradient-to-br from-[#1E293B]/5 to-[#334155]/5 rounded-xl p-5 sm:p-6 border border-[#1E293B]/20">
               <p className="text-center text-sm text-[#475569] mb-4">
                 {t.pricingDialog.candidatesChoseSprint}
               </p>
@@ -124,7 +124,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
 
             <div className="space-y-3">
               <Button
-                className="w-full h-14 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-black text-base shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)]"
+                className="w-full h-14 bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-white font-black text-base shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)]"
                 onClick={() => handleUpgrade("interview_sprint")}
                 disabled={!!isLoading}
               >
@@ -249,14 +249,14 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           </div>
 
           {/* 7-Day Sprint - BEST VALUE (Moved to 3rd position) */}
-          <div className="bg-white border border-[#8B5CF6]/30 rounded-xl p-6 flex flex-col h-full relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
+          <div className="bg-white border border-[#1E293B]/30 rounded-xl p-6 flex flex-col h-full relative">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#1E293B] to-[#7C3AED] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">workspace_premium</span>
               {t.pricingDialog.bestValue}
             </div>
             <div className="mb-6">
               <div className="flex justify-between items-start">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#8B5CF6] font-mono">{t.pricingDialog.sevenDaySprint}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#1E293B] font-mono">{t.pricingDialog.sevenDaySprint}</span>
                 <span className="bg-[#22C55E]/10 text-[#22C55E] text-[10px] font-black px-2 py-1 rounded">{t.pricingDialog.bestValue}</span>
               </div>
               <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.sevenDaySprint}</h2>
@@ -269,32 +269,32 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </div>
             </div>
             <div className="space-y-3 mb-6 flex-grow">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#8B5CF6]">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#1E293B]">
                 <span className="material-symbols-outlined text-base">verified</span>
                 {t.pricingDialog.unlimitedCVScans}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.robotViewTerminal}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.missingSignalsDetector}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.seniorityMatchAudit}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.industrySelectorFAANG}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.bulletToneElevator}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-base">check_circle</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
                 {t.pricingDialog.battlePlanGenerator}
               </div>
               <div className="pt-2 border-t border-slate-200">
@@ -325,7 +325,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <button
               onClick={() => handleUpgrade("interview_sprint")}
               disabled={!!isLoading}
-              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#8B5CF6]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#2e62f6] text-white font-bold text-sm shadow-lg shadow-[#1E293B]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isLoading === "interview_sprint" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.start7DaySprint}
             </button>

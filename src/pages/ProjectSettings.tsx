@@ -83,7 +83,7 @@ export default function ProjectSettings() {
                 <div className="flex flex-wrap gap-3">
                   <button
                     onClick={() => setIsAISuggestionsOpen(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
+                    className="px-4 py-2 bg-gradient-to-r from-[#334155] to-[#334155] hover:from-slate-500 hover:to-[#475569] text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2"
                   >
                     <Sparkles className="h-4 w-4" />
                     AI Suggestions

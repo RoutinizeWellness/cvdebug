@@ -155,7 +155,7 @@ export function PricingSection() {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <motion.div
-              className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white text-xs font-bold px-4 py-1.5 rounded tracking-wide shadow-lg shadow-primary/25 font-mono"
+              className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#1E293B] to-[#334155] text-white text-xs font-bold px-4 py-1.5 rounded tracking-wide shadow-lg shadow-primary/25 font-mono"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
@@ -177,7 +177,7 @@ export function PricingSection() {
             </div>
             <motion.button
               onClick={() => handlePlanSelect('sprint_7day')}
-              className="w-full h-12 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold shadow-lg shadow-primary/25 relative overflow-hidden"
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold shadow-lg shadow-primary/25 relative overflow-hidden"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

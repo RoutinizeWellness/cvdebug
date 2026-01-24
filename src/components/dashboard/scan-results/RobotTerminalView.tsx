@@ -1,6 +1,11 @@
 import { Terminal, Cpu, Zap, Shield, Activity } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
+// Cast to any to avoid deep type instantiation errors
+const apiAny = api as any;
 
 interface LogEntry {
   line: number;
@@ -11,60 +16,230 @@ interface LogEntry {
 interface RobotTerminalViewProps {
   logs?: LogEntry[];
   autoAnimate?: boolean;
+  resumeId?: string;
 }
 
 export function RobotTerminalView({
   logs,
   autoAnimate = true,
+  resumeId,
 }: RobotTerminalViewProps) {
   const [displayedLogs, setDisplayedLogs] = useState<LogEntry[]>([]);
   const [cpuUsage, setCpuUsage] = useState(45);
   const [memUsage, setMemUsage] = useState(62);
   const [scanProgress, setScanProgress] = useState(0);
 
-  const defaultLogs: LogEntry[] = [
-    {
-      line: 1,
-      type: "command",
-      message: "./ats-scanner --mode=deep --engine=ml-v4 --target=resume.pdf",
-    },
-    { line: 2, type: "info", message: "[INIT] 🤖 ATS Robot Engine v4.2.0 - Neural Network Active" },
-    { line: 3, type: "ok", message: "[OK] ✓ PDF structure validated • Text layer extracted successfully" },
-    { line: 4, type: "info", message: "[ANALYZE] 🧠 Running ML role detection algorithm..." },
-    { line: 5, type: "ok", message: "[DETECT] ✓ Role identified: Senior Frontend Engineer (92% confidence)" },
-    { line: 6, type: "info", message: "[SCAN] 📊 Parsing experience section..." },
-    {
-      line: 7,
-      type: "warn",
-      message: '[WARN] ⚠️  Font inconsistency detected: "Comic Sans MS" in footer',
-    },
-    { line: 8, type: "info", message: "[ANALYZE] 🔍 Analyzing keyword density matrix..." },
-    {
-      line: 9,
-      type: "critical",
-      message: "[CRITICAL] ❌ Missing critical keywords: React, TypeScript, Node.js",
-    },
-    {
-      line: 10,
-      type: "info",
-      message: '           → Required stack: ["React", "TypeScript", "Node.js", "Git"]',
-    },
-    { line: 11, type: "info", message: '           → Found stack: ["jQuery", "Java", "HTML/CSS"]' },
-    {
-      line: 12,
-      type: "warn",
-      message: "[WARN] ⚠️  Experience bullets lack quantitative metrics (0/12 measurable)",
-    },
-    { line: 13, type: "info", message: "[SCAN] 🎯 Extracting soft skills..." },
-    { line: 14, type: "ok", message: '[OK] ✓ "Leadership" mentioned 3x • "Teamwork" 2x • "Communication" 1x' },
-    {
+  // Fetch user profile and resume data for adaptive metrics
+  const user = useQuery(apiAny.users.currentUser);
+  const resumes = useQuery(apiAny.resumes.getResumes);
+  const currentResume = resumeId
+    ? resumes?.find((r: any) => r._id === resumeId)
+    : (resumes && resumes.length > 0 ? resumes[0] : null);
+
+  // Determine seniority level from resume or user profile
+  const seniorityLevel = currentResume?.seniorityLevel || 'mid'; // entry, junior, mid, senior, staff
+  const yearsOfExperience = currentResume?.yearsOfExperience || 0;
+
+  // Generate adaptive logs based on seniority
+  const getAdaptiveLogs = (): LogEntry[] => {
+    const isJunior = seniorityLevel === 'entry' || seniorityLevel === 'junior' || yearsOfExperience < 3;
+    const isMid = seniorityLevel === 'mid' || (yearsOfExperience >= 3 && yearsOfExperience < 8);
+    const isSenior = seniorityLevel === 'senior' || seniorityLevel === 'staff' || yearsOfExperience >= 8;
+
+    const baseLogs: LogEntry[] = [
+      {
+        line: 1,
+        type: "command",
+        message: "./ats-scanner --mode=deep --engine=ml-v4 --target=resume.pdf",
+      },
+      {
+        line: 2,
+        type: "info",
+        message: "[INIT] 🤖 ATS Robot Engine v4.2.0 - Neural Network Active"
+      },
+      {
+        line: 3,
+        type: "ok",
+        message: "[OK] ✓ PDF structure validated • Text layer extracted successfully"
+      },
+      {
+        line: 4,
+        type: "info",
+        message: "[ANALYZE] 🧠 Running ML role detection algorithm..."
+      },
+    ];
+
+    // Adaptive role detection based on seniority
+    if (isJunior) {
+      baseLogs.push({
+        line: 5,
+        type: "ok",
+        message: `[DETECT] ✓ Target level: Entry/Junior (${yearsOfExperience}yrs experience)`
+      });
+      baseLogs.push({
+        line: 6,
+        type: "info",
+        message: "[SCAN] 📊 Analyzing education, projects, and internships..."
+      });
+      baseLogs.push({
+        line: 7,
+        type: "warn",
+        message: "[WARN] ⚠️  Limited work experience detected - Focus on projects & academic achievements"
+      });
+      baseLogs.push({
+        line: 8,
+        type: "info",
+        message: "[ANALYZE] 🔍 Checking for relevant coursework and technical skills..."
+      });
+      baseLogs.push({
+        line: 9,
+        type: "critical",
+        message: "[CRITICAL] ❌ Missing: Portfolio projects, GitHub links, or internship experience"
+      });
+      baseLogs.push({
+        line: 10,
+        type: "info",
+        message: '           → Recommended: Add 2-3 personal projects with live demos'
+      });
+      baseLogs.push({
+        line: 11,
+        type: "warn",
+        message: "[WARN] ⚠️  Soft skills mentioned but need concrete examples from coursework/projects"
+      });
+      baseLogs.push({
+        line: 12,
+        type: "info",
+        message: "[SCAN] 🎯 Junior roles prioritize: Learning ability, passion, and potential"
+      });
+      baseLogs.push({
+        line: 13,
+        type: "ok",
+        message: '[OK] ✓ Education section strong • Relevant coursework identified'
+      });
+      baseLogs.push({
+        line: 14,
+        type: "fail",
+        message: '[FAIL] ❌ Entry-level signal: Missing hands-on project descriptions'
+      });
+    } else if (isMid) {
+      baseLogs.push({
+        line: 5,
+        type: "ok",
+        message: `[DETECT] ✓ Target level: Mid-Level (${yearsOfExperience}yrs experience)`
+      });
+      baseLogs.push({
+        line: 6,
+        type: "info",
+        message: "[SCAN] 📊 Analyzing professional experience and technical depth..."
+      });
+      baseLogs.push({
+        line: 7,
+        type: "warn",
+        message: "[WARN] ⚠️  Experience bullets lack quantitative impact metrics"
+      });
+      baseLogs.push({
+        line: 8,
+        type: "info",
+        message: "[ANALYZE] 🔍 Evaluating skill progression and project ownership..."
+      });
+      baseLogs.push({
+        line: 9,
+        type: "critical",
+        message: "[CRITICAL] ❌ Missing key signals: Project ownership, code reviews, mentoring"
+      });
+      baseLogs.push({
+        line: 10,
+        type: "info",
+        message: '           → Mid-level roles expect: Independent delivery + some technical leadership'
+      });
+      baseLogs.push({
+        line: 11,
+        type: "warn",
+        message: "[WARN] ⚠️  Technologies listed but impact unclear (improved performance by X%?)"
+      });
+      baseLogs.push({
+        line: 12,
+        type: "info",
+        message: "[SCAN] 🎯 Mid roles prioritize: Delivery track record, technical depth, collaboration"
+      });
+      baseLogs.push({
+        line: 13,
+        type: "ok",
+        message: '[OK] ✓ Technical skills match mid-level requirements'
+      });
+      baseLogs.push({
+        line: 14,
+        type: "fail",
+        message: '[FAIL] ❌ Mid-level gap: Need measurable outcomes (0/10 achievements quantified)'
+      });
+    } else if (isSenior) {
+      baseLogs.push({
+        line: 5,
+        type: "ok",
+        message: `[DETECT] ✓ Target level: Senior/Staff (${yearsOfExperience}+ yrs experience)`
+      });
+      baseLogs.push({
+        line: 6,
+        type: "info",
+        message: "[SCAN] 📊 Analyzing leadership impact, system design, and strategic contributions..."
+      });
+      baseLogs.push({
+        line: 7,
+        type: "warn",
+        message: "[WARN] ⚠️  Senior experience not reflected: Missing architecture/design decisions"
+      });
+      baseLogs.push({
+        line: 8,
+        type: "info",
+        message: "[ANALYZE] 🔍 Checking for: Tech leadership, mentoring, cross-functional work..."
+      });
+      baseLogs.push({
+        line: 9,
+        type: "critical",
+        message: "[CRITICAL] ❌ Senior signals missing: No system architecture, team leadership, or strategic impact"
+      });
+      baseLogs.push({
+        line: 10,
+        type: "info",
+        message: '           → Senior roles expect: "Led team of X", "Architected system serving Ym users", "Reduced costs by Z%"'
+      });
+      baseLogs.push({
+        line: 11,
+        type: "warn",
+        message: "[WARN] ⚠️  Leadership & mentoring experience not quantified (mentored how many engineers?)"
+      });
+      baseLogs.push({
+        line: 12,
+        type: "info",
+        message: "[SCAN] 🎯 Senior roles prioritize: Strategic impact, technical authority, people leadership"
+      });
+      baseLogs.push({
+        line: 13,
+        type: "ok",
+        message: '[OK] ✓ Deep technical expertise evident in skill set'
+      });
+      baseLogs.push({
+        line: 14,
+        type: "fail",
+        message: '[FAIL] ❌ Seniority mismatch: 12 critical leadership/impact signals missing'
+      });
+    }
+
+    baseLogs.push({
       line: 15,
-      type: "fail",
-      message: '[FAIL] ❌ Seniority mismatch: 12 critical signals missing for "Senior" level',
-    },
-    { line: 16, type: "info", message: "[PROCESS] ⚙️  Generating ATS compatibility report..." },
-    { line: 17, type: "ok", message: "[COMPLETE] ✓ Scan finished • Report ready • Score calculated" },
-  ];
+      type: "info",
+      message: "[PROCESS] ⚙️  Generating ATS compatibility report..."
+    });
+    baseLogs.push({
+      line: 16,
+      type: "ok",
+      message: "[COMPLETE] ✓ Scan finished • Report ready • Score calculated"
+    });
+
+    return baseLogs;
+  };
+
+  const defaultLogs: LogEntry[] = getAdaptiveLogs();
 
   const logData = logs || defaultLogs;
 
@@ -181,7 +356,7 @@ export function RobotTerminalView({
         }}
       />
       <motion.div
-        className="absolute bottom-0 right-0 w-64 h-64 bg-[#8B5CF6]/20 rounded-full blur-3xl"
+        className="absolute bottom-0 right-0 w-64 h-64 bg-[#1E293B]/20 rounded-full blur-3xl"
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -268,10 +443,10 @@ export function RobotTerminalView({
                 {cpuUsage.toFixed(0)}%
               </motion.span>
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#8B5CF6]/30">
-              <Shield className="h-3 w-3 text-[#8B5CF6]" />
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-black/40 rounded border border-[#1E293B]/30">
+              <Shield className="h-3 w-3 text-[#1E293B]" />
               <span className="text-[#64748B]">MEM</span>
-              <span className="text-[#8B5CF6] font-bold min-w-[32px] text-right">{memUsage.toFixed(0)}%</span>
+              <span className="text-[#1E293B] font-bold min-w-[32px] text-right">{memUsage.toFixed(0)}%</span>
             </div>
           </div>
         </div>
@@ -284,7 +459,7 @@ export function RobotTerminalView({
             className="mt-2 h-1 bg-black/40 rounded-full overflow-hidden"
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-[#64748B] via-[#8B5CF6] to-[#22C55E]"
+              className="h-full bg-gradient-to-r from-[#64748B] via-[#1E293B] to-[#22C55E]"
               initial={{ width: "0%" }}
               animate={{ width: `${scanProgress}%` }}
               transition={{ duration: 0.3 }}
@@ -334,7 +509,7 @@ export function RobotTerminalView({
                   <div className="flex-1 break-words">
                     <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
                     <span className="text-[#64748B]">:</span>
-                    <span className="text-[#8B5CF6] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+                    <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
                     <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
                     <span className="text-white/90 ml-2">{log.message}</span>
                   </div>
@@ -373,7 +548,7 @@ export function RobotTerminalView({
               <span className="text-[#22C55E]">✓</span>
               <span className="text-[#64748B] font-bold drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]">root@ats-robot</span>
               <span className="text-[#64748B]">:</span>
-              <span className="text-[#8B5CF6] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
+              <span className="text-[#1E293B] font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">~/neural-scan</span>
               <span className="text-[#22C55E] font-bold drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">$</span>
               <motion.span
                 className="inline-block w-2 h-4 bg-[#64748B] align-middle ml-2 shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
@@ -449,7 +624,7 @@ export function RobotTerminalView({
 
       {/* Corner accent lights */}
       <div className="absolute top-0 left-0 w-32 h-32 bg-[#64748B]/20 blur-3xl rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#8B5CF6]/20 blur-3xl rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#1E293B]/20 blur-3xl rounded-full pointer-events-none" />
     </div>
   );
 }

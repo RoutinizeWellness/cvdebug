@@ -234,7 +234,7 @@ export function AdvancedATSInsights({
           <div className="border-t border-gray-200 pt-4">
             <h4 className="text-lg font-bold text-[#0F172A] mb-3">Impact Metrics Analysis</h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-              <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4">
                 <div className="text-3xl font-bold text-[#334155]">
                   {analysisResult.impactAnalysis.totalMetrics}
                 </div>

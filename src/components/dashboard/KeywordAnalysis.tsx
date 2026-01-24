@@ -731,7 +731,7 @@ export function KeywordAnalysis({
                 {/* Lock Overlay */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
                   <div className="text-center px-6 max-w-md">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#8B5CF6]/30">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#1E293B] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#1E293B]/30">
                       <span className="material-symbols-outlined text-4xl text-white">lock</span>
                     </div>
                     <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
@@ -765,7 +765,7 @@ export function KeywordAnalysis({
 
                     <button
                       onClick={onUpgrade}
-                      className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#8B5CF6]/30 hover:shadow-2xl hover:shadow-[#8B5CF6]/40 flex items-center justify-center gap-2"
+                      className="w-full bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#1E293B]/30 hover:shadow-2xl hover:shadow-[#1E293B]/40 flex items-center justify-center gap-2"
                     >
                       <span className="material-symbols-outlined">workspace_premium</span>
                       {t.keywordAnalysis.unlockComplete}
@@ -840,7 +840,7 @@ export function KeywordAnalysis({
                         </button>
                         <button
                           onClick={() => handleAutoAdd(signal.keyword)}
-                          className="px-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded text-xs transition-all font-medium shadow-lg"
+                          className="px-3 bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white rounded text-xs transition-all font-medium shadow-lg"
                         >
                           {t.keywordAnalysis.autoAdd}
                         </button>
@@ -880,7 +880,7 @@ export function KeywordAnalysis({
                       ? kw.color === 'primary'
                         ? 'text-[#0F172A] bg-[#64748B]/20 border border-[#64748B]/40 px-3 py-1 rounded-lg backdrop-blur-sm'
                         : kw.color === 'accent'
-                        ? 'text-[#8B5CF6] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 px-3 py-1 rounded-lg backdrop-blur-sm'
+                        ? 'text-[#1E293B] bg-[#1E293B]/10 border border-[#1E293B]/30 px-3 py-1 rounded-lg backdrop-blur-sm'
                         : 'text-[#0F172A] bg-[#64748B]/10 border border-[#64748B]/30 px-2 py-1 rounded backdrop-blur-sm'
                       : `text-${kw.color} ${kw.size !== 'sm' ? 'border border-[#E2E8F0]/50 px-2 py-1 rounded' : 'px-2'}`
                     }

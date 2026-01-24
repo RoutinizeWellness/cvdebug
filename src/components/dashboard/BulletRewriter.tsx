@@ -283,7 +283,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2">
-          <Zap className="h-8 w-8 text-[#8B5CF6]" />
+          <Zap className="h-8 w-8 text-[#1E293B]" />
           <h2 className="text-2xl font-bold text-[#0F172A]">ML Bullet Rewriter</h2>
         </div>
         <p className="text-sm text-[#64748B]">
@@ -340,7 +340,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
         <Button
           onClick={handleRewrite}
           disabled={isLoading || !bulletText.trim()}
-          className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-medium"
+          className="w-full bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white font-medium"
         >
           {isLoading ? (
             <>
@@ -369,7 +369,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
             <div className="glass-panel rounded-xl p-6 border border-[#E2E8F0] space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-[#8B5CF6]" />
+                  <BarChart3 className="h-5 w-5 text-[#1E293B]" />
                   ML Analysis
                 </h3>
                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -413,10 +413,10 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
             </div>
 
             {/* Optimized Version */}
-            <div className="glass-panel rounded-xl p-6 border-2 border-[#8B5CF6] space-y-3 bg-gradient-to-br from-[#F8F7FF] to-[#FFFFFF]">
+            <div className="glass-panel rounded-xl p-6 border-2 border-[#1E293B] space-y-3 bg-gradient-to-br from-[#F8F7FF] to-[#FFFFFF]">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-[#0F172A] flex items-center gap-2">
-                  <Target className="h-5 w-5 text-[#8B5CF6]" />
+                  <Target className="h-5 w-5 text-[#1E293B]" />
                   ML-Optimized Version
                 </h3>
                 <Button
@@ -462,7 +462,7 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
                       <div className={`px-2 py-1 rounded text-xs font-bold ${
                         alt.type === 'Leadership' ? 'bg-[#64748B] text-white' :
                         alt.type === 'Impact' ? 'bg-[#10B981] text-white' :
-                        'bg-[#8B5CF6] text-white'
+                        'bg-[#1E293B] text-white'
                       }`}>
                         {alt.type}
                       </div>

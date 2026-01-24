@@ -146,7 +146,7 @@ export default function SoftwareEngineerKeywordSniper() {
               className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               Keyword Sniper for{" "}
-              <span className="bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#22C55E] to-[#1E293B] bg-clip-text text-transparent">
                 Software Engineers
               </span>
             </motion.h1>
@@ -169,7 +169,7 @@ export default function SoftwareEngineerKeywordSniper() {
             >
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#64748B]"
+                className="glow-button relative flex h-12 min-w-[200px] items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[#22C55E] to-[#1E293B] px-8 text-base font-bold text-[#FFFFFF] transition-all hover:bg-[#64748B]"
               >
                 Scan My Resume (Free)
               </Button>
@@ -321,7 +321,7 @@ export default function SoftwareEngineerKeywordSniper() {
             <div className="mt-10 flex flex-col items-center justify-center gap-y-6">
               <Button
                 onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
-                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#22C55E] to-[#8B5CF6] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#22C55E] hover:to-[#8B5CF6] sm:w-auto"
+                className="glow-button w-full max-w-md rounded-xl bg-gradient-to-r from-[#22C55E] to-[#1E293B] px-8 py-4 text-lg font-bold text-[#FFFFFF] shadow-2xl transition-all hover:scale-105 hover:from-[#22C55E] hover:to-[#1E293B] sm:w-auto"
               >
                 Run Keyword Sniper (Free)
               </Button>

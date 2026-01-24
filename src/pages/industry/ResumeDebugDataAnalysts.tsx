@@ -117,7 +117,7 @@ export default function ResumeDebugDataAnalysts() {
               className="text-4xl font-black tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl"
             >
               Resume Debug Tool for{" "}
-              <span className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#64748B] to-[#1E293B] bg-clip-text text-transparent">
                 Data Analysts
               </span>
             </motion.h1>

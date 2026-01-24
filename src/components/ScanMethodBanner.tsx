@@ -15,8 +15,8 @@ export function ScanMethodBanner({ method }: ScanMethodBannerProps) {
         className="bg-gradient-to-r from-[#EEF2FF] to-[#F5F3FF] border border-[#C4B5FD]/30 rounded-xl p-4 mb-6"
       >
         <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Zap className="h-4 w-4 text-[#8B5CF6]" />
+          <div className="w-8 h-8 rounded-lg bg-[#1E293B]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <Zap className="h-4 w-4 text-[#1E293B]" />
           </div>
           <div className="flex-1">
             <h4 className="text-sm font-bold text-[#1E293B] mb-1 flex items-center gap-2">

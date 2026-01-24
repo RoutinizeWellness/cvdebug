@@ -16,7 +16,7 @@ export function ProductShowcaseGallery() {
       description: t.showcase.robotDesc,
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
       icon: Sparkles,
-      color: "#8B5CF6",
+      color: "#1E293B",
       stats: "95% accuracy rate"
     },
     {
@@ -24,7 +24,7 @@ export function ProductShowcaseGallery() {
       description: t.showcase.instantDesc,
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
       icon: Zap,
-      color: "#8B5CF6",
+      color: "#1E293B",
       stats: "10s scan time"
     },
     {
@@ -49,7 +49,7 @@ export function ProductShowcaseGallery() {
     <section id="features" className="py-24 px-4 relative overflow-hidden bg-[#FFFFFF]">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-radial from-[#64748B]/5 via-transparent to-transparent opacity-40"></div>
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E293B]/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#64748B]/10 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto max-w-7xl relative z-10">
@@ -68,7 +68,7 @@ export function ProductShowcaseGallery() {
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1E293B] mb-4 sm:mb-6 px-4">
             {t.showcase.heading}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B] mt-2">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B] mt-2">
               {t.showcase.subheading}
             </span>
           </h2>
@@ -153,14 +153,14 @@ export function ProductShowcaseGallery() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-[#8B5CF6]/20 to-[#64748B]/20 border border-[#64748B]/30 rounded-2xl p-6 sm:p-8">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-[#1E293B]/20 to-[#64748B]/20 border border-[#64748B]/30 rounded-2xl p-6 sm:p-8">
             <div className="text-left">
               <p className="text-[#1E293B] font-bold text-lg mb-1">{t.showcase.ctaBanner}</p>
               <p className="text-[#475569] text-sm">{t.showcase.ctaSubtext}</p>
             </div>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="px-8 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#64748B] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap"
+              className="px-8 py-3 bg-gradient-to-r from-[#1E293B] to-[#64748B] hover:opacity-90 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 whitespace-nowrap"
             >
               {t.showcase.ctaButton}
             </button>

@@ -53,7 +53,7 @@ export function ActivityReminderBanner({
       icon: "text-amber-100",
     },
     low: {
-      bg: "from-[#334155] to-indigo-500",
+      bg: "from-[#334155] to-slate-500",
       border: "border-[#475569]",
       icon: "text-[#F1F5F9]",
     },

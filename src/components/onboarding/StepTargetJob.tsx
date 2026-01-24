@@ -30,7 +30,7 @@ export function StepTargetJob({
       className="bg-white rounded-2xl overflow-hidden flex flex-col ring-1 ring-[#64748B]/50 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-[#E2E8F0]"
     >
       <div className="h-1 w-full bg-[#E2E8F0]">
-        <div className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#64748B] w-2/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+        <div className="h-full bg-gradient-to-r from-[#1E293B] to-[#64748B] w-2/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
       </div>
       <div className="p-8 flex flex-col gap-8">
         <div className="flex flex-col gap-2">
@@ -95,7 +95,7 @@ export function StepTargetJob({
           </Button>
           <Button
             onClick={onNext}
-            className="group relative px-8 py-2.5 bg-gradient-to-r from-[#8B5CF6] to-[#64748B] hover:from-[#8B5CF6]/90 hover:to-[#64748B]/90 text-white font-bold shadow-lg shadow-[#8B5CF6]/25 hover:shadow-[#8B5CF6]/40 transition-all"
+            className="group relative px-8 py-2.5 bg-gradient-to-r from-[#1E293B] to-[#64748B] hover:from-[#1E293B]/90 hover:to-[#64748B]/90 text-white font-bold shadow-lg shadow-[#1E293B]/25 hover:shadow-[#1E293B]/40 transition-all"
           >
             Initialize Scan
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />

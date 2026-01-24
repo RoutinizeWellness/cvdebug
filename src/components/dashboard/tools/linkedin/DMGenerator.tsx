@@ -173,7 +173,7 @@ export function DMGenerator({ profileText, jobDescription, missingKeywords }: DM
           <Button
             onClick={handleGenerate}
             disabled={isGenerating}
-            className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 border border-cyan-500/20 text-white font-medium shadow-lg shadow-cyan-900/20"
+            className="w-full bg-gradient-to-r from-[#334155] to-[#334155] hover:from-[#475569] hover:to-slate-500 border border-cyan-500/20 text-white font-medium shadow-lg shadow-cyan-900/20"
           >
             {isGenerating ? (
               <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>

@@ -28,7 +28,7 @@ export function NewFeaturesGrid() {
 
   const iconColors = {
     blue: "bg-[#DBEAFE] text-[#64748B]",
-    purple: "bg-[#F3E8FF] text-[#8B5CF6]",
+    purple: "bg-[#F3E8FF] text-[#1E293B]",
   };
 
   return (

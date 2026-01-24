@@ -100,7 +100,7 @@ export default function Blog() {
               className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-[#CBD5E1] hover:shadow-xl transition-all duration-300 cursor-pointer group"
             >
               {/* Featured badge */}
-              <div className="bg-gradient-to-r from-[#0F172A] to-indigo-600 px-6 py-3">
+              <div className="bg-gradient-to-r from-[#0F172A] to-[#334155] px-6 py-3">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-white text-[20px]">star</span>
                   <span className="text-white text-sm font-bold uppercase tracking-wider">Featured Article</span>

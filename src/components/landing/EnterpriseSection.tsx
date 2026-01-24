@@ -36,7 +36,7 @@ export function EnterpriseSection() {
 
         <div className="rounded-2xl p-8 md:p-12 lg:p-16 relative overflow-hidden border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
           {/* Gradient border effect */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#8B5CF6] to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#1E293B] to-transparent"></div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -61,7 +61,7 @@ export function EnterpriseSection() {
                 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1E293B] mb-4"
               >
                 {t.pricing.enterprise.title}<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">
                   {t.pricing.enterprise.subtitle}
                 </span>
               </motion.h2>
@@ -85,7 +85,7 @@ export function EnterpriseSection() {
               >
                 <Button
                   onClick={() => window.open("mailto:enterprise@cvdebug.com", "_blank")}
-                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#64748B] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(59,130,246,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all border-0"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-[#1E293B] to-[#64748B] px-6 py-3 text-white font-semibold shadow-[0_10px_40px_-10px_rgba(59,130,246,0.25)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.4)] hover:scale-[1.02] transition-all border-0"
                 >
                   <span className="mr-2">{t.pricing.enterprise.contactSales}</span>
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

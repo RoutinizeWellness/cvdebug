@@ -369,7 +369,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
             </div>
             <div className="h-3 bg-[#E2E8F0] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#64748B] to-[#6366F1] rounded-full"
+                className="h-full bg-gradient-to-r from-[#64748B] to-[#334155] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${technicalSignal}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
@@ -384,14 +384,14 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#8B5CF6]">person</span>
+                <span className="material-symbols-outlined text-[20px] text-[#1E293B]">person</span>
                 <span className="text-sm font-semibold text-[#0F172A]">Human Signal</span>
               </div>
-              <span className="text-lg font-black text-[#8B5CF6]">{humanSignal}%</span>
+              <span className="text-lg font-black text-[#1E293B]">{humanSignal}%</span>
             </div>
             <div className="h-3 bg-[#E2E8F0] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-full"
+                className="h-full bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${humanSignal}%` }}
                 transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
@@ -465,11 +465,11 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
           transition={{ delay: 0.2 }}
           className="bg-gradient-to-br from-[#F3E8FF] to-[#EFF6FF] rounded-2xl p-6 border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B5CF6]/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#1E293B]/10 rounded-full blur-3xl" />
 
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-4">
-              <Target className="h-5 w-5 text-[#8B5CF6]" />
+              <Target className="h-5 w-5 text-[#1E293B]" />
               <h3 className="text-sm font-bold text-[#0F172A] uppercase tracking-wider">
                 Seniority Inference
               </h3>
@@ -477,7 +477,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
             <div className="mb-4">
               <p className="text-xs text-[#64748B] mb-2">AI Inference: You sound like a</p>
-              <div className="inline-block px-4 py-2 rounded-xl bg-white border-2 border-[#8B5CF6] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]">
+              <div className="inline-block px-4 py-2 rounded-xl bg-white border-2 border-[#1E293B] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]">
                 <span className="text-lg font-black text-[#0F172A]">{seniorityLevel}</span>
               </div>
             </div>
@@ -485,7 +485,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
             {!isPaidUser && (
               <button
                 onClick={onUpgrade}
-                className="w-full mt-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.4)] flex items-center justify-center gap-2"
+                className="w-full mt-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.4)] flex items-center justify-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 Sound like a Senior Architect

@@ -169,7 +169,7 @@ export function KanbanBoard() {
       return [
         { title: "Applied", count: 0, color: "#14b8a6", cards: [], statusKey: "applied" },
         { title: "Interviewing", count: 0, color: "#64748B", cards: [], statusKey: "interviewing" },
-        { title: "Accepted", count: 0, color: "#8B5CF6", cards: [], statusKey: "accepted" },
+        { title: "Accepted", count: 0, color: "#1E293B", cards: [], statusKey: "accepted" },
       ];
     }
 
@@ -217,7 +217,7 @@ export function KanbanBoard() {
       {
         title: "Accepted",
         count: acceptedCards.length,
-        color: "#8B5CF6",
+        color: "#1E293B",
         cards: acceptedCards.slice(0, 5),
         statusKey: "accepted"
       },

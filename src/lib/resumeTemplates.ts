@@ -150,7 +150,7 @@ export const hybridTemplates: HybridTemplate[] = [
         primary: '#1F2937',
         secondary: '#6B7280',
         text: '#111827',
-        accent: '#8B5CF6'
+        accent: '#1E293B'
       },
       spacing: {
         sectionGap: '24px',

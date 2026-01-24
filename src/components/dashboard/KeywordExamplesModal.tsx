@@ -32,7 +32,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
       },
       scalability: {
         icon: "trending_up",
-        color: "#8B5CF6",
+        color: "#1E293B",
         template: `Leveraged ${keyword} to scale infrastructure supporting 10M+ daily users, cutting operational costs by $120K annually`
       },
       process: {
@@ -81,7 +81,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <DialogTitle className="text-2xl font-bold text-[#0F172A]">
-                How to Use: <span className="text-[#8B5CF6]">{keyword}</span>
+                How to Use: <span className="text-[#1E293B]">{keyword}</span>
               </DialogTitle>
               <p className="text-sm text-[#64748B]">
                 Senior-level examples that integrate this keyword naturally (no keyword stuffing)
@@ -92,7 +92,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
 
         {/* Info Banner */}
         <div className="bg-gradient-to-r from-[#F3E8FF] to-[#EFF6FF] border border-[#E2E8F0] rounded-lg p-4 flex items-start gap-3">
-          <Sparkles className="h-5 w-5 text-[#8B5CF6] flex-shrink-0 mt-0.5" />
+          <Sparkles className="h-5 w-5 text-[#1E293B] flex-shrink-0 mt-0.5" />
           <div className="text-sm text-[#475569]">
             <strong className="text-[#0F172A]">Pro Tip:</strong> Each example follows the STAR format and includes quantifiable metrics.
             Click to copy, then customize the numbers to match your actual experience.
@@ -107,7 +107,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#8B5CF6] hover:shadow-[0_4px_20px_-4px_rgba(139,92,246,0.15)] transition-all duration-300"
+              className="group relative bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#1E293B] hover:shadow-[0_4px_20px_-4px_rgba(139,92,246,0.15)] transition-all duration-300"
             >
               {/* Category Header */}
               <div className="flex items-center gap-3 mb-4">
@@ -140,7 +140,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
                 {/* Copy Button */}
                 <button
                   onClick={() => handleCopy(example.bullet, index)}
-                  className="absolute top-3 right-3 p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#8B5CF6] hover:bg-[#F3E8FF] transition-all group/btn"
+                  className="absolute top-3 right-3 p-2 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#1E293B] hover:bg-[#F3E8FF] transition-all group/btn"
                 >
                   <AnimatePresence mode="wait">
                     {copiedIndex === index ? (
@@ -159,7 +159,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
                         animate={{ scale: 1 }}
                         exit={{ scale: 0 }}
                       >
-                        <Copy className="h-4 w-4 text-[#64748B] group-hover/btn:text-[#8B5CF6]" />
+                        <Copy className="h-4 w-4 text-[#64748B] group-hover/btn:text-[#1E293B]" />
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -169,7 +169,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
               {/* Highlight Keywords */}
               <div className="mt-3 flex items-center gap-2 text-xs">
                 <span className="text-[#64748B]">Key elements:</span>
-                <span className="px-2 py-0.5 rounded bg-[#8B5CF6]/10 text-[#8B5CF6] font-medium border border-[#8B5CF6]/20">
+                <span className="px-2 py-0.5 rounded bg-[#1E293B]/10 text-[#1E293B] font-medium border border-[#1E293B]/20">
                   {keyword}
                 </span>
                 <span className="px-2 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E] font-medium border border-[#22C55E]/20">
@@ -190,7 +190,7 @@ export function KeywordExamplesModal({ open, onOpenChange, keyword, role = "Seni
           </p>
           <button
             onClick={() => onOpenChange(false)}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-semibold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
           >
             Got it
           </button>

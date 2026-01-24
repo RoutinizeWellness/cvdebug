@@ -137,7 +137,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
                           e.stopPropagation();
                           onStepClick(step.id);
                         }}
-                        className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] text-white font-semibold"
+                        className="bg-gradient-to-r from-[#64748B] to-[#1E293B] text-white font-semibold"
                       >
                         <Zap className="h-4 w-4 mr-1" />
                         Fix Now
@@ -177,7 +177,7 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl border-2 border-[#E2E8F0] dark:border-slate-700 shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] p-6">
+      <div className="bg-gradient-to-r from-[#64748B] to-[#1E293B] p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-black text-white">Action Plan</h2>
           <div className="text-right">

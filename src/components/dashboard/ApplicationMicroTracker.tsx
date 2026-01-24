@@ -41,7 +41,7 @@ export function ApplicationMicroTracker() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-[#8B5CF6] to-[#6366F1] rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 bg-gradient-to-br from-[#1E293B] to-[#334155] rounded-lg flex items-center justify-center flex-shrink-0">
             <Briefcase className="h-4 w-4 text-white" />
           </div>
           <div className="min-w-0">
@@ -150,7 +150,7 @@ export function ApplicationMicroTracker() {
               <span className="font-bold text-[#0F172A]">{successRate}%</span>
             </div>
           </div>
-          <button className="text-[#64748B] hover:text-[#8B5CF6] font-semibold transition-colors whitespace-nowrap">
+          <button className="text-[#64748B] hover:text-[#1E293B] font-semibold transition-colors whitespace-nowrap">
             View All →
           </button>
         </div>

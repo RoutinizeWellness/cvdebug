@@ -202,7 +202,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                 </div>
                 <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-[#334155] to-violet-500 rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
                     style={{ width: `${progressPercentage}%` }}
                   ></div>
                 </div>
@@ -258,8 +258,8 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
               <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 50">
                 <defs>
                   <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2"></stop>
-                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0"></stop>
+                    <stop offset="0%" stopColor="#1E293B" stopOpacity="0.2"></stop>
+                    <stop offset="100%" stopColor="#1E293B" stopOpacity="0"></stop>
                   </linearGradient>
                 </defs>
                 <path
@@ -269,15 +269,15 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                 <path
                   d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5"
                   fill="none"
-                  stroke="#8B5CF6"
+                  stroke="#1E293B"
                   strokeLinecap="round"
                   strokeWidth="2"
                   vectorEffect="non-scaling-stroke"
                 ></path>
                 {/* Data Points */}
-                <circle className="fill-white stroke-violet-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
-                <circle className="fill-white stroke-violet-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
-                <circle className="fill-white stroke-violet-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
               </svg>
               {/* X-Axis Labels */}
               <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
@@ -363,7 +363,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   {/* Toggle Switch */}
                   <button
                     onClick={handleAnalyticsToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#475569] focus:ring-offset-2 focus:ring-offset-white ${
                       shareAnalytics ? 'bg-[#64748B]' : 'bg-slate-300'
                     }`}
                   >

@@ -137,7 +137,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
 
               <Button
                 onClick={onUpgrade}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Upgrade to Interview Sprint</span>
@@ -276,7 +276,7 @@ export function CoverLetterGenerator({ initialApplicationId, onUpgrade }: CoverL
                 {!hasInterviewSprint && (
                   <div className="absolute inset-0 bg-white/95 backdrop-blur-sm flex items-center justify-center rounded-lg">
                     <div className="text-center p-8">
-                      <Lock className="h-12 w-12 text-[#8B5CF6] mx-auto mb-3" />
+                      <Lock className="h-12 w-12 text-[#1E293B] mx-auto mb-3" />
                       <p className="text-sm text-[#475569] font-medium">Upgrade to Interview Sprint to unlock</p>
                     </div>
                   </div>

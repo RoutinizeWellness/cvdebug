@@ -344,7 +344,7 @@ export function FreeTierView({
       </div>
 
       {/* The Paywall - Clear Value Proposition */}
-      <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 bg-gradient-to-br from-[#64748B]/10 via-[#8B5CF6]/10 to-[#F59E0B]/10 border-2 border-[#64748B]/30">
+      <div className="bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 bg-gradient-to-br from-[#64748B]/10 via-[#1E293B]/10 to-[#F59E0B]/10 border-2 border-[#64748B]/30">
         <div className="text-center space-y-6">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#64748B] to-[#F59E0B] rounded-full flex items-center justify-center">
             <Lock className="h-8 w-8 text-white" />
@@ -408,21 +408,21 @@ export function FreeTierView({
             </Button>
 
             {/* Manual Review Option - $49 */}
-            <div className="bg-gradient-to-r from-[#8B5CF6]/10 to-[#64748B]/10 border-2 border-[#8B5CF6]/30 rounded-lg p-4 max-w-md mx-auto">
+            <div className="bg-gradient-to-r from-[#1E293B]/10 to-[#64748B]/10 border-2 border-[#1E293B]/30 rounded-lg p-4 max-w-md mx-auto">
               <div className="flex items-start gap-3 mb-3">
-                <div className="h-10 w-10 bg-[#8B5CF6]/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-[#8B5CF6]/30">
+                <div className="h-10 w-10 bg-[#1E293B]/20 rounded-lg flex items-center justify-center flex-shrink-0 border border-[#1E293B]/30">
                   <span className="text-xl">👨‍💻</span>
                 </div>
                 <div className="flex-1">
                   <h4 className="text-[#0F172A] font-bold mb-1">Albert reviews your CV personally</h4>
                   <p className="text-[#475569] text-xs">3-min video with brutal feedback + all fixes</p>
                 </div>
-                <span className="text-[#8B5CF6] font-black text-xl">€49</span>
+                <span className="text-[#1E293B] font-black text-xl">€49</span>
               </div>
               <Button
                 onClick={() => setShowPricing(true)}
                 size="sm"
-                className="w-full bg-[#8B5CF6] hover:bg-[#8B5CF6]/90 text-white font-semibold"
+                className="w-full bg-[#1E293B] hover:bg-[#1E293B]/90 text-white font-semibold"
               >
                 I want the manual review →
               </Button>

@@ -69,7 +69,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
         {/* Header */}
         <DialogHeader className="border-b border-[#E2E8F0] pb-4">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8B5CF6] via-[#6366F1] to-[#64748B] flex items-center justify-center shadow-lg">
+            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#1E293B] via-[#334155] to-[#64748B] flex items-center justify-center shadow-lg">
               <Sparkles className="h-7 w-7 text-white" />
             </div>
             <div className="flex-1">
@@ -80,7 +80,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                 Transform your entire resume with FAANG-level bullet points in seconds
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold border border-[#8B5CF6]/20">
+                <span className="px-3 py-1 rounded-full bg-[#1E293B]/10 text-[#1E293B] text-xs font-bold border border-[#1E293B]/20">
                   🔒 Interview Sprint
                 </span>
                 <span className="text-xs text-[#64748B]">•</span>
@@ -106,15 +106,15 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                       onClick={() => setSeniorityLevel(level)}
                       className={`p-4 rounded-xl border-2 transition-all text-left ${
                         seniorityLevel === level
-                          ? "border-[#8B5CF6] bg-[#F3E8FF] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
-                          : "border-[#E2E8F0] hover:border-[#8B5CF6]/50 hover:bg-[#F8FAFC]"
+                          ? "border-[#1E293B] bg-[#F3E8FF] shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+                          : "border-[#E2E8F0] hover:border-[#1E293B]/50 hover:bg-[#F8FAFC]"
                       }`}
                     >
                       <div className="flex items-center gap-2 mb-2">
                         {seniorityLevel === level && (
-                          <CheckCircle className="h-5 w-5 text-[#8B5CF6]" />
+                          <CheckCircle className="h-5 w-5 text-[#1E293B]" />
                         )}
-                        <span className={`text-sm font-bold ${seniorityLevel === level ? "text-[#8B5CF6]" : "text-[#0F172A]"}`}>
+                        <span className={`text-sm font-bold ${seniorityLevel === level ? "text-[#1E293B]" : "text-[#0F172A]"}`}>
                           {level}
                         </span>
                       </div>
@@ -131,7 +131,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
               {/* Keywords Preview */}
               <div className="bg-gradient-to-br from-[#EFF6FF] to-[#F3E8FF] rounded-xl p-5 border border-[#E2E8F0]">
                 <div className="flex items-start gap-3 mb-3">
-                  <Zap className="h-5 w-5 text-[#8B5CF6] flex-shrink-0 mt-0.5" />
+                  <Zap className="h-5 w-5 text-[#1E293B] flex-shrink-0 mt-0.5" />
                   <div>
                     <h3 className="text-sm font-bold text-[#0F172A]">
                       Keywords to Integrate ({keywords.length})
@@ -169,7 +169,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                   },
                   {
                     icon: Sparkles,
-                    color: "#8B5CF6",
+                    color: "#1E293B",
                     title: "Optimize",
                     desc: "Inject keywords naturally"
                   },
@@ -218,7 +218,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
               <button
                 onClick={handleRewrite}
                 disabled={isProcessing}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(139,92,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_6px_20px_-3px_rgba(139,92,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {isProcessing ? (
                   <>
@@ -287,7 +287,7 @@ export function RewriteAllModal({ open, onOpenChange, resumeData, keywords, onCo
                       {result.keywordsIntegrated.map((keyword, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 rounded bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-medium border border-[#8B5CF6]/20"
+                          className="px-2 py-0.5 rounded bg-[#1E293B]/10 text-[#1E293B] text-xs font-medium border border-[#1E293B]/20"
                         >
                           🔑 {keyword}
                         </span>

@@ -44,7 +44,7 @@ export function PremiumFeatureModal({
       name: "Interview Sprint",
       price: "€24.99",
       priceSubtext: "per month",
-      color: "from-[#8B5CF6] to-[#EC4899]",
+      color: "from-[#1E293B] to-[#EC4899]",
       icon: Crown,
       features: [
         "✨ Everything in Single Scan",

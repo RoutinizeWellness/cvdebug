@@ -16,7 +16,7 @@ export function IntegrityPanel({ integrityScore, hasImageTrap, pageCount = 1 }: 
     >
       <div className="flex items-center justify-between mb-1">
         <h3 className="text-slate-100 font-semibold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#8B5CF6] text-sm">health_and_safety</span>
+          <span className="material-symbols-outlined text-[#1E293B] text-sm">health_and_safety</span>
           Integrity Health
         </h3>
         <button className="text-[#64748B] hover:text-[#0F172A] transition-colors">

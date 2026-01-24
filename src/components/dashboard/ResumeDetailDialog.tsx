@@ -780,15 +780,15 @@ export function ResumeDetailDialog({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedIndustry("google")}>
                   <span className="mr-2">🔍</span> Google
-                  {selectedIndustry === "google" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                  {selectedIndustry === "google" && <Check className="h-4 w-4 ml-auto text-[#1E293B]" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedIndustry("meta")}>
                   <span className="mr-2">📘</span> Meta
-                  {selectedIndustry === "meta" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                  {selectedIndustry === "meta" && <Check className="h-4 w-4 ml-auto text-[#1E293B]" />}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setSelectedIndustry("amazon")}>
                   <span className="mr-2">📦</span> Amazon
-                  {selectedIndustry === "amazon" && <Check className="h-4 w-4 ml-auto text-[#8B5CF6]" />}
+                  {selectedIndustry === "amazon" && <Check className="h-4 w-4 ml-auto text-[#1E293B]" />}
                 </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
@@ -927,7 +927,7 @@ export function ResumeDetailDialog({
                     <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
                       <TabsTrigger
                         value="edit"
-                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#8B5CF6] data-[state=active]:to-[#6366F1] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#1E293B] data-[state=active]:to-[#334155] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
                       >
                         <span className="flex items-center gap-1.5">
                           <Edit className="h-4 w-4" />
@@ -952,7 +952,7 @@ export function ResumeDetailDialog({
                           </span>
                         )}
                       </TabsTrigger>
-                      <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#64748B] data-[state=active]:to-[#8B5CF6] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                      <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#64748B] data-[state=active]:to-[#1E293B] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                         <span className="flex items-center gap-1.5">
                           <TrendingUp className="h-4 w-4" />
                           <span>Progress</span>
@@ -1200,7 +1200,7 @@ Software Engineer | StartupXYZ
                             ▸ ROBOT_VIEW_TERMINAL.exe
                           </span>
                           {selectedIndustry !== "general" && (
-                            <span className="text-[#8B5CF6] font-mono text-[10px] bg-[#8B5CF6]/10 px-2 py-0.5 rounded border border-[#8B5CF6]">
+                            <span className="text-[#1E293B] font-mono text-[10px] bg-[#1E293B]/10 px-2 py-0.5 rounded border border-[#1E293B]">
                               {selectedIndustry.toUpperCase()}_MODE
                             </span>
                           )}
@@ -1889,7 +1889,7 @@ Impact: AUTO_REJECT (100% rejection rate)
               {isPdfCollapsed && (
                 <button
                   onClick={() => setIsPdfCollapsed(false)}
-                  className="lg:hidden fixed bottom-6 right-6 z-40 px-6 py-3 bg-gradient-to-r from-[#64748B] to-[#8B5CF6] text-white font-bold rounded-full shadow-2xl hover:shadow-[#64748B]/50 transition-all flex items-center gap-2 animate-pulse"
+                  className="lg:hidden fixed bottom-6 right-6 z-40 px-6 py-3 bg-gradient-to-r from-[#64748B] to-[#1E293B] text-white font-bold rounded-full shadow-2xl hover:shadow-[#64748B]/50 transition-all flex items-center gap-2 animate-pulse"
                 >
                   <Eye className="h-5 w-5" />
                   View CV

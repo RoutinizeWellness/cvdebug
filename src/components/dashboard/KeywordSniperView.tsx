@@ -162,7 +162,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
 
             <Button
               onClick={onUpgrade}
-              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
+              className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
             >
               <Sparkles className="h-4 w-4" />
               <span>{t.keywordSniper.upgradeToSprint}</span>
@@ -260,11 +260,11 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
             {/* Rewrite All */}
             <button
               onClick={() => setShowRewriteModal(true)}
-              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#8B5CF6] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(139,92,246,0.15)]"
+              className="bg-[#FFFFFF] border-2 border-[#E2E8F0] hover:border-[#1E293B] rounded-xl p-4 text-left transition-all shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(139,92,246,0.15)]"
             >
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
-                  <RefreshCw className="h-5 w-5 text-[#8B5CF6]" />
+                <div className="w-10 h-10 rounded-lg bg-[#1E293B]/10 flex items-center justify-center">
+                  <RefreshCw className="h-5 w-5 text-[#1E293B]" />
                 </div>
                 <h3 className="text-sm font-bold text-[#0F172A]">{t.keywordSniper.rewriteAll}</h3>
               </div>
@@ -297,14 +297,14 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         {!hasInterviewSprint && (
           <div className="absolute inset-0 z-10 bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
             <div className="text-center p-8 max-w-md">
-              <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
+              <Lock className="h-16 w-16 text-[#1E293B] mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">{t.keywordSniper.lockedTitle}</h3>
               <p className="text-slate-300 text-sm mb-6">
                 {t.keywordSniper.lockedDesc}
               </p>
               <Button
                 onClick={onUpgrade}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-bold"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-white font-bold"
               >
                 <Sparkles className="h-5 w-5 mr-2" />
                 {t.keywordSniper.upgradeNow}

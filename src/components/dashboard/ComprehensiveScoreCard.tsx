@@ -211,7 +211,7 @@ export function ComprehensiveScoreCard({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-gradient-to-br from-[#F8FAFC] to-indigo-50 rounded-xl p-6 border-2 border-[#E2E8F0] shadow-sm"
+          className="bg-gradient-to-br from-[#F8FAFC] to-slate-50 rounded-xl p-6 border-2 border-[#E2E8F0] shadow-sm"
         >
           <h4 className="text-lg font-bold text-[#0F172A] mb-3 flex items-center gap-2">
             <Zap className="h-5 w-5 text-[#1E293B]" />

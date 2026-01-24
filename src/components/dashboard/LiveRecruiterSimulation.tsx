@@ -1032,7 +1032,7 @@ export function LiveRecruiterSimulation({
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-5 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
             <div className="flex items-center gap-2 mb-3">
-              <span className="material-symbols-outlined text-[#8B5CF6] text-sm">psychology</span>
+              <span className="material-symbols-outlined text-[#1E293B] text-sm">psychology</span>
               <h3 className="text-xs font-bold text-[#475569] uppercase tracking-widest">Soft Skills AI Inference</h3>
             </div>
             <div className="space-y-3">
@@ -1042,7 +1042,7 @@ export function LiveRecruiterSimulation({
                 </div>
                 <div className="flex gap-1">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.leadership ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.leadership ? 'bg-[#1E293B]' : 'bg-slate-200'}`}></div>
                   ))}
                 </div>
               </div>
@@ -1052,7 +1052,7 @@ export function LiveRecruiterSimulation({
                 </div>
                 <div className="flex gap-1">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.communication ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.communication ? 'bg-[#1E293B]' : 'bg-slate-200'}`}></div>
                   ))}
                 </div>
               </div>
@@ -1062,7 +1062,7 @@ export function LiveRecruiterSimulation({
                 </div>
                 <div className="flex gap-1">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.problemSolving ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.problemSolving ? 'bg-[#1E293B]' : 'bg-slate-200'}`}></div>
                   ))}
                 </div>
               </div>
@@ -1072,7 +1072,7 @@ export function LiveRecruiterSimulation({
                 </div>
                 <div className="flex gap-1">
                   {[...Array(4)].map((_, i) => (
-                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.teamwork ? 'bg-[#8B5CF6]' : 'bg-slate-200'}`}></div>
+                    <div key={i} className={`h-1.5 w-full rounded-sm ${i < softSkillsAnalysis.teamwork ? 'bg-[#1E293B]' : 'bg-slate-200'}`}></div>
                   ))}
                 </div>
               </div>

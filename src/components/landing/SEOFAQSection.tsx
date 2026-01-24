@@ -116,7 +116,7 @@ export function SEOFAQSection() {
           <p className="text-[#475569] mb-4">
             {t.landing.cta.secondary}
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#64748B] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#64748B]/50 transition-all duration-300 hover:scale-105">
+          <button className="px-8 py-4 bg-gradient-to-r from-[#1E293B] to-[#64748B] text-white font-bold rounded-xl hover:shadow-lg hover:shadow-[#64748B]/50 transition-all duration-300 hover:scale-105">
             {t.landing.cta.button}
           </button>
         </motion.div>

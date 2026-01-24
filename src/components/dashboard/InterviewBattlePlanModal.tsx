@@ -78,7 +78,7 @@ export function InterviewBattlePlanModal({
                 Radar of threats, opportunities, and winning strategies for: <span className="text-[#0F172A] font-semibold">{targetRole}</span>
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <span className="px-3 py-1 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold border border-[#8B5CF6]/20">
+                <span className="px-3 py-1 rounded-full bg-[#1E293B]/10 text-[#1E293B] text-xs font-bold border border-[#1E293B]/20">
                   🔒 Interview Sprint
                 </span>
                 <span className="text-xs text-[#64748B]">•</span>
@@ -98,14 +98,14 @@ export function InterviewBattlePlanModal({
               </label>
               <textarea
                 placeholder="Paste the full job description here..."
-                className="w-full h-48 p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 text-sm font-mono resize-none"
+                className="w-full h-48 p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#1E293B] focus:ring-2 focus:ring-[#1E293B]/20 text-sm font-mono resize-none"
                 defaultValue={jobDescription}
               />
             </div>
 
             <div className="bg-gradient-to-r from-[#EFF6FF] to-[#F3E8FF] border border-[#E2E8F0] rounded-xl p-5">
               <div className="flex items-start gap-3">
-                <Lightbulb className="h-5 w-5 text-[#8B5CF6] flex-shrink-0 mt-0.5" />
+                <Lightbulb className="h-5 w-5 text-[#1E293B] flex-shrink-0 mt-0.5" />
                 <div>
                   <h3 className="text-sm font-bold text-[#0F172A] mb-2">What You'll Get:</h3>
                   <ul className="space-y-1 text-xs text-[#475569]">
@@ -216,7 +216,7 @@ export function InterviewBattlePlanModal({
             {/* Strategic Points */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#8B5CF6]" />
+                <TrendingUp className="h-5 w-5 text-[#1E293B]" />
                 <h3 className="text-lg font-bold text-[#0F172A]">
                   Your Strategic Advantages
                 </h3>
@@ -232,7 +232,7 @@ export function InterviewBattlePlanModal({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-xl p-5 border border-[#E2E8F0] hover:border-[#8B5CF6] hover:shadow-[0_4px_16px_rgba(139,92,246,0.1)] transition-all"
+                    className="bg-white rounded-xl p-5 border border-[#E2E8F0] hover:border-[#1E293B] hover:shadow-[0_4px_16px_rgba(139,92,246,0.1)] transition-all"
                   >
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -245,7 +245,7 @@ export function InterviewBattlePlanModal({
                     <h4 className="text-sm font-bold text-[#0F172A] mb-2">{point.strength}</h4>
                     <p className="text-xs text-[#475569] mb-3">{point.positioning}</p>
                     <div className="bg-[#F8FAFC] rounded-lg p-3 border border-[#E2E8F0]">
-                      <span className="text-xs font-bold text-[#8B5CF6]">Deflection:</span>
+                      <span className="text-xs font-bold text-[#1E293B]">Deflection:</span>
                       <p className="text-xs text-[#475569] mt-1">{point.deflectionTactic}</p>
                     </div>
                   </motion.div>
@@ -254,11 +254,11 @@ export function InterviewBattlePlanModal({
             </div>
 
             {/* Killer Question */}
-            <div className="bg-gradient-to-br from-[#F3E8FF] to-[#EFF6FF] border-2 border-[#8B5CF6] rounded-xl p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B5CF6]/10 rounded-full blur-3xl"></div>
+            <div className="bg-gradient-to-br from-[#F3E8FF] to-[#EFF6FF] border-2 border-[#1E293B] rounded-xl p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#1E293B]/10 rounded-full blur-3xl"></div>
               <div className="relative">
                 <div className="flex items-start gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#8B5CF6] to-[#6366F1] flex items-center justify-center shadow-lg">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center shadow-lg">
                     <Lightbulb className="h-5 w-5 text-white" />
                   </div>
                   <div>
@@ -275,7 +275,7 @@ export function InterviewBattlePlanModal({
                   </p>
                   <div className="space-y-2">
                     <div>
-                      <span className="text-xs font-bold text-[#8B5CF6]">Why it works:</span>
+                      <span className="text-xs font-bold text-[#1E293B]">Why it works:</span>
                       <p className="text-sm text-[#475569] mt-1">{battlePlan.killerQuestion.why}</p>
                     </div>
                     <div>
@@ -305,7 +305,7 @@ export function InterviewBattlePlanModal({
               </button>
               <button
                 onClick={() => onOpenChange(false)}
-                className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
+                className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_4px_12px_-2px_rgba(139,92,246,0.3)]"
               >
                 I'm Ready 🚀
               </button>

@@ -518,7 +518,7 @@ export function ATSAnalysisReport({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-gradient-to-br from-slate-900/90 to-indigo-900/40 rounded-lg md:rounded-xl p-4 md:p-6 border-2 border-[#475569]/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
+                  className="bg-gradient-to-br from-slate-900/90 to-[#0F172A]/40 rounded-lg md:rounded-xl p-4 md:p-6 border-2 border-[#475569]/40 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group cursor-pointer"
                   onClick={onOpenWritingForge}
                 >
                   {/* Decorative gradient background */}
@@ -548,15 +548,15 @@ export function ATSAnalysisReport({
                       {/* Benefits */}
                       <div className="space-y-1.5 mb-4">
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
-                          <span className="text-[#8B5CF6]">✓</span>
+                          <span className="text-[#1E293B]">✓</span>
                           <span>Track impact metrics</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
-                          <span className="text-[#8B5CF6]">✓</span>
+                          <span className="text-[#1E293B]">✓</span>
                           <span>AI-powered suggestions</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#475569]">
-                          <span className="text-[#8B5CF6]">✓</span>
+                          <span className="text-[#1E293B]">✓</span>
                           <span>Reach elite level (10+)</span>
                         </div>
                       </div>

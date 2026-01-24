@@ -34,7 +34,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
                 <motion.div
                   animate={{
                     scale: isActive ? 1.1 : 1,
-                    color: isActive ? "#8B5CF6" : "#64748B",
+                    color: isActive ? "#1E293B" : "#64748B",
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
@@ -43,7 +43,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
 
                 <span
                   className={`text-[10px] font-bold transition-colors ${
-                    isActive ? "text-[#8B5CF6]" : "text-[#64748B]"
+                    isActive ? "text-[#1E293B]" : "text-[#64748B]"
                   }`}
                 >
                   {tab.label}
@@ -53,7 +53,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
-                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-[#8B5CF6]"
+                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-[#1E293B]"
                     initial={false}
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
@@ -69,7 +69,7 @@ export function MobileTabBar({ currentView, setCurrentView, onUpload }: MobileTa
           >
             <Button
               onClick={onUpload}
-              className="h-14 w-14 rounded-full bg-gradient-to-br from-[#64748B] to-[#8B5CF6] hover:from-[#64748B]/90 hover:to-[#8B5CF6]/90 shadow-[0_0_30px_rgba(139,92,246,0.5)] border-4 border-[#FFFFFF]"
+              className="h-14 w-14 rounded-full bg-gradient-to-br from-[#64748B] to-[#1E293B] hover:from-[#64748B]/90 hover:to-[#1E293B]/90 shadow-[0_0_30px_rgba(139,92,246,0.5)] border-4 border-[#FFFFFF]"
               aria-label="Upload Resume"
             >
               <Upload className="h-6 w-6 text-white" />

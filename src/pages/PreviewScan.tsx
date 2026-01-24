@@ -353,13 +353,13 @@ export default function PreviewScan() {
           backgroundSize: "32px 32px",
         }}
       />
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 left-1/4 w-96 h-96 bg-[#1E293B]/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-[#64748B]/5 rounded-full blur-3xl" />
 
       {/* Scan line effect */}
       {isProcessing && !showResults && (
         <motion.div
-          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[#8B5CF6] to-transparent"
+          className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[#1E293B] to-transparent"
           animate={{ y: [0, window.innerHeight] }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         />
@@ -398,7 +398,7 @@ export default function PreviewScan() {
                 className="mb-12"
               >
                 <h1 className="text-4xl md:text-5xl font-black text-[#1E293B] mb-4">
-                  {t.previewScan.title.split(' ').slice(0, 1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">{t.previewScan.title.split(' ').slice(1).join(' ')}</span>
+                  {t.previewScan.title.split(' ').slice(0, 1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">{t.previewScan.title.split(' ').slice(1).join(' ')}</span>
                 </h1>
                 <p className="text-xl text-[#475569] max-w-2xl mx-auto">
                   {t.previewScan.subtitle}
@@ -420,10 +420,10 @@ export default function PreviewScan() {
                 />
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-white p-12 rounded-2xl border-2 border-dashed border-[#8B5CF6]/30 hover:border-[#8B5CF6]/60 cursor-pointer transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                  className="bg-white p-12 rounded-2xl border-2 border-dashed border-[#1E293B]/30 hover:border-[#1E293B]/60 cursor-pointer transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 >
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#8B5CF6]/20 to-[#64748B]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Upload className="h-10 w-10 text-[#8B5CF6]" />
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#1E293B]/20 to-[#64748B]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Upload className="h-10 w-10 text-[#1E293B]" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#1E293B] mb-2">{t.previewScan.dropHere}</h3>
                   <p className="text-[#475569] mb-6">{t.previewScan.orBrowse}</p>
@@ -441,7 +441,7 @@ export default function PreviewScan() {
                 {!showJobDescriptionField ? (
                   <button
                     onClick={() => setShowJobDescriptionField(true)}
-                    className="text-sm text-[#8B5CF6] hover:text-[#7C3AED] font-medium flex items-center gap-2 mx-auto transition-colors"
+                    className="text-sm text-[#1E293B] hover:text-[#7C3AED] font-medium flex items-center gap-2 mx-auto transition-colors"
                   >
                     <Sparkles className="h-4 w-4" />
                     {t.previewScan.addJobDesc}
@@ -449,8 +449,8 @@ export default function PreviewScan() {
                 ) : (
                   <div className="bg-white p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
                     <div className="flex items-start gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#64748B]/20 to-[#8B5CF6]/20 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#64748B]/20 to-[#1E293B]/20 flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="h-5 w-5 text-[#1E293B]" />
                       </div>
                       <div className="flex-1">
                         <h4 className="text-sm font-bold text-[#1E293B] mb-1">{t.previewScan.targetJobPosition}</h4>
@@ -470,7 +470,7 @@ export default function PreviewScan() {
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
                       placeholder={t.previewScan.jobDescPlaceholder + "\n\nExample:\nWe are looking for a Senior Software Engineer with 5+ years of experience in Python, React, and AWS..."}
-                      className="w-full min-h-[120px] p-3 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-transparent resize-none font-mono text-[#475569] bg-[#F8FAFC]"
+                      className="w-full min-h-[120px] p-3 text-sm border border-[#E2E8F0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1E293B] focus:border-transparent resize-none font-mono text-[#475569] bg-[#F8FAFC]"
                     />
                     {jobDescription && (
                       <p className="text-xs text-[#22C55E] mt-2 flex items-center gap-1">
@@ -490,15 +490,15 @@ export default function PreviewScan() {
                 className="mt-12 flex items-center justify-center gap-8 text-sm text-[#475569]"
               >
                 <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-[#8B5CF6]" />
+                  <Lock className="h-4 w-4 text-[#1E293B]" />
                   <span>Secure & Private</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Zap className="h-4 w-4 text-[#8B5CF6]" />
+                  <Zap className="h-4 w-4 text-[#1E293B]" />
                   <span>Instant Results</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-[#8B5CF6]" />
+                  <Eye className="h-4 w-4 text-[#1E293B]" />
                   <span>No Credit Card</span>
                 </div>
               </motion.div>
@@ -550,7 +550,7 @@ export default function PreviewScan() {
               <div className="space-y-6">
                 <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#8B5CF6] text-lg">analytics</span>
+                    <span className="material-symbols-outlined text-[#1E293B] text-lg">analytics</span>
                     Diagnostics
                   </h3>
 
@@ -583,11 +583,11 @@ export default function PreviewScan() {
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs text-[#64748B]">Text Extraction</span>
-                        <span className="text-xs font-semibold text-[#8B5CF6]">{diagnostics.textRatio.toFixed(0)}%</span>
+                        <span className="text-xs font-semibold text-[#1E293B]">{diagnostics.textRatio.toFixed(0)}%</span>
                       </div>
                       <div className="w-full bg-[#E2E8F0] rounded-full h-2 overflow-hidden">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#64748B]"
+                          className="h-full bg-gradient-to-r from-[#1E293B] to-[#64748B]"
                           initial={{ width: 0 }}
                           animate={{ width: `${diagnostics.textRatio}%` }}
                           transition={{ duration: 0.8 }}
@@ -600,13 +600,13 @@ export default function PreviewScan() {
                 {/* Progress Card */}
                 <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#8B5CF6] text-lg">hourglass_top</span>
+                    <span className="material-symbols-outlined text-[#1E293B] text-lg">hourglass_top</span>
                     Progress
                   </h3>
 
                   <div className="space-y-3">
                     <div className="text-center">
-                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B] mb-2">
+                      <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B] mb-2">
                         {progress}%
                       </p>
                       <p className="text-xs text-[#64748B]">{currentStep || "Processing..."}</p>
@@ -614,7 +614,7 @@ export default function PreviewScan() {
 
                     <div className="w-full bg-[#E2E8F0] rounded-full h-3 overflow-hidden relative">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-[#8B5CF6] to-[#64748B] relative"
+                        className="h-full bg-gradient-to-r from-[#1E293B] to-[#64748B] relative"
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.3 }}
@@ -647,14 +647,14 @@ export default function PreviewScan() {
 
               {/* Score Card - Partially Revealed */}
               <div className="bg-white p-8 rounded-2xl text-center relative overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/10 to-[#64748B]/10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/10 to-[#64748B]/10" />
                 <div className="relative z-10">
                   <h2 className="text-2xl font-bold text-[#1E293B] mb-4">Your Resume Score</h2>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", duration: 0.8 }}
-                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B] mb-4"
+                    className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B] mb-4"
                   >
                     {previewScore}
                   </motion.div>
@@ -697,7 +697,7 @@ export default function PreviewScan() {
                   {/* Locked overlay */}
                   <div className="absolute inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm">
                     <div className="text-center">
-                      <Lock className="h-12 w-12 text-[#8B5CF6] mx-auto mb-4" />
+                      <Lock className="h-12 w-12 text-[#1E293B] mx-auto mb-4" />
                       <p className="text-[#1E293B] font-bold text-lg mb-2">Create free account to see full Robot View</p>
                       <p className="text-[#475569] text-sm">Plus detailed keyword analysis and actionable fixes</p>
                     </div>

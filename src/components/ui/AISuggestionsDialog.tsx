@@ -117,7 +117,7 @@ export function AISuggestionsDialog({
               {/* Header */}
               <div className="flex items-start justify-between p-6 pb-4 border-b border-[#E2E8F0] bg-gradient-to-r from-[#F8FAFC] to-transparent">
                 <div className="flex gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-slate-600 to-violet-600 shadow-lg shadow-cyan-500/20 shrink-0 text-white">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-slate-600 to-[#334155] shadow-lg shadow-cyan-500/20 shrink-0 text-white">
                     <Sparkles className="h-7 w-7" />
                   </div>
                   <div className="flex flex-col justify-center">

@@ -44,10 +44,10 @@ const getColorClasses = (color: string) => {
     blue: {
       badge: "bg-[#1E293B]/10 border-[#1E293B]/20 text-[#CBD5E1]",
       badgeIcon: "text-[#94A3B8]",
-      gradient: "from-[#475569] to-indigo-400",
+      gradient: "from-[#475569] to-slate-400",
       button: "from-[#0F172A] to-[#1E293B] hover:from-[#0F172A] hover:to-[#334155] shadow-[#0F172A]/25",
-      keyword: "from-[#1E293B]/20 to-indigo-500/20 border-[#1E293B]/30 text-[#CBD5E1]",
-      floatingBadge: "from-[#0F172A] to-indigo-600",
+      keyword: "from-[#1E293B]/20 to-slate-500/20 border-[#1E293B]/30 text-[#CBD5E1]",
+      floatingBadge: "from-[#0F172A] to-[#334155]",
       bg: "bg-[#1E293B]/10",
       bgSecondary: "bg-[#F8FAFC]0/10",
       text: "text-[#94A3B8]",
@@ -110,9 +110,9 @@ const getColorClasses = (color: string) => {
       badge: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300",
       badgeIcon: "text-cyan-400",
       gradient: "from-[#64748B] to-[#475569]",
-      button: "from-violet-600 to-[#0F172A] hover:from-violet-700 hover:to-[#0F172A] shadow-cyan-500/25",
-      keyword: "from-violet-500/20 to-[#1E293B]/20 border-cyan-500/30 text-cyan-300",
-      floatingBadge: "from-violet-600 to-[#0F172A]",
+      button: "from-[#334155] to-[#0F172A] hover:from-[#475569] hover:to-[#0F172A] shadow-cyan-500/25",
+      keyword: "from-[#475569]/20 to-[#1E293B]/20 border-cyan-500/30 text-cyan-300",
+      floatingBadge: "from-[#334155] to-[#0F172A]",
       bg: "bg-cyan-500/10",
       bgSecondary: "bg-teal-500/10",
       text: "text-cyan-400",
@@ -202,7 +202,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
         <section className="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#64748B]/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#8B5CF6]/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#1E293B]/10 rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -219,7 +219,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] mb-6 leading-tight">
                   {template.heroTitle}
-                  <span className="block bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] bg-clip-text text-transparent">
+                  <span className="block bg-gradient-to-r from-[#1E293B] to-[#334155] bg-clip-text text-transparent">
                     {template.heroHighlight}
                   </span>
                 </h1>
@@ -231,7 +231,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-lg group"
+                    className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-lg group"
                     onClick={() => navigate("/auth")}
                   >
                     {template.primaryCTA}
@@ -240,7 +240,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-[#E2E8F0] hover:border-[#8B5CF6] text-[#0F172A] hover:text-[#8B5CF6]"
+                    className="border-[#E2E8F0] hover:border-[#1E293B] text-[#0F172A] hover:text-[#1E293B]"
                     onClick={() => navigate("/auth")}
                   >
                     See Robot View Demo
@@ -278,7 +278,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 + idx * 0.05 }}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#8B5CF6]/10 to-[#6366F1]/10 border border-[#E2E8F0] text-sm font-medium text-[#475569]"
+                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 border border-[#E2E8F0] text-sm font-medium text-[#475569]"
                       >
                         {keyword}
                       </motion.span>
@@ -295,7 +295,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
-                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-xl p-4 shadow-xl"
+                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-xl p-4 shadow-xl"
                 >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="h-5 w-5 text-white" />
@@ -428,7 +428,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               className="text-center mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
-                Built Specifically for <span className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] bg-clip-text text-transparent">Your Industry</span>
+                Built Specifically for <span className="bg-gradient-to-r from-[#1E293B] to-[#334155] bg-clip-text text-transparent">Your Industry</span>
               </h2>
               <p className="text-lg text-[#475569] max-w-3xl mx-auto">
                 Our scanner understands your field's terminology, requirements, and ATS configurations
@@ -445,10 +445,10 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
-                    className="rounded-xl p-8 border border-[#E2E8F0] hover:border-[#8B5CF6] transition-all group bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                    className="rounded-xl p-8 border border-[#E2E8F0] hover:border-[#1E293B] transition-all group bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                   >
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#8B5CF6]/10 to-[#6366F1]/10 border border-[#E2E8F0] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="h-7 w-7 text-[#8B5CF6]" />
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#1E293B]/10 to-[#334155]/10 border border-[#E2E8F0] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="h-7 w-7 text-[#1E293B]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{feature.title}</h3>
                     <p className="text-[#475569] text-lg leading-relaxed">{feature.description}</p>
@@ -493,7 +493,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
                   <p className="text-[#475569] mb-4 italic">"{testimonial.quote}"</p>
                   <div>
                     <div className="font-bold text-[#0F172A]">{testimonial.name}</div>
-                    <div className="text-sm text-[#8B5CF6]">{testimonial.role}</div>
+                    <div className="text-sm text-[#1E293B]">{testimonial.role}</div>
                     <div className="text-sm text-[#64748B]">{testimonial.location}</div>
                   </div>
                 </motion.div>
@@ -504,7 +504,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
 
         {/* CTA Section */}
         <section className="py-16 md:py-24 relative overflow-hidden bg-[#FFFFFF]">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#8B5CF6]/10 to-[#6366F1]/10 blur-3xl opacity-50" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 blur-3xl opacity-50" />
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
@@ -520,7 +520,7 @@ export function NicheLandingPage({ template }: NicheLandingPageProps) {
               </p>
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white text-lg px-8 py-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-white text-lg px-8 py-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
                 onClick={() => navigate("/auth")}
               >
                 {template.primaryCTA}

@@ -11,7 +11,7 @@ export function JobTrackerView() {
   if (!jobHistory) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin h-8 w-8 border-4 border-[#8B5CF6] border-t-transparent rounded-full"></div>
+        <div className="animate-spin h-8 w-8 border-4 border-[#1E293B] border-t-transparent rounded-full"></div>
       </div>
     );
   }
@@ -47,16 +47,16 @@ export function JobTrackerView() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#8B5CF6]/30 transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 hover:border-[#1E293B]/30 transition-all group shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
           >
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
-                    <Briefcase className="h-5 w-5 text-[#8B5CF6]" />
+                  <div className="h-10 w-10 rounded-lg bg-[#1E293B]/10 flex items-center justify-center">
+                    <Briefcase className="h-5 w-5 text-[#1E293B]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#0F172A] group-hover:text-[#8B5CF6] transition-colors">
+                    <h3 className="text-lg font-bold text-[#0F172A] group-hover:text-[#1E293B] transition-colors">
                       {job.jobTitle || "Untitled Position"}
                     </h3>
                     {job.company && (

@@ -150,11 +150,11 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         {/* Sprint Countdown Widget */}
         {hasActiveSprint && (
           <div className="mx-4 mb-4 p-4 rounded-lg bg-[#FFFFFF] border border-[#E2E8F0] relative overflow-hidden group shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-            <div className="absolute inset-0 bg-violet-50/50 group-hover:bg-violet-50 transition-colors"></div>
+            <div className="absolute inset-0 bg-slate-50/50 group-hover:bg-slate-50 transition-colors"></div>
 
             <div className="flex items-center justify-between mb-2 relative z-10">
-              <span className="text-[10px] uppercase font-bold text-violet-600 tracking-wider flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-pulse"></span>
+              <span className="text-[10px] uppercase font-bold text-slate-600 tracking-wider flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-pulse"></span>
                 {t.sidebar.sprintActive}
               </span>
             </div>
@@ -174,7 +174,7 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
         <div className="mx-4 mb-4">
           <button
             onClick={() => setShowPricing(true)}
-            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-semibold text-sm shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[18px]">workspace_premium</span>
             {hasActiveSprint ? t.sidebar.managePlan : t.sidebar.upgradeNow}

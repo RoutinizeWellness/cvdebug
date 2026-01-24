@@ -330,7 +330,7 @@ export function BulletPointSniper({
                                 <div className="group relative p-3 rounded bg-[#FFFFFF] border border-[#E2E8F0] hover:border-primary/50 transition-colors">
                                   <div className="flex justify-between gap-3">
                                     <div>
-                                      <span className="text-[10px] font-bold text-[#8B5CF6] uppercase tracking-wider mb-1 block">Leadership</span>
+                                      <span className="text-[10px] font-bold text-[#1E293B] uppercase tracking-wider mb-1 block">Leadership</span>
                                       <p className="text-xs text-[#475569] leading-relaxed">{bullets.leadership}</p>
                                     </div>
                                     <Button

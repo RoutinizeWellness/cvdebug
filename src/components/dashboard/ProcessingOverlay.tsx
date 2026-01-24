@@ -42,7 +42,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
   useEffect(() => {
     // Add logs progressively
     const logMessages = [
-      { type: "INIT", message: "Loading core modules...", color: "text-[#8B5CF6]" },
+      { type: "INIT", message: "Loading core modules...", color: "text-[#1E293B]" },
       { type: "SCAN", message: "Detecting document layout structure...", color: "text-[#64748B]" },
       { type: "INFO", message: "OCR confidence level: 98.2%", color: "text-[#22C55E]" },
       { type: "PROC", message: "Extracting experience keywords...", color: "text-[#64748B]" },
@@ -177,7 +177,7 @@ export function ProcessingOverlay({ isUploading, isProcessing, statusMessage, pr
             </div>
             <div className="absolute -right-12 bottom-1/3 hidden md:flex flex-col gap-2 opacity-60 items-end">
               <div className="h-[1px] w-8 bg-slate-400"></div>
-              <span className="text-[10px] text-[#8B5CF6] font-mono -rotate-90 origin-right -translate-x-3">Z-INDEX</span>
+              <span className="text-[10px] text-[#1E293B] font-mono -rotate-90 origin-right -translate-x-3">Z-INDEX</span>
             </div>
           </div>
 

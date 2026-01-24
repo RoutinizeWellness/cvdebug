@@ -32,7 +32,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
 
       {/* Card 1: AI Cover Letter */}
       <Card
-        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#8B5CF6] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#1E293B] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         onClick={() => onNavigate('cover-letter')}
       >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -56,7 +56,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
 
       {/* Card 2: Recruiter DM */}
       <Card
-        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#8B5CF6] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#1E293B] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         onClick={() => setShowDMGenerator(true)}
       >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -75,7 +75,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
 
       {/* Card 3: LinkedIn Optimizer */}
       <Card
-        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#8B5CF6] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+        className="bg-[#FFFFFF] border-[#E2E8F0] hover:border-[#1E293B] transition-all group cursor-pointer overflow-hidden relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
         onClick={() => onNavigate('linkedin')}
       >
         <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -97,7 +97,7 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
         <div className={`rounded-xl p-4 border shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] ${
           isSprintActive
             ? "bg-gradient-to-br from-[#F8FAFC] to-[#FFFFFF] border-[#E2E8F0]"
-            : "bg-gradient-to-br from-[#F3E8FF] to-[#FFFFFF] border-[#8B5CF6]/30"
+            : "bg-gradient-to-br from-[#F3E8FF] to-[#FFFFFF] border-[#1E293B]/30"
         }`}>
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className={`h-4 w-4 ${isSprintActive ? "text-[#64748B]" : "text-[#F59E0B] animate-pulse"}`} />

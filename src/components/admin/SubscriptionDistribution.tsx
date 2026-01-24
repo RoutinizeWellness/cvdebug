@@ -34,7 +34,7 @@ export function SubscriptionDistribution() {
       name: "Interview Sprint",
       count: subscriptionStats.byTier.interview_sprint,
       percentage: (subscriptionStats.byTier.interview_sprint / total) * 100,
-      color: "#8B5CF6",
+      color: "#1E293B",
       darkColor: "#A78BFA",
       icon: "⚡",
     },

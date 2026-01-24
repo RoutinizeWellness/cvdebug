@@ -464,7 +464,7 @@ export function FluffDetector({
         {/* Lock Overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/50 via-white/80 to-white/95 backdrop-blur-sm">
           <div className="text-center px-6 max-w-lg">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#8B5CF6]/30">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#1E293B] to-[#EC4899] flex items-center justify-center mb-6 mx-auto shadow-2xl shadow-[#1E293B]/30">
               <span className="material-symbols-outlined text-4xl text-white">lock</span>
             </div>
             <h3 className="text-2xl font-bold text-[#0F172A] mb-3">
@@ -494,7 +494,7 @@ export function FluffDetector({
 
             <button
               onClick={onUpgrade}
-              className="w-full bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#8B5CF6]/30 hover:shadow-2xl hover:shadow-[#8B5CF6]/40 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-xl shadow-[#1E293B]/30 hover:shadow-2xl hover:shadow-[#1E293B]/40 flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">workspace_premium</span>
               {t.fluffDetector.unlockFluff}
@@ -529,8 +529,8 @@ export function FluffDetector({
               <svg className="w-32 h-32 transform -rotate-90">
                 <defs>
                   <linearGradient id="clarityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#8B5CF6" />
-                    <stop offset="100%" stopColor="#6366F1" />
+                    <stop offset="0%" stopColor="#1E293B" />
+                    <stop offset="100%" stopColor="#334155" />
                   </linearGradient>
                 </defs>
                 <circle
@@ -616,16 +616,16 @@ export function FluffDetector({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-gradient-to-br from-[#8B5CF6]/5 to-[#EC4899]/5 rounded-xl border-2 border-[#8B5CF6]/30 p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:border-[#8B5CF6] transition-all"
+          className="bg-gradient-to-br from-[#1E293B]/5 to-[#EC4899]/5 rounded-xl border-2 border-[#1E293B]/30 p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:border-[#1E293B] transition-all"
         >
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <PremiumFeatureBadge plan="interview_sprint" size="sm" />
-                <span className="text-[10px] text-[#8B5CF6] font-bold uppercase tracking-wider">AI-Powered</span>
+                <span className="text-[10px] text-[#1E293B] font-bold uppercase tracking-wider">AI-Powered</span>
               </div>
               <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#8B5CF6]">auto_awesome</span>
+                <span className="material-symbols-outlined text-[#1E293B]">auto_awesome</span>
                 Complete Resume Rewrite
               </h3>
               <p className="text-sm text-[#64748B]">
@@ -638,7 +638,7 @@ export function FluffDetector({
                 const message = "AI Resume Rewrite is coming soon! This will automatically rewrite your entire resume with:\n• Power verbs and action words\n• Quantified metrics and achievements\n• Impact-focused statements\n• ATS-optimized formatting";
                 alert(message);
               }}
-              className="px-6 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#8B5CF6]/30 whitespace-nowrap text-sm"
+              className="px-6 py-3 bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#1E293B]/30 whitespace-nowrap text-sm"
             >
               Rewrite All
             </button>
@@ -785,9 +785,9 @@ export function FluffDetector({
           >
             <div className="p-5 border-b border-[#E2E8F0]">
               <h3 className="font-semibold text-[#0F172A] flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#8B5CF6] text-[20px]">query_stats</span>
+                <span className="material-symbols-outlined text-[#1E293B] text-[20px]">query_stats</span>
                 Impact Quantification Audit
-                <span className="bg-[#F8FAFC] text-[#8B5CF6] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-[#F1F5F9]">
+                <span className="bg-[#F8FAFC] text-[#1E293B] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ml-2 border border-[#F1F5F9]">
                   {unquantifiedAchievements.length} Missing
                 </span>
               </h3>
@@ -808,7 +808,7 @@ export function FluffDetector({
                   >
                     <div className="mb-3">
                       <div className="flex items-start gap-2 mb-1">
-                        <span className="material-symbols-outlined text-[#8B5CF6] text-[16px] mt-0.5">flag</span>
+                        <span className="material-symbols-outlined text-[#1E293B] text-[16px] mt-0.5">flag</span>
                         <div>
                           <h4 className="text-sm font-bold text-[#0F172A]">
                             {achievement.title}
@@ -822,7 +822,7 @@ export function FluffDetector({
 
                     <div>
                       <p className="text-xs font-semibold text-[#0F172A] mb-2 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[#8B5CF6] text-sm">auto_awesome</span>
+                        <span className="material-symbols-outlined text-[#1E293B] text-sm">auto_awesome</span>
                         AI-Suggested Quantifications:
                       </p>
                       <div className="space-y-2">
@@ -836,7 +836,7 @@ export function FluffDetector({
                               name={`metric-${index}`}
                               checked={selectedMetrics[index] === sIndex}
                               onChange={() => setSelectedMetrics({ ...selectedMetrics, [index]: sIndex })}
-                              className="mt-0.5 w-4 h-4 text-[#8B5CF6] focus:ring-[#1E293B] focus:ring-2"
+                              className="mt-0.5 w-4 h-4 text-[#1E293B] focus:ring-[#1E293B] focus:ring-2"
                             />
                             <span className="text-xs text-[#475569] group-hover:text-[#0F172A] flex-1">
                               {suggestion}
@@ -872,7 +872,7 @@ export function FluffDetector({
                       disabled={selectedMetrics[index] === undefined}
                       className={`w-full mt-3 px-3 py-2 text-white text-xs font-semibold rounded transition-all ${
                         selectedMetrics[index] !== undefined
-                          ? "bg-[#8B5CF6] hover:bg-[#7C3AED] shadow-lg shadow-purple-500/30 cursor-pointer"
+                          ? "bg-[#1E293B] hover:bg-[#7C3AED] shadow-lg shadow-slate-500/30 cursor-pointer"
                           : "bg-gray-300 cursor-not-allowed opacity-60"
                       }`}
                     >

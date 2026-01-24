@@ -68,7 +68,7 @@ export function NewsletterCapture({ context, variant = "inline" }: NewsletterCap
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] rounded-xl p-6 text-white"
+        className="bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-xl p-6 text-white"
       >
         <AnimatePresence mode="wait">
           {!isSubmitted ? (
@@ -99,7 +99,7 @@ export function NewsletterCapture({ context, variant = "inline" }: NewsletterCap
                     <Button
                       type="submit"
                       disabled={isLoading}
-                      className="bg-white text-[#8B5CF6] hover:bg-white/90 font-bold whitespace-nowrap"
+                      className="bg-white text-[#1E293B] hover:bg-white/90 font-bold whitespace-nowrap"
                     >
                       {isLoading ? "..." : copy.cta}
                     </Button>
@@ -138,7 +138,7 @@ export function NewsletterCapture({ context, variant = "inline" }: NewsletterCap
             exit={{ opacity: 0 }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+              <Sparkles className="h-5 w-5 text-[#1E293B]" />
               <h3 className="text-[#0F172A] font-bold">{copy.headline}</h3>
             </div>
             <p className="text-[#64748B] text-sm mb-4">{copy.subtext}</p>
@@ -154,7 +154,7 @@ export function NewsletterCapture({ context, variant = "inline" }: NewsletterCap
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] text-white font-bold whitespace-nowrap"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold whitespace-nowrap"
               >
                 {isLoading ? "..." : copy.cta}
               </Button>

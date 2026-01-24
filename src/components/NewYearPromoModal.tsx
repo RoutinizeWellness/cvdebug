@@ -59,7 +59,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
           {/* Abstract Fireworks SVG Decoration */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20">
             <div className="absolute top-[10%] left-[10%] w-64 h-64 rounded-full bg-[#64748B] blur-[100px] opacity-30"></div>
-            <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-[#8B5CF6] blur-[100px] opacity-30"></div>
+            <div className="absolute bottom-[20%] right-[10%] w-96 h-96 rounded-full bg-[#1E293B] blur-[100px] opacity-30"></div>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               className="w-full mb-8"
             >
               <div className="relative overflow-hidden rounded-xl border border-[#E2E8F0] bg-gradient-to-br from-[#F8FAFC] to-[#FFFFFF] p-1 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#8B5CF6]/5 to-transparent skew-x-12 opacity-50"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1E293B]/5 to-transparent skew-x-12 opacity-50"></div>
                 <div
                   className="relative bg-cover bg-center flex flex-col items-center md:flex-row md:items-stretch rounded-lg overflow-hidden h-auto min-h-[160px]"
                   style={{
@@ -132,8 +132,8 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
                 >
                   <div className="flex flex-col justify-center p-6 w-full text-center md:text-left">
                     <div className="inline-flex items-center justify-center md:justify-start gap-2 mb-2">
-                      <Rocket className="h-5 w-5 text-[#8B5CF6]" />
-                      <span className="text-[#8B5CF6] font-bold tracking-wider text-sm uppercase">
+                      <Rocket className="h-5 w-5 text-[#1E293B]" />
+                      <span className="text-[#1E293B] font-bold tracking-wider text-sm uppercase">
                         New Year Pass
                       </span>
                     </div>
@@ -161,7 +161,7 @@ export function NewYearPromoModal({ open, onOpenChange, onUnlock }: NewYearPromo
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onUnlock}
-              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+              className="w-full group relative flex items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] p-[2px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
             >
               <div className="relative flex h-14 w-full items-center justify-center rounded-[10px] bg-transparent px-8 transition-all group-hover:bg-white/10">
                 <span className="text-[#FFFFFF] text-lg font-bold tracking-wide mr-2">

@@ -16,7 +16,7 @@ export function RelatedPages({ currentUrl, category = "general" }: RelatedPagesP
   const getCategoryColor = (cat: string) => {
     const colors = {
       nursing: "from-emerald-500 to-cyan-500",
-      tech: "from-[#1E293B] to-indigo-500",
+      tech: "from-[#1E293B] to-slate-500",
       finance: "from-[#1E293B] to-pink-500",
       general: "from-primary to-secondary"
     };

@@ -90,7 +90,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
   const statusColors = {
     INFO: "text-[#64748B]",
     WARN: "text-[#F59E0B]",
-    SCAN: "text-[#8B5CF6]",
+    SCAN: "text-[#1E293B]",
     DEBUG: "text-[#22C55E]",
     PROC: "text-[#64748B]"
   };
@@ -109,7 +109,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
               <span className="animate-pulse text-[#64748B]">...</span>
             </h1>
             <p className="text-[#64748B] text-lg font-light flex items-center gap-2">
-              <span className="material-symbols-outlined text-sm text-[#8B5CF6]">settings_suggest</span>
+              <span className="material-symbols-outlined text-sm text-[#1E293B]">settings_suggest</span>
               Simulating ATS parsing engines
             </p>
           </div>
@@ -156,9 +156,9 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
 
                 {/* Scanning Laser Line */}
                 <motion.div
-                  className="absolute left-[-10%] right-[-10%] h-[2px] bg-[#8B5CF6]/80"
+                  className="absolute left-[-10%] right-[-10%] h-[2px] bg-[#1E293B]/80"
                   style={{
-                    boxShadow: '0 0 15px #8B5CF6, 0 0 30px #64748B'
+                    boxShadow: '0 0 15px #1E293B, 0 0 30px #64748B'
                   }}
                   animate={{
                     top: ['0%', '100%']
@@ -173,7 +173,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
 
               {/* Floating Status Indicators */}
               <div className="absolute top-6 left-6 flex items-center gap-2 bg-[#FFFFFF]/90 px-3 py-1 rounded-md border border-[#E2E8F0] text-xs font-mono text-[#475569] shadow-sm">
-                <span className="material-symbols-outlined text-sm text-[#8B5CF6]">visibility</span>
+                <span className="material-symbols-outlined text-sm text-[#1E293B]">visibility</span>
                 <span>OCR Layer: Detected</span>
               </div>
               <div className="absolute bottom-6 right-6 flex items-center gap-2 bg-[#FFFFFF]/90 px-3 py-1 rounded-md border border-[#E2E8F0] text-xs font-mono text-[#475569] shadow-sm">
@@ -193,7 +193,7 @@ export function CinematicScanning({ isScanning, progress, fileName }: CinematicS
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.3 }}
-                  className="h-full bg-gradient-to-r from-[#64748B] via-[#64748B]/80 to-[#8B5CF6] rounded-full"
+                  className="h-full bg-gradient-to-r from-[#64748B] via-[#64748B]/80 to-[#1E293B] rounded-full"
                   style={{
                     boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
                   }}

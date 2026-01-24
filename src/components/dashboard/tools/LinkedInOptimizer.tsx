@@ -170,7 +170,7 @@ export function LinkedInOptimizer({ onUpgrade }: LinkedInOptimizerProps) {
 
               <Button
                 onClick={onUpgrade}
-                className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>Upgrade to Interview Sprint</span>

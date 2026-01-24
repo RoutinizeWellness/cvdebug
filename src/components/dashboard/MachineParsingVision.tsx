@@ -82,7 +82,7 @@ export function MachineParsingVision({
                 checked={showMachineView}
                 onChange={() => setShowMachineView(!showMachineView)}
               />
-              <div className="w-11 h-6 bg-[#E2E8F0] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#64748B]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#FFFFFF] after:border-[#E2E8F0] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#64748B] peer-checked:to-[#8B5CF6]"></div>
+              <div className="w-11 h-6 bg-[#E2E8F0] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#64748B]/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-[#FFFFFF] after:border-[#E2E8F0] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#64748B] peer-checked:to-[#1E293B]"></div>
             </label>
           </div>
 
@@ -223,11 +223,11 @@ export function MachineParsingVision({
 
                   {/* Skills Block */}
                   {extractedFields?.skills && extractedFields.skills.length > 0 && (
-                    <div className="absolute top-[500px] right-[40px] w-[380px] h-[150px] border border-[#8B5CF6]/50 bg-[#8B5CF6]/5 rounded p-1">
-                      <span className="bg-[#8B5CF6]/20 text-[#8B5CF6] px-1 w-fit">SECTION: SKILLS_TABLE</span>
+                    <div className="absolute top-[500px] right-[40px] w-[380px] h-[150px] border border-[#1E293B]/50 bg-[#1E293B]/5 rounded p-1">
+                      <span className="bg-[#1E293B]/20 text-[#1E293B] px-1 w-fit">SECTION: SKILLS_TABLE</span>
                       <div className="grid grid-cols-2 gap-2 mt-4 px-2">
                         {extractedFields.skills.slice(0, 4).map((skill, i) => (
-                          <div key={i} className="h-4 bg-[#8B5CF6]/20 rounded flex items-center px-2 text-[#8B5CF6] text-[9px]">
+                          <div key={i} className="h-4 bg-[#1E293B]/20 rounded flex items-center px-2 text-[#1E293B] text-[9px]">
                             {skill}
                           </div>
                         ))}
@@ -261,7 +261,7 @@ export function MachineParsingVision({
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <div className="w-px h-6 bg-[#E2E8F0] mx-1"></div>
-                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white rounded-full font-medium text-sm shadow-lg shadow-[#64748B]/25 transition-all">
+                <button className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#64748B] to-[#1E293B] hover:opacity-90 text-white rounded-full font-medium text-sm shadow-lg shadow-[#64748B]/25 transition-all">
                   <Wand2 className="h-4 w-4" />
                   <span>Fix Formatting</span>
                 </button>
@@ -290,7 +290,7 @@ export function MachineParsingVision({
         <div className="absolute right-0 top-0 bottom-0 w-[380px] bg-[#FFFFFF] border-l border-[#E2E8F0] flex flex-col shadow-xl z-30">
           <div className="px-5 py-4 border-b border-[#E2E8F0] flex justify-between items-center bg-[#FFFFFF]/95 backdrop-blur">
             <h2 className="font-bold text-[#0F172A] flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#8B5CF6]">data_object</span>
+              <span className="material-symbols-outlined text-[#1E293B]">data_object</span>
               Parsed Output
             </h2>
             <button className="text-xs text-[#64748B] hover:text-[#64748B]/80 font-mono underline decoration-dotted underline-offset-4">

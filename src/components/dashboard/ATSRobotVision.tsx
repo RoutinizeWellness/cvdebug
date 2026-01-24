@@ -44,7 +44,7 @@ export function ATSRobotVision() {
       <header className="bg-[#FFFFFF] border-b border-[#E2E8F0] px-6 py-4 flex items-center justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="size-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#64748B] to-[#8B5CF6]">
+            <div className="size-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-[#64748B] to-[#1E293B]">
               <span className="material-symbols-outlined text-[24px]">visibility</span>
             </div>
             <div>
@@ -79,7 +79,7 @@ export function ATSRobotVision() {
           </Button>
           <Button
             size="sm"
-            className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white"
+            className="bg-gradient-to-r from-[#64748B] to-[#1E293B] hover:opacity-90 text-white"
           >
             <span className="material-symbols-outlined text-[18px] mr-2">auto_fix_high</span>
             Fix All Issues
@@ -190,7 +190,7 @@ export function ATSRobotVision() {
               <div className="h-6 w-px bg-[#E2E8F0]" />
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-[#64748B] to-[#8B5CF6] hover:opacity-90 text-white"
+                className="bg-gradient-to-r from-[#64748B] to-[#1E293B] hover:opacity-90 text-white"
               >
                 <span className="material-symbols-outlined text-[18px] mr-2">build</span>
                 Fix Formatting
@@ -204,7 +204,7 @@ export function ATSRobotVision() {
           {/* Inspector Header */}
           <div className="px-6 py-4 border-b border-[#E2E8F0]">
             <div className="flex items-center gap-2 mb-1">
-              <span className="material-symbols-outlined text-[20px] text-[#8B5CF6]">
+              <span className="material-symbols-outlined text-[20px] text-[#1E293B]">
                 code
               </span>
               <h2 className="text-lg font-bold text-[#0F172A]">Inspector</h2>

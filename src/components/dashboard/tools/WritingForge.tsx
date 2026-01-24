@@ -233,7 +233,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
             <Button
               onClick={onUpgrade}
-              className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
+              className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
             >
               <Sparkles className="h-4 w-4" />
               <span>Upgrade to Interview Sprint</span>
@@ -468,7 +468,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
                       <button
                         onClick={() => {/* Navigate to pricing */}}
-                        className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
+                        className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
                       >
                         <Sparkles className="h-4 w-4" />
                         <span>Upgrade to Interview Sprint</span>
@@ -521,14 +521,14 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
             {!hasInterviewSprint && (
               <div className="absolute inset-0 z-20 bg-white/95 backdrop-blur-sm flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
-                  <Lock className="h-16 w-16 text-[#8B5CF6] mx-auto mb-4" />
+                  <Lock className="h-16 w-16 text-[#1E293B] mx-auto mb-4" />
                   <h3 className="text-xl font-bold text-[#0F172A] mb-2">Interview Sprint Required</h3>
                   <p className="text-[#475569] text-sm mb-6">
                     Unlock the Writing Forge to create and edit professional resumes with AI assistance.
                   </p>
                   <Button
                     onClick={onUpgrade}
-                    className="bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-white font-bold"
+                    className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-white font-bold"
                   >
                     <Sparkles className="h-5 w-5 mr-2" />
                     Upgrade Now

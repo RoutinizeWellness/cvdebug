@@ -24,7 +24,7 @@ export function SystemConsole({ logs }: SystemConsoleProps) {
     switch (type) {
       case "INFO": return "text-[#64748B]";
       case "WARN": return "text-[#F59E0B]";
-      case "AI": return "text-[#8B5CF6]";
+      case "AI": return "text-[#1E293B]";
       case "SUCCESS": return "text-[#22C55E]";
       case "ERROR": return "text-[#EF4444]";
       default: return "text-[#64748B]";
@@ -55,7 +55,7 @@ export function SystemConsole({ logs }: SystemConsoleProps) {
             <div key={idx} className="flex gap-2 text-[#64748B]">
               <span className="opacity-50">{log.time}</span>
               <span className={getLogColor(log.type)}>[{log.type}]</span>
-              <span className={log.type === "WARN" ? "text-[#475569]" : log.type === "SUCCESS" ? "text-[#22C55E]" : log.type === "AI" ? "text-[#8B5CF6]" : "text-[#64748B]"}>{log.message}</span>
+              <span className={log.type === "WARN" ? "text-[#475569]" : log.type === "SUCCESS" ? "text-[#22C55E]" : log.type === "AI" ? "text-[#1E293B]" : "text-[#64748B]"}>{log.message}</span>
             </div>
           ))}
           <div className="flex gap-2 mt-2">

@@ -69,7 +69,7 @@ export function MobileKeywordChecklist({
             <motion.button
               key={i}
               onClick={() => handleKeywordClick(keyword)}
-              className="w-full p-3 rounded-lg bg-[#FFFFFF] border-2 border-[#F3E8FF] hover:border-[#8B5CF6]/60 transition-all text-left shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+              className="w-full p-3 rounded-lg bg-[#FFFFFF] border-2 border-[#F3E8FF] hover:border-[#1E293B]/60 transition-all text-left shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
               whileTap={{ scale: 0.98 }}
               animate={{
                 borderColor: i === 0 ? ["rgba(139,92,246,0.3)", "rgba(139,92,246,0.6)", "rgba(139,92,246,0.3)"] : undefined
@@ -80,7 +80,7 @@ export function MobileKeywordChecklist({
             >
               <div className="flex items-center justify-between">
                 <span className="font-bold text-[#0F172A] text-sm">{keyword}</span>
-                <Sparkles className="h-4 w-4 text-[#8B5CF6]" />
+                <Sparkles className="h-4 w-4 text-[#1E293B]" />
               </div>
             </motion.button>
           ))}
@@ -92,7 +92,7 @@ export function MobileKeywordChecklist({
         <SheetContent side="bottom" className="bg-[#FFFFFF] border-t border-[#E2E8F0] rounded-t-3xl max-h-[80vh]">
           <SheetHeader className="mb-4">
             <SheetTitle className="text-[#0F172A] flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-[#8B5CF6]" />
+              <Sparkles className="h-5 w-5 text-[#1E293B]" />
               AI Suggestions for "{selectedKeyword}"
             </SheetTitle>
           </SheetHeader>
@@ -103,7 +103,7 @@ export function MobileKeywordChecklist({
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               >
-                <Sparkles className="h-8 w-8 text-[#8B5CF6]" />
+                <Sparkles className="h-8 w-8 text-[#1E293B]" />
               </motion.div>
             </div>
           ) : (
@@ -118,7 +118,7 @@ export function MobileKeywordChecklist({
                       variant="ghost"
                       size="sm"
                       onClick={() => copyToClipboard(suggestion.text)}
-                      className="h-8 w-8 p-0 hover:bg-[#8B5CF6]/20"
+                      className="h-8 w-8 p-0 hover:bg-[#1E293B]/20"
                     >
                       <Copy className="h-4 w-4" />
                     </Button>

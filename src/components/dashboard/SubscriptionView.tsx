@@ -91,10 +91,10 @@ export function SubscriptionView() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-[#FFFFFF] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border-2 border-[#E2E8F0] hover:border-[#8B5CF6]/30 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+            className="bg-[#FFFFFF] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border-2 border-[#E2E8F0] hover:border-[#1E293B]/30 transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
           >
             {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B5CF6]/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#1E293B]/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#64748B]/5 rounded-full blur-3xl -ml-12 -mb-12 pointer-events-none"></div>
 
             <div className="flex flex-col gap-5 relative z-10 max-w-xl flex-1">
@@ -123,13 +123,13 @@ export function SubscriptionView() {
                   {isSingleScan && (
                     <>
                       <span>Single Scan</span>
-                      <span className="material-symbols-outlined text-[#8B5CF6] text-[28px]">bolt</span>
+                      <span className="material-symbols-outlined text-[#1E293B] text-[28px]">bolt</span>
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">Interview Sprint</span>
-                      <span className="material-symbols-outlined text-[#8B5CF6] text-[28px]">rocket_launch</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Interview Sprint</span>
+                      <span className="material-symbols-outlined text-[#1E293B] text-[28px]">rocket_launch</span>
                     </>
                   )}
                 </h3>
@@ -137,13 +137,13 @@ export function SubscriptionView() {
                   {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
                   {isSingleScan && (
                     <>
-                      You have <span className="text-[#8B5CF6] font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
+                      You have <span className="text-[#1E293B] font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      You have <span className="text-[#8B5CF6] font-bold">unlimited scans</span> for{" "}
-                      <span className="text-[#0F172A] font-bold bg-[#8B5CF6]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
                       <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
@@ -185,15 +185,15 @@ export function SubscriptionView() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border border-[#E2E8F0] hover:border-[#8B5CF6]/50 hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 group relative overflow-hidden"
+                className="bg-[#FFFFFF] rounded-2xl p-6 md:p-7 flex flex-col h-full border border-[#E2E8F0] hover:border-[#1E293B]/50 hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transition-all duration-300 group relative overflow-hidden"
               >
                 {/* Subtle background glow */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B5CF6]/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#1E293B]/5 rounded-full blur-2xl -mr-10 -mt-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] group-hover:border-[#8B5CF6]/30 transition-colors">
-                      <span className="material-symbols-outlined text-[#64748B] group-hover:text-[#8B5CF6] text-[24px] transition-colors">bolt</span>
+                    <div className="p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] group-hover:border-[#1E293B]/30 transition-colors">
+                      <span className="material-symbols-outlined text-[#64748B] group-hover:text-[#1E293B] text-[24px] transition-colors">bolt</span>
                     </div>
                     <div className="flex-1">
                       <h4 className="text-xl font-bold text-[#0F172A]">Single Scan</h4>
@@ -215,8 +215,8 @@ export function SubscriptionView() {
                       { icon: "shield_with_heart", text: "PDF Sanitization" }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <div className="p-1 rounded-lg bg-[#8B5CF6]/10 border border-[#8B5CF6]/20">
-                          <span className="material-symbols-outlined text-[#8B5CF6] text-[16px]">{feature.icon}</span>
+                        <div className="p-1 rounded-lg bg-[#1E293B]/10 border border-[#1E293B]/20">
+                          <span className="material-symbols-outlined text-[#1E293B] text-[16px]">{feature.icon}</span>
                         </div>
                         <p className="text-sm text-[#475569] font-medium leading-relaxed">{feature.text}</p>
                       </div>
@@ -225,7 +225,7 @@ export function SubscriptionView() {
 
                   <button
                     disabled={isSingleScan}
-                    className="w-full py-3.5 rounded-xl border-2 border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] font-bold hover:bg-[#FFFFFF] hover:border-[#8B5CF6]/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                    className="w-full py-3.5 rounded-xl border-2 border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] font-bold hover:bg-[#FFFFFF] hover:border-[#1E293B]/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
                   >
                     {isSingleScan ? (
                       <span className="flex items-center justify-center gap-2">
@@ -247,11 +247,11 @@ export function SubscriptionView() {
                 className="relative rounded-2xl p-6 md:p-7 flex flex-col h-full border-2 border-[#F3E8FF] bg-gradient-to-br from-[#FFFFFF] via-[#FFFFFF] to-[#F3E8FF]/30 shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)] transform hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] transition-all duration-300 group overflow-hidden"
               >
                 {/* Animated background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#8B5CF6]/5 via-transparent to-[#64748B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/5 via-transparent to-[#64748B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                 {/* Best Value Badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                  <div className="bg-gradient-to-r from-[#8B5CF6] via-[#6366F1] to-[#8B5CF6] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#8B5CF6]/40 border-2 border-[#8B5CF6]/30 animate-pulse">
+                  <div className="bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#1E293B]/40 border-2 border-[#1E293B]/30 animate-pulse">
                     <span className="flex items-center gap-1.5">
                       BEST VALUE - SAVE 60%
                     </span>
@@ -260,19 +260,19 @@ export function SubscriptionView() {
 
                 <div className="relative z-10 pt-2">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="p-2.5 rounded-xl bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 group-hover:shadow-lg group-hover:shadow-[#8B5CF6]/20 transition-all">
-                      <span className="material-symbols-outlined text-[#8B5CF6] text-[24px]">rocket_launch</span>
+                    <div className="p-2.5 rounded-xl bg-[#1E293B]/20 border border-[#1E293B]/40 group-hover:shadow-lg group-hover:shadow-[#1E293B]/20 transition-all">
+                      <span className="material-symbols-outlined text-[#1E293B] text-[24px]">rocket_launch</span>
                     </div>
                     <div className="flex-1">
                       <h4 className="text-xl font-black text-[#0F172A] flex items-center gap-2">
                         Interview Sprint
                       </h4>
-                      <p className="text-[#8B5CF6] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
+                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap items-baseline gap-3 mb-2">
-                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#64748B]">{formatPrice('sprint_7day')}</span>
+                    <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">{formatPrice('sprint_7day')}</span>
                     <span className="text-[#64748B] line-through text-xl font-bold">{formatPrice('interview_sprint')}</span>
                   </div>
 
@@ -292,8 +292,8 @@ export function SubscriptionView() {
                       { icon: "support_agent", text: "Priority Support" }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <div className="p-1 rounded-lg bg-[#8B5CF6]/20 border border-[#8B5CF6]/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
-                          <span className="material-symbols-outlined text-[#8B5CF6] text-[16px]">{feature.icon}</span>
+                        <div className="p-1 rounded-lg bg-[#1E293B]/20 border border-[#1E293B]/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                          <span className="material-symbols-outlined text-[#1E293B] text-[16px]">{feature.icon}</span>
                         </div>
                         <p className="text-sm text-[#0F172A] font-semibold leading-relaxed">{feature.text}</p>
                       </div>
@@ -305,10 +305,10 @@ export function SubscriptionView() {
                     <div className="flex items-center gap-2 mb-2">
                       <div className="flex -space-x-2">
                         {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#8B5CF6] to-[#64748B] border-2 border-[#FFFFFF]"></div>
+                          <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#1E293B] to-[#64748B] border-2 border-[#FFFFFF]"></div>
                         ))}
                       </div>
-                      <span className="text-xs font-bold text-[#8B5CF6]">1,200+ Success Stories</span>
+                      <span className="text-xs font-bold text-[#1E293B]">1,200+ Success Stories</span>
                     </div>
                     <p className="text-[10px] text-[#64748B] leading-tight">
                       "Got interviews at <span className="text-[#0F172A] font-bold">Google</span> & <span className="text-[#0F172A] font-bold">Netflix</span> in one week"
@@ -317,7 +317,7 @@ export function SubscriptionView() {
 
                   <button
                     disabled={isInterviewSprint}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#6366F1] hover:from-[#8B5CF6]/90 hover:to-[#6366F1]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(139,92,246,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(139,92,246,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
                   >
                     {isInterviewSprint ? (
                       <span className="flex items-center justify-center gap-2">

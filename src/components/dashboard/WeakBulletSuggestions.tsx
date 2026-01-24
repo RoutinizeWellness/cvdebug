@@ -790,7 +790,7 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
                 <div className="flex items-center gap-2 mb-2">
                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
                     suggestion.type === 'volume' ? 'bg-[#64748B]/20 text-[#64748B]' :
-                    suggestion.type === 'efficiency' ? 'bg-[#8B5CF6]/20 text-[#8B5CF6]' :
+                    suggestion.type === 'efficiency' ? 'bg-[#1E293B]/20 text-[#1E293B]' :
                     'bg-[#22C55E]/20 text-[#22C55E]'
                   }`}>
                     {suggestion.type === 'volume' ? '# Volume' :
@@ -820,7 +820,7 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
             <button
               onClick={handleApplyMetric}
               disabled={isApplying}
-              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-[#64748B] to-[#8B5CF6] text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+              className="flex-1 h-10 md:h-11 rounded-lg bg-gradient-to-r from-[#64748B] to-[#1E293B] text-white font-semibold text-sm shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
             >
               {isApplying ? "Applying..." : "Apply Selected & Continue"}
             </button>
