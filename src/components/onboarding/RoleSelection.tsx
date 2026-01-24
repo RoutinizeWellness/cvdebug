@@ -186,7 +186,7 @@ export default function RoleSelection({
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   style={{
-                    boxShadow: "0 0 8px rgba(139, 92, 246, 1)",
+                    boxShadow: "0 0 8px rgba(100, 116, 139, 1)",
                   }}
                 />
               )}

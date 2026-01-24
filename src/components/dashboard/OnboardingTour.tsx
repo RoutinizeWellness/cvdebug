@@ -64,6 +64,7 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
   const isLastStep = currentStep === ONBOARDING_STEPS.length - 1;
 
   const handleNext = () => {
+    console.log('[OnboardingTour] Next clicked, current step:', currentStep, 'isLastStep:', isLastStep);
     if (isLastStep) {
       handleComplete();
     } else {
@@ -72,15 +73,19 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
   };
 
   const handleComplete = () => {
+    console.log('[OnboardingTour] Complete called, hiding tour');
     setIsVisible(false);
     setTimeout(() => {
+      console.log('[OnboardingTour] Calling onComplete callback');
       onComplete();
     }, 300);
   };
 
   const handleSkipNow = () => {
+    console.log('[OnboardingTour] Skip called, hiding tour');
     setIsVisible(false);
     setTimeout(() => {
+      console.log('[OnboardingTour] Calling onSkip callback');
       onSkip();
     }, 300);
   };
@@ -117,6 +122,7 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-full max-w-lg mx-4"
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="bg-[#0F172A] border-4 border-[#22C55E] rounded-2xl shadow-2xl overflow-hidden">
               {/* Header */}
@@ -225,13 +231,17 @@ export function useOnboarding() {
   }, []);
 
   const completeOnboarding = () => {
+    console.log('[useOnboarding] completeOnboarding called, setting localStorage');
     localStorage.setItem("onboarding_completed", "true");
     setShowOnboarding(false);
+    console.log('[useOnboarding] localStorage set:', localStorage.getItem("onboarding_completed"));
   };
 
   const skipOnboarding = () => {
+    console.log('[useOnboarding] skipOnboarding called, setting localStorage');
     localStorage.setItem("onboarding_completed", "true");
     setShowOnboarding(false);
+    console.log('[useOnboarding] localStorage set:', localStorage.getItem("onboarding_completed"));
   };
 
   const resetOnboarding = () => {
