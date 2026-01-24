@@ -8412,9 +8412,16 @@ export const translations: Record<SupportedLocale, Translation> = {
 };
 
 // Get browser locale or default to en
+// NOTE: Always defaults to English. Users must manually change language.
+// This prevents automatic Spanish detection for users with Spanish browsers.
 export function detectLocale(): SupportedLocale {
   if (typeof window === 'undefined') return 'en';
 
+  // ALWAYS default to English - do not auto-detect from browser
+  // Users can manually switch language via the language selector
+  return 'en';
+
+  /* DISABLED: Auto-detection caused issues with Spanish-speaking users
   const browserLang = navigator.language || 'en';
   const supportedLocales: SupportedLocale[] = ['en', 'es', 'fr', 'de', 'pt'];
 
@@ -8428,6 +8435,7 @@ export function detectLocale(): SupportedLocale {
 
   // Default to English
   return 'en';
+  */
 }
 
 // Get translations for current locale
