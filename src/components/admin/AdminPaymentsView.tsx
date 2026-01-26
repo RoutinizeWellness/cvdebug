@@ -12,16 +12,23 @@ import { toast } from "sonner";
 export function AdminPaymentsView() {
   const payments = useQuery(apiAny.billing.getAllPayments, {});
   const [previousPaymentCount, setPreviousPaymentCount] = useState(0);
+  const [isLive, setIsLive] = useState(true);
 
   // Detect new payment and show notification
   useEffect(() => {
     if (payments && payments.length > 0) {
       if (previousPaymentCount > 0 && payments.length > previousPaymentCount) {
         const latestPayment = payments[0];
-        toast.success("💰 New Payment Received!", {
-          description: `${latestPayment.userName} purchased ${latestPayment.plan === "interview_sprint" ? "Interview Sprint" : "Single Scan"} for $${latestPayment.amount}`,
+        const planName = latestPayment.plan === "single_debug_fix" ? "Arreglo Rápido" :
+                        latestPayment.plan === "single_scan" ? "Pase 24h" :
+                        "Sprint 7 Días";
+        toast.success("💰 ¡Nuevo Pago Recibido!", {
+          description: `${latestPayment.userName} compró ${planName} por €${latestPayment.amount}`,
           duration: 5000,
         });
+        // Flash the live indicator
+        setIsLive(false);
+        setTimeout(() => setIsLive(true), 500);
       }
       setPreviousPaymentCount(payments.length);
     }
@@ -34,6 +41,33 @@ export function AdminPaymentsView() {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Live Connection Indicator */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={`w-3 h-3 rounded-full ${isLive ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`} />
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900">
+                Conexión en Tiempo Real Activa
+              </h3>
+              <p className="text-xs text-slate-600">
+                El panel se actualiza automáticamente cuando llegan nuevos pagos desde Autumn
+              </p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-xs text-slate-500">Webhook URL:</p>
+            <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded">
+              /autumn-webhook
+            </code>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Revenue Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
@@ -179,14 +213,20 @@ export function AdminPaymentsView() {
                       <TableCell>
                         <Badge
                           variant={payment.plan === "interview_sprint" ? "default" : "outline"}
-                          className="capitalize"
+                          className={
+                            payment.plan === "single_debug_fix" ? "bg-amber-50 text-amber-700 border-amber-300" :
+                            payment.plan === "single_scan" ? "bg-orange-50 text-orange-700 border-orange-300" :
+                            ""
+                          }
                         >
-                          {payment.plan === "interview_sprint" ? "Interview Sprint" : "Single Scan"}
+                          {payment.plan === "single_debug_fix" ? "Arreglo Rápido" :
+                           payment.plan === "single_scan" ? "Pase 24h" :
+                           "Sprint 7 Días"}
                         </Badge>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm font-bold text-emerald-400">
-                          ${payment.amount.toFixed(2)}
+                        <span className="text-sm font-bold text-emerald-600">
+                          €{payment.amount.toFixed(2)}
                         </span>
                       </TableCell>
                       <TableCell>
