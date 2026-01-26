@@ -29,6 +29,7 @@ import type * as ai_bulletRewriter from "../ai/bulletRewriter.js";
 import type * as ai_careerTrajectory from "../ai/careerTrajectory.js";
 import type * as ai_chatbot from "../ai/chatbot.js";
 import type * as ai_comprehensiveExtractor from "../ai/comprehensiveExtractor.js";
+import type * as ai_comprehensiveRewriter from "../ai/comprehensiveRewriter.js";
 import type * as ai_config_keywords from "../ai/config/keywords.js";
 import type * as ai_config_metricTemplates from "../ai/config/metricTemplates.js";
 import type * as ai_contactExtractor from "../ai/contactExtractor.js";
@@ -190,6 +191,7 @@ declare const fullApi: ApiFromModules<{
   "ai/careerTrajectory": typeof ai_careerTrajectory;
   "ai/chatbot": typeof ai_chatbot;
   "ai/comprehensiveExtractor": typeof ai_comprehensiveExtractor;
+  "ai/comprehensiveRewriter": typeof ai_comprehensiveRewriter;
   "ai/config/keywords": typeof ai_config_keywords;
   "ai/config/metricTemplates": typeof ai_config_metricTemplates;
   "ai/contactExtractor": typeof ai_contactExtractor;

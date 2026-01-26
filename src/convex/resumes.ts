@@ -984,3 +984,69 @@ export const updateResumeManually = mutation({
     return args.id;
   },
 });
+
+/**
+ * Generate comprehensive AI rewrite of entire resume using ML algorithms
+ */
+export const generateComprehensiveRewrite = mutation({
+  args: {
+    id: v.id("resumes"),
+    targetRole: v.optional(v.string()),
+    industry: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("NOT_AUTHENTICATED");
+    }
+
+    // Get resume
+    const resume = await ctx.db.get(args.id);
+    if (!resume || resume.userId !== identity.subject) {
+      throw new ConvexError("UNAUTHORIZED");
+    }
+
+    if (!resume.ocrText) {
+      throw new ConvexError("NO_TEXT_TO_REWRITE");
+    }
+
+    console.log("[generateComprehensiveRewrite] Starting AI rewrite for:", args.id);
+
+    // Call internal action to generate rewrite
+    const result = await ctx.scheduler.runAfter(0, internal.ai.comprehensiveRewriter.generateComprehensiveRewrite, {
+      resumeId: args.id,
+      resumeText: resume.ocrText,
+      targetRole: args.targetRole,
+      industry: args.industry,
+    });
+
+    // Store rewritten version in database
+    await ctx.db.patch(args.id, {
+      rewrittenText: "PROCESSING", // Will be updated by action
+    });
+
+    console.log("[generateComprehensiveRewrite] Rewrite scheduled successfully");
+
+    return {
+      success: true,
+      message: "AI rewrite in progress. Check back in a few seconds.",
+    };
+  },
+});
+
+/**
+ * Save the rewritten text (called by internal action)
+ */
+export const saveRewrittenText = internalMutation({
+  args: {
+    resumeId: v.id("resumes"),
+    rewrittenText: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.resumeId, {
+      rewrittenText: args.rewrittenText,
+    });
+
+    console.log("[saveRewrittenText] Saved rewritten text for:", args.resumeId);
+  },
+});
