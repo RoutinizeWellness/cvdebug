@@ -38,10 +38,11 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
   // Memoize filtered resumes with debouncing effect
   const filteredResumes = useMemo(() => {
     if (!resumes) return [];
+    const queryLower = searchQuery.toLowerCase();
     return resumes.filter(resume =>
       searchQuery === "" ||
-      resume.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      resume.category?.toLowerCase().includes(searchQuery.toLowerCase())
+      (resume.title || '').toLowerCase().includes(queryLower) ||
+      (resume.category || '').toLowerCase().includes(queryLower)
     );
   }, [resumes, searchQuery]);
 

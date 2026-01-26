@@ -13,10 +13,11 @@ export function Blog() {
   const allPosts = getAllPosts();
 
   const filteredPosts = allPosts.filter(post => {
+    const queryLower = searchQuery.toLowerCase();
     const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      (post.title || '').toLowerCase().includes(queryLower) ||
+      (post.excerpt || '').toLowerCase().includes(queryLower) ||
+      (post.tags || []).some(tag => (tag || '').toLowerCase().includes(queryLower));
 
     const matchesCategory = selectedCategory === "all" || post.category === selectedCategory;
 

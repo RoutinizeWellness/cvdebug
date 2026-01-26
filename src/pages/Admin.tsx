@@ -340,10 +340,10 @@ export default function AdminPage() {
   const filteredUsers = users?.filter((user: any) => {
     const search = searchTerm.toLowerCase();
     return (
-      user.name?.toLowerCase().includes(search) ||
-      user.email?.toLowerCase().includes(search) ||
-      user.tokenIdentifier?.toLowerCase().includes(search) ||
-      user._id.toLowerCase().includes(search)
+      (user.name || '').toLowerCase().includes(search) ||
+      (user.email || '').toLowerCase().includes(search) ||
+      (user.tokenIdentifier || '').toLowerCase().includes(search) ||
+      (user._id || '').toLowerCase().includes(search)
     );
   }) || [];
 

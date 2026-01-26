@@ -38,7 +38,7 @@ export function MissionStats() {
     
     // Check recent applications for known ATS domains
     for (const app of applications) {
-      if (app.jobUrl) {
+      if (app.jobUrl && typeof app.jobUrl === 'string') {
         const url = app.jobUrl.toLowerCase();
         if (url.includes("greenhouse.io")) return "Greenhouse";
         if (url.includes("lever.co")) return "Lever";
