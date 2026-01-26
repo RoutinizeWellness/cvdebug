@@ -91,7 +91,9 @@ export function BulletRewriter({ onUpgrade }: BulletRewriterProps) {
     }
 
     // Check for strong action verbs
-    const allVerbs = Object.values(ACTION_VERBS).flat().map(v => v.toLowerCase());
+    const allVerbs = Object.values(ACTION_VERBS).flat().map((v: any) =>
+      typeof v === 'string' ? v.toLowerCase() : ''
+    ).filter(Boolean);
     const hasStrongVerb = allVerbs.some(verb => lowerText.startsWith(verb));
     if (!hasStrongVerb) {
       weaknessReasons.push("Doesn't start with strong action verb");

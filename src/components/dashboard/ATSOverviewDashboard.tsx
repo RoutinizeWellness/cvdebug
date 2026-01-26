@@ -66,7 +66,8 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     // Capitalization specific messages
     if (issueLower.includes("capitalization")) {
       const matches = ocrText.match(/\b(github|linkedin|javascript|typescript|nodejs|mongodb|postgresql|mysql|aws|gcp|api)\b/gi) || [];
-      const incorrect = matches.filter((m: string) => {
+      const incorrect = matches.filter((m: any) => {
+        if (typeof m !== 'string') return false;
         const lower = m.toLowerCase();
         return (lower === 'github' && m !== 'GitHub') ||
                (lower === 'linkedin' && m !== 'LinkedIn') ||
@@ -79,7 +80,8 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       });
 
       if (incorrect.length > 0) {
-        const examples = incorrect.slice(0, 3).map((term: string) => {
+        const examples = incorrect.slice(0, 3).map((term: any) => {
+          if (typeof term !== 'string') return '';
           const lower = term.toLowerCase();
           const correct = lower === 'github' ? 'GitHub' :
                          lower === 'linkedin' ? 'LinkedIn' :
@@ -90,7 +92,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                          lower === 'mysql' ? 'MySQL' :
                          lower === 'mongodb' ? 'MongoDB' : term;
           return `${term} → ${correct}`;
-        }).join(', ');
+        }).filter(Boolean).join(', ');
 
         enhancedDescription = `Found ${incorrect.length} technical terms with incorrect capitalization. ATS keyword matching is case-sensitive.`;
         enhancedFix = `Correct: ${examples}. Use proper capitalization for all technical terms.`;
@@ -105,7 +107,10 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
         .filter((l: string) => l.length > 20);
 
       const starters = lines
-        .map((l: string) => l.split(/\s+/)[0]?.toLowerCase())
+        .map((l: string) => {
+          const firstWord = l.split(/\s+/)[0];
+          return firstWord && typeof firstWord === 'string' ? firstWord.toLowerCase() : '';
+        })
         .filter(Boolean);
 
       const starterCounts: Record<string, number> = {};

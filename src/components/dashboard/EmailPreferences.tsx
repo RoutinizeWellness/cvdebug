@@ -79,7 +79,11 @@ export function EmailPreferences() {
   const formatCategoryName = (category: string): string => {
     return category
       .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .map((word: any) => {
+        if (typeof word !== 'string' || word.length === 0) return '';
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .filter(Boolean)
       .join(' ');
   };
 

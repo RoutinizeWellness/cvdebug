@@ -320,11 +320,16 @@ export function KeywordAnalysis({
 
     // Helper: check if keyword exists in CV
     const hasKeyword = (keywords: string[]) =>
-      keywords.some(kw => matchedLower.some(m => m.includes(kw.toLowerCase())));
+      keywords.some((kw: any) => {
+        const kwLower = typeof kw === 'string' ? kw.toLowerCase() : '';
+        return matchedLower.some(m => m.includes(kwLower));
+      });
 
     // Helper: check if keyword in JD but not in CV
-    const inJDNotCV = (keyword: string) =>
-      jdLower.includes(keyword.toLowerCase()) && !matchedLower.some(m => m.includes(keyword.toLowerCase()));
+    const inJDNotCV = (keyword: string) => {
+      const keywordLower = typeof keyword === 'string' ? keyword.toLowerCase() : '';
+      return jdLower.includes(keywordLower) && !matchedLower.some(m => m.includes(keywordLower));
+    };
 
     // === 1. JOB DESCRIPTION ANALYSIS (highest priority) ===
     if (jobDescription) {

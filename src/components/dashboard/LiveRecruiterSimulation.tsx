@@ -342,7 +342,10 @@ export function LiveRecruiterSimulation({
     }
 
     // Add [CRIT] tags for critical format issues
-    const criticalIssues = formatIssues.filter(f => f.severity === "critical" || f.issue.toLowerCase().includes("parse") || f.issue.toLowerCase().includes("extract"));
+    const criticalIssues = formatIssues.filter(f => {
+      const issueStr = typeof f.issue === 'string' ? f.issue.toLowerCase() : '';
+      return f.severity === "critical" || issueStr.includes("parse") || issueStr.includes("extract");
+    });
     if (criticalIssues.length > 0) {
       annotatedText = `<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
         <div class="flex items-center gap-2 mb-2">
