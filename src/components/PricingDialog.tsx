@@ -205,8 +205,8 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               ARREGLA DE UNA VEZ
             </div>
             <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">One-Time Fix</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Single Debug Fix</h2>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">Arreglo Único</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Arreglo Rápido</h2>
               <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-black tracking-tighter text-slate-900">€5.99</span>
@@ -225,19 +225,19 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Missing Keywords Completo
+                Keywords Faltantes Completo
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                1 AI Rewrite Completo
+                1 Reescritura IA Completa
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Auto-Inject Keywords
+                Auto-Inyección de Keywords
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Export CV ATS-safe
+                Exportar CV ATS-seguro
               </div>
             </div>
             <button
