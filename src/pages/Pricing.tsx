@@ -304,7 +304,7 @@ export default function PricingPage() {
                 {tier.showGuarantee && (
                   <div className="mb-4 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
                     <span className="text-xs font-mono font-bold text-[#22C55E]">
-                      {t.pricingPage.guarantee}
+                      {tier.guaranteeText}
                     </span>
                   </div>
                 )}

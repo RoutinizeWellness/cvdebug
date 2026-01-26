@@ -27,11 +27,11 @@ export function SprintProgressBar() {
     const isReadyToApply = hasValidatedCV && hasMatchedKeywords && hasCoverLetter;
 
     return [
-      { id: 'cv', label: 'CV Validated', completed: hasValidatedCV },
-      { id: 'keywords', label: 'Keywords Matched', completed: hasMatchedKeywords },
-      { id: 'cover', label: 'Cover Letter Ready', completed: hasCoverLetter },
-      { id: 'linkedin', label: 'LinkedIn Optimized', completed: hasLinkedInOptimized },
-      { id: 'ready', label: 'Ready to Apply', completed: isReadyToApply },
+      { id: 'cv', label: 'CV Validado', completed: hasValidatedCV },
+      { id: 'keywords', label: 'Keywords Ajustadas', completed: hasMatchedKeywords },
+      { id: 'cover', label: 'Carta Lista', completed: hasCoverLetter },
+      { id: 'linkedin', label: 'LinkedIn Optimizado', completed: hasLinkedInOptimized },
+      { id: 'ready', label: 'Listo para Aplicar', completed: isReadyToApply },
     ];
   }, [resumes, jobHistory, linkedinProfile]);
 
@@ -46,7 +46,7 @@ export function SprintProgressBar() {
     const expiresAt = currentUser.sprintExpiresAt;
     const diff = expiresAt - now;
     
-    if (diff <= 0) return "Expired";
+    if (diff <= 0) return "Expirado";
     
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -67,17 +67,17 @@ export function SprintProgressBar() {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-            Interview Sprint Progress
+            Progreso del Sprint de Entrevistas
           </h3>
           <p className="text-sm text-[#64748B] mt-1">
-            Complete all stages to maximize your success rate
+            Completa todas las etapas para maximizar tu tasa de éxito
           </p>
         </div>
         {timeRemaining && (
           <div className="flex items-center gap-2 px-3 py-2 bg-primary/20 border border-primary/30 rounded-lg">
             <Clock className="h-4 w-4 text-primary" />
             <div className="text-right">
-              <div className="text-xs text-[#64748B]">Expires in</div>
+              <div className="text-xs text-[#64748B]">Expira en</div>
               <div className="text-sm font-bold text-[#0F172A] font-mono">{timeRemaining}</div>
             </div>
           </div>
@@ -87,8 +87,8 @@ export function SprintProgressBar() {
       {/* Progress Bar */}
       <div className="space-y-2">
         <div className="flex justify-between text-xs text-[#64748B]">
-          <span>Overall Progress</span>
-          <span className="font-mono">{completedCount}/{stages.length} Complete</span>
+          <span>Progreso General</span>
+          <span className="font-mono">{completedCount}/{stages.length} Completado</span>
         </div>
         <Progress value={progressPercentage} className="h-2" />
       </div>
@@ -134,7 +134,7 @@ export function SprintProgressBar() {
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <p className="text-sm font-bold text-emerald-400 text-center">
-              🎉 All stages complete! You're ready to dominate your job search.
+              🎉 ¡Todas las etapas completadas! Estás listo para dominar tu búsqueda de empleo.
             </p>
           </motion.div>
         )}

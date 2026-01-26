@@ -7,7 +7,7 @@ import { useI18n } from "@/contexts/I18nContext";
 
 export function PricingSection() {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [prices, setPrices] = useState({
     singleDebugFix: "€5.99",
     single: "€14.99",
@@ -17,6 +17,9 @@ export function PricingSection() {
   });
 
   useEffect(() => {
+    console.log(`[PricingSection] Current locale: ${locale}`);
+    console.log(`[PricingSection] Sample translation:`, t.pricingLanding.freeTitle);
+
     const region = getCurrentRegion();
     const singleDebugFixPrice = getRegionalPrice(5.99);
     const singlePrice = getRegionalPrice(14.99);
@@ -29,7 +32,7 @@ export function PricingSection() {
       discount: premiumPrice.discount,
       region: region.countryName,
     });
-  }, []);
+  }, [locale, t]);
 
   const handlePlanSelect = (plan: string) => {
     navigate(`/auth?plan=${plan}`);

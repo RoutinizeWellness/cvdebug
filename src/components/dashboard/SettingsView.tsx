@@ -61,14 +61,25 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
 
   // Calculate sprint progress
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
-  const sprintDaysLeft = sprintExpiresAt > Date.now()
+  const hasActiveSprint = sprintExpiresAt > Date.now();
+  const sprintDaysLeft = hasActiveSprint
     ? Math.ceil((sprintExpiresAt - Date.now()) / (1000 * 60 * 60 * 24))
     : 0;
 
-  const planName = user?.subscriptionTier === "interview_sprint" ? "Interview Sprint" : "Interview Sprint";
-  const validUntil = sprintExpiresAt > Date.now()
+  // Determine plan name based on subscription tier
+  const planName = user?.subscriptionTier === "interview_sprint"
+    ? "Interview Sprint (7 Days)"
+    : user?.subscriptionTier === "single_scan"
+    ? "24h Pass"
+    : user?.subscriptionTier === "single_debug_fix"
+    ? "Quick Fix"
+    : "Free Plan";
+
+  const validUntil = hasActiveSprint
     ? new Date(sprintExpiresAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
-    : "Not available";
+    : sprintExpiresAt > 0 && user?.subscriptionTier === "interview_sprint"
+    ? "Expired"
+    : "No active sprint";
 
   const userName = user?.name || "Not available";
   const userEmail = user?.email || "Not available";
@@ -410,23 +421,45 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                     </div>
                   </div>
 
-                  {/* Progress Bar Component */}
-                  <div className="flex flex-col gap-2 mb-8">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span className="text-[#0F172A] font-medium">Sprint Progress</span>
-                      <span className="text-[#64748B] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
+                  {/* Progress Bar Component - Only show for active sprint */}
+                  {hasActiveSprint && user?.subscriptionTier === "interview_sprint" && (
+                    <div className="flex flex-col gap-2 mb-8">
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-[#0F172A] font-medium">Sprint Progress</span>
+                        <span className="text-[#64748B] font-mono">
+                          {sprintDaysLeft > 0 ? `${sprintDaysLeft} ${sprintDaysLeft === 1 ? 'Day' : 'Days'} Left` : 'Ending soon'}
+                        </span>
+                      </div>
+                      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
+                          style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between text-xs text-[#64748B] mt-1">
+                        <span>Day {daysElapsed}</span>
+                        <span>Day {totalSprintDays}</span>
+                      </div>
                     </div>
-                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
-                        style={{ width: `${progressPercentage}%` }}
-                      ></div>
+                  )}
+
+                  {/* Show upgrade message for non-sprint users */}
+                  {!hasActiveSprint && user?.subscriptionTier !== "interview_sprint" && (
+                    <div className="mb-8 p-4 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg">
+                      <p className="text-sm text-[#0F172A]">
+                        <span className="font-semibold">Upgrade to Interview Sprint</span> to get 7 days of unlimited scans, cover letter generation, and more.
+                      </p>
                     </div>
-                    <div className="flex justify-between text-xs text-[#64748B] mt-1">
-                      <span>Day {daysElapsed}</span>
-                      <span>Day {totalSprintDays}</span>
+                  )}
+
+                  {/* Show expired message for expired sprint users */}
+                  {!hasActiveSprint && user?.subscriptionTier === "interview_sprint" && sprintExpiresAt > 0 && (
+                    <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                      <p className="text-sm text-amber-900">
+                        Your Interview Sprint has expired. Renew to continue using premium features.
+                      </p>
                     </div>
-                  </div>
+                  )}
 
                   <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
                     <button
