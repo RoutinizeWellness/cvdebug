@@ -32,9 +32,12 @@ export default function OnboardingLayout({
   };
 
   const handleNext = () => {
+    console.log('[OnboardingLayout] handleNext called', { currentStep, selectedRole, uploadedFile });
     if (currentStep < 3) {
+      console.log('[OnboardingLayout] Moving to next step:', currentStep + 1);
       setCurrentStep((prev) => (prev + 1) as OnboardingStep);
     } else if (onComplete) {
+      console.log('[OnboardingLayout] Calling onComplete');
       onComplete();
     }
   };

@@ -198,9 +198,14 @@ export default function RoleSelection({
       {!isCompleted && (
         <div className="flex justify-end">
           <button
-            onClick={onNext}
+            onClick={(e) => {
+              console.log('[RoleSelection] Continue button clicked', { selectedRole, isCompleted });
+              e.preventDefault();
+              e.stopPropagation();
+              onNext();
+            }}
             disabled={!selectedRole}
-            className="px-8 py-3 rounded-lg bg-gradient-to-r from-secondary to-primary text-white font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {t.onboarding.roleSelection.continueButton}
           </button>

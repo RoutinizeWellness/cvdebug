@@ -237,9 +237,16 @@ export default function CVUpload({
           </button>
 
           <button
-            onClick={onNext}
+            onClick={(e) => {
+              console.log('[CVUpload] Scan button clicked', { uploadedFile, disabled: !uploadedFile });
+              e.preventDefault();
+              e.stopPropagation();
+              if (uploadedFile) {
+                onNext();
+              }
+            }}
             disabled={!uploadedFile}
-            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#64748B] text-white font-bold shadow-lg shadow-[#64748B]/25 hover:shadow-[#64748B]/40 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="px-8 py-3 rounded-lg bg-gradient-to-r from-[#1E293B] to-[#334155] text-white font-bold shadow-lg hover:opacity-90 hover:scale-[1.02] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             {t.onboarding.cvUpload.scanButton}
             <ArrowRight className="h-4 w-4" />
