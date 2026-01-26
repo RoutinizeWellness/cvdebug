@@ -1454,6 +1454,46 @@ export interface Translation {
     feedbackSubmitted: string;
     submitError: string;
   };
+  // Elite Match Tool
+  eliteMatchTool: {
+    title: string;
+    subtitle: string;
+    urlLabel: string;
+    urlPlaceholder: string;
+    urlHelp: string;
+    textLabel: string;
+    textPlaceholder: string;
+    textHelp: string;
+    analyzeButton: string;
+    featureExtraction: string;
+    featureExtractionDesc: string;
+    gapAnalysis: string;
+    gapAnalysisDesc: string;
+    autoFix: string;
+    autoFixDesc: string;
+    premiumTitle: string;
+    premiumSubtitle: string;
+    premiumFeatures: string;
+    scoreTitle: string;
+    scoreExcellent: string;
+    scoreGood: string;
+    scoreNeedsWork: string;
+    missingCritical: string;
+    matchedSkills: string;
+    robotViewTitle: string;
+    redZones: string;
+    greenZones: string;
+    recommendations: string;
+    analyzeAnother: string;
+    applyFix: string;
+    applyFixSuccess: string;
+    analyzingStep1: string;
+    analyzingStep2: string;
+    analyzingStep3: string;
+    analyzingStep4: string;
+    errorAnalyzing: string;
+    errorUnknown: string;
+  };
   // Ecosystem Prompts
   ecosystem: {
     copyPasteTip: {
@@ -1478,6 +1518,20 @@ export interface Translation {
     };
     dismissLabel: string;
     freeLabel: string;
+    bookmarklet: {
+      title: string;
+      step1Title: string;
+      step1Copy: string;
+      step1Copied: string;
+      step2Title: string;
+      step2Instructions: string[];
+      step3Title: string;
+      step3Description: string;
+      proTip: string;
+      successCopied: string;
+      openingChecklist: string;
+      comingSoon: string;
+    };
   };
 }
 
@@ -2879,6 +2933,45 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Thank you! Feedback submitted.',
       submitError: 'Failed to submit feedback. Please try again.',
     },
+    eliteMatchTool: {
+      title: 'Elite Match Tool',
+      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      urlLabel: 'LinkedIn URL (Recommended)',
+      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
+      textLabel: 'Paste Job Description',
+      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      textHelp: 'Copy and paste the full job description from any portal.',
+      analyzeButton: 'Analyze Match Score',
+      featureExtraction: 'Entity Extraction',
+      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      gapAnalysis: 'Gap Analysis',
+      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
+      autoFix: 'AI Auto-Fix',
+      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
+      premiumTitle: 'Elite Match Tool is Premium',
+      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
+      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
+      scoreTitle: 'Match Score',
+      scoreExcellent: 'Excellent match! Apply with confidence.',
+      scoreGood: 'Good match, but there are important gaps.',
+      scoreNeedsWork: 'You need to improve your resume for this offer.',
+      missingCritical: 'Missing Critical Signals',
+      matchedSkills: 'Matched Skills',
+      robotViewTitle: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      recommendations: 'Auto-Fix Recommendations',
+      analyzeAnother: 'Analyze Another Job',
+      applyFix: 'Apply Auto-Fix',
+      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      analyzingStep1: 'Extracting Recruiter Intent...',
+      analyzingStep2: 'Analyzing Hard Skills Requirements...',
+      analyzingStep3: 'Detecting Soft Skills Signals...',
+      analyzingStep4: 'Generating Missing Signals Report...',
+      errorAnalyzing: 'Error analyzing the match: ',
+      errorUnknown: 'Unknown error',
+    },
     ecosystem: {
       copyPasteTip: {
         badge: 'FREE',
@@ -2902,6 +2995,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Not interested',
       freeLabel: '100% FREE',
+      bookmarklet: {
+        title: 'Scanner Installation (1 minute)',
+        step1Title: 'Copy the bookmarklet',
+        step1Copy: 'Copy Bookmarklet',
+        step1Copied: 'Copied!',
+        step2Title: 'Create a bookmark',
+        step2Instructions: [
+          'Right-click on the bookmarks bar',
+          'Select "Add page"',
+          'Name: "Job Scanner"',
+          'URL: Paste the copied code'
+        ],
+        step3Title: 'Use it on any site',
+        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
+        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
+        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
+        openingChecklist: 'Opening LinkedIn checklist...',
+        comingSoon: 'Coming soon: Recruiter email analyzer',
+      },
     },
   },
   'es': {
@@ -4293,6 +4405,45 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: '¡Gracias! Opinión enviada.',
       submitError: 'Error al enviar opinión. Inténtalo de nuevo.',
     },
+    eliteMatchTool: {
+      title: 'Elite Match Tool',
+      subtitle: 'Analiza tu CV contra cualquier oferta con precisión ML local. Identifica gaps y optimiza para ATS instantáneamente.',
+      urlLabel: 'URL de LinkedIn (Recomendado)',
+      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      urlHelp: 'Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.',
+      textLabel: 'Pega la Descripción del Trabajo',
+      textPlaceholder: 'Sobre el rol:\nBuscamos un Senior Full Stack Developer con 5+ años de experiencia...\n\nRequisitos:\n- Experiencia sólida con React y Node.js\n- Experiencia con Kubernetes y AWS',
+      textHelp: 'Copia y pega la descripción completa del trabajo de cualquier portal.',
+      analyzeButton: 'Analizar Puntuación de Coincidencia',
+      featureExtraction: 'Extracción de Entidades',
+      featureExtractionDesc: 'No solo palabras clave: extraemos Hard Skills, Soft Skills y Métricas de Industria con comprensión semántica profunda.',
+      gapAnalysis: 'Análisis de Gaps',
+      gapAnalysisDesc: 'Identificamos EXACTAMENTE qué señales faltan en tu perfil para pasar los filtros ATS de alto riesgo.',
+      autoFix: 'Auto-Fix con IA',
+      autoFixDesc: 'Reescritura con IA de un clic que integra inteligentemente las señales faltantes en tu narrativa de CV existente.',
+      premiumTitle: 'Elite Match Tool es Premium',
+      premiumSubtitle: 'Analiza tu CV contra cualquier oferta usando ML local (0 costes de API)',
+      premiumFeatures: '• Extracción de entidades con TF-IDF & Cosine Similarity\n• Gap analysis crítico/importante/nice-to-have\n• Robot View con zonas rojas/verdes\n• Auto-Fix suggestions específicas',
+      scoreTitle: 'Puntuación de Coincidencia',
+      scoreExcellent: 'Excelente match! Aplica con confianza.',
+      scoreGood: 'Buen match, pero hay gaps importantes.',
+      scoreNeedsWork: 'Necesitas mejorar tu CV para esta oferta.',
+      missingCritical: 'Señales Críticas Faltantes',
+      matchedSkills: 'Habilidades Coincidentes',
+      robotViewTitle: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      recommendations: 'Auto-Fix Recommendations',
+      analyzeAnother: 'Analyze Another Job',
+      applyFix: 'Apply Auto-Fix',
+      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      analyzingStep1: 'Extracting Recruiter Intent...',
+      analyzingStep2: 'Analyzing Hard Skills Requirements...',
+      analyzingStep3: 'Detecting Soft Skills Signals...',
+      analyzingStep4: 'Generating Missing Signals Report...',
+      errorAnalyzing: 'Error al analizar el match: ',
+      errorUnknown: 'Error desconocido',
+    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRATIS',
@@ -4316,6 +4467,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'No me interesa',
       freeLabel: '100% GRATIS',
+      bookmarklet: {
+        title: 'Instalación del Scanner (1 minuto)',
+        step1Title: 'Copia el bookmarklet',
+        step1Copy: 'Copiar Bookmarklet',
+        step1Copied: '¡Copiado!',
+        step2Title: 'Crea un marcador',
+        step2Instructions: [
+          'Haz clic derecho en la barra de marcadores',
+          'Selecciona "Agregar página"',
+          'Nombre: "Job Scanner"',
+          'URL: Pega el código copiado'
+        ],
+        step3Title: 'Úsalo en cualquier sitio',
+        step3Description: 'Ve a LinkedIn, Indeed, o cualquier job posting → Haz clic en el marcador "Job Scanner" → Se extraerá el texto → Pégalo en tu analizador de CV',
+        proTip: 'Funciona en CUALQUIER página web. LinkedIn, Indeed, Glassdoor, empresa X...',
+        successCopied: '¡Bookmarklet copiado! Ahora arrástralo a tu barra de marcadores.',
+        openingChecklist: 'Abriendo checklist de LinkedIn...',
+        comingSoon: 'Función próximamente: Analizador de emails de reclutadores',
+      },
     },
   },
   'fr': {
@@ -5707,6 +5877,45 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Merci ! Commentaires envoyés.',
       submitError: 'Échec de l\'envoi des commentaires. Veuillez réessayer.',
     },
+    eliteMatchTool: {
+      title: 'Elite Match Tool',
+      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      urlLabel: 'LinkedIn URL (Recommended)',
+      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
+      textLabel: 'Paste Job Description',
+      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      textHelp: 'Copy and paste the full job description from any portal.',
+      analyzeButton: 'Analyze Match Score',
+      featureExtraction: 'Entity Extraction',
+      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      gapAnalysis: 'Gap Analysis',
+      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
+      autoFix: 'AI Auto-Fix',
+      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
+      premiumTitle: 'Elite Match Tool is Premium',
+      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
+      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
+      scoreTitle: 'Match Score',
+      scoreExcellent: 'Excellent match! Apply with confidence.',
+      scoreGood: 'Good match, but there are important gaps.',
+      scoreNeedsWork: 'You need to improve your resume for this offer.',
+      missingCritical: 'Missing Critical Signals',
+      matchedSkills: 'Matched Skills',
+      robotViewTitle: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      recommendations: 'Auto-Fix Recommendations',
+      analyzeAnother: 'Analyze Another Job',
+      applyFix: 'Apply Auto-Fix',
+      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      analyzingStep1: 'Extracting Recruiter Intent...',
+      analyzingStep2: 'Analyzing Hard Skills Requirements...',
+      analyzingStep3: 'Detecting Soft Skills Signals...',
+      analyzingStep4: 'Generating Missing Signals Report...',
+      errorAnalyzing: 'Error analyzing the match: ',
+      errorUnknown: 'Unknown error',
+    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRATUIT',
@@ -5730,6 +5939,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Pas intéressé',
       freeLabel: '100% GRATUIT',
+      bookmarklet: {
+        title: 'Scanner Installation (1 minute)',
+        step1Title: 'Copy the bookmarklet',
+        step1Copy: 'Copy Bookmarklet',
+        step1Copied: 'Copied!',
+        step2Title: 'Create a bookmark',
+        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
+        step3Title: 'Use it on any site',
+        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
+        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
+        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
+        openingChecklist: 'Opening LinkedIn checklist...',
+        comingSoon: 'Coming soon: Recruiter email analyzer',
+      },
     },
   },
   'de': {
@@ -7121,6 +7344,45 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Danke! Feedback gesendet.',
       submitError: 'Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     },
+    eliteMatchTool: {
+      title: 'Elite Match Tool',
+      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      urlLabel: 'LinkedIn URL (Recommended)',
+      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
+      textLabel: 'Paste Job Description',
+      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      textHelp: 'Copy and paste the full job description from any portal.',
+      analyzeButton: 'Analyze Match Score',
+      featureExtraction: 'Entity Extraction',
+      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      gapAnalysis: 'Gap Analysis',
+      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
+      autoFix: 'AI Auto-Fix',
+      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
+      premiumTitle: 'Elite Match Tool is Premium',
+      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
+      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
+      scoreTitle: 'Match Score',
+      scoreExcellent: 'Excellent match! Apply with confidence.',
+      scoreGood: 'Good match, but there are important gaps.',
+      scoreNeedsWork: 'You need to improve your resume for this offer.',
+      missingCritical: 'Missing Critical Signals',
+      matchedSkills: 'Matched Skills',
+      robotViewTitle: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      recommendations: 'Auto-Fix Recommendations',
+      analyzeAnother: 'Analyze Another Job',
+      applyFix: 'Apply Auto-Fix',
+      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      analyzingStep1: 'Extracting Recruiter Intent...',
+      analyzingStep2: 'Analyzing Hard Skills Requirements...',
+      analyzingStep3: 'Detecting Soft Skills Signals...',
+      analyzingStep4: 'Generating Missing Signals Report...',
+      errorAnalyzing: 'Error analyzing the match: ',
+      errorUnknown: 'Unknown error',
+    },
     ecosystem: {
       copyPasteTip: {
         badge: 'KOSTENLOS',
@@ -7144,6 +7406,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Nicht interessiert',
       freeLabel: '100% KOSTENLOS',
+      bookmarklet: {
+        title: 'Scanner Installation (1 minute)',
+        step1Title: 'Copy the bookmarklet',
+        step1Copy: 'Copy Bookmarklet',
+        step1Copied: 'Copied!',
+        step2Title: 'Create a bookmark',
+        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
+        step3Title: 'Use it on any site',
+        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
+        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
+        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
+        openingChecklist: 'Opening LinkedIn checklist...',
+        comingSoon: 'Coming soon: Recruiter email analyzer',
+      },
     },
   },
   'pt': {
@@ -8535,6 +8811,45 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Obrigado! Feedback enviado.',
       submitError: 'Falha ao enviar feedback. Tente novamente.',
     },
+    eliteMatchTool: {
+      title: 'Elite Match Tool',
+      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      urlLabel: 'LinkedIn URL (Recommended)',
+      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
+      textLabel: 'Paste Job Description',
+      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      textHelp: 'Copy and paste the full job description from any portal.',
+      analyzeButton: 'Analyze Match Score',
+      featureExtraction: 'Entity Extraction',
+      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      gapAnalysis: 'Gap Analysis',
+      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
+      autoFix: 'AI Auto-Fix',
+      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
+      premiumTitle: 'Elite Match Tool is Premium',
+      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
+      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
+      scoreTitle: 'Match Score',
+      scoreExcellent: 'Excellent match! Apply with confidence.',
+      scoreGood: 'Good match, but there are important gaps.',
+      scoreNeedsWork: 'You need to improve your resume for this offer.',
+      missingCritical: 'Missing Critical Signals',
+      matchedSkills: 'Matched Skills',
+      robotViewTitle: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      recommendations: 'Auto-Fix Recommendations',
+      analyzeAnother: 'Analyze Another Job',
+      applyFix: 'Apply Auto-Fix',
+      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      analyzingStep1: 'Extracting Recruiter Intent...',
+      analyzingStep2: 'Analyzing Hard Skills Requirements...',
+      analyzingStep3: 'Detecting Soft Skills Signals...',
+      analyzingStep4: 'Generating Missing Signals Report...',
+      errorAnalyzing: 'Error analyzing the match: ',
+      errorUnknown: 'Unknown error',
+    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRÁTIS',
@@ -8558,6 +8873,20 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Não estou interessado',
       freeLabel: '100% GRÁTIS',
+      bookmarklet: {
+        title: 'Scanner Installation (1 minute)',
+        step1Title: 'Copy the bookmarklet',
+        step1Copy: 'Copy Bookmarklet',
+        step1Copied: 'Copied!',
+        step2Title: 'Create a bookmark',
+        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
+        step3Title: 'Use it on any site',
+        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
+        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
+        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
+        openingChecklist: 'Opening LinkedIn checklist...',
+        comingSoon: 'Coming soon: Recruiter email analyzer',
+      },
     },
   },
 };

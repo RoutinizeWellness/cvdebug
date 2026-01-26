@@ -86,7 +86,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
   };
 
   const showBookmarkletInstructions = () => {
-    toast.success("Copia el bookmarklet y arrástralo a tu barra de marcadores!", {
+    toast.success(t.ecosystem.bookmarklet.successCopied, {
       duration: 5000,
     });
     // Show instructions modal
@@ -99,11 +99,11 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
   };
 
   const showEmailAnalyzer = () => {
-    toast.info("Función próximamente: Analizador de emails de reclutadores");
+    toast.info(t.ecosystem.bookmarklet.comingSoon);
   };
 
   const showLinkedInChecklist = () => {
-    toast.info("Abriendo checklist de LinkedIn...");
+    toast.info(t.ecosystem.bookmarklet.openingChecklist);
   };
 
   if (!activePrompt) return null;
@@ -189,6 +189,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
 
 // Chrome Bookmarklet Instructions Modal
 export function BookmarkletInstructions() {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
 
   const bookmarklet = `javascript:(function(){var t=document.body.innerText||document.body.textContent;var w=window.open('','_blank','width=800,height=600');w.document.write('<html><head><title>Job Description Scanner</title></head><body style="font-family:monospace;padding:20px;background:#0F172A;color:#22C55E"><h1>📊 Extracted Text</h1><pre style="white-space:pre-wrap;background:#1E293B;padding:20px;border-radius:8px">'+t.substring(0,5000)+'</pre><p style="color:#64748B">Copy this text and paste into your CV scanner</p></body></html>');w.document.close()})();`;
@@ -196,7 +197,7 @@ export function BookmarkletInstructions() {
   const copyBookmarklet = () => {
     navigator.clipboard.writeText(bookmarklet);
     setCopied(true);
-    toast.success("¡Bookmarklet copiado! Ahora arrástralo a tu barra de marcadores.");
+    toast.success(t.ecosystem.bookmarklet.successCopied);
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -205,7 +206,7 @@ export function BookmarkletInstructions() {
       <div className="flex items-center gap-3 mb-4">
         <Chrome className="h-8 w-8 text-[#64748B]" />
         <h3 className="text-xl font-black text-[#0F172A]">
-          Instalación del Scanner (1 minuto)
+          {t.ecosystem.bookmarklet.title}
         </h3>
       </div>
 
@@ -213,7 +214,7 @@ export function BookmarkletInstructions() {
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
           <h4 className="font-bold text-[#0F172A] mb-2 flex items-center gap-2">
             <span className="bg-[#334155] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
-            Copia el bookmarklet
+            {t.ecosystem.bookmarklet.step1Title}
           </h4>
           <div className="bg-white border border-[#CBD5E1] rounded p-3 font-mono text-xs break-all mb-2 max-h-32 overflow-y-auto">
             {bookmarklet}
@@ -225,12 +226,12 @@ export function BookmarkletInstructions() {
             {copied ? (
               <>
                 <Check className="h-4 w-4 mr-2" />
-                ¡Copiado!
+                {t.ecosystem.bookmarklet.step1Copied}
               </>
             ) : (
               <>
                 <Copy className="h-4 w-4 mr-2" />
-                Copiar Bookmarklet
+                {t.ecosystem.bookmarklet.step1Copy}
               </>
             )}
           </Button>
@@ -239,30 +240,29 @@ export function BookmarkletInstructions() {
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <h4 className="font-bold text-green-900 mb-2 flex items-center gap-2">
             <span className="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
-            Crea un marcador
+            {t.ecosystem.bookmarklet.step2Title}
           </h4>
           <ul className="text-sm text-green-800 space-y-1 ml-8">
-            <li>• Haz clic derecho en la barra de marcadores</li>
-            <li>• Selecciona "Agregar página"</li>
-            <li>• Nombre: "Job Scanner"</li>
-            <li>• URL: Pega el código copiado</li>
+            {t.ecosystem.bookmarklet.step2Instructions.map((instruction, idx) => (
+              <li key={idx}>• {instruction}</li>
+            ))}
           </ul>
         </div>
 
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg p-4">
           <h4 className="font-bold text-[#0F172A] mb-2 flex items-center gap-2">
             <span className="bg-[#1E293B] text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
-            Úsalo en cualquier sitio
+            {t.ecosystem.bookmarklet.step3Title}
           </h4>
           <p className="text-sm text-[#0F172A]">
-            Ve a LinkedIn, Indeed, o cualquier job posting → Haz clic en el marcador "Job Scanner" → Se extraerá el texto → Pégalo en tu analizador de CV
+            {t.ecosystem.bookmarklet.step3Description}
           </p>
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
           <p className="text-xs text-yellow-800 flex items-center gap-2">
             <span className="text-lg">💡</span>
-            <span><strong>Pro tip:</strong> Funciona en CUALQUIER página web. LinkedIn, Indeed, Glassdoor, empresa X...</span>
+            <span><strong>Pro tip:</strong> {t.ecosystem.bookmarklet.proTip}</span>
           </p>
         </div>
       </div>
