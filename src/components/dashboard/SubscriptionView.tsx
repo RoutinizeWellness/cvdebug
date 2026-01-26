@@ -294,11 +294,11 @@ export function SubscriptionView() {
 
                   <div className="space-y-3.5 mb-8 flex-1">
                     {[
-                      { icon: "verified", text: "Full ATS Analysis" },
-                      { icon: "key", text: "Complete Keyword Report" },
-                      { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
-                      { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
-                      { icon: "shield_with_heart", text: "PDF Sanitization" }
+                      { icon: "verified", text: "Análisis ATS Completo" },
+                      { icon: "key", text: "Reporte Completo de Keywords" },
+                      { icon: "auto_fix_high", text: "Auditoría de Formato + Correcciones" },
+                      { icon: "autorenew", text: "Re-escaneos Ilimitados (24h)" },
+                      { icon: "shield_with_heart", text: "Sanitización de PDF" }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#1E293B]/10 border border-[#1E293B]/20">
@@ -339,7 +339,7 @@ export function SubscriptionView() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
                   <div className="bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#1E293B]/40 border-2 border-[#1E293B]/30 animate-pulse">
                     <span className="flex items-center gap-1.5">
-                      BEST VALUE - SAVE 60%
+                      MEJOR VALOR - AHORRA 60%
                     </span>
                   </div>
                 </div>
