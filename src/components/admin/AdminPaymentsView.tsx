@@ -39,14 +39,14 @@ export function AdminPaymentsView() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-panel p-5 rounded-xl border border-slate-700/50 relative overflow-hidden group"
+          className="glass-panel p-5 rounded-xl border border-slate-200/50 relative overflow-hidden group"
         >
           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <DollarSign className="h-12 w-12 text-emerald-500" />
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">Total Revenue</p>
+          <p className="text-slate-600 text-sm font-medium mb-1">Total Revenue</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-2xl font-display font-bold text-white">
+            <h3 className="text-2xl font-display font-bold text-slate-900">
               ${totalRevenue.toFixed(2)}
             </h3>
             <span className="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-1.5 py-0.5 rounded flex items-center">
@@ -60,13 +60,13 @@ export function AdminPaymentsView() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-panel p-5 rounded-xl border border-slate-700/50 relative overflow-hidden group"
+          className="glass-panel p-5 rounded-xl border border-slate-200/50 relative overflow-hidden group"
         >
           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <CheckCircle2 className="h-12 w-12 text-green-500" />
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">Total Payments</p>
-          <h3 className="text-2xl font-display font-bold text-white">
+          <p className="text-slate-600 text-sm font-medium mb-1">Total Payments</p>
+          <h3 className="text-2xl font-display font-bold text-slate-900">
             {payments?.length || 0}
           </h3>
           <p className="text-xs text-slate-500 mt-1">All time</p>
@@ -76,13 +76,13 @@ export function AdminPaymentsView() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-panel p-5 rounded-xl border border-slate-700/50 relative overflow-hidden group"
+          className="glass-panel p-5 rounded-xl border border-slate-200/50 relative overflow-hidden group"
         >
           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <CreditCard className="h-12 w-12 text-amber-500" />
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">Single Scans</p>
-          <h3 className="text-2xl font-display font-bold text-white">
+          <p className="text-slate-600 text-sm font-medium mb-1">Single Scans</p>
+          <h3 className="text-2xl font-display font-bold text-slate-900">
             {singleScanCount}
           </h3>
           <p className="text-xs text-slate-500 mt-1">${(singleScanCount * 9.99).toFixed(2)}</p>
@@ -92,13 +92,13 @@ export function AdminPaymentsView() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-panel p-5 rounded-xl border border-slate-700/50 relative overflow-hidden group"
+          className="glass-panel p-5 rounded-xl border border-slate-200/50 relative overflow-hidden group"
         >
           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <CreditCard className="h-12 w-12 text-primary" />
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">Interview Sprints</p>
-          <h3 className="text-2xl font-display font-bold text-white">
+          <p className="text-slate-600 text-sm font-medium mb-1">Interview Sprints</p>
+          <h3 className="text-2xl font-display font-bold text-slate-900">
             {interviewSprintCount}
           </h3>
           <p className="text-xs text-slate-500 mt-1">${(interviewSprintCount * 24.99).toFixed(2)}</p>
@@ -124,7 +124,7 @@ export function AdminPaymentsView() {
           ) : payments.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <CreditCard className="h-12 w-12 text-muted-foreground mb-4 opacity-50" />
-              <p className="text-lg font-semibold text-white mb-2">No Payments Yet</p>
+              <p className="text-lg font-semibold text-slate-900 mb-2">No Payments Yet</p>
               <p className="text-sm text-muted-foreground">
                 Payment transactions will appear here as users make purchases
               </p>
@@ -149,7 +149,7 @@ export function AdminPaymentsView() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="border-b border-slate-800/50 hover:bg-slate-800/30"
+                      className="border-b border-slate-200/50 hover:bg-slate-50"
                     >
                       <TableCell>
                         <div className="flex flex-col">
