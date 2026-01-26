@@ -4,9 +4,6 @@ import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 
-// Cast internal to any to avoid type instantiation issues
-const internalAny = require("./_generated/api").internal;
-
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -38,8 +35,360 @@ export const createResume = mutation({
       v.literal("lead"),
       v.literal("executive")
     )),
+    targetMarket: v.optional(v.union(
+      v.literal("USA"),
+      v.literal("UK"),
+      v.literal("DACH"),
+      v.literal("EU"),
+      v.literal("LATAM"),
+      v.literal("APAC")
+    )),
   },
+        jobTitle: args.jobTitle,
+        company: args.company,
+        targetMarket: args.targetMarket,
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
+        status: "processing",
+      });
+    try {
+      console.log("[createResume] ====== START ======");
+      console.log("[createResume] 📥 Args received:", {
+        storageId: args.storageId,
+        title: args.title,
+        mimeType: args.mimeType,
+        hasJobDescription: !!args.jobDescription,
+        hasCategory: !!args.category,
+        hasProjectId: !!args.projectId
+      });
+
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        console.error("[createResume] ❌ No identity found");
+        throw new ConvexError("NOT_AUTHENTICATED");
+      }
+
+      console.log("[createResume] ✅ User authenticated:", identity.email);
+
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+        .unique();
+
+      if (!user) {
+        throw new ConvexError("USER_NOT_FOUND_REFRESH");
+      }
+
+      const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+      const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" && hasActiveSprint;
+      const hasPaidPlan = user.subscriptionTier === "single_scan" || isUnlimitedPlan;
+
+      // RE-SCAN LOGIC: 24h unlimited re-scans for PAID users only (Single Scan & Interview Sprint)
+      // Free users get preview only
+      let isFreeRescan = false;
+
+      // Check for existing resumes with the same title in the last 24h (PAID users only)
+      if (hasPaidPlan) {
+        const existingResumes = await ctx.db
+          .query("resumes")
+          .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+          .order("desc")
+          .take(10);
+
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        const recentSameFile = existingResumes.find(r =>
+          r.title === args.title &&
+          (Date.now() - r._creationTime) < twentyFourHours
+        );
+
+        if (recentSameFile) {
+          isFreeRescan = true;
+          console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
+        }
+      }
+
+      // CREDIT CONSUMPTION: Apply limits based on subscription tier
+      if (!isUnlimitedPlan && !isFreeRescan) {
+        if (user.subscriptionTier === "free") {
+          // Free tier: Preview only - no credit consumption but limited features
+          console.log(`[Billing] Free user ${user.email} getting preview scan`);
+        } else if (user.subscriptionTier === "single_scan") {
+          // Single Scan: 1 credit + 24h re-scan window
+          const currentCredits = user.credits ?? 0;
+          if (currentCredits <= 0) {
+            throw new ConvexError("CREDITS_EXHAUSTED");
+          }
+          await ctx.db.patch(user._id, {
+            credits: currentCredits - 1,
+            freeTrialUsed: true,
+          });
+          console.log(`[Billing] Single Scan user ${user.email} consumed 1 credit`);
+        }
+      } else if (isUnlimitedPlan) {
+        console.log(`[Billing] Interview Sprint user ${user.email} has unlimited scans`);
+      }
+
+      if (user.deviceFingerprint) {
+        const fingerprint = user.deviceFingerprint;
+        const deviceUsage = await ctx.db
+          .query("deviceUsage")
+          .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
+          .first();
+
+        if (deviceUsage) {
+          await ctx.db.patch(deviceUsage._id, {
+            creditsConsumed: deviceUsage.creditsConsumed + 1,
+            lastUsedAt: Date.now(),
+          });
+        }
+      }
+
+      const url = await ctx.storage.getUrl(args.storageId);
+      if (!url) {
+        throw new ConvexError("FAILED_TO_GET_FILE_URL");
+      }
+
+      const resumeId = await ctx.db.insert("resumes", {
+        userId: identity.subject,
+        projectId: args.projectId,
+        title: args.title,
+        url,
+        storageId: args.storageId,
+        mimeType: args.mimeType,
+        category: args.category,
+        jobDescription: args.jobDescription,
+        jobTitle: args.jobTitle,
+        company: args.company,
+        targetMarket: args.targetMarket,
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
+        status: "processing",
+      });
+
+      // Add timeline event if part of a project
+      if (args.projectId) {
+        try {
+          await ctx.scheduler.runAfter(0, (internal as any).projectTimeline.addTimelineEvent, {
+            projectId: args.projectId,
+            type: "resume_uploaded",
+            title: "Resume Uploaded",
+            description: `Uploaded ${args.title} for analysis`,
+          });
+        } catch (timelineError) {
+          console.error("[createResume] Failed to add timeline event:", timelineError);
+        }
+      }
+
+      // Schedule abandonment email for free users (wrapped in try-catch to prevent blocking)
+      if (!hasActiveSprint && (user.credits ?? 0) === 1 && user.email) {
+        try {
+          // Check if the internal function exists before calling
+          if ((internal as any).abandonmentEmails?.scheduleAbandonmentEmail) {
+            await ctx.scheduler.runAfter(0, (internal as any).abandonmentEmails.scheduleAbandonmentEmail, {
+              userId: identity.subject,
+              email: user.email,
+              resumeId,
+            });
+          }
+        } catch (scheduleError: any) {
+          // Log but don't fail the entire operation if email scheduling fails
+          console.error("[createResume] Failed to schedule abandonment email:", scheduleError);
+        }
+      }
+
+      console.log("[createResume] ✅ Resume created successfully:", resumeId);
+      console.log("[createResume] ====== END SUCCESS ======");
+      return resumeId;
+    } catch (error: any) {
+      console.error("[createResume] ❌ ====== ERROR ======");
+      console.error("[createResume] Error type:", error?.constructor?.name);
+      console.error("[createResume] Error message:", error?.message);
+      console.error("[createResume] Error:", error);
+      console.error("[createResume] Stack:", error?.stack);
+      console.error("[createResume] ====== END ERROR ======");
+
+      // Re-throw ConvexErrors as-is
+      if (error instanceof ConvexError) {
+        throw error;
+      }
+
+      // Wrap unknown errors in ConvexError
+      throw new ConvexError(`CREATE_RESUME_ERROR: ${error.message || String(error)}`);
+    }
+  },
+});
+=======
   handler: async (ctx, args) => {
+    try {
+      console.log("[createResume] ====== START ======");
+      console.log("[createResume] 📥 Args received:", {
+        storageId: args.storageId,
+        title: args.title,
+        mimeType: args.mimeType,
+        hasJobDescription: !!args.jobDescription,
+        hasCategory: !!args.category,
+        hasProjectId: !!args.projectId
+      });
+
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        console.error("[createResume] ❌ No identity found");
+        throw new ConvexError("NOT_AUTHENTICATED");
+      }
+
+      console.log("[createResume] ✅ User authenticated:", identity.email);
+
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
+        .unique();
+
+      if (!user) {
+        throw new ConvexError("USER_NOT_FOUND_REFRESH");
+      }
+
+      const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
+      const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" && hasActiveSprint;
+      const hasPaidPlan = user.subscriptionTier === "single_scan" || isUnlimitedPlan;
+
+      // RE-SCAN LOGIC: 24h unlimited re-scans for PAID users only (Single Scan & Interview Sprint)
+      // Free users get preview only
+      let isFreeRescan = false;
+
+      // Check for existing resumes with the same title in the last 24h (PAID users only)
+      if (hasPaidPlan) {
+        const existingResumes = await ctx.db
+          .query("resumes")
+          .withIndex("by_user", (q) => q.eq("userId", identity.subject))
+          .order("desc")
+          .take(10);
+
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        const recentSameFile = existingResumes.find(r =>
+          r.title === args.title &&
+          (Date.now() - r._creationTime) < twentyFourHours
+        );
+
+        if (recentSameFile) {
+          isFreeRescan = true;
+          console.log(`[Billing] Free 24h re-scan detected for file: ${args.title}`);
+        }
+      }
+
+      // CREDIT CONSUMPTION: Apply limits based on subscription tier
+      if (!isUnlimitedPlan && !isFreeRescan) {
+        if (user.subscriptionTier === "free") {
+          // Free tier: Preview only - no credit consumption but limited features
+          console.log(`[Billing] Free user ${user.email} getting preview scan`);
+        } else if (user.subscriptionTier === "single_scan") {
+          // Single Scan: 1 credit + 24h re-scan window
+          const currentCredits = user.credits ?? 0;
+          if (currentCredits <= 0) {
+            throw new ConvexError("CREDITS_EXHAUSTED");
+          }
+          await ctx.db.patch(user._id, {
+            credits: currentCredits - 1,
+            freeTrialUsed: true,
+          });
+          console.log(`[Billing] Single Scan user ${user.email} consumed 1 credit`);
+        }
+      } else if (isUnlimitedPlan) {
+        console.log(`[Billing] Interview Sprint user ${user.email} has unlimited scans`);
+      }
+
+      if (user.deviceFingerprint) {
+        const fingerprint = user.deviceFingerprint;
+        const deviceUsage = await ctx.db
+          .query("deviceUsage")
+          .withIndex("by_visitor_id", (q) => q.eq("visitorId", fingerprint))
+          .first();
+
+        if (deviceUsage) {
+          await ctx.db.patch(deviceUsage._id, {
+            creditsConsumed: deviceUsage.creditsConsumed + 1,
+            lastUsedAt: Date.now(),
+          });
+        }
+      }
+
+      const url = await ctx.storage.getUrl(args.storageId);
+      if (!url) {
+        throw new ConvexError("FAILED_TO_GET_FILE_URL");
+      }
+
+      const resumeId = await ctx.db.insert("resumes", {
+        userId: identity.subject,
+        projectId: args.projectId,
+        title: args.title,
+        url,
+        storageId: args.storageId,
+        mimeType: args.mimeType,
+        category: args.category,
+        jobDescription: args.jobDescription,
+        jobTitle: args.jobTitle,
+        company: args.company,
+        targetMarket: args.targetMarket,
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
+        status: "processing",
+      });
+
+      // Add timeline event if part of a project
+      if (args.projectId) {
+        try {
+          await ctx.scheduler.runAfter(0, (internal as any).projectTimeline.addTimelineEvent, {
+            projectId: args.projectId,
+            type: "resume_uploaded",
+            title: "Resume Uploaded",
+            description: `Uploaded ${args.title} for analysis`,
+          });
+        } catch (timelineError) {
+          console.error("[createResume] Failed to add timeline event:", timelineError);
+        }
+      }
+
+      // Schedule abandonment email for free users (wrapped in try-catch to prevent blocking)
+      if (!hasActiveSprint && (user.credits ?? 0) === 1 && user.email) {
+        try {
+          // Check if the internal function exists before calling
+          if ((internal as any).abandonmentEmails?.scheduleAbandonmentEmail) {
+            await ctx.scheduler.runAfter(0, (internal as any).abandonmentEmails.scheduleAbandonmentEmail, {
+              userId: identity.subject,
+              email: user.email,
+              resumeId,
+            });
+          }
+        } catch (scheduleError: any) {
+          // Log but don't fail the entire operation if email scheduling fails
+          console.error("[createResume] Failed to schedule abandonment email:", scheduleError);
+        }
+      }
+
+      console.log("[createResume] ✅ Resume created successfully:", resumeId);
+      console.log("[createResume] ====== END SUCCESS ======");
+      return resumeId;
+    } catch (error: any) {
+      console.error("[createResume] ❌ ====== ERROR ======");
+      console.error("[createResume] Error type:", error?.constructor?.name);
+      console.error("[createResume] Error message:", error?.message);
+      console.error("[createResume] Error:", error);
+      console.error("[createResume] Stack:", error?.stack);
+      console.error("[createResume] ====== END ERROR ======");
+
+      // Re-throw ConvexErrors as-is
+      if (error instanceof ConvexError) {
+        throw error;
+      }
+
+      // Wrap unknown errors in ConvexError
+      throw new ConvexError(`CREATE_RESUME_ERROR: ${error.message || String(error)}`);
+    }
+  },
+});
+=======
+        jobTitle: args.jobTitle,
+        company: args.company,
+        targetMarket: args.targetMarket,
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
+        status: "processing",
+      });
     try {
       console.log("[createResume] ====== START ======");
       console.log("[createResume] 📥 Args received:", {
@@ -220,7 +569,7 @@ export const updateResumeOcr = mutation({
         `[OCR] Smart fallback triggered for resume ${args.id} (length: ${trimmedText.length})`
       );
       if (resume.storageId) {
-        await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
+        await ctx.scheduler.runAfter(0, (internal as any).ai.performOcr.performOcr, {
           resumeId: args.id,
           storageId: resume.storageId,
         });
@@ -240,14 +589,14 @@ export const updateResumeOcr = mutation({
 
     await ctx.scheduler.runAfter(
       0,
-      internalAny.cvHealthMonitor.checkTextLayerIntegrity,
+      (internal as any).cvHealthMonitor.checkTextLayerIntegrity,
       {
         resumeId: args.id,
         ocrText: trimmedText,
       }
     );
 
-    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+    await ctx.scheduler.runAfter(0, (internal as any).ai.analyzeResume, {
       id: args.id,
       ocrText: trimmedText,
       jobDescription: resume.jobDescription,
@@ -332,7 +681,7 @@ export const analyzeResume = mutation({
     // Get experience level from resume args or user profile
     const experienceLevel = args.experienceLevel || user.experienceLevel;
 
-    await ctx.scheduler.runAfter(delay, internalAny.ai.analyzeResume, {
+    await ctx.scheduler.runAfter(delay, (internal as any).ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
       jobDescription: args.jobDescription,
@@ -441,7 +790,7 @@ export const updateResumeMetadata = internalMutation({
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         if (user && user.email) {
           await ctx.db.patch(args.id, { parsingErrorEmailSent: true });
-          await ctx.scheduler.runAfter(0, internalAny.marketing.sendParsingErrorEmail, {
+          await ctx.scheduler.runAfter(0, (internal as any).marketing.sendParsingErrorEmail, {
             email: user.email,
             name: user.name,
             resumeId: args.id,
@@ -458,7 +807,7 @@ export const updateResumeMetadata = internalMutation({
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         if (user && user.email) {
           await ctx.db.patch(args.id, { lowScoreEmailSent: true });
-          await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleLowScoreFollowUp, {
+          await ctx.scheduler.runAfter(0, (internal as any).abandonmentEmails.scheduleLowScoreFollowUp, {
             userId: resume.userId,
             email: user.email,
             resumeId: args.id,
@@ -682,7 +1031,7 @@ export const triggerServerOcr = mutation({
     }
 
     // Schedule the server OCR action
-    await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
+    await ctx.scheduler.runAfter(0, (internal as any).ai.performOcr.performOcr, {
       resumeId: args.resumeId,
       storageId: args.storageId,
     });
@@ -872,7 +1221,7 @@ export const updateResumeContent = mutation({
     });
 
     // Trigger re-analysis with updated content
-    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+    await ctx.scheduler.runAfter(0, (internal as any).ai.analyzeResume, {
       id: args.id,
       ocrText: args.newContent,
       jobDescription: resume.jobDescription,

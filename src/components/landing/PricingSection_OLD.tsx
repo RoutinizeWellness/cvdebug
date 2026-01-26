@@ -230,7 +230,7 @@ export function PricingSection() {
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-black text-white">{prices.premium}</span>
                 <span className="text-lg text-slate-500 line-through">
-                  {t.pricingLanding.sprint7dBeforePrice}
+                  €49.99
                 </span>
               </div>
               <p className="text-sm text-slate-400 mt-2">

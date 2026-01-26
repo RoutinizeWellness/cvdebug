@@ -15,7 +15,8 @@ import {
   Brain,
   BarChart3,
   Wand2,
-  Lock
+  Lock,
+  Badge
 } from "lucide-react";
 import { toast } from "sonner";
 import { useQuery, useAction } from "convex/react";
@@ -287,12 +288,15 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                   <div className="w-20 h-20 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-full flex items-center justify-center mx-auto mb-6">
                     <Lock className="h-10 w-10 text-white" />
                   </div>
-                  <h2 className="text-3xl font-black text-[#0F172A] dark:text-white mb-3">
-                    Elite Match Tool es Premium
-                  </h2>
-                  <p className="text-[#64748B] dark:text-slate-400 mb-2 text-lg">
-                    Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#1E293B]">ML local</span> (0 costes de API)
-                  </p>
+                  <div className="flex-1">
+                    <h2 className="text-3xl font-black text-[#1E293B] dark:text-white mb-2 flex items-center gap-3">
+                      Elite Match Tool
+                      <Badge className="bg-[#3B82F6] text-white border-none px-3 py-1 text-sm font-bold">PREMIUM</Badge>
+                    </h2>
+                    <p className="text-[#64748B] dark:text-slate-400 mb-2 text-lg">
+                      Analiza tu CV contra cualquier oferta usando <span className="font-bold text-[#1E293B]">ML local</span>
+                    </p>
+                  </div>
                   <p className="text-[#64748B] dark:text-slate-400 mb-8 text-sm">
                     • Extracción de entidades con TF-IDF & Cosine Similarity<br/>
                     • Gap analysis crítico/importante/nice-to-have<br/>

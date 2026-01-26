@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { CheckCircle2, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getRegionalPrice, getCurrentRegion } from "@/lib/locale";
@@ -7,7 +7,7 @@ import { useI18n } from "@/contexts/I18nContext";
 
 export function PricingSection() {
   const navigate = useNavigate();
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [prices, setPrices] = useState({
     singleDebugFix: "€5.99",
     single: "€14.99",
@@ -17,9 +17,6 @@ export function PricingSection() {
   });
 
   useEffect(() => {
-    console.log(`[PricingSection] Current locale: ${locale}`);
-    console.log(`[PricingSection] Sample translation:`, t.pricingLanding.freeTitle);
-
     const region = getCurrentRegion();
     const singleDebugFixPrice = getRegionalPrice(5.99);
     const singlePrice = getRegionalPrice(14.99);
@@ -32,7 +29,7 @@ export function PricingSection() {
       discount: premiumPrice.discount,
       region: region.countryName,
     });
-  }, [locale, t]);
+  }, []);
 
   const handlePlanSelect = (plan: string) => {
     navigate(`/auth?plan=${plan}`);
@@ -61,7 +58,7 @@ export function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
-          {/* Free Tier - EL GANCHO */}
+          {/* Free Tier */}
           <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-slate-700 hover:shadow-lg hover:shadow-black/20 transition-all relative"
             whileHover={{ y: -5 }}
@@ -104,7 +101,7 @@ export function PricingSection() {
             </div>
           </motion.div>
 
-          {/* Single Debug Fix - ARREGLA DE UNA VEZ */}
+          {/* Single Debug Fix */}
           <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-[#F59E0B]/30 hover:shadow-lg hover:shadow-[#F59E0B]/10 transition-all relative"
             whileHover={{ y: -5 }}
@@ -156,7 +153,7 @@ export function PricingSection() {
             </div>
           </motion.div>
 
-          {/* Pase 24h - HOT FIX */}
+          {/* 24h Pass */}
           <motion.div
             className="p-8 rounded-2xl bg-slate-950/50 backdrop-blur-sm border border-slate-800 flex flex-col gap-6 h-full hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/10 transition-all relative"
             whileHover={{ y: -5 }}
@@ -202,7 +199,7 @@ export function PricingSection() {
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                {locale === 'es' ? 'Generador Cover Letter Ilimitado' : 'Unlimited Cover Letter Generator'}
+                {t.pricingLanding.pass24hFeature6}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
@@ -212,7 +209,7 @@ export function PricingSection() {
             </div>
           </motion.div>
 
-          {/* Sprint 7 Días - INTENSIVO */}
+          {/* 7-Day Sprint */}
           <motion.div
             className="p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-slate-600/10 border border-primary/50 shadow-xl shadow-primary/10 flex flex-col gap-6 relative h-full transform md:-translate-y-4"
             whileHover={{ y: -12, boxShadow: "0 25px 50px -12px rgba(163, 127, 188, 0.2)" }}
@@ -230,7 +227,7 @@ export function PricingSection() {
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-black text-white">{prices.premium}</span>
                 <span className="text-lg text-slate-500 line-through">
-                  {t.pricingLanding.sprint7dBeforePrice}
+                  €49.99
                 </span>
               </div>
               <p className="text-sm text-slate-400 mt-2">
@@ -269,10 +266,6 @@ export function PricingSection() {
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
                 {t.pricingLanding.sprint7dFeature6}
-              </div>
-              <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
-                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                {locale === 'es' ? 'Guiones DM para Recruiters' : 'Recruiter DM Templates'}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">

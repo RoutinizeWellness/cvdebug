@@ -3153,7 +3153,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       subtitle: 'Paga una vez. Arregla para siempre. Sin suscripciones.',
       // Free tier
       freeTitle: 'FREE Debug',
-      freeSubtitle: 'Descubre qué keywords NO ve el robot',
+      freeSubtitle: 'Discover which keywords the robot DOESN\'T see',
       freeScanButton: 'Escanear Gratis',
       freeFeature1: 'Detección de Invisibilidad (2 keywords)',
       freeFeature2: 'Global ATS Score',
