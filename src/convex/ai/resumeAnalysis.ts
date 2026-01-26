@@ -433,13 +433,20 @@ export const analyzeResume = internalAction({
       }
     } catch (globalError: any) {
       console.error("[AI Analysis] CRITICAL ERROR:", globalError);
-      
+      console.error("[AI Analysis] Error stack:", globalError.stack);
+      console.error("[AI Analysis] Error details:", JSON.stringify({
+        message: globalError.message,
+        name: globalError.name,
+        resumeId: args.id,
+        textLength: args.ocrText?.length || 0
+      }));
+
       // Log critical error
       await safeLogFailure(ctx, {
         service: "resumeAnalysis",
         model: "unknown",
         errorType: "critical_error",
-        errorMessage: globalError.message,
+        errorMessage: globalError.message || String(globalError),
         userId,
         duration: Date.now() - startTime,
         usedFallback: false,

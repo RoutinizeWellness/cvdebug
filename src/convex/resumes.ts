@@ -306,14 +306,18 @@ export const analyzeResume = mutation({
       }
     }
 
-    // Update resume with job description immediately
+    // Update resume status to processing and optionally update job description
+    const updateData: any = {
+      status: "processing" as const,
+    };
+
     if (args.jobDescription) {
-      await ctx.db.patch(args.id, {
-        jobDescription: args.jobDescription,
-        status: "processing" as const,
-      });
+      updateData.jobDescription = args.jobDescription;
       console.log(`[Analyze Resume] Updated resume ${args.id} with job description (${args.jobDescription.length} chars)`);
     }
+
+    await ctx.db.patch(args.id, updateData);
+    console.log(`[Analyze Resume] Set status to processing for resume ${args.id}`);
 
     // Check if user has active Interview Sprint for priority parsing
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
