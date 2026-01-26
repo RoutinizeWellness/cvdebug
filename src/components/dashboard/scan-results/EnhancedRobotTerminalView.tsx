@@ -32,7 +32,7 @@ export function EnhancedRobotTerminalView({
 
   // Fetch user and resume data
   const user = useQuery(apiAny.users.currentUser);
-  const resume = useQuery(apiAny.resumes.getResumeById, { id: resumeId });
+  const resume = useQuery(apiAny.resumes.getResume, { id: resumeId });
   const allResumes = useQuery(apiAny.resumes.getResumes);
 
   // Generate precise logs based on actual resume analysis

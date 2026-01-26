@@ -406,7 +406,7 @@ export default function Dashboard() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="space-y-2">
                   <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">{t.dashboard.masterCvs}</h1>
-                  <p className="text-[#475569] text-base">Your base resume templates - manage and optimize</p>
+                  <p className="text-[#475569] text-base">Tus plantillas de CV base - gestiona y optimiza</p>
                 </div>
                 <Button
                   onClick={() => fileInputRef.current?.click()}
@@ -414,7 +414,7 @@ export default function Dashboard() {
                   data-onboarding="upload-button"
                 >
                   <Upload className="h-5 w-5" />
-                  Upload New CV
+                  {t.dashboard.uploadCv}
                 </Button>
               </div>
             </div>
@@ -462,7 +462,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Transform weak bullets into impact-driven achievements using Google XYZ formula
+                        Transforma viñetas débiles en logros impactantes usando la fórmula Google XYZ
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -489,7 +489,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        AI-powered cover letters with keyword optimization
+                        Cartas de presentación potenciadas con IA y optimización de keywords
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -516,7 +516,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Optimize your profile for recruiters
+                        Optimiza tu perfil para reclutadores
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -539,19 +539,19 @@ export default function Dashboard() {
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
                         {t.dashboard.keywordSniper}
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
-                          Featured
+                          Destacado
                         </span>
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        AI-powered bullet rewriting with keyword injection and live score tracking
+                        Reescritura de viñetas con IA, inyección de keywords y seguimiento en vivo
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                       <button className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
-                        Launch Tool
+                        Abrir Herramienta
                       </button>
                     </div>
                   </div>
@@ -563,7 +563,7 @@ export default function Dashboard() {
       case 'profile':
         return (
           <div className="space-y-6 pb-24 md:pb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">Profile</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">Perfil</h1>
             <div className="space-y-4">
               <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex items-center justify-between mb-4">
