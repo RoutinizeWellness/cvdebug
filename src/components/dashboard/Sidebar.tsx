@@ -76,6 +76,12 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
     </button>
   );
 
+  const SectionHeader = ({ label }: { label: string }) => (
+    <div className="px-4 py-2 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+      {label}
+    </div>
+  );
+
   const hasActiveSprint = currentUser?.sprintExpiresAt && currentUser.sprintExpiresAt > Date.now();
 
   return (
@@ -89,12 +95,14 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           <Logo iconClassName="h-12 w-auto" />
         </div>
 
-        {/* Navigation */}
-        <nav className="flex flex-col gap-2">
+        {/* Navigation with Hierarchy */}
+        <nav className="flex flex-col gap-1">
+          {/* RESUMES Section */}
+          <SectionHeader label="RESUMES" />
           <NavItem
             active={currentView === 'mission'}
             icon="home"
-            label={t.sidebar.home}
+            label="Dashboard"
             onClick={() => setCurrentView('mission')}
           />
 
@@ -106,19 +114,27 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
           />
 
           <NavItem
-            active={currentView === 'tools'}
-            icon="smart_toy"
-            label={t.sidebar.aiTools}
-            onClick={() => setCurrentView('tools')}
-          />
-
-          <NavItem
             active={currentView === 'match'}
             icon="target"
-            label={t.sidebar.eliteMatch}
+            label="Job Match"
             onClick={() => setCurrentView('match')}
           />
 
+          {/* TOOLS Section */}
+          <div className="mt-3">
+            <SectionHeader label="TOOLS" />
+          </div>
+          <NavItem
+            active={currentView === 'tools'}
+            icon="smart_toy"
+            label="AI Assistant"
+            onClick={() => setCurrentView('tools')}
+          />
+
+          {/* ACCOUNT Section */}
+          <div className="mt-3">
+            <SectionHeader label="ACCOUNT" />
+          </div>
           <NavItem
             active={currentView === 'settings'}
             icon="settings"
@@ -126,21 +142,28 @@ export function Sidebar({ categoryFilter, setCategoryFilter, setShowPricing, cur
             onClick={() => setCurrentView('settings')}
           />
 
+          {/* Admin Panel (only for admin) */}
           {user?.email === "tiniboti@gmail.com" && (
-            <NavItem
-              active={false}
-              icon="shield"
-              label={t.sidebar.adminPanel}
-              onClick={() => navigate("/admin")}
-            />
+            <>
+              <div className="mt-3">
+                <SectionHeader label="ADMIN" />
+              </div>
+              <NavItem
+                active={false}
+                icon="shield"
+                label={t.sidebar.adminPanel}
+                onClick={() => navigate("/admin")}
+              />
+            </>
           )}
         </nav>
       </div>
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto px-4 pb-4 custom-scrollbar">
-        {/* Application Tracker Compacto */}
+        {/* APPLICATIONS Section */}
         <div className="mb-4">
+          <SectionHeader label="APPLICATIONS" />
           <SidebarApplicationTracker />
         </div>
       </div>

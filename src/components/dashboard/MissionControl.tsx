@@ -136,109 +136,136 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
         </div>
       </header>
 
-      {/* Metrics Grid - ResumeWorded Style */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {/* Metric 1 - Visibility Score */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-[#FFFFFF] rounded-xl p-6 border border-[#E2E8F0] hover:border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow transition-all duration-200 relative overflow-hidden group cursor-pointer"
-          onClick={() => onNavigate("master-cvs")}
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp className="h-20 w-20 text-[#64748B]" />
-          </div>
-          <div className="flex flex-col gap-3 relative z-10">
-            <div className="flex items-center justify-between">
-              <p className="text-[#64748B] text-sm font-semibold uppercase tracking-wider">
-                {t.missionControl.visibilityScore}
-              </p>
-              <div className="p-2 rounded-lg bg-slate-100">
-                <TrendingUp className="h-5 w-5 text-[#475569]" />
+      {/* Main Score Card - Large and Prominent */}
+      <motion.section
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="bg-gradient-to-br from-white to-slate-50 rounded-2xl p-8 border-2 border-[#E2E8F0] shadow-xl"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left: Large Score Gauge */}
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-slate-600 text-sm uppercase tracking-wider mb-4">
+              {t.missionControl.welcomeBack}, <span className="font-bold text-[#0F172A]">{userName}</span>. Current visibility:
+            </p>
+
+            {/* Large Circle Gauge */}
+            <div className="relative w-48 h-48 mb-6">
+              <svg className="transform -rotate-90 w-48 h-48">
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="88"
+                  stroke="#E2E8F0"
+                  strokeWidth="16"
+                  fill="none"
+                />
+                <motion.circle
+                  cx="96"
+                  cy="96"
+                  r="88"
+                  stroke={visibilityScore >= 80 ? '#22C55E' : visibilityScore >= 60 ? '#F59E0B' : '#EF4444'}
+                  strokeWidth="16"
+                  fill="none"
+                  strokeDasharray={`${2 * Math.PI * 88}`}
+                  initial={{ strokeDashoffset: 2 * Math.PI * 88 }}
+                  animate={{ strokeDashoffset: 2 * Math.PI * 88 * (1 - visibilityScore / 100) }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className={`text-5xl font-black ${
+                  visibilityScore >= 80 ? 'text-green-600' :
+                  visibilityScore >= 60 ? 'text-yellow-600' :
+                  'text-red-600'
+                }`}>
+                  {visibilityScore}%
+                </p>
+                <p className="text-sm font-bold text-slate-600 mt-1">
+                  {visibilityScore >= 80 ? 'EXCELLENT' : visibilityScore >= 60 ? 'GOOD' : 'CRITICAL'}
+                </p>
               </div>
             </div>
-            <div className="flex items-baseline gap-2">
-              <p className="text-[#0F172A] text-3xl sm:text-4xl md:text-5xl font-bold">
-                {visibilityScore}
-              </p>
-              <span className="text-xl sm:text-2xl text-[#64748B] font-semibold">/100</span>
-            </div>
-            <p className="text-[#64748B] text-sm mt-2">
-              {t.missionControl.howRecruitersFind}
-            </p>
-            {/* Progress Bar with Cyber Gradient */}
-            <div className="w-full bg-slate-200 rounded-full h-2 mt-4 overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${visibilityScore}%` }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className={`h-2 rounded-full ${
-                  visibilityScore >= 80 ? 'progress-cyber' :
-                  visibilityScore >= 60 ? 'bg-[#F59E0B]' :
-                  'bg-[#EF4444]'
-                }`}
-              />
-            </div>
-          </div>
-        </motion.div>
 
-        {/* Metric 2 - Active Applications */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-[#FFFFFF] rounded-xl p-5 relative overflow-hidden group border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Send className="h-16 w-16 text-[#64748B]" />
-          </div>
-          <div className="flex flex-col gap-1 relative z-10">
-            <p className="text-[#64748B] text-sm font-medium uppercase tracking-wider">
-              {t.missionControl.activeApplications}
-            </p>
-            <div className="flex items-baseline gap-2 mt-1">
-              <p className="text-[#0F172A] text-2xl sm:text-3xl md:text-4xl font-mono font-bold">{activeApplications}</p>
-            </div>
-            <div className="flex items-center gap-1 mt-2 text-[#64748B] text-xs font-mono bg-[#F8FAFC] w-fit px-2 py-1 rounded border border-[#E2E8F0]">
-              <span className="material-symbols-outlined text-sm">bolt</span>
-              2 {t.missionControl.interviewsScheduled}
+            <div className="text-center text-sm text-slate-600">
+              🎯 Sprint Goal: Reach 95% visibility
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
-            <div className="h-full bg-[#64748B] w-[40%]"></div>
-          </div>
-        </motion.div>
 
-        {/* Metric 3 - Missing Signals */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-[#FFFFFF] rounded-xl p-5 relative overflow-hidden group border border-rose-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <AlertCircle className="h-16 w-16 text-rose-400" />
-          </div>
-          <div className="flex flex-col gap-1 relative z-10">
-            <p className="text-[#64748B] text-sm font-medium uppercase tracking-wider">
-              {t.missionControl.missingSignals}
-            </p>
-            <div className="flex items-baseline gap-2 mt-1">
-              <p className="text-[#0F172A] text-2xl sm:text-3xl md:text-4xl font-mono font-bold">{criticalErrorsCount}</p>
-              <span className="text-rose-600 font-bold text-xs sm:text-sm bg-rose-50 px-2 py-0.5 rounded border border-rose-200 whitespace-nowrap">
-                {t.missionControl.critical}
+          {/* Right: Critical Actions */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-black text-[#0F172A]">🚨 CRITICAL ACTIONS</h3>
+              <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-200">
+                Fix Now
               </span>
             </div>
-            <div className="flex items-center gap-1 mt-2 text-rose-600 text-xs font-mono">
-              <span className="material-symbols-outlined text-sm">arrow_downward</span>
-              {t.missionControl.impactingMatchScore} -{criticalErrorsCount * 5}%
+
+            {/* Action 1: Missing Keywords */}
+            {missingKeywords.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-red-50 border-2 border-red-200 rounded-xl p-4"
+              >
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h4 className="font-bold text-red-900 text-sm mb-1">❌ Missing keywords: {missingKeywords.slice(0, 2).join(", ")}</h4>
+                    <p className="text-xs text-red-700 mb-3">Impact: -{missingKeywords.length * 5}% match score</p>
+                    <Button
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                      onClick={() => onNavigate("tools")}
+                    >
+                      Fix with Keyword Sniper →
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Action 2: Format Issues */}
+            {masterResume?.formatIssues && masterResume.formatIssues.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4"
+              >
+                <div className="flex items-start gap-3">
+                  <Wrench className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h4 className="font-bold text-yellow-900 text-sm mb-1">⚠️ Date format inconsistency</h4>
+                    <p className="text-xs text-yellow-700 mb-3">Impact: -5% parsability</p>
+                    <Button
+                      size="sm"
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs"
+                      onClick={() => onNavigate("master-cvs")}
+                    >
+                      Auto-fix →
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Active Applications & Success Rate */}
+            <div className="grid grid-cols-2 gap-3 mt-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-blue-600 font-semibold mb-1">💼 Active Applications</p>
+                <p className="text-2xl font-black text-blue-900">{activeApplications}</p>
+              </div>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                <p className="text-xs text-green-600 font-semibold mb-1">📈 Success rate</p>
+                <p className="text-2xl font-black text-green-900">100%</p>
+              </div>
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-200">
-            <div className="h-full bg-rose-500 w-[25%]"></div>
-          </div>
-        </motion.div>
-      </section>
+        </div>
+      </motion.section>
+
 
       {/* Robot View Widget - Prominent */}
       <motion.section
