@@ -108,47 +108,47 @@ export function PricingSection() {
           >
             <div className="absolute -top-3 right-4">
               <span className="inline-flex items-center px-3 py-1 rounded text-[10px] font-bold font-mono bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30 shadow-sm">
-                ARREGLA DE UNA VEZ
+                {t.pricingLanding.singleDebugBadge}
               </span>
             </div>
             <div className="mt-2">
-              <h3 className="text-2xl font-bold mb-2 text-white">Arreglo Rápido</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">{t.pricingLanding.singleDebugTitle}</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-5xl font-black text-white">{prices.singleDebugFix}</span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Arregla tu CV por el precio de un café</p>
+              <p className="text-sm text-slate-400 mt-2">{t.pricingLanding.singleDebugSubtitle}</p>
             </div>
             <button
               onClick={() => handlePlanSelect('single_debug_fix')}
               className="w-full h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-[#F59E0B]/50 font-bold transition-all text-white"
             >
-              Arreglar Mi CV →
+              {t.pricingLanding.singleDebugButton}
             </button>
             <div className="space-y-3 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                1 Escaneo Profundo Completo
+                {t.pricingLanding.singleDebugFeature1}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Vista Robot Desbloqueada
+                {t.pricingLanding.singleDebugFeature2}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                1 Optimización AI (Rewrite)
+                {t.pricingLanding.singleDebugFeature3}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                Auto-Inyección Keywords
+                {t.pricingLanding.singleDebugFeature4}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Exportar CV Optimizado
+                {t.pricingLanding.singleDebugFeature5}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
               <span className="text-xs font-mono font-bold text-[#22C55E]">
-                ✓ PLANTILLA LEGIBLE GARANTIZADA
+                {t.pricingLanding.singleDebugGuarantee}
               </span>
             </div>
           </motion.div>
@@ -160,47 +160,51 @@ export function PricingSection() {
           >
             <div className="absolute -top-3 right-4">
               <span className="inline-flex items-center px-3 py-1 rounded text-[10px] font-bold font-mono bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/30 shadow-sm">
-                HOT FIX / URGENTE
+                {t.pricingLanding.pass24hBadge}
               </span>
             </div>
             <div className="mt-2">
-              <h3 className="text-2xl font-bold mb-2 text-white">Pase 24h</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">{t.pricingLanding.pass24hTitle}</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-5xl font-black text-white">{prices.single}</span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Debug Inmediato para entrevista mañana</p>
+              <p className="text-sm text-slate-400 mt-2">{t.pricingLanding.pass24hSubtitle}</p>
             </div>
             <button
               onClick={() => handlePlanSelect('single_scan')}
               className="w-full h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-red-500/50 font-bold transition-all text-white"
             >
-              Acceso 24h →
+              {t.pricingLanding.pass24hButton}
             </button>
             <div className="space-y-3 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Scans Ilimitados (24h)
+                {t.pricingLanding.pass24hFeature1}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Vista X-Ray Robot Completa
+                {t.pricingLanding.pass24hFeature2}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                Etiquetas [ERROR] + [WARN] + Fixes
+                {t.pricingLanding.pass24hFeature3}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Detector Gap de Keywords
+                {t.pricingLanding.pass24hFeature4}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Plantilla 100% Legible por ATS
+                {t.pricingLanding.pass24hFeature5}
+              </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                {t.pricingLanding.pass24hFeature6}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
               <span className="text-xs font-mono font-bold text-[#22C55E]">
-                ✓ GARANTIZADA
+                {t.pricingLanding.pass24hGuarantee}
               </span>
             </div>
           </motion.div>
