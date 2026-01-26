@@ -128,8 +128,12 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
               {/* Header */}
               <div className="bg-gradient-to-r from-[#22C55E] to-[#10B981] p-6 relative">
                 <button
-                  onClick={handleSkipNow}
-                  className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleSkipNow();
+                  }}
+                  className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-10"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -174,13 +178,21 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
                 <div className="flex gap-3">
                   <Button
                     variant="outline"
-                    onClick={handleSkipNow}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSkipNow();
+                    }}
                     className="flex-1 border-gray-600 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
                     Skip Tour
                   </Button>
                   <Button
-                    onClick={handleNext}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleNext();
+                    }}
                     className="flex-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold shadow-lg"
                   >
                     {isLastStep ? (
