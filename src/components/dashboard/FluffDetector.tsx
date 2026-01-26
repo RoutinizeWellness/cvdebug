@@ -511,21 +511,21 @@ export function FluffDetector({
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <div className="mb-8">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 lg:gap-6 mb-6">
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 md:gap-6 mb-4 md:mb-6">
           {/* Left: Title & Description */}
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-2 break-words">
+          <div className="flex-1 min-w-0 w-full sm:w-auto">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#0F172A] mb-1 md:mb-2 break-words">
               Clarity & Impact Audit
             </h2>
-            <p className="text-[#475569] text-xs md:text-sm">
+            <p className="text-[#475569] text-xs sm:text-sm">
               Detecting weak language, buzzwords, and unquantified claims.
             </p>
           </div>
 
           {/* Right: Clarity Score Circle */}
-          <div className="flex items-center gap-4 lg:gap-6 flex-shrink-0">
-            <div className="relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6 flex-shrink-0 w-full sm:w-auto justify-center sm:justify-end">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
                 <defs>
                   <linearGradient id="clarityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -556,8 +556,8 @@ export function FluffDetector({
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-xl md:text-2xl lg:text-3xl font-bold text-[#0F172A] font-mono">{clarityScore}</span>
-                <span className="text-[8px] md:text-[9px] lg:text-[10px] text-[#64748B] uppercase tracking-widest font-bold">Clarity</span>
+                <span className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[#0F172A] font-mono">{clarityScore}</span>
+                <span className="text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] text-[#64748B] uppercase tracking-widest font-bold">Clarity</span>
               </div>
             </div>
           </div>

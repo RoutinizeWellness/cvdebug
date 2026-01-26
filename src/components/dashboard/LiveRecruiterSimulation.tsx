@@ -36,11 +36,12 @@ export function LiveRecruiterSimulation({
     if (!text) return "";
 
     const lines = text.split('\n').filter(l => l.trim());
-    const summaryLine = lines.find(line =>
-      line.length > 100 &&
-      !line.toLowerCase().includes('education') &&
-      !line.toLowerCase().includes('experience')
-    );
+    const summaryLine = lines.find(line => {
+      const lineLower = (line || '').toLowerCase();
+      return line.length > 100 &&
+        !lineLower.includes('education') &&
+        !lineLower.includes('experience');
+    });
 
     return summaryLine?.substring(0, 300) || lines[0]?.substring(0, 300) || "";
   };
@@ -62,7 +63,7 @@ export function LiveRecruiterSimulation({
     let foundExperience = false;
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      const line = lines[i] || '';
       const lowerLine = line.toLowerCase();
 
       // Skip header sections

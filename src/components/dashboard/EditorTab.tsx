@@ -8,6 +8,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 interface EditorTabProps {
   resume: any;
@@ -20,7 +21,9 @@ interface EditorTabProps {
 export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate }: EditorTabProps) {
   const [showFluffSidebar, setShowFluffSidebar] = useState(false);
   const [isRewriting, setIsRewriting] = useState(false);
+  const [editorKey, setEditorKey] = useState(0); // Force re-render of editor
   const generateRewrite = useMutation(api.resumes.generateComprehensiveRewrite);
+  const updateResumeText = useMutation(api.resumes.updateResumeText);
 
   const handleRewriteAll = async () => {
     if (!isPaidUser) {
@@ -85,6 +88,7 @@ export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate
           {/* Inline Editor */}
           {resume && (
             <InlineResumeEditor
+              key={editorKey} // Force re-render when key changes
               resumeId={resume._id}
               initialContent={resume.ocrText || ""}
               missingKeywords={resume.missingKeywords || []}
@@ -176,10 +180,23 @@ export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate
 
                   <div className="mt-4 flex gap-3">
                     <Button
-                      onClick={() => {
-                        if (onContentUpdate) {
-                          onContentUpdate(resume.rewrittenText);
-                          toast.success("✅ ML-optimized resume applied successfully! Your resume now has stronger impact and better ATS compatibility.");
+                      onClick={async () => {
+                        if (resume.rewrittenText && resume._id) {
+                          try {
+                            // Update resume content with the rewritten text
+                            await updateResumeText({
+                              id: resume._id,
+                              newContent: resume.rewrittenText
+                            });
+
+                            // Force editor to re-render with new content
+                            setEditorKey(prev => prev + 1);
+
+                            toast.success("✅ ML-optimized resume applied successfully! Your resume now has stronger impact and better ATS compatibility.");
+                          } catch (error) {
+                            console.error("Error applying rewrite:", error);
+                            toast.error("Failed to apply rewrite. Please try again.");
+                          }
                         }
                       }}
                       className="bg-gradient-to-r from-green-600 to-emerald-600 hover:opacity-90 text-white gap-2 shadow-md"
