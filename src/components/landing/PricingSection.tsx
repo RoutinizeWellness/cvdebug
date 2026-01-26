@@ -69,34 +69,34 @@ export function PricingSection() {
               </span>
             </div>
             <div className="mt-2">
-              <h3 className="text-2xl font-bold mb-2 text-white">FREE Debug</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">{t.pricingLanding.freeTitle}</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-5xl font-black text-white">€0</span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Descubre qué keywords NO ve el robot</p>
+              <p className="text-sm text-slate-400 mt-2">{t.pricingLanding.freeSubtitle}</p>
             </div>
             <button
               onClick={() => handlePlanSelect('free')}
               className="w-full h-12 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 font-bold transition-all text-white"
             >
-              Escanear Gratis
+              {t.pricingLanding.freeScanButton}
             </button>
             <div className="space-y-3 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EF4444]/10 text-[#EF4444]">[ERR]</span>
-                Detección de Invisibilidad (2 keywords)
+                {t.pricingLanding.freeFeature1}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Global ATS Score
+                {t.pricingLanding.freeFeature2}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#EF4444]/10 text-[#EF4444]">[ERR]</span>
-                Vista Robot (bloqueada)
+                {t.pricingLanding.freeFeature3}
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                Preview Seniority Match
+                {t.pricingLanding.freeFeature4}
               </div>
             </div>
           </motion.div>
