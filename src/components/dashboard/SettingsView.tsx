@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { EmailPreferences } from "./EmailPreferences";
 import { ExperienceLevelSelector, type ExperienceLevel, getExperienceLevelLabel } from "@/components/ExperienceLevelSelector";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const apiAny = api as any;
 
@@ -177,10 +178,10 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
         >
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl md:text-4xl font-bold font-display text-[#0F172A] tracking-tight">
-              Account & Settings
+              Settings
             </h1>
             <p className="text-[#64748B] font-body">
-              Manage your subscription, security, and view your performance stats.
+              Manage your account, subscription, and privacy preferences.
             </p>
           </div>
           <div className="flex gap-2">
@@ -199,8 +200,190 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
           </div>
         </motion.div>
 
-        {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Tabs */}
+        <Tabs defaultValue="account" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white border border-[#E2E8F0] p-1">
+            <TabsTrigger value="account" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
+              👤 Account
+            </TabsTrigger>
+            <TabsTrigger value="plan" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
+              💳 Plan
+            </TabsTrigger>
+            <TabsTrigger value="privacy" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
+              🔒 Privacy
+            </TabsTrigger>
+          </TabsList>
+
+          {/* ACCOUNT TAB */}
+          <TabsContent value="account" className="space-y-6">
+            {/* User Info Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+            >
+              <h3 className="text-xl font-bold font-display text-[#0F172A] mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#64748B]">person</span>
+                Account Information
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-medium text-[#475569] mb-1.5">Full Name</label>
+                  <input
+                    type="text"
+                    value={userName}
+                    disabled
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] text-sm font-medium cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#475569] mb-1.5">Email Address</label>
+                  <input
+                    type="email"
+                    value={userEmail}
+                    disabled
+                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] text-sm font-medium cursor-not-allowed"
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Password Change */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+            >
+              <h3 className="text-xl font-bold font-display text-[#0F172A] mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#64748B]">lock</span>
+                Change Password
+              </h3>
+              <div className="flex flex-col gap-4 max-w-2xl">
+                <div>
+                  <label className="block text-xs font-medium text-[#475569] mb-1.5">
+                    Current Password
+                  </label>
+                  <input
+                    className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                    placeholder="••••••••••••"
+                    type="password"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-[#475569] mb-1.5">
+                      New Password
+                    </label>
+                    <input
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                      placeholder="••••••••••••"
+                      type="password"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-[#475569] mb-1.5">
+                      Confirm New
+                    </label>
+                    <input
+                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
+                      placeholder="••••••••••••"
+                      type="password"
+                    />
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <button
+                    onClick={handleUpdatePassword}
+                    className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#334155] to-[#475569] text-white text-sm font-semibold hover:opacity-90 transition-all"
+                  >
+                    Update Password
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Experience Level */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-[#64748B]">person</span>
+                <h3 className="text-xl font-bold font-display text-[#0F172A]">
+                  Career Profile
+                </h3>
+              </div>
+              <p className="text-[#64748B] text-sm mb-6">
+                Your experience level helps us provide personalized CV analysis and recommendations tailored to your career stage.
+              </p>
+
+              {user?.experienceLevel && (
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-[#64748B] text-xl mt-0.5">badge</span>
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm mb-1">Current Experience Level</h4>
+                      <p className="text-sm text-slate-700 font-medium">
+                        {getExperienceLevelLabel(user.experienceLevel)}
+                      </p>
+                      {user.targetRole && (
+                        <p className="text-xs text-slate-600 mt-1">
+                          Target Role: <span className="font-semibold">{user.targetRole}</span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mb-6">
+                <ExperienceLevelSelector
+                  value={experienceLevel}
+                  onChange={setExperienceLevel}
+                  label="Update Your Experience Level"
+                />
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-[#475569] mb-2">
+                  Target Role (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={targetRole}
+                  onChange={(e) => setTargetRole(e.target.value)}
+                  placeholder="e.g., Software Engineer, Product Manager, SDR..."
+                  className="w-full px-4 py-3 border border-[#E2E8F0] rounded-lg text-sm font-medium text-[#0F172A] bg-white focus:outline-none focus:ring-2 focus:ring-[#475569] focus:border-transparent placeholder:text-slate-400"
+                />
+                <p className="text-xs text-[#64748B] mt-1.5">
+                  This helps us give more targeted feedback for your specific career goals
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleExperienceLevelUpdate}
+                  disabled={!experienceLevel}
+                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#334155] to-[#475569] text-white font-semibold text-sm shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-base">save</span>
+                  Save Changes
+                </button>
+                {experienceLevel !== user?.experienceLevel && (
+                  <span className="text-xs text-[#F59E0B] font-medium">
+                    Unsaved changes
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          </TabsContent>
+
+          {/* PLAN TAB */}
+          <TabsContent value="plan" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Plan Section (Span 2 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
