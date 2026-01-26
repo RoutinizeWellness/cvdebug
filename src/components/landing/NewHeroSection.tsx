@@ -101,7 +101,7 @@ export function NewHeroSection() {
           >
             <Button
               onClick={() => navigate("/preview")}
-              className="gradient-button relative flex h-12 sm:h-14 w-full sm:flex-1 sm:max-w-xs items-center justify-center gap-2 overflow-hidden rounded-lg px-6 sm:px-8 text-base sm:text-lg font-bold text-white border-0 group shadow-soft"
+              className="relative flex h-12 sm:h-14 w-full sm:flex-1 sm:max-w-xs items-center justify-center gap-2 overflow-hidden rounded-lg px-6 sm:px-8 text-base sm:text-lg font-bold text-white border-0 group shadow-lg bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#0F172A] hover:to-[#1E293B] transition-all"
             >
               <span className="relative z-10 truncate">{t.hero.ctaPrimary}</span>
               <motion.div
