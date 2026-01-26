@@ -107,20 +107,24 @@ export const getAdminStats = query({
     }
 
     const freeUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "free")).collect();
+    const singleDebugFixUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_debug_fix")).collect();
     const singleScanUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan")).collect();
     const sprintUsers = await ctx.db.query("users").withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint")).collect();
 
     // Calculate total revenue (approximate)
-    const singleScanRevenue = singleScanUsers.length * 4.99;
+    const singleDebugFixRevenue = singleDebugFixUsers.length * 5.99;
+    const singleScanRevenue = singleScanUsers.length * 14.99;
     const sprintRevenue = sprintUsers.length * 24.99;
-    const totalRevenue = singleScanRevenue + sprintRevenue;
+    const totalRevenue = singleDebugFixRevenue + singleScanRevenue + sprintRevenue;
 
     return {
       free: freeUsers.length,
+      singleDebugFix: singleDebugFixUsers.length,
       singleScan: singleScanUsers.length,
       interviewSprint: sprintUsers.length,
-      total: freeUsers.length + singleScanUsers.length + sprintUsers.length,
+      total: freeUsers.length + singleDebugFixUsers.length + singleScanUsers.length + sprintUsers.length,
       revenue: {
+        singleDebugFix: singleDebugFixRevenue,
         singleScan: singleScanRevenue,
         sprint: sprintRevenue,
         total: totalRevenue,
@@ -138,14 +142,21 @@ export const getPremiumUsers = query({
       return [];
     }
 
-    // Get single_scan users
+    // Get single_debug_fix users (€5.99)
+    const singleDebugFixUsers = await ctx.db
+      .query("users")
+      .withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_debug_fix"))
+      .order("desc")
+      .take(200);
+
+    // Get single_scan users (€14.99 - 24h Pass)
     const singleScanUsers = await ctx.db
       .query("users")
       .withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "single_scan"))
       .order("desc")
       .take(200);
 
-    // Get interview_sprint users
+    // Get interview_sprint users (€24.99 - 7 Day Sprint)
     const sprintUsers = await ctx.db
       .query("users")
       .withIndex("by_subscription_tier", q => q.eq("subscriptionTier", "interview_sprint"))
@@ -153,16 +164,31 @@ export const getPremiumUsers = query({
       .take(200);
 
     // Combine and sort by creation time
-    const premiumUsers = [...singleScanUsers, ...sprintUsers]
+    const premiumUsers = [...singleDebugFixUsers, ...singleScanUsers, ...sprintUsers]
       .sort((a, b) => b._creationTime - a._creationTime);
 
     // Enhance with payment info
     const usersWithPaymentInfo = premiumUsers.map(user => {
-      const plan = user.subscriptionTier === "single_scan" ? "Single Scan (€4.99)" : "Interview Sprint (€24.99)";
-      const revenue = user.subscriptionTier === "single_scan" ? 4.99 : 24.99;
-      const isActive = user.subscriptionTier === "interview_sprint"
-        ? (user.sprintExpiresAt && user.sprintExpiresAt > Date.now())
-        : true;
+      let plan = "Unknown";
+      let revenue = 0;
+      let isActive = false;
+
+      if (user.subscriptionTier === "single_debug_fix") {
+        plan = "Arreglo Rápido (€5.99)";
+        revenue = 5.99;
+        // Single Debug Fix is active if they still have credits OR haven't used it yet
+        isActive = (user.credits || 0) > 0 || !user.singleDebugFixUsed;
+      } else if (user.subscriptionTier === "single_scan") {
+        plan = "Pase 24h (€14.99)";
+        revenue = 14.99;
+        // 24h Pass is active if they still have credits
+        isActive = (user.credits || 0) > 0;
+      } else if (user.subscriptionTier === "interview_sprint") {
+        plan = "Sprint 7 Días (€24.99)";
+        revenue = 24.99;
+        // Sprint is active if not expired
+        isActive = user.sprintExpiresAt ? user.sprintExpiresAt > Date.now() : false;
+      }
 
       return {
         _id: user._id,
@@ -355,9 +381,9 @@ export const fixKnownMissingUsers = mutation({
 });
 
 export const grantPurchase = mutation({
-  args: { 
-    identifier: v.string(), 
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+  args: {
+    identifier: v.string(),
+    plan: v.union(v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
     name: v.optional(v.string())
   },
   handler: async (ctx, args) => {
@@ -378,7 +404,7 @@ export const grantPurchase = mutation({
         .unique();
     }
 
-    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
+    const creditsToAdd = args.plan === "single_debug_fix" ? 1 : args.plan === "single_scan" ? 1 : 0;
     const sprintDuration = args.plan === "interview_sprint" ? 7 * 24 * 60 * 60 * 1000 : undefined;
 
     if (user) {
@@ -586,7 +612,7 @@ export const processBulkGrants = mutation({
 export const updateUserPlan = mutation({
   args: {
     userId: v.id("users"),
-    plan: v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(v.literal("free"), v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
     credits: v.number(),
   },
   handler: async (ctx, args) => {
@@ -599,9 +625,14 @@ export const updateUserPlan = mutation({
       subscriptionTier: args.plan,
       credits: args.credits,
     };
-    
+
     if (args.plan === "interview_sprint") {
       updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    // Reset singleDebugFixUsed if assigning single_debug_fix plan
+    if (args.plan === "single_debug_fix") {
+      updates.singleDebugFixUsed = false;
     }
 
     await ctx.db.patch(args.userId, updates);
@@ -613,7 +644,7 @@ export const createUser = mutation({
     email: v.string(),
     firstName: v.optional(v.string()),
     lastName: v.optional(v.string()),
-    plan: v.optional(v.union(v.literal("free"), v.literal("single_scan"), v.literal("interview_sprint"))),
+    plan: v.optional(v.union(v.literal("free"), v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint"))),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -647,7 +678,7 @@ export const createUser = mutation({
       name: name,
       email: args.email,
       subscriptionTier: plan,
-      credits: plan === "single_scan" ? 1 : 0,
+      credits: plan === "single_debug_fix" || plan === "single_scan" ? 1 : 0,
       trialEndsOn: Date.now() + (15 * 24 * 60 * 60 * 1000),
       emailVariant: "A",
       lastSeen: Date.now(),
@@ -655,6 +686,10 @@ export const createUser = mutation({
 
     if (plan === "interview_sprint") {
       userData.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    if (plan === "single_debug_fix") {
+      userData.singleDebugFixUsed = false;
     }
 
     const newUserId = await ctx.db.insert("users", userData);
@@ -692,7 +727,7 @@ export const deleteUser = mutation({
 export const simulateWebhookEvent = action({
   args: {
     email: v.string(),
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
