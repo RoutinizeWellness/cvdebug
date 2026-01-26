@@ -519,7 +519,9 @@ export function KeywordAnalysis({
                 onClick={() => {
                   const newMode = viewMode === 'list' ? 'grid' : 'list';
                   setViewMode(newMode);
-                  toast.info(`${t.keywordAnalysis.switchedToView} ${newMode === 'list' ? t.keywordAnalysis.listView.toLowerCase() : t.keywordAnalysis.gridView.toLowerCase()}`);
+                  const listView = (t.keywordAnalysis?.listView || 'list view').toLowerCase();
+                  const gridView = (t.keywordAnalysis?.gridView || 'grid view').toLowerCase();
+                  toast.info(`${t.keywordAnalysis?.switchedToView || 'Switched to view'} ${newMode === 'list' ? listView : gridView}`);
                 }}
                 className="text-[#64748B] font-medium hover:text-[#475569] transition-colors"
               >

@@ -158,7 +158,7 @@ export default function CVUpload({
                     {uploadedFile.name}
                   </p>
                   <p className="text-xs text-[#64748B]">
-                    {(uploadedFile.size / 1024).toFixed(2)} KB • {t.onboarding.cvUpload.clickToUpload.toLowerCase()}
+                    {(uploadedFile.size / 1024).toFixed(2)} KB • {(t.onboarding?.cvUpload?.clickToUpload || 'Click to upload').toLowerCase()}
                   </p>
                 </div>
               ) : (

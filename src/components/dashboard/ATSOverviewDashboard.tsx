@@ -42,7 +42,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   // Helper to create context-aware messages
   const enhanceIssueMessage = (issue: any) => {
-    const issueLower = issue.issue.toLowerCase();
+    const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
     let enhancedDescription = issue.atsImpact || "This may affect ATS parsing";
     let enhancedFix = issue.fix || "Review and update this section";
 
@@ -141,13 +141,14 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     .slice(0, 3)
     .map((issue: any) => {
       const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
+      const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
       return {
-        icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
-              issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+        icon: issueLower.includes("image") || issueLower.includes("icon") ? "image" :
+              issueLower.includes("metric") || issueLower.includes("number") ? "numbers" :
+              issueLower.includes("contact") || issueLower.includes("linkedin") ? "link" :
+              issueLower.includes("format") || issueLower.includes("parse") ? "warning" :
               "error",
-        title: issue.issue,
+        title: issue.issue || 'Unknown issue',
         description: enhancedDescription,
         severity: issue.severity,
         howToFix: enhancedFix
@@ -161,13 +162,14 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       .slice(0, 3)
       .map((issue: any) => {
         const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
+        const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
         return {
-          icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
-                issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
-                issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
-                issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
+          icon: issueLower.includes("image") || issueLower.includes("icon") ? "image" :
+                issueLower.includes("metric") || issueLower.includes("number") ? "numbers" :
+                issueLower.includes("contact") || issueLower.includes("linkedin") ? "link" :
+                issueLower.includes("format") || issueLower.includes("parse") ? "warning" :
                 "info",
-          title: issue.issue,
+          title: issue.issue || 'Unknown issue',
           description: enhancedDescription,
           severity: issue.severity,
           howToFix: enhancedFix

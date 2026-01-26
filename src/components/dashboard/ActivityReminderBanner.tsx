@@ -21,22 +21,23 @@ export function ActivityReminderBanner({
   const { t } = useI18n();
 
   const getMessage = (): { title: string; description: string; urgency: "high" | "medium" | "low" } => {
+    const days = (t.sidebar?.days || 'days').toLowerCase();
     if (daysSinceActive >= 7) {
       return {
-        title: `${t.dashboard.welcome} 🎯`,
-        description: `${daysSinceActive} ${t.sidebar.days.toLowerCase()}. ${t.dashboard.uploadToStart}`,
+        title: `${t.dashboard?.welcome || 'Welcome'} 🎯`,
+        description: `${daysSinceActive} ${days}. ${t.dashboard?.uploadToStart || 'Upload to start'}`,
         urgency: "high" as const,
       };
     } else if (daysSinceActive >= 5) {
       return {
-        title: `${t.common.error}: CV ⚠️`,
-        description: `${daysSinceActive} ${t.sidebar.days.toLowerCase()}.`,
+        title: `${t.common?.error || 'Error'}: CV ⚠️`,
+        description: `${daysSinceActive} ${days}.`,
         urgency: "medium" as const,
       };
     } else {
       return {
-        title: `${t.common.success} 💼`,
-        description: `${daysSinceActive} ${t.sidebar.days.toLowerCase()}.`,
+        title: `${t.common?.success || 'Success'} 💼`,
+        description: `${daysSinceActive} ${days}.`,
         urgency: "low" as const,
       };
     }

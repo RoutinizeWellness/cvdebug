@@ -40,9 +40,14 @@ export function ATSAnalysisReport({
   // Handle matched keywords - can be array of strings or objects
   const rawMatchedKeywords = resume?.matchedKeywords || [];
   const matchedKeywords = Array.isArray(rawMatchedKeywords)
-    ? rawMatchedKeywords.map((kw: any) =>
-        typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
-      ).filter((k: string) => k.length > 0)
+    ? rawMatchedKeywords.map((kw: any) => {
+        if (typeof kw === 'string' && kw) return kw;
+        if (kw && typeof kw === 'object') {
+          const keyword = kw.keyword || kw.term;
+          return (keyword && typeof keyword === 'string') ? keyword : '';
+        }
+        return '';
+      }).filter((k: string) => k && k.length > 0)
     : [];
 
   // Handle missing keywords - can be array of strings or objects with detailed info
@@ -61,19 +66,23 @@ export function ATSAnalysisReport({
 
   const missingKeywordsDetailed: MissingKeywordDetail[] = Array.isArray(rawMissingKeywords)
     ? rawMissingKeywords.map((kw: any) => {
-        if (typeof kw === 'string') {
+        if (typeof kw === 'string' && kw) {
           return { keyword: kw };
         }
-        return {
-          keyword: kw.keyword || kw.term || '',
-          priority: kw.priority,
-          section: kw.section,
-          context: kw.context,
-          frequency: kw.frequency,
-          impact: kw.impact,
-          synonyms: kw.synonyms
-        };
-      }).filter((k: MissingKeywordDetail) => k.keyword.length > 0)
+        if (kw && typeof kw === 'object') {
+          const keyword = kw.keyword || kw.term;
+          return {
+            keyword: (keyword && typeof keyword === 'string') ? keyword : '',
+            priority: kw.priority,
+            section: kw.section,
+            context: kw.context,
+            frequency: kw.frequency,
+            impact: kw.impact,
+            synonyms: kw.synonyms
+          };
+        }
+        return { keyword: '' };
+      }).filter((k: MissingKeywordDetail) => k.keyword && k.keyword.length > 0)
     : [];
 
   // Simple array of keyword strings for basic display

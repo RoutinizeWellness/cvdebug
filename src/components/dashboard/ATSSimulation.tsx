@@ -155,7 +155,7 @@ export function ATSSimulation({ resumeId, onBack }: ATSSimulationProps) {
     return finalLevel;
   };
 
-  const seniorityLevel = resume.extractedData?.seniorityLevel
+  const seniorityLevel = resume.extractedData?.seniorityLevel && typeof resume.extractedData.seniorityLevel === 'string'
     ? (resume.extractedData.seniorityLevel.toLowerCase().includes('lead') || resume.extractedData.seniorityLevel.toLowerCase().includes('principal') ? 3
       : resume.extractedData.seniorityLevel.toLowerCase().includes('senior') ? 2
       : resume.extractedData.seniorityLevel.toLowerCase().includes('mid') ? 1

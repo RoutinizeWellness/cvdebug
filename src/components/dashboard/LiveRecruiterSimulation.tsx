@@ -264,11 +264,10 @@ export function LiveRecruiterSimulation({
     // Check for suspicious patterns that ATS can't parse
     const hasInvisibleChars = /[\u200B-\u200D\uFEFF]/.test(text);
     const hasExcessiveWhitespace = /\s{10,}/.test(text);
-    const hasSuspiciousFormatting = formatIssuesArr.some(f =>
-      f.issue.toLowerCase().includes('parse') ||
-      f.issue.toLowerCase().includes('extract') ||
-      f.issue.toLowerCase().includes('image')
-    );
+    const hasSuspiciousFormatting = formatIssuesArr.some(f => {
+      const issueStr = (f && typeof f.issue === 'string') ? f.issue.toLowerCase() : '';
+      return issueStr.includes('parse') || issueStr.includes('extract') || issueStr.includes('image');
+    });
 
     const trapCount = [hasInvisibleChars, hasExcessiveWhitespace, hasSuspiciousFormatting].filter(Boolean).length;
 
@@ -403,10 +402,10 @@ export function LiveRecruiterSimulation({
 
   // Format issues for display
   const hasFormatIssues = formatIssues.length > 0;
-  const hasLinkedInIssue = formatIssues.some(f =>
-    f.issue.toLowerCase().includes('linkedin') ||
-    f.issue.toLowerCase().includes('profile')
-  );
+  const hasLinkedInIssue = formatIssues.some(f => {
+    const issueStr = (f && typeof f.issue === 'string') ? f.issue.toLowerCase() : '';
+    return issueStr.includes('linkedin') || issueStr.includes('profile');
+  });
 
   return (
     <div className="min-h-screen transition-colors duration-300 bg-[#F8FAFC]">
