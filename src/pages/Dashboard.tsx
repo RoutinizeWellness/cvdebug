@@ -36,6 +36,7 @@ import { ProjectsView } from "@/components/dashboard/ProjectsView";
 import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
+import { RegionSelector } from "@/components/dashboard/RegionSelector";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
@@ -109,6 +110,7 @@ export default function Dashboard() {
   const [editingResumeId, setEditingResumeId] = useState<Id<"resumes"> | null>(null);
   const [previewResumeId, setPreviewResumeId] = useState<Id<"resumes"> | null>(null);
   const [showNewYearPromo, setShowNewYearPromo] = useState(false);
+  const [showRegionSelector, setShowRegionSelector] = useState(false);
 
   // Onboarding Tour
   const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
@@ -147,6 +149,8 @@ export default function Dashboard() {
     processingResumeId,
     setProcessingResumeId,
     processingStatus,
+    selectedRegion,
+    setSelectedRegion,
     fileInputRef,
     handleFileUpload,
     handleDragOver,
@@ -392,11 +396,38 @@ export default function Dashboard() {
         );
       case 'mission':
         return (
-          <MissionControl 
-            onNavigate={handleNavigate} 
-            onGenerateCoverLetter={handleGenerateCoverLetter}
-            onUpload={() => fileInputRef.current?.click()}
-          />
+          <>
+            {showRegionSelector && (
+              <div className="mb-8 bg-white border border-[#E2E8F0] rounded-xl p-6 shadow-sm">
+                <RegionSelector
+                  selectedRegion={selectedRegion}
+                  onRegionChange={setSelectedRegion}
+                />
+                <div className="flex gap-3 mt-6">
+                  <Button
+                    onClick={() => {
+                      setShowRegionSelector(false);
+                      fileInputRef.current?.click();
+                    }}
+                    className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold"
+                  >
+                    Continue to Upload
+                  </Button>
+                  <Button
+                    onClick={() => setShowRegionSelector(false)}
+                    variant="outline"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+            <MissionControl
+              onNavigate={handleNavigate}
+              onGenerateCoverLetter={handleGenerateCoverLetter}
+              onUpload={() => setShowRegionSelector(true)}
+            />
+          </>
         );
       case 'master-cvs':
         return (

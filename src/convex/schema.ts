@@ -326,6 +326,14 @@ const schema = defineSchema(
     github: v.optional(v.string()),
     website: v.optional(v.string()),
     location: v.optional(v.string()),
+    targetMarket: v.optional(v.union(
+      v.literal("USA"),
+      v.literal("UK"),
+      v.literal("DACH"), // Germany, Austria, Switzerland
+      v.literal("EU"),
+      v.literal("LATAM"),
+      v.literal("APAC")
+    )),
     // ML-extracted comprehensive data
     extractedData: v.optional(v.object({
       // Education
