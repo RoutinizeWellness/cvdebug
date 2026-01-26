@@ -819,8 +819,7 @@ export const createResumeManually = mutation({
 export const updateResumeText = mutation({
   args: {
     id: v.id("resumes"),
-    oldText: v.string(),
-    newText: v.string(),
+    newContent: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -833,13 +832,9 @@ export const updateResumeText = mutation({
       throw new ConvexError("UNAUTHORIZED");
     }
 
-    const currentText = resume.ocrText || "";
-
-    // Replace the old bullet with the new improved bullet
-    const updatedText = currentText.replace(args.oldText, args.newText);
-
+    // Update the resume with the new content
     await ctx.db.patch(args.id, {
-      ocrText: updatedText,
+      ocrText: args.newContent,
     });
 
     console.log("[updateResumeText] Resume text updated:", args.id);
