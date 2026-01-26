@@ -40,17 +40,20 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 
       // customer_id from Autumn is the Clerk tokenIdentifier (identity.subject)
       // Map product_id to plan
+      const productDebugFix = process.env.PRODUCT_SINGLE_DEBUG_FIX || "single_debug_fix";
       const productSingleScan = process.env.PRODUCT_SINGLE_SCAN || "single_scan";
       const productSprint = process.env.PRODUCT_INTERVIEW_SPRINT || "interview_sprint";
 
-      let plan: "single_scan" | "interview_sprint";
-      if (product_id === productSingleScan) {
+      let plan: "single_debug_fix" | "single_scan" | "interview_sprint";
+      if (product_id === productDebugFix) {
+        plan = "single_debug_fix";
+      } else if (product_id === productSingleScan) {
         plan = "single_scan";
       } else if (product_id === productSprint) {
         plan = "interview_sprint";
       } else {
         console.error(`[Webhook] ❌ Unknown product_id: ${product_id}`);
-        console.error(`[Webhook] Expected: ${productSingleScan} or ${productSprint}`);
+        console.error(`[Webhook] Expected: ${productDebugFix}, ${productSingleScan}, or ${productSprint}`);
         return new Response("Unknown product", { status: 400 });
       }
 
@@ -76,7 +79,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
           tokenIdentifier: customer_id,
           plan,
           transactionId: transaction_id,
-          amount: amount || (plan === "single_scan" ? 9.99 : 24.99),
+          amount: amount || (plan === "single_debug_fix" ? 5.99 : plan === "single_scan" ? 14.99 : 24.99),
         });
         console.log(`[Webhook] ✅ STEP 2 SUCCESS: Payment record stored - Admin panel will auto-sync`);
       } catch (error: any) {
@@ -120,7 +123,7 @@ export const handleWebhook = httpAction(async (ctx, request) => {
 export const storePaymentRecord = internalMutation({
   args: {
     tokenIdentifier: v.string(),
-    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")),
+    plan: v.union(v.literal("single_debug_fix"), v.literal("single_scan"), v.literal("interview_sprint")),
     transactionId: v.string(),
     amount: v.number(),
   },

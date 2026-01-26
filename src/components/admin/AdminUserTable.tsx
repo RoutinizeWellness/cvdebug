@@ -121,22 +121,50 @@ export function AdminUserTable({
                         </TableCell>
                         <TableCell>{userData.email || "No email"}</TableCell>
                         <TableCell>
-                          <Badge 
-                            variant={tier === "interview_sprint" ? "default" : tier === "single_scan" ? "outline" : "secondary"}
-                            className="capitalize"
+                          <Badge
+                            variant={
+                              tier === "interview_sprint" ? "default" :
+                              tier === "single_scan" ? "outline" :
+                              tier === "single_debug_fix" ? "outline" :
+                              "secondary"
+                            }
+                            className={
+                              tier === "single_debug_fix" ? "bg-amber-50 text-amber-700 border-amber-300" :
+                              tier === "single_scan" ? "bg-orange-50 text-orange-700 border-orange-300" :
+                              ""
+                            }
                           >
-                            {tier === "interview_sprint" ? "Interview Sprint" : tier === "single_scan" ? "Single Scan" : "Free Preview"}
+                            {tier === "interview_sprint" ? "Sprint 7 Días" :
+                             tier === "single_scan" ? "Pase 24h" :
+                             tier === "single_debug_fix" ? "Arreglo Rápido" :
+                             "Free Preview"}
                           </Badge>
                         </TableCell>
                         <TableCell>
                           {hasActiveSprint ? (
                             <Badge variant="default" className="bg-green-600">
-                              Active Sprint
+                              Sprint Activo
                             </Badge>
+                          ) : tier === "single_debug_fix" ? (
+                            userData.singleDebugFixUsed ? (
+                              <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+                                Usado
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-300">
+                                Activo
+                              </Badge>
+                            )
                           ) : tier === "single_scan" ? (
-                            <Badge variant="outline">
-                              Purchased
-                            </Badge>
+                            userData.credits > 0 ? (
+                              <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-300">
+                                Activo ({userData.credits} créditos)
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary" className="bg-gray-100 text-gray-600">
+                                Sin créditos
+                              </Badge>
+                            )
                           ) : (
                             <Badge variant="secondary">
                               Free
