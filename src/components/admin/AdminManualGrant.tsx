@@ -10,8 +10,8 @@ interface AdminManualGrantProps {
   setGrantEmail: (value: string) => void;
   grantName: string;
   setGrantName: (value: string) => void;
-  grantPlan: "single_scan" | "interview_sprint";
-  setGrantPlan: (value: "single_scan" | "interview_sprint") => void;
+  grantPlan: "single_debug_fix" | "single_scan" | "interview_sprint";
+  setGrantPlan: (value: "single_debug_fix" | "single_scan" | "interview_sprint") => void;
   handleGrantPurchase: () => void;
   isGranting: boolean;
 }
@@ -56,16 +56,17 @@ export function AdminManualGrant({
           </div>
           <div className="grid w-full md:w-[200px] gap-1.5">
             <Label htmlFor="grant-plan">Plan to Grant</Label>
-            <Select 
-              value={grantPlan} 
-              onValueChange={(val: "single_scan" | "interview_sprint") => setGrantPlan(val)}
+            <Select
+              value={grantPlan}
+              onValueChange={(val: "single_debug_fix" | "single_scan" | "interview_sprint") => setGrantPlan(val)}
             >
               <SelectTrigger id="grant-plan">
                 <SelectValue placeholder="Select plan" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="single_scan">Single Scan (€9.99)</SelectItem>
-                <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
+                <SelectItem value="single_debug_fix">Arreglo Rápido (€5.99)</SelectItem>
+                <SelectItem value="single_scan">Pase 24h (€14.99)</SelectItem>
+                <SelectItem value="interview_sprint">Sprint 7 Días (€24.99)</SelectItem>
               </SelectContent>
             </Select>
           </div>

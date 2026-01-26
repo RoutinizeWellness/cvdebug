@@ -5,12 +5,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, CreditCard, Zap, Building2, Sparkles } from "lucide-react";
 
 interface AdminPaymentTestingProps {
-  handleTestPayment: (plan: "single_scan" | "interview_sprint") => void;
+  handleTestPayment: (plan: "single_debug_fix" | "single_scan" | "interview_sprint") => void;
   isTestingPayment: string | null;
   webhookEmail: string;
   setWebhookEmail: (value: string) => void;
-  webhookPlan: "single_scan" | "interview_sprint";
-  setWebhookPlan: (value: "single_scan" | "interview_sprint") => void;
+  webhookPlan: "single_debug_fix" | "single_scan" | "interview_sprint";
+  setWebhookPlan: (value: "single_debug_fix" | "single_scan" | "interview_sprint") => void;
   handleSimulateWebhook: () => void;
   isSimulatingWebhook: boolean;
 }
@@ -41,16 +41,26 @@ export function AdminPaymentTesting({
             <p className="text-xs text-muted-foreground">
               Initiate a real checkout session to verify the payment provider connection.
             </p>
-            <div className="flex gap-2">
-              <Button 
-                onClick={() => handleTestPayment("single_scan")} 
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                onClick={() => handleTestPayment("single_debug_fix")}
+                disabled={!!isTestingPayment}
+                variant="outline"
+                size="sm"
+                className="border-amber-200 hover:bg-amber-50 hover:text-amber-700"
+              >
+                {isTestingPayment === "single_debug_fix" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Zap className="mr-2 h-3 w-3" />}
+                Test Debug Fix (€5.99)
+              </Button>
+              <Button
+                onClick={() => handleTestPayment("single_scan")}
                 disabled={!!isTestingPayment}
                 variant="outline"
                 size="sm"
                 className="border-green-200 hover:bg-green-50 hover:text-green-700"
               >
                 {isTestingPayment === "single_scan" ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : <Zap className="mr-2 h-3 w-3" />}
-                Test Single (€9.99)
+                Test 24h Pass (€14.99)
               </Button>
               <Button
                 onClick={() => handleTestPayment("interview_sprint")}
@@ -79,16 +89,17 @@ export function AdminPaymentTesting({
                   onChange={(e) => setWebhookEmail(e.target.value)}
                   className="h-8 text-xs bg-background"
                 />
-                <Select 
-                  value={webhookPlan} 
-                  onValueChange={(val: "single_scan" | "interview_sprint") => setWebhookPlan(val)}
+                <Select
+                  value={webhookPlan}
+                  onValueChange={(val: "single_debug_fix" | "single_scan" | "interview_sprint") => setWebhookPlan(val)}
                 >
-                  <SelectTrigger className="h-8 w-[130px] text-xs bg-background">
+                  <SelectTrigger className="h-8 w-[160px] text-xs bg-background">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="single_scan">Single Scan</SelectItem>
-                    <SelectItem value="interview_sprint">Interview Sprint</SelectItem>
+                    <SelectItem value="single_debug_fix">Debug Fix (€5.99)</SelectItem>
+                    <SelectItem value="single_scan">24h Pass (€14.99)</SelectItem>
+                    <SelectItem value="interview_sprint">Sprint (€24.99)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -84,7 +84,7 @@ export default function AdminPage() {
     email: "",
     firstName: "",
     lastName: "",
-    plan: "free" as "free" | "single_scan" | "interview_sprint"
+    plan: "free" as "free" | "single_debug_fix" | "single_scan" | "interview_sprint"
   });
   const [isCreatingUser, setIsCreatingUser] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
@@ -93,10 +93,10 @@ export default function AdminPage() {
   const [historyUser, setHistoryUser] = useState<{id: string, name: string, email?: string} | null>(null);
   const [grantEmail, setGrantEmail] = useState("");
   const [grantName, setGrantName] = useState("");
-  const [grantPlan, setGrantPlan] = useState<"single_scan" | "interview_sprint">("single_scan");
+  const [grantPlan, setGrantPlan] = useState<"single_debug_fix" | "single_scan" | "interview_sprint">("single_scan");
   const [isGranting, setIsGranting] = useState(false);
   const [webhookEmail, setWebhookEmail] = useState("");
-  const [webhookPlan, setWebhookPlan] = useState<"single_scan" | "interview_sprint">("single_scan");
+  const [webhookPlan, setWebhookPlan] = useState<"single_debug_fix" | "single_scan" | "interview_sprint">("single_scan");
   const [isSimulatingWebhook, setIsSimulatingWebhook] = useState(false);
   const [bulkText, setBulkText] = useState("");
   const [isBulkProcessing, setIsBulkProcessing] = useState(false);
@@ -129,7 +129,7 @@ export default function AdminPage() {
     try {
       await updateUserPlan({
         userId: editingUser._id as Id<"users">,
-        plan: editForm.plan as "free" | "single_scan" | "interview_sprint",
+        plan: editForm.plan as "free" | "single_debug_fix" | "single_scan" | "interview_sprint",
         credits: Number(editForm.credits)
       });
       toast.success("User updated successfully");
@@ -234,7 +234,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleTestPayment = async (plan: "single_scan" | "interview_sprint") => {
+  const handleTestPayment = async (plan: "single_debug_fix" | "single_scan" | "interview_sprint") => {
     setIsTestingPayment(plan);
     try {
       const url = await createCheckoutSession({
@@ -901,8 +901,9 @@ export default function AdminPage() {
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <SelectItem value="free">Free</SelectItem>
-                  <SelectItem value="single_scan">Single Scan (€4.99)</SelectItem>
-                  <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
+                  <SelectItem value="single_debug_fix">Arreglo Rápido (€5.99)</SelectItem>
+                  <SelectItem value="single_scan">Pase 24h (€14.99)</SelectItem>
+                  <SelectItem value="interview_sprint">Sprint 7 Días (€24.99)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -999,8 +1000,9 @@ export default function AdminPage() {
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <SelectItem value="free">Free Preview</SelectItem>
-                  <SelectItem value="single_scan">Single Scan (€4.99)</SelectItem>
-                  <SelectItem value="interview_sprint">Interview Sprint (€24.99)</SelectItem>
+                  <SelectItem value="single_debug_fix">Arreglo Rápido (€5.99)</SelectItem>
+                  <SelectItem value="single_scan">Pase 24h (€14.99)</SelectItem>
+                  <SelectItem value="interview_sprint">Sprint 7 Días (€24.99)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
