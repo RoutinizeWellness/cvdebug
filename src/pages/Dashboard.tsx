@@ -462,7 +462,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Transforma viñetas débiles en logros impactantes usando la fórmula Google XYZ
+                        Transform weak bullets into impactful achievements using Google's XYZ formula
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -489,7 +489,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Cartas de presentación potenciadas con IA y optimización de keywords
+                        AI-powered cover letters with keyword optimization
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -516,7 +516,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Optimiza tu perfil para reclutadores
+                        Optimize your profile to get noticed by recruiters
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -539,19 +539,19 @@ export default function Dashboard() {
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
                         {t.dashboard.keywordSniper}
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
-                          Destacado
+                          Featured
                         </span>
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Reescritura de viñetas con IA, inyección de keywords y seguimiento en vivo
+                        AI bullet rewriting, keyword injection, and live tracking
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                       <button className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
-                        Abrir Herramienta
+                        Open Tool
                       </button>
                     </div>
                   </div>
