@@ -3,9 +3,11 @@ import { CheckCircle2, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { getRegionalPrice, getCurrentRegion } from "@/lib/locale";
+import { useI18n } from "@/contexts/I18nContext";
 
 export function PricingSection() {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [prices, setPrices] = useState({
     singleDebugFix: "€5.99",
     single: "€14.99",
@@ -39,8 +41,8 @@ export function PricingSection() {
 
       <div className="relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">Simple Pricing</h2>
-          <p className="text-xl text-slate-400">Pay once. Fix forever. No subscriptions.</p>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">{t.pricingLanding.title}</h2>
+          <p className="text-xl text-slate-400">{t.pricingLanding.subtitle}</p>
           {prices.discount && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

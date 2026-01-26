@@ -40,6 +40,55 @@ export interface Translation {
       feature3Desc: string;
     };
   };
+  pricingLanding: {
+    title: string;
+    subtitle: string;
+    // Free tier
+    freeTitle: string;
+    freeSubtitle: string;
+    freeScanButton: string;
+    freeFeature1: string;
+    freeFeature2: string;
+    freeFeature3: string;
+    freeFeature4: string;
+    freeGuarantee: string;
+    // Single debug fix (€5.99)
+    singleDebugBadge: string;
+    singleDebugTitle: string;
+    singleDebugSubtitle: string;
+    singleDebugButton: string;
+    singleDebugFeature1: string;
+    singleDebugFeature2: string;
+    singleDebugFeature3: string;
+    singleDebugFeature4: string;
+    singleDebugFeature5: string;
+    singleDebugGuarantee: string;
+    // 24h Pass (€14.99)
+    pass24hBadge: string;
+    pass24hTitle: string;
+    pass24hSubtitle: string;
+    pass24hButton: string;
+    pass24hFeature1: string;
+    pass24hFeature2: string;
+    pass24hFeature3: string;
+    pass24hFeature4: string;
+    pass24hFeature5: string;
+    pass24hFeature6: string;
+    pass24hGuarantee: string;
+    // 7 Day Sprint (€24.99)
+    sprint7dBadge: string;
+    sprint7dTitle: string;
+    sprint7dSubtitle: string;
+    sprint7dBeforePrice: string;
+    sprint7dButton: string;
+    sprint7dFeature1: string;
+    sprint7dFeature2: string;
+    sprint7dFeature3: string;
+    sprint7dFeature4: string;
+    sprint7dFeature5: string;
+    sprint7dFeature6: string;
+    sprint7dGuarantee: string;
+  };
   pricingDialog: {
     quickFix: string;
     pass24h: string;
@@ -1570,6 +1619,55 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3Desc: 'Integrate ATS scanning directly into your recruitment workflow',
       },
     },
+    pricingLanding: {
+      title: 'Simple Pricing',
+      subtitle: 'Pay once. Fix forever. No subscriptions.',
+      // Free tier
+      freeTitle: 'FREE Debug',
+      freeSubtitle: 'Discover which keywords the robot DOESN\'T see',
+      freeScanButton: 'Scan for Free',
+      freeFeature1: 'Invisibility Detection (2 keywords)',
+      freeFeature2: 'Global ATS Score',
+      freeFeature3: 'Robot View (locked)',
+      freeFeature4: 'Preview Seniority Match',
+      freeGuarantee: '✓ READABLE TEMPLATE GUARANTEED',
+      // Single debug fix (€5.99)
+      singleDebugBadge: 'FIX IT ONCE',
+      singleDebugTitle: 'Quick Fix',
+      singleDebugSubtitle: 'Fix your CV for the price of a coffee',
+      singleDebugButton: 'Fix My CV →',
+      singleDebugFeature1: '1 Complete Deep Scan',
+      singleDebugFeature2: 'Robot View Unlocked',
+      singleDebugFeature3: '1 AI Optimization (Rewrite)',
+      singleDebugFeature4: 'Auto-Keyword Injection',
+      singleDebugFeature5: 'Export Optimized CV',
+      singleDebugGuarantee: '✓ READABLE TEMPLATE GUARANTEED',
+      // 24h Pass (€14.99)
+      pass24hBadge: 'HOT FIX / URGENT',
+      pass24hTitle: '24h Pass',
+      pass24hSubtitle: 'Instant Debug for tomorrow\'s interview',
+      pass24hButton: '24h Access →',
+      pass24hFeature1: 'Unlimited Scans (24h)',
+      pass24hFeature2: 'Full Robot X-Ray View',
+      pass24hFeature3: '[ERROR] + [WARN] + Fixes Tags',
+      pass24hFeature4: 'Keyword Gap Detector',
+      pass24hFeature5: 'Cover Letter Generator',
+      pass24hFeature6: '100% ATS-Readable Template',
+      pass24hGuarantee: '✓ GUARANTEED',
+      // 7 Day Sprint (€24.99)
+      sprint7dBadge: 'INTENSIVE / RECOMMENDED',
+      sprint7dTitle: '7-Day Sprint',
+      sprint7dSubtitle: 'Beast Mode. Full 7-day attack',
+      sprint7dBeforePrice: '€49.99',
+      sprint7dButton: 'Start 7-Day Sprint →',
+      sprint7dFeature1: 'Unlimited Scans (7 days)',
+      sprint7dFeature2: 'Industry Selector (FAANG/Finance)',
+      sprint7dFeature3: 'Bullet Tone Elevator (AI Rewrite)',
+      sprint7dFeature4: 'Interview Battle Plan',
+      sprint7dFeature5: 'DM Scripts for Recruiters',
+      sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
+      sprint7dGuarantee: '✓ 100% READABLE TEMPLATE GUARANTEED',
+    },
     pricingDialog: {
       quickFix: 'Quick Fix',
       pass24h: '24h Pass',
@@ -3049,6 +3147,55 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'Acceso a API',
         feature3Desc: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
       },
+    },
+    pricingLanding: {
+      title: 'Precios Simples',
+      subtitle: 'Paga una vez. Arregla para siempre. Sin suscripciones.',
+      // Free tier
+      freeTitle: 'FREE Debug',
+      freeSubtitle: 'Descubre qué keywords NO ve el robot',
+      freeScanButton: 'Escanear Gratis',
+      freeFeature1: 'Detección de Invisibilidad (2 keywords)',
+      freeFeature2: 'Global ATS Score',
+      freeFeature3: 'Vista Robot (bloqueada)',
+      freeFeature4: 'Preview Seniority Match',
+      freeGuarantee: '✓ PLANTILLA LEGIBLE GARANTIZADA',
+      // Single debug fix (€5.99)
+      singleDebugBadge: 'ARREGLA DE UNA VEZ',
+      singleDebugTitle: 'Arreglo Rápido',
+      singleDebugSubtitle: 'Arregla tu CV por el precio de un café',
+      singleDebugButton: 'Arreglar Mi CV →',
+      singleDebugFeature1: '1 Escaneo Profundo Completo',
+      singleDebugFeature2: 'Vista Robot Desbloqueada',
+      singleDebugFeature3: '1 Optimización AI (Rewrite)',
+      singleDebugFeature4: 'Auto-Inyección Keywords',
+      singleDebugFeature5: 'Exportar CV Optimizado',
+      singleDebugGuarantee: '✓ PLANTILLA LEGIBLE GARANTIZADA',
+      // 24h Pass (€14.99)
+      pass24hBadge: 'HOT FIX / URGENTE',
+      pass24hTitle: 'Pase 24h',
+      pass24hSubtitle: 'Debug Inmediato para entrevista mañana',
+      pass24hButton: 'Acceso 24h →',
+      pass24hFeature1: 'Scans Ilimitados (24h)',
+      pass24hFeature2: 'Vista X-Ray Robot Completa',
+      pass24hFeature3: 'Etiquetas [ERROR] + [WARN] + Fixes',
+      pass24hFeature4: 'Detector Gap de Keywords',
+      pass24hFeature5: 'Generador de Cover Letter',
+      pass24hFeature6: 'Plantilla 100% Legible por ATS',
+      pass24hGuarantee: '✓ GARANTIZADA',
+      // 7 Day Sprint (€24.99)
+      sprint7dBadge: 'INTENSIVO / RECOMENDADO',
+      sprint7dTitle: 'Sprint 7 Días',
+      sprint7dSubtitle: 'Modo Bestia. Ataque total de 7 días',
+      sprint7dBeforePrice: '€49.99',
+      sprint7dButton: 'Empezar Sprint 7 Días →',
+      sprint7dFeature1: 'Scans Ilimitados (7 días)',
+      sprint7dFeature2: 'Selector Industria (FAANG/Finanzas)',
+      sprint7dFeature3: 'Elevador Tono Viñetas (AI Rewrite)',
+      sprint7dFeature4: 'Battle Plan Entrevistas',
+      sprint7dFeature5: 'Guiones de DM para Recruiters',
+      sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
+      sprint7dGuarantee: '✓ PLANTILLA 100% LEGIBLE GARANTIZADA',
     },
     pricingDialog: {
       quickFix: 'Solución Rápida',
