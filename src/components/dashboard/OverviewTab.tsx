@@ -32,31 +32,84 @@ export function OverviewTab({ resume, user, isPaidUser, onUpgrade, onNavigate }:
   // Calculate quick wins from available data
   const quickWins = [];
 
-  if (resume?.formatIssues && resume.formatIssues.length > 0) {
+  // Format issues
+  const formatIssuesCount = Array.isArray(resume?.formatIssues) ? resume.formatIssues.length : 0;
+  if (formatIssuesCount > 0) {
     quickWins.push({
       title: "Fix Format Issues",
-      description: `${resume.formatIssues.length} formatting problems detected`,
+      description: `${formatIssuesCount} formatting ${formatIssuesCount === 1 ? 'problem' : 'problems'} detected`,
       impact: "high",
       icon: AlertCircle
     });
   }
 
-  if (resume?.missingKeywords && resume.missingKeywords.length > 0) {
+  // Missing keywords
+  const missingKeywordsCount = Array.isArray(resume?.missingKeywords) ? resume.missingKeywords.length : 0;
+  if (missingKeywordsCount > 0) {
     quickWins.push({
       title: "Add Missing Keywords",
-      description: `${resume.missingKeywords.length} important keywords missing`,
+      description: `${missingKeywordsCount} important ${missingKeywordsCount === 1 ? 'keyword' : 'keywords'} missing`,
       impact: "high",
       icon: Target
     });
   }
 
-  if (resume?.fluffPhrases && resume.fluffPhrases.length > 0) {
+  // Fluff phrases
+  const fluffPhrasesCount = Array.isArray(resume?.fluffPhrases) ? resume.fluffPhrases.length : 0;
+  if (fluffPhrasesCount > 0) {
     quickWins.push({
       title: "Remove Weak Language",
-      description: `${resume.fluffPhrases.length} weak phrases detected`,
+      description: `${fluffPhrasesCount} weak ${fluffPhrasesCount === 1 ? 'phrase' : 'phrases'} detected`,
       impact: "medium",
       icon: Zap
     });
+  }
+
+  // Add quantifiable metrics if missing
+  if (resume?.score && resume.score < 70) {
+    const hasMetrics = resume?.ocrText?.match(/\d+%|\d+\+|\$\d+/g);
+    if (!hasMetrics || hasMetrics.length < 3) {
+      quickWins.push({
+        title: "Add Quantifiable Metrics",
+        description: "Include numbers, percentages, and measurable achievements",
+        impact: "high",
+        icon: TrendingUp
+      });
+    }
+  }
+
+  // Add action verbs if missing
+  if (resume?.weakBullets && resume.weakBullets.length > 0) {
+    quickWins.push({
+      title: "Strengthen Action Verbs",
+      description: `${resume.weakBullets.length} bullets need stronger action verbs`,
+      impact: "medium",
+      icon: CheckCircle2
+    });
+  }
+
+  // Fallback: if no quick wins, provide generic but helpful advice
+  if (quickWins.length === 0 && resume?.status === 'completed') {
+    quickWins.push(
+      {
+        title: "Upload Resume for Analysis",
+        description: "Get AI-powered insights and recommendations",
+        impact: "high",
+        icon: AlertCircle
+      },
+      {
+        title: "Add Job Description",
+        description: "Match your resume to specific job requirements",
+        impact: "high",
+        icon: Target
+      },
+      {
+        title: "Use ML Resume Rewrite",
+        description: "Transform your resume with advanced algorithms",
+        impact: "high",
+        icon: Zap
+      }
+    );
   }
 
   // Limit to top 3 quick wins

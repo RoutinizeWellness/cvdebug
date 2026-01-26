@@ -154,10 +154,11 @@ export function InlineResumeEditor({
 
       for (let i = 0; i < lines.length; i++) {
         // Look for skills section or bullets
-        if (lines[i].toLowerCase().includes('skills') ||
-            lines[i].toLowerCase().includes('technologies') ||
-            lines[i].trim().startsWith('•') ||
-            lines[i].trim().startsWith('-')) {
+        const lineLower = (lines[i] || '').toLowerCase();
+        if (lineLower.includes('skills') ||
+            lineLower.includes('technologies') ||
+            (lines[i] || '').trim().startsWith('•') ||
+            (lines[i] || '').trim().startsWith('-')) {
           // Insert after this line
           lines.splice(i + 1, 0, `• ${keyword}`);
           inserted = true;
@@ -182,7 +183,8 @@ export function InlineResumeEditor({
 
     // 1. Fix date formats
     formatIssues.slice(0, 3).forEach(issue => {
-      if (issue.issue.toLowerCase().includes('date')) {
+      const issueText = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
+      if (issueText.includes('date')) {
         const before = newContent;
         newContent = newContent.replace(/(\d{4})\s*-\s*(\d{4})/g, '$1 - $2');
         newContent = newContent.replace(/(\w{3})\.\s*(\d{4})/g, '$1 $2');
