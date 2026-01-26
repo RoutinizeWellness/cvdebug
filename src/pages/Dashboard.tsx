@@ -127,15 +127,18 @@ export default function Dashboard() {
   const [showExperienceOnboarding, setShowExperienceOnboarding] = useState(false);
 
   useEffect(() => {
-    // Show experience level onboarding for users without it set
-    // Wait 1 second after dashboard loads to avoid overwhelming the user
-    if (currentUser && !currentUser.experienceLevel) {
+    // Show experience level onboarding ONLY AFTER main tour is complete
+    // AND user doesn't have experience level set
+    const onboardingCompleted = localStorage.getItem("onboarding_completed");
+
+    // Only show if: tour is done, experience level not set, and tour is not currently showing
+    if (currentUser && !currentUser.experienceLevel && onboardingCompleted === "true" && !showOnboarding) {
       const timer = setTimeout(() => {
         setShowExperienceOnboarding(true);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [currentUser]);
+  }, [currentUser, showOnboarding]);
 
   const {
     isUploading,
