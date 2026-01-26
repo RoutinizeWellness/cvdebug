@@ -1,18 +1,18 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Transparent background for better contrast -->
-  <rect width="32" height="32" fill="transparent"/>
+  <!-- Dark background for better visibility in browser tabs -->
+  <rect width="32" height="32" fill="#1E293B"/>
 
-  <!-- Bug/Debug icon with CV document - LARGER, fills almost entire space -->
-  <rect x="1" y="0.5" width="30" height="31" rx="2.5" fill="#1E293B"/>
+  <!-- Bug/Debug icon with CV document - FILLS ENTIRE SPACE -->
+  <rect x="2" y="2" width="28" height="28" rx="2" fill="#334155"/>
 
-  <!-- Document lines - LARGER -->
-  <line x1="5" y1="7" x2="27" y2="7" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
-  <line x1="5" y1="12" x2="27" y2="12" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
-  <line x1="5" y1="17" x2="27" y2="17" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
-  <line x1="5" y1="22" x2="20" y2="22" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95"/>
+  <!-- Document lines - LARGER and MORE VISIBLE -->
+  <line x1="5" y1="8" x2="27" y2="8" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+  <line x1="5" y1="13" x2="27" y2="13" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+  <line x1="5" y1="18" x2="27" y2="18" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+  <line x1="5" y1="23" x2="20" y2="23" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
 
-  <!-- Bug badge - LARGER -->
-  <circle cx="24.5" cy="26.5" r="7.5" fill="#EF4444"/>
-  <line x1="24.5" y1="21" x2="24.5" y2="32" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
-  <line x1="18.5" y1="26.5" x2="30.5" y2="26.5" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- Bug badge - LARGER and more prominent -->
+  <circle cx="24" cy="27" r="6.5" fill="#EF4444"/>
+  <line x1="24" y1="22" x2="24" y2="32" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="19" y1="27" x2="29" y2="27" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
 </svg>
