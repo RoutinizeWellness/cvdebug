@@ -166,7 +166,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           title: fileName,
           mimeType: mimeType,
           ...(trimmedJobDesc && { jobDescription: trimmedJobDesc }),
-          targetMarket: selectedRegion,
         });
         console.log("[Upload] ✅ createResume succeeded, resumeId:", resumeId);
       } catch (createError: any) {

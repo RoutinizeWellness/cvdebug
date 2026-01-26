@@ -74,6 +74,7 @@ export interface Translation {
     pass24hFeature4: string;
     pass24hFeature5: string;
     pass24hFeature6: string;
+    pass24hFeature7: string;
     pass24hGuarantee: string;
     // 7 Day Sprint (€24.99)
     sprint7dBadge: string;
@@ -87,6 +88,7 @@ export interface Translation {
     sprint7dFeature4: string;
     sprint7dFeature5: string;
     sprint7dFeature6: string;
+    sprint7dFeature7: string;
     sprint7dGuarantee: string;
   };
   pricingDialog: {
@@ -1653,12 +1655,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24hFeature4: 'Keyword Gap Detector',
       pass24hFeature5: 'Cover Letter Generator',
       pass24hFeature6: '100% ATS-Readable Template',
+      pass24hFeature7: 'Unlimited Cover Letter Generator',
       pass24hGuarantee: '✓ GUARANTEED',
       // 7 Day Sprint (€24.99)
       sprint7dBadge: 'INTENSIVE / RECOMMENDED',
       sprint7dTitle: '7-Day Sprint',
       sprint7dSubtitle: 'Beast Mode. Full 7-day attack',
-      sprint7dBeforePrice: '€59.99',
+      sprint7dBeforePrice: '€49.99',
       sprint7dButton: 'Start 7-Day Sprint →',
       sprint7dFeature1: 'Unlimited Scans (7 days)',
       sprint7dFeature2: 'Industry Selector (FAANG/Finance)',
@@ -3187,7 +3190,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dBadge: 'INTENSIVO / RECOMENDADO',
       sprint7dTitle: 'Sprint 7 Días',
       sprint7dSubtitle: 'Modo Bestia. Ataque total de 7 días',
-      sprint7dBeforePrice: '€59.99',
+      sprint7dBeforePrice: '€49.99',
       sprint7dButton: 'Empezar Sprint 7 Días →',
       sprint7dFeature1: 'Scans Ilimitados (7 días)',
       sprint7dFeature2: 'Selector Industria (FAANG/Finanzas)',
@@ -4704,7 +4707,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dBadge: 'INTENSIF / RECOMMANDÉ',
       sprint7dTitle: 'Sprint 7 Jours',
       sprint7dSubtitle: 'Mode Bête. Attaque totale de 7 jours',
-      sprint7dBeforePrice: '€59.99',
+      sprint7dBeforePrice: '€49.99',
       sprint7dButton: 'Commencer Sprint 7 Jours →',
       sprint7dFeature1: 'Scans Illimités (7 jours)',
       sprint7dFeature2: 'Sélecteur d\'Industrie (FAANG/Finance)',
@@ -6220,7 +6223,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dBadge: 'INTENSIV / EMPFOHLEN',
       sprint7dTitle: '7-Tage-Sprint',
       sprint7dSubtitle: 'Bestien-Modus. Vollständiger 7-Tage-Angriff',
-      sprint7dBeforePrice: '€59.99',
+      sprint7dBeforePrice: '€49.99',
       sprint7dButton: '7-Tage-Sprint Starten →',
       sprint7dFeature1: 'Unbegrenzte Scans (7 Tage)',
       sprint7dFeature2: 'Branchen-Auswahl (FAANG/Finanzen)',
@@ -7736,7 +7739,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dBadge: 'INTENSIVO / RECOMENDADO',
       sprint7dTitle: 'Sprint 7 Dias',
       sprint7dSubtitle: 'Modo Fera. Ataque total de 7 dias',
-      sprint7dBeforePrice: '€59.99',
+      sprint7dBeforePrice: '€49.99',
       sprint7dButton: 'Começar Sprint 7 Dias →',
       sprint7dFeature1: 'Scans Ilimitados (7 dias)',
       sprint7dFeature2: 'Seletor de Indústria (FAANG/Finanças)',
