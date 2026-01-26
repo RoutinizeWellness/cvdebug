@@ -80,7 +80,7 @@ export default function TermsConditions() {
               <ul className="list-disc list-inside space-y-2 text-[#475569] ml-4">
                 <li>Single Scan purchases are non-refundable once the analysis is completed</li>
                 <li>Interview Sprint subscriptions may be refunded within 7 days of initial purchase if no scans have been performed</li>
-                <li>Refund requests must be submitted to support@cvdebug.com</li>
+                <li>Refund requests must be submitted to cvdebug@outlook.com</li>
                 <li>We reserve the right to refuse refunds for abuse or violation of terms</li>
               </ul>
             </section>
@@ -157,7 +157,7 @@ export default function TermsConditions() {
             <section>
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">14. Dispute Resolution</h2>
               <p className="text-[#475569] leading-relaxed">
-                Before filing a claim, you agree to try to resolve the dispute informally by contacting us at support@cvdebug.com. If the dispute is not resolved within 30 days, either party may initiate formal proceedings.
+                Before filing a claim, you agree to try to resolve the dispute informally by contacting us at cvdebug@outlook.com. If the dispute is not resolved within 30 days, either party may initiate formal proceedings.
               </p>
             </section>
 
@@ -174,7 +174,7 @@ export default function TermsConditions() {
                 If you have any questions about these Terms and Conditions, please contact us:
               </p>
               <div className="p-4 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg">
-                <p className="text-[#0F172A]">Email: support@cvdebug.com</p>
+                <p className="text-[#0F172A]">Email: cvdebug@outlook.com</p>
                 <p className="text-[#0F172A]">Legal: legal@cvdebug.com</p>
                 <p className="text-[#0F172A]">Address: CVDebug Inc., 123 Tech Street, San Francisco, CA 94105</p>
               </div>

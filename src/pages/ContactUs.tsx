@@ -49,7 +49,7 @@ export default function ContactUs() {
       icon: Mail,
       title: "Email Support",
       description: "Send us an email and we'll respond within 24 hours",
-      detail: "support@cvdebug.com",
+      detail: "cvdebug@outlook.com",
       color: "blue"
     },
     {

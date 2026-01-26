@@ -122,7 +122,8 @@ export function ResumeDetailDialog({
   const applyRewriteToResume = useMutation(apiAny.resumes.applyRewriteToResume);
 
   const user = useQuery(apiAny.users.currentUser);
-  const isFree = user?.subscriptionTier === "free";
+  const isPremium = checkIsPaidUser(user?.subscriptionTier);
+  const isFree = !isPremium;
 
   const allResumes = useQuery(apiAny.resumes.getResumes, {});
   const displayResume = allResumes?.find((r: any) => r._id === resumeId);
@@ -1493,8 +1494,8 @@ Software Engineer | StartupXYZ
                         // Calculate image traps (check for images in resume)
                         const imageTraps: "None Detected" | "Detected" | "Critical" = "None Detected";
 
-                        // Calculate ATS score (based on confidence and signals)
-                        const atsScore = Math.min(95, Math.round(confidenceScore * 0.7 + detectedSignals.length * 5));
+                        // Use the real ATS score from the resume
+                        const atsScore = displayResume?.score || 0;
 
                         return (
                           <SeniorityMatchAnalysis
@@ -1512,27 +1513,6 @@ Software Engineer | StartupXYZ
                         );
                       })()}
 
-                      {/* Quick Stats */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">Readability</div>
-                          <div className="text-2xl font-bold text-green-700">
-                            {displayResume?.ocrText && displayResume.ocrText.length > 100 ? '✓ Good' : '✗ Poor'}
-                          </div>
-                        </div>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">Image Traps</div>
-                          <div className="text-2xl font-bold text-green-700">
-                            {displayResume?.hasImageTrap ? '⚠️ Found' : '✓ None'}
-                          </div>
-                        </div>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                          <div className="text-[#22C55E] text-xs font-mono uppercase mb-1">ATS Score</div>
-                          <div className="text-2xl font-bold text-green-700">
-                            {displayResume?.score || 0}/100
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     )}
                   </div>

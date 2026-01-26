@@ -122,7 +122,7 @@ export default function OnboardingLayout({
       <div className="w-full max-w-5xl flex justify-between items-center mb-10">
         <Logo showText={true} />
         <button
-          onClick={() => window.open('mailto:support@cvdebug.com?subject=Help%20Request', '_blank')}
+          onClick={() => window.open('mailto:cvdebug@outlook.com?subject=Help%20Request', '_blank')}
           className="text-sm text-[#64748B] hover:text-[#0F172A] transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-[#F8FAFC]"
         >
           <HelpCircle className="h-4 w-4" />

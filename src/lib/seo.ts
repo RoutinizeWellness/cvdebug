@@ -187,7 +187,7 @@ function addOrganizationSchema(): void {
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Customer Support',
-      email: 'support@cvdebug.com',
+      email: 'cvdebug@outlook.com',
       availableLanguage: ['English', 'Spanish', 'French', 'German', 'Portuguese']
     }
   };
