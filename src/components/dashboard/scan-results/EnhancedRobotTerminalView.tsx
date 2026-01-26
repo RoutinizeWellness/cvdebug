@@ -862,9 +862,9 @@ export function EnhancedRobotTerminalView({
         <div className="text-[#94a3b8] space-y-0.5 relative z-10">
           <AnimatePresence mode="popLayout">
             {displayedLogs.map((log, index) => {
-              // For free users: show first 3 lines clearly, blur rest
-              const shouldBlur = isFree && index >= 3;
-              const isPreviewLine = isFree && index < 3;
+              // For free users: show first 10 lines clearly, blur rest
+              const shouldBlur = isFree && index >= 10;
+              const isPreviewLine = isFree && index < 10;
 
               return (
               <motion.div
@@ -925,8 +925,8 @@ export function EnhancedRobotTerminalView({
             })}
           </AnimatePresence>
 
-          {/* FREE USER UPGRADE CTA - Shows after 3 preview lines */}
-          {isFree && displayedLogs.length > 3 && (
+          {/* FREE USER UPGRADE CTA - Shows after 10 preview lines */}
+          {isFree && displayedLogs.length > 10 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -942,9 +942,9 @@ export function EnhancedRobotTerminalView({
                   </h3>
                 </div>
                 <p className="text-sm text-white/80 max-w-md mx-auto leading-relaxed">
-                  You're seeing <span className="font-bold text-[#22C55E]">3 preview lines</span>.
+                  You're seeing <span className="font-bold text-[#22C55E]">10 preview lines</span>.
                   Get the <span className="font-bold text-white">complete ATS breakdown</span> with{" "}
-                  <span className="font-black text-[#22C55E]">{displayedLogs.length - 3}+ more critical insights</span> for just <span className="font-black text-white">$5.99</span>.
+                  <span className="font-black text-[#22C55E]">{displayedLogs.length - 10}+ more critical insights</span> for just <span className="font-black text-white">$5.99</span>.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
                   <motion.button

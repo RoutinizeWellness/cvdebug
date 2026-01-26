@@ -99,6 +99,7 @@ import type * as applications from "../applications.js";
 import type * as auth from "../auth.js";
 import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as autoTune from "../autoTune.js";
+import type * as battlePlanActions from "../battlePlanActions.js";
 import type * as billing from "../billing.js";
 import type * as billingActions from "../billingActions.js";
 import type * as blog from "../blog.js";
@@ -259,6 +260,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   "auth/emailOtp": typeof auth_emailOtp;
   autoTune: typeof autoTune;
+  battlePlanActions: typeof battlePlanActions;
   billing: typeof billing;
   billingActions: typeof billingActions;
   blog: typeof blog;
