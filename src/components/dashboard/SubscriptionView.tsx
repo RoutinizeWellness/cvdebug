@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useCurrency } from "@/hooks/use-currency";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
 
@@ -11,6 +12,7 @@ export function SubscriptionView() {
   const user = useQuery(apiAny.users.currentUser);
   const [timeRemaining, setTimeRemaining] = useState({ days: 4, hours: 12, minutes: 30 });
   const { formatPrice } = useCurrency();
+  const { t } = useI18n();
 
   // Calculate sprint countdown
   useEffect(() => {
@@ -60,10 +62,10 @@ export function SubscriptionView() {
               onClick={() => window.history.back()}
               className="text-[#64748B] hover:text-[#0F172A] transition-colors"
             >
-              Ajustes
+              {t.sidebar.settings}
             </button>
             <span className="material-symbols-outlined text-[#475569] text-[16px]">chevron_right</span>
-            <span className="text-[#0F172A] font-medium">Suscripción</span>
+            <span className="text-[#0F172A] font-medium">{t.modals.subscription.title}</span>
           </div>
           <div className="flex items-center gap-4">
             <button className="p-2 text-[#64748B] hover:text-[#0F172A] transition-colors">
@@ -82,9 +84,9 @@ export function SubscriptionView() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-2"
           >
-            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">Gestión de Suscripción</h2>
+            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">{t.modals.subscription.title}</h2>
             <p className="text-[#64748B] max-w-2xl text-lg">
-              Administra tu plan actual, detalles de facturación, y desbloquea sprints premium de preparación para entrevistas.
+              {t.locale === 'es' ? 'Administra tu plan actual, detalles de facturación, y desbloquea sprints premium de preparación para entrevistas.' : 'Manage your current plan, billing details, and unlock premium interview preparation sprints.'}
             </p>
           </motion.div>
 
@@ -103,14 +105,14 @@ export function SubscriptionView() {
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] px-3 py-1.5 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
-                  <span className="text-xs font-bold uppercase tracking-wide">Plan Actual</span>
+                  <span className="text-xs font-bold uppercase tracking-wide">{t.modals.subscription.tier}</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                   </span>
-                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">Activo</span>
+                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">{t.locale === 'es' ? 'Activo' : 'Active'}</span>
                 </div>
               </div>
 
@@ -118,59 +120,69 @@ export function SubscriptionView() {
                 <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-2 flex items-center gap-2 flex-wrap">
                   {isFreeTier && (
                     <>
-                      <span>Vista Previa Gratis</span>
+                      <span>{t.pricingLanding.freeTitle}</span>
                       <span className="material-symbols-outlined text-[#64748B] text-[28px]">preview</span>
                     </>
                   )}
                   {isSingleDebugFix && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] to-[#D97706]">Single Debug Fix</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] to-[#D97706]">{t.pricingLanding.singleDebugTitle}</span>
                       <span className="material-symbols-outlined text-[#F59E0B] text-[28px]">build</span>
                     </>
                   )}
                   {isSingleScan && (
                     <>
-                      <span>Escaneo Único</span>
+                      <span>{t.pricingLanding.pass24hTitle}</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">bolt</span>
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Sprint de Entrevistas</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">{t.pricingLanding.sprint7dTitle}</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">rocket_launch</span>
                     </>
                   )}
                   {isIterationPass && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Sprint de 7 Días</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">{t.pricingLanding.sprint7dTitle}</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">all_inclusive</span>
                     </>
                   )}
                 </h3>
                 <p className="text-[#475569] text-base leading-relaxed">
-                  {isFreeTier && "Escaneo básico gratuito para ver dónde estás. Mejora para desbloquear análisis completo y funciones premium."}
+                  {isFreeTier && t.pricingLanding.freeSubtitle}
                   {isSingleDebugFix && (
                     <>
-                      Tienes <span className="text-[#F59E0B] font-bold">1 escaneo profundo completo</span> con 1 reescritura IA incluida. Perfecto para una corrección rápida del CV.
+                      {t.locale === 'es' ? 'Tienes ' : 'You have '}
+                      <span className="text-[#F59E0B] font-bold">{t.locale === 'es' ? '1 escaneo profundo completo' : '1 complete deep scan'}</span>
+                      {t.locale === 'es' ? ' con 1 reescritura IA incluida. Perfecto para una corrección rápida del CV.' : ' with 1 included AI rewrite. Perfect for a quick CV fix.'}
                     </>
                   )}
                   {isSingleScan && (
                     <>
-                      Tienes <span className="text-[#1E293B] font-bold">{currentCredits} crédito de escaneo</span> restante. Incluye re-escaneos ilimitados por 24 horas.
+                      {t.locale === 'es' ? 'Tienes ' : 'You have '}
+                      <span className="text-[#1E293B] font-bold">{currentCredits} {t.locale === 'es' ? 'crédito de escaneo' : 'scan credit'}</span>
+                      {t.locale === 'es' ? ' restante. Incluye re-escaneos ilimitados por 24 horas.' : ' remaining. Includes unlimited re-scans for 24 hours.'}
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      Tienes <span className="text-[#1E293B] font-bold">escaneos ilimitados</span> por{" "}
-                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} días</span>. Expira el{" "}
-                      <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
+                      {t.locale === 'es' ? 'Tienes ' : 'You have '}
+                      <span className="text-[#1E293B] font-bold">{t.locale === 'es' ? 'escaneos ilimitados' : 'unlimited scans'}</span>
+                      {t.locale === 'es' ? ' por ' : ' for '}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} {t.locale === 'es' ? 'días' : 'days'}</span>.
+                      {t.locale === 'es' ? ' Expira el ' : ' Expires on '}
+                      <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString(t.locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
                   {isIterationPass && (
                     <>
-                      Tienes <span className="text-[#1E293B] font-bold">escaneos ilimitados</span> por{" "}
-                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} días</span>. Expira el{" "}
-                      <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
+                      {t.locale === 'es' ? 'Tienes ' : 'You have '}
+                      <span className="text-[#1E293B] font-bold">{t.locale === 'es' ? 'escaneos ilimitados' : 'unlimited scans'}</span>
+                      {t.locale === 'es' ? ' por ' : ' for '}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} {t.locale === 'es' ? 'días' : 'days'}</span>.
+                      {t.locale === 'es' ? ' Expira el ' : ' Expires on '}
+                      <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString(t.locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
                 </p>
@@ -179,19 +191,19 @@ export function SubscriptionView() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 shrink-0 w-full sm:w-auto">
               <button
-                onClick={() => toast.info("Función de historial de facturación próximamente")}
+                onClick={() => toast.info(t.locale === 'es' ? "Función de historial de facturación próximamente" : "Billing history feature coming soon")}
                 className="text-[#475569] hover:text-[#0F172A] text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-[#F8FAFC] rounded-lg border border-transparent hover:border-[#E2E8F0] text-center"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-                  Historial de Facturación
+                  {t.locale === 'es' ? 'Historial de Facturación' : 'Billing History'}
                 </span>
               </button>
               {!isFreeTier && (
                 <button className="bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/50 text-[#475569] hover:text-[#EF4444] px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="flex items-center justify-center gap-2">
                     <span className="material-symbols-outlined text-[18px]">cancel</span>
-                    Cancelar Plan
+                    {t.locale === 'es' ? 'Cancelar Plan' : 'Cancel Plan'}
                   </span>
                 </button>
               )}
@@ -201,8 +213,8 @@ export function SubscriptionView() {
           {/* Pricing Section */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold text-[#0F172A]">Opciones de Mejora</h3>
-              <span className="text-xs text-[#64748B] font-medium">Paga una vez, úsalo por siempre</span>
+              <h3 className="text-2xl font-bold text-[#0F172A]">{t.locale === 'es' ? 'Opciones de Mejora' : 'Upgrade Options'}</h3>
+              <span className="text-xs text-[#64748B] font-medium">{t.pricingLanding.subtitle}</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -234,12 +246,12 @@ export function SubscriptionView() {
 
                   <div className="space-y-3.5 mb-8 flex-1">
                     {[
-                      { icon: "verified", text: "1 Escaneo Profundo" },
-                      { icon: "terminal", text: "Vista Robot Terminal" },
-                      { icon: "key", text: "Keywords Faltantes Completo" },
-                      { icon: "auto_awesome", text: "1 Reescritura IA Completa" },
-                      { icon: "integration_instructions", text: "Auto-Inyección Keywords" },
-                      { icon: "download", text: "Exportar CV ATS-seguro" }
+                      { icon: "verified", text: t.pricingLanding.singleDebugFeature1 },
+                      { icon: "terminal", text: t.pricingLanding.singleDebugFeature2 },
+                      { icon: "key", text: t.locale === 'es' ? 'Keywords Faltantes Completo' : 'Complete Missing Keywords' },
+                      { icon: "auto_awesome", text: t.pricingLanding.singleDebugFeature3 },
+                      { icon: "integration_instructions", text: t.pricingLanding.singleDebugFeature4 },
+                      { icon: "download", text: t.pricingLanding.singleDebugFeature5 }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#F59E0B]/10 border border-[#F59E0B]/20">
@@ -257,10 +269,10 @@ export function SubscriptionView() {
                     {isSingleDebugFix ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Plan Actual
+                        {t.locale === 'es' ? 'Plan Actual' : 'Current Plan'}
                       </span>
                     ) : (
-                      "Arreglar Mi CV"
+                      t.pricingLanding.singleDebugButton
                     )}
                   </button>
                 </div>
@@ -294,11 +306,11 @@ export function SubscriptionView() {
 
                   <div className="space-y-3.5 mb-8 flex-1">
                     {[
-                      { icon: "verified", text: "Análisis ATS Completo" },
-                      { icon: "key", text: "Reporte Completo de Keywords" },
-                      { icon: "auto_fix_high", text: "Auditoría de Formato + Correcciones" },
-                      { icon: "autorenew", text: "Re-escaneos Ilimitados (24h)" },
-                      { icon: "shield_with_heart", text: "Sanitización de PDF" }
+                      { icon: "verified", text: t.pricingLanding.pass24hFeature2 },
+                      { icon: "key", text: t.pricingLanding.pass24hFeature4 },
+                      { icon: "auto_fix_high", text: t.locale === 'es' ? 'Auditoría de Formato + Correcciones' : 'Format Audit + Corrections' },
+                      { icon: "autorenew", text: t.pricingLanding.pass24hFeature1 },
+                      { icon: "shield_with_heart", text: t.locale === 'es' ? 'Sanitización de PDF' : 'PDF Sanitization' }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#1E293B]/10 border border-[#1E293B]/20">
@@ -316,10 +328,10 @@ export function SubscriptionView() {
                     {isSingleScan ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Plan Actual
+                        {t.locale === 'es' ? 'Plan Actual' : 'Current Plan'}
                       </span>
                     ) : (
-                      "Obtener Escaneo Único"
+                      t.pricingLanding.pass24hButton
                     )}
                   </button>
                 </div>
@@ -339,7 +351,7 @@ export function SubscriptionView() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
                   <div className="bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#1E293B]/40 border-2 border-[#1E293B]/30 animate-pulse">
                     <span className="flex items-center gap-1.5">
-                      MEJOR VALOR - AHORRA 60%
+                      {t.locale === 'es' ? 'MEJOR VALOR - AHORRA 60%' : 'BEST VALUE - SAVE 60%'}
                     </span>
                   </div>
                 </div>
@@ -351,9 +363,9 @@ export function SubscriptionView() {
                     </div>
                     <div className="flex-1">
                       <h4 className="text-xl font-black text-[#0F172A] flex items-center gap-2">
-                        Sprint de Entrevistas
+                        {t.pricingLanding.sprint7dTitle}
                       </h4>
-                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Días Ilimitados</p>
+                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">{t.locale === 'es' ? '7 Días Ilimitados' : '7 Days Unlimited'}</p>
                     </div>
                   </div>
 
@@ -366,16 +378,16 @@ export function SubscriptionView() {
                     <div className="px-2.5 py-1 rounded-md bg-[#22C55E]/10 border border-[#22C55E]/30">
                       <p className="text-[#22C55E] text-xs font-bold">60% OFF</p>
                     </div>
-                    <p className="text-[#64748B] text-xs italic">Usado por más de 1,200 candidatos</p>
+                    <p className="text-[#64748B] text-xs italic">{t.locale === 'es' ? 'Usado por más de 1,200 candidatos' : 'Used by 1,200+ candidates'}</p>
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
                     {[
-                      { icon: "all_inclusive", text: "Escaneos Ilimitados (7 Días)" },
-                      { icon: "psychology", text: "Sugerencias de Keywords IA" },
-                      { icon: "description", text: "Generador de Cartas de Presentación" },
-                      { icon: "work", text: "Optimizador de LinkedIn" },
-                      { icon: "support_agent", text: "Soporte Prioritario" }
+                      { icon: "all_inclusive", text: t.pricingLanding.sprint7dFeature1 },
+                      { icon: "psychology", text: t.locale === 'es' ? 'Sugerencias de Keywords IA' : 'AI Keyword Suggestions' },
+                      { icon: "description", text: t.pricingLanding.sprint7dFeature6 },
+                      { icon: "work", text: t.locale === 'es' ? 'Optimizador de LinkedIn' : 'LinkedIn Optimizer' },
+                      { icon: "support_agent", text: t.locale === 'es' ? 'Soporte Prioritario' : 'Priority Support' }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#1E293B]/20 border border-[#1E293B]/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
@@ -394,10 +406,10 @@ export function SubscriptionView() {
                           <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#1E293B] to-[#64748B] border-2 border-[#FFFFFF]"></div>
                         ))}
                       </div>
-                      <span className="text-xs font-bold text-[#1E293B]">1,200+ Casos de Éxito</span>
+                      <span className="text-xs font-bold text-[#1E293B]">{t.locale === 'es' ? '1,200+ Casos de Éxito' : '1,200+ Success Stories'}</span>
                     </div>
                     <p className="text-[10px] text-[#64748B] leading-tight">
-                      "Conseguí entrevistas en <span className="text-[#0F172A] font-bold">Google</span> y <span className="text-[#0F172A] font-bold">Netflix</span> en una semana"
+                      {t.pricingLanding.sprintTestimonial}
                     </p>
                   </div>
 
@@ -408,11 +420,11 @@ export function SubscriptionView() {
                     {(isInterviewSprint || isIterationPass) ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Plan Actual
+                        {t.locale === 'es' ? 'Plan Actual' : 'Current Plan'}
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-2">
-                        Iniciar Sprint de 7 Días
+                        {t.pricingLanding.sprint7dButton}
                         <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </span>
                     )}
@@ -424,13 +436,13 @@ export function SubscriptionView() {
 
           {/* FAQ or Trust Section Footer */}
           <div className="mt-8 border-t border-[#E2E8F0] pt-8 flex flex-col md:flex-row justify-between items-center text-[#64748B] text-sm">
-            <p>© 2026 CVDebug Inc. Todos los derechos reservados.</p>
+            <p>{t.locale === 'es' ? '© 2026 CVDebug Inc. Todos los derechos reservados.' : '© 2026 CVDebug Inc. All rights reserved.'}</p>
             <div className="flex gap-4 mt-4 md:mt-0">
               <a className="hover:text-[#475569] transition-colors" href="/privacy">
-                Política de Privacidad
+                {t.locale === 'es' ? 'Política de Privacidad' : 'Privacy Policy'}
               </a>
               <a className="hover:text-[#475569] transition-colors" href="/terms">
-                Términos de Servicio
+                {t.locale === 'es' ? 'Términos de Servicio' : 'Terms of Service'}
               </a>
             </div>
           </div>

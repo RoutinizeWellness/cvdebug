@@ -73,8 +73,91 @@ export function KeywordAnalysis({
   };
 
   // Infer icon based on keyword type (not random)
-  const getKeywordIcon = (keyword: string): string => {
+  const getKeywordIcon = (keyword: any): string => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Infer SPECIFIC location based on keyword type
+  const getKeywordLocation = (keyword: string): string => {
     const lower = keyword.toLowerCase();
+=======
+  // Infer SPECIFIC location based on keyword type
+  const getKeywordLocation = (keyword: any): string => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Helper: Extract context snippet where keyword appears
+  const extractKeywordContext = (keyword: string, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
+    const lowerKeyword = keyword.toLowerCase();
+    const lowerText = text.toLowerCase();
+=======
+  // Helper: Extract context snippet where keyword appears
+  const extractKeywordContext = (keyword: any, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
+    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
+    const lowerKeyword = kwStr.toLowerCase();
+    const lowerText = (text || '').toLowerCase();
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Calculate REAL impact for missing keywords based on importance
+  const calculateImpact = (keyword: string, index: number): { impact: string; percent: number; isPriority: boolean } => {
+    const lower = keyword.toLowerCase();
+=======
+  // Calculate REAL impact for missing keywords based on importance
+  const calculateImpact = (keyword: any, index: number): { impact: string; percent: number; isPriority: boolean } => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Generate REAL context-aware descriptions with SPECIFIC guidance
+  const getKeywordDescription = (keyword: string): string => {
+    const lower = keyword.toLowerCase();
+=======
+  // Generate REAL context-aware descriptions with SPECIFIC guidance
+  const getKeywordDescription = (keyword: any): string => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Map matched keywords to found signals with REAL context
+  const foundSignals: FoundKeyword[] = matchedKeywords.slice(0, 15).map((keyword) => {
+    const contextInfo = extractKeywordContext(keyword, resumeText);
+
+    return {
+      keyword,
+      icon: getKeywordIcon(keyword),
+      location: getKeywordLocation(keyword),
+      context: contextInfo.context,
+      matchType: contextInfo.matchType,
+      confidence: contextInfo.confidence
+    };
+  });
+=======
+  // Map matched keywords to found signals with REAL context
+  const foundSignals: FoundKeyword[] = (matchedKeywords || []).slice(0, 15).map((kw: any) => {
+    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
+    const contextInfo = extractKeywordContext(keyword, resumeText);
+
+    return {
+      keyword,
+      icon: getKeywordIcon(keyword),
+      location: getKeywordLocation(keyword),
+      context: contextInfo.context,
+      matchType: contextInfo.matchType,
+      confidence: contextInfo.confidence
+    };
+  });
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+  // Create DYNAMIC keyword cloud from REAL matched + missing keywords
+  const allKeywords = [...matchedKeywords, ...missingKeywords];
+  const industryKeywords = allKeywords.slice(0, 16).map((keyword, index) => {
+    const isMatched = matchedKeywords.includes(keyword);
+=======
+  // Create DYNAMIC keyword cloud from REAL matched + missing keywords
+  const allKeywords = [...(matchedKeywords || []), ...(missingKeywords || [])];
+  const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
+    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
+    const isMatched = (matchedKeywords || []).some((m: any) => 
+      (typeof m === 'string' ? m : m?.keyword) === keyword
+    );
     if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower)) return "code";
     if (/sql|database|mongodb|postgresql|redis/.test(lower)) return "storage";
     if (/aws|azure|gcp|cloud|kubernetes|docker/.test(lower)) return "cloud";
