@@ -61,6 +61,90 @@ export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTab
   // Limit to top 3 quick wins
   const topQuickWins = quickWins.slice(0, 3);
 
+  // Generate Action Plan steps from resume data
+  const generateActionPlanSteps = () => {
+    const steps = [];
+    let stepIndex = 1;
+
+    // Critical: Format Issues
+    if (resume?.formatIssues && resume.formatIssues.length > 0) {
+      steps.push({
+        id: `format-${stepIndex++}`,
+        title: "Fix ATS Format Issues",
+        description: `${resume.formatIssues.length} formatting problems are blocking ATS systems from reading your resume properly.`,
+        priority: 'critical' as const,
+        completed: false,
+        estimatedImpact: "+10-15%"
+      });
+    }
+
+    // Critical: Missing Keywords
+    const missingCount = Array.isArray(resume?.missingKeywords) ? resume.missingKeywords.length : 0;
+    if (missingCount > 0) {
+      steps.push({
+        id: `keywords-${stepIndex++}`,
+        title: "Add Missing Keywords",
+        description: `${missingCount} critical keywords are missing. Add them to match job requirements.`,
+        priority: missingCount > 10 ? 'critical' as const : 'important' as const,
+        completed: false,
+        estimatedImpact: "+15-20%"
+      });
+    }
+
+    // Important: Weak Language
+    if (resume?.fluffPhrases && resume.fluffPhrases.length > 0) {
+      steps.push({
+        id: `fluff-${stepIndex++}`,
+        title: "Replace Weak Phrases",
+        description: `${resume.fluffPhrases.length} weak phrases detected. Replace with action verbs and quantified achievements.`,
+        priority: 'important' as const,
+        completed: false,
+        estimatedImpact: "+5-10%"
+      });
+    }
+
+    // Important: Add Metrics
+    const scoreBreakdown = resume?.scoreBreakdown || {};
+    if (scoreBreakdown.completeness && scoreBreakdown.completeness < 70) {
+      steps.push({
+        id: `metrics-${stepIndex++}`,
+        title: "Quantify Your Achievements",
+        description: "Add numbers, percentages, and metrics to your accomplishments to demonstrate impact.",
+        priority: 'important' as const,
+        completed: false,
+        estimatedImpact: "+8-12%"
+      });
+    }
+
+    // Recommended: Job Description Match
+    if (!resume?.jobDescription) {
+      steps.push({
+        id: `jd-match-${stepIndex++}`,
+        title: "Match to Job Description",
+        description: "Upload a target job description to get customized keyword recommendations.",
+        priority: 'recommended' as const,
+        completed: false,
+        estimatedImpact: "+5-8%"
+      });
+    }
+
+    // Recommended: LinkedIn Profile
+    if (currentScore >= 70) {
+      steps.push({
+        id: `linkedin-${stepIndex++}`,
+        title: "Optimize LinkedIn Profile",
+        description: "Your resume is strong. Now optimize your LinkedIn to complete your professional brand.",
+        priority: 'recommended' as const,
+        completed: false,
+        estimatedImpact: "+visibility"
+      });
+    }
+
+    return steps;
+  };
+
+  const actionPlanSteps = generateActionPlanSteps();
+
   const getScoreColor = (score: number) => {
     if (score >= 80) return "text-green-600";
     if (score >= 60) return "text-yellow-600";
@@ -230,7 +314,7 @@ export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTab
         >
           <h3 className="text-2xl font-black text-[#0F172A] mb-6">Action Plan</h3>
           <ActionPlan
-            steps={resume.actionPlan || []}
+            steps={actionPlanSteps}
             onStepClick={(stepId) => console.log('Step clicked:', stepId)}
             onCompleteStep={(stepId) => console.log('Step completed:', stepId)}
           />

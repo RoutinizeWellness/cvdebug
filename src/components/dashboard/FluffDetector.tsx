@@ -647,10 +647,10 @@ export function FluffDetector({
 
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-12 gap-6">
+      {/* Main Content Grid - Responsive */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
         {/* Left Column - Weak Phrase Detector */}
-        <div className="col-span-12 lg:col-span-7 space-y-6">
+        <div className="col-span-1 lg:col-span-7 space-y-4 lg:space-y-6">
           {/* Weak Phrases */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -776,7 +776,7 @@ export function FluffDetector({
         </div>
 
         {/* Right Column - Impact Quantification Audit */}
-        <div className="col-span-12 lg:col-span-5">
+        <div className="col-span-1 lg:col-span-5">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}

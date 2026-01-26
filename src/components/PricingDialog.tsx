@@ -179,15 +179,19 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                {t.pricingDialog.scorePreview}
+                Score Preview
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                {t.pricingDialog.errorLabels}
+                Robot View (First 10 Lines)
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
-                {t.pricingDialog.topKeywords}
+                Invisibility Check (YES/NO)
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+                <span className="material-symbols-outlined text-emerald-500 text-base">check_circle</span>
+                Top 2 Keywords
               </div>
             </div>
             <button
@@ -202,42 +206,42 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="bg-white border-2 border-[#F59E0B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(245,158,11,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">build</span>
-              ARREGLA DE UNA VEZ
+              FIX IT ONCE
             </div>
             <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">Arreglo Único</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Arreglo Rápido</h2>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">Single Fix</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Formato Pro</h2>
               <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-black tracking-tighter text-slate-900">€5.99</span>
                 </div>
-                <span className="text-slate-400 text-[10px] font-medium mt-1">Un café para arreglar tu CV</span>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">One coffee to fix your CV</span>
               </div>
             </div>
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#F59E0B]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                1 Escaneo Profundo Completo
+                Score 85+ Guarantee
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Vista Robot Terminal
+                Full Robot Terminal View
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Keywords Faltantes Completo
+                Match with 1 Job Description
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                1 Reescritura IA Completa
+                1 Complete AI Rewrite
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Auto-Inyección de Keywords
+                Auto-Keyword Injection
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Exportar CV ATS-seguro
+                Export ATS-Safe CV
               </div>
             </div>
             <button
@@ -245,7 +249,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               disabled={!!isLoading}
               className="w-full h-11 rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold text-sm shadow-lg shadow-[#F59E0B]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isLoading === "single_debug_fix" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Arreglar Mi CV →"}
+              {isLoading === "single_debug_fix" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Fix My CV →"}
             </button>
           </div>
 
@@ -271,23 +275,27 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#64748B]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                {t.pricingDialog.unlimitedScans24h}
+                Unlimited CV Scans (24h)
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
-                {t.pricingDialog.fullErrorReport}
+                Unlimited Title Scans
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
-                {t.pricingDialog.robotXRayView}
+                Robot X-Ray View
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
-                {t.pricingDialog.keywordOptimizer}
+                Keyword Optimizer
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
-                {t.pricingDialog.battlePlanGenerator}
+                Unlimited Cover Letter AI
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                <span className="material-symbols-outlined text-[#64748B] text-base">check_circle</span>
+                Battle Plan Generator
               </div>
             </div>
             <button
@@ -322,41 +330,41 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
             <div className="space-y-3 mb-6 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#1E293B]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                {t.pricingDialog.unlimitedCVScans}
+                Unlimited CV Scans (7 Days)
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.robotViewTerminal}
+                Robot View Terminal
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.missingSignalsDetector}
+                Missing Signals Detector
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.seniorityMatchAudit}
+                Seniority Match Audit
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.industrySelectorFAANG}
+                Unlimited AI Rewrites
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.bulletToneElevator}
-              </div>
-              <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
-                <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
-                {t.pricingDialog.battlePlanGenerator}
+                Battle Plan Generator
               </div>
               <div className="pt-2 border-t border-slate-200">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">{t.pricingDialog.bonusExtras}</p>
-                <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-                  <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
-                  {t.pricingDialog.coverLetterGen}
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Career Growth Tools</p>
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                  <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
+                  LinkedIn Deep Audit
                 </div>
-                <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-                  <span className="material-symbols-outlined text-slate-300 text-base">check_circle</span>
-                  {t.pricingDialog.linkedinOptimizer}
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                  <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
+                  Recruiter DM Templates
+                </div>
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                  <span className="material-symbols-outlined text-[#1E293B] text-base">check_circle</span>
+                  Unlimited Cover Letters
                 </div>
               </div>
             </div>
