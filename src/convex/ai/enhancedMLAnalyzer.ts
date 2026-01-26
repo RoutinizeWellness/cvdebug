@@ -310,7 +310,7 @@ function identifyImprovementAreas(
 ): string[] {
   const improvements: string[] = [];
 
-  if (features.technicalDensity < 30 && userProfile.dominantIndustry.toLowerCase().includes('tech')) {
+  if (features.technicalDensity < 30 && userProfile.dominantIndustry?.toLowerCase().includes('tech')) {
     improvements.push(`Add more technical keywords for ${userProfile.dominantIndustry} roles`);
   }
 
@@ -377,7 +377,7 @@ function generatePersonalizedRecommendations(
         category: 'Technical Skills',
         priority: 'high' as const,
         message: `Your technical keyword density is ${value.toFixed(1)}%, below optimal for ${userProfile.dominantIndustry}`,
-        actionable: userProfile.dominantIndustry.toLowerCase().includes('tech')
+        actionable: userProfile.dominantIndustry?.toLowerCase().includes('tech')
           ? 'Add specific technologies, frameworks, and tools you\'ve used. Examples: React, AWS, Python, Docker'
           : 'Include relevant industry-specific terminology and tools',
         impact: 18,

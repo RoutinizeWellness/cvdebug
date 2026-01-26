@@ -293,7 +293,7 @@ function extractCompanyInsights(jobDescription: string, companyName: string) {
 
   return {
     values: values.slice(0, 3),
-    keywords: keywords.length > 0 ? keywords : [companyName.toLowerCase()]
+    keywords: keywords.length > 0 ? keywords : [(companyName || '').toLowerCase()]
   };
 }
 

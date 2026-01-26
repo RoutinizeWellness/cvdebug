@@ -293,8 +293,8 @@ export const getPersonalizedKeywords = query({
     }> = [];
 
     // Industry-specific recommendations
-    if (profile.dominantIndustry.toLowerCase().includes('tech') ||
-        profile.dominantIndustry.toLowerCase().includes('engineer')) {
+    if (profile.dominantIndustry?.toLowerCase().includes('tech') ||
+        profile.dominantIndustry?.toLowerCase().includes('engineer')) {
       recommendations.push(
         {
           keyword: 'agile methodology',
@@ -336,8 +336,8 @@ export const getPersonalizedKeywords = query({
     }
 
     // Nursing/Healthcare recommendations
-    if (profile.dominantIndustry.toLowerCase().includes('nurs') ||
-        profile.dominantIndustry.toLowerCase().includes('health')) {
+    if (profile.dominantIndustry?.toLowerCase().includes('nurs') ||
+        profile.dominantIndustry?.toLowerCase().includes('health')) {
       recommendations.push(
         {
           keyword: 'patient-centered care',
@@ -444,16 +444,16 @@ export const getAdaptiveScoringWeights = internalQuery({
     };
 
     // Tech industry: keywords matter more
-    if (profile.dominantIndustry.toLowerCase().includes('tech') ||
-        profile.dominantIndustry.toLowerCase().includes('engineer')) {
+    if (profile.dominantIndustry?.toLowerCase().includes('tech') ||
+        profile.dominantIndustry?.toLowerCase().includes('engineer')) {
       weights.keywords = 35;
       weights.content = 30;
       weights.formatting = 20;
     }
 
     // Healthcare: content and certifications matter more
-    if (profile.dominantIndustry.toLowerCase().includes('nurs') ||
-        profile.dominantIndustry.toLowerCase().includes('health')) {
+    if (profile.dominantIndustry?.toLowerCase().includes('nurs') ||
+        profile.dominantIndustry?.toLowerCase().includes('health')) {
       weights.content = 35;
       weights.keywords = 30;
       weights.formatting = 20;
