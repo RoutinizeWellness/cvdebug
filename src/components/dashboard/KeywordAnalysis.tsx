@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Layout, Server, Cloud, Database, Code2 } from "lucide-react";
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
 import { PremiumFeatureModal } from "@/components/PremiumFeatureModal";
 import { useI18n } from "@/contexts/I18nContext";
@@ -74,7 +75,8 @@ export function KeywordAnalysis({
 
   // Infer icon based on keyword type (not random)
   const getKeywordIcon = (keyword: any): string => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
+    const lower = kwStr.toLowerCase();
 
     if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower)) return "code";
     if (/sql|database|mongodb|postgresql|redis/.test(lower)) return "storage";
@@ -90,7 +92,8 @@ export function KeywordAnalysis({
 
   // Infer SPECIFIC location based on keyword type
   const getKeywordLocation = (keyword: any): string => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
+    const lower = kwStr.toLowerCase();
 
     if (/lead|manage|director|senior|architect|executive|chief/.test(lower))
       return "Professional Summary, Experience (leadership bullets)";
@@ -176,102 +179,14 @@ export function KeywordAnalysis({
   };
 
   // Generate REAL context-aware descriptions with SPECIFIC guidance
-  const getKeywordDescription = (keyword: any): string => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
-
-    // Programming Languages
-    if (/\bpython\b/.test(lower)) return `Essential for technical roles. Add to "Technical Skills" with specific frameworks (Django, Flask, FastAPI) and use cases.`;
-    if (/javascript|typescript/.test(lower)) return `Core web development skill. Mention frameworks (React, Node.js, Vue) and projects where you used it.`;
-    if (/\bjava\b/.test(lower)) return `Enterprise development staple. Include Spring, Maven, or microservices architecture experience.`;
-    if (/\bc\+\+|cpp\b/.test(lower)) return `Systems programming language. Highlight performance-critical applications, memory management, or embedded systems work.`;
-    if (/\bruby\b/.test(lower)) return `Web development with Rails. Mention API development, test-driven development, or automation scripts built.`;
-    if (/\bgo\b|golang/.test(lower)) return `Cloud-native language. Describe microservices built, concurrency patterns used, or CLI tools developed.`;
-
-    // Databases & Data
-    if (/\bsql\b/.test(lower)) return `Critical database skill. Include specific databases (PostgreSQL, MySQL) and mention query optimization or data analysis with measurable results.`;
-    if (/postgresql|postgres/.test(lower)) return `Advanced SQL database. Detail complex queries, indexing strategies, or database performance tuning you implemented.`;
-    if (/mysql/.test(lower)) return `Popular relational database. Mention schema design, query optimization, or replication setup you managed.`;
-    if (/mongodb/.test(lower)) return `NoSQL document database. Describe data modeling, aggregation pipelines, or scalability improvements achieved.`;
-    if (/redis/.test(lower)) return `In-memory cache. Detail caching strategies, session management, or latency reductions (e.g., from 500ms to 50ms).`;
-    if (/elasticsearch/.test(lower)) return `Search and analytics engine. Mention search features built, query performance, or log analysis systems implemented.`;
-    if (/excel/.test(lower)) return `Data analysis tool. Highlight advanced functions (VLOOKUP, Pivot Tables, Macros) and how you automated reports or analysis.`;
-    if (/\betl\b/.test(lower)) return `Data pipeline expertise. Describe data volumes processed, transformation logic, and pipeline reliability improvements.`;
-    if (/data warehouse/.test(lower)) return `Big data infrastructure. Mention tools (Redshift, Snowflake, BigQuery), data volume, and query performance gains.`;
-
-    // Big Data & Analytics
-    if (/big data/.test(lower)) return `Large-scale data processing. Quantify data volumes (TB/PB), processing speed improvements, and business insights generated.`;
-    if (/hadoop/.test(lower)) return `Distributed computing platform. Specify cluster size, data processed, and performance optimizations achieved.`;
-    if (/\bspark\b/.test(lower)) return `Fast data processing engine. Mention job optimization, processing time reductions, and data volume handled.`;
-    if (/\bhive\b/.test(lower)) return `SQL-on-Hadoop tool. Describe query optimization, data warehouse design, and analytics capabilities built.`;
-    if (/\bpig\b/.test(lower)) return `Data transformation language. Detail ETL pipelines created, data processing efficiency, and workflow automation.`;
-    if (/kafka/.test(lower)) return `Event streaming platform. Describe message throughput, stream processing, or real-time data pipelines built.`;
-    if (/airflow/.test(lower)) return `Workflow orchestration. Mention DAGs created, task scheduling, or data pipeline automation implemented.`;
-
-    // Cloud & Infrastructure
-    if (/\baws\b/.test(lower)) return `Cloud platforms are highly valued. Specify services used (S3, EC2, Lambda, RDS) and scale of infrastructure managed.`;
-    if (/\bec2\b/.test(lower)) return `AWS compute service. Detail instance types managed, auto-scaling setups, or cost optimizations achieved.`;
-    if (/\bs3\b/.test(lower)) return `AWS object storage. Mention data volume stored, backup strategies, or CDN integrations implemented.`;
-    if (/lambda/.test(lower)) return `Serverless compute. Describe functions deployed, event triggers, or cost savings from serverless architecture.`;
-    if (/azure/.test(lower)) return `Microsoft cloud platform. Specify services used (VMs, App Services, Cosmos DB) and infrastructure scale.`;
-    if (/\bgcp\b|google cloud/.test(lower)) return `Google cloud platform. Detail services used (Compute Engine, BigQuery, Cloud Functions) and projects deployed.`;
-    if (/kubernetes|k8s/.test(lower)) return `Container orchestration. Mention cluster size (nodes/pods), deployment strategies, or uptime SLAs achieved.`;
-    if (/docker/.test(lower)) return `Containerization platform. Describe Dockerfiles written, image optimization, or CI/CD integration implemented.`;
-    if (/terraform/.test(lower)) return `Infrastructure as code. Detail resources provisioned, environments managed, or deployment automation built.`;
-    if (/ansible/.test(lower)) return `Configuration management. Mention servers managed, playbooks written, or deployment time reductions achieved.`;
-
-    // AI/ML
-    if (/machine learning|\bml\b/.test(lower)) return `High-demand AI skill. Detail algorithms used (regression, neural nets), model accuracy, and business impact.`;
-    if (/deep learning/.test(lower)) return `Advanced AI technique. Mention neural architectures (CNN, RNN, Transformer), model performance, and applications built.`;
-    if (/tensorflow/.test(lower)) return `ML framework. Describe models trained, training time optimizations, or inference performance improvements.`;
-    if (/pytorch/.test(lower)) return `ML research framework. Detail model architectures implemented, experiment tracking, or research contributions.`;
-    if (/\bnlp\b|natural language/.test(lower)) return `Text processing AI. Mention tasks (sentiment analysis, NER, translation), accuracy metrics, and use cases.`;
-
-    // Web Frameworks
-    if (/\breact\b/.test(lower)) return `Popular UI library. Describe components built, state management (Redux/Context), or performance optimizations.`;
-    if (/\bvue\b/.test(lower)) return `Progressive framework. Mention components, Vuex state management, or SPAs built with measurable load times.`;
-    if (/angular/.test(lower)) return `Enterprise framework. Detail modules created, RxJS reactive patterns, or large-scale apps architected.`;
-    if (/node\.?js/.test(lower)) return `Server-side JavaScript. Describe APIs built, concurrent connections handled, or microservices developed.`;
-    if (/express/.test(lower)) return `Node.js framework. Mention REST APIs built, middleware implemented, or request throughput achieved.`;
-    if (/django/.test(lower)) return `Python web framework. Detail MVT architecture, ORM usage, or web apps deployed with user metrics.`;
-    if (/flask/.test(lower)) return `Lightweight Python framework. Describe microservices built, API endpoints created, or integration complexity.`;
-    if (/spring/.test(lower)) return `Java enterprise framework. Mention Spring Boot apps, dependency injection, or microservices architecture.`;
-
-    // DevOps & Tools
-    if (/\bgit\b/.test(lower)) return `Version control is expected. Mention branching strategies, merge conflict resolution, or monorepo management.`;
-    if (/github|gitlab|bitbucket/.test(lower)) return `Code hosting platform. Detail CI/CD pipelines, PR review process, or open source contributions made.`;
-    if (/jenkins/.test(lower)) return `CI/CD automation. Describe pipelines built, build time reductions, or deployment frequency improvements.`;
-    if (/\bci\s*\/?\s*cd\b/.test(lower)) return `Automated deployment pipeline. Mention deployment frequency (daily/hourly), rollback strategies, or zero-downtime deploys.`;
-    if (/maven/.test(lower)) return `Java build tool. Detail dependency management, build optimization, or multi-module project configurations.`;
-    if (/\bpip\b/.test(lower)) return `Python package manager. Mention dependency management, virtual environments, or package distribution setup.`;
-    if (/npm|yarn/.test(lower)) return `JavaScript package manager. Describe dependency updates, security audits, or monorepo tooling setup.`;
-
-    // Soft Skills & Leadership
-    if (/system design/.test(lower)) return `Architecture skill. Describe systems designed (scalability, reliability), traffic handled (QPS), or architecture decisions made.`;
-    if (/performance optimization/.test(lower)) return `Critical skill. Quantify improvements: latency reductions (500ms→50ms), throughput increases (100→1000 req/s), or resource savings.`;
-    if (/scalability/.test(lower)) return `Growth capability. Mention scale achieved (10K→1M users), load testing, or horizontal/vertical scaling strategies.`;
-    if (/mentoring/.test(lower)) return `Leadership skill. Quantify: engineers mentored, code reviews conducted, or junior→mid promotions facilitated.`;
-    if (/code review/.test(lower)) return `Quality practice. Detail review volume (PRs/week), bug prevention rate, or code quality improvements measured.`;
-    if (/agile|scrum/.test(lower)) return `Project management methodology. Describe sprint cadence, velocity improvements (story points/sprint), and team collaboration.`;
-    if (/kanban/.test(lower)) return `Workflow visualization. Mention WIP limits set, cycle time reductions, or throughput improvements achieved.`;
-    if (/leadership/.test(lower)) return `Management skill. Quantify: team size led, projects delivered, or key initiatives championed with business impact.`;
-
-    // Testing & Quality
-    if (/\bunit test|testing/.test(lower)) return `Quality assurance. Mention test coverage % achieved, testing frameworks used (Jest, PyTest), or bug reduction rates.`;
-    if (/integration test/.test(lower)) return `End-to-end validation. Describe test suites built, CI integration, or production incidents prevented.`;
-    if (/\btdd\b|test.driven/.test(lower)) return `Development methodology. Detail test coverage, refactoring confidence, or code quality improvements.`;
-
-    // Security
-    if (/security|encryption/.test(lower)) return `Critical concern. Mention security audits, vulnerability fixes, encryption implementations, or compliance achieved.`;
-    if (/oauth|authentication/.test(lower)) return `User security. Describe auth flows implemented, SSO integration, or security improvements (e.g., MFA).`;
-
-    // APIs & Protocols
-    if (/\brest\b|\brest\s*api/.test(lower)) return `API design pattern. Mention endpoints created, API versioning, or throughput handled (requests/sec).`;
-    if (/graphql/.test(lower)) return `Query language. Describe schemas designed, resolver optimization, or over-fetching reductions achieved.`;
-    if (/\bgrpc\b/.test(lower)) return `High-performance RPC. Detail services built, performance gains over REST, or microservices communication.`;
-    if (/websocket/.test(lower)) return `Real-time communication. Mention concurrent connections, latency targets, or live features built (chat, notifications).`;
-
-    // Generic but context-aware fallback
-    return `Include "${keyword}" in Technical Skills or Experience. Add context: tools/versions used, scale of work, and quantifiable impact (faster, cheaper, more reliable).`;
+  const getKeywordDescription = (keyword: any) => {
+    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
+    const lower = kwStr.toLowerCase();
+    if (lower.includes('react')) return "Essential for modern frontend roles. Highlight specific hooks and state management patterns.";
+    if (lower.includes('node')) return "Core backend competency. Mention Express, NestJS, or microservices architecture.";
+    if (lower.includes('aws')) return "Cloud infrastructure is highly valued. Specify services like S3, EC2, or Lambda.";
+    if (lower.includes('typescript')) return "Shows commitment to code quality and type safety. Mention migration projects.";
+    return "A key requirement for this role. Ensure it's mentioned in your most recent experience.";
   };
 
   // ML-powered keyword suggestion engine - analyzes CV context, industry, seniority
@@ -412,33 +327,58 @@ export function KeywordAnalysis({
     : generateMLKeywordSuggestions();
 
   const missingCount = Math.min(keywordsToAnalyze.length, 8);
-  const missingSignals: MissingKeyword[] = keywordsToAnalyze.slice(0, missingCount).map((keyword, index) => {
-    const impact = calculateImpact(keyword, index);
+  const missingSignals: MissingKeyword[] = keywordsToAnalyze.slice(0, missingCount).map((kw: any, index) => {
+    const keywordStr = typeof kw === 'string' ? kw : (kw && typeof kw === 'object' && typeof kw.keyword === 'string' ? kw.keyword : '');
+    const impact = calculateImpact(keywordStr, index);
 
     return {
-      keyword: typeof keyword === 'string' ? keyword : keyword?.keyword || '',
+      keyword: keywordStr,
       impact: impact.impact,
       impactPercent: impact.percent,
-      description: getKeywordDescription(keyword),
+      description: getKeywordDescription(keywordStr),
       isPriority: impact.isPriority
     };
   });
 
   // Create DYNAMIC keyword cloud from REAL matched + missing keywords
   const allKeywords = [...(matchedKeywords || []), ...(missingKeywords || [])];
-  const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
-    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
-    const isMatched = (matchedKeywords || []).some((m: any) =>
-      (typeof m === 'string' ? m : m?.keyword) === keyword
-    );
-    const isCritical = index < 3;
-    const size = isCritical ? "2xl" : index < 6 ? "xl" : index < 10 ? "lg" : "base";
-    const weight = isCritical ? "bold" : index < 8 ? "bold" : "medium";
-    const color = isMatched ? (isCritical ? "primary" : "slate-200") : "slate-500";
-    const highlight = isMatched && isCritical;
+  const getIndustryKeywords = (category: string, seniorityLevel: string) => {
+    const cat = (category || '').toLowerCase();
+    const seniority = (seniorityLevel || '').toLowerCase();
 
-    return { text: keyword, size, weight, color, highlight };
-  });
+    const base: Record<string, string[]> = {
+      software: ['Git', 'Agile', 'CI/CD', 'Unit Testing', 'Code Review'],
+      marketing: ['SEO', 'Content Strategy', 'Analytics', 'Social Media', 'Campaign Management'],
+      design: ['Figma', 'User Research', 'Prototyping', 'Design Systems', 'Adobe CC'],
+      sales: ['CRM', 'Lead Generation', 'Negotiation', 'Pipeline Management', 'B2B Sales']
+    };
+
+    const catKeywords = base[cat] || [];
+    const seniorityKeywords: Record<string, string[]> = {
+      'junior': ['Code Quality', 'Best Practices', 'Documentation', 'Version Control', 'Testing'],
+      'mid': ['System Design', 'Performance Optimization', 'Scalability', 'Mentoring', 'Code Review'],
+      'senior': ['Architecture Design', 'Technical Leadership', 'Cross-functional Collaboration', 'Strategic Planning', 'Team Mentorship'],
+      'lead': ['Engineering Strategy', 'Stakeholder Management', 'Technical Roadmap', 'Budget Planning', 'Hiring']
+    };
+
+    const seniorityKeywordsList = seniorityKeywords[seniority] || [];
+    const allKeywords = [...catKeywords, ...seniorityKeywordsList];
+    const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
+      const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
+      const isMatched = (matchedKeywords || []).some((m: any) =>
+        (typeof m === 'string' ? m : m?.keyword) === keyword
+      );
+      const isCritical = index < 3;
+      const size = isCritical ? "2xl" : index < 6 ? "xl" : index < 10 ? "lg" : "base";
+      const weight = isCritical ? "bold" : index < 8 ? "bold" : "medium";
+      const color = isMatched ? (isCritical ? "primary" : "slate-200") : "slate-500";
+      const highlight = isMatched && isCritical;
+
+      return { text: keyword, size, weight, color, highlight };
+    });
+
+    return industryKeywords;
+  };
 
   return (
     <div className="w-full">
@@ -844,7 +784,7 @@ export function KeywordAnalysis({
             className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
           >
             <div className="flex flex-wrap gap-2 items-center justify-center">
-              {industryKeywords.map((kw, index) => (
+              {getIndustryKeywords(category, seniorityLevel).map((kw, index) => (
                 <motion.span
                   key={index}
                   initial={{ opacity: 0, scale: 0.8 }}
