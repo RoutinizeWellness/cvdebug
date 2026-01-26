@@ -75,89 +75,6 @@ export function KeywordAnalysis({
   // Infer icon based on keyword type (not random)
   const getKeywordIcon = (keyword: any): string => {
     const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Infer SPECIFIC location based on keyword type
-  const getKeywordLocation = (keyword: string): string => {
-    const lower = keyword.toLowerCase();
-=======
-  // Infer SPECIFIC location based on keyword type
-  const getKeywordLocation = (keyword: any): string => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Helper: Extract context snippet where keyword appears
-  const extractKeywordContext = (keyword: string, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
-    const lowerKeyword = keyword.toLowerCase();
-    const lowerText = text.toLowerCase();
-=======
-  // Helper: Extract context snippet where keyword appears
-  const extractKeywordContext = (keyword: any, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
-    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
-    const lowerKeyword = kwStr.toLowerCase();
-    const lowerText = (text || '').toLowerCase();
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Calculate REAL impact for missing keywords based on importance
-  const calculateImpact = (keyword: string, index: number): { impact: string; percent: number; isPriority: boolean } => {
-    const lower = keyword.toLowerCase();
-=======
-  // Calculate REAL impact for missing keywords based on importance
-  const calculateImpact = (keyword: any, index: number): { impact: string; percent: number; isPriority: boolean } => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Generate REAL context-aware descriptions with SPECIFIC guidance
-  const getKeywordDescription = (keyword: string): string => {
-    const lower = keyword.toLowerCase();
-=======
-  // Generate REAL context-aware descriptions with SPECIFIC guidance
-  const getKeywordDescription = (keyword: any): string => {
-    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Map matched keywords to found signals with REAL context
-  const foundSignals: FoundKeyword[] = matchedKeywords.slice(0, 15).map((keyword) => {
-    const contextInfo = extractKeywordContext(keyword, resumeText);
-
-    return {
-      keyword,
-      icon: getKeywordIcon(keyword),
-      location: getKeywordLocation(keyword),
-      context: contextInfo.context,
-      matchType: contextInfo.matchType,
-      confidence: contextInfo.confidence
-    };
-  });
-=======
-  // Map matched keywords to found signals with REAL context
-  const foundSignals: FoundKeyword[] = (matchedKeywords || []).slice(0, 15).map((kw: any) => {
-    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
-    const contextInfo = extractKeywordContext(keyword, resumeText);
-
-    return {
-      keyword,
-      icon: getKeywordIcon(keyword),
-      location: getKeywordLocation(keyword),
-      context: contextInfo.context,
-      matchType: contextInfo.matchType,
-      confidence: contextInfo.confidence
-    };
-  });
->>>>>>> REPLACE
-<<<<<<< SEARCH
-  // Create DYNAMIC keyword cloud from REAL matched + missing keywords
-  const allKeywords = [...matchedKeywords, ...missingKeywords];
-  const industryKeywords = allKeywords.slice(0, 16).map((keyword, index) => {
-    const isMatched = matchedKeywords.includes(keyword);
-=======
-  // Create DYNAMIC keyword cloud from REAL matched + missing keywords
-  const allKeywords = [...(matchedKeywords || []), ...(missingKeywords || [])];
-  const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
-    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
-    const isMatched = (matchedKeywords || []).some((m: any) => 
-      (typeof m === 'string' ? m : m?.keyword) === keyword
-    );
     if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower)) return "code";
     if (/sql|database|mongodb|postgresql|redis/.test(lower)) return "storage";
     if (/aws|azure|gcp|cloud|kubernetes|docker/.test(lower)) return "cloud";
@@ -170,8 +87,8 @@ export function KeywordAnalysis({
   };
 
   // Infer SPECIFIC location based on keyword type
-  const getKeywordLocation = (keyword: string): string => {
-    const lower = keyword.toLowerCase();
+  const getKeywordLocation = (keyword: any): string => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
 
     // Leadership keywords
     if (/lead|manage|director|senior|architect|executive|chief/.test(lower))
@@ -218,9 +135,10 @@ export function KeywordAnalysis({
   };
 
   // Helper: Extract context snippet where keyword appears
-  const extractKeywordContext = (keyword: string, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
-    const lowerKeyword = keyword.toLowerCase();
-    const lowerText = text.toLowerCase();
+  const extractKeywordContext = (keyword: any, text: string): { context: string; matchType: 'exact' | 'synonym' | 'semantic'; confidence: number } => {
+    const kwStr = typeof keyword === 'string' ? keyword : keyword?.keyword || '';
+    const lowerKeyword = kwStr.toLowerCase();
+    const lowerText = (text || '').toLowerCase();
 
     // Try exact match first
     const exactIndex = lowerText.indexOf(lowerKeyword);
@@ -261,7 +179,8 @@ export function KeywordAnalysis({
   };
 
   // Map matched keywords to found signals with REAL context
-  const foundSignals: FoundKeyword[] = matchedKeywords.slice(0, 15).map((keyword) => {
+  const foundSignals: FoundKeyword[] = (matchedKeywords || []).slice(0, 15).map((kw: any) => {
+    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
     const contextInfo = extractKeywordContext(keyword, resumeText);
 
     return {
@@ -275,8 +194,8 @@ export function KeywordAnalysis({
   });
 
   // Calculate REAL impact for missing keywords based on importance
-  const calculateImpact = (keyword: string, index: number): { impact: string; percent: number; isPriority: boolean } => {
-    const lower = keyword.toLowerCase();
+  const calculateImpact = (keyword: any, index: number): { impact: string; percent: number; isPriority: boolean } => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
 
     // High-impact technical keywords
     if (/python|sql|machine learning|aws|kubernetes|docker/.test(lower)) {
@@ -293,8 +212,8 @@ export function KeywordAnalysis({
   };
 
   // Generate REAL context-aware descriptions with SPECIFIC guidance
-  const getKeywordDescription = (keyword: string): string => {
-    const lower = keyword.toLowerCase();
+  const getKeywordDescription = (keyword: any): string => {
+    const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
 
     // Programming Languages
     if (/\bpython\b/.test(lower)) return `Essential for technical roles. Add to "Technical Skills" with specific frameworks (Django, Flask, FastAPI) and use cases.`;
@@ -543,9 +462,12 @@ export function KeywordAnalysis({
   });
 
   // Create DYNAMIC keyword cloud from REAL matched + missing keywords
-  const allKeywords = [...matchedKeywords, ...missingKeywords];
-  const industryKeywords = allKeywords.slice(0, 16).map((keyword, index) => {
-    const isMatched = matchedKeywords.includes(keyword);
+  const allKeywords = [...(matchedKeywords || []), ...(missingKeywords || [])];
+  const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
+    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
+    const isMatched = (matchedKeywords || []).some((m: any) => 
+      (typeof m === 'string' ? m : m?.keyword) === keyword
+    );
     const isCritical = index < 3; // First 3 are most important
 
     // Size based on importance and match status
@@ -602,9 +524,7 @@ export function KeywordAnalysis({
                 onClick={() => {
                   const newMode = viewMode === 'list' ? 'grid' : 'list';
                   setViewMode(newMode);
-                  const listView = (t.keywordAnalysis?.listView || 'list view').toLowerCase();
-                  const gridView = (t.keywordAnalysis?.gridView || 'grid view').toLowerCase();
-                  toast.info(`${t.keywordAnalysis?.switchedToView || 'Switched to view'} ${newMode === 'list' ? listView : gridView}`);
+                  toast.info(`${t.keywordAnalysis.switchedToView} ${newMode === 'list' ? t.keywordAnalysis.listView.toLowerCase() : t.keywordAnalysis.gridView.toLowerCase()}`);
                 }}
                 className="text-[#64748B] font-medium hover:text-[#475569] transition-colors"
               >
