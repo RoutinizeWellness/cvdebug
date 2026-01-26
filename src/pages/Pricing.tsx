@@ -67,6 +67,7 @@ export default function PricingPage() {
       plan: "single_debug_fix",
       highlighted: false,
       showGuarantee: true,
+      guaranteeText: t.pricingLanding.singleDebugGuarantee,
     },
     {
       name: t.pricingLanding.pass24hTitle,
@@ -90,6 +91,7 @@ export default function PricingPage() {
       plan: "single_scan",
       highlighted: false,
       showGuarantee: true,
+      guaranteeText: t.pricingLanding.pass24hGuarantee,
     },
     {
       name: t.pricingLanding.sprint7dTitle,
@@ -115,6 +117,7 @@ export default function PricingPage() {
       highlighted: true,
       badge: t.pricingDialog.bestValue,
       showGuarantee: true,
+      guaranteeText: t.pricingLanding.sprint7dGuarantee,
     },
   ];
 

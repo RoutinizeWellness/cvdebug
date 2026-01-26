@@ -408,11 +408,11 @@ export function SubscriptionView() {
                     {(isInterviewSprint || isIterationPass) ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
+                        Plan Actual
                       </span>
                     ) : (
                       <span className="flex items-center justify-center gap-2">
-                        Start 7-Day Sprint
+                        Iniciar Sprint de 7 Días
                         <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                       </span>
                     )}
@@ -424,13 +424,13 @@ export function SubscriptionView() {
 
           {/* FAQ or Trust Section Footer */}
           <div className="mt-8 border-t border-[#E2E8F0] pt-8 flex flex-col md:flex-row justify-between items-center text-[#64748B] text-sm">
-            <p>© 2026 CVDebug Inc. All rights reserved.</p>
+            <p>© 2026 CVDebug Inc. Todos los derechos reservados.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
               <a className="hover:text-[#475569] transition-colors" href="/privacy">
-                Privacy Policy
+                Política de Privacidad
               </a>
               <a className="hover:text-[#475569] transition-colors" href="/terms">
-                Terms of Service
+                Términos de Servicio
               </a>
             </div>
           </div>
