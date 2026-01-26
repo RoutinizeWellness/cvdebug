@@ -197,10 +197,6 @@ export function PricingSection() {
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
                 {t.pricingLanding.pass24hFeature5}
               </div>
-              <div className="flex items-center gap-3 text-sm text-slate-300">
-                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                {t.pricingLanding.pass24hFeature6}
-              </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
               <span className="text-xs font-mono font-bold text-[#22C55E]">
@@ -220,20 +216,18 @@ export function PricingSection() {
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
-              INTENSIVO / RECOMENDADO
+              {t.pricingLanding.sprint7dBadge}
             </motion.div>
             <div className="mt-2">
-              <h3 className="text-2xl font-bold mb-2 text-white">Sprint 7 Días</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">{t.pricingLanding.sprint7dTitle}</h3>
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-black text-white">{prices.premium}</span>
-                {prices.discount && (
-                  <span className="text-lg text-slate-500 line-through">
-                    {getRegionalPrice(24.99 / (1 - prices.discount / 100)).formatted}
-                  </span>
-                )}
+                <span className="text-lg text-slate-500 line-through">
+                  {t.pricingLanding.sprint7dBeforePrice}
+                </span>
               </div>
               <p className="text-sm text-slate-400 mt-2">
-                Modo Bestia. Ataque total de 7 días
+                {t.pricingLanding.sprint7dSubtitle}
               </p>
             </div>
             <motion.button
@@ -242,33 +236,37 @@ export function PricingSection() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              Empezar Sprint 7 Días →
+              {t.pricingLanding.sprint7dButton}
             </motion.button>
             <div className="space-y-3 pt-4 border-t border-primary/20">
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Scans Ilimitados (7 días)
+                {t.pricingLanding.sprint7dFeature1}
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Selector Industria (FAANG/Finanzas)
+                {t.pricingLanding.sprint7dFeature2}
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                Elevador Tono Viñetas (AI Rewrite)
+                {t.pricingLanding.sprint7dFeature3}
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Battle Plan Entrevistas
+                {t.pricingLanding.sprint7dFeature4}
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Cover Letter + LinkedIn Optimizer
+                {t.pricingLanding.sprint7dFeature5}
+              </div>
+              <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                {t.pricingLanding.sprint7dFeature6}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
               <span className="text-xs font-mono font-bold text-[#22C55E]">
-                ✓ PLANTILLA 100% LEGIBLE GARANTIZADA
+                {t.pricingLanding.sprint7dGuarantee}
               </span>
             </div>
           </motion.div>

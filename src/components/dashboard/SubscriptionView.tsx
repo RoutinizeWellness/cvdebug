@@ -60,10 +60,10 @@ export function SubscriptionView() {
               onClick={() => window.history.back()}
               className="text-[#64748B] hover:text-[#0F172A] transition-colors"
             >
-              Settings
+              Ajustes
             </button>
             <span className="material-symbols-outlined text-[#475569] text-[16px]">chevron_right</span>
-            <span className="text-[#0F172A] font-medium">Subscription</span>
+            <span className="text-[#0F172A] font-medium">Suscripción</span>
           </div>
           <div className="flex items-center gap-4">
             <button className="p-2 text-[#64748B] hover:text-[#0F172A] transition-colors">
@@ -82,9 +82,9 @@ export function SubscriptionView() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-2"
           >
-            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">Subscription Management</h2>
+            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">Gestión de Suscripción</h2>
             <p className="text-[#64748B] max-w-2xl text-lg">
-              Manage your current plan, billing details, and unlock premium interview preparation sprints.
+              Administra tu plan actual, detalles de facturación, y desbloquea sprints premium de preparación para entrevistas.
             </p>
           </motion.div>
 

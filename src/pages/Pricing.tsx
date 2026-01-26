@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCurrency } from "@/hooks/use-currency";
 import { motion } from "framer-motion";
 import { usePresetSEO } from "@/hooks/useIntelligentSEO";
+import { useI18n } from "@/contexts/I18nContext";
 
 export default function PricingPage() {
   // Intelligent SEO for pricing page
@@ -15,6 +16,7 @@ export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { formatPrice, currencyInfo } = useCurrency();
+  const { t } = useI18n();
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -26,41 +28,39 @@ export default function PricingPage() {
 
   const pricingTiers = [
     {
-      name: "FREE Debug",
+      name: t.pricingLanding.freeTitle,
       tag: "EL GANCHO",
       tagColor: "bg-[#64748B]/10 text-[#64748B]",
-      description: "Descubre qué keywords NO ve el robot. Detección de invisibilidad.",
+      description: t.pricingLanding.freeSubtitle,
       price: `${currencyInfo.symbol}0`,
       period: "forever",
       features: [
-        { text: "Detección de Invisibilidad (2 keywords)", icon: "[ERR]", guaranteed: false },
-        { text: "Global ATS Score", icon: "[OK]", guaranteed: false },
-        { text: "Vista Robot (bloqueada)", icon: "[ERR]", guaranteed: false },
-        { text: "Preview Seniority Match", icon: "[FIX]", guaranteed: false },
+        { text: t.pricingLanding.freeFeature1, icon: "[ERR]", guaranteed: false },
+        { text: t.pricingLanding.freeFeature2, icon: "[OK]", guaranteed: false },
+        { text: t.pricingLanding.freeFeature3, icon: "[ERR]", guaranteed: false },
+        { text: t.pricingLanding.freeFeature4, icon: "[FIX]", guaranteed: false },
       ],
-      buttonText: "Escanear Gratis",
+      buttonText: t.pricingLanding.freeScanButton,
       buttonVariant: "outline" as const,
       borderColor: "border-slate-800",
       hoverBorder: "hover:border-slate-600",
       plan: "free",
     },
     {
-      name: "Single Debug Fix",
-      tag: "ARREGLA DE UNA VEZ",
+      name: t.pricingLanding.singleDebugTitle,
+      tag: t.pricingLanding.singleDebugBadge,
       tagColor: "bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30",
-      description: "Arregla tu CV de una vez por el precio de un café.",
+      description: t.pricingLanding.singleDebugSubtitle,
       price: formatPrice("single_debug_fix"),
       period: "1 CV completo",
       features: [
-        { text: "1 Escaneo Profundo Completo", icon: "[OK]", guaranteed: true },
-        { text: "Vista Robot Terminal Desbloqueada", icon: "[OK]", guaranteed: true },
-        { text: "Detector Missing Keywords Completo", icon: "[FIX]", guaranteed: true },
-        { text: "1 Optimización AI Completa (Rewrite)", icon: "[FIX]", guaranteed: true },
-        { text: "Auto-Inject Keywords Relevantes", icon: "[FIX]", guaranteed: true },
-        { text: "Export CV Optimizado ATS-safe", icon: "[OK]", guaranteed: true },
-        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.singleDebugFeature1, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.singleDebugFeature2, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.singleDebugFeature3, icon: "[FIX]", guaranteed: true },
+        { text: t.pricingLanding.singleDebugFeature4, icon: "[FIX]", guaranteed: true },
+        { text: t.pricingLanding.singleDebugFeature5, icon: "[OK]", guaranteed: true },
       ],
-      buttonText: "Arreglar Mi CV →",
+      buttonText: t.pricingLanding.singleDebugButton,
       buttonVariant: "default" as const,
       borderColor: "border-[#0F172A]/50",
       hoverBorder: "hover:border-[#F59E0B]/50",
