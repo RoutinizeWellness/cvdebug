@@ -311,7 +311,9 @@ export function analyzeReadability(text: string): {
   const avgSentenceLength = words.length / Math.max(sentences.length, 1);
 
   // Vocabulary richness = unique words / total words
-  const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+  const uniqueWords = new Set(words.map((w: any) =>
+    typeof w === 'string' ? w.toLowerCase() : ''
+  ).filter(Boolean));
   const vocabularyRichness = uniqueWords.size / Math.max(words.length, 1);
 
   // Complexity based on average word length

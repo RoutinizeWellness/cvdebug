@@ -704,7 +704,9 @@ export function tailorResume(
 ): TailoredResumeData {
   // Extract job keywords using local TF-IDF
   const jobKeywords = extractKeywords(jobDescription, 15);
-  const requiredSkillsLower = jobRequirements.map(r => r.toLowerCase());
+  const requiredSkillsLower = jobRequirements.map((r: any) =>
+    typeof r === 'string' ? r.toLowerCase() : ''
+  ).filter(Boolean);
 
   // Prioritize skills that match job requirements
   const resumeSkills = resume.skills || [];

@@ -311,7 +311,10 @@ export function KeywordAnalysis({
   // ML-powered keyword suggestion engine - analyzes CV context, industry, seniority
   const generateMLKeywordSuggestions = (): string[] => {
     const suggestions: Set<string> = new Set();
-    const matchedLower = matchedKeywords.map(k => k.toLowerCase());
+    const matchedLower = matchedKeywords.map((k: any) => {
+      if (typeof k === 'string') return k.toLowerCase();
+      return k?.keyword ? k.keyword.toLowerCase() : '';
+    }).filter(Boolean);
     const resumeLower = resumeText.toLowerCase();
     const jdLower = jobDescription.toLowerCase();
 

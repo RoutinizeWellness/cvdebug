@@ -392,7 +392,10 @@ export function generateIntelligentFallback(
   }));
 
   // Add traditional keywords that aren't already in NLP results
-  const nlpKeywordSet = new Set(nlpMissingKeywords.map(k => k.keyword.toLowerCase()));
+  const nlpKeywordSet = new Set(nlpMissingKeywords.map((k: any) => {
+    if (typeof k === 'string') return k.toLowerCase();
+    return k?.keyword ? k.keyword.toLowerCase() : '';
+  }).filter(Boolean));
   traditionalMissingKeywords.forEach((kw: any) => {
     if (!nlpKeywordSet.has(kw.keyword.toLowerCase()) && missingKeywords.length < (isPremium ? 15 : 8)) {
       missingKeywords.push({
