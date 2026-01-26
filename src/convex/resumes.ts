@@ -1054,3 +1054,32 @@ export const saveRewrittenText = internalMutation({
     console.log("[saveRewrittenText] Saved rewritten text for:", args.resumeId);
   },
 });
+
+/**
+ * Force resume status to completed if stuck in processing
+ * This is a safety mechanism for resumes that get stuck
+ */
+export const forceCompleteStuckResumes = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
+
+    // Find resumes stuck in processing for more than 5 minutes
+    const stuckResumes = await ctx.db
+      .query("resumes")
+      .filter(q => q.eq(q.field("status"), "processing"))
+      .filter(q => q.lt(q.field("_creationTime"), fiveMinutesAgo))
+      .collect();
+
+    console.log(`[Force Complete] Found ${stuckResumes.length} stuck resumes`);
+
+    for (const resume of stuckResumes) {
+      await ctx.db.patch(resume._id, {
+        status: "completed",
+      });
+      console.log(`[Force Complete] Fixed stuck resume: ${resume._id}`);
+    }
+
+    return { fixed: stuckResumes.length };
+  },
+});
