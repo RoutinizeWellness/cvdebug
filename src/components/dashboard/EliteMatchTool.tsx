@@ -22,6 +22,7 @@ import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCurrency } from "@/hooks/use-currency";
 import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface MissingSignal {
   text: string;
@@ -49,6 +50,7 @@ interface EliteMatchToolProps {
 }
 
 export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
+  const { t } = useI18n();
   const [step, setStep] = useState<'input' | 'analyzing' | 'results'>('input');
 
   // Fetch current user to check subscription status
@@ -70,13 +72,13 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
 
   const handleAnalyze = async () => {
     if (!isPaidUser) {
-      toast.error('Esta función es Premium. Actualiza tu plan para continuar.');
+      toast.error(t.dialogs.upgradeForInsights);
       if (onUpgrade) onUpgrade();
       return;
     }
 
     if (!jobDescriptionUrl && !jobDescriptionText) {
-      toast.error('Por favor pega el link de LinkedIn o el texto de la oferta');
+      toast.error(t.tools.interviewBattle.noJobDesc);
       return;
     }
 
@@ -86,14 +88,14 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
     try {
       // Check if user has resumes
       if (!resumes || resumes.length === 0) {
-        toast.error('No se encontró ningún CV. Por favor sube un CV primero.');
+        toast.error(t.dashboard.noResumeFound);
         setStep('input');
         return;
       }
 
       const latestResume = resumes[0];
       if (!latestResume.ocrText) {
-        toast.error('Tu CV no tiene texto extraído. Por favor re-sube tu CV.');
+        toast.error(t.toasts.errors.uploadFailed);
         setStep('input');
         return;
       }
