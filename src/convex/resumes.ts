@@ -162,14 +162,17 @@ export const createResume = mutation({
         });
       }
 
-      // Schedule abandonment email for free users
+      // Schedule abandonment email for free users (wrapped in try-catch to prevent blocking)
       if (!hasActiveSprint && (user.credits ?? 0) === 1 && user.email) {
         try {
-          await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
-            userId: identity.subject,
-            email: user.email,
-            resumeId,
-          });
+          // Check if the internal function exists before calling
+          if (internalAny.abandonmentEmails?.scheduleAbandonmentEmail) {
+            await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
+              userId: identity.subject,
+              email: user.email,
+              resumeId,
+            });
+          }
         } catch (scheduleError: any) {
           // Log but don't fail the entire operation if email scheduling fails
           console.error("[createResume] Failed to schedule abandonment email:", scheduleError);

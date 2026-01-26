@@ -169,7 +169,7 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     unlimitedTitleScans: true, // Unlimited title variation testing
 
     // Additional Tools
-    coverLetterGenerator: "unlimited", // Unlimited cover letter generation
+    coverLetterGenerator: "unlimited", // ADDED: Unlimited cover letter generation for 24h
     linkedinOptimizer: false, // Removed from 24h plan
     linkedinDeepAudit: false,
     recruiterDMTemplates: false,
@@ -216,7 +216,7 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     coverLetterGenerator: "unlimited",
     linkedinOptimizer: false, // Removed - replaced by deep audit
     linkedinDeepAudit: true, // LinkedIn Deep Audit with detailed recommendations
-    recruiterDMTemplates: true, // DM templates for reaching out to recruiters
+    recruiterDMTemplates: true, // ADDED: DM templates for reaching out to recruiters
     interviewBattlePlan: true,
 
     // Guarantees

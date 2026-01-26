@@ -200,6 +200,10 @@ export function PricingSection() {
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
                 {t.pricingLanding.pass24hFeature5}
               </div>
+              <div className="flex items-center gap-3 text-sm text-slate-300">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                {locale === 'es' ? 'Generador Cover Letter Ilimitado' : 'Unlimited Cover Letter Generator'}
+              </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
               <span className="text-xs font-mono font-bold text-[#22C55E]">
@@ -226,7 +230,7 @@ export function PricingSection() {
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-black text-white">{prices.premium}</span>
                 <span className="text-lg text-slate-500 line-through">
-                  {t.pricingLanding.sprint7dBeforePrice}
+                  €59.99
                 </span>
               </div>
               <p className="text-sm text-slate-400 mt-2">
@@ -265,6 +269,10 @@ export function PricingSection() {
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
                 {t.pricingLanding.sprint7dFeature6}
+              </div>
+              <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
+                <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
+                {locale === 'es' ? 'Guiones DM para Recruiters' : 'Recruiter DM Templates'}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
