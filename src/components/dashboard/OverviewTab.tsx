@@ -13,7 +13,7 @@ interface OverviewTabProps {
 }
 
 export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTabProps) {
-  const currentScore = resume?.vlyScore || resume?.atsScore || 0;
+  const currentScore = resume?.score || 0;
   const bestScore = resume?.bestScore || currentScore;
 
   // Calculate benchmark/percentile (simulated data - in production would come from DB)
@@ -118,7 +118,7 @@ export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTab
                   <p className="text-3xl font-black text-purple-700 mb-1">
                     {benchmarkData.percentile}th
                   </p>
-                  <p className="text-xs font-semibold text-purple-600">
+                  <p className="text-xs font-semibold text-purple-600 mt-1">
                     {benchmarkData.message}
                   </p>
                 </div>

@@ -384,128 +384,132 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
           {/* PLAN TAB */}
           <TabsContent value="plan" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Plan Section (Span 2 columns) */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-          >
-            <div className="p-6 md:p-8 flex flex-col justify-between h-full">
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
-                      Active
-                    </span>
-                    <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
+              {/* Plan Section (Span 2 columns) */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+              >
+                <div className="p-6 md:p-8 flex flex-col justify-between h-full">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
+                          Active
+                        </span>
+                        <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
+                      </div>
+                      <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-1">
+                        {planName}
+                      </h2>
+                      <p className="text-[#64748B] text-sm">Valid until {validUntil}</p>
+                    </div>
+                    <div className="size-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
+                      <span className="material-symbols-outlined text-[#475569]">rocket_launch</span>
+                    </div>
                   </div>
-                  <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-1">
-                    {planName}
-                  </h2>
-                  <p className="text-[#64748B] text-sm">Valid until {validUntil}</p>
-                </div>
-                <div className="size-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
-                  <span className="material-symbols-outlined text-[#475569]">rocket_launch</span>
-                </div>
-              </div>
 
-              {/* Progress Bar Component */}
-              <div className="flex flex-col gap-2 mb-8">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-[#0F172A] font-medium">Sprint Progress</span>
-                  <span className="text-[#64748B] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
-                </div>
-                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
-                    style={{ width: `${progressPercentage}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-xs text-[#64748B] mt-1">
-                  <span>Day {daysElapsed}</span>
-                  <span>Day {totalSprintDays}</span>
-                </div>
-              </div>
+                  {/* Progress Bar Component */}
+                  <div className="flex flex-col gap-2 mb-8">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-[#0F172A] font-medium">Sprint Progress</span>
+                      <span className="text-[#64748B] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
+                    </div>
+                    <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
+                        style={{ width: `${progressPercentage}%` }}
+                      ></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-[#64748B] mt-1">
+                      <span>Day {daysElapsed}</span>
+                      <span>Day {totalSprintDays}</span>
+                    </div>
+                  </div>
 
-              <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
-                <button
-                  onClick={onOpenPricing}
-                  className="gradient-btn px-5 py-2.5 rounded-lg text-[#0F172A] text-sm font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2"
-                >
-                  <span>Manage Subscription</span>
-                  <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                </button>
-              </div>
+                  <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
+                    <button
+                      onClick={onOpenPricing}
+                      className="gradient-btn px-5 py-2.5 rounded-lg text-[#0F172A] text-sm font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2"
+                    >
+                      <span>Manage Subscription</span>
+                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Stats Card (Span 1 column) */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="material-symbols-outlined text-cyan-600">monitoring</span>
+                    <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
+                  </div>
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
+                    {scoreImprovement !== 0 && (
+                      <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
+                        scoreImprovement > 0
+                          ? 'text-[#22C55E] bg-emerald-50'
+                          : 'text-rose-600 bg-rose-50'
+                      }`}>
+                        <span className="material-symbols-outlined text-[14px] mr-0.5">
+                          {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
+                        </span>
+                        {scoreImprovement > 0 ? '+' : ''}{scoreImprovement}%
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Chart SVG */}
+                <div className="relative h-32 w-full mt-auto">
+                  <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 50">
+                    <defs>
+                      <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stopColor="#1E293B" stopOpacity="0.2"></stop>
+                        <stop offset="100%" stopColor="#1E293B" stopOpacity="0"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5 L 100 50 L 0 50 Z"
+                      fill="url(#chartGradient)"
+                    ></path>
+                    <path
+                      d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5"
+                      fill="none"
+                      stroke="#1E293B"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                      vectorEffect="non-scaling-stroke"
+                    ></path>
+                    {/* Data Points */}
+                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
+                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
+                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
+                  </svg>
+                  {/* X-Axis Labels */}
+                  <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
+                    <span>Wk 1</span>
+                    <span>Wk 2</span>
+                    <span>Wk 3</span>
+                    <span>Wk 4</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
+          </TabsContent>
 
-          {/* Stats Card (Span 1 column) */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-          >
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="material-symbols-outlined text-cyan-600">monitoring</span>
-                <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
-              </div>
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
-                {scoreImprovement !== 0 && (
-                  <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
-                    scoreImprovement > 0
-                      ? 'text-[#22C55E] bg-emerald-50'
-                      : 'text-rose-600 bg-rose-50'
-                  }`}>
-                    <span className="material-symbols-outlined text-[14px] mr-0.5">
-                      {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
-                    </span>
-                    {scoreImprovement > 0 ? '+' : ''}{scoreImprovement}%
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Chart SVG */}
-            <div className="relative h-32 w-full mt-auto">
-              <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 50">
-                <defs>
-                  <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#1E293B" stopOpacity="0.2"></stop>
-                    <stop offset="100%" stopColor="#1E293B" stopOpacity="0"></stop>
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5 L 100 50 L 0 50 Z"
-                  fill="url(#chartGradient)"
-                ></path>
-                <path
-                  d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5"
-                  fill="none"
-                  stroke="#1E293B"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  vectorEffect="non-scaling-stroke"
-                ></path>
-                {/* Data Points */}
-                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
-                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
-                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
-              </svg>
-              {/* X-Axis Labels */}
-              <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
-                <span>Wk 1</span>
-                <span>Wk 2</span>
-                <span>Wk 3</span>
-                <span>Wk 4</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Security Section (Full Width) */}
+          {/* PRIVACY TAB */}
+          <TabsContent value="privacy" className="space-y-6">
+            {/* Security Section (Full Width) */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -703,11 +707,12 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="lg:col-span-3 mt-2"
+            className="mt-2"
           >
             <EmailPreferences />
           </motion.div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
