@@ -130,9 +130,10 @@ export default function Dashboard() {
     // Show experience level onboarding ONLY AFTER main tour is complete
     // AND user doesn't have experience level set
     const onboardingCompleted = localStorage.getItem("onboarding_completed");
+    const experienceOnboardingCompleted = localStorage.getItem("experience_onboarding_completed");
 
-    // Only show if: tour is done, experience level not set, and tour is not currently showing
-    if (currentUser && !currentUser.experienceLevel && onboardingCompleted === "true" && !showOnboarding) {
+    // Only show if: tour is done, experience level not set, experience onboarding not completed, and tour is not currently showing
+    if (currentUser && !currentUser.experienceLevel && onboardingCompleted === "true" && !showOnboarding && !experienceOnboardingCompleted) {
       const timer = setTimeout(() => {
         setShowExperienceOnboarding(true);
       }, 1000);
@@ -853,7 +854,10 @@ export default function Dashboard() {
       {/* Experience Level Onboarding */}
       <ExperienceLevelOnboarding
         open={showExperienceOnboarding}
-        onComplete={() => setShowExperienceOnboarding(false)}
+        onComplete={() => {
+          localStorage.setItem("experience_onboarding_completed", "true");
+          setShowExperienceOnboarding(false);
+        }}
       />
     </div>
   );

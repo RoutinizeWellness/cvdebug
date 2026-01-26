@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import { ExperienceLevel, ExperienceLevelSelector } from "@/components/ExperienceLevelSelector";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -53,6 +54,9 @@ export function ExperienceLevelOnboarding({ open, onComplete }: ExperienceLevelO
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
       >
+        <VisuallyHidden>
+          <DialogTitle>Personalize Your Experience</DialogTitle>
+        </VisuallyHidden>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
