@@ -112,8 +112,11 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 z-[100] backdrop-blur-sm"
-            onClick={handleSkipNow}
+            className="fixed inset-0 bg-black/70 z-[9998] backdrop-blur-sm"
+            onClick={(e) => {
+              console.log('[OnboardingTour] Overlay clicked');
+              handleSkipNow();
+            }}
           />
 
           {/* Tour Card */}
@@ -121,19 +124,23 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[101] w-full max-w-lg mx-4"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999] w-full max-w-lg mx-4 pointer-events-auto"
+            onClick={(e) => {
+              console.log('[OnboardingTour] Card clicked');
+              e.stopPropagation();
+            }}
           >
             <div className="bg-[#0F172A] border-4 border-[#22C55E] rounded-2xl shadow-2xl overflow-hidden">
               {/* Header */}
               <div className="bg-gradient-to-r from-[#22C55E] to-[#10B981] p-6 relative">
                 <button
                   onClick={(e) => {
+                    console.log('[OnboardingTour] X button clicked');
                     e.preventDefault();
                     e.stopPropagation();
                     handleSkipNow();
                   }}
-                  className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-10"
+                  className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors z-20 cursor-pointer"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -179,21 +186,23 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
                   <Button
                     variant="outline"
                     onClick={(e) => {
+                      console.log('[OnboardingTour] Skip button clicked');
                       e.preventDefault();
                       e.stopPropagation();
                       handleSkipNow();
                     }}
-                    className="flex-1 border-gray-600 text-gray-400 hover:bg-gray-800 hover:text-white"
+                    className="flex-1 border-gray-600 text-gray-400 hover:bg-gray-800 hover:text-white relative z-10"
                   >
                     Skip Tour
                   </Button>
                   <Button
                     onClick={(e) => {
+                      console.log('[OnboardingTour] Next button clicked');
                       e.preventDefault();
                       e.stopPropagation();
                       handleNext();
                     }}
-                    className="flex-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold shadow-lg"
+                    className="flex-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold shadow-lg relative z-10"
                   >
                     {isLastStep ? (
                       <>
