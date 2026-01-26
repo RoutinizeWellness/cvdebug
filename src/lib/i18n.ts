@@ -271,6 +271,7 @@ export interface Translation {
     home: string;
     myResumes: string;
     aiTools: string;
+    eliteMatch: string;
     settings: string;
     adminPanel: string;
     sprintActive: string;
@@ -1713,6 +1714,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       home: 'Home',
       myResumes: 'My Resumes',
       aiTools: 'AI Tools',
+      eliteMatch: 'Match Elite',
       settings: 'Settings',
       adminPanel: 'Admin Panel',
       sprintActive: 'Sprint Active',
@@ -3102,6 +3104,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       home: 'Inicio',
       myResumes: 'Mis CVs',
       aiTools: 'Herramientas IA',
+      eliteMatch: 'Match Elite',
       settings: 'Configuración',
       adminPanel: 'Panel Admin',
       sprintActive: 'Sprint Activo',
@@ -4491,6 +4494,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       home: 'Accueil',
       myResumes: 'Mes CVs',
       aiTools: 'Outils IA',
+      eliteMatch: 'Match Elite',
       settings: 'Paramètres',
       adminPanel: 'Panneau Admin',
       sprintActive: 'Sprint Actif',
@@ -5880,6 +5884,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       home: 'Startseite',
       myResumes: 'Meine Lebensläufe',
       aiTools: 'KI-Tools',
+      eliteMatch: 'Elite Match',
       settings: 'Einstellungen',
       adminPanel: 'Admin-Panel',
       sprintActive: 'Sprint Aktiv',
@@ -7269,6 +7274,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       home: 'Início',
       myResumes: 'Meus Currículos',
       aiTools: 'Ferramentas IA',
+      eliteMatch: 'Match Elite',
       settings: 'Configurações',
       adminPanel: 'Painel Admin',
       sprintActive: 'Sprint Ativo',

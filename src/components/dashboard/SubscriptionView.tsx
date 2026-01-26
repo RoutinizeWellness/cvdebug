@@ -236,10 +236,10 @@ export function SubscriptionView() {
                     {[
                       { icon: "verified", text: "1 Escaneo Profundo" },
                       { icon: "terminal", text: "Vista Robot Terminal" },
-                      { icon: "key", text: "Missing Keywords Completo" },
-                      { icon: "auto_awesome", text: "1 AI Rewrite Completo" },
-                      { icon: "integration_instructions", text: "Auto-Inject Keywords" },
-                      { icon: "download", text: "Export CV ATS-safe" }
+                      { icon: "key", text: "Keywords Faltantes Completo" },
+                      { icon: "auto_awesome", text: "1 Reescritura IA Completa" },
+                      { icon: "integration_instructions", text: "Auto-Inyección Keywords" },
+                      { icon: "download", text: "Exportar CV ATS-seguro" }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#F59E0B]/10 border border-[#F59E0B]/20">

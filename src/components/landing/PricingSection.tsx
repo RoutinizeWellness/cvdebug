@@ -110,7 +110,7 @@ export function PricingSection() {
               </span>
             </div>
             <div className="mt-2">
-              <h3 className="text-2xl font-bold mb-2 text-white">Single Debug Fix</h3>
+              <h3 className="text-2xl font-bold mb-2 text-white">Arreglo Rápido</h3>
               <div className="flex items-baseline gap-1">
                 <span className="text-5xl font-black text-white">{prices.singleDebugFix}</span>
               </div>
@@ -137,11 +137,11 @@ export function PricingSection() {
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#F59E0B]/10 text-[#F59E0B]">[FIX]</span>
-                Auto-Inject Keywords
+                Auto-Inyección Keywords
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                Export CV Optimizado
+                Exportar CV Optimizado
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
