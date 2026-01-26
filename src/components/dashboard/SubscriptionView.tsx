@@ -371,11 +371,11 @@ export function SubscriptionView() {
 
                   <div className="space-y-3.5 mb-8 flex-1">
                     {[
-                      { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
-                      { icon: "psychology", text: "AI Keyword Suggestions" },
-                      { icon: "description", text: "Cover Letter Generator" },
-                      { icon: "work", text: "LinkedIn Optimizer" },
-                      { icon: "support_agent", text: "Priority Support" }
+                      { icon: "all_inclusive", text: "Escaneos Ilimitados (7 Días)" },
+                      { icon: "psychology", text: "Sugerencias de Keywords IA" },
+                      { icon: "description", text: "Generador de Cartas de Presentación" },
+                      { icon: "work", text: "Optimizador de LinkedIn" },
+                      { icon: "support_agent", text: "Soporte Prioritario" }
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#1E293B]/20 border border-[#1E293B]/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">

@@ -202,7 +202,7 @@ export function PricingSection() {
               </div>
               <div className="flex items-center gap-3 text-sm text-slate-300">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                {locale === 'es' ? 'Generador Cover Letter Ilimitado' : 'Unlimited Cover Letter Generator'}
+                {t.pricingLanding.pass24hFeature7}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
@@ -272,7 +272,7 @@ export function PricingSection() {
               </div>
               <div className="flex items-center gap-3 text-sm font-medium text-slate-200">
                 <span className="flex-shrink-0 font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#22C55E]/10 text-[#22C55E]">[OK]</span>
-                {locale === 'es' ? 'Guiones DM para Recruiters' : 'Recruiter DM Templates'}
+                {t.pricingLanding.sprint7dFeature7}
               </div>
             </div>
             <div className="mt-2 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">

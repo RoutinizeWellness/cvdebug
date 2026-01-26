@@ -1669,6 +1669,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dFeature4: 'Interview Battle Plan',
       sprint7dFeature5: 'DM Scripts for Recruiters',
       sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
+      sprint7dFeature7: 'Recruiter DM Templates',
       sprint7dGuarantee: '✓ 100% READABLE TEMPLATE GUARANTEED',
     },
     pricingDialog: {
@@ -3199,6 +3200,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       sprint7dFeature4: 'Battle Plan Entrevistas',
       sprint7dFeature5: 'Guiones de DM para Recruiters',
       sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
+      sprint7dFeature7: 'Recruiter DM Templates',
       sprint7dGuarantee: '✓ PLANTILLA 100% LEGIBLE GARANTIZADA',
     },
     pricingDialog: {
