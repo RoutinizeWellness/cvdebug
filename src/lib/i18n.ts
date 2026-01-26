@@ -3185,6 +3185,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       pass24hFeature4: 'Detector Gap de Keywords',
       pass24hFeature5: 'Generador de Cover Letter',
       pass24hFeature6: 'Plantilla 100% Legible por ATS',
+      pass24hFeature7: 'Generador Cover Letter Ilimitado',
       pass24hGuarantee: '✓ GARANTIZADA',
       // 7 Day Sprint (€24.99)
       sprint7dBadge: 'INTENSIVO / RECOMENDADO',
