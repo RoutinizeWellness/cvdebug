@@ -1454,6 +1454,31 @@ export interface Translation {
     feedbackSubmitted: string;
     submitError: string;
   };
+  // Ecosystem Prompts
+  ecosystem: {
+    copyPasteTip: {
+      badge: string;
+      title: string;
+      description: string;
+      actionLabel: string;
+      successMessage: string;
+    };
+    linkedinReminder: {
+      badge: string;
+      title: string;
+      description: string;
+      actionLabel: string;
+    };
+    keyboardShortcuts: {
+      badge: string;
+      title: string;
+      description: string;
+      actionLabel: string;
+      infoMessage: string;
+    };
+    dismissLabel: string;
+    freeLabel: string;
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -2854,6 +2879,30 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Thank you! Feedback submitted.',
       submitError: 'Failed to submit feedback. Please try again.',
     },
+    ecosystem: {
+      copyPasteTip: {
+        badge: 'FREE',
+        title: '💡 Pro Tip: Copy from LinkedIn',
+        description: 'Go to a job posting on LinkedIn → Select all text → Ctrl+C → Paste it in \'Add Job Description\'. Automatic, no extensions needed.',
+        actionLabel: 'Got it',
+        successMessage: 'Perfect! Use Ctrl+C on any job posting.',
+      },
+      linkedinReminder: {
+        badge: 'FREE',
+        title: '🔗 Reminder: Update LinkedIn',
+        description: 'Your CV is at {score}%. 89% of recruiters search LinkedIn before calling. Copy your CV improvements to your LinkedIn profile.',
+        actionLabel: 'Go to LinkedIn',
+      },
+      keyboardShortcuts: {
+        badge: 'FREE',
+        title: '⌨️ Keyboard Shortcuts',
+        description: 'Ctrl+V to paste job description quickly. Esc to close modals. Work faster without leaving the keyboard.',
+        actionLabel: 'See More Shortcuts',
+        infoMessage: 'Shortcuts: Ctrl+V (paste JD), Esc (close), Tab (navigate)',
+      },
+      dismissLabel: 'Not interested',
+      freeLabel: '100% FREE',
+    },
   },
   'es': {
     hero: {
@@ -4243,6 +4292,30 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Por favor selecciona una calificación',
       feedbackSubmitted: '¡Gracias! Opinión enviada.',
       submitError: 'Error al enviar opinión. Inténtalo de nuevo.',
+    },
+    ecosystem: {
+      copyPasteTip: {
+        badge: 'GRATIS',
+        title: '💡 Pro Tip: Copia desde LinkedIn',
+        description: 'Ve a un job posting en LinkedIn → Selecciona todo el texto → Ctrl+C → Pégalo en \'Add Job Description\'. Automático, sin extensiones.',
+        actionLabel: 'Entendido',
+        successMessage: '¡Perfecto! Usa Ctrl+C en cualquier job posting.',
+      },
+      linkedinReminder: {
+        badge: 'GRATIS',
+        title: '🔗 Recordatorio: Actualiza LinkedIn',
+        description: 'Tu CV está en {score}%. 89% de reclutadores buscan en LinkedIn antes de llamar. Copia las mejoras de tu CV a tu perfil de LinkedIn.',
+        actionLabel: 'Ir a LinkedIn',
+      },
+      keyboardShortcuts: {
+        badge: 'GRATIS',
+        title: '⌨️ Atajos de Teclado',
+        description: 'Ctrl+V para pegar job description rápido. Esc para cerrar modales. Trabaja más rápido sin salir del teclado.',
+        actionLabel: 'Ver Más Atajos',
+        infoMessage: 'Atajos: Ctrl+V (pegar JD), Esc (cerrar), Tab (navegar)',
+      },
+      dismissLabel: 'No me interesa',
+      freeLabel: '100% GRATIS',
     },
   },
   'fr': {
@@ -5634,6 +5707,30 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Merci ! Commentaires envoyés.',
       submitError: 'Échec de l\'envoi des commentaires. Veuillez réessayer.',
     },
+    ecosystem: {
+      copyPasteTip: {
+        badge: 'GRATUIT',
+        title: '💡 Astuce Pro : Copiez depuis LinkedIn',
+        description: 'Allez sur une offre d\'emploi sur LinkedIn → Sélectionnez tout le texte → Ctrl+C → Collez-le dans \'Ajouter description du poste\'. Automatique, sans extensions.',
+        actionLabel: 'Compris',
+        successMessage: 'Parfait ! Utilisez Ctrl+C sur n\'importe quelle offre d\'emploi.',
+      },
+      linkedinReminder: {
+        badge: 'GRATUIT',
+        title: '🔗 Rappel : Mettez à jour LinkedIn',
+        description: 'Votre CV est à {score}%. 89% des recruteurs recherchent sur LinkedIn avant d\'appeler. Copiez les améliorations de votre CV sur votre profil LinkedIn.',
+        actionLabel: 'Aller sur LinkedIn',
+      },
+      keyboardShortcuts: {
+        badge: 'GRATUIT',
+        title: '⌨️ Raccourcis Clavier',
+        description: 'Ctrl+V pour coller rapidement la description du poste. Esc pour fermer les modales. Travaillez plus vite sans quitter le clavier.',
+        actionLabel: 'Voir Plus de Raccourcis',
+        infoMessage: 'Raccourcis : Ctrl+V (coller JD), Esc (fermer), Tab (naviguer)',
+      },
+      dismissLabel: 'Pas intéressé',
+      freeLabel: '100% GRATUIT',
+    },
   },
   'de': {
     hero: {
@@ -7024,6 +7121,30 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Danke! Feedback gesendet.',
       submitError: 'Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     },
+    ecosystem: {
+      copyPasteTip: {
+        badge: 'KOSTENLOS',
+        title: '💡 Profi-Tipp: Von LinkedIn kopieren',
+        description: 'Gehen Sie zu einer Stellenanzeige auf LinkedIn → Wählen Sie den gesamten Text → Strg+C → Fügen Sie ihn in \'Stellenbeschreibung hinzufügen\' ein. Automatisch, keine Erweiterungen erforderlich.',
+        actionLabel: 'Verstanden',
+        successMessage: 'Perfekt! Verwenden Sie Strg+C bei jeder Stellenanzeige.',
+      },
+      linkedinReminder: {
+        badge: 'KOSTENLOS',
+        title: '🔗 Erinnerung: LinkedIn aktualisieren',
+        description: 'Ihr Lebenslauf steht bei {score}%. 89% der Recruiter suchen auf LinkedIn, bevor sie anrufen. Kopieren Sie Ihre Lebenslaufverbesserungen in Ihr LinkedIn-Profil.',
+        actionLabel: 'Zu LinkedIn gehen',
+      },
+      keyboardShortcuts: {
+        badge: 'KOSTENLOS',
+        title: '⌨️ Tastaturkürzel',
+        description: 'Strg+V zum schnellen Einfügen der Stellenbeschreibung. Esc zum Schließen von Modalen. Arbeiten Sie schneller, ohne die Tastatur zu verlassen.',
+        actionLabel: 'Mehr Shortcuts anzeigen',
+        infoMessage: 'Shortcuts: Strg+V (JD einfügen), Esc (schließen), Tab (navigieren)',
+      },
+      dismissLabel: 'Nicht interessiert',
+      freeLabel: '100% KOSTENLOS',
+    },
   },
   'pt': {
     hero: {
@@ -8413,6 +8534,30 @@ export const translations: Record<SupportedLocale, Translation> = {
       selectRating: 'Por favor, selecione uma avaliação',
       feedbackSubmitted: 'Obrigado! Feedback enviado.',
       submitError: 'Falha ao enviar feedback. Tente novamente.',
+    },
+    ecosystem: {
+      copyPasteTip: {
+        badge: 'GRÁTIS',
+        title: '💡 Dica Profissional: Copie do LinkedIn',
+        description: 'Vá para uma vaga no LinkedIn → Selecione todo o texto → Ctrl+C → Cole em \'Adicionar Descrição da Vaga\'. Automático, sem extensões.',
+        actionLabel: 'Entendi',
+        successMessage: 'Perfeito! Use Ctrl+C em qualquer vaga de emprego.',
+      },
+      linkedinReminder: {
+        badge: 'GRÁTIS',
+        title: '🔗 Lembrete: Atualize o LinkedIn',
+        description: 'Seu currículo está em {score}%. 89% dos recrutadores pesquisam no LinkedIn antes de ligar. Copie as melhorias do seu currículo para seu perfil do LinkedIn.',
+        actionLabel: 'Ir para o LinkedIn',
+      },
+      keyboardShortcuts: {
+        badge: 'GRÁTIS',
+        title: '⌨️ Atalhos de Teclado',
+        description: 'Ctrl+V para colar descrição da vaga rapidamente. Esc para fechar modais. Trabalhe mais rápido sem sair do teclado.',
+        actionLabel: 'Ver Mais Atalhos',
+        infoMessage: 'Atalhos: Ctrl+V (colar descrição), Esc (fechar), Tab (navegar)',
+      },
+      dismissLabel: 'Não estou interessado',
+      freeLabel: '100% GRÁTIS',
     },
   },
 };

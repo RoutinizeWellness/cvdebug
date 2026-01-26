@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Chrome, Mail, Linkedin, ExternalLink, Copy, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useI18n } from "@/contexts/I18nContext";
 
 interface EcosystemPrompt {
   id: string;
@@ -21,6 +22,7 @@ interface EcosystemPromptsProps {
 }
 
 export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
+  const { t } = useI18n();
   const [dismissedPrompts, setDismissedPrompts] = useState<string[]>([]);
   const [activePrompt, setActivePrompt] = useState<EcosystemPrompt | null>(null);
   const [copiedBookmarklet, setCopiedBookmarklet] = useState(false);
@@ -38,30 +40,30 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
     const prompts: EcosystemPrompt[] = [
       {
         id: "copy-paste-tip",
-        title: "💡 Pro Tip: Copia desde LinkedIn",
-        description: "Ve a un job posting en LinkedIn → Selecciona todo el texto → Ctrl+C → Pégalo en 'Add Job Description'. Automático, sin extensiones.",
+        title: t.ecosystem.copyPasteTip.title,
+        description: t.ecosystem.copyPasteTip.description,
         icon: <Chrome className="h-8 w-8 text-[#64748B]" />,
-        actionLabel: "Entendido",
-        badge: "GRATIS",
-        onAction: () => toast.success("¡Perfecto! Usa Ctrl+C en cualquier job posting."),
+        actionLabel: t.ecosystem.copyPasteTip.actionLabel,
+        badge: t.ecosystem.copyPasteTip.badge,
+        onAction: () => toast.success(t.ecosystem.copyPasteTip.successMessage),
       },
       {
         id: "linkedin-reminder",
-        title: "🔗 Recordatorio: Actualiza LinkedIn",
-        description: "Tu CV está en {score}%. 89% de reclutadores buscan en LinkedIn antes de llamar. Copia las mejoras de tu CV a tu perfil de LinkedIn.",
+        title: t.ecosystem.linkedinReminder.title,
+        description: t.ecosystem.linkedinReminder.description.replace('{score}', String(userScore || 0)),
         icon: <Linkedin className="h-8 w-8 text-[#0A66C2]" />,
-        actionLabel: "Ir a LinkedIn",
-        badge: "GRATIS",
+        actionLabel: t.ecosystem.linkedinReminder.actionLabel,
+        badge: t.ecosystem.linkedinReminder.badge,
         onAction: () => window.open("https://www.linkedin.com/in/me/", "_blank"),
       },
       {
         id: "keyboard-shortcuts",
-        title: "⌨️ Atajos de Teclado",
-        description: "Ctrl+V para pegar job description rápido. Esc para cerrar modales. Trabaja más rápido sin salir del teclado.",
+        title: t.ecosystem.keyboardShortcuts.title,
+        description: t.ecosystem.keyboardShortcuts.description,
         icon: <Zap className="h-8 w-8 text-[#F59E0B]" />,
-        actionLabel: "Ver Más Atajos",
-        badge: "GRATIS",
-        onAction: () => toast.info("Atajos: Ctrl+V (pegar JD), Esc (cerrar), Tab (navegar)"),
+        actionLabel: t.ecosystem.keyboardShortcuts.actionLabel,
+        badge: t.ecosystem.keyboardShortcuts.badge,
+        onAction: () => toast.info(t.ecosystem.keyboardShortcuts.infoMessage),
       },
     ];
 
@@ -74,7 +76,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
         setActivePrompt(availablePrompt);
       }, delay);
     }
-  }, [userId, dismissedPrompts]);
+  }, [userId, dismissedPrompts, t, userScore]);
 
   const dismissPrompt = (promptId: string) => {
     const newDismissed = [...dismissedPrompts, promptId];
@@ -168,7 +170,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
               onClick={() => dismissPrompt(activePrompt.id)}
               className="w-full text-center text-xs text-gray-400 hover:text-gray-600 mt-2"
             >
-              No me interesa
+              {t.ecosystem.dismissLabel}
             </button>
           </div>
 
@@ -176,7 +178,7 @@ export function EcosystemPrompts({ userId, userScore }: EcosystemPromptsProps) {
           <div className="bg-gray-50 border-t border-gray-200 px-4 py-2">
             <div className="flex items-center justify-between text-[10px] text-gray-500">
               <span className="font-mono">ECOSYSTEM_HELPER</span>
-              <span className="text-[#22C55E] font-bold">100% GRATIS</span>
+              <span className="text-[#22C55E] font-bold">{t.ecosystem.freeLabel}</span>
             </div>
           </div>
         </div>
