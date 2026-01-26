@@ -36,12 +36,11 @@ export function LiveRecruiterSimulation({
     if (!text) return "";
 
     const lines = text.split('\n').filter(l => l.trim());
-    const summaryLine = lines.find(line => {
-      const lineLower = (line || '').toLowerCase();
-      return line.length > 100 &&
-        !lineLower.includes('education') &&
-        !lineLower.includes('experience');
-    });
+    const summaryLine = lines.find(line =>
+      line.length > 100 &&
+      !line.toLowerCase().includes('education') &&
+      !line.toLowerCase().includes('experience')
+    );
 
     return summaryLine?.substring(0, 300) || lines[0]?.substring(0, 300) || "";
   };
@@ -63,7 +62,7 @@ export function LiveRecruiterSimulation({
     let foundExperience = false;
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i] || '';
+      const line = lines[i];
       const lowerLine = line.toLowerCase();
 
       // Skip header sections
@@ -265,10 +264,11 @@ export function LiveRecruiterSimulation({
     // Check for suspicious patterns that ATS can't parse
     const hasInvisibleChars = /[\u200B-\u200D\uFEFF]/.test(text);
     const hasExcessiveWhitespace = /\s{10,}/.test(text);
-    const hasSuspiciousFormatting = formatIssuesArr.some(f => {
-      const issueStr = (f && typeof f.issue === 'string') ? f.issue.toLowerCase() : '';
-      return issueStr.includes('parse') || issueStr.includes('extract') || issueStr.includes('image');
-    });
+    const hasSuspiciousFormatting = formatIssuesArr.some(f =>
+      f.issue.toLowerCase().includes('parse') ||
+      f.issue.toLowerCase().includes('extract') ||
+      f.issue.toLowerCase().includes('image')
+    );
 
     const trapCount = [hasInvisibleChars, hasExcessiveWhitespace, hasSuspiciousFormatting].filter(Boolean).length;
 
@@ -342,10 +342,7 @@ export function LiveRecruiterSimulation({
     }
 
     // Add [CRIT] tags for critical format issues
-    const criticalIssues = formatIssues.filter(f => {
-      const issueStr = typeof f.issue === 'string' ? f.issue.toLowerCase() : '';
-      return f.severity === "critical" || issueStr.includes("parse") || issueStr.includes("extract");
-    });
+    const criticalIssues = formatIssues.filter(f => f.severity === "critical" || f.issue.toLowerCase().includes("parse") || f.issue.toLowerCase().includes("extract"));
     if (criticalIssues.length > 0) {
       annotatedText = `<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
         <div class="flex items-center gap-2 mb-2">
@@ -403,10 +400,10 @@ export function LiveRecruiterSimulation({
 
   // Format issues for display
   const hasFormatIssues = formatIssues.length > 0;
-  const hasLinkedInIssue = formatIssues.some(f => {
-    const issueStr = (f && typeof f.issue === 'string') ? f.issue.toLowerCase() : '';
-    return issueStr.includes('linkedin') || issueStr.includes('profile');
-  });
+  const hasLinkedInIssue = formatIssues.some(f =>
+    f.issue.toLowerCase().includes('linkedin') ||
+    f.issue.toLowerCase().includes('profile')
+  );
 
   return (
     <div className="min-h-screen transition-colors duration-300 bg-[#F8FAFC]">

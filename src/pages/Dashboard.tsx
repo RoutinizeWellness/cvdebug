@@ -36,7 +36,6 @@ import { ProjectsView } from "@/components/dashboard/ProjectsView";
 import { ProcessingOverlay } from "@/components/dashboard/ProcessingOverlay";
 import { ResumeDetailDialog } from "@/components/dashboard/ResumeDetailDialog";
 import { ResumeGrid } from "@/components/dashboard/ResumeGrid";
-import { RegionSelector } from "@/components/dashboard/RegionSelector";
 import { ProjectBoard } from "@/components/dashboard/ProjectBoard";
 import { TemplatesView, LinkedInView, CoverLetterView, WritingForge } from "@/components/dashboard/ToolsViews";
 import { KeywordSniperView } from "@/components/dashboard/KeywordSniperView";
@@ -110,7 +109,6 @@ export default function Dashboard() {
   const [editingResumeId, setEditingResumeId] = useState<Id<"resumes"> | null>(null);
   const [previewResumeId, setPreviewResumeId] = useState<Id<"resumes"> | null>(null);
   const [showNewYearPromo, setShowNewYearPromo] = useState(false);
-  const [showRegionSelector, setShowRegionSelector] = useState(false);
 
   // Onboarding Tour
   const { showOnboarding, completeOnboarding, skipOnboarding } = useOnboarding();
@@ -149,8 +147,6 @@ export default function Dashboard() {
     processingResumeId,
     setProcessingResumeId,
     processingStatus,
-    selectedRegion,
-    setSelectedRegion,
     fileInputRef,
     handleFileUpload,
     handleDragOver,
@@ -396,38 +392,11 @@ export default function Dashboard() {
         );
       case 'mission':
         return (
-          <>
-            {showRegionSelector && (
-              <div className="mb-8 bg-white border border-[#E2E8F0] rounded-xl p-6 shadow-sm">
-                <RegionSelector
-                  selectedRegion={selectedRegion}
-                  onRegionChange={setSelectedRegion}
-                />
-                <div className="flex gap-3 mt-6">
-                  <Button
-                    onClick={() => {
-                      setShowRegionSelector(false);
-                      fileInputRef.current?.click();
-                    }}
-                    className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white font-bold"
-                  >
-                    Continue to Upload
-                  </Button>
-                  <Button
-                    onClick={() => setShowRegionSelector(false)}
-                    variant="outline"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            )}
-            <MissionControl
-              onNavigate={handleNavigate}
-              onGenerateCoverLetter={handleGenerateCoverLetter}
-              onUpload={() => setShowRegionSelector(true)}
-            />
-          </>
+          <MissionControl 
+            onNavigate={handleNavigate} 
+            onGenerateCoverLetter={handleGenerateCoverLetter}
+            onUpload={() => fileInputRef.current?.click()}
+          />
         );
       case 'master-cvs':
         return (
@@ -493,7 +462,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Transform weak bullets into impactful achievements using Google's XYZ formula
+                        Transforma viñetas débiles en logros impactantes usando la fórmula Google XYZ
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -520,7 +489,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        AI-powered cover letters with keyword optimization
+                        Cartas de presentación potenciadas con IA y optimización de keywords
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -547,7 +516,7 @@ export default function Dashboard() {
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Optimize your profile to get noticed by recruiters
+                        Optimiza tu perfil para reclutadores
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -570,19 +539,19 @@ export default function Dashboard() {
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
                         {t.dashboard.keywordSniper}
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
-                          Featured
+                          Destacado
                         </span>
                         {!hasInterviewSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        AI bullet rewriting, keyword injection, and live tracking
+                        Reescritura de viñetas con IA, inyección de keywords y seguimiento en vivo
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
                       <button className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
-                        Open Tool
+                        Abrir Herramienta
                       </button>
                     </div>
                   </div>

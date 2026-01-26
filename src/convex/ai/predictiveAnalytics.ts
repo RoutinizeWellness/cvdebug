@@ -29,7 +29,7 @@ export const predictJobMatchScore = query({
     const ocrText = (resume.ocrText || "").toLowerCase();
     const analysisText = (resume.analysis || "").toLowerCase();
     const combinedText = ocrText + " " + analysisText;
-    const jobTitle = (args.jobTitle || "").toLowerCase();
+    const jobTitle = args.jobTitle.toLowerCase();
     const jobDescription = (args.jobDescription || "").toLowerCase();
 
     const factors: Array<{

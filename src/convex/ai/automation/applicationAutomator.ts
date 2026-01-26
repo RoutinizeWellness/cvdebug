@@ -212,12 +212,8 @@ export const analyzeJobMatch = action({
     );
 
     // Calculate skill match locally
-    const requiredSkillsLower = job.requirements.map((r: any) =>
-      typeof r === 'string' ? r.toLowerCase() : ''
-    ).filter(Boolean);
-    const userSkillsLower = args.userSkills.map((s: any) =>
-      typeof s === 'string' ? s.toLowerCase() : ''
-    ).filter(Boolean);
+    const requiredSkillsLower = job.requirements.map(r => r.toLowerCase());
+    const userSkillsLower = args.userSkills.map(s => s.toLowerCase());
 
     const matchedSkills = args.userSkills.filter(skill =>
       requiredSkillsLower.some(req => req.includes(skill.toLowerCase()) || skill.toLowerCase().includes(req))

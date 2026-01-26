@@ -143,10 +143,6 @@ function generateEnhancementRewrite(
  * Enhance text with missing skill
  */
 function enhanceTextWithSkill(originalText: string, skill: string, category: string): string {
-  // Validate inputs
-  if (!originalText || typeof originalText !== 'string') originalText = '';
-  if (!skill || typeof skill !== 'string') skill = 'relevant skills';
-
   // Parse original text to understand structure
   const hasMetric = /\d+%|\d+\+?\s*(users?|customers?|million)/.test(originalText);
   const hasAction = /\b(developed?|built?|created?|implemented?|designed?|managed?|led|optimized?)/i.test(originalText);

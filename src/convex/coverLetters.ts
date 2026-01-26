@@ -21,15 +21,12 @@ export const generateCoverLetter = mutation({
       throw new Error("Application not found or unauthorized");
     }
 
-    // ENFORCEMENT: AI Cover Letter is locked for Free/Single Debug Fix users
-    // Available for: 24h Pass (unlimited), 7-Day Sprint (unlimited)
+    // ENFORCEMENT: AI Cover Letter is locked for Free/Single Scan users
+    // Only Interview Sprint users can use this tool
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    const hasAccess = hasActiveSprint ||
-                      user.subscriptionTier === "single_scan" ||
-                      user.subscriptionTier === "interview_sprint";
-
-    if (!hasAccess) {
-      throw new Error("PLAN_RESTRICTION: Upgrade to 24-Hour Pass or Interview Sprint to use AI Cover Letter Generator.");
+    
+    if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
+      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use AI Cover Letter Generator.");
     }
 
     // Schedule AI generation
@@ -182,211 +179,31 @@ function buildCoverLetterPrompt(
   jobDescription: string,
   missingKeywords: string[]
 ): string {
-  // ML Algorithm 1: Extract company insights from job description
-  const companyInsights = extractCompanyInsights(jobDescription, companyName);
+  return `You are an expert Cover Letter Writer specializing in ATS-optimized applications.
 
-  // ML Algorithm 2: Identify strongest achievements from resume
-  const achievements = extractTopAchievements(resumeText);
+**Task:** Write a compelling, professional cover letter for the following job application.
 
-  // ML Algorithm 3: Analyze job requirements priority
-  const requirements = analyzeRequirementPriority(jobDescription);
+**Candidate Resume:**
+${resumeText.substring(0, 5000)}
 
-  // ML Algorithm 4: Generate keyword integration strategy
-  const keywordStrategy = generateKeywordIntegrationPlan(missingKeywords, resumeText);
+**Target Position:** ${jobTitle} at ${companyName}
 
-  return `You are an AI-powered Cover Letter Generator using Machine Learning algorithms for ATS optimization and persuasion psychology.
-
-**ML-ANALYZED DATA:**
-
-Target Role: ${jobTitle} at ${companyName}
-Detected Company Values: ${companyInsights.values.join(", ")}
-Company Keywords: ${companyInsights.keywords.join(", ")}
-
-**CANDIDATE'S STRONGEST ACHIEVEMENTS (ML-RANKED):**
-${achievements.map((a, i) => `${i + 1}. ${a}`).join("\n")}
-
-**JOB REQUIREMENTS (AI-PRIORITIZED):**
-High Priority: ${requirements.high.join(", ")}
-Medium Priority: ${requirements.medium.join(", ")}
-
-**MISSING KEYWORDS (MUST INTEGRATE):**
-${keywordStrategy.map(k => `- ${k.keyword}: ${k.integrationContext}`).join("\n")}
-
-**FULL JOB DESCRIPTION:**
+**Job Description:**
 ${jobDescription.substring(0, 3000)}
 
-**RESUME EXCERPT:**
-${resumeText.substring(0, 4000)}
+**Critical Missing Keywords (MUST integrate naturally):**
+${missingKeywords.slice(0, 10).join(", ")}
 
-**AI GENERATION INSTRUCTIONS:**
-Use the following ML-optimized framework:
+**Instructions:**
+1. Open with a strong hook that shows genuine interest in ${companyName}
+2. Naturally weave in the missing keywords by providing specific examples from past experience
+3. Use the STAR method to demonstrate relevant achievements
+4. Show how your background aligns with the role requirements
+5. Close with a confident call to action
+6. Keep it to 3-4 paragraphs, max 300 words
+7. Professional but conversational tone
 
-1. **Opening Hook (Psychological Trigger):**
-   - Reference specific company value/initiative found in analysis
-   - Create immediate relevance connection
-   - Use power words: "excited", "passionate", "proven track record"
-
-2. **Achievement Bridge (Pattern Matching):**
-   - Map candidate's strongest achievements to high-priority requirements
-   - Use STAR method with quantifiable metrics
-   - Naturally integrate 3-5 missing keywords with specific examples
-   - Format: "My experience [KEYWORD] resulted in [METRIC]"
-
-3. **Value Proposition (NLP-Optimized):**
-   - Highlight unique differentiators
-   - Address medium-priority requirements
-   - Show cultural fit with company values
-   - Use industry-specific terminology
-
-4. **Strong Close (Call-to-Action):**
-   - Express genuine enthusiasm
-   - Confidently request next steps
-   - Reinforce key value proposition
-
-**OUTPUT REQUIREMENTS:**
-- 3-4 paragraphs, 250-300 words
-- ATS score: 85%+ (keyword density 2-3%)
-- Professional yet personable tone
-- No clichés ("detail-oriented", "team player")
-- Return ONLY the letter, no preamble
-
-Generate the cover letter now:`;
-}
-
-// ML Algorithm 1: Extract company insights
-function extractCompanyInsights(jobDescription: string, companyName: string) {
-  const jd = jobDescription.toLowerCase();
-
-  const values: string[] = [];
-  const keywords: string[] = [];
-
-  // Value detection patterns
-  const valuePatterns = [
-    { pattern: /\b(innovation|innovative|cutting.?edge)\b/gi, value: "Innovation" },
-    { pattern: /\b(collaboration|collaborative|team)\b/gi, value: "Collaboration" },
-    { pattern: /\b(growth|scale|scaling)\b/gi, value: "Growth-oriented" },
-    { pattern: /\b(impact|meaningful|mission)\b/gi, value: "Impact-driven" },
-    { pattern: /\b(customer|user.?centric|user.?focused)\b/gi, value: "Customer-focused" },
-  ];
-
-  valuePatterns.forEach(({ pattern, value }) => {
-    if (pattern.test(jd)) {
-      values.push(value);
-    }
-  });
-
-  // Extract repeated important keywords
-  const importantTerms = jd.match(/\b[a-z]{4,}\b/g) || [];
-  const frequency: Record<string, number> = {};
-
-  importantTerms.forEach((term: string) => {
-    if (term.length > 5 && !['where', 'there', 'their', 'about', 'would', 'should'].includes(term)) {
-      frequency[term] = (frequency[term] || 0) + 1;
-    }
-  });
-
-  // Get top 5 most frequent keywords
-  Object.entries(frequency)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .forEach(([term]) => keywords.push(term));
-
-  return {
-    values: values.slice(0, 3),
-    keywords: keywords.length > 0 ? keywords : [(companyName || '').toLowerCase()]
-  };
-}
-
-// ML Algorithm 2: Extract top achievements
-function extractTopAchievements(resumeText: string): string[] {
-  const achievements: Array<{ text: string; score: number }> = [];
-
-  // Extract bullet points
-  const bullets = resumeText.match(/[•\-\*]\s*([^\n]{30,200})/g) || [];
-
-  bullets.forEach(bullet => {
-    let score = 0;
-    const cleanBullet = bullet.replace(/^[•\-\*]\s*/, '');
-
-    // Scoring algorithm
-    if (/\d+%|\$[\d,]+|\d+x|\d+\+/.test(cleanBullet)) score += 40; // Has metrics
-    if (/^(Led|Built|Developed|Improved|Reduced|Increased|Created|Designed|Implemented)/i.test(cleanBullet)) score += 30; // Strong verb
-    if (cleanBullet.split(' ').length > 12) score += 20; // Detailed
-    if (/\b(team|users|customers|revenue|growth|efficiency)\b/i.test(cleanBullet)) score += 10; // Impact words
-
-    if (score > 40) {
-      achievements.push({ text: cleanBullet, score });
-    }
-  });
-
-  return achievements
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-    .map(a => a.text);
-}
-
-// ML Algorithm 3: Analyze requirement priority
-function analyzeRequirementPriority(jobDescription: string) {
-  const jd = jobDescription.toLowerCase();
-
-  const high: string[] = [];
-  const medium: string[] = [];
-
-  // High priority indicators
-  const highPatterns = /(?:required|must\s+have|essential|critical):\s*([^\n.]{10,100})/gi;
-  let match;
-  while ((match = highPatterns.exec(jd)) !== null) {
-    if (match[1]) high.push(match[1].trim());
-  }
-
-  // Medium priority
-  const mediumPatterns = /(?:preferred|nice\s+to\s+have|plus|bonus):\s*([^\n.]{10,100})/gi;
-  while ((match = mediumPatterns.exec(jd)) !== null) {
-    if (match[1]) medium.push(match[1].trim());
-  }
-
-  // If no explicit indicators, extract from first sentences
-  if (high.length === 0) {
-    const sentences = jobDescription.split(/[.!?]/);
-    high.push(...sentences.slice(0, 2).map(s => s.trim()).filter(s => s.length > 20));
-  }
-
-  return {
-    high: high.slice(0, 3),
-    medium: medium.slice(0, 2)
-  };
-}
-
-// ML Algorithm 4: Generate keyword integration plan
-function generateKeywordIntegrationPlan(keywords: string[], resumeText: string) {
-  const resume = resumeText.toLowerCase();
-
-  return keywords.slice(0, 5).map(keyword => {
-    let integrationContext = "mentioned in my experience";
-
-    // Check if keyword appears in resume for context
-    if (resume.includes(keyword.toLowerCase())) {
-      integrationContext = "demonstrated through previous projects";
-    } else {
-      // Suggest related experience
-      const relatedTerms = [
-        { term: 'leadership', context: "led teams of" },
-        { term: 'python', context: "developed with" },
-        { term: 'scale', context: "scaled systems handling" },
-        { term: 'cloud', context: "architected on AWS/Azure" },
-      ];
-
-      const related = relatedTerms.find(r => keyword.toLowerCase().includes(r.term));
-      if (related) {
-        integrationContext = related.context;
-      }
-    }
-
-    return {
-      keyword,
-      integrationContext
-    };
-  });
+**Output:** Return ONLY the cover letter text, no preamble or explanations.`;
 }
 
 function generateTemplateCoverLetter(

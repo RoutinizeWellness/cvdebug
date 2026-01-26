@@ -7,7 +7,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { useCurrency } from "@/hooks/use-currency";
 import { motion } from "framer-motion";
 import { usePresetSEO } from "@/hooks/useIntelligentSEO";
-import { useI18n } from "@/contexts/I18nContext";
 
 export default function PricingPage() {
   // Intelligent SEO for pricing page
@@ -16,7 +15,6 @@ export default function PricingPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { formatPrice, currencyInfo } = useCurrency();
-  const { t } = useI18n();
 
   const handleGetStarted = (plan?: string) => {
     if (isAuthenticated) {
@@ -28,96 +26,99 @@ export default function PricingPage() {
 
   const pricingTiers = [
     {
-      name: t.pricingLanding.freeTitle,
+      name: "FREE Debug",
       tag: "EL GANCHO",
       tagColor: "bg-[#64748B]/10 text-[#64748B]",
-      description: t.pricingLanding.freeSubtitle,
+      description: "Descubre qué keywords NO ve el robot. Detección de invisibilidad.",
       price: `${currencyInfo.symbol}0`,
       period: "forever",
       features: [
-        { text: t.pricingLanding.freeFeature1, icon: "[ERR]", guaranteed: false },
-        { text: t.pricingLanding.freeFeature2, icon: "[OK]", guaranteed: false },
-        { text: t.pricingLanding.freeFeature3, icon: "[ERR]", guaranteed: false },
-        { text: t.pricingLanding.freeFeature4, icon: "[FIX]", guaranteed: false },
+        { text: "Detección de Invisibilidad (2 keywords)", icon: "[ERR]", guaranteed: false },
+        { text: "Global ATS Score", icon: "[OK]", guaranteed: false },
+        { text: "Vista Robot (bloqueada)", icon: "[ERR]", guaranteed: false },
+        { text: "Preview Seniority Match", icon: "[FIX]", guaranteed: false },
       ],
-      buttonText: t.pricingLanding.freeScanButton,
+      buttonText: "Escanear Gratis",
       buttonVariant: "outline" as const,
       borderColor: "border-slate-800",
       hoverBorder: "hover:border-slate-600",
       plan: "free",
     },
     {
-      name: t.pricingLanding.singleDebugTitle,
-      tag: t.pricingLanding.singleDebugBadge,
+      name: "Single Debug Fix",
+      tag: "ARREGLA DE UNA VEZ",
       tagColor: "bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30",
-      description: t.pricingLanding.singleDebugSubtitle,
+      description: "Arregla tu CV de una vez por el precio de un café.",
       price: formatPrice("single_debug_fix"),
-      period: "1 complete CV",
+      period: "1 CV completo",
       features: [
-        { text: t.pricingLanding.singleDebugFeature1, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.singleDebugFeature2, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.singleDebugFeature3, icon: "[FIX]", guaranteed: true },
-        { text: t.pricingLanding.singleDebugFeature4, icon: "[FIX]", guaranteed: true },
-        { text: t.pricingLanding.singleDebugFeature5, icon: "[OK]", guaranteed: true },
+        { text: "1 Escaneo Profundo Completo", icon: "[OK]", guaranteed: true },
+        { text: "Vista Robot Terminal Desbloqueada", icon: "[OK]", guaranteed: true },
+        { text: "Detector Missing Keywords Completo", icon: "[FIX]", guaranteed: true },
+        { text: "1 Optimización AI Completa (Rewrite)", icon: "[FIX]", guaranteed: true },
+        { text: "Auto-Inject Keywords Relevantes", icon: "[FIX]", guaranteed: true },
+        { text: "Export CV Optimizado ATS-safe", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
       ],
-      buttonText: t.pricingLanding.singleDebugButton,
+      buttonText: "Arreglar Mi CV →",
       buttonVariant: "default" as const,
       borderColor: "border-[#0F172A]/50",
       hoverBorder: "hover:border-[#F59E0B]/50",
       plan: "single_debug_fix",
       highlighted: false,
       showGuarantee: true,
-      guaranteeText: t.pricingLanding.singleDebugGuarantee,
     },
     {
-      name: t.pricingLanding.pass24hTitle,
-      tag: t.pricingLanding.pass24hBadge,
+      name: "Pase 24h",
+      tag: "HOT FIX / URGENTE",
       tagColor: "bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/30",
-      description: t.pricingLanding.pass24hSubtitle,
+      description: "Debug Inmediato. Solución para entrevista mañana. Sin suscripciones.",
       price: formatPrice("single_scan"),
-      period: "24 hours",
+      period: "24 horas",
       features: [
-        { text: t.pricingLanding.pass24hFeature1, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.pass24hFeature2, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.pass24hFeature3, icon: "[FIX]", guaranteed: true },
-        { text: t.pricingLanding.pass24hFeature4, icon: "[FIX]", guaranteed: true },
-        { text: t.pricingLanding.pass24hFeature5, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.pass24hFeature6, icon: "[OK]", guaranteed: true },
+        { text: "Scans Ilimitados (24h)", icon: "[OK]", guaranteed: true },
+        { text: "Vista X-Ray Robot Completa", icon: "[OK]", guaranteed: true },
+        { text: "Etiquetas [ERROR] + [WARN] + Fixes", icon: "[FIX]", guaranteed: true },
+        { text: "Análisis Seniority Match", icon: "[OK]", guaranteed: true },
+        { text: "Detector Gap de Keywords", icon: "[FIX]", guaranteed: true },
+        { text: "Generador Battle Plan", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible por ATS", icon: "[OK]", guaranteed: true },
       ],
-      buttonText: t.pricingLanding.pass24hButton,
+      buttonText: "Acceso 24h →",
       buttonVariant: "default" as const,
       borderColor: "border-[#0F172A]/50",
       hoverBorder: "hover:border-[#EF4444]/50",
       plan: "single_scan",
       highlighted: false,
       showGuarantee: true,
-      guaranteeText: t.pricingLanding.pass24hGuarantee,
     },
     {
-      name: t.pricingLanding.sprint7dTitle,
-      tag: t.pricingLanding.sprint7dBadge,
+      name: "Sprint 7 Días",
+      tag: "INTENSIVO / RECOMENDADO",
       tagColor: "bg-gradient-to-r from-[#1E293B] to-[#334155] text-white",
-      description: t.pricingLanding.sprint7dSubtitle,
+      description: "Modo Bestia. Ataque total de 7 días para conseguir trabajo ya.",
       price: formatPrice("sprint_7day"),
-      originalPrice: t.pricingLanding.sprint7dBeforePrice,
-      period: "7 days",
+      period: "7 días",
       features: [
-        { text: t.pricingLanding.sprint7dFeature1, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.sprint7dFeature2, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.sprint7dFeature3, icon: "[FIX]", guaranteed: true },
-        { text: t.pricingLanding.sprint7dFeature4, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.sprint7dFeature5, icon: "[OK]", guaranteed: true },
-        { text: t.pricingLanding.sprint7dFeature6, icon: "[OK]", guaranteed: true },
+        { text: "Scans Ilimitados (7 días)", icon: "[OK]", guaranteed: true },
+        { text: "Robot View Terminal (consola dirty)", icon: "[OK]", guaranteed: true },
+        { text: "Detector Missing Signals", icon: "[FIX]", guaranteed: true },
+        { text: "Auditoría Seniority Match", icon: "[OK]", guaranteed: true },
+        { text: "Selector Industria (FAANG/Finanzas)", icon: "[OK]", guaranteed: true },
+        { text: "Elevador Tono Viñetas (AI Rewrite)", icon: "[FIX]", guaranteed: true },
+        { text: "Battle Plan Entrevistas", icon: "[OK]", guaranteed: true },
+        { text: "Export CV Sanitizado (ATS-safe)", icon: "[OK]", guaranteed: true },
+        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
+        { text: "BONUS: Cover Letter + LinkedIn", icon: "[OK]", guaranteed: true },
       ],
-      buttonText: t.pricingLanding.sprint7dButton,
+      buttonText: "Empezar Sprint 7 Días →",
       buttonVariant: "premium" as const,
       borderColor: "border-[#64748B]/30",
       hoverBorder: "hover:border-[#64748B]/50",
       plan: "sprint_7day",
       highlighted: true,
-      badge: t.pricingDialog.bestValue,
+      badge: "MEJOR VALOR",
       showGuarantee: true,
-      guaranteeText: t.pricingLanding.sprint7dGuarantee,
     },
   ];
 
@@ -257,22 +258,15 @@ export default function PricingPage() {
                 </div>
 
                 <div className="mb-8 font-mono">
-                  <div className="flex items-baseline gap-2">
-                    <span
-                      className={`${
-                        tier.highlighted
-                          ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]"
-                          : "text-4xl font-bold text-[#0F172A]"
-                      }`}
-                    >
-                      {tier.price}
-                    </span>
-                    {tier.originalPrice && (
-                      <span className="text-lg text-slate-400 line-through">
-                        {tier.originalPrice}
-                      </span>
-                    )}
-                  </div>
+                  <span
+                    className={`${
+                      tier.highlighted
+                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]"
+                        : "text-4xl font-bold text-[#0F172A]"
+                    }`}
+                  >
+                    {tier.price}
+                  </span>
                   <span className="text-[#64748B] text-sm">/ {tier.period}</span>
                 </div>
 
@@ -304,7 +298,7 @@ export default function PricingPage() {
                 {tier.showGuarantee && (
                   <div className="mb-4 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
                     <span className="text-xs font-mono font-bold text-[#22C55E]">
-                      {tier.guaranteeText}
+                      ✓ PLANTILLA 100% LEGIBLE GARANTIZADA
                     </span>
                   </div>
                 )}

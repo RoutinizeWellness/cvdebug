@@ -82,9 +82,7 @@ export interface MLPrediction {
 export function extractFeatures(text: string, category: string): ResumeFeatures {
   const words = text.split(/\s+/);
   const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
-  const uniqueWords = new Set(words.map((w: any) =>
-    typeof w === 'string' ? w.toLowerCase() : ''
-  ).filter(Boolean));
+  const uniqueWords = new Set(words.map(w => w.toLowerCase()));
 
   // Text statistics
   const wordCount = words.length;

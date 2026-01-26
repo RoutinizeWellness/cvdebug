@@ -40,57 +40,6 @@ export interface Translation {
       feature3Desc: string;
     };
   };
-  pricingLanding: {
-    title: string;
-    subtitle: string;
-    // Free tier
-    freeTitle: string;
-    freeSubtitle: string;
-    freeScanButton: string;
-    freeFeature1: string;
-    freeFeature2: string;
-    freeFeature3: string;
-    freeFeature4: string;
-    freeGuarantee: string;
-    // Single debug fix (€5.99)
-    singleDebugBadge: string;
-    singleDebugTitle: string;
-    singleDebugSubtitle: string;
-    singleDebugButton: string;
-    singleDebugFeature1: string;
-    singleDebugFeature2: string;
-    singleDebugFeature3: string;
-    singleDebugFeature4: string;
-    singleDebugFeature5: string;
-    singleDebugGuarantee: string;
-    // 24h Pass (€14.99)
-    pass24hBadge: string;
-    pass24hTitle: string;
-    pass24hSubtitle: string;
-    pass24hButton: string;
-    pass24hFeature1: string;
-    pass24hFeature2: string;
-    pass24hFeature3: string;
-    pass24hFeature4: string;
-    pass24hFeature5: string;
-    pass24hFeature6: string;
-    pass24hFeature7: string;
-    pass24hGuarantee: string;
-    // 7 Day Sprint (€24.99)
-    sprint7dBadge: string;
-    sprint7dTitle: string;
-    sprint7dSubtitle: string;
-    sprint7dBeforePrice: string;
-    sprint7dButton: string;
-    sprint7dFeature1: string;
-    sprint7dFeature2: string;
-    sprint7dFeature3: string;
-    sprint7dFeature4: string;
-    sprint7dFeature5: string;
-    sprint7dFeature6: string;
-    sprint7dFeature7: string;
-    sprint7dGuarantee: string;
-  };
   pricingDialog: {
     quickFix: string;
     pass24h: string;
@@ -1505,46 +1454,6 @@ export interface Translation {
     feedbackSubmitted: string;
     submitError: string;
   };
-  // Elite Match Tool
-  eliteMatchTool: {
-    title: string;
-    subtitle: string;
-    urlLabel: string;
-    urlPlaceholder: string;
-    urlHelp: string;
-    textLabel: string;
-    textPlaceholder: string;
-    textHelp: string;
-    analyzeButton: string;
-    featureExtraction: string;
-    featureExtractionDesc: string;
-    gapAnalysis: string;
-    gapAnalysisDesc: string;
-    autoFix: string;
-    autoFixDesc: string;
-    premiumTitle: string;
-    premiumSubtitle: string;
-    premiumFeatures: string;
-    scoreTitle: string;
-    scoreExcellent: string;
-    scoreGood: string;
-    scoreNeedsWork: string;
-    missingCritical: string;
-    matchedSkills: string;
-    robotViewTitle: string;
-    redZones: string;
-    greenZones: string;
-    recommendations: string;
-    analyzeAnother: string;
-    applyFix: string;
-    applyFixSuccess: string;
-    analyzingStep1: string;
-    analyzingStep2: string;
-    analyzingStep3: string;
-    analyzingStep4: string;
-    errorAnalyzing: string;
-    errorUnknown: string;
-  };
   // Ecosystem Prompts
   ecosystem: {
     copyPasteTip: {
@@ -1569,20 +1478,6 @@ export interface Translation {
     };
     dismissLabel: string;
     freeLabel: string;
-    bookmarklet: {
-      title: string;
-      step1Title: string;
-      step1Copy: string;
-      step1Copied: string;
-      step2Title: string;
-      step2Instructions: string[];
-      step3Title: string;
-      step3Description: string;
-      proTip: string;
-      successCopied: string;
-      openingChecklist: string;
-      comingSoon: string;
-    };
   };
 }
 
@@ -1620,57 +1515,6 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'API Access',
         feature3Desc: 'Integrate ATS scanning directly into your recruitment workflow',
       },
-    },
-    pricingLanding: {
-      title: 'Simple Pricing',
-      subtitle: 'Pay once. Fix forever. No subscriptions.',
-      // Free tier
-      freeTitle: 'FREE Debug',
-      freeSubtitle: 'Discover which keywords the robot DOESN\'T see',
-      freeScanButton: 'Scan for Free',
-      freeFeature1: 'Invisibility Detection (2 keywords)',
-      freeFeature2: 'Global ATS Score',
-      freeFeature3: 'Robot View (locked)',
-      freeFeature4: 'Preview Seniority Match',
-      freeGuarantee: '✓ READABLE TEMPLATE GUARANTEED',
-      // Single debug fix (€5.99)
-      singleDebugBadge: 'FIX IT ONCE',
-      singleDebugTitle: 'Quick Fix',
-      singleDebugSubtitle: 'Fix your CV for the price of a coffee',
-      singleDebugButton: 'Fix My CV →',
-      singleDebugFeature1: '1 Complete Deep Scan',
-      singleDebugFeature2: 'Robot View Unlocked',
-      singleDebugFeature3: '1 AI Optimization (Rewrite)',
-      singleDebugFeature4: 'Auto-Keyword Injection',
-      singleDebugFeature5: 'Export Optimized CV',
-      singleDebugGuarantee: '✓ READABLE TEMPLATE GUARANTEED',
-      // 24h Pass (€14.99)
-      pass24hBadge: 'HOT FIX / URGENT',
-      pass24hTitle: '24h Pass',
-      pass24hSubtitle: 'Instant Debug for tomorrow\'s interview',
-      pass24hButton: '24h Access →',
-      pass24hFeature1: 'Unlimited Scans (24h)',
-      pass24hFeature2: 'Full Robot X-Ray View',
-      pass24hFeature3: '[ERROR] + [WARN] + Fixes Tags',
-      pass24hFeature4: 'Keyword Gap Detector',
-      pass24hFeature5: 'Cover Letter Generator',
-      pass24hFeature6: '100% ATS-Readable Template',
-      pass24hFeature7: 'Unlimited Cover Letter Generator',
-      pass24hGuarantee: '✓ GUARANTEED',
-      // 7 Day Sprint (€24.99)
-      sprint7dBadge: 'INTENSIVE / RECOMMENDED',
-      sprint7dTitle: '7-Day Sprint',
-      sprint7dSubtitle: 'Beast Mode. Full 7-day attack',
-      sprint7dBeforePrice: '€49.99',
-      sprint7dButton: 'Start 7-Day Sprint →',
-      sprint7dFeature1: 'Unlimited Scans (7 days)',
-      sprint7dFeature2: 'Industry Selector (FAANG/Finance)',
-      sprint7dFeature3: 'Bullet Tone Elevator (AI Rewrite)',
-      sprint7dFeature4: 'Interview Battle Plan',
-      sprint7dFeature5: 'DM Scripts for Recruiters',
-      sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
-      sprint7dFeature7: 'Recruiter DM Templates',
-      sprint7dGuarantee: '✓ 100% READABLE TEMPLATE GUARANTEED',
     },
     pricingDialog: {
       quickFix: 'Quick Fix',
@@ -1863,7 +1707,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsing: 'PARSING_KEYWORDS...',
       optimizing: 'OPTIMIZING_ATS_SCORE...',
       headline: 'Debug your career history with precision.',
-      subtitle: 'Join thousands of job seekers who optimized their resumes with AI-powered analysis and landed their dream jobs.',
+      subtitle: 'Únete a miles de personas que optimizaron sus CVs con análisis impulsado por IA y consiguieron sus trabajos soñados.',
       initSession: 'Initialize Session',
       enterCredentials: 'Enter your credentials to access the console',
       signIn: 'Sign In',
@@ -3035,45 +2879,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Thank you! Feedback submitted.',
       submitError: 'Failed to submit feedback. Please try again.',
     },
-    eliteMatchTool: {
-      title: 'Elite Match Tool',
-      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
-      urlLabel: 'LinkedIn URL (Recommended)',
-      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
-      textLabel: 'Paste Job Description',
-      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
-      textHelp: 'Copy and paste the full job description from any portal.',
-      analyzeButton: 'Analyze Match Score',
-      featureExtraction: 'Entity Extraction',
-      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
-      gapAnalysis: 'Gap Analysis',
-      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
-      autoFix: 'AI Auto-Fix',
-      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
-      premiumTitle: 'Elite Match Tool is Premium',
-      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
-      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
-      scoreTitle: 'Match Score',
-      scoreExcellent: 'Excellent match! Apply with confidence.',
-      scoreGood: 'Good match, but there are important gaps.',
-      scoreNeedsWork: 'You need to improve your resume for this offer.',
-      missingCritical: 'Missing Critical Signals',
-      matchedSkills: 'Matched Skills',
-      robotViewTitle: 'Robot View',
-      redZones: 'Red Zones',
-      greenZones: 'Green Zones',
-      recommendations: 'Auto-Fix Recommendations',
-      analyzeAnother: 'Analyze Another Job',
-      applyFix: 'Apply Auto-Fix',
-      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
-      analyzingStep1: 'Extracting Recruiter Intent...',
-      analyzingStep2: 'Analyzing Hard Skills Requirements...',
-      analyzingStep3: 'Detecting Soft Skills Signals...',
-      analyzingStep4: 'Generating Missing Signals Report...',
-      errorAnalyzing: 'Error analyzing the match: ',
-      errorUnknown: 'Unknown error',
-    },
     ecosystem: {
       copyPasteTip: {
         badge: 'FREE',
@@ -3097,25 +2902,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Not interested',
       freeLabel: '100% FREE',
-      bookmarklet: {
-        title: 'Scanner Installation (1 minute)',
-        step1Title: 'Copy the bookmarklet',
-        step1Copy: 'Copy Bookmarklet',
-        step1Copied: 'Copied!',
-        step2Title: 'Create a bookmark',
-        step2Instructions: [
-          'Right-click on the bookmarks bar',
-          'Select "Add page"',
-          'Name: "Job Scanner"',
-          'URL: Paste the copied code'
-        ],
-        step3Title: 'Use it on any site',
-        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
-        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
-        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
-        openingChecklist: 'Opening LinkedIn checklist...',
-        comingSoon: 'Coming soon: Recruiter email analyzer',
-      },
     },
   },
   'es': {
@@ -3151,57 +2937,6 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'Acceso a API',
         feature3Desc: 'Integra el escaneo ATS directamente en tu flujo de trabajo de reclutamiento',
       },
-    },
-    pricingLanding: {
-      title: 'Precios Simples',
-      subtitle: 'Paga una vez. Arregla para siempre. Sin suscripciones.',
-      // Free tier
-      freeTitle: 'FREE Debug',
-      freeSubtitle: 'Discover which keywords the robot DOESN\'T see',
-      freeScanButton: 'Escanear Gratis',
-      freeFeature1: 'Detección de Invisibilidad (2 keywords)',
-      freeFeature2: 'Global ATS Score',
-      freeFeature3: 'Vista Robot (bloqueada)',
-      freeFeature4: 'Preview Seniority Match',
-      freeGuarantee: '✓ PLANTILLA LEGIBLE GARANTIZADA',
-      // Single debug fix (€5.99)
-      singleDebugBadge: 'ARREGLA DE UNA VEZ',
-      singleDebugTitle: 'Arreglo Rápido',
-      singleDebugSubtitle: 'Arregla tu CV por el precio de un café',
-      singleDebugButton: 'Arreglar Mi CV →',
-      singleDebugFeature1: '1 Escaneo Profundo Completo',
-      singleDebugFeature2: 'Vista Robot Desbloqueada',
-      singleDebugFeature3: '1 Optimización AI (Rewrite)',
-      singleDebugFeature4: 'Auto-Inyección Keywords',
-      singleDebugFeature5: 'Exportar CV Optimizado',
-      singleDebugGuarantee: '✓ PLANTILLA LEGIBLE GARANTIZADA',
-      // 24h Pass (€14.99)
-      pass24hBadge: 'HOT FIX / URGENTE',
-      pass24hTitle: 'Pase 24h',
-      pass24hSubtitle: 'Debug Inmediato para entrevista mañana',
-      pass24hButton: 'Acceso 24h →',
-      pass24hFeature1: 'Scans Ilimitados (24h)',
-      pass24hFeature2: 'Vista X-Ray Robot Completa',
-      pass24hFeature3: 'Etiquetas [ERROR] + [WARN] + Fixes',
-      pass24hFeature4: 'Detector Gap de Keywords',
-      pass24hFeature5: 'Generador de Cover Letter',
-      pass24hFeature6: 'Plantilla 100% Legible por ATS',
-      pass24hFeature7: 'Generador Cover Letter Ilimitado',
-      pass24hGuarantee: '✓ GARANTIZADA',
-      // 7 Day Sprint (€24.99)
-      sprint7dBadge: 'INTENSIVO / RECOMENDADO',
-      sprint7dTitle: 'Sprint 7 Días',
-      sprint7dSubtitle: 'Modo Bestia. Ataque total de 7 días',
-      sprint7dBeforePrice: '€49.99',
-      sprint7dButton: 'Empezar Sprint 7 Días →',
-      sprint7dFeature1: 'Scans Ilimitados (7 días)',
-      sprint7dFeature2: 'Selector Industria (FAANG/Finanzas)',
-      sprint7dFeature3: 'Elevador Tono Viñetas (AI Rewrite)',
-      sprint7dFeature4: 'Battle Plan Entrevistas',
-      sprint7dFeature5: 'Guiones de DM para Recruiters',
-      sprint7dFeature6: 'Cover Letter + LinkedIn Optimizer',
-      sprint7dFeature7: 'Recruiter DM Templates',
-      sprint7dGuarantee: '✓ PLANTILLA 100% LEGIBLE GARANTIZADA',
     },
     pricingDialog: {
       quickFix: 'Solución Rápida',
@@ -4558,44 +4293,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: '¡Gracias! Opinión enviada.',
       submitError: 'Error al enviar opinión. Inténtalo de nuevo.',
     },
-    eliteMatchTool: {
-      title: 'Elite Match Tool',
-      subtitle: 'Analiza tu CV contra cualquier oferta con precisión ML local. Identifica gaps y optimiza para ATS instantáneamente.',
-      urlLabel: 'URL de LinkedIn (Recomendado)',
-      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      urlHelp: 'Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.',
-      textLabel: 'Pega la Descripción del Trabajo',
-      textPlaceholder: 'Sobre el rol:\nBuscamos un Senior Full Stack Developer con 5+ años de experiencia...\n\nRequisitos:\n- Experiencia sólida con React y Node.js\n- Experiencia con Kubernetes y AWS',
-      textHelp: 'Copia y pega la descripción completa del trabajo de cualquier portal.',
-      analyzeButton: 'Analizar Puntuación de Coincidencia',
-      featureExtraction: 'Extracción de Entidades',
-      featureExtractionDesc: 'No solo palabras clave: extraemos Hard Skills, Soft Skills y Métricas de Industria con comprensión semántica profunda.',
-      gapAnalysis: 'Análisis de Gaps',
-      gapAnalysisDesc: 'Identificamos EXACTAMENTE qué señales faltan en tu perfil para pasar los filtros ATS de alto riesgo.',
-      autoFix: 'Auto-Fix con IA',
-      autoFixDesc: 'Reescritura con IA de un clic que integra inteligentemente las señales faltantes en tu narrativa de CV existente.',
-    sprint7dBeforePrice: '€49.99',
-      premiumFeatures: '• Extracción de entidades con TF-IDF & Cosine Similarity\\n• Gap analysis crítico/importante/nice-to-have\\n• Robot View con zonas rojas/verdes\\n• Auto-Fix suggestions específicas',
-      scoreTitle: 'Puntuación de Coincidencia',
-      scoreExcellent: 'Excelente match! Aplica con confianza.',
-      scoreGood: 'Buen match, pero hay gaps importantes.',
-      scoreNeedsWork: 'Necesitas mejorar tu CV para esta oferta.',
-      missingCritical: 'Señales Críticas Faltantes',
-      matchedSkills: 'Habilidades Coincidentes',
-      robotViewTitle: 'Robot View',
-      redZones: 'Red Zones',
-      greenZones: 'Green Zones',
-      recommendations: 'Auto-Fix Recommendations',
-      analyzeAnother: 'Analyze Another Job',
-      applyFix: 'Apply Auto-Fix',
-      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
-      analyzingStep1: 'Extracting Recruiter Intent...',
-      analyzingStep2: 'Analyzing Hard Skills Requirements...',
-      analyzingStep3: 'Detecting Soft Skills Signals...',
-      analyzingStep4: 'Generating Missing Signals Report...',
-      errorAnalyzing: 'Error al analizar el match: ',
-      errorUnknown: 'Error desconocido',
-    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRATIS',
@@ -4619,25 +4316,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'No me interesa',
       freeLabel: '100% GRATIS',
-      bookmarklet: {
-        title: 'Instalación del Scanner (1 minuto)',
-        step1Title: 'Copia el bookmarklet',
-        step1Copy: 'Copiar Bookmarklet',
-        step1Copied: '¡Copiado!',
-        step2Title: 'Crea un marcador',
-        step2Instructions: [
-          'Haz clic derecho en la barra de marcadores',
-          'Selecciona "Agregar página"',
-          'Nombre: "Job Scanner"',
-          'URL: Pega el código copiado'
-        ],
-        step3Title: 'Úsalo en cualquier sitio',
-        step3Description: 'Ve a LinkedIn, Indeed, o cualquier job posting → Haz clic en el marcador "Job Scanner" → Se extraerá el texto → Pégalo en tu analizador de CV',
-        proTip: 'Funciona en CUALQUIER página web. LinkedIn, Indeed, Glassdoor, empresa X...',
-        successCopied: '¡Bookmarklet copiado! Ahora arrástralo a tu barra de marcadores.',
-        openingChecklist: 'Abriendo checklist de LinkedIn...',
-        comingSoon: 'Función próximamente: Analizador de emails de reclutadores',
-      },
     },
   },
   'fr': {
@@ -4673,51 +4351,6 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'Accès API',
         feature3Desc: 'Intégrez le scan ATS directement dans votre flux de travail de recrutement',
       },
-    },
-    pricingLanding: {
-      title: 'Tarifs Simples',
-      subtitle: 'Payez une fois. Corrigez pour toujours. Sans abonnements.',
-      freeTitle: 'FREE Debug',
-      freeSubtitle: 'Découvrez quels mots-clés le robot NE voit PAS',
-      freeScanButton: 'Scanner Gratuitement',
-      freeFeature1: 'Détection d\'Invisibilité (2 mots-clés)',
-      freeFeature2: 'Score ATS Global',
-      freeFeature3: 'Vue Robot (verrouillée)',
-      freeFeature4: 'Aperçu Correspondance Séniorité',
-      freeGuarantee: '✓ MODÈLE LISIBLE GARANTI',
-      singleDebugBadge: 'RÉPARER EN UNE FOIS',
-      singleDebugTitle: 'Correction Rapide',
-      singleDebugSubtitle: 'Réparez votre CV pour le prix d\'un café',
-      singleDebugButton: 'Réparer Mon CV →',
-      singleDebugFeature1: '1 Scan Profond Complet',
-      singleDebugFeature2: 'Vue Robot Déverrouillée',
-      singleDebugFeature3: '1 Optimisation IA (Réécriture)',
-      singleDebugFeature4: 'Injection Auto de Mots-clés',
-      singleDebugFeature5: 'Exporter CV Optimisé',
-      singleDebugGuarantee: '✓ MODÈLE LISIBLE GARANTI',
-      pass24hBadge: 'CORRECTIF RAPIDE / URGENT',
-      pass24hTitle: 'Pass 24h',
-      pass24hSubtitle: 'Debug Immédiat pour l\'entretien de demain',
-      pass24hButton: 'Accès 24h →',
-      pass24hFeature1: 'Scans Illimités (24h)',
-      pass24hFeature2: 'Vue Rayon X Robot Complète',
-      pass24hFeature3: 'Étiquettes [ERREUR] + [AVERT] + Corrections',
-      pass24hFeature4: 'Détecteur d\'Écart de Mots-clés',
-      pass24hFeature5: 'Générateur de Lettre de Motivation',
-      pass24hFeature6: 'Modèle 100% Lisible par ATS',
-      pass24hGuarantee: '✓ GARANTI',
-      sprint7dBadge: 'INTENSIF / RECOMMANDÉ',
-      sprint7dTitle: 'Sprint 7 Jours',
-      sprint7dSubtitle: 'Mode Bête. Attaque totale de 7 jours',
-      sprint7dBeforePrice: '€49.99',
-      sprint7dButton: 'Commencer Sprint 7 Jours →',
-      sprint7dFeature1: 'Scans Illimités (7 jours)',
-      sprint7dFeature2: 'Sélecteur d\'Industrie (FAANG/Finance)',
-      sprint7dFeature3: 'Élévateur de Ton (Réécriture IA)',
-      sprint7dFeature4: 'Plan de Bataille d\'Entretiens',
-      sprint7dFeature5: 'Scripts de DM pour Recruteurs',
-      sprint7dFeature6: 'Lettre de Motivation + Optimiseur LinkedIn',
-      sprint7dGuarantee: '✓ MODÈLE 100% LISIBLE GARANTI',
     },
     pricingDialog: {
       quickFix: 'Solution Rapide',
@@ -4902,7 +4535,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsing: 'ANALYSE_MOTS_CLÉS...',
       optimizing: 'OPTIMISATION_SCORE_ATS...',
       headline: 'Déboguez votre parcours professionnel avec précision.',
-      subtitle: 'Rejoignez des milliers de chercheurs d\'emploi qui ont optimisé leurs CV avec une analyse basée sur l\'IA et ont décroché l\'emploi de leurs rêves.',
+      subtitle: 'Únete a miles de personas que optimizaron sus CVs con análisis impulsado por IA y consiguieron sus trabajos soñados.',
       initSession: 'Initialiser la Session',
       enterCredentials: 'Entrez vos identifiants pour accéder à la console',
       signIn: 'Se Connecter',
@@ -6074,45 +5707,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Merci ! Commentaires envoyés.',
       submitError: 'Échec de l\'envoi des commentaires. Veuillez réessayer.',
     },
-    eliteMatchTool: {
-      title: 'Elite Match Tool',
-      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
-      urlLabel: 'LinkedIn URL (Recommended)',
-      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
-      textLabel: 'Paste Job Description',
-      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
-      textHelp: 'Copy and paste the full job description from any portal.',
-      analyzeButton: 'Analyze Match Score',
-      featureExtraction: 'Entity Extraction',
-      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
-      gapAnalysis: 'Gap Analysis',
-      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
-      autoFix: 'AI Auto-Fix',
-      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
-      premiumTitle: 'Elite Match Tool is Premium',
-      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
-      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
-      scoreTitle: 'Match Score',
-      scoreExcellent: 'Excellent match! Apply with confidence.',
-      scoreGood: 'Good match, but there are important gaps.',
-      scoreNeedsWork: 'You need to improve your resume for this offer.',
-      missingCritical: 'Missing Critical Signals',
-      matchedSkills: 'Matched Skills',
-      robotViewTitle: 'Robot View',
-      redZones: 'Red Zones',
-      greenZones: 'Green Zones',
-      recommendations: 'Auto-Fix Recommendations',
-      analyzeAnother: 'Analyze Another Job',
-      applyFix: 'Apply Auto-Fix',
-      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
-      analyzingStep1: 'Extracting Recruiter Intent...',
-      analyzingStep2: 'Analyzing Hard Skills Requirements...',
-      analyzingStep3: 'Detecting Soft Skills Signals...',
-      analyzingStep4: 'Generating Missing Signals Report...',
-      errorAnalyzing: 'Error analyzing the match: ',
-      errorUnknown: 'Unknown error',
-    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRATUIT',
@@ -6136,20 +5730,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Pas intéressé',
       freeLabel: '100% GRATUIT',
-      bookmarklet: {
-        title: 'Scanner Installation (1 minute)',
-        step1Title: 'Copy the bookmarklet',
-        step1Copy: 'Copy Bookmarklet',
-        step1Copied: 'Copied!',
-        step2Title: 'Create a bookmark',
-        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
-        step3Title: 'Use it on any site',
-        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
-        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
-        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
-        openingChecklist: 'Opening LinkedIn checklist...',
-        comingSoon: 'Coming soon: Recruiter email analyzer',
-      },
     },
   },
   'de': {
@@ -6185,55 +5765,6 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'API-Zugang',
         feature3Desc: 'Integrieren Sie ATS-Scanning direkt in Ihren Recruiting-Workflow',
       },
-    },
-    pricingLanding: {
-      title: 'Einfache Preise',
-      subtitle: 'Einmal zahlen. Für immer beheben. Keine Abonnements.',
-      // Free tier
-      freeTitle: 'FREE Debug',
-      freeSubtitle: 'Entdecken Sie, welche Keywords der Roboter NICHT sieht',
-      freeScanButton: 'Kostenlos Scannen',
-      freeFeature1: 'Unsichtbarkeits-Erkennung (2 Keywords)',
-      freeFeature2: 'Globaler ATS-Score',
-      freeFeature3: 'Roboter-Ansicht (gesperrt)',
-      freeFeature4: 'Vorschau Senioritäts-Match',
-      freeGuarantee: '✓ LESBARE VORLAGE GARANTIERT',
-      // Single debug fix (€5.99)
-      singleDebugBadge: 'EINMAL BEHEBEN',
-      singleDebugTitle: 'Schnelle Lösung',
-      singleDebugSubtitle: 'Beheben Sie Ihren Lebenslauf für den Preis eines Kaffees',
-      singleDebugButton: 'Meinen CV Reparieren →',
-      singleDebugFeature1: '1 Vollständiger Tiefen-Scan',
-      singleDebugFeature2: 'Roboter-Ansicht Freigeschaltet',
-      singleDebugFeature3: '1 KI-Optimierung (Neuschreiben)',
-      singleDebugFeature4: 'Auto-Keyword-Injektion',
-      singleDebugFeature5: 'Optimierten CV Exportieren',
-      singleDebugGuarantee: '✓ LESBARE VORLAGE GARANTIERT',
-      // 24h Pass (€14.99)
-      pass24hBadge: 'SCHNELLE LÖSUNG / DRINGEND',
-      pass24hTitle: '24h Pass',
-      pass24hSubtitle: 'Sofortiges Debugging für das morgige Interview',
-      pass24hButton: '24h Zugang →',
-      pass24hFeature1: 'Unbegrenzte Scans (24h)',
-      pass24hFeature2: 'Vollständige Roboter-Röntgenansicht',
-      pass24hFeature3: '[FEHLER] + [WARNUNG] + Behebungs-Tags',
-      pass24hFeature4: 'Keyword-Lücken-Detektor',
-      pass24hFeature5: 'Anschreiben-Generator',
-      pass24hFeature6: '100% ATS-Lesbare Vorlage',
-      pass24hGuarantee: '✓ GARANTIERT',
-      // 7 Day Sprint (€24.99)
-      sprint7dBadge: 'INTENSIV / EMPFOHLEN',
-      sprint7dTitle: '7-Tage-Sprint',
-      sprint7dSubtitle: 'Bestien-Modus. Vollständiger 7-Tage-Angriff',
-      sprint7dBeforePrice: '€49.99',
-      sprint7dButton: '7-Tage-Sprint Starten →',
-      sprint7dFeature1: 'Unbegrenzte Scans (7 Tage)',
-      sprint7dFeature2: 'Branchen-Auswahl (FAANG/Finanzen)',
-      sprint7dFeature3: 'Stichpunkt-Ton-Elevator (KI-Neuschreiben)',
-      sprint7dFeature4: 'Interview-Kampfplan',
-      sprint7dFeature5: 'DM-Skripte für Recruiter',
-      sprint7dFeature6: 'Anschreiben + LinkedIn-Optimierer',
-      sprint7dGuarantee: '✓ 100% LESBARE VORLAGE GARANTIERT',
     },
     pricingDialog: {
       quickFix: 'Schnelle Lösung',
@@ -6418,7 +5949,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsing: 'SCHLÜSSELWÖRTER_PARSEN...',
       optimizing: 'ATS_SCORE_OPTIMIEREN...',
       headline: 'Debuggen Sie Ihre Karrieregeschichte mit Präzision.',
-      subtitle: 'Schließen Sie sich Tausenden von Arbeitssuchenden an, die ihre Lebensläufe mit KI-gestützter Analyse optimiert und ihren Traumjob gefunden haben.',
+      subtitle: 'Únete a miles de personas que optimizaron sus CVs con análisis impulsado por IA y consiguieron sus trabajos soñados.',
       initSession: 'Sitzung initialisieren',
       enterCredentials: 'Geben Sie Ihre Anmeldedaten ein, um auf die Konsole zuzugreifen',
       signIn: 'Anmelden',
@@ -7590,45 +7121,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Danke! Feedback gesendet.',
       submitError: 'Feedback konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     },
-    eliteMatchTool: {
-      title: 'Elite Match Tool',
-      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
-      urlLabel: 'LinkedIn URL (Recommended)',
-      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
-      textLabel: 'Paste Job Description',
-      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
-      textHelp: 'Copy and paste the full job description from any portal.',
-      analyzeButton: 'Analyze Match Score',
-      featureExtraction: 'Entity Extraction',
-      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
-      gapAnalysis: 'Gap Analysis',
-      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
-      autoFix: 'AI Auto-Fix',
-      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
-      premiumTitle: 'Elite Match Tool is Premium',
-      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
-      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
-      scoreTitle: 'Match Score',
-      scoreExcellent: 'Excellent match! Apply with confidence.',
-      scoreGood: 'Good match, but there are important gaps.',
-      scoreNeedsWork: 'You need to improve your resume for this offer.',
-      missingCritical: 'Missing Critical Signals',
-      matchedSkills: 'Matched Skills',
-      robotViewTitle: 'Robot View',
-      redZones: 'Red Zones',
-      greenZones: 'Green Zones',
-      recommendations: 'Auto-Fix Recommendations',
-      analyzeAnother: 'Analyze Another Job',
-      applyFix: 'Apply Auto-Fix',
-      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
-      analyzingStep1: 'Extracting Recruiter Intent...',
-      analyzingStep2: 'Analyzing Hard Skills Requirements...',
-      analyzingStep3: 'Detecting Soft Skills Signals...',
-      analyzingStep4: 'Generating Missing Signals Report...',
-      errorAnalyzing: 'Error analyzing the match: ',
-      errorUnknown: 'Unknown error',
-    },
     ecosystem: {
       copyPasteTip: {
         badge: 'KOSTENLOS',
@@ -7652,20 +7144,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Nicht interessiert',
       freeLabel: '100% KOSTENLOS',
-      bookmarklet: {
-        title: 'Scanner Installation (1 minute)',
-        step1Title: 'Copy the bookmarklet',
-        step1Copy: 'Copy Bookmarklet',
-        step1Copied: 'Copied!',
-        step2Title: 'Create a bookmark',
-        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
-        step3Title: 'Use it on any site',
-        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
-        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
-        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
-        openingChecklist: 'Opening LinkedIn checklist...',
-        comingSoon: 'Coming soon: Recruiter email analyzer',
-      },
     },
   },
   'pt': {
@@ -7701,55 +7179,6 @@ export const translations: Record<SupportedLocale, Translation> = {
         feature3: 'Acesso à API',
         feature3Desc: 'Integre o escaneamento ATS diretamente no seu fluxo de trabalho de recrutamento',
       },
-    },
-    pricingLanding: {
-      title: 'Preços Simples',
-      subtitle: 'Pague uma vez. Corrija para sempre. Sem assinaturas.',
-      // Free tier
-      freeTitle: 'FREE Debug',
-      freeSubtitle: 'Descubra quais palavras-chave o robô NÃO vê',
-      freeScanButton: 'Escanear Grátis',
-      freeFeature1: 'Detecção de Invisibilidade (2 palavras-chave)',
-      freeFeature2: 'Pontuação ATS Global',
-      freeFeature3: 'Visão Robô (bloqueada)',
-      freeFeature4: 'Prévia Correspondência de Senioridade',
-      freeGuarantee: '✓ MODELO LEGÍVEL GARANTIDO',
-      // Single debug fix (€5.99)
-      singleDebugBadge: 'CORRIJA DE UMA VEZ',
-      singleDebugTitle: 'Solução Rápida',
-      singleDebugSubtitle: 'Corrija seu currículo pelo preço de um café',
-      singleDebugButton: 'Corrigir Meu CV →',
-      singleDebugFeature1: '1 Escaneamento Profundo Completo',
-      singleDebugFeature2: 'Visão Robô Desbloqueada',
-      singleDebugFeature3: '1 Otimização de IA (Reescrita)',
-      singleDebugFeature4: 'Auto-Injeção de Palavras-chave',
-      singleDebugFeature5: 'Exportar CV Otimizado',
-      singleDebugGuarantee: '✓ MODELO LEGÍVEL GARANTIDO',
-      // 24h Pass (€14.99)
-      pass24hBadge: 'CORREÇÃO RÁPIDA / URGENTE',
-      pass24hTitle: 'Passe 24h',
-      pass24hSubtitle: 'Debug Imediato para entrevista de amanhã',
-      pass24hButton: 'Acesso 24h →',
-      pass24hFeature1: 'Scans Ilimitados (24h)',
-      pass24hFeature2: 'Visão Raio-X Robô Completa',
-      pass24hFeature3: 'Tags [ERRO] + [AVISO] + Correções',
-      pass24hFeature4: 'Detector de Lacunas de Palavras-chave',
-      pass24hFeature5: 'Gerador de Carta de Apresentação',
-      pass24hFeature6: 'Modelo 100% Legível por ATS',
-      pass24hGuarantee: '✓ GARANTIDO',
-      // 7 Day Sprint (€24.99)
-      sprint7dBadge: 'INTENSIVO / RECOMENDADO',
-      sprint7dTitle: 'Sprint 7 Dias',
-      sprint7dSubtitle: 'Modo Fera. Ataque total de 7 dias',
-      sprint7dBeforePrice: '€49.99',
-      sprint7dButton: 'Começar Sprint 7 Dias →',
-      sprint7dFeature1: 'Scans Ilimitados (7 dias)',
-      sprint7dFeature2: 'Seletor de Indústria (FAANG/Finanças)',
-      sprint7dFeature3: 'Elevador de Tom de Marcadores (Reescrita IA)',
-      sprint7dFeature4: 'Plano de Batalha para Entrevistas',
-      sprint7dFeature5: 'Scripts de DM para Recrutadores',
-      sprint7dFeature6: 'Carta de Apresentação + Otimizador LinkedIn',
-      sprint7dGuarantee: '✓ MODELO 100% LEGÍVEL GARANTIDO',
     },
     pricingDialog: {
       quickFix: 'Solução Rápida',
@@ -7934,7 +7363,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsing: 'ANALISANDO_PALAVRAS...',
       optimizing: 'OTIMIZANDO_PONTUAÇÃO_ATS...',
       headline: 'Depure seu histórico profissional com precisão.',
-      subtitle: 'Junte-se a milhares de candidatos que otimizaram seus currículos com análise baseada em IA e conquistaram seus empregos dos sonhos.',
+      subtitle: 'Únete a miles de personas que optimizaron sus CVs con análisis impulsado por IA y consiguieron sus trabajos soñados.',
       initSession: 'Inicializar Sessão',
       enterCredentials: 'Digite suas credenciais para acessar o console',
       signIn: 'Entrar',
@@ -9106,45 +8535,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       feedbackSubmitted: 'Obrigado! Feedback enviado.',
       submitError: 'Falha ao enviar feedback. Tente novamente.',
     },
-    eliteMatchTool: {
-      title: 'Elite Match Tool',
-      subtitle: 'Analyze your resume against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
-      urlLabel: 'LinkedIn URL (Recommended)',
-      urlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      urlHelp: 'Paste the direct LinkedIn job posting link for best extraction results.',
-      textLabel: 'Paste Job Description',
-      textPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Strong experience with React and Node.js\n- Experience with Kubernetes and AWS',
-      textHelp: 'Copy and paste the full job description from any portal.',
-      analyzeButton: 'Analyze Match Score',
-      featureExtraction: 'Entity Extraction',
-      featureExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
-      gapAnalysis: 'Gap Analysis',
-      gapAnalysisDesc: 'We identify EXACTLY what signals are missing from your profile to pass high-risk ATS filters.',
-      autoFix: 'AI Auto-Fix',
-      autoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing resume narrative.',
-      premiumTitle: 'Elite Match Tool is Premium',
-      premiumSubtitle: 'Analyze your resume against any offer using local ML (0 API costs)',
-      premiumFeatures: '• Entity extraction with TF-IDF & Cosine Similarity\n• Critical/important/nice-to-have gap analysis\n• Robot View with red/green zones\n• Specific Auto-Fix suggestions',
-      scoreTitle: 'Match Score',
-      scoreExcellent: 'Excellent match! Apply with confidence.',
-      scoreGood: 'Good match, but there are important gaps.',
-      scoreNeedsWork: 'You need to improve your resume for this offer.',
-      missingCritical: 'Missing Critical Signals',
-      matchedSkills: 'Matched Skills',
-      robotViewTitle: 'Robot View',
-      redZones: 'Red Zones',
-      greenZones: 'Green Zones',
-      recommendations: 'Auto-Fix Recommendations',
-      analyzeAnother: 'Analyze Another Job',
-      applyFix: 'Apply Auto-Fix',
-      applyFixSuccess: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
-      analyzingStep1: 'Extracting Recruiter Intent...',
-      analyzingStep2: 'Analyzing Hard Skills Requirements...',
-      analyzingStep3: 'Detecting Soft Skills Signals...',
-      analyzingStep4: 'Generating Missing Signals Report...',
-      errorAnalyzing: 'Error analyzing the match: ',
-      errorUnknown: 'Unknown error',
-    },
     ecosystem: {
       copyPasteTip: {
         badge: 'GRÁTIS',
@@ -9168,20 +8558,6 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Não estou interessado',
       freeLabel: '100% GRÁTIS',
-      bookmarklet: {
-        title: 'Scanner Installation (1 minute)',
-        step1Title: 'Copy the bookmarklet',
-        step1Copy: 'Copy Bookmarklet',
-        step1Copied: 'Copied!',
-        step2Title: 'Create a bookmark',
-        step2Instructions: ['Right-click on the bookmarks bar', 'Select "Add page"', 'Name: "Job Scanner"', 'URL: Paste the copied code'],
-        step3Title: 'Use it on any site',
-        step3Description: 'Go to LinkedIn, Indeed, or any job posting → Click the "Job Scanner" bookmark → Text will be extracted → Paste it in your resume analyzer',
-        proTip: 'Works on ANY website. LinkedIn, Indeed, Glassdoor, company X...',
-        successCopied: 'Bookmarklet copied! Now drag it to your bookmarks bar.',
-        openingChecklist: 'Opening LinkedIn checklist...',
-        comingSoon: 'Coming soon: Recruiter email analyzer',
-      },
     },
   },
 };

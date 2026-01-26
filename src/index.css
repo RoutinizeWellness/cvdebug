@@ -96,9 +96,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
-    letter-spacing: -0.011em; /* Subtle tightening for modern look */
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
@@ -133,31 +131,12 @@
   }
 
   p {
-    @apply text-base leading-relaxed; /* Increased from leading-7 to leading-relaxed for 20% more breathing room */
+    @apply text-base leading-7;
   }
 
   /* Improved readability for small text */
   .text-xs, .text-sm {
     letter-spacing: 0.01em;
-  }
-
-  /* Enhanced spacing for better UX (20% more breathing room) */
-  section {
-    @apply mb-8; /* Increased section spacing */
-  }
-
-  /* Card and component spacing improvements */
-  .space-y-4 > * + * {
-    margin-top: 1.2rem !important; /* 20% increase from 1rem */
-  }
-
-  .space-y-6 > * + * {
-    margin-top: 1.8rem !important; /* 20% increase from 1.5rem */
-  }
-
-  /* Button padding improvements for better clickability */
-  button, .btn {
-    @apply px-5 py-2.5; /* Slightly more generous padding */
   }
 }
 

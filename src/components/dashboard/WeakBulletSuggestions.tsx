@@ -174,9 +174,7 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
     techPatterns.forEach(pattern => {
       const matches = bullet.match(pattern);
       if (matches) {
-        technologies.push(...matches.map((m: any) =>
-          typeof m === 'string' ? m.toLowerCase() : ''
-        ).filter(Boolean));
+        technologies.push(...matches.map(m => m.toLowerCase()));
       }
     });
 
@@ -193,9 +191,7 @@ export function WeakBulletSuggestions({ resumeId, ocrText, metricsCount, isPaidU
     actionPatterns.forEach(pattern => {
       const matches = bullet.match(pattern);
       if (matches) {
-        actions.push(...matches.map((m: any) =>
-          typeof m === 'string' ? m.toLowerCase() : ''
-        ).filter(Boolean));
+        actions.push(...matches.map(m => m.toLowerCase()));
       }
     });
 

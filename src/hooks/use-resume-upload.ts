@@ -9,14 +9,11 @@ import { api } from "@/convex/_generated/api";
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
 
-export type TargetMarket = "USA" | "UK" | "DACH" | "EU" | "LATAM" | "APAC";
-
 export function useResumeUpload(jobDescription: string, setJobDescription: (val: string) => void) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [processingResumeId, setProcessingResumeId] = useState<string | null>(null);
   const [processingStatus, setProcessingStatus] = useState<string>("");
-  const [selectedRegion, setSelectedRegion] = useState<TargetMarket>("USA");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -656,8 +653,6 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     processingResumeId,
     setProcessingResumeId,
     processingStatus,
-    selectedRegion,
-    setSelectedRegion,
     fileInputRef,
     handleFile,
     handleFileUpload,

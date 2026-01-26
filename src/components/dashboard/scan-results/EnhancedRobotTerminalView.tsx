@@ -1,11 +1,10 @@
-import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle, Download, Lock } from "lucide-react";
+import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { toast } from "sonner";
-import { isPaidUser as checkIsPaidUser } from "@/lib/planHelpers";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -36,13 +35,9 @@ export function EnhancedRobotTerminalView({
   const resume = useQuery(apiAny.resumes.getResume, { id: resumeId });
   const allResumes = useQuery(apiAny.resumes.getResumes);
 
-  // Check if user is paid
-  const isPremium = checkIsPaidUser(user?.subscriptionTier);
-  const isFree = !isPremium;
-
   // Generate precise logs based on actual resume analysis
   const generatePreciseLogs = (): LogEntry[] => {
-    if (!resume) {
+    if (!resume || !resume.analysis) {
       return getLoadingLogs();
     }
 
@@ -268,76 +263,73 @@ export function EnhancedRobotTerminalView({
       }
     }
 
-    // Parse analysis for specific issues - try both resume.analysis and direct fields
-    let analysis: any = null;
-
+    // Parse analysis for specific issues
     try {
-      if (resume.analysis) {
-        analysis = JSON.parse(resume.analysis);
+      const analysis = JSON.parse(resume.analysis);
+
+      // Format Issues
+      if (analysis.formatIssues && analysis.formatIssues.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "info",
+          message: `[ISSUES] 🔍 Found ${analysis.formatIssues.length} formatting issues:`
+        });
+
+        analysis.formatIssues.slice(0, 5).forEach((issue: any) => {
+          const issueType = issue.issue || issue.type || "Issue";
+          const issueSeverity = issue.severity || "medium";
+
+          const logType = issueSeverity === "critical" ? "critical" :
+                         issueSeverity === "high" ? "fail" : "warn";
+
+          logs.push({
+            line: lineNum++,
+            type: logType,
+            message: `         → ${issueType}`,
+            detail: issue.fix || issue.suggestion
+          });
+        });
       }
+
+      // Missing Keywords
+      if (analysis.missingKeywords && analysis.missingKeywords.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "info",
+          message: `[KEYWORDS] 📝 Missing ${analysis.missingKeywords.length} critical keywords:`
+        });
+
+        analysis.missingKeywords.slice(0, 5).forEach((kw: any) => {
+          const keyword = kw.keyword || kw;
+          const priority = kw.priority || "medium";
+
+          const logType = priority === "critical" ? "critical" :
+                         priority === "high" ? "fail" : "warn";
+
+          logs.push({
+            line: lineNum++,
+            type: logType,
+            message: `         → "${keyword}"`,
+            detail: kw.context || kw.section
+          });
+        });
+      }
+
+      // Matched Keywords (successes)
+      if (analysis.matchedKeywords && analysis.matchedKeywords.length > 0) {
+        logs.push({
+          line: lineNum++,
+          type: "ok",
+          message: `[KEYWORDS] ✓ Found ${analysis.matchedKeywords.length} matching keywords`
+        });
+      }
+
     } catch (e) {
-      // If can't parse, will use direct fields
-    }
-
-    // Use direct fields as fallback or primary source
-    const formatIssues = analysis?.formatIssues || resume.formatIssues || [];
-    const missingKeywords = analysis?.missingKeywords || resume.missingKeywords || [];
-    const matchedKeywords = analysis?.matchedKeywords || resume.matchedKeywords || [];
-
-    // Format Issues
-    if (formatIssues.length > 0) {
+      // If analysis can't be parsed, show generic message
       logs.push({
         line: lineNum++,
         type: "info",
-        message: `[ISSUES] 🔍 Found ${formatIssues.length} formatting issues:`
-      });
-
-      formatIssues.slice(0, 5).forEach((issue: any) => {
-        const issueType = issue.issue || issue.type || "Issue";
-        const issueSeverity = issue.severity || "medium";
-
-        const logType = issueSeverity === "critical" ? "critical" :
-                       issueSeverity === "high" ? "fail" : "warn";
-
-        logs.push({
-          line: lineNum++,
-          type: logType,
-          message: `         → ${issueType}`,
-          detail: issue.fix || issue.suggestion
-        });
-      });
-    }
-
-    // Missing Keywords
-    if (missingKeywords.length > 0) {
-      logs.push({
-        line: lineNum++,
-        type: "info",
-        message: `[KEYWORDS] 📝 Missing ${missingKeywords.length} critical keywords:`
-      });
-
-      missingKeywords.slice(0, 5).forEach((kw: any) => {
-        const keyword = kw.keyword || kw;
-        const priority = kw.priority || "medium";
-
-        const logType = priority === "critical" ? "critical" :
-                       priority === "high" ? "fail" : "warn";
-
-        logs.push({
-          line: lineNum++,
-          type: logType,
-          message: `         → "${keyword}"`,
-          detail: kw.context || kw.section
-        });
-      });
-    }
-
-    // Matched Keywords (successes)
-    if (matchedKeywords.length > 0) {
-      logs.push({
-        line: lineNum++,
-        type: "ok",
-        message: `[KEYWORDS] ✓ Found ${matchedKeywords.length} matching keywords`
+        message: "[ANALYZE] 📊 Detailed analysis available in report"
       });
     }
 
@@ -864,18 +856,13 @@ export function EnhancedRobotTerminalView({
 
         <div className="text-[#94a3b8] space-y-0.5 relative z-10">
           <AnimatePresence mode="popLayout">
-            {displayedLogs.map((log, index) => {
-              // For free users: show first 10 lines clearly, blur rest
-              const shouldBlur = isFree && index >= 10;
-              const isPreviewLine = isFree && index < 10;
-
-              return (
+            {displayedLogs.map((log, index) => (
               <motion.div
                 key={`${log.line}-${index}`}
                 initial={{ opacity: 0, x: -20, filter: "blur(4px)" }}
-                animate={{ opacity: 1, x: 0, filter: shouldBlur ? "blur(6px)" : "blur(0px)" }}
+                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className={`flex items-start gap-2 sm:gap-3 group hover:bg-white/5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_rgba(100,116,139,0.2)] ${shouldBlur ? 'opacity-40 pointer-events-none' : ''} ${isPreviewLine ? 'ring-1 ring-[#22C55E]/30' : ''}`}
+                className="flex items-start gap-2 sm:gap-3 group hover:bg-white/5 px-2 sm:px-3 py-1.5 rounded-lg transition-all duration-200 hover:shadow-[0_0_15px_rgba(100,116,139,0.2)]"
               >
                 {/* Line number with glow */}
                 <motion.span
@@ -924,53 +911,8 @@ export function EnhancedRobotTerminalView({
                   {new Date().toLocaleTimeString('en-US', { hour12: false })}
                 </motion.span>
               </motion.div>
-            );
-            })}
+            ))}
           </AnimatePresence>
-
-          {/* FREE USER UPGRADE CTA - Shows after 10 preview lines */}
-          {isFree && displayedLogs.length > 10 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.4 }}
-              className="relative mt-6 p-6 bg-gradient-to-br from-[#22C55E]/10 via-[#10B981]/10 to-[#059669]/10 border-2 border-[#22C55E]/40 rounded-xl backdrop-blur-sm shadow-[0_0_40px_rgba(34,197,94,0.3)]"
-            >
-              <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-              <div className="relative z-10 text-center space-y-4">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Lock className="h-5 w-5 text-[#22C55E]" />
-                  <h3 className="text-lg font-black text-[#22C55E] uppercase tracking-wider">
-                    🔓 Unlock Full Analysis
-                  </h3>
-                </div>
-                <p className="text-sm text-white/80 max-w-md mx-auto leading-relaxed">
-                  You're seeing <span className="font-bold text-[#22C55E]">10 preview lines</span>.
-                  Get the <span className="font-bold text-white">complete ATS breakdown</span> with{" "}
-                  <span className="font-black text-[#22C55E]">{displayedLogs.length - 10}+ more critical insights</span> for just <span className="font-black text-white">$5.99</span>.
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      // Navigate to pricing - you'll need to add this prop
-                      const pricingSection = document.querySelector('#pricing');
-                      if (pricingSection) {
-                        pricingSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    className="px-6 py-3 bg-gradient-to-r from-[#22C55E] to-[#10B981] text-white font-black rounded-lg shadow-[0_0_30px_rgba(34,197,94,0.5)] hover:shadow-[0_0_40px_rgba(34,197,94,0.7)] transition-all uppercase tracking-wider text-sm"
-                  >
-                    🚀 Upgrade for $5.99
-                  </motion.button>
-                  <div className="text-xs text-white/60">
-                    ⚡ Instant access • No subscription
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
 
           {/* Cursor */}
           {autoAnimate && displayedLogs.length === logData.length && (

@@ -42,7 +42,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
 
   // Helper to create context-aware messages
   const enhanceIssueMessage = (issue: any) => {
-    const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
+    const issueLower = issue.issue.toLowerCase();
     let enhancedDescription = issue.atsImpact || "This may affect ATS parsing";
     let enhancedFix = issue.fix || "Review and update this section";
 
@@ -66,8 +66,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     // Capitalization specific messages
     if (issueLower.includes("capitalization")) {
       const matches = ocrText.match(/\b(github|linkedin|javascript|typescript|nodejs|mongodb|postgresql|mysql|aws|gcp|api)\b/gi) || [];
-      const incorrect = matches.filter((m: any) => {
-        if (typeof m !== 'string') return false;
+      const incorrect = matches.filter((m: string) => {
         const lower = m.toLowerCase();
         return (lower === 'github' && m !== 'GitHub') ||
                (lower === 'linkedin' && m !== 'LinkedIn') ||
@@ -80,8 +79,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       });
 
       if (incorrect.length > 0) {
-        const examples = incorrect.slice(0, 3).map((term: any) => {
-          if (typeof term !== 'string') return '';
+        const examples = incorrect.slice(0, 3).map((term: string) => {
           const lower = term.toLowerCase();
           const correct = lower === 'github' ? 'GitHub' :
                          lower === 'linkedin' ? 'LinkedIn' :
@@ -92,7 +90,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
                          lower === 'mysql' ? 'MySQL' :
                          lower === 'mongodb' ? 'MongoDB' : term;
           return `${term} → ${correct}`;
-        }).filter(Boolean).join(', ');
+        }).join(', ');
 
         enhancedDescription = `Found ${incorrect.length} technical terms with incorrect capitalization. ATS keyword matching is case-sensitive.`;
         enhancedFix = `Correct: ${examples}. Use proper capitalization for all technical terms.`;
@@ -107,10 +105,7 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
         .filter((l: string) => l.length > 20);
 
       const starters = lines
-        .map((l: string) => {
-          const firstWord = l.split(/\s+/)[0];
-          return firstWord && typeof firstWord === 'string' ? firstWord.toLowerCase() : '';
-        })
+        .map((l: string) => l.split(/\s+/)[0]?.toLowerCase())
         .filter(Boolean);
 
       const starterCounts: Record<string, number> = {};
@@ -141,14 +136,13 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
     .slice(0, 3)
     .map((issue: any) => {
       const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
-      const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
       return {
-        icon: issueLower.includes("image") || issueLower.includes("icon") ? "image" :
-              issueLower.includes("metric") || issueLower.includes("number") ? "numbers" :
-              issueLower.includes("contact") || issueLower.includes("linkedin") ? "link" :
-              issueLower.includes("format") || issueLower.includes("parse") ? "warning" :
+        icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+              issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+              issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+              issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
               "error",
-        title: issue.issue || 'Unknown issue',
+        title: issue.issue,
         description: enhancedDescription,
         severity: issue.severity,
         howToFix: enhancedFix
@@ -162,14 +156,13 @@ export function ATSOverviewDashboard({ resume, user, onFixIssue, onUpgrade }: AT
       .slice(0, 3)
       .map((issue: any) => {
         const { enhancedDescription, enhancedFix } = enhanceIssueMessage(issue);
-        const issueLower = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
         return {
-          icon: issueLower.includes("image") || issueLower.includes("icon") ? "image" :
-                issueLower.includes("metric") || issueLower.includes("number") ? "numbers" :
-                issueLower.includes("contact") || issueLower.includes("linkedin") ? "link" :
-                issueLower.includes("format") || issueLower.includes("parse") ? "warning" :
+          icon: issue.issue.toLowerCase().includes("image") || issue.issue.toLowerCase().includes("icon") ? "image" :
+                issue.issue.toLowerCase().includes("metric") || issue.issue.toLowerCase().includes("number") ? "numbers" :
+                issue.issue.toLowerCase().includes("contact") || issue.issue.toLowerCase().includes("linkedin") ? "link" :
+                issue.issue.toLowerCase().includes("format") || issue.issue.toLowerCase().includes("parse") ? "warning" :
                 "info",
-          title: issue.issue || 'Unknown issue',
+          title: issue.issue,
           description: enhancedDescription,
           severity: issue.severity,
           howToFix: enhancedFix

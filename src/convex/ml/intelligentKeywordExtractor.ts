@@ -434,13 +434,10 @@ function generateKeywordSuggestions(
   if (!industry) return suggestions;
 
   const industryData = INDUSTRY_KEYWORDS[industry];
-  const foundTerms = new Set(foundKeywords.map((k: any) => {
-    if (typeof k === 'string') return k.toLowerCase();
-    return k?.term ? k.term.toLowerCase() : '';
-  }).filter(Boolean));
+  const foundTerms = new Set(foundKeywords.map(k => k.term.toLowerCase()));
 
   // Suggest related keywords from same category
-  const categories = foundKeywords.map((k: any) => typeof k === 'string' ? '' : k?.category).filter(Boolean);
+  const categories = foundKeywords.map(k => k.category);
   const topCategories = [...new Set(categories)].slice(0, 3);
 
   for (const category of topCategories) {

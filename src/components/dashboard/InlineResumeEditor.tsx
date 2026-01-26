@@ -125,13 +125,9 @@ export function InlineResumeEditor({
       setHasChanges(false);
       setLastSaved(new Date());
 
-      // Trigger re-analysis with updated content
+      // Trigger re-analysis
       setIsReanalyzing(true);
-      await analyzeResume({
-        id: resumeId,
-        ocrText: content,
-        experienceLevel: resumeData?.experienceLevel
-      });
+      await analyzeResume({ id: resumeId });
 
       toast.success("✓ Changes saved! Re-analyzing...");
 
@@ -154,11 +150,10 @@ export function InlineResumeEditor({
 
       for (let i = 0; i < lines.length; i++) {
         // Look for skills section or bullets
-        const lineLower = (lines[i] || '').toLowerCase();
-        if (lineLower.includes('skills') ||
-            lineLower.includes('technologies') ||
-            (lines[i] || '').trim().startsWith('•') ||
-            (lines[i] || '').trim().startsWith('-')) {
+        if (lines[i].toLowerCase().includes('skills') ||
+            lines[i].toLowerCase().includes('technologies') ||
+            lines[i].trim().startsWith('•') ||
+            lines[i].trim().startsWith('-')) {
           // Insert after this line
           lines.splice(i + 1, 0, `• ${keyword}`);
           inserted = true;
@@ -179,71 +174,18 @@ export function InlineResumeEditor({
 
   const quickFixAll = () => {
     let newContent = content;
-    let fixCount = 0;
 
-    // 1. Fix date formats
+    // Quick fixes for common issues
     formatIssues.slice(0, 3).forEach(issue => {
-      const issueText = (issue && typeof issue.issue === 'string') ? issue.issue.toLowerCase() : '';
-      if (issueText.includes('date')) {
-        const before = newContent;
+      if (issue.issue.toLowerCase().includes('date')) {
+        // Standardize date format
         newContent = newContent.replace(/(\d{4})\s*-\s*(\d{4})/g, '$1 - $2');
         newContent = newContent.replace(/(\w{3})\.\s*(\d{4})/g, '$1 $2');
-        if (before !== newContent) fixCount++;
       }
-    });
-
-    // 2. Add top missing keywords naturally
-    const topKeywords = missingKeywords.slice(0, 3);
-    if (topKeywords.length > 0) {
-      // Find Skills section or create one
-      const skillsRegex = /(Skills|Technical Skills|Core Competencies):?\s*/i;
-      const hasSkillsSection = skillsRegex.test(newContent);
-
-      if (hasSkillsSection) {
-        // Add keywords to existing skills section
-        const keywordsToAdd = topKeywords.map(kw => kw.keyword).join(', ');
-        newContent = newContent.replace(skillsRegex, (match) => {
-          fixCount += topKeywords.length;
-          return `${match}${keywordsToAdd}, `;
-        });
-      } else {
-        // Add new skills section at the end
-        const keywordsToAdd = topKeywords.map(kw => kw.keyword).join(', ');
-        newContent += `\n\nSkills: ${keywordsToAdd}`;
-        fixCount += topKeywords.length;
-      }
-    }
-
-    // 3. Fix weak bullets by adding action verbs to lines starting with "-" or "•"
-    const bulletRegex = /^[\s]*[-•]\s+(.+)$/gm;
-    let match;
-    const actionVerbs = ['Developed', 'Implemented', 'Led', 'Managed', 'Achieved', 'Created'];
-    const weakBulletFixes: Array<{original: string, fixed: string}> = [];
-
-    while ((match = bulletRegex.exec(newContent)) !== null) {
-      const bulletContent = match[1];
-      const hasActionVerb = /^(Developed|Implemented|Led|Managed|Achieved|Created|Built|Designed|Established|Coordinated)/i.test(bulletContent);
-
-      if (!hasActionVerb && bulletContent.length > 15 && weakBulletFixes.length < 3) {
-        const randomVerb = actionVerbs[Math.floor(Math.random() * actionVerbs.length)];
-        const fixedBullet = match[0].replace(bulletContent, `${randomVerb} ${bulletContent.toLowerCase()}`);
-        weakBulletFixes.push({ original: match[0], fixed: fixedBullet });
-      }
-    }
-
-    // Apply bullet fixes
-    weakBulletFixes.forEach(fix => {
-      newContent = newContent.replace(fix.original, fix.fixed);
-      fixCount++;
     });
 
     setContent(newContent);
-
-    if (fixCount > 0) {
-      toast.success(`✓ Applied ${fixCount} quick fixes!`);
-    } else {
-      toast.info("No issues found to quick fix.");
-    }
+    toast.success("✓ Applied quick fixes!");
   };
 
   return (

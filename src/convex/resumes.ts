@@ -4,6 +4,9 @@ import { getCurrentUser } from "./users";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
 export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -34,14 +37,6 @@ export const createResume = mutation({
       v.literal("senior"),
       v.literal("lead"),
       v.literal("executive")
-    )),
-    targetMarket: v.optional(v.union(
-      v.literal("USA"),
-      v.literal("UK"),
-      v.literal("DACH"),
-      v.literal("EU"),
-      v.literal("LATAM"),
-      v.literal("APAC")
     )),
   },
   handler: async (ctx, args) => {
@@ -153,36 +148,28 @@ export const createResume = mutation({
         jobDescription: args.jobDescription,
         jobTitle: args.jobTitle,
         company: args.company,
-        targetMarket: args.targetMarket,
         detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
         status: "processing",
       });
 
       // Add timeline event if part of a project
       if (args.projectId) {
-        try {
-          await ctx.scheduler.runAfter(0, (internal as any).projectTimeline.addTimelineEvent, {
-            projectId: args.projectId,
-            type: "resume_uploaded",
-            title: "Resume Uploaded",
-            description: `Uploaded ${args.title} for analysis`,
-          });
-        } catch (timelineError) {
-          console.error("[createResume] Failed to add timeline event:", timelineError);
-        }
+        await ctx.scheduler.runAfter(0, internalAny.projectTimeline.addTimelineEvent, {
+          projectId: args.projectId,
+          type: "resume_uploaded",
+          title: "Resume Uploaded",
+          description: `Uploaded ${args.title} for analysis`,
+        });
       }
 
-      // Schedule abandonment email for free users (wrapped in try-catch to prevent blocking)
+      // Schedule abandonment email for free users
       if (!hasActiveSprint && (user.credits ?? 0) === 1 && user.email) {
         try {
-          // Check if the internal function exists before calling
-          if ((internal as any).abandonmentEmails?.scheduleAbandonmentEmail) {
-            await ctx.scheduler.runAfter(0, (internal as any).abandonmentEmails.scheduleAbandonmentEmail, {
-              userId: identity.subject,
-              email: user.email,
-              resumeId,
-            });
-          }
+          await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleAbandonmentEmail, {
+            userId: identity.subject,
+            email: user.email,
+            resumeId,
+          });
         } catch (scheduleError: any) {
           // Log but don't fail the entire operation if email scheduling fails
           console.error("[createResume] Failed to schedule abandonment email:", scheduleError);
@@ -230,7 +217,7 @@ export const updateResumeOcr = mutation({
         `[OCR] Smart fallback triggered for resume ${args.id} (length: ${trimmedText.length})`
       );
       if (resume.storageId) {
-        await ctx.scheduler.runAfter(0, (internal as any).ai.performOcr.performOcr, {
+        await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
           resumeId: args.id,
           storageId: resume.storageId,
         });
@@ -250,14 +237,14 @@ export const updateResumeOcr = mutation({
 
     await ctx.scheduler.runAfter(
       0,
-      (internal as any).cvHealthMonitor.checkTextLayerIntegrity,
+      internalAny.cvHealthMonitor.checkTextLayerIntegrity,
       {
         resumeId: args.id,
         ocrText: trimmedText,
       }
     );
 
-    await ctx.scheduler.runAfter(0, (internal as any).ai.analyzeResume, {
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
       id: args.id,
       ocrText: trimmedText,
       jobDescription: resume.jobDescription,
@@ -319,18 +306,14 @@ export const analyzeResume = mutation({
       }
     }
 
-    // Update resume status to processing and optionally update job description
-    const updateData: any = {
-      status: "processing" as const,
-    };
-
+    // Update resume with job description immediately
     if (args.jobDescription) {
-      updateData.jobDescription = args.jobDescription;
+      await ctx.db.patch(args.id, {
+        jobDescription: args.jobDescription,
+        status: "processing" as const,
+      });
       console.log(`[Analyze Resume] Updated resume ${args.id} with job description (${args.jobDescription.length} chars)`);
     }
-
-    await ctx.db.patch(args.id, updateData);
-    console.log(`[Analyze Resume] Set status to processing for resume ${args.id}`);
 
     // Check if user has active Interview Sprint for priority parsing
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
@@ -342,7 +325,7 @@ export const analyzeResume = mutation({
     // Get experience level from resume args or user profile
     const experienceLevel = args.experienceLevel || user.experienceLevel;
 
-    await ctx.scheduler.runAfter(delay, (internal as any).ai.analyzeResume, {
+    await ctx.scheduler.runAfter(delay, internalAny.ai.analyzeResume, {
       id: args.id,
       ocrText: args.ocrText,
       jobDescription: args.jobDescription,
@@ -451,7 +434,7 @@ export const updateResumeMetadata = internalMutation({
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         if (user && user.email) {
           await ctx.db.patch(args.id, { parsingErrorEmailSent: true });
-          await ctx.scheduler.runAfter(0, (internal as any).marketing.sendParsingErrorEmail, {
+          await ctx.scheduler.runAfter(0, internalAny.marketing.sendParsingErrorEmail, {
             email: user.email,
             name: user.name,
             resumeId: args.id,
@@ -468,7 +451,7 @@ export const updateResumeMetadata = internalMutation({
         const user = await ctx.db.query("users").withIndex("by_token", q => q.eq("tokenIdentifier", resume.userId)).unique();
         if (user && user.email) {
           await ctx.db.patch(args.id, { lowScoreEmailSent: true });
-          await ctx.scheduler.runAfter(0, (internal as any).abandonmentEmails.scheduleLowScoreFollowUp, {
+          await ctx.scheduler.runAfter(0, internalAny.abandonmentEmails.scheduleLowScoreFollowUp, {
             userId: resume.userId,
             email: user.email,
             resumeId: args.id,
@@ -692,7 +675,7 @@ export const triggerServerOcr = mutation({
     }
 
     // Schedule the server OCR action
-    await ctx.scheduler.runAfter(0, (internal as any).ai.performOcr.performOcr, {
+    await ctx.scheduler.runAfter(0, internalAny.ai.performOcr.performOcr, {
       resumeId: args.resumeId,
       storageId: args.storageId,
     });
@@ -882,7 +865,7 @@ export const updateResumeContent = mutation({
     });
 
     // Trigger re-analysis with updated content
-    await ctx.scheduler.runAfter(0, (internal as any).ai.analyzeResume, {
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
       id: args.id,
       ocrText: args.newContent,
       jobDescription: resume.jobDescription,
@@ -999,100 +982,5 @@ export const updateResumeManually = mutation({
 
     console.log("[updateResumeManually] Resume updated:", args.id);
     return args.id;
-  },
-});
-
-/**
- * Generate comprehensive AI rewrite of entire resume using ML algorithms
- */
-export const generateComprehensiveRewrite = mutation({
-  args: {
-    id: v.id("resumes"),
-    targetRole: v.optional(v.string()),
-    industry: v.optional(v.string()),
-  },
-  handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new ConvexError("NOT_AUTHENTICATED");
-    }
-
-    // Get resume
-    const resume = await ctx.db.get(args.id);
-    if (!resume || resume.userId !== identity.subject) {
-      throw new ConvexError("UNAUTHORIZED");
-    }
-
-    if (!resume.ocrText) {
-      throw new ConvexError("NO_TEXT_TO_REWRITE");
-    }
-
-    console.log("[generateComprehensiveRewrite] Starting AI rewrite for:", args.id);
-
-    // Call internal action to generate rewrite
-    const result = await ctx.scheduler.runAfter(0, internal.ai.comprehensiveRewriter.generateComprehensiveRewrite, {
-      resumeId: args.id,
-      resumeText: resume.ocrText,
-      targetRole: args.targetRole,
-      industry: args.industry,
-    });
-
-    // Store rewritten version in database
-    await ctx.db.patch(args.id, {
-      rewrittenText: "PROCESSING", // Will be updated by action
-    });
-
-    console.log("[generateComprehensiveRewrite] Rewrite scheduled successfully");
-
-    return {
-      success: true,
-      message: "AI rewrite in progress. Check back in a few seconds.",
-    };
-  },
-});
-
-/**
- * Save the rewritten text (called by internal action)
- */
-export const saveRewrittenText = internalMutation({
-  args: {
-    resumeId: v.id("resumes"),
-    rewrittenText: v.string(),
-  },
-  handler: async (ctx, args) => {
-    await ctx.db.patch(args.resumeId, {
-      rewrittenText: args.rewrittenText,
-    });
-
-    console.log("[saveRewrittenText] Saved rewritten text for:", args.resumeId);
-  },
-});
-
-/**
- * Force resume status to completed if stuck in processing
- * This is a safety mechanism for resumes that get stuck
- */
-export const forceCompleteStuckResumes = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-
-    // Find resumes stuck in processing for more than 5 minutes
-    const stuckResumes = await ctx.db
-      .query("resumes")
-      .filter(q => q.eq(q.field("status"), "processing"))
-      .filter(q => q.lt(q.field("_creationTime"), fiveMinutesAgo))
-      .collect();
-
-    console.log(`[Force Complete] Found ${stuckResumes.length} stuck resumes`);
-
-    for (const resume of stuckResumes) {
-      await ctx.db.patch(resume._id, {
-        status: "completed",
-      });
-      console.log(`[Force Complete] Fixed stuck resume: ${resume._id}`);
-    }
-
-    return { fixed: stuckResumes.length };
   },
 });

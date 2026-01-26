@@ -368,10 +368,7 @@ function analyzeJobDescriptionMatch(
 
   // Find overlap with resume keywords
   const resumeKeywordSet = new Set(
-    keywordExtraction.keywords.map((k: any) => {
-      if (typeof k === 'string') return k.toLowerCase();
-      return k.term ? k.term.toLowerCase() : '';
-    }).filter(Boolean)
+    keywordExtraction.keywords.map((k: any) => k.term.toLowerCase())
   );
 
   const matched: string[] = [];
@@ -830,10 +827,7 @@ function calculateIndustryMatch(
 
   // Count how many keywords from this industry are in the resume
   const resumeKeywordSet = new Set(
-    keywordExtraction.keywords.map((k: any) => {
-      if (typeof k === 'string') return k.toLowerCase();
-      return k.term ? k.term.toLowerCase() : '';
-    }).filter(Boolean)
+    keywordExtraction.keywords.map((k: any) => k.term.toLowerCase())
   );
 
   let matchCount = 0;

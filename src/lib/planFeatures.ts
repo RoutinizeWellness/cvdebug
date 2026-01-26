@@ -11,16 +11,13 @@ export interface PlanFeatures {
   maxScans: number | null;
 
   // Robot View
-  robotTerminalView: boolean; // false = partial preview (10 lines), true = full access
-  partialRobotView: boolean; // Shows first 10 lines with blur
+  robotTerminalView: boolean;
   fullKeywordAnalysis: boolean;
 
   // Analysis Features
   seniorityMatch: boolean;
   missingSignals: boolean;
   fluffDetector: boolean;
-  invisibilityCheck: boolean; // Binary YES/NO indicator for free tier
-  detailedErrorTags: boolean; // Exact fix locations (removed from free)
 
   // AI Optimization
   aiRewrite: number; // Number of AI rewrites allowed
@@ -31,19 +28,10 @@ export interface PlanFeatures {
   exportOptimizedCV: boolean;
   atsTemplates: boolean;
 
-  // Job Matching
-  jobDescriptionMatches: number; // Number of job descriptions to match against
-  unlimitedTitleScans: boolean; // Unlimited title variation testing
-
   // Additional Tools
-  coverLetterGenerator: boolean | "unlimited"; // Boolean or "unlimited" for 24h pass
-  linkedinOptimizer: boolean; // Basic tips
-  linkedinDeepAudit: boolean; // Deep audit with detailed recommendations
-  recruiterDMTemplates: boolean; // DM templates for reaching out to recruiters
+  coverLetterGenerator: boolean;
+  linkedinOptimizer: boolean;
   interviewBattlePlan: boolean;
-
-  // Guarantees
-  scoreGuarantee: number | null; // Minimum score guarantee (e.g., 85)
 
   // Support
   prioritySupport: boolean;
@@ -56,16 +44,13 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     maxScans: 1,
 
     // Robot View
-    robotTerminalView: false, // Full view blocked
-    partialRobotView: true, // Show first 10 lines with blur
+    robotTerminalView: false, // Blocked/Preview only
     fullKeywordAnalysis: false, // Only top 2 keywords
 
     // Analysis Features
     seniorityMatch: false, // Preview only
     missingSignals: false,
     fluffDetector: false,
-    invisibilityCheck: true, // Binary YES/NO indicator
-    detailedErrorTags: false, // Don't show exact fix locations
 
     // AI Optimization
     aiRewrite: 0,
@@ -76,19 +61,10 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     exportOptimizedCV: false,
     atsTemplates: false,
 
-    // Job Matching
-    jobDescriptionMatches: 0,
-    unlimitedTitleScans: false,
-
     // Additional Tools
     coverLetterGenerator: false,
     linkedinOptimizer: false,
-    linkedinDeepAudit: false,
-    recruiterDMTemplates: false,
     interviewBattlePlan: false,
-
-    // Guarantees
-    scoreGuarantee: null,
 
     // Support
     prioritySupport: false,
@@ -101,15 +77,12 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
 
     // Robot View
     robotTerminalView: true, // Full access
-    partialRobotView: false, // Not needed - has full access
     fullKeywordAnalysis: true, // All keywords shown
 
     // Analysis Features
     seniorityMatch: true,
     missingSignals: true,
     fluffDetector: true,
-    invisibilityCheck: true,
-    detailedErrorTags: true, // Show exact fix locations
 
     // AI Optimization
     aiRewrite: 1, // 1 complete AI rewrite
@@ -120,19 +93,10 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     exportOptimizedCV: true,
     atsTemplates: true,
 
-    // Job Matching
-    jobDescriptionMatches: 1, // Match with 1 job description
-    unlimitedTitleScans: false,
-
     // Additional Tools
     coverLetterGenerator: false,
     linkedinOptimizer: false,
-    linkedinDeepAudit: false,
-    recruiterDMTemplates: false,
     interviewBattlePlan: false,
-
-    // Guarantees
-    scoreGuarantee: 85, // Score 85+ guarantee
 
     // Support
     prioritySupport: false,
@@ -145,15 +109,12 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
 
     // Robot View
     robotTerminalView: true,
-    partialRobotView: false, // Not needed - has full access
     fullKeywordAnalysis: true,
 
     // Analysis Features
     seniorityMatch: true,
     missingSignals: true,
     fluffDetector: true,
-    invisibilityCheck: true,
-    detailedErrorTags: true,
 
     // AI Optimization
     aiRewrite: 0, // No AI rewrite
@@ -164,19 +125,10 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     exportOptimizedCV: true,
     atsTemplates: true,
 
-    // Job Matching
-    jobDescriptionMatches: 999, // Unlimited job matches
-    unlimitedTitleScans: true, // Unlimited title variation testing
-
     // Additional Tools
-    coverLetterGenerator: "unlimited", // ADDED: Unlimited cover letter generation for 24h
-    linkedinOptimizer: false, // Removed from 24h plan
-    linkedinDeepAudit: false,
-    recruiterDMTemplates: false,
+    coverLetterGenerator: false,
+    linkedinOptimizer: false,
     interviewBattlePlan: true,
-
-    // Guarantees
-    scoreGuarantee: null,
 
     // Support
     prioritySupport: false,
@@ -189,15 +141,12 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
 
     // Robot View
     robotTerminalView: true,
-    partialRobotView: false, // Not needed - has full access
     fullKeywordAnalysis: true,
 
     // Analysis Features
     seniorityMatch: true,
     missingSignals: true,
     fluffDetector: true,
-    invisibilityCheck: true,
-    detailedErrorTags: true,
 
     // AI Optimization
     aiRewrite: 999, // Unlimited rewrites
@@ -208,19 +157,10 @@ export const PLAN_FEATURES: Record<PlanTier, PlanFeatures> = {
     exportOptimizedCV: true,
     atsTemplates: true,
 
-    // Job Matching
-    jobDescriptionMatches: 999, // Unlimited job matches
-    unlimitedTitleScans: true, // Unlimited title variation testing
-
     // Additional Tools
-    coverLetterGenerator: "unlimited",
-    linkedinOptimizer: false, // Removed - replaced by deep audit
-    linkedinDeepAudit: true, // LinkedIn Deep Audit with detailed recommendations
-    recruiterDMTemplates: true, // ADDED: DM templates for reaching out to recruiters
+    coverLetterGenerator: true,
+    linkedinOptimizer: true,
     interviewBattlePlan: true,
-
-    // Guarantees
-    scoreGuarantee: null,
 
     // Support
     prioritySupport: true,

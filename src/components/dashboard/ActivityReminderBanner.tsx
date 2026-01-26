@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Calendar, TrendingUp, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useI18n } from "@/contexts/I18nContext";
 
 interface ActivityReminderBannerProps {
   show: boolean;
@@ -18,26 +17,23 @@ export function ActivityReminderBanner({
   onDismiss,
   onAction,
 }: ActivityReminderBannerProps) {
-  const { t } = useI18n();
-
   const getMessage = (): { title: string; description: string; urgency: "high" | "medium" | "low" } => {
-    const days = (t.sidebar?.days || 'days').toLowerCase();
     if (daysSinceActive >= 7) {
       return {
-        title: `${t.dashboard?.welcome || 'Welcome'} 🎯`,
-        description: `${daysSinceActive} ${days}. ${t.dashboard?.uploadToStart || 'Upload to start'}`,
+        title: "¡Te Echábamos de Menos! 🎯",
+        description: `Han pasado ${daysSinceActive} días desde tu última optimización. El mercado laboral sigue activo - tu CV no debería estar parado.`,
         urgency: "high" as const,
       };
     } else if (daysSinceActive >= 5) {
       return {
-        title: `${t.common?.error || 'Error'}: CV ⚠️`,
-        description: `${daysSinceActive} ${days}.`,
+        title: "Recordatorio: CV sin Actualizar ⚠️",
+        description: `${daysSinceActive} días sin revisar tu CV. Los reclutadores publican nuevas ofertas cada día.`,
         urgency: "medium" as const,
       };
     } else {
       return {
-        title: `${t.common?.success || 'Success'} 💼`,
-        description: `${daysSinceActive} ${days}.`,
+        title: "Continúa tu Progreso 💼",
+        description: `${daysSinceActive} días desde tu última sesión. Mantén el momentum.`,
         urgency: "low" as const,
       };
     }
@@ -109,7 +105,8 @@ export function ActivityReminderBanner({
                 <div className="flex items-center gap-2 text-white/80 text-xs mb-4">
                   <TrendingUp className="h-4 w-4" />
                   <span>
-                    {t.dashboard.score}: <span className="font-bold">{lastScore}%</span>
+                    Tu último score: <span className="font-bold">{lastScore}%</span> - Aún hay
+                    margen de mejora
                   </span>
                 </div>
               )}
@@ -120,14 +117,14 @@ export function ActivityReminderBanner({
                   className="bg-white text-slate-900 hover:bg-white/90 font-bold shadow-lg"
                 >
                   <Target className="h-4 w-4 mr-2" />
-                  {t.buttons.upgradeNow}
+                  Optimizar Ahora
                 </Button>
                 <Button
                   onClick={onDismiss}
                   variant="outline"
                   className="border-2 border-white/30 text-white hover:bg-white/10"
                 >
-                  {t.resumeDetail.maybeLater}
+                  Más Tarde
                 </Button>
               </div>
             </div>
@@ -140,12 +137,12 @@ export function ActivityReminderBanner({
                     {daysSinceActive}
                   </div>
                   <div className="text-xs text-white/70 uppercase tracking-wider">
-                    {t.sidebar.days}
+                    Días Inactivo
                   </div>
                 </div>
                 <div className="mt-3 pt-3 border-t border-white/20">
                   <div className="text-[10px] text-white/60 text-center">
-                    {t.dashboard.uploadToStart}
+                    Objetivo: Sesión diaria
                   </div>
                 </div>
               </div>

@@ -38,11 +38,10 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
   // Memoize filtered resumes with debouncing effect
   const filteredResumes = useMemo(() => {
     if (!resumes) return [];
-    const queryLower = searchQuery.toLowerCase();
     return resumes.filter(resume =>
       searchQuery === "" ||
-      (resume.title || '').toLowerCase().includes(queryLower) ||
-      (resume.category || '').toLowerCase().includes(queryLower)
+      resume.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      resume.category?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [resumes, searchQuery]);
 
@@ -409,152 +408,99 @@ export function ResumeGrid({ resumes, setSelectedResume, handleDelete, categoryF
           </div>
         </>
       ) : (
-        // Enhanced Grid View - Larger scores, better visual hierarchy
+        // Grid View (existing implementation)
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredResumes.map((resume) => {
-            const score = resume.score || 0;
-            const status = resume.status;
-
-            // Determine card style based on score
-            const getScoreStyle = () => {
-              if (status === 'processing') {
-                return {
-                  bgClass: 'bg-gradient-to-br from-slate-50 to-slate-100',
-                  borderClass: 'border-slate-300',
-                  textClass: 'text-slate-600',
-                  label: 'ANALYZING'
-                };
-              }
-              if (score >= 80) {
-                return {
-                  bgClass: 'bg-gradient-to-br from-green-50 to-emerald-100',
-                  borderClass: 'border-green-300',
-                  textClass: 'text-green-700',
-                  label: 'EXCELLENT'
-                };
-              } else if (score >= 60) {
-                return {
-                  bgClass: 'bg-gradient-to-br from-yellow-50 to-amber-100',
-                  borderClass: 'border-yellow-300',
-                  textClass: 'text-yellow-700',
-                  label: 'GOOD'
-                };
-              } else {
-                return {
-                  bgClass: 'bg-gradient-to-br from-red-50 to-rose-100',
-                  borderClass: 'border-red-300',
-                  textClass: 'text-red-700',
-                  label: 'CRITICAL'
-                };
-              }
-            };
-
-            const scoreStyle = getScoreStyle();
-
-            return (
-              <motion.div
-                key={resume._id}
-                className={`group relative flex flex-col rounded-2xl border-2 ${scoreStyle.borderClass} ${scoreStyle.bgClass} shadow-lg overflow-hidden cursor-pointer`}
-                onClick={() => setSelectedResume(resume)}
-                whileHover={{
-                  y: -8,
-                  scale: 1.02,
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)"
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-              >
-                {/* Large Score Circle at Top */}
-                <div className="relative w-full p-6 flex flex-col items-center justify-center">
-                  {/* Circular Score Badge */}
-                  <div className={`relative w-32 h-32 rounded-full border-8 ${scoreStyle.borderClass} bg-white shadow-xl flex flex-col items-center justify-center mb-3`}>
-                    {status === 'processing' ? (
-                      <>
-                        <Loader2 className="h-8 w-8 animate-spin text-slate-600 mb-1" />
-                        <span className="text-xs font-bold text-slate-600">...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className={`text-4xl font-black ${scoreStyle.textClass}`}>
-                          {score}%
-                        </span>
-                        <span className={`text-[10px] font-bold uppercase tracking-wider ${scoreStyle.textClass}`}>
-                          {scoreStyle.label}
-                        </span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Title */}
-                  <h4 className="font-bold text-[#0F172A] text-center line-clamp-2 px-2 min-h-[2.5rem]" title={resume.title}>
-                    {resume.title}
-                  </h4>
-                </div>
-
-                {/* Content Area - White Background */}
-                <div className="bg-white p-4 flex flex-col gap-3 flex-1 border-t-2 border-slate-200">
-                  {/* Date */}
-                  <div className="flex items-center justify-center gap-2 text-xs text-[#64748B]">
-                    <span className="font-mono">{formatDate(resume._creationTime)}</span>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      className="flex-1 bg-gradient-to-r from-[#64748B] to-[#1E293B] hover:opacity-90 text-white font-bold shadow-md"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedResume(resume);
-                      }}
-                    >
-                      <Eye className="h-4 w-4 mr-1" />
-                      <span className="text-xs">View</span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-2 hover:bg-red-50 hover:border-red-300 text-red-600 font-bold"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(resume._id);
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Hover Overlay with Quick Stats */}
-                <div className="absolute inset-0 bg-white/95 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center gap-3 p-6 backdrop-blur-sm">
-                  <div className="text-center">
-                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Quick Stats</p>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
-                        <p className="text-blue-900 font-bold">{resume.matchedKeywords?.length || 0}</p>
-                        <p className="text-blue-600 text-[10px]">Keywords</p>
-                      </div>
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-2">
-                        <p className="text-purple-900 font-bold">{resume.iterations || 1}</p>
-                        <p className="text-purple-600 text-[10px]">Iterations</p>
-                      </div>
+          {filteredResumes.map((resume) => (
+            <motion.div
+              key={resume._id}
+              className="group relative flex flex-col rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] overflow-hidden cursor-pointer"
+              onClick={() => setSelectedResume(resume)}
+              whileHover={{
+                y: -4,
+                borderColor: "rgba(100, 116, 139, 0.3)",
+                boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.1)"
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              {/* Preview Area */}
+              <div className="relative w-full aspect-[3/4] bg-[#F8FAFC] overflow-hidden">
+                {resume.mimeType.startsWith("image/") ? (
+                  <img
+                    src={resume.url}
+                    alt={resume.title}
+                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-[#F8FAFC] p-6 text-center border-b border-[#E2E8F0]">
+                    <div className="h-16 w-16 bg-slate-100 rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex items-center justify-center mb-4 border border-[#E2E8F0]">
+                      {getFileIcon(resume.mimeType)}
                     </div>
+                    <p className="text-xs font-medium text-[#475569] line-clamp-2 px-4">
+                      {resume.title}
+                    </p>
                   </div>
+                )}
+
+                {/* Overlay Actions */}
+                <div className="absolute inset-0 bg-[#FFFFFF]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
                   <Button
-                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:opacity-90 text-white font-bold shadow-lg"
+                    size="sm"
+                    variant="secondary"
+                    className="font-bold shadow-lg bg-[#FFFFFF] text-[#0F172A] hover:bg-slate-100"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedResume(resume);
                     }}
                   >
-                    <Eye className="h-4 w-4 mr-2" />
-                    Open Analysis
+                    <Eye className="h-4 w-4 mr-2" /> {t.resumeGrid.viewDetails}
                   </Button>
                 </div>
-              </motion.div>
-            );
-          })}
+
+                {/* Score Badge */}
+                <div className="absolute top-3 right-3">
+                  {getHealthBadge(resume.score || 0, resume.status)}
+                </div>
+              </div>
+
+              {/* Content Area */}
+              <div className="p-4 flex flex-col gap-3 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-[#0F172A] truncate" title={resume.title}>
+                      {resume.title}
+                    </h4>
+                    <p className="text-xs text-[#64748B] mt-1">
+                      {formatDate(resume._creationTime)}
+                    </p>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2 text-[#64748B] hover:text-[#0F172A]" onClick={(e) => e.stopPropagation()}>
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem className="text-[#EF4444] focus:text-[#EF4444]" onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(resume._id);
+                      }}>
+                        <Trash2 className="h-4 w-4 mr-2" /> {t.resumeGrid.delete}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="mt-auto pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
+                  <span className={`
+                    inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider
+                    ${resume.category ? 'bg-primary/10 text-primary border border-primary/30' : 'bg-slate-100 text-[#64748B] border border-[#E2E8F0]'}
+                  `}>
+                    {resume.category || 'Uncategorized'}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       )}
 

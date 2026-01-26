@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { EmailPreferences } from "./EmailPreferences";
 import { ExperienceLevelSelector, type ExperienceLevel, getExperienceLevelLabel } from "@/components/ExperienceLevelSelector";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const apiAny = api as any;
 
@@ -61,25 +60,14 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
 
   // Calculate sprint progress
   const sprintExpiresAt = user?.sprintExpiresAt || 0;
-  const hasActiveSprint = sprintExpiresAt > Date.now();
-  const sprintDaysLeft = hasActiveSprint
+  const sprintDaysLeft = sprintExpiresAt > Date.now()
     ? Math.ceil((sprintExpiresAt - Date.now()) / (1000 * 60 * 60 * 24))
     : 0;
 
-  // Determine plan name based on subscription tier
-  const planName = user?.subscriptionTier === "interview_sprint"
-    ? "Interview Sprint (7 Days)"
-    : user?.subscriptionTier === "single_scan"
-    ? "24h Pass"
-    : user?.subscriptionTier === "single_debug_fix"
-    ? "Quick Fix"
-    : "Free Plan";
-
-  const validUntil = hasActiveSprint
+  const planName = user?.subscriptionTier === "interview_sprint" ? "Interview Sprint" : "Interview Sprint";
+  const validUntil = sprintExpiresAt > Date.now()
     ? new Date(sprintExpiresAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
-    : sprintExpiresAt > 0 && user?.subscriptionTier === "interview_sprint"
-    ? "Expired"
-    : "No active sprint";
+    : "Not available";
 
   const userName = user?.name || "Not available";
   const userEmail = user?.email || "Not available";
@@ -189,10 +177,10 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
         >
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl md:text-4xl font-bold font-display text-[#0F172A] tracking-tight">
-              Settings
+              Account & Settings
             </h1>
             <p className="text-[#64748B] font-body">
-              Manage your account, subscription, and privacy preferences.
+              Manage your subscription, security, and view your performance stats.
             </p>
           </div>
           <div className="flex gap-2">
@@ -211,338 +199,130 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
           </div>
         </motion.div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="account" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-white border border-[#E2E8F0] p-1">
-            <TabsTrigger value="account" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
-              👤 Account
-            </TabsTrigger>
-            <TabsTrigger value="plan" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
-              💳 Plan
-            </TabsTrigger>
-            <TabsTrigger value="privacy" className="data-[state=active]:bg-[#F8FAFC] data-[state=active]:shadow-sm font-semibold">
-              🔒 Privacy
-            </TabsTrigger>
-          </TabsList>
-
-          {/* ACCOUNT TAB */}
-          <TabsContent value="account" className="space-y-6">
-            {/* User Info Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-            >
-              <h3 className="text-xl font-bold font-display text-[#0F172A] mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#64748B]">person</span>
-                Account Information
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Plan Section (Span 2 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+          >
+            <div className="p-6 md:p-8 flex flex-col justify-between h-full">
+              <div className="flex justify-between items-start mb-6">
                 <div>
-                  <label className="block text-xs font-medium text-[#475569] mb-1.5">Full Name</label>
-                  <input
-                    type="text"
-                    value={userName}
-                    disabled
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] text-sm font-medium cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-[#475569] mb-1.5">Email Address</label>
-                  <input
-                    type="email"
-                    value={userEmail}
-                    disabled
-                    className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] text-sm font-medium cursor-not-allowed"
-                  />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Password Change */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-            >
-              <h3 className="text-xl font-bold font-display text-[#0F172A] mb-6 flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#64748B]">lock</span>
-                Change Password
-              </h3>
-              <div className="flex flex-col gap-4 max-w-2xl">
-                <div>
-                  <label className="block text-xs font-medium text-[#475569] mb-1.5">
-                    Current Password
-                  </label>
-                  <input
-                    className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
-                    placeholder="••••••••••••"
-                    type="password"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-[#475569] mb-1.5">
-                      New Password
-                    </label>
-                    <input
-                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
-                      placeholder="••••••••••••"
-                      type="password"
-                    />
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
+                      Active
+                    </span>
+                    <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[#475569] mb-1.5">
-                      Confirm New
-                    </label>
-                    <input
-                      className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder-slate-400 focus:outline-none focus:border-[#64748B] focus:ring-1 focus:ring-[#1E293B] transition-all font-mono text-sm"
-                      placeholder="••••••••••••"
-                      type="password"
-                    />
-                  </div>
+                  <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-1">
+                    {planName}
+                  </h2>
+                  <p className="text-[#64748B] text-sm">Valid until {validUntil}</p>
                 </div>
-                <div className="mt-2">
-                  <button
-                    onClick={handleUpdatePassword}
-                    className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#334155] to-[#475569] text-white text-sm font-semibold hover:opacity-90 transition-all"
-                  >
-                    Update Password
-                  </button>
+                <div className="size-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
+                  <span className="material-symbols-outlined text-[#475569]">rocket_launch</span>
                 </div>
               </div>
-            </motion.div>
 
-            {/* Experience Level */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="material-symbols-outlined text-[#64748B]">person</span>
-                <h3 className="text-xl font-bold font-display text-[#0F172A]">
-                  Career Profile
-                </h3>
-              </div>
-              <p className="text-[#64748B] text-sm mb-6">
-                Your experience level helps us provide personalized CV analysis and recommendations tailored to your career stage.
-              </p>
-
-              {user?.experienceLevel && (
-                <div className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-4 mb-6">
-                  <div className="flex items-start gap-3">
-                    <span className="material-symbols-outlined text-[#64748B] text-xl mt-0.5">badge</span>
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-sm mb-1">Current Experience Level</h4>
-                      <p className="text-sm text-slate-700 font-medium">
-                        {getExperienceLevelLabel(user.experienceLevel)}
-                      </p>
-                      {user.targetRole && (
-                        <p className="text-xs text-slate-600 mt-1">
-                          Target Role: <span className="font-semibold">{user.targetRole}</span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
+              {/* Progress Bar Component */}
+              <div className="flex flex-col gap-2 mb-8">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-[#0F172A] font-medium">Sprint Progress</span>
+                  <span className="text-[#64748B] font-mono">{sprintDaysLeft > 0 ? `${sprintDaysLeft} Days Left` : 'Not available'}</span>
                 </div>
-              )}
-
-              <div className="mb-6">
-                <ExperienceLevelSelector
-                  value={experienceLevel}
-                  onChange={setExperienceLevel}
-                  label="Update Your Experience Level"
-                />
+                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
+                    style={{ width: `${progressPercentage}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between text-xs text-[#64748B] mt-1">
+                  <span>Day {daysElapsed}</span>
+                  <span>Day {totalSprintDays}</span>
+                </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-[#475569] mb-2">
-                  Target Role (Optional)
-                </label>
-                <input
-                  type="text"
-                  value={targetRole}
-                  onChange={(e) => setTargetRole(e.target.value)}
-                  placeholder="e.g., Software Engineer, Product Manager, SDR..."
-                  className="w-full px-4 py-3 border border-[#E2E8F0] rounded-lg text-sm font-medium text-[#0F172A] bg-white focus:outline-none focus:ring-2 focus:ring-[#475569] focus:border-transparent placeholder:text-slate-400"
-                />
-                <p className="text-xs text-[#64748B] mt-1.5">
-                  This helps us give more targeted feedback for your specific career goals
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
                 <button
-                  onClick={handleExperienceLevelUpdate}
-                  disabled={!experienceLevel}
-                  className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-[#334155] to-[#475569] text-white font-semibold text-sm shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  onClick={onOpenPricing}
+                  className="gradient-btn px-5 py-2.5 rounded-lg text-[#0F172A] text-sm font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-base">save</span>
-                  Save Changes
+                  <span>Manage Subscription</span>
+                  <span className="material-symbols-outlined text-[18px]">open_in_new</span>
                 </button>
-                {experienceLevel !== user?.experienceLevel && (
-                  <span className="text-xs text-[#F59E0B] font-medium">
-                    Unsaved changes
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Stats Card (Span 1 column) */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="material-symbols-outlined text-cyan-600">monitoring</span>
+                <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
+              </div>
+              <div className="flex items-baseline gap-2 mb-6">
+                <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
+                {scoreImprovement !== 0 && (
+                  <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
+                    scoreImprovement > 0
+                      ? 'text-[#22C55E] bg-emerald-50'
+                      : 'text-rose-600 bg-rose-50'
+                  }`}>
+                    <span className="material-symbols-outlined text-[14px] mr-0.5">
+                      {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
+                    </span>
+                    {scoreImprovement > 0 ? '+' : ''}{scoreImprovement}%
                   </span>
                 )}
               </div>
-            </motion.div>
-          </TabsContent>
-
-          {/* PLAN TAB */}
-          <TabsContent value="plan" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Plan Section (Span 2 columns) */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="lg:col-span-2 bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl overflow-hidden relative shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-              >
-                <div className="p-6 md:p-8 flex flex-col justify-between h-full">
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#F8FAFC] text-[#64748B] border border-[#E2E8F0]">
-                          Active
-                        </span>
-                        <p className="text-[#64748B] text-sm font-medium">Current Plan</p>
-                      </div>
-                      <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F172A] mb-1">
-                        {planName}
-                      </h2>
-                      <p className="text-[#64748B] text-sm">Valid until {validUntil}</p>
-                    </div>
-                    <div className="size-12 rounded-full bg-[#F8FAFC] flex items-center justify-center border border-[#E2E8F0]">
-                      <span className="material-symbols-outlined text-[#475569]">rocket_launch</span>
-                    </div>
-                  </div>
-
-                  {/* Progress Bar Component - Only show for active sprint */}
-                  {hasActiveSprint && user?.subscriptionTier === "interview_sprint" && (
-                    <div className="flex flex-col gap-2 mb-8">
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-[#0F172A] font-medium">Sprint Progress</span>
-                        <span className="text-[#64748B] font-mono">
-                          {sprintDaysLeft > 0 ? `${sprintDaysLeft} ${sprintDaysLeft === 1 ? 'Day' : 'Days'} Left` : 'Ending soon'}
-                        </span>
-                      </div>
-                      <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-[#334155] to-[#475569] rounded-full transition-all duration-500"
-                          style={{ width: `${progressPercentage}%` }}
-                        ></div>
-                      </div>
-                      <div className="flex justify-between text-xs text-[#64748B] mt-1">
-                        <span>Day {daysElapsed}</span>
-                        <span>Day {totalSprintDays}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Show upgrade message for non-sprint users */}
-                  {!hasActiveSprint && user?.subscriptionTier !== "interview_sprint" && (
-                    <div className="mb-8 p-4 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg">
-                      <p className="text-sm text-[#0F172A]">
-                        <span className="font-semibold">Upgrade to Interview Sprint</span> to get 7 days of unlimited scans, cover letter generation, and more.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Show expired message for expired sprint users */}
-                  {!hasActiveSprint && user?.subscriptionTier === "interview_sprint" && sprintExpiresAt > 0 && (
-                    <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                      <p className="text-sm text-amber-900">
-                        Your Interview Sprint has expired. Renew to continue using premium features.
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E2E8F0]">
-                    <button
-                      onClick={onOpenPricing}
-                      className="gradient-btn px-5 py-2.5 rounded-lg text-[#0F172A] text-sm font-semibold shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all flex items-center gap-2"
-                    >
-                      <span>Manage Subscription</span>
-                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Stats Card (Span 1 column) */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-              >
-                <div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="material-symbols-outlined text-cyan-600">monitoring</span>
-                    <h3 className="text-lg font-bold font-display text-[#0F172A]">Match Score</h3>
-                  </div>
-                  <div className="flex items-baseline gap-2 mb-6">
-                    <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
-                    {scoreImprovement !== 0 && (
-                      <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
-                        scoreImprovement > 0
-                          ? 'text-[#22C55E] bg-emerald-50'
-                          : 'text-rose-600 bg-rose-50'
-                      }`}>
-                        <span className="material-symbols-outlined text-[14px] mr-0.5">
-                          {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
-                        </span>
-                        {scoreImprovement > 0 ? '+' : ''}{scoreImprovement}%
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Chart SVG */}
-                <div className="relative h-32 w-full mt-auto">
-                  <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 50">
-                    <defs>
-                      <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="#1E293B" stopOpacity="0.2"></stop>
-                        <stop offset="100%" stopColor="#1E293B" stopOpacity="0"></stop>
-                      </linearGradient>
-                    </defs>
-                    <path
-                      d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5 L 100 50 L 0 50 Z"
-                      fill="url(#chartGradient)"
-                    ></path>
-                    <path
-                      d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5"
-                      fill="none"
-                      stroke="#1E293B"
-                      strokeLinecap="round"
-                      strokeWidth="2"
-                      vectorEffect="non-scaling-stroke"
-                    ></path>
-                    {/* Data Points */}
-                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
-                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
-                    <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
-                  </svg>
-                  {/* X-Axis Labels */}
-                  <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
-                    <span>Wk 1</span>
-                    <span>Wk 2</span>
-                    <span>Wk 3</span>
-                    <span>Wk 4</span>
-                  </div>
-                </div>
-              </motion.div>
             </div>
-          </TabsContent>
 
-          {/* PRIVACY TAB */}
-          <TabsContent value="privacy" className="space-y-6">
-            {/* Security Section (Full Width) */}
+            {/* Chart SVG */}
+            <div className="relative h-32 w-full mt-auto">
+              <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 50">
+                <defs>
+                  <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#1E293B" stopOpacity="0.2"></stop>
+                    <stop offset="100%" stopColor="#1E293B" stopOpacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5 L 100 50 L 0 50 Z"
+                  fill="url(#chartGradient)"
+                ></path>
+                <path
+                  d="M0 40 Q 25 35, 35 25 T 70 15 T 100 5"
+                  fill="none"
+                  stroke="#1E293B"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  vectorEffect="non-scaling-stroke"
+                ></path>
+                {/* Data Points */}
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="35" cy="25" r="2"></circle>
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="70" cy="15" r="2"></circle>
+                <circle className="fill-white stroke-slate-500 stroke-[1.5]" cx="100" cy="5" r="2"></circle>
+              </svg>
+              {/* X-Axis Labels */}
+              <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-2 uppercase tracking-wider">
+                <span>Wk 1</span>
+                <span>Wk 2</span>
+                <span>Wk 3</span>
+                <span>Wk 4</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Security Section (Full Width) */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -740,12 +520,11 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-2"
+            className="lg:col-span-3 mt-2"
           >
             <EmailPreferences />
           </motion.div>
-          </TabsContent>
-        </Tabs>
+        </div>
       </div>
     </div>
   );

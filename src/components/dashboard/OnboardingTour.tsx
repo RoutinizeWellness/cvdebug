@@ -12,12 +12,40 @@ interface OnboardingStep {
   position: "center" | "top" | "bottom" | "left" | "right";
 }
 
-// Simplified to 1-click onboarding - user wants to get started, not read
 const ONBOARDING_STEPS: OnboardingStep[] = [
   {
     id: "welcome",
-    title: "Upload CV → See Score → Fix Errors",
-    description: "We scan your resume like a real ATS robot. Most users go from 35% to 90% match in one session. Click below to start.",
+    title: "Welcome to the Visibility Debugger",
+    description: "We're not a resume builder. We're a diagnostic tool that shows you exactly why ATS robots reject your CV. Let's fix that in 3 steps.",
+    icon: <Cpu className="h-12 w-12 text-[#22C55E]" />,
+    position: "center",
+  },
+  {
+    id: "upload",
+    title: "Step 1: Upload Your CV",
+    description: "Drop your current resume here. We'll scan it like a real ATS robot and show you the brutal truth in 10 seconds.",
+    icon: <Upload className="h-10 w-10 text-[#64748B]" />,
+    target: "[data-onboarding='upload-button']",
+    position: "bottom",
+  },
+  {
+    id: "robot-view",
+    title: "Step 2: See the Robot View",
+    description: "This is your secret weapon. The 'Robot View' shows exactly what ATS systems extract from your PDF. Most resumes lose 40% of content here.",
+    icon: <Cpu className="h-10 w-10 text-[#22C55E]" />,
+    position: "center",
+  },
+  {
+    id: "fix",
+    title: "Step 3: Fix Critical Errors",
+    description: "Red alerts = auto-reject by ATS. We'll show you exactly what to add (metrics, keywords, sections). No guessing.",
+    icon: <Wand2 className="h-10 w-10 text-[#F59E0B]" />,
+    position: "center",
+  },
+  {
+    id: "ready",
+    title: "That's It. No Fluff.",
+    description: "You'll get a score (0-100), see what's broken, and fix it. Most users go from 35% to 90% in one session. Ready?",
     icon: <CheckCircle2 className="h-12 w-12 text-[#22C55E]" />,
     position: "center",
   },
@@ -121,6 +149,9 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
                     {currentStepData.icon}
                   </div>
                   <div className="flex-1">
+                    <div className="text-white/80 text-xs font-mono uppercase tracking-wider mb-1">
+                      Step {currentStep + 1} of {ONBOARDING_STEPS.length}
+                    </div>
                     <h3 className="text-white font-black text-xl">
                       {currentStepData.title}
                     </h3>
@@ -134,21 +165,56 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
                   {currentStepData.description}
                 </p>
 
-                {/* Single Action Button */}
+                {/* Progress Dots */}
+                <div className="flex items-center justify-center gap-2 mb-6">
+                  {ONBOARDING_STEPS.map((_, idx) => (
+                    <div
+                      key={idx}
+                      className={`h-2 rounded-full transition-all ${
+                        idx === currentStep
+                          ? "w-8 bg-[#22C55E]"
+                          : idx < currentStep
+                          ? "w-2 bg-[#22C55E]/50"
+                          : "w-2 bg-gray-600"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Actions */}
                 <div className="flex gap-3">
                   <Button
+                    variant="outline"
                     onClick={(e) => {
-                      console.log('[OnboardingTour] Get Started clicked');
+                      console.log('[OnboardingTour] Skip button clicked');
                       e.preventDefault();
                       e.stopPropagation();
-                      handleComplete();
+                      handleSkipNow();
                     }}
-                    className="flex-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold shadow-lg relative z-10 text-lg py-6"
+                    className="flex-1 border-gray-600 text-gray-400 hover:bg-gray-800 hover:text-white relative z-10"
                   >
-                    <>
-                      <CheckCircle2 className="h-5 w-5 mr-2" />
-                      Get Started →
-                    </>
+                    Skip Tour
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      console.log('[OnboardingTour] Next button clicked');
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    className="flex-1 bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold shadow-lg relative z-10"
+                  >
+                    {isLastStep ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        Let's Go
+                      </>
+                    ) : (
+                      <>
+                        Next
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

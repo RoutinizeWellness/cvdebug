@@ -87,7 +87,7 @@ export const getPersonalizedRecommendations = query({
           category: "Overall Quality",
           title: `Improve Resume Score ${industryContext}`,
           description: userProfile
-            ? `Your resume scores below 70% for ${userProfile.dominantIndustry} roles. Based on your profile as a ${userProfile.dominantSeniority} professional, focus on: ${userProfile.dominantIndustry?.toLowerCase().includes('tech') ? 'technical keywords, system architecture, and measurable impact' : userProfile.dominantIndustry?.toLowerCase().includes('health') ? 'clinical competencies, certifications, and patient outcomes' : 'relevant keywords, achievements, and industry expertise'}.`
+            ? `Your resume scores below 70% for ${userProfile.dominantIndustry} roles. Based on your profile as a ${userProfile.dominantSeniority} professional, focus on: ${userProfile.dominantIndustry.toLowerCase().includes('tech') ? 'technical keywords, system architecture, and measurable impact' : userProfile.dominantIndustry.toLowerCase().includes('health') ? 'clinical competencies, certifications, and patient outcomes' : 'relevant keywords, achievements, and industry expertise'}.`
             : "Your resume scores below 70%. Focus on adding relevant keywords, improving formatting, and quantifying achievements.",
           impact: 25,
           actionable: true,
@@ -119,9 +119,9 @@ export const getPersonalizedRecommendations = query({
       // Personalized keyword recommendations
       if (analysisText.includes("keyword") || analysisText.includes("missing")) {
         const keywordAdvice = userProfile
-          ? userProfile.dominantIndustry?.toLowerCase().includes('tech')
+          ? userProfile.dominantIndustry.toLowerCase().includes('tech')
             ? `${userProfile.dominantSeniority === 'senior' || userProfile.dominantSeniority === 'lead' ? 'Technical leadership keywords (e.g., "system architecture", "technical roadmap", "team mentoring")' : 'Core technical keywords (e.g., "agile", "CI/CD", "code review")'} specific to ${userProfile.dominantIndustry}`
-            : userProfile.dominantIndustry?.toLowerCase().includes('health')
+            : userProfile.dominantIndustry.toLowerCase().includes('health')
             ? `Clinical keywords like "patient-centered care", "EHR documentation", and relevant certifications (BLS, ACLS, etc.)`
             : `Industry-specific keywords relevant to ${userProfile.dominantIndustry} ${userProfile.dominantSeniority} roles`
           : "relevant industry terms";
@@ -166,11 +166,11 @@ export const getPersonalizedRecommendations = query({
       const hasNumbers = /\d+/.test(ocrText);
       if (!hasNumbers && ocrText.length > 0) {
         const metricsExamples = userProfile
-          ? userProfile.dominantIndustry?.toLowerCase().includes('tech')
+          ? userProfile.dominantIndustry.toLowerCase().includes('tech')
             ? userProfile.dominantSeniority === 'senior' || userProfile.dominantSeniority === 'lead'
               ? '"Led team of 8 engineers", "Reduced latency by 40%", "Architected system serving 1M+ users"'
               : '"Implemented feature used by 50K users", "Reduced bug rate by 25%", "Delivered 15+ projects"'
-            : userProfile.dominantIndustry?.toLowerCase().includes('health')
+            : userProfile.dominantIndustry.toLowerCase().includes('health')
             ? '"Managed 20-bed unit", "Improved patient satisfaction by 15%", "Reduced readmission rate by 10%"'
             : '"Increased efficiency by 30%", "Managed $500K budget", "Led team of 5"'
           : "'30% increase', '5 projects', '$2M revenue'";
@@ -190,7 +190,7 @@ export const getPersonalizedRecommendations = query({
 
     // Personalized industry-specific recommendations based on user profile
     if (userProfile) {
-      const industry = (userProfile.dominantIndustry || "").toLowerCase();
+      const industry = userProfile.dominantIndustry.toLowerCase();
       const seniority = userProfile.dominantSeniority;
 
       if (industry.includes("tech") || industry.includes("engineer")) {
@@ -232,7 +232,7 @@ export const getPersonalizedRecommendations = query({
       }
     } else if (currentResume && currentResume.jobTitle) {
       // Fallback to generic recommendations only if no profile exists
-      const role = (currentResume.jobTitle || "").toLowerCase();
+      const role = currentResume.jobTitle.toLowerCase();
       if (role.includes("engineer") || role.includes("developer")) {
         recommendations.push({
           type: "medium",
