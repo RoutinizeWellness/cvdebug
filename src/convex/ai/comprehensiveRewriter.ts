@@ -106,99 +106,283 @@ function parseResumeSections(resumeText: string) {
   return sections;
 }
 
+// Enhanced action verbs database with seniority levels
+const ACTION_VERBS_BY_LEVEL = {
+  executive: [
+    'Spearheaded', 'Orchestrated', 'Pioneered', 'Transformed', 'Architected',
+    'Championed', 'Directed', 'Commanded', 'Galvanized', 'Restructured'
+  ],
+  senior: [
+    'Led', 'Managed', 'Drove', 'Established', 'Engineered',
+    'Designed', 'Optimized', 'Scaled', 'Mentored', 'Strategized'
+  ],
+  mid: [
+    'Developed', 'Implemented', 'Built', 'Created', 'Executed',
+    'Delivered', 'Improved', 'Enhanced', 'Automated', 'Streamlined'
+  ],
+  junior: [
+    'Contributed', 'Assisted', 'Supported', 'Collaborated', 'Participated',
+    'Learned', 'Applied', 'Maintained', 'Updated', 'Documented'
+  ]
+};
+
+// Industry-specific keywords for intelligent metric injection
+const INDUSTRY_KEYWORDS = {
+  tech: ['system', 'platform', 'api', 'database', 'cloud', 'infrastructure', 'code', 'software', 'application'],
+  finance: ['revenue', 'budget', 'cost', 'roi', 'investment', 'portfolio', 'financial', 'capital'],
+  sales: ['sales', 'revenue', 'client', 'customer', 'pipeline', 'deal', 'conversion', 'growth'],
+  marketing: ['campaign', 'engagement', 'brand', 'content', 'audience', 'conversion', 'traffic', 'leads'],
+  operations: ['process', 'efficiency', 'workflow', 'logistics', 'supply', 'inventory', 'delivery'],
+  product: ['product', 'feature', 'user', 'launch', 'adoption', 'retention', 'feedback', 'roadmap']
+};
+
 /**
- * ML Algorithm 2: Analyze and score bullet points
+ * ML Algorithm 2: Advanced bullet point analysis with multi-factor scoring
  */
 function analyzeBullet(bullet: string): {
   score: number;
   hasActionVerb: boolean;
   hasMetric: boolean;
   hasImpact: boolean;
+  hasSpecificity: boolean;
+  hasScope: boolean;
   wordCount: number;
+  seniorityLevel: 'executive' | 'senior' | 'mid' | 'junior' | 'none';
+  detectedIndustry: string[];
 } {
-  const actionVerbs = /^(achieved|led|managed|developed|implemented|created|designed|built|established|improved|increased|reduced|delivered|launched|optimized|streamlined|coordinated|executed|generated|transformed|spearheaded)/i;
-  const metricPattern = /\d+[%$kKmMbB]?|(\d+[-–]\d+)|(increased|decreased|reduced|improved|saved).*?\d+/i;
-  const impactWords = /(improved|increased|enhanced|reduced|saved|generated|delivered|achieved|exceeded|optimized|transformed)/i;
+  const bulletLower = bullet.toLowerCase().trim();
 
-  const hasActionVerb = actionVerbs.test(bullet.trim());
+  // Check for action verbs and determine seniority
+  let hasActionVerb = false;
+  let seniorityLevel: 'executive' | 'senior' | 'mid' | 'junior' | 'none' = 'none';
+
+  for (const [level, verbs] of Object.entries(ACTION_VERBS_BY_LEVEL)) {
+    for (const verb of verbs) {
+      if (bulletLower.startsWith(verb.toLowerCase())) {
+        hasActionVerb = true;
+        seniorityLevel = level as any;
+        break;
+      }
+    }
+    if (hasActionVerb) break;
+  }
+
+  // Enhanced metric detection (numbers, percentages, ranges, scales)
+  const metricPattern = /\d+[%$kKmMbB]?|\d+x|\d+\+|(\d+[-–]\d+)|(increased|decreased|reduced|improved|saved|generated|grew).*?\d+/i;
   const hasMetric = metricPattern.test(bullet);
+
+  // Impact words detection
+  const impactWords = /(improved|increased|enhanced|reduced|saved|generated|delivered|achieved|exceeded|optimized|transformed|accelerated|maximized|minimized)/i;
   const hasImpact = impactWords.test(bullet);
+
+  // Specificity check (mentions specific tools, technologies, methodologies)
+  const specificityPattern = /\b(using|with|through|via|leveraging)\b.*?\b([A-Z][a-z]+|[A-Z]{2,}|\w+\.\w+)/;
+  const hasSpecificity = specificityPattern.test(bullet);
+
+  // Scope indicators (team size, user base, budget, timeframe)
+  const scopePattern = /(team of \d+|\d+\+?\s*(users|customers|clients|members|employees)|within \d+\s*(months|weeks|days)|budget of|\$\d+)/i;
+  const hasScope = scopePattern.test(bullet);
+
+  // Detect industry
+  const detectedIndustry: string[] = [];
+  for (const [industry, keywords] of Object.entries(INDUSTRY_KEYWORDS)) {
+    if (keywords.some(kw => bulletLower.includes(kw))) {
+      detectedIndustry.push(industry);
+    }
+  }
+
   const wordCount = bullet.trim().split(/\s+/).length;
 
+  // Advanced scoring algorithm
   let score = 0;
-  if (hasActionVerb) score += 30;
-  if (hasMetric) score += 40;
-  if (hasImpact) score += 20;
-  if (wordCount >= 10 && wordCount <= 25) score += 10;
 
-  return { score, hasActionVerb, hasMetric, hasImpact, wordCount };
+  // Action verb scoring with seniority multiplier
+  if (hasActionVerb) {
+    const multipliers = { executive: 1.5, senior: 1.3, mid: 1.0, junior: 0.7, none: 0 };
+    score += 30 * (multipliers[seniorityLevel] || 1);
+  }
+
+  // Metric scoring (most important for ATS)
+  if (hasMetric) score += 40;
+
+  // Impact scoring
+  if (hasImpact) score += 20;
+
+  // Specificity bonus
+  if (hasSpecificity) score += 15;
+
+  // Scope bonus
+  if (hasScope) score += 10;
+
+  // Word count optimization (15-25 words is ideal)
+  if (wordCount >= 15 && wordCount <= 25) {
+    score += 10;
+  } else if (wordCount >= 10 && wordCount < 15) {
+    score += 5;
+  }
+
+  return {
+    score,
+    hasActionVerb,
+    hasMetric,
+    hasImpact,
+    hasSpecificity,
+    hasScope,
+    wordCount,
+    seniorityLevel,
+    detectedIndustry
+  };
 }
 
 /**
- * ML Algorithm 3: Rewrite bullet with ML-enhanced improvements
+ * ML Algorithm 3: Advanced ML-powered bullet rewriting with context awareness
  */
 function rewriteBulletWithML(bullet: string, context?: string): string {
   const analysis = analyzeBullet(bullet);
 
-  // If already strong (score >= 80), keep it
-  if (analysis.score >= 80) {
+  // If already excellent (score >= 90), keep it
+  if (analysis.score >= 90) {
     return bullet;
   }
 
   let rewritten = bullet.trim();
 
-  // Step 1: Add strong action verb if missing
-  if (!analysis.hasActionVerb) {
-    const actionVerbs = [
-      'Spearheaded', 'Architected', 'Orchestrated', 'Engineered', 'Transformed',
-      'Pioneered', 'Established', 'Executed', 'Optimized', 'Delivered'
-    ];
-    const verb = actionVerbs[Math.floor(Math.random() * actionVerbs.length)];
+  // Step 1: Intelligent action verb replacement based on seniority detection
+  if (!analysis.hasActionVerb || analysis.seniorityLevel === 'junior') {
+    // Infer seniority from context
+    let targetLevel: 'executive' | 'senior' | 'mid' | 'junior' = 'mid';
 
-    // Remove weak starts
-    rewritten = rewritten.replace(/^(responsible for|duties include|worked on|helped with)/i, '');
+    if (context && context.toLowerCase().includes('director|vp|chief|head')) {
+      targetLevel = 'executive';
+    } else if (rewritten.toLowerCase().match(/led|managed|architected|designed/)) {
+      targetLevel = 'senior';
+    } else if (rewritten.toLowerCase().match(/assisted|supported|helped/)) {
+      targetLevel = 'mid'; // Upgrade juniors to mid
+    }
+
+    const verbs = ACTION_VERBS_BY_LEVEL[targetLevel];
+    const verb = verbs[Math.floor(Math.random() * verbs.length)];
+
+    // Remove weak language patterns
+    rewritten = rewritten.replace(/^(responsible for|duties included?|worked on|helped with|assisted in|involved in|participated in)/i, '');
+    rewritten = rewritten.replace(/^(was|were|am|is|are)\s+/i, '');
+
     rewritten = `${verb} ${rewritten.toLowerCase()}`;
   }
 
-  // Step 2: Add quantifiable metric if missing
+  // Step 2: Context-aware metric injection based on detected industry
   if (!analysis.hasMetric) {
-    const metricTemplates = [
-      ' resulting in 30% improvement',
-      ' impacting 100+ users',
-      ' reducing processing time by 25%',
-      ' serving 1M+ requests daily',
-      ' achieving 99.9% uptime',
-      ' managing $500K+ budget'
+    const industries = analysis.detectedIndustry;
+    let metric = '';
+
+    if (industries.includes('tech')) {
+      const techMetrics = [
+        ' serving 100K+ daily active users',
+        ' processing 50M+ API requests/month',
+        ' achieving 99.9% uptime',
+        ' reducing latency by 45%',
+        ' scaling to handle 10x traffic'
+      ];
+      metric = techMetrics[Math.floor(Math.random() * techMetrics.length)];
+    } else if (industries.includes('finance')) {
+      const financeMetrics = [
+        ' managing $2M+ budget',
+        ' generating $500K+ in cost savings',
+        ' increasing ROI by 35%',
+        ' processing $10M+ in transactions',
+        ' reducing financial risk by 40%'
+      ];
+      metric = financeMetrics[Math.floor(Math.random() * financeMetrics.length)];
+    } else if (industries.includes('sales')) {
+      const salesMetrics = [
+        ' driving $1.5M+ in annual revenue',
+        ' exceeding quota by 125%',
+        ' closing 50+ enterprise deals',
+        ' growing pipeline by 300%',
+        ' increasing conversion rate by 40%'
+      ];
+      metric = salesMetrics[Math.floor(Math.random() * salesMetrics.length)];
+    } else if (industries.includes('marketing')) {
+      const marketingMetrics = [
+        ' reaching 2M+ audience members',
+        ' increasing engagement by 150%',
+        ' generating 10K+ qualified leads',
+        ' improving CTR by 65%',
+        ' growing brand awareness by 200%'
+      ];
+      metric = marketingMetrics[Math.floor(Math.random() * marketingMetrics.length)];
+    } else if (industries.includes('operations')) {
+      const opsMetrics = [
+        ' improving efficiency by 40%',
+        ' reducing costs by $250K annually',
+        ' cutting delivery time by 50%',
+        ' eliminating 80% of bottlenecks',
+        ' increasing throughput by 3x'
+      ];
+      metric = opsMetrics[Math.floor(Math.random() * opsMetrics.length)];
+    } else {
+      // Generic high-impact metrics
+      const lower = rewritten.toLowerCase();
+      if (lower.includes('team') || lower.includes('led') || lower.includes('managed')) {
+        metric = ' for cross-functional team of 12+ members';
+      } else if (lower.includes('system') || lower.includes('platform')) {
+        metric = ' serving 75K+ active users';
+      } else if (lower.includes('process') || lower.includes('workflow')) {
+        metric = ' reducing cycle time by 45%';
+      } else {
+        metric = ' resulting in 35% improvement in key metrics';
+      }
+    }
+
+    rewritten += metric;
+  }
+
+  // Step 3: Add specificity if missing (tools, technologies, methodologies)
+  if (!analysis.hasSpecificity && rewritten.length < 150) {
+    const specificityAdditions = [
+      ' using Agile methodologies',
+      ' leveraging Python and SQL',
+      ' through data-driven analysis',
+      ' via AWS cloud infrastructure',
+      ' with React and TypeScript',
+      ' implementing CI/CD pipelines'
     ];
 
-    // Check context to determine appropriate metric
-    const lower = rewritten.toLowerCase();
-    if (lower.includes('team') || lower.includes('led')) {
-      rewritten += ' for team of 8+ members';
-    } else if (lower.includes('system') || lower.includes('platform')) {
-      rewritten += ' serving 50K+ daily active users';
-    } else if (lower.includes('process') || lower.includes('workflow')) {
-      rewritten += ' reducing cycle time by 40%';
-    } else {
-      const metric = metricTemplates[Math.floor(Math.random() * metricTemplates.length)];
-      rewritten += metric;
+    // Only add if it fits the context
+    const industries = analysis.detectedIndustry;
+    if (industries.includes('tech')) {
+      const tech = specificityAdditions[Math.floor(Math.random() * specificityAdditions.length)];
+      rewritten += tech;
     }
   }
 
-  // Step 3: Strengthen impact language
+  // Step 4: Enhance impact language
   if (!analysis.hasImpact) {
-    rewritten = rewritten.replace(/\s+(for|to|by)\s+/i, (match) => {
-      return `, resulting in enhanced ${match}`;
-    });
+    const impactVerbs = ['resulting in', 'leading to', 'driving', 'achieving', 'delivering'];
+    const impact = impactVerbs[Math.floor(Math.random() * impactVerbs.length)];
+
+    // Add impact clause if there's room
+    if (rewritten.split(/\s+/).length < 20) {
+      rewritten += `, ${impact} significant business value`;
+    }
   }
 
-  // Step 4: Ensure proper length (15-25 words optimal for ATS)
+  // Step 5: Optimize length (15-25 words is ATS-optimal)
   const words = rewritten.split(/\s+/);
-  if (words.length > 30) {
-    rewritten = words.slice(0, 28).join(' ') + '...';
+  if (words.length > 28) {
+    rewritten = words.slice(0, 25).join(' ');
+  } else if (words.length < 12) {
+    // Too short - add context
+    rewritten += ' while maintaining high quality standards and meeting all deadlines';
   }
 
-  return rewritten.charAt(0).toUpperCase() + rewritten.slice(1);
+  // Final polish: capitalize and ensure proper formatting
+  rewritten = rewritten.charAt(0).toUpperCase() + rewritten.slice(1);
+
+  // Remove any double spaces
+  rewritten = rewritten.replace(/\s+/g, ' ').trim();
+
+  return rewritten;
 }
 
 /**
@@ -235,38 +419,131 @@ function rewriteExperienceBlock(block: string): string {
 }
 
 /**
- * ML Algorithm 5: Generate enhanced professional summary
+ * ML Algorithm 5: Advanced professional summary generation with deep analysis
  */
 function generateEnhancedSummary(resumeText: string, sections: any): string {
-  // Extract key information
-  const experienceYears = (resumeText.match(/\d+\+?\s*years?/gi) || [])[0] || '5+ years';
-  const skills: string[] = [];
-  const achievements: string[] = [];
+  const textLower = resumeText.toLowerCase();
 
-  // Extract skills from text
-  const techKeywords = ['React', 'Python', 'AWS', 'Docker', 'Kubernetes', 'Node.js', 'TypeScript', 'SQL', 'API', 'CI/CD'];
-  for (const keyword of techKeywords) {
-    if (resumeText.toLowerCase().includes(keyword.toLowerCase())) {
-      skills.push(keyword);
+  // Step 1: Extract experience years with multiple patterns
+  let experienceYears = '5+ years';
+  const yearPatterns = [
+    /(\d+)\+?\s*years?/gi,
+    /(\d+)\s*yr/gi,
+    /over\s+(\d+)\s*years?/gi
+  ];
+
+  for (const pattern of yearPatterns) {
+    const matches = resumeText.match(pattern);
+    if (matches && matches.length > 0) {
+      experienceYears = matches[0];
+      break;
     }
   }
 
-  // Extract quantified achievements
-  const metricMatches = resumeText.match(/\d+%|\d+\+\s*(users|customers|million|projects)/gi);
-  if (metricMatches) {
-    achievements.push(...metricMatches.slice(0, 2));
+  // Step 2: Detect seniority level from titles and responsibilities
+  let seniorityPrefix = 'Results-driven';
+  if (textLower.includes('director') || textLower.includes('vp') || textLower.includes('chief')) {
+    seniorityPrefix = 'Visionary executive leader';
+  } else if (textLower.includes('senior') || textLower.includes('lead') || textLower.includes('principal')) {
+    seniorityPrefix = 'Strategic senior professional';
+  } else if (textLower.includes('manager') || textLower.includes('head of')) {
+    seniorityPrefix = 'Accomplished manager';
   }
 
-  // Generate summary
-  const summaryParts = [
-    `Results-driven professional with ${experienceYears} of experience`,
-    skills.length > 0 ? `specializing in ${skills.slice(0, 3).join(', ')}` : 'in technology and innovation',
-    `. Proven track record of delivering high-impact solutions`,
-    achievements.length > 0 ? ` with achievements including ${achievements.join(' and ')}` : '',
-    `. Expert in driving operational excellence, leading cross-functional teams, and implementing scalable architectures that exceed business objectives.`
+  // Step 3: Intelligent skill extraction across multiple domains
+  const skillsByCategory: Record<string, string[]> = {
+    tech: ['React', 'Python', 'AWS', 'Docker', 'Kubernetes', 'Node.js', 'TypeScript', 'JavaScript', 'SQL', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL', 'REST API', 'CI/CD', 'Jenkins', 'Git', 'Microservices', 'Serverless'],
+    methodologies: ['Agile', 'Scrum', 'Kanban', 'DevOps', 'TDD', 'CI/CD', 'Lean', 'Six Sigma'],
+    business: ['P&L', 'ROI', 'Strategy', 'Analytics', 'KPI', 'Revenue', 'Growth', 'Scaling'],
+    leadership: ['Team Building', 'Mentoring', 'Cross-functional', 'Stakeholder Management', 'Change Management']
+  };
+
+  const detectedSkills: { category: string; skills: string[] }[] = [];
+
+  for (const [category, keywords] of Object.entries(skillsByCategory)) {
+    const found: string[] = [];
+    for (const keyword of keywords) {
+      if (textLower.includes(keyword.toLowerCase())) {
+        found.push(keyword);
+      }
+    }
+    if (found.length > 0) {
+      detectedSkills.push({ category, skills: found.slice(0, 4) });
+    }
+  }
+
+  // Step 4: Extract quantified achievements with context
+  const achievementPatterns = [
+    /(\d+%)\s*(increase|improvement|reduction|growth|saving)/gi,
+    /(increased|improved|reduced|grew|saved|generated).*?(\d+%)/gi,
+    /(\$\d+[kKmMbB]?\+?)/g,
+    /(\d+[xX])\s*(faster|improvement|growth)/gi,
+    /(\d+\+)\s*(users|customers|clients|members|employees)/gi
   ];
 
-  return summaryParts.join('');
+  const achievements: string[] = [];
+  for (const pattern of achievementPatterns) {
+    const matches = resumeText.match(pattern);
+    if (matches) {
+      achievements.push(...matches.slice(0, 2));
+    }
+    if (achievements.length >= 3) break;
+  }
+
+  // Step 5: Detect industry specialization
+  let industryFocus = '';
+  const industries = {
+    'SaaS and cloud platforms': ['saas', 'cloud', 'aws', 'azure', 'platform'],
+    'fintech and financial services': ['fintech', 'banking', 'payment', 'financial', 'trading'],
+    'e-commerce and retail': ['e-commerce', 'retail', 'marketplace', 'shopping'],
+    'enterprise software': ['enterprise', 'b2b', 'erp', 'crm'],
+    'data and analytics': ['data', 'analytics', 'ml', 'ai', 'machine learning'],
+    'mobile and web applications': ['mobile', 'ios', 'android', 'web app'],
+  };
+
+  for (const [industry, keywords] of Object.entries(industries)) {
+    if (keywords.some(kw => textLower.includes(kw))) {
+      industryFocus = ` in ${industry}`;
+      break;
+    }
+  }
+
+  // Step 6: Build dynamic summary based on detected elements
+  const summaryComponents: string[] = [];
+
+  // Opening statement with seniority and experience
+  summaryComponents.push(`${seniorityPrefix} with ${experienceYears} of progressive experience${industryFocus}.`);
+
+  // Core expertise section
+  if (detectedSkills.length > 0) {
+    const topSkills = detectedSkills[0].skills.slice(0, 5);
+    summaryComponents.push(` Expert in ${topSkills.join(', ')}`);
+
+    // Add secondary skills if available
+    if (detectedSkills.length > 1) {
+      const secondarySkills = detectedSkills[1].skills.slice(0, 3);
+      summaryComponents.push(` with strong capabilities in ${secondarySkills.join(', ')}`);
+    }
+    summaryComponents.push('.');
+  }
+
+  // Achievement highlight
+  if (achievements.length > 0) {
+    const achievementStr = achievements.slice(0, 2).join(' and ');
+    summaryComponents.push(` Proven track record of delivering measurable impact, including ${achievementStr}.`);
+  } else {
+    summaryComponents.push(` Proven track record of delivering high-impact solutions that drive business growth and operational excellence.`);
+  }
+
+  // Leadership and value proposition
+  const hasLeadership = textLower.includes('led') || textLower.includes('managed') || textLower.includes('mentored');
+  if (hasLeadership) {
+    summaryComponents.push(` Demonstrated leadership in building and scaling high-performing teams while fostering innovation and continuous improvement.`);
+  } else {
+    summaryComponents.push(` Known for technical excellence, collaborative approach, and ability to translate complex requirements into elegant solutions.`);
+  }
+
+  return summaryComponents.join('');
 }
 
 /**
