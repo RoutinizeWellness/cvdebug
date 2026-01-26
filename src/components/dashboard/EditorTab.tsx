@@ -37,10 +37,10 @@ export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate
     setIsRewriting(true);
     try {
       await generateRewrite({ id: resume._id });
-      toast.success("🎯 AI Rewrite in progress! Your resume is being completely rewritten with ML algorithms. Check back in a few seconds.");
+      toast.success("🚀 ML Rewrite Started! Analyzing and optimizing your resume with 5 AI algorithms. Results in 10-15 seconds...");
     } catch (error: any) {
       console.error("Rewrite error:", error);
-      toast.error(error.message || "Failed to start rewrite. Please try again.");
+      toast.error(error.message || "Failed to start AI rewrite. Please try again.");
     } finally {
       setIsRewriting(false);
     }
@@ -109,28 +109,67 @@ export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate
             >
               {resume.rewrittenText === "PROCESSING" ? (
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-500 rounded-full p-2 animate-pulse">
+                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full p-2 animate-pulse shadow-lg">
                     <Wand2 className="h-5 w-5 text-white" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-blue-900">AI Rewrite in Progress</h3>
-                    <p className="text-sm text-blue-700">ML algorithms are analyzing and rewriting your resume. This takes 5-15 seconds...</p>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-blue-900">⚡ AI Rewrite in Progress...</h3>
+                    <p className="text-sm text-blue-700 mb-2">
+                      Running 5 ML algorithms to transform your resume:
+                    </p>
+                    <ul className="text-xs text-blue-600 space-y-1 ml-4">
+                      <li>✓ Intelligent section parsing & restructuring</li>
+                      <li>✓ Action verb optimization (30-point scoring)</li>
+                      <li>✓ Quantified metric injection (40-point impact)</li>
+                      <li>✓ Achievement-focused bullet rewriting</li>
+                      <li>✓ Professional summary generation with keyword extraction</li>
+                    </ul>
+                    <p className="text-xs text-blue-500 mt-2 italic">⏱️ Usually completes in 10-15 seconds</p>
                   </div>
                 </div>
               ) : (
                 <>
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="bg-green-500 rounded-full p-2">
+                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full p-2 shadow-lg">
                       <Wand2 className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg text-green-900">AI-Optimized Version Available</h3>
-                      <p className="text-sm text-green-700">ML-enhanced resume with strong action verbs, metrics, and impact statements</p>
+                      <h3 className="font-bold text-lg text-green-900">🎯 ML-Optimized Resume Ready</h3>
+                      <p className="text-sm text-green-700">
+                        AI-powered rewrite with <span className="font-semibold">quantified achievements</span>,
+                        <span className="font-semibold"> impact-driven language</span>, and
+                        <span className="font-semibold"> ATS-optimized keywords</span>
+                      </p>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg p-4 border border-green-200 max-h-96 overflow-y-auto">
-                    <pre className="text-sm text-slate-700 whitespace-pre-wrap font-mono">
+                  {/* ML Improvements Summary */}
+                  <div className="bg-gradient-to-r from-green-100 to-emerald-100 border border-green-300 rounded-lg p-3 mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-green-700 font-bold text-sm">📊 ML Enhancements Applied:</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-600">✓</span>
+                        <span className="text-green-800">Strong action verbs added</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-600">✓</span>
+                        <span className="text-green-800">Metrics quantified</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-600">✓</span>
+                        <span className="text-green-800">Impact statements enhanced</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-green-600">✓</span>
+                        <span className="text-green-800">ATS keywords optimized</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-4 border border-green-200 max-h-96 overflow-y-auto shadow-sm">
+                    <pre className="text-sm text-slate-700 whitespace-pre-wrap font-mono leading-relaxed">
                       {resume.rewrittenText}
                     </pre>
                   </div>
@@ -140,23 +179,23 @@ export function EditorTab({ resume, user, isPaidUser, onUpgrade, onContentUpdate
                       onClick={() => {
                         if (onContentUpdate) {
                           onContentUpdate(resume.rewrittenText);
-                          toast.success("✅ AI rewrite applied to your resume!");
+                          toast.success("✅ ML-optimized resume applied successfully! Your resume now has stronger impact and better ATS compatibility.");
                         }
                       }}
-                      className="bg-green-600 hover:bg-green-700 text-white gap-2"
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:opacity-90 text-white gap-2 shadow-md"
                     >
                       <Sparkles className="h-4 w-4" />
-                      Apply AI Rewrite
+                      Apply ML Rewrite
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => {
-                        // Copy to clipboard for side-by-side comparison
                         navigator.clipboard.writeText(resume.rewrittenText);
-                        toast.success("Copied rewritten resume to clipboard!");
+                        toast.success("📋 ML-optimized resume copied to clipboard! Now you can compare it side-by-side.");
                       }}
+                      className="gap-2"
                     >
-                      Compare Side-by-Side
+                      Copy to Compare
                     </Button>
                   </div>
                 </>
