@@ -52,7 +52,7 @@ export default function PricingPage() {
       tagColor: "bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/30",
       description: t.pricingLanding.singleDebugSubtitle,
       price: formatPrice("single_debug_fix"),
-      period: "1 CV completo",
+      period: "1 complete CV",
       features: [
         { text: t.pricingLanding.singleDebugFeature1, icon: "[OK]", guaranteed: true },
         { text: t.pricingLanding.singleDebugFeature2, icon: "[OK]", guaranteed: true },
@@ -69,22 +69,21 @@ export default function PricingPage() {
       showGuarantee: true,
     },
     {
-      name: "Pase 24h",
-      tag: "HOT FIX / URGENTE",
+      name: t.pricingLanding.pass24hTitle,
+      tag: t.pricingLanding.pass24hBadge,
       tagColor: "bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/30",
-      description: "Debug Inmediato. Solución para entrevista mañana. Sin suscripciones.",
+      description: t.pricingLanding.pass24hSubtitle,
       price: formatPrice("single_scan"),
-      period: "24 horas",
+      period: "24 hours",
       features: [
-        { text: "Scans Ilimitados (24h)", icon: "[OK]", guaranteed: true },
-        { text: "Vista X-Ray Robot Completa", icon: "[OK]", guaranteed: true },
-        { text: "Etiquetas [ERROR] + [WARN] + Fixes", icon: "[FIX]", guaranteed: true },
-        { text: "Análisis Seniority Match", icon: "[OK]", guaranteed: true },
-        { text: "Detector Gap de Keywords", icon: "[FIX]", guaranteed: true },
-        { text: "Generador Battle Plan", icon: "[OK]", guaranteed: true },
-        { text: "Plantilla 100% Legible por ATS", icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature1, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature2, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature3, icon: "[FIX]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature4, icon: "[FIX]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature5, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.pass24hFeature6, icon: "[OK]", guaranteed: true },
       ],
-      buttonText: "Acceso 24h →",
+      buttonText: t.pricingLanding.pass24hButton,
       buttonVariant: "default" as const,
       borderColor: "border-[#0F172A]/50",
       hoverBorder: "hover:border-[#EF4444]/50",
@@ -93,31 +92,28 @@ export default function PricingPage() {
       showGuarantee: true,
     },
     {
-      name: "Sprint 7 Días",
-      tag: "INTENSIVO / RECOMENDADO",
+      name: t.pricingLanding.sprint7dTitle,
+      tag: t.pricingLanding.sprint7dBadge,
       tagColor: "bg-gradient-to-r from-[#1E293B] to-[#334155] text-white",
-      description: "Modo Bestia. Ataque total de 7 días para conseguir trabajo ya.",
+      description: t.pricingLanding.sprint7dSubtitle,
       price: formatPrice("sprint_7day"),
-      period: "7 días",
+      originalPrice: t.pricingLanding.sprint7dBeforePrice,
+      period: "7 days",
       features: [
-        { text: "Scans Ilimitados (7 días)", icon: "[OK]", guaranteed: true },
-        { text: "Robot View Terminal (consola dirty)", icon: "[OK]", guaranteed: true },
-        { text: "Detector Missing Signals", icon: "[FIX]", guaranteed: true },
-        { text: "Auditoría Seniority Match", icon: "[OK]", guaranteed: true },
-        { text: "Selector Industria (FAANG/Finanzas)", icon: "[OK]", guaranteed: true },
-        { text: "Elevador Tono Viñetas (AI Rewrite)", icon: "[FIX]", guaranteed: true },
-        { text: "Battle Plan Entrevistas", icon: "[OK]", guaranteed: true },
-        { text: "Export CV Sanitizado (ATS-safe)", icon: "[OK]", guaranteed: true },
-        { text: "Plantilla 100% Legible Garantizada", icon: "[OK]", guaranteed: true },
-        { text: "BONUS: Cover Letter + LinkedIn", icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature1, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature2, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature3, icon: "[FIX]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature4, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature5, icon: "[OK]", guaranteed: true },
+        { text: t.pricingLanding.sprint7dFeature6, icon: "[OK]", guaranteed: true },
       ],
-      buttonText: "Empezar Sprint 7 Días →",
+      buttonText: t.pricingLanding.sprint7dButton,
       buttonVariant: "premium" as const,
       borderColor: "border-[#64748B]/30",
       hoverBorder: "hover:border-[#64748B]/50",
       plan: "sprint_7day",
       highlighted: true,
-      badge: "MEJOR VALOR",
+      badge: t.pricingDialog.bestValue,
       showGuarantee: true,
     },
   ];
@@ -258,15 +254,22 @@ export default function PricingPage() {
                 </div>
 
                 <div className="mb-8 font-mono">
-                  <span
-                    className={`${
-                      tier.highlighted
-                        ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]"
-                        : "text-4xl font-bold text-[#0F172A]"
-                    }`}
-                  >
-                    {tier.price}
-                  </span>
+                  <div className="flex items-baseline gap-2">
+                    <span
+                      className={`${
+                        tier.highlighted
+                          ? "text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#334155]"
+                          : "text-4xl font-bold text-[#0F172A]"
+                      }`}
+                    >
+                      {tier.price}
+                    </span>
+                    {tier.originalPrice && (
+                      <span className="text-lg text-slate-400 line-through">
+                        {tier.originalPrice}
+                      </span>
+                    )}
+                  </div>
                   <span className="text-[#64748B] text-sm">/ {tier.period}</span>
                 </div>
 
@@ -298,7 +301,7 @@ export default function PricingPage() {
                 {tier.showGuarantee && (
                   <div className="mb-4 px-3 py-2 bg-[#22C55E]/5 border border-[#22C55E]/20 rounded text-center">
                     <span className="text-xs font-mono font-bold text-[#22C55E]">
-                      ✓ PLANTILLA 100% LEGIBLE GARANTIZADA
+                      {t.pricingPage.guarantee}
                     </span>
                   </div>
                 )}

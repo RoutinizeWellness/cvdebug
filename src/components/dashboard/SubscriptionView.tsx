@@ -103,14 +103,14 @@ export function SubscriptionView() {
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] px-3 py-1.5 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
-                  <span className="text-xs font-bold uppercase tracking-wide">Current Plan</span>
+                  <span className="text-xs font-bold uppercase tracking-wide">Plan Actual</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                   </span>
-                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">Active</span>
+                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">Activo</span>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@ export function SubscriptionView() {
                 <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-2 flex items-center gap-2 flex-wrap">
                   {isFreeTier && (
                     <>
-                      <span>Free Preview</span>
+                      <span>Vista Previa Gratis</span>
                       <span className="material-symbols-outlined text-[#64748B] text-[28px]">preview</span>
                     </>
                   )}
@@ -130,46 +130,46 @@ export function SubscriptionView() {
                   )}
                   {isSingleScan && (
                     <>
-                      <span>Single Scan</span>
+                      <span>Escaneo Único</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">bolt</span>
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Interview Sprint</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Sprint de Entrevistas</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">rocket_launch</span>
                     </>
                   )}
                   {isIterationPass && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">7-Day Sprint</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Sprint de 7 Días</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">all_inclusive</span>
                     </>
                   )}
                 </h3>
                 <p className="text-[#475569] text-base leading-relaxed">
-                  {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
+                  {isFreeTier && "Escaneo básico gratuito para ver dónde estás. Mejora para desbloquear análisis completo y funciones premium."}
                   {isSingleDebugFix && (
                     <>
-                      You have <span className="text-[#F59E0B] font-bold">1 complete deep scan</span> with 1 AI rewrite included. Perfect for a quick CV fix.
+                      Tienes <span className="text-[#F59E0B] font-bold">1 escaneo profundo completo</span> con 1 reescritura IA incluida. Perfecto para una corrección rápida del CV.
                     </>
                   )}
                   {isSingleScan && (
                     <>
-                      You have <span className="text-[#1E293B] font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
+                      Tienes <span className="text-[#1E293B] font-bold">{currentCredits} crédito de escaneo</span> restante. Incluye re-escaneos ilimitados por 24 horas.
                     </>
                   )}
                   {isInterviewSprint && (
                     <>
-                      You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
-                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      Tienes <span className="text-[#1E293B] font-bold">escaneos ilimitados</span> por{" "}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} días</span>. Expira el{" "}
                       <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
                   {isIterationPass && (
                     <>
-                      You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
-                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
+                      Tienes <span className="text-[#1E293B] font-bold">escaneos ilimitados</span> por{" "}
+                      <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} días</span>. Expira el{" "}
                       <span className="text-[#0F172A] font-bold">{new Date(sprintExpiresAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span>.
                     </>
                   )}
@@ -179,19 +179,19 @@ export function SubscriptionView() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 relative z-10 shrink-0 w-full sm:w-auto">
               <button
-                onClick={() => toast.info("Billing history feature coming soon")}
+                onClick={() => toast.info("Función de historial de facturación próximamente")}
                 className="text-[#475569] hover:text-[#0F172A] text-sm font-semibold px-4 py-2.5 transition-colors hover:bg-[#F8FAFC] rounded-lg border border-transparent hover:border-[#E2E8F0] text-center"
               >
                 <span className="flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-                  Billing History
+                  Historial de Facturación
                 </span>
               </button>
               {!isFreeTier && (
                 <button className="bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/50 text-[#475569] hover:text-[#EF4444] px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="flex items-center justify-center gap-2">
                     <span className="material-symbols-outlined text-[18px]">cancel</span>
-                    Cancel Plan
+                    Cancelar Plan
                   </span>
                 </button>
               )}
@@ -201,8 +201,8 @@ export function SubscriptionView() {
           {/* Pricing Section */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold text-[#0F172A]">Upgrade Options</h3>
-              <span className="text-xs text-[#64748B] font-medium">Pay once, use forever</span>
+              <h3 className="text-2xl font-bold text-[#0F172A]">Opciones de Mejora</h3>
+              <span className="text-xs text-[#64748B] font-medium">Paga una vez, úsalo por siempre</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -257,7 +257,7 @@ export function SubscriptionView() {
                     {isSingleDebugFix ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
+                        Plan Actual
                       </span>
                     ) : (
                       "Arreglar Mi CV"
@@ -282,8 +282,8 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-[#64748B] group-hover:text-[#1E293B] text-[24px] transition-colors">bolt</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-[#0F172A]">Single Scan</h4>
-                      <p className="text-[#64748B] text-xs mt-0.5 font-medium uppercase tracking-wide">One-time payment</p>
+                      <h4 className="text-xl font-bold text-[#0F172A]">Escaneo Único</h4>
+                      <p className="text-[#64748B] text-xs mt-0.5 font-medium uppercase tracking-wide">Pago único</p>
                     </div>
                   </div>
 
@@ -316,10 +316,10 @@ export function SubscriptionView() {
                     {isSingleScan ? (
                       <span className="flex items-center justify-center gap-2">
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
+                        Plan Actual
                       </span>
                     ) : (
-                      "Get Single Scan"
+                      "Obtener Escaneo Único"
                     )}
                   </button>
                 </div>
@@ -351,9 +351,9 @@ export function SubscriptionView() {
                     </div>
                     <div className="flex-1">
                       <h4 className="text-xl font-black text-[#0F172A] flex items-center gap-2">
-                        Interview Sprint
+                        Sprint de Entrevistas
                       </h4>
-                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
+                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Días Ilimitados</p>
                     </div>
                   </div>
 
@@ -366,7 +366,7 @@ export function SubscriptionView() {
                     <div className="px-2.5 py-1 rounded-md bg-[#22C55E]/10 border border-[#22C55E]/30">
                       <p className="text-[#22C55E] text-xs font-bold">60% OFF</p>
                     </div>
-                    <p className="text-[#64748B] text-xs italic">Joined by 1,200+ candidates</p>
+                    <p className="text-[#64748B] text-xs italic">Usado por más de 1,200 candidatos</p>
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
@@ -394,10 +394,10 @@ export function SubscriptionView() {
                           <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#1E293B] to-[#64748B] border-2 border-[#FFFFFF]"></div>
                         ))}
                       </div>
-                      <span className="text-xs font-bold text-[#1E293B]">1,200+ Success Stories</span>
+                      <span className="text-xs font-bold text-[#1E293B]">1,200+ Casos de Éxito</span>
                     </div>
                     <p className="text-[10px] text-[#64748B] leading-tight">
-                      "Got interviews at <span className="text-[#0F172A] font-bold">Google</span> & <span className="text-[#0F172A] font-bold">Netflix</span> in one week"
+                      "Conseguí entrevistas en <span className="text-[#0F172A] font-bold">Google</span> y <span className="text-[#0F172A] font-bold">Netflix</span> en una semana"
                     </p>
                   </div>
 

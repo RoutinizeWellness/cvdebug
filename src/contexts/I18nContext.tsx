@@ -19,26 +19,40 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
     // Check localStorage first
     const saved = localStorage.getItem('cvdebug-locale');
-    if (saved) return saved as SupportedLocale;
 
-    // Otherwise detect from browser
-    return detectLocale();
+    // CACHE BUST: Force English if saved locale is invalid
+    const validLocales: SupportedLocale[] = ['en', 'es', 'fr', 'de', 'pt'];
+    if (saved && validLocales.includes(saved as SupportedLocale)) {
+      console.log(`[I18nProvider] Using saved locale: ${saved}`);
+      return saved as SupportedLocale;
+    }
+
+    // Default to English
+    console.log("[I18nProvider] No saved locale, defaulting to English");
+    return 'en';
   });
 
   const t = getTranslation(locale);
 
   const setLocale = (newLocale: SupportedLocale) => {
+    console.log(`[I18nProvider] Setting locale to: ${newLocale}`);
     setLocaleState(newLocale);
     localStorage.setItem('cvdebug-locale', newLocale);
 
     // Update HTML lang attribute
     document.documentElement.lang = newLocale;
+
+    // Force page reload to ensure all components re-render with new locale
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   useEffect(() => {
     // Set initial lang attribute
     document.documentElement.lang = locale;
-  }, []);
+    console.log(`[I18nProvider] HTML lang attribute set to: ${locale}`);
+  }, [locale]);
 
   return (
     <I18nContext.Provider value={{ locale, setLocale, t }}>
