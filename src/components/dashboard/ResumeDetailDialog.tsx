@@ -988,6 +988,7 @@ export function ResumeDetailDialog({
                     user={user}
                     isPaidUser={isPremium}
                     onUpgrade={() => setShowPricing(true)}
+                    onNavigate={(tab) => setActiveTab(tab)}
                   />
                 </TabsContent>
 

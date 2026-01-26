@@ -42,7 +42,7 @@ export function EnhancedRobotTerminalView({
 
   // Generate precise logs based on actual resume analysis
   const generatePreciseLogs = (): LogEntry[] => {
-    if (!resume || !resume.analysis) {
+    if (!resume) {
       return getLoadingLogs();
     }
 
@@ -268,73 +268,76 @@ export function EnhancedRobotTerminalView({
       }
     }
 
-    // Parse analysis for specific issues
+    // Parse analysis for specific issues - try both resume.analysis and direct fields
+    let analysis: any = null;
+
     try {
-      const analysis = JSON.parse(resume.analysis);
-
-      // Format Issues
-      if (analysis.formatIssues && analysis.formatIssues.length > 0) {
-        logs.push({
-          line: lineNum++,
-          type: "info",
-          message: `[ISSUES] 🔍 Found ${analysis.formatIssues.length} formatting issues:`
-        });
-
-        analysis.formatIssues.slice(0, 5).forEach((issue: any) => {
-          const issueType = issue.issue || issue.type || "Issue";
-          const issueSeverity = issue.severity || "medium";
-
-          const logType = issueSeverity === "critical" ? "critical" :
-                         issueSeverity === "high" ? "fail" : "warn";
-
-          logs.push({
-            line: lineNum++,
-            type: logType,
-            message: `         → ${issueType}`,
-            detail: issue.fix || issue.suggestion
-          });
-        });
+      if (resume.analysis) {
+        analysis = JSON.parse(resume.analysis);
       }
-
-      // Missing Keywords
-      if (analysis.missingKeywords && analysis.missingKeywords.length > 0) {
-        logs.push({
-          line: lineNum++,
-          type: "info",
-          message: `[KEYWORDS] 📝 Missing ${analysis.missingKeywords.length} critical keywords:`
-        });
-
-        analysis.missingKeywords.slice(0, 5).forEach((kw: any) => {
-          const keyword = kw.keyword || kw;
-          const priority = kw.priority || "medium";
-
-          const logType = priority === "critical" ? "critical" :
-                         priority === "high" ? "fail" : "warn";
-
-          logs.push({
-            line: lineNum++,
-            type: logType,
-            message: `         → "${keyword}"`,
-            detail: kw.context || kw.section
-          });
-        });
-      }
-
-      // Matched Keywords (successes)
-      if (analysis.matchedKeywords && analysis.matchedKeywords.length > 0) {
-        logs.push({
-          line: lineNum++,
-          type: "ok",
-          message: `[KEYWORDS] ✓ Found ${analysis.matchedKeywords.length} matching keywords`
-        });
-      }
-
     } catch (e) {
-      // If analysis can't be parsed, show generic message
+      // If can't parse, will use direct fields
+    }
+
+    // Use direct fields as fallback or primary source
+    const formatIssues = analysis?.formatIssues || resume.formatIssues || [];
+    const missingKeywords = analysis?.missingKeywords || resume.missingKeywords || [];
+    const matchedKeywords = analysis?.matchedKeywords || resume.matchedKeywords || [];
+
+    // Format Issues
+    if (formatIssues.length > 0) {
       logs.push({
         line: lineNum++,
         type: "info",
-        message: "[ANALYZE] 📊 Detailed analysis available in report"
+        message: `[ISSUES] 🔍 Found ${formatIssues.length} formatting issues:`
+      });
+
+      formatIssues.slice(0, 5).forEach((issue: any) => {
+        const issueType = issue.issue || issue.type || "Issue";
+        const issueSeverity = issue.severity || "medium";
+
+        const logType = issueSeverity === "critical" ? "critical" :
+                       issueSeverity === "high" ? "fail" : "warn";
+
+        logs.push({
+          line: lineNum++,
+          type: logType,
+          message: `         → ${issueType}`,
+          detail: issue.fix || issue.suggestion
+        });
+      });
+    }
+
+    // Missing Keywords
+    if (missingKeywords.length > 0) {
+      logs.push({
+        line: lineNum++,
+        type: "info",
+        message: `[KEYWORDS] 📝 Missing ${missingKeywords.length} critical keywords:`
+      });
+
+      missingKeywords.slice(0, 5).forEach((kw: any) => {
+        const keyword = kw.keyword || kw;
+        const priority = kw.priority || "medium";
+
+        const logType = priority === "critical" ? "critical" :
+                       priority === "high" ? "fail" : "warn";
+
+        logs.push({
+          line: lineNum++,
+          type: logType,
+          message: `         → "${keyword}"`,
+          detail: kw.context || kw.section
+        });
+      });
+    }
+
+    // Matched Keywords (successes)
+    if (matchedKeywords.length > 0) {
+      logs.push({
+        line: lineNum++,
+        type: "ok",
+        message: `[KEYWORDS] ✓ Found ${matchedKeywords.length} matching keywords`
       });
     }
 

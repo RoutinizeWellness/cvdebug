@@ -10,9 +10,10 @@ interface OverviewTabProps {
   user: any;
   isPaidUser: boolean;
   onUpgrade: () => void;
+  onNavigate?: (tab: string) => void;
 }
 
-export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTabProps) {
+export function OverviewTab({ resume, user, isPaidUser, onUpgrade, onNavigate }: OverviewTabProps) {
   const currentScore = resume?.score || 0;
   const bestScore = resume?.bestScore || currentScore;
 
@@ -315,7 +316,21 @@ export function OverviewTab({ resume, user, isPaidUser, onUpgrade }: OverviewTab
           <h3 className="text-2xl font-black text-[#0F172A] mb-6">Action Plan</h3>
           <ActionPlan
             steps={actionPlanSteps}
-            onStepClick={(stepId) => console.log('Step clicked:', stepId)}
+            onStepClick={(stepId) => {
+              // Navigate to the appropriate tab based on step ID
+              if (stepId.startsWith('format-')) {
+                onNavigate?.('ats-analysis');
+              } else if (stepId.startsWith('keywords-')) {
+                onNavigate?.('job-match');
+              } else if (stepId.startsWith('fluff-') || stepId.startsWith('metrics-')) {
+                onNavigate?.('editor');
+              } else if (stepId.startsWith('jd-match-')) {
+                onNavigate?.('job-match');
+              } else if (stepId.startsWith('linkedin-')) {
+                // For LinkedIn, could open external tool or show message
+                onUpgrade();
+              }
+            }}
             onCompleteStep={(stepId) => console.log('Step completed:', stepId)}
           />
         </motion.div>
