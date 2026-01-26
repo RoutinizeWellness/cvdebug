@@ -75,62 +75,44 @@ export function KeywordAnalysis({
   // Infer icon based on keyword type (not random)
   const getKeywordIcon = (keyword: any): string => {
     const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
+
     if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower)) return "code";
     if (/sql|database|mongodb|postgresql|redis/.test(lower)) return "storage";
     if (/aws|azure|gcp|cloud|kubernetes|docker/.test(lower)) return "cloud";
     if (/ai|ml|machine learning|deep learning|neural/.test(lower)) return "psychology";
-    if (/3d|ar|vr|unity|unreal/.test(lower)) return "view_in_ar";
+    if (/design|ui|ux|figma|sketch/.test(lower)) return "design_services";
+    if (/lead|manage|director|senior|architect|executive|chief/.test(lower)) return "workspace_premium";
     if (/api|integration|sync|webhook/.test(lower)) return "sync";
     if (/agile|scrum|kanban|methodology/.test(lower)) return "settings";
     if (/git|github|version control/.test(lower)) return "code_blocks";
-    return "terminal"; // Default for unclassified
+    return "terminal";
   };
 
   // Infer SPECIFIC location based on keyword type
   const getKeywordLocation = (keyword: any): string => {
     const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
 
-    // Leadership keywords
     if (/lead|manage|director|senior|architect|executive|chief/.test(lower))
       return "Professional Summary, Experience (leadership bullets)";
-
-    // Cloud & Infrastructure
     if (/aws|azure|gcp|cloud|kubernetes|docker|terraform|ansible/.test(lower))
       return "Technical Skills → Infrastructure, Projects";
-
-    // Programming Languages
     if (/python|java|javascript|typescript|c\+\+|ruby|go|rust/.test(lower))
       return "Technical Skills → Languages, Projects (with use cases)";
-
-    // Databases
     if (/\bsql\b|mysql|postgresql|mongodb|redis|cassandra|dynamodb/.test(lower))
       return "Technical Skills → Databases, Experience (with metrics)";
-
-    // Data Tools
     if (/excel|tableau|power bi|looker|data studio/.test(lower))
       return "Technical Skills → Tools, Experience (with analysis examples)";
-
-    // Big Data
     if (/hadoop|spark|hive|pig|kafka|flink|storm/.test(lower))
       return "Technical Skills → Big Data, Projects (with scale)";
-
-    // ETL & Data Engineering
     if (/etl|airflow|nifi|data warehouse|redshift|snowflake|bigquery/.test(lower))
       return "Technical Skills → Data Engineering, Experience (with pipeline details)";
-
-    // AI/ML
     if (/machine learning|deep learning|tensorflow|pytorch|scikit|keras|ml/.test(lower))
       return "Technical Skills → AI/ML, Projects (with model performance)";
-
-    // Methodologies
     if (/agile|scrum|kanban|devops|ci\/cd/.test(lower))
       return "Experience (methodology context), Professional Summary";
-
-    // Version Control
     if (/git|github|gitlab|bitbucket/.test(lower))
       return "Technical Skills → Version Control, Experience";
 
-    // Generic fallback - but more specific
     return "Technical Skills section, Experience bullets (with context)";
   };
 
@@ -140,74 +122,56 @@ export function KeywordAnalysis({
     const lowerKeyword = kwStr.toLowerCase();
     const lowerText = (text || '').toLowerCase();
 
-    // Try exact match first
     const exactIndex = lowerText.indexOf(lowerKeyword);
     if (exactIndex !== -1) {
       const start = Math.max(0, exactIndex - 30);
-      const end = Math.min(text.length, exactIndex + keyword.length + 30);
+      const end = Math.min(text.length, exactIndex + kwStr.length + 30);
       const snippet = text.substring(start, end);
-      return {
-        context: snippet,
-        matchType: 'exact',
-        confidence: 100
-      };
+      return { context: snippet, matchType: 'exact', confidence: 100 };
     }
 
-    // Try finding related terms (semantic matching)
     const words = lowerText.split(/\s+/);
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
-      // Check if this word is semantically related to keyword
       if (word.includes(lowerKeyword.split(' ')[0]) || lowerKeyword.split(' ')[0].includes(word)) {
         const start = Math.max(0, i - 6);
         const end = Math.min(words.length, i + 7);
         const snippet = words.slice(start, end).join(' ');
-        return {
-          context: snippet,
-          matchType: 'semantic',
-          confidence: 75
-        };
+        return { context: snippet, matchType: 'semantic', confidence: 75 };
       }
     }
 
-    // Default: keyword exists somewhere
-    return {
-      context: 'Found in resume',
-      matchType: 'exact',
-      confidence: 85
-    };
+    return { context: 'Found in resume', matchType: 'exact', confidence: 85 };
   };
 
   // Map matched keywords to found signals with REAL context
-  const foundSignals: FoundKeyword[] = (matchedKeywords || []).slice(0, 15).map((kw: any) => {
-    const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
-    const contextInfo = extractKeywordContext(keyword, resumeText);
+  const foundSignals: FoundKeyword[] = (matchedKeywords || [])
+    .filter(Boolean)
+    .slice(0, 15)
+    .map((kw: any) => {
+      const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
+      const contextInfo = extractKeywordContext(keyword, resumeText);
 
-    return {
-      keyword,
-      icon: getKeywordIcon(keyword),
-      location: getKeywordLocation(keyword),
-      context: contextInfo.context,
-      matchType: contextInfo.matchType,
-      confidence: contextInfo.confidence
-    };
-  });
+      return {
+        keyword,
+        icon: getKeywordIcon(keyword),
+        location: getKeywordLocation(keyword),
+        context: contextInfo.context,
+        matchType: contextInfo.matchType,
+        confidence: contextInfo.confidence
+      };
+    });
 
   // Calculate REAL impact for missing keywords based on importance
   const calculateImpact = (keyword: any, index: number): { impact: string; percent: number; isPriority: boolean } => {
     const lower = (typeof keyword === 'string' ? keyword : keyword?.keyword || '').toLowerCase();
 
-    // High-impact technical keywords
     if (/python|sql|machine learning|aws|kubernetes|docker/.test(lower)) {
       return { impact: `High Impact +${8 + index}%`, percent: 8 + index, isPriority: true };
     }
-
-    // Medium-impact keywords
     if (/git|agile|scrum|api|rest|graphql/.test(lower)) {
       return { impact: `Impact +${4 + index}%`, percent: 4 + index, isPriority: false };
     }
-
-    // Standard impact
     return { impact: `Impact +${2 + index}%`, percent: 2 + index, isPriority: false };
   };
 
@@ -443,7 +407,6 @@ export function KeywordAnalysis({
   };
 
   // Map missing keywords to critical signals with REAL impact
-  // If no missing keywords provided, use ML to generate smart suggestions
   const keywordsToAnalyze = missingKeywords.length > 0
     ? missingKeywords
     : generateMLKeywordSuggestions();
@@ -453,7 +416,7 @@ export function KeywordAnalysis({
     const impact = calculateImpact(keyword, index);
 
     return {
-      keyword,
+      keyword: typeof keyword === 'string' ? keyword : keyword?.keyword || '',
       impact: impact.impact,
       impactPercent: impact.percent,
       description: getKeywordDescription(keyword),
@@ -465,12 +428,10 @@ export function KeywordAnalysis({
   const allKeywords = [...(matchedKeywords || []), ...(missingKeywords || [])];
   const industryKeywords = allKeywords.slice(0, 16).map((kw: any, index) => {
     const keyword = typeof kw === 'string' ? kw : kw?.keyword || '';
-    const isMatched = (matchedKeywords || []).some((m: any) => 
+    const isMatched = (matchedKeywords || []).some((m: any) =>
       (typeof m === 'string' ? m : m?.keyword) === keyword
     );
-    const isCritical = index < 3; // First 3 are most important
-
-    // Size based on importance and match status
+    const isCritical = index < 3;
     const size = isCritical ? "2xl" : index < 6 ? "xl" : index < 10 ? "lg" : "base";
     const weight = isCritical ? "bold" : index < 8 ? "bold" : "medium";
     const color = isMatched ? (isCritical ? "primary" : "slate-200") : "slate-500";
@@ -524,7 +485,9 @@ export function KeywordAnalysis({
                 onClick={() => {
                   const newMode = viewMode === 'list' ? 'grid' : 'list';
                   setViewMode(newMode);
-                  toast.info(`${t.keywordAnalysis.switchedToView} ${newMode === 'list' ? t.keywordAnalysis.listView.toLowerCase() : t.keywordAnalysis.gridView.toLowerCase()}`);
+                  const listView = (t.keywordAnalysis?.listView || 'list view').toLowerCase();
+                  const gridView = (t.keywordAnalysis?.gridView || 'grid view').toLowerCase();
+                  toast.info(`${t.keywordAnalysis?.switchedToView || 'Switched to view'} ${newMode === 'list' ? listView : gridView}`);
                 }}
                 className="text-[#64748B] font-medium hover:text-[#475569] transition-colors"
               >
