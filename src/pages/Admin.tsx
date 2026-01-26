@@ -401,9 +401,9 @@ export default function AdminPage() {
           >
             <TrendingUp className={`h-5 w-5 ${currentView === "premium" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Premium Users</span>
-            {stats && (stats.singleScan + stats.interviewSprint) > 0 && (
+            {stats && (stats.singleDebugFix + stats.singleScan + stats.interviewSprint) > 0 && (
               <Badge variant="default" className="ml-auto bg-[#22C55E] text-xs">
-                {stats.singleScan + stats.interviewSprint}
+                {stats.singleDebugFix + stats.singleScan + stats.interviewSprint}
               </Badge>
             )}
           </button>
@@ -550,8 +550,8 @@ export default function AdminPage() {
                 )}
 
                 {/* Metrics Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <motion.div 
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="glass-panel p-5 rounded-xl border border-slate-200/50 hover:border-slate-300 transition-colors relative group overflow-hidden"
@@ -562,17 +562,13 @@ export default function AdminPage() {
                     <p className="text-slate-600 text-sm font-medium mb-1">Total Users</p>
                     <div className="flex items-baseline gap-2">
                       <h3 className="text-2xl font-display font-bold text-slate-900">{stats?.total || 0}</h3>
-                      <span className="text-emerald-600 text-xs font-bold bg-emerald-400/10 px-1.5 py-0.5 rounded flex items-center">
-                        <TrendingUp className="h-3 w-3 mr-0.5" />
-                        12%
-                      </span>
                     </div>
                     <div className="w-full bg-slate-200 h-1 mt-4 rounded-full overflow-hidden">
                       <div className="bg-[#64748B] h-full rounded-full" style={{ width: '65%' }}></div>
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
@@ -590,7 +586,25 @@ export default function AdminPage() {
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 }}
+                    className="glass-panel p-5 rounded-xl border border-slate-200/50 hover:border-slate-300 transition-colors relative group overflow-hidden"
+                  >
+                    <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <CreditCard className="h-12 w-12 text-amber-600" />
+                    </div>
+                    <p className="text-slate-600 text-sm font-medium mb-1">Arreglo Rápido</p>
+                    <div className="flex items-baseline gap-2">
+                      <h3 className="text-2xl font-display font-bold text-amber-600">{stats?.singleDebugFix || 0}</h3>
+                    </div>
+                    <div className="w-full bg-slate-200 h-1 mt-4 rounded-full overflow-hidden">
+                      <div className="bg-amber-600 h-full rounded-full" style={{ width: '15%' }}></div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
@@ -599,27 +613,27 @@ export default function AdminPage() {
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                       <CreditCard className="h-12 w-12 text-[#F59E0B]" />
                     </div>
-                    <p className="text-slate-600 text-sm font-medium mb-1">Single Scan</p>
+                    <p className="text-slate-600 text-sm font-medium mb-1">Pase 24h</p>
                     <div className="flex items-baseline gap-2">
-                      <h3 className="text-2xl font-display font-bold text-slate-900 text-orange-600">{stats?.singleScan || 0}</h3>
+                      <h3 className="text-2xl font-display font-bold text-orange-600">{stats?.singleScan || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-200 h-1 mt-4 rounded-full overflow-hidden">
                       <div className="bg-[#F59E0B] h-full rounded-full" style={{ width: '25%' }}></div>
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ delay: 0.25 }}
                     className="glass-panel p-5 rounded-xl border border-slate-200/50 hover:border-slate-300 transition-colors relative group overflow-hidden"
                   >
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                       <BarChart3 className="h-12 w-12 text-[#22C55E]" />
                     </div>
-                    <p className="text-slate-600 text-sm font-medium mb-1">Bulk Pack</p>
+                    <p className="text-slate-600 text-sm font-medium mb-1">Sprint 7 Días</p>
                     <div className="flex items-baseline gap-2">
-                      <h3 className="text-2xl font-display font-bold text-slate-900 text-[#64748B]">{stats?.bulkPack || 0}</h3>
+                      <h3 className="text-2xl font-display font-bold text-primary">{stats?.interviewSprint || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-200 h-1 mt-4 rounded-full overflow-hidden">
                       <div className="bg-[#22C55E] h-full rounded-full" style={{ width: '88%' }}></div>
