@@ -1,0 +1,543 @@
+import { NewNavbar } from "@/components/landing/NewNavbar";
+import { NewFooter } from "@/components/landing/NewFooter";
+import { RelatedPages } from "@/components/seo/RelatedPages";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
+import {
+  CheckCircle2,
+  Shield,
+  Target,
+  Zap,
+  FileText,
+  TrendingUp,
+  AlertCircle,
+  Heart,
+  Stethoscope,
+  Activity,
+  Code,
+  Server,
+  Workflow
+} from "lucide-react";
+import { NicheTemplate } from "@/data/nicheTemplates";
+import { updatePageSEO, generateHowToSchema, generateServiceSchema } from "@/lib/seo";
+
+interface NicheLandingPageProps {
+  template: NicheTemplate;
+}
+
+// Icon mapping based on category
+const getIconForFeature = (index: number, category: string) => {
+  const iconSets = {
+    nursing: [Stethoscope, Heart, Activity, Shield],
+    tech: [Code, Server, Workflow, Target],
+    default: [Target, Shield, CheckCircle2, Zap]
+  };
+
+  const icons = iconSets[category as keyof typeof iconSets] || iconSets.default;
+  return icons[index % icons.length];
+};
+
+const getColorClasses = (color: string) => {
+  const colors: Record<string, any> = {
+    blue: {
+      badge: "bg-[#1E293B]/10 border-[#1E293B]/20 text-[#CBD5E1]",
+      badgeIcon: "text-[#94A3B8]",
+      gradient: "from-[#475569] to-slate-400",
+      button: "from-[#0F172A] to-[#1E293B] hover:from-[#0F172A] hover:to-[#334155] shadow-[#0F172A]/25",
+      keyword: "from-[#1E293B]/20 to-slate-500/20 border-[#1E293B]/30 text-[#CBD5E1]",
+      floatingBadge: "from-[#0F172A] to-[#334155]",
+      bg: "bg-[#1E293B]/10",
+      bgSecondary: "bg-[#F8FAFC]0/10",
+      text: "text-[#94A3B8]",
+      border: "border-[#1E293B]/30",
+      checkmark: "text-[#94A3B8]"
+    },
+    emerald: {
+      badge: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300",
+      badgeIcon: "text-emerald-400",
+      gradient: "from-emerald-400 to-cyan-400",
+      button: "from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 shadow-emerald-500/25",
+      keyword: "from-emerald-500/20 to-cyan-500/20 border-emerald-500/30 text-emerald-300",
+      floatingBadge: "from-emerald-600 to-cyan-600",
+      bg: "bg-emerald-500/10",
+      bgSecondary: "bg-cyan-500/10",
+      text: "text-emerald-400",
+      border: "border-emerald-500/30",
+      checkmark: "text-emerald-400"
+    },
+    red: {
+      badge: "bg-red-500/10 border-red-500/20 text-red-300",
+      badgeIcon: "text-red-400",
+      gradient: "from-red-400 to-orange-400",
+      button: "from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 shadow-red-500/25",
+      keyword: "from-red-500/20 to-orange-500/20 border-red-500/30 text-red-300",
+      floatingBadge: "from-red-600 to-orange-600",
+      bg: "bg-red-500/10",
+      bgSecondary: "bg-orange-500/10",
+      text: "text-red-400",
+      border: "border-red-500/30",
+      checkmark: "text-red-400"
+    },
+    purple: {
+      badge: "bg-teal-500/10 border-teal-500/20 text-teal-300",
+      badgeIcon: "text-teal-400",
+      gradient: "from-[#475569] to-pink-400",
+      button: "from-[#0F172A] to-pink-600 hover:from-[#1E293B] hover:to-pink-700 shadow-cyan-500/25",
+      keyword: "from-[#1E293B]/20 to-pink-500/20 border-teal-500/30 text-teal-300",
+      floatingBadge: "from-[#0F172A] to-pink-600",
+      bg: "bg-teal-500/10",
+      bgSecondary: "bg-pink-500/10",
+      text: "text-teal-400",
+      border: "border-teal-500/30",
+      checkmark: "text-teal-400"
+    },
+    cyan: {
+      badge: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300",
+      badgeIcon: "text-cyan-400",
+      gradient: "from-[#64748B] to-[#475569]",
+      button: "from-cyan-600 to-[#0F172A] hover:from-cyan-700 hover:to-[#0F172A] shadow-cyan-500/25",
+      keyword: "from-cyan-500/20 to-[#1E293B]/20 border-cyan-500/30 text-cyan-300",
+      floatingBadge: "from-cyan-600 to-[#0F172A]",
+      bg: "bg-cyan-500/10",
+      bgSecondary: "bg-[#1E293B]/10",
+      text: "text-cyan-400",
+      border: "border-cyan-500/30",
+      checkmark: "text-cyan-400"
+    },
+    violet: {
+      badge: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300",
+      badgeIcon: "text-cyan-400",
+      gradient: "from-[#64748B] to-[#475569]",
+      button: "from-[#334155] to-[#0F172A] hover:from-[#475569] hover:to-[#0F172A] shadow-cyan-500/25",
+      keyword: "from-[#475569]/20 to-[#1E293B]/20 border-cyan-500/30 text-cyan-300",
+      floatingBadge: "from-[#334155] to-[#0F172A]",
+      bg: "bg-cyan-500/10",
+      bgSecondary: "bg-teal-500/10",
+      text: "text-cyan-400",
+      border: "border-cyan-500/30",
+      checkmark: "text-cyan-400"
+    }
+  };
+
+  return colors[color] || colors.blue;
+};
+
+export function NicheLandingPage({ template }: NicheLandingPageProps) {
+  const navigate = useNavigate();
+  const colors = getColorClasses(template.colors.primary);
+  const category = template.slug.includes('nurse') ? 'nursing' : 'tech';
+
+  useEffect(() => {
+    // Extract job title from hero highlight or badge
+    const jobTitle = template.badge.replace('For ', '').replace(' RNs', '').replace(' Engineers', '');
+
+    // Extract keywords from template data
+    const keywords = [
+      ...template.keywords,
+      `${jobTitle} ATS scanner`,
+      `${jobTitle} resume optimizer`,
+      'ATS resume checker',
+      'applicant tracking system',
+    ];
+
+    // Determine industry category for structured data
+    const industryCategory = template.slug.includes('nurse') || template.slug.includes('health')
+      ? 'Healthcare'
+      : template.slug.includes('engineer') || template.slug.includes('developer')
+      ? 'Software Engineering'
+      : template.slug.includes('finance') || template.slug.includes('analyst')
+      ? 'Finance'
+      : 'Professional Services';
+
+    // Update all SEO meta tags dynamically
+    updatePageSEO({
+      title: template.metaTitle,
+      description: template.metaDescription,
+      keywords,
+      canonical: `https://cvdebug.com/${template.slug}`,
+      ogImage: `https://cvdebug.com/og-${category}.jpg`,
+      structuredData: {
+        type: 'HowTo',
+        data: generateHowToSchema(jobTitle, industryCategory),
+      },
+    });
+
+    // Add Service Schema specific to this page
+    const serviceScript = document.createElement('script');
+    serviceScript.type = 'application/ld+json';
+    serviceScript.id = `service-schema-${template.slug}`;
+    serviceScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      ...generateServiceSchema(
+        `${jobTitle} ATS Optimization`,
+        template.metaDescription,
+        `${jobTitle} Professionals`
+      ),
+    });
+    document.head.appendChild(serviceScript);
+
+    return () => {
+      const existingScript = document.getElementById(`service-schema-${template.slug}`);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [template, category]);
+
+  return (
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-[#64748B]/30 selection:text-[#0F172A] antialiased bg-[#F8FAFC]">
+      <style>{`
+        body {
+          background: #F8FAFC;
+        }
+      `}</style>
+
+      <NewNavbar />
+
+      <main className="flex-grow pt-16">
+        {/* Hero Section */}
+        <section className="relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 -left-48 w-96 h-96 bg-[#64748B]/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-[#1E293B]/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#64748B]/10 border border-[#64748B]/20 mb-6">
+                  <Heart className="h-4 w-4 text-[#64748B]" />
+                  <span className="text-sm font-medium text-[#64748B]">{template.badge}</span>
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0F172A] mb-6 leading-tight">
+                  {template.heroTitle}
+                  <span className="block bg-gradient-to-r from-[#1E293B] to-[#334155] bg-clip-text text-transparent">
+                    {template.heroHighlight}
+                  </span>
+                </h1>
+
+                <p className="text-lg md:text-xl text-[#475569] mb-8 leading-relaxed">
+                  {template.heroDescription}
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-lg group"
+                    onClick={() => navigate("/auth")}
+                  >
+                    {template.primaryCTA}
+                    <Zap className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-[#E2E8F0] hover:border-[#1E293B] text-[#0F172A] hover:text-[#1E293B]"
+                    onClick={() => navigate("/auth")}
+                  >
+                    See Robot View Demo
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-3 gap-6 pt-8 border-t border-[#E2E8F0]">
+                  {template.stats.map((stat, idx) => (
+                    <div key={idx}>
+                      <div className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-1">{stat.value}</div>
+                      <div className="text-xs md:text-sm text-[#64748B]">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="rounded-2xl p-8 border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="w-2 h-2 rounded-full bg-[#64748B] animate-pulse" />
+                    <span className="text-sm text-[#64748B] font-mono">ATS Scanning...</span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-[#0F172A] mb-4">Critical Keywords Detected:</h3>
+
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {template.keywords.slice(0, 12).map((keyword, idx) => (
+                      <motion.span
+                        key={idx}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.4 + idx * 0.05 }}
+                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 border border-[#E2E8F0] text-sm font-medium text-[#475569]"
+                      >
+                        {keyword}
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-[#E2E8F0]">
+                    <span className="text-[#64748B] text-sm">ATS Match Score:</span>
+                    <span className="text-2xl font-bold text-[#64748B]">89%</span>
+                  </div>
+                </div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                  className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#1E293B] to-[#334155] rounded-xl p-4 shadow-xl"
+                >
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-white" />
+                    <span className="text-white font-semibold text-sm">ATS Optimized</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Problem Section */}
+        <section className="py-16 md:py-24 bg-[#FFFFFF]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                Why Resumes Get <span className="text-[#EF4444]">Auto-Rejected</span> by ATS
+              </h2>
+              <p className="text-lg text-[#475569] max-w-3xl mx-auto">
+                Here's what kills your application before it reaches a human recruiter:
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {template.commonIssues.map((issue, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="rounded-xl p-6 border border-[#EF4444]/20 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/20 flex items-center justify-center mb-4">
+                    <AlertCircle className="h-6 w-6 text-[#EF4444]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">{issue.title}</h3>
+                  <p className="text-[#475569]">{issue.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Before/After Section (if available) */}
+        {template.beforeAfter && (
+          <section className="py-16 md:py-24 bg-[#F8FAFC]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                  Real Resume Transformation
+                </h2>
+                <p className="text-lg text-[#475569] max-w-3xl mx-auto">
+                  See how CVDebug optimizes resumes for ATS systems
+                </p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="rounded-xl p-8 border border-[#EF4444]/30 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/20 flex items-center justify-center">
+                      <AlertCircle className="h-6 w-6 text-[#EF4444]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#0F172A]">BEFORE Optimization</h3>
+                      <p className="text-3xl font-black text-[#EF4444]">{template.beforeAfter.beforeScore} ATS Score</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {template.beforeAfter.beforeIssues.map((issue, idx) => (
+                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC]">
+                        <div className="text-[#EF4444] mt-0.5">✗</div>
+                        <p className="text-[#475569] text-sm">{issue}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="rounded-xl p-8 border border-[#22C55E]/30 bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/20 flex items-center justify-center">
+                      <CheckCircle2 className="h-6 w-6 text-[#22C55E]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-[#0F172A]">AFTER Optimization</h3>
+                      <p className="text-3xl font-black text-[#22C55E]">{template.beforeAfter.afterScore} ATS Score</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {template.beforeAfter.afterFixes.map((fix, idx) => (
+                      <div key={idx} className="flex gap-3 p-3 rounded-lg bg-[#F8FAFC]">
+                        <div className="text-[#22C55E] mt-0.5">✓</div>
+                        <p className="text-[#475569] text-sm">{fix}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Features Section */}
+        <section className="py-16 md:py-24 bg-[#FFFFFF]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                Built Specifically for <span className="bg-gradient-to-r from-[#1E293B] to-[#334155] bg-clip-text text-transparent">Your Industry</span>
+              </h2>
+              <p className="text-lg text-[#475569] max-w-3xl mx-auto">
+                Our scanner understands your field's terminology, requirements, and ATS configurations
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {template.features.map((feature, idx) => {
+                const Icon = getIconForFeature(idx, category);
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="rounded-xl p-8 border border-[#E2E8F0] hover:border-[#1E293B] transition-all group bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                  >
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#1E293B]/10 to-[#334155]/10 border border-[#E2E8F0] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="h-7 w-7 text-[#1E293B]" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-[#0F172A] mb-3">{feature.title}</h3>
+                    <p className="text-[#475569] text-lg leading-relaxed">{feature.description}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Social Proof Section */}
+        <section className="py-16 md:py-24 bg-[#F8FAFC]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-black text-[#0F172A] mb-4">
+                Success Stories from Professionals Like You
+              </h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {template.testimonials.map((testimonial, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="rounded-xl p-6 border border-[#E2E8F0] bg-[#FFFFFF] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                >
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5 text-[#F59E0B] fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-[#475569] mb-4 italic">"{testimonial.quote}"</p>
+                  <div>
+                    <div className="font-bold text-[#0F172A]">{testimonial.name}</div>
+                    <div className="text-sm text-[#1E293B]">{testimonial.role}</div>
+                    <div className="text-sm text-[#64748B]">{testimonial.location}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-16 md:py-24 relative overflow-hidden bg-[#FFFFFF]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B]/10 to-[#334155]/10 blur-3xl opacity-50" />
+
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-5xl font-black text-[#0F172A] mb-6">
+                Stop Getting Auto-Rejected by ATS Systems
+              </h2>
+              <p className="text-xl text-[#475569] mb-8">
+                Get your free resume scan in 10 seconds. See your ATS score, missing keywords, and exact formatting issues.
+              </p>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-[#1E293B] to-[#334155] text-white text-lg px-8 py-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]"
+                onClick={() => navigate("/auth")}
+              >
+                {template.primaryCTA}
+                <TrendingUp className="ml-2 h-5 w-5" />
+              </Button>
+              <p className="text-sm text-[#64748B] mt-4">
+                ✓ No credit card required  ✓ Results in 10 seconds  ✓ 100% confidential
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Related Pages - Internal Linking */}
+        <RelatedPages currentUrl={template.slug.startsWith('/') ? template.slug : `/${template.slug}`} category={category} />
+      </main>
+
+      <NewFooter />
+    </div>
+  );
+}

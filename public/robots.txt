@@ -1,0 +1,275 @@
+# robots.txt for CVDebug - Free ATS Resume Scanner
+# https://cvdebug.com/robots.txt
+
+# Default rule for all bots
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /project-settings
+Disallow: /api/
+Disallow: /convex/
+Disallow: /*.json$
+
+# Allow all niche landing pages (50+ pages for programmatic SEO)
+Allow: /*-ats-optimizer
+Allow: /*-ats-scanner
+Allow: /*-ats
+Allow: /optimize/*
+Allow: /pricing
+Allow: /features
+
+# Sitemap location
+Sitemap: https://cvdebug.com/sitemap.xml
+
+# Crawl delay (be polite to servers)
+Crawl-delay: 1
+
+# Specific rules for major search engines (higher priority)
+User-agent: Googlebot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# AI Search Engines & LLM Crawlers (Allow for search, disallow training on private data)
+# Updated strategy: Allow LLMs to index for search results while protecting user data
+
+# OpenAI ChatGPT Search
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /api/
+Disallow: /convex/
+Crawl-delay: 1
+
+# OpenAI Training Bot (block for training, but allow search)
+User-agent: GPTBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /api/
+Disallow: /convex/
+Crawl-delay: 1
+
+# Anthropic Claude AI
+User-agent: anthropic-ai
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /api/
+Disallow: /convex/
+Crawl-delay: 1
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Crawl-delay: 1
+
+# Common Crawl (used by many AI models)
+User-agent: CCBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Disallow: /api/
+Disallow: /convex/
+Crawl-delay: 2
+
+# Perplexity AI Bot
+User-agent: PerplexityBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Crawl-delay: 1
+
+# Google Gemini / Bard AI
+User-agent: Google-Extended
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Crawl-delay: 1
+
+# Meta AI (Facebook/Instagram AI)
+User-agent: FacebookBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# ByteDance (TikTok) - Block for training
+User-agent: Bytespider
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /auth
+Disallow: /onboarding
+Disallow: /payment
+Allow: /
+
+# Amazon Alexa
+User-agent: Amazonbot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# AI2 Bot (Allen Institute)
+User-agent: AI2Bot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# Applebot (Apple Intelligence/Siri)
+User-agent: Applebot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# YouBot (You.com AI search)
+User-agent: YouBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# Diffbot (AI-powered web data extraction)
+User-agent: Diffbot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 2
+
+# Anthropic constitutional AI
+User-agent: ClaudeBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# Meta's OPT model crawler
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Crawl-delay: 1
+
+# Omgili (content indexing for AI)
+User-agent: omgili
+Allow: /
+Disallow: /dashboard
+Crawl-delay: 2
+
+# ImagesiftBot
+User-agent: ImagesiftBot
+Allow: /
+Disallow: /dashboard
+
+# Webz.io (AI training data)
+User-agent: webz.io
+Allow: /
+Disallow: /dashboard
+Crawl-delay: 2
+
+# Social media bots (allow for social sharing previews)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+# News aggregators
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+# Allow Yandex (Russian search engine)
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Allow other international search engines
+User-agent: Yahoo-MMCrawler
+Allow: /
+
+User-agent: DuckDuckGo-Favicons-Bot
+Allow: /
+
+# Block bad bots and scrapers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

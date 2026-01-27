@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVDebug Favicon Generator</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 40px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 30px;
+      color: #0F172A;
+    }
+    .preview {
+      display: flex;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .preview-item {
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    button {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    .note {
+      background: #FEF3C7;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #F59E0B;
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    input[type="color"] {
+      width: 60px;
+      height: 40px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    input[type="range"] {
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐛 CVDebug Favicon Generator</h1>
+
+    <div class="note">
+      <strong>Goal:</strong> Create a bold, highly visible favicon like TikTok, Apple, Reddit, etc.<br>
+      <strong>Strategy:</strong> Make the bug emoji HUGE (fills 80-90% of the canvas), solid background, high contrast.
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Background Color:</label>
+        <input type="color" id="bgColor" value="#0F172A">
+      </div>
+      <div class="control-group">
+        <label>Logo Size:</label>
+        <input type="range" id="logoSize" min="60" max="95" value="85" step="5">
+        <span id="logoSizeValue">85%</span>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="preview-item">
+        <canvas id="favicon16" width="16" height="16"></canvas>
+        <p>16x16 (browser tab)</p>
+      </div>
+      <div class="preview-item">
+        <canvas id="favicon32" width="32" height="32"></canvas>
+        <p>32x32 (retina tab)</p>
+      </div>
+      <div class="preview-item">
+        <canvas id="favicon48" width="48" height="48"></canvas>
+        <p>48x48 (extension)</p>
+      </div>
+      <div class="preview-item">
+        <canvas id="favicon128" width="128" height="128"></canvas>
+        <p>128x128 (extension store)</p>
+      </div>
+      <div class="preview-item">
+        <canvas id="favicon512" width="512" height="512"></canvas>
+        <p>512x512 (HD)</p>
+      </div>
+    </div>
+
+    <div>
+      <button onclick="downloadFavicon(16)">Download 16x16</button>
+      <button onclick="downloadFavicon(32)">Download 32x32</button>
+      <button onclick="downloadFavicon(48)">Download 48x48</button>
+      <button onclick="downloadFavicon(128)">Download 128x128</button>
+      <button onclick="downloadFavicon(512)">Download 512x512</button>
+      <button onclick="downloadAll()">Download All</button>
+    </div>
+
+    <div class="note" style="margin-top: 30px;">
+      <strong>Instructions:</strong><br>
+      1. Adjust the background color and logo size to your preference<br>
+      2. Click "Download All" to get all sizes<br>
+      3. Replace files in <code>/public/</code> (favicon.png)<br>
+      4. Replace files in <code>/extension/icons/</code> (icon16.png, icon48.png, icon128.png)<br>
+      5. Update version number in index.html to force browser cache refresh
+    </div>
+  </div>
+
+  <script>
+    const sizes = [16, 32, 48, 128, 512];
+    const logoSizeSlider = document.getElementById('logoSize');
+    const logoSizeValue = document.getElementById('logoSizeValue');
+    const bgColorInput = document.getElementById('bgColor');
+
+    // Update displays when controls change
+    logoSizeSlider.addEventListener('input', (e) => {
+      logoSizeValue.textContent = e.target.value + '%';
+      renderAllFavicons();
+    });
+
+    bgColorInput.addEventListener('input', renderAllFavicons);
+
+    function renderAllFavicons() {
+      sizes.forEach(size => {
+        renderFavicon(size);
+      });
+    }
+
+    function renderFavicon(size) {
+      const canvas = document.getElementById(`favicon${size}`);
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const bgColor = bgColorInput.value;
+      const logoSizePercent = parseInt(logoSizeSlider.value);
+
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+
+      // Draw solid background
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, size, size);
+
+      // Calculate emoji size (as percentage of canvas)
+      const emojiFontSize = (size * logoSizePercent) / 100;
+
+      // Draw bug emoji centered and HUGE
+      ctx.font = `${emojiFontSize}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // Draw emoji (bug 🐛)
+      ctx.fillText('🐛', size / 2, size / 2);
+    }
+
+    function downloadFavicon(size) {
+      const canvas = document.getElementById(`favicon${size}`);
+      const link = document.createElement('a');
+      link.download = `favicon-${size}x${size}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function downloadAll() {
+      sizes.forEach(size => {
+        setTimeout(() => downloadFavicon(size), size * 10);
+      });
+      alert('Downloading all favicon sizes! Check your Downloads folder.');
+    }
+
+    // Initial render
+    renderAllFavicons();
+  </script>
+</body>
+</html>

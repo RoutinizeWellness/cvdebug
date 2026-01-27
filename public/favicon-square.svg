@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background to match brand - fills entire space -->
+  <rect width="512" height="512" fill="#1E293B" rx="96"/>
+
+  <!-- Document frame (slightly lighter for contrast) - MUCH LARGER -->
+  <rect x="60" y="40" width="392" height="432" rx="16" fill="#334155"/>
+
+  <!-- Document lines (white) - LARGER and MORE PROMINENT -->
+  <line x1="100" y1="120" x2="412" y2="120" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.95"/>
+  <line x1="100" y1="200" x2="412" y2="200" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.95"/>
+  <line x1="100" y1="280" x2="412" y2="280" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.95"/>
+  <line x1="100" y1="360" x2="320" y2="360" stroke="white" stroke-width="20" stroke-linecap="round" opacity="0.95"/>
+
+  <!-- Bug badge - MUCH LARGER and more visible -->
+  <circle cx="400" cy="420" r="90" fill="#EF4444"/>
+  <line x1="400" y1="350" x2="400" y2="490" stroke="white" stroke-width="28" stroke-linecap="round"/>
+  <line x1="330" y1="420" x2="470" y2="420" stroke="white" stroke-width="28" stroke-linecap="round"/>
+</svg>

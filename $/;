@@ -1,0 +1,15 @@
+    cleaned = cleaned.replace(jsonBlockStart, '').replace(jsonBlockEnd, '').trim();
+
+    const parsed = JSON.parse(cleaned);
+    if (parsed && typeof parsed === 'object') {
+      return parsed;
+    }
+
+    throw new Error("Parsed content is not a valid object");
+
+  } catch (err: any) {
+    console.error("[extractJSON] JSON parsing failed:", err.message);
+    // Return empty object to trigger fallback
+    return {};
+  }
+}

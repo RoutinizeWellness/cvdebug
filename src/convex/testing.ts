@@ -1,0 +1,125 @@
+import { mutation } from "./_generated/server";
+import { v } from "convex/values";
+import { internal } from "./_generated/api";
+
+// Cast internal to any to avoid type instantiation issues
+const internalAny = require("./_generated/api").internal;
+
+export const sendTestEmail = mutation({
+  args: {
+    email: v.string(),
+    type: v.string(), // "welcome", "reminder_24h", "last_chance_72h", "post_scan", "value_reminder", "discount", "win_back", "all"
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .first();
+
+    const name = user?.name || "Test User";
+    const email = args.email;
+    const type = args.type.trim();
+
+    const validTypes = ["welcome", "reminder_24h", "last_chance_72h", "post_scan", "value_reminder", "discount", "win_back"];
+
+    if (type === "all") {
+      for (const t of validTypes) {
+        await scheduleEmail(ctx, t, email, name);
+      }
+      return `Scheduled all ${validTypes.length} emails for ${email}`;
+    }
+
+    if (!validTypes.includes(type)) {
+      throw new Error(`Invalid email type: "${type}". Valid types are: ${validTypes.join(", ")}, or "all"`);
+    }
+
+    await scheduleEmail(ctx, type, email, name);
+    return `Scheduled ${type} email for ${email}`;
+  },
+});
+
+async function scheduleEmail(ctx: any, type: string, email: string, name: string) {
+  console.log(`Scheduling ${type} email for ${email}`);
+  switch (type) {
+    case "welcome":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendOnboardingEmail, { email, name, variant: "A" });
+      break;
+    case "reminder_24h":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendActivationReminderEmail, { email, name });
+      break;
+    case "last_chance_72h":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendActivationLastChanceEmail, { email, name });
+      break;
+    case "post_scan":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendPostScanEmail, { email, name, score: 65 });
+      break;
+    case "value_reminder":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendValueReminderEmail, { email, name, score: 65 });
+      break;
+    case "discount":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendDiscountEmail, { email, name });
+      break;
+    case "win_back":
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendWinBackEmail, { email, name });
+      break;
+  }
+}
+
+export const resetUserFlags = mutation({
+  args: { email: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .first();
+
+    if (!user) return "User not found";
+
+    await ctx.db.patch(user._id, {
+      activationEmail24hSent: undefined,
+      winBackEmail30dSent: undefined,
+    });
+
+    return "Reset user email flags";
+  },
+});
+
+export const simulatePurchase = mutation({
+  args: { 
+    email: v.string(), 
+    plan: v.union(v.literal("single_scan"), v.literal("interview_sprint")) 
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+
+    if (!user) return "User not found";
+
+    const creditsToAdd = args.plan === "single_scan" ? 1 : 0;
+    const currentCredits = user.credits ?? 0;
+
+    const updates: any = {
+      credits: currentCredits + creditsToAdd,
+      subscriptionTier: args.plan,
+    };
+    
+    if (args.plan === "interview_sprint") {
+      updates.sprintExpiresAt = Date.now() + (7 * 24 * 60 * 60 * 1000);
+    }
+
+    await ctx.db.patch(user._id, updates);
+
+    if (user.email) {
+      await ctx.scheduler.runAfter(0, internalAny.marketing.sendPurchaseConfirmationEmail, {
+        email: user.email,
+        name: user.name,
+        plan: args.plan,
+        credits: creditsToAdd
+      });
+    }
+
+    return `Updated ${user.email}: Plan=${args.plan}, Credits=${currentCredits} -> ${currentCredits + creditsToAdd}`;
+  },
+});

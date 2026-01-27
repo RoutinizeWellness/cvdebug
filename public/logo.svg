@@ -1,0 +1,52 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bug icon with CVDebug branding - LARGER with gray theme -->
+
+  <!-- Bug body - LARGER -->
+  <ellipse cx="60" cy="63" rx="22" ry="30" fill="url(#bugGradient)"/>
+
+  <!-- Bug head - LARGER -->
+  <circle cx="60" cy="40" r="16" fill="url(#bugGradient)"/>
+
+  <!-- Antennas - LARGER -->
+  <path d="M 49 33 Q 42 24 35 18" stroke="#64748B" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <path d="M 71 33 Q 78 24 85 18" stroke="#64748B" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Antenna tips (glowing) - LARGER -->
+  <circle cx="35" cy="18" r="4.5" fill="#94A3B8">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="85" cy="18" r="4.5" fill="#94A3B8">
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+
+  <!-- Eyes - LARGER -->
+  <circle cx="52" cy="39" r="4" fill="#0F172A" opacity="0.9"/>
+  <circle cx="68" cy="39" r="4" fill="#0F172A" opacity="0.9"/>
+
+  <!-- Eye shine - LARGER -->
+  <circle cx="53.5" cy="37.5" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="69.5" cy="37.5" r="1.5" fill="white" opacity="0.9"/>
+
+  <!-- Legs (3 per side, more prominent) - LARGER -->
+  <path d="M 40 52 L 20 57" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 38 63 L 16 70" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 40 74 L 20 82" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+
+  <path d="M 80 52 L 100 57" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 82 63 L 104 70" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M 80 74 L 100 82" stroke="#64748B" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Body segments (enhanced) - LARGER -->
+  <line x1="43" y1="53" x2="77" y2="53" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
+  <line x1="42" y1="63" x2="78" y2="63" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
+  <line x1="43" y1="73" x2="77" y2="73" stroke="rgba(15, 23, 42, 0.3)" stroke-width="2"/>
+
+  <!-- Gradient definition - Gray theme -->
+  <defs>
+    <linearGradient id="bugGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#334155;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1E293B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

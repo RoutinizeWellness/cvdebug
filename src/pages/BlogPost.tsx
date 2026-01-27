@@ -1,0 +1,353 @@
+import { useNavigate, useParams } from "react-router";
+import { motion } from "framer-motion";
+import { NewNavbar } from "@/components/landing/NewNavbar";
+import { NewFooter } from "@/components/landing/NewFooter";
+import { Calendar, Clock, ArrowLeft, Eye, Share2, Tag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useEffect } from "react";
+import { updatePageSEO } from "@/lib/seo";
+import { toast } from "sonner";
+import { SEOHead } from "@/components/SEOHead";
+
+export default function BlogPost() {
+  const navigate = useNavigate();
+  const { slug } = useParams<{ slug: string }>();
+  const post = useQuery(api.blog.getPostBySlug, slug ? { slug } : "skip");
+  const recentPosts = useQuery(api.blog.getRecentPosts, { limit: 3 });
+  const incrementViews = useMutation(api.blog.incrementViews);
+
+  useEffect(() => {
+    if (post && post._id) {
+      // Increment view count
+      incrementViews({ postId: post._id }).catch(console.error);
+
+      // Update SEO
+      updatePageSEO({
+        title: post.metaTitle || `${post.title} | CVDebug Blog`,
+        description: post.metaDescription || post.excerpt,
+        keywords: post.keywords,
+        canonical: post.canonicalUrl || `https://cvdebug.com/blog/${post.slug}`,
+      });
+    }
+  }, [post, incrementViews]);
+
+  const handleShare = () => {
+    const url = `https://cvdebug.com/blog/${slug}`;
+    if (navigator.share) {
+      navigator.share({
+        title: post?.title,
+        text: post?.excerpt,
+        url: url,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(url);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
+  if (!post) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-900 text-xl">Loading post...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <SEOHead
+        title={post.metaTitle || `${post.title} | CVDebug Blog`}
+        description={post.metaDescription || post.excerpt}
+        keywords={post.keywords || []}
+        ogType="article"
+        ogImage={post.featuredImage}
+        canonical={post.canonicalUrl || `https://cvdebug.com/blog/${post.slug}`}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.excerpt,
+          "author": {
+            "@type": "Person",
+            "name": post.author
+          },
+          "datePublished": post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date().toISOString(),
+          "image": post.featuredImage,
+          "publisher": {
+            "@type": "Organization",
+            "name": "CVDebug",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://harmless-tapir-303.convex.cloud/api/storage/4f836582-7336-4306-8004-211fad87218f"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://cvdebug.com/blog/${post.slug}`
+          }
+        }}
+      />
+
+      <NewNavbar />
+
+      <main className="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back Button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/blog')}
+            className="mb-8 text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Blog
+          </Button>
+        </motion.div>
+
+        {/* Article Header */}
+        <motion.article
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <header className="mb-12">
+            <span className="inline-block px-4 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full text-[#0F172A] text-sm font-semibold mb-6">
+              {post.category}
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              {post.title}
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              {post.excerpt}
+            </p>
+
+            {/* Meta Information */}
+            <div className="flex items-center justify-between flex-wrap gap-4 py-6 border-y border-gray-200">
+              <div className="flex items-center gap-6 flex-wrap text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <time>
+                    {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    }) : 'Recently'}
+                  </time>
+                </div>
+                {post.readingTime && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{post.readingTime} min read</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  <span>{post.views || 0} views</span>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleShare}
+                className="text-gray-600 hover:text-gray-900 border-gray-300"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share
+              </Button>
+            </div>
+          </header>
+
+          {/* Featured Image */}
+          {post.featuredImage && (
+            <div className="mb-12 rounded-xl overflow-hidden border border-gray-200">
+              <img
+                src={post.featuredImage}
+                alt={post.title}
+                className="w-full h-auto"
+              />
+            </div>
+          )}
+
+          {/* Article Content */}
+          <div
+            className="prose prose-lg prose-gray max-w-none mb-12"
+            style={{
+              color: '#1f2937',
+            }}
+          >
+            <style>{`
+              .prose h1 {
+                font-size: 2.25rem;
+                font-weight: 800;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: #111827;
+                line-height: 1.2;
+              }
+              .prose h2 {
+                font-size: 1.875rem;
+                font-weight: 700;
+                margin-top: 2rem;
+                margin-bottom: 1rem;
+                color: #111827;
+                line-height: 1.3;
+              }
+              .prose h3 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+                color: #1f2937;
+                line-height: 1.4;
+              }
+              .prose p {
+                margin-top: 1.25rem;
+                margin-bottom: 1.25rem;
+                line-height: 1.75;
+                color: #374151;
+              }
+              .prose ul, .prose ol {
+                margin-top: 1.25rem;
+                margin-bottom: 1.25rem;
+                padding-left: 1.5rem;
+              }
+              .prose li {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.75;
+                color: #374151;
+              }
+              .prose li::marker {
+                color: #3b82f6;
+                font-weight: 600;
+              }
+              .prose strong {
+                color: #111827;
+                font-weight: 600;
+              }
+              .prose a {
+                color: #3b82f6;
+                text-decoration: underline;
+              }
+              .prose a:hover {
+                color: #2563eb;
+              }
+              .prose code {
+                background-color: #f3f4f6;
+                padding: 0.125rem 0.375rem;
+                border-radius: 0.25rem;
+                font-size: 0.875em;
+                color: #1f2937;
+              }
+              .prose pre {
+                background-color: #1f2937;
+                color: #e5e7eb;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+              }
+              .prose blockquote {
+                border-left: 4px solid #3b82f6;
+                padding-left: 1rem;
+                font-style: italic;
+                color: #4b5563;
+                margin-top: 1.5rem;
+                margin-bottom: 1.5rem;
+              }
+              .prose hr {
+                border-color: #e5e7eb;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+              }
+            `}</style>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </div>
+
+          {/* Tags */}
+          {post.tags.length > 0 && (
+            <div className="flex items-center gap-3 flex-wrap mb-12 pb-8 border-b border-gray-200">
+              <Tag className="w-4 h-4 text-gray-500" />
+              <span className="text-gray-600 font-semibold text-sm">Tags:</span>
+              {post.tags.map((tag: any, index: number) => (
+                <span
+                  key={index}
+                  className="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Author Info */}
+          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-8 mb-12">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">About the Author</h3>
+            <p className="text-gray-700">
+              Written by <span className="text-[#1E293B] font-semibold">{post.author}</span>
+            </p>
+          </div>
+        </motion.article>
+
+        {/* Related Posts */}
+        {recentPosts && recentPosts.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">More Articles</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {recentPosts.filter((p: any) => p.slug !== post.slug).slice(0, 3).map((relatedPost: any) => (
+                <motion.div
+                  key={relatedPost.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  onClick={() => navigate(`/blog/${relatedPost.slug}`)}
+                  className="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer hover:border-[#CBD5E1] hover:shadow-lg transition-all"
+                >
+                  <span className="inline-block px-3 py-1 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-semibold mb-3">
+                    {relatedPost.category}
+                  </span>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-[#1E293B] transition-colors">
+                    {relatedPost.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm line-clamp-2">
+                    {relatedPost.excerpt}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* CTA */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="p-12 bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border border-[#E2E8F0] rounded-2xl text-center"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Ready to Optimize Your Resume?
+          </h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Get instant ATS analysis and actionable feedback in seconds.
+          </p>
+          <Button
+            onClick={() => navigate('/')}
+            size="lg"
+            className="bg-[#0F172A] hover:bg-[#0F172A] text-white px-10 py-6 text-lg font-bold rounded-lg shadow-lg"
+          >
+            Scan Your Resume for Free
+          </Button>
+        </motion.section>
+      </main>
+
+      <NewFooter />
+    </div>
+  );
+}

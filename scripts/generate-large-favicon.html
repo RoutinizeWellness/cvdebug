@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Large Logo Favicon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        .preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #3B82F6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐛 Generate Large Logo Favicons</h1>
+    <p>Creates favicons with 85% logo size (like TikTok, Apple, Reddit)</p>
+
+    <div>
+        <label>
+            Background Color:
+            <input type="color" id="bgColor" value="#3B82F6">
+        </label>
+        <label>
+            Logo Size (%):
+            <input type="range" id="logoSize" min="70" max="95" value="85" step="5">
+            <span id="logoSizeValue">85%</span>
+        </label>
+    </div>
+
+    <h3>Preview:</h3>
+    <div class="preview">
+        <div>
+            <p>16x16</p>
+            <canvas id="canvas16" width="16" height="16"></canvas>
+        </div>
+        <div>
+            <p>32x32</p>
+            <canvas id="canvas32" width="32" height="32"></canvas>
+        </div>
+        <div>
+            <p>180x180 (Apple)</p>
+            <canvas id="canvas180" width="180" height="180"></canvas>
+        </div>
+        <div>
+            <p>512x512</p>
+            <canvas id="canvas512" width="512" height="512"></canvas>
+        </div>
+    </div>
+
+    <button onclick="downloadAll()">Download All Sizes</button>
+    <button onclick="updatePreviews()">Refresh Preview</button>
+
+    <script>
+        const logoEmoji = '🐛';
+
+        function renderFavicon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+
+            // Get settings
+            const bgColor = document.getElementById('bgColor').value;
+            const logoSizePercent = parseInt(document.getElementById('logoSize').value);
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Draw background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, size, size);
+
+            // Draw emoji (85% of canvas like Apple/TikTok)
+            const emojiFontSize = (size * logoSizePercent) / 100;
+            ctx.font = `${emojiFontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(logoEmoji, size / 2, size / 2);
+        }
+
+        function updatePreviews() {
+            renderFavicon('canvas16', 16);
+            renderFavicon('canvas32', 32);
+            renderFavicon('canvas180', 180);
+            renderFavicon('canvas512', 512);
+
+            // Update label
+            const logoSize = document.getElementById('logoSize').value;
+            document.getElementById('logoSizeValue').textContent = logoSize + '%';
+        }
+
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function downloadAll() {
+            downloadCanvas('canvas16', 'favicon-16x16.png');
+            setTimeout(() => downloadCanvas('canvas32', 'favicon-32x32.png'), 100);
+            setTimeout(() => downloadCanvas('canvas180', 'apple-touch-icon.png'), 200);
+            setTimeout(() => downloadCanvas('canvas512', 'favicon.png'), 300);
+
+            alert('All favicons downloaded! Now:\n\n1. Replace files in /public/\n2. Update version in index.html (v=25)\n3. Clear browser cache');
+        }
+
+        // Auto-update on change
+        document.getElementById('bgColor').addEventListener('change', updatePreviews);
+        document.getElementById('logoSize').addEventListener('input', updatePreviews);
+
+        // Initial render
+        updatePreviews();
+    </script>
+
+    <hr>
+    <h3>Instructions:</h3>
+    <ol>
+        <li>Adjust logo size to 85% (recommended for large, visible logo like TikTok)</li>
+        <li>Click "Download All Sizes"</li>
+        <li>Replace files in <code>/public/</code>:
+            <ul>
+                <li>favicon-16x16.png</li>
+                <li>favicon-32x32.png</li>
+                <li>apple-touch-icon.png (180x180)</li>
+                <li>favicon.png (512x512)</li>
+            </ul>
+        </li>
+        <li>Update version in index.html: <code>v=24</code> → <code>v=25</code></li>
+        <li>Generate .ico file online at <a href="https://www.icoconverter.com/">icoconverter.com</a> using the 32x32.png</li>
+    </ol>
+
+    <h3>Why 85% Logo Size?</h3>
+    <ul>
+        <li><strong>TikTok:</strong> 85% logo, 15% padding</li>
+        <li><strong>Apple:</strong> 80-85% logo, very visible</li>
+        <li><strong>Reddit:</strong> 90% logo (Snoo fills the space)</li>
+        <li><strong>Twitter:</strong> 85% logo</li>
+        <li><strong>Default (bad):</strong> 50-60% logo, too much padding</li>
+    </ul>
+
+    <p><strong>Result:</strong> Your 🐛 logo will be VERY visible in browser tabs, bookmarks, and mobile home screens!</p>
+</body>
+</html>

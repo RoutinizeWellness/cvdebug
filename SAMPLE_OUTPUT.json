@@ -1,0 +1,304 @@
+{
+  "success": true,
+  "data": {
+    "keywordAnalysis": {
+      "overallScore": 82,
+      "categoryBreakdown": {
+        "technical": {
+          "score": 85,
+          "matched": 12,
+          "total": 15
+        },
+        "soft": {
+          "score": 70,
+          "matched": 7,
+          "total": 10
+        },
+        "tools": {
+          "score": 90,
+          "matched": 9,
+          "total": 10
+        },
+        "methodology": {
+          "score": 75,
+          "matched": 3,
+          "total": 4
+        }
+      },
+      "matchedKeywords": [
+        {
+          "keyword": "javascript",
+          "category": "technical",
+          "weight": 5,
+          "matched": true,
+          "frequency": 3,
+          "sections": ["Experience", "Skills"],
+          "context": "Built scalable web applications using JavaScript and React...",
+          "relatedSkillsFound": ["react", "node.js", "typescript"]
+        },
+        {
+          "keyword": "react",
+          "category": "technical",
+          "weight": 5,
+          "matched": true,
+          "frequency": 5,
+          "sections": ["Experience", "Skills"],
+          "context": "Developed React components for e-commerce platform...",
+          "relatedSkillsFound": ["javascript", "redux", "next.js"]
+        },
+        {
+          "keyword": "aws",
+          "category": "technical",
+          "weight": 5,
+          "matched": true,
+          "frequency": 2,
+          "sections": ["Experience"],
+          "context": "Deployed applications to AWS using EC2 and S3...",
+          "relatedSkillsFound": ["docker", "kubernetes"]
+        }
+      ],
+      "missingKeywords": [
+        {
+          "keyword": "typescript",
+          "category": "technical",
+          "weight": 7,
+          "matched": false,
+          "frequency": 0,
+          "sections": [],
+          "context": "",
+          "relatedSkillsFound": []
+        },
+        {
+          "keyword": "kubernetes",
+          "category": "technical",
+          "weight": 7,
+          "matched": false,
+          "frequency": 0,
+          "sections": [],
+          "context": "",
+          "relatedSkillsFound": ["docker"]
+        }
+      ],
+      "industryRelevance": "software",
+      "strengthAreas": ["Technical", "Tools"],
+      "improvementAreas": ["Soft"]
+    },
+    "impactAnalysis": {
+      "totalMetrics": 12,
+      "impactScore": 78,
+      "impactLevel": "strong",
+      "metrics": [
+        {
+          "type": "percentage",
+          "value": "improved performance by 40%",
+          "context": "Optimized database queries, improving application performance by 40% and reducing load time from 3s to 1.8s",
+          "sentiment": "positive",
+          "impactScore": 8,
+          "category": "efficiency"
+        },
+        {
+          "type": "currency",
+          "value": "$2.5M",
+          "context": "Led development of e-commerce platform that generated $2.5M in revenue in first year",
+          "sentiment": "positive",
+          "impactScore": 10,
+          "category": "revenue"
+        },
+        {
+          "type": "scale",
+          "value": "100K+ users",
+          "context": "Built API serving 100K+ daily active users with 99.9% uptime",
+          "sentiment": "positive",
+          "impactScore": 9,
+          "category": "leadership"
+        },
+        {
+          "type": "time",
+          "value": "reduced deployment time from 2 hours to 15 minutes",
+          "context": "Implemented CI/CD pipeline using Jenkins and Docker, reduced deployment time from 2 hours to 15 minutes",
+          "sentiment": "positive",
+          "impactScore": 8,
+          "category": "efficiency"
+        },
+        {
+          "type": "growth",
+          "value": "3x faster",
+          "context": "Refactored legacy codebase making application 3x faster",
+          "sentiment": "positive",
+          "impactScore": 9,
+          "category": "growth"
+        },
+        {
+          "type": "scale",
+          "value": "team of 5 engineers",
+          "context": "Mentored and led team of 5 engineers in developing microservices architecture",
+          "sentiment": "positive",
+          "impactScore": 7,
+          "category": "leadership"
+        },
+        {
+          "type": "percentage",
+          "value": "reduced costs by 30%",
+          "context": "Migrated infrastructure to cloud, reducing hosting costs by 30%",
+          "sentiment": "positive",
+          "impactScore": 8,
+          "category": "efficiency"
+        },
+        {
+          "type": "numeric",
+          "value": "50+ features",
+          "context": "Delivered 50+ features across 3 major product releases",
+          "sentiment": "positive",
+          "impactScore": 7,
+          "category": "quality"
+        },
+        {
+          "type": "percentage",
+          "value": "increased test coverage from 45% to 85%",
+          "context": "Implemented comprehensive testing strategy, increased test coverage from 45% to 85%",
+          "sentiment": "positive",
+          "impactScore": 7,
+          "category": "quality"
+        },
+        {
+          "type": "scale",
+          "value": "10 million requests/day",
+          "context": "Scaled backend to handle 10 million requests per day",
+          "sentiment": "positive",
+          "impactScore": 9,
+          "category": "leadership"
+        },
+        {
+          "type": "time",
+          "value": "3 years",
+          "context": "Senior Software Engineer at TechCorp (2020-2023, 3 years)",
+          "sentiment": "neutral",
+          "impactScore": 6,
+          "category": "quality"
+        },
+        {
+          "type": "percentage",
+          "value": "98% uptime",
+          "context": "Maintained production systems with 98% uptime SLA",
+          "sentiment": "positive",
+          "impactScore": 7,
+          "category": "quality"
+        }
+      ],
+      "missingMetricOpportunities": [],
+      "improvementSuggestions": [
+        "Add a few more high-impact metrics to reach 'elite' level (15+ metrics)"
+      ]
+    },
+    "missingKeywordSuggestions": [
+      {
+        "keyword": "kubernetes",
+        "priority": "critical",
+        "impact": 8,
+        "section": "Skills or Experience",
+        "context": "Built scalable microservices using kubernetes that processed 10K+ requests/second",
+        "synonyms": ["k8s", "container orchestration"],
+        "reasoning": "This keyword appears in the job description and is critical for ATS matching."
+      },
+      {
+        "keyword": "typescript",
+        "priority": "critical",
+        "impact": 9,
+        "section": "Skills or Experience",
+        "context": "Built scalable microservices using typescript that processed 10K+ requests/second",
+        "synonyms": ["ts"],
+        "reasoning": "This keyword appears in the job description and is critical for ATS matching."
+      },
+      {
+        "keyword": "graphql",
+        "priority": "important",
+        "impact": 6,
+        "section": "Skills or Experience",
+        "context": "Built scalable microservices using graphql that processed 10K+ requests/second",
+        "synonyms": [],
+        "reasoning": "This keyword appears in the job description and is critical for ATS matching."
+      },
+      {
+        "keyword": "postgresql",
+        "priority": "important",
+        "impact": 7,
+        "section": "Skills or Experience",
+        "context": "Built scalable microservices using postgresql that processed 10K+ requests/second",
+        "synonyms": ["postgres"],
+        "reasoning": "High-value skill (weight: 5/5) that strengthens your technical profile."
+      },
+      {
+        "keyword": "terraform",
+        "priority": "important",
+        "impact": 6,
+        "section": "Skills or Experience",
+        "context": "Utilized terraform to streamline development workflows and reduce deployment time by 40%",
+        "synonyms": ["infrastructure as code"],
+        "reasoning": "This keyword appears in the job description and is critical for ATS matching."
+      },
+      {
+        "keyword": "agile",
+        "priority": "important",
+        "impact": 7,
+        "section": "Experience bullet points",
+        "context": "Led agile transformation, implementing sprint planning and retrospectives across 3 teams",
+        "synonyms": ["agile methodology"],
+        "reasoning": "High-value skill (weight: 5/5) that strengthens your methodology profile."
+      },
+      {
+        "keyword": "microservices",
+        "priority": "important",
+        "impact": 6,
+        "section": "Skills or Experience",
+        "context": "Built scalable microservices using microservices that processed 10K+ requests/second",
+        "synonyms": ["microservice architecture"],
+        "reasoning": "High-value skill (weight: 4/5) that strengthens your technical profile."
+      },
+      {
+        "keyword": "redis",
+        "priority": "nice-to-have",
+        "impact": 4,
+        "section": "Skills or Experience",
+        "context": "Utilized redis to streamline development workflows and reduce deployment time by 40%",
+        "synonyms": [],
+        "reasoning": "High-value skill (weight: 4/5) that strengthens your technical profile."
+      }
+    ],
+    "atsCompatibility": {
+      "overallScore": 85,
+      "formatScore": 90,
+      "contentScore": 85,
+      "keywordScore": 82,
+      "issues": [
+        {
+          "severity": "warning",
+          "category": "format",
+          "message": "Special bullet characters detected (●, ■, etc.)",
+          "fix": "Replace with standard bullets (-) or let the ATS system handle formatting"
+        },
+        {
+          "severity": "warning",
+          "category": "content",
+          "message": "Few quantifiable achievements detected",
+          "fix": "Add more numbers and metrics to your bullet points. Current: 12 metrics"
+        },
+        {
+          "severity": "info",
+          "category": "format",
+          "message": "Possible multi-column layout detected",
+          "fix": "Use single-column layout for better ATS parsing"
+        }
+      ],
+      "recommendations": [
+        "Add 3 high-priority keywords to boost your score",
+        "Address critical issues first for immediate score improvement"
+      ]
+    },
+    "metadata": {
+      "analyzedAt": "2026-01-15T18:30:45.123Z",
+      "targetIndustry": "software",
+      "hasJobDescription": true,
+      "resumeLength": 2847
+    }
+  }
+}
