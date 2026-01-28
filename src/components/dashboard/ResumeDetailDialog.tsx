@@ -63,7 +63,7 @@ import { ActionableFixes } from "./analysis/ActionableFixes";
 import { ImpactScore } from "./analysis/ImpactScore";
 import { AIProTip } from "./analysis/AIProTip";
 import { ImageTrapAlert } from "./ImageTrapAlert";
-import { LiveRecruiterSimulation } from "./LiveRecruiterSimulation";
+import { LiveRecruiterSimulation } from "./analysis/LiveRecruiterSimulation";
 import { InterviewPrepMode } from "./InterviewPrepMode";
 import { SanitizedVersionDialog } from "./SanitizedVersionDialog";
 import { InterviewBattlePlan } from "./InterviewBattlePlan";
@@ -411,89 +411,80 @@ export function ResumeDetailDialog({
 
   const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
 
-  // Prepare audit items - dynamically generated from real format issues
+  // Prepare audit items - DEEP DIAGNOSTIC ALGORITHM
   const auditItems: Array<{
     title: string;
     status: "passed" | "failed" | "warning";
     reason: string;
     fix: string;
+    severity: "low" | "medium" | "high";
   }> = (() => {
     const items: Array<{
       title: string;
       status: "passed" | "failed" | "warning";
       reason: string;
       fix: string;
+      severity: "low" | "medium" | "high";
     }> = [];
 
+    const ocrText = displayResume?.ocrText || "";
     const formatIssues = displayResume?.formatIssues || [];
 
-    // Only add items if there are actual issues detected
-    if (formatIssues.length > 0) {
-      formatIssues.forEach((issue: any) => {
-        // Defensive check: skip if issue is undefined or null
-        if (!issue) return;
+    // --- 1. ATS KILLER: Tables Detection ---
+    const hasTableMarkers = /\||--|-{3,}|\+{3,}/.test(ocrText) || (displayResume?.analysis?.toLowerCase().includes("table"));
+    items.push({
+      title: "Table Layout Detection",
+      status: hasTableMarkers ? "failed" : "passed",
+      reason: hasTableMarkers ? "Tables detected in CV structure." : "No complex tables detected.",
+      fix: "Standard ATS parsers (Workday, Taleo) often skip text inside tables. Use simple tabs and alignment instead.",
+      severity: "high"
+    });
 
-        const issueText = issue.issue || issue.message || "";
-        const issueLower = issueText.toLowerCase();
+    // --- 2. ATS KILLER: Multi-column Detection ---
+    const isMultiColumn = displayResume?.analysis?.toLowerCase().includes("column") || displayResume?.analysis?.toLowerCase().includes("split");
+    items.push({
+      title: "Multi-column Sensitivity",
+      status: isMultiColumn ? "warning" : "passed",
+      reason: isMultiColumn ? "Split column layout detected." : "Single column layout verified.",
+      fix: "Older ATS systems read left-to-right across the whole page, scrambling your experience. Use a vertical, single-column layout for 99% compatibility.",
+      severity: "medium"
+    });
 
-        // Contact information
-        if (issueLower.includes('contact') || issueLower.includes('email') || issueLower.includes('phone')) {
-          items.push({
-            title: "Contact Information Parsing",
-            status: "failed",
-            reason: issueText,
-            fix: issue.fix || "Place contact info at the top in a clear format: name@email.com, (123) 456-7890"
-          });
-        }
-        // Section headers
-        else if (issueLower.includes('section') || issueLower.includes('header')) {
-          items.push({
-            title: "Section Headers Recognition",
-            status: "warning",
-            reason: issueText,
-            fix: issue.fix || "Use standard headers: Experience, Education, Skills, Projects"
-          });
-        }
-        // Bullet points
-        else if (issueLower.includes('bullet') || issueLower.includes('list')) {
-          items.push({
-            title: "Bullet Point Formatting",
-            status: "failed",
-            reason: issueText,
-            fix: issue.fix || "Use simple bullets (•) and maintain consistent indentation"
-          });
-        }
-        // Date format
-        else if (issueLower.includes('date')) {
-          items.push({
-            title: "Date Format Consistency",
-            status: "warning",
-            reason: issueText,
-            fix: issue.fix || "Use consistent date format: MM/YYYY or Month YYYY"
-          });
-        }
-        // Font and styling
-        else if (issueLower.includes('font') || issueLower.includes('table') || issueLower.includes('format') || issueLower.includes('style')) {
-          items.push({
-            title: "Font & Styling Compatibility",
-            status: "warning",
-            reason: issueText,
-            fix: issue.fix || "Avoid tables, text boxes, and unusual fonts. Stick to standard fonts like Arial or Calibri"
-          });
-        }
-        // Generic issue
-        else {
-          items.push({
-            title: "Formatting Issue",
-            status: "warning",
-            reason: issueText,
-            fix: issue.fix || "Review and fix this formatting issue"
-          });
-        }
-      });
-    }
+    // --- 3. ATS KILLER: Non-standard Headers ---
+    const standardHeaders = ["Experience", "Education", "Skills", "Projects", "Summary"];
+    const foundHeaders = standardHeaders.filter(h => new RegExp(`\\b${h}\\b`, "i").test(ocrText));
+    const missingHeaders = standardHeaders.filter(h => !foundHeaders.includes(h) && h !== "Projects");
 
-    // If no issues, return empty array (will show "No format issues detected")
+    items.push({
+      title: "Section Header Recognition",
+      status: missingHeaders.length > 0 ? "warning" : "passed",
+      reason: missingHeaders.length > 0 ? `Missing standard headers: ${missingHeaders.join(", ")}` : "All standard headers detected.",
+      fix: "ATS systems look for specific keywords to bucket your data. Use 'Professional Experience' instead of 'My Career Journey'.",
+      severity: "medium"
+    });
+
+    // --- 4. ATS KILLER: Image & Graphic Extraction ---
+    const hasImageText = /image|graphic|icon|profile photo/.test(displayResume?.analysis?.toLowerCase() || "");
+    items.push({
+      title: "Graphic & Link Integrity",
+      status: hasImageText ? "warning" : "passed",
+      reason: hasImageText ? "Non-text elements detected." : "Clean text extraction verified.",
+      fix: "Avoid profile photos and heavy graphics. They can increase file size and distract some OCR engines.",
+      severity: "low"
+    });
+
+    // --- 5. Contact Info Parsing ---
+    const hasEmail = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(ocrText);
+    const hasPhone = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/.test(ocrText) || /\b\+\d{1,3}\b/.test(ocrText);
+
+    items.push({
+      title: "Contact Info Accessibility",
+      status: (hasEmail && hasPhone) ? "passed" : "failed",
+      reason: (hasEmail && hasPhone) ? "Email and Phone clearly detected." : "Contact details might be missing or in headers.",
+      fix: "Ensure your email and phone are in the main body text, NOT the header file. Many ATS strip headers/footers completely.",
+      severity: "high"
+    });
+
     return items;
   })();
 
@@ -572,76 +563,53 @@ export function ResumeDetailDialog({
 
     if (!displayResume) return steps;
 
-    // CRITICAL: No metrics (0% quantifiable achievements)
-    if (!displayResume.stats?.hasQuantifiableAchievements) {
+    // 1. FORMAT CRITICAL: Tables or Columns
+    const formatAudit = auditItems;
+    const criticalFormat = formatAudit.find(a => a.status === "failed" && a.severity === "high");
+    if (criticalFormat) {
       steps.push({
         id: `step-${stepId++}`,
-        title: "Add Quantifiable Metrics (0% Detected)",
-        description: "89% of ATS systems auto-reject resumes without numbers. Add metrics like percentages, dollar amounts, or counts to every achievement.",
+        title: `Fix Structural Issue: ${criticalFormat.title}`,
+        description: criticalFormat.fix,
         priority: 'critical' as const,
         completed: false,
-        estimatedImpact: "+15-25%"
+        estimatedImpact: "+20-30%"
       });
     }
 
-    // CRITICAL: Missing sections
-    if (displayResume.missingElements && displayResume.missingElements.length > 0) {
+    // 2. CONTENT CRITICAL: No metrics
+    if (!displayResume.stats?.hasQuantifiableAchievements) {
       steps.push({
         id: `step-${stepId++}`,
-        title: `Add Missing Sections: ${displayResume.missingElements.slice(0, 2).join(', ')}`,
-        description: `Required sections not found: ${displayResume.missingElements.join(', ')}. ATS parsers expect standard headers.`,
+        title: "Quantify Your Impact",
+        description: "Your experience lacks numeric achievements. Add data ($, %, #) to at least 50% of your bullet points to bypass 'low-impact' filters.",
         priority: 'critical' as const,
+        completed: false,
+        estimatedImpact: "+15-20%"
+      });
+    }
+
+    // 3. KEYWORDS IMPORTANT: Missing 5+
+    if (displayResume.missingKeywords && displayResume.missingKeywords.length > 5) {
+      steps.push({
+        id: `step-${stepId++}`,
+        title: `Inject ${displayResume.missingKeywords.length} Required Keywords`,
+        description: `Your match rate is low due to missing core skills: ${displayResume.missingKeywords.slice(0, 3).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}.`,
+        priority: 'important' as const,
         completed: false,
         estimatedImpact: "+10-15%"
       });
     }
 
-    // IMPORTANT: Missing keywords (5+)
-    if (displayResume.missingKeywords && displayResume.missingKeywords.length > 5) {
+    // 4. ROLE SPECIFIC: Seniority mismatch
+    if (displayResume.seniorityLevel && displayResume.experienceLevel && displayResume.seniorityLevel !== displayResume.experienceLevel) {
       steps.push({
         id: `step-${stepId++}`,
-        title: `Add ${displayResume.missingKeywords.length} Missing Keywords`,
-        description: `Critical keywords not found: ${displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}...`,
+        title: "Align Seniority Signals",
+        description: `Your profile signals ${displayResume.experienceLevel} but you are applying for ${displayResume.seniorityLevel} roles. Adjust your action verbs.`,
         priority: 'important' as const,
         completed: false,
         estimatedImpact: "+8-12%"
-      });
-    }
-
-    // IMPORTANT: Low keyword density
-    if (displayResume.stats?.keywordDensity && displayResume.stats.keywordDensity < 2) {
-      steps.push({
-        id: `step-${stepId++}`,
-        title: "Increase Keyword Density",
-        description: `Current density: ${displayResume.stats.keywordDensity.toFixed(1)}%. Aim for 2-4% by naturally incorporating industry terms throughout your CV.`,
-        priority: 'important' as const,
-        completed: false,
-        estimatedImpact: "+5-8%"
-      });
-    }
-
-    // RECOMMENDED: Improve score to 90%+
-    if (displayResume.score && displayResume.score < 90) {
-      const neededPoints = 90 - displayResume.score;
-      steps.push({
-        id: `step-${stepId++}`,
-        title: `Reach 90% Score (Currently ${displayResume.score}%)`,
-        description: `You need ${neededPoints} more points to reach the 90% threshold. Focus on the critical issues above first.`,
-        priority: 'recommended' as const,
-        completed: false,
-        estimatedImpact: `+${neededPoints}%`
-      });
-    }
-
-    // RECOMMENDED: Fluff detection
-    if (displayResume.stats?.hasVagueLanguage) {
-      steps.push({
-        id: `step-${stepId++}`,
-        title: "Remove Vague Language & Fluff",
-        description: "Replace weak phrases like 'responsible for' and 'helped with' with strong action verbs and concrete achievements.",
-        priority: 'recommended' as const,
-        completed: false,
-        estimatedImpact: "+3-5%"
       });
     }
 
@@ -1001,10 +969,10 @@ export function ResumeDetailDialog({
 
                       {/* PREP Group */}
                       <div className="flex gap-1 pl-3">
-                        <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
+                        <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#6366F1] data-[state=active]:to-[#4F46E5] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
                           <span className="flex items-center gap-1.5">
                             <Building className="h-4 w-4" />
-                            <span>Interview</span>
+                            <span>Recruiter Sim</span>
                           </span>
                         </TabsTrigger>
                       </div>
@@ -1604,14 +1572,14 @@ export function ResumeDetailDialog({
                           <div className="space-y-3">
                             {auditItems.map((item: any, index: number) => (
                               <div key={index} className={`p-5 rounded-xl border-l-4 shadow-sm transition-all hover:shadow-md ${item.status === "failed"
-                                  ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
-                                  : item.status === "warning"
-                                    ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
-                                    : "bg-green-50/50 border-l-green-500 border border-green-200/50"
+                                ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
+                                : item.status === "warning"
+                                  ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
+                                  : "bg-green-50/50 border-l-green-500 border border-green-200/50"
                                 }`}>
                                 <div className="flex items-start gap-4">
                                   <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${item.status === "failed" ? "bg-red-100" :
-                                      item.status === "warning" ? "bg-amber-100" : "bg-green-100"
+                                    item.status === "warning" ? "bg-amber-100" : "bg-green-100"
                                     }`}>
                                     <span className="text-lg">
                                       {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
@@ -1620,23 +1588,23 @@ export function ResumeDetailDialog({
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-2">
                                       <h3 className={`font-bold text-base ${item.status === "failed" ? "text-red-800" :
-                                          item.status === "warning" ? "text-amber-800" : "text-green-800"
+                                        item.status === "warning" ? "text-amber-800" : "text-green-800"
                                         }`}>
                                         {item.title}
                                       </h3>
                                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${item.status === "failed" ? "bg-red-200 text-red-700" :
-                                          item.status === "warning" ? "bg-amber-200 text-amber-700" :
-                                            "bg-green-200 text-green-700"
+                                        item.status === "warning" ? "bg-amber-200 text-amber-700" :
+                                          "bg-green-200 text-green-700"
                                         }`}>
                                         {item.status === "failed" ? "Critical" : item.status === "warning" ? "Warning" : "Passed"}
                                       </span>
                                     </div>
                                     <p className="text-[#0F172A] text-sm font-medium mb-2">{item.reason}</p>
                                     <div className={`mt-3 p-3 rounded-lg ${item.status === "failed" ? "bg-red-100/50" :
-                                        item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
+                                      item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
                                       }`}>
                                       <p className={`text-xs font-medium ${item.status === "failed" ? "text-red-700" :
-                                          item.status === "warning" ? "text-amber-700" : "text-green-700"
+                                        item.status === "warning" ? "text-amber-700" : "text-green-700"
                                         }`}>
                                         <span className="font-bold">Fix: </span>{item.fix}
                                       </p>

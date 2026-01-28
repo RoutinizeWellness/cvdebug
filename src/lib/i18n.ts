@@ -221,6 +221,7 @@ export interface Translation {
     jobDescriptionPlaceholder: string;
     jobDescriptionTip: string;
     analyzeMatchScore: string;
+    errorNoDescription: string;
     entityExtraction: string;
     entityExtractionDesc: string;
     gapAnalysis: string;
@@ -1544,6 +1545,13 @@ export interface Translation {
     matchScoreImpact: string;
     dateFormatInconsistency: string;
     atExperienceBlock: string;
+    quickActions: string;
+    uploadNewCv: string;
+    analyzeJob: string;
+    viewCriticalErrors: string;
+    sectionSystemStatus: string;
+    sectionCoreAnalysis: string;
+    sectionAdvancedTools: string;
   };
   // ATS Report
   atsReport: {
@@ -3226,6 +3234,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'match_score impact:',
       dateFormatInconsistency: 'Date format inconsistency found',
       atExperienceBlock: 'at Experience.block (Line 42)',
+      quickActions: 'Quick Actions',
+      uploadNewCv: 'Upload New CV',
+      analyzeJob: 'Analyze Job Match',
+      viewCriticalErrors: 'View Critical Errors',
+      sectionSystemStatus: 'System Status',
+      sectionCoreAnalysis: 'Core Analysis',
+      sectionAdvancedTools: 'Advanced Tools',
     },
     atsReport: {
       missingSignals: 'Missing Signals',
@@ -3351,31 +3366,32 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     eliteMatch: {
       title: 'Elite Match Tool',
-      description: 'Analyze your CV against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      description: 'Analyze your CV against any job offer with advanced AI precision. Identify what you are missing and optimize for ATS instantly.',
       linkedinUrlLabel: 'LinkedIn URL (Recommended)',
       linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      linkedinUrlTip: 'Paste the direct link to the LinkedIn job offer for better extraction results.',
+      linkedinUrlTip: 'Paste the direct LinkedIn job link for better extraction results.',
       or: 'OR',
       jobDescriptionLabel: 'Paste Job Description',
-      jobDescriptionPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Solid experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      jobDescriptionPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer...\n\nRequirements:\n- Strong experience with React and Node.js\n- Kubernetes and AWS experience',
       jobDescriptionTip: 'Copy and paste the full job description from any portal.',
       analyzeMatchScore: 'Analyze Match Score',
-      entityExtraction: 'Entity Extraction',
-      entityExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      errorNoDescription: 'Please provide a job description or URL to analyze.',
+      entityExtraction: 'Intelligent Detection',
+      entityExtractionDesc: 'More than just keywords: we detect technical skills, soft skills, and industry metrics with deep semantic understanding.',
       gapAnalysis: 'Gap Analysis',
       gapAnalysisDesc: 'We identify EXACTLY which signals are missing from your profile to pass high-risk ATS filters.',
       aiAutoFix: 'AI Auto-Fix',
       aiAutoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing CV narrative.',
-      premiumTitle: 'Elite Match Tool is Premium',
-      premiumDescription: 'Analyze your CV against any offer using local ML (0 API costs)',
+      premiumTitle: 'Elite Match is Premium',
+      premiumDescription: 'Analyze your CV against any job offer using our private AI processing.',
       premiumList: [
-        'Entity extraction with TF-IDF & Cosine Similarity',
-        'Critical/important/nice-to-have gap analysis',
-        'Robot View with red/green zones',
-        'Specific Auto-Fix suggestions'
+        'Ultra-precise semantic matching',
+        'Critical/Important/Nice-to-have skill detection',
+        'Robot View with risk zone analysis',
+        'Specific suggestions to improve your CV'
       ],
       upgradeNow: 'Upgrade Now',
-      accessDuration: '24-hour access • Unlimited match analysis • ML-powered insights',
+      accessDuration: '24-hour access • Unlimited match analyses • AI-powered insights',
       analyzingMessage: 'Analyzing...',
       progressComplete: 'complete',
       matchScore: 'Match Score',
@@ -4851,6 +4867,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto en match_score:',
       dateFormatInconsistency: 'Inconsistencia de formato de fecha encontrada',
       atExperienceBlock: 'en Experience.block (Línea 42)',
+      quickActions: 'Acciones Rápidas',
+      uploadNewCv: 'Subir nuevo CV',
+      analyzeJob: 'Analizar CV contra Oferta',
+      viewCriticalErrors: 'Ver Errores Críticos',
+      sectionSystemStatus: 'Estado del Sistema',
+      sectionCoreAnalysis: 'Análisis del Robot',
+      sectionAdvancedTools: 'Herramientas de Élite',
     },
     atsReport: {
       missingSignals: 'Señales Faltantes',
@@ -4976,28 +4999,29 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     eliteMatch: {
       title: 'Elite Match Tool',
-      description: 'Analiza tu CV contra cualquier oferta con precisión ML local. Identifica gaps y optimiza para ATS instantáneamente.',
+      description: 'Analiza tu CV contra cualquier oferta con precisión de IA avanzada. Identifica lo que te falta y optimiza para pasar los filtros instantáneamente.',
       linkedinUrlLabel: 'URL de LinkedIn (Recomendado)',
       linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
       linkedinUrlTip: 'Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.',
       or: 'O',
       jobDescriptionLabel: 'Pega la Descripción del Trabajo',
-      jobDescriptionPlaceholder: 'Sobre el rol:\nBuscamos un Senior Full Stack Developer con 5+ años de experiencia...\n\nRequisitos:\n- Experiencia sólida con React y Node.js\n- Experiencia con Kubernetes y AWS',
+      jobDescriptionPlaceholder: 'Sobre el rol:\nBuscamos un Senior Full Stack Developer...\n\nRequisitos:\n- Experiencia sólida con React y Node.js\n- Experiencia con Kubernetes y AWS',
       jobDescriptionTip: 'Copia y pega la descripción completa del trabajo de cualquier portal.',
-      analyzeMatchScore: 'Analizar Puntuación de Coincidencia',
-      entityExtraction: 'Extracción de Entidades',
-      entityExtractionDesc: 'No solo palabras clave: extraemos Hard Skills, Soft Skills y Métricas de Industria con comprensión semántica profunda.',
+      analyzeMatchScore: 'Analizar Coincidencia',
+      errorNoDescription: 'Por favor, introduce una descripción de trabajo o URL para analizar.',
+      entityExtraction: 'Detección Inteligente',
+      entityExtractionDesc: 'Más que palabras clave: detectamos habilidades técnicas, blandas y logros clave con comprensión profunda.',
       gapAnalysis: 'Análisis de Gaps',
-      gapAnalysisDesc: 'Identificamos EXACTAMENTE qué señales faltan en tu perfil para pasar los filtros ATS de alto riesgo.',
+      gapAnalysisDesc: 'Identificamos EXACTAMENTE qué señales faltan en tu perfil para que seas el candidato ideal.',
       aiAutoFix: 'Auto-Fix con IA',
-      aiAutoFixDesc: 'Reescritura con IA de un clic que integra inteligentemente las señales faltantes en tu narrativa de CV existente.',
-      premiumTitle: 'Elite Match Tool es Premium',
-      premiumDescription: 'Analiza tu CV contra cualquier oferta usando ML local (0 costes de API)',
+      aiAutoFixDesc: 'Reescritura inteligente que integra las habilidades faltantes en tu narrativa de CV actual.',
+      premiumTitle: 'Elite Match es Premium',
+      premiumDescription: 'Analiza tu CV contra cualquier oferta usando nuestra IA de procesamiento privado.',
       premiumList: [
-        'Extracción de entidades con TF-IDF & Cosine Similarity',
-        'Análisis de gaps crítico/importante/nice-to-have',
-        'Robot View con zonas rojas/verdes',
-        'Sugerencias específicas de Auto-Fix'
+        'Coincidencia semántica ultra precisa',
+        'Detección de habilidades críticas y deseadas',
+        'Vista de Robot con análisis de riesgos',
+        'Sugerencias directas para mejorar tu CV'
       ],
       upgradeNow: 'Actualizar Ahora',
       accessDuration: 'Acceso 24 horas • Análisis de match ilimitados • Insights potenciados por ML',
@@ -5079,51 +5103,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       joinedByCandidates: 'Más de 1.200 candidatos se unieron',
       allRightsReserved: 'Todos los derechos reservados.',
     },
-    registrationWall: {
-      errorDetails: {
-        title: "Te hemos encontrado {count} fallos",
-        subtitle: "Regístrate gratis para ver cuáles son y cómo arreglarlos",
-        benefits: [
-          "Lista completa de errores de formato",
-          "Sugerencias específicas de keywords faltantes",
-          "Análisis de contacto y parsing",
-          "Puntuación detallada por sección"
-        ],
-        ctaText: "Ver Todos los Errores - Gratis",
-        urgency: "✨ Sin tarjeta de crédito • Resultados instantáneos"
-      },
-      saveHistory: {
-        title: "No pierdas este análisis",
-        subtitle: "Crea una cuenta para comparar este CV con otros puestos",
-        benefits: [
-          "Guarda todos tus análisis",
-          "Compara diferentes versiones de tu CV",
-          "Rastrea tu progreso de optimización",
-          "Accede a tu historial desde cualquier lugar"
-        ],
-        ctaText: "Crear Cuenta Gratis",
-        urgency: "🔒 Tu análisis se borrará al cerrar esta página"
-      },
-      aiSprint: {
-        title: "Desbloquea el Poder de la IA",
-        subtitle: "Sprint requiere una cuenta para acceder a herramientas premium",
-        benefits: [
-          "Reescritura inteligente con IA",
-          "Optimización de keywords en tiempo real",
-          "Generación de bullets con métricas",
-          "Análisis competitivo del mercado"
-        ],
-        ctaText: "Activar Sprint ⚡",
-        urgency: "💎 Funciones avanzadas de IA con tu cuenta",
-        pricingHint: "Sprint es una función premium. Primeros 3 análisis gratis al registrarte."
-      },
-      inline: {
-        errorDetails: "🔒 Regístrate gratis para ver la lista completa de errores",
-        saveHistory: "💾 Crea una cuenta para guardar este análisis",
-        aiSprint: "✨ Activa Sprint con tu cuenta para optimizar con IA",
-        signUp: "Registrarse"
-      }
-    },
+
   },
   'fr': {
     hero: {
@@ -6576,6 +6556,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impact sur match_score :',
       dateFormatInconsistency: 'Incohérence de format de date trouvée',
       atExperienceBlock: 'à Experience.block (Ligne 42)',
+      quickActions: 'Actions Rapides',
+      uploadNewCv: 'Télécharger nouveau CV',
+      analyzeJob: 'Analyser Match Job',
+      viewCriticalErrors: 'Voir Erreurs Critiques',
+      sectionSystemStatus: 'Statut du Système',
+      sectionCoreAnalysis: 'Analyse de Core',
+      sectionAdvancedTools: 'Outils Avancés',
     },
     atsReport: {
       missingSignals: 'Signaux Manquants',
@@ -6709,8 +6696,9 @@ export const translations: Record<SupportedLocale, Translation> = {
       jobDescriptionLabel: 'Coller la description du poste',
       jobDescriptionPlaceholder: 'À propos du rôle :\nNous recherchons un Développeur Full Stack Senior avec 5+ ans d\'expérience...\n\nExigences :\n- Solide expérience avec React et Node.js\n- Expérience avec Kubernetes et AWS',
       jobDescriptionTip: 'Copiez et collez la description complète du poste depuis n\'importe quel portail.',
-      analyzeMatchScore: 'Analyser le score de correspondance',
-      entityExtraction: 'Extraction d\'entités',
+      analyzeMatchScore: 'Analyser le Match',
+      errorNoDescription: 'Veuillez fournir une description de poste ou une URL à analyser.',
+      entityExtraction: 'Détection Intelligente',
       entityExtractionDesc: 'Pas seulement des mots-clés : nous extrayons les Hard Skills, Soft Skills et métriques de l\'industrie avec une compréhension sémantique profonde.',
       gapAnalysis: 'Analyse des lacunes',
       gapAnalysisDesc: 'Nous identifions EXACTEMENT quels signaux manquent à votre profil pour passer les filtres ATS à haut risque.',
@@ -6804,51 +6792,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       joinedByCandidates: 'Rejoint par 1 200+ candidats',
       allRightsReserved: 'Tous droits réservés.',
     },
-    registrationWall: {
-      errorDetails: {
-        title: "Nous avons trouvé {count} erreurs",
-        subtitle: "Inscrivez-vous gratuitement pour les voir et savoir comment les corriger",
-        benefits: [
-          "Liste complète des erreurs de formatage",
-          "Suggestions spécifiques de mots-clés manquants",
-          "Analyse de contact et de parsing",
-          "Score détaillé par section"
-        ],
-        ctaText: "Voir Toutes les Erreurs - Gratuit",
-        urgency: "✨ Sans carte de crédit • Résultats instantanés"
-      },
-      saveHistory: {
-        title: "Ne perdez pas cette analyse",
-        subtitle: "Créez un compte pour comparer ce CV avec d'autres postes",
-        benefits: [
-          "Enregistrez toutes vos analyses",
-          "Comparez différentes versions de votre CV",
-          "Suivez vos progrès d'optimisation",
-          "Accédez à votre historique partout"
-        ],
-        ctaText: "Créer un Compte Gratuit",
-        urgency: "🔒 Votre analyse sera supprimée à la fermeture de cette page"
-      },
-      aiSprint: {
-        title: "Débloquez la Puissance de l'IA",
-        subtitle: "Sprint nécessite un compte pour accéder aux outils premium",
-        benefits: [
-          "Réécriture intelligente par l'IA",
-          "Optimisation des mots-clés en temps réel",
-          "Génération de puces basée sur les métriques",
-          "Analyse compétitive du marché"
-        ],
-        ctaText: "Activer Sprint ⚡",
-        urgency: "💎 Fonctions IA avancées avec votre compte",
-        pricingHint: "Sprint est une fonctionnalité premium. Les 3 premières analyses sont gratuites lors de votre inscription."
-      },
-      inline: {
-        errorDetails: "🔒 Inscrivez-vous gratuitement pour voir la liste complète des erreurs",
-        saveHistory: "💾 Créez un compte pour enregistrer cette analyse",
-        aiSprint: "✨ Activez Sprint avec votre compte pour optimiser avec l'IA",
-        signUp: "S'inscrire"
-      }
-    },
+
   },
   'de': {
     hero: {
@@ -6940,6 +6884,18 @@ export const translations: Record<SupportedLocale, Translation> = {
       loginToPurchase: 'Melden Sie sich an, um Guthaben zu kaufen',
       checkoutFailed: 'Checkout-Start fehlgeschlagen',
       checkoutError: 'Checkout-Initialisierung fehlgeschlagen',
+      // New Single Debug Fix fields
+      fixOnceBanner: 'EINMALIG UND ENDGÜLTIG BEHEBEN',
+      oneTimeFixLabel: 'Einmalige Lösung',
+      quickFixTitle: 'Schnelle Lösung',
+      coffeePriceLabel: 'Ein Kaffee, um Ihren Lebenslauf zu korrigieren',
+      oneDeepScan: '1 vollständiger Tiefenscan',
+      robotTerminalView: 'Roboter-Terminal-Ansicht',
+      fullMissingKeywords: 'Vollständige fehlende Schlüsselwörter',
+      oneAiRewrite: '1 vollständige KI-Umschreibung',
+      keywordAutoInjection: 'Automatische Schlüsselwort-Injektion',
+      exportAtsSafe: 'ATS-sicheren Lebenslauf exportieren',
+      fixMyCvBtn: 'Meinen Lebenslauf korrigieren →',
     },
     dashboard: {
       welcome: 'Willkommen zurück',
@@ -7426,7 +7382,7 @@ export const translations: Record<SupportedLocale, Translation> = {
         apiKeyNotConfigured: 'API-Schlüssel nicht konfiguriert. Bitte kontaktieren Sie den Support unter cvdebug@outlook.com',
         noTransactionId: 'Keine Transaktions-ID verfügbar',
         checkoutError: 'Checkout konnte nicht gestartet werden',
-        loginRequired: 'Bitte einloggen, um Credits zu kaufen',
+        loginRequired: 'Bitte einloggen, um Guthaben zu kaufen',
         initiateError: 'Zahlung konnte nicht initiiert werden',
       },
       success: {
@@ -8244,6 +8200,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'match_score Auswirkung:',
       dateFormatInconsistency: 'Datumsformat-Inkonsistenz gefunden',
       atExperienceBlock: 'bei Experience.block (Zeile 42)',
+      quickActions: 'Schnellaktionen',
+      uploadNewCv: 'Neuen Lebenslauf hochladen',
+      analyzeJob: 'Job-Match analysieren',
+      viewCriticalErrors: 'Kritische Fehler anzeigen',
+      sectionSystemStatus: 'Systemstatus',
+      sectionCoreAnalysis: 'Kernanalyse',
+      sectionAdvancedTools: 'Erweiterte Tools',
     },
     atsReport: {
       missingSignals: 'Fehlende Signale',
@@ -8369,28 +8332,29 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     eliteMatch: {
       title: 'Elite Match Tool',
-      description: 'Analysieren Sie Ihren Lebenslauf mit lokaler ML-Präzision gegen jedes Stellenangebot. Identifizieren Sie Lücken und optimieren Sie sofort für ATS.',
+      description: 'Analysieren Sie Ihren Lebenslauf gegen jedes Stellenangebot mit fortschrittlicher KI-Präzision. Identifizieren Sie, was Ihnen fehlt, und optimieren Sie sofort für ATS.',
       linkedinUrlLabel: 'LinkedIn URL (Empfohlen)',
       linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
-      linkedinUrlTip: 'Fügen Sie den direkten Link zum LinkedIn-Stellenangebot für bessere Extraktionsergebnisse ein.',
+      linkedinUrlTip: 'Fügen Sie den direkten LinkedIn-Joblink ein, um bessere Extraktionsergebnisse zu erhalten.',
       or: 'ODER',
       jobDescriptionLabel: 'Stellenbeschreibung einfügen',
-      jobDescriptionPlaceholder: 'Über die Rolle:\nWir suchen einen Senior Full Stack Developer mit 5+ Jahren Erfahrung...\n\nAnforderungen:\n- Fundierte Erfahrung mit React und Node.js\n- Erfahrung mit Kubernetes und AWS',
+      jobDescriptionPlaceholder: 'Über die Rolle:\nWir suchen einen Senior Full Stack Developer...\n\nAnforderungen:\n- Fundierte Erfahrung mit React und Node.js\n- Erfahrung mit Kubernetes und AWS',
       jobDescriptionTip: 'Kopieren Sie die vollständige Stellenbeschreibung von einem beliebigen Portal und fügen Sie sie hier ein.',
-      analyzeMatchScore: 'Match-Score analysieren',
-      entityExtraction: 'Entitäten-Extraktion',
-      entityExtractionDesc: 'Nicht nur Schlüsselwörter: Wir extrahieren Hard Skills, Soft Skills und Branchenmetriken mit tiefem semantischem Verständnis.',
-      gapAnalysis: 'Lückenanalyse',
-      gapAnalysisDesc: 'Wir identifizieren EXAKT, welche Signale in Ihrem Profil fehlen, um Hochrisiko-ATS-Filter zu bestehen.',
-      aiAutoFix: 'KI-Auto-Fix',
-      aiAutoFixDesc: 'KI-Umschreibung mit einem Klick, die fehlende Signale intelligent in Ihre bestehende Lebenslauf-Erzählung integriert.',
-      premiumTitle: 'Elite Match Tool ist Premium',
-      premiumDescription: 'Analysieren Sie Ihren Lebenslauf gegen jedes Angebot mit lokalem ML (0 API-Kosten)',
+      analyzeMatchScore: 'Match analysieren',
+      errorNoDescription: 'Bitte geben Sie eine Stellenbeschreibung oder URL zur Analyse an.',
+      entityExtraction: 'Intelligente Erkennung',
+      entityExtractionDesc: 'Mehr als nur Schlüsselwörter: Wir erkennen Hard Skills, Soft Skills und Branchenkennzahlen mit tiefem semantischem Verständnis.',
+      gapAnalysis: 'Gap-Analyse',
+      gapAnalysisDesc: 'Wir identifizieren GENAU, welche Signale in Ihrem Profil fehlen, um Hochrisiko-ATS-Filter zu bestehen.',
+      aiAutoFix: 'KI Auto-Fix',
+      aiAutoFixDesc: 'KI-Umschreiben mit einem Klick, das fehlende Signale intelligent in Ihre bestehende Lebenslauf-Narrative integriert.',
+      premiumTitle: 'Elite Match ist Premium',
+      premiumDescription: 'Analysieren Sie Ihren Lebenslauf gegen jedes Stellenangebot mit unserer privaten KI-Verarbeitung.',
       premiumList: [
-        'Entitäten-Extraktion mit TF-IDF & Cosine Similarity',
-        'Kritische/wichtige/optionale Lückenanalyse',
-        'Robot-View mit roten/grünen Zonen',
-        'Spezifische Auto-Fix-Vorschläge'
+        'Ultra-präzises semantisches Matching',
+        'Erkennung kritischer/wichtiger Fähigkeiten',
+        'Robot-View mit Risikozonen-Analyse',
+        'Spezifische Vorschläge zur Verbesserung Ihres Lebenslaufs'
       ],
       upgradeNow: 'Jetzt upgraden',
       accessDuration: '24-Stunden-Zugang • Unlimitierte Match-Analysen • ML-gestützte Einblicke',
@@ -9924,6 +9888,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       matchScoreImpact: 'impacto no match_score:',
       dateFormatInconsistency: 'Inconsistência de formato de data encontrada',
       atExperienceBlock: 'em Experience.block (Linha 42)',
+      quickActions: 'Ações Rápidas',
+      uploadNewCv: 'Enviar Novo Currículo',
+      analyzeJob: 'Analisar Match de Vaga',
+      viewCriticalErrors: 'Ver Erros Críticos',
+      sectionSystemStatus: 'Status do Sistema',
+      sectionCoreAnalysis: 'Análise Principal',
+      sectionAdvancedTools: 'Ferramentas Avançadas',
     },
     atsReport: {
       missingSignals: 'Sinais Ausentes',
@@ -10049,28 +10020,29 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     eliteMatch: {
       title: 'Ferramenta Elite Match',
-      description: 'Analise seu currículo contra qualquer vaga com precisão de ML local. Identifique lacunas e otimize para ATS instantaneamente.',
+      description: 'Analise seu currículo contra qualquer vaga com precisão de IA avançada. Identifique o que falta e otimize para passar nos filtros instantaneamente.',
       linkedinUrlLabel: 'URL do LinkedIn (Recomendado)',
       linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
       linkedinUrlTip: 'Cole o link direto da vaga no LinkedIn para melhores resultados de extração.',
       or: 'OU',
       jobDescriptionLabel: 'Cole a Descrição da Vaga',
-      jobDescriptionPlaceholder: 'Sobre a vaga:\nBuscamos um Desenvolvedor Full Stack Sênior com 5+ anos de experiência...\n\nRequisitos:\n- Experiência sólida com React e Node.js\n- Experiência com Kubernetes e AWS',
+      jobDescriptionPlaceholder: 'Sobre a vaga:\nBuscamos Senior Full Stack Developer...\n\nRequisitos:\n- Experiência sólida com React e Node.js\n- Experiência com Kubernetes e AWS',
       jobDescriptionTip: 'Copie e cole a descrição completa da vaga de qualquer portal.',
-      analyzeMatchScore: 'Analisar Pontuação de Correspondência',
-      entityExtraction: 'Extração de Entidades',
-      entityExtractionDesc: 'Não apenas palavras-chave: extraímos Hard Skills, Soft Skills e Métricas da Indústria com compreensão semântica profunda.',
-      gapAnalysis: 'Análise de Lacunas',
+      analyzeMatchScore: 'Analisar Match',
+      errorNoDescription: 'Por favor, forneça uma descrição de vaga ou URL para analisar.',
+      entityExtraction: 'Detecção Inteligente',
+      entityExtractionDesc: 'Mais do que palavras-chave: detectamos habilidades técnicas, comportamentais e métricas do setor com compreensão profunda.',
+      gapAnalysis: 'Análise de Gaps',
       gapAnalysisDesc: 'Identificamos EXATAMENTE quais sinais faltam no seu perfil para passar pelos filtros ATS de alto risco.',
       aiAutoFix: 'Auto-Fix com IA',
-      aiAutoFixDesc: 'Reescrita por IA em um clique que integra inteligentemente os sinais ausentes na sua narrativa de currículo existente.',
+      aiAutoFixDesc: 'Reescrita com IA de um clique que integra inteligentemente os sinais que faltam na sua narrativa de currículo existente.',
       premiumTitle: 'Elite Match é Premium',
-      premiumDescription: 'Analise seu currículo contra qualquer vaga usando ML local (custo zero de API)',
+      premiumDescription: 'Analise seu currículo contra qualquer vaga usando nosso processamento de IA privado.',
       premiumList: [
-        'Extração de entidades com TF-IDF & Cosine Similarity',
-        'Análise de lacunas crítica/importante/desejável',
-        'Visão Robô com zonas vermelhas/verdes',
-        'Sugestões específicas de Auto-Fix'
+        'Match semântico ultra preciso',
+        'Detecção de habilidades críticas e desejadas',
+        'Vista de Robô com análise de zonas de risco',
+        'Sugestões específicas para melhorar seu currículo'
       ],
       upgradeNow: 'Atualizar Agora',
       accessDuration: 'Acesso por 24 horas • Análises de correspondência ilimitadas • Insights baseados em ML',

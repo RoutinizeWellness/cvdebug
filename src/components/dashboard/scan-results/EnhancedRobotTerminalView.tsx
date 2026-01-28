@@ -67,19 +67,19 @@ export function EnhancedRobotTerminalView({
     const experienceLevel = user?.experienceLevel || resume.experienceLevel;
     if (experienceLevel) {
       const levelLabels: Record<string, string> = {
-        internship: "Internship/Entry (0-1 yrs)",
-        entry: "Entry Level (0-2 yrs)",
-        junior: "Junior (2-4 yrs)",
-        mid: "Mid-Level (4-7 yrs)",
-        senior: "Senior (7-10 yrs)",
-        lead: "Lead/Staff (10+ yrs)",
-        executive: "Executive (C-level)"
+        internship: "L1_INTERN_FOUNDATION",
+        entry: "L2_ENTRY_ASSOCIATE",
+        junior: "L3_JUNIOR_CORE",
+        mid: "L4_MID_PROFESSIONAL",
+        senior: "L5_SENIOR_ARCHITECT",
+        lead: "L6_STAFF_PRINCIPAL",
+        executive: "L7_EXECUTIVE_STRATEGY"
       };
 
       logs.push({
         line: lineNum++,
         type: "ok",
-        message: `[DETECT] ✓ Experience level: ${levelLabels[experienceLevel] || experienceLevel}`
+        message: `[DETECT] ✓ Signal weight adjusted for: ${levelLabels[experienceLevel] || experienceLevel}`
       });
     }
 
@@ -88,28 +88,23 @@ export function EnhancedRobotTerminalView({
       logs.push({
         line: lineNum++,
         type: "info",
-        message: `[ANALYZE] 🧠 Role detected: ${resume.category}`
+        message: `[ANALYZE] 🧠 Domain heuristic mapped to: ${resume.category.toUpperCase()}`
       });
     }
 
     // Additional Metrics - Word Count, Sections, etc.
     try {
-      const analysis = JSON.parse(resume.analysis);
-
-      // Extract word count from OCR text if available
       const ocrText = resume.ocrText || "";
       const wordCount = ocrText.split(/\s+/).filter((w: string) => w.length > 0).length;
 
       if (wordCount > 0) {
         const wordStatus = wordCount >= 400 && wordCount <= 800 ? "ok" :
-                          wordCount > 800 ? "warn" : "critical";
-        const wordEmoji = wordCount >= 400 && wordCount <= 800 ? "✓" :
-                         wordCount > 800 ? "⚠️" : "❌";
+          wordCount > 800 ? "warn" : "critical";
 
         logs.push({
           line: lineNum++,
           type: wordStatus as any,
-          message: `[METRICS] ${wordEmoji} Word count: ${wordCount} words ${wordCount >= 400 && wordCount <= 800 ? '(optimal range)' : wordCount > 800 ? '(too long)' : '(too short)'}`
+          message: `[METRICS] OCR Stream density: ${wordCount} words | ${wordStatus === "ok" ? "OPTIMAL" : "SUB-OPTIMAL"}`
         });
       }
 
@@ -280,7 +275,7 @@ export function EnhancedRobotTerminalView({
           const issueSeverity = issue.severity || "medium";
 
           const logType = issueSeverity === "critical" ? "critical" :
-                         issueSeverity === "high" ? "fail" : "warn";
+            issueSeverity === "high" ? "fail" : "warn";
 
           logs.push({
             line: lineNum++,
@@ -304,7 +299,7 @@ export function EnhancedRobotTerminalView({
           const priority = kw.priority || "medium";
 
           const logType = priority === "critical" ? "critical" :
-                         priority === "high" ? "fail" : "warn";
+            priority === "high" ? "fail" : "warn";
 
           logs.push({
             line: lineNum++,

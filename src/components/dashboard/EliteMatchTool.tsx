@@ -78,7 +78,7 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
     }
 
     if (!jobDescriptionUrl && !jobDescriptionText) {
-      toast.error(t.eliteMatch.jobDescriptionPlaceholder); // Or a more specific error
+      toast.error(t.eliteMatch.errorNoDescription);
       return;
     }
 
