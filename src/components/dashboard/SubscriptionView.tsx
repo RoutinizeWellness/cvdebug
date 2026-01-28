@@ -1,9 +1,10 @@
-import { useQuery } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useCurrency } from "@/hooks/use-currency";
+import { useI18n } from "@/contexts/I18nContext";
 
 const apiAny = api as any;
 
@@ -11,6 +12,30 @@ export function SubscriptionView() {
   const user = useQuery(apiAny.users.currentUser);
   const [timeRemaining, setTimeRemaining] = useState({ days: 4, hours: 12, minutes: 30 });
   const { formatPrice } = useCurrency();
+  const { t } = useI18n();
+  const createCheckoutSession = useAction(apiAny.billingActions.createCheckoutSession);
+  const [isLoading, setIsLoading] = useState<string | null>(null);
+
+  const handleUpgrade = async (plan: "single_debug_fix" | "single_scan" | "interview_sprint" | "iteration_pass") => {
+    setIsLoading(plan);
+    try {
+      const url = await createCheckoutSession({
+        plan,
+        origin: window.location.origin,
+      });
+
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error("Failed to start checkout. Please try again.");
+      }
+    } catch (error: any) {
+      console.error("Checkout error:", error);
+      toast.error(error.message || "Failed to initiate checkout");
+    } finally {
+      setIsLoading(null);
+    }
+  };
 
   // Calculate sprint countdown
   useEffect(() => {
@@ -37,7 +62,7 @@ export function SubscriptionView() {
   const isFreeTier = currentPlan === "free";
   const isSingleDebugFix = currentPlan === "single_debug_fix";
   const isSingleScan = currentPlan === "single_scan";
-  const isInterviewSprint = currentPlan === "interview_sprint";
+  const isCareerSprint = currentPlan === "interview_sprint";
   const isIterationPass = currentPlan === "iteration_pass";
 
   // Calculate remaining credits
@@ -82,9 +107,9 @@ export function SubscriptionView() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-2"
           >
-            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">Subscription Management</h2>
+            <h2 className="text-3xl font-bold text-[#0F172A] tracking-tight">{t('subscriptionView.title')}</h2>
             <p className="text-[#64748B] max-w-2xl text-lg">
-              Manage your current plan, billing details, and unlock premium interview preparation sprints.
+              {t('subscriptionView.subtitle')}
             </p>
           </motion.div>
 
@@ -103,14 +128,14 @@ export function SubscriptionView() {
               <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] text-[#475569] px-3 py-1.5 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="material-symbols-outlined text-[16px]">workspace_premium</span>
-                  <span className="text-xs font-bold uppercase tracking-wide">Current Plan</span>
+                  <span className="text-xs font-bold uppercase tracking-wide">{t('subscriptionView.currentPlan')}</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#22C55E]/10 border border-[#22C55E]/30">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                   </span>
-                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">Active</span>
+                  <span className="text-[#22C55E] text-xs font-bold uppercase tracking-wide">{t('subscriptionView.activeStatus')}</span>
                 </div>
               </div>
 
@@ -118,25 +143,25 @@ export function SubscriptionView() {
                 <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-2 flex items-center gap-2 flex-wrap">
                   {isFreeTier && (
                     <>
-                      <span>Free Preview</span>
+                      <span>{t('subscriptionView.freePreview')}</span>
                       <span className="material-symbols-outlined text-[#64748B] text-[28px]">preview</span>
                     </>
                   )}
                   {isSingleDebugFix && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] to-[#D97706]">Single Debug Fix</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F59E0B] to-[#D97706]">{t('subscriptionView.singleDebugFix')}</span>
                       <span className="material-symbols-outlined text-[#F59E0B] text-[28px]">build</span>
                     </>
                   )}
                   {isSingleScan && (
                     <>
-                      <span>Single Scan</span>
+                      <span>{t('subscriptionView.singleScan')}</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">bolt</span>
                     </>
                   )}
-                  {isInterviewSprint && (
+                  {isCareerSprint && (
                     <>
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">Interview Sprint</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B]">{t('subscriptionView.careerSprint')}</span>
                       <span className="material-symbols-outlined text-[#1E293B] text-[28px]">rocket_launch</span>
                     </>
                   )}
@@ -148,7 +173,7 @@ export function SubscriptionView() {
                   )}
                 </h3>
                 <p className="text-[#475569] text-base leading-relaxed">
-                  {isFreeTier && "Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features."}
+                  {isFreeTier && t('subscriptionView.freePreviewDesc')}
                   {isSingleDebugFix && (
                     <>
                       You have <span className="text-[#F59E0B] font-bold">1 complete deep scan</span> with 1 AI rewrite included. Perfect for a quick CV fix.
@@ -159,7 +184,7 @@ export function SubscriptionView() {
                       You have <span className="text-[#1E293B] font-bold">{currentCredits} scan credit</span> remaining. Includes unlimited re-scans for 24 hours.
                     </>
                   )}
-                  {isInterviewSprint && (
+                  {isCareerSprint && (
                     <>
                       You have <span className="text-[#1E293B] font-bold">unlimited scans</span> for{" "}
                       <span className="text-[#0F172A] font-bold bg-[#1E293B]/10 px-2 py-0.5 rounded">{daysUntilReset} days</span>. Expires on{" "}
@@ -184,14 +209,14 @@ export function SubscriptionView() {
               >
                 <span className="flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-                  Billing History
+                  {t('subscriptionView.billingHistory')}
                 </span>
               </button>
               {!isFreeTier && (
                 <button className="bg-[#F8FAFC] hover:bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#EF4444]/50 text-[#475569] hover:text-[#EF4444] px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <span className="flex items-center justify-center gap-2">
                     <span className="material-symbols-outlined text-[18px]">cancel</span>
-                    Cancel Plan
+                    {t('subscriptionView.cancelPlan')}
                   </span>
                 </button>
               )}
@@ -201,8 +226,8 @@ export function SubscriptionView() {
           {/* Pricing Section */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold text-[#0F172A]">Upgrade Options</h3>
-              <span className="text-xs text-[#64748B] font-medium">Pay once, use forever</span>
+              <h3 className="text-2xl font-bold text-[#0F172A]">{t('subscriptionView.upgradeOptions')}</h3>
+              <span className="text-xs text-[#64748B] font-medium">{t('subscriptionView.payOnce')}</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -222,8 +247,8 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-[#F59E0B] text-[24px]">build</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-[#0F172A]">Single Debug Fix</h4>
-                      <p className="text-[#F59E0B] text-xs mt-0.5 font-medium uppercase tracking-wide">One-time fix</p>
+                      <h4 className="text-xl font-bold text-[#0F172A]">{t('subscriptionView.singleDebugFix')}</h4>
+                      <p className="text-[#F59E0B] text-xs mt-0.5 font-medium uppercase tracking-wide">{t('subscriptionView.oneTimeFix')}</p>
                     </div>
                   </div>
 
@@ -233,14 +258,7 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
-                    {[
-                      { icon: "verified", text: "1 Escaneo Profundo" },
-                      { icon: "terminal", text: "Vista Robot Terminal" },
-                      { icon: "key", text: "Keywords Faltantes Completo" },
-                      { icon: "auto_awesome", text: "1 Reescritura IA Completa" },
-                      { icon: "integration_instructions", text: "Auto-Inyección Keywords" },
-                      { icon: "download", text: "Exportar CV ATS-seguro" }
-                    ].map((feature, i) => (
+                    {(t('subscriptionView.singleDebugFixFeatures') as any[]).map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#F59E0B]/10 border border-[#F59E0B]/20">
                           <span className="material-symbols-outlined text-[#F59E0B] text-[16px]">{feature.icon}</span>
@@ -251,16 +269,19 @@ export function SubscriptionView() {
                   </div>
 
                   <button
-                    disabled={isSingleDebugFix}
-                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-[#FFFFFF] font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                    disabled={isSingleDebugFix || !!isLoading}
+                    onClick={() => handleUpgrade("single_debug_fix")}
+                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-[#FFFFFF] font-bold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base flex items-center justify-center gap-2"
                   >
-                    {isSingleDebugFix ? (
-                      <span className="flex items-center justify-center gap-2">
+                    {isLoading === "single_debug_fix" ? (
+                      <span className="material-symbols-outlined animate-spin">sync</span>
+                    ) : isSingleDebugFix ? (
+                      <>
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
-                      </span>
+                        {t('subscriptionView.currentPlanBtn')}
+                      </>
                     ) : (
-                      "Arreglar Mi CV"
+                      t('subscriptionView.fixMyCv')
                     )}
                   </button>
                 </div>
@@ -282,8 +303,8 @@ export function SubscriptionView() {
                       <span className="material-symbols-outlined text-[#64748B] group-hover:text-[#1E293B] text-[24px] transition-colors">bolt</span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-[#0F172A]">Single Scan</h4>
-                      <p className="text-[#64748B] text-xs mt-0.5 font-medium uppercase tracking-wide">One-time payment</p>
+                      <h4 className="text-xl font-bold text-[#0F172A]">{t('subscriptionView.singleScan')}</h4>
+                      <p className="text-[#64748B] text-xs mt-0.5 font-medium uppercase tracking-wide">{t('subscriptionView.oneTimePayment')}</p>
                     </div>
                   </div>
 
@@ -293,13 +314,7 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
-                    {[
-                      { icon: "verified", text: "Full ATS Analysis" },
-                      { icon: "key", text: "Complete Keyword Report" },
-                      { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
-                      { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
-                      { icon: "shield_with_heart", text: "PDF Sanitization" }
-                    ].map((feature, i) => (
+                    {(t('subscriptionView.singleScanFeatures') as any[]).map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <div className="p-1 rounded-lg bg-[#1E293B]/10 border border-[#1E293B]/20">
                           <span className="material-symbols-outlined text-[#1E293B] text-[16px]">{feature.icon}</span>
@@ -310,22 +325,25 @@ export function SubscriptionView() {
                   </div>
 
                   <button
-                    disabled={isSingleScan}
-                    className="w-full py-3.5 rounded-xl border-2 border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] font-bold hover:bg-[#FFFFFF] hover:border-[#1E293B]/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base"
+                    disabled={isSingleScan || !!isLoading}
+                    onClick={() => handleUpgrade("single_scan")}
+                    className="w-full py-3.5 rounded-xl border-2 border-[#E2E8F0] bg-[#F8FAFC] text-[#0F172A] font-bold hover:bg-[#FFFFFF] hover:border-[#1E293B]/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed group-hover:shadow-lg text-base flex items-center justify-center gap-2"
                   >
-                    {isSingleScan ? (
-                      <span className="flex items-center justify-center gap-2">
+                    {isLoading === "single_scan" ? (
+                      <span className="material-symbols-outlined animate-spin">sync</span>
+                    ) : isSingleScan ? (
+                      <>
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
-                      </span>
+                        {t('subscriptionView.currentPlanBtn')}
+                      </>
                     ) : (
-                      "Get Single Scan"
+                      t('subscriptionView.getSingleScan')
                     )}
                   </button>
                 </div>
               </motion.div>
 
-              {/* Interview Sprint / 7-Day Sprint (Highlighted) */}
+              {/* Career Sprint / 7-Day Sprint (Highlighted) */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -337,9 +355,9 @@ export function SubscriptionView() {
 
                 {/* Best Value Badge */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
-                  <div className="bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#1E293B]/40 border-2 border-[#1E293B]/30 animate-pulse">
+                  <div className="bg-gradient-to-r from-[#1E293B] via-[#334155] to-[#1E293B] text-[#FFFFFF] text-xs font-black px-5 py-1.5 rounded-full shadow-xl shadow-[#1E293B]/40 border-2 border-[#1E293B]/30">
                     <span className="flex items-center gap-1.5">
-                      BEST VALUE - SAVE 60%
+                      {t('subscriptionView.bestValue')}
                     </span>
                   </div>
                 </div>
@@ -351,9 +369,9 @@ export function SubscriptionView() {
                     </div>
                     <div className="flex-1">
                       <h4 className="text-xl font-black text-[#0F172A] flex items-center gap-2">
-                        Interview Sprint
+                        {t('subscriptionView.careerSprint')}
                       </h4>
-                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">7 Days Unlimited</p>
+                      <p className="text-[#1E293B] text-xs mt-0.5 font-bold uppercase tracking-wide">{t('subscriptionView.sevenDayUnlimited')}</p>
                     </div>
                   </div>
 
@@ -370,15 +388,9 @@ export function SubscriptionView() {
                   </div>
 
                   <div className="space-y-3.5 mb-8 flex-1">
-                    {[
-                      { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
-                      { icon: "psychology", text: "AI Keyword Suggestions" },
-                      { icon: "description", text: "Cover Letter Generator" },
-                      { icon: "work", text: "LinkedIn Optimizer" },
-                      { icon: "support_agent", text: "Priority Support" }
-                    ].map((feature, i) => (
+                    {(t('subscriptionView.careerSprintFeatures') as any[]).map((feature, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <div className="p-1 rounded-lg bg-[#1E293B]/20 border border-[#1E293B]/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
+                        <div className="p-1 rounded-lg bg-[#1E293B]/20 border border-[#1E293B]/40 shadow-[0_10px_40px_-10_rgba(0,0,0,0.08)]">
                           <span className="material-symbols-outlined text-[#1E293B] text-[16px]">{feature.icon}</span>
                         </div>
                         <p className="text-sm text-[#0F172A] font-semibold leading-relaxed">{feature.text}</p>
@@ -394,7 +406,7 @@ export function SubscriptionView() {
                           <div key={i} className="h-6 w-6 rounded-full bg-gradient-to-br from-[#1E293B] to-[#64748B] border-2 border-[#FFFFFF]"></div>
                         ))}
                       </div>
-                      <span className="text-xs font-bold text-[#1E293B]">1,200+ Success Stories</span>
+                      <span className="text-xs font-bold text-[#1E293B]">{t('subscriptionView.successStories')}</span>
                     </div>
                     <p className="text-[10px] text-[#64748B] leading-tight">
                       "Got interviews at <span className="text-[#0F172A] font-bold">Google</span> & <span className="text-[#0F172A] font-bold">Netflix</span> in one week"
@@ -402,19 +414,22 @@ export function SubscriptionView() {
                   </div>
 
                   <button
-                    disabled={isInterviewSprint || isIterationPass}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                    disabled={isCareerSprint || isIterationPass || !!isLoading}
+                    onClick={() => handleUpgrade("interview_sprint")}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 text-[#FFFFFF] font-black shadow-[0_10px_40px_-10px_rgba(100,116,139,0.5)] hover:shadow-[0_10px_40px_-10px_rgba(100,116,139,0.7)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-base flex items-center justify-center gap-2"
                   >
-                    {(isInterviewSprint || isIterationPass) ? (
-                      <span className="flex items-center justify-center gap-2">
+                    {isLoading === "interview_sprint" ? (
+                      <span className="material-symbols-outlined animate-spin">sync</span>
+                    ) : (isCareerSprint || isIterationPass) ? (
+                      <>
                         <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                        Current Plan
-                      </span>
+                        {t('subscriptionView.currentPlanBtn')}
+                      </>
                     ) : (
-                      <span className="flex items-center justify-center gap-2">
-                        Start 7-Day Sprint
+                      <>
+                        {t('subscriptionView.startSprint')}
                         <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                      </span>
+                      </>
                     )}
                   </button>
                 </div>

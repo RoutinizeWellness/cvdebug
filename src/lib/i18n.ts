@@ -150,6 +150,20 @@ export interface Translation {
     interviewsCount: string;
     topPerformingKeywords: string;
     dataUniqueToYou: string;
+    // Descriptions
+    masterCvsSubtitle: string;
+    bulletRewriterDesc: string;
+    coverLetterGenDesc: string;
+    linkedinOptimizerDesc: string;
+    keywordSniperDesc: string;
+    featured: string;
+    openTool: string;
+    profile: string;
+    credits: string;
+    buyCredits: string;
+    careerSprintRequired: string;
+    careerSprintRequiredDesc: string;
+    upgradeToSprint: string;
   };
   // Resume Detail Dialog
   resumeDetail: {
@@ -183,6 +197,51 @@ export interface Translation {
     reanalyze: string;
     cancel: string;
   };
+  eliteMatch: {
+    title: string;
+    description: string;
+    linkedinUrlLabel: string;
+    linkedinUrlPlaceholder: string;
+    linkedinUrlTip: string;
+    or: string;
+    jobDescriptionLabel: string;
+    jobDescriptionPlaceholder: string;
+    jobDescriptionTip: string;
+    analyzeMatchScore: string;
+    entityExtraction: string;
+    entityExtractionDesc: string;
+    gapAnalysis: string;
+    gapAnalysisDesc: string;
+    aiAutoFix: string;
+    aiAutoFixDesc: string;
+    premiumTitle: string;
+    premiumDescription: string;
+    premiumList: string[];
+    upgradeNow: string;
+    accessDuration: string;
+    analyzingMessage: string;
+    progressComplete: string;
+    matchScore: string;
+    excellentMatch: string;
+    goodMatch: string;
+    improveMatch: string;
+    missingCriticalSignals: string;
+    matchedSkills: string;
+    robotView: string;
+    redZones: string;
+    greenZones: string;
+    autoFixRecommendations: string;
+    analyzeAnotherJob: string;
+    applyAutoFix: string;
+    autoFixCopied: string;
+    premiumFeature: string;
+    noResumeFound: string;
+    noTextFound: string;
+    extractingIntent: string;
+    analyzingHardSkills: string;
+    detectingSoftSkills: string;
+    generatingReport: string;
+  };
   // Preview Scan
   previewScan: {
     title: string;
@@ -194,6 +253,42 @@ export interface Translation {
     targetJobPosition: string;
     jobDescPlaceholder: string;
     jobDescAdded: string;
+  };
+  subscriptionView: {
+    title: string;
+    subtitle: string;
+    currentPlan: string;
+    activeStatus: string;
+    billingHistory: string;
+    cancelPlan: string;
+    upgradeOptions: string;
+    payOnce: string;
+    freePreview: string;
+    freePreviewDesc: string;
+    singleDebugFix: string;
+    oneTimeFix: string;
+    singleScan: string;
+    oneTimePayment: string;
+    careerSprint: string;
+    sevenDayUnlimited: string;
+    bestValue: string;
+    successStories: string;
+    startSprint: string;
+    currentPlanBtn: string;
+    fixMyCv: string;
+    getSingleScan: string;
+    singleDebugFixFeatures: { icon: string; text: string }[];
+    singleScanFeatures: { icon: string; text: string }[];
+    careerSprintFeatures: { icon: string; text: string }[];
+    oneDeepScanDesc: string;
+    unlimitedRescansDesc: string;
+    unlimitedScans: string;
+    forLabel: string;
+    daysLabel: string;
+    expiresOn: string;
+    once: string;
+    joinedByCandidates: string;
+    allRightsReserved: string;
   };
   // Navigation
   nav: {
@@ -679,6 +774,47 @@ export interface Translation {
       scanError: string;
       noBioOptimization: string;
       bioOptimized: string;
+      // New keys
+      reScanProfile: string;
+      scanLinkedInProfile: string;
+      pasteProfileDescription: string;
+      profileUrlLabel: string;
+      profileUrlPlaceholder: string;
+      profileTextLabel: string;
+      profileTextPlaceholder: string;
+      profileTextDescription: string;
+      targetJobLabel: string;
+      targetJobPlaceholder: string;
+      analyzeProfile: string;
+      noAnalysisYet: string;
+      noAnalysisDescriptionFree: string;
+      noAnalysisDescriptionPaid: string;
+      unlockToOptimize: string;
+      visibilityScore: string;
+      excellent: string;
+      good: string;
+      needsWork: string;
+      visibleToRecruiters: string;
+      missesKeywords: string;
+      invisibleTo: string;
+      marketPositioning: string;
+      top15Percent: string;
+      comparedToCandidates: string;
+      searchabilityGap: string;
+      missingCriticalTerms: string;
+      bioAudit: string;
+      copyOptimizedBio: string;
+      copying: string;
+      currentAboutSection: string;
+      aiOptimizedVersion: string;
+      keyImprovements: string;
+      noBioAnalysis: string;
+      benefits: {
+        headline: string;
+        keywords: string;
+        bio: string;
+        visibility: string;
+      };
     };
     answerFinder: {
       title: string;
@@ -711,6 +847,27 @@ export interface Translation {
       selectResume: string;
       companyPlaceholder: string;
       rolePlaceholder: string;
+      // New keys
+      generatorSettings: string;
+      generatorDescription: string;
+      selectResumeLabel: string;
+      noneGenericLetter: string;
+      companyNameLabel: string;
+      jobTitleLabel: string;
+      jobDescriptionLabel: string;
+      jobDescriptionPlaceholder: string;
+      writingLetter: string;
+      upgradeToGenerate: string;
+      generateCoverLetter: string;
+      generatedLetterTitle: string;
+      generatedLetterDescription: string;
+      placeholderText: string;
+      benefits: {
+        unlimited: string;
+        tailoring: string;
+        atsOptimized: string;
+        integration: string;
+      };
     };
     dm: {
       title: string;
@@ -1499,7 +1656,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     pricing: {
       free: 'Free Scan',
       pass24h: '24-Hour Pass',
-      sprint7d: '7-Day Sprint',
+      sprint7d: '7-Day Career Sprint',
       currency: '$',
       enterprise: {
         badge: 'Enterprise',
@@ -1527,7 +1684,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimizer: 'Keyword Optimizer',
       battlePlanGenerator: 'Battle Plan Generator',
       get24hPass: 'Get 24h Pass',
-      sprint7d: '7-Day Sprint',
+      sprint7d: '7-Day Career Sprint',
       price7d: '$39.99',
       access7d: '7-day access',
       unlimitedScans7d: 'Unlimited Scans (7 Days)',
@@ -1536,25 +1693,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       noThanksJust24h: 'No thanks, just 24h Pass',
       title: 'Simple, Transparent Pricing',
       subtitle: 'One-time payments for professional results. No recurring subscriptions or hidden fees.',
-      start7DaySprint: 'Start 7-Day Sprint 🚀',
+      start7DaySprint: 'Start 7-Day Career Sprint 🚀',
       secureCheckout: 'Secure 256-bit Encrypted Checkout',
       // Upsell section
       waitBeforeCheckout: '⚠️ WAIT! Before You Checkout...',
       applyingToOneJob: 'Are You Applying to Only ONE Job?',
-      justMoreGetSprint: 'For just €10 more, get the Interview Sprint.',
+      justMoreGetSprint: 'For just €10 more, get the Career Sprint.',
       whyUpgrade: 'Why Upgrade?',
       save60: 'Save 60%',
       unlimitedScansNotOne: 'Unlimited scans for 7 days (not just one)',
       aiCoverLetters: 'AI-powered cover letters for every application',
       linkedinOptimization: 'LinkedIn profile optimization included',
-      candidatesChoseSprint: '1,200+ candidates chose Interview Sprint and landed roles at:',
+      candidatesChoseSprint: '1,200+ candidates chose Career Sprint and landed roles at:',
       upgradeToSprint: 'Yes, Upgrade to Sprint (€24.99) 🚀',
       // More hardcoded strings
       scorePreview: 'Score Preview',
       errorLabels: '[ERROR] Labels',
       topKeywords: 'Top 2 Keywords',
       bestValue: 'BEST VALUE',
-      sevenDaySprint: '7-Day Sprint',
+      sevenDaySprint: '7-Day Career Sprint',
       sevenDaysAccess: '7 days full access',
       unlimitedCVScans: 'Unlimited CV Scans (7d)',
       robotViewTerminal: 'Robot View Terminal',
@@ -1625,6 +1782,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       interviewsCount: 'Interviews',
       topPerformingKeywords: 'Top Performing Keywords',
       dataUniqueToYou: '🔒 This data is unique to you and cannot be replicated by competitors',
+      masterCvsSubtitle: 'Your base CV templates - manage and optimize',
+      bulletRewriterDesc: 'Transform weak bullet points into high-impact achievements using Google XYZ formula',
+      coverLetterGenDesc: 'AI-generated cover letters with keyword optimization',
+      linkedinOptimizerDesc: 'Optimize your profile for recruiters',
+      keywordSniperDesc: 'AI bullet rewriting, keyword injection, and live tracking',
+      featured: 'Featured',
+      openTool: 'Open Tool',
+      profile: 'Profile',
+      credits: 'Credits',
+      buyCredits: 'Buy More Credits',
+      careerSprintRequired: 'Career Sprint Required',
+      careerSprintRequiredDesc: 'Optimize your LinkedIn profile with AI and get 3x more recruiter views.',
+      upgradeToSprint: 'Upgrade to Career Sprint',
     },
     resumeDetail: {
       // LinkedIn Upsell
@@ -1678,6 +1848,52 @@ export const translations: Record<SupportedLocale, Translation> = {
       blog: 'Blog',
       product: 'Product',
     },
+    subscriptionView: {
+      title: 'Subscription Management',
+      subtitle: 'Manage your current plan, billing details, and unlock premium interview preparation sprints.',
+      currentPlan: 'Current Plan',
+      activeStatus: 'Active',
+      billingHistory: 'Billing History',
+      cancelPlan: 'Cancel Plan',
+      upgradeOptions: 'Upgrade Options',
+      payOnce: 'Pay once, use forever',
+      freePreview: 'Free Preview',
+      freePreviewDesc: 'Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features.',
+      singleDebugFix: 'Single Debug Fix',
+      oneTimeFix: 'One-time fix',
+      singleScan: 'Single Scan',
+      oneTimePayment: 'One-time payment',
+      careerSprint: 'Career Sprint',
+      sevenDayUnlimited: '7 Days Unlimited',
+      bestValue: 'BEST VALUE - SAVE 60%',
+      successStories: '1,200+ Success Stories',
+      startSprint: 'Start 7-Day Sprint',
+      currentPlanBtn: 'Current Plan',
+      fixMyCv: 'Fix My CV',
+      getSingleScan: 'Get Single Scan',
+      singleDebugFixFeatures: [
+        { icon: "verified", text: "1 Deep Scan" },
+        { icon: "terminal", text: "Robot Terminal View" },
+        { icon: "key", text: "Full Missing Keywords" },
+        { icon: "auto_awesome", text: "1 Full IA Rewrite" },
+        { icon: "integration_instructions", text: "Keywords Auto-Injection" },
+        { icon: "download", text: "Export ATS-safe CV" }
+      ],
+      singleScanFeatures: [
+        { icon: "verified", text: "Full ATS Analysis" },
+        { icon: "key", text: "Complete Keyword Report" },
+        { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
+        { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
+        { icon: "shield_with_heart", text: "PDF Sanitization" }
+      ],
+      careerSprintFeatures: [
+        { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
+        { icon: "psychology", text: "AI Keyword Suggestions" },
+        { icon: "description", text: "Cover Letter Generator" },
+        { icon: "work", text: "LinkedIn Optimizer" },
+        { icon: "support_agent", text: "Priority Support" }
+      ],
+    },
     buttons: {
       uploadResume: 'Upload Resume',
       uploadNewCv: 'Upload New CV',
@@ -1707,7 +1923,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       parsing: 'PARSING_KEYWORDS...',
       optimizing: 'OPTIMIZING_ATS_SCORE...',
       headline: 'Debug your career history with precision.',
-      subtitle: 'Únete a miles de personas que optimizaron sus CVs con análisis impulsado por IA y consiguieron sus trabajos soñados.',
+      subtitle: 'Join thousands of job seekers who optimized their resumes with AI-powered insights and landed their dream jobs.',
       initSession: 'Initialize Session',
       enterCredentials: 'Enter your credentials to access the console',
       signIn: 'Sign In',
@@ -1981,7 +2197,7 @@ export const translations: Record<SupportedLocale, Translation> = {
         continueDashboard: 'Continue to Dashboard',
         pressEsc: 'Press ESC to close',
         premium: 'Premium',
-        interviewSprint: '7-Day Sprint',
+        interviewSprint: '7-Day Career Sprint',
         singleScan: '24-Hour Pass',
         freePlan: 'Free Plan',
         scoreChanged: 'Your score changed? Here\'s why',
@@ -2133,7 +2349,47 @@ export const translations: Record<SupportedLocale, Translation> = {
         analyzed: '✅ LinkedIn profile analyzed successfully!',
         scanError: 'Failed to scan profile. Please try again.',
         noBioOptimization: 'No bio optimization available. Please scan your profile first.',
-        bioOptimized: '✅ Optimized bio copied to clipboard! Paste it into your LinkedIn profile',
+        bioOptimized: '✅ Optimized bio copied to clipboard! Paste it into your LinkedIn About section.',
+        reScanProfile: 'Re-scan Profile',
+        scanLinkedInProfile: 'Scan LinkedIn Profile',
+        pasteProfileDescription: 'Paste your LinkedIn profile text to get AI-powered optimization suggestions.',
+        profileUrlLabel: 'LinkedIn Profile URL (Optional)',
+        profileUrlPlaceholder: 'https://linkedin.com/in/yourprofile',
+        profileTextLabel: 'Profile Text',
+        profileTextPlaceholder: 'Paste your LinkedIn profile text here (headline, about section, experience, etc.)',
+        profileTextDescription: 'Copy and paste your entire LinkedIn profile or specific sections you want to optimize.',
+        targetJobLabel: 'Target Job Description (Optional)',
+        targetJobPlaceholder: 'Paste a job description to get tailored optimization suggestions',
+        analyzeProfile: 'Analyze Profile',
+        noAnalysisYet: 'No LinkedIn Analysis Yet',
+        noAnalysisDescriptionFree: 'Upgrade to Career Sprint to analyze your LinkedIn profile and get AI-powered optimization suggestions.',
+        noAnalysisDescriptionPaid: 'Click "Re-scan Profile" to analyze your LinkedIn profile and get AI-powered optimization suggestions.',
+        unlockToOptimize: 'Upgrade to Unlock',
+        visibilityScore: 'Recruiter Visibility Score',
+        excellent: 'Excellent',
+        good: 'Good',
+        needsWork: 'Needs Work',
+        visibleToRecruiters: 'Your profile is highly visible to recruiters!',
+        missesKeywords: 'Your profile is visible but misses key technical keywords.',
+        invisibleTo: 'Invisible to {percentage}% of recruiters',
+        marketPositioning: 'Market Positioning',
+        top15Percent: 'Top 15%',
+        comparedToCandidates: 'Compared to 1,400+ similar candidates',
+        searchabilityGap: 'Searchability Gap',
+        missingCriticalTerms: 'Missing critical terms for your target role',
+        bioAudit: 'Bio Audit',
+        copyOptimizedBio: 'Copy Optimized Bio',
+        copying: 'Copying...',
+        currentAboutSection: 'Current About Section',
+        aiOptimizedVersion: 'AI-Optimized Version',
+        keyImprovements: 'Key Improvements',
+        noBioAnalysis: 'No bio analysis available yet. Make sure to include your About section when scanning your profile.',
+        benefits: {
+          headline: 'AI headline optimization',
+          keywords: 'Keyword analysis',
+          bio: 'About section rewrite',
+          visibility: 'Visibility score boost',
+        },
       },
       answerFinder: {
         title: 'Answer Finder',
@@ -2166,6 +2422,26 @@ export const translations: Record<SupportedLocale, Translation> = {
         selectResume: 'Select a resume...',
         companyPlaceholder: 'e.g. Acme Corp',
         rolePlaceholder: 'e.g. Senior Engineer',
+        generatorSettings: 'Generator Settings',
+        generatorDescription: 'Configure the AI to write a tailored cover letter.',
+        selectResumeLabel: 'Select Resume (Context)',
+        noneGenericLetter: 'None (Generic Letter)',
+        companyNameLabel: 'Company Name',
+        jobTitleLabel: 'Job Title',
+        jobDescriptionLabel: 'Job Description',
+        jobDescriptionPlaceholder: 'Paste the job description here...',
+        writingLetter: 'Writing Letter...',
+        upgradeToGenerate: 'Upgrade to Generate',
+        generateCoverLetter: 'Generate Cover Letter',
+        generatedLetterTitle: 'Generated Letter',
+        generatedLetterDescription: 'Review and edit your cover letter below.',
+        placeholderText: 'Your cover letter will appear here',
+        benefits: {
+          unlimited: 'Unlimited generations',
+          tailoring: 'Job-specific tailoring',
+          atsOptimized: 'ATS-optimized format',
+          integration: 'Resume integration',
+        },
       },
       dm: {
         title: 'DM Generator',
@@ -2256,7 +2532,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       reportUnlocked: '🎉 Resume report unlocked! Your credits have been applied.',
       resumeDeleted: 'Resume deleted',
       upgrade: {
-        interviewSprintRequired: 'Interview Sprint plan required',
+        interviewSprintRequired: 'Career Sprint plan required',
       },
       feedback: {
         noRating: 'Please select a rating',
@@ -2381,7 +2657,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       singleScan: 'Single Scan',
       oneCompleteFix: 'One complete fix',
       getSingleScan: 'Get Single Scan',
-      interviewSprint: 'Interview Sprint',
+      interviewSprint: 'Career Sprint',
       sevenDaysUnlimited: '7 days unlimited',
       startSprint: 'Start Sprint',
       bestValue: '🚀 BEST VALUE',
@@ -2499,10 +2775,10 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     dialogs: {
       addNewApplication: 'Add New Application',
-      sprintRequired: 'Interview Sprint Required',
+      sprintRequired: 'Career Sprint Required',
       upgradeMessage: 'Upgrade to track applications, get keyword analysis, and receive ghosting alerts.',
       upgradeNow: 'Upgrade Now',
-      sprintRequiredError: 'Interview Sprint plan required',
+      sprintRequiredError: 'Career Sprint plan required',
       upgradeForInsights: 'Upgrade to track applications and get AI-powered insights',
     },
     scoreCard: {
@@ -2656,13 +2932,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       howToStep3: 'Analyze the job description to extract keywords',
       howToStep4: 'Return here to get AI-powered keyword suggestions',
       backToDashboard: 'Back to Dashboard',
-      interviewSprintRequired: 'Interview Sprint Required',
+      interviewSprintRequired: 'Career Sprint Required',
       injectKeywordsDesc: 'Inject missing keywords into your resume bullets with AI-powered suggestions.',
       keywordInjection: 'Keyword injection',
       liveScoreTracking: 'Live score tracking',
       priorityTargeting: 'Priority targeting',
       contextAwareAI: 'Context-aware AI',
-      upgradeToSprint: 'Upgrade to Interview Sprint',
+      upgradeToSprint: 'Upgrade to Career Sprint',
       back: 'Back',
       targeting: 'Targeting',
       currentResume: 'Current Resume',
@@ -2678,7 +2954,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Suggestion applied! Your resume has been updated.',
       noMissingKeywords: 'No missing keywords to show examples for',
       rewriteSuccess: 'Resume rewritten successfully!',
-      lockedTitle: 'Interview Sprint Required',
+      lockedTitle: 'Career Sprint Required',
       lockedDesc: 'Unlock the Keyword Sniper Tool to inject missing keywords and boost your ATS score.',
       upgradeNow: 'Upgrade Now',
     },
@@ -2706,7 +2982,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     createApplication: {
       title: 'Add New Application',
-      sprintRequired: 'Interview Sprint Required',
+      sprintRequired: 'Career Sprint Required',
       upgradeDesc: 'Upgrade to track applications, get keyword analysis, and receive ghosting alerts.',
       upgradeNow: 'Upgrade Now',
       companyName: 'Company Name',
@@ -2722,11 +2998,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancel',
       addApplication: 'Add Application',
       adding: 'Adding...',
-      planRequired: 'Interview Sprint plan required',
+      planRequired: 'Career Sprint plan required',
       planRequiredDesc: 'Upgrade to track applications and get AI-powered insights',
       successMessage: 'Application added successfully',
       errorMessage: 'Failed to add application',
-      featureRestricted: 'This feature is only available with an active Interview Sprint subscription',
+      featureRestricted: 'This feature is only available with an active Career Sprint subscription',
     },
     missionControl: {
       title: 'Mission Control',
@@ -2903,6 +3179,56 @@ export const translations: Record<SupportedLocale, Translation> = {
       dismissLabel: 'Not interested',
       freeLabel: '100% FREE',
     },
+    eliteMatch: {
+      title: 'Elite Match Tool',
+      description: 'Analyze your CV against any job offer with local ML precision. Identify gaps and optimize for ATS instantly.',
+      linkedinUrlLabel: 'LinkedIn URL (Recommended)',
+      linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      linkedinUrlTip: 'Paste the direct link to the LinkedIn job offer for better extraction results.',
+      or: 'OR',
+      jobDescriptionLabel: 'Paste Job Description',
+      jobDescriptionPlaceholder: 'About the role:\nWe are looking for a Senior Full Stack Developer with 5+ years of experience...\n\nRequirements:\n- Solid experience with React and Node.js\n- Experience with Kubernetes and AWS',
+      jobDescriptionTip: 'Copy and paste the full job description from any portal.',
+      analyzeMatchScore: 'Analyze Match Score',
+      entityExtraction: 'Entity Extraction',
+      entityExtractionDesc: 'Not just keywords: we extract Hard Skills, Soft Skills, and Industry Metrics with deep semantic understanding.',
+      gapAnalysis: 'Gap Analysis',
+      gapAnalysisDesc: 'We identify EXACTLY which signals are missing from your profile to pass high-risk ATS filters.',
+      aiAutoFix: 'AI Auto-Fix',
+      aiAutoFixDesc: 'One-click AI rewriting that intelligently integrates missing signals into your existing CV narrative.',
+      premiumTitle: 'Elite Match Tool is Premium',
+      premiumDescription: 'Analyze your CV against any offer using local ML (0 API costs)',
+      premiumList: [
+        'Entity extraction with TF-IDF & Cosine Similarity',
+        'Critical/important/nice-to-have gap analysis',
+        'Robot View with red/green zones',
+        'Specific Auto-Fix suggestions'
+      ],
+      upgradeNow: 'Upgrade Now',
+      accessDuration: '24-hour access • Unlimited match analysis • ML-powered insights',
+      analyzingMessage: 'Analyzing...',
+      progressComplete: 'complete',
+      matchScore: 'Match Score',
+      excellentMatch: 'Excellent match! Apply with confidence.',
+      goodMatch: 'Good match, but there are important gaps.',
+      improveMatch: 'You need to improve your CV for this offer.',
+      missingCriticalSignals: 'Missing Critical Signals',
+      matchedSkills: 'Matched Skills',
+      robotView: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      autoFixRecommendations: 'Auto-Fix Recommendations',
+      analyzeAnotherJob: 'Analyze Another Job',
+      applyAutoFix: 'Apply Auto-Fix',
+      autoFixCopied: 'Auto-Fix suggestions copied! Navigate to Edit tab to apply changes.',
+      premiumFeature: 'This feature is Premium. Upgrade your plan to continue.',
+      noResumeFound: 'No resume found. Please upload a CV first.',
+      noTextFound: 'Your CV has no extracted text. Please re-upload your CV.',
+      extractingIntent: 'Extracting Recruiter Intent...',
+      analyzingHardSkills: 'Analyzing Hard Skills Requirements...',
+      detectingSoftSkills: 'Detecting Soft Skills Signals...',
+      generatingReport: 'Generating Missing Signals Report...',
+    },
   },
   'es': {
     hero: {
@@ -2921,7 +3247,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     pricing: {
       free: 'Escaneo Gratis',
       pass24h: 'Pase 24 Horas',
-      sprint7d: 'Sprint 7 Días',
+      sprint7d: 'Career Sprint 7 Días',
       currency: '€',
       enterprise: {
         badge: 'Empresarial',
@@ -2949,7 +3275,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordOptimizer: 'Optimizador de Palabras Clave',
       battlePlanGenerator: 'Generador de Plan de Batalla',
       get24hPass: 'Obtener Pase 24h',
-      sprint7d: 'Sprint 7 Días',
+      sprint7d: 'Career Sprint 7 Días',
       price7d: '€39.99',
       access7d: 'acceso de 7 días',
       unlimitedScans7d: 'Escaneos Ilimitados (7 Días)',
@@ -2958,25 +3284,25 @@ export const translations: Record<SupportedLocale, Translation> = {
       noThanksJust24h: 'No gracias, solo Pase 24h',
       title: 'Precios Simples y Transparentes',
       subtitle: 'Pagos únicos para resultados profesionales. Sin suscripciones recurrentes ni tarifas ocultas.',
-      start7DaySprint: 'Comenzar Sprint 7 Días 🚀',
+      start7DaySprint: 'Comenzar Career Sprint 7 Días 🚀',
       secureCheckout: 'Pago Seguro Encriptado de 256 bits',
       // Upsell section
       waitBeforeCheckout: '⚠️ ¡ESPERA! Antes de finalizar...',
       applyingToOneJob: '¿Postulas Solo a UN Trabajo?',
-      justMoreGetSprint: 'Por solo €10 más, obtén el Interview Sprint.',
+      justMoreGetSprint: 'Por solo €10 más, obtén el Career Sprint.',
       whyUpgrade: '¿Por qué mejorar?',
       save60: 'Ahorra 60%',
       unlimitedScansNotOne: 'Escaneos ilimitados por 7 días (no solo uno)',
       aiCoverLetters: 'Cartas de presentación con IA para cada aplicación',
       linkedinOptimization: 'Optimización de perfil de LinkedIn incluida',
-      candidatesChoseSprint: '1,200+ candidatos eligieron Interview Sprint y consiguieron roles en:',
+      candidatesChoseSprint: '1,200+ candidatos eligieron Career Sprint y consiguieron roles en:',
       upgradeToSprint: 'Sí, mejorar a Sprint (€24.99) 🚀',
       // More hardcoded strings
       scorePreview: 'Vista Previa del Puntaje',
       errorLabels: 'Etiquetas [ERROR]',
       topKeywords: 'Top 2 Palabras Clave',
       bestValue: 'MEJOR VALOR',
-      sevenDaySprint: 'Sprint de 7 Días',
+      sevenDaySprint: 'Career Sprint de 7 Días',
       sevenDaysAccess: '7 días de acceso completo',
       unlimitedCVScans: 'Escaneos de CV Ilimitados (7d)',
       robotViewTerminal: 'Terminal Vista Robot',
@@ -3043,6 +3369,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       interviewsCount: 'Entrevistas',
       topPerformingKeywords: 'Palabras Clave de Mayor Rendimiento',
       dataUniqueToYou: '🔒 Estos datos son únicos para ti y no pueden ser replicados por competidores',
+      masterCvsSubtitle: 'Tus plantillas de CV base - gestiona y optimiza',
+      bulletRewriterDesc: 'Transforma viñetas débiles en logros impactantes usando la fórmula Google XYZ',
+      coverLetterGenDesc: 'Cartas de presentación potenciadas con IA y optimización de palabras clave',
+      linkedinOptimizerDesc: 'Optimiza tu perfil para reclutadores',
+      keywordSniperDesc: 'Reescritura de viñetas con IA, inyección de palabras clave y seguimiento en vivo',
+      featured: 'Destacado',
+      openTool: 'Abrir Herramienta',
+      profile: 'Perfil',
+      credits: 'Créditos',
+      buyCredits: 'Comprar más créditos',
+      careerSprintRequired: 'Se requiere Career Sprint',
+      careerSprintRequiredDesc: 'Optimiza tu perfil de LinkedIn con IA y obtén 3 veces más vistas de reclutadores.',
+      upgradeToSprint: 'Actualizar a Career Sprint',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimizado → LinkedIn es el Siguiente Paso',
@@ -3395,7 +3734,7 @@ export const translations: Record<SupportedLocale, Translation> = {
         continueDashboard: 'Continuar al Panel',
         pressEsc: 'Presiona ESC para cerrar',
         premium: 'Premium',
-        interviewSprint: 'Sprint 7 Días',
+        interviewSprint: 'Sprint Carrera (7 Días)',
         singleScan: 'Pase 24 Horas',
         freePlan: 'Plan Gratis',
         scoreChanged: '¿Tu puntuación cambió? Aquí está el porqué',
@@ -3547,7 +3886,47 @@ export const translations: Record<SupportedLocale, Translation> = {
         analyzed: '✅ ¡Perfil de LinkedIn analizado exitosamente!',
         scanError: 'Error al escanear perfil. Por favor intenta de nuevo.',
         noBioOptimization: 'No hay optimización de biografía disponible. Por favor escanea tu perfil primero.',
-        bioOptimized: '✅ ¡Biografía optimizada copiada al portapapeles! Pégala en tu perfil de LinkedIn',
+        bioOptimized: '✅ ¡Biografía optimizada copiada al portapapeles! Pégala en tu sección "Acerca de" de LinkedIn.',
+        reScanProfile: 'Re-escanear Perfil',
+        scanLinkedInProfile: 'Escanear Perfil de LinkedIn',
+        pasteProfileDescription: 'Pega el texto de tu perfil de LinkedIn para obtener sugerencias de optimización con IA.',
+        profileUrlLabel: 'URL del Perfil de LinkedIn (Opcional)',
+        profileUrlPlaceholder: 'https://linkedin.com/in/tuperfil',
+        profileTextLabel: 'Texto del Perfil',
+        profileTextPlaceholder: 'Pega aquí el texto de tu perfil de LinkedIn (titular, extracto, experiencia, etc.)',
+        profileTextDescription: 'Copia y pega tu perfil completo de LinkedIn o las secciones específicas que quieras optimizar.',
+        targetJobLabel: 'Descripción del Puesto Objetivo (Opcional)',
+        targetJobPlaceholder: 'Pega una descripción de trabajo para obtener sugerencias adaptadas',
+        analyzeProfile: 'Analizar Perfil',
+        noAnalysisYet: 'Aún no hay Análisis de LinkedIn',
+        noAnalysisDescriptionFree: 'Actualiza a Career Sprint para analizar tu perfil de LinkedIn y obtener sugerencias de optimización con IA.',
+        noAnalysisDescriptionPaid: 'Haz clic en "Re-escanear Perfil" para analizar tu perfil de LinkedIn y obtener sugerencias de optimización con IA.',
+        unlockToOptimize: 'Actualizar para Desbloquear',
+        visibilityScore: 'Calificación de Visibilidad para Reclutadores',
+        excellent: 'Excelente',
+        good: 'Bueno',
+        needsWork: 'Necesita Ajustes',
+        visibleToRecruiters: '¡Tu perfil es altamente visible para los reclutadores!',
+        missesKeywords: 'Tu perfil es visible pero le faltan palabras clave técnicas.',
+        invisibleTo: 'Invisible para el {percentage}% de los reclutadores',
+        marketPositioning: 'Posicionamiento en el Mercado',
+        top15Percent: 'Top 15%',
+        comparedToCandidates: 'Comparado con más de 1,400 candidatos similares',
+        searchabilityGap: 'Brecha de Búsqueda',
+        missingCriticalTerms: 'Faltan términos críticos para tu puesto objetivo',
+        bioAudit: 'Auditoría de Bio',
+        copyOptimizedBio: 'Copiar Bio Optimizada',
+        copying: 'Copiando...',
+        currentAboutSection: 'Sección "Acerca de" Actual',
+        aiOptimizedVersion: 'Versión Optimizada por IA',
+        keyImprovements: 'Mejoras Clave',
+        noBioAnalysis: 'Aún no hay análisis de bio disponible. Asegúrate de incluir tu sección "Acerca de" al escanear tu perfil.',
+        benefits: {
+          headline: 'Optimización de titular con IA',
+          keywords: 'Análisis de palabras clave',
+          bio: 'Reescritura de sección Acerca de',
+          visibility: 'Aumento de visibilidad',
+        },
       },
       answerFinder: {
         title: 'Buscador de Respuestas',
@@ -3580,6 +3959,26 @@ export const translations: Record<SupportedLocale, Translation> = {
         selectResume: 'Seleccionar un CV...',
         companyPlaceholder: 'ej. Acme Corp',
         rolePlaceholder: 'ej. Ingeniero Senior',
+        generatorSettings: 'Configuración del Generador',
+        generatorDescription: 'Configura la IA para escribir una carta de presentación adaptada.',
+        selectResumeLabel: 'Seleccionar CV (Contexto)',
+        noneGenericLetter: 'Ninguno (Carta Genérica)',
+        companyNameLabel: 'Nombre de la Empresa',
+        jobTitleLabel: 'Título del Puesto',
+        jobDescriptionLabel: 'Descripción del Puesto',
+        jobDescriptionPlaceholder: 'Pega la descripción del trabajo aquí...',
+        writingLetter: 'Escribiendo Carta...',
+        upgradeToGenerate: 'Actualizar para Generar',
+        generateCoverLetter: 'Generar Carta de Presentación',
+        generatedLetterTitle: 'Carta Generada',
+        generatedLetterDescription: 'Revisa y edita tu carta de presentación a continuación.',
+        placeholderText: 'Tu carta de presentación aparecerá aquí',
+        benefits: {
+          unlimited: 'Generaciones ilimitadas',
+          tailoring: 'Adaptación específica al puesto',
+          atsOptimized: 'Formato optimizado para ATS',
+          integration: 'Integración con tu CV',
+        },
       },
       dm: {
         title: 'Generador de MDs',
@@ -3670,7 +4069,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       reportUnlocked: '🎉 ¡Informe de CV desbloqueado! Tus créditos han sido aplicados.',
       resumeDeleted: 'CV eliminado',
       upgrade: {
-        interviewSprintRequired: 'Se requiere plan Sprint de Entrevistas',
+        interviewSprintRequired: 'Se requiere plan Sprint Carrera',
       },
       feedback: {
         noRating: 'Por favor selecciona una calificación',
@@ -3795,7 +4194,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       singleScan: 'Escaneo Único',
       oneCompleteFix: 'Una corrección completa',
       getSingleScan: 'Obtener Escaneo Único',
-      interviewSprint: 'Sprint de Entrevistas',
+      interviewSprint: 'Sprint Carrera',
       sevenDaysUnlimited: '7 días ilimitados',
       startSprint: 'Iniciar Sprint',
       bestValue: '🚀 MEJOR VALOR',
@@ -4070,13 +4469,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       howToStep3: 'Analiza la descripción para extraer keywords',
       howToStep4: 'Vuelve aquí para obtener sugerencias de IA',
       backToDashboard: 'Volver al Panel',
-      interviewSprintRequired: 'Interview Sprint Requerido',
+      interviewSprintRequired: 'Career Sprint Requerido',
       injectKeywordsDesc: 'Inyecta keywords faltantes en tus bullets con sugerencias de IA.',
       keywordInjection: 'Inyección de keywords',
       liveScoreTracking: 'Seguimiento de puntuación en vivo',
       priorityTargeting: 'Objetivo prioritario',
       contextAwareAI: 'IA consciente del contexto',
-      upgradeToSprint: 'Actualizar a Interview Sprint',
+      upgradeToSprint: 'Actualizar a Career Sprint',
       back: 'Atrás',
       targeting: 'Objetivo',
       currentResume: 'CV Actual',
@@ -4092,7 +4491,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
       noMissingKeywords: 'No hay keywords faltantes para mostrar ejemplos',
       rewriteSuccess: '¡CV reescrito con éxito!',
-      lockedTitle: 'Interview Sprint Requerido',
+      lockedTitle: 'Career Sprint Requerido',
       lockedDesc: 'Desbloquea la Herramienta Keyword Sniper para inyectar keywords faltantes y mejorar tu puntuación ATS.',
       upgradeNow: 'Actualizar Ahora',
     },
@@ -4120,7 +4519,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     createApplication: {
       title: 'Agregar Nueva Solicitud',
-      sprintRequired: 'Interview Sprint Requerido',
+      sprintRequired: 'Career Sprint Requerido',
       upgradeDesc: 'Actualiza para rastrear solicitudes, obtener análisis de keywords y recibir alertas de ghosting.',
       upgradeNow: 'Actualizar Ahora',
       companyName: 'Nombre de la Empresa',
@@ -4136,11 +4535,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       addApplication: 'Agregar Solicitud',
       adding: 'Agregando...',
-      planRequired: 'Plan Interview Sprint requerido',
+      planRequired: 'Plan Career Sprint requerido',
       planRequiredDesc: 'Actualiza para rastrear solicitudes y obtener insights con IA',
       successMessage: 'Solicitud agregada con éxito',
       errorMessage: 'Error al agregar la solicitud',
-      featureRestricted: 'Esta función solo está disponible con una suscripción activa de Interview Sprint',
+      featureRestricted: 'Esta función solo está disponible con una suscripción activa de Career Sprint',
     },
     missionControl: {
       title: 'Control de Misión',
@@ -4317,6 +4716,102 @@ export const translations: Record<SupportedLocale, Translation> = {
       dismissLabel: 'No me interesa',
       freeLabel: '100% GRATIS',
     },
+    eliteMatch: {
+      title: 'Elite Match Tool',
+      description: 'Analiza tu CV contra cualquier oferta con precisión ML local. Identifica gaps y optimiza para ATS instantáneamente.',
+      linkedinUrlLabel: 'URL de LinkedIn (Recomendado)',
+      linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      linkedinUrlTip: 'Pega el link directo de la oferta de LinkedIn para mejores resultados de extracción.',
+      or: 'O',
+      jobDescriptionLabel: 'Pega la Descripción del Trabajo',
+      jobDescriptionPlaceholder: 'Sobre el rol:\nBuscamos un Senior Full Stack Developer con 5+ años de experiencia...\n\nRequisitos:\n- Experiencia sólida con React y Node.js\n- Experiencia con Kubernetes y AWS',
+      jobDescriptionTip: 'Copia y pega la descripción completa del trabajo de cualquier portal.',
+      analyzeMatchScore: 'Analizar Puntuación de Coincidencia',
+      entityExtraction: 'Extracción de Entidades',
+      entityExtractionDesc: 'No solo palabras clave: extraemos Hard Skills, Soft Skills y Métricas de Industria con comprensión semántica profunda.',
+      gapAnalysis: 'Análisis de Gaps',
+      gapAnalysisDesc: 'Identificamos EXACTAMENTE qué señales faltan en tu perfil para pasar los filtros ATS de alto riesgo.',
+      aiAutoFix: 'Auto-Fix con IA',
+      aiAutoFixDesc: 'Reescritura con IA de un clic que integra inteligentemente las señales faltantes en tu narrativa de CV existente.',
+      premiumTitle: 'Elite Match Tool es Premium',
+      premiumDescription: 'Analiza tu CV contra cualquier oferta usando ML local (0 costes de API)',
+      premiumList: [
+        'Extracción de entidades con TF-IDF & Cosine Similarity',
+        'Análisis de gaps crítico/importante/nice-to-have',
+        'Robot View con zonas rojas/verdes',
+        'Sugerencias específicas de Auto-Fix'
+      ],
+      upgradeNow: 'Actualizar Ahora',
+      accessDuration: 'Acceso 24 horas • Análisis de match ilimitados • Insights potenciados por ML',
+      analyzingMessage: 'Analizando...',
+      progressComplete: 'completado',
+      matchScore: 'Puntuación de Coincidencia',
+      excellentMatch: '¡Excelente match! Aplica con confianza.',
+      goodMatch: 'Buen match, pero hay gaps importantes.',
+      improveMatch: 'Necesitas mejorar tu CV para esta oferta.',
+      missingCriticalSignals: 'Señales Críticas Faltantes',
+      matchedSkills: 'Habilidades Coincidentes',
+      robotView: 'Robot View',
+      redZones: 'Red Zones',
+      greenZones: 'Green Zones',
+      autoFixRecommendations: 'Recomendaciones de Auto-Fix',
+      analyzeAnotherJob: 'Analizar Otro Trabajo',
+      applyAutoFix: 'Aplicar Auto-Fix',
+      autoFixCopied: '¡Sugerencias de Auto-Fix copiadas! Ve a la pestaña de Editar para aplicar los cambios.',
+      premiumFeature: 'Esta función es Premium. Actualiza tu plan para continuar.',
+      noResumeFound: 'No se encontró ningún CV. Por favor sube un CV primero.',
+      noTextFound: 'Tu CV no tiene texto extraído. Por favor re-sube tu CV.',
+      extractingIntent: 'Extrayendo Intención del Reclutador...',
+      analyzingHardSkills: 'Analizando Requisitos de Hard Skills...',
+      detectingSoftSkills: 'Detectando Señales de Soft Skills...',
+      generatingReport: 'Generando Informe de Señales Faltantes...',
+    },
+    subscriptionView: {
+      title: 'Gestión de Suscripción',
+      subtitle: 'Administra tu plan actual, detalles de facturación y desbloquea sprints premium de preparación para entrevistas.',
+      currentPlan: 'Plan Actual',
+      activeStatus: 'Activo',
+      billingHistory: 'Historial de Facturación',
+      cancelPlan: 'Cancelar Plan',
+      upgradeOptions: 'Opciones de Mejora',
+      payOnce: 'Paga una vez, úsalo para siempre',
+      freePreview: 'Vista Previa Gratuita',
+      freePreviewDesc: 'Escaneo básico gratuito para ver dónde te encuentras. Mejora para desbloquear el análisis completo y funciones premium.',
+      singleDebugFix: 'Arreglo de Debug Único',
+      oneTimeFix: 'Arreglo de una sola vez',
+      singleScan: 'Escaneo Único',
+      oneTimePayment: 'Pago único',
+      careerSprint: 'Career Sprint',
+      sevenDayUnlimited: '7 Días Ilimitados',
+      bestValue: 'MEJOR VALOR - AHORRA 60%',
+      successStories: '1.200+ Casos de Éxito',
+      startSprint: 'Comenzar Sprint de 7 Días',
+      currentPlanBtn: 'Plan Actual',
+      fixMyCv: 'Arreglar Mi CV',
+      getSingleScan: 'Obtener Escaneo Único',
+      singleDebugFixFeatures: [
+        { icon: "verified", text: "1 Escaneo Profundo" },
+        { icon: "terminal", text: "Vista Robot Terminal" },
+        { icon: "key", text: "Keywords Faltantes Completo" },
+        { icon: "auto_awesome", text: "1 Reescritura IA Completa" },
+        { icon: "integration_instructions", text: "Auto-Inyección Keywords" },
+        { icon: "download", text: "Exportar CV ATS-seguro" }
+      ],
+      singleScanFeatures: [
+        { icon: "verified", text: "Análisis ATS Completo" },
+        { icon: "key", text: "Informe de Keywords Completo" },
+        { icon: "auto_fix_high", text: "Auditoría de Formato + Arreglos" },
+        { icon: "autorenew", text: "Re-escaneos Ilimitados (24h)" },
+        { icon: "shield_with_heart", text: "Sanitización de PDF" }
+      ],
+      careerSprintFeatures: [
+        { icon: "all_inclusive", text: "Escaneos Ilimitados (7 Días)" },
+        { icon: "psychology", text: "Sugerencias de Keywords IA" },
+        { icon: "description", text: "Generador de Cartas de Presentación" },
+        { icon: "work", text: "Optimizador de LinkedIn" },
+        { icon: "support_agent", text: "Soporte Prioritario" }
+      ],
+    },
   },
   'fr': {
     hero: {
@@ -4377,13 +4872,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       // Upsell section
       waitBeforeCheckout: '⚠️ ATTENDEZ! Avant de payer...',
       applyingToOneJob: 'Postulez-vous pour UN SEUL Emploi?',
-      justMoreGetSprint: 'Pour seulement €10 de plus, obtenez l\'Interview Sprint.',
+      justMoreGetSprint: 'Pour seulement €10 de plus, obtenez l\'Career Sprint.',
       whyUpgrade: 'Pourquoi mettre à niveau?',
       save60: 'Économisez 60%',
       unlimitedScansNotOne: 'Scans illimités pendant 7 jours (pas un seul)',
       aiCoverLetters: 'Lettres de motivation générées par IA pour chaque candidature',
       linkedinOptimization: 'Optimisation du profil LinkedIn incluse',
-      candidatesChoseSprint: '1,200+ candidats ont choisi Interview Sprint et ont décroché des postes chez:',
+      candidatesChoseSprint: '1,200+ candidats ont choisi Career Sprint et ont décroché des postes chez:',
       upgradeToSprint: 'Oui, passer au Sprint (€24.99) 🚀',
       // More hardcoded strings
       scorePreview: 'Aperçu du Score',
@@ -4457,6 +4952,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       interviewsCount: 'Entretiens',
       topPerformingKeywords: 'Mots-Clés les Plus Performants',
       dataUniqueToYou: '🔒 Ces données sont uniques à vous et ne peuvent être répliquées par les concurrents',
+      masterCvsSubtitle: 'Vos modèles de CV de base - gérez et optimisez',
+      bulletRewriterDesc: 'Transformez des puces faibles en réalisations à fort impact en utilisant la formule Google XYZ',
+      coverLetterGenDesc: 'Lettres de motivation générées par l\'IA avec optimisation des mots-clés',
+      linkedinOptimizerDesc: 'Optimisez votre profil pour les recruteurs',
+      keywordSniperDesc: 'Réécriture de puces par l\'IA, injection de mots-clés et suivi en direct',
+      featured: 'Mis en avant',
+      openTool: 'Ouvrir l\'Outil',
+      profile: 'Profil',
+      credits: 'Crédits',
+      buyCredits: 'Acheter plus de crédits',
+      careerSprintRequired: 'Career Sprint Requis',
+      careerSprintRequiredDesc: 'Optimisez votre profil LinkedIn avec l\'IA et obtenez 3 fois plus de vues de recruteurs.',
+      upgradeToSprint: 'Passer au Career Sprint',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimisé → LinkedIn est le Suivant',
@@ -4962,6 +5470,46 @@ export const translations: Record<SupportedLocale, Translation> = {
         scanError: 'Échec de l\'analyse du profil. Veuillez réessayer.',
         noBioOptimization: 'Aucune optimisation de bio disponible. Veuillez d\'abord analyser votre profil.',
         bioOptimized: '✅ Bio optimisée copiée dans le presse-papiers ! Collez-la dans votre profil LinkedIn',
+        reScanProfile: 'Ré-analyser le Profil',
+        scanLinkedInProfile: 'Analyser le Profil LinkedIn',
+        pasteProfileDescription: 'Collez le texte de votre profil LinkedIn pour obtenir des suggestions d\'optimisation par l\'IA.',
+        profileUrlLabel: 'URL du Profil LinkedIn (Optionnel)',
+        profileUrlPlaceholder: 'https://linkedin.com/in/votreprofil',
+        profileTextLabel: 'Texte du Profil',
+        profileTextPlaceholder: 'Collez ici le texte de votre profil LinkedIn (titre, résumé, expérience, etc.)',
+        profileTextDescription: 'Copiez et collez l\'intégralité de votre profil LinkedIn ou les sections spécifiques que vous souhaitez optimiser.',
+        targetJobLabel: 'Description du Poste Cible (Optionnel)',
+        targetJobPlaceholder: 'Collez une description de poste pour obtenir des suggestions adaptées',
+        analyzeProfile: 'Analyser le Profil',
+        noAnalysisYet: 'Aucune Analyse LinkedIn pour le moment',
+        noAnalysisDescriptionFree: 'Passez au Career Sprint pour analyser votre profil LinkedIn et obtenir des suggestions d\'optimisation par l\'IA.',
+        noAnalysisDescriptionPaid: 'Cliquez sur "Ré-analyser le Profil" pour analyser votre profil LinkedIn et obtenir des suggestions d\'optimisation par l\'IA.',
+        unlockToOptimize: 'Mettre à Niveau pour Débloquer',
+        visibilityScore: 'Score de Visibilité pour les Recruteurs',
+        excellent: 'Excellent',
+        good: 'Bon',
+        needsWork: 'À Améliorer',
+        visibleToRecruiters: 'Votre profil est très visible pour les recruteurs !',
+        missesKeywords: 'Votre profil est visible mais manque de mots-clés techniques.',
+        invisibleTo: 'Invisible pour {percentage}% des recruteurs',
+        marketPositioning: 'Positionnement sur le Marché',
+        top15Percent: 'Top 15%',
+        comparedToCandidates: 'Comparé à plus de 1 400 candidats similaires',
+        searchabilityGap: 'Déficit de Recherche',
+        missingCriticalTerms: 'Termes critiques manquants pour votre rôle cible',
+        bioAudit: 'Audit de la Bio',
+        copyOptimizedBio: 'Copier la Bio Optimisée',
+        copying: 'Copie en cours...',
+        currentAboutSection: 'Section "À propos" Actuelle',
+        aiOptimizedVersion: 'Version Optimisée par l\'IA',
+        keyImprovements: 'Améliorations Clés',
+        noBioAnalysis: 'Aucune analyse de bio disponible pour le moment. Assurez-vous d\'inclure votre section "À propos" lors de l\'analyse de votre profil.',
+        benefits: {
+          headline: 'Optimisation du titre par l\'IA',
+          keywords: 'Analyse des mots-clés',
+          bio: 'Réécriture de la section À propos',
+          visibility: 'Boost de visibilité',
+        },
       },
       answerFinder: {
         title: 'Chercheur de Réponses',
@@ -4994,6 +5542,26 @@ export const translations: Record<SupportedLocale, Translation> = {
         selectResume: 'Sélectionner un CV...',
         companyPlaceholder: 'ex. Acme Corp',
         rolePlaceholder: 'ex. Ingénieur Senior',
+        generatorSettings: 'Paramètres du Générateur',
+        generatorDescription: 'Configurez l\'IA pour rédiger une lettre de motivation sur mesure.',
+        selectResumeLabel: 'Sélectionner le CV (Contexte)',
+        noneGenericLetter: 'Aucun (Lettre Générique)',
+        companyNameLabel: 'Nom de l\'Entreprise',
+        jobTitleLabel: 'Titre du Poste',
+        jobDescriptionLabel: 'Description du Poste',
+        jobDescriptionPlaceholder: 'Collez la description du poste ici...',
+        writingLetter: 'Rédaction de la Lettre...',
+        upgradeToGenerate: 'Mettre à Niveau pour Générer',
+        generateCoverLetter: 'Générer la Lettre de Motivation',
+        generatedLetterTitle: 'Lettre Générée',
+        generatedLetterDescription: 'Examinez et modifiez votre lettre de motivation ci-dessous.',
+        placeholderText: 'Votre lettre de motivation apparaîtra ici',
+        benefits: {
+          unlimited: 'Générations illimitées',
+          tailoring: 'Adaptation spécifique au poste',
+          atsOptimized: 'Format optimisé pour l\'ATS',
+          integration: 'Intégration du CV',
+        },
       },
       dm: {
         title: 'Générateur de Messages',
@@ -5484,13 +6052,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       howToStep3: 'Analysez la description pour extraire les mots-clés',
       howToStep4: 'Revenez ici pour obtenir des suggestions IA',
       backToDashboard: 'Retour au Tableau de Bord',
-      interviewSprintRequired: 'Interview Sprint Requis',
+      interviewSprintRequired: 'Career Sprint Requis',
       injectKeywordsDesc: 'Injectez des mots-clés manquants dans vos points avec des suggestions IA.',
       keywordInjection: 'Injection de mots-clés',
       liveScoreTracking: 'Suivi du score en direct',
       priorityTargeting: 'Ciblage prioritaire',
       contextAwareAI: 'IA consciente du contexte',
-      upgradeToSprint: 'Passer à Interview Sprint',
+      upgradeToSprint: 'Passer à Career Sprint',
       back: 'Retour',
       targeting: 'Ciblage',
       currentResume: 'CV Actuel',
@@ -5506,7 +6074,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Suggestion appliquée ! Votre CV a été mis à jour.',
       noMissingKeywords: 'Aucun mot-clé manquant pour afficher des exemples',
       rewriteSuccess: 'CV réécrit avec succès !',
-      lockedTitle: 'Interview Sprint Requis',
+      lockedTitle: 'Career Sprint Requis',
       lockedDesc: 'Débloquez l\'Outil Keyword Sniper pour injecter des mots-clés manquants et améliorer votre score ATS.',
       upgradeNow: 'Mettre à Niveau Maintenant',
     },
@@ -5534,7 +6102,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     createApplication: {
       title: 'Ajouter une Nouvelle Candidature',
-      sprintRequired: 'Interview Sprint Requis',
+      sprintRequired: 'Career Sprint Requis',
       upgradeDesc: 'Passez à la version supérieure pour suivre les candidatures, obtenir une analyse des mots-clés et recevoir des alertes de ghosting.',
       upgradeNow: 'Mettre à Niveau Maintenant',
       companyName: 'Nom de l\'Entreprise',
@@ -5550,11 +6118,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Annuler',
       addApplication: 'Ajouter une Candidature',
       adding: 'Ajout...',
-      planRequired: 'Plan Interview Sprint requis',
+      planRequired: 'Plan Career Sprint requis',
       planRequiredDesc: 'Passez à la version supérieure pour suivre les candidatures et obtenir des informations basées sur l\'IA',
       successMessage: 'Candidature ajoutée avec succès',
       errorMessage: 'Échec de l\'ajout de la candidature',
-      featureRestricted: 'Cette fonctionnalité n\'est disponible qu\'avec un abonnement Interview Sprint actif',
+      featureRestricted: 'Cette fonctionnalité n\'est disponible qu\'avec un abonnement Career Sprint actif',
     },
     missionControl: {
       title: 'Centre de Contrôle',
@@ -5731,6 +6299,102 @@ export const translations: Record<SupportedLocale, Translation> = {
       dismissLabel: 'Pas intéressé',
       freeLabel: '100% GRATUIT',
     },
+    eliteMatch: {
+      title: 'Outil Elite Match',
+      description: 'Analysez votre CV par rapport à n\'importe quelle offre d\'emploi avec la précision du ML local. Identifiez les lacunes et optimisez instantanément pour les ATS.',
+      linkedinUrlLabel: 'URL LinkedIn (Recommandé)',
+      linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      linkedinUrlTip: 'Collez le lien direct vers l\'offre LinkedIn pour de meilleurs résultats d\'extraction.',
+      or: 'OU',
+      jobDescriptionLabel: 'Coller la description du poste',
+      jobDescriptionPlaceholder: 'À propos du rôle :\nNous recherchons un Développeur Full Stack Senior avec 5+ ans d\'expérience...\n\nExigences :\n- Solide expérience avec React et Node.js\n- Expérience avec Kubernetes et AWS',
+      jobDescriptionTip: 'Copiez et collez la description complète du poste depuis n\'importe quel portail.',
+      analyzeMatchScore: 'Analyser le score de correspondance',
+      entityExtraction: 'Extraction d\'entités',
+      entityExtractionDesc: 'Pas seulement des mots-clés : nous extrayons les Hard Skills, Soft Skills et métriques de l\'industrie avec une compréhension sémantique profonde.',
+      gapAnalysis: 'Analyse des lacunes',
+      gapAnalysisDesc: 'Nous identifions EXACTEMENT quels signaux manquent à votre profil pour passer les filtres ATS à haut risque.',
+      aiAutoFix: 'Auto-Fix IA',
+      aiAutoFixDesc: 'Réécriture IA en un clic qui intègre intelligemment les signaux manquants dans votre narration de CV existante.',
+      premiumTitle: 'L\'outil Elite Match est Premium',
+      premiumDescription: 'Analysez votre CV par rapport à n\'importe quelle offre en utilisant le ML local (0 coût d\'API)',
+      premiumList: [
+        'Extraction d\'entités avec TF-IDF & Cosine Similarity',
+        'Analyse des lacunes critique/importante/souhaitable',
+        'Vue Robot avec zones rouges/vertes',
+        'Suggestions spécifiques d\'Auto-Fix'
+      ],
+      upgradeNow: 'Mettre à jour maintenant',
+      accessDuration: 'Accès 24 heures • Analyses de correspondance illimitées • Insights alimentés par ML',
+      analyzingMessage: 'Analyse en cours...',
+      progressComplete: 'terminé',
+      matchScore: 'Score de correspondance',
+      excellentMatch: 'Excellente correspondance ! Postulez en toute confiance.',
+      goodMatch: 'Bonne correspondance, mais il y a des lacunes importantes.',
+      improveMatch: 'Vous devez améliorer votre CV pour cette offre.',
+      missingCriticalSignals: 'Signaux critiques manquants',
+      matchedSkills: 'Compétences correspondantes',
+      robotView: 'Vue Robot',
+      redZones: 'Zones rouges',
+      greenZones: 'Zones vertes',
+      autoFixRecommendations: 'Recommandations Auto-Fix',
+      analyzeAnotherJob: 'Analyser un autre poste',
+      applyAutoFix: 'Appliquer l\'Auto-Fix',
+      autoFixCopied: 'Suggestions d\'Auto-Fix copiées ! Allez dans l\'onglet de modification pour appliquer les changements.',
+      premiumFeature: 'Cette fonctionnalité est Premium. Mettez à jour votre plan pour continuer.',
+      noResumeFound: 'Aucun CV trouvé. Veuillez d\'abord télécharger un CV.',
+      noTextFound: 'Votre CV n\'a pas de texte extrait. Veuillez re-télécharger votre CV.',
+      extractingIntent: 'Extraction de l\'intention du recruteur...',
+      analyzingHardSkills: 'Analyse des exigences en Hard Skills...',
+      detectingSoftSkills: 'Détection des signaux de Soft Skills...',
+      generatingReport: 'Génération du rapport sur les signaux manquants...',
+    },
+    subscriptionView: {
+      title: 'Gestion de l\'abonnement',
+      subtitle: 'Gérez votre plan actuel, vos détails de facturation et débloquez les sprints premium de préparation aux entretiens.',
+      currentPlan: 'Plan Actuel',
+      activeStatus: 'Actif',
+      billingHistory: 'Historique de Facturation',
+      cancelPlan: 'Annuler le Plan',
+      upgradeOptions: 'Options de Mise à Niveau',
+      payOnce: 'Payez une fois, utilisez pour toujours',
+      freePreview: 'Aperçu Gratuit',
+      freePreviewDesc: 'Analyse de base gratuite pour savoir où vous en êtes. Mettez à niveau pour débloquer l\'analyse complète et les fonctionnalités premium.',
+      singleDebugFix: 'Debug Fix Unique',
+      oneTimeFix: 'Correction unique',
+      singleScan: 'Scan Unique',
+      oneTimePayment: 'Paiement unique',
+      careerSprint: 'Career Sprint',
+      sevenDayUnlimited: '7 Jours Illimités',
+      bestValue: 'MEILLEURE VALEUR - ÉCONOMISEZ 60%',
+      successStories: '1 200+ Cas de Succès',
+      startSprint: 'Démarrer le Sprint de 7 Jours',
+      currentPlanBtn: 'Plan Actuel',
+      fixMyCv: 'Corriger Mon CV',
+      getSingleScan: 'Obtenir un Scan Unique',
+      singleDebugFixFeatures: [
+        { icon: "verified", text: "1 Scan Profond" },
+        { icon: "terminal", text: "Vue Terminal Robot" },
+        { icon: "key", text: "Mots-clés Manquants Complets" },
+        { icon: "auto_awesome", text: "1 Réécriture IA Complète" },
+        { icon: "integration_instructions", text: "Auto-Injection de Mots-clés" },
+        { icon: "download", text: "Exporter CV Compatible ATS" }
+      ],
+      singleScanFeatures: [
+        { icon: "verified", text: "Analyse ATS Complète" },
+        { icon: "key", text: "Rapport de Mots-clés Complet" },
+        { icon: "auto_fix_high", text: "Audit de Format + Corrections" },
+        { icon: "autorenew", text: "Ré-scans Illimités (24h)" },
+        { icon: "shield_with_heart", text: "Sanitisation PDF" }
+      ],
+      careerSprintFeatures: [
+        { icon: "all_inclusive", text: "Scans Illimités (7 Jours)" },
+        { icon: "psychology", text: "Suggestions de Mots-clés IA" },
+        { icon: "description", text: "Générateur de Lettre de Motivation" },
+        { icon: "work", text: "Optimiseur LinkedIn" },
+        { icon: "support_agent", text: "Support Prioritaire" }
+      ],
+    },
   },
   'de': {
     hero: {
@@ -5791,13 +6455,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       // Upsell section
       waitBeforeCheckout: '⚠️ WARTEN SIE! Bevor Sie bezahlen...',
       applyingToOneJob: 'Bewerben Sie sich nur auf EINEN Job?',
-      justMoreGetSprint: 'Für nur €10 mehr erhalten Sie den Interview Sprint.',
+      justMoreGetSprint: 'Für nur €10 mehr erhalten Sie den Career Sprint.',
       whyUpgrade: 'Warum upgraden?',
       save60: 'Sparen Sie 60%',
       unlimitedScansNotOne: 'Unbegrenzte Scans für 7 Tage (nicht nur einen)',
       aiCoverLetters: 'KI-generierte Anschreiben für jede Bewerbung',
       linkedinOptimization: 'LinkedIn-Profiloptimierung inklusive',
-      candidatesChoseSprint: '1,200+ Kandidaten wählten Interview Sprint und bekamen Jobs bei:',
+      candidatesChoseSprint: '1,200+ Kandidaten wählten Career Sprint und bekamen Jobs bei:',
       upgradeToSprint: 'Ja, auf Sprint upgraden (€24.99) 🚀',
       // More hardcoded strings
       scorePreview: 'Score-Vorschau',
@@ -5871,6 +6535,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       interviewsCount: 'Interviews',
       topPerformingKeywords: 'Top-performante Schlüsselwörter',
       dataUniqueToYou: '🔒 Diese Daten sind einzigartig für Sie und können nicht von Wettbewerbern repliziert werden',
+      masterCvsSubtitle: 'Ihre Basis-Lebenslaufvorlagen - verwalten und optimieren',
+      bulletRewriterDesc: 'Verwandeln Sie schwache Aufzählungspunkte mit der Google XYZ-Formel in wirkungsvolle Erfolge',
+      coverLetterGenDesc: 'KI-generierte Anschreiben mit Keyword-Optimierung',
+      linkedinOptimizerDesc: 'Optimieren Sie Ihr Profil für Recruiter',
+      keywordSniperDesc: 'KI-Aufzählungsumschreibung, Keyword-Injektion und Live-Tracking',
+      featured: 'Hervorgehoben',
+      openTool: 'Werkzeug Öffnen',
+      profile: 'Profil',
+      credits: 'Credits',
+      buyCredits: 'Mehr Credits Kaufen',
+      careerSprintRequired: 'Career Sprint Erforderlich',
+      careerSprintRequiredDesc: 'Optimieren Sie Ihr LinkedIn-Profil mit KI und erhalten Sie 3x mehr Ansichten von Recruitern.',
+      upgradeToSprint: 'Auf Career Sprint Upgraden',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Optimiert → LinkedIn ist als Nächstes',
@@ -6369,13 +7046,53 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       linkedIn: {
         title: 'LinkedIn-Optimierer',
-        description: 'Optimieren Sie Ihr LinkedIn-Profil',
-        upgradeDescription: 'Upgrade für LinkedIn-Optimierung',
-        noProfileText: 'Bitte geben Sie Profiltext ein',
-        analyzed: 'Profil analysiert!',
-        scanError: 'Scan fehlgeschlagen',
-        noBioOptimization: 'Keine Bio-Optimierung verfügbar',
-        bioOptimized: 'Bio optimiert!',
+        description: 'Optimieren Sie Ihr LinkedIn-Profil für maximale Sichtbarkeit',
+        upgradeDescription: 'Aktualisieren Sie, um Ihr LinkedIn-Profil zu optimieren',
+        noProfileText: 'Bitte fügen Sie Ihren LinkedIn-Profilbericht ein',
+        analyzed: '✅ LinkedIn-Profil erfolgreich analysiert!',
+        scanError: 'Profil-Scan fehlgeschlagen. Bitte versuchen Sie es erneut.',
+        noBioOptimization: 'Keine Bio-Optimierung verfügbar. Bitte scannen Sie zuerst Ihr Profil.',
+        bioOptimized: '✅ Optimierte Bio in die Zwischenablage kopiert! Fügen Sie sie in Ihren LinkedIn-Über-Abschnitt ein.',
+        reScanProfile: 'Profil erneut scannen',
+        scanLinkedInProfile: 'LinkedIn-Profil scannen',
+        pasteProfileDescription: 'Fügen Sie Ihren LinkedIn-Profiltext ein, um KI-gestützte Optimierungsvorschläge zu erhalten.',
+        profileUrlLabel: 'LinkedIn-Profil-URL (Optional)',
+        profileUrlPlaceholder: 'https://linkedin.com/in/ihrprofil',
+        profileTextLabel: 'Profiltext',
+        profileTextPlaceholder: 'Fügen Sie hier Ihren LinkedIn-Profiltext ein (Überschrift, Info-Bereich, Erfahrung usw.)',
+        profileTextDescription: 'Kopieren Sie Ihr gesamtes LinkedIn-Profil oder bestimmte Abschnitte, die Sie optimieren möchten, und fügen Sie sie ein.',
+        targetJobLabel: 'Angestrebte Stellenbeschreibung (Optional)',
+        targetJobPlaceholder: 'Fügen Sie eine Stellenbeschreibung ein, um maßgeschneiderte Vorschläge zu erhalten',
+        analyzeProfile: 'Profil analysieren',
+        noAnalysisYet: 'Noch keine LinkedIn-Analyse vorhanden',
+        noAnalysisDescriptionFree: 'Aktualisieren Sie auf Career Sprint, um Ihr LinkedIn-Profil zu analysieren und KI-gestützte Optimierungsvorschläge zu erhalten.',
+        noAnalysisDescriptionPaid: 'Klicken Sie auf "Profil erneut scannen", um Ihr LinkedIn-Profil zu analysieren und KI-gestützte Optimierungsvorschläge zu erhalten.',
+        unlockToOptimize: 'Aktualisieren zum Freischalten',
+        visibilityScore: 'Sichtbarkeits-Score für Recruiter',
+        excellent: 'Ausgezeichnet',
+        good: 'Gut',
+        needsWork: 'Überarbeitungsbedürftig',
+        visibleToRecruiters: 'Ihr Profil ist für Recruiter sehr gut sichtbar!',
+        missesKeywords: 'Ihr Profil ist sichtbar, aber es fehlen wichtige technische Keywords.',
+        invisibleTo: 'Unsichtbar für {percentage}% der Recruiter',
+        marketPositioning: 'Marktpositionierung',
+        top15Percent: 'Top 15%',
+        comparedToCandidates: 'Im Vergleich zu über 1.400 ähnlichen Kandidaten',
+        searchabilityGap: 'Suchbarkeits-Lücke',
+        missingCriticalTerms: 'Fehlende kritische Begriffe für Ihre Zielrolle',
+        bioAudit: 'Bio-Audit',
+        copyOptimizedBio: 'Optimierte Bio kopieren',
+        copying: 'Kopiere...',
+        currentAboutSection: 'Aktueller Info-Bereich',
+        aiOptimizedVersion: 'KI-optimierte Version',
+        keyImprovements: 'Wichtigste Verbesserungen',
+        noBioAnalysis: 'Noch keine Bio-Analyse verfügbar. Stellen Sie sicher, dass Sie Ihren Info-Bereich beim Scannen Ihres Profils mit einbeziehen.',
+        benefits: {
+          headline: 'KI-Überschriften-Optimierung',
+          keywords: 'Keyword-Analyse',
+          bio: 'Umschreiben des Info-Bereichs',
+          visibility: 'Sichtbarkeits-Boost',
+        },
       },
       answerFinder: {
         title: 'Antwort-Finder',
@@ -6401,13 +7118,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       coverLetter: {
         title: 'Anschreiben-Generator',
-        upgradeDescription: 'Upgrade für Anschreiben',
-        noJobDescription: 'Keine Stellenbeschreibung',
-        generated: 'Anschreiben generiert!',
-        generateError: 'Generierung fehlgeschlagen',
-        selectResume: 'CV auswählen',
-        companyPlaceholder: 'Firmenname',
-        rolePlaceholder: 'Stellentitel',
+        upgradeDescription: 'Aktualisieren Sie, um KI-gestützte Anschreiben zu generieren',
+        noJobDescription: 'Bitte geben Sie eine Stellenbeschreibung ein',
+        generated: 'Anschreiben erfolgreich generiert!',
+        generateError: 'Anschreiben konnte nicht generiert werden',
+        selectResume: 'Einen Lebenslauf auswählen...',
+        companyPlaceholder: 'z. B. Acme Corp',
+        rolePlaceholder: 'z. B. Senior Engineer',
+        generatorSettings: 'Generator-Einstellungen',
+        generatorDescription: 'Konfigurieren Sie die KI, um ein maßgeschneidertes Anschreiben zu verfassen.',
+        selectResumeLabel: 'Lebenslauf auswählen (Kontext)',
+        noneGenericLetter: 'Keiner (Allgemeines Anschreiben)',
+        companyNameLabel: 'Firmenname',
+        jobTitleLabel: 'Stellentitel',
+        jobDescriptionLabel: 'Stellenbeschreibung',
+        jobDescriptionPlaceholder: 'Fügen Sie hier die Stellenbeschreibung ein...',
+        writingLetter: 'Schreibe Anschreiben...',
+        upgradeToGenerate: 'Aktualisieren zum Generieren',
+        generateCoverLetter: 'Anschreiben generieren',
+        generatedLetterTitle: 'Generiertes Anschreiben',
+        generatedLetterDescription: 'Überprüfen und bearbeiten Sie Ihr Anschreiben unten.',
+        placeholderText: 'Ihr Anschreiben wird hier erscheinen',
+        benefits: {
+          unlimited: 'Unbegrenzte Erstellung',
+          tailoring: 'Job-spezifische Anpassung',
+          atsOptimized: 'ATS-optimiertes Format',
+          integration: 'Lebenslauf-Integration',
+        },
       },
       dm: {
         title: 'DM-Generator',
@@ -6898,13 +7635,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       howToStep3: 'Analysieren Sie die Beschreibung, um Keywords zu extrahieren',
       howToStep4: 'Kehren Sie hierher zurück, um KI-Vorschläge zu erhalten',
       backToDashboard: 'Zurück zum Dashboard',
-      interviewSprintRequired: 'Interview Sprint Erforderlich',
+      interviewSprintRequired: 'Career Sprint Erforderlich',
       injectKeywordsDesc: 'Fügen Sie fehlende Keywords in Ihre Bulletpoints mit KI-Vorschlägen ein.',
       keywordInjection: 'Keyword-Injektion',
       liveScoreTracking: 'Live-Score-Tracking',
       priorityTargeting: 'Prioritäts-Targeting',
       contextAwareAI: 'Kontextbewusste KI',
-      upgradeToSprint: 'Upgrade auf Interview Sprint',
+      upgradeToSprint: 'Upgrade auf Career Sprint',
       back: 'Zurück',
       targeting: 'Targeting',
       currentResume: 'Aktueller Lebenslauf',
@@ -6920,7 +7657,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Vorschlag angewendet! Ihr Lebenslauf wurde aktualisiert.',
       noMissingKeywords: 'Keine fehlenden Keywords zum Anzeigen von Beispielen',
       rewriteSuccess: 'Lebenslauf erfolgreich neu geschrieben!',
-      lockedTitle: 'Interview Sprint Erforderlich',
+      lockedTitle: 'Career Sprint Erforderlich',
       lockedDesc: 'Schalten Sie das Keyword Sniper Tool frei, um fehlende Keywords einzufügen und Ihren ATS-Score zu verbessern.',
       upgradeNow: 'Jetzt Upgraden',
     },
@@ -6948,7 +7685,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     createApplication: {
       title: 'Neue Bewerbung Hinzufügen',
-      sprintRequired: 'Interview Sprint Erforderlich',
+      sprintRequired: 'Career Sprint Erforderlich',
       upgradeDesc: 'Upgrade, um Bewerbungen zu verfolgen, Keyword-Analysen zu erhalten und Ghosting-Warnungen zu bekommen.',
       upgradeNow: 'Jetzt Upgraden',
       companyName: 'Firmenname',
@@ -6964,11 +7701,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Abbrechen',
       addApplication: 'Bewerbung Hinzufügen',
       adding: 'Wird hinzugefügt...',
-      planRequired: 'Interview Sprint Plan erforderlich',
+      planRequired: 'Career Sprint Plan erforderlich',
       planRequiredDesc: 'Upgrade für Bewerbungsverfolgung und KI-gestützte Insights',
       successMessage: 'Bewerbung erfolgreich hinzugefügt',
       errorMessage: 'Fehler beim Hinzufügen der Bewerbung',
-      featureRestricted: 'Diese Funktion ist nur mit einem aktiven Interview Sprint Abonnement verfügbar',
+      featureRestricted: 'Diese Funktion ist nur mit einem aktiven Career Sprint Abonnement verfügbar',
     },
     missionControl: {
       title: 'Missionskontrolle',
@@ -7145,6 +7882,102 @@ export const translations: Record<SupportedLocale, Translation> = {
       dismissLabel: 'Nicht interessiert',
       freeLabel: '100% KOSTENLOS',
     },
+    eliteMatch: {
+      title: 'Elite Match Tool',
+      description: 'Analysieren Sie Ihren Lebenslauf mit lokaler ML-Präzision gegen jedes Stellenangebot. Identifizieren Sie Lücken und optimieren Sie sofort für ATS.',
+      linkedinUrlLabel: 'LinkedIn URL (Empfohlen)',
+      linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      linkedinUrlTip: 'Fügen Sie den direkten Link zum LinkedIn-Stellenangebot für bessere Extraktionsergebnisse ein.',
+      or: 'ODER',
+      jobDescriptionLabel: 'Stellenbeschreibung einfügen',
+      jobDescriptionPlaceholder: 'Über die Rolle:\nWir suchen einen Senior Full Stack Developer mit 5+ Jahren Erfahrung...\n\nAnforderungen:\n- Fundierte Erfahrung mit React und Node.js\n- Erfahrung mit Kubernetes und AWS',
+      jobDescriptionTip: 'Kopieren Sie die vollständige Stellenbeschreibung von einem beliebigen Portal und fügen Sie sie hier ein.',
+      analyzeMatchScore: 'Match-Score analysieren',
+      entityExtraction: 'Entitäten-Extraktion',
+      entityExtractionDesc: 'Nicht nur Schlüsselwörter: Wir extrahieren Hard Skills, Soft Skills und Branchenmetriken mit tiefem semantischem Verständnis.',
+      gapAnalysis: 'Lückenanalyse',
+      gapAnalysisDesc: 'Wir identifizieren EXAKT, welche Signale in Ihrem Profil fehlen, um Hochrisiko-ATS-Filter zu bestehen.',
+      aiAutoFix: 'KI-Auto-Fix',
+      aiAutoFixDesc: 'KI-Umschreibung mit einem Klick, die fehlende Signale intelligent in Ihre bestehende Lebenslauf-Erzählung integriert.',
+      premiumTitle: 'Elite Match Tool ist Premium',
+      premiumDescription: 'Analysieren Sie Ihren Lebenslauf gegen jedes Angebot mit lokalem ML (0 API-Kosten)',
+      premiumList: [
+        'Entitäten-Extraktion mit TF-IDF & Cosine Similarity',
+        'Kritische/wichtige/optionale Lückenanalyse',
+        'Robot-View mit roten/grünen Zonen',
+        'Spezifische Auto-Fix-Vorschläge'
+      ],
+      upgradeNow: 'Jetzt upgraden',
+      accessDuration: '24-Stunden-Zugang • Unlimitierte Match-Analysen • ML-gestützte Einblicke',
+      analyzingMessage: 'Analysiere...',
+      progressComplete: 'fertig',
+      matchScore: 'Match-Score',
+      excellentMatch: 'Hervorragender Match! Bewerben Sie sich mit Zuversicht.',
+      goodMatch: 'Guter Match, aber es gibt wichtige Lücken.',
+      improveMatch: 'Sie müssen Ihren Lebenslauf für dieses Angebot verbessern.',
+      missingCriticalSignals: 'Fehlende kritische Signale',
+      matchedSkills: 'Übereinstimmende Fähigkeiten',
+      robotView: 'Robot-View',
+      redZones: 'Rote Zonen',
+      greenZones: 'Grüne Zonen',
+      autoFixRecommendations: 'Auto-Fix-Empfehlungen',
+      analyzeAnotherJob: 'Anderen Job analysieren',
+      applyAutoFix: 'Auto-Fix anwenden',
+      autoFixCopied: 'Auto-Fix-Vorschläge kopiert! Navigieren Sie zum Tab „Bearbeiten“, um die Änderungen zu übernehmen.',
+      premiumFeature: 'Diese Funktion ist Premium. Upgraden Sie Ihren Plan, um fortzufahren.',
+      noResumeFound: 'Kein Lebenslauf gefunden. Bitte laden Sie zuerst einen Lebenslauf hoch.',
+      noTextFound: 'Ihr Lebenslauf enthält keinen extrahierten Text. Bitte laden Sie Ihren Lebenslauf erneut hoch.',
+      extractingIntent: 'Extrahiere Recruiter-Intention...',
+      analyzingHardSkills: 'Analyse der Hard-Skill-Anforderungen...',
+      detectingSoftSkills: 'Erkenne Soft-Skill-Signale...',
+      generatingReport: 'Generiere Bericht über fehlende Signale...',
+    },
+    subscriptionView: {
+      title: 'Abonnement-Verwaltung',
+      subtitle: 'Verwalten Sie Ihren aktuellen Plan, Rechnungsdetails und schalten Sie Premium-Interview-Vorbereitungs-Sprints frei.',
+      currentPlan: 'Aktueller Plan',
+      activeStatus: 'Aktiv',
+      billingHistory: 'Rechnungshistorie',
+      cancelPlan: 'Plan kündigen',
+      upgradeOptions: 'Upgrade-Optionen',
+      payOnce: 'Einmal zahlen, für immer nutzen',
+      freePreview: 'Kostenlose Vorschau',
+      freePreviewDesc: 'Kostenloser Basis-Scan, um zu sehen, wo Sie stehen. Upgrade für vollständige Analyse und Premium-Funktionen.',
+      singleDebugFix: 'Einzelner Debug Fix',
+      oneTimeFix: 'Einmalige Korrektur',
+      singleScan: 'Einzelner Scan',
+      oneTimePayment: 'Einmalige Zahlung',
+      careerSprint: 'Career Sprint',
+      sevenDayUnlimited: '7 Tage Unbegrenzt',
+      bestValue: 'BESTER WERT - 60% SPAREN',
+      successStories: '1.200+ Erfolgsgeschichten',
+      startSprint: '7-Tage-Sprint starten',
+      currentPlanBtn: 'Aktueller Plan',
+      fixMyCv: 'Meinen CV korrigieren',
+      getSingleScan: 'Einzelnen Scan erhalten',
+      singleDebugFixFeatures: [
+        { icon: "verified", text: "1 Tiefenscan" },
+        { icon: "terminal", text: "Roboter-Terminal-Ansicht" },
+        { icon: "key", text: "Vollständige fehlende Keywords" },
+        { icon: "auto_awesome", text: "1 Vollständige KI-Umschreibung" },
+        { icon: "integration_instructions", text: "Automatische Keyword-Injektion" },
+        { icon: "download", text: "ATS-sicheren CV exportieren" }
+      ],
+      singleScanFeatures: [
+        { icon: "verified", text: "Vollständige ATS-Analyse" },
+        { icon: "key", text: "Kompletter Keyword-Bericht" },
+        { icon: "auto_fix_high", text: "Format-Audit + Korrekturen" },
+        { icon: "autorenew", text: "Unbegrenzte Re-scans (24h)" },
+        { icon: "shield_with_heart", text: "PDF-Bereinigung" }
+      ],
+      careerSprintFeatures: [
+        { icon: "all_inclusive", text: "Unbegrenzte Scans (7 Tage)" },
+        { icon: "psychology", text: "KI-Keyword-Vorschläge" },
+        { icon: "description", text: "Anschreiben-Generator" },
+        { icon: "work", text: "LinkedIn-Optimierer" },
+        { icon: "support_agent", text: "Prioritäts-Support" }
+      ],
+    },
   },
   'pt': {
     hero: {
@@ -7205,13 +8038,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       // Upsell section
       waitBeforeCheckout: '⚠️ AGUARDE! Antes de finalizar...',
       applyingToOneJob: 'Você está se candidatando a Apenas UM Emprego?',
-      justMoreGetSprint: 'Por apenas €10 a mais, obtenha o Interview Sprint.',
+      justMoreGetSprint: 'Por apenas €10 a mais, obtenha o Career Sprint.',
       whyUpgrade: 'Por que atualizar?',
       save60: 'Economize 60%',
       unlimitedScansNotOne: 'Escaneamentos ilimitados por 7 dias (não apenas um)',
       aiCoverLetters: 'Cartas de apresentação com IA para cada candidatura',
       linkedinOptimization: 'Otimização de perfil do LinkedIn incluída',
-      candidatesChoseSprint: '1,200+ candidatos escolheram Interview Sprint e conseguiram vagas em:',
+      candidatesChoseSprint: '1,200+ candidatos escolheram Career Sprint e conseguiram vagas em:',
       upgradeToSprint: 'Sim, atualizar para Sprint (€24.99) 🚀',
       // More hardcoded strings
       scorePreview: 'Prévia da Pontuação',
@@ -7285,6 +8118,19 @@ export const translations: Record<SupportedLocale, Translation> = {
       interviewsCount: 'Entrevistas',
       topPerformingKeywords: 'Palavras-Chave de Melhor Desempenho',
       dataUniqueToYou: '🔒 Estes dados são únicos para você e não podem ser replicados por concorrentes',
+      masterCvsSubtitle: 'Seus modelos de currículo base - gerencie e otimize',
+      bulletRewriterDesc: 'Transforme marcadores fracos em conquistas de alto impacto usando a fórmula Google XYZ',
+      coverLetterGenDesc: 'Cartas de apresentação geradas por IA com otimização de palavras-chave',
+      linkedinOptimizerDesc: 'Otimize seu perfil para recrutadores',
+      keywordSniperDesc: 'Reescrita de marcadores por IA, injeção de palavras-chave e acompanhamento ao vivo',
+      featured: 'Destaque',
+      openTool: 'Abrir Ferramenta',
+      profile: 'Perfil',
+      credits: 'Créditos',
+      buyCredits: 'Comprar mais créditos',
+      careerSprintRequired: 'Career Sprint Necessário',
+      careerSprintRequiredDesc: 'Otimize seu perfil do LinkedIn com IA e obtenha 3x mais visualizações de recrutadores.',
+      upgradeToSprint: 'Atualizar para Career Sprint',
     },
     resumeDetail: {
       linkedinUpsellTitle: 'CV Otimizado → LinkedIn é o Próximo',
@@ -7783,13 +8629,53 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       linkedIn: {
         title: 'Otimizador de LinkedIn',
-        description: 'Otimize seu perfil do LinkedIn',
-        upgradeDescription: 'Upgrade para otimização do LinkedIn',
-        noProfileText: 'Por favor, insira texto do perfil',
-        analyzed: 'Perfil analisado!',
-        scanError: 'Falha no scan',
-        noBioOptimization: 'Sem otimização de bio disponível',
-        bioOptimized: 'Bio otimizada!',
+        description: 'Otimize seu perfil do LinkedIn para máxima visibilidade',
+        upgradeDescription: 'Atualize para otimizar seu perfil do LinkedIn',
+        noProfileText: 'Por favor, cole o texto do seu perfil do LinkedIn',
+        analyzed: '✅ Perfil do LinkedIn analisado com sucesso!',
+        scanError: 'Falha ao escanear perfil. Por favor, tente novamente.',
+        noBioOptimization: 'Nenhuma otimização de bio disponível. Por favor, escaneie seu perfil primeiro.',
+        bioOptimized: '✅ Bio otimizada copiada para a área de transferência! Cole-a na sua seção "Sobre" do LinkedIn.',
+        reScanProfile: 'Re-escanear Perfil',
+        scanLinkedInProfile: 'Escanear Perfil do LinkedIn',
+        pasteProfileDescription: 'Cole o texto do seu perfil do LinkedIn para obter sugestões de otimização por IA.',
+        profileUrlLabel: 'URL do Perfil do LinkedIn (Opcional)',
+        profileUrlPlaceholder: 'https://linkedin.com/in/seuperfil',
+        profileTextLabel: 'Texto do Perfil',
+        profileTextPlaceholder: 'Cole aqui o texto do seu perfil do LinkedIn (título, resumo, experiência, etc.)',
+        profileTextDescription: 'Copie e cole todo o seu perfil do LinkedIn ou as seções específicas que deseja otimizar.',
+        targetJobLabel: 'Descrição da Vaga Alvo (Opcional)',
+        targetJobPlaceholder: 'Cole uma descrição de vaga para obter sugestões personalizadas',
+        analyzeProfile: 'Analisar Perfil',
+        noAnalysisYet: 'Nenhuma Análise de LinkedIn ainda',
+        noAnalysisDescriptionFree: 'Atualize para o Career Sprint para analisar seu perfil do LinkedIn e obter sugestões de otimização por IA.',
+        noAnalysisDescriptionPaid: 'Clique em "Re-escanear Perfil" para analisar seu perfil do LinkedIn e obter sugestões de otimização por IA.',
+        unlockToOptimize: 'Atualizar para Desbloquear',
+        visibilityScore: 'Pontuação de Visibilidade para Recrutadores',
+        excellent: 'Excelente',
+        good: 'Bom',
+        needsWork: 'Precisa de Ajustes',
+        visibleToRecruiters: 'Seu perfil é altamente visível para os recrutadores!',
+        missesKeywords: 'Seu perfil é visível, mas faltam palavras-chave técnicas importantes.',
+        invisibleTo: 'Invisível para {percentage}% dos recrutadores',
+        marketPositioning: 'Posicionamento de Mercado',
+        top15Percent: 'Top 15%',
+        comparedToCandidates: 'Comparado a mais de 1.400 candidatos semelhantes',
+        searchabilityGap: 'Lacuna de Pesquisa',
+        missingCriticalTerms: 'Faltam termos críticos para seu cargo alvo',
+        bioAudit: 'Auditoria de Bio',
+        copyOptimizedBio: 'Copiar Bio Otimizada',
+        copying: 'Copiando...',
+        currentAboutSection: 'Seção "Sobre" Atual',
+        aiOptimizedVersion: 'Versão Otimizada por IA',
+        keyImprovements: 'Principais Melhorias',
+        noBioAnalysis: 'Nenhuma análise de bio disponível no momento. Certifique-se de incluir sua seção "Sobre" ao escanear seu perfil.',
+        benefits: {
+          headline: 'Otimização de título por IA',
+          keywords: 'Análise de palavras-chave',
+          bio: 'Reescrita da seção Sobre',
+          visibility: 'Aumento de visibilidade',
+        },
       },
       answerFinder: {
         title: 'Localizador de Respostas',
@@ -7815,13 +8701,33 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       coverLetter: {
         title: 'Gerador de Carta de Apresentação',
-        upgradeDescription: 'Upgrade para carta de apresentação',
-        noJobDescription: 'Sem descrição da vaga',
-        generated: 'Carta gerada!',
-        generateError: 'Falha na geração',
-        selectResume: 'Selecionar CV',
-        companyPlaceholder: 'Nome da empresa',
-        rolePlaceholder: 'Título da vaga',
+        upgradeDescription: 'Atualize para gerar cartas de apresentação por IA',
+        noJobDescription: 'Por favor, insira uma descrição da vaga',
+        generated: 'Carta de apresentação gerada com sucesso!',
+        generateError: 'Falha ao gerar carta de apresentação',
+        selectResume: 'Selecionar um currículo...',
+        companyPlaceholder: 'ex: Acme Corp',
+        rolePlaceholder: 'ex: Engenheiro Senior',
+        generatorSettings: 'Configurações do Gerador',
+        generatorDescription: 'Configure a IA para escrever uma carta de apresentação personalizada.',
+        selectResumeLabel: 'Selecionar Currículo (Contexto)',
+        noneGenericLetter: 'Nenhum (Carta Genérica)',
+        companyNameLabel: 'Nome da Empresa',
+        jobTitleLabel: 'Título da Vaga',
+        jobDescriptionLabel: 'Descrição da Vaga',
+        jobDescriptionPlaceholder: 'Cole a descrição da vaga aqui...',
+        writingLetter: 'Escrevendo Carta...',
+        upgradeToGenerate: 'Atualizar para Gerar',
+        generateCoverLetter: 'Gerar Carta de Apresentação',
+        generatedLetterTitle: 'Carta Gerada',
+        generatedLetterDescription: 'Revise e edite sua carta de apresentação abaixo.',
+        placeholderText: 'Sua carta de apresentação aparecerá aqui',
+        benefits: {
+          unlimited: 'Gerações ilimitadas',
+          tailoring: 'Personalização por vaga',
+          atsOptimized: 'Formato otimizado para ATS',
+          integration: 'Integração com currículo',
+        },
       },
       dm: {
         title: 'Gerador de DM',
@@ -8312,13 +9218,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       howToStep3: 'Analise a descrição para extrair palavras-chave',
       howToStep4: 'Volte aqui para obter sugestões de IA',
       backToDashboard: 'Voltar ao Painel',
-      interviewSprintRequired: 'Interview Sprint Necessário',
+      interviewSprintRequired: 'Career Sprint Necessário',
       injectKeywordsDesc: 'Injete palavras-chave ausentes em seus bullets com sugestões de IA.',
       keywordInjection: 'Injeção de palavras-chave',
       liveScoreTracking: 'Acompanhamento de pontuação ao vivo',
       priorityTargeting: 'Segmentação prioritária',
       contextAwareAI: 'IA consciente do contexto',
-      upgradeToSprint: 'Atualizar para Interview Sprint',
+      upgradeToSprint: 'Atualizar para Career Sprint',
       back: 'Voltar',
       targeting: 'Segmentação',
       currentResume: 'Currículo Atual',
@@ -8334,7 +9240,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       suggestionApplied: 'Sugestão aplicada! Seu currículo foi atualizado.',
       noMissingKeywords: 'Nenhuma palavra-chave ausente para mostrar exemplos',
       rewriteSuccess: 'Currículo reescrito com sucesso!',
-      lockedTitle: 'Interview Sprint Necessário',
+      lockedTitle: 'Career Sprint Necessário',
       lockedDesc: 'Desbloqueie a Ferramenta Keyword Sniper para injetar palavras-chave ausentes e melhorar sua pontuação ATS.',
       upgradeNow: 'Atualizar Agora',
     },
@@ -8362,7 +9268,7 @@ export const translations: Record<SupportedLocale, Translation> = {
     },
     createApplication: {
       title: 'Adicionar Nova Candidatura',
-      sprintRequired: 'Interview Sprint Necessário',
+      sprintRequired: 'Career Sprint Necessário',
       upgradeDesc: 'Atualize para rastrear candidaturas, obter análise de palavras-chave e receber alertas de ghosting.',
       upgradeNow: 'Atualizar Agora',
       companyName: 'Nome da Empresa',
@@ -8378,11 +9284,11 @@ export const translations: Record<SupportedLocale, Translation> = {
       cancel: 'Cancelar',
       addApplication: 'Adicionar Candidatura',
       adding: 'Adicionando...',
-      planRequired: 'Plano Interview Sprint necessário',
+      planRequired: 'Plano Career Sprint necessário',
       planRequiredDesc: 'Atualize para rastrear candidaturas e obter insights baseados em IA',
       successMessage: 'Candidatura adicionada com sucesso',
       errorMessage: 'Falha ao adicionar candidatura',
-      featureRestricted: 'Esta funcionalidade está disponível apenas com uma assinatura Interview Sprint ativa',
+      featureRestricted: 'Esta funcionalidade está disponível apenas com uma assinatura Career Sprint ativa',
     },
     missionControl: {
       title: 'Controle de Missão',
@@ -8558,6 +9464,102 @@ export const translations: Record<SupportedLocale, Translation> = {
       },
       dismissLabel: 'Não estou interessado',
       freeLabel: '100% GRÁTIS',
+    },
+    eliteMatch: {
+      title: 'Ferramenta Elite Match',
+      description: 'Analise seu currículo contra qualquer vaga com precisão de ML local. Identifique lacunas e otimize para ATS instantaneamente.',
+      linkedinUrlLabel: 'URL do LinkedIn (Recomendado)',
+      linkedinUrlPlaceholder: 'https://www.linkedin.com/jobs/view/...',
+      linkedinUrlTip: 'Cole o link direto da vaga no LinkedIn para melhores resultados de extração.',
+      or: 'OU',
+      jobDescriptionLabel: 'Cole a Descrição da Vaga',
+      jobDescriptionPlaceholder: 'Sobre a vaga:\nBuscamos um Desenvolvedor Full Stack Sênior com 5+ anos de experiência...\n\nRequisitos:\n- Experiência sólida com React e Node.js\n- Experiência com Kubernetes e AWS',
+      jobDescriptionTip: 'Copie e cole a descrição completa da vaga de qualquer portal.',
+      analyzeMatchScore: 'Analisar Pontuação de Correspondência',
+      entityExtraction: 'Extração de Entidades',
+      entityExtractionDesc: 'Não apenas palavras-chave: extraímos Hard Skills, Soft Skills e Métricas da Indústria com compreensão semântica profunda.',
+      gapAnalysis: 'Análise de Lacunas',
+      gapAnalysisDesc: 'Identificamos EXATAMENTE quais sinais faltam no seu perfil para passar pelos filtros ATS de alto risco.',
+      aiAutoFix: 'Auto-Fix com IA',
+      aiAutoFixDesc: 'Reescrita por IA em um clique que integra inteligentemente os sinais ausentes na sua narrativa de currículo existente.',
+      premiumTitle: 'Elite Match é Premium',
+      premiumDescription: 'Analise seu currículo contra qualquer vaga usando ML local (custo zero de API)',
+      premiumList: [
+        'Extração de entidades com TF-IDF & Cosine Similarity',
+        'Análise de lacunas crítica/importante/desejável',
+        'Visão Robô com zonas vermelhas/verdes',
+        'Sugestões específicas de Auto-Fix'
+      ],
+      upgradeNow: 'Atualizar Agora',
+      accessDuration: 'Acesso por 24 horas • Análises de correspondência ilimitadas • Insights baseados em ML',
+      analyzingMessage: 'Analisando...',
+      progressComplete: 'concluído',
+      matchScore: 'Score de Correspondência',
+      excellentMatch: 'Excelente correspondência! Candidate-se com confiança.',
+      goodMatch: 'Boa correspondência, mas existem lacunas importantes.',
+      improveMatch: 'Você precisa melhorar seu currículo para esta vaga.',
+      missingCriticalSignals: 'Sinais Críticos Ausentes',
+      matchedSkills: 'Habilidades Correspondentes',
+      robotView: 'Visão Robô',
+      redZones: 'Zonas Vermelhas',
+      greenZones: 'Zonas Verdes',
+      autoFixRecommendations: 'Recomendações de Auto-Fix',
+      analyzeAnotherJob: 'Analisar Outra Vaga',
+      applyAutoFix: 'Aplicar Auto-Fix',
+      autoFixCopied: 'Sugestões de Auto-Fix copiadas! Vá para a aba "Editar" para aplicar as mudanças.',
+      premiumFeature: 'Esta funcionalidade é Premium. Atualize seu plano para continuar.',
+      noResumeFound: 'Nenhum currículo encontrado. Por favor, carregue um currículo primeiro.',
+      noTextFound: 'Seu currículo não possui texto extraído. Por favor, carregue-o novamente.',
+      extractingIntent: 'Extraindo Intenção do Recrutador...',
+      analyzingHardSkills: 'Analisando Requisitos de Hard Skills...',
+      detectingSoftSkills: 'Detectando Sinais de Soft Skills...',
+      generatingReport: 'Gerando Relatório de Sinais Ausentes...',
+    },
+    subscriptionView: {
+      title: 'Subscription Management',
+      subtitle: 'Manage your current plan, billing details, and unlock premium interview preparation sprints.',
+      currentPlan: 'Current Plan',
+      activeStatus: 'Active',
+      billingHistory: 'Billing History',
+      cancelPlan: 'Cancel Plan',
+      upgradeOptions: 'Upgrade Options',
+      payOnce: 'Pay once, use forever',
+      freePreview: 'Free Preview',
+      freePreviewDesc: 'Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features.',
+      singleDebugFix: 'Single Debug Fix',
+      oneTimeFix: 'One-time fix',
+      singleScan: 'Single Scan',
+      oneTimePayment: 'One-time payment',
+      careerSprint: 'Career Sprint',
+      sevenDayUnlimited: '7 Days Unlimited',
+      bestValue: 'BEST VALUE - SAVE 60%',
+      successStories: '1,200+ Success Stories',
+      startSprint: 'Start 7-Day Sprint',
+      currentPlanBtn: 'Current Plan',
+      fixMyCv: 'Fix My CV',
+      getSingleScan: 'Get Single Scan',
+      singleDebugFixFeatures: [
+        { icon: "verified", text: "1 Deep Scan" },
+        { icon: "terminal", text: "Robot Terminal View" },
+        { icon: "key", text: "Full Missing Keywords" },
+        { icon: "auto_awesome", text: "1 Full IA Rewrite" },
+        { icon: "integration_instructions", text: "Keywords Auto-Injection" },
+        { icon: "download", text: "Export ATS-safe CV" }
+      ],
+      singleScanFeatures: [
+        { icon: "verified", text: "Full ATS Analysis" },
+        { icon: "key", text: "Complete Keyword Report" },
+        { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
+        { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
+        { icon: "shield_with_heart", text: "PDF Sanitization" }
+      ],
+      careerSprintFeatures: [
+        { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
+        { icon: "psychology", text: "AI Keyword Suggestions" },
+        { icon: "description", text: "Cover Letter Generator" },
+        { icon: "work", text: "LinkedIn Optimizer" },
+        { icon: "support_agent", text: "Priority Support" }
+      ],
     },
   },
 };

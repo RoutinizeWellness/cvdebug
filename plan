@@ -1,3 +1,0 @@
-1. Verify the changes by running the type checker (automatically done).
-2. If successful, the user should be able to upgrade plans using the Clerk backend SDK integration.
-3. The "checkout" is simulated by immediately upgrading the plan, as requested (no Stripe).

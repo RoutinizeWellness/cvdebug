@@ -1,7 +1,0 @@
-{
-  "buildCommand": "chmod +x build-vly.sh && ./build-vly.sh",
-  "outputDirectory": "dist",
-  "installCommand": "npm install --legacy-peer-deps",
-  "framework": "vite",
-  "nodeVersion": "20"
-}

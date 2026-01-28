@@ -29,6 +29,17 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
     }
   }, [initialPlan]);
 
+  // Auto-trigger upgrade if initialPlan is provided and user is already authenticated
+  useEffect(() => {
+    if (open && initialPlan && isAuthenticated && !isLoading && !showUpsell) {
+      // Small delay to ensure everything is loaded
+      const timer = setTimeout(() => {
+        handleUpgrade(initialPlan);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [open, initialPlan, isAuthenticated]);
+
   const handleUpgrade = async (plan: "single_debug_fix" | "single_scan" | "interview_sprint" | "iteration_pass") => {
     if (!isAuthenticated) {
       toast.error(t.pricingDialog.loginToPurchase);

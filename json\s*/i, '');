@@ -1,3 +1,0 @@
-
-    // Strategy 5: Remove known trailing markdown patterns
-    cleaned = cleaned.replace(/[\s]*
