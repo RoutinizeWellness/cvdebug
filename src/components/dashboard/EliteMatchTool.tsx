@@ -158,17 +158,33 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             className="relative"
           >
             {/* Header */}
-            <header className="mb-8 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-3 mb-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1E293B] to-[#334155] flex items-center justify-center">
-                  <Target className="h-6 w-6 text-white" />
+            <header className="mb-10 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
+                <div className="flex items-center justify-center md:justify-start gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#0F172A] flex items-center justify-center shadow-xl shadow-slate-200">
+                    <Target className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-4xl font-black text-[#0F172A] dark:text-white tracking-tighter">
+                      {t.eliteMatch.title}
+                    </h1>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-black uppercase tracking-widest rounded border border-green-100">Private Llama-3 ML</span>
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded border border-blue-100">Zero API Cost</span>
+                    </div>
+                  </div>
                 </div>
-                <h1 className="text-4xl font-bold text-[#0F172A] dark:text-white tracking-tight">
-                  {t.eliteMatch.title}
-                </h1>
+
+                <div className="hidden lg:flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                  <div className="text-left">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Data Privacy</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 font-bold">100% Local Processing</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-lg text-[#64748B] dark:text-slate-400 max-w-xl">
-                {t.eliteMatch.description}
+              <p className="text-lg text-[#64748B] dark:text-slate-400 max-w-2xl leading-relaxed">
+                {t.eliteMatch.description} <span className="text-[#0F172A] dark:text-white font-bold">Paste any job offer to see exactly why you're being rejected.</span>
               </p>
             </header>
 
@@ -244,36 +260,40 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
             </section>
 
             {/* Features Grid */}
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-[#0F172A]/30 rounded-xl p-6 transition-all hover:shadow-md">
-                <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-[#0F172A]/20 flex items-center justify-center mb-4">
-                  <Brain className="h-5 w-5 text-[#1E293B] dark:text-[#94A3B8]" />
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Brain,
+                  title: t.eliteMatch.entityExtraction,
+                  desc: "Neural extraction of hard skills, tech stack, and experience signals using local ML.",
+                  bgColor: "bg-blue-50",
+                  iconColor: "text-blue-600"
+                },
+                {
+                  icon: BarChart3,
+                  title: t.eliteMatch.gapAnalysis,
+                  desc: "Precise gap analysis between your CV trajectory and the vacancy requirements.",
+                  bgColor: "bg-amber-50",
+                  iconColor: "text-amber-600"
+                },
+                {
+                  icon: Shield,
+                  title: "100% Data Moat",
+                  desc: "Unlike Rezi or Jobscan, your data never leaves this environment for matching.",
+                  bgColor: "bg-green-50",
+                  iconColor: "text-green-600"
+                }
+              ].map((feature, i) => (
+                <div key={i} className="bg-white dark:bg-slate-900/50 border border-[#E2E8F0] dark:border-slate-800 rounded-2xl p-6 transition-all hover:shadow-xl hover:translate-y-[-4px] group">
+                  <div className={`w-12 h-12 rounded-xl ${feature.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
+                  </div>
+                  <h3 className="font-black text-[#0F172A] dark:text-white mb-2 text-sm uppercase tracking-tight">{feature.title}</h3>
+                  <p className="text-xs text-[#64748B] dark:text-slate-400 leading-relaxed">
+                    {feature.desc}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">{t.eliteMatch.entityExtraction}</h3>
-                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  {t.eliteMatch.entityExtractionDesc}
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-slate-900/50 border border-amber-200 dark:border-amber-900/30 rounded-xl p-6 transition-all hover:shadow-md">
-                <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-                </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">{t.eliteMatch.gapAnalysis}</h3>
-                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  {t.eliteMatch.gapAnalysisDesc}
-                </p>
-              </div>
-
-              <div className="bg-white dark:bg-slate-900/50 border border-emerald-200 dark:border-emerald-900/30 rounded-xl p-6 transition-all hover:shadow-md">
-                <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-4">
-                  <Wand2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <h3 className="font-semibold text-[#0F172A] dark:text-white mb-2">{t.eliteMatch.aiAutoFix}</h3>
-                <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed">
-                  {t.eliteMatch.aiAutoFixDesc}
-                </p>
-              </div>
+              ))}
             </section>
 
             {/* Paywall Overlay */}

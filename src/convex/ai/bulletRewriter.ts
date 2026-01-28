@@ -573,14 +573,14 @@ function generateMLBulletRewrite(
 
   // Smart verb replacement dictionary (learned from high-performing bullets)
   const verbUpgrades: Record<string, string[]> = {
-    "helped": ["Collaborated with", "Partnered with", "Supported", "Enabled"],
-    "worked": ["Delivered", "Executed", "Implemented", "Drove"],
-    "responsible": ["Led", "Managed", "Orchestrated", "Oversaw"],
-    "assisted": ["Facilitated", "Enabled", "Supported", "Contributed to"],
-    "participated": ["Contributed to", "Engaged in", "Played key role in"],
-    "did": ["Executed", "Implemented", "Delivered", "Completed"],
-    "made": ["Created", "Developed", "Built", "Engineered"],
-    "improved": ["Optimized", "Enhanced", "Transformed", "Elevated"]
+    "helped": ["Collaborated with", "Partnered with", "Supported", "Enabled", "Facilitated"],
+    "worked": ["Delivered", "Executed", "Implemented", "Drove", "Spearheaded"],
+    "responsible": ["Led", "Managed", "Orchestrated", "Oversaw", "Directed"],
+    "assisted": ["Facilitated", "Enabled", "Supported", "Contributed to", "Partnered in"],
+    "participated": ["Contributed to", "Engaged in", "Played key role in", "Collaborated on"],
+    "did": ["Executed", "Implemented", "Delivered", "Completed", "Engineered"],
+    "made": ["Created", "Developed", "Built", "Engineered", "Architected", "Launched"],
+    "improved": ["Optimized", "Enhanced", "Transformed", "Elevated", "Modernized"]
   };
 
   // Infer metrics based on role type and context
@@ -619,45 +619,45 @@ function generateMLBulletRewrite(
   if (experienceLevel === "senior") {
     alternatives.push(
       {
-        text: `Led cross-functional initiative ${enhancedBullet.toLowerCase()}, driving $250K+ in cost savings and improving team velocity by 50%`,
+        text: `Led strategic initiative to ${enhancedBullet.toLowerCase()}, resulting in a 40% increase in operational efficiency and $200k+ annual cost reduction.`,
         type: "metric-focused"
       },
       {
-        text: `Spearheaded ${enhancedBullet.toLowerCase()} through strategic planning and stakeholder alignment, resulting in 70% efficiency gains`,
+        text: `Architected and spearheaded ${enhancedBullet.toLowerCase()} by leveraging advanced technical frameworks, reducing system downtime by 25%.`,
         type: "action-focused"
       },
       {
-        text: `Architected and delivered ${enhancedBullet.toLowerCase()}, generating measurable ROI and enabling scalable growth`,
+        text: `Directed the digital transformation of ${enhancedBullet.toLowerCase()}, delivering high-impact business solutions to 50k+ global users.`,
         type: "balanced"
       }
     );
   } else if (experienceLevel === "mid") {
     alternatives.push(
       {
-        text: `Optimized ${enhancedBullet.toLowerCase()}, achieving 40% performance improvement and reducing costs by $50K annually`,
+        text: `Optimized cross-functional ${enhancedBullet.toLowerCase()}, achieving a 20% performance boost and saving 10+ engineering hours per week.`,
         type: "metric-focused"
       },
       {
-        text: `Implemented ${enhancedBullet.toLowerCase()} using industry best practices, enhancing system reliability and user satisfaction`,
+        text: `Implemented automated workflows for ${enhancedBullet.toLowerCase()}, enhancing process reliability through specialized tool integration.`,
         type: "action-focused"
       },
       {
-        text: `Delivered ${enhancedBullet.toLowerCase()}, resulting in measurable business impact and positive stakeholder feedback`,
+        text: `Successfully managed ${enhancedBullet.toLowerCase()} from conception to delivery, receiving a 95% satisfaction rating from stakeholders.`,
         type: "balanced"
       }
     );
   } else {
     alternatives.push(
       {
-        text: `Developed ${enhancedBullet.toLowerCase()}, serving 500+ users and improving workflow efficiency by 30%`,
+        text: `Developed ${enhancedBullet.toLowerCase()} which successfully served 1,000+ active users and improved data accuracy by 15%.`,
         type: "metric-focused"
       },
       {
-        text: `Built ${enhancedBullet.toLowerCase()} through self-directed learning and agile methodology, demonstrating strong technical fundamentals`,
+        text: `Built a robust solution for ${enhancedBullet.toLowerCase()} using React/Node.js, demonstrating strong end-to-end development capabilities.`,
         type: "action-focused"
       },
       {
-        text: `Created ${enhancedBullet.toLowerCase()}, showcasing initiative and practical application of academic knowledge`,
+        text: `Created and deployed ${enhancedBullet.toLowerCase()} in a fast-paced team environment, meeting all project milestones ahead of schedule.`,
         type: "balanced"
       }
     );

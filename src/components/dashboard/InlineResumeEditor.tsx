@@ -42,8 +42,7 @@ export function InlineResumeEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedSuggestion, setSelectedSuggestion] = useState<number | null>(null);
-  const updateResume = useMutation(api.resumes.updateResumeText);
-  const analyzeResume = useMutation(api.resumes.analyzeResume);
+  const triggerUpdateAndAnalyze = useMutation(api.resumes.updateResumeContent);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isReanalyzing, setIsReanalyzing] = useState(false);
@@ -114,6 +113,11 @@ export function InlineResumeEditor({
   };
 
   const handleSave = async () => {
+    if (!isPaidUser) {
+      onUpgrade?.();
+      return;
+    }
+
     setIsSaving(true);
     try {
       // Save current score before updating
@@ -121,19 +125,21 @@ export function InlineResumeEditor({
         setPreviousScore(resumeData.score);
       }
 
-      await updateResume({ id: resumeId, newContent: content });
+      // This mutation updates the text and triggers the AI re-analysis
+      await triggerUpdateAndAnalyze({ id: resumeId as Id<"resumes">, newContent: content });
+
       setHasChanges(false);
       setLastSaved(new Date());
 
-      // Trigger re-analysis
+      // Mark as reanalyzing so the UI updates
       setIsReanalyzing(true);
-      await analyzeResume({ id: resumeId });
 
-      toast.success("✓ Changes saved! Re-analyzing...");
+      toast.success("✓ Changes saved! AI is recalculating your score...");
 
       // Call parent callback
       onContentUpdate(content);
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Save error:", error);
       toast.error("Failed to save. Try again?");
       setIsReanalyzing(false);
       setPreviousScore(null);
@@ -151,9 +157,9 @@ export function InlineResumeEditor({
       for (let i = 0; i < lines.length; i++) {
         // Look for skills section or bullets
         if (lines[i].toLowerCase().includes('skills') ||
-            lines[i].toLowerCase().includes('technologies') ||
-            lines[i].trim().startsWith('•') ||
-            lines[i].trim().startsWith('-')) {
+          lines[i].toLowerCase().includes('technologies') ||
+          lines[i].trim().startsWith('•') ||
+          lines[i].trim().startsWith('-')) {
           // Insert after this line
           lines.splice(i + 1, 0, `• ${keyword}`);
           inserted = true;
@@ -336,13 +342,11 @@ export function InlineResumeEditor({
           onFocus={() => setIsEditing(true)}
           onBlur={() => setIsEditing(false)}
           disabled={!isPaidUser}
-          className={`w-full min-h-[400px] p-4 bg-[#FFFFFF] border-2 rounded-lg font-mono text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none transition-all ${
-            !isPaidUser ? 'blur-[2px] pointer-events-none' : ''
-          } ${
-            isEditing
+          className={`w-full min-h-[400px] p-4 bg-[#FFFFFF] border-2 rounded-lg font-mono text-sm text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none transition-all ${!isPaidUser ? 'blur-[2px] pointer-events-none' : ''
+            } ${isEditing
               ? 'border-[#1E293B] shadow-[0_0_20px_rgba(100,116,139,0.2)]'
               : 'border-[#E2E8F0]'
-          }`}
+            }`}
           placeholder="Paste your resume content here and edit directly..."
           spellCheck={false}
         />

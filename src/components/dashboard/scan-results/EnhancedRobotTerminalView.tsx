@@ -532,7 +532,9 @@ export function EnhancedRobotTerminalView({
     ];
   };
 
-  const logData = resume ? generatePreciseLogs() : getLoadingLogs();
+  const logData = useMemo(() => {
+    return resume ? generatePreciseLogs() : getLoadingLogs();
+  }, [resume]); // Only regenerate when resume data changes
 
   useEffect(() => {
     if (!autoAnimate) {
@@ -555,7 +557,7 @@ export function EnhancedRobotTerminalView({
     }, 120); // Slightly faster for more logs
 
     return () => clearInterval(interval);
-  }, [autoAnimate, logData, resume]);
+  }, [autoAnimate, logData]); // Removed 'resume' as logData already depends on it
 
   // Simulate CPU and memory fluctuations
   useEffect(() => {
