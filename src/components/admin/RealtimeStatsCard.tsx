@@ -158,7 +158,7 @@ export function RealtimeStatsCard() {
               <p className="text-2xl font-bold text-[#1E293B] dark:text-[#94A3B8]">
                 {subscriptions.byTier.interview_sprint.toLocaleString()}
               </p>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Interview Sprint</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Career Sprint</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">

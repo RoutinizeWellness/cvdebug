@@ -22,11 +22,11 @@ export const generateCoverLetter = mutation({
     }
 
     // ENFORCEMENT: AI Cover Letter is locked for Free/Single Scan users
-    // Only Interview Sprint users can use this tool
+    // Only Career Sprint users can use this tool
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
-    
+
     if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use AI Cover Letter Generator.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to use AI Cover Letter Generator.");
     }
 
     // Schedule AI generation
@@ -113,7 +113,7 @@ export const generateCoverLetterAI = internalAction({
 
       } catch (primaryError: any) {
         console.error("[Cover Letter] ❌ Primary AI failed:", primaryError.message);
-        
+
         // Try fallback model
         try {
           console.log("[Cover Letter] Attempting fallback model: deepseek-chat");
@@ -140,7 +140,7 @@ export const generateCoverLetterAI = internalAction({
 
         } catch (fallbackError: any) {
           console.error("[Cover Letter] ❌ Fallback model also failed:", fallbackError.message);
-          
+
           // Generate template-based cover letter
           const templateContent = generateTemplateCoverLetter(
             application.jobTitle,
@@ -211,7 +211,7 @@ function generateTemplateCoverLetter(
   companyName: string,
   missingKeywords: string[]
 ): string {
-  const keywordPhrase = missingKeywords.length > 0 
+  const keywordPhrase = missingKeywords.length > 0
     ? `My experience with ${missingKeywords.slice(0, 3).join(", ")} aligns well with your requirements.`
     : "My technical background aligns well with your requirements.";
 

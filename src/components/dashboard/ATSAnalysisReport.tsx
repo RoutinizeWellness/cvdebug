@@ -31,7 +31,7 @@ export function ATSAnalysisReport({
   const score = resume?.score || 0; // No fake score - show real data only
   const [showTechnicalLogs, setShowTechnicalLogs] = useState(false);
 
-  // Check if user has paid plan (single_scan, single_debug_fix, or interview_sprint)
+  // Check if user has paid plan (single_scan, single_debug_fix, or career_sprint)
   const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
 
   // Extract target role (from job title, project, or resume data)
@@ -41,8 +41,8 @@ export function ATSAnalysisReport({
   const rawMatchedKeywords = resume?.matchedKeywords || [];
   const matchedKeywords = Array.isArray(rawMatchedKeywords)
     ? rawMatchedKeywords.map((kw: any) =>
-        typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
-      ).filter((k: string) => k.length > 0)
+      typeof kw === 'string' ? kw : kw.keyword || kw.term || ''
+    ).filter((k: string) => k.length > 0)
     : [];
 
   // Handle missing keywords - can be array of strings or objects with detailed info
@@ -61,19 +61,19 @@ export function ATSAnalysisReport({
 
   const missingKeywordsDetailed: MissingKeywordDetail[] = Array.isArray(rawMissingKeywords)
     ? rawMissingKeywords.map((kw: any) => {
-        if (typeof kw === 'string') {
-          return { keyword: kw };
-        }
-        return {
-          keyword: kw.keyword || kw.term || '',
-          priority: kw.priority,
-          section: kw.section,
-          context: kw.context,
-          frequency: kw.frequency,
-          impact: kw.impact,
-          synonyms: kw.synonyms
-        };
-      }).filter((k: MissingKeywordDetail) => k.keyword.length > 0)
+      if (typeof kw === 'string') {
+        return { keyword: kw };
+      }
+      return {
+        keyword: kw.keyword || kw.term || '',
+        priority: kw.priority,
+        section: kw.section,
+        context: kw.context,
+        frequency: kw.frequency,
+        impact: kw.impact,
+        synonyms: kw.synonyms
+      };
+    }).filter((k: MissingKeywordDetail) => k.keyword.length > 0)
     : [];
 
   // Simple array of keyword strings for basic display
@@ -259,10 +259,10 @@ export function ATSAnalysisReport({
                       <stop offset="100%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
                     </linearGradient>
                     <filter id="glow">
-                      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                       <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
+                        <feMergeNode in="coloredBlur" />
+                        <feMergeNode in="SourceGraphic" />
                       </feMerge>
                     </filter>
                   </defs>
@@ -298,11 +298,10 @@ export function ATSAnalysisReport({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.5, type: "spring" }}
-                    className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight ${
-                      scorePercentage >= 80
+                    className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight ${scorePercentage >= 80
                         ? 'text-gradient-cyber'
                         : 'bg-gradient-to-br from-slate-900 to-slate-700 bg-clip-text text-transparent'
-                    }`}
+                      }`}
                   >
                     {scorePercentage}
                   </motion.span>
@@ -353,11 +352,10 @@ export function ATSAnalysisReport({
                   className="space-y-2 md:space-y-3"
                 >
                   <div className="flex flex-col sm:flex-row items-center gap-2 md:gap-3 justify-center lg:justify-start">
-                    <div className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-sm md:text-base lg:text-lg ${
-                      scorePercentage >= 80 ? 'bg-green-100 text-green-700' :
-                      scorePercentage >= 60 ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
+                    <div className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-bold text-sm md:text-base lg:text-lg ${scorePercentage >= 80 ? 'bg-green-100 text-green-700' :
+                        scorePercentage >= 60 ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                      }`}>
                       Grade: {getVisibilityGrade(scorePercentage)}
                     </div>
                     <span className="text-[#475569] text-sm md:text-base">
@@ -368,8 +366,8 @@ export function ATSAnalysisReport({
                     {scorePercentage >= 80
                       ? 'Your resume is highly optimized for ATS systems. Recruiters can easily find and parse your information.'
                       : scorePercentage >= 60
-                      ? 'Your resume passes basic ATS requirements but has room for optimization to improve visibility.'
-                      : 'Your resume may struggle with ATS systems. Follow the recommendations below to improve your score.'}
+                        ? 'Your resume passes basic ATS requirements but has room for optimization to improve visibility.'
+                        : 'Your resume may struggle with ATS systems. Follow the recommendations below to improve your score.'}
                   </p>
                 </motion.div>
 
@@ -460,25 +458,22 @@ export function ATSAnalysisReport({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className={`bg-[#FFFFFF] rounded-lg md:rounded-xl p-4 md:p-6 border transition-all duration-300 ${
-                    impactLevel.level === 'weak' ? 'border-red-200 hover:border-red-300' :
-                    impactLevel.level === 'good' ? 'border-amber-200 hover:border-amber-300' :
-                    'border-emerald-200 hover:border-emerald-300'
-                  } shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow`}
+                  className={`bg-[#FFFFFF] rounded-lg md:rounded-xl p-4 md:p-6 border transition-all duration-300 ${impactLevel.level === 'weak' ? 'border-red-200 hover:border-red-300' :
+                      impactLevel.level === 'good' ? 'border-amber-200 hover:border-amber-300' :
+                        'border-emerald-200 hover:border-emerald-300'
+                    } shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow`}
                 >
                   <div className="flex justify-between items-start mb-3 md:mb-4">
-                    <div className={`p-2 md:p-3 rounded-lg ${
-                      impactLevel.level === 'weak' ? 'bg-red-50 text-red-700' :
-                      impactLevel.level === 'good' ? 'bg-amber-50 text-amber-700' :
-                      'bg-emerald-50 text-emerald-700'
-                    }`}>
+                    <div className={`p-2 md:p-3 rounded-lg ${impactLevel.level === 'weak' ? 'bg-red-50 text-red-700' :
+                        impactLevel.level === 'good' ? 'bg-amber-50 text-amber-700' :
+                          'bg-emerald-50 text-emerald-700'
+                      }`}>
                       <span className="material-symbols-outlined text-lg md:text-xl">speed</span>
                     </div>
-                    <span className={`px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-semibold rounded-full ${
-                      impactLevel.level === 'weak' ? 'text-red-700 bg-red-50' :
-                      impactLevel.level === 'good' ? 'text-amber-700 bg-amber-50' :
-                      'text-emerald-700 bg-emerald-50'
-                    }`}>
+                    <span className={`px-2.5 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-semibold rounded-full ${impactLevel.level === 'weak' ? 'text-red-700 bg-red-50' :
+                        impactLevel.level === 'good' ? 'text-amber-700 bg-amber-50' :
+                          'text-emerald-700 bg-emerald-50'
+                      }`}>
                       {impactLevel.label}
                     </span>
                   </div>
@@ -497,11 +492,10 @@ export function ATSAnalysisReport({
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.min(100, (metricsCount / 10) * 100)}%` }}
                         transition={{ duration: 1, delay: 0.6 }}
-                        className={`h-2.5 md:h-3 rounded-full ${
-                          impactLevel.level === 'weak' ? 'bg-[#EF4444]' :
-                          impactLevel.level === 'good' ? 'bg-yellow-500' :
-                          'bg-[#22C55E]'
-                        }`}
+                        className={`h-2.5 md:h-3 rounded-full ${impactLevel.level === 'weak' ? 'bg-[#EF4444]' :
+                            impactLevel.level === 'good' ? 'bg-yellow-500' :
+                              'bg-[#22C55E]'
+                          }`}
                       />
                       {/* Threshold markers */}
                       <div className="absolute top-0 left-[50%] w-0.5 h-2.5 md:h-3 bg-slate-400/40"></div>
@@ -568,7 +562,7 @@ export function ATSAnalysisReport({
                       className="btn-power w-full py-2 rounded-lg text-[#0F172A] text-sm font-bold border-0 flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform"
                     >
                       <span className="material-symbols-outlined text-base">diamond</span>
-                      <span>Unlock with Interview Sprint</span>
+                      <span>Unlock with Career Sprint</span>
                     </button>
                   </div>
                 </motion.div>

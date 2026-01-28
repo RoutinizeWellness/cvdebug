@@ -18,14 +18,14 @@ export const getInactiveUsers = internalQuery({
     // Filter users who:
     // 1. Haven't been active in 7+ days (lastSeen < inactiveSince OR lastSeen is undefined)
     // 2. Haven't received retargeting email OR last email was 30+ days ago
-    // 3. Are not Interview Sprint users (we don't want to spam premium users)
+    // 3. Are not Career Sprint users (we don't want to spam premium users)
     const inactiveUsers = allUsers.filter(user => {
       // Check if user is inactive (lastSeen is old or undefined)
       const isInactive = !user.lastSeen || user.lastSeen < args.inactiveSince;
 
       // Check if we can send retargeting email
       const canSendEmail = !user.retargetingEmail7dSent ||
-                          (user.lastRetargetingEmailSent && user.lastRetargetingEmailSent < thirtyDaysAgo);
+        (user.lastRetargetingEmailSent && user.lastRetargetingEmailSent < thirtyDaysAgo);
 
       // Don't spam premium users
       const isNotPremium = user.subscriptionTier !== "interview_sprint";

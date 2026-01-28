@@ -11,6 +11,7 @@ export interface Translation {
     ctaPrimary: string;
     ctaSecondary: string;
     trustIndicator: string;
+    systemStatus: string;
   };
   // Features
   features: {
@@ -95,6 +96,18 @@ export interface Translation {
     loginToPurchase: string;
     checkoutFailed: string;
     checkoutError: string;
+    // New Single Debug Fix fields
+    fixOnceBanner: string;
+    oneTimeFixLabel: string;
+    quickFixTitle: string;
+    coffeePriceLabel: string;
+    oneDeepScan: string;
+    robotTerminalView: string;
+    fullMissingKeywords: string;
+    oneAiRewrite: string;
+    keywordAutoInjection: string;
+    exportAtsSafe: string;
+    fixMyCvBtn: string;
   };
   // Dashboard
   dashboard: {
@@ -253,6 +266,29 @@ export interface Translation {
     targetJobPosition: string;
     jobDescPlaceholder: string;
     jobDescAdded: string;
+    // Trust indicators
+    securePrivate: string;
+    instantResults: string;
+    noCreditCard: string;
+    // Results page
+    yourResumeScore: string;
+    outOf100: string;
+    extraction: string;
+    success: string;
+    processingTime: string;
+    robotViewPreview: string;
+    whatATSSee: string;
+    createFreeAccount: string;
+    plusDetailedAnalysis: string;
+    // Diagnostics
+    diagnostics: string;
+    encoding: string;
+    valid: string;
+    fileSize: string;
+    optimal: string;
+    textExtraction: string;
+    progress: string;
+    processing: string;
   };
   subscriptionView: {
     title: string;
@@ -1636,6 +1672,43 @@ export interface Translation {
     dismissLabel: string;
     freeLabel: string;
   };
+  socialProof: {
+    redditTitle: string;
+    redditSubtitle: string;
+    redditQuote: string;
+    companiesTitle: string;
+    members: string;
+  };
+  registrationWall: {
+    errorDetails: {
+      title: string;
+      subtitle: string;
+      benefits: string[];
+      ctaText: string;
+      urgency: string;
+    };
+    saveHistory: {
+      title: string;
+      subtitle: string;
+      benefits: string[];
+      ctaText: string;
+      urgency: string;
+    };
+    aiSprint: {
+      title: string;
+      subtitle: string;
+      benefits: string[];
+      ctaText: string;
+      urgency: string;
+      pricingHint: string;
+    };
+    inline: {
+      errorDetails: string;
+      saveHistory: string;
+      aiSprint: string;
+      signUp: string;
+    };
+  };
 }
 
 export const translations: Record<SupportedLocale, Translation> = {
@@ -1646,6 +1719,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       ctaPrimary: 'See Robot View - Free',
       ctaSecondary: 'Sign Up for Full Access',
       trustIndicator: '3.2x more interviews • 14 days avg. to job offer • No random tool testing',
+      systemStatus: 'SYSTEM ONLINE v2.4.0',
     },
     features: {
       robotView: 'Robot View Terminal',
@@ -1728,6 +1802,18 @@ export const translations: Record<SupportedLocale, Translation> = {
       loginToPurchase: 'Please log in to purchase credits',
       checkoutFailed: 'Failed to start checkout',
       checkoutError: 'Failed to initiate checkout',
+      // New Single Debug Fix fields
+      fixOnceBanner: 'FIX ONCE AND FOR ALL',
+      oneTimeFixLabel: 'One-Time Fix',
+      quickFixTitle: 'Quick Fix',
+      coffeePriceLabel: 'A coffee to fix your CV',
+      oneDeepScan: '1 Full Deep Scan',
+      robotTerminalView: 'Robot Terminal View',
+      fullMissingKeywords: 'Full Missing Keywords',
+      oneAiRewrite: '1 Full AI Rewrite',
+      keywordAutoInjection: 'Keyword Auto-Injection',
+      exportAtsSafe: 'Export ATS-safe CV',
+      fixMyCvBtn: 'Fix My CV →',
     },
     dashboard: {
       welcome: 'Welcome back',
@@ -1837,6 +1923,29 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Target Job Position',
       jobDescPlaceholder: 'Paste the full job description here...',
       jobDescAdded: 'Job description added - will enhance keyword analysis',
+      // Trust indicators
+      securePrivate: 'Secure & Private',
+      instantResults: 'Instant Results',
+      noCreditCard: 'No Credit Card',
+      // Results page
+      yourResumeScore: 'Your Resume Score',
+      outOf100: 'Out of 100',
+      extraction: 'Extraction',
+      success: 'Success',
+      processingTime: 'Processing Time',
+      robotViewPreview: 'Robot View Preview',
+      whatATSSee: 'This is what ATS systems actually see',
+      createFreeAccount: 'Create free account to see full Robot View',
+      plusDetailedAnalysis: 'Plus detailed keyword analysis and actionable fixes',
+      // Diagnostics
+      diagnostics: 'Diagnostics',
+      encoding: 'Encoding',
+      valid: 'Valid',
+      fileSize: 'File Size',
+      optimal: 'Optimal',
+      textExtraction: 'Text Extraction',
+      progress: 'Progress',
+      processing: 'Processing...',
     },
     nav: {
       features: 'Features',
@@ -1893,6 +2002,60 @@ export const translations: Record<SupportedLocale, Translation> = {
         { icon: "work", text: "LinkedIn Optimizer" },
         { icon: "support_agent", text: "Priority Support" }
       ],
+      oneDeepScanDesc: 'You have 1 complete deep scan with 1 AI rewrite included. Perfect for a quick CV fix.',
+      unlimitedRescansDesc: 'Includes unlimited re-scans for 24 hours.',
+      unlimitedScans: 'unlimited scans',
+      forLabel: 'for',
+      daysLabel: 'days',
+      expiresOn: 'Expires on',
+      once: '/once',
+      joinedByCandidates: 'Joined by 1,200+ candidates',
+      allRightsReserved: 'All rights reserved.',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "We found {count} errors",
+        subtitle: "Sign up for free to see what they are and how to fix them",
+        benefits: [
+          "Complete list of formatting errors",
+          "Specific missing keyword suggestions",
+          "Contact and parsing analysis",
+          "Detailed score by section"
+        ],
+        ctaText: "See All Errors - Free",
+        urgency: "✨ No credit card • Instant results"
+      },
+      saveHistory: {
+        title: "Don't lose this analysis",
+        subtitle: "Create an account to compare this CV against other jobs",
+        benefits: [
+          "Save all your analyses",
+          "Compare different CV versions",
+          "Track your optimization progress",
+          "Access your history anywhere"
+        ],
+        ctaText: "Create Free Account",
+        urgency: "🔒 Your analysis will be deleted when you close this page"
+      },
+      aiSprint: {
+        title: "Unlock AI Power",
+        subtitle: "Sprint requires an account to access premium tools",
+        benefits: [
+          "Smart AI rewriting",
+          "Real-time keyword optimization",
+          "Metric-driven bullet generation",
+          "Competitive market analysis"
+        ],
+        ctaText: "Activate Sprint ⚡",
+        urgency: "💎 Advanced AI features with your account",
+        pricingHint: "Sprint is a premium feature. First 3 analyses free when you sign up."
+      },
+      inline: {
+        errorDetails: "🔒 Sign up for free to see the full list of errors",
+        saveHistory: "💾 Create an account to save this analysis",
+        aiSprint: "✨ Activate Sprint with your account to optimize with AI",
+        signUp: "Sign Up"
+      }
     },
     buttons: {
       uploadResume: 'Upload Resume',
@@ -1979,6 +2142,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       upload: 'Upload',
       download: 'Download',
       edit: 'Edit',
+    },
+    socialProof: {
+      redditTitle: 'Recommended by Reddit Communities',
+      redditSubtitle: 'The favorite ATS checker of millions of job seekers',
+      redditQuote: '"CVDebug is constantly mentioned in the most active job search communities on Reddit as the most accurate and easy-to-use ATS tool"',
+      companiesTitle: 'Engineers from these companies use CVDebug',
+      members: 'members'
     },
     showcase: {
       badge: 'Free ATS Scanner',
@@ -3237,6 +3407,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       ctaPrimary: 'Ver Vista Robot - Gratis',
       ctaSecondary: 'Regístrate para Acceso Completo',
       trustIndicator: '3,2x más entrevistas • 14 días media hasta oferta • Sin probar herramientas al azar',
+      systemStatus: 'SISTEMA ONLINE v2.4.0',
     },
     features: {
       robotView: 'Terminal Vista Robot',
@@ -3319,6 +3490,63 @@ export const translations: Record<SupportedLocale, Translation> = {
       loginToPurchase: 'Inicia sesión para comprar créditos',
       checkoutFailed: 'Error al iniciar el pago',
       checkoutError: 'Error al iniciar el proceso de pago',
+      // New Single Debug Fix fields
+      fixOnceBanner: 'ARREGLA DE UNA VEZ POR TODAS',
+      oneTimeFixLabel: 'Arreglo Único',
+      quickFixTitle: 'Arreglo Rápido',
+      coffeePriceLabel: 'Un café para arreglar tu CV',
+      oneDeepScan: '1 Escaneo Profundo Completo',
+      robotTerminalView: 'Vista Robot Terminal',
+      fullMissingKeywords: 'Keywords Faltantes Completo',
+      oneAiRewrite: '1 Reescritura IA Completa',
+      keywordAutoInjection: 'Auto-Inyección de Keywords',
+      exportAtsSafe: 'Exportar CV ATS-seguro',
+      fixMyCvBtn: 'Arreglar Mi CV →',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Te hemos encontrado {count} fallos",
+        subtitle: "Regístrate gratis para ver cuáles son y cómo arreglarlos",
+        benefits: [
+          "Lista completa de errores de formato",
+          "Sugerencias específicas de keywords faltantes",
+          "Análisis de contacto y parsing",
+          "Puntuación detallada por sección"
+        ],
+        ctaText: "Ver Todos los Errores - Gratis",
+        urgency: "✨ Sin tarjeta de crédito • Resultados instantáneos"
+      },
+      saveHistory: {
+        title: "No pierdas este análisis",
+        subtitle: "Crea una cuenta para comparar este CV con otros puestos",
+        benefits: [
+          "Guarda todos tus análisis",
+          "Compara diferentes versiones de tu CV",
+          "Rastrea tu progreso de optimización",
+          "Accede a tu historial desde cualquier lugar"
+        ],
+        ctaText: "Crear Cuenta Gratis",
+        urgency: "🔒 Tu análisis se borrará al cerrar esta página"
+      },
+      aiSprint: {
+        title: "Desbloquea el Poder de la IA",
+        subtitle: "Sprint requiere una cuenta para acceder a herramientas premium",
+        benefits: [
+          "Reescritura inteligente con IA",
+          "Optimización de keywords en tiempo real",
+          "Generación de bullets con métricas",
+          "Análisis competitivo del mercado"
+        ],
+        ctaText: "Activar Sprint ⚡",
+        urgency: "💎 Funciones avanzadas de IA con tu cuenta",
+        pricingHint: "Sprint es una función premium. Primeros 3 análisis gratis al registrarte."
+      },
+      inline: {
+        errorDetails: "🔒 Regístrate gratis para ver la lista completa de errores",
+        saveHistory: "💾 Crea una cuenta para guardar este análisis",
+        aiSprint: "✨ Activa Sprint con tu cuenta para optimizar con IA",
+        signUp: "Registrarse"
+      }
     },
     dashboard: {
       welcome: 'Bienvenido de nuevo',
@@ -3420,6 +3648,29 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Puesto de Trabajo Objetivo',
       jobDescPlaceholder: 'Pega aquí la descripción completa del trabajo...',
       jobDescAdded: 'Descripción del trabajo añadida - mejorará el análisis de palabras clave',
+      // Trust indicators
+      securePrivate: 'Seguro y Privado',
+      instantResults: 'Resultados Instantáneos',
+      noCreditCard: 'Sin Tarjeta de Crédito',
+      // Results page
+      yourResumeScore: 'Tu Puntuación de CV',
+      outOf100: 'De 100',
+      extraction: 'Extracción',
+      success: 'Éxito',
+      processingTime: 'Tiempo de Procesamiento',
+      robotViewPreview: 'Vista Previa Robot',
+      whatATSSee: 'Esto es lo que los sistemas ATS realmente ven',
+      createFreeAccount: 'Crea cuenta gratis para ver la Vista Robot completa',
+      plusDetailedAnalysis: 'Más análisis detallado de palabras clave y correcciones accionables',
+      // Diagnostics
+      diagnostics: 'Diagnósticos',
+      encoding: 'Codificación',
+      valid: 'Válido',
+      fileSize: 'Tamaño de Archivo',
+      optimal: 'Óptimo',
+      textExtraction: 'Extracción de Texto',
+      progress: 'Progreso',
+      processing: 'Procesando...',
     },
     nav: {
       features: 'Características',
@@ -3556,6 +3807,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       copyright: '© 2026 CVDebug Inc. Todos los derechos reservados. Estado del Sistema:',
       systemStatus: 'Estado del Sistema:',
       online: 'En Línea',
+    },
+    socialProof: {
+      redditTitle: 'Recomendado por las comunidades de Reddit',
+      redditSubtitle: 'El ATS checker favorito de millones de job seekers',
+      redditQuote: '"CVDebug es mencionado constantemente en las comunidades de búsqueda de empleo más activas de Reddit como la herramienta ATS más precisa y fácil de usar"',
+      companiesTitle: 'Ingenieros de estas empresas usan CVDebug',
+      members: 'miembros'
     },
     landing: {
       nav: {
@@ -4811,6 +5069,60 @@ export const translations: Record<SupportedLocale, Translation> = {
         { icon: "work", text: "Optimizador de LinkedIn" },
         { icon: "support_agent", text: "Soporte Prioritario" }
       ],
+      oneDeepScanDesc: 'Tienes 1 escaneo profundo completo con 1 reescritura de IA incluida. Perfecto para una corrección rápida de CV.',
+      unlimitedRescansDesc: 'Incluye re-escaneos ilimitados durante 24 horas.',
+      unlimitedScans: 'escaneos ilimitados',
+      forLabel: 'por',
+      daysLabel: 'días',
+      expiresOn: 'Expira el',
+      once: '/una vez',
+      joinedByCandidates: 'Más de 1.200 candidatos se unieron',
+      allRightsReserved: 'Todos los derechos reservados.',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Te hemos encontrado {count} fallos",
+        subtitle: "Regístrate gratis para ver cuáles son y cómo arreglarlos",
+        benefits: [
+          "Lista completa de errores de formato",
+          "Sugerencias específicas de keywords faltantes",
+          "Análisis de contacto y parsing",
+          "Puntuación detallada por sección"
+        ],
+        ctaText: "Ver Todos los Errores - Gratis",
+        urgency: "✨ Sin tarjeta de crédito • Resultados instantáneos"
+      },
+      saveHistory: {
+        title: "No pierdas este análisis",
+        subtitle: "Crea una cuenta para comparar este CV con otros puestos",
+        benefits: [
+          "Guarda todos tus análisis",
+          "Compara diferentes versiones de tu CV",
+          "Rastrea tu progreso de optimización",
+          "Accede a tu historial desde cualquier lugar"
+        ],
+        ctaText: "Crear Cuenta Gratis",
+        urgency: "🔒 Tu análisis se borrará al cerrar esta página"
+      },
+      aiSprint: {
+        title: "Desbloquea el Poder de la IA",
+        subtitle: "Sprint requiere una cuenta para acceder a herramientas premium",
+        benefits: [
+          "Reescritura inteligente con IA",
+          "Optimización de keywords en tiempo real",
+          "Generación de bullets con métricas",
+          "Análisis competitivo del mercado"
+        ],
+        ctaText: "Activar Sprint ⚡",
+        urgency: "💎 Funciones avanzadas de IA con tu cuenta",
+        pricingHint: "Sprint es una función premium. Primeros 3 análisis gratis al registrarte."
+      },
+      inline: {
+        errorDetails: "🔒 Regístrate gratis para ver la lista completa de errores",
+        saveHistory: "💾 Crea una cuenta para guardar este análisis",
+        aiSprint: "✨ Activa Sprint con tu cuenta para optimizar con IA",
+        signUp: "Registrarse"
+      }
     },
   },
   'fr': {
@@ -4820,6 +5132,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       ctaPrimary: 'Voir Vue Robot - Gratuit',
       ctaSecondary: 'S\'inscrire pour Accès Complet',
       trustIndicator: 'Sans carte • Sans inscription • Résultats instantanés en 10 secondes',
+      systemStatus: 'SYSTÈME EN LIGNE v2.4.0',
     },
     features: {
       robotView: 'Terminal Vue Robot',
@@ -4902,6 +5215,63 @@ export const translations: Record<SupportedLocale, Translation> = {
       loginToPurchase: 'Connectez-vous pour acheter des crédits',
       checkoutFailed: 'Échec du démarrage du paiement',
       checkoutError: 'Échec de l\'initialisation du paiement',
+      // New Single Debug Fix fields
+      fixOnceBanner: 'CORRIGEZ UNE FOIS POUR TOUTES',
+      oneTimeFixLabel: 'Correction Unique',
+      quickFixTitle: 'Correction Rapide',
+      coffeePriceLabel: 'Un café pour corriger votre CV',
+      oneDeepScan: '1 Scan Profond Complet',
+      robotTerminalView: 'Vue Terminal Robot',
+      fullMissingKeywords: 'Mots-clés Manquants Complets',
+      oneAiRewrite: '1 Réécriture IA Complète',
+      keywordAutoInjection: 'Auto-Injection de Mots-clés',
+      exportAtsSafe: 'Exporter CV Compatible ATS',
+      fixMyCvBtn: 'Corriger Mon CV →',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Nous avons trouvé {count} erreurs",
+        subtitle: "Inscrivez-vous gratuitement pour les voir et savoir comment les corriger",
+        benefits: [
+          "Liste complète des erreurs de formatage",
+          "Suggestions spécifiques de mots-clés manquants",
+          "Analyse de contact et de parsing",
+          "Score détaillé par section"
+        ],
+        ctaText: "Voir Toutes les Erreurs - Gratuit",
+        urgency: "✨ Sans carte de crédit • Résultats instantanés"
+      },
+      saveHistory: {
+        title: "Ne perdez pas cette analyse",
+        subtitle: "Créez un compte pour comparer ce CV avec d'autres postes",
+        benefits: [
+          "Enregistrez toutes vos analyses",
+          "Comparez différentes versions de votre CV",
+          "Suivez vos progrès d'optimisation",
+          "Accédez à votre historique partout"
+        ],
+        ctaText: "Créer un Compte Gratuit",
+        urgency: "🔒 Votre analyse sera supprimée à la fermeture de cette page"
+      },
+      aiSprint: {
+        title: "Débloquez la Puissance de l'IA",
+        subtitle: "Sprint nécessite un compte pour accéder aux outils premium",
+        benefits: [
+          "Réécriture intelligente par l'IA",
+          "Optimisation des mots-clés en temps réel",
+          "Génération de puces basée sur les métriques",
+          "Analyse compétitive du marché"
+        ],
+        ctaText: "Activer Sprint ⚡",
+        urgency: "💎 Fonctions IA avancées avec votre compte",
+        pricingHint: "Sprint est une fonctionnalité premium. Les 3 premières analyses sont gratuites lors de votre inscription."
+      },
+      inline: {
+        errorDetails: "🔒 Inscrivez-vous gratuitement pour voir la liste complète des erreurs",
+        saveHistory: "💾 Créez un compte pour enregistrer cette analyse",
+        aiSprint: "✨ Activez Sprint avec votre compte pour optimiser avec l'IA",
+        signUp: "S'inscrire"
+      }
     },
     dashboard: {
       welcome: 'Bon retour',
@@ -5003,6 +5373,29 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Poste Cible',
       jobDescPlaceholder: 'Collez ici la description complète du poste...',
       jobDescAdded: 'Description du poste ajoutée - améliorera l\'analyse des mots-clés',
+      // Trust indicators
+      securePrivate: 'Sécurisé et Privé',
+      instantResults: 'Résultats Instantanés',
+      noCreditCard: 'Pas de Carte de Crédit',
+      // Results page
+      yourResumeScore: 'Votre Score de CV',
+      outOf100: 'Sur 100',
+      extraction: 'Extraction',
+      success: 'Succès',
+      processingTime: 'Temps de Traitement',
+      robotViewPreview: 'Aperçu Vue Robot',
+      whatATSSee: 'Voici ce que les systèmes ATS voient réellement',
+      createFreeAccount: 'Créez un compte gratuit pour voir la Vue Robot complète',
+      plusDetailedAnalysis: 'Plus une analyse détaillée des mots-clés et des corrections actionnables',
+      // Diagnostics
+      diagnostics: 'Diagnostics',
+      encoding: 'Encodage',
+      valid: 'Valide',
+      fileSize: 'Taille du Fichier',
+      optimal: 'Optimal',
+      textExtraction: 'Extraction de Texte',
+      progress: 'Progrès',
+      processing: 'Traitement...',
     },
     nav: {
       features: 'Fonctionnalités',
@@ -5099,6 +5492,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       upload: 'Télécharger',
       download: 'Télécharger',
       edit: 'Modifier',
+    },
+    socialProof: {
+      redditTitle: 'Recommandé par les communautés Reddit',
+      redditSubtitle: 'Le vérificateur ATS préféré de millions de chercheurs d\'emploi',
+      redditQuote: '"CVDebug est constamment mentionné dans les communautés de recherche d\'emploi les plus actives de Reddit comme l\'outil ATS le plus précis et facile à utiliser"',
+      companiesTitle: 'Des ingénieurs de ces entreprises utilisent CVDebug',
+      members: 'membres'
     },
     showcase: {
       badge: 'Scanner ATS Gratuit',
@@ -6394,6 +6794,60 @@ export const translations: Record<SupportedLocale, Translation> = {
         { icon: "work", text: "Optimiseur LinkedIn" },
         { icon: "support_agent", text: "Support Prioritaire" }
       ],
+      oneDeepScanDesc: 'Vous avez 1 scan complet avec 1 réécriture IA incluse. Parfait pour une correction rapide de CV.',
+      unlimitedRescansDesc: 'Inclut des re-scans illimités pendant 24 heures.',
+      unlimitedScans: 'scans illimités',
+      forLabel: 'pour',
+      daysLabel: 'jours',
+      expiresOn: 'Expire le',
+      once: '/une fois',
+      joinedByCandidates: 'Rejoint par 1 200+ candidats',
+      allRightsReserved: 'Tous droits réservés.',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Nous avons trouvé {count} erreurs",
+        subtitle: "Inscrivez-vous gratuitement pour les voir et savoir comment les corriger",
+        benefits: [
+          "Liste complète des erreurs de formatage",
+          "Suggestions spécifiques de mots-clés manquants",
+          "Analyse de contact et de parsing",
+          "Score détaillé par section"
+        ],
+        ctaText: "Voir Toutes les Erreurs - Gratuit",
+        urgency: "✨ Sans carte de crédit • Résultats instantanés"
+      },
+      saveHistory: {
+        title: "Ne perdez pas cette analyse",
+        subtitle: "Créez un compte pour comparer ce CV avec d'autres postes",
+        benefits: [
+          "Enregistrez toutes vos analyses",
+          "Comparez différentes versions de votre CV",
+          "Suivez vos progrès d'optimisation",
+          "Accédez à votre historique partout"
+        ],
+        ctaText: "Créer un Compte Gratuit",
+        urgency: "🔒 Votre analyse sera supprimée à la fermeture de cette page"
+      },
+      aiSprint: {
+        title: "Débloquez la Puissance de l'IA",
+        subtitle: "Sprint nécessite un compte pour accéder aux outils premium",
+        benefits: [
+          "Réécriture intelligente par l'IA",
+          "Optimisation des mots-clés en temps réel",
+          "Génération de puces basée sur les métriques",
+          "Analyse compétitive du marché"
+        ],
+        ctaText: "Activer Sprint ⚡",
+        urgency: "💎 Fonctions IA avancées avec votre compte",
+        pricingHint: "Sprint est une fonctionnalité premium. Les 3 premières analyses sont gratuites lors de votre inscription."
+      },
+      inline: {
+        errorDetails: "🔒 Inscrivez-vous gratuitement pour voir la liste complète des erreurs",
+        saveHistory: "💾 Créez un compte pour enregistrer cette analyse",
+        aiSprint: "✨ Activez Sprint avec votre compte pour optimiser avec l'IA",
+        signUp: "S'inscrire"
+      }
     },
   },
   'de': {
@@ -6403,6 +6857,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       ctaPrimary: 'Roboter-Ansicht sehen - Kostenlos',
       ctaSecondary: 'Für vollen Zugang anmelden',
       trustIndicator: 'Keine Kreditkarte • Keine Anmeldung • Sofortergebnisse in 10 Sekunden',
+      systemStatus: 'SYSTEM ONLINE v2.4.0',
     },
     features: {
       robotView: 'Roboter-Ansicht Terminal',
@@ -6586,6 +7041,29 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Zielposition',
       jobDescPlaceholder: 'Fügen Sie hier die vollständige Stellenbeschreibung ein...',
       jobDescAdded: 'Stellenbeschreibung hinzugefügt - verbessert die Schlüsselwortanalyse',
+      // Trust indicators
+      securePrivate: 'Sicher und Privat',
+      instantResults: 'Sofortige Ergebnisse',
+      noCreditCard: 'Keine Kreditkarte',
+      // Results page
+      yourResumeScore: 'Ihr Lebenslauf-Score',
+      outOf100: 'Von 100',
+      extraction: 'Extraktion',
+      success: 'Erfolg',
+      processingTime: 'Verarbeitungszeit',
+      robotViewPreview: 'Roboter-Ansicht Vorschau',
+      whatATSSee: 'Das sehen ATS-Systeme wirklich',
+      createFreeAccount: 'Kostenloses Konto erstellen, um die vollständige Roboter-Ansicht zu sehen',
+      plusDetailedAnalysis: 'Plus detaillierte Schlüsselwortanalyse und umsetzbare Korrekturen',
+      // Diagnostics
+      diagnostics: 'Diagnose',
+      encoding: 'Kodierung',
+      valid: 'Gültig',
+      fileSize: 'Dateigröße',
+      optimal: 'Optimal',
+      textExtraction: 'Textextraktion',
+      progress: 'Fortschritt',
+      processing: 'Verarbeitung...',
     },
     nav: {
       features: 'Funktionen',
@@ -6682,6 +7160,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       upload: 'Hochladen',
       download: 'Herunterladen',
       edit: 'Bearbeiten',
+    },
+    socialProof: {
+      redditTitle: 'Empfohlen von Reddit-Communities',
+      redditSubtitle: 'Der bevorzugte ATS-Checker von Millionen von Arbeitssuchenden',
+      redditQuote: '"CVDebug wird in den aktivsten Job-Such-Communities auf Reddit ständig als das präziseste und benutzerfreundlichste ATS-Tool erwähnt"',
+      companiesTitle: 'Ingenieure dieser Unternehmen nutzen CVDebug',
+      members: 'Mitglieder'
     },
     showcase: {
       badge: 'Kostenloser ATS-Scanner',
@@ -7309,7 +7794,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       noTransactionId: 'Keine Transaktions-ID verfügbar',
       receiptDownloaded: 'Quittung erfolgreich heruntergeladen',
       downloadError: 'Fehler beim Herunterladen der Quittung',
-      checkoutError: 'Fehler beim Starten der Zahlung',
+      checkoutError: 'Fehler beim Einleiten des Checkouts',
       loginRequired: 'Bitte melden Sie sich an, um Guthaben zu kaufen',
       initiateError: 'Fehler beim Einleiten der Zahlung',
     },
@@ -7977,6 +8462,60 @@ export const translations: Record<SupportedLocale, Translation> = {
         { icon: "work", text: "LinkedIn-Optimierer" },
         { icon: "support_agent", text: "Prioritäts-Support" }
       ],
+      oneDeepScanDesc: 'Sie haben 1 vollständigen Tiefenscan mit 1 KI-Umschreibung inklusive. Perfekt für eine schnelle Lebenslauf-Korrektur.',
+      unlimitedRescansDesc: 'Beinhaltet unbegrenzte Wiederholungsscans für 24 Stunden.',
+      unlimitedScans: 'unbegrenzte Scans',
+      forLabel: 'für',
+      daysLabel: 'Tage',
+      expiresOn: 'Läuft ab am',
+      once: '/einmalig',
+      joinedByCandidates: 'Von 1.200+ Kandidaten genutzt',
+      allRightsReserved: 'Alle Rechte vorbehalten.',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Wir haben {count} Fehler gefunden",
+        subtitle: "Registrieren Sie sich kostenlos, um zu sehen, was sie sind und wie man sie behebt",
+        benefits: [
+          "Vollständige Liste der Formatierungsfehler",
+          "Spezifische Vorschläge für fehlende Schlüsselwörter",
+          "Kontakt- und Parsing-Analyse",
+          "Detaillierter Score nach Abschnitten"
+        ],
+        ctaText: "Alle Fehler sehen - Kostenlos",
+        urgency: "✨ Keine Kreditkarte • Sofortige Ergebnisse"
+      },
+      saveHistory: {
+        title: "Verlieren Sie diese Analyse nicht",
+        subtitle: "Erstellen Sie ein Konto, um diesen Lebenslauf mit anderen Stellen zu vergleichen",
+        benefits: [
+          "Alle Analysen speichern",
+          "Verschiedene Lebenslaufversionen vergleichen",
+          "Fortschritt der Optimierung verfolgen",
+          "Überall auf Verlauf zugreifen"
+        ],
+        ctaText: "Kostenloses Konto erstellen",
+        urgency: "🔒 Ihre Analyse wird gelöscht, wenn Sie diese Seite schließen"
+      },
+      aiSprint: {
+        title: "KI-Power freischalten",
+        subtitle: "Sprint erfordert ein Konto für den Zugriff auf Premium-Tools",
+        benefits: [
+          "Intelligente KI-Umschreibung",
+          "Echtzeit-Keyword-Optimierung",
+          "Metrikbasierte Stichpunkt-Generierung",
+          "Wettbewerbsfähige Marktanalyse"
+        ],
+        ctaText: "Sprint aktivieren ⚡",
+        urgency: "💎 Fortgeschrittene KI-Funktionen mit Ihrem Konto",
+        pricingHint: "Sprint ist eine Premium-Funktion. Erste 3 Analysen kostenlos bei Anmeldung."
+      },
+      inline: {
+        errorDetails: "🔒 Kostenlos anmelden für vollständige Fehlerliste",
+        saveHistory: "💾 Konto erstellen zum Speichern dieser Analyse",
+        aiSprint: "✨ Sprint mit Konto aktivieren für KI-Optimierung",
+        signUp: "Anmelden"
+      }
     },
   },
   'pt': {
@@ -7986,6 +8525,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       ctaPrimary: 'Ver Visão Robô - Grátis',
       ctaSecondary: 'Cadastre-se para Acesso Completo',
       trustIndicator: 'Sem cartão • Sem cadastro • Resultados instantâneos em 10 segundos',
+      systemStatus: 'SISTEMA ONLINE v2.4.0',
     },
     features: {
       robotView: 'Terminal Visão Robô',
@@ -8068,6 +8608,18 @@ export const translations: Record<SupportedLocale, Translation> = {
       loginToPurchase: 'Faça login para comprar créditos',
       checkoutFailed: 'Falha ao iniciar o checkout',
       checkoutError: 'Falha ao iniciar o processo de checkout',
+      // New Single Debug Fix fields
+      fixOnceBanner: 'CORRIJA DE UMA VEZ POR TODAS',
+      oneTimeFixLabel: 'Ajuste Único',
+      quickFixTitle: 'Ajuste Rápido',
+      coffeePriceLabel: 'Um café para ajustar seu CV',
+      oneDeepScan: '1 Escaneamento Profundo Completo',
+      robotTerminalView: 'Visão Terminal Robô',
+      fullMissingKeywords: 'Palavras-chave Ausentes Completas',
+      oneAiRewrite: '1 Reescrita Completa com IA',
+      keywordAutoInjection: 'Auto-injeção de Palavras-chave',
+      exportAtsSafe: 'Exportar Currículo Seguro para ATS',
+      fixMyCvBtn: 'Corrigir Meu CV →',
     },
     dashboard: {
       welcome: 'Bem-vindo de volta',
@@ -8169,6 +8721,29 @@ export const translations: Record<SupportedLocale, Translation> = {
       targetJobPosition: 'Posição Alvo',
       jobDescPlaceholder: 'Cole aqui a descrição completa da vaga...',
       jobDescAdded: 'Descrição da vaga adicionada - melhorará a análise de palavras-chave',
+      // Trust indicators
+      securePrivate: 'Seguro e Privado',
+      instantResults: 'Resultados Instantâneos',
+      noCreditCard: 'Sem Cartão de Crédito',
+      // Results page
+      yourResumeScore: 'Sua Pontuação de Currículo',
+      outOf100: 'De 100',
+      extraction: 'Extração',
+      success: 'Sucesso',
+      processingTime: 'Tempo de Processamento',
+      robotViewPreview: 'Prévia da Vista Robot',
+      whatATSSee: 'Isto é o que os sistemas ATS realmente veem',
+      createFreeAccount: 'Crie uma conta grátis para ver a Vista Robot completa',
+      plusDetailedAnalysis: 'Mais análise detalhada de palavras-chave e correções acionáveis',
+      // Diagnostics
+      diagnostics: 'Diagnósticos',
+      encoding: 'Codificação',
+      valid: 'Válido',
+      fileSize: 'Tamanho do Arquivo',
+      optimal: 'Ótimo',
+      textExtraction: 'Extração de Texto',
+      progress: 'Progresso',
+      processing: 'Processando...',
     },
     nav: {
       features: 'Recursos',
@@ -8265,6 +8840,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       upload: 'Enviar',
       download: 'Baixar',
       edit: 'Editar',
+    },
+    socialProof: {
+      redditTitle: 'Recomendado pelas comunidades do Reddit',
+      redditSubtitle: 'O verificador ATS favorito de milhões de profissionais',
+      redditQuote: '"CVDebug é constantemente mencionado nas comunidades de busca de emprego mais ativas do Reddit como a ferramenta ATS mais precisa e fácil de usar"',
+      companiesTitle: 'Engenheiros dessas empresas usam CVDebug',
+      members: 'membros'
     },
     showcase: {
       badge: 'Scanner ATS Gratuito',
@@ -8523,7 +9105,7 @@ export const translations: Record<SupportedLocale, Translation> = {
         noCredits: 'Sem créditos disponíveis. Faça upgrade para continuar.',
         apiKeyNotConfigured: 'Chave API não configurada. Entre em contato com o suporte em cvdebug@outlook.com',
         noTransactionId: 'Nenhum ID de transação disponível',
-        checkoutError: 'Falha ao iniciar checkout',
+        checkoutError: 'Falha ao iniciar o checkout',
         loginRequired: 'Por favor, faça login para comprar créditos',
         initiateError: 'Falha ao iniciar pagamento',
       },
@@ -9516,50 +10098,104 @@ export const translations: Record<SupportedLocale, Translation> = {
       generatingReport: 'Gerando Relatório de Sinais Ausentes...',
     },
     subscriptionView: {
-      title: 'Subscription Management',
-      subtitle: 'Manage your current plan, billing details, and unlock premium interview preparation sprints.',
-      currentPlan: 'Current Plan',
-      activeStatus: 'Active',
-      billingHistory: 'Billing History',
-      cancelPlan: 'Cancel Plan',
-      upgradeOptions: 'Upgrade Options',
-      payOnce: 'Pay once, use forever',
-      freePreview: 'Free Preview',
-      freePreviewDesc: 'Free basic scan to see where you stand. Upgrade to unlock full analysis and premium features.',
-      singleDebugFix: 'Single Debug Fix',
-      oneTimeFix: 'One-time fix',
-      singleScan: 'Single Scan',
-      oneTimePayment: 'One-time payment',
+      title: 'Gestão de Assinatura',
+      subtitle: 'Gerencie seu plano atual, detalhes de cobrança e desbloqueie sprints premium de preparação para entrevistas.',
+      currentPlan: 'Plano Atual',
+      activeStatus: 'Ativo',
+      billingHistory: 'Histórico de Cobrança',
+      cancelPlan: 'Cancelar Plano',
+      upgradeOptions: 'Opções de Melhoria',
+      payOnce: 'Pague uma vez, use para sempre',
+      freePreview: 'Prévia Grátis',
+      freePreviewDesc: 'Escaneamento básico gratuito para ver sua situação. Atualize para desbloquear análise completa e recursos premium.',
+      singleDebugFix: 'Ajuste único de depuração',
+      oneTimeFix: 'Ajuste único',
+      singleScan: 'Escaneamento Único',
+      oneTimePayment: 'Pagamento único',
       careerSprint: 'Career Sprint',
-      sevenDayUnlimited: '7 Days Unlimited',
-      bestValue: 'BEST VALUE - SAVE 60%',
-      successStories: '1,200+ Success Stories',
-      startSprint: 'Start 7-Day Sprint',
-      currentPlanBtn: 'Current Plan',
-      fixMyCv: 'Fix My CV',
-      getSingleScan: 'Get Single Scan',
+      sevenDayUnlimited: '7 Dias Ilimitados',
+      bestValue: 'MELHOR VALOR - ECONOMIZE 60%',
+      successStories: 'Mais de 1.200 Casos de Sucesso',
+      startSprint: 'Iniciar Sprint de 7 Dias',
+      currentPlanBtn: 'Plano Atual',
+      fixMyCv: 'Corrigir Meu CV',
+      getSingleScan: 'Obter Escaneamento Único',
       singleDebugFixFeatures: [
-        { icon: "verified", text: "1 Deep Scan" },
-        { icon: "terminal", text: "Robot Terminal View" },
-        { icon: "key", text: "Full Missing Keywords" },
-        { icon: "auto_awesome", text: "1 Full IA Rewrite" },
-        { icon: "integration_instructions", text: "Keywords Auto-Injection" },
-        { icon: "download", text: "Export ATS-safe CV" }
+        { icon: "verified", text: "1 Escaneamento Profundo" },
+        { icon: "terminal", text: "Visão Terminal Robô" },
+        { icon: "key", text: "Palavras-chave Ausentes Completas" },
+        { icon: "auto_awesome", text: "1 Reescrita Completa com IA" },
+        { icon: "integration_instructions", text: "Auto-injeção de Palavras-chave" },
+        { icon: "download", text: "Exportar Currículo Seguro para ATS" }
       ],
       singleScanFeatures: [
-        { icon: "verified", text: "Full ATS Analysis" },
-        { icon: "key", text: "Complete Keyword Report" },
-        { icon: "auto_fix_high", text: "Formatting Audit + Fixes" },
-        { icon: "autorenew", text: "Unlimited Re-scans (24h)" },
-        { icon: "shield_with_heart", text: "PDF Sanitization" }
+        { icon: "verified", text: "Análise ATS Completa" },
+        { icon: "key", text: "Relatório Completo de Palavras-chave" },
+        { icon: "auto_fix_high", text: "Auditoria de Formatação + Ajustes" },
+        { icon: "autorenew", text: "Re-escaneamentos Ilimitados (24h)" },
+        { icon: "shield_with_heart", text: "Sanitização de PDF" }
       ],
       careerSprintFeatures: [
-        { icon: "all_inclusive", text: "Unlimited Scans (7 Days)" },
-        { icon: "psychology", text: "AI Keyword Suggestions" },
-        { icon: "description", text: "Cover Letter Generator" },
-        { icon: "work", text: "LinkedIn Optimizer" },
-        { icon: "support_agent", text: "Priority Support" }
+        { icon: "all_inclusive", text: "Escaneamentos Ilimitados (7 Dias)" },
+        { icon: "psychology", text: "Sugestões de IA para Palavras-chave" },
+        { icon: "description", text: "Gerador de Carta de Apresentação" },
+        { icon: "work", text: "Otimizador de LinkedIn" },
+        { icon: "support_agent", text: "Suporte Prioritário" }
       ],
+      oneDeepScanDesc: 'Você tem 1 scan profundo completo com 1 reescrita de IA incluída. Perfeito para uma correção rápida de currículo.',
+      unlimitedRescansDesc: 'Inclui re-scans ilimitados por 24 horas.',
+      unlimitedScans: 'escaneamentos ilimitados',
+      forLabel: 'por',
+      daysLabel: 'dias',
+      expiresOn: 'Expira em',
+      once: '/uma vez',
+      joinedByCandidates: 'Mais de 1.200 candidatos aderiram',
+      allRightsReserved: 'Todos os direitos reservados.',
+    },
+    registrationWall: {
+      errorDetails: {
+        title: "Encontramos {count} erros",
+        subtitle: "Cadastre-se grátis para ver quais são e como corrigi-los",
+        benefits: [
+          "Lista completa de erros de formatação",
+          "Sugestões específicas de palavras-chave ausentes",
+          "Análise de contato e extração",
+          "Pontuação detalhada por seção"
+        ],
+        ctaText: "Ver Todos os Erros - Grátis",
+        urgency: "✨ Sem cartão de crédito • Resultados instantâneos"
+      },
+      saveHistory: {
+        title: "Não perca esta análise",
+        subtitle: "Crie uma conta para comparar este CV com outras vagas",
+        benefits: [
+          "Salve todas as suas análises",
+          "Compare diferentes versões do seu CV",
+          "Rastreie seu progresso de otimização",
+          "Acesse seu histórico de qualquer lugar"
+        ],
+        ctaText: "Criar Conta Grátis",
+        urgency: "🔒 Sua análise será apagada ao fechar esta página"
+      },
+      aiSprint: {
+        title: "Desbloqueie o Poder da IA",
+        subtitle: "O Sprint requer uma conta para acessar ferramentas premium",
+        benefits: [
+          "Reescrita inteligente com IA",
+          "Otimização de palavras-chave em tempo real",
+          "Geração de bullets focada em métricas",
+          "Análise competitiva de mercado"
+        ],
+        ctaText: "Ativar Sprint ⚡",
+        urgency: "💎 Recursos avançados de IA com sua conta",
+        pricingHint: "O Sprint é um recurso premium. Primeiras 3 análises gratuitas ao se cadastrar."
+      },
+      inline: {
+        errorDetails: "🔒 Cadastre-se grátis para ver a lista completa de erros",
+        saveHistory: "💾 Crie uma conta para salvar esta análise",
+        aiSprint: "✨ Ative o Sprint com sua conta para otimizar com IA",
+        signUp: "Cadastrar-se"
+      }
     },
   },
 };

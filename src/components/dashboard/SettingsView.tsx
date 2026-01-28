@@ -64,7 +64,7 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
     ? Math.ceil((sprintExpiresAt - Date.now()) / (1000 * 60 * 60 * 24))
     : 0;
 
-  const planName = user?.subscriptionTier === "interview_sprint" ? "Interview Sprint" : "Interview Sprint";
+  const planName = user?.subscriptionTier === "interview_sprint" ? "Career Sprint" : "Career Sprint";
   const validUntil = sprintExpiresAt > Date.now()
     ? new Date(sprintExpiresAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : "Not available";
@@ -272,11 +272,10 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
               <div className="flex items-baseline gap-2 mb-6">
                 <span className="text-4xl font-bold text-[#0F172A] font-display">{Math.round(currentScore)}%</span>
                 {scoreImprovement !== 0 && (
-                  <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${
-                    scoreImprovement > 0
+                  <span className={`text-sm font-mono flex items-center px-1.5 py-0.5 rounded ${scoreImprovement > 0
                       ? 'text-[#22C55E] bg-emerald-50'
                       : 'text-rose-600 bg-rose-50'
-                  }`}>
+                    }`}>
                     <span className="material-symbols-outlined text-[14px] mr-0.5">
                       {scoreImprovement > 0 ? 'trending_up' : 'trending_down'}
                     </span>
@@ -396,14 +395,12 @@ export function SettingsView({ onOpenPricing }: SettingsViewProps = {}) {
                   {/* Toggle Switch */}
                   <button
                     onClick={handleAnalyticsToggle}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#475569] focus:ring-offset-2 focus:ring-offset-white ${
-                      shareAnalytics ? 'bg-[#64748B]' : 'bg-slate-300'
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#475569] focus:ring-offset-2 focus:ring-offset-white ${shareAnalytics ? 'bg-[#64748B]' : 'bg-slate-300'
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-[#FFFFFF] transition duration-200 ease-in-out ${
-                        shareAnalytics ? 'translate-x-6' : 'translate-x-1'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-[#FFFFFF] transition duration-200 ease-in-out ${shareAnalytics ? 'translate-x-6' : 'translate-x-1'
+                        }`}
                     ></span>
                   </button>
                 </div>

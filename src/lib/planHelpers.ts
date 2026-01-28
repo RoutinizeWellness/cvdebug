@@ -27,9 +27,9 @@ export function isFreeUser(tier?: string): boolean {
 }
 
 /**
- * Check if user has Interview Sprint plan (highest tier)
+ * Check if user has Career Sprint plan (highest tier)
  */
-export function hasInterviewSprint(tier?: string, sprintExpiresAt?: number): boolean {
+export function hasCareerSprint(tier?: string, sprintExpiresAt?: number): boolean {
   if (tier !== "interview_sprint") return false;
   if (!sprintExpiresAt) return true; // No expiry set means unlimited
   return sprintExpiresAt > Date.now();
@@ -96,7 +96,7 @@ export function getPlanName(tier?: string): string {
     free: "Free",
     single_debug_fix: "Single Debug Fix",
     single_scan: "24h Pass",
-    interview_sprint: "Interview Sprint",
+    interview_sprint: "Career Sprint",
   };
   return names[tier || "free"] || "Free";
 }

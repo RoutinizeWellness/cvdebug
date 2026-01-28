@@ -18,10 +18,10 @@ export const createApplication = mutation({
     const dbUser = user.dbUser;
 
     // ENFORCEMENT: Project Tracker (CRM) is locked for Free/Single Scan users
-    // Only Interview Sprint users can create applications
+    // Only Career Sprint users can create applications
     const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
     if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to track applications.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to track applications.");
     }
 
     // Find the resume for this project to perform initial analysis
@@ -30,7 +30,7 @@ export const createApplication = mutation({
       .withIndex("by_user", (q) => q.eq("userId", user._id))
       .filter((q) => q.eq(q.field("projectId"), args.projectId))
       .collect();
-    
+
     // Use the most recent resume for this project
     resumes.sort((a, b) => b._creationTime - a._creationTime);
     const resume = resumes[0];
@@ -47,14 +47,14 @@ export const createApplication = mutation({
           (resume.category as RoleCategory) || "General",
           args.jobDescriptionText
         );
-        
+
         matchedKeywords = analysis.matchedKeywords;
         missingKeywords = analysis.missingKeywords.map(k => k.keyword);
-        
+
         // Calculate match score based on coverage of JD keywords
         const totalKeywords = analysis.foundKeywords.length + analysis.missingKeywords.length;
         if (totalKeywords > 0) {
-           matchScore = Math.round((analysis.foundKeywords.length / totalKeywords) * 100);
+          matchScore = Math.round((analysis.foundKeywords.length / totalKeywords) * 100);
         }
       } else {
         // Fallback: No JD or no OCR text, use existing resume analysis data
@@ -63,12 +63,12 @@ export const createApplication = mutation({
 
         if (args.jobDescriptionText) {
           const jdText = args.jobDescriptionText.toLowerCase();
-          
+
           // Find which resume keywords appear in the JD
-          matchedKeywords = resumeMatchedKeywords.filter(kw => 
+          matchedKeywords = resumeMatchedKeywords.filter(kw =>
             jdText.includes(kw.toLowerCase())
           );
-          
+
           // Find which missing keywords from resume are in the JD (critical gaps)
           missingKeywords = resumeMissingKeywords
             .filter(kw => {
@@ -129,7 +129,7 @@ export const analyzeApplicationKeywords = mutation({
     // ENFORCEMENT: AI Tools are locked for Free/Single Scan users
     const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
     if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Keyword Sniper.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to use Keyword Sniper.");
     }
 
     const application = await ctx.db.get(args.applicationId);
@@ -151,7 +151,7 @@ export const analyzeApplicationKeywords = mutation({
         (resume.category as RoleCategory) || "General",
         application.jobDescriptionText
       );
-      
+
       matchedKeywords = analysis.matchedKeywords;
       missingKeywords = analysis.missingKeywords.map(k => k.keyword);
     } else {
@@ -161,11 +161,11 @@ export const analyzeApplicationKeywords = mutation({
 
       if (application.jobDescriptionText) {
         const jdText = application.jobDescriptionText.toLowerCase();
-        
-        matchedKeywords = resumeMatchedKeywords.filter(kw => 
+
+        matchedKeywords = resumeMatchedKeywords.filter(kw =>
           jdText.includes(kw.toLowerCase())
         );
-        
+
         missingKeywords = resumeMissingKeywords
           .filter(kw => {
             const keyword = typeof kw === 'string' ? kw : kw.keyword;
@@ -236,18 +236,18 @@ export const getApplicationsByProject = query({
 
     return applications.map(app => {
       let matchScore = (app as any).matchScore || 0;
-      
+
       // Calculate match score dynamically if not present
       if (!matchScore) {
         const matched = app.matchedKeywords?.length || 0;
         const missing = app.missingKeywords?.length || 0;
         const total = matched + missing;
-        
+
         if (total > 0) {
           matchScore = Math.round((matched / total) * 100);
         }
       }
-      
+
       return { ...app, matchScore };
     });
   },
@@ -272,7 +272,7 @@ export const updateApplicationStatus = mutation({
     // ENFORCEMENT: CRM functionality is locked
     const hasActiveSprint = dbUser.sprintExpiresAt && dbUser.sprintExpiresAt > Date.now();
     if (!hasActiveSprint && dbUser.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to manage application status.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to manage application status.");
     }
 
     const app = await ctx.db.get(args.applicationId);
@@ -368,7 +368,7 @@ export const checkGhosting = mutation({
       .withIndex("by_user_and_status", (q) => q.eq("userId", user._id).eq("status", "applied"))
       .filter((q) => q.lt(q.field("lastStatusUpdate"), fiveDaysAgo))
       .collect();
-    
+
     return ghostedApps.length;
   },
 });
@@ -454,11 +454,11 @@ export const getSuccessAnalytics = query({
       topKeywords: keywordInsights,
       topInsight: topKeyword
         ? {
-            message: `CVs with "${topKeyword.keyword}" have a ${Math.round(topKeyword.successRate)}% success rate`,
-            keyword: topKeyword.keyword,
-            successRate: Math.round(topKeyword.successRate),
-            lift: Math.round(topKeyword.successRate - averageSuccessRate),
-          }
+          message: `CVs with "${topKeyword.keyword}" have a ${Math.round(topKeyword.successRate)}% success rate`,
+          keyword: topKeyword.keyword,
+          successRate: Math.round(topKeyword.successRate),
+          lift: Math.round(topKeyword.successRate - averageSuccessRate),
+        }
         : null,
     };
   },

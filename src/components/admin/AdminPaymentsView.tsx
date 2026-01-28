@@ -20,8 +20,8 @@ export function AdminPaymentsView() {
       if (previousPaymentCount > 0 && payments.length > previousPaymentCount) {
         const latestPayment = payments[0];
         const planName = latestPayment.plan === "single_debug_fix" ? "Arreglo Rápido" :
-                        latestPayment.plan === "single_scan" ? "Pase 24h" :
-                        "Sprint 7 Días";
+          latestPayment.plan === "single_scan" ? "Pase 24h" :
+            "Sprint 7 Días";
         toast.success("💰 ¡Nuevo Pago Recibido!", {
           description: `${latestPayment.userName} compró ${planName} por €${latestPayment.amount}`,
           duration: 5000,
@@ -131,7 +131,7 @@ export function AdminPaymentsView() {
           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <CreditCard className="h-12 w-12 text-primary" />
           </div>
-          <p className="text-slate-600 text-sm font-medium mb-1">Interview Sprints</p>
+          <p className="text-slate-600 text-sm font-medium mb-1">Career Sprints</p>
           <h3 className="text-2xl font-display font-bold text-slate-900">
             {interviewSprintCount}
           </h3>
@@ -215,13 +215,13 @@ export function AdminPaymentsView() {
                           variant={payment.plan === "interview_sprint" ? "default" : "outline"}
                           className={
                             payment.plan === "single_debug_fix" ? "bg-amber-50 text-amber-700 border-amber-300" :
-                            payment.plan === "single_scan" ? "bg-orange-50 text-orange-700 border-orange-300" :
-                            ""
+                              payment.plan === "single_scan" ? "bg-orange-50 text-orange-700 border-orange-300" :
+                                ""
                           }
                         >
                           {payment.plan === "single_debug_fix" ? "Arreglo Rápido" :
-                           payment.plan === "single_scan" ? "Pase 24h" :
-                           "Sprint 7 Días"}
+                            payment.plan === "single_scan" ? "Pase 24h" :
+                              "Sprint 7 Días"}
                         </Badge>
                       </TableCell>
                       <TableCell>

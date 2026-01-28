@@ -35,8 +35,8 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   const [selectedKeyword, setSelectedKeyword] = useState<string>("");
   const [selectedBullet, setSelectedBullet] = useState<string>("");
 
-  // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+  // Check if user has Career Sprint plan
+  const hasCareerSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   // PRIORITY: Get application with job description (has missing keywords)
@@ -122,7 +122,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   return (
     <div className="w-full flex flex-col pb-8">
       {/* Interview Sprint Required Alert */}
-      {!hasInterviewSprint && (
+      {!hasCareerSprint && (
         <Alert className="mb-6 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] relative overflow-hidden">
           {/* Decorative gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-orange-500/5 pointer-events-none" />
@@ -193,7 +193,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                 {t.keywordSniper.subtitle}
               </p>
             </div>
-            {!hasInterviewSprint && (
+            {!hasCareerSprint && (
               <Lock className="h-5 w-5 text-slate-400" />
             )}
           </div>
@@ -211,7 +211,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
       </div>
 
       {/* Premium AI Tools */}
-      {hasInterviewSprint && (
+      {hasCareerSprint && (
         <div className="w-full mb-6">
           <h2 className="text-lg font-bold text-[#0F172A] mb-4">{t.keywordSniper.aiPremiumTools}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -294,7 +294,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
 
       {/* Keyword Sniper Tool */}
       <div className="w-full relative">
-        {!hasInterviewSprint && (
+        {!hasCareerSprint && (
           <div className="absolute inset-0 z-10 bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
             <div className="text-center p-8 max-w-md">
               <Lock className="h-16 w-16 text-[#1E293B] mx-auto mb-4" />

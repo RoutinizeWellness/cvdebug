@@ -64,12 +64,12 @@ export default function TermsConditions() {
               <div className="space-y-4 text-[#475569] leading-relaxed">
                 <p><strong className="text-[#0F172A]">Free Preview:</strong> Limited access to basic scanning features at no cost.</p>
                 <p><strong className="text-[#0F172A]">Single Scan (€9.99):</strong> One-time payment for a single comprehensive resume analysis.</p>
-                <p><strong className="text-[#0F172A]">Interview Sprint (€24.99):</strong> 30-day access to unlimited scans and premium features.</p>
+                <p><strong className="text-[#0F172A]">Career Sprint (€24.99):</strong> 30-day access to unlimited scans and premium features.</p>
                 <p className="mt-4"><strong className="text-[#0F172A]">Billing:</strong></p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>All payments are processed securely through Stripe</li>
                   <li>Prices are in Euros and include applicable taxes</li>
-                  <li>Interview Sprint subscriptions renew automatically unless canceled</li>
+                  <li>Career Sprint subscriptions renew automatically unless canceled</li>
                   <li>You can cancel your subscription at any time from your account settings</li>
                 </ul>
               </div>
@@ -79,7 +79,7 @@ export default function TermsConditions() {
               <h2 className="text-2xl font-bold text-[#0F172A] mb-4">5. Refund Policy</h2>
               <ul className="list-disc list-inside space-y-2 text-[#475569] ml-4">
                 <li>Single Scan purchases are non-refundable once the analysis is completed</li>
-                <li>Interview Sprint subscriptions may be refunded within 7 days of initial purchase if no scans have been performed</li>
+                <li>Career Sprint subscriptions may be refunded within 7 days of initial purchase if no scans have been performed</li>
                 <li>Refund requests must be submitted to cvdebug@outlook.com</li>
                 <li>We reserve the right to refuse refunds for abuse or violation of terms</li>
               </ul>

@@ -27,7 +27,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
-    
+
     if (processingResumeId) {
       try {
         await deleteResume({ id: processingResumeId as any });
@@ -35,7 +35,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         console.error("Failed to cleanup resume on cancel", e);
       }
     }
-    
+
     setIsUploading(false);
     setProcessingResumeId(null);
     setProcessingStatus("");
@@ -58,10 +58,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
     // FILE TYPE VALIDATION with specific error messages
     const validTypes = [
-      "image/jpeg", 
-      "image/png", 
-      "image/webp", 
-      "application/pdf", 
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "application/pdf",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ];
 
@@ -84,13 +84,13 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
 
     setIsUploading(true);
     setProcessingStatus("Uploading your resume...");
-    
+
     let resumeId = null;
     let storageId = null;
 
     try {
       // NETWORK TIMEOUT PROTECTION
-      const uploadTimeout = new Promise((_, reject) => 
+      const uploadTimeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("UPLOAD_TIMEOUT")), 30000)
       );
 
@@ -101,12 +101,12 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           body: file,
           signal: abortControllerRef.current?.signal,
         });
-        
+
         if (!result.ok) {
           const errorText = await result.text().catch(() => "Unknown error");
           throw new Error(`UPLOAD_FAILED: ${result.status} - ${errorText}`);
         }
-        
+
         return result.json();
       });
 
@@ -176,14 +176,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
       setProcessingResumeId(resumeId);
       setProcessingStatus("Analyzing file structure...");
 
-      toast.success(jobDescription.trim() 
-        ? "Resume uploaded! AI is analyzing against your job description..." 
+      toast.success(jobDescription.trim()
+        ? "Resume uploaded! AI is analyzing against your job description..."
         : "Resume uploaded! AI is analyzing..."
       );
-      
+
       // Try fast client-side processing first with 90s timeout
       const processingPromise = processFile(file, resumeId, storageId);
-      const timeoutPromise = new Promise((_, reject) => 
+      const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("CLIENT_TIMEOUT")), 90000)
       );
 
@@ -191,13 +191,13 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         await Promise.race([processingPromise, timeoutPromise]);
       } catch (processingError: any) {
         // If client-side fails or times out, trigger server-side OCR
-        if (processingError.message === "CLIENT_TIMEOUT" || 
-            processingError.message.includes("Could not extract text") ||
-            processingError.message.includes("OCR")) {
-          
+        if (processingError.message === "CLIENT_TIMEOUT" ||
+          processingError.message.includes("Could not extract text") ||
+          processingError.message.includes("OCR")) {
+
           console.log("[Client] Client processing failed/timed out, triggering server OCR");
           toast.info("⚙️ Switching to deep scan mode...");
-          
+
           await triggerServerOcr({ resumeId, storageId });
           toast.success("Deep scan initiated. This may take a moment...");
           setJobDescription("");
@@ -205,7 +205,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         }
         throw processingError;
       }
-      
+
       setJobDescription("");
 
     } catch (error: any) {
@@ -213,21 +213,21 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         console.log("Upload cancelled by user");
         return; // Already handled in cancelUpload
       }
-      
+
       console.error("[Upload Error]", error);
-      
+
       // SPECIFIC ERROR MESSAGES based on error type
       if (error.message === "UPLOAD_TIMEOUT") {
         toast.error("Upload timed out. Check your internet connection and try again.");
       } else if (error.message.startsWith("UPLOAD_FAILED")) {
         toast.error("Upload failed. The file may be corrupted or your connection interrupted. Try again.");
-      } else if (error.message === "CLIENT_TIMEOUT" || 
-          error.message.includes("Could not extract text") ||
-          error.message.includes("OCR")) {
-        
+      } else if (error.message === "CLIENT_TIMEOUT" ||
+        error.message.includes("Could not extract text") ||
+        error.message.includes("OCR")) {
+
         console.log("[Client] Client-side processing failed, triggering server-side OCR fallback");
         toast.info("⚙️ Client processing timed out. Trying server-side extraction...");
-        
+
         try {
           if (resumeId && storageId) {
             await triggerServerOcr({ resumeId, storageId });
@@ -251,7 +251,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
         toast.error("No credits remaining. Upgrade to continue scanning resumes.");
       } else {
         const errorMsg = error instanceof Error ? error.message : String(error);
-        
+
         // Enhanced error messaging with actionable help
         if (errorMsg.includes('timeout') || errorMsg.includes('network')) {
           toast.error(
@@ -289,7 +289,7 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           toast.error(
             "No scans remaining.",
             {
-              description: "Upgrade to Single Scan (€4.99) or Interview Sprint (€24.99) for unlimited scans",
+              description: "Upgrade to Single Scan (€4.99) or Career Sprint (€24.99) for unlimited scans",
               duration: 6000,
             }
           );
@@ -303,10 +303,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           );
         }
       }
-      
+
       setProcessingResumeId(null);
       setProcessingStatus("");
-      
+
       if (resumeId) {
         try {
           await deleteResume({ id: resumeId });
@@ -356,15 +356,15 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
           );
 
           pdf = await Promise.race([loadingTask.promise, loadTimeout]);
-          
+
           const maxPages = Math.min(pdf.numPages, 15);
-          
+
           for (let i = 1; i <= maxPages; i++) {
             if (abortControllerRef.current?.signal.aborted) throw new Error("Aborted");
-            
+
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
-            
+
             const pageText = content.items
               .map((item: any) => {
                 const str = item.str || "";
@@ -372,10 +372,10 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
                 return hasEOL ? str + "\n" : str + " ";
               })
               .join("");
-            
+
             text += pageText + "\n";
           }
-          
+
           if (text.trim().length < 20) {
             console.log("PDF text extraction yielded minimal text, attempting enhanced OCR fallback...");
             toast.info("PDF format not standard, using enhanced OCR for text extraction...");
@@ -450,14 +450,14 @@ export function useResumeUpload(jobDescription: string, setJobDescription: (val:
             }
 
             text = ocrText;
-            
+
             if (!text.trim()) {
               throw new Error("Could not extract text from this PDF. Please try: 1) Re-saving as a new PDF from Word, 2) Using 'Save As PDF' instead of 'Export', or 3) Uploading as a .docx file instead.");
             }
           }
         } catch (pdfError: any) {
           if (pdfError.message === "Aborted") throw pdfError;
-          
+
           console.error("PDF parsing failed:", pdfError);
           toast.info("PDF format not recognized, attempting enhanced OCR extraction...");
           setProcessingStatus("PDF parsing failed, attempting enhanced OCR...");

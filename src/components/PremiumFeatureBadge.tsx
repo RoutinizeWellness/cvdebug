@@ -20,7 +20,7 @@ export function PremiumFeatureBadge({
       icon: Lock
     },
     interview_sprint: {
-      label: "Interview Sprint",
+      label: "Career Sprint",
       price: "€24.99",
       color: "from-[#1E293B] to-[#EC4899]",
       icon: Crown

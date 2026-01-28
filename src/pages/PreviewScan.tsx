@@ -491,15 +491,15 @@ export default function PreviewScan() {
               >
                 <div className="flex items-center gap-2">
                   <Lock className="h-4 w-4 text-[#1E293B]" />
-                  <span>Secure & Private</span>
+                  <span>{t('previewScan.securePrivate')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Zap className="h-4 w-4 text-[#1E293B]" />
-                  <span>Instant Results</span>
+                  <span>{t('previewScan.instantResults')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4 text-[#1E293B]" />
-                  <span>No Credit Card</span>
+                  <span>{t('previewScan.noCreditCard')}</span>
                 </div>
               </motion.div>
             </motion.div>
@@ -528,12 +528,11 @@ export default function PreviewScan() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className={`mb-2 ${
-                        log.type === "success" ? "text-[#22C55E]" :
-                        log.type === "error" ? "text-[#EF4444]" :
-                        log.type === "warning" ? "text-[#F59E0B]" :
-                        "text-[#64748B]"
-                      }`}
+                      className={`mb-2 ${log.type === "success" ? "text-[#22C55E]" :
+                          log.type === "error" ? "text-[#EF4444]" :
+                            log.type === "warning" ? "text-[#F59E0B]" :
+                              "text-[#64748B]"
+                        }`}
                     >
                       {log.message}
                     </motion.div>
@@ -551,38 +550,38 @@ export default function PreviewScan() {
                 <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
                     <span className="material-symbols-outlined text-[#1E293B] text-lg">analytics</span>
-                    Diagnostics
+                    {t('previewScan.diagnostics')}
                   </h3>
 
                   <div className="space-y-4">
                     {/* Encoding Health */}
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-[#64748B]">Encoding</span>
+                        <span className="text-xs text-[#64748B]">{t('previewScan.encoding')}</span>
                         <span className="text-xs font-semibold text-[#22C55E]">{diagnostics.encoding}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
-                        <span className="text-xs text-[#475569]">Valid</span>
+                        <span className="text-xs text-[#475569]">{t('previewScan.valid')}</span>
                       </div>
                     </div>
 
                     {/* File Size */}
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-[#64748B]">File Size</span>
+                        <span className="text-xs text-[#64748B]">{t('previewScan.fileSize')}</span>
                         <span className="text-xs font-semibold text-[#64748B]">{diagnostics.fileSize}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-[#64748B] text-sm">description</span>
-                        <span className="text-xs text-[#475569]">Optimal</span>
+                        <span className="text-xs text-[#475569]">{t('previewScan.optimal')}</span>
                       </div>
                     </div>
 
                     {/* Text-to-Image Ratio */}
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs text-[#64748B]">Text Extraction</span>
+                        <span className="text-xs text-[#64748B]">{t('previewScan.textExtraction')}</span>
                         <span className="text-xs font-semibold text-[#1E293B]">{diagnostics.textRatio.toFixed(0)}%</span>
                       </div>
                       <div className="w-full bg-[#E2E8F0] rounded-full h-2 overflow-hidden">
@@ -601,7 +600,7 @@ export default function PreviewScan() {
                 <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                   <h3 className="text-sm font-bold text-[#1E293B] uppercase tracking-wider mb-4 flex items-center gap-2">
                     <span className="material-symbols-outlined text-[#1E293B] text-lg">hourglass_top</span>
-                    Progress
+                    {t('previewScan.progress')}
                   </h3>
 
                   <div className="space-y-3">
@@ -609,7 +608,7 @@ export default function PreviewScan() {
                       <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#1E293B] to-[#64748B] mb-2">
                         {progress}%
                       </p>
-                      <p className="text-xs text-[#64748B]">{currentStep || "Processing..."}</p>
+                      <p className="text-xs text-[#64748B]">{currentStep || t('previewScan.processing')}</p>
                     </div>
 
                     <div className="w-full bg-[#E2E8F0] rounded-full h-3 overflow-hidden relative">
@@ -649,7 +648,7 @@ export default function PreviewScan() {
               <div className="bg-white p-8 rounded-2xl text-center relative overflow-hidden border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1E293B]/10 to-[#64748B]/10" />
                 <div className="relative z-10">
-                  <h2 className="text-2xl font-bold text-[#1E293B] mb-4">Your Resume Score</h2>
+                  <h2 className="text-2xl font-bold text-[#1E293B] mb-4">{t('previewScan.yourResumeScore')}</h2>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
@@ -658,15 +657,15 @@ export default function PreviewScan() {
                   >
                     {previewScore}
                   </motion.div>
-                  <p className="text-[#475569] mb-6">Out of 100</p>
+                  <p className="text-[#475569] mb-6">{t('previewScan.outOf100')}</p>
 
                   <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
-                      <p className="text-sm text-[#64748B] mb-1">Extraction</p>
-                      <p className="text-2xl font-bold text-[#22C55E]">✓ Success</p>
+                      <p className="text-sm text-[#64748B] mb-1">{t('previewScan.extraction')}</p>
+                      <p className="text-2xl font-bold text-[#22C55E]">✓ {t('previewScan.success')}</p>
                     </div>
                     <div className="bg-[#F8FAFC] rounded-lg p-4 border border-[#E2E8F0]">
-                      <p className="text-sm text-[#64748B] mb-1">Processing Time</p>
+                      <p className="text-sm text-[#64748B] mb-1">{t('previewScan.processingTime')}</p>
                       <p className="text-2xl font-bold text-[#1E293B]">&lt; 10s</p>
                     </div>
                   </div>
@@ -680,8 +679,8 @@ export default function PreviewScan() {
                     <Eye className="h-5 w-5 text-[#22C55E]" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#1E293B]">Robot View Preview</h3>
-                    <p className="text-sm text-[#475569]">This is what ATS systems actually see</p>
+                    <h3 className="text-lg font-bold text-[#1E293B]">{t('previewScan.robotViewPreview')}</h3>
+                    <p className="text-sm text-[#475569]">{t('previewScan.whatATSSee')}</p>
                   </div>
                 </div>
 
@@ -698,8 +697,8 @@ export default function PreviewScan() {
                   <div className="absolute inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm">
                     <div className="text-center">
                       <Lock className="h-12 w-12 text-[#1E293B] mx-auto mb-4" />
-                      <p className="text-[#1E293B] font-bold text-lg mb-2">Create free account to see full Robot View</p>
-                      <p className="text-[#475569] text-sm">Plus detailed keyword analysis and actionable fixes</p>
+                      <p className="text-[#1E293B] font-bold text-lg mb-2">{t('previewScan.createFreeAccount')}</p>
+                      <p className="text-[#475569] text-sm">{t('previewScan.plusDetailedAnalysis')}</p>
                     </div>
                   </div>
                 </div>

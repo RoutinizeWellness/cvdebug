@@ -23,11 +23,11 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
   if (textLayerIntegrity >= 95 && !hasImageTrap) return null;
 
   const isIntegrityIssue = textLayerIntegrity < 95;
-  
-  const title = isIntegrityIssue 
+
+  const title = isIntegrityIssue
     ? "⚠️ RED ALERT: Your latest edit broke your PDF encoding."
     : "⚠️ ATS WARNING: Hidden text or formatting anomalies detected.";
-    
+
   const description = isIntegrityIssue
     ? `Engineers from the company will see a blank page. The text layer integrity is ${textLayerIntegrity}%.`
     : `Your text layer is intact (${textLayerIntegrity}%), but we detected potential 'keyword stuffing' or hidden text layers that will flag your resume as spam.`;
@@ -41,10 +41,10 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
 
   const handleSanitize = async () => {
     if (!resumeId) {
-        toast.error("Cannot sanitize: Resume ID missing");
-        return;
+      toast.error("Cannot sanitize: Resume ID missing");
+      return;
     }
-    
+
     setIsSanitizing(true);
     try {
       await sanitizePdf({ id: resumeId as any });
@@ -75,16 +75,16 @@ export function ImageTrapAlert({ textLayerIntegrity, hasImageTrap, resumeId, has
           <p className="text-sm text-zinc-300 mt-1 leading-relaxed">
             {description}
           </p>
-          
+
           {hasActiveSprint && (
             <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/30 flex items-center gap-2">
               <Zap className="h-4 w-4 text-primary" />
               <p className="text-xs text-primary font-medium">
-                <strong>Interview Sprint Active:</strong> Continuous PDF sanitization will auto-fix this within 5 minutes.
+                <strong>Career Sprint Active:</strong> Continuous PDF sanitization will auto-fix this within 5 minutes.
               </p>
             </div>
           )}
-          
+
           <div className="mt-4 flex flex-wrap gap-3">
             <Button
               size="sm"

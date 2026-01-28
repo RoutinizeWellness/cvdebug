@@ -51,7 +51,7 @@ export function NewHeroSection() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
             </div>
             <span className="text-xs font-semibold text-[#1E293B] uppercase tracking-wider">
-              SYSTEM ONLINE v2.4.0
+              {t.hero.systemStatus}
             </span>
           </div>
         </motion.div>

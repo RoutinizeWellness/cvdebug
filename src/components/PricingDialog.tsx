@@ -213,42 +213,42 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
           <div className="bg-white border-2 border-[#F59E0B]/40 rounded-xl p-6 flex flex-col h-full relative shadow-[0_0_40px_0_rgba(245,158,11,0.1)]">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest flex items-center gap-1.5 shadow-md">
               <span className="material-symbols-outlined text-xs">build</span>
-              ARREGLA DE UNA VEZ
+              {t.pricingDialog.fixOnceBanner}
             </div>
             <div className="mb-6">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">Arreglo Único</span>
-              <h2 className="text-xl font-extrabold text-slate-900 mt-1">Arreglo Rápido</h2>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#F59E0B] font-mono">{t.pricingDialog.oneTimeFixLabel}</span>
+              <h2 className="text-xl font-extrabold text-slate-900 mt-1">{t.pricingDialog.quickFixTitle}</h2>
               <div className="mt-3 flex flex-col">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-black tracking-tighter text-slate-900">€5.99</span>
                 </div>
-                <span className="text-slate-400 text-[10px] font-medium mt-1">Un café para arreglar tu CV</span>
+                <span className="text-slate-400 text-[10px] font-medium mt-1">{t.pricingDialog.coffeePriceLabel}</span>
               </div>
             </div>
             <div className="space-y-3 mb-8 flex-grow">
               <div className="flex items-center gap-2 text-xs font-bold text-[#F59E0B]">
                 <span className="material-symbols-outlined text-base">verified</span>
-                1 Escaneo Profundo Completo
+                {t.pricingDialog.oneDeepScan}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Vista Robot Terminal
+                {t.pricingDialog.robotTerminalView}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Keywords Faltantes Completo
+                {t.pricingDialog.fullMissingKeywords}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                1 Reescritura IA Completa
+                {t.pricingDialog.oneAiRewrite}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Auto-Inyección de Keywords
+                {t.pricingDialog.keywordAutoInjection}
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-700">
                 <span className="material-symbols-outlined text-[#F59E0B] text-base">check_circle</span>
-                Exportar CV ATS-seguro
+                {t.pricingDialog.exportAtsSafe}
               </div>
             </div>
             <button
@@ -256,7 +256,7 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
               disabled={!!isLoading}
               className="w-full h-11 rounded-lg bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white font-bold text-sm shadow-lg shadow-[#F59E0B]/20 hover:opacity-90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isLoading === "single_debug_fix" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Arreglar Mi CV →"}
+              {isLoading === "single_debug_fix" ? <Loader2 className="h-4 w-4 animate-spin" /> : t.pricingDialog.fixMyCvBtn}
             </button>
           </div>
 

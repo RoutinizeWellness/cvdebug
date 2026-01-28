@@ -26,14 +26,14 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
     jobDescriptionText: "",
   });
 
-  // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+  // Check if user has Career Sprint plan
+  const hasCareerSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!hasInterviewSprint) {
+    if (!hasCareerSprint) {
       toast.error(t.createApplication.planRequired, {
         description: t.createApplication.planRequiredDesc
       });
@@ -87,7 +87,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                 <h3 className="text-xl font-semibold text-[#0F172A] tracking-tight">
                   {t.createApplication.title}
                 </h3>
-                {!hasInterviewSprint && (
+                {!hasCareerSprint && (
                   <Lock className="h-4 w-4 text-[#64748B]" />
                 )}
               </div>
@@ -100,7 +100,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
             </div>
 
             {/* Upgrade Alert */}
-            {!hasInterviewSprint && (
+            {!hasCareerSprint && (
               <div className="mx-6 mt-6 bg-gradient-to-r from-primary/10 to-teal-500/10 border border-primary/30 rounded-xl p-4">
                 <div className="flex gap-3">
                   <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
@@ -135,7 +135,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                         value={formData.companyName}
                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                         required
-                        disabled={!hasInterviewSprint}
+                        disabled={!hasCareerSprint}
                         className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] disabled:opacity-50"
                       />
                     </div>
@@ -148,7 +148,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                         value={formData.jobTitle}
                         onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
                         required
-                        disabled={!hasInterviewSprint}
+                        disabled={!hasCareerSprint}
                         className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] disabled:opacity-50"
                       />
                     </div>
@@ -163,7 +163,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                       placeholder={t.createApplication.urlPlaceholder}
                       value={formData.jobUrl}
                       onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
-                      disabled={!hasInterviewSprint}
+                      disabled={!hasCareerSprint}
                       className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] disabled:opacity-50"
                     />
                   </div>
@@ -178,7 +178,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                       value={formData.jobDescriptionText}
                       onChange={(e) => setFormData({ ...formData, jobDescriptionText: e.target.value })}
                       rows={6}
-                      disabled={!hasInterviewSprint}
+                      disabled={!hasCareerSprint}
                       className="w-full bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg px-4 py-2.5 text-[#0F172A] placeholder:text-[#64748B] focus:ring-1 focus:ring-primary focus:border-primary focus:outline-none transition-all shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] resize-none disabled:opacity-50"
                     />
                     <p className="text-xs text-[#64748B]">
@@ -199,7 +199,7 @@ export function CreateApplicationDialog({ open, onOpenChange, projectId, onUpgra
                 </button>
                 <button
                   type="submit"
-                  disabled={isLoading || !hasInterviewSprint}
+                  disabled={isLoading || !hasCareerSprint}
                   className="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:bg-slate-200 disabled:text-[#64748B] text-[#0F172A] font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}

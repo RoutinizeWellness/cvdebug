@@ -21,7 +21,7 @@ export const sendRetargetingEmails = internalAction({
     // Query users who:
     // 1. Haven't been seen in 7+ days
     // 2. Haven't received a retargeting email yet (or it's been 30+ days since last one)
-    // 3. Are not premium users (Interview Sprint)
+    // 3. Are not premium users (Career Sprint)
     const inactiveUsers: any[] = await ctx.runQuery(internalAny.retargetingHelpers.getInactiveUsers, {
       inactiveSince: sevenDaysAgo,
       currentTime: now

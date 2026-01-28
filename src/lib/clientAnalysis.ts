@@ -12,54 +12,129 @@
  */
 
 // Common tech synonyms and variations for smarter keyword matching
+// EXPANDED: Now includes 100+ technology mappings for precise ATS analysis
 const KEYWORD_SYNONYMS = new Map<string, string[]>([
   // Programming languages
-  ['javascript', ['js', 'ecmascript', 'es6', 'es2015', 'es2020', 'node']],
-  ['typescript', ['ts']],
-  ['python', ['py', 'python3', 'python2']],
-  ['java', ['jvm', 'java8', 'java11', 'java17']],
-  ['csharp', ['c#', '.net', 'dotnet']],
-  // Frameworks & Libraries
-  ['react', ['reactjs', 'react.js', 'react native']],
-  ['angular', ['angularjs', 'angular.js']],
-  ['vue', ['vuejs', 'vue.js']],
+  ['javascript', ['js', 'ecmascript', 'es6', 'es2015', 'es2020', 'es2021', 'node', 'nodejs', 'node.js']],
+  ['typescript', ['ts', 'tsx']],
+  ['python', ['py', 'python3', 'python2', 'python 3', 'python 2.7']],
+  ['java', ['jvm', 'java8', 'java11', 'java17', 'java 8', 'java 11', 'java 17', 'java se']],
+  ['csharp', ['c#', '.net', 'dotnet', 'dot net', 'asp.net', 'aspnet']],
+  ['cpp', ['c++', 'cplusplus']],
+  ['golang', ['go', 'go lang']],
+  ['rust', ['rustlang']],
+  ['ruby', ['ruby on rails', 'rails', 'ror']],
+  ['php', ['php7', 'php8', 'php 7', 'php 8']],
+  ['swift', ['swiftui', 'swift ui']],
+  ['kotlin', ['kotlin/jvm']],
+  ['scala', ['scala.js']],
+  ['r', ['r programming', 'r language']],
+
+  // Frontend Frameworks & Libraries
+  ['react', ['reactjs', 'react.js', 'react native', 'react-native', 'nextjs', 'next.js', 'next']],
+  ['angular', ['angularjs', 'angular.js', 'angular 2', 'angular 12', 'angular 14']],
+  ['vue', ['vuejs', 'vue.js', 'vue 2', 'vue 3', 'nuxt', 'nuxtjs', 'nuxt.js']],
+  ['svelte', ['sveltekit', 'svelte kit']],
+  ['solid', ['solidjs', 'solid.js']],
+  ['jquery', ['jquery ui']],
+
+  // Backend Frameworks
   ['express', ['expressjs', 'express.js']],
-  ['django', ['python django']],
-  ['spring', ['spring boot', 'springboot']],
+  ['django', ['python django', 'django rest framework', 'drf']],
+  ['flask', ['python flask']],
+  ['fastapi', ['fast api']],
+  ['spring', ['spring boot', 'springboot', 'spring framework', 'spring mvc']],
+  ['laravel', ['php laravel']],
+  ['nestjs', ['nest.js', 'nest']],
+  ['fastify', ['fastify.js']],
+
   // Databases
-  ['postgresql', ['postgres', 'psql']],
-  ['mongodb', ['mongo', 'nosql']],
-  ['mysql', ['mariadb']],
-  ['redis', ['cache', 'caching']],
+  ['postgresql', ['postgres', 'psql', 'pg']],
+  ['mongodb', ['mongo', 'nosql', 'mongo db']],
+  ['mysql', ['mariadb', 'my sql']],
+  ['redis', ['cache', 'caching', 'redis cache']],
+  ['elasticsearch', ['elastic search', 'elastic', 'es']],
+  ['dynamodb', ['dynamo db', 'dynamo']],
+  ['cassandra', ['apache cassandra']],
+  ['neo4j', ['graph database']],
+  ['sqlite', ['sql lite']],
+  ['oracle', ['oracle db', 'oracle database']],
+  ['mssql', ['sql server', 'microsoft sql server', 'ms sql']],
+
   // Cloud/DevOps
-  ['kubernetes', ['k8s', 'container orchestration']],
-  ['docker', ['containers', 'containerization']],
-  ['aws', ['amazon web services', 'ec2', 's3', 'lambda']],
-  ['gcp', ['google cloud platform', 'google cloud']],
-  ['azure', ['microsoft azure']],
-  ['jenkins', ['ci/cd', 'continuous integration']],
-  ['terraform', ['infrastructure as code', 'iac']],
-  // Methodologies
-  ['agile', ['scrum', 'kanban', 'sprint']],
-  ['tdd', ['test driven development', 'test-driven']],
-  ['rest', ['restful', 'rest api', 'restful api']],
-  ['graphql', ['graph ql', 'gql']],
+  ['kubernetes', ['k8s', 'container orchestration', 'k8', 'kube']],
+  ['docker', ['containers', 'containerization', 'dockerfile']],
+  ['aws', ['amazon web services', 'ec2', 's3', 'lambda', 'cloudformation', 'rds', 'dynamodb', 'eks', 'ecs']],
+  ['gcp', ['google cloud platform', 'google cloud', 'gke', 'cloud run', 'bigquery']],
+  ['azure', ['microsoft azure', 'azure devops', 'aks']],
+  ['jenkins', ['ci/cd', 'continuous integration', 'continuous deployment']],
+  ['terraform', ['infrastructure as code', 'iac', 'tf']],
+  ['ansible', ['configuration management']],
+  ['gitlab', ['gitlab ci', 'gitlab-ci']],
+  ['github actions', ['github action', 'gh actions']],
+  ['circleci', ['circle ci']],
+  ['travis ci', ['travis']],
+  ['argocd', ['argo cd', 'gitops']],
+
+  // AI/ML Technologies
+  ['tensorflow', ['tf', 'tensorflow.js', 'tfjs']],
+  ['pytorch', ['torch', 'py torch']],
+  ['scikit-learn', ['sklearn', 'scikit learn']],
+  ['keras', ['keras api']],
+  ['hugging face', ['huggingface', 'transformers']],
+  ['langchain', ['lang chain']],
+  ['openai', ['gpt', 'chatgpt', 'gpt-3', 'gpt-4', 'gpt3', 'gpt4']],
+  ['llm', ['large language model', 'large language models']],
+  ['machine learning', ['ml', 'ai', 'artificial intelligence']],
+  ['deep learning', ['dl', 'neural networks', 'neural network']],
+  ['computer vision', ['cv', 'image recognition']],
+  ['natural language processing', ['nlp', 'text processing']],
+
+  // Testing Frameworks
+  ['jest', ['jest.js']],
+  ['mocha', ['mocha.js']],
+  ['pytest', ['py.test']],
+  ['junit', ['junit5', 'junit 5']],
+  ['cypress', ['cypress.io']],
+  ['selenium', ['selenium webdriver']],
+  ['playwright', ['playwright test']],
+
+  // Build Tools & Package Managers
+  ['webpack', ['webpack 5']],
+  ['vite', ['vitejs', 'vite.js']],
+  ['npm', ['node package manager']],
+  ['yarn', ['yarn berry']],
+  ['pnpm', ['performant npm']],
+  ['maven', ['apache maven']],
+  ['gradle', ['gradle build tool']],
+
+  // Methodologies & Practices
+  ['agile', ['scrum', 'kanban', 'sprint', 'agile methodology']],
+  ['tdd', ['test driven development', 'test-driven development', 'test-driven']],
+  ['bdd', ['behavior driven development', 'behavior-driven']],
+  ['rest', ['restful', 'rest api', 'restful api', 'rest apis']],
+  ['graphql', ['graph ql', 'gql', 'graphql api']],
+  ['microservices', ['micro services', 'microservice architecture']],
+  ['serverless', ['serverless architecture', 'faas']],
+  ['event-driven', ['event driven', 'event driven architecture', 'eda']],
+
   // Soft skills & competencies
-  ['leadership', ['led', 'managed', 'supervised', 'directed', 'mentored']],
-  ['collaboration', ['teamwork', 'cross-functional', 'team player', 'cooperative']],
-  ['communication', ['presented', 'communicated', 'articulated', 'conveyed']],
-  ['problem-solving', ['troubleshooting', 'debugging', 'resolved', 'solved']],
-  ['project management', ['pm', 'project lead', 'project manager', 'delivery']],
-  ['analytical', ['analysis', 'data-driven', 'metrics', 'insights']],
+  ['leadership', ['led', 'managed', 'supervised', 'directed', 'mentored', 'team lead', 'tech lead']],
+  ['collaboration', ['teamwork', 'cross-functional', 'team player', 'cooperative', 'collaborated']],
+  ['communication', ['presented', 'communicated', 'articulated', 'conveyed', 'stakeholder management']],
+  ['problem-solving', ['troubleshooting', 'debugging', 'resolved', 'solved', 'problem solving']],
+  ['project management', ['pm', 'project lead', 'project manager', 'delivery', 'program management']],
+  ['analytical', ['analysis', 'data-driven', 'metrics', 'insights', 'data analysis']],
+
   // Certifications
-  ['aws certified', ['aws cert', 'aws certification', 'amazon certified']],
+  ['aws certified', ['aws cert', 'aws certification', 'amazon certified', 'aws solutions architect', 'aws developer']],
   ['pmp', ['project management professional', 'pmi certified']],
   ['cissp', ['certified information systems security professional']],
   ['cka', ['certified kubernetes administrator']],
   ['ckad', ['certified kubernetes application developer']],
-  ['gcp certified', ['google cloud certified']],
-  ['azure certified', ['microsoft certified azure']],
-  ['scrum master', ['csm', 'certified scrum master', 'psm']],
+  ['gcp certified', ['google cloud certified', 'google certified']],
+  ['azure certified', ['microsoft certified azure', 'az-900', 'az-104']],
+  ['scrum master', ['csm', 'certified scrum master', 'psm', 'professional scrum master']],
 ]);
 
 // Soft skills keywords for detection
@@ -1221,8 +1296,8 @@ function scoreResumeBySection(text: string, sections: string[]): {
       feedback: experienceScore >= 80
         ? 'Strong experience section with action verbs and metrics'
         : experienceScore >= 60
-        ? 'Good experience section, add more quantifiable achievements'
-        : 'Experience section needs more detail and measurable results'
+          ? 'Good experience section, add more quantifiable achievements'
+          : 'Experience section needs more detail and measurable results'
     };
   }
 
@@ -1247,8 +1322,8 @@ function scoreResumeBySection(text: string, sections: string[]): {
       feedback: educationScore >= 80
         ? 'Comprehensive education section'
         : educationScore >= 60
-        ? 'Good education section, consider adding GPA or honors if applicable'
-        : 'Education section needs more detail'
+          ? 'Good education section, consider adding GPA or honors if applicable'
+          : 'Education section needs more detail'
     };
   }
 
@@ -1272,8 +1347,8 @@ function scoreResumeBySection(text: string, sections: string[]): {
       feedback: skillsScore >= 80
         ? 'Excellent skills section with good variety'
         : skillsScore >= 60
-        ? 'Good skills section, consider adding more relevant skills'
-        : 'Skills section needs expansion and categorization'
+          ? 'Good skills section, consider adding more relevant skills'
+          : 'Skills section needs expansion and categorization'
     };
   }
 
@@ -1297,8 +1372,8 @@ function scoreResumeBySection(text: string, sections: string[]): {
       feedback: summaryScore >= 80
         ? 'Strong summary with clear value proposition'
         : summaryScore >= 60
-        ? 'Good summary, add more specific achievements'
-        : 'Summary needs to be more impactful and specific'
+          ? 'Good summary, add more specific achievements'
+          : 'Summary needs to be more impactful and specific'
     };
   }
 

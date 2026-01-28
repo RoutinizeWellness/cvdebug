@@ -17,7 +17,7 @@ export const generateBulkExport = action({
 
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     if (!hasActiveSprint) {
-      throw new Error("Bulk export is only available for Interview Sprint subscribers");
+      throw new Error("Bulk export is only available for Career Sprint subscribers");
     }
 
     const application = await ctx.runQuery(internalAny.applications.getApplication, {
@@ -44,7 +44,7 @@ export const generateBulkExport = action({
       const resume = await ctx.runQuery(internalAny.resumes.getResumeInternal, {
         id: project.masterCvId,
       });
-      
+
       if (resume && resume.rewrittenText) {
         exportData.files.push({
           name: `${application.companyName}_Optimized_Resume.txt`,
@@ -58,7 +58,7 @@ export const generateBulkExport = action({
       const coverLetter = await ctx.runQuery(internalAny.coverLetters.getCoverLetter, {
         coverLetterId: application.coverLetterId,
       });
-      
+
       if (coverLetter) {
         exportData.files.push({
           name: `${application.companyName}_Cover_Letter.txt`,

@@ -26,12 +26,12 @@ export function SubscriptionDistribution() {
   }
 
   const total = subscriptionStats.byTier.free +
-                subscriptionStats.byTier.single_scan +
-                subscriptionStats.byTier.interview_sprint;
+    subscriptionStats.byTier.single_scan +
+    subscriptionStats.byTier.interview_sprint;
 
   const tiers: SubscriptionTier[] = [
     {
-      name: "Interview Sprint",
+      name: "Career Sprint",
       count: subscriptionStats.byTier.interview_sprint,
       percentage: (subscriptionStats.byTier.interview_sprint / total) * 100,
       color: "#1E293B",

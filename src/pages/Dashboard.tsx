@@ -279,21 +279,22 @@ export default function Dashboard() {
       toast.info("Payment cancelled.");
       setSearchParams({});
       navigate("/dashboard", { replace: true });
-    } else if (plan === "single_scan" || plan === "interview_sprint") {
-      setInitialPlan(plan as "single_scan" | "interview_sprint");
+    } else if (plan === "single_scan" || plan === "interview_sprint" || plan === "single_debug_fix" || plan === "sprint_7day") {
+      const normalizedPlan = plan === "sprint_7day" ? "interview_sprint" : plan;
+      setInitialPlan(normalizedPlan as any);
       setShowPricing(true);
     }
   }, [searchParams, purchaseCredits, navigate, setSearchParams, isLoading, isAuthenticated, storeUser]);
 
-  const processingResume = resumes?.find((r: any) => 
-    r._id === processingResumeId && 
+  const processingResume = resumes?.find((r: any) =>
+    r._id === processingResumeId &&
     (r.status === "processing" || (!r.status && (!r.score || r.score === 0)))
   );
 
   useEffect(() => {
     if (processingResumeId && resumes) {
       const resume = resumes.find((r: any) => r._id === processingResumeId);
-      
+
       if (!resume) {
         setProcessingResumeId(null);
         return;
@@ -363,8 +364,8 @@ export default function Dashboard() {
       case 'projects':
         if (selectedProject) {
           return (
-            <ProjectBoard 
-              projectId={selectedProject} 
+            <ProjectBoard
+              projectId={selectedProject}
               onBack={() => {
                 setSelectedProject(null);
                 setSearchParams(params => {
@@ -372,7 +373,7 @@ export default function Dashboard() {
                   params.delete("applicationId");
                   return params;
                 });
-              }} 
+              }}
               onGenerateCoverLetter={handleGenerateCoverLetter}
               initialApplicationId={initialApplicationId}
               onUpgrade={handleUpgrade}
@@ -380,20 +381,20 @@ export default function Dashboard() {
           );
         }
         return (
-          <ProjectsView 
+          <ProjectsView
             onSelectProject={(id: Id<"projects">) => {
               setSelectedProject(id);
               setSearchParams(params => {
                 params.set("projectId", id);
                 return params;
               });
-            }} 
+            }}
           />
         );
       case 'mission':
         return (
-          <MissionControl 
-            onNavigate={handleNavigate} 
+          <MissionControl
+            onNavigate={handleNavigate}
             onGenerateCoverLetter={handleGenerateCoverLetter}
             onUpload={() => fileInputRef.current?.click()}
           />
@@ -406,7 +407,7 @@ export default function Dashboard() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="space-y-2">
                   <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">{t.dashboard.masterCvs}</h1>
-                  <p className="text-[#475569] text-base">Tus plantillas de CV base - gestiona y optimiza</p>
+                  <p className="text-[#475569] text-base">{t.dashboard.masterCvsSubtitle}</p>
                 </div>
                 <Button
                   onClick={() => fileInputRef.current?.click()}
@@ -430,9 +431,10 @@ export default function Dashboard() {
           </div>
         );
       case 'tools':
-        // Check if user has Interview Sprint for lock icons
-        const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
-          (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
+        // Check if user has Career Sprint for lock icons
+        const hasCareerSprint =
+          currentUser?.subscriptionTier === "interview_sprint" &&
+          (currentUser?.sprintExpiresAt ? currentUser.sprintExpiresAt > Date.now() : true);
 
         return (
           <div className="space-y-8 pb-24 md:pb-6">
@@ -457,12 +459,12 @@ export default function Dashboard() {
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#1E293B] transition-colors flex items-center gap-2">
                         {t.dashboard.bulletRewriter}
-                        {!hasInterviewSprint && (
+                        {!hasCareerSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Transforma viñetas débiles en logros impactantes usando la fórmula Google XYZ
+                        {t.dashboard.bulletRewriterDesc}
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -484,12 +486,12 @@ export default function Dashboard() {
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#334155] transition-colors flex items-center gap-2">
                         {t.dashboard.coverLetterGen}
-                        {!hasInterviewSprint && (
+                        {!hasCareerSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Cartas de presentación potenciadas con IA y optimización de keywords
+                        {t.dashboard.coverLetterGenDesc}
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -511,12 +513,12 @@ export default function Dashboard() {
                     <div className="flex-1 text-left">
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#475569] transition-colors flex items-center gap-2">
                         {t.dashboard.linkedinOptimizer}
-                        {!hasInterviewSprint && (
+                        {!hasCareerSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Optimiza tu perfil para reclutadores
+                        {t.dashboard.linkedinOptimizerDesc}
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
@@ -539,20 +541,20 @@ export default function Dashboard() {
                       <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
                         {t.dashboard.keywordSniper}
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
-                          Destacado
+                          {t.dashboard.featured}
                         </span>
-                        {!hasInterviewSprint && (
+                        {!hasCareerSprint && (
                           <Lock className="h-4 w-4 text-slate-400" />
                         )}
                       </h3>
                       <p className="text-[#64748B] text-sm">
-                        Reescritura de viñetas con IA, inyección de keywords y seguimiento en vivo
+                        {t.dashboard.keywordSniperDesc}
                       </p>
                     </div>
                     <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <button className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
-                        Abrir Herramienta
-                      </button>
+                      <span className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
+                        {t.dashboard.openTool}
+                      </span>
                     </div>
                   </div>
                 </button>
@@ -563,11 +565,11 @@ export default function Dashboard() {
       case 'profile':
         return (
           <div className="space-y-6 pb-24 md:pb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">Perfil</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">{t.dashboard.profile}</h1>
             <div className="space-y-4">
               <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-[#0F172A]">Credits</h3>
+                  <h3 className="font-bold text-[#0F172A]">{t.dashboard.credits}</h3>
                   <span className="text-2xl font-black text-[#1E293B]">
                     {currentUser?.credits || 0}
                   </span>
@@ -576,7 +578,7 @@ export default function Dashboard() {
                   onClick={() => setShowPricing(true)}
                   className="w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]"
                 >
-                  Buy More Credits
+                  {t.dashboard.buyCredits}
                 </Button>
               </div>
               {currentUser?.sprintExpiresAt && (
@@ -633,8 +635,8 @@ export default function Dashboard() {
         return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       default:
         return (
-          <MissionControl 
-            onNavigate={handleNavigate} 
+          <MissionControl
+            onNavigate={handleNavigate}
             onGenerateCoverLetter={handleGenerateCoverLetter}
             onUpload={() => fileInputRef.current?.click()}
           />
@@ -707,15 +709,15 @@ export default function Dashboard() {
         )}
       </main>
 
-      <MobileTabBar 
+      <MobileTabBar
         currentView={currentView}
         setCurrentView={setCurrentView}
         onUpload={() => fileInputRef.current?.click()}
       />
 
-      <PricingDialog 
-        open={showPricing} 
-        onOpenChange={setShowPricing} 
+      <PricingDialog
+        open={showPricing}
+        onOpenChange={setShowPricing}
         initialPlan={initialPlan}
       />
 
@@ -728,13 +730,13 @@ export default function Dashboard() {
       />
 
       {(isUploading || !!processingResumeId || isProcessingPayment) && (
-        <ProcessingOverlay 
-          isUploading={isUploading} 
-          isProcessing={!!processingResumeId || isProcessingPayment} 
+        <ProcessingOverlay
+          isUploading={isUploading}
+          isProcessing={!!processingResumeId || isProcessingPayment}
           statusMessage={processingStatus}
         />
       )}
-      
+
       <ResumeDetailDialog
         resumeId={selectedResumeId}
         onClose={() => setSelectedResumeId(null)}
@@ -754,9 +756,9 @@ export default function Dashboard() {
         }}
       />
 
-      <CreditsExhaustedModal 
-        open={showCreditsExhausted} 
-        onOpenChange={setShowCreditsExhausted} 
+      <CreditsExhaustedModal
+        open={showCreditsExhausted}
+        onOpenChange={setShowCreditsExhausted}
         onUpgrade={() => {
           setShowCreditsExhausted(false);
           setShowPricing(true);
@@ -802,10 +804,10 @@ export default function Dashboard() {
             resume={resumes.find((r: any) => r._id === previewResumeId)}
             onClose={() => setPreviewResumeId(null)}
             onEdit={() => {
-            setPreviewResumeId(null);
-            handleEditResume(previewResumeId);
-          }}
-        />
+              setPreviewResumeId(null);
+              handleEditResume(previewResumeId);
+            }}
+          />
         </Suspense>
       )}
 

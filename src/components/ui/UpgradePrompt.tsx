@@ -72,7 +72,7 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                   className="text-center space-y-3 mb-8"
                 >
                   <h2 className="text-2xl font-bold text-[#0F172A] tracking-tight">
-                    Unlock Interview Sprint
+                    Unlock Career Sprint
                   </h2>
                   <p className="text-[#64748B] text-sm leading-relaxed px-2">
                     You've hit the limit of the free plan. Upgrade now to debug{" "}
@@ -125,7 +125,7 @@ export function UpgradePrompt({ isOpen, onClose, onUpgrade }: UpgradePromptProps
                     {/* Inner button */}
                     <div className="relative h-full w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:brightness-110 flex items-center justify-center rounded-lg transition-all">
                       <span className="text-white font-semibold text-sm tracking-wide">
-                        Upgrade to Interview Sprint
+                        Upgrade to Career Sprint
                       </span>
                       <ArrowRight className="text-white ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </div>

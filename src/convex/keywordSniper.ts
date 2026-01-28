@@ -26,7 +26,7 @@ export const generateKeywordPhrases = action({
     // ENFORCEMENT: Keyword Sniper is locked for Free/Single Scan users
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Keyword Sniper.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to use Keyword Sniper.");
     }
 
     // Get API key from environment
@@ -76,7 +76,7 @@ export const generateKeywordPhrases = action({
       }
     } catch (primaryError: any) {
       console.error("[Keyword Sniper] ❌ Primary AI failed:", primaryError.message);
-      
+
       // Try fallback model
       try {
         console.log("[Keyword Sniper] Attempting fallback model: deepseek-chat");
@@ -97,7 +97,7 @@ export const generateKeywordPhrases = action({
         };
       } catch (fallbackError: any) {
         console.error("[Keyword Sniper] ❌ Fallback model also failed:", fallbackError.message);
-        
+
         // Enhanced template-based fallback with context awareness
         const contextHint = resumeText.toLowerCase().includes(args.missingKeyword.toLowerCase())
           ? `building on your existing ${args.missingKeyword} experience`

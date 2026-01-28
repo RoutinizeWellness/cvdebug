@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Lock, Sparkles, TrendingUp, Save, Zap, CheckCircle, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useI18n } from "@/contexts/I18nContext";
 
 export type WallType = "error-details" | "save-history" | "ai-sprint";
 
@@ -32,55 +33,42 @@ export function RegistrationWall({ type, errorCount = 0, onSignUp, className = "
     }
   };
 
+  const { t } = useI18n();
+
   // Different content for each wall type
   const content = {
     "error-details": {
       icon: TrendingUp,
       iconColor: "text-amber-500",
       iconBg: "bg-amber-500/10",
-      title: `Te hemos encontrado ${errorCount} ${errorCount === 1 ? 'fallo' : 'fallos'}`,
-      subtitle: "Regístrate gratis para ver cuáles son y cómo arreglarlos",
-      benefits: [
-        "Lista completa de errores de formato",
-        "Sugerencias específicas de keywords faltantes",
-        "Análisis de contacto y parsing",
-        "Puntuación detallada por sección"
-      ],
-      ctaText: "Ver Todos los Errores - Gratis",
+      title: t.registrationWall.errorDetails.title.replace('{count}', errorCount.toString()),
+      subtitle: t.registrationWall.errorDetails.subtitle,
+      benefits: t.registrationWall.errorDetails.benefits,
+      ctaText: t.registrationWall.errorDetails.ctaText,
       ctaIcon: ArrowRight,
-      urgency: "✨ Sin tarjeta de crédito • Resultados instantáneos"
+      urgency: t.registrationWall.errorDetails.urgency
     },
     "save-history": {
       icon: Save,
       iconColor: "text-[#1E293B]",
       iconBg: "bg-[#1E293B]/10",
-      title: "No pierdas este análisis",
-      subtitle: "Crea una cuenta para comparar este CV con otros puestos",
-      benefits: [
-        "Guarda todos tus análisis",
-        "Compara diferentes versiones de tu CV",
-        "Rastrea tu progreso de optimización",
-        "Accede a tu historial desde cualquier lugar"
-      ],
-      ctaText: "Crear Cuenta Gratis",
+      title: t.registrationWall.saveHistory.title,
+      subtitle: t.registrationWall.saveHistory.subtitle,
+      benefits: t.registrationWall.saveHistory.benefits,
+      ctaText: t.registrationWall.saveHistory.ctaText,
       ctaIcon: Save,
-      urgency: "🔒 Tu análisis se borrará al cerrar esta página"
+      urgency: t.registrationWall.saveHistory.urgency
     },
     "ai-sprint": {
       icon: Sparkles,
       iconColor: "text-[#1E293B]",
       iconBg: "bg-[#1E293B]/10",
-      title: "Desbloquea el Poder de la IA",
-      subtitle: "Sprint requiere una cuenta para acceder a herramientas premium",
-      benefits: [
-        "Reescritura inteligente con IA",
-        "Optimización de keywords en tiempo real",
-        "Generación de bullets con métricas",
-        "Análisis competitivo del mercado"
-      ],
-      ctaText: "Activar Sprint ⚡",
+      title: t.registrationWall.aiSprint.title,
+      subtitle: t.registrationWall.aiSprint.subtitle,
+      benefits: t.registrationWall.aiSprint.benefits,
+      ctaText: t.registrationWall.aiSprint.ctaText,
       ctaIcon: Zap,
-      urgency: "💎 Funciones avanzadas de IA con tu cuenta"
+      urgency: t.registrationWall.aiSprint.urgency
     }
   };
 
@@ -139,7 +127,7 @@ export function RegistrationWall({ type, errorCount = 0, onSignUp, className = "
           transition={{ delay: 0.5 }}
           className="mb-8 space-y-3 max-w-md mx-auto text-left"
         >
-          {config.benefits.map((benefit, index) => (
+          {config.benefits.map((benefit: string, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}

@@ -72,9 +72,9 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
                 <span className="text-slate-600">{log.time}</span>
                 <span className={
                   log.type === "success" ? "text-[#22C55E]" :
-                  log.type === "warning" ? "text-[#F59E0B]" :
-                  log.type === "active" ? "text-[#64748B]" :
-                  "text-[#64748B]"
+                    log.type === "warning" ? "text-[#F59E0B]" :
+                      log.type === "active" ? "text-[#64748B]" :
+                        "text-[#64748B]"
                 }>
                   {log.type === "success" ? "✓" : log.type === "warning" ? "⚠" : log.type === "active" ? ">" : "ℹ"}
                 </span>
@@ -145,7 +145,7 @@ export function StepScanning({ score = 45, criticalIssues = 3, onUnlock }: StepS
               Unlock Full Report & Fix Errors - €24.99
             </Button>
             <p className="text-center text-xs text-[#64748B]">
-              7-Day Interview Sprint • Unlimited Scans • AI Fixes
+              7-Day Career Sprint • Unlimited Scans • AI Fixes
             </p>
           </motion.div>
         )}

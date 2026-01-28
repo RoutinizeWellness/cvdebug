@@ -565,7 +565,7 @@ export const sendPurchaseConfirmationEmail = internalAction({
 
     const firstName = args.name?.split(" ")[0] || "there";
     const currentYear = new Date().getFullYear();
-    const planName = args.plan === "interview_sprint" ? "Interview Sprint (7 Days)" : "Single Scan";
+    const planName = args.plan === "interview_sprint" ? "Career Sprint (7 Days)" : "Single Scan";
     const isSprint = args.plan === "interview_sprint";
 
     // Calculate value metrics

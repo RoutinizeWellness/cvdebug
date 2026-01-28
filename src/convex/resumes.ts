@@ -72,7 +72,7 @@ export const createResume = mutation({
       const isUnlimitedPlan = user.subscriptionTier === "interview_sprint" && hasActiveSprint;
       const hasPaidPlan = user.subscriptionTier === "single_scan" || isUnlimitedPlan;
 
-      // RE-SCAN LOGIC: 24h unlimited re-scans for PAID users only (Single Scan & Interview Sprint)
+      // RE-SCAN LOGIC: 24h unlimited re-scans for PAID users only (Single Scan & Career Sprint)
       // Free users get preview only
       let isFreeRescan = false;
 
@@ -114,7 +114,7 @@ export const createResume = mutation({
           console.log(`[Billing] Single Scan user ${user.email} consumed 1 credit`);
         }
       } else if (isUnlimitedPlan) {
-        console.log(`[Billing] Interview Sprint user ${user.email} has unlimited scans`);
+        console.log(`[Billing] Career Sprint user ${user.email} has unlimited scans`);
       }
 
       if (user.deviceFingerprint) {
@@ -148,7 +148,7 @@ export const createResume = mutation({
         jobDescription: args.jobDescription,
         jobTitle: args.jobTitle,
         company: args.company,
-        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Interview Sprint get full analysis
+        detailsUnlocked: hasPaidPlan ? true : false, // Single Scan & Career Sprint get full analysis
         status: "processing",
       });
 
@@ -315,7 +315,7 @@ export const analyzeResume = mutation({
       console.log(`[Analyze Resume] Updated resume ${args.id} with job description (${args.jobDescription.length} chars)`);
     }
 
-    // Check if user has active Interview Sprint for priority parsing
+    // Check if user has active Career Sprint for priority parsing
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     const hasPriorityParsing = hasActiveSprint || user.hasPriorityParsing;
 
@@ -412,7 +412,7 @@ export const updateResumeMetadata = internalMutation({
       const currentResume = await ctx.db.get(args.id);
       if (currentResume && currentResume.score !== undefined && currentResume.score !== args.score) {
         updates.previousScore = currentResume.score;
-        
+
         // Build score history
         const existingHistory = currentResume.scoreHistory || [];
         const newHistoryEntry = {
@@ -472,7 +472,7 @@ export const unlockResumeAfterPurchase = internalMutation({
   handler: async (ctx, args) => {
     // Verify the resume exists and belongs to this user
     const resume = await ctx.db.get(args.resumeId);
-    
+
     if (!resume) {
       console.error(`[Unlock] Resume ${args.resumeId} not found`);
       return { success: false, error: "Resume not found" };
@@ -514,20 +514,20 @@ export const getResumes = query({
     console.log("[getResumes] Fetching resumes for userId:", userId);
 
     if (args.search) {
-       const results = await ctx.db
+      const results = await ctx.db
         .query("resumes")
-        .withSearchIndex("search_ocr", (q) => 
+        .withSearchIndex("search_ocr", (q) =>
           q.search("ocrText", args.search!).eq("userId", userId)
         )
         .take(20);
-       console.log("[getResumes] Search results count:", results.length);
-       return results;
+      console.log("[getResumes] Search results count:", results.length);
+      return results;
     }
 
     if (args.category) {
       const results = await ctx.db
         .query("resumes")
-        .withIndex("by_user_and_category", (q) => 
+        .withIndex("by_user_and_category", (q) =>
           q.eq("userId", userId).eq("category", args.category)
         )
         .order("desc")
@@ -541,7 +541,7 @@ export const getResumes = query({
       .withIndex("by_user", (q) => q.eq("userId", userId))
       .order("desc")
       .take(50);
-    
+
     // Redact sensitive analysis details for locked resumes
     const redactedResults = results.map(resume => {
       if (!resume.detailsUnlocked) {
@@ -645,7 +645,7 @@ export const sanitizePdf = mutation({
 
     // In a real implementation, this would trigger a background job to re-process the PDF
     // For now, we'll mark it as sanitized and "fix" the integrity flag
-    
+
     await ctx.db.patch(args.id, {
       textLayerIntegrity: 100,
       hasImageTrap: false,
@@ -697,9 +697,9 @@ export const generateSanitizedVersion = mutation({
 
     // ENFORCEMENT: PDF Sanitization is locked for Free users (unless they unlocked this specific resume)
     // Single Scan users have detailsUnlocked=true for their purchased resume
-    // Interview Sprint users have detailsUnlocked=true for all resumes
+    // Career Sprint users have detailsUnlocked=true for all resumes
     if (!resume.detailsUnlocked) {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Single Scan or Interview Sprint to unlock PDF Sanitization.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Single Scan or Career Sprint to unlock PDF Sanitization.");
     }
 
     if (!resume.ocrText) {

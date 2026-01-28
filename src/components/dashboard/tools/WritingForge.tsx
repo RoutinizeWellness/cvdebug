@@ -51,8 +51,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
     !!resumeId && !!resume?.ocrText
   );
 
-  // Check if user has Interview Sprint plan
-  const hasInterviewSprint = currentUser?.subscriptionTier === "interview_sprint" &&
+  // Check if user has Career Sprint plan
+  const hasCareerSprint = currentUser?.subscriptionTier === "interview_sprint" &&
     (!currentUser?.sprintExpiresAt || currentUser.sprintExpiresAt > Date.now());
 
   const handleEdit = () => {
@@ -104,8 +104,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   };
 
   const handleRegenerate = () => {
-    if (!hasInterviewSprint) {
-      toast.error("Interview Sprint plan required", {
+    if (!hasCareerSprint) {
+      toast.error("Career Sprint plan required", {
         description: "Upgrade to access AI regeneration"
       });
       onUpgrade?.();
@@ -132,8 +132,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   };
 
   const handleDownloadPDF = () => {
-    if (!hasInterviewSprint) {
-      toast.error("Interview Sprint plan required", {
+    if (!hasCareerSprint) {
+      toast.error("Career Sprint plan required", {
         description: "Upgrade to unlock PDF downloads"
       });
       onUpgrade?.();
@@ -143,8 +143,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   };
 
   const handleHistory = () => {
-    if (!hasInterviewSprint) {
-      toast.error("Interview Sprint plan required", {
+    if (!hasCareerSprint) {
+      toast.error("Career Sprint plan required", {
         description: "Upgrade to access version history"
       });
       onUpgrade?.();
@@ -160,8 +160,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   };
 
   const handleToneChange = (newTone: string) => {
-    if (!hasInterviewSprint) {
-      toast.error("Interview Sprint plan required", {
+    if (!hasCareerSprint) {
+      toast.error("Career Sprint plan required", {
         description: "Upgrade to change tone strategy"
       });
       onUpgrade?.();
@@ -176,9 +176,9 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
   // Extract missing keywords from resume data - NO FALLBACK, only real data
   const keywordGaps = resume?.missingKeywords && Array.isArray(resume.missingKeywords)
     ? resume.missingKeywords.slice(0, 4).map((k: any) => ({
-        name: typeof k === 'string' ? k : k.keyword,
-        completed: false
-      }))
+      name: typeof k === 'string' ? k : k.keyword,
+      completed: false
+    }))
     : [];
 
   // Calculate match score and gap
@@ -192,8 +192,8 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
 
   return (
     <div className="h-full flex flex-col bg-[#F8FAFC]">
-      {/* Interview Sprint Required Alert */}
-      {!hasInterviewSprint && (
+      {/* Career Sprint Required Alert */}
+      {!hasCareerSprint && (
         <Alert className="m-6 mb-4 bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-primary/40 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] relative overflow-hidden">
           {/* Decorative gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[#334155]/5 pointer-events-none" />
@@ -204,7 +204,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 <Diamond className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-[#0F172A] font-bold text-base mb-1">Interview Sprint Required</h3>
+                <h3 className="text-[#0F172A] font-bold text-base mb-1">Career Sprint Required</h3>
                 <p className="text-[#475569] text-sm leading-relaxed">
                   Build and edit professional resumes with AI-powered writing assistance.
                 </p>
@@ -236,7 +236,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
               className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full py-2.5 text-white font-bold border-0 flex items-center justify-center gap-2"
             >
               <Sparkles className="h-4 w-4" />
-              <span>Upgrade to Interview Sprint</span>
+              <span>Upgrade to Career Sprint</span>
             </Button>
           </div>
         </Alert>
@@ -251,12 +251,12 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
             </a>
             <span className="text-[#0F172A] text-sm font-medium border-b-2 border-primary pb-0.5 flex items-center gap-2">
               Writing Forge
-              {!hasInterviewSprint && (
+              {!hasCareerSprint && (
                 <Lock className="h-3 w-3 text-[#64748B]" />
               )}
             </span>
             <a className="text-[#64748B] hover:text-[#0F172A] text-sm font-medium transition-colors" href="#">
-              Interview Sprint
+              Career Sprint
             </a>
           </nav>
         </div>
@@ -345,11 +345,10 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                 {keywordGaps.map((gap: any, idx: number) => (
                   <div
                     key={idx}
-                    className={`flex items-center justify-between p-2 rounded border transition-colors ${
-                      gap.completed
+                    className={`flex items-center justify-between p-2 rounded border transition-colors ${gap.completed
                         ? "bg-[#F8FAFC] border-[#E2E8F0] opacity-50"
                         : "bg-[#FFFFFF] border-[#E2E8F0] hover:border-primary/50 group cursor-pointer"
-                    }`}
+                      }`}
                   >
                     <span className={gap.completed ? "text-[#64748B] line-through" : "text-[#475569] group-hover:text-primary transition-colors"}>
                       {gap.name}
@@ -443,7 +442,7 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                           <Diamond className="h-6 w-6" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[#0F172A] text-sm font-bold mb-1">Interview Sprint Required</p>
+                          <p className="text-[#0F172A] text-sm font-bold mb-1">Career Sprint Required</p>
                           <p className="text-[#64748B] text-xs leading-relaxed">
                             Unlock professional PDF exports, ATS optimization, and unlimited regenerations.
                           </p>
@@ -467,11 +466,11 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
                       </div>
 
                       <button
-                        onClick={() => {/* Navigate to pricing */}}
+                        onClick={() => {/* Navigate to pricing */ }}
                         className="bg-gradient-to-r from-[#1E293B] to-[#334155] hover:from-[#1E293B]/90 hover:to-[#334155]/90 w-full px-4 py-2.5 rounded-lg text-white text-sm font-bold border-0 flex items-center justify-center gap-2 group"
                       >
                         <Sparkles className="h-4 w-4" />
-                        <span>Upgrade to Interview Sprint</span>
+                        <span>Upgrade to Career Sprint</span>
                       </button>
                     </motion.div>
                   )}
@@ -518,11 +517,11 @@ export function WritingForge({ resumeId, onUpgrade }: WritingForgeProps) {
             />
 
             {/* Paywall Overlay */}
-            {!hasInterviewSprint && (
+            {!hasCareerSprint && (
               <div className="absolute inset-0 z-20 bg-white/95 backdrop-blur-sm flex items-center justify-center">
                 <div className="text-center p-8 max-w-md">
                   <Lock className="h-16 w-16 text-[#1E293B] mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">Interview Sprint Required</h3>
+                  <h3 className="text-xl font-bold text-[#0F172A] mb-2">Career Sprint Required</h3>
                   <p className="text-[#475569] text-sm mb-6">
                     Unlock the Writing Forge to create and edit professional resumes with AI assistance.
                   </p>

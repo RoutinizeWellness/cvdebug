@@ -122,7 +122,7 @@ export function EmailPreferences() {
           </p>
         </div>
         <Badge variant="outline" className="text-xs whitespace-nowrap self-start sm:self-auto">
-          {preferences.tier === 'free' ? 'Free' : preferences.tier === 'single_scan' ? 'Single Scan' : 'Interview Sprint'} Plan
+          {preferences.tier === 'free' ? 'Free' : preferences.tier === 'single_scan' ? 'Single Scan' : 'Career Sprint'} Plan
         </Badge>
       </div>
 

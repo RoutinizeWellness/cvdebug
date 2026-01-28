@@ -96,8 +96,8 @@ export const getPersonalizedRecommendations = query({
         const seniorityAdvice = userProfile?.dominantSeniority === 'senior' || userProfile?.dominantSeniority === 'lead'
           ? 'leadership impact, team mentoring, and strategic initiatives'
           : userProfile?.dominantSeniority === 'junior'
-          ? 'technical fundamentals, learning agility, and project contributions'
-          : 'quantifiable results and industry-specific keywords';
+            ? 'technical fundamentals, learning agility, and project contributions'
+            : 'quantifiable results and industry-specific keywords';
 
         recommendations.push({
           type: "high",
@@ -122,8 +122,8 @@ export const getPersonalizedRecommendations = query({
           ? userProfile.dominantIndustry.toLowerCase().includes('tech')
             ? `${userProfile.dominantSeniority === 'senior' || userProfile.dominantSeniority === 'lead' ? 'Technical leadership keywords (e.g., "system architecture", "technical roadmap", "team mentoring")' : 'Core technical keywords (e.g., "agile", "CI/CD", "code review")'} specific to ${userProfile.dominantIndustry}`
             : userProfile.dominantIndustry.toLowerCase().includes('health')
-            ? `Clinical keywords like "patient-centered care", "EHR documentation", and relevant certifications (BLS, ACLS, etc.)`
-            : `Industry-specific keywords relevant to ${userProfile.dominantIndustry} ${userProfile.dominantSeniority} roles`
+              ? `Clinical keywords like "patient-centered care", "EHR documentation", and relevant certifications (BLS, ACLS, etc.)`
+              : `Industry-specific keywords relevant to ${userProfile.dominantIndustry} ${userProfile.dominantSeniority} roles`
           : "relevant industry terms";
 
         recommendations.push({
@@ -171,8 +171,8 @@ export const getPersonalizedRecommendations = query({
               ? '"Led team of 8 engineers", "Reduced latency by 40%", "Architected system serving 1M+ users"'
               : '"Implemented feature used by 50K users", "Reduced bug rate by 25%", "Delivered 15+ projects"'
             : userProfile.dominantIndustry.toLowerCase().includes('health')
-            ? '"Managed 20-bed unit", "Improved patient satisfaction by 15%", "Reduced readmission rate by 10%"'
-            : '"Increased efficiency by 30%", "Managed $500K budget", "Led team of 5"'
+              ? '"Managed 20-bed unit", "Improved patient satisfaction by 15%", "Reduced readmission rate by 10%"'
+              : '"Increased efficiency by 30%", "Managed $500K budget", "Led team of 5"'
           : "'30% increase', '5 projects', '$2M revenue'";
 
         recommendations.push({
@@ -197,8 +197,8 @@ export const getPersonalizedRecommendations = query({
         const techAdvice = seniority === 'senior' || seniority === 'lead'
           ? "system architecture decisions, technical mentoring impact, and cross-team initiatives you've led"
           : seniority === 'junior'
-          ? "specific technologies mastered, projects completed, and code quality contributions"
-          : "programming languages, frameworks, and technical projects with measurable outcomes";
+            ? "specific technologies mastered, projects completed, and code quality contributions"
+            : "programming languages, frameworks, and technical projects with measurable outcomes";
 
         recommendations.push({
           type: "medium",
@@ -306,7 +306,7 @@ export const getNextBestActions = query({
       if (resumes.length >= 1) {
         actions.push({
           priority: "high",
-          action: "Upgrade to Interview Sprint",
+          action: "Upgrade to Career Sprint",
           reason: "Unlock unlimited scans, priority parsing, and advanced AI features for 7 days",
           link: "/pricing",
         });
@@ -318,7 +318,7 @@ export const getNextBestActions = query({
       if (daysLeft <= 2 && daysLeft > 0) {
         actions.push({
           priority: "high",
-          action: "Renew Interview Sprint",
+          action: "Renew Career Sprint",
           reason: `Your sprint expires in ${daysLeft} day${daysLeft === 1 ? '' : 's'}. Renew now to maintain access`,
           link: "/pricing",
         });

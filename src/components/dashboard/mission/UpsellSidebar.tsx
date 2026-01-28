@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { RecruiterDMGenerator } from "@/components/dashboard/tools/RecruiterDMGenerator";
 import { useState } from "react";
-import { isPaidUser as checkIsPaidUser, hasInterviewSprint } from "@/lib/planHelpers";
+import { isPaidUser as checkIsPaidUser, hasCareerSprint } from "@/lib/planHelpers";
 
 // Cast to any to avoid deep type instantiation errors
 const apiAny = api as any;
@@ -16,7 +16,7 @@ interface UpsellSidebarProps {
 
 export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
   const currentUser = useQuery(apiAny.users.currentUser);
-  const isSprintActive = hasInterviewSprint(currentUser?.subscriptionTier, currentUser?.sprintExpiresAt);
+  const isSprintActive = hasCareerSprint(currentUser?.subscriptionTier, currentUser?.sprintExpiresAt);
   const isPaidUser = checkIsPaidUser(currentUser?.subscriptionTier);
   const [showDMGenerator, setShowDMGenerator] = useState(false);
 
@@ -95,15 +95,14 @@ export function UpsellSidebar({ onNavigate }: UpsellSidebarProps) {
 
       {/* Sprint Upsell / Status */}
       <div className="pt-4">
-        <div className={`rounded-xl p-4 border shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] ${
-          isSprintActive
+        <div className={`rounded-xl p-4 border shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] ${isSprintActive
             ? "bg-gradient-to-br from-[#F8FAFC] to-[#FFFFFF] border-[#E2E8F0]"
             : "bg-gradient-to-br from-[#F3E8FF] to-[#FFFFFF] border-[#1E293B]/30"
-        }`}>
+          }`}>
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className={`h-4 w-4 ${isSprintActive ? "text-[#64748B]" : "text-[#F59E0B] animate-pulse"}`} />
             <span className={`text-xs font-bold ${isSprintActive ? "text-[#475569]" : "text-[#0F172A]"}`}>
-              {isSprintActive ? "Sprint Active" : "Unlock Interview Sprint"}
+              {isSprintActive ? "Sprint Active" : "Unlock Career Sprint"}
             </span>
           </div>
 

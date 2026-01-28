@@ -41,24 +41,24 @@ export function SprintProgressBar() {
   // Calculate time remaining
   const timeRemaining = useMemo(() => {
     if (!currentUser?.sprintExpiresAt) return null;
-    
+
     const now = Date.now();
     const expiresAt = currentUser.sprintExpiresAt;
     const diff = expiresAt - now;
-    
+
     if (diff <= 0) return "Expired";
-    
+
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
+
     return `${days}d ${hours}h ${minutes}m`;
   }, [currentUser?.sprintExpiresAt]);
 
   if (!currentUser?.sprintExpiresAt) return null;
 
   return (
-    <motion.div 
+    <motion.div
       className="bg-gradient-to-r from-primary/10 to-teal-500/10 border border-primary/30 rounded-xl p-6 space-y-6"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -67,7 +67,7 @@ export function SprintProgressBar() {
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-[#0F172A] flex items-center gap-2">
-            Interview Sprint Progress
+            Career Sprint Progress
           </h3>
           <p className="text-sm text-[#64748B] mt-1">
             Complete all stages to maximize your success rate
@@ -97,27 +97,24 @@ export function SprintProgressBar() {
       <div className="flex items-center justify-between gap-2">
         {stages.map((stage, index) => (
           <div key={stage.id} className="flex flex-col items-center gap-2 flex-1">
-            <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-              stage.completed
+            <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${stage.completed
                 ? 'bg-[#22C55E] border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]'
                 : 'bg-[#FFFFFF] border-[#E2E8F0]'
-            }`}>
+              }`}>
               {stage.completed ? (
                 <CheckCircle2 className="h-5 w-5 text-[#0F172A]" />
               ) : (
                 <Circle className="h-5 w-5 text-[#64748B]" />
               )}
               {index < stages.length - 1 && (
-                <div className={`absolute left-full w-full h-0.5 ${
-                  stage.completed && stages[index + 1].completed
+                <div className={`absolute left-full w-full h-0.5 ${stage.completed && stages[index + 1].completed
                     ? 'bg-[#22C55E]'
                     : 'bg-slate-700'
-                }`} style={{ width: 'calc(100% + 0.5rem)' }} />
+                  }`} style={{ width: 'calc(100% + 0.5rem)' }} />
               )}
             </div>
-            <span className={`text-[10px] font-bold uppercase tracking-wider text-center ${
-              stage.completed ? 'text-emerald-400' : 'text-[#64748B]'
-            }`}>
+            <span className={`text-[10px] font-bold uppercase tracking-wider text-center ${stage.completed ? 'text-emerald-400' : 'text-[#64748B]'
+              }`}>
               {stage.label}
             </span>
           </div>
@@ -126,7 +123,7 @@ export function SprintProgressBar() {
 
       <AnimatePresence>
         {progressPercentage === 100 && (
-          <motion.div 
+          <motion.div
             className="p-4 bg-[#22C55E]/10 border border-emerald-500/30 rounded-lg"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

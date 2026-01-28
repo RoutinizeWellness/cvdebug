@@ -280,8 +280,8 @@ export const triggerEventNotifications = internalMutation({
         await ctx.runMutation(api.ai.smartNotifications.createSmartNotification, {
           userId: args.userId,
           type: "subscription_expiring",
-          title: "Interview Sprint Expiring Soon",
-          message: `Your Interview Sprint expires in ${daysLeft} days. Renew now to keep your benefits!`,
+          title: "Career Sprint Expiring Soon",
+          message: `Your Career Sprint expires in ${daysLeft} days. Renew now to keep your benefits!`,
           priority: "high",
           metadata: { daysLeft, expiresAt },
         });

@@ -79,7 +79,7 @@ export function InterviewBattlePlanModal({
               </p>
               <div className="flex items-center gap-2 mt-3">
                 <span className="px-3 py-1 rounded-full bg-[#1E293B]/10 text-[#1E293B] text-xs font-bold border border-[#1E293B]/20">
-                  🔒 Interview Sprint
+                  🔒 Career Sprint
                 </span>
                 <span className="text-xs text-[#64748B]">•</span>
                 <span className="text-xs text-[#64748B]">Strategic Interview Coaching AI</span>

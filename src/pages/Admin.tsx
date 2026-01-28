@@ -2,10 +2,10 @@ import { useQuery, useMutation, useAction } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 const apiAny: any = api;
-import { 
-  Loader2, 
-  ShieldAlert, 
-  Save, 
+import {
+  Loader2,
+  ShieldAlert,
+  Save,
   Menu,
   LayoutDashboard,
   Users,
@@ -59,7 +59,7 @@ import { motion } from "framer-motion";
 export default function AdminPage() {
   const { user, isLoading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
-  
+
   const shouldFetch = !authLoading && user?.email === "tiniboti@gmail.com";
   const users = useQuery(apiAny.admin.getUsers, shouldFetch ? {} : "skip");
   const stats = useQuery(apiAny.admin.getAdminStats, shouldFetch ? {} : "skip");
@@ -90,7 +90,7 @@ export default function AdminPage() {
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingKnown, setIsFixingKnown] = useState(false);
   const [isFixingReported, setIsFixingReported] = useState(false);
-  const [historyUser, setHistoryUser] = useState<{id: string, name: string, email?: string} | null>(null);
+  const [historyUser, setHistoryUser] = useState<{ id: string, name: string, email?: string } | null>(null);
   const [grantEmail, setGrantEmail] = useState("");
   const [grantName, setGrantName] = useState("");
   const [grantPlan, setGrantPlan] = useState<"single_debug_fix" | "single_scan" | "interview_sprint">("single_scan");
@@ -379,7 +379,7 @@ export default function AdminPage() {
             <p className="text-slate-500 text-xs font-mono">v2.4.0-prod</p>
           </div>
         </div>
-        
+
         <nav className="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1">
           <button
             onClick={() => setCurrentView("dashboard")}
@@ -401,9 +401,9 @@ export default function AdminPage() {
           >
             <TrendingUp className={`h-5 w-5 ${currentView === "premium" ? "text-primary" : "text-slate-500"}`} />
             <span className="text-sm font-medium">Premium Users</span>
-            {stats && (stats.singleDebugFix + stats.singleScan + stats.interviewSprint) > 0 && (
+            {stats && (stats.singleDebugFix + stats.singleScan + stats.careerSprint) > 0 && (
               <Badge variant="default" className="ml-auto bg-[#22C55E] text-xs">
-                {stats.singleDebugFix + stats.singleScan + stats.interviewSprint}
+                {stats.singleDebugFix + stats.singleScan + stats.careerSprint}
               </Badge>
             )}
           </button>
@@ -474,7 +474,7 @@ export default function AdminPage() {
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh Stats
             </Button>
-              <div className="w-9 h-9 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
+            <div className="w-9 h-9 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
               <div className="w-full h-full bg-primary/20 flex items-center justify-center text-slate-700 font-bold text-sm">
                 {user.email?.charAt(0).toUpperCase() || "A"}
               </div>
@@ -595,7 +595,7 @@ export default function AdminPage() {
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                       <CreditCard className="h-12 w-12 text-amber-600" />
                     </div>
-                    <p className="text-slate-600 text-sm font-medium mb-1">Arreglo Rápido</p>
+                    <p className="text-slate-600 text-sm font-medium mb-1">Quick Fix</p>
                     <div className="flex items-baseline gap-2">
                       <h3 className="text-2xl font-display font-bold text-amber-600">{stats?.singleDebugFix || 0}</h3>
                     </div>
@@ -613,7 +613,7 @@ export default function AdminPage() {
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                       <CreditCard className="h-12 w-12 text-[#F59E0B]" />
                     </div>
-                    <p className="text-slate-600 text-sm font-medium mb-1">Pase 24h</p>
+                    <p className="text-slate-600 text-sm font-medium mb-1">24h Pass</p>
                     <div className="flex items-baseline gap-2">
                       <h3 className="text-2xl font-display font-bold text-orange-600">{stats?.singleScan || 0}</h3>
                     </div>
@@ -631,9 +631,9 @@ export default function AdminPage() {
                     <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                       <BarChart3 className="h-12 w-12 text-[#22C55E]" />
                     </div>
-                    <p className="text-slate-600 text-sm font-medium mb-1">Sprint 7 Días</p>
+                    <p className="text-slate-600 text-sm font-medium mb-1">Career Sprint</p>
                     <div className="flex items-baseline gap-2">
-                      <h3 className="text-2xl font-display font-bold text-primary">{stats?.interviewSprint || 0}</h3>
+                      <h3 className="text-2xl font-display font-bold text-primary">{stats?.careerSprint || 0}</h3>
                     </div>
                     <div className="w-full bg-slate-200 h-1 mt-4 rounded-full overflow-hidden">
                       <div className="bg-[#22C55E] h-full rounded-full" style={{ width: '88%' }}></div>
@@ -729,7 +729,7 @@ export default function AdminPage() {
                         View All Users
                       </Button>
                     </div>
-                    
+
                     <div className="overflow-x-auto flex-1">
                       <table className="w-full text-left text-sm text-slate-600">
                         <thead className="bg-white/30 text-xs uppercase font-semibold text-[#64748B]">
@@ -756,7 +756,7 @@ export default function AdminPage() {
                                 </div>
                               </td>
                               <td className="px-6 py-3">
-                                <Badge 
+                                <Badge
                                   variant={userData.subscriptionTier === "interview_sprint" ? "default" : userData.subscriptionTier === "single_scan" ? "outline" : "secondary"}
                                   className="capitalize"
                                 >
@@ -773,7 +773,7 @@ export default function AdminPage() {
                                 {userData.lastScanDate ? new Date(userData.lastScanDate).toLocaleDateString('es-ES') : "Never"}
                               </td>
                               <td className="px-6 py-3 text-right">
-                                <button 
+                                <button
                                   onClick={() => handleEditClick(userData)}
                                   className="text-[#64748B] hover:text-slate-900 transition-colors"
                                 >
@@ -899,13 +899,13 @@ export default function AdminPage() {
               Manually update subscription and credits for {editingUser?.name}.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="plan" className="text-right text-slate-700">Plan</Label>
-              <Select 
-                value={editForm.plan} 
-                onValueChange={(val) => setEditForm({...editForm, plan: val})}
+              <Select
+                value={editForm.plan}
+                onValueChange={(val) => setEditForm({ ...editForm, plan: val })}
               >
                 <SelectTrigger className="col-span-3 bg-slate-100 border-slate-200">
                   <SelectValue placeholder="Select plan" />
@@ -924,7 +924,7 @@ export default function AdminPage() {
                 id="credits"
                 type="number"
                 value={editForm.credits}
-                onChange={(e) => setEditForm({...editForm, credits: parseInt(e.target.value) || 0})}
+                onChange={(e) => setEditForm({ ...editForm, credits: parseInt(e.target.value) || 0 })}
                 className="col-span-3 bg-slate-100 border-slate-200 text-slate-900"
               />
             </div>
@@ -974,7 +974,7 @@ export default function AdminPage() {
                 type="email"
                 placeholder="user@example.com"
                 value={createUserForm.email}
-                onChange={(e) => setCreateUserForm({...createUserForm, email: e.target.value})}
+                onChange={(e) => setCreateUserForm({ ...createUserForm, email: e.target.value })}
                 className="col-span-3 bg-slate-100 border-slate-200 text-slate-900"
               />
             </div>
@@ -985,7 +985,7 @@ export default function AdminPage() {
                 type="text"
                 placeholder="John"
                 value={createUserForm.firstName}
-                onChange={(e) => setCreateUserForm({...createUserForm, firstName: e.target.value})}
+                onChange={(e) => setCreateUserForm({ ...createUserForm, firstName: e.target.value })}
                 className="col-span-3 bg-slate-100 border-slate-200 text-slate-900"
               />
             </div>
@@ -996,7 +996,7 @@ export default function AdminPage() {
                 type="text"
                 placeholder="Doe"
                 value={createUserForm.lastName}
-                onChange={(e) => setCreateUserForm({...createUserForm, lastName: e.target.value})}
+                onChange={(e) => setCreateUserForm({ ...createUserForm, lastName: e.target.value })}
                 className="col-span-3 bg-slate-100 border-slate-200 text-slate-900"
               />
             </div>
@@ -1004,7 +1004,7 @@ export default function AdminPage() {
               <Label htmlFor="plan" className="text-right text-slate-700">Plan</Label>
               <Select
                 value={createUserForm.plan}
-                onValueChange={(val: any) => setCreateUserForm({...createUserForm, plan: val})}
+                onValueChange={(val: any) => setCreateUserForm({ ...createUserForm, plan: val })}
               >
                 <SelectTrigger className="col-span-3 bg-slate-100 border-slate-200">
                   <SelectValue placeholder="Select plan" />

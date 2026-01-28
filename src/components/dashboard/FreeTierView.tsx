@@ -14,10 +14,10 @@ interface FreeTierViewProps {
   formatIssues?: any[];
 }
 
-export function FreeTierView({ 
-  score, 
-  missingCount, 
-  formatCount, 
+export function FreeTierView({
+  score,
+  missingCount,
+  formatCount,
   criticalKeywords,
   showBlurredPreview,
   setShowPricing,
@@ -111,7 +111,7 @@ export function FreeTierView({
       {/* Hero Section with Gauge */}
       <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] rounded-lg p-8 relative overflow-hidden">
         <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
-        
+
         <div className="relative">
           <GaugeScore score={score} />
           {/* Tooltip Badge */}
@@ -125,16 +125,14 @@ export function FreeTierView({
 
         <div className="flex flex-col gap-6 flex-1 z-10 w-full text-center lg:text-left">
           <div>
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${
-              score >= 80
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${score >= 80
                 ? 'bg-[#22C55E]/20 text-[#22C55E] border-[#22C55E]/30'
                 : score >= 50
-                ? 'bg-[#F59E0B]/20 text-[#F59E0B] border-[#F59E0B]/30'
-                : 'bg-[#EF4444]/20 text-[#EF4444] border-[#EF4444]/30'
-            } text-xs font-bold uppercase tracking-wider mb-4 border`}>
-              <span className={`size-2 rounded-full animate-pulse ${
-                score >= 80 ? 'bg-[#22C55E]' : score >= 50 ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'
-              }`}></span>
+                  ? 'bg-[#F59E0B]/20 text-[#F59E0B] border-[#F59E0B]/30'
+                  : 'bg-[#EF4444]/20 text-[#EF4444] border-[#EF4444]/30'
+              } text-xs font-bold uppercase tracking-wider mb-4 border`}>
+              <span className={`size-2 rounded-full animate-pulse ${score >= 80 ? 'bg-[#22C55E]' : score >= 50 ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'
+                }`}></span>
               {score >= 80 ? 'Excellent' : score >= 50 ? 'Needs Optimization' : 'Critical Issues'}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold leading-tight text-[#0F172A] mb-4">
@@ -167,7 +165,7 @@ export function FreeTierView({
             <p className="text-xs text-[#64748B]">This is exactly what the ATS sees when parsing your resume</p>
           </div>
         </div>
-        
+
         <div className="bg-[#F59E0B]/10 border border-[#F59E0B]/20 rounded-lg p-3 mb-3">
           <div className="flex gap-2">
             <Eye className="h-4 w-4 text-[#F59E0B] flex-shrink-0 mt-0.5" />
@@ -195,8 +193,8 @@ export function FreeTierView({
                     ⚠️ Hidden content blocked by ATS parser
                   </div>
                   <div className="bg-[#EF4444]/10 rounded px-3 py-2 font-mono text-[#EF4444] text-[10px] blur-sm select-none">
-                    ████████████████████████████<br/>
-                    ████████████████████<br/>
+                    ████████████████████████████<br />
+                    ████████████████████<br />
                     ████████████████████████████████
                   </div>
                   <div className="mt-2 text-[10px] text-[#EF4444] italic">
@@ -239,7 +237,7 @@ export function FreeTierView({
             Showing 2 of {formatCount}
           </span>
         </div>
-        
+
         <div className="space-y-3 mb-4">
           {top2Errors.length > 0 ? (
             top2Errors.map((issue: any, i: number) => {
@@ -266,7 +264,7 @@ export function FreeTierView({
             </>
           )}
         </div>
-        
+
         {remainingErrors > 0 && (
           <div className="bg-[#F8FAFC]/50 border border-[#E2E8F0] rounded-lg p-4 text-center">
             <p className="text-sm text-[#475569] font-medium mb-2">
@@ -289,7 +287,7 @@ export function FreeTierView({
             Showing 2 of {missingCount}
           </span>
         </div>
-        
+
         <div className="space-y-3 mb-4">
           {top2Keywords.length > 0 ? (
             top2Keywords.map((kw: any, i: number) => {
@@ -316,7 +314,7 @@ export function FreeTierView({
             </>
           )}
         </div>
-        
+
         {/* Blurred Keywords Section */}
         {remainingKeywords > 0 && (
           <div className="relative">
@@ -349,7 +347,7 @@ export function FreeTierView({
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-[#64748B] to-[#F59E0B] rounded-full flex items-center justify-center">
             <Lock className="h-8 w-8 text-white" />
           </div>
-          
+
           <div>
             <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mb-3">
               Get Your Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#22C55E]">Certified</span> by CVDebug
@@ -429,10 +427,10 @@ export function FreeTierView({
             </div>
 
             <p className="text-xs text-[#64748B]">
-              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#64748B] underline font-semibold">Interview Sprint (€24.99)</button> for unlimited scans + cover letter optimizer
+              or upgrade to <button onClick={() => setShowPricing(true)} className="text-[#64748B] underline font-semibold">Career Sprint (€24.99)</button> for unlimited scans + cover letter optimizer
             </p>
           </div>
-          
+
           <div className="flex items-center justify-center gap-6 text-sm text-[#475569] font-medium">
             <span className="flex items-center gap-1">✓ One-time payment</span>
             <span className="flex items-center gap-1">✓ Instant access</span>

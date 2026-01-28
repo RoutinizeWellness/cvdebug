@@ -27,7 +27,7 @@ export const generateReceipt = action({
       }),
       customerName: payment.userName,
       customerEmail: payment.userEmail,
-      plan: payment.plan === "single_scan" ? "Single Scan" : "Interview Sprint (7 Days)",
+      plan: payment.plan === "single_scan" ? "Single Scan" : "Career Sprint (7 Days)",
       amount: `€${payment.amount.toFixed(2)}`,
       status: payment.status,
     };

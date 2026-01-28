@@ -27,7 +27,7 @@ export const optimizeLinkedIn = action({
     // ENFORCEMENT: LinkedIn Optimizer is locked for Free/Single Scan users
     const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
     if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
-      throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use LinkedIn Optimizer.");
+      throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to use LinkedIn Optimizer.");
     }
 
     // Check cache first (80-95% cost savings)
@@ -61,7 +61,7 @@ export const optimizeLinkedIn = action({
 
     const result = extractJSON(content);
     if (!result) {
-        throw new Error("Failed to parse AI response");
+      throw new Error("Failed to parse AI response");
     }
 
     // Cache the result
@@ -108,7 +108,7 @@ export const generateRecruiterDMs = action({
       // ENFORCEMENT: Recruiter DM Generator is locked for Free/Single Scan users
       const hasActiveSprint = user.sprintExpiresAt && user.sprintExpiresAt > Date.now();
       if (!hasActiveSprint && user.subscriptionTier !== "interview_sprint") {
-        throw new Error("PLAN_RESTRICTION: Upgrade to Interview Sprint to use Recruiter DM Generator.");
+        throw new Error("PLAN_RESTRICTION: Upgrade to Career Sprint to use Recruiter DM Generator.");
       }
 
       // Check cache first (80-95% cost savings)
@@ -133,8 +133,8 @@ export const generateRecruiterDMs = action({
       if (!apiKey) throw new Error("AI not configured");
 
       const prompt = buildRecruiterDMPrompt(
-        args.profileText, 
-        args.jobDescription, 
+        args.profileText,
+        args.jobDescription,
         args.recruiterName,
         args.missingKeywords
       );
@@ -147,7 +147,7 @@ export const generateRecruiterDMs = action({
 
       const result = extractJSON(content);
       if (!result) {
-          throw new Error("Failed to parse AI response");
+        throw new Error("Failed to parse AI response");
       }
 
       // Cache the result
@@ -175,7 +175,7 @@ export const generateRecruiterDMs = action({
       return result;
     } catch (error) {
       console.error("Recruiter DM generation failed:", error);
-      
+
       // Fallback: Return high-quality templates so the user always gets a result
       return {
         variations: [
