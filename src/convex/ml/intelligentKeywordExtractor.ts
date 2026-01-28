@@ -61,41 +61,49 @@ export const INDUSTRY_KEYWORDS = {
     ],
     methodologies: [
       'agile', 'scrum', 'kanban', 'tdd', 'bdd', 'microservices', 'restful api',
-      'graphql', 'event-driven', 'domain-driven design', 'continuous integration'
+      'graphql', 'event-driven', 'domain-driven design', 'continuous integration',
+      'ci/cd', 'devsecops', 'sre', 'serverless', 'service mesh', 'observability'
     ]
   },
   healthcare: {
     certifications: [
       'rn', 'bls', 'acls', 'pals', 'cpr', 'tncc', 'ccrn', 'cnor', 'crna', 'np',
-      'bsn', 'msn', 'dnp', 'lpn', 'cna', 'cma', 'emt', 'paramedic'
+      'bsn', 'msn', 'dnp', 'lpn', 'cna', 'cma', 'emt', 'paramedic', 'phlebotomy',
+      'arrt', 'rdms', 'nremt', 'hics'
     ],
     specialties: [
       'icu', 'critical care', 'emergency', 'pediatrics', 'oncology', 'cardiology',
       'telemetry', 'med-surg', 'operating room', 'labor and delivery', 'nicu',
-      'psychiatric', 'geriatric', 'orthopedic', 'neurology'
+      'psychiatric', 'geriatric', 'orthopedic', 'neurology', 'rehabilitation',
+      'dialysis', 'hospice', 'palliative care', 'urology', 'nephrology'
     ],
     skills: [
       'patient assessment', 'iv therapy', 'wound care', 'medication administration',
       'ventilator management', 'hemodynamic monitoring', 'triage', 'charting',
-      'patient education', 'infection control', 'vital signs monitoring'
+      'patient education', 'infection control', 'vital signs monitoring',
+      'lab interpretation', 'care planning', 'discharge planning', 'bls/acls'
     ],
     systems: [
       'epic', 'cerner', 'meditech', 'allscripts', 'athenahealth', 'eclinicalworks',
-      'electronic health records', 'ehr', 'emr', 'cpoe', 'emar'
+      'electronic health records', 'ehr', 'emr', 'cpoe', 'emar', 'pacs', 'ris'
     ]
   },
   finance: {
     skills: [
       'financial modeling', 'valuation', 'dcf', 'lbo', 'merger and acquisition',
       'financial analysis', 'forecasting', 'budgeting', 'variance analysis',
-      'financial reporting', 'gaap', 'ifrs', 'sox compliance', 'risk management'
+      'financial reporting', 'gaap', 'ifrs', 'sox compliance', 'risk management',
+      'derivatives', 'hedging', 'asset management', 'wealth management', 'audit',
+      'tax planning', 'equity research', 'investment banking'
     ],
     tools: [
       'excel', 'bloomberg', 'capital iq', 'factset', 'quickbooks', 'sap', 'oracle',
-      'tableau', 'power bi', 'sql', 'python', 'r', 'vba', 'alteryx'
+      'tableau', 'power bi', 'sql', 'python', 'r', 'vba', 'alteryx', 'hyperion',
+      'netsuite', 'sage', 'morningstar', 'reuters'
     ],
     certifications: [
-      'cpa', 'cfa', 'cma', 'cia', 'frm', 'series 7', 'series 63', 'series 65'
+      'cpa', 'cfa', 'cma', 'cia', 'frm', 'series 7', 'series 63', 'series 65',
+      'series 66', 'cfp', 'acca', 'ca', 'chfc'
     ]
   },
   sales: {
@@ -299,8 +307,8 @@ export function extractIntelligentKeywords(
       // Industry-specific boosts
       if (userProfile.industry.toLowerCase().includes('tech')) {
         if (data.category.includes('programming') ||
-            data.category.includes('framework') ||
-            data.category.includes('cloud')) {
+          data.category.includes('framework') ||
+          data.category.includes('cloud')) {
           data.score *= 1.2;
         }
       }
@@ -308,7 +316,7 @@ export function extractIntelligentKeywords(
       // Seniority-specific boosts
       if (userProfile.seniority === 'senior' || userProfile.seniority === 'lead') {
         if (data.category === 'action_verb' &&
-            ['led', 'managed', 'architected', 'spearheaded'].some(v => term.includes(v))) {
+          ['led', 'managed', 'architected', 'spearheaded'].some(v => term.includes(v))) {
           data.score *= 1.4; // Senior roles need leadership verbs
         }
       }
@@ -401,14 +409,14 @@ function getKeywordWeight(keyword: string, category: string): number {
 
   // Technical skills have high weight
   if (category.includes('programming') || category.includes('framework') ||
-      category.includes('cloud') || category.includes('database') ||
-      category.includes('tool')) {
+    category.includes('cloud') || category.includes('database') ||
+    category.includes('tool')) {
     return KEYWORD_WEIGHTS.technical_skill;
   }
 
   // Domain expertise has moderate weight
   if (category.includes('skill') || category.includes('specialty') ||
-      category.includes('methodology')) {
+    category.includes('methodology')) {
     return KEYWORD_WEIGHTS.domain_expertise;
   }
 
@@ -457,9 +465,9 @@ function generateKeywordSuggestions(
     for (const [category, keywords] of Object.entries(industryData)) {
       for (const keyword of keywords as string[]) {
         if (jdLower.includes(keyword.toLowerCase()) &&
-            !foundTerms.has(keyword.toLowerCase()) &&
-            !suggestions.includes(keyword) &&
-            suggestions.length < 15) {
+          !foundTerms.has(keyword.toLowerCase()) &&
+          !suggestions.includes(keyword) &&
+          suggestions.length < 15) {
           suggestions.push(keyword);
         }
       }

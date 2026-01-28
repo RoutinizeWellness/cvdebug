@@ -466,12 +466,15 @@ function calculateScores(
   let keywordScore = 0;
 
   // 1. Keyword density MUST be in optimal range (3-8% like real ATS)
+  // 1. Keyword density MUST be in optimal range (3-8% like real ATS)
   if (keywordExtraction.keyword_density >= 3 && keywordExtraction.keyword_density <= 8) {
-    keywordScore += 20; // Optimal range
+    keywordScore += 25; // Optimal range (increased from 20)
   } else if (keywordExtraction.keyword_density >= 2 && keywordExtraction.keyword_density < 3) {
-    keywordScore += 10; // Too sparse
+    keywordScore += 12; // Too sparse
   } else if (keywordExtraction.keyword_density > 8 && keywordExtraction.keyword_density <= 12) {
-    keywordScore += 8; // Too dense (keyword stuffing)
+    keywordScore += 5; // Too dense (keyword stuffing)
+  } else if (keywordExtraction.keyword_density > 12) {
+    keywordScore -= 20; // Critical: Keyword stuffing detected
   } else {
     keywordScore += 0; // Outside acceptable range
   }
@@ -497,9 +500,20 @@ function calculateScores(
   }
 
   // 4. Must have quantifiable achievements (numbers, metrics)
-  const hasMetrics = /\d+%|\$\d+|team of \d+|\d+\+?\s*(?:years|users|customers|projects)/gi.test(resumeText);
-  if (hasMetrics) {
-    keywordScore += 10; // Has quantifiable results
+  const metricPatterns = [
+    /\d+%|\$\d+/gi,
+    /team of \d+/gi,
+    /\d+\+?\s*(?:years|users|customers|projects|clients)/gi,
+    /(?:increased|reduced|saved|generated|grew|boosted).*\d+/gi
+  ];
+
+  const hasMetrics = metricPatterns.some(pattern => pattern.test(resumeText));
+  const specificMetricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
+
+  if (specificMetricCount >= 5) {
+    keywordScore += 20; // Excellent quantifiable results
+  } else if (hasMetrics) {
+    keywordScore += 10; // Has some quantifiable results
   } else {
     // No quantifiable results = major red flag for real ATS
     keywordScore -= 15;

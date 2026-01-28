@@ -1,6 +1,6 @@
 import { Terminal, Cpu, Zap, Shield, Activity, Target, TrendingUp, AlertTriangle, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";

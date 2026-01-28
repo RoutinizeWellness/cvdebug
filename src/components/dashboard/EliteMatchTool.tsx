@@ -15,7 +15,8 @@ import {
   Brain,
   BarChart3,
   Wand2,
-  Lock
+  Lock,
+  Shield
 } from "lucide-react";
 import { toast } from "sonner";
 import { useQuery, useAction } from "convex/react";
