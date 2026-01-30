@@ -1,4 +1,4 @@
 {
-    "team": "tiniboti-gmail-com",
-    "project": "cvdebug"
+    "functions": "src/convex/",
+    "$schema": "https://raw.githubusercontent.com/get-convex/convex-backend/main/npm-packages/convex/convex.schema.json"
 }
