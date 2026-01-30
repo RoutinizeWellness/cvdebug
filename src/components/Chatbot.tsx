@@ -24,7 +24,7 @@ export function Chatbot() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  
+
   const chatAction = useAction(apiAny.ai.chat);
 
   useEffect(() => {
@@ -55,9 +55,21 @@ export function Chatbot() {
       });
 
       setMessages(prev => [...prev, { role: "assistant", content: response }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      setMessages(prev => [...prev, { role: "assistant", content: "Sorry, I encountered an error. Please try again." }]);
+      const errorMessage = error.message || "";
+
+      if (errorMessage.includes("PLAN_RESTRICTION")) {
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: "🔒 This feature is reserved for Career Sprint users. Upgrade your plan to get unlimited career coaching and AI assistance!"
+        }]);
+      } else {
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: "Sorry, I encountered an error. Please try again."
+        }]);
+      }
     } finally {
       setIsLoading(false);
     }

@@ -88,6 +88,7 @@ export const getFeatureAccess = query({
           coverLetterGenerator: false,
           linkedinOptimizer: false,
           interviewBattlePlan: false,
+          keywordSniper: false,
         },
       };
     }
@@ -109,6 +110,7 @@ export const getFeatureAccess = query({
           coverLetterGenerator: false,
           linkedinOptimizer: false,
           interviewBattlePlan: false,
+          keywordSniper: false,
         },
       };
     }
@@ -139,6 +141,7 @@ export const getFeatureAccess = query({
           coverLetterGenerator: false,
           linkedinOptimizer: false,
           interviewBattlePlan: false,
+          keywordSniper: false,
         },
       };
     }
@@ -157,6 +160,7 @@ export const getFeatureAccess = query({
             coverLetterGenerator: false,
             linkedinOptimizer: false,
             interviewBattlePlan: false,
+            keywordSniper: true,
           },
         };
 
@@ -172,6 +176,7 @@ export const getFeatureAccess = query({
             coverLetterGenerator: false,
             linkedinOptimizer: false,
             interviewBattlePlan: true,
+            keywordSniper: true,
           },
         };
 
@@ -187,6 +192,7 @@ export const getFeatureAccess = query({
             coverLetterGenerator: true,
             linkedinOptimizer: true,
             interviewBattlePlan: true,
+            keywordSniper: true,
           },
         };
 
@@ -202,6 +208,7 @@ export const getFeatureAccess = query({
             coverLetterGenerator: false,
             linkedinOptimizer: false,
             interviewBattlePlan: false,
+            keywordSniper: false,
           },
         };
     }

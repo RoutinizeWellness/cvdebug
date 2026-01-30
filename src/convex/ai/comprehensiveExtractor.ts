@@ -445,8 +445,97 @@ function extractExperience(text: string) {
 
   // Use calculated years if no direct mention
   if (experienceYears.length > 0 && totalYears === 0) {
-    // Sum all unique experiences (cap at 50 years max)
-    totalYears = Math.min(50, experienceYears.reduce((a, b) => a + b, 0));
+    // FIXED: Merge overlapping date ranges instead of summing
+    // Extract all date ranges from the text
+    const dateRangesData: Array<{ start: number; end: number; startMonth?: number; endMonth?: number }> = [];
+    
+    // Re-parse all date ranges to get start/end dates
+    const allDateMatches = [
+      ...text.matchAll(yearPatterns[1]), // YYYY - Present
+      ...text.matchAll(yearPatterns[2]), // Month YYYY - Present
+      ...text.matchAll(yearPatterns[3]), // MM/YYYY - Present
+      ...text.matchAll(yearPatterns[4]), // YYYY - YYYY
+      ...text.matchAll(yearPatterns[5])  // Month YYYY - Month YYYY
+    ];
+    
+    for (const match of allDateMatches) {
+      let startYear = 0;
+      let endYear = currentYear;
+      let startMonth = 1;
+      let endMonth = 12;
+      
+      // Parse based on pattern type
+      if (match[0].match(/present|current|now/i)) {
+        // Current job patterns
+        const yearMatch = match[0].match(/(\d{4})/);
+        if (yearMatch) {
+          startYear = parseInt(yearMatch[1]);
+          endYear = currentYear;
+          
+          // Try to extract month if present
+          const monthMatch = match[0].match(/(\d{1,2})\/(\d{4})/);
+          if (monthMatch) {
+            startMonth = parseInt(monthMatch[1]);
+            endMonth = currentMonth;
+          }
+        }
+      } else {
+        // Date range patterns (YYYY - YYYY)
+        const years = match[0].match(/(\d{4})/g);
+        if (years && years.length >= 2) {
+          startYear = parseInt(years[0]);
+          endYear = parseInt(years[1]);
+        }
+      }
+      
+      if (startYear > 0 && isValidYear(startYear) && isValidYear(endYear) && endYear >= startYear) {
+        dateRangesData.push({ start: startYear, end: endYear, startMonth, endMonth });
+      }
+    }
+    
+    // Merge overlapping date ranges
+    if (dateRangesData.length > 0) {
+      // Sort by start year
+      dateRangesData.sort((a, b) => a.start - b.start || (a.startMonth || 1) - (b.startMonth || 1));
+      
+      const mergedRanges: typeof dateRangesData = [];
+      let current = dateRangesData[0];
+      
+      for (let i = 1; i < dateRangesData.length; i++) {
+        const next = dateRangesData[i];
+        
+        // Check if ranges overlap or are adjacent
+        if (next.start <= current.end + 1) {
+          // Merge: extend current range to include next
+          current = {
+            start: current.start,
+            end: Math.max(current.end, next.end),
+            startMonth: current.startMonth,
+            endMonth: next.end > current.end ? next.endMonth : current.endMonth
+          };
+        } else {
+          // No overlap: save current and start new range
+          mergedRanges.push(current);
+          current = next;
+        }
+      }
+      mergedRanges.push(current); // Add last range
+      
+      // Calculate total years from merged ranges
+      totalYears = mergedRanges.reduce((total, range) => {
+        const years = range.end - range.start;
+        // Add fractional year based on months if available
+        const monthFraction = range.startMonth && range.endMonth 
+          ? (12 - (range.startMonth || 1) + (range.endMonth || 12)) / 12 / (range.end - range.start + 1)
+          : 0;
+        return total + years + monthFraction;
+      }, 0);
+      
+      totalYears = Math.min(50, Math.round(totalYears * 10) / 10); // Round to 1 decimal, cap at 50
+    } else {
+      // Fallback: sum if we couldn't parse detailed ranges (old behavior as backup)
+      totalYears = Math.min(50, experienceYears.reduce((a, b) => a + b, 0));
+    }
   }
 
   // Ensure at least 0 years if we found any work history indicators

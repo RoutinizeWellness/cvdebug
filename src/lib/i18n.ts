@@ -403,7 +403,10 @@ export interface Translation {
     home: string;
     myResumes: string;
     aiTools: string;
+    aiAssistant: string;
     eliteMatch: string;
+    jobMatch: string;
+    analytics: string;
     settings: string;
     adminPanel: string;
     sprintActive: string;
@@ -413,7 +416,13 @@ export interface Translation {
     managePlan: string;
     upgradeNow: string;
     proPlan: string;
+    singleDebugFixPlan: string;
+    singleScanPlan: string;
     freePlan: string;
+    resumesSection: string;
+    toolsSection: string;
+    applicationsSection: string;
+    accountSection: string;
   };
   // Common
   common: {
@@ -866,6 +875,8 @@ export interface Translation {
       applied: string;
       rewritten: string;
       exampleDescription: string;
+      upgradeRequired: string;
+      battlePlanUpgradeDesc: string;
     };
     bullet: {
       noInput: string;
@@ -1118,7 +1129,6 @@ export interface Translation {
     q3: string;
     a3: string;
   };
-  // Pricing Section (Landing Page)
   pricingSection: {
     heading: string;
     subheading: string;
@@ -1126,6 +1136,9 @@ export interface Translation {
     free: string;
     seeScore: string;
     tryFree: string;
+    singleDebugFix: string;
+    oneDeepScanDesc: string;
+    fixMyCv: string;
     singleScan: string;
     oneCompleteFix: string;
     getSingleScan: string;
@@ -1443,6 +1456,13 @@ export interface Translation {
     lockedTitle: string;
     lockedDesc: string;
     upgradeNow: string;
+    verificationToolTitle: string;
+    verificationToolDesc: string;
+    verificationPlaceholder: string;
+    verifyButton: string;
+    keywordFound: string;
+    keywordNotFound: string;
+    imageTrapAction: string;
   };
   // Create Project Dialog
   createProject: {
@@ -2123,10 +2143,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       trackAppsDesc: 'Manage your job search in one place',
     },
     sidebar: {
-      home: 'Home',
+      home: 'Dashboard',
       myResumes: 'My Resumes',
       aiTools: 'AI Tools',
+      aiAssistant: 'AI Assistant',
       eliteMatch: 'Match Elite',
+      jobMatch: 'Job Match',
+      analytics: 'Analytics',
       settings: 'Settings',
       adminPanel: 'Admin Panel',
       sprintActive: 'Sprint Active',
@@ -2135,8 +2158,14 @@ export const translations: Record<SupportedLocale, Translation> = {
       minutes: 'MIN',
       managePlan: 'Manage Plan',
       upgradeNow: 'Upgrade Now',
-      proPlan: 'Pro Plan',
+      proPlan: 'Career Sprint',
+      singleDebugFixPlan: 'Single Debug Fix',
+      singleScanPlan: '24h Pass',
       freePlan: 'Free Plan',
+      resumesSection: 'RESUMES',
+      toolsSection: 'TOOLS',
+      applicationsSection: 'APPLICATIONS',
+      accountSection: 'ACCOUNT',
     },
     common: {
       loading: 'Loading...',
@@ -2582,6 +2611,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         applied: 'Suggestion applied! Your resume has been updated.',
         rewritten: 'Resume rewritten successfully!',
         exampleDescription: 'View how top candidates incorporate this keyword effectively.',
+        upgradeRequired: 'Upgrade Required',
+        battlePlanUpgradeDesc: 'Get the Career Sprint plan to unlock the full Interview Battle Plan with AI-generated strategy.',
       },
       bullet: {
         noInput: 'Please enter a bullet point to rewrite',
@@ -2832,9 +2863,12 @@ export const translations: Record<SupportedLocale, Translation> = {
       free: 'Free',
       seeScore: 'See your ATS score',
       tryFree: 'Try Free',
-      singleScan: 'Single Scan',
+      singleDebugFix: 'Single Debug Fix',
+      oneDeepScanDesc: '1 complete fix & AI optimization',
+      fixMyCv: 'Fix My CV',
+      singleScan: '24-Hour Pass',
       oneCompleteFix: 'One complete fix',
-      getSingleScan: 'Get Single Scan',
+      getSingleScan: 'Get 24h Pass',
       interviewSprint: 'Career Sprint',
       sevenDaysUnlimited: '7 days unlimited',
       startSprint: 'Start Sprint',
@@ -3135,6 +3169,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       lockedTitle: 'Career Sprint Required',
       lockedDesc: 'Unlock the Keyword Sniper Tool to inject missing keywords and boost your ATS score.',
       upgradeNow: 'Upgrade Now',
+      verificationToolTitle: 'Keyword Verification Tool',
+      verificationToolDesc: 'Check if specific keywords are being detected by ATS robots in your current resume.',
+      verificationPlaceholder: 'Enter keywords separated by commas (e.g. Python, SQL, Project Management)',
+      verifyButton: 'Verify Detection',
+      keywordFound: 'Detected',
+      keywordNotFound: 'Not Detected',
+      imageTrapAction: 'Fix Image Trap',
     },
     createProject: {
       title: 'Create New Project',
@@ -3756,10 +3797,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       trackAppsDesc: 'Administra tu búsqueda de empleo en un solo lugar',
     },
     sidebar: {
-      home: 'Inicio',
+      home: 'Dashboard',
       myResumes: 'Mis CVs',
       aiTools: 'Herramientas IA',
+      aiAssistant: 'Asistente IA',
       eliteMatch: 'Match Elite',
+      jobMatch: 'Match de Trabajo',
+      analytics: 'Análisis',
       settings: 'Configuración',
       adminPanel: 'Panel Admin',
       sprintActive: 'Sprint Activo',
@@ -3768,8 +3812,14 @@ export const translations: Record<SupportedLocale, Translation> = {
       minutes: 'MIN',
       managePlan: 'Gestionar Plan',
       upgradeNow: 'Actualizar Ahora',
-      proPlan: 'Plan Pro',
+      proPlan: 'Sprint Carrera',
+      singleDebugFixPlan: 'Single Debug Fix',
+      singleScanPlan: 'Pase 24h',
       freePlan: 'Plan Gratis',
+      resumesSection: 'CURRÍCULOS',
+      toolsSection: 'HERRAMIENTAS',
+      applicationsSection: 'POSTULACIONES',
+      accountSection: 'CUENTA',
     },
     common: {
       loading: 'Cargando...',
@@ -4215,6 +4265,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         applied: '¡Sugerencia aplicada! Tu CV ha sido actualizado.',
         rewritten: '¡CV reescrito exitosamente!',
         exampleDescription: 'Ver cómo los mejores candidatos incorporan esta palabra clave efectivamente.',
+        upgradeRequired: 'Actualización Requerida',
+        battlePlanUpgradeDesc: 'Consigue el plan Sprint Carrera para desbloquear el Plan de Batalla para Entrevistas completo con estrategia generada por IA.',
       },
       bullet: {
         noInput: 'Por favor ingresa un punto para reescribir',
@@ -4465,9 +4517,12 @@ export const translations: Record<SupportedLocale, Translation> = {
       free: 'Gratis',
       seeScore: 'Ver tu puntuación ATS',
       tryFree: 'Prueba Gratis',
-      singleScan: 'Escaneo Único',
+      singleDebugFix: 'Single Debug Fix',
+      oneDeepScanDesc: '1 arreglo completo y optimización IA',
+      fixMyCv: 'Arreglar Mi CV',
+      singleScan: 'Pase 24 Horas',
       oneCompleteFix: 'Una corrección completa',
-      getSingleScan: 'Obtener Escaneo Único',
+      getSingleScan: 'Obtener Pase 24h',
       interviewSprint: 'Sprint Carrera',
       sevenDaysUnlimited: '7 días ilimitados',
       startSprint: 'Iniciar Sprint',
@@ -4768,6 +4823,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       lockedTitle: 'Career Sprint Requerido',
       lockedDesc: 'Desbloquea la Herramienta Keyword Sniper para inyectar keywords faltantes y mejorar tu puntuación ATS.',
       upgradeNow: 'Actualizar Ahora',
+      verificationToolTitle: 'Verificador de Palabras Clave',
+      verificationToolDesc: 'Comprueba si palabras clave específicas están siendo detectadas por los robots ATS en tu CV.',
+      verificationPlaceholder: 'Ingresa palabras clave separadas por comas (ej. Python, SQL, Gestión de Proyectos)',
+      verifyButton: 'Verificar Detección',
+      keywordFound: 'Detectada',
+      keywordNotFound: 'No Detectada',
+      imageTrapAction: 'Corregir Trampa de Imagen',
     },
     createProject: {
       title: 'Crear Nuevo Proyecto',
@@ -5445,10 +5507,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       trackAppsDesc: 'Gérez votre recherche d\'emploi en un seul endroit',
     },
     sidebar: {
-      home: 'Accueil',
+      home: 'Tableau de Bord',
       myResumes: 'Mes CVs',
       aiTools: 'Outils IA',
+      aiAssistant: 'Assistant IA',
       eliteMatch: 'Match Elite',
+      jobMatch: 'Match Emploi',
+      analytics: 'Analytique',
       settings: 'Paramètres',
       adminPanel: 'Panneau Admin',
       sprintActive: 'Sprint Actif',
@@ -5457,8 +5522,14 @@ export const translations: Record<SupportedLocale, Translation> = {
       minutes: 'MIN',
       managePlan: 'Gérer le Plan',
       upgradeNow: 'Mettre à Niveau',
-      proPlan: 'Plan Pro',
+      proPlan: 'Sprint Carrière',
+      singleDebugFixPlan: 'Single Debug Fix',
+      singleScanPlan: 'Pass 24h',
       freePlan: 'Plan Gratuit',
+      resumesSection: 'CV',
+      toolsSection: 'OUTILS',
+      applicationsSection: 'CANDIDATURES',
+      accountSection: 'COMPTE',
     },
     common: {
       loading: 'Chargement...',
@@ -5904,6 +5975,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         applied: 'Suggestion appliquée ! Votre CV a été mis à jour.',
         rewritten: 'CV réécrit avec succès !',
         exampleDescription: 'Découvrez comment les meilleurs candidats intègrent efficacement ce mot-clé.',
+        upgradeRequired: 'Mise à Niveau Requise',
+        battlePlanUpgradeDesc: 'Obtenez le plan Sprint de Carrière pour débloquer le Plan de Bataille d\'Entretien complet avec une stratégie générée par IA.',
       },
       bullet: {
         noInput: 'Veuillez entrer un point à réécrire',
@@ -6154,10 +6227,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       free: 'Gratuit',
       seeScore: 'Voir votre score ATS',
       tryFree: 'Essayer Gratuitement',
-      singleScan: 'Scan Unique',
+      singleDebugFix: 'Single Debug Fix',
+      oneDeepScanDesc: '1 correction complète et optimisation IA',
+      fixMyCv: 'Corriger Mon CV',
+      singleScan: 'Pass 24h',
       oneCompleteFix: 'Une correction complète',
-      getSingleScan: 'Obtenir Scan Unique',
-      interviewSprint: 'Sprint d\'Entretien',
+      getSingleScan: 'Obtenir Pass 24h',
+      interviewSprint: 'Sprint de Carrière',
       sevenDaysUnlimited: '7 jours illimités',
       startSprint: 'Démarrer le Sprint',
       bestValue: '🚀 MEILLEURE VALEUR',
@@ -6428,7 +6504,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       noJobDescriptionDesc: 'Keyword Sniper a besoin d\'une description de poste pour analyser et extraire les mots-clés manquants.',
       howToUseTitle: 'Comment utiliser Keyword Sniper :',
       howToStep1: 'Créez un projet avec votre rôle cible',
-      howToStep2: 'Ajoutez une candidature avec la description du poste',
+      howToStep2: 'Ajoutez une Candidature avec la description du poste',
       howToStep3: 'Analysez la description pour extraire les mots-clés',
       howToStep4: 'Revenez ici pour obtenir des suggestions IA',
       backToDashboard: 'Retour au Tableau de Bord',
@@ -6457,6 +6533,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       lockedTitle: 'Career Sprint Requis',
       lockedDesc: 'Débloquez l\'Outil Keyword Sniper pour injecter des mots-clés manquants et améliorer votre score ATS.',
       upgradeNow: 'Mettre à Niveau Maintenant',
+      verificationToolTitle: 'Vérificateur de Mots-Clés',
+      verificationToolDesc: 'Vérifiez si des mots-clés spécifiques sont détectés par les robots ATS dans votre CV actuel.',
+      verificationPlaceholder: 'Entrez les mots-clés séparés par des virgules (ex. Python, SQL, Gestion de Projet)',
+      verifyButton: 'Vérifier la Détection',
+      keywordFound: 'Détecté',
+      keywordNotFound: 'Non Détecté',
+      imageTrapAction: 'Corriger le Piège d\'Image',
     },
     createProject: {
       title: 'Créer un Nouveau Projet',
@@ -7089,10 +7172,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       trackAppsDesc: 'Verwalten Sie Ihre Jobsuche an einem Ort',
     },
     sidebar: {
-      home: 'Startseite',
+      home: 'Dashboard',
       myResumes: 'Meine Lebensläufe',
       aiTools: 'KI-Tools',
+      aiAssistant: 'KI-Assistent',
       eliteMatch: 'Elite Match',
+      jobMatch: 'Job-Match',
+      analytics: 'Analysen',
       settings: 'Einstellungen',
       adminPanel: 'Admin-Panel',
       sprintActive: 'Sprint Aktiv',
@@ -7101,8 +7187,14 @@ export const translations: Record<SupportedLocale, Translation> = {
       minutes: 'MIN',
       managePlan: 'Plan verwalten',
       upgradeNow: 'Jetzt upgraden',
-      proPlan: 'Pro-Plan',
+      proPlan: 'Karriere-Sprint',
+      singleDebugFixPlan: 'Single Debug Fix',
+      singleScanPlan: '24h-Pass',
       freePlan: 'Kostenloser Plan',
+      resumesSection: 'LEBENSLÄUFE',
+      toolsSection: 'TOOLS',
+      applicationsSection: 'BEWERBUNGEN',
+      accountSection: 'KONTO',
     },
     common: {
       loading: 'Wird geladen...',
@@ -7548,6 +7640,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         applied: 'Angewendet!',
         rewritten: 'Umgeschrieben!',
         exampleDescription: 'Beispiel-Stellenbeschreibung',
+        upgradeRequired: 'Upgrade Erforderlich',
+        battlePlanUpgradeDesc: 'Holen Sie sich den Karriere-Sprint-Plan, um den vollständigen Interview-Schlachtplan mit KI-generierter Strategie freizuschalten.',
       },
       bullet: {
         noInput: 'Keine Eingabe',
@@ -7752,7 +7846,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       downloadError: 'Fehler beim Herunterladen der Quittung',
       checkoutError: 'Fehler beim Einleiten des Checkouts',
       loginRequired: 'Bitte melden Sie sich an, um Guthaben zu kaufen',
-      initiateError: 'Fehler beim Einleiten der Zahlung',
+      initiateError: 'Zahlung konnte nicht initiiert werden',
     },
     previewScanExtended: {
       processError: 'Fehler beim Verarbeiten der Datei',
@@ -7798,10 +7892,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       free: 'Kostenlos',
       seeScore: 'Sehen Sie Ihren ATS-Score',
       tryFree: 'Kostenlos Testen',
-      singleScan: 'Einzelner Scan',
+      singleDebugFix: 'Single Debug Fix',
+      oneDeepScanDesc: '1 vollständige Korrektur und KI-Optimierung',
+      fixMyCv: 'Meinen Lebenslauf Korrigieren',
+      singleScan: '24h-Pass',
       oneCompleteFix: 'Eine vollständige Korrektur',
-      getSingleScan: 'Einzelnen Scan Erhalten',
-      interviewSprint: 'Interview-Sprint',
+      getSingleScan: '24h-Pass Erhalten',
+      interviewSprint: 'Karriere-Sprint',
       sevenDaysUnlimited: '7 Tage unbegrenzt',
       startSprint: 'Sprint Starten',
       bestValue: '🚀 BESTER WERT',
@@ -8101,6 +8198,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       lockedTitle: 'Career Sprint Erforderlich',
       lockedDesc: 'Schalten Sie das Keyword Sniper Tool frei, um fehlende Keywords einzufügen und Ihren ATS-Score zu verbessern.',
       upgradeNow: 'Jetzt Upgraden',
+      verificationToolTitle: 'Keyword-Überprüfung',
+      verificationToolDesc: 'Überprüfen Sie, ob bestimmte Keywords von ATS-Robotern in Ihrem Lebenslauf erkannt werden.',
+      verificationPlaceholder: 'Keywords durch Kommas getrennt eingeben (z. B. Python, SQL, Projektmanagement)',
+      verifyButton: 'Erkennung Prüfen',
+      keywordFound: 'Erkannt',
+      keywordNotFound: 'Nicht Erkannt',
+      imageTrapAction: 'Bild-Falle beheben',
     },
     createProject: {
       title: 'Neues Projekt Erstellen',
@@ -8777,10 +8881,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       trackAppsDesc: 'Gerencie sua busca de emprego em um só lugar',
     },
     sidebar: {
-      home: 'Início',
+      home: 'Painel',
       myResumes: 'Meus Currículos',
       aiTools: 'Ferramentas IA',
+      aiAssistant: 'Assistente IA',
       eliteMatch: 'Match Elite',
+      jobMatch: 'Match de Vaga',
+      analytics: 'Análises',
       settings: 'Configurações',
       adminPanel: 'Painel Admin',
       sprintActive: 'Sprint Ativo',
@@ -8789,8 +8896,14 @@ export const translations: Record<SupportedLocale, Translation> = {
       minutes: 'MIN',
       managePlan: 'Gerenciar Plano',
       upgradeNow: 'Atualizar Agora',
-      proPlan: 'Plano Pro',
+      proPlan: 'Sprint de Carreira',
+      singleDebugFixPlan: 'Single Debug Fix',
+      singleScanPlan: 'Passe 24h',
       freePlan: 'Plano Gratuito',
+      resumesSection: 'CURRÍCULOS',
+      toolsSection: 'FERRAMENTAS',
+      applicationsSection: 'CANDIDATURAS',
+      accountSection: 'CONTA',
     },
     common: {
       loading: 'Carregando...',
@@ -8845,7 +8958,7 @@ export const translations: Record<SupportedLocale, Translation> = {
       resources: 'Recursos',
       aboutUs: 'Sobre Nós',
       contactUs: 'Fale Conosco',
-      legal: 'Legal',
+      legal: 'Política de Privacidade',
       privacy: 'Política de Privacidade',
       terms: 'Termos e Condições',
       copyright: '© 2026 CVDebug Inc. Todos os direitos reservados. Status do Sistema:',
@@ -9236,6 +9349,8 @@ export const translations: Record<SupportedLocale, Translation> = {
         applied: 'Aplicado!',
         rewritten: 'Reescrito!',
         exampleDescription: 'Descrição de exemplo',
+        upgradeRequired: 'Atualização Necessária',
+        battlePlanUpgradeDesc: 'Obtenha o plano de Sprint de Carreira para desbloquear o Plano de Batalha de Entrevista completo com estratégia gerada por IA.',
       },
       bullet: {
         noInput: 'Sem entrada',
@@ -9486,10 +9601,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       free: 'Grátis',
       seeScore: 'Ver sua pontuação ATS',
       tryFree: 'Experimentar Grátis',
-      singleScan: 'Scan Único',
+      singleDebugFix: 'Single Debug Fix',
+      oneDeepScanDesc: '1 correção completa e otimização IA',
+      fixMyCv: 'Corrigir Meu Currículo',
+      singleScan: 'Pass de 24h',
       oneCompleteFix: 'Uma correção completa',
-      getSingleScan: 'Obter Scan Único',
-      interviewSprint: 'Sprint de Entrevistas',
+      getSingleScan: 'Obter Pass de 24h',
+      interviewSprint: 'Sprint de Carreira',
       sevenDaysUnlimited: '7 dias ilimitados',
       startSprint: 'Iniciar Sprint',
       bestValue: '🚀 MELHOR VALOR',
@@ -9789,6 +9907,13 @@ export const translations: Record<SupportedLocale, Translation> = {
       lockedTitle: 'Career Sprint Necessário',
       lockedDesc: 'Desbloqueie a Ferramenta Keyword Sniper para injetar palavras-chave ausentes e melhorar sua pontuação ATS.',
       upgradeNow: 'Atualizar Agora',
+      verificationToolTitle: 'Verificador de Palavras-Chave',
+      verificationToolDesc: 'Verifique se palavras-chave específicas estão sendo detectadas pelos robôs ATS no seu currículo.',
+      verificationPlaceholder: 'Digite as palavras-chave separadas por vírgulas (ex: Python, SQL, Gestão de Projetos)',
+      verifyButton: 'Verificar Detecção',
+      keywordFound: 'Detectada',
+      keywordNotFound: 'Não Detectada',
+      imageTrapAction: 'Corrigir Armadilha de Imagem',
     },
     createProject: {
       title: 'Criar Novo Projeto',

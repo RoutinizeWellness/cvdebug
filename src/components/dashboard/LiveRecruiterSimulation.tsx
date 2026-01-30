@@ -137,8 +137,8 @@ export function LiveRecruiterSimulation({
       const matches = text.match(datePattern);
       if (!matches || matches.length === 0) return 0;
 
-      let totalMonths = 0;
       const currentYear = new Date().getFullYear();
+      const dateRanges: Array<{ start: number; end: number }> = [];
 
       matches.forEach(match => {
         try {
@@ -156,18 +156,51 @@ export function LiveRecruiterSimulation({
             endYear = currentYear;
           }
 
-          // Calculate months (assuming full years for simplicity)
-          const months = (endYear - startYear) * 12;
-          totalMonths += Math.max(0, months);
+          // Validate years
+          if (startYear >= 1970 && startYear <= currentYear && endYear >= startYear && endYear <= currentYear + 1) {
+            dateRanges.push({ start: startYear, end: endYear });
+          }
         } catch (e) {
           // Skip invalid date ranges
           console.warn("Error parsing date range:", match, e);
         }
       });
 
-      // Convert to years, rounded to 1 decimal
-      const years = Math.round((totalMonths / 12) * 10) / 10;
-      return isNaN(years) ? 0 : years;
+      if (dateRanges.length === 0) return 0;
+
+      // FIXED: Merge overlapping date ranges instead of summing
+      // Sort by start year
+      dateRanges.sort((a, b) => a.start - b.start);
+
+      const mergedRanges: typeof dateRanges = [];
+      let current = dateRanges[0];
+
+      for (let i = 1; i < dateRanges.length; i++) {
+        const next = dateRanges[i];
+
+        // Check if ranges overlap or are adjacent (within 1 year)
+        if (next.start <= current.end + 1) {
+          // Merge: extend current range to include next
+          current = {
+            start: current.start,
+            end: Math.max(current.end, next.end)
+          };
+        } else {
+          // No overlap: save current and start new range
+          mergedRanges.push(current);
+          current = next;
+        }
+      }
+      mergedRanges.push(current); // Add last range
+
+      // Calculate total years from merged ranges
+      const totalYears = mergedRanges.reduce((total, range) => {
+        return total + (range.end - range.start);
+      }, 0);
+
+      // Round to 1 decimal
+      const years = Math.round(totalYears * 10) / 10;
+      return isNaN(years) ? 0 : Math.min(50, years); // Cap at 50 years max
     } catch (e) {
       console.warn("Error calculating total years:", e);
       return 0;
@@ -318,26 +351,26 @@ export function LiveRecruiterSimulation({
 
     let annotatedText = text;
 
-    // Add [CRIT] tags for no quantifiable metrics (ATS auto-reject risk)
+    // Add [CRIT] tags for no quantifiable metrics
     if (metricsAnalysis.count === 0) {
       annotatedText = `<div class="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
         <div class="flex items-center gap-2 mb-2">
           <span class="text-red-600 font-bold text-sm">[CRIT]</span>
-          <span class="text-red-700 font-semibold text-sm">🚨 ATS AUTO-REJECT DETECTED</span>
+          <span class="text-red-700 font-semibold text-sm">Action Required: No Impact Metrics Found</span>
         </div>
         <div class="text-xs text-red-700 font-semibold ml-6 mb-1">${metricsPercentage}% METRICS DENSITY (${metricsAnalysis.count} found)</div>
-        <div class="text-xs text-red-600 ml-6">No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.</div>
-        <div class="text-xs text-emerald-700 ml-6 mt-2 font-semibold">✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"</div>
+        <div class="text-xs text-red-600 ml-6">Recruiters look for numbers to understand the scale of your work. Without them, your impact is unclear.</div>
+        <div class="text-xs text-emerald-700 ml-6 mt-2 font-semibold">✅ TRY THIS: If you don't have exact numbers, use estimates like "~20% improvement" or "reduced time by half". Focus on scale (team size, users) if financial metrics aren't relevant.</div>
       </div>` + annotatedText;
     } else if (metricsAnalysis.count < 3) {
       annotatedText = `<div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-500 rounded">
         <div class="flex items-center gap-2 mb-2">
           <span class="text-amber-600 font-bold text-sm">[WARN]</span>
-          <span class="text-amber-700 font-semibold text-sm">⚠️ Low Metrics Density</span>
+          <span class="text-amber-700 font-semibold text-sm">💡 Opportunity to Strengthen Impact</span>
         </div>
         <div class="text-xs text-amber-700 font-semibold ml-6 mb-1">${metricsPercentage}% METRICS DENSITY (${metricsAnalysis.count} found)</div>
-        <div class="text-xs text-amber-600 ml-6">Only ${metricsAnalysis.count} quantifiable metric${metricsAnalysis.count === 1 ? '' : 's'} detected. Add more numbers to strengthen your impact.</div>
-        ${metricsAnalysis.examples.length > 0 ? `<div class="text-xs text-emerald-700 ml-6 mt-2">Found: ${metricsAnalysis.examples.join(', ')}</div>` : ''}
+        <div class="text-xs text-amber-600 ml-6">You have some metrics, which is great! Adding 2-3 more would make your resume stand out significantly to hiring managers.</div>
+        ${metricsAnalysis.examples.length > 0 ? `<div class="text-xs text-emerald-700 ml-6 mt-2">Good example found: "${metricsAnalysis.examples[0]}"</div>` : ''}
       </div>` + annotatedText;
     }
 
@@ -578,13 +611,13 @@ export function LiveRecruiterSimulation({
                       [CRIT]
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm font-bold text-[#EF4444]">🚨 ATS AUTO-REJECT DETECTED</p>
+                      <p className="text-sm font-bold text-[#EF4444]">Action Required: Add Impact Metrics</p>
                       <p className="text-xs font-semibold text-[#0F172A] mt-1">{metricsPercentage}% METRICS DENSITY ({metricsAnalysis.count} found)</p>
                       <p className="text-xs text-[#64748B] mt-1">
-                        No quantifiable achievements found (%, $, numbers). 89% of ATS systems auto-reject resumes without metrics.
+                        Recruiters scan for numbers to gauge the scale of your achievements. No numbers = hard to judge impact.
                       </p>
                       <p className="text-xs text-emerald-700 mt-2 font-semibold">
-                        ✅ FIX: Add numbers like "Increased sales by 40%" or "Managed team of 12 developers"
+                        ✅ TIP: Use estimates like "~30% faster" or "reduced errors by half" if exact data is missing.
                       </p>
                     </div>
                     <span className="material-symbols-outlined text-[#EF4444] flex-shrink-0">cancel</span>
@@ -598,14 +631,14 @@ export function LiveRecruiterSimulation({
                       [WARN]
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-[#0F172A]">⚠️ Low Metrics Density</p>
+                      <p className="text-sm font-medium text-[#0F172A]">💡 Strengthen Your Impact</p>
                       <p className="text-xs font-semibold text-[#0F172A] mt-1">{metricsPercentage}% METRICS DENSITY ({metricsAnalysis.count} found)</p>
                       <p className="text-xs text-[#64748B] mt-1">
-                        Only {metricsAnalysis.count} quantifiable metric{metricsAnalysis.count === 1 ? '' : 's'} detected. Add more numbers to strengthen your impact.
+                        You have {metricsAnalysis.count} metric{metricsAnalysis.count === 1 ? '' : 's'}, which is a good start. Adding 2-3 more creates a stronger track record.
                       </p>
                       {metricsAnalysis.examples.length > 0 && (
                         <p className="text-xs text-emerald-700 mt-2">
-                          Examples found: {metricsAnalysis.examples.join(', ')}
+                          Great example: "{metricsAnalysis.examples[0]}"
                         </p>
                       )}
                     </div>
@@ -675,31 +708,28 @@ export function LiveRecruiterSimulation({
                 <div className="flex bg-slate-100 rounded p-0.5">
                   <button
                     onClick={() => setViewMode("parsed")}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-                      viewMode === "parsed"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
-                        : 'text-[#64748B] hover:text-[#0F172A]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${viewMode === "parsed"
+                      ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
+                      : 'text-[#64748B] hover:text-[#0F172A]'
+                      }`}
                   >
                     Parsed View
                   </button>
                   <button
                     onClick={() => setViewMode("raw")}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-                      viewMode === "raw"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
-                        : 'text-[#64748B] hover:text-[#0F172A]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${viewMode === "raw"
+                      ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
+                      : 'text-[#64748B] hover:text-[#0F172A]'
+                      }`}
                   >
                     Raw Text
                   </button>
                   <button
                     onClick={() => setViewMode("pdf")}
-                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-                      viewMode === "pdf"
-                        ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
-                        : 'text-[#64748B] hover:text-[#0F172A]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-medium rounded transition-colors ${viewMode === "pdf"
+                      ? 'shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] bg-[#FFFFFF] text-[#64748B]'
+                      : 'text-[#64748B] hover:text-[#0F172A]'
+                      }`}
                   >
                     Original PDF
                   </button>
@@ -912,14 +942,12 @@ export function LiveRecruiterSimulation({
           >
             <div className="flex justify-between items-start">
               <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Readability</p>
-              <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                readabilityAnalysis.color === 'emerald' ? 'bg-emerald-50' :
+              <div className={`h-8 w-8 rounded-full flex items-center justify-center ${readabilityAnalysis.color === 'emerald' ? 'bg-emerald-50' :
                 readabilityAnalysis.color === 'amber' ? 'bg-amber-50' : 'bg-red-50'
-              }`}>
-                <span className={`material-symbols-outlined text-lg ${
-                  readabilityAnalysis.color === 'emerald' ? 'text-emerald-500' :
+                }`}>
+                <span className={`material-symbols-outlined text-lg ${readabilityAnalysis.color === 'emerald' ? 'text-emerald-500' :
                   readabilityAnalysis.color === 'amber' ? 'text-amber-500' : 'text-red-500'
-                }`}>{readabilityAnalysis.icon}</span>
+                  }`}>{readabilityAnalysis.icon}</span>
               </div>
             </div>
             <div>
@@ -936,10 +964,9 @@ export function LiveRecruiterSimulation({
           >
             <div className="flex justify-between items-start">
               <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Image Traps</p>
-              <span className={`px-2 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase ${
-                imageTrapsAnalysis.color === 'emerald' ? 'bg-emerald-50 text-emerald-600' :
+              <span className={`px-2 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase ${imageTrapsAnalysis.color === 'emerald' ? 'bg-emerald-50 text-emerald-600' :
                 imageTrapsAnalysis.color === 'amber' ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-600'
-              }`}>
+                }`}>
                 {imageTrapsAnalysis.badge}
               </span>
             </div>
