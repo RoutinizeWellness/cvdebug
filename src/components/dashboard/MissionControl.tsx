@@ -20,17 +20,14 @@ import {
   ChevronRight,
   CheckCircle2,
   Target,
-  LayoutDashboard
+  LayoutDashboard,
+  RefreshCw,
+  Cpu,
+  ShieldAlert
 } from "lucide-react";
 import { SuccessInsightsWidget } from "./SuccessInsightsWidget";
 import { ApplicationMicroTracker } from "./ApplicationMicroTracker";
-import { EliteMatchTool } from "./EliteMatchTool";
 import { useI18n } from "@/contexts/I18nContext";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 
 const apiAny = api as any;
 
@@ -45,16 +42,6 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
   const currentUser = useQuery(apiAny.users.currentUser);
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.jobTracker.getJobHistory);
-
-  const [sectionsOpen, setSectionsOpen] = useState({
-    status: true,
-    analysis: true,
-    advanced: true
-  });
-
-  const toggleSection = (section: keyof typeof sectionsOpen) => {
-    setSectionsOpen(prev => ({ ...prev, [section]: !prev[section] }));
-  };
 
   const masterResume = useMemo(() => {
     if (!resumes || resumes.length === 0) return null;
@@ -81,17 +68,6 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
 
   const criticalErrorsCount = missingKeywords.slice(0, 3).length;
 
-  // Group applications by status for kanban
-  const applicationsByStatus = useMemo(() => {
-    if (!applications) return { applied: [], interviewing: [], accepted: [] };
-
-    return {
-      applied: applications.filter((app: any) => app.status === "applied").slice(0, 5),
-      interviewing: applications.filter((app: any) => app.status === "interviewing").slice(0, 5),
-      accepted: applications.filter((app: any) => app.status === "accepted").slice(0, 5)
-    };
-  }, [applications]);
-
   // Top errors from master resume
   const topErrors = useMemo(() => {
     const errors = [];
@@ -100,8 +76,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       if (missingKeywords.length > 0) {
         errors.push({
           severity: "CRIT",
-          message: `${t.missionControl.missingKeyword} "${missingKeywords[0]}"`,
-          detail: `${t.missionControl.matchScoreImpact} -15%`,
+          message: `MISSING_CORE_KEYWORD: "${missingKeywords[0]}"`,
+          detail: "-15% DETECTABILITY",
           color: "text-rose-500"
         });
       }
@@ -109,8 +85,8 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       if (masterResume.formatIssues && masterResume.formatIssues.length > 0) {
         errors.push({
           severity: "WARN",
-          message: t.missionControl.dateFormatInconsistency,
-          detail: t.missionControl.atExperienceBlock,
+          message: "FORMAT_ANOMALY_DETECTED",
+          detail: "PARSING_INTEGRITY_COMPROMISED",
           color: "text-[#F59E0B]"
         });
       }
@@ -118,318 +94,227 @@ export function MissionControl({ onNavigate, onGenerateCoverLetter, onUpload }: 
       if (missingKeywords.length > 1) {
         errors.push({
           severity: "WARN",
-          message: `${t.missionControl.missingKeyword} '${missingKeywords[1]}'`,
-          detail: `${t.missionControl.matchScoreImpact} -5%`,
+          message: `KEYWORD_GAP: "${missingKeywords[1]}"`,
+          detail: "-5% RELEVANCE",
           color: "text-[#F59E0B]"
         });
       }
     }
 
     return errors.slice(0, 3);
-  }, [masterResume, missingKeywords, t]);
+  }, [masterResume, missingKeywords]);
 
-  const userName = currentUser?.name?.split(" ")[0] || "there";
+  const userName = currentUser?.name?.split(" ")[0] || "User";
 
   return (
-    <div className="space-y-10 pb-24 md:pb-6 max-w-5xl mx-auto px-4">
-      {/* 1. Dashboard Header */}
-      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-4">
+    <div className="space-y-8 pb-24 md:pb-6 max-w-6xl mx-auto px-4 font-mono">
+      {/* 1. TERMINAL HEADER */}
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 pt-4 border-b-2 border-slate-200 pb-6">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">System Online</span>
+            <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse box-shadow-glow"></div>
+            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] font-mono">
+              SYSTEM_ONLINE :: {new Date().toLocaleTimeString()}
+            </span>
           </div>
-          <h1 className="text-4xl font-black text-[#0F172A] tracking-tight">
-            {t.missionControl.welcomeBack}, <span className="text-indigo-600">{userName}</span>.
+          <h1 className="text-3xl md:text-5xl font-black text-[#0F172A] tracking-tighter uppercase relative">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-500">
+              Mission Control
+            </span>
+            <span className="absolute -top-2 -right-4 text-[10px] bg-slate-100 px-1 py-0.5 rounded text-slate-500 font-mono">V.4.0</span>
           </h1>
-          <p className="text-[#64748B] mt-2 text-lg">
-            Your professional visibility is currently <span className="text-[#0F172A] font-bold">{visibilityScore < 50 ? 'Critical' : 'Good'}</span>.
+          <p className="text-[#64748B] mt-2 font-mono text-xs uppercase tracking-widest">
+            Logged in as: <span className="text-indigo-600 font-bold">{userName}</span>
           </p>
         </div>
 
         <div className="flex flex-wrap gap-3">
           <Button
             onClick={onUpload}
-            className="h-12 px-6 bg-white border-2 border-slate-100 text-[#0F172A] hover:bg-slate-50 font-bold rounded-2xl shadow-sm"
+            variant="outline"
+            className="h-10 px-6 border-2 border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white font-bold rounded-none uppercase tracking-widest text-xs transition-all"
           >
-            <Plus className="h-4 w-4 mr-2" />
-            Upload New CV
+            <Plus className="h-3 w-3 mr-2" />
+            Init_Upload
           </Button>
           <Button
             onClick={() => onNavigate("match")}
-            className="h-12 px-6 bg-[#0F172A] text-white hover:bg-slate-900 font-bold rounded-2xl shadow-xl shadow-slate-200"
+            className="h-10 px-6 bg-[#0F172A] text-white hover:bg-emerald-600 font-bold rounded-none uppercase tracking-widest text-xs shadow-none border-2 border-[#0F172A] hover:border-emerald-600 transition-all"
           >
-            <Zap className="h-4 w-4 mr-2" />
-            Elite Match
+            <Zap className="h-3 w-3 mr-2" />
+            Run_Elite_Match
           </Button>
         </div>
       </header>
 
-      {/* 2. CORE DASHBOARD: SCORE & ACTIONS */}
+      {/* 2. DASHBOARD DATA GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        {/* Visibility Gauge Card */}
-        <div className="lg:col-span-12 xl:col-span-8 bg-white rounded-[2rem] border-2 border-[#E2E8F0] p-8 md:p-12 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Target className="h-64 w-64 -mr-20 -mt-20" />
+        {/* STATUS GAUGE (ASCII STYLE) */}
+        <div className="lg:col-span-8 bg-[#F8FAFC] rounded-sm border-2 border-slate-200 p-8 relative overflow-hidden group hover:border-slate-400 transition-colors">
+          <div className="absolute top-2 right-2 text-[10px] font-black text-slate-300 uppercase tracking-widest">
+            VISIBILITY_MONITOR
           </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
-            {/* Gauge SVG */}
-            <div className="relative h-56 w-56 shrink-0">
-              <svg className="w-full h-full transform -rotate-90">
-                <circle
-                  cx="112"
-                  cy="112"
-                  r="100"
-                  stroke="currentColor"
-                  strokeWidth="20"
-                  fill="transparent"
-                  className="text-slate-100"
-                />
-                <motion.circle
-                  initial={{ strokeDashoffset: 628 }}
-                  animate={{ strokeDashoffset: 628 - (628 * visibilityScore) / 100 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                  cx="112"
-                  cy="112"
-                  r="100"
-                  stroke="currentColor"
-                  strokeWidth="20"
-                  strokeDasharray="628"
-                  strokeLinecap="round"
-                  fill="transparent"
-                  className={`${visibilityScore < 50 ? 'text-rose-500' : visibilityScore < 80 ? 'text-amber-500' : 'text-emerald-500'}`}
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className={`text-6xl font-black ${visibilityScore < 50 ? 'text-rose-600' : visibilityScore < 80 ? 'text-amber-600' : 'text-emerald-600'}`}>
+          <div className="flex flex-col md:flex-row items-center gap-12">
+            {/* Retro Gauge */}
+            <div className="relative h-48 w-48 shrink-0 flex items-center justify-center">
+              <div className="absolute inset-0 border-4 border-slate-200 rounded-full border-dashed animate-[spin_10s_linear_infinite]"></div>
+              <div className="absolute inset-2 border-2 border-slate-100 rounded-full"></div>
+
+              <div className="text-center z-10">
+                <div className={`text-5xl font-black font-mono tracking-tighter ${visibilityScore < 50 ? 'text-rose-500' : visibilityScore < 80 ? 'text-amber-500' : 'text-emerald-500'
+                  }`}>
                   {visibilityScore}
-                </span>
-                <span className="text-xs font-black text-slate-400 uppercase tracking-widest mt-1">/ 100</span>
+                </div>
+                <div className="w-full h-px bg-slate-300 my-2"></div>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  ATS_SCORE
+                </div>
               </div>
             </div>
 
             <div className="flex-1 space-y-6 text-center md:text-left">
               <div>
-                <h3 className="text-2xl font-black text-[#0F172A] mb-2 uppercase tracking-tight">
-                  Current Visibility Status
+                <h3 className="text-xl font-black text-[#0F172A] mb-2 uppercase tracking-tight font-mono flex items-center gap-2 justify-center md:justify-start">
+                  {visibilityScore < 50 && <ShieldAlert className="h-5 w-5 text-rose-500" />}
+                  STATUS: <span className={`${visibilityScore < 50 ? 'text-rose-600 bg-rose-50' :
+                      visibilityScore < 80 ? 'text-amber-600 bg-amber-50' :
+                        'text-emerald-600 bg-emerald-50'
+                    } px-2 py-0.5`}>
+                    {visibilityScore < 50 ? 'CRITICAL_FAILURE' : visibilityScore < 80 ? 'WARNING_LEVEL' : 'OPTIMAL'}
+                  </span>
                 </h3>
-                <p className="text-slate-500 text-lg leading-relaxed">
+                <p className="text-slate-500 text-sm font-mono leading-relaxed mt-2">
                   {visibilityScore < 50
-                    ? "Your profile is almost invisible to ATS robots. You likely won't survive the first robotic screening."
+                    ? ">> ALERT: CV content is invisible to standard parsers. Immediate reconstruction required."
                     : visibilityScore < 80
-                      ? "Your profile is readable, but you're missing key competitive signals."
-                      : "Excellent. You are in the top 5% of candidate visibility."}
+                      ? ">> NOTICE: Content legible but lacks competitive density. Optimization recommended."
+                      : ">> SYSTEM: Visibility optimized. Ready for deployment."}
                 </p>
               </div>
 
-              {/* Sprint Progress */}
-              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                <div className="flex items-center justify-between mb-3 text-xs font-black text-slate-400 uppercase tracking-widest">
-                  <span>🎯 Sprint Goal: Reach 95%</span>
-                  <span className="text-slate-600">364 Days Left</span>
+              {/* Stats Row */}
+              <div className="grid grid-cols-2 gap-4 mt-4 text-xs font-mono">
+                <div className="p-3 bg-white border border-slate-200">
+                  <div className="text-slate-400 uppercase tracking-wider mb-1">Keywords</div>
+                  <div className="font-bold text-slate-800">{masterResume?.matchedKeywords?.length || 0} MATCHED</div>
                 </div>
-                <div className="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: "35%" }} // Example progress
-                    className="h-full bg-[#1E293B]"
-                  ></motion.div>
+                <div className="p-3 bg-white border border-slate-200">
+                  <div className="text-slate-400 uppercase tracking-wider mb-1">Errors</div>
+                  <div className="font-bold text-rose-500">{criticalErrorsCount} CRITICAL</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Start Critical Actions Checklist */}
-        <div className="lg:col-span-12 xl:col-span-4 space-y-4">
-          <h3 className="px-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] flex items-center justify-between">
-            🚨 Critical Actions
-            <span className="bg-rose-100 text-rose-600 px-2 py-0.5 rounded text-[10px]">{criticalErrorsCount} Fixes</span>
-          </h3>
-
-          {topErrors.map((error, idx) => (
-            <motion.div
-              key={idx}
-              whileHover={{ scale: 1.02 }}
-              className="p-5 bg-white border-2 border-[#E2E8F0] rounded-[1.5rem] shadow-sm cursor-pointer group hover:border-[#1E293B] transition-all"
-              onClick={() => onNavigate("master-cvs")}
-            >
-              <div className="flex items-start gap-4">
-                <div className={`shrink-0 h-10 w-10 rounded-xl flex items-center justify-center ${error.severity === 'CRIT' ? 'bg-rose-50 text-rose-500' : 'bg-amber-50 text-amber-500'}`}>
-                  {error.severity === 'CRIT' ? <AlertCircle className="h-5 w-5" /> : <Wrench className="h-5 w-5" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-black text-[#0F172A] mb-1 line-clamp-1">{error.message}</p>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${error.severity === 'CRIT' ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-600'}`}>
-                      Impact: {error.detail.includes('-') ? error.detail.split('-')[1] : error.detail.replace('Score:', '')}
-                    </span>
-                  </div>
-                </div>
-                <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-[#0F172A] mt-1" />
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
-                  <Zap className="h-3 w-3 fill-current" /> Auto-fix available
-                </span>
-                <span className="text-[10px] font-black uppercase text-indigo-600 group-hover:translate-x-1 transition-transform">
-                  Fix Now →
-                </span>
-              </div>
-            </motion.div>
-          ))}
-
-          <button
-            onClick={() => onNavigate("master-cvs")}
-            className="w-full py-4 border-2 border-dashed border-slate-200 rounded-[1.5rem] text-xs font-black text-slate-400 uppercase tracking-widest hover:border-slate-300 hover:text-slate-600 transition-all"
-          >
-            View Action Plan Checklist
-          </button>
-        </div>
-      </div>
-
-      {/* 3. ANALYTICS & ROBOT VIEW SECTION */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        {/* Performance Cards */}
-        <div className="lg:col-span-4 grid grid-cols-2 gap-4">
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between">
-            <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
-              <Activity className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="text-2xl font-black text-[#0F172A]">{activeApplications}</span>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Apps</p>
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between">
-            <div className="h-10 w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-              <TrendingUp className="h-5 w-5" />
-            </div>
-            <div>
-              <span className="text-2xl font-black text-[#0F172A]">100%</span>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Success Rate</p>
-            </div>
-          </div>
-          <div className="col-span-2 bg-[#0F172A] p-6 rounded-3xl shadow-xl flex items-center justify-between group overflow-hidden relative">
-            <div className="absolute right-0 bottom-0 opacity-10 group-hover:scale-110 transition-transform">
-              <Zap className="h-24 w-24 -mr-6 -mb-6 text-white" />
-            </div>
-            <div className="relative z-10">
-              <h4 className="text-white font-bold mb-1">Weekly Report Ready</h4>
-              <p className="text-slate-400 text-[10px] line-clamp-1">See how you compare against top candidates.</p>
-            </div>
-            <Button size="sm" variant="ghost" className="text-white hover:bg-white/10 relative z-10">
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Robot View Section */}
-        <div className="lg:col-span-8 bg-[#0F172A] rounded-[2.5rem] border-8 border-slate-100 border-double overflow-hidden relative shadow-2xl min-h-[400px]">
-          <div className="absolute top-0 left-0 right-0 p-6 border-b border-white/5 bg-white/5 backdrop-blur-md z-20 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-rose-500"></div>
-                <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-              </div>
-              <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">CVDebug_Neural_Parser_v4.0.1</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-[9px] font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20 uppercase tracking-widest hidden sm:inline">ROBOT_EYE_SCAN_ACTIVE</span>
-              <Wrench className="h-4 w-4 text-white/40 cursor-pointer hover:text-white transition-colors" />
-            </div>
+        {/* SYSTEM ALERTS LIST */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] font-mono">
+              SYSTEM_ALERTS
+            </h3>
+            <span className="bg-rose-100 text-rose-600 text-[10px] font-bold px-1.5 py-0.5 font-mono">
+              {topErrors.length} ACTIVE
+            </span>
           </div>
 
-          <div className="p-10 pt-24 font-mono text-[11px] leading-relaxed text-slate-400 h-full overflow-y-auto custom-scrollbar">
-            {masterResume?.ocrText ? (
-              <div className="space-y-6">
-                <div className="flex items-start gap-4 py-2 border-b border-white/5 animate-in fade-in slide-in-from-left-4 duration-500">
-                  <span className="text-emerald-500 shrink-0 font-black">[MATCH]</span>
-                  <div className="flex-1">
-                    <span className="text-white font-bold block mb-1">Personal Identifier Detected </span>
-                    <span className="opacity-60 text-[10px]"> bhargab.saikia | bsaikia@cvdebug.ai</span>
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-1 py-0.5 rounded border border-emerald-500/30">VALIDATED</span>
-                      <span className="text-[8px] opacity-40 hover:opacity-100 cursor-pointer underline">Click to edit metadata</span>
-                    </div>
-                  </div>
+          <div className="space-y-2">
+            {topErrors.map((error, idx) => (
+              <div
+                key={idx}
+                onClick={() => onNavigate("master-cvs")}
+                className="group p-4 bg-white border-l-4 border-l-rose-500 border-y border-r border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50 transition-all"
+              >
+                <div className="flex justify-between items-start mb-1">
+                  <span className={`text-[10px] font-black uppercase font-mono ${error.color}`}>
+                    [{error.severity}]
+                  </span>
+                  <ArrowRight className="h-3 w-3 text-slate-300 group-hover:text-slate-800" />
                 </div>
-
-                {/* Image Trap Warning Inline */}
-                {(masterResume.ocrText.length < 100 || masterResume.formatIssues?.some((f: any) => f.issue.toLowerCase().includes('parse') || f.issue.toLowerCase().includes('image'))) && (
-                  <div className="p-4 bg-rose-500/10 border-2 border-rose-500/30 rounded-2xl animate-pulse">
-                    <p className="text-rose-400 font-black uppercase text-[10px] flex items-center gap-2 mb-2">
-                      <AlertCircle className="h-3 w-3" /> Critical Security: Image Trap Detected
-                    </p>
-                    <p className="text-[10px] text-rose-300 leading-normal">
-                      Robots cannot see the text in your CV. This is a 100% rejection risk. Fix formatting now.
-                    </p>
-                  </div>
-                )}
-
-                <div className="text-white/80 relative z-10 leading-[1.8] tracking-wide whitespace-pre-wrap select-all selection:bg-indigo-500/30">
-                  <span className="text-indigo-400 font-bold mr-2 inline-block animate-pulse">&gt;</span>
-                  {masterResume.ocrText.slice(0, 1500)}...
-                  <div className="mt-4 inline-block px-1.5 py-0.5 bg-white text-black font-black animate-pulse">_</div>
-                </div>
-
-                <div className="h-32"></div> {/* Padding for scroll */}
+                <h4 className="font-bold text-slate-800 text-xs font-mono mb-1">{error.message}</h4>
+                <p className="text-[10px] text-slate-500 font-mono uppercase">{error.detail}</p>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20 text-slate-600 uppercase tracking-[0.2em] text-center">
-                <Terminal className="h-12 w-12 mb-4 opacity-20" />
-                <p className="max-w-[200px] leading-loose">Awaiting neural input stream...</p>
-                <Button variant="ghost" size="sm" onClick={onUpload} className="mt-8 border border-white/10 text-white hover:bg-white/5">
-                  Initialize Stream
-                </Button>
+            ))}
+
+            {topErrors.length === 0 && (
+              <div className="p-6 text-center border-2 border-dashed border-slate-200 text-slate-400 font-mono text-xs">
+                NO_ACTIVE_ALERTS
               </div>
             )}
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#0F172A] via-[#0F172A] to-transparent z-20 flex justify-center pb-8 pt-20">
-            <Button
-              onClick={() => onNavigate("master-cvs")}
-              className="bg-white/10 hover:bg-white/20 text-white font-black text-[10px] uppercase tracking-widest px-8 rounded-full border border-white/10 backdrop-blur-md"
-            >
-              View In-Depth Technical Report
-            </Button>
+          <Button
+            variant="ghost"
+            className="w-full text-[10px] font-mono uppercase tracking-widest text-slate-500 hover:text-slate-800"
+            onClick={() => onNavigate("master-cvs")}
+          >
+            // View_Full_Diagnostics
+          </Button>
+        </div>
+      </div>
+
+      {/* 3. NEURAL PARSER OUTPUT (The Robot View) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="lg:col-span-12">
+          <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] font-mono mb-4 flex items-center gap-2">
+            <Cpu className="h-4 w-4" />
+            NEURAL_PARSER_OUTPUT_STREAM
+          </h3>
+
+          <div className="bg-[#0c0c0c] rounded-lg border border-slate-800 p-6 font-mono text-xs relative overflow-hidden shadow-2xl min-h-[300px]">
+            {/* Terminal UI Elements */}
+            <div className="absolute top-0 left-0 right-0 h-8 bg-[#1a1a1a] border-b border-slate-800 flex items-center px-4 gap-2">
+              <div className="h-2 w-2 rounded-full bg-rose-500"></div>
+              <div className="h-2 w-2 rounded-full bg-amber-500"></div>
+              <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+              <div className="ml-4 text-[10px] text-slate-500">root@cvdebug-parser:~</div>
+            </div>
+
+            <div className="mt-8 text-slate-300 space-y-1 h-[300px] overflow-y-auto custom-scrollbar pr-2">
+              {masterResume?.ocrText ? (
+                <>
+                  <div className="text-emerald-500 mb-4">$ cat parsed_resume_data.txt</div>
+                  <div className="whitespace-pre-wrap leading-relaxed opacity-80">
+                    {masterResume.ocrText}
+                  </div>
+                  <div className="mt-4 text-emerald-500 animate-pulse">_</div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-slate-600">
+                  <Terminal className="h-12 w-12 mb-4 opacity-20" />
+                  <p>WAITING_FOR_INPUT_STREAM...</p>
+                </div>
+              )}
+            </div>
+
+            {/* Overlay Data */}
+            <div className="absolute top-12 right-6 flex flex-col items-end gap-1 pointer-events-none">
+              <div className="text-[10px] text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                PARSE_CONFIDENCE: 98.2%
+              </div>
+              <div className="text-[10px] text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                ENTITIES: {masterResume?.matchedKeywords?.length || 0}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 4. SUCCESS INSIGHTS AREA */}
-      <section>
-        <div className="flex items-center justify-between mb-6 px-2">
-          <div>
-            <h3 className="text-xl font-black text-[#0F172A]">Project Success Tracker</h3>
-            <p className="text-xs font-medium text-slate-400">Based on your latest 5 applications</p>
-          </div>
-          <Button variant="ghost" size="sm" onClick={() => onNavigate("projects")} className="text-[10px] font-black uppercase tracking-widest text-indigo-600">
-            Manage All Projects →
+      {/* 4. SUCCESS INSIGHTS (Footer) */}
+      <div className="border-t-2 border-slate-100 pt-8">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-black text-[#0F172A] font-mono uppercase">Mission Logistics</h3>
+          <Button variant="ghost" size="sm" onClick={() => onNavigate("projects")} className="text-[10px] font-black uppercase tracking-widest text-indigo-600 font-mono">
+            View_All_Projects →
           </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <SuccessInsightsWidget />
           <ApplicationMicroTracker />
-          <div className="bg-white p-8 rounded-[2rem] border border-slate-100 flex flex-col justify-center items-center text-center group transition-all hover:shadow-xl hover:-translate-y-1">
-            <div className="h-16 w-16 bg-slate-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <LayoutDashboard className="h-8 w-8 text-slate-300" />
-            </div>
-            <h4 className="font-black text-[#0F172A] mb-2 uppercase tracking-tight text-sm">Application Board</h4>
-            <p className="text-[11px] text-slate-400 px-4 leading-relaxed">
-              Track your journey from first scan to final offer. Manage interviews and follow-ups.
-            </p>
-            <Button variant="outline" size="sm" className="mt-6 font-bold rounded-xl" onClick={() => onNavigate("projects")}>
-              Open Board
-            </Button>
-          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

@@ -65,6 +65,7 @@ import { useActivityReminder } from "@/hooks/use-activity-reminder";
 import { PlanExpirationModal } from "@/components/dashboard/PlanExpirationModal";
 import { usePlanExpiration } from "@/hooks/use-plan-expiration";
 import { ExperienceLevelOnboarding } from "@/components/onboarding/ExperienceLevelOnboarding";
+import { CVVersionAnalytics } from "@/components/dashboard/CVVersionAnalytics"; // IMPORTED
 
 // Lazy load heavy components for better performance
 const ResumeBuilder = lazy(() => import("@/components/resume/ResumeBuilder").then(m => ({ default: m.ResumeBuilder })));
@@ -361,6 +362,161 @@ export default function Dashboard() {
 
   const renderContent = () => {
     switch (currentView) {
+      case 'mission':
+        return (
+          <MissionControl
+            onNavigate={handleNavigate}
+            onGenerateCoverLetter={handleGenerateCoverLetter}
+            onUpload={() => fileInputRef.current?.click()}
+          />
+        );
+      case 'master-cvs':
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            <ResumeGrid
+              resumes={resumes || []}
+              setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
+              handleDelete={handleDelete}
+              onUpload={() => fileInputRef.current?.click()}
+              onCreateManual={handleCreateManualResume}
+            />
+          </div>
+        );
+      case 'match':
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+              <EliteMatchToolLazy onUpgrade={handleUpgrade} />
+            </Suspense>
+          </div>
+        );
+      case 'tools':
+        // Check if user has Career Sprint for lock icons
+        const hasCareerSprint =
+          currentUser?.subscriptionTier === "interview_sprint" &&
+          (currentUser?.sprintExpiresAt ? currentUser.sprintExpiresAt > Date.now() : true);
+
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
+                <span className="bg-[#1E293B] w-1.5 h-6 rounded-full inline-block"></span>
+                {t.dashboard.tools}
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* AI Bullet Rewriter */}
+                <button
+                  onClick={() => setCurrentView('bullet-rewriter')}
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-700 hover:shadow-[0_8px_30px_rgba(59,130,246,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                >
+                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0 text-[#1E293B] group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">auto_fix_high</span>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#1E293B] transition-colors flex items-center gap-2">
+                        {t.dashboard.bulletRewriter}
+                        {!hasCareerSprint && <Lock className="h-4 w-4 text-slate-400" />}
+                      </h3>
+                      <p className="text-[#64748B] text-sm">{t.dashboard.bulletRewriterDesc}</p>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Keyword Sniper Tool - Featured */}
+                <button
+                  onClick={() => setCurrentView('keyword-sniper')}
+                  className="group relative bg-[#FFFFFF] border border-orange-200 rounded-xl p-6 transition-all duration-300 hover:border-orange-400 hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                >
+                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] text-orange-600 group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">track_changes</span>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
+                        {t.dashboard.keywordSniper}
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
+                          {t.dashboard.featured}
+                        </span>
+                        {!hasCareerSprint && <Lock className="h-4 w-4 text-slate-400" />}
+                      </h3>
+                      <p className="text-[#64748B] text-sm">{t.dashboard.keywordSniperDesc}</p>
+                    </div>
+                  </div>
+                </button>
+
+                {/* Cover Letter Generator */}
+                <button
+                  onClick={() => setCurrentView('cover-letter')}
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-600 hover:shadow-[0_8px_30px_rgba(168,85,247,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                >
+                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center flex-shrink-0 text-[#334155] group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">description</span>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#334155] transition-colors flex items-center gap-2">
+                        {t.dashboard.coverLetterGen}
+                        {!hasCareerSprint && <Lock className="h-4 w-4 text-slate-400" />}
+                      </h3>
+                      <p className="text-[#64748B] text-sm">{t.dashboard.coverLetterGenDesc}</p>
+                    </div>
+                  </div>
+                </button>
+
+                {/* LinkedIn Optimizer */}
+                <button
+                  onClick={() => setCurrentView('linkedin')}
+                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-[#64748B] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
+                >
+                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="h-12 w-12 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 text-[#475569] group-hover:scale-110 transition-transform duration-300">
+                      <span className="material-symbols-outlined">visibility</span>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#475569] transition-colors flex items-center gap-2">
+                        {t.dashboard.linkedinOptimizer}
+                        {!hasCareerSprint && <Lock className="h-4 w-4 text-slate-400" />}
+                      </h3>
+                      <p className="text-[#64748B] text-sm">{t.dashboard.linkedinOptimizerDesc}</p>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 'analytics':
+        return (
+          <div className="space-y-8 pb-24 md:pb-6">
+            {user?.id && <CVVersionAnalytics userId={user.id} />}
+          </div>
+        );
+      case 'settings':
+        return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
+      case 'linkedin':
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <LinkedInOptimizer onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
+      case 'cover-letter':
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
+      case 'bullet-rewriter':
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+            <BulletRewriter onUpgrade={handleUpgrade} />
+          </Suspense>
+        );
+      case 'writing-forge':
+        return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
+      case 'keyword-sniper':
+        return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
       case 'projects':
         if (selectedProject) {
           return (
@@ -391,248 +547,6 @@ export default function Dashboard() {
             }}
           />
         );
-      case 'mission':
-        return (
-          <MissionControl
-            onNavigate={handleNavigate}
-            onGenerateCoverLetter={handleGenerateCoverLetter}
-            onUpload={() => fileInputRef.current?.click()}
-          />
-        );
-      case 'master-cvs':
-        return (
-          <div className="space-y-8 pb-24 md:pb-6">
-            {/* Header Section */}
-            <div className="bg-[#FFFFFF] rounded-2xl shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-[#E2E8F0] p-8">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                <div className="space-y-2">
-                  <h1 className="text-3xl md:text-4xl font-bold text-[#0F172A]">{t.dashboard.masterCvs}</h1>
-                  <p className="text-[#475569] text-base">{t.dashboard.masterCvsSubtitle}</p>
-                </div>
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="px-6 py-3 bg-[#1E293B] hover:bg-[#0F172A] text-white font-semibold rounded-lg shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_40px_-10px_rgba(59,130,246,0.3)] transition-all duration-200 flex items-center gap-2"
-                  data-onboarding="upload-button"
-                >
-                  <Upload className="h-5 w-5" />
-                  {t.dashboard.uploadCv}
-                </Button>
-              </div>
-            </div>
-
-            {/* Resume Grid */}
-            <ResumeGrid
-              resumes={resumes || []}
-              setSelectedResume={(resume) => setSelectedResumeId(resume._id)}
-              handleDelete={handleDelete}
-              onUpload={() => fileInputRef.current?.click()}
-              onCreateManual={handleCreateManualResume}
-            />
-          </div>
-        );
-      case 'tools':
-        // Check if user has Career Sprint for lock icons
-        const hasCareerSprint =
-          currentUser?.subscriptionTier === "interview_sprint" &&
-          (currentUser?.sprintExpiresAt ? currentUser.sprintExpiresAt > Date.now() : true);
-
-        return (
-          <div className="space-y-8 pb-24 md:pb-6">
-            {/* AI Tools Section */}
-            <div>
-              <h2 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
-                <span className="bg-[#1E293B] w-1.5 h-6 rounded-full inline-block"></span>
-                {t.dashboard.tools}
-              </h2>
-
-              <div className="grid grid-cols-1 gap-4">
-                {/* AI Bullet Rewriter */}
-                <button
-                  onClick={() => setCurrentView('bullet-rewriter')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-700 hover:shadow-[0_8px_30px_rgba(59,130,246,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center flex-shrink-0 text-[#1E293B] group-hover:scale-110 transition-transform duration-300">
-                      <span className="material-symbols-outlined">auto_fix_high</span>
-                    </div>
-                    <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#1E293B] transition-colors flex items-center gap-2">
-                        {t.dashboard.bulletRewriter}
-                        {!hasCareerSprint && (
-                          <Lock className="h-4 w-4 text-slate-400" />
-                        )}
-                      </h3>
-                      <p className="text-[#64748B] text-sm">
-                        {t.dashboard.bulletRewriterDesc}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-slate-600">arrow_forward</span>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Cover Letter Generator */}
-                <button
-                  onClick={() => setCurrentView('cover-letter')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-slate-600 hover:shadow-[0_8px_30px_rgba(168,85,247,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center flex-shrink-0 text-[#334155] group-hover:scale-110 transition-transform duration-300">
-                      <span className="material-symbols-outlined">description</span>
-                    </div>
-                    <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#334155] transition-colors flex items-center gap-2">
-                        {t.dashboard.coverLetterGen}
-                        {!hasCareerSprint && (
-                          <Lock className="h-4 w-4 text-slate-400" />
-                        )}
-                      </h3>
-                      <p className="text-[#64748B] text-sm">
-                        {t.dashboard.coverLetterGenDesc}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-[#334155]">arrow_forward</span>
-                    </div>
-                  </div>
-                </button>
-
-                {/* LinkedIn Optimizer */}
-                <button
-                  onClick={() => setCurrentView('linkedin')}
-                  className="group relative bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 transition-all duration-300 hover:border-[#64748B] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#F8FAFC] to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center flex-shrink-0 text-[#475569] group-hover:scale-110 transition-transform duration-300">
-                      <span className="material-symbols-outlined">visibility</span>
-                    </div>
-                    <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 group-hover:text-[#475569] transition-colors flex items-center gap-2">
-                        {t.dashboard.linkedinOptimizer}
-                        {!hasCareerSprint && (
-                          <Lock className="h-4 w-4 text-slate-400" />
-                        )}
-                      </h3>
-                      <p className="text-[#64748B] text-sm">
-                        {t.dashboard.linkedinOptimizerDesc}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="material-symbols-outlined text-[#94A3B8]">arrow_forward</span>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Keyword Sniper Tool - Featured */}
-                <button
-                  onClick={() => setCurrentView('keyword-sniper')}
-                  className="group relative bg-[#FFFFFF] border border-orange-200 rounded-xl p-6 transition-all duration-300 hover:border-orange-400 hover:shadow-[0_8px_30px_rgba(249,115,22,0.1)] overflow-hidden shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="relative flex flex-col md:flex-row md:items-center gap-4">
-                    <div className="h-12 w-12 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] text-orange-600 group-hover:scale-110 transition-transform duration-300">
-                      <span className="material-symbols-outlined">track_changes</span>
-                    </div>
-                    <div className="flex-1 text-left">
-                      <h3 className="text-lg font-bold text-[#0F172A] mb-1 flex items-center gap-2 group-hover:text-orange-600 transition-colors">
-                        {t.dashboard.keywordSniper}
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-100 text-orange-700 border border-orange-200 uppercase tracking-wide">
-                          {t.dashboard.featured}
-                        </span>
-                        {!hasCareerSprint && (
-                          <Lock className="h-4 w-4 text-slate-400" />
-                        )}
-                      </h3>
-                      <p className="text-[#64748B] text-sm">
-                        {t.dashboard.keywordSniperDesc}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="text-xs font-bold text-orange-700 bg-orange-50 px-3 py-1.5 rounded-md border border-orange-200 hover:bg-orange-100 transition-colors uppercase">
-                        {t.dashboard.openTool}
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      case 'profile':
-        return (
-          <div className="space-y-6 pb-24 md:pb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0F172A]">{t.dashboard.profile}</h1>
-            <div className="space-y-4">
-              <div className="p-6 rounded-2xl bg-[#FFFFFF] border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold text-[#0F172A]">{t.dashboard.credits}</h3>
-                  <span className="text-2xl font-black text-[#1E293B]">
-                    {currentUser?.credits || 0}
-                  </span>
-                </div>
-                <Button
-                  onClick={() => setShowPricing(true)}
-                  className="w-full bg-gradient-to-r from-[#1E293B] to-[#334155] hover:opacity-90 text-white font-bold shadow-[0_10px_40px_-10px_rgba(139,92,246,0.3)]"
-                >
-                  {t.dashboard.buyCredits}
-                </Button>
-              </div>
-              {currentUser?.sprintExpiresAt && (
-                <SprintProgressBar />
-              )}
-
-              {/* Activity Reminder Banner */}
-              <ActivityReminderBanner
-                show={showReminderBanner}
-                daysSinceActive={daysSinceActive}
-                lastScore={resumes && resumes.length > 0 ? resumes[0].score : undefined}
-                onDismiss={dismissReminder}
-                onAction={() => {
-                  dismissReminder();
-                  setCurrentView('master-cvs');
-                }}
-              />
-            </div>
-          </div>
-        );
-      case 'templates':
-        return <TemplatesView />;
-      case 'linkedin':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-            <LinkedInOptimizer onUpgrade={handleUpgrade} />
-          </Suspense>
-        );
-      case 'cover-letter':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-            <CoverLetterGenerator initialApplicationId={preSelectedApplicationId} onUpgrade={handleUpgrade} />
-          </Suspense>
-        );
-      case 'bullet-rewriter':
-        return (
-          <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-            <BulletRewriter onUpgrade={handleUpgrade} />
-          </Suspense>
-        );
-      case 'writing-forge':
-        return <WritingForge resumeId={writingForgeResumeId} onUpgrade={handleUpgrade} />;
-      case 'keyword-sniper':
-        return <KeywordSniperView onBack={() => setCurrentView('tools')} onUpgrade={handleUpgrade} />;
-      case 'match':
-        return (
-          <div className="space-y-8 pb-24 md:pb-6">
-            <Suspense fallback={<div className="flex items-center justify-center py-24"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
-              <EliteMatchToolLazy onUpgrade={handleUpgrade} />
-            </Suspense>
-          </div>
-        );
-      case 'settings':
-        return <SettingsView onOpenPricing={() => setShowPricing(true)} />;
       default:
         return (
           <MissionControl
@@ -693,7 +607,7 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 relative z-10">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 relative z-10 custom-scrollbar">
           <div className="max-w-6xl mx-auto space-y-8">
             {renderContent()}
           </div>
@@ -801,11 +715,12 @@ export default function Dashboard() {
           </div>
         }>
           <ResumePreview
-            resume={resumes.find((r: any) => r._id === previewResumeId)}
+            resumeId={previewResumeId}
             onClose={() => setPreviewResumeId(null)}
             onEdit={() => {
               setPreviewResumeId(null);
-              handleEditResume(previewResumeId);
+              setEditingResumeId(previewResumeId);
+              setShowResumeBuilder(true);
             }}
           />
         </Suspense>
@@ -814,53 +729,54 @@ export default function Dashboard() {
       <NewYearPromoModal
         open={showNewYearPromo}
         onOpenChange={setShowNewYearPromo}
-        onUnlock={() => {
+        onUpgrade={() => {
           setShowNewYearPromo(false);
-          setInitialPlan("single_scan");
           setShowPricing(true);
         }}
       />
 
-      <PaymentSuccessModal
-        open={showPaymentSuccess}
-        onClose={() => setShowPaymentSuccess(false)}
-        plan={paymentSuccessPlan}
-      />
-
-      {/* Onboarding Tour for First-Time Users */}
-      {showOnboarding && (
-        <OnboardingTour
-          onComplete={completeOnboarding}
-          onSkip={skipOnboarding}
-        />
-      )}
-
-      {/* Ecosystem Integration Prompts (FREE) */}
-      {user && (
-        <EcosystemPrompts
-          userId={user.id}
-          userScore={resumes && resumes.length > 0 ? resumes[0].score : undefined}
-        />
-      )}
-
-      {/* Plan Expiration Modal */}
-      {showExpirationModal && expiredTier && expirationReason && (
-        <PlanExpirationModal
-          isOpen={showExpirationModal}
-          onClose={() => setShowExpirationModal(false)}
-          tier={expiredTier}
-          reason={expirationReason}
-        />
-      )}
-
-      {/* Experience Level Onboarding */}
-      <ExperienceLevelOnboarding
-        open={showExperienceOnboarding}
-        onComplete={() => {
-          localStorage.setItem("experience_onboarding_completed", "true");
-          setShowExperienceOnboarding(false);
+      <PlanExpirationModal
+        open={showExpirationModal}
+        onOpenChange={setShowExpirationModal}
+        onUpgrade={() => {
+          setShowExpirationModal(false);
+          setShowPricing(true);
         }}
+        tier={expiredTier}
+        reason={expirationReason}
       />
+
+      {showExperienceOnboarding && (
+        <ExperienceLevelOnboarding
+          open={showExperienceOnboarding}
+          onOpenChange={setShowExperienceOnboarding}
+          onComplete={() => {
+            setShowExperienceOnboarding(false);
+            localStorage.setItem("experience_onboarding_completed", "true");
+          }}
+        />
+      )}
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        open={showOnboarding}
+        onComplete={completeOnboarding}
+        onSkip={skipOnboarding}
+      />
+
+      {/* Ecosystem Prompts */}
+      <EcosystemPrompts
+        currentView={currentView}
+        onViewChange={setCurrentView}
+      />
+
+      {showPaymentSuccess && (
+        <PaymentSuccessModal
+          open={showPaymentSuccess}
+          onOpenChange={setShowPaymentSuccess}
+          plan={paymentSuccessPlan}
+        />
+      )}
     </div>
   );
 }
