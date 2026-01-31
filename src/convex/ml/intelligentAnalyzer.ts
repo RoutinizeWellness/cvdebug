@@ -16,6 +16,7 @@ import {
 } from "./intelligentKeywordExtractor";
 import { classifyRole, RoleCategory } from "../ai/config/keywords";
 import { analyzeSEOContent } from "../../lib/intelligentSEO";
+import { detectMilitaryJargon } from "./militaryTranslator";
 
 export interface IntelligentAnalysisResult {
   // Scores
@@ -148,8 +149,24 @@ export function analyzeResumeIntelligently(
     scores,
     roleInfo.category,
     specificMetricCount,
-    isEntryLevel
   );
+
+  // Step 6.5: Military Jargon Detection
+  const militaryJargon = detectMilitaryJargon(resumeText);
+  if (militaryJargon.length > 0) {
+    console.log(`[Intelligent Analyzer] Detected ${militaryJargon.length} military terms`);
+
+    // Add to recommendations with high priority
+    militaryJargon.forEach(term => {
+      recommendations.unshift({
+        category: "content",
+        priority: "critical",
+        message: `Military Lingo: "${term.term}" is confusing ATS robots.`,
+        actionable: `Translate "${term.term}" to "${term.civilian}" to instantly improve readability. ${term.impact}.`,
+        impact: 15
+      });
+    });
+  }
 
   console.log(`[Intelligent Analyzer] Generated ${recommendations.length} recommendations`);
 
