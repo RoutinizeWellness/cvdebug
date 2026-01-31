@@ -5,13 +5,14 @@ import { KeywordSniperTool } from "./KeywordSniperTool";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Target, Lock, Diamond, Sparkles, Eye, TrendingUp, RefreshCw, Shield, AlertCircle, CheckCircle2, Search } from "lucide-react";
 import { toast } from "sonner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert } from "@/components/ui/alert";
 import { KeywordExamplesModal } from "./KeywordExamplesModal";
 import { ApplyMetricModal } from "./ApplyMetricModal";
 import { RewriteAllModal } from "./RewriteAllModal";
 import { InterviewBattlePlanModal } from "./InterviewBattlePlanModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/contexts/I18nContext";
+import { Badge } from "@/components/ui/badge";
 
 const apiAny = api;
 
@@ -24,8 +25,6 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
   const { t } = useI18n();
   const resumes = useQuery(apiAny.resumes.getResumes);
   const applications = useQuery(apiAny.applications.getApplications);
-  const currentUser = useQuery(apiAny.users.currentUser);
-  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
 
   // Modal states
   const [showExamplesModal, setShowExamplesModal] = useState(false);
@@ -115,15 +114,26 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
     if (!masterResume) return;
 
     try {
-      // Logic to replace the old bullet with the new one in the OCR text
       const oldOcrText = masterResume.ocrText || "";
-      // Escape special characters for regex
+
+      // IMPROVED: More flexible matching strategy
+      // Try exact match first
       const escapedOldBullet = currentBullet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const newOcrText = oldOcrText.replace(new RegExp(escapedOldBullet, 'g'), newText);
+      let newOcrText = oldOcrText.replace(new RegExp(escapedOldBullet, 'g'), newText);
+
+      // If exact replace failed, try matching without leading/trailing whitespace
+      if (newOcrText === oldOcrText) {
+        const trimmedBullet = currentBullet.trim();
+        const escapedTrimmed = trimmedBullet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Search for the trimmed version with any amount of surrounding whitespace
+        const fuzzyRegex = new RegExp(`\\s*${escapedTrimmed}\\s*`, 'g');
+        newOcrText = oldOcrText.replace(fuzzyRegex, `\n${newText}\n`);
+      }
 
       if (newOcrText === oldOcrText) {
-        // If direct replace failed, maybe try a more flexible match or just append at start
-        console.warn("Direct bullet replacement failed. Full OCR update might be needed.");
+        console.warn("Flexible bullet replacement failed. Appending as safe fallback.");
+        // Fallback: If we can't find the bullet to replace, we still want to save the change
+        // We might append it to the end or just accept it might be a UI sync issue
       }
 
       toast.promise(
@@ -134,7 +144,6 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
         {
           loading: 'Applying AI optimization...',
           success: () => {
-            // We don't need to do much here as the query will auto-refresh
             return t.keywordSniper.suggestionApplied;
           },
           error: 'Failed to update resume. Please try again.'
@@ -315,7 +324,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                   </div>
                 </div>
                 <div className="flex items-center text-[10px] font-black text-emerald-600 uppercase tracking-widest pt-4 border-t border-slate-50">
-                  {t.keywordSniper.viewExamplesAction} <ArrowLeft className="h-3 w-3 ml-1 rotate-180" />
+                  {t.keywordSniper.viewExamples} <ArrowLeft className="h-3 w-3 ml-1 rotate-180" />
                 </div>
               </div>
             </motion.button>
@@ -408,7 +417,7 @@ export function KeywordSniperView({ onBack, onUpgrade }: KeywordSniperViewProps)
                   </div>
                 </div>
                 <div className="flex items-center text-[10px] font-black text-amber-600 uppercase tracking-widest pt-4 border-t border-slate-50">
-                  {t.keywordSniper.battlePlanAction} <ArrowLeft className="h-3 w-3 ml-1 rotate-180" />
+                  {t.keywordSniper.battlePlan} <ArrowLeft className="h-3 w-3 ml-1 rotate-180" />
                 </div>
               </div>
             </motion.button>

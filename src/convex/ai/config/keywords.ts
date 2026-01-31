@@ -151,8 +151,8 @@ export const productKeywords = [
   "stakeholder management", "agile", "scrum", "kanban", "product launch",
   "product-market fit", "user personas", "customer journey", "feature prioritization",
   "product analytics", "mixpanel", "amplitude", "product roadmap", "go-to-market",
-  "pendo", "fullstory", "heap", "segment", "airtable", "notion", "trello", 
-  "asana", "monday.com", "clickup", "linear", "aha!", "roadmunk", 
+  "pendo", "fullstory", "heap", "segment", "airtable", "notion", "trello",
+  "asana", "monday.com", "clickup", "linear", "aha!", "roadmunk",
   "productboard", "miro", "mural", "lucidchart", "balsamiq", "axure"
 ];
 
@@ -221,7 +221,7 @@ export const softSkills = [
   "communication", "leadership", "problem solving", "teamwork", "collaboration",
   "adaptability", "creativity", "critical thinking", "time management", "emotional intelligence",
   "negotiation", "conflict resolution", "decision making", "mentoring", "presentation",
-  "strategic planning", "project management", "stakeholder management", "client facing", 
+  "strategic planning", "project management", "stakeholder management", "client facing",
   "analytical", "detail oriented", "organization", "flexibility", "interpersonal skills",
   "cross-functional collaboration", "remote collaboration", "async communication", "active listening",
   "cultural awareness", "empathy", "storytelling", "public speaking", "consensus building",
@@ -527,13 +527,68 @@ export const roleClassificationPatterns: Record<RoleCategory, RolePattern[]> = {
     { keywords: ["regression", "classification", "clustering", "predictive", "statistical", "nlp", "computer vision"], weight: 4 },
     { keywords: ["tensorflow", "pytorch", "keras", "big data", "etl", "data mining"], weight: 3 }
   ],
+  "Human Resources": [
+    { keywords: ["talent acquisition", "employee relations", "benefits", "payroll", "onboarding", "hris"], weight: 10, context: ["hr", "human resources", "recruiter", "manager"] },
+    { keywords: ["workday", "bamboo", "succession planning", "labor law", "performance management"], weight: 8 },
+    { keywords: ["shrm", "phr", "staffing", "recruiting"], weight: 6 }
+  ],
+  "Legal": [
+    { keywords: ["litigation", "legal research", "compliance", "corporate law", "contract"], weight: 10, context: ["attorney", "lawyer", "legal", "counsel"] },
+    { keywords: ["intellectual property", "arbitration", "regulatory", "due diligence"], weight: 8 },
+    { keywords: ["lexisnexis", "westlaw", "clio"], weight: 6 }
+  ],
+  "Education": [
+    { keywords: ["curriculum", "classroom management", "lesson planning", "instructional design"], weight: 10, context: ["teacher", "educator", "instructor", "professor"] },
+    { keywords: ["student assessment", "special education", "k-12", "higher education"], weight: 8 },
+    { keywords: ["canvas", "blackboard", "moodle"], weight: 6 }
+  ],
+  "Customer Service": [
+    { keywords: ["customer experience", "conflict resolution", "ticketing", "client relations"], weight: 10, context: ["support", "service", "customer", "representative"] },
+    { keywords: ["zendesk", "intercom", "retention", "account management"], weight: 8 },
+    { keywords: ["problem solving", "communication"], weight: 4 }
+  ],
+  "Sales": [
+    { keywords: ["quota attainment", "revenue growth", "pipeline", "b2b sales", "outside sales", "inside sales"], weight: 10, context: ["sales", "account executive", "representative", "manager"] },
+    { keywords: ["salesforce", "hubspot", "crm", "cold calling", "prospecting", "closir"], weight: 8 },
+    { keywords: ["saas", "commission", "negotiation", "lead generation"], weight: 6 }
+  ],
   "General": [
     { keywords: ["management", "leadership", "strategy", "operations", "administration"], weight: 5 },
     { keywords: ["communication", "collaboration", "problem solving", "customer service"], weight: 3 }
+  ],
+  "Cloud & DevOps": [
+    { keywords: ["aws", "azure", "gcp", "docker", "kubernetes", "terraform", "ansible", "cloud architecture"], weight: 10, context: ["engineer", "architect", "devops"] },
+    { keywords: ["ci/cd", "jenkins", "gitlab ci", "github actions", "infrastructure as code", "platform engineering"], weight: 8 },
+    { keywords: ["site reliability", "sre", "monitoring", "prometheus", "grafana", "microservices"], weight: 6 }
+  ],
+  "Cybersecurity": [
+    { keywords: ["security", "cybersecurity", "penetration testing", "ethical hacking", "infosec", "soc"], weight: 10, context: ["analyst", "engineer", "specialist"] },
+    { keywords: ["compliance", "vulnerability assessment", "incident response", "firewall", "encryption"], weight: 8 },
+    { keywords: ["cissp", "ceh", "comptia security+", "iso 27001", "gdpr", "nist"], weight: 6 }
+  ],
+  "Project/Program Management": [
+    { keywords: ["project management", "program management", "pmo", "portfolio management"], weight: 10, context: ["manager", "director", "lead"] },
+    { keywords: ["scrum master", "agile coach", "pmp", "prince2", "budgeting", "resource planning"], weight: 8 },
+    { keywords: ["stakeholder engagement", "risk mitigation", "strategic planning", "milestone tracking"], weight: 6 }
+  ],
+  "Design & Creative": [
+    { keywords: ["ux design", "ui design", "product design", "graphic design", "visual design"], weight: 10, context: ["designer", "creative", "artist"] },
+    { keywords: ["figma", "adobe xd", "sketch", "photoshop", "illustrator", "wireframing"], weight: 8 },
+    { keywords: ["user research", "prototyping", "design system", "typography", "branding"], weight: 6 }
+  ],
+  "Healthcare/Medical": [
+    { keywords: ["patient care", "clinical", "healthcare", "medical", "hospital", "nursing", "diagnosis"], weight: 10, context: ["nurse", "doctor", "clinician", "specialist"] },
+    { keywords: ["hipaa", "emr", "ehr", "medical terminology", "patient safety", "cpr", "acls"], weight: 8 },
+    { keywords: ["treatment planning", "healthcare administration", "medical records", "telehealth"], weight: 6 }
+  ],
+  "Finance/Fintech": [
+    { keywords: ["financial analysis", "banking", "fintech", "investment", "accounting", "venture capital"], weight: 10, context: ["analyst", "banker", "accountant", "advisor"] },
+    { keywords: ["cfa", "cpa", "gaap", "ifrs", "risk management", "hedging", "blockchain", "payments"], weight: 8 },
+    { keywords: ["financial modeling", "portfolio management", "asset allocation", "equity research"], weight: 6 }
   ]
 };
 
-export type RoleCategory = "Engineering" | "Software Engineering" | "Marketing" | "Product Management" | "Data Science" | "General";
+export type RoleCategory = "Engineering" | "Software Engineering" | "Marketing" | "Sales" | "Product Management" | "Data Science" | "Human Resources" | "Legal" | "Education" | "Customer Service" | "General" | "Cloud & DevOps" | "Cybersecurity" | "Project/Program Management" | "Design & Creative" | "Healthcare/Medical" | "Finance/Fintech";
 
 export function getKeywordsForCategory(category: RoleCategory): string[] {
   // Include new keywords in all categories for comprehensive coverage
@@ -543,7 +598,6 @@ export function getKeywordsForCategory(category: RoleCategory): string[] {
     ...industrySpecificKeywords,
     ...enhancedSoftSkills
   ];
-
   switch (category) {
     case "Engineering":
       return [...engineeringKeywords, ...techKeywords, ...certificationKeywords, ...enhancedSoftSkills];
@@ -555,6 +609,28 @@ export function getKeywordsForCategory(category: RoleCategory): string[] {
       return [...productKeywords, ...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
     case "Data Science":
       return [...dataKeywords, ...techKeywords, ...emergingTechKeywords, ...certificationKeywords, ...enhancedSoftSkills];
+    case "Human Resources":
+      return [...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
+    case "Legal":
+      return [...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
+    case "Education":
+      return [...techKeywords, ...enhancedSoftSkills];
+    case "Customer Service":
+      return [...techKeywords, ...enhancedSoftSkills];
+    case "Sales":
+      return [...marketingKeywords, ...techKeywords, ...industrySpecificKeywords, ...enhancedSoftSkills];
+    case "Cloud & DevOps":
+      return [...techKeywords, ...emergingTechKeywords, ...certificationKeywords, ...enhancedSoftSkills, "aws", "docker", "kubernetes", "terraform", "ci/cd"];
+    case "Cybersecurity":
+      return [...techKeywords, ...certificationKeywords, ...enhancedSoftSkills, "security", "encryption", "siem", "penetration testing"];
+    case "Project/Program Management":
+      return [...productKeywords, ...enhancedSoftSkills, "pmp", "scrum", "budgeting", "roadmap"];
+    case "Design & Creative":
+      return [...techKeywords, ...enhancedSoftSkills, "figma", "ux", "ui", "adobe", "typography"];
+    case "Healthcare/Medical":
+      return [...enhancedSoftSkills, "clinical", "hipaa", "emr", "patient care", "medical terminology"];
+    case "Finance/Fintech":
+      return [...enhancedSoftSkills, "cfa", "gaap", "financial modeling", "fintech", "banking"];
     default:
       return [...techKeywords, ...marketingKeywords, ...engineeringKeywords, ...baseNewKeywords];
   }
@@ -567,21 +643,32 @@ export function classifyRole(text: string): { category: RoleCategory; confidence
     "Engineering": 0,
     "Software Engineering": 0,
     "Marketing": 0,
+    "Sales": 0,
     "Product Management": 0,
     "Data Science": 0,
-    "General": 0
+    "Human Resources": 0,
+    "Legal": 0,
+    "Education": 0,
+    "Customer Service": 0,
+    "General": 0,
+    "Cloud & DevOps": 0,
+    "Cybersecurity": 0,
+    "Project/Program Management": 0,
+    "Design & Creative": 0,
+    "Healthcare/Medical": 0,
+    "Finance/Fintech": 0
   };
 
   // Apply pattern-based scoring
   for (const [category, patterns] of Object.entries(roleClassificationPatterns)) {
     for (const pattern of patterns) {
       let matchScore = 0;
-      
+
       // Check if keywords exist
       const keywordMatches = pattern.keywords.filter(kw => lowerText.includes(kw)).length;
       if (keywordMatches > 0) {
         matchScore = pattern.weight * (keywordMatches / pattern.keywords.length);
-        
+
         // Bonus if context words are present
         if (pattern.context) {
           const contextMatches = pattern.context.filter(ctx => lowerText.includes(ctx)).length;
@@ -589,7 +676,7 @@ export function classifyRole(text: string): { category: RoleCategory; confidence
             matchScore *= 1.5;
           }
         }
-        
+
         scores[category as RoleCategory] += matchScore;
       }
     }
@@ -598,7 +685,7 @@ export function classifyRole(text: string): { category: RoleCategory; confidence
   // Find category with highest score
   const maxScore = Math.max(...Object.values(scores));
   const topCategory = (Object.keys(scores).find(key => scores[key as RoleCategory] === maxScore) || "General") as RoleCategory;
-  
+
   // Calculate confidence (0-1)
   const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
   const confidence = totalScore > 0 ? maxScore / totalScore : 0;

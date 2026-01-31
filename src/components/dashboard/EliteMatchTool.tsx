@@ -193,11 +193,10 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                       <div
                         key={resume._id}
                         onClick={() => setSelectedResumeId(resume._id)}
-                        className={`p-4 border rounded-xl cursor-pointer transition-all ${
-                          selectedResumeId === resume._id
+                        className={`p-4 border rounded-xl cursor-pointer transition-all ${selectedResumeId === resume._id
                             ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
                             : "border-[#E2E8F0] dark:border-slate-800 hover:border-blue-300"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -217,11 +216,10 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                             </div>
                           </div>
                           <div
-                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                              selectedResumeId === resume._id
+                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${selectedResumeId === resume._id
                                 ? "border-blue-500 bg-blue-500"
                                 : "border-gray-300"
-                            }`}
+                              }`}
                           >
                             {selectedResumeId === resume._id && (
                               <div className="w-3 h-3 rounded-full bg-white" />
@@ -274,9 +272,6 @@ export function EliteMatchTool({ user, onUpgrade }: EliteMatchToolProps = {}) {
                     <div className="flex items-center gap-2 mt-1">
                       <span className="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-black uppercase tracking-widest rounded border border-green-100">
                         Private Llama-3 ML
-                      </span>
-                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded border border-blue-100">
-                        Zero API Cost
                       </span>
                     </div>
                   </div>

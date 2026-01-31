@@ -14,6 +14,7 @@ import {
   calculateKeywordSimilarity,
   INDUSTRY_KEYWORDS
 } from "./intelligentKeywordExtractor";
+import { classifyRole, RoleCategory } from "../ai/config/keywords";
 import { analyzeSEOContent } from "../../lib/intelligentSEO";
 
 export interface IntelligentAnalysisResult {
@@ -69,6 +70,9 @@ export interface IntelligentAnalysisResult {
   jdMatchScore?: number;
   jdKeywordOverlap?: number;
   jdMissingKeywords?: string[];
+
+  // Section Analysis
+  sectionStrength: Array<{ section: string; strength: number; feedback: string }>;
 }
 
 /**
@@ -99,6 +103,10 @@ export function analyzeResumeIntelligently(
   console.log(`[Intelligent Analyzer] Keyword density: ${keywordExtraction.keyword_density}%`);
   console.log(`[Intelligent Analyzer] Missing critical: ${keywordExtraction.missing_critical.length}`);
 
+  // Step 2.5: Classify role to adjust scoring
+  const roleInfo = classifyRole(resumeText);
+  console.log(`[Intelligent Analyzer] Detected Role: ${roleInfo.category}, Confidence: ${Math.round(roleInfo.confidence * 100)}%`);
+
   // Step 3: Analyze ATS compatibility
   const atsAnalysis = analyzeATSCompatibility(resumeText);
   console.log(`[Intelligent Analyzer] ATS Score: ${atsAnalysis.score}/100`);
@@ -110,12 +118,24 @@ export function analyzeResumeIntelligently(
     console.log(`[Intelligent Analyzer] JD Match Score: ${jdAnalysis.matchScore}/100`);
   }
 
+  // Step 4.5: Metrics detection for scoring
+  const metricPatterns = [
+    /\d+%|\$\d+/gi,
+    /team of \d+/gi,
+    /\d+\+?\s*(?:years|users|customers|projects|clients)/gi,
+    /(?:increased|reduced|saved|generated|grew|boosted).*\d+/gi
+  ];
+  const specificMetricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
+  const isEntryLevel = /\b(student|intern|junior|entry|trainee|apprentice)\b/gi.test(resumeText);
+
   // Step 5: Calculate scores
   const scores = calculateScores(
     keywordExtraction,
     atsAnalysis,
     jdAnalysis,
-    resumeText
+    resumeText,
+    roleInfo.category,
+    specificMetricCount
   );
 
   console.log(`[Intelligent Analyzer] Final Scores - Overall: ${scores.overall}, Keywords: ${scores.keywords}, Format: ${scores.format}, Completeness: ${scores.completeness}`);
@@ -125,7 +145,10 @@ export function analyzeResumeIntelligently(
     keywordExtraction,
     atsAnalysis,
     jdAnalysis,
-    scores
+    scores,
+    roleInfo.category,
+    specificMetricCount,
+    isEntryLevel
   );
 
   console.log(`[Intelligent Analyzer] Generated ${recommendations.length} recommendations`);
@@ -161,6 +184,7 @@ export function analyzeResumeIntelligently(
     })),
 
     recommendations,
+    sectionStrength: analyzeSectionStrength(resumeText),
 
     detectedIndustry,
     industryMatchScore,
@@ -236,21 +260,38 @@ function analyzeATSCompatibility(resumeText: string): ATSAnalysis {
     });
   }
 
-  // Check for standard sections
-  const sections = ['experience', 'education', 'skills', 'summary'];
+  // Check for standard sections with capitalization
+  const sections = ['EXPERIENCE', 'EDUCATION', 'SKILLS', 'SUMMARY', 'PROJECTS'];
   const foundSections = sections.filter(s =>
-    new RegExp(`\\b${s}\\b`, 'gi').test(resumeText)
+    new RegExp(`\\b${s}\\b`, 'g').test(resumeText)
   );
 
-  if (foundSections.length < 2) {
-    score -= 15;
-    issues.push({
-      issue: "Missing standard section headers",
-      severity: "high",
-      fix: "Add clear sections: EXPERIENCE, EDUCATION, SKILLS",
-      location: "Document structure",
-      impact: "ATS may not categorize content correctly"
-    });
+  if (foundSections.length < 3) {
+    // Check for lowercase versions if uppercase not found
+    const lowerSections = ['experience', 'education', 'skills', 'summary', 'projects'];
+    const foundLower = lowerSections.filter(s =>
+      new RegExp(`\\b${s}\\b`, 'gi').test(resumeText)
+    );
+
+    if (foundLower.length < 3) {
+      score -= 15;
+      issues.push({
+        issue: "Missing standard section headers",
+        severity: "high",
+        fix: "Add clear, bold sections: EXPERIENCE, EDUCATION, SKILLS",
+        location: "Document structure",
+        impact: "ATS may not categorize content correctly"
+      });
+    } else if (foundSections.length < foundLower.length) {
+      score -= 5;
+      issues.push({
+        issue: "Section headers are not capitalized",
+        severity: "medium",
+        fix: "Capitalize section headers (e.g., EXPERIENCE instead of Experience) for better ATS parsing",
+        location: "Section titles",
+        impact: "Some ATS systems better recognize ALL CAPS headers"
+      });
+    }
   }
 
   // Check for contact information
@@ -292,18 +333,30 @@ function analyzeATSCompatibility(resumeText: string): ATSAnalysis {
     });
   }
 
-  // Check for dates
-  const dates = resumeText.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}\b/gi) || [];
-  const yearRanges = resumeText.match(/\b\d{4}\s*[-–]\s*\d{4}\b/g) || [];
+  // Check for dates (MM/YYYY or Month YYYY)
+  const standardDates = resumeText.match(/\b(0[1-9]|1[0-2])\/\d{4}\b/g) || [];
+  const monthNames = resumeText.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{4}\b/gi) || [];
+  const yearRanges = resumeText.match(/\b\d{4}\s*[-–—]\s*(?:\d{4}|present|current)\b/gi) || [];
 
-  if (dates.length + yearRanges.length < 2) {
-    score -= 8;
+  const totalDateSignals = standardDates.length + monthNames.length + yearRanges.length;
+
+  if (totalDateSignals < 2) {
+    score -= 10;
     issues.push({
-      issue: "Limited date information found",
+      issue: "Insufficient date information found",
+      severity: "high",
+      fix: "Provide clear dates for each role and degree using MM/YYYY or Month YYYY format",
+      location: "Experience/Education sections",
+      impact: "ATS cannot calculate your years of experience accurately"
+    });
+  } else if (standardDates.length + monthNames.length === 0 && yearRanges.length > 0) {
+    score -= 5;
+    issues.push({
+      issue: "Dates only show years (e.g., 2020-2022)",
       severity: "medium",
-      fix: "Include dates for all experiences and education (e.g., Jan 2020 - Present)",
-      location: "Experience and Education",
-      impact: "Cannot verify work history timeline"
+      fix: "Include months (e.g., Jan 2020 - Dec 2022) to help ATS calculate precise experience duration",
+      location: "Date ranges",
+      impact: "ATS may underestimate experience by rounding down years"
     });
   }
 
@@ -458,7 +511,9 @@ function calculateScores(
   keywordExtraction: any,
   atsAnalysis: ATSAnalysis,
   jdAnalysis: JDAnalysis | null,
-  resumeText: string
+  resumeText: string,
+  role: RoleCategory,
+  specificMetricCount: number
 ): { overall: number; keywords: number; format: number; completeness: number } {
 
   // STRICT: Keyword scoring based on real ATS requirements
@@ -480,15 +535,9 @@ function calculateScores(
   }
 
   // 2. Unique keyword count (must have variety)
-  if (keywordExtraction.unique_keyword_count >= 15) {
-    keywordScore += 25; // Excellent variety
-  } else if (keywordExtraction.unique_keyword_count >= 10) {
-    keywordScore += 18; // Good variety
-  } else if (keywordExtraction.unique_keyword_count >= 5) {
-    keywordScore += 10; // Minimal variety
-  } else {
-    keywordScore += 0; // No real keywords
-  }
+  // Granular scoring: Each unique keyword up to 20 gives points
+  const varietyScore = Math.min(25, keywordExtraction.unique_keyword_count * 1.5);
+  keywordScore += varietyScore;
 
   // 3. Job description match (critical for real ATS)
   if (jdAnalysis && jdAnalysis.keywordOverlap > 0) {
@@ -499,7 +548,7 @@ function calculateScores(
     keywordScore += 5;
   }
 
-  // 4. Must have quantifiable achievements (numbers, metrics)
+  // INCREASED WEIGHT: Metrics are the #1 thing recruiters look for
   const metricPatterns = [
     /\d+%|\$\d+/gi,
     /team of \d+/gi,
@@ -508,15 +557,15 @@ function calculateScores(
   ];
 
   const hasMetrics = metricPatterns.some(pattern => pattern.test(resumeText));
-  const specificMetricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
 
-  if (specificMetricCount >= 5) {
-    keywordScore += 20; // Excellent quantifiable results
-  } else if (hasMetrics) {
-    keywordScore += 10; // Has some quantifiable results
-  } else {
+  // Granular metrics scoring: 6 points per specific metric, max 30
+  // (Was 4 points, max 20)
+  const metricsScore = Math.min(30, specificMetricCount * 6);
+  keywordScore += metricsScore;
+
+  if (metricsScore === 0 && !hasMetrics) {
     // No quantifiable results = major red flag for real ATS
-    keywordScore -= 15;
+    keywordScore -= 15; // Increased penalty from -10
   }
 
   keywordScore = Math.max(0, Math.min(100, keywordScore));
@@ -525,7 +574,7 @@ function calculateScores(
   const formatScore = atsAnalysis.score;
 
   // Completeness score based on sections and REAL content quality
-  const completenessScore = calculateCompletenessScore(resumeText);
+  const completenessScore = calculateCompletenessScore(resumeText, role);
 
   // STRICT: Overall score - Real ATS are harsh
   // Keywords = 50% (most important), Completeness = 30%, Format = 20%
@@ -548,22 +597,24 @@ function calculateScores(
  * Calculate completeness score - STRICT: Real ATS requirements
  * A generic Harvard template should NOT score high without real content
  */
-function calculateCompletenessScore(resumeText: string): number {
+function calculateCompletenessScore(resumeText: string, role: RoleCategory): number {
   let score = 0; // NO free points - must earn everything
 
   // CRITICAL SECTIONS (Must have these or fail)
   let criticalSections = 0;
 
   // Experience section - MUST have with actual job titles and dates
-  const hasExperienceSection = /\b(experience|work history|employment|professional experience)\b/gi.test(resumeText);
-  const hasJobTitles = /\b(developer|engineer|manager|analyst|consultant|specialist|coordinator|designer|architect|lead|senior|junior)\b/gi.test(resumeText);
+  // ADAPTIVE: If student/entry roles, accept projects/volunteer
+  const isEntryLevel = /\b(student|intern|junior|entry|trainee|apprentice)\b/gi.test(resumeText);
+  const hasExperienceSection = /\b(experience|work history|employment|professional experience|internships?|projects?)\b/gi.test(resumeText);
+  const hasJobTitles = /\b(developer|engineer|manager|analyst|consultant|specialist|coordinator|designer|architect|lead|senior|junior|intern|volunteer)\b/gi.test(resumeText);
   const hasDates = /\d{4}\s*[-–—]\s*(?:\d{4}|present|current)/gi.test(resumeText);
 
-  if (hasExperienceSection && hasJobTitles && hasDates) {
-    score += 25; // Experience with real content
+  if (hasExperienceSection && (hasJobTitles || isEntryLevel) && hasDates) {
+    score += 30; // Increased from 25
     criticalSections++;
   } else if (hasExperienceSection) {
-    score += 5; // Has section but no real content
+    score += 10; // Increased from 5
   }
 
   // Education section - MUST have with degree and institution
@@ -609,12 +660,14 @@ function calculateCompletenessScore(resumeText: string): number {
   const hasMetrics = /\d+%|\$\d+[kmb]?|team of \d+|\d+\+?\s*(?:years|users|customers|projects)/gi.test(resumeText);
   const metricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
 
-  if (metricCount >= 3) {
-    score += 15; // Multiple quantifiable achievements
+  if (metricCount >= 4) {
+    score += 20; // Increased from 15
+  } else if (metricCount >= 2) {
+    score += 12; // Increased from 8
   } else if (hasMetrics) {
-    score += 8; // Has some metrics
+    score += 6;
   } else {
-    score -= 10; // No metrics = generic template
+    score -= 15; // Increased penalty from -10
   }
 
   // STRICT: Check for action verbs (shows real work)
@@ -665,7 +718,10 @@ function generateIntelligentRecommendations(
   keywordExtraction: any,
   atsAnalysis: ATSAnalysis,
   jdAnalysis: JDAnalysis | null,
-  scores: any
+  scores: any,
+  role: RoleCategory,
+  metricCount: number,
+  isEntryLevel: boolean
 ): Array<{
   category: string;
   priority: "critical" | "high" | "medium" | "low";
@@ -674,7 +730,13 @@ function generateIntelligentRecommendations(
   impact: number;
 }> {
 
-  const recommendations = [];
+  const recommendations: Array<{
+    category: string;
+    priority: "critical" | "high" | "medium" | "low";
+    message: string;
+    actionable: string;
+    impact: number;
+  }> = [];
 
   // Critical ATS issues
   for (const issue of atsAnalysis.issues) {
@@ -700,14 +762,40 @@ function generateIntelligentRecommendations(
     });
   }
 
-  // Low keyword density
-  if (keywordExtraction.keyword_density < 3) {
+  // Metrics recommendation (ADAPTED TO ROLE)
+  if (metricCount < 4) {
+    let metricSuggestion = "Add quantifiable results using numbers and percentages (e.g., 'Increased efficiency by 15%')";
+
+    if (role === "Software Engineering") {
+      metricSuggestion = "Add technical metrics (e.g., 'Reduced API latency by 30%', 'Managed 10k+ concurrent users', 'Saved 10 hours/week via automation')";
+    } else if (role === "Cloud & DevOps") {
+      metricSuggestion = "Focus on reliability and scale (e.g., 'Achieved 99.99% uptime', 'Reduced deployment time by 50% using CI/CD', 'Cut cloud costs by 20% through optimization')";
+    } else if (role === "Cybersecurity") {
+      metricSuggestion = "Highlight threat reduction (e.g., 'Detected and mitigated 500+ security threats', 'Achieved 100% compliance in SOC2 audit', 'Reduced vulnerability window by 40%')";
+    } else if (role === "Project/Program Management") {
+      metricSuggestion = "Show delivery excellence (e.g., 'Delivered $1M project 2 weeks ahead of schedule', 'Improved team velocity by 25%', 'Managed cross-functional team of 20+')";
+    } else if (role === "Design & Creative") {
+      metricSuggestion = "Show user impact (e.g., 'Increased conversion rate by 15% through UI redesign', 'Improved user satisfaction score by 20%', 'Reduced user drop-off by 30%')";
+    } else if (role === "Marketing") {
+      metricSuggestion = "Include marketing KPIs (e.g., 'Improved CTR by 15%', 'Grew social reach by 50k', 'Reduced CAC by 20%')";
+    } else if (role === "Sales") {
+      metricSuggestion = "List sales achievements (e.g., 'Exceeded quota by 125%', 'Generated $100k+ in new pipeline', '20% increase in conversion rate')";
+    } else if (role === "Healthcare/Medical") {
+      metricSuggestion = "Focus on patient outcomes and efficiency (e.g., 'Improved patient throughput by 15%', 'Reduced clinical errors by 20%', 'Managed caseload of 50+ patients daily')";
+    } else if (role === "Finance/Fintech") {
+      metricSuggestion = "Highlight financial precision (e.g., 'Managed $2M+ portfolio', 'Reduced audit time by 30%', 'Identified $50k in cost savings through financial modeling')";
+    } else if (role === "Education") {
+      metricSuggestion = "Add classroom metrics (e.g., 'Improved student test scores by 15%', 'Managed cohort of 30+ students', 'Reduced administrative time by 20%')";
+    } else if (isEntryLevel) {
+      metricSuggestion = "Even without experience, use numbers: 'Completed 5 projects', 'Achieved 95% grade in Capstone', 'Led team of 4 in university project'";
+    }
+
     recommendations.push({
-      category: "Keywords",
-      priority: "medium" as const,
-      message: "Keyword density is too low",
-      actionable: "Incorporate more industry-specific terms and technical skills throughout your resume",
-      impact: 12
+      category: "Impact",
+      priority: metricCount < 2 ? "high" : "medium" as const,
+      message: "Lacks quantifiable achievements",
+      actionable: metricSuggestion,
+      impact: metricCount < 2 ? 18 : 12
     });
   }
 
@@ -755,10 +843,13 @@ function generateIntelligentRecommendations(
   }
 
   // Sort by priority and impact
-  const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+  const priorityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
   recommendations.sort((a, b) => {
-    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    const aPriority = priorityOrder[a.priority as string] ?? 99;
+    const bPriority = priorityOrder[b.priority as string] ?? 99;
+
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority;
     }
     return b.impact - a.impact;
   });
@@ -825,6 +916,55 @@ function formatMissingKeywords(
   }
 
   return formatted.slice(0, 20); // Max 20 missing keywords
+}
+
+/**
+ * Analyze section strength based on density and presence
+ */
+function analyzeSectionStrength(resumeText: string): Array<{ section: string; strength: number; feedback: string }> {
+  const sections = [
+    { name: 'EXPERIENCE', patterns: [/\b(EXPERIENCE|WORK HISTORY|EMPLOYMENT|PROFESSIONAL EXPERIENCE)\b/g], weight: 40 },
+    { name: 'EDUCATION', patterns: [/\b(EDUCATION|ACADEMIC|QUALIFICATIONS)\b/g], weight: 20 },
+    { name: 'SKILLS', patterns: [/\b(SKILLS|COMPETENCIES|TECHNOLOGIES)\b/g], weight: 25 },
+    { name: 'SUMMARY', patterns: [/\b(SUMMARY|PROFILE|OBJECTIVE|PROFESSIONAL SUMMARY)\b/g], weight: 15 }
+  ];
+
+  return sections.map(s => {
+    // Check for exact caps match first (ATS preferred)
+    let hasSection = s.patterns.some(p => p.test(resumeText));
+    let feedback = "";
+    let strength = 0;
+
+    if (!hasSection) {
+      // Try case-insensitive
+      const pLower = new RegExp(s.patterns[0].source, 'gi');
+      if (pLower.test(resumeText)) {
+        strength = 30;
+        feedback = "NON_CAPITALIZED_HEADER";
+      } else {
+        strength = 0;
+        feedback = "SECTION_NOT_FOUND";
+      }
+    } else {
+      // Analyze content density
+      const parts = resumeText.split(s.patterns[0]);
+      const content = parts.length > 1 ? parts[1].split(/[A-Z]{5,}/)[0] : "";
+      const wordCount = content.trim().split(/\s+/).length;
+
+      if (wordCount > 80) {
+        strength = 100;
+        feedback = "OPTIMAL_DENSITY";
+      } else if (wordCount > 30) {
+        strength = 70;
+        feedback = "SUFFICIENT_DETAIL";
+      } else {
+        strength = 40;
+        feedback = "LOW_DETAIL";
+      }
+    }
+
+    return { section: s.name, strength, feedback };
+  });
 }
 
 /**

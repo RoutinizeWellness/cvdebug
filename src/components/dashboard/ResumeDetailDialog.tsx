@@ -1,8 +1,5 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +13,6 @@ import {
   Trash2,
   X,
   Sparkles,
-  Info,
   Maximize2,
   Minimize2,
   Wand2,
@@ -28,49 +24,29 @@ import {
   Link2,
   Building,
   CheckCircle2,
-  XCircle,
   FileSearch,
   AlertTriangle,
   Loader2,
   Check,
   Edit,
   MoreVertical,
-  Share2,
   TrendingUp,
   ListChecks,
   Settings,
   Lock,
-  Search
+  Activity,
+  Monitor
 } from "lucide-react";
+import { ATSOverviewDashboard } from "./ATSOverviewDashboard";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useAction, useQuery, useMutation } from "convex/react";
 import { PricingDialog } from "@/components/PricingDialog";
-import { ScoreHistory } from "./ScoreHistory";
-import { ResumeStats } from "./ResumeStats";
 import { SeniorityMatchAnalysis } from "./SeniorityMatchAnalysis";
-import { CriticalIssues } from "./CriticalIssues";
-import { ImportantIssues } from "./ImportantIssues";
-import { FreeTierView } from "./FreeTierView";
-import { ScoreCard } from "./ScoreCard";
-import { SkillGapHeatmap } from "./SkillGapHeatmap";
-import { DeepAuditChecklist } from "./DeepAuditChecklist";
-import { GaugeScore } from "./analysis/GaugeScore";
-import { FormattingAudit } from "./analysis/FormattingAudit";
-import { KeywordHeatmap } from "./analysis/KeywordHeatmap";
-import { RoleMatchCard } from "./analysis/RoleMatchCard";
-import { ActionableFixes } from "./analysis/ActionableFixes";
-import { ImpactScore } from "./analysis/ImpactScore";
-import { AIProTip } from "./analysis/AIProTip";
-import { ImageTrapAlert } from "./ImageTrapAlert";
-import { LiveRecruiterSimulation } from "./analysis/LiveRecruiterSimulation";
-import { InterviewPrepMode } from "./InterviewPrepMode";
 import { SanitizedVersionDialog } from "./SanitizedVersionDialog";
 import { InterviewBattlePlan } from "./InterviewBattlePlan";
 import { KeywordAnalysis } from "./KeywordAnalysis";
-import { ATSSimulation } from "./ATSSimulation";
-import { SniperModeTeaser } from "./SniperModeTeaser";
 import { ATSAnalysisReport } from "./ATSAnalysisReport";
 import { FluffDetector } from "./FluffDetector";
 import { InlineResumeEditor } from "./InlineResumeEditor";
@@ -97,17 +73,14 @@ export function ResumeDetailDialog({
   resumeId,
   onClose,
   onDelete,
-  onOpenWritingForge,
-  onOpenKeywordSniper,
   onOpenLinkedIn
 }: ResumeDetailDialogProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
-  const [showBlurredPreview, setShowBlurredPreview] = useState(true);
   const [showJobDescriptionInput, setShowJobDescriptionInput] = useState(false);
   const [jobDescription, setJobDescription] = useState("");
   const [isReanalyzing, setIsReanalyzing] = useState(false);
-  const [activeTab, setActiveTab] = useState("robot");
+  const [activeTab, setActiveTab] = useState("overview");
   const [showRobotPulse, setShowRobotPulse] = useState(false);
   // PDF collapsed by default on mobile, expanded on desktop
   const [isPdfCollapsed, setIsPdfCollapsed] = useState(() => {
@@ -116,7 +89,6 @@ export function ResumeDetailDialog({
   });
   const [showSanitizerDialog, setShowSanitizerDialog] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState<string>("general");
-  const [showSystemLogs, setShowSystemLogs] = useState(false);
 
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useMutation(apiAny.resumes.analyzeResume);
@@ -129,9 +101,9 @@ export function ResumeDetailDialog({
   const allResumes = useQuery(apiAny.resumes.getResumes, {});
   const displayResume = allResumes?.find((r: any) => r._id === resumeId);
 
-  // Pulse effect for Robot View if not clicked within 5 seconds
+  // Pulse effect for ATS Check if not clicked within 5 seconds
   useEffect(() => {
-    if (activeTab !== "robot" && displayResume) {
+    if (activeTab !== "ats-check" && displayResume) {
       const timer = setTimeout(() => {
         setShowRobotPulse(true);
       }, 5000);
@@ -143,7 +115,7 @@ export function ResumeDetailDialog({
   }, [activeTab, displayResume]);
 
   useEffect(() => {
-    if (activeTab !== "robot") {
+    if (activeTab !== "ats-check") {
       const timer = setTimeout(() => {
         setShowRobotPulse(true);
       }, 3000);
@@ -236,8 +208,8 @@ export function ResumeDetailDialog({
     try {
       await applyRewriteToResume({ id: displayResume._id });
 
-      // Switch to Robot View to show updated text
-      setActiveTab("robot");
+      // Switch to ATS Check to show updated text
+      setActiveTab("ats-check");
 
       toast.success("✅ Rewrite applied to your CV!", {
         description: "Check the 'Robot View' tab to see your optimized CV text."
@@ -895,88 +867,66 @@ export function ResumeDetailDialog({
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
                   <div className="bg-[#FFFFFF] flex-shrink-0 p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 border-b border-[#E2E8F0]">
                     <TabsList className="inline-flex w-auto min-w-full gap-1 h-auto bg-transparent">
-                      {/* EDIT Group - NEW */}
-                      <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
-                        <TabsTrigger
-                          value="edit"
-                          className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#1E293B] data-[state=active]:to-[#334155] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
-                        >
-                          <span className="flex items-center gap-1.5">
-                            <Edit className="h-4 w-4" />
-                            <span>Edit</span>
-                          </span>
-                        </TabsTrigger>
-                      </div>
-                      {/* DIAGNOSIS Group */}
-                      <div className="flex gap-1 pr-3 border-r border-[#E2E8F0]">
-                        <TabsTrigger
-                          value="robot"
-                          className={`relative text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#22C55E] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg ${showRobotPulse ? 'animate-pulse ring-2 ring-green-500/50' : ''}`}
-                        >
-                          <span className="flex items-center gap-1.5">
-                            <Cpu className="h-4 w-4" />
-                            <span>Robot View</span>
-                          </span>
-                          {showRobotPulse && (
-                            <span className="absolute -top-1 -right-1 flex h-2 w-2 z-10">
-                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
-                            </span>
-                          )}
-                        </TabsTrigger>
-                        <TabsTrigger value="progress" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#64748B] data-[state=active]:to-[#1E293B] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <TrendingUp className="h-4 w-4" />
-                            <span>Progress</span>
-                          </span>
-                        </TabsTrigger>
-                        <TabsTrigger value="action-plan" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#F59E0B] data-[state=active]:to-[#EF4444] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <ListChecks className="h-4 w-4" />
-                            <span>Action Plan</span>
-                          </span>
-                        </TabsTrigger>
-                        <TabsTrigger value="ats-report" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <FileSearch className="h-4 w-4" />
-                            <span>Format</span>
-                          </span>
-                        </TabsTrigger>
-                        <TabsTrigger value="keywords" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#64748B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <Target className="h-4 w-4" />
-                            <span>Keywords</span>
-                          </span>
-                        </TabsTrigger>
-                      </div>
+                      {/* 1. OVERVIEW */}
+                      <TabsTrigger
+                        value="overview"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#F1F5F9] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <TrendingUp className="h-4 w-4" />
+                          <span>Overview</span>
+                        </span>
+                      </TabsTrigger>
 
-                      {/* FIX Group */}
-                      <div className="flex gap-1 px-3 border-r border-[#E2E8F0]">
-                        <TabsTrigger value="fluff" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#F59E0B] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <Sparkles className="h-4 w-4" />
-                            <span>Fluff</span>
+                      {/* 2. EDITOR */}
+                      <TabsTrigger
+                        value="edit"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#1E293B] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Edit className="h-4 w-4" />
+                          <span>Editor</span>
+                        </span>
+                      </TabsTrigger>
+
+                      {/* 3. ATS CHECK */}
+                      <TabsTrigger
+                        value="ats-check"
+                        className={`relative text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#22C55E] data-[state=active]:text-[#0F172A] data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:bg-slate-100 rounded-lg ${showRobotPulse ? 'animate-pulse ring-2 ring-green-500/50' : ''}`}
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Cpu className="h-4 w-4" />
+                          <span>ATS Check</span>
+                        </span>
+                        {showRobotPulse && (
+                          <span className="absolute -top-1 -right-1 flex h-2 w-2 z-10">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
                           </span>
-                        </TabsTrigger>
-                        {displayResume?.rewrittenText && (
-                          <TabsTrigger value="rewritten" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-[#22C55E] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                            <span className="flex items-center gap-1.5">
-                              <Wand2 className="h-4 w-4" />
-                              <span>AI Rewrite</span>
-                            </span>
-                          </TabsTrigger>
                         )}
-                      </div>
+                      </TabsTrigger>
 
-                      {/* PREP Group */}
-                      <div className="flex gap-1 pl-3">
-                        <TabsTrigger value="interview" className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#6366F1] data-[state=active]:to-[#4F46E5] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:text-[#0F172A] data-[state=inactive]:hover:bg-slate-100 rounded-lg">
-                          <span className="flex items-center gap-1.5">
-                            <Building className="h-4 w-4" />
-                            <span>Recruiter Sim</span>
-                          </span>
-                        </TabsTrigger>
-                      </div>
+                      {/* 4. IMPROVEMENTS */}
+                      <TabsTrigger
+                        value="improvements"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#F59E0B] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Sparkles className="h-4 w-4" />
+                          <span>Improvements</span>
+                        </span>
+                      </TabsTrigger>
+
+                      {/* 5. INTERVIEW PREP */}
+                      <TabsTrigger
+                        value="prep"
+                        className="text-xs sm:text-sm whitespace-nowrap px-4 py-2.5 font-semibold transition-all data-[state=active]:bg-[#6366F1] data-[state=active]:text-white data-[state=inactive]:text-[#475569] data-[state=inactive]:hover:bg-slate-100 rounded-lg"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Building className="h-4 w-4" />
+                          <span>Prep Mode</span>
+                        </span>
+                      </TabsTrigger>
                     </TabsList>
                   </div>
 
@@ -1000,660 +950,228 @@ export function ResumeDetailDialog({
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="robot" className="flex-1 overflow-auto p-0 m-0">
-                    <div className="h-full bg-[#F8FAFC] relative">
-                      {/* Terminal Header */}
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 px-6 py-3 flex items-center justify-between shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                        <div className="flex items-center gap-3">
-                          <div className="flex gap-1.5">
-                            <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                            <div className="w-3 h-3 rounded-full bg-[#22C55E]"></div>
-                          </div>
-                          <span className="text-green-700 font-mono text-sm font-bold">ATS_PARSER_v2.1.0</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
-                          </span>
-                          <span className="text-green-700 font-mono text-xs">LIVE</span>
-                        </div>
-                      </div>
-
-                      {/* 🔒 ROBOT VIEW - LOCKED BEHIND REGISTRATION (Lead Magnet) */}
+                  {/* 3. ATS CHECK */}
+                  <TabsContent value="ats-check" className="flex-1 overflow-auto bg-black m-0 p-0 border-none shadow-none">
+                    <div className="bg-black min-h-full">
                       {!user || user.isAnonymous ? (
-                        <div className="p-6 space-y-6">
-                          {/* THE AHA! MOMENT - Preview with blur */}
-                          <div className="relative">
-                            {/* Blurred Preview */}
-                            <div className="blur-sm pointer-events-none select-none">
-                              <div className="bg-green-50 border border-green-200 rounded-lg p-3 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                                <div className="flex items-center gap-3">
-                                  <div className="text-xl">👁️</div>
-                                  <p className="text-green-700 text-sm font-medium">
-                                    This is what ATS robots see. Changes appear here in real-time.
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-lg p-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] mt-4">
-                                <div className="flex items-center justify-between mb-4">
-                                  <h4 className="text-[#0F172A] font-mono font-bold text-sm uppercase tracking-wider">Extracted Text Content</h4>
-                                  <span className="text-[#475569] font-mono text-xs">3,247 characters</span>
-                                </div>
-                                <div className="bg-[#F8FAFC] rounded border border-[#E2E8F0] p-4 h-64">
-                                  <pre className="text-[#475569] font-mono text-xs leading-relaxed">
-                                    JOHN DOE
-                                    Software Engineer | San Francisco, CA
-                                    john.doe@email.com | (555) 123-4567
-                                    linkedin.com/in/johndoe
-
-                                    EXPERIENCE
-
-                                    Senior Software Engineer | TechCorp Inc.
-                                    2020 - Present
-                                    • Led development team of 8 engineers
-                                    • Architected microservices handling 50M+ requests/day
-                                    • Reduced infrastructure costs by 35% ($500K annually)
-                                    • Improved system reliability from 99.5% to 99.95%
-
-                                    Software Engineer | StartupXYZ
-                                    2018 - 2020
-                                    • Built RESTful APIs serving 1M+ users
-                                    • Implemented CI/CD pipeline reducing deploy time 80%
-                                    ...
-                                  </pre>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Registration Wall Overlay - THE AHA! MOMENT */}
-                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-transparent via-white/90 to-white">
-                              <div className="max-w-2xl mx-auto p-8 text-center space-y-6">
-                                <div className="space-y-3">
-                                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-[#22C55E] to-[#10B981] shadow-lg">
-                                    <Cpu className="h-10 w-10 text-white" />
-                                  </div>
-                                  <h3 className="text-3xl font-bold text-[#0F172A]">
-                                    🤯 The "Aha!" Moment
-                                  </h3>
-                                  <p className="text-lg font-semibold text-[#22C55E]">
-                                    See what ATS robots ACTUALLY see in your resume
-                                  </p>
-                                </div>
-
-                                <div className="bg-gradient-to-r from-red-50 via-yellow-50 to-green-50 border-2 border-[#22C55E] rounded-xl p-6 space-y-4">
-                                  <div className="flex items-start gap-4">
-                                    <div className="text-4xl">😱</div>
-                                    <div className="text-left space-y-2">
-                                      <p className="text-sm font-bold text-[#EF4444]">
-                                        Your score is <span className="text-xl">{displayResume?.score || 65}/100</span>
-                                      </p>
-                                      <p className="text-xs text-[#475569]">
-                                        But ATS robots see it as <span className="font-bold text-[#22C55E]">85/100</span> because of hidden formatting issues!
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="bg-white/80 rounded-lg p-4 space-y-2 text-left">
-                                    <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
-                                      <span className="text-[#22C55E]">✓</span>
-                                      Seniority Score: See if ATS ranks you as Junior/Mid/Senior
-                                    </p>
-                                    <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
-                                      <span className="text-[#22C55E]">✓</span>
-                                      Keyword Gap: Discover exactly which keywords robots miss
-                                    </p>
-                                    <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
-                                      <span className="text-[#22C55E]">✓</span>
-                                      Hidden Penalties: Find invisible formatting that kills your score
-                                    </p>
-                                    <p className="text-xs font-bold text-[#0F172A] flex items-center gap-2">
-                                      <span className="text-[#22C55E]">✓</span>
-                                      Real ATS View: See your resume EXACTLY as robots parse it
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="space-y-3">
-                                  <Button
-                                    onClick={() => {
-                                      onClose();
-                                      // Trigger auth
-                                      window.location.href = '/';
-                                    }}
-                                    className="w-full bg-gradient-to-r from-[#22C55E] to-[#10B981] hover:opacity-90 text-white font-bold text-lg py-6 rounded-xl shadow-2xl transform hover:scale-105 transition-all"
-                                  >
-                                    <span className="flex items-center gap-3 justify-center">
-                                      <Sparkles className="h-6 w-6" />
-                                      Unlock Robot View (FREE)
-                                      <Sparkles className="h-6 w-6" />
-                                    </span>
-                                  </Button>
-                                  <p className="text-xs text-[#64748B]">
-                                    No credit card required • See your real ATS score in 10 seconds
-                                  </p>
-                                </div>
-
-                                <div className="flex items-center justify-center gap-8 text-xs text-[#64748B] pt-4">
-                                  <div className="flex items-center gap-1">
-                                    <Check className="h-4 w-4 text-[#22C55E]" />
-                                    <span>100% Free</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Check className="h-4 w-4 text-[#22C55E]" />
-                                    <span>No Credit Card</span>
-                                  </div>
-                                  <div className="flex items-center gap-1">
-                                    <Check className="h-4 w-4 text-[#22C55E]" />
-                                    <span>Instant Access</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        <div className="p-6 space-y-6 text-center">
+                          <h3 className="text-3xl font-bold text-white mt-12">🤯 Unlock the "Aha!" Moment</h3>
+                          <p className="text-lg text-[#22C55E] font-semibold">See your resume exactly as ATS robots parse it</p>
+                          <Button onClick={() => window.location.href = '/'} className="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-6 px-12 text-lg rounded-xl shadow-lg">Unlock Robot View (FREE)</Button>
                         </div>
                       ) : (
-                        /* ROBOT VIEW TERMINAL - Dirty Error Console Style */
-                        <div className="p-0 space-y-0 bg-black">
-                          {/* Terminal Header Bar - Make it look like actual error console */}
-                          <div className="bg-[#0A0A0A] border-b-2 border-[#EF4444] px-4 py-2 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="flex gap-1.5">
-                                <div className="w-3 h-3 rounded-full bg-[#EF4444] animate-pulse"></div>
-                                <div className="w-3 h-3 rounded-full bg-[#F59E0B]"></div>
-                                <div className="w-3 h-3 rounded-full bg-[#64748B]"></div>
-                              </div>
-                              <span className="text-[#EF4444] font-mono text-xs font-bold ml-2">
-                                ▸ ROBOT_VIEW_TERMINAL.exe
-                              </span>
-                              {selectedIndustry !== "general" && (
-                                <span className="text-[#1E293B] font-mono text-[10px] bg-[#1E293B]/10 px-2 py-0.5 rounded border border-[#1E293B]">
-                                  {selectedIndustry.toUpperCase()}_MODE
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-[#64748B] font-mono text-[10px]">
-                              PID: {Math.floor(Math.random() * 99999)} | MEM: {displayResume?.ocrText?.length || 0}B
-                            </span>
-                          </div>
+                        <div className="flex flex-col h-full">
+                          <EnhancedRobotTerminalView
+                            resumeId={displayResume?._id}
+                            autoAnimate={false}
+                          />
 
-                          {/* CRITICAL ERROR ALERTS - AHA! MOMENT */}
-                          {(!displayResume?.extractedData?.hasQuantifiableResults ||
-                            (displayResume?.missingKeywords && displayResume.missingKeywords.length > 5) ||
-                            (displayResume?.missingElements && displayResume.missingElements.length > 0)) && (
-                              <div className="bg-gradient-to-r from-red-950 to-red-900 border-4 border-[#EF4444] p-6">
-                                <div className="flex items-start gap-4">
-                                  <div className="flex-shrink-0">
-                                    <div className="w-16 h-16 bg-[#EF4444] rounded-full flex items-center justify-center animate-pulse">
-                                      <AlertTriangle className="h-8 w-8 text-white" />
-                                    </div>
+                          <div className="p-6 space-y-12 bg-black pb-24">
+                            {/* Seniority Match */}
+                            {(() => {
+                              const seniorityLevel = displayResume?.extractedData?.seniorityLevel || 'junior';
+                              const years = displayResume?.extractedData?.totalYearsExperience || 0;
+                              return (
+                                <SeniorityMatchAnalysis
+                                  detectedLevel={seniorityLevel.toUpperCase()}
+                                  confidenceScore={85}
+                                  experienceYears={years}
+                                  expectedLevel={years >= 7 ? 'SENIOR' : 'JUNIOR'}
+                                  signalsDetected={5}
+                                  signalStrength="STRONG"
+                                  detectedSignals={['Experience', 'Skills', 'Quantification']}
+                                  readability="High Integrity"
+                                  imageTraps="None Detected"
+                                  atsScore={displayResume?.score || 0}
+                                />
+                              );
+                            })()}
+
+                            {/* LinkedIn Banner */}
+                            {displayResume?.score >= 70 && !isFree && (
+                              <div className="bg-gradient-to-r from-[#0A66C2] to-[#004182] border-4 border-[#0A66C2] p-6 rounded-xl shadow-2xl">
+                                <div className="flex items-center gap-4">
+                                  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center p-2 shadow-lg shrink-0">
+                                    <svg viewBox="0 0 24 24" fill="#0A66C2" className="w-full h-full"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path></svg>
                                   </div>
                                   <div className="flex-1">
-                                    <h3 className="text-white font-black text-2xl mb-3 flex items-center gap-2">
-                                      🚨 CRITICAL: ATS AUTO-REJECT DETECTED
-                                    </h3>
-
-                                    {!displayResume?.extractedData?.hasQuantifiableResults && (
-                                      <div className="relative bg-black/60 border-4 border-[#EF4444] rounded-lg p-5 mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] animate-pulse">
-                                        {/* Animated Corner Accent */}
-                                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#EF4444] rounded-full animate-ping"></div>
-                                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#EF4444] rounded-full"></div>
-
-                                        <div className="flex items-start gap-4">
-                                          <div className="flex-shrink-0">
-                                            <div className="w-20 h-20 bg-[#EF4444]/20 border-4 border-[#EF4444] rounded-full flex items-center justify-center animate-pulse">
-                                              <div className="text-center">
-                                                <div className="text-3xl font-black text-[#EF4444]">0%</div>
-                                                <div className="text-[8px] text-red-300 font-bold uppercase">Impact</div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2 mb-2">
-                                              <XCircle className="h-6 w-6 text-[#EF4444]" />
-                                              <p className="text-[#EF4444] font-black text-xl tracking-tight">
-                                                ZERO METRICS = AUTO-REJECT
-                                              </p>
-                                            </div>
-                                            <div className="bg-red-950/60 border border-[#EF4444]/30 rounded-md p-3 mb-3">
-                                              <p className="text-red-100 text-sm font-bold mb-2">
-                                                📊 BUSINESS IMPACT:
-                                              </p>
-                                              <ul className="space-y-1 text-gray-300 text-sm">
-                                                <li className="flex items-center gap-2">
-                                                  <span className="text-[#EF4444] font-bold">•</span>
-                                                  <span><span className="text-white font-bold">89%</span> of ATS systems auto-reject resumes without numbers</span>
-                                                </li>
-                                                <li className="flex items-center gap-2">
-                                                  <span className="text-[#EF4444] font-bold">•</span>
-                                                  <span><span className="text-white font-bold">Recruiters spend 6 seconds</span> - metrics catch attention instantly</span>
-                                                </li>
-                                                <li className="flex items-center gap-2">
-                                                  <span className="text-[#EF4444] font-bold">•</span>
-                                                  <span><span className="text-white font-bold">3x higher callback rate</span> when quantifiable achievements present</span>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                            <div className="bg-green-950/40 border border-green-500/30 rounded-md p-3">
-                                              <p className="text-[#22C55E] font-bold text-sm mb-2 flex items-center gap-2">
-                                                <Check className="h-4 w-4" />
-                                                IMMEDIATE FIX:
-                                              </p>
-                                              <div className="text-white text-sm space-y-1 font-mono">
-                                                <div className="flex items-start gap-2">
-                                                  <span className="text-[#22C55E]">✓</span>
-                                                  <span><span className="text-yellow-300">%</span> "Increased sales by <span className="text-[#22C55E] font-bold">40%</span>"</span>
-                                                </div>
-                                                <div className="flex items-start gap-2">
-                                                  <span className="text-[#22C55E]">✓</span>
-                                                  <span><span className="text-yellow-300">$</span> "Reduced costs by <span className="text-[#22C55E] font-bold">$500K</span> annually"</span>
-                                                </div>
-                                                <div className="flex items-start gap-2">
-                                                  <span className="text-[#22C55E]">✓</span>
-                                                  <span><span className="text-yellow-300">#</span> "Led team of <span className="text-[#22C55E] font-bold">12 engineers</span>"</span>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {displayResume?.missingElements && displayResume.missingElements.length > 0 && (
-                                      <div className="bg-black/40 border-2 border-[#F59E0B] rounded-lg p-4 mb-3">
-                                        <div className="flex items-start gap-3">
-                                          <AlertTriangle className="h-6 w-6 text-[#F59E0B] flex-shrink-0 mt-1" />
-                                          <div>
-                                            <p className="text-[#F59E0B] font-bold text-lg mb-1">MISSING CRITICAL SECTIONS</p>
-                                            <p className="text-gray-300 text-sm mb-2">
-                                              Required sections not found: {displayResume.missingElements.join(', ')}
-                                            </p>
-                                            <p className="text-white font-semibold text-sm">
-                                              ✅ FIX: Add clear section headers (Experience, Education, Skills)
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )}
-
-                                    {displayResume?.missingKeywords && displayResume.missingKeywords.length > 5 && (
-                                      <div className="bg-black/40 border-2 border-[#F59E0B] rounded-lg p-4">
-                                        <div className="flex items-start gap-3">
-                                          <AlertTriangle className="h-6 w-6 text-[#F59E0B] flex-shrink-0 mt-1" />
-                                          <div>
-                                            <p className="text-[#F59E0B] font-bold text-lg mb-1">{displayResume.missingKeywords.length} MISSING KEYWORDS</p>
-                                            <p className="text-gray-300 text-sm mb-2">
-                                              Critical signals: {displayResume.missingKeywords.slice(0, 5).map((kw: any) => typeof kw === 'string' ? kw : kw.keyword).join(', ')}...
-                                            </p>
-                                            <p className="text-white font-semibold text-sm">
-                                              ✅ FIX: Use the "Edit" tab to add missing keywords instantly
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )}
+                                    <h4 className="text-white font-black text-xl mb-1">🎯 CV Optimized → LinkedIn Next</h4>
+                                    <p className="text-blue-50 text-sm">Your CV is ready. 89% of recruiters check LinkedIn next. Optimize your profile now.</p>
                                   </div>
+                                  <Button onClick={() => onOpenLinkedIn?.()} className="bg-white text-[#0A66C2] font-black hover:bg-white/90">Optimize LinkedIn</Button>
                                 </div>
                               </div>
                             )}
-
-                          {/* LinkedIn Upsell Banner - Show when CV is optimized (score >= 70) */}
-                          {displayResume?.score !== undefined && displayResume.score >= 70 && !isFree && (
-                            <div className="bg-gradient-to-r from-[#0A66C2] to-[#004182] border-4 border-[#0A66C2] p-6 mx-4 my-4 rounded-lg shadow-2xl">
-                              <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                                <div className="flex-shrink-0">
-                                  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-lg">
-                                    <svg className="h-10 w-10" viewBox="0 0 24 24" fill="#0A66C2">
-                                      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"></path>
-                                    </svg>
-                                  </div>
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="text-white font-black text-xl mb-2 flex items-center gap-2">
-                                    🎯 CV Optimizado → LinkedIn es el Siguiente Paso
-                                  </h3>
-                                  <p className="text-[#F1F5F9] text-sm mb-3">
-                                    Tu CV está listo (Score: {displayResume.score}%). <span className="font-bold">89% de los reclutadores</span> revisan LinkedIn antes de contactar. No pierdas oportunidades por un perfil desactualizado.
-                                  </p>
-                                  <div className="flex flex-col sm:flex-row gap-2">
-                                    <Button
-                                      onClick={() => {
-                                        toast.success("Navegando a LinkedIn Optimizer...");
-                                        onClose();
-                                        if (onOpenLinkedIn) {
-                                          onOpenLinkedIn();
-                                        }
-                                      }}
-                                      className="bg-white text-[#0A66C2] font-bold hover:bg-[#F8FAFC] shadow-lg hover:shadow-xl transition-all"
-                                    >
-                                      <span className="flex items-center gap-2">
-                                        <Sparkles className="h-4 w-4" />
-                                        Optimizar LinkedIn Ahora
-                                      </span>
-                                    </Button>
-                                    <Button
-                                      variant="outline"
-                                      onClick={() => {
-                                        // Maybe track that user dismissed
-                                        const banner = document.querySelector('[data-linkedin-banner]');
-                                        if (banner) banner.remove();
-                                      }}
-                                      className="border-2 border-white/30 text-white hover:bg-white/10"
-                                    >
-                                      Más Tarde
-                                    </Button>
-                                  </div>
-                                </div>
-                                <div className="flex-shrink-0 hidden lg:block">
-                                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                                    <div className="text-xs text-white/80 mb-2 font-mono">STATS:</div>
-                                    <div className="space-y-1 text-white font-bold">
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-2xl">89%</span>
-                                        <span className="text-xs opacity-80">check LinkedIn</span>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-2xl">3x</span>
-                                        <span className="text-xs opacity-80">more callbacks</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* ENHANCED ROBOT TERMINAL VIEW - Shows precise analysis with real data */}
-                          <div className="bg-[#000000] p-4">
-                            <EnhancedRobotTerminalView
-                              resumeId={displayResume?._id}
-                              autoAnimate={false}
-                            />
                           </div>
-
-                          {/* Image Trap Warning */}
-                          {displayResume?.hasImageTrap && (
-                            <div className="bg-red-50 border border-red-200 rounded-lg p-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                              <div className="flex items-start gap-3">
-                                <AlertTriangle className="h-6 w-6 text-[#EF4444] flex-shrink-0" />
-                                <div>
-                                  <h4 className="text-red-700 font-bold text-lg mb-1">🚨 IMAGE TRAP DETECTED</h4>
-                                  <p className="text-[#EF4444] text-sm">
-                                    Critical content is embedded as an image. ATS systems cannot read this and will auto-reject your application.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* SENIORITY MATCH - Critical Indicator (ML-Based) - Modern Design */}
-                          {(() => {
-                            // Use ML-calculated seniority from backend extractedData with realistic fallbacks
-                            const seniorityLevel = displayResume?.extractedData?.seniorityLevel || 'junior';
-                            const years = displayResume?.extractedData?.totalYearsExperience || 0;
-
-                            // Calculate realistic confidence score based on multiple factors
-                            const hasLeadershipTitle = displayResume?.extractedData?.currentRole?.toLowerCase().match(/senior|lead|principal|staff|architect/);
-                            const hasQuantifiableResults = displayResume?.extractedData?.hasQuantifiableResults;
-                            const companiesCount = displayResume?.extractedData?.companies?.length || 0;
-                            const skillsCount = displayResume?.extractedData?.technicalSkills?.length || 0;
-
-                            // More realistic scoring algorithm for confidence
-                            let confidenceScore = 0;
-                            if (years >= 10) {
-                              confidenceScore = 60 + (hasLeadershipTitle ? 15 : 0) + (hasQuantifiableResults ? 10 : 0) + Math.min(companiesCount * 3, 15);
-                            } else if (years >= 7) {
-                              confidenceScore = 45 + (hasLeadershipTitle ? 15 : 0) + (hasQuantifiableResults ? 10 : 0) + Math.min(companiesCount * 2, 10);
-                            } else if (years >= 3) {
-                              confidenceScore = 30 + (hasQuantifiableResults ? 10 : 0) + Math.min(companiesCount * 2, 10);
-                            } else {
-                              confidenceScore = 15 + (hasQuantifiableResults ? 10 : 0);
-                            }
-
-                            // Detect realistic seniority signals from extracted data
-                            const detectedSignals: string[] = [];
-                            if (companiesCount >= 3) detectedSignals.push(`${companiesCount} companies`);
-                            if (hasLeadershipTitle) {
-                              const title = displayResume.extractedData.currentRole;
-                              if (title.toLowerCase().includes('senior')) detectedSignals.push('Senior title');
-                              if (title.toLowerCase().includes('lead')) detectedSignals.push('Leadership title');
-                              if (title.toLowerCase().includes('principal')) detectedSignals.push('Principal title');
-                            }
-                            if (skillsCount >= 10) detectedSignals.push(`${skillsCount} technical skills`);
-                            if (displayResume?.extractedData?.certifications && displayResume.extractedData.certifications.length > 0) {
-                              detectedSignals.push(`${displayResume.extractedData.certifications.length} certifications`);
-                            }
-                            if (hasQuantifiableResults) detectedSignals.push('Quantified achievements');
-                            if (years >= 7) detectedSignals.push(`${years} years experience`);
-
-                            // Map seniority levels to uppercase display
-                            const levelMap: Record<string, string> = {
-                              'lead': 'LEAD',
-                              'senior': 'SENIOR',
-                              'mid': 'MID-LEVEL',
-                              'junior': 'JUNIOR'
-                            };
-
-                            const detectedLevelDisplay = levelMap[seniorityLevel] || 'JUNIOR';
-
-                            // Calculate expected level based on years
-                            let expectedLevel = 'JUNIOR';
-                            if (years >= 10) expectedLevel = 'SENIOR';
-                            else if (years >= 7) expectedLevel = 'MID-LEVEL';
-                            else if (years >= 3) expectedLevel = 'JUNIOR';
-
-                            // Determine signal strength based on number of signals
-                            let signalStrength: "STRONG" | "MODERATE" | "WEAK" = "WEAK";
-                            if (detectedSignals.length >= 5) signalStrength = "STRONG";
-                            else if (detectedSignals.length >= 3) signalStrength = "MODERATE";
-
-                            // Calculate readability based on OCR text quality
-                            let readability: "High Integrity" | "Medium" | "Low" = "High Integrity";
-                            if (displayResume?.ocrText) {
-                              const textLength = displayResume.ocrText.length;
-                              if (textLength < 100) readability = "Low";
-                              else if (textLength < 500) readability = "Medium";
-                            }
-
-                            // Calculate image traps (check for images in resume)
-                            const imageTraps: "None Detected" | "Detected" | "Critical" = "None Detected";
-
-                            // Use the real ATS score from the resume
-                            const atsScore = displayResume?.score || 0;
-
-                            return (
-                              <SeniorityMatchAnalysis
-                                detectedLevel={detectedLevelDisplay}
-                                confidenceScore={confidenceScore}
-                                experienceYears={years}
-                                expectedLevel={expectedLevel}
-                                signalsDetected={detectedSignals.length}
-                                signalStrength={signalStrength}
-                                detectedSignals={detectedSignals}
-                                readability={readability}
-                                imageTraps={imageTraps}
-                                atsScore={atsScore}
-                              />
-                            );
-                          })()}
-
                         </div>
                       )}
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="progress" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <ScoreProgressChart
-                      history={[
-                        {
-                          version: 1,
-                          score: displayResume.score || 0,
-                          timestamp: displayResume._creationTime,
-                          changes: ["Initial scan"]
-                        }
-                      ]}
-                      currentScore={displayResume.score || 0}
-                    />
-                  </TabsContent>
-
-                  <TabsContent value="action-plan" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <ActionPlan
-                      steps={actionSteps}
-                      onStepClick={(stepId) => {
-                        // Navigate to Edit tab for fixes
-                        setActiveTab('edit');
-                        toast.info("Opening inline editor to fix this issue...");
-                      }}
-                      onCompleteStep={(stepId) => {
-                        toast.success("Step marked as complete! Keep up the great work!");
-                      }}
-                    />
-                  </TabsContent>
-
-                  <TabsContent value="ats-report" className="flex-1 overflow-auto p-6">
-                    {/* Contextual Elite Match CTA */}
-                    {!displayResume?.jobDescription && (
-                      <div className="mb-6 p-6 bg-gradient-to-br from-[#1E293B] to-[#0F172A] rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-secondary/20 transition-all" />
-                        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              <span className="px-2 py-0.5 bg-secondary/20 text-secondary text-[10px] font-black uppercase tracking-widest rounded border border-secondary/30">Targeted Match</span>
-                              <h4 className="text-white font-bold text-lg">Match with a Specific Job?</h4>
-                            </div>
-                            <p className="text-slate-400 text-sm max-w-md">Our <span className="text-white font-bold">Elite Match Engine</span> uses local private ML to find precise gaps between your CV and a specific vacancy.</p>
-                          </div>
-                          <Button
-                            onClick={() => {
-                              setActiveTab('match'); // We'll need to define where this goes or handle it
-                              document.getElementById('jd-input-trigger')?.click();
-                            }}
-                            className="bg-secondary hover:bg-secondary/90 text-[#0F172A] font-black px-8 h-12 rounded-xl shadow-[0_0_20px_rgba(24ACC4,0.3)]"
-                          >
-                            Add Job Offer
-                            <Search className="h-4 w-4 ml-2" />
-                          </Button>
+                  {/* 1. OVERVIEW */}
+                  <TabsContent value="overview" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
+                    <div className="space-y-8 max-w-5xl mx-auto">
+                      <ScoreProgressChart
+                        history={[
+                          {
+                            version: 1,
+                            score: displayResume.score || 0,
+                            timestamp: displayResume._creationTime,
+                            changes: ["Initial scan"]
+                          }
+                        ]}
+                        currentScore={displayResume.score || 0}
+                      />
+                      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+                          <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                            <Activity className="h-5 w-5 text-slate-500" />
+                            ATS Performance Snapshot
+                          </h3>
+                        </div>
+                        <div className="p-0">
+                          <ATSOverviewDashboard
+                            resume={displayResume}
+                            user={user}
+                            onFixIssue={(issueType) => setActiveTab('improvements')}
+                            onUpgrade={() => setShowPricing(true)}
+                          />
                         </div>
                       </div>
-                    )}
-
-                    <ATSAnalysisReport
-                      resume={displayResume}
-                      user={user}
-                      onEditWithSniper={() => {
-                        if (onOpenKeywordSniper) {
-                          onOpenKeywordSniper();
-                          toast.success("Opening Keyword Sniper Tool...");
-                        } else {
-                          onClose();
-                          toast.info("Opening Keyword Sniper Tool...");
-                        }
-                      }}
-                      onOpenWritingForge={() => {
-                        if (onOpenWritingForge) {
-                          onOpenWritingForge();
-                          toast.success("Opening Writing Forge...");
-                        } else {
-                          onClose();
-                          toast.info("Opening Writing Forge...");
-                        }
-                      }}
-                      onDownloadPDF={() => {
-                        toast.success("Generating PDF report...");
-                      }}
-                      onUpgrade={() => setShowPricing(true)}
-                    />
+                    </div>
                   </TabsContent>
 
-                  <TabsContent value="fluff" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <FluffDetector
-                      resumeText={displayResume.ocrText || ""}
-                      clarityScore={displayResume?.score || 0}
-                      isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
-                      onUpgrade={() => setShowPricing(true)}
-                    />
-                  </TabsContent>
+                  {/* 4. IMPROVEMENTS */}
+                  <TabsContent value="improvements" className="flex-1 overflow-auto bg-slate-50">
+                    <div className="max-w-6xl mx-auto p-6 space-y-12 pb-24">
 
-                  <TabsContent value="keywords" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <KeywordAnalysis
-                      matchedKeywords={foundKeywords}
-                      missingKeywords={criticalKeywords.map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw.term || '')}
-                      matchRate={displayResume?.score || 0}
-                      resumeText={displayResume?.ocrText || ''}
-                      jobDescription={displayResume?.jobDescription || ''}
-                      category={displayResume?.category || ''}
-                      seniorityLevel={displayResume?.extractedData?.seniorityLevel || 'mid'}
-                      isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
-                      onUpgrade={() => setShowPricing(true)}
-                    />
-                  </TabsContent>
+                      {/* Action Plan */}
+                      <section id="action-plan" className="space-y-6 scroll-mt-20">
+                        <div className="border-b border-slate-200 pb-4">
+                          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                            <ListChecks className="h-6 w-6 text-amber-500" />
+                            Step-By-Step Priority Plan
+                          </h2>
+                          <p className="text-slate-500 text-sm">Critical fixes ordered by impact on your ATS score.</p>
+                        </div>
+                        <ActionPlan
+                          steps={actionSteps}
+                          onStepClick={(stepId) => setActiveTab('edit')}
+                          onCompleteStep={(stepId) => toast.success("Step marked as complete!")}
+                        />
+                      </section>
 
-                  <TabsContent value="format" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <div className="space-y-8">
-                      <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                        <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Format Issues</h2>
-                        {auditItems.length > 0 ? (
-                          <div className="space-y-3">
-                            {auditItems.map((item: any, index: number) => (
-                              <div key={index} className={`p-5 rounded-xl border-l-4 shadow-sm transition-all hover:shadow-md ${item.status === "failed"
-                                ? "bg-red-50/50 border-l-red-500 border border-red-200/50"
-                                : item.status === "warning"
-                                  ? "bg-amber-50/50 border-l-amber-500 border border-amber-200/50"
-                                  : "bg-green-50/50 border-l-green-500 border border-green-200/50"
-                                }`}>
-                                <div className="flex items-start gap-4">
-                                  <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${item.status === "failed" ? "bg-red-100" :
-                                    item.status === "warning" ? "bg-amber-100" : "bg-green-100"
-                                    }`}>
-                                    <span className="text-lg">
-                                      {item.status === "failed" ? "❌" : item.status === "warning" ? "⚠️" : "✅"}
-                                    </span>
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <h3 className={`font-bold text-base ${item.status === "failed" ? "text-red-800" :
-                                        item.status === "warning" ? "text-amber-800" : "text-green-800"
-                                        }`}>
-                                        {item.title}
-                                      </h3>
-                                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${item.status === "failed" ? "bg-red-200 text-red-700" :
-                                        item.status === "warning" ? "bg-amber-200 text-amber-700" :
-                                          "bg-green-200 text-green-700"
-                                        }`}>
-                                        {item.status === "failed" ? "Critical" : item.status === "warning" ? "Warning" : "Passed"}
-                                      </span>
-                                    </div>
-                                    <p className="text-[#0F172A] text-sm font-medium mb-2">{item.reason}</p>
-                                    <div className={`mt-3 p-3 rounded-lg ${item.status === "failed" ? "bg-red-100/50" :
-                                      item.status === "warning" ? "bg-amber-100/50" : "bg-green-100/50"
-                                      }`}>
-                                      <p className={`text-xs font-medium ${item.status === "failed" ? "text-red-700" :
-                                        item.status === "warning" ? "text-amber-700" : "text-green-700"
-                                        }`}>
-                                        <span className="font-bold">Fix: </span>{item.fix}
-                                      </p>
-                                    </div>
-                                  </div>
+                      {/* Keyword Analysis */}
+                      <section id="keywords" className="space-y-6 scroll-mt-20">
+                        <div className="border-b border-slate-200 pb-4">
+                          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                            <Target className="h-6 w-6 text-blue-500" />
+                            Industry Keyword Match
+                          </h2>
+                          <p className="text-slate-500 text-sm">Bridge the gap between your experience and industry expectations.</p>
+                        </div>
+                        <KeywordAnalysis
+                          matchedKeywords={foundKeywords}
+                          missingKeywords={criticalKeywords.map((kw: any) => typeof kw === 'string' ? kw : kw.keyword || kw.term || '')}
+                          matchRate={displayResume?.score || 0}
+                          resumeText={displayResume?.ocrText || ''}
+                          jobDescription={displayResume?.jobDescription || ''}
+                          category={displayResume?.category || ''}
+                          seniorityLevel={displayResume?.extractedData?.seniorityLevel || 'mid'}
+                          isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
+                          onUpgrade={() => setShowPricing(true)}
+                        />
+                      </section>
+
+                      {/* ATS Technical Report */}
+                      <section id="ats-report" className="space-y-6 scroll-mt-20">
+                        <div className="border-b border-slate-200 pb-4">
+                          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                            <FileSearch className="h-6 w-6 text-indigo-500" />
+                            Technical Cleanliness Report
+                          </h2>
+                          <p className="text-slate-500 text-sm">Deep scan of formatting, fonts, and structural integrity.</p>
+                        </div>
+                        <ATSAnalysisReport
+                          resume={displayResume}
+                          user={user}
+                          onEditWithSniper={() => setActiveTab('edit')}
+                          onOpenWritingForge={() => setActiveTab('edit')}
+                          onDownloadPDF={() => toast.info("Report downloading...")}
+                          onUpgrade={() => setShowPricing(true)}
+                        />
+                      </section>
+
+                      {/* Fluff & Clarity */}
+                      <section id="fluff" className="space-y-6 scroll-mt-20">
+                        <div className="border-b border-slate-200 pb-4">
+                          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                            <Sparkles className="h-6 w-6 text-rose-500" />
+                            Clarity & Fluff Detector
+                          </h2>
+                          <p className="text-slate-500 text-sm">Identify filler words and improve impact density.</p>
+                        </div>
+                        <FluffDetector
+                          resumeText={displayResume.ocrText || ""}
+                          clarityScore={displayResume?.score || 0}
+                          isPaidUser={checkIsPaidUser(user?.subscriptionTier)}
+                          onUpgrade={() => setShowPricing(true)}
+                        />
+                      </section>
+
+                      {/* Format Issues */}
+                      <section id="format" className="space-y-6 scroll-mt-20">
+                        <div className="border-b border-slate-200 pb-4">
+                          <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                            <Monitor className="h-6 w-6 text-slate-500" />
+                            Format Issues
+                          </h2>
+                          <p className="text-slate-500 text-sm">Visual and structural elements that might confuse ATS.</p>
+                        </div>
+                        <div className="bg-white rounded-xl border border-slate-200 p-6">
+                          {auditItems.length > 0 ? (
+                            <div className="space-y-3">
+                              {auditItems.map((item: any, index: number) => (
+                                <div key={index} className={`p-4 rounded-lg border-l-4 ${item.status === "failed" ? "bg-red-50 border-l-red-500" : item.status === "warning" ? "bg-amber-50 border-l-amber-500" : "bg-green-50 border-l-green-500"}`}>
+                                  <h4 className="font-bold text-sm">{item.title}</h4>
+                                  <p className="text-xs text-slate-600 mt-1">{item.reason}</p>
+                                  <p className="text-xs font-bold text-slate-900 mt-2">Fix: {item.fix}</p>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-slate-500 italic">No major formatting issues detected.</p>
+                          )}
+                        </div>
+                      </section>
+
+                      {/* Master Rewrite */}
+                      {displayResume?.rewrittenText && (
+                        <section id="rewritten" className="space-y-6 scroll-mt-20">
+                          <div className="border-b border-slate-200 pb-4">
+                            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                              <Wand2 className="h-6 w-6 text-emerald-500" />
+                              AI Master Rewrite
+                            </h2>
+                            <p className="text-slate-500 text-sm">Neural-optimized version for maximum conversion.</p>
                           </div>
-                        ) : (
-                          <div className="p-6 rounded-lg bg-green-50 border border-green-200 text-center">
-                            <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                            <h3 className="font-bold text-green-700 mb-2">No Format Issues Detected</h3>
-                            <p className="text-sm text-[#475569]">Your resume has good formatting that should be ATS-compatible.</p>
+                          <div className="bg-white rounded-2xl border-2 border-emerald-100 p-8 shadow-xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4">
+                              <Button onClick={handleApplyRewrite} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold">Apply Rewrite</Button>
+                            </div>
+                            <pre className="text-sm font-mono text-slate-700 whitespace-pre-wrap leading-relaxed mt-8">
+                              {displayResume.rewrittenText}
+                            </pre>
                           </div>
-                        )}
-                      </div>
+                        </section>
+                      )}
                     </div>
                   </TabsContent>
 
 
 
-                  <TabsContent value="interview" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
+                  {/* 5. PREP MODE */}
+                  <TabsContent value="prep" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
                     <InterviewBattlePlan
                       targetRole={displayResume.jobTitle || "Data Science Role"}
                       companyName={displayResume.company || "TechCorp"}
@@ -1663,65 +1181,7 @@ export function ResumeDetailDialog({
                     />
                   </TabsContent>
 
-                  <TabsContent value="raw" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <div className="space-y-8">
-                      <div className="bg-[#FFFFFF] rounded-lg p-6 border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                        <h2 className="text-2xl font-bold text-[#0F172A] mb-6">Raw Text View</h2>
-                        <div className="bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] p-4 text-xs text-[#475569] font-mono leading-relaxed whitespace-pre-wrap">
-                          {displayResume?.ocrText || "No text extracted."}
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
 
-                  <TabsContent value="rewritten" className="flex-1 overflow-auto p-6 bg-[#F8FAFC]">
-                    <div className="space-y-8">
-                      <div className="bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] rounded-2xl p-8 border-2 border-[#E2E8F0] shadow-xl">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-                          <div>
-                            <h2 className="text-3xl font-black text-[#0F172A] flex items-center gap-3">
-                              <Wand2 className="h-8 w-8 text-[#1E293B]" />
-                              AI Master Rewrite
-                            </h2>
-                            <p className="text-[#64748B] text-sm mt-1">Full structural optimization based on high-conversion patterns.</p>
-                          </div>
-                          <Button
-                            onClick={handleApplyRewrite}
-                            className="bg-[#1E293B] hover:bg-[#0F172A] text-white font-black h-12 px-8 rounded-xl shadow-lg transition-all"
-                          >
-                            <CheckCircle2 className="h-4 w-4 mr-2" />
-                            Apply to My CV
-                          </Button>
-                        </div>
-
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6 flex items-start gap-4">
-                          <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border border-blue-100 shadow-sm shrink-0">
-                            <Sparkles className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-blue-900 text-sm mb-1">Impact Validation</h4>
-                            <p className="text-blue-700 text-xs leading-relaxed">
-                              This version has been optimized for <span className="font-bold">readability</span> and <span className="font-bold">keyword density</span>. Applying this version can increase your ATS score by up to <span className="font-bold">+35%</span>.
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-6 max-h-[500px] overflow-y-auto custom-scrollbar shadow-inner relative group">
-                          <pre className="text-[#0F172A] font-mono text-xs leading-relaxed whitespace-pre-wrap">
-                            {displayResume?.rewrittenText || "No rewrite ready. Please trigger an analysis first."}
-                          </pre>
-                        </div>
-
-                        <div className="mt-6 flex items-center justify-between text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">
-                          <div className="flex gap-4">
-                            <span>{displayResume?.rewrittenText?.length || 0} chars</span>
-                            <span>Neural Optimized ✓</span>
-                          </div>
-                          <span className="text-[#1E293B]">XYZ Formula + STAR Method applied</span>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
                 </Tabs>
 
                 {/* Floating "View CV" button for mobile */}

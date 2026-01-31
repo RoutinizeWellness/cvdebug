@@ -1463,6 +1463,8 @@ export interface Translation {
     keywordFound: string;
     keywordNotFound: string;
     imageTrapAction: string;
+    upgradeRequired: string;
+    battlePlanUpgradeDesc: string;
   };
   // Create Project Dialog
   createProject: {
@@ -3176,6 +3178,8 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordFound: 'Detected',
       keywordNotFound: 'Not Detected',
       imageTrapAction: 'Fix Image Trap',
+      upgradeRequired: 'Upgrade Required',
+      battlePlanUpgradeDesc: 'You need the Career Sprint pass to unlock the Interview Battle Plan.'
     },
     createProject: {
       title: 'Create New Project',
@@ -4830,6 +4834,8 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordFound: 'Detectada',
       keywordNotFound: 'No Detectada',
       imageTrapAction: 'Corregir Trampa de Imagen',
+      upgradeRequired: 'Mejora Requerida',
+      battlePlanUpgradeDesc: 'Necesitas el pase Career Sprint para desbloquear el Plan de Batalla de Entrevistas.'
     },
     createProject: {
       title: 'Crear Nuevo Proyecto',
@@ -6540,6 +6546,8 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordFound: 'Détecté',
       keywordNotFound: 'Non Détecté',
       imageTrapAction: 'Corriger le Piège d\'Image',
+      upgradeRequired: 'Mise à niveau requise',
+      battlePlanUpgradeDesc: 'Vous avez besoin du pass Career Sprint pour débloquer le plan de bataille d\'entrevue.'
     },
     createProject: {
       title: 'Créer un Nouveau Projet',
@@ -8205,6 +8213,8 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordFound: 'Erkannt',
       keywordNotFound: 'Nicht Erkannt',
       imageTrapAction: 'Bild-Falle beheben',
+      upgradeRequired: 'Upgrade erforderlich',
+      battlePlanUpgradeDesc: 'Sie benötigen den Career Sprint Pass, um den Interview-Schlachtplan freizuschalten.'
     },
     createProject: {
       title: 'Neues Projekt Erstellen',
@@ -9914,6 +9924,8 @@ export const translations: Record<SupportedLocale, Translation> = {
       keywordFound: 'Detectada',
       keywordNotFound: 'Não Detectada',
       imageTrapAction: 'Corrigir Armadilha de Imagem',
+      upgradeRequired: 'Upgrade Necesário',
+      battlePlanUpgradeDesc: 'Você precisa do passe Career Sprint para desbloquear o Plano de Batalha de Entrevista.'
     },
     createProject: {
       title: 'Criar Novo Projeto',
@@ -10331,7 +10343,7 @@ export function useTranslation(locale?: SupportedLocale): Translation {
 }
 
 // Format price with currency
-export function formatPrice(amount: number, locale?: SupportedLocale): string {
+export function formatPrice(amount: number): string {
   // Always use $ for simplified pricing
   return `$${amount.toFixed(2)}`;
 }

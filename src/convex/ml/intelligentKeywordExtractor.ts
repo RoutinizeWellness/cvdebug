@@ -134,6 +134,50 @@ export const INDUSTRY_KEYWORDS = {
       'roi', 'roas', 'ctr', 'conversion rate', 'cac', 'ltv', 'engagement rate',
       'bounce rate', 'impressions', 'reach', 'cpm', 'cpc', 'cpa'
     ]
+  },
+  human_resources: {
+    skills: [
+      'talent acquisition', 'employee relations', 'onboarding', 'performance management',
+      'benefits administration', 'hris', 'recruiting', 'staffing', 'training and development',
+      'compliance', 'labor laws', 'compensation', 'strategic hr', 'succession planning'
+    ],
+    tools: [
+      'workday', 'bamboo hr', 'lever', 'greenhouse', 'adp', 'gusto', 'paychex',
+      'linkedin recruiter', 'indeed', 'monster'
+    ],
+    certifications: [
+      'shrm-cp', 'shrm-scp', 'phr', 'sphr', 'gphr', 'hrci'
+    ]
+  },
+  legal: {
+    skills: [
+      'legal research', 'litigation', 'contract negotiation', 'compliance',
+      'corporate law', 'intellectual property', 'diligence', 'legal writing',
+      'regulatory affairs', 'arbitration', 'mediation', 'employment law'
+    ],
+    tools: [
+      'lexisnexis', 'westlaw', 'clio', 'relativity', 'legal tracker', 'concordance'
+    ]
+  },
+  education: {
+    skills: [
+      'curriculum development', 'classroom management', 'lesson planning',
+      'educational technology', 'instructional design', 'student assessment',
+      'differentiated instruction', 'special education', 'k-12', 'higher education'
+    ],
+    tools: [
+      'canvas', 'blackboard', 'moodle', 'google classroom', 'kahoot', 'zoom'
+    ]
+  },
+  customer_service: {
+    skills: [
+      'conflict resolution', 'customer experience', 'technical support',
+      'problem solving', 'crm', 'ticketing systems', 'account management',
+      'client retention', 'multitasking', 'call center operations'
+    ],
+    tools: [
+      'zendesk', 'intercom', 'freshdesk', 'salesforce service cloud', 'jira service desk'
+    ]
   }
 };
 
@@ -573,23 +617,36 @@ function identifyMissingCritical(
     }
   }
 
-  // Check for technical skills in tech industry
+  // Check for technical skills in tech industry - ONLY if role is developer-related
   if (industry === 'technology') {
     const techData = industryData as typeof INDUSTRY_KEYWORDS.technology;
-    const hasLanguage = techData.programming_languages.some((lang: string) =>
-      resumeLower.includes(lang.toLowerCase())
-    );
+    const isDeveloper = /\b(developer|engineer|programmer|coder|architect|software)\b/gi.test(resumeText);
 
-    if (!hasLanguage) {
-      missing.push('Programming language');
-    }
+    if (isDeveloper) {
+      const hasLanguage = techData.programming_languages.some((lang: string) =>
+        resumeLower.includes(lang.toLowerCase())
+      );
 
-    const hasCloud = techData.cloud_platforms.some((cloud: string) =>
-      resumeLower.includes(cloud.toLowerCase())
-    );
+      if (!hasLanguage) {
+        missing.push('Programming language (Javascript, Python, Java, etc.)');
+      }
 
-    if (!hasCloud) {
-      missing.push('Cloud platform experience (AWS, Azure, GCP)');
+      const hasCloud = techData.cloud_platforms.some((cloud: string) =>
+        resumeLower.includes(cloud.toLowerCase())
+      );
+
+      if (!hasCloud) {
+        missing.push('Cloud platform experience (AWS, Azure, GCP)');
+      }
+    } else {
+      // Tech industry but non-developer role (e.g. Sales, PM)
+      // Suggest tools instead
+      const hasTools = techData.devops.some((tool: string) =>
+        resumeLower.includes(tool.toLowerCase())
+      );
+      if (!hasTools) {
+        missing.push('Industry standard tools (Jira, Confluence, etc.)');
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { X, ArrowRight, CheckCircle2, Upload, Cpu, Wand2, Target } from "lucide-react";
+import { X, ArrowRight, CheckCircle2, Upload, Cpu, Wand2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface OnboardingStep {
@@ -52,13 +52,19 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
 ];
 
 interface OnboardingTourProps {
+  open: boolean;
   onComplete: () => void;
   onSkip: () => void;
 }
 
-export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
+export function OnboardingTour({ open, onComplete, onSkip }: OnboardingTourProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(open);
+
+  useEffect(() => {
+    setIsVisible(open);
+    if (open) setCurrentStep(0);
+  }, [open]);
 
   const currentStepData = ONBOARDING_STEPS[currentStep];
   const isLastStep = currentStep === ONBOARDING_STEPS.length - 1;
@@ -113,7 +119,7 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 z-[9998] backdrop-blur-sm"
-            onClick={(e) => {
+            onClick={() => {
               console.log('[OnboardingTour] Overlay clicked');
               handleSkipNow();
             }}
@@ -170,13 +176,12 @@ export function OnboardingTour({ onComplete, onSkip }: OnboardingTourProps) {
                   {ONBOARDING_STEPS.map((_, idx) => (
                     <div
                       key={idx}
-                      className={`h-2 rounded-full transition-all ${
-                        idx === currentStep
-                          ? "w-8 bg-[#22C55E]"
-                          : idx < currentStep
+                      className={`h-2 rounded-full transition-all ${idx === currentStep
+                        ? "w-8 bg-[#22C55E]"
+                        : idx < currentStep
                           ? "w-2 bg-[#22C55E]/50"
                           : "w-2 bg-gray-600"
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>

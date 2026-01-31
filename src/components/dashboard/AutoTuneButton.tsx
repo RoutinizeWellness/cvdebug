@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Wand2, Loader2, Sparkles, TrendingUp, CheckCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useMutation } from "convex/react";
+import { motion } from "framer-motion";
+import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import {
@@ -32,7 +32,7 @@ export function AutoTuneButton({
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<any>(null);
 
-  const autoTuneResume = useMutation(api.autoTune.autoTuneResume);
+  const autoTuneResume = useAction(api.autoTune.autoTuneResume);
 
   const handleAutoTune = async () => {
     if (!isPremium) {

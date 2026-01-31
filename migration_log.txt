@@ -1,0 +1,39 @@
+﻿­ƒöì Reading config from: C:\Users\Carles\Desktop\dfjdf\cvdebug\.env.migration
+­ƒôä File content length: 298
+Line 0: "# PROD"
+   ÔØî No match for line 0
+Line 1: "ORIGEN_URL=https://next-cod-660.convex.cloud"
+   Ô£à Matched: ORIGEN_URL=https://next-cod-660.convex.cloud
+Line 2: "DESTINO_DEPLOY_KEY=prod:formal-dogfish-712|eyJ2MiI6ImExMjJjMTdmNGI4NzQ0NTBiYzUwYWExZGJjZThlNTliIn0="
+   Ô£à Matched: DESTINO_DEPLOY_KEY=KEY_MASKED
+Line 3: "DESTINO_URL=https://formal-dogfish-712.convex.cloud"
+   Ô£à Matched: DESTINO_URL=https://formal-dogfish-712.convex.cloud
+Line 4: ""
+   ÔØî No match for line 4
+Line 5: "# DEV"
+   ÔØî No match for line 5
+Line 6: "DEV_ORIGEN_URL="
+   Ô£à Matched: DEV_ORIGEN_URL=
+Line 7: "DEV_DESTINO_DEPLOY_KEY="
+   Ô£à Matched: DEV_DESTINO_DEPLOY_KEY=
+Line 8: "DEV_DESTINO_URL="
+   Ô£à Matched: DEV_DESTINO_URL=
+Line 9: ""
+   ÔØî No match for line 9
+Line 10: "SITE_URL=https://cvdebug.com"
+   Ô£à Matched: SITE_URL=https://cvdebug.com
+Line 11: ""
+   ÔØî No match for line 11
+­ƒôØ Loaded Config (masking keys):
+   - ORIGEN_URL: https://next-cod-660.convex.cloud
+   - DESTINO_URL: https://formal-dogfish-712.convex.cloud
+   - DESTINO_DEPLOY_KEY: PRESENT
+
+--- ­ƒÜÇ Starting PROD Migration ---
+­ƒôì Origin: https://next-cod-660.convex.cloud
+­ƒôì Destination: https://formal-dogfish-712.convex.cloud
+­ƒôÑ Exporting PROD data (requires 'npx convex login')...
+
+ÔÅ¡´©Å Skipping DEV migration: Missing environment variables.
+
+­ƒÅü All migration tasks finished.

@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Copy,
   Download,
   Sparkles,
-  Check,
   Wand2,
   AlertCircle,
   Save,
@@ -41,7 +40,6 @@ export function InlineResumeEditor({
   const [content, setContent] = useState(initialContent);
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
-  const [selectedSuggestion, setSelectedSuggestion] = useState<number | null>(null);
   const triggerUpdateAndAnalyze = useMutation(api.resumes.updateResumeContent);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
@@ -67,7 +65,7 @@ export function InlineResumeEditor({
   useEffect(() => {
     if (resumeData && isReanalyzing) {
       // Check if status changed from "processing" to "analyzed"
-      if (resumeData.status === "analyzed") {
+      if (resumeData.status === "completed") {
         setIsReanalyzing(false);
 
         // Show success notification with score change

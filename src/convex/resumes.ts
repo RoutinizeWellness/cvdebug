@@ -819,7 +819,9 @@ export const createResumeManually = mutation({
 export const updateResumeText = mutation({
   args: {
     id: v.id("resumes"),
-    newContent: v.string(),
+    oldText: v.optional(v.string()),
+    newText: v.string(),
+    newContent: v.optional(v.string()), // For backward compatibility
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -832,12 +834,31 @@ export const updateResumeText = mutation({
       throw new ConvexError("UNAUTHORIZED");
     }
 
-    // Update the resume with the new content
+    let updatedContent = "";
+
+    if (args.newContent) {
+      updatedContent = args.newContent;
+    } else if (args.oldText) {
+      // Replace specific bullet or text chunk
+      updatedContent = (resume.ocrText || "").replace(args.oldText, args.newText);
+    } else {
+      updatedContent = args.newText;
+    }
+
+    // Update the resume with the new content and trigger re-analysis
     await ctx.db.patch(args.id, {
-      ocrText: args.newContent,
+      ocrText: updatedContent,
+      status: "processing",
     });
 
-    console.log("[updateResumeText] Resume text updated:", args.id);
+    // Schedule re-analysis so the score updates
+    await ctx.scheduler.runAfter(0, internalAny.ai.analyzeResume, {
+      id: args.id,
+      ocrText: updatedContent,
+      jobDescription: resume.jobDescription,
+    });
+
+    console.log("[updateResumeText] Resume text updated and re-analysis scheduled:", args.id);
     return args.id;
   },
 });
