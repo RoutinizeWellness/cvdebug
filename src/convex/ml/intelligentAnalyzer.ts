@@ -516,39 +516,38 @@ function calculateScores(
   specificMetricCount: number
 ): { overall: number; keywords: number; format: number; completeness: number } {
 
-  // STRICT: Keyword scoring based on real ATS requirements
-  // No free points - must earn everything
-  let keywordScore = 0;
+  // BALANCED: Keyword scoring based on real ATS requirements
+  // Start with a baseline for having content, then add points for quality
+  let keywordScore = 20; // Base score for having a resume
 
-  // 1. Keyword density MUST be in optimal range (3-8% like real ATS)
-  // 1. Keyword density MUST be in optimal range (3-8% like real ATS)
+  // 1. Keyword density in optimal range (2-8% is realistic)
   if (keywordExtraction.keyword_density >= 3 && keywordExtraction.keyword_density <= 8) {
-    keywordScore += 25; // Optimal range (increased from 20)
+    keywordScore += 20; // Optimal range
   } else if (keywordExtraction.keyword_density >= 2 && keywordExtraction.keyword_density < 3) {
-    keywordScore += 12; // Too sparse
+    keywordScore += 15; // Good but could be better
   } else if (keywordExtraction.keyword_density > 8 && keywordExtraction.keyword_density <= 12) {
-    keywordScore += 5; // Too dense (keyword stuffing)
+    keywordScore += 10; // A bit dense but acceptable
   } else if (keywordExtraction.keyword_density > 12) {
-    keywordScore -= 20; // Critical: Keyword stuffing detected
-  } else {
-    keywordScore += 0; // Outside acceptable range
+    keywordScore -= 5; // Keyword stuffing (reduced penalty)
+  } else if (keywordExtraction.keyword_density >= 1) {
+    keywordScore += 8; // Has some keywords
   }
 
   // 2. Unique keyword count (must have variety)
-  // Granular scoring: Each unique keyword up to 20 gives points
-  const varietyScore = Math.min(25, keywordExtraction.unique_keyword_count * 1.5);
+  // More realistic: 10-15 unique keywords is good
+  const varietyScore = Math.min(20, Math.floor(keywordExtraction.unique_keyword_count * 1.3));
   keywordScore += varietyScore;
 
-  // 3. Job description match (critical for real ATS)
+  // 3. Job description match (important but not everything)
   if (jdAnalysis && jdAnalysis.keywordOverlap > 0) {
-    const matchBonus = Math.min(30, jdAnalysis.keywordOverlap * 0.4);
+    const matchBonus = Math.min(25, Math.floor(jdAnalysis.keywordOverlap * 0.35));
     keywordScore += matchBonus;
   } else {
-    // No JD provided or no match = minimal baseline
-    keywordScore += 5;
+    // No JD provided = give reasonable baseline
+    keywordScore += 10;
   }
 
-  // INCREASED WEIGHT: Metrics are the #1 thing recruiters look for
+  // 4. Metrics are important but not everything
   const metricPatterns = [
     /\d+%|\$\d+/gi,
     /team of \d+/gi,
@@ -558,17 +557,16 @@ function calculateScores(
 
   const hasMetrics = metricPatterns.some(pattern => pattern.test(resumeText));
 
-  // Granular metrics scoring: 6 points per specific metric, max 30
-  // (Was 4 points, max 20)
-  const metricsScore = Math.min(30, specificMetricCount * 6);
+  // More realistic: 4 points per metric, max 20
+  const metricsScore = Math.min(20, specificMetricCount * 4);
   keywordScore += metricsScore;
 
   if (metricsScore === 0 && !hasMetrics) {
-    // No quantifiable results = major red flag for real ATS
-    keywordScore -= 15; // Increased penalty from -10
+    // No metrics = small penalty (some roles don't need many metrics)
+    keywordScore -= 5;
   }
 
-  keywordScore = Math.max(0, Math.min(100, keywordScore));
+  keywordScore = Math.max(30, Math.min(100, keywordScore)); // Min 30 for having content
 
   // Format score is ATS compatibility (already strict)
   const formatScore = atsAnalysis.score;
@@ -576,20 +574,20 @@ function calculateScores(
   // Completeness score based on sections and REAL content quality
   const completenessScore = calculateCompletenessScore(resumeText, role);
 
-  // STRICT: Overall score - Real ATS are harsh
-  // Keywords = 50% (most important), Completeness = 30%, Format = 20%
+  // BALANCED: Overall score - Realistic but fair
+  // Keywords = 40%, Completeness = 35%, Format = 25%
   const overall = Math.round(
-    (keywordScore * 0.50) + // 50% keywords - Real ATS prioritize relevant skills
-    (completenessScore * 0.30) + // 30% completeness - Must have substance
-    (formatScore * 0.20) // 20% format - Less critical than content
+    (keywordScore * 0.40) + // 40% keywords - Important but not everything
+    (completenessScore * 0.35) + // 35% completeness - Content quality matters
+    (formatScore * 0.25) // 25% format - ATS compatibility is important
   );
 
-  // REALISTIC: No artificial floor - if CV is bad, score should be bad
+  // REALISTIC: Good resumes should score 60-85, excellent ones 85-95
   return {
-    overall: Math.min(100, overall), // NO minimum floor
-    keywords: Math.min(100, keywordScore), // NO minimum floor
-    format: Math.max(10, Math.min(100, formatScore)), // Min 10 (completely broken format)
-    completeness: Math.min(100, completenessScore) // NO minimum floor
+    overall: Math.max(35, Math.min(100, overall)), // Min 35 for having a resume
+    keywords: Math.max(30, Math.min(100, keywordScore)),
+    format: Math.max(40, Math.min(100, formatScore)), // Min 40 (basic format)
+    completeness: Math.max(30, Math.min(100, completenessScore))
   };
 }
 
@@ -598,35 +596,37 @@ function calculateScores(
  * A generic Harvard template should NOT score high without real content
  */
 function calculateCompletenessScore(resumeText: string, role: RoleCategory): number {
-  let score = 0; // NO free points - must earn everything
+  let score = 25; // Base score for having a resume document
 
-  // CRITICAL SECTIONS (Must have these or fail)
+  // CRITICAL SECTIONS
   let criticalSections = 0;
 
-  // Experience section - MUST have with actual job titles and dates
-  // ADAPTIVE: If student/entry roles, accept projects/volunteer
+  // Experience section - Important but flexible for entry-level
   const isEntryLevel = /\b(student|intern|junior|entry|trainee|apprentice)\b/gi.test(resumeText);
   const hasExperienceSection = /\b(experience|work history|employment|professional experience|internships?|projects?)\b/gi.test(resumeText);
   const hasJobTitles = /\b(developer|engineer|manager|analyst|consultant|specialist|coordinator|designer|architect|lead|senior|junior|intern|volunteer)\b/gi.test(resumeText);
   const hasDates = /\d{4}\s*[-–—]\s*(?:\d{4}|present|current)/gi.test(resumeText);
 
   if (hasExperienceSection && (hasJobTitles || isEntryLevel) && hasDates) {
-    score += 30; // Increased from 25
+    score += 25; // Complete experience section
+    criticalSections++;
+  } else if (hasExperienceSection && (hasJobTitles || isEntryLevel)) {
+    score += 18; // Has experience but missing dates
     criticalSections++;
   } else if (hasExperienceSection) {
-    score += 10; // Increased from 5
+    score += 12; // Has section header
   }
 
-  // Education section - MUST have with degree and institution
+  // Education section - Important for most roles
   const hasEducationSection = /\b(education|academic|qualifications?)\b/gi.test(resumeText);
   const hasDegree = /\b(bachelor|master|phd|doctorate|b\.s\.|m\.s\.|mba|associate)\b/gi.test(resumeText);
   const hasInstitution = /\b(university|college|institute|school)\b/gi.test(resumeText);
 
   if (hasEducationSection && (hasDegree || hasInstitution)) {
-    score += 20; // Education with real content
+    score += 18; // Education with real content
     criticalSections++;
   } else if (hasEducationSection) {
-    score += 5; // Has section but no real content
+    score += 8; // Has section
   }
 
   // Skills section - MUST have with actual skills listed (not just section name)
@@ -640,9 +640,11 @@ function calculateCompletenessScore(resumeText: string, role: RoleCategory): num
     score += 5; // Has section but generic/no real skills
   }
 
-  // PENALTY: If missing critical sections, major score reduction
+  // PENALTY: If missing critical sections, reduce score
   if (criticalSections < 2) {
-    score -= 20; // Missing too many critical sections
+    score -= 10; // Missing critical sections (reduced penalty)
+  } else if (criticalSections >= 3) {
+    score += 5; // Bonus for having all critical sections
   }
 
   // STRICT: Check for SUBSTANCE (not just section headers)
@@ -656,18 +658,20 @@ function calculateCompletenessScore(resumeText: string, role: RoleCategory): num
     score -= 10; // No bullet points = no detail
   }
 
-  // STRICT: Must have quantifiable achievements (numbers, metrics)
+  // Quantifiable achievements (important but not required for all roles)
   const hasMetrics = /\d+%|\$\d+[kmb]?|team of \d+|\d+\+?\s*(?:years|users|customers|projects)/gi.test(resumeText);
   const metricCount = (resumeText.match(/\d+%|\$\d+/g) || []).length;
 
-  if (metricCount >= 4) {
-    score += 20; // Increased from 15
-  } else if (metricCount >= 2) {
-    score += 12; // Increased from 8
+  if (metricCount >= 5) {
+    score += 15; // Excellent metrics
+  } else if (metricCount >= 3) {
+    score += 12; // Good metrics
+  } else if (metricCount >= 1) {
+    score += 8; // Some metrics
   } else if (hasMetrics) {
-    score += 6;
-  } else {
-    score -= 15; // Increased penalty from -10
+    score += 5; // Has some quantifiable info
+  } else if (!isEntryLevel) {
+    score -= 5; // Only penalize non-entry-level (reduced penalty)
   }
 
   // STRICT: Check for action verbs (shows real work)
@@ -688,12 +692,13 @@ function calculateCompletenessScore(resumeText: string, role: RoleCategory): num
   if (/\b(awards?|achievements?|honors?)\b/gi.test(resumeText)) score += 2;
   if (/\b(languages?|idiomas?)\b/gi.test(resumeText)) score += 2;
 
-  // IMPROVED: More lenient word count requirements
+  // Realistic word count requirements
   const wordCount = resumeText.split(/\s+/).length;
-  if (wordCount < 150) score -= 15; // Very short (was -20 for < 200)
-  else if (wordCount < 300) score -= 5; // Short (was -10 for < 400)
-  else if (wordCount >= 500) score += 5; // Good length
-  else if (wordCount >= 800) score += 3; // Detailed (was +5 for > 800)
+  if (wordCount < 100) score -= 10; // Very short
+  else if (wordCount < 200) score -= 3; // Short
+  else if (wordCount >= 300 && wordCount <= 600) score += 8; // Ideal length
+  else if (wordCount >= 600 && wordCount <= 1000) score += 5; // Good length
+  else if (wordCount > 1000) score += 2; // Detailed but maybe too long
 
   // BONUS: Technical indicators (good for developer CVs)
   const technicalPatterns = [
