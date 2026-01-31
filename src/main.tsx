@@ -88,6 +88,8 @@ const SolutionsArchitectATSScanner = lazy(() => import("./pages/industry/Solutio
 const FinanceInternshipATSOptimizer = lazy(() => import("./pages/industry/FinanceInternshipATSOptimizer"));
 
 // Lazy load blog pages
+const JobscanAlternative = lazy(() => import("./pages/blog/JobscanAlternative"));
+const BeatATSRobot = lazy(() => import("./pages/blog/BeatATSRobot"));
 const HowToBeatATSResumeScanners = lazy(() => import("./pages/blog/HowToBeatATSResumeScanners"));
 const UnderstandingATSRobotView = lazy(() => import("./pages/blog/UnderstandingATSRobotView"));
 
@@ -184,6 +186,8 @@ function App() {
         <Route path="/industry/finance-internship-ats-optimizer" element={<FinanceInternshipATSOptimizer />} />
 
         {/* Blog Posts */}
+        <Route path="/blog/jobscan-alternative" element={<JobscanAlternative />} />
+        <Route path="/blog/beat-ats-robot" element={<BeatATSRobot />} />
         <Route path="/blog/how-to-beat-ats-resume-scanners" element={<HowToBeatATSResumeScanners />} />
         <Route path="/blog/understanding-ats-robot-view" element={<UnderstandingATSRobotView />} />
 

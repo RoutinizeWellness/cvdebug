@@ -39,8 +39,13 @@ export function NewFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
-                  {t.footer.blog}
+                <Link to="/competitor-comparison" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
+                  Vs Competitors
+                </Link>
+              </li>
+              <li>
+                <Link to="/success-stories" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
+                  Success Stories
                 </Link>
               </li>
             </ul>
@@ -50,6 +55,16 @@ export function NewFooter() {
           <div>
             <h3 className="text-[#1E293B] font-semibold mb-4">{t.footer.resources}</h3>
             <ul className="space-y-2">
+              <li>
+                <Link to="/blog" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
+                  {t.footer.blog}
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog/beat-ats-robot" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
+                  ATS Guide 2026
+                </Link>
+              </li>
               <li>
                 <Link to="/about" className="text-[#475569] hover:text-[#64748B] text-sm transition-colors">
                   {t.footer.aboutUs}

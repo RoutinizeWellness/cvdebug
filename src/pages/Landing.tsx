@@ -8,6 +8,7 @@ import { SEOFAQSection } from "@/components/landing/SEOFAQSection";
 import { EnterpriseSection } from "@/components/landing/EnterpriseSection";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
 import { NewFooter } from "@/components/landing/NewFooter";
+import { WhyChooseUsSection } from "@/components/landing/WhyChooseUsSection";
 import { useEffect } from "react";
 import { usePresetSEO } from "@/hooks/useIntelligentSEO";
 
@@ -37,6 +38,7 @@ export default function Landing() {
         <NewHeroSection />
         <NewSocialProofSection />
         <ProductShowcaseGallery />
+        <WhyChooseUsSection />
         <ComparisonVisualSection />
         <TestimonialsSection />
         <SEOFAQSection />
