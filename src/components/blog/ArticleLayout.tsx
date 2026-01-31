@@ -24,7 +24,7 @@ export function ArticleLayout({ meta, children }: ArticleLayoutProps) {
     return (
         <div className="min-h-screen flex flex-col bg-white">
             <Helmet>
-                <title>{meta.title} | RoutinizeWellness Blog</title>
+                <title>{meta.title} | CVDebug Blog</title>
                 <meta name="description" content={meta.description} />
             </Helmet>
 

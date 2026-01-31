@@ -6,8 +6,8 @@ export default function JobscanAlternative() {
     return (
         <ArticleLayout
             meta={{
-                title: "Jobscan vs RoutinizeWellness: The Best ATS Resume Scanner in 2026",
-                description: "Compare Jobscan vs RoutinizeWellness. See why job seekers are switching to RoutinizeWellness for better accuracy, lower pricing, and advanced AI features.",
+                title: "Jobscan vs CVDebug: The Best ATS Resume Scanner in 2026",
+                description: "Compare Jobscan vs CVDebug. See why job seekers are switching to CVDebug for better accuracy, lower pricing, and advanced AI features.",
                 publishDate: "January 31, 2026",
                 author: "AI Career Team",
                 category: "Comparison",
@@ -19,7 +19,7 @@ export default function JobscanAlternative() {
                 If you're looking for an ATS resume scanner, you've likely heard of <strong>Jobscan</strong>. It's the market leader for a reason – they pioneered the category. But in 2026, the technology has evolved, and job seekers demand more than just keyword matching.
             </p>
             <p>
-                <strong>RoutinizeWellness</strong> has emerged as the superior alternative, offering advanced Machine Learning (ML) scoring, flexible pay-as-you-go pricing, and a complete suite of career tools (LinkedIn, Cover Letters, Application Tracking) for a fraction of the cost.
+                <strong>CVDebug</strong> has emerged as the superior alternative, offering advanced Machine Learning (ML) scoring, flexible pay-as-you-go pricing, and a complete suite of career tools (LinkedIn, Cover Letters, Application Tracking) for a fraction of the cost.
             </p>
 
             <h2>Feature Comparison at a Glance</h2>
@@ -28,7 +28,7 @@ export default function JobscanAlternative() {
                     <thead>
                         <tr className="bg-gray-50">
                             <th className="p-4 text-left border border-gray-200">Feature</th>
-                            <th className="p-4 text-center border border-gray-200 text-blue-600">RoutinizeWellness</th>
+                            <th className="p-4 text-center border border-gray-200 text-blue-600">CVDebug</th>
                             <th className="p-4 text-center border border-gray-200 text-gray-600">Jobscan</th>
                         </tr>
                     </thead>
@@ -62,7 +62,7 @@ export default function JobscanAlternative() {
                 Jobscan relies heavily on <strong>exact keyword matching</strong>. If the job description says "React.js" and you have "React", it might penalize you.
             </p>
             <p>
-                <strong>RoutinizeWellness</strong> uses advanced <strong>Machine Learning (ML)</strong> models that understand context. We know that "React" and "React.js" are the same. We evaluate your resume on 4 key dimensions:
+                <strong>CVDebug</strong> uses advanced <strong>Machine Learning (ML)</strong> models that understand context. We know that "React" and "React.js" are the same. We evaluate your resume on 4 key dimensions:
             </p>
             <ul>
                 <li><strong>Keywords (40%)</strong>: Semantic matching, not just exact text.</li>
@@ -89,7 +89,7 @@ export default function JobscanAlternative() {
 
             <h2>3. The "Success Analytics" Advantage</h2>
             <p>
-                RoutinizeWellness is the ONLY tool that tracks your success over time. Our dashboard shows you:
+                CVDebug is the ONLY tool that tracks your success over time. Our dashboard shows you:
             </p>
             <ul>
                 <li>Your average resume score trend.</li>
@@ -102,7 +102,7 @@ export default function JobscanAlternative() {
 
             <h2>Conclusion: The Smart Choice</h2>
             <p>
-                Jobscan is a solid tool, but it's built for the job search of 2015. <strong>RoutinizeWellness</strong> is built for 2026.
+                Jobscan is a solid tool, but it's built for the job search of 2015. <strong>CVDebug</strong> is built for 2026.
             </p>
             <p>
                 With better AI, fair pricing, and a complete suite of tools, the choice is clear. Stop overpaying for basic keyword matching and start optimizing your career with true intelligence.

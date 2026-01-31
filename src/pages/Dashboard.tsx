@@ -496,7 +496,7 @@ export default function Dashboard() {
       case 'applications':
         return (
           <div className="space-y-8 pb-24 md:pb-6">
-            <JobTrackerView />
+            <JobTrackerView onCreateNew={() => setCurrentView('keyword-sniper')} />
           </div>
         );
       case 'settings':

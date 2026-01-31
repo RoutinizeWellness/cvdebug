@@ -1,4 +1,5 @@
 import { Check, X, Sparkles, Zap, Shield, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 
@@ -54,17 +55,22 @@ export default function CompetitorComparison() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-            {/* Header */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                        Why Choose <span className="text-blue-600">RoutinizeWellness</span>?
+            {/* Hero Section */}
+            <div className="bg-gradient-to-b from-blue-50 to-white pt-32 pb-20 px-6">
+                <div className="max-w-4xl mx-auto text-center">
+                    <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200 mb-6 px-4 py-1.5 text-sm font-bold uppercase tracking-wider shadow-sm">
+                        Unbiased Comparison
+                    </Badge>
+                    <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight">
+                        Why smart job seekers switch from <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Jobscan</span> to <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">CVDebug</span>
                     </h1>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                         See how we compare to other resume optimization tools. Spoiler: We're better. 😉
                     </p>
                 </div>
+            </div>
 
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-20 relative z-10"> {/* Adjusted padding and margin for hero */}
                 {/* Key Differentiators */}
                 <div className="grid md:grid-cols-4 gap-6 mb-16">
                     <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-blue-500">

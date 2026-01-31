@@ -85,6 +85,14 @@ const CERTIFICATION_PATTERNS = [
 /**
  * Extract all entities from a job description
  */
+// Helper to escape regex special characters
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Extract all entities from a job description
+ */
 export function extractJobEntities(jobDescription: string): JobDescriptionEntities {
   const text = jobDescription.toLowerCase();
   const originalText = jobDescription;
@@ -104,37 +112,48 @@ export function extractJobEntities(jobDescription: string): JobDescriptionEntiti
   // Extract Hard Skills
   Object.entries(HARD_SKILLS_DATABASE).forEach(([category, skills]) => {
     skills.forEach(skill => {
-      // Escape special characters for regex (e.g. C++ -> C\+\+)
-      const escapedSkill = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\b${escapedSkill}\\b`, 'gi');
-      const matches = originalText.match(regex);
+      try {
+        const escapedSkill = escapeRegExp(skill);
+        // Use a more robust boundary check that handles symbols like C++ correctly
+        // Instead of just \b, we allow non-word characters if the skill ends in a symbol
+        const regex = new RegExp(`(?<=\\s|^|[\\.,;])${escapedSkill}(?=\\s|$|[\\.,;])`, 'gi');
+        // Fallback to standard word boundary if simple alphanumeric
+        const standardRegex = new RegExp(`\\b${escapedSkill}\\b`, 'gi');
 
-      if (matches) {
-        const context = extractContext(originalText, skill);
-        const importance = determineImportance(context, originalText);
+        // Choose regex based on content
+        const finalRegex = /^[a-zA-Z0-9]+$/.test(skill) ? standardRegex : regex;
 
-        const entity: ExtractedEntity = {
-          text: skill,
-          category: category === 'frameworks' ? 'framework' : category === 'tools' ? 'tool' : 'hard_skill',
-          importance,
-          context,
-          synonyms: getSynonyms(skill)
-        };
+        const matches = originalText.match(finalRegex);
 
-        if (category === 'frameworks') {
-          entities.frameworks.push(entity);
-        } else if (category === 'tools') {
-          entities.tools.push(entity);
-        } else {
-          entities.hardSkills.push(entity);
+        if (matches) {
+          const context = extractContext(originalText, skill);
+          const importance = determineImportance(context, originalText);
+
+          const entity: ExtractedEntity = {
+            text: skill,
+            category: category === 'frameworks' ? 'framework' : category === 'tools' ? 'tool' : 'hard_skill',
+            importance,
+            context,
+            synonyms: getSynonyms(skill)
+          };
+
+          if (category === 'frameworks') {
+            entities.frameworks.push(entity);
+          } else if (category === 'tools') {
+            entities.tools.push(entity);
+          } else {
+            entities.hardSkills.push(entity);
+          }
+
+          // Add to mustHaves or niceToHaves based on context
+          if (importance === 'critical') {
+            entities.mustHaves.push(entity);
+          } else if (importance === 'nice_to_have') {
+            entities.niceToHaves.push(entity);
+          }
         }
-
-        // Add to mustHaves or niceToHaves based on context
-        if (importance === 'critical') {
-          entities.mustHaves.push(entity);
-        } else if (importance === 'nice_to_have') {
-          entities.niceToHaves.push(entity);
-        }
+      } catch (e) {
+        console.warn(`[EntityExtraction] Skipped skill "${skill}" due to regex error:`, e);
       }
     });
   });

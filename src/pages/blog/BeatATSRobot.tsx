@@ -67,7 +67,7 @@ export default function BeatATSRobot() {
 
             <h3>4. Quantify Your Impact</h3>
             <p>
-                Advanced ATS algorithms (like the ones we use at RoutinizeWellness) look for numbers.
+                Advanced ATS algorithms (like the ones we use at CVDebug) look for numbers.
             </p>
             <ul>
                 <li>Matches the pattern: <code>[Action Verb] + [Object] + [Result/Number]</code></li>
@@ -81,7 +81,7 @@ export default function BeatATSRobot() {
                 You can't see the parsed text with your naked eye. You need a tool that simulates the ATS parser.
             </p>
             <p>
-                RoutinizeWellness offers a unique <strong>"Robot View"</strong> feature. It strips your resume down exactly how an ATS would, highlighting errors, unreadable sections, and keyword density issues.
+                CVDebug offers a unique <strong>"Robot View"</strong> feature. It strips your resume down exactly how an ATS would, highlighting errors, unreadable sections, and keyword density issues.
             </p>
 
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 mt-8 text-center">

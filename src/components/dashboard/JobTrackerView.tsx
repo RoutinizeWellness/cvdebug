@@ -5,7 +5,13 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
-export function JobTrackerView() {
+import { Button } from "@/components/ui/button";
+
+interface JobTrackerViewProps {
+  onCreateNew?: () => void;
+}
+
+export function JobTrackerView({ onCreateNew }: JobTrackerViewProps) {
   const jobHistory = useQuery(api.jobTracker.getJobHistory);
 
   if (!jobHistory) {
@@ -21,9 +27,15 @@ export function JobTrackerView() {
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <Briefcase className="h-16 w-16 text-[#E2E8F0] mb-4" />
         <h3 className="text-xl font-bold text-[#0F172A] mb-2">No Job Applications Tracked Yet</h3>
-        <p className="text-[#64748B] max-w-md">
+        <p className="text-[#64748B] max-w-md mb-8">
           Start uploading resumes with job descriptions to track your application scores and see your progress over time.
         </p>
+        <Button
+          onClick={onCreateNew}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold"
+        >
+          Create My First Application
+        </Button>
       </div>
     );
   }
@@ -139,12 +151,12 @@ export function JobTrackerView() {
               <div className="flex flex-col items-end gap-2 min-w-[100px]">
                 <div className="flex items-center gap-2">
                   <TrendingUp className={`h-5 w-5 ${(job.score || 0) >= 80 ? 'text-[#22C55E]' :
-                      (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
-                        'text-[#64748B]'
+                    (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
+                      'text-[#64748B]'
                     }`} />
                   <span className={`text-3xl font-black ${(job.score || 0) >= 80 ? 'text-[#22C55E]' :
-                      (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
-                        'text-[#64748B]'
+                    (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
+                      'text-[#64748B]'
                     }`}>
                     {job.score || 0}
                   </span>

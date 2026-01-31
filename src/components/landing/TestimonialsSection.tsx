@@ -16,7 +16,7 @@ export function TestimonialsSection() {
       name: "Sarah Chen",
       role: "Senior Engineer",
       company: "Fintech",
-      content: "Jobscan kept telling me to add keywords I already had. RoutinizeWellness actually understood the context of my tech stack. The Score History chart helped me see exactly which version of my resume was performing.",
+      content: "Jobscan kept telling me to add keywords I already had. CVDebug actually understood the context of my tech stack. The Score History chart helped me see exactly which version of my resume was performing.",
       rating: 5,
       result: "+45 Score Improvement",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah"
