@@ -1021,10 +1021,10 @@ export function ATSAnalysisReport({
                   </div>
 
                   <div className="pl-4 pt-2 flex items-center gap-2">
-                    <span className="text-emerald-500">>>></span>
+                    <span className="text-emerald-500">&gt;&gt;&gt;</span>
                     <span className="text-slate-100 font-bold">Final Score Calculation: {scorePercentage}/100</span>
                     <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${scorePercentage >= 80 ? 'bg-emerald-500/20 text-emerald-400' :
-                        scorePercentage >= 60 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
+                      scorePercentage >= 60 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
                       }`}>
                       {getVisibilityGrade(scorePercentage)}
                     </span>
