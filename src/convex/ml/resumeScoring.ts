@@ -224,8 +224,8 @@ export function scoreSDRResume(
       strengths.push(`Strong call activity: ${calls} calls/day`);
     }
   } else {
-    redFlags.push("❌ No daily call activity metrics found");
-    penalties.noMetrics += 15;
+    redFlags.push("⚠️ No daily call activity metrics found");
+    penalties.noMetrics += 8; // Reduced from 15
   }
 
   if (emailsMatch) {
@@ -239,8 +239,8 @@ export function scoreSDRResume(
       strengths.push(`Strong email outreach: ${emails} emails/day`);
     }
   } else {
-    redFlags.push("❌ No daily email activity metrics found");
-    penalties.noMetrics += 15;
+    redFlags.push("⚠️ No daily email activity metrics found");
+    penalties.noMetrics += 8; // Reduced from 15
   }
 
   if (meetingsMatch) {
@@ -254,8 +254,8 @@ export function scoreSDRResume(
       strengths.push(`Excellent meeting booking: ${meetings}/week`);
     }
   } else {
-    redFlags.push("❌ No meeting booking metrics found");
-    penalties.noMetrics += 15;
+    redFlags.push("⚠️ No meeting booking metrics found");
+    penalties.noMetrics += 8; // Reduced from 15
   }
 
   activityScore = Math.min(100, activityScore);
@@ -277,7 +277,7 @@ export function scoreSDRResume(
     }
   } else {
     redFlags.push("⚠️ No connect rate percentage");
-    penalties.noMetrics += 10;
+    penalties.noMetrics += 5; // Reduced from 10
   }
 
   if (responseRateMatch) {
@@ -291,7 +291,7 @@ export function scoreSDRResume(
     }
   } else {
     redFlags.push("⚠️ No email response rate");
-    penalties.noMetrics += 10;
+    penalties.noMetrics += 5; // Reduced from 10
   }
 
   if (showRateMatch) {
@@ -332,8 +332,8 @@ export function scoreSDRResume(
       strengths.push(`Strong pipeline generation: $${(amount / 1000000).toFixed(1)}M`);
     }
   } else {
-    redFlags.push("❌ No pipeline $ amount found");
-    penalties.noMetrics += 12;
+    redFlags.push("⚠️ No pipeline $ amount found");
+    penalties.noMetrics += 8; // Reduced from 12
   }
 
   if (quotaMatch) {
@@ -349,8 +349,8 @@ export function scoreSDRResume(
       redFlags.push(`⚠️ Below quota: ${quota}%`);
     }
   } else {
-    redFlags.push("❌ No quota attainment % found - CRITICAL for SDR roles");
-    penalties.noMetrics += 15;
+    redFlags.push("⚠️ No quota attainment % found - Important for SDR roles");
+    penalties.noMetrics += 10; // Reduced from 15
   }
 
   if (revenueMatch) {
@@ -392,8 +392,8 @@ export function scoreSDRResume(
     formatScore += 30;
   } else {
     formatScore += 10;
-    redFlags.push("❌ Resume is over 1 page - SDR resumes must be 1 page");
-    penalties.overTwoPages = 15;
+    redFlags.push("⚠️ Resume is over 1 page - SDR resumes should be 1 page");
+    penalties.overTwoPages = 8; // Reduced from 15
   }
 
   // Check for education-heavy (education keywords appear in first 30% of resume)
@@ -404,9 +404,9 @@ export function scoreSDRResume(
   ).length;
 
   if (educationInTopThird >= 3) {
-    redFlags.push("❌ Education-heavy top section - push sales experience up");
-    penalties.educationHeavy = 10;
-    formatScore -= 20;
+    redFlags.push("⚠️ Education-heavy top section - push sales experience up");
+    penalties.educationHeavy = 6; // Reduced from 10
+    formatScore -= 12; // Reduced from 20
   } else {
     formatScore += 30;
   }
@@ -438,20 +438,20 @@ export function scoreSDRResume(
   const totalPenalties = Object.values(penalties).reduce((sum, p) => sum + p, 0);
   overallScore = Math.max(0, overallScore - totalPenalties);
 
-  // STRICT CAPS for SDR/BDR
+  // REALISTIC CAPS for SDR/BDR - Allow good resumes to score well
   if (activityScore < 20) {
-    overallScore = Math.min(45, overallScore); // Can't score high without activity metrics
-    redFlags.push("🚨 CRITICAL: No activity metrics = max 45/100 score");
+    overallScore = Math.min(55, overallScore); // Increased from 45
+    redFlags.push("⚠️ Limited activity metrics = max 55/100 score");
   }
 
   if (conversionScore < 20) {
-    overallScore = Math.min(60, overallScore); // Can't score high without conversion data
-    redFlags.push("⚠️ No conversion metrics = max 60/100 score");
+    overallScore = Math.min(70, overallScore); // Increased from 60
+    redFlags.push("⚠️ Limited conversion metrics = max 70/100 score");
   }
 
   if (pipelineScore < 20) {
-    overallScore = Math.min(65, overallScore);
-    redFlags.push("⚠️ No pipeline impact = max 65/100 score");
+    overallScore = Math.min(75, overallScore); // Increased from 65
+    redFlags.push("⚠️ Limited pipeline impact = max 75/100 score");
   }
 
   return {
@@ -603,7 +603,7 @@ export function scoreResumeByRole(
 
   // For other roles, use enhanced heuristics with ATS check
   const standards = GLOBAL_INDUSTRY_STANDARDS[role];
-  let score = 50; // Base score
+  let score = 55; // Base score (increased from 50)
   const insights: string[] = [];
   const penalties: string[] = [];
 
@@ -632,8 +632,8 @@ export function scoreResumeByRole(
     score += 15;
     insights.push(`Good quantification: ${metrics.length} metrics`);
   } else if (!metrics || metrics.length < 3) {
-    score -= 15;
-    penalties.push("Lacks quantifiable achievements - add percentages, dollar amounts, and numbers");
+    score -= 8; // Reduced from 15
+    penalties.push("Consider adding quantifiable achievements - percentages, dollar amounts, and numbers");
   }
 
   // Check for experience relevance
