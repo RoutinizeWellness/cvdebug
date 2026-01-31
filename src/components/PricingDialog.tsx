@@ -169,11 +169,34 @@ export function PricingDialog({ open, onOpenChange, initialPlan, resumeId }: { o
         </button>
 
         <div className="p-12 lg:p-16 pb-12 text-center">
-          <DialogHeader>
-            <DialogTitle className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-slate-900">{t.pricingDialog.title}</DialogTitle>
-            <DialogDescription className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
+          <DialogHeader className="px-6 pt-6 pb-4">
+            <DialogTitle className="text-2xl font-bold text-center">{t.pricingDialog.title}</DialogTitle>
+            <DialogDescription className="text-center text-sm text-slate-600 mt-2">
               {t.pricingDialog.subtitle}
             </DialogDescription>
+
+            {/* Competitive Value Banner */}
+            <div className="mt-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <ShieldCheck className="w-5 h-5 text-blue-600" />
+                <span className="text-sm font-bold text-blue-900">Why We're Different</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="bg-white rounded-md p-2 border border-blue-100">
+                  <div className="font-semibold text-gray-900">Competitors</div>
+                  <div className="text-gray-600 mt-1">$39-89/month</div>
+                  <div className="text-gray-500 text-[10px] mt-1">Recurring charges</div>
+                </div>
+                <div className="bg-gradient-to-br from-blue-500 to-purple-500 rounded-md p-2 text-white">
+                  <div className="font-semibold">Us ⭐</div>
+                  <div className="mt-1">$4.99-24.99</div>
+                  <div className="text-blue-100 text-[10px] mt-1">Pay only when needed</div>
+                </div>
+              </div>
+              <div className="mt-3 text-center text-[11px] text-blue-800 font-medium">
+                💰 Save up to 90% • 🚀 More features • ⚡ Faster AI
+              </div>
+            </div>
           </DialogHeader>
         </div>
 
