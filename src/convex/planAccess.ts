@@ -371,14 +371,20 @@ export const shouldShowExpirationPopup = query({
       user.sprintExpiresAt &&
       user.sprintExpiresAt <= now;
 
+    // Check if recently downgraded by cron (tier is free, but popup not shown)
+    const justDowngraded =
+      user.subscriptionTier === "free" &&
+      user.planExpirationPopupShown === false &&
+      !!user.lastExpiredTier;
+
     const isSingleDebugFixExhausted =
       user.subscriptionTier === "single_debug_fix" && user.singleDebugFixUsed;
 
-    if ((hasExpired || isSingleDebugFixExhausted) && !user.planExpirationPopupShown) {
+    if ((hasExpired || isSingleDebugFixExhausted || justDowngraded) && !user.planExpirationPopupShown) {
       return {
         shouldShow: true,
-        tier: user.subscriptionTier,
-        reason: hasExpired ? "expired" : "exhausted",
+        tier: justDowngraded ? user.lastExpiredTier : user.subscriptionTier,
+        reason: (hasExpired || justDowngraded) ? "expired" : "exhausted",
       };
     }
 

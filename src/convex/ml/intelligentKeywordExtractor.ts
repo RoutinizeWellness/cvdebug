@@ -65,6 +65,36 @@ export const INDUSTRY_KEYWORDS = {
       'ci/cd', 'devsecops', 'sre', 'serverless', 'service mesh', 'observability'
     ]
   },
+  hardware_engineering: { // VLSI & Embedded specialized
+    tools: [
+      'cadence virtuoso', 'synopsys', 'mentor graphics', 'vivado', 'quartus',
+      'matlab', 'simulink', 'spice', 'hspice', 'magic', 'gdsii'
+    ],
+    skills: [
+      'systemverilog', 'uvm', 'verilog', 'vhdl', 'physical design', 'rtl design',
+      'fpga', 'asic', 'soc', 'verification', 'timing analysis', 'dft',
+      'pcb design', 'circuit design', 'logic synthesis', 'static timing analysis'
+    ],
+    languages: [
+      'c', 'c++', 'assembly', 'python', 'tcl', 'perl', 'bash'
+    ]
+  },
+  it_support: {
+    tools: [
+      'active directory', 'office 365', 'jira', 'vpn', 'servicenow', 'zendesk',
+      'remote desktop', 'teamviewer', 'citrix', 'vmware', 'hyper-v', 'powershell',
+      'bash', 'wireshark', 'nagios'
+    ],
+    skills: [
+      'technical support', 'troubleshooting', 'system administration', 'network configuration',
+      'hardware repair', 'software installation', 'help desk', 'ticket management',
+      'user training', 'disaster recovery', 'backup management'
+    ],
+    certifications: [
+      'comptia a+', 'comptia network+', 'comptia security+', 'microsoft certified',
+      'ccna', 'itil', 'google it support'
+    ]
+  },
   healthcare: {
     certifications: [
       'rn', 'bls', 'acls', 'pals', 'cpr', 'tncc', 'ccrn', 'cnor', 'crna', 'np',
@@ -131,8 +161,13 @@ export const INDUSTRY_KEYWORDS = {
       'mailchimp', 'hootsuite', 'buffer', 'semrush', 'ahrefs', 'moz', 'mixpanel'
     ],
     metrics: [
-      'roi', 'roas', 'ctr', 'conversion rate', 'cac', 'ltv', 'engagement rate',
-      'bounce rate', 'impressions', 'reach', 'cpm', 'cpc', 'cpa'
+      'bounce rate', 'impressions', 'reach', 'cpm', 'cpc', 'cpa', 'cr', 'clv',
+      'attribution', 'churn rate', 'quality score'
+    ],
+    ad_tech: [ // Specialized Advertising
+      'programmatic', 'dsp', 'ssp', 'ad server', 'meta manager', 'google tag manager',
+      'ga4', 'dv360', 'search ads 360', 'campaign manager', 'facebook business manager',
+      'tiktok ads', 'linkedin campaign manager'
     ]
   },
   human_resources: {
