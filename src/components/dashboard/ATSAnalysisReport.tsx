@@ -958,40 +958,81 @@ export function ATSAnalysisReport({
               transition={{ duration: 0.3 }}
               className="mt-6 w-full max-w-3xl"
             >
-              <div className="bg-[#FFFFFF] border-2 border-[#E2E8F0] rounded-xl p-4 font-mono text-sm shadow-lg relative overflow-hidden">
+              <div className="bg-[#0c0c0c] border border-slate-800 rounded-xl p-6 font-mono text-xs shadow-2xl relative overflow-hidden">
                 {/* Terminal Header */}
-                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#E2E8F0]">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-[#EF4444]"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#22C55E]"></div>
+                <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#EF4444]"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                      <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]"></div>
+                    </div>
+                    <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest ml-2">SYSTEM_ROOT :: PARSING_LOGS</span>
                   </div>
-                  <span className="text-[#64748B] text-xs font-semibold ml-2">Terminal - CVDebug Analysis</span>
+                  <div className="text-[10px] text-emerald-500 font-bold animate-pulse">LIVE</div>
                 </div>
+
                 {/* Terminal Body */}
-                <div className="space-y-2">
-                  <div className="flex gap-2 text-[#64748B]">
-                    <span className="text-emerald-400">$</span>
-                    <span className="text-[#475569]">cv-debug --analyze --target=resume.pdf</span>
+                <div className="space-y-1.5 font-mono h-64 overflow-y-auto custom-scrollbar pr-2">
+                  <div className="flex gap-2 text-slate-500">
+                    <span className="text-emerald-500">$</span>
+                    <span className="text-slate-300">init_sequence --target="{targetRole || 'general_resume'}" --mode=deep_scan</span>
                   </div>
-                  <div className="text-[#64748B] pl-4">
-                    <span className="text-[#94A3B8]">→</span> Initializing parsing engine... <span className="text-green-400 font-bold">OK</span>
+
+                  <div className="pl-4 text-emerald-500/80">
+                    [SYSTEM] Loading lexical analyzers... <span className="text-emerald-400 font-bold">DONE</span>
                   </div>
-                  <div className="text-[#64748B] pl-4">
-                    <span className="text-[#94A3B8]">→</span> Scanning for ATS keywords... Found <span className="text-emerald-400 font-bold">{matchedKeywords.length || 0}</span>
+                  <div className="pl-4 text-emerald-500/80">
+                    [SYSTEM] Calibrating keyword weights for {targetRole || 'General Role'}... <span className="text-emerald-400 font-bold">DONE</span>
                   </div>
-                  <div className="text-[#64748B] pl-4">
-                    <span className="text-[#94A3B8]">→</span> Parsing quality: <span className="text-emerald-400 font-bold">100%</span> | Analysis mode: Deep Scan
+
+                  {/* Matched Keywords Log */}
+                  {matchedKeywords.slice(0, 5).map((kw, i) => (
+                    <div key={`match-${i}`} className="pl-4 flex gap-2">
+                      <span className="text-slate-600">[{new Date().toLocaleTimeString()}]</span>
+                      <span className="text-emerald-400">FOUND_TOKEN:</span>
+                      <span className="text-slate-300">"{kw}"</span>
+                      <span className="text-emerald-500/50 text-[10px]">[MATCHED]</span>
+                    </div>
+                  ))}
+                  {matchedKeywords.length > 5 && (
+                    <div className="pl-4 text-slate-500 text-[10px] italic">... and {matchedKeywords.length - 5} more tokens identified</div>
+                  )}
+
+                  {/* Missing Keywords Log */}
+                  {missingKeywords.slice(0, 5).map((kw, i) => (
+                    <div key={`miss-${i}`} className="pl-4 flex gap-2">
+                      <span className="text-slate-600">[{new Date().toLocaleTimeString()}]</span>
+                      <span className="text-rose-500">MISSING_TOKEN:</span>
+                      <span className="text-slate-300">"{kw}"</span>
+                      <span className="text-rose-500/50 text-[10px]">[CRITICAL]</span>
+                    </div>
+                  ))}
+
+                  {/* Analysis Summary */}
+                  <div className="pl-4 pt-4 text-slate-300">
+                    ----------------------------------------
                   </div>
-                  <div className="text-[#64748B] pl-4">
-                    <span className="text-[#94A3B8]">→</span> Role classification: Technical | Format: Machine-readable
+                  <div className="pl-4 text-blue-400">
+                    [ANALYSIS] Impact Density: {metricsCount} quantifiable metrics found
                   </div>
-                  <div className="text-emerald-400 font-bold pl-4 pt-2">
-                    <span className="text-[#22C55E]">✓</span> [SUCCESS] Visibility Score: {scorePercentage}% | Grade: {getVisibilityGrade(scorePercentage)}
+                  <div className="pl-4 text-blue-400">
+                    [ANALYSIS] Keyword Saturation: {keywordData.tech}% Tech / {keywordData.soft}% Soft
                   </div>
-                  <div className="flex items-center gap-2 pl-4 pt-1">
-                    <div className="w-2 h-4 bg-[#22C55E] animate-pulse"></div>
-                    <span className="text-[#64748B] text-xs">Analysis complete</span>
+
+                  <div className="pl-4 pt-2 flex items-center gap-2">
+                    <span className="text-emerald-500">>>></span>
+                    <span className="text-slate-100 font-bold">Final Score Calculation: {scorePercentage}/100</span>
+                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${scorePercentage >= 80 ? 'bg-emerald-500/20 text-emerald-400' :
+                        scorePercentage >= 60 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
+                      }`}>
+                      {getVisibilityGrade(scorePercentage)}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2 pl-4 pt-4">
+                    <div className="w-2 h-4 bg-emerald-500 animate-pulse"></div>
+                    <span className="text-slate-500 text-xs">Awaiting user input...</span>
                   </div>
                 </div>
               </div>
