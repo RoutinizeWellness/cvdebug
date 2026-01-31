@@ -32,11 +32,42 @@ export function JobTrackerView() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[#0F172A]">Targeted Match History</h2>
+          <h2 className="text-2xl font-bold text-[#0F172A]">Success Analytics</h2>
           <p className="text-[#64748B]">Track application progress and keyword gaps</p>
         </div>
         <div className="text-sm text-[#64748B]">
           {jobHistory.length} {jobHistory.length === 1 ? 'application' : 'applications'} tracked
+        </div>
+      </div>
+
+      {/* Analytics Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+        <div className="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
+          <div className="flex items-center gap-2 text-blue-600 mb-1">
+            <Briefcase className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Total Applications</span>
+          </div>
+          <div className="text-2xl font-black text-slate-900">{jobHistory.length}</div>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-green-100 shadow-sm">
+          <div className="flex items-center gap-2 text-green-600 mb-1">
+            <TrendingUp className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Avg. Match Score</span>
+          </div>
+          <div className="text-2xl font-black text-slate-900">
+            {Math.round(jobHistory.reduce((acc: number, job: any) => acc + (job.score || 0), 0) / jobHistory.length) || 0}
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-sm">
+          <div className="flex items-center gap-2 text-purple-600 mb-1">
+            <CheckCircle2 className="w-4 h-4" />
+            <span className="text-xs font-bold uppercase tracking-wider">Strong Matches</span>
+          </div>
+          <div className="text-2xl font-black text-slate-900">
+            {jobHistory.filter((job: any) => (job.score || 0) >= 70).length}
+          </div>
         </div>
       </div>
 
@@ -107,16 +138,14 @@ export function JobTrackerView() {
 
               <div className="flex flex-col items-end gap-2 min-w-[100px]">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className={`h-5 w-5 ${
-                    (job.score || 0) >= 80 ? 'text-[#22C55E]' :
-                    (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
-                    'text-[#64748B]'
-                  }`} />
-                  <span className={`text-3xl font-black ${
-                    (job.score || 0) >= 80 ? 'text-[#22C55E]' :
-                    (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
-                    'text-[#64748B]'
-                  }`}>
+                  <TrendingUp className={`h-5 w-5 ${(job.score || 0) >= 80 ? 'text-[#22C55E]' :
+                      (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
+                        'text-[#64748B]'
+                    }`} />
+                  <span className={`text-3xl font-black ${(job.score || 0) >= 80 ? 'text-[#22C55E]' :
+                      (job.score || 0) >= 50 ? 'text-[#F59E0B]' :
+                        'text-[#64748B]'
+                    }`}>
                     {job.score || 0}
                   </span>
                 </div>

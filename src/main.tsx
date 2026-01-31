@@ -34,6 +34,8 @@ const TermsConditions = lazy(() => import("./pages/TermsConditions"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
 const AboutUs = lazy(() => import("./pages/AboutUs"));
 const ProjectSettings = lazy(() => import("./pages/ProjectSettings"));
+const CompetitorComparison = lazy(() => import("./pages/CompetitorComparison"));
+const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 
 // Lazy load industry pages
 const SoftwareEngineerKeywordSniper = lazy(() => import("./pages/industry/SoftwareEngineerKeywordSniper"));
@@ -128,7 +130,9 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/project/:projectId/settings" element={<ProjectSettings />} />
-        
+        <Route path="/competitor-comparison" element={<CompetitorComparison />} />
+        <Route path="/success-stories" element={<SuccessStories />} />
+
         {/* Industry Pages */}
         <Route path="/industry/software-engineer-resume-scanner" element={<SoftwareEngineerKeywordSniper />} />
         <Route path="/industry/marketing-manager-ats-scanner" element={<MarketingManagerATSScanner />} />
