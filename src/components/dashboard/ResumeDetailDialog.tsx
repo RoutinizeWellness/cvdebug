@@ -252,137 +252,7 @@ export function ResumeDetailDialog({
     }
   };
 
-  const renderAnalysis = (text: string) => {
-    if (!text || text.trim().length === 0) {
-      return (
-        <div className="flex items-center justify-center py-8">
-          <p className="text-[#64748B] italic">Analysis pending...</p>
-        </div>
-      );
-    }
-
-    // Check if the text contains an error message
-    if (text.toLowerCase().includes("error") || text.toLowerCase().includes("failed")) {
-      return (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="h-5 w-5 text-[#EF4444] flex-shrink-0 mt-1" />
-            <div>
-              <h4 className="text-red-700 font-bold mb-2">Analysis Error</h4>
-              <p className="text-[#475569] text-sm mb-4">{text}</p>
-              <p className="text-[#475569] text-xs">
-                Please try re-uploading your resume or contact support at cvdebug@outlook.com if the issue persists.
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (!text.includes("###")) {
-      return <div className="whitespace-pre-wrap text-sm text-[#475569] leading-relaxed">{text}</div>;
-    }
-
-    const parts = text.split("###").filter(part => part.trim());
-
-    return (
-      <div className="space-y-5">
-        {parts.map((part, index) => {
-          const lines = part.trim().split("\n");
-          const title = lines[0];
-          const content = lines.slice(1).filter(line => line.trim());
-
-          let icon = null;
-          let headerClass = "text-[#0F172A]";
-          let bgClass = "bg-[#FFFFFF]";
-          let borderClass = "border-[#E2E8F0]";
-
-          if (title.includes("🎯") || title.includes("Tailored")) {
-            icon = <Target className="h-4 w-4 text-[#22C55E]" />;
-            headerClass = "text-green-700";
-            bgClass = "bg-green-50";
-            borderClass = "border-green-200";
-          } else if (title.includes("🤖") || title.includes("Parsing")) {
-            icon = <Cpu className="h-4 w-4 text-[#64748B]" />;
-            headerClass = "text-[#0F172A]";
-            bgClass = "bg-[#F8FAFC]";
-            borderClass = "border-[#E2E8F0]";
-          } else if (title.includes("📊") || title.includes("Score")) {
-            icon = <ScanLine className="h-4 w-4 text-teal-600" />;
-            headerClass = "text-teal-700";
-            bgClass = "bg-teal-50";
-            borderClass = "border-teal-200";
-          } else if (title.includes("🔑") || title.includes("Missing")) {
-            icon = <AlertTriangle className="h-4 w-4 text-[#EF4444]" />;
-            headerClass = "text-red-700";
-            bgClass = "bg-red-50";
-            borderClass = "border-red-200";
-          } else if (title.includes("⚠️") || title.includes("Format")) {
-            icon = <AlertTriangle className="h-4 w-4 text-[#F59E0B]" />;
-            headerClass = "text-yellow-700";
-            bgClass = "bg-yellow-50";
-            borderClass = "border-yellow-200";
-          }
-
-          return (
-            <div key={index} className={`rounded-xl ${bgClass} p-5 border ${borderClass} hover:shadow-lg transition-all duration-200`}>
-              <h4 className={`font-bold ${headerClass} mb-4 text-base flex items-center gap-2`}>
-                {icon}
-                {title}
-              </h4>
-              <div className="space-y-3 text-sm text-[#475569]">
-                {content.map((line, i) => {
-                  const trimmed = line.trim();
-
-                  if (/^\d+\*?\*?/.test(trimmed)) {
-                    const match = trimmed.match(/^(\d+)\*?\*?\s*(.+)/);
-                    if (match) {
-                      const [, number, text] = match;
-                      return (
-                        <div key={i} className="flex items-start gap-3 p-3 bg-[#FFFFFF] rounded-lg border border-[#E2E8F0] shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
-                          <span className="flex-shrink-0 h-6 w-6 rounded-full bg-[#F1F5F9] text-[#0F172A] font-bold text-xs flex items-center justify-center border border-[#E2E8F0]">
-                            {number}
-                          </span>
-                          <span className="flex-1 leading-relaxed font-medium text-[#0F172A]">{text}</span>
-                        </div>
-                      );
-                    }
-                  }
-
-                  if (trimmed.startsWith("-") || trimmed.startsWith("•") || trimmed.startsWith("*")) {
-                    return (
-                      <div key={i} className="flex items-start gap-3 pl-2">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#64748B] flex-shrink-0" />
-                        <span className="flex-1 leading-relaxed text-[#475569]">{trimmed.replace(/^[-•*]\s*/, "")}</span>
-                      </div>
-                    );
-                  }
-
-                  if (trimmed.includes("**")) {
-                    const parts = trimmed.split("**");
-                    return (
-                      <p key={i} className="leading-relaxed text-[#475569]">
-                        {parts.map((part, idx) =>
-                          idx % 2 === 1 ? <strong key={idx} className="font-bold text-[#0F172A]">{part}</strong> : part
-                        )}
-                      </p>
-                    );
-                  }
-
-                  return <p key={i} className="leading-relaxed text-[#475569]">{trimmed}</p>;
-                })}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   const criticalKeywords = displayResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'critical' : k.priority) === 'critical') || [];
-  const importantKeywords = displayResume?.missingKeywords?.filter((k: any) => (typeof k === 'string' ? 'important' : k.priority) === 'important') || [];
-
-  const totalImpact = criticalKeywords.reduce((acc: number, curr: any) => acc + (curr.impact || 5), 0);
 
   // Prepare audit items - DEEP DIAGNOSTIC ALGORITHM
   const auditItems: Array<{
@@ -941,7 +811,7 @@ export function ResumeDetailDialog({
                           formatIssues={displayResume.formatIssues || []}
                           user={user}
                           onUpgrade={() => setShowPricing(true)}
-                          onContentUpdate={(newContent) => {
+                          onContentUpdate={(_newContent) => {
                             // Content is automatically saved and re-analyzed by the InlineResumeEditor component
                             // No need to duplicate the analysis here
                           }}
@@ -1033,7 +903,7 @@ export function ResumeDetailDialog({
                           <ATSOverviewDashboard
                             resume={displayResume}
                             user={user}
-                            onFixIssue={(issueType) => setActiveTab('improvements')}
+                            onFixIssue={(_issueType) => setActiveTab('improvements')}
                             onUpgrade={() => setShowPricing(true)}
                           />
                         </div>
@@ -1056,8 +926,8 @@ export function ResumeDetailDialog({
                         </div>
                         <ActionPlan
                           steps={actionSteps}
-                          onStepClick={(stepId) => setActiveTab('edit')}
-                          onCompleteStep={(stepId) => toast.success("Step marked as complete!")}
+                          onStepClick={(_stepId) => setActiveTab('edit')}
+                          onCompleteStep={(_stepId) => toast.success("Step marked as complete!")}
                         />
                       </section>
 
