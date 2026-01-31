@@ -232,7 +232,7 @@ export function MissionControl({ onNavigate, onUpload }: MissionControlProps) {
 
         {/* APPLICATION TRACKER MINI WIDGET */}
         <div className="lg:col-span-12 xl:col-span-5 flex flex-col gap-6">
-          <ApplicationMicroTracker />
+          <ApplicationMicroTracker onViewAll={() => onNavigate("tracker")} />
           <SuccessInsightsWidget />
         </div>
       </div>

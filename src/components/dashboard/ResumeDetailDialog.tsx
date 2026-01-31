@@ -853,7 +853,7 @@ export function ResumeDetailDialog({
                         onOpenWritingForge={() => setActiveTab("edit")}
                         compactMode={true}
                       />
-                      <ActionPlan resume={displayResume} />
+                      <ActionPlan steps={actionSteps} />
                       <FluffDetector
                         resumeText={displayResume.ocrText}
                         clarityScore={displayResume.score}

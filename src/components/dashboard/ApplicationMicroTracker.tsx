@@ -4,7 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useI18n } from "@/contexts/I18nContext";
 
-export function ApplicationMicroTracker() {
+export function ApplicationMicroTracker({ onViewAll }: { onViewAll?: () => void }) {
   const { t } = useI18n();
   const applications = useQuery(api.applications.getApplications);
 
@@ -93,12 +93,11 @@ export function ApplicationMicroTracker() {
               >
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="flex-shrink-0">
-                    <div className={`w-2 h-2 rounded-full ${
-                      status === 'interviewing' ? 'bg-[#64748B] animate-pulse' :
+                    <div className={`w-2 h-2 rounded-full ${status === 'interviewing' ? 'bg-[#64748B] animate-pulse' :
                       status === 'accepted' ? 'bg-[#22C55E]' :
-                      status === 'rejected' ? 'bg-rose-500' :
-                      'bg-slate-400'
-                    }`} />
+                        status === 'rejected' ? 'bg-rose-500' :
+                          'bg-slate-400'
+                      }`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
@@ -150,7 +149,10 @@ export function ApplicationMicroTracker() {
               <span className="font-bold text-[#0F172A]">{successRate}%</span>
             </div>
           </div>
-          <button className="text-[#64748B] hover:text-[#1E293B] font-semibold transition-colors whitespace-nowrap">
+          <button
+            onClick={onViewAll}
+            className="text-blue-600 hover:text-blue-700 font-semibold transition-colors whitespace-nowrap"
+          >
             View All →
           </button>
         </div>

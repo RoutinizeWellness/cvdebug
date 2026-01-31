@@ -18,10 +18,11 @@ interface ActionPlanProps {
   onCompleteStep?: (stepId: string) => void;
 }
 
-export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanProps) {
+export function ActionPlan({ steps = [], onStepClick, onCompleteStep }: ActionPlanProps) {
   const [expandedStep, setExpandedStep] = useState<string | null>(null);
 
-  const criticalSteps = steps.filter(s => s.priority === 'critical' && !s.completed);
+  const safeSteps = steps || [];
+  const criticalSteps = safeSteps.filter(s => s.priority === 'critical' && !s.completed);
   const importantSteps = steps.filter(s => s.priority === 'important' && !s.completed);
   const recommendedSteps = steps.filter(s => s.priority === 'recommended' && !s.completed);
   const completedSteps = steps.filter(s => s.completed);
@@ -82,15 +83,14 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
       >
         <div className="flex items-start gap-3">
           {/* Number/Checkmark */}
-          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-            step.completed
+          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step.completed
               ? 'bg-green-500 text-white'
               : step.priority === 'critical'
-              ? 'bg-red-500 text-white'
-              : step.priority === 'important'
-              ? 'bg-orange-500 text-white'
-              : 'bg-[#334155] text-white'
-          }`}>
+                ? 'bg-red-500 text-white'
+                : step.priority === 'important'
+                  ? 'bg-orange-500 text-white'
+                  : 'bg-[#334155] text-white'
+            }`}>
             {step.completed ? (
               <CheckCircle2 className="h-5 w-5" />
             ) : (
@@ -101,9 +101,8 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <h4 className={`font-bold text-base ${
-                step.completed ? 'text-[#64748B] line-through' : 'text-[#0F172A] dark:text-white'
-              }`}>
+              <h4 className={`font-bold text-base ${step.completed ? 'text-[#64748B] line-through' : 'text-[#0F172A] dark:text-white'
+                }`}>
                 {step.title}
               </h4>
               {getPriorityBadge(step.priority)}
@@ -114,9 +113,8 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
               )}
             </div>
 
-            <p className={`text-sm ${
-              step.completed ? 'text-[#94A3B8]' : 'text-[#64748B] dark:text-slate-400'
-            }`}>
+            <p className={`text-sm ${step.completed ? 'text-[#94A3B8]' : 'text-[#64748B] dark:text-slate-400'
+              }`}>
               {step.description}
             </p>
 
@@ -165,9 +163,8 @@ export function ActionPlan({ steps, onStepClick, onCompleteStep }: ActionPlanPro
 
           {/* Chevron */}
           <ChevronRight
-            className={`h-5 w-5 text-[#64748B] transition-transform flex-shrink-0 ${
-              isExpanded ? 'rotate-90' : ''
-            }`}
+            className={`h-5 w-5 text-[#64748B] transition-transform flex-shrink-0 ${isExpanded ? 'rotate-90' : ''
+              }`}
           />
         </div>
       </motion.div>

@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Briefcase, Building2, TrendingUp, Calendar, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Briefcase, Building2, TrendingUp, Calendar, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -142,6 +142,11 @@ export function JobTrackerView({ onCreateNew }: JobTrackerViewProps) {
                     {job.missingKeywords.length > 5 && (
                       <span className="text-xs text-[#64748B] self-center">+{job.missingKeywords.length - 5} more</span>
                     )}
+                  </div>
+                ) : (job.score === 0 || !job.score) ? (
+                  <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Analyzing...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-[#22C55E] text-sm">

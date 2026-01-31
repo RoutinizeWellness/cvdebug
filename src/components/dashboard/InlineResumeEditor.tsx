@@ -47,7 +47,7 @@ export function InlineResumeEditor({
   const [previousScore, setPreviousScore] = useState<number | null>(null);
 
   // Subscribe to resume updates in real-time
-  const resumeData = useQuery(api.resumes.getResume, { id: resumeId as Id<"resumes"> });
+  const resumeData = useQuery(api.resumes.getResume, resumeId ? { id: resumeId as Id<"resumes"> } : "skip");
 
   // Check if user has paid plan
   const isPaidUser = checkIsPaidUser(user?.subscriptionTier);
