@@ -17,6 +17,7 @@ interface ATSAnalysisReportProps {
   onOpenWritingForge?: () => void;
   onDownloadPDF?: () => void;
   onUpgrade?: () => void;
+  onUpdateResume?: (newContent: string) => void;
 }
 
 export function ATSAnalysisReport({
@@ -26,6 +27,7 @@ export function ATSAnalysisReport({
   onOpenWritingForge,
   onDownloadPDF,
   onUpgrade,
+  onUpdateResume,
   compactMode = false
 }: ATSAnalysisReportProps & { compactMode?: boolean }) {
   const { t } = useI18n();
@@ -706,40 +708,7 @@ export function ATSAnalysisReport({
                   </div>
                 )}
 
-                {/* Matched Keywords */}
-                {matchedKeywords.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                    className="bg-[#FFFFFF] rounded-xl p-4 md:p-6 border-2 border-emerald-200 hover:border-emerald-400 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-all duration-300 flex flex-col min-h-[300px] md:min-h-[350px] max-h-[500px]"
-                  >
-                    <div className="flex items-start justify-between mb-3 md:mb-4 flex-shrink-0">
-                      <div className="flex items-center gap-2 md:gap-3">
-                        <div className="p-2 md:p-3 rounded-xl bg-emerald-100 text-[#22C55E]">
-                          <span className="material-symbols-outlined text-xl md:text-2xl">check_circle</span>
-                        </div>
-                        <div>
-                          <h3 className="text-[#0F172A] font-bold text-base md:text-lg">Keywords Found</h3>
-                          <p className="text-[#475569] text-xs md:text-sm">{matchedKeywords.length} matches detected</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-2 overflow-y-auto pr-2 flex-1 content-start">
-                      {matchedKeywords.map((keyword: string, index: number) => (
-                        <motion.span
-                          key={index}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.8 + index * 0.02 }}
-                          className="px-2 py-1.5 md:px-3 md:py-2 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200 text-xs md:text-sm font-medium hover:bg-emerald-100 transition-colors cursor-default h-fit"
-                        >
-                          {keyword}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
+                {/* Matched Keywords removed to reduce duplication with Heatmap */}
 
                 {/* Missing Keywords - LOCKED FOR FREE USERS */}
                 {missingKeywords.length > 0 && (
@@ -908,8 +877,11 @@ export function ATSAnalysisReport({
                     resumeText={ocrText}
                     missingKeywords={missingKeywords}
                     onOptimized={(optimizedText) => {
-                      // User would need to save the optimized text
-                      console.log('Optimized text:', optimizedText);
+                      if (onUpdateResume) {
+                        onUpdateResume(optimizedText);
+                      } else {
+                        console.warn("No update handler provided for Auto-Tune");
+                      }
                     }}
                     isPremium={isPaidUser}
                     onUpgrade={onUpgrade}

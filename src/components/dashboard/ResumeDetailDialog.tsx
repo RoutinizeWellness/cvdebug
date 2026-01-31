@@ -94,6 +94,7 @@ export function ResumeDetailDialog({
   const rewriteResume = useAction(apiAny.ai.rewriteResume);
   const analyzeResume = useMutation(apiAny.resumes.analyzeResume);
   const applyRewriteToResume = useMutation(apiAny.resumes.applyRewriteToResume);
+  const updateResumeContent = useMutation(apiAny.resumes.updateResumeContent);
 
   const user = useQuery(apiAny.users.currentUser);
   const isPremium = checkIsPaidUser(user?.subscriptionTier);
@@ -126,6 +127,30 @@ export function ResumeDetailDialog({
       setShowRobotPulse(false);
     }
   }, [activeTab]);
+
+  const handleRewriteAll = async () => {
+    if (!resumeId || !displayResume?.ocrText) return;
+    setIsGenerating(true);
+    try {
+      const newText = await rewriteResume({
+        id: resumeId,
+        ocrText: displayResume.ocrText
+      });
+
+      if (newText) {
+        await updateResumeContent({
+          id: resumeId,
+          ocrText: newText
+        });
+        toast.success("Resume rewritten and applied!");
+      }
+    } catch (error) {
+      console.error("Rewrite error:", error);
+      toast.error("Rewrite failed");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   // Industry selector feedback
   useEffect(() => {
@@ -851,6 +876,19 @@ export function ResumeDetailDialog({
                         user={user}
                         onUpgrade={() => setShowPricing(true)}
                         onOpenWritingForge={() => setActiveTab("edit")}
+                        onUpdateResume={async (newText) => {
+                          if (!resumeId) return;
+                          try {
+                            await updateResumeContent({
+                              id: resumeId,
+                              ocrText: newText
+                            });
+                            toast.success("Resume updated! Re-analyzing...");
+                          } catch (error) {
+                            console.error("Update failed:", error);
+                            toast.error("Failed to update resume");
+                          }
+                        }}
                         compactMode={true}
                       />
                       <ActionPlan steps={actionSteps} />
@@ -859,6 +897,7 @@ export function ResumeDetailDialog({
                         clarityScore={displayResume.score}
                         isPaidUser={isPremium}
                         onUpgrade={() => setShowPricing(true)}
+                        onRewriteAll={handleRewriteAll}
                       />
                     </div>
                   </TabsContent>

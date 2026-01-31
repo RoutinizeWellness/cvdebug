@@ -23,13 +23,15 @@ interface FluffDetectorProps {
   clarityScore?: number;
   isPaidUser?: boolean;
   onUpgrade?: () => void;
+  onRewriteAll?: () => void;
 }
 
 export function FluffDetector({
   resumeText = "",
   clarityScore = 73,
   isPaidUser = false,
-  onUpgrade
+  onUpgrade,
+  onRewriteAll
 }: FluffDetectorProps) {
 
   const { t } = useI18n();
@@ -634,9 +636,16 @@ export function FluffDetector({
             </div>
             <button
               onClick={() => {
-                // Show toast notification that feature is coming soon
-                const message = "AI Resume Rewrite is coming soon! This will automatically rewrite your entire resume with:\n• Power verbs and action words\n• Quantified metrics and achievements\n• Impact-focused statements\n• ATS-optimized formatting";
-                alert(message);
+                if (!isPaidUser) {
+                  onUpgrade?.();
+                  return;
+                }
+
+                if (onRewriteAll) {
+                  onRewriteAll();
+                } else {
+                  toast.info("Rewrite feature coming soon!");
+                }
               }}
               className="px-6 py-3 bg-gradient-to-r from-[#1E293B] to-[#EC4899] hover:opacity-90 text-white rounded-lg font-bold transition-all shadow-lg shadow-[#1E293B]/30 whitespace-nowrap text-sm"
             >
@@ -870,11 +879,10 @@ export function FluffDetector({
                         }
                       }}
                       disabled={selectedMetrics[index] === undefined}
-                      className={`w-full mt-3 px-3 py-2 text-white text-xs font-semibold rounded transition-all ${
-                        selectedMetrics[index] !== undefined
-                          ? "bg-[#1E293B] hover:bg-[#334155] shadow-lg shadow-slate-500/30 cursor-pointer"
-                          : "bg-gray-300 cursor-not-allowed opacity-60"
-                      }`}
+                      className={`w-full mt-3 px-3 py-2 text-white text-xs font-semibold rounded transition-all ${selectedMetrics[index] !== undefined
+                        ? "bg-[#1E293B] hover:bg-[#334155] shadow-lg shadow-slate-500/30 cursor-pointer"
+                        : "bg-gray-300 cursor-not-allowed opacity-60"
+                        }`}
                     >
                       {selectedMetrics[index] !== undefined ? "📋 Copy Selected Metric" : "Select a Metric First"}
                     </button>
