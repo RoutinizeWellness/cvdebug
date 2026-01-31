@@ -31,16 +31,16 @@ const levelBadges = {
 };
 
 export function SeniorityMatchAnalysis({
-  detectedLevel,
-  confidenceScore,
-  experienceYears,
-  expectedLevel,
-  signalsDetected,
-  signalStrength,
-  detectedSignals,
-  readability,
-  imageTraps,
-  atsScore,
+  detectedLevel = "UNKNOWN",
+  confidenceScore = 0,
+  experienceYears = 0,
+  expectedLevel = "UNKNOWN",
+  signalsDetected = 0,
+  signalStrength = "MODERATE",
+  detectedSignals = [],
+  readability = "Medium",
+  imageTraps = "None Detected",
+  atsScore = 0,
 }: SeniorityMatchProps) {
   const levelColor = levelColors[detectedLevel as keyof typeof levelColors] || levelColors.JUNIOR;
   const levelBadge = levelBadges[detectedLevel as keyof typeof levelBadges] || levelBadges.JUNIOR;
@@ -128,13 +128,12 @@ export function SeniorityMatchAnalysis({
               <p className="text-xs text-slate-500">
                 Signal strength:{" "}
                 <span
-                  className={`font-bold ${
-                    signalStrength === "STRONG"
+                  className={`font-bold ${signalStrength === "STRONG"
                       ? "text-emerald-500"
                       : signalStrength === "WEAK"
-                      ? "text-rose-500"
-                      : "text-amber-500"
-                  }`}
+                        ? "text-rose-500"
+                        : "text-amber-500"
+                    }`}
                 >
                   {signalStrength}
                 </span>

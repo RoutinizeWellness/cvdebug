@@ -278,9 +278,19 @@ function calculateScore(text: string): number {
   const verbCount = strongVerbs.filter(v => new RegExp(`\\b${v}\\b`, 'i').test(text)).length;
   score += Math.min(15, verbCount * 3);
 
-  // FAANG keywords (+15)
-  const faangKeywords = ['scalable', 'distributed', 'microservices', 'kubernetes', 'aws', 'ci/cd'];
-  const keywordCount = faangKeywords.filter(k => new RegExp(`\\b${k}\\b`, 'i').test(text)).length;
+  // High Value / Industry Keywords (+15)
+  // Expanded to include Business, Marketing, and Leadership terms (not just FAANG)
+  const highImpactKeywords = [
+    // Tech
+    'scalable', 'distributed', 'microservices', 'kubernetes', 'aws', 'ci/cd', 'algorithm',
+    // Business/Strategy
+    'revenue', 'roi', 'strategy', 'stakeholders', 'p&l', 'budget', 'roadmap', 'growth',
+    // Marketing/Sales
+    'campaign', 'conversion', 'funnel', 'retention', 'acquisition', 'crm', 'quota',
+    // Leadership/General
+    'mentored', 'negotiated', 'spearheaded', 'orchestrated', 'initiative', 'compliance'
+  ];
+  const keywordCount = highImpactKeywords.filter(k => new RegExp(`\\b${k}\\b`, 'i').test(text)).length;
   score += Math.min(15, keywordCount * 2.5);
 
   return Math.min(100, Math.round(score));
